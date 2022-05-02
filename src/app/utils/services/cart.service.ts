@@ -1563,6 +1563,7 @@ export class CartService
 
     async setUnserviceables(unserviceables: any[])
     {
+        console.trace();
         this.notifications = await this.notifications.filter((notifcation) => notifcation.type !== 'unserviceable');
         this.notifications = [...this.notifications, ...unserviceables];
         this.notificationsSubject.next(this.notifications);
@@ -1570,6 +1571,7 @@ export class CartService
 
     async setCartNotifications(cartNotifications: any[])
     {
+        console.trace();
         this.notifications = await this.notifications.filter((notifcation) => notifcation.type == 'unserviceable');
         this.notifications = [...this.notifications, ...cartNotifications];
         this.notificationsSubject.next(this.notifications);
@@ -1896,6 +1898,18 @@ export class CartService
         this.clearNotifications()
         const user = this._localStorageService.retrieve('user');
         this.setValidateCartMessageApi({ userId: user['userId'], data: this.cartNotications }).subscribe(() => { console.log("cleared all notfication"); })
+    }
+
+    findInvalidItem()
+    {
+        const items = (this.getGenericCartSession['itemsList'] as any[]);
+        const index = items.findIndex((item) => item['productQuantity'] === 0 || item['productQuantity'] === "");
+        if(index > -1){
+            const item = this.getGenericCartSession.itemsList[index]
+            const errorTxt = `${item.productName} cannot have invalid quantity.`;
+            this._toastService.show({ type: 'error', text: errorTxt });
+        }
+        return index;
     }
 
     //Analytics

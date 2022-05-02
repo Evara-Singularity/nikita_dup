@@ -19,6 +19,7 @@ import { ProductService } from '@utils/services/product.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { of, Subscription, forkJoin } from 'rxjs';
 import { catchError, concatMap, map, mergeMap, switchMap } from 'rxjs/operators';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 declare let dataLayer;
 //declare var digitalData: {};
@@ -529,6 +530,7 @@ export class CartComponent
     {
         const item = this._cartService.getGenericCartSession.itemsList[itemIndex];
         const currentQty = item.productQuantity;
+        if (currentQty === "") { action = 'update';}
         const msn = item['productId'];
         const incrementUnit = item['incrementUnit'] || 1;
         let updateQtyTo = null;
@@ -544,13 +546,14 @@ export class CartComponent
                 break;
             }
             case 'update': {
-                updateQtyTo = value ? parseInt(value) : 0;
+                updateQtyTo = value ? parseInt(value) : "";
                 this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updateQtyTo, itemIndex, "quantity_updated");
                 break;
             }
         }
-        if (updateQtyTo < 1) {
+        if (updateQtyTo < 1 || updateQtyTo === "") {
             const errorTxt = `${item.productName} cannot have invalid quantity.`;
+            this._cartService.getGenericCartSession.itemsList[itemIndex]['productQuantity'] = updateQtyTo;
             this._tms.show({ type: 'error', text: errorTxt });
             return
         }

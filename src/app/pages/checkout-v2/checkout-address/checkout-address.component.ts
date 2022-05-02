@@ -180,6 +180,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
     /**@description decides whether to procees to payment or not.*/
     continueToPayment()
     {
+        //item varification
+        const invalidIndex = this._cartService.findInvalidItem();
+        if (invalidIndex > -1) return;
+
         //address verification
         if (!this.deliveryAddress) {
             this.addDeliveryOrBilling.next("Delivery");

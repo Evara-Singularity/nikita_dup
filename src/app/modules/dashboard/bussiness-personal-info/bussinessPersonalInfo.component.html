@@ -5,7 +5,7 @@
   </div>
   <span class="update-name">UPDATE NAME</span>
 </div>
-<div class="personal-details">
+<!-- <div class="personal-details">
   <div class="personal-details-inner">
     <label>Email</label>
     <h4>ashish.kumar@gmail.com</h4>
@@ -14,7 +14,18 @@
     <label>Mobile Number</label>
     <h4>+91 - 9717311486</h4>
   </div>
-</div>
+</div> -->
+
+<!-- <div class="material-static-form">
+  <div class="static-input-field">
+    <label>Email</label>
+    <h4>ashish.kumar@gmail.com</h4>
+  </div>
+  <div class="static-input-field">
+    <label>Mobile Number</label>
+    <h4>+91 - 9717311486</h4>
+  </div>
+</div> -->
 <!-- <form #personalInfodForm="ngForm" (ngSubmit)="onSubmit(personalInfodForm.value)" class="material-form" novalidate>
   <div class="card">
     <div class="container input-field">
@@ -35,21 +46,19 @@
 </form> -->
 
 <!-- email and phone -->
-<!-- <form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value)"
-  class="material-form profile-form mar-15" novalidate>
-  <div class="card">
-    <div class="container input-field">
-      <label class="is-focus">
-        <input type="text" name="email" [ngModel]="userInfo?.email" readonly>
-        <span class="label">Email *</span>
-      </label>
-      <label class="is-focus">
-        <input type="number" name="phone" [ngModel]="userInfo?.phone" readonly>
-        <span class="label">Phone No. *</span>
-      </label>
-    </div>
+<form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value)" class="material-form profile-form"
+  novalidate>
+  <div class="container input-field custom-profile-input">
+    <label class="is-focus">
+      <input type="text" name="email" [ngModel]="userInfo?.email" readonly>
+      <span class="label">Email *</span>
+    </label>
+    <label class="is-focus">
+      <input type="number" name="phone" [ngModel]="userInfo?.phone" readonly>
+      <span class="label">Phone No. *</span>
+    </label>
   </div>
-</form> -->
+</form>
 
 <div class="profile-card profile-bottom-card " (click)="toPasswordPage()">
   <div class="profile-card-inner profile-bottom-card-inner">

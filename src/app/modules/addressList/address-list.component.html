@@ -10,6 +10,7 @@
         <span class="chk-txt">
           <span class="heading-container">
             <span class="heading">
+              <!-- <i class="icon-arrow-right-s-line"></i> -->
               <span class="address-name" [ngClass]="{'persnName':!showRadio}">{{address.addressCustomerName | slice:0:60}}</span> &nbsp;
             </span>
           </span>
@@ -20,8 +21,8 @@
             <span class="small-btn edit" (click)="updateAddressV1({index: i, type: type, address: address})">
               EDIT
             </span>
-            <span *ngIf="(router.url.indexOf('/dashboard/address') == -1)" class="small-btn delete" (click)="selectAddress(address,type, i)" >
-              DELIVER HERE
+            <span  class="small-btn delete" (click)="selectAddress(address,type, i)" >
+              USE THIS
             </span>
           </span>
         </span>

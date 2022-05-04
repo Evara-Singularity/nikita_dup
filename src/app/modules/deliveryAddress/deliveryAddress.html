@@ -62,9 +62,9 @@
         </div>
         <div class="content-popup" content>
             <div class="add-address-substrip">
-                <button class="btn blue-border-btn-full"
+                <button class="btn btn-red-bordered center-aligned-button"
                     (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1, null, true)">
-                    ADD NEW ADDRESS
+                    + ADD NEW ADDRESS
                 </button>
             </div>
             <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)"

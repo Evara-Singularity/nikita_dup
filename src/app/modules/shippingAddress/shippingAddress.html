@@ -1,4 +1,13 @@
 <form [formGroup]="addressForm" class="material-form" (ngSubmit)="onSubmit(addressForm.value)">
+    <div class="outline-input-label mb-25">
+        <label>
+            <input type="tel" pattern="\d{10}" numbersOnly maxlength="10" formControlName="phone">
+            <span class="label">Enter Mobile Number</span>
+            <!-- <ng-container >
+                <p class="error-field error-txt">Enter 10 digit mobile number</p>
+            </ng-container> -->
+        </label>
+    </div>
     <input formControlName="idAddress" type="hidden">
     <div class="input-field">
         <label [class.is-focus]="addressCustomerName.value.length!=0">

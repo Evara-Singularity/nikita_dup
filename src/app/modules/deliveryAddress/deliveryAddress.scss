@@ -35,14 +35,14 @@
     @extend %clear-fix;
     // @extend %container;
     label {
-        padding: 10px 0;
+        // padding: 10px 0;
         display: block;
         @extend %custom-radio-checkout;
         @extend %clear-fix;
         .chk-txt {
             font-size: $medium-font;
-            width: calc(100% - 40px);
-            margin-left: 20px;
+            // width: calc(100% - 40px);
+            margin-left: 0px;
             .heading-container {
                 display: block;
                 @extend %clear-fix;

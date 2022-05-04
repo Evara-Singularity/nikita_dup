@@ -15,7 +15,7 @@ declare let dataLayer;
     templateUrl: './checkout-address.component.html',
     styleUrls: ['./checkout-address.component.scss'],
 })
-export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
+export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestroy
 {
     readonly STEPPER: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }, { label: "PAYMENT", status: false }];
     readonly IMG_PATH: string = environment.IMAGE_ASSET_URL;
@@ -32,6 +32,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
     billingAddress = null;
     moveSectionTo = null;
     cartSession = null;
+    itemChanges: { status: boolean, message: string } = null;
 
     orderSummarySubscription; Subscription = null;
     loginSubscription: Subscription = null;
@@ -40,7 +41,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
 
     constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
         private _router: Router, private _toastService: ToastMessageService) { }
-    
+
 
     ngOnInit(): void
     {
@@ -61,7 +62,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
                 // incase user is redirect from payment page or payment gateway this._cartService.getCartUpdatesChanges() 
                 // user will receive empty cartSession.
                 // in this case we need explicitly trigger cartSession update.
-                this._cartService.checkForUserAndCartSessionAndNotify().subscribe(status => {
+                this._cartService.checkForUserAndCartSessionAndNotify().subscribe(status =>
+                {
                     if (status) {
                         this._cartService.setCartUpdatesChanges(this.cartSession);
                     } else {
@@ -181,8 +183,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
     continueToPayment()
     {
         //item varification
-        const invalidIndex = this._cartService.findInvalidItem();
-        if (invalidIndex > -1) return;
+        if (!this.itemChanges.status) {
+            this._toastService.show({ type: 'error', text: this.itemChanges.message });
+            return;
+        }
 
         //address verification
         if (!this.deliveryAddress) {
@@ -216,6 +220,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
     viewUnavailableItemsFromNotifacions(types: string[]) { if (types && types.length) this._cartService.viewUnavailableItems(types); }
 
     handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
+
+    handleItemChanges(change: { status: boolean, message: string }) { this.itemChanges = change; }
 
     sendServiceableCriteo()
     {
@@ -251,7 +257,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
         }
     }
 
-    get displayPage() { return this._cartService.getGenericCartSession?.itemsList && this._cartService.getGenericCartSession?.itemsList.length > 0}
+    get displayPage() { return this._cartService.getGenericCartSession?.itemsList && this._cartService.getGenericCartSession?.itemsList.length > 0 }
 
     ngOnDestroy()
     {

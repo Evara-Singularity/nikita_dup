@@ -27,7 +27,7 @@
             (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
             (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
             (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-        <cart [moduleName]="'CHECKOUT'"></cart>
+        <cart [moduleName]="'CHECKOUT'" (emitItemChangeEvent$)="handleItemChanges($event)"></cart>
         <order-summary></order-summary>
     </ng-container>
 </div>

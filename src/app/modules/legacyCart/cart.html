@@ -13,7 +13,6 @@
                 <div class="product-img product-img-v2">
                     <img (click)="redirectToProductURL(showLink,item.productUrl)" src="{{item.productImg}}">
                 </div>
-
             </div>
             <div class="product-detail">
                 <div class="p-name">
@@ -30,7 +29,6 @@
 
                     <!-- <span class="error-txt" *ngIf="item.oos">Out of Stock</span> -->
                 </p>
-
                 <div *ngIf="!item.oos" class="remove-btn" (click)="showPopup(sbm.index = i)">
                     <span>REMOVE</span>
                     <!-- <span class="discount" *ngIf="item.offer && item.offer>0">Coupon Discount: ₹ {{item.offer | mathFloor | number : '1.2-2'}}</span> -->

@@ -32,7 +32,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     billingAddress = null;
     moveSectionTo = null;
     cartSession = null;
-    itemChanges: { status: boolean, message: string } = null;
 
     orderSummarySubscription; Subscription = null;
     loginSubscription: Subscription = null;
@@ -182,12 +181,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     /**@description decides whether to procees to payment or not.*/
     continueToPayment()
     {
-        //item varification
-        if (!this.itemChanges.status) {
-            this._toastService.show({ type: 'error', text: this.itemChanges.message });
-            return;
-        }
-
         //address verification
         if (!this.deliveryAddress) {
             this.addDeliveryOrBilling.next("Delivery");
@@ -220,8 +213,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     viewUnavailableItemsFromNotifacions(types: string[]) { if (types && types.length) this._cartService.viewUnavailableItems(types); }
 
     handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
-
-    handleItemChanges(change: { status: boolean, message: string }) { this.itemChanges = change; }
 
     sendServiceableCriteo()
     {

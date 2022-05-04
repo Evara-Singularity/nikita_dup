@@ -1,6 +1,6 @@
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -38,7 +38,9 @@ export class CartComponent
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     cartSubscription: Subscription;
     pageEvent = "genericPageLoad";
-    traceProductDetails = {};//trace for any product changes'
+    traceProductDetails = {};//trace for any product changes';
+    cartSession = null;
+    @Output("emitItemChangeEvent$") emitItemChangeEvent$: EventEmitter<{ status: boolean, message: string }> = new EventEmitter<{ status: boolean, message: string }>();
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -52,6 +54,7 @@ export class CartComponent
     ngOnInit()
     {
         // Get latest cart from API
+        this.emitItemChangeEvent$.emit({ status: true, message: null });
         this._commonService.updateUserSession();
         this.loadCartDataFromAPI();
     }
@@ -61,14 +64,16 @@ export class CartComponent
     {
         this._globalLoaderService.setLoaderState(true);
         this.cartSubscription = this._cartService.getCartUpdatesChanges().pipe(
-            map((cart: any) =>
+            map((cartSession: any) =>
             {
+                this.cartSession = JSON.parse(JSON.stringify(cartSession));
                 const delay = this._router.url.includes("quickorder") ? 0 : 500;
                 this._cartService.verifyAndUpdateNotfications(delay);
-                this.sendCritieoDataonView(this._cartService.getGenericCartSession);
+                this.sendCritieoDataonView(this.cartSession);
                 this.sendAdobeAnalyticsData(this.pageEvent);
                 this.pageEvent = "genericClick";
-                return cart;
+                return cartSession
+                ;
             }),
             concatMap((res) => this._cartService.getShippingAndUpdateCartSession(res))).subscribe(
                 (result) =>
@@ -329,7 +334,7 @@ export class CartComponent
         e.stopPropagation();
         this._globalLoaderService.setLoaderState(true);
         this.pushDataToDatalayerOnRemove(this.removeIndex);
-        this._cartService.removeUnavailableItems([this._cartService.getGenericCartSession.itemsList[this.removeIndex]]);
+        this._cartService.removeUnavailableItems([this.cartSession.itemsList[this.removeIndex]]);
         this.removePopup = false;
     }
 
@@ -440,16 +445,16 @@ export class CartComponent
 
     pushDataToDatalayerOnRemove(index)
     {
-        if (!this._cartService.getGenericCartSession["itemsList"][index]) return;
-        var taxonomy = this._cartService.getGenericCartSession["itemsList"][index]['taxonomyCode'];
+        if (!this.cartSession["itemsList"][index]) return;
+        var taxonomy = this.cartSession["itemsList"][index]['taxonomyCode'];
         var trackingData = {
             event_type: "click",
             label: "remove_from_cart",
-            product_name: this._cartService.getGenericCartSession["itemsList"][index]['productName'],
-            msn: this._cartService.getGenericCartSession["itemsList"][index]['productId'],
-            brand: this._cartService.getGenericCartSession["itemsList"][index]['brandName'],
-            price: this._cartService.getGenericCartSession["itemsList"][index]['totalPayableAmount'],
-            quantity: this._cartService.getGenericCartSession["itemsList"][index]['productQuantity'],
+            product_name: this.cartSession["itemsList"][index]['productName'],
+            msn: this.cartSession["itemsList"][index]['productId'],
+            brand: this.cartSession["itemsList"][index]['brandName'],
+            price: this.cartSession["itemsList"][index]['totalPayableAmount'],
+            quantity: this.cartSession["itemsList"][index]['productQuantity'],
             channel: "Cart",
             category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
             category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
@@ -462,12 +467,12 @@ export class CartComponent
             'ecommerce': {
                 'remove': {
                     'products': [{
-                        'name': this._cartService.getGenericCartSession["itemsList"][index]['productName'],
-                        'id': this._cartService.getGenericCartSession["itemsList"][index]['productId'],
-                        'price': this._cartService.getGenericCartSession["itemsList"][index]['totalPayableAmount'],
+                        'name': this.cartSession["itemsList"][index]['productName'],
+                        'id': this.cartSession["itemsList"][index]['productId'],
+                        'price': this.cartSession["itemsList"][index]['totalPayableAmount'],
                         'variant': '',
-                        'quantity': this._cartService.getGenericCartSession["itemsList"][index]['productQuantity'],
-                        'prodImg': this._cartService.getGenericCartSession["itemsList"][index]['productImg']
+                        'quantity': this.cartSession["itemsList"][index]['productQuantity'],
+                        'prodImg': this.cartSession["itemsList"][index]['productImg']
                     }]
                 }
             },
@@ -527,7 +532,7 @@ export class CartComponent
     //new implmentation
     handleItemQuantityChanges(itemIndex: number, action: string, value?)
     {
-        const item = this._cartService.getGenericCartSession.itemsList[itemIndex];
+        const item = this.cartSession.itemsList[itemIndex];
         const currentQty = item.productQuantity;
         if (currentQty === "") { action = 'update';}
         const msn = item['productId'];
@@ -536,23 +541,24 @@ export class CartComponent
         switch (action) {
             case 'increment': {
                 updateQtyTo = currentQty + incrementUnit;
-                this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updateQtyTo, itemIndex, "increment_quantity");
+                this.sendMessageOnQuantityChanges(this.cartSession, updateQtyTo, itemIndex, "increment_quantity");
                 break;
             }
             case 'decrement': {
                 updateQtyTo = currentQty - incrementUnit;
-                this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updateQtyTo, itemIndex, "increment_quantity");
+                this.sendMessageOnQuantityChanges(this.cartSession, updateQtyTo, itemIndex, "increment_quantity");
                 break;
             }
             case 'update': {
                 updateQtyTo = value ? parseInt(value) : "";
-                this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updateQtyTo, itemIndex, "quantity_updated");
+                this.sendMessageOnQuantityChanges(this.cartSession, updateQtyTo, itemIndex, "quantity_updated");
                 break;
             }
         }
         if (updateQtyTo < 1 || updateQtyTo === "") {
             const errorTxt = `${item.productName} cannot have invalid quantity.`;
-            this._cartService.getGenericCartSession.itemsList[itemIndex]['productQuantity'] = updateQtyTo;
+            this.emitItemChangeEvent$.emit({ status: false, message: errorTxt});
+            this.cartSession.itemsList[itemIndex]['productQuantity'] = updateQtyTo;
             this._tms.show({ type: 'error', text: errorTxt });
             return
         }
@@ -578,11 +584,15 @@ export class CartComponent
         ).subscribe((product) =>
         {
             if(!product){
-                this._tms.show({ type: 'error', text: "Product does not exist" });
+                const msg = "Product does not exist";
+                this.emitItemChangeEvent$.emit({ status: false, message: msg });
+                this._tms.show({ type: 'error', text: msg });
                 return;
             }
             if (product['productQuantity'] && (product['quantityAvailable'] < newQty)) {
-                this._tms.show({ type: 'error', text: "Quantity not available" });
+                const msg = "Quantity not available";
+                this.emitItemChangeEvent$.emit({ status: false, message: msg });
+                this._tms.show({ type: 'error', text: msg });
                 return;
             }
             this.traceProductDetails[msn] = product;
@@ -599,12 +609,16 @@ export class CartComponent
         const available = productToUpdate['quantityAvailable'];
         if (newQty < moq) {
             this._globalLoaderService.setLoaderState(false);
-            this._tms.show({ type: 'error', text: `Minimum qty can be ordered is: ${moq}` });
+            const msg = `Minimum qty can be ordered is: ${moq}`;
+            this.emitItemChangeEvent$.emit({ status: false, message: msg });
+            this._tms.show({ type: 'error', text: msg });
             return;
         }
         if (newQty > available) {
             this._globalLoaderService.setLoaderState(false);
-            this._tms.show({ type: 'error', text: `Maximum qty can be ordered is: ${available}` });
+            const msg = `Maximum qty can be ordered is: ${available}`;
+            this.emitItemChangeEvent$.emit({ status: false, message: msg });
+            this._tms.show({ type: 'error', text: msg });
             return;
         }
         if (productToUpdate['bulkPriceMap'] && productToUpdate['bulkPriceMap']['india'] && (productToUpdate['bulkPriceMap']['india'] as any[]).length) {
@@ -613,8 +627,8 @@ export class CartComponent
                 return bulk['active'] && newQty >= bulk['minQty'] && newQty <= bulk['maxQty']
             });
             if (bulkPriceMap.length) {
-                this._cartService.getGenericCartSession.itemsList[itemIndex]['bulkPrice'] = bulkPriceMap[0]['bulkSellingPrice'];;
-                this._cartService.getGenericCartSession.itemsList[itemIndex]['bulkPriceWithoutTax'] = bulkPriceMap[0]['bulkSPWithoutTax'];
+                this.cartSession.itemsList[itemIndex]['bulkPrice'] = bulkPriceMap[0]['bulkSellingPrice'];;
+                this.cartSession.itemsList[itemIndex]['bulkPriceWithoutTax'] = bulkPriceMap[0]['bulkSPWithoutTax'];
             }
         }
         this.updateCart(itemIndex, msn , newQty)
@@ -623,10 +637,10 @@ export class CartComponent
     updateCart(itemIndex, msn, newQty)
     {
         this._globalLoaderService.setLoaderState(true);
-        const oldQty = this._cartService.getGenericCartSession.itemsList[itemIndex]['productQuantity'];
-        this._cartService.getGenericCartSession.itemsList[itemIndex]['productQuantity'] = newQty;
+        const oldQty = this.cartSession.itemsList[itemIndex]['productQuantity'];
+        this.cartSession.itemsList[itemIndex]['productQuantity'] = newQty;
         const setValidationMessages$ = this._cartService.removeNotificationsByMsns([msn], true);
-        const newCartSession = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession));
+        const newCartSession = JSON.parse(JSON.stringify(this.cartSession));
         const updateCart$ = this._cartService.updateCartSession(newCartSession).pipe(
             switchMap((newCartSession) =>
             {
@@ -641,13 +655,14 @@ export class CartComponent
             const cartSession = responses[1];
             if (cartSession){
                 this._cartService.setGenericCartSession(cartSession);
-                this._cartService.publishCartUpdateChange(this._cartService.getGenericCartSession);
+                this._cartService.publishCartUpdateChange(this.cartSession);
                 this._cartService.orderSummary.next(cartSession);
                 this._tms.show({ type: 'success', text: "Cart quantity updated successfully" });
                 this.sendMessageAfterCartAction(cartSession);
+                this.emitItemChangeEvent$.emit({ status: true, message: null });
                 return;
             }
-            this._cartService.getGenericCartSession.itemsList[itemIndex]['productQuantity'] = oldQty;
+            this.cartSession.itemsList[itemIndex]['productQuantity'] = oldQty;
             this._tms.show({ type: 'error', text: cartSession["message"] || "Cart quanity is not updated." });
         })
     }

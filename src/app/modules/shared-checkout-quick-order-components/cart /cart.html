@@ -1,5 +1,5 @@
-<div *ngIf="_cartService.getGenericCartSession?.itemsList && _cartService.getGenericCartSession?.itemsList.length > 0">
-    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let itemIndex = index;">
+<div *ngIf="cartSession?.itemsList && cartSession?.itemsList.length > 0">
+    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of cartSession?.itemsList; let itemIndex = index;">
         <div *ngIf="item['text1']" class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>

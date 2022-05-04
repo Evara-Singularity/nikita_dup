@@ -165,6 +165,7 @@ select {
                 background-color: #ffffff;
                 left: 10px;
                 padding: 0px 5px;
+                z-index: 9;
             }
 
             textarea:focus + .label {
@@ -387,3 +388,4 @@ option {
         }
     }
 }
+

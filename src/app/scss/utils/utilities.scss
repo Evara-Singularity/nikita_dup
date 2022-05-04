@@ -44,14 +44,8 @@
     padding-bottom: 5px;
 }
 
-ul {
+.list-information {
     list-style: disc;
     font-size: $medium-font;
-    li {
-      margin: 10px 0 0 10px;
-      line-height: $small-line-height;
-      &:last-child{
-          margin-bottom: 10px;
-      }
-    }
+    line-height: $small-line-height;
 }

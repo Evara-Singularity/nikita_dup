@@ -1,6 +1,7 @@
 @import '../../scss/variables';
 @import '../../scss/base/typography.scss';
 @import '../../scss/layout/cards.scss';
+@import '../../scss/utils/utilities.scss';
 
 .testimonial-container{
 	.card{
@@ -12,6 +13,16 @@
 			i{
 				margin-left: auto;
 			}
-		   }
+		}
+		.content{
+			.list-information {
+				li {
+				  margin: 10px 0 0 10px;
+				  &:last-child{
+					  margin-bottom: 10px;
+				  }
+				}
+			}
+		}
 	 }
 }

@@ -1,3 +1,10 @@
+<div class="pwa-tabs-container">
+    <ul class="pwa-inline-tab"  id="elementTabs">
+        <li *ngFor="let i of [1,2,3,4,5,6,7]" class="pwa-tab">
+            Print
+        </li>
+    </ul>
+</div>
 <div class="trending-search-container" *ngIf="trendingCatName?.length > 0">
     <h3 class="search_heading"><i class="icon-trending"></i>Trending Searches</h3>
     <div class="trending-search-inner">

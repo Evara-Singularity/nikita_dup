@@ -124,7 +124,7 @@ export class CommonService
         });
     }
 
-    get getPreviousUrl() {
+    get getPreviousUrl(): string {
         return this.previousUrl;
     } 
 

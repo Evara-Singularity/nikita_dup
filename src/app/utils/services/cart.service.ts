@@ -1881,7 +1881,7 @@ export class CartService
                 return false;
             });
         }
-        const saveNotfications = this.notifications.filter((notification) => notification['type'] ="unserviceable");
+        const saveNotfications = this.notifications.filter((notification) => notification['type'] == "unserviceable");
         return this.setValidateCartMessageApi({ userId: userSession['userId'], data: saveNotfications });
 
     }

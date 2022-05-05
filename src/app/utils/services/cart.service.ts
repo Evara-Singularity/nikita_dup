@@ -9,7 +9,7 @@ import { SharedCheckoutUnavailableItemsComponent } from '@app/modules/shared-che
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { BehaviorSubject, forkJoin, Observable, of, Subject } from 'rxjs';
-import { catchError, delay, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, delay, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { Address } from '../models/address.modal';
 import { AddToCartProductSchema } from "../models/cart.initial";
@@ -985,15 +985,20 @@ export class CartService
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SET_SetCartValidationMessages, { body: data });
     }
 
+    
     validateCartApi(cart)
     {
+        console.trace()
         // used in cart.components.ts
         const cartN = JSON.parse(JSON.stringify(cart));
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_CART, { body: this.buyNow ? cartN : cart });
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_CART, { body: this.buyNow ? cartN : cart }).pipe(
+            tap((response)=>{return response;}),
+            shareReplay(1)
+        );
     }
 
     getSessionByUserId(cart)
-    {
+    {   
         // used in Shared Auth modules components
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CartByUser, { body: cart });
     }

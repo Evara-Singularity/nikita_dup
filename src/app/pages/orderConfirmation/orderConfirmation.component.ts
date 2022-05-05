@@ -555,15 +555,14 @@ export class OrderConfirmationComponent implements OnInit {
             offersList: null,
         };
         this._cartService.updateCartSession(emptyCart).subscribe((response) => {
-            //new code
-            if (response['statusCode'] === 200)
+            if (response['cart'])
             {
                 this._cartService.checkForUserAndCartSessionAndNotify().subscribe(res =>
                 {
+                    console.log(res)
                     console.log('cart updated');
                 });
             }
-            
         });
     }
 

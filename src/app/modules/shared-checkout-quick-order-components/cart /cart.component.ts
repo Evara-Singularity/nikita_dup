@@ -40,7 +40,7 @@ export class CartComponent
         public localStorageService: LocalStorageService, public _router: Router, public _cartService: CartService,
         private _tms: ToastMessageService, private _productService: ProductService, private _globalLoaderService: GlobalLoaderService,
         private _globalAnalyticsService: GlobalAnalyticsService,
-        public _localAuthService:LocalAuthService
+        public _localAuthService: LocalAuthService
     ) { }
 
     ngOnInit()
@@ -141,11 +141,11 @@ export class CartComponent
         const currentQty = item.productQuantity;
         let updateQtyTo = null;
         let errorMsg = null;
+        let removeIndex = -1;
         switch (action) {
             case 'increment': {
                 updateQtyTo = currentQty + incrementUnit;
-                if (updateQtyTo > maxQty)
-                {
+                if (updateQtyTo > maxQty) {
                     updateQtyTo = maxQty;
                     errorMsg = `Maximum qty can be ordered is: ${maxQty}`;
                 }
@@ -154,12 +154,10 @@ export class CartComponent
             }
             case 'decrement': {
                 updateQtyTo = currentQty - incrementUnit;
-                if (updateQtyTo < minQty)
-                {
-                    updateQtyTo = minQty;
-                    errorMsg = `Minimum qty can be ordered is: ${minQty}`;
-                }
                 this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updateQtyTo, itemIndex, "decrement_quantity");
+                if (updateQtyTo < minQty) {
+                    removeIndex = itemIndex;
+                }
                 break;
             }
             case 'update': {
@@ -175,6 +173,11 @@ export class CartComponent
                 this.sendMessageOnQuantityChanges(this._cartService.getGenericCartSession, updateQtyTo, itemIndex, "quantity_updated");
                 break;
             }
+        }
+        if (removeIndex > -1) { 
+            this._globalLoaderService.setLoaderState(false);
+            this.removeItemFromCart(itemIndex); 
+            return 
         }
         let bulkPriceMap = [];
         const newCartSession = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession));
@@ -218,7 +221,7 @@ export class CartComponent
                 return;
             }
             this._tms.show({ type: 'error', text: cartSession["message"] || "Cart quanity is not updated." });
-        }, (error) => { this._globalLoaderService.setLoaderState(false);})
+        }, (error) => { this._globalLoaderService.setLoaderState(false); })
     }
 
     sendCritieoDataonView(cartSession)

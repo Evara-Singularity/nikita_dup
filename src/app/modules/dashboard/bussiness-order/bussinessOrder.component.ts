@@ -88,8 +88,6 @@ export class BussinessOrderComponent {
     let page = this._activatedRoute.snapshot.queryParams.page || 0;
     this.openOrder = this._activatedRoute.snapshot.queryParams.order;
     this.currentRoute = this._commonService.getCurrentRoute(this._router.url);
-    console.log(this.user);
-
     if (!this._activatedRoute.snapshot.queryParams.hasOwnProperty("token")) {
       this.initializePageParams(page);
     } else {
@@ -183,7 +181,6 @@ export class BussinessOrderComponent {
           }
         }
         this.orders = res["data"];
-        console.log(JSON.stringify(this.orders, null, 2));
         this.orders.forEach((element) => {
           element["isOrderVisible"] = false;
         });
@@ -363,7 +360,6 @@ export class BussinessOrderComponent {
     digitalData["page"] = page;
     digitalData["custData"] = custData;
     digitalData["order"] = order;
-    console.log(digitalData);
     if (_satellite) {
       _satellite.track("genericClick");
     }

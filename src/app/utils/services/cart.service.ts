@@ -708,12 +708,6 @@ export class CartService
         }
     }
 
-    // resetBuyNow()
-    // {
-    //     this._buyNow = false;
-    //     this.buyNowSessionDetails = null;
-    // }
-
     // incase of update use this to notify cart session
     publishCartUpdateChange(cartSession) { this._cartUpdatesChanges.next(cartSession); }
 
@@ -1095,112 +1089,6 @@ export class CartService
         return messageList;
     }
 
-    //TODO:Remove after new notification revampe
-    /**
-     * 
-     * @param itemsValidationMessage : new updates in item: price, shipping, coupon
-     * This function add new items validation or update the older one for oos, and price.
-     */
-    // setValidationMessageLocalstorage(itemsValidationMessageNew, itemsValidationMessageOld)
-    // {
-    //     if (itemsValidationMessageOld && itemsValidationMessageOld.length > 0) {
-    //         itemsValidationMessageNew.forEach((itemValidationMessageNew) =>
-    //         {
-    //             let isExist = false;
-    //             for (let i = 0; i < itemsValidationMessageOld.length; i++) {
-    //                 let itemValidationMessageOld = itemsValidationMessageOld[i];
-    //                 if (itemValidationMessageOld['msnid'] == itemValidationMessageNew['msnid']) {
-    //                     isExist = true;
-    //                     if (itemValidationMessageNew['type'] == 'price' || itemValidationMessageNew['type'] == 'oos') {
-    //                         itemsValidationMessageOld[i] = Object.assign({}, itemValidationMessageNew);
-    //                     }
-    //                     break;
-    //                 }
-    //             }
-    //             if (!isExist) {
-    //                 itemsValidationMessageOld.push(itemValidationMessageNew);
-    //             }
-    //             else {
-    //                 itemsValidationMessageOld = itemsValidationMessageNew;
-    //             }
-    //         })
-    //     } else {
-    //         itemsValidationMessageOld = itemsValidationMessageNew;
-    //     }
-    //     // Remove oos validation message, if it is instock after sometime
-    //     itemsValidationMessageOld = itemsValidationMessageOld.filter((itemValidationMessageOld) =>
-    //     {
-    //         if (itemValidationMessageOld['type'] == 'oos') {
-    //             return itemsValidationMessageNew.some(itemValidationMessageNew => itemValidationMessageOld['msnid'] == itemValidationMessageNew['msnid']);
-    //         }
-    //         return true;
-
-    //     })
-    //     return itemsValidationMessageOld;
-    // }
-
-    //TODO:Remove after new notification revampe
-    // deleteValidationMessageLocalstorage(item, type?)
-    // {
-    //     const user = this._localStorageService.retrieve('user');
-    //     if (user && user.authenticated == "true") {
-    //         //remove cart item message from local storage
-    //         let itemsValidationMessage: Array<{}> = this.itemsValidationMessage;
-    //         if (!itemsValidationMessage.length) { return itemsValidationMessage; }
-    //         let itemsUnServicableMessage = [];
-    //         if (!type || type != "delete") {
-    //             itemsUnServicableMessage = itemsValidationMessage.filter(ivm => ivm['type'] == "unservicable");
-    //         }
-    //         itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['msnid'] != item['productId']);
-    //         if (type && type == "delete") {
-    //             itemsUnServicableMessage = itemsValidationMessage.filter(ivm => ivm['type'] == "unservicable");
-    //         }
-    //         itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "unservicable");
-    //         itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "coupon");
-    //         itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "shipping");
-    //         itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "shippingcoupon");
-    //         this.setValidateCartMessageApi({ userId: user['userId'], data: itemsValidationMessage }).subscribe(() => { });
-    //         return [...itemsValidationMessage, ...itemsUnServicableMessage];
-    //     } else {
-    //         return null;
-    //     }
-    // }
-
-    //TODO:Remove after new notification revampe
-    // getValidationMessageLocalstorage()
-    // {
-    //     // return itemValidationMessage;
-    //     // const user = this.localStorageService.retrieve('user');
-    //     // return user["itemsValidationMessage"] ? user["itemsValidationMessage"] : [];
-    //     return this.itemsValidationMessage;
-    // }
-
-    //TODO:Remove after new notification revampe
-    // addPriceUpdateToCart(itemsList, itemsValidationMessage)
-    // {
-    //     let itemsListNew = JSON.parse(JSON.stringify(itemsList));
-    //     let itemsValidationMessageT = {}; //Transformed Items validation messages;
-    //     for (let ivm in itemsValidationMessage) {
-    //         itemsValidationMessageT[itemsValidationMessage[ivm]['msnid']] = itemsValidationMessage[ivm];
-    //     }
-    //     itemsListNew = itemsListNew.map((item) =>
-    //     {
-    //         item.text1 = null;
-    //         item.text2 = null;
-    //         item.oPrice = null;
-    //         item.nPrice = null;
-    //         if (itemsValidationMessageT[item['productId']] && itemsValidationMessageT[item['productId']]['type'] == 'price') {
-    //             const data = itemsValidationMessageT[item['productId']]['data'];
-    //             item.text1 = data['text1'];
-    //             item.text2 = data['text2'];
-    //             item.oPrice = data['oPrice'];
-    //             item.nPrice = data['nPrice'];
-    //         }
-    //         return item;
-    //     })
-    //     return itemsListNew;
-    // }
-
     updateCartItem(item, productResult)
     {
         item["amount"] = Number(productResult['mrp']),
@@ -1387,15 +1275,6 @@ export class CartService
             })
         );
     }
-
-    //TODO:cart removal logic
-    // deleteValidationMessages(removableItems: any[])
-    // {
-    //     const DELETE = "delete";
-    //     let NEW_VALIDATION_MSGS = [];
-    //     removableItems.forEach((item) => { NEW_VALIDATION_MSGS = this.deleteValidationMessageLocalstorage(item, DELETE); });
-    //     this.itemsValidationMessage = NEW_VALIDATION_MSGS;
-    // }
 
     updateOfferList(cartSession, data)
     {

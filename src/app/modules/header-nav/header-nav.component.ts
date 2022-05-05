@@ -404,7 +404,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 this._commonService.getPreviousUrl.indexOf('checkout/signup') > -1 || 
                 this._commonService.getPreviousUrl.indexOf('checkout/otp') > -1
             ) {
-                this.router.navigate(['/quickorder']);
+                this.router.navigate(['/']);
             } else {
                 this.location.back();
             }

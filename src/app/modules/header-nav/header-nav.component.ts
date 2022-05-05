@@ -393,16 +393,24 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 
     redirectToBackURL() {
         // incase redirected back from checkout then we need to call cartsession API
-        if( ((this.router.url).indexOf('checkout/address')  > -1) || ((this.router.url).indexOf('quickorder')  > -1) ){
+        if (((this.router.url).indexOf('checkout/address') > -1) || ((this.router.url).indexOf('quickorder') > -1)) {
             console.log('bakbtn cart session API called');
             //this.cartService.resetBuyNow();
             //this.cartService.refreshCartSesion();
             this.cartService.clearBuyNowFlow();
-            this.location.back();
-        }else{
+            console.log('bakbtn cart session API called commonService.getPreviousUrl', this._commonService.getPreviousUrl);
+            if (
+                this._commonService.getPreviousUrl.indexOf('checkout/login') > -1 ||
+                this._commonService.getPreviousUrl.indexOf('checkout/signup') > -1 || 
+                this._commonService.getPreviousUrl.indexOf('checkout/otp') > -1
+            ) {
+                this.router.navigate(['/']);
+            } else {
+                this.location.back();
+            }
+        } else {
             this.location.back();
         }
-        
     }
 
     refreshIcon() {

@@ -23,11 +23,14 @@ export class CheckoutPaymentComponent implements OnInit {
 
   checkForValidRedirection() {
     if (
+      (this._cartService.getGenericCartSession && Object.keys(this._cartService.getGenericCartSession?.cart).length == 0) ||
       !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
-      (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
+        (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
     ) {
       this._cartService.checkForUserAndCartSessionAndNotify();
       this.router.navigate(['/checkout/address']);
+    }else{
+      console.log('redirecting to payment ==>', this._cartService.getGenericCartSession);
     }
     // console.log('payment logs', this._cartService.invoiceType, this._cartService.shippingAddress, this._cartService.billingAddress)
   }

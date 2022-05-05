@@ -689,7 +689,8 @@ export class CartService
     public refreshCartSesion()
     {
         // we do not want to refresh cart by pages component in case buynow event
-        // conditional are hacks used because localtion.goback() refrsh page and call getcartsession API from pages component (root module)
+        // conditional are hacks used because localtion.goback() refresh page and 
+        // call getcartsession API from pages component (root module)
         if (
             !this._buyNow &&
             !this.buyNowSessionDetails &&
@@ -988,7 +989,6 @@ export class CartService
     
     validateCartApi(cart)
     {
-        console.trace()
         // used in cart.components.ts
         const cartN = JSON.parse(JSON.stringify(cart));
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_CART, { body: this.buyNow ? cartN : cart }).pipe(
@@ -1894,6 +1894,12 @@ export class CartService
     {
         this.cartNotications = [];
         this.notifications = [];
+        (this.getGenericCartSession['itemsList'] as any[]).forEach((item)=>{
+            delete item['text1'];
+            delete item['text2'];
+            delete item['nPrice'];
+            delete item['oPrice'];
+        })
     }
 
     clearCartNotfications()

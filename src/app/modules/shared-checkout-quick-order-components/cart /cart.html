@@ -23,8 +23,8 @@
                     <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">₹ {{item.priceWithoutTax | mathFloor | number : '1.2-2'}}</span>
                     <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax  | mathFloor | number : '1.2-2'}}</span>
                 </p>
-                <div *ngIf="!item.oos" class="remove-btn" (click)="$event.stopPropagation();removeItemFromCart(itemIndex)">
-                    <span>REMOVE</span>
+                <div *ngIf="!item.oos" class="remove-btn">
+                    <span (click)="$event.stopPropagation();removeItemFromCart(itemIndex)">REMOVE</span>
                 </div>
             </div>
         </div>

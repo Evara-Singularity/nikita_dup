@@ -420,9 +420,11 @@
         padding-bottom: 15px;
     }
 }
-
+.alert-opacity {
+    opacity:0.05;
+}
 .alert-box {
-    .overlay {
+    .overlay{
         z-index: 12;
     }
     .content-area {

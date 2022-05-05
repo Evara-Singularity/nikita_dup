@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ToastMessageService } from '@modules/toastMessage/toast-message.service';
 import { GlobalState } from '@utils/global.state';
@@ -38,7 +39,8 @@ export class CartComponent
         public dataService: DataService, public _commonService: CommonService, public checkOutService: CheckoutService,
         public localStorageService: LocalStorageService, public _router: Router, public _cartService: CartService,
         private _tms: ToastMessageService, private _productService: ProductService, private _globalLoaderService: GlobalLoaderService,
-        private _globalAnalyticsService: GlobalAnalyticsService
+        private _globalAnalyticsService: GlobalAnalyticsService,
+        public _localAuthService:LocalAuthService
     ) { }
 
     ngOnInit()

@@ -32,7 +32,7 @@
             <span>REMOVE</span>
         </div>
         <div class="alert-box" *ngIf="removePopup">
-            <div class="overlay"></div>
+            <div class="overlay" [class.alert-opacity]="_localAuthService.isUserLoggedIn()"></div>
             <div class="content-area">
                 <div class="info-area">
                     <p class="info-title">Remove Item</p>

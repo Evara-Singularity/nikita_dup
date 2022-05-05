@@ -115,9 +115,10 @@
 }
 
 .multiple-address {
+    padding: 15px;
+    background-color: red !important;
     &.withRadioContainer {
-        padding: 10px 15px;
-        border-bottom: 1px solid $border-grey;
+        @extend %white-card;
         &:last-child {
             border-bottom: none;
         }

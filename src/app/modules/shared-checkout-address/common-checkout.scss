@@ -1,8 +1,9 @@
 @import "../../scss/variables";
-@import '../../scss/components/checkbox';
-@import '../../scss/components/radio';
+@import "../../scss/components/checkbox";
+@import "../../scss/components/radio";
 
 .invoice-container {
+    @extend %white-card;
     background: $white;
     padding: 15px;
     margin-top: 10px;
@@ -43,7 +44,8 @@
 .address-container {
     margin-top: 10px;
     @extend %cards;
-    padding: 0 0 10px 0;
+    background-color: var(--ghost-white);
+    padding: 0 0 0 0;
     border: 0;
     .sub-strip {
         background: $selected-color;
@@ -65,20 +67,29 @@
     .addButtonContainer {
         padding: 15px 10px;
     }
+    .shipping-container {
+        @extend %white-card;
+        margin-top: 10px;
+        @extend %cards;
+        padding: 0px;
+        border: 0;
+        .addButtonContainer {
+            padding: 0px 10px 15px;
+        }
+    }
 }
 
 .address-list {
     @extend %clear-fix;
     // @extend %container;
     label {
-        padding: 10px 0;
         display: block;
         @extend %custom-radio-checkout;
         @extend %clear-fix;
         .chk-txt {
             font-size: $medium-font;
             width: calc(100% - 40px);
-            margin-left: 20px;
+            margin-left: 0px;
             .heading-container {
                 display: block;
                 @extend %clear-fix;
@@ -95,49 +106,52 @@
             }
             .txt {
                 display: block;
-                font-size: $large-font;
-                width: 65%;
-                line-height: 21px;
+                font-size: $medium-font;
+                width: 100%;
+                line-height: $small-line-height;
             }
         }
     }
 }
 
 .persnName {
-    &:after {
-        content: "|";
-        padding: 0px 10px;
-        position: absolute;
-    }
+    font-size: $medium-font;
+    font-weight: bold;
+    // &:after {
+    //     content: "|";
+    //     padding: 0px 10px;
+    //     position: absolute;
+    // }
     & + span {
         padding-left: 10px;
     }
 }
 
-.multiple-address {
-    &.withRadioContainer {
-        padding: 10px 15px;
-        border-bottom: 1px solid $border-grey;
-        &:last-child {
-            border-bottom: none;
+form {
+    background-color: var(--ghost-white);
+    .multiple-address {
+        padding: 15px;
+        &.withRadioContainer {
+            @extend %white-card;
+            &:last-child {
+                border-bottom: none;
+            }
+            .chk-txt {
+                margin-left: 5px !important;
+            }
         }
-        .chk-txt {
-            margin-left: 5px !important;
+        @extend %clear-fix;
+        label {
+            float: left;
         }
-    }
-    @extend %clear-fix;
-    label {
-        float: left;
-        width: 93%;
-    }
-    .bin-icon {
-        float: right;
-        text-align: right;
-        padding: 10px 0;
-        width: 7%;
+        .bin-icon {
+            float: right;
+            text-align: right;
+            padding: 10px 0;
+            width: 7%;
+        }
     }
 }
-
 .address-btn-section {
     display: block;
     margin-top: 10px;
@@ -161,7 +175,6 @@
     }
 }
 
-
 .addAddressPopup {
     .header_add_edit {
         background: #d9232d !important;
@@ -173,9 +186,9 @@
             i {
                 font-size: 20px;
                 line-height: 24px;
-                color:#fff;
+                color: #fff;
             }
-            i+.page-name {
+            i + .page-name {
                 font-size: $extra-large-font;
                 margin-left: 10px;
                 line-height: 26px;
@@ -197,22 +210,22 @@
     bottom: 0;
     left: 0;
     z-index: 2;
-    &:disabled{
-        background: #bdbdbd;;
+    &:disabled {
+        background: #bdbdbd;
     }
 }
-.column-field{
+.column-field {
     @extend %clear-fix;
-    .w-65{
-      width: 65%;
-      float: left;
+    .w-65 {
+        width: 65%;
+        float: left;
     }
-    .w-30{
-      width: 30%;
-      float: right;
+    .w-30 {
+        width: 30%;
+        float: right;
     }
-  }
-  .for-varification {
+}
+.for-varification {
     position: relative;
     .for-varification-r {
         position: absolute;
@@ -225,7 +238,7 @@
             font-size: $large-font;
         }
         span.hidden {
-            color: #209F19 !important;
+            color: #209f19 !important;
             font-size: $medium-font;
             i {
                 font-size: $large-font;
@@ -239,6 +252,9 @@
 }
 
 .varified-checkbox {
-    @extend %custom-check-box-checkout
+    @extend %custom-check-box-checkout;
 }
 
+.multiple-address-checkout{
+    padding: 15px !important;
+}

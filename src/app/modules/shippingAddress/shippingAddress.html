@@ -59,7 +59,7 @@
                 Special characters are not allowed in address.</p>
         </div>
         <div class="column-field material-form clearfix">
-            <div class="outline-input-label mb-25 w-65">
+            <div class="outline-input-label mb-25 w-48">
                 <label [class.is-focus]="isCountry.value!='Select Country' && isCountry.value!=''">
                     <select formControlName="idCountry" (change)="onCountryChange($event)" #isCountry disabled>
                         <option selected="selected" *ngFor="let country of countryList" [value]="country.idCountry">
@@ -71,7 +71,7 @@
                 <p *ngIf="idCountry.touched && idCountry.invalid && idCountry.errors['required']" class="error-txt">
                     Kindly select your country</p>
             </div>
-            <div class="outline-input-label mb-25 w-30">
+            <div class="outline-input-label mb-25 w-48 column-r">
                 <label [class.is-focus]="isPincodeSec.value.length!=0">
                     <input (keypress)="checkNumeric($event)" formControlName="postCode" type="number" placeholder=""
                         #isPincodeSec>

@@ -27,6 +27,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     payableAmount = 0;
     isUserLoggedIn = false;
     hasCartItems = true;
+    verifyUnserviceableFromCartSubscription = false;//to restrict the verification of unserviceable items on every cart subscription.
 
     deliveryAddress = null;
     billingAddress = null;
@@ -57,6 +58,12 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length) {
                     this.calculatePayableAmount(this.cartSession['cart']);
                 }
+                //address is getting updated and cart session is getting updated with some delay.
+                //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
+                if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
+                    this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
+                    this.verifyUnserviceableFromCartSubscription = !(this.verifyUnserviceableFromCartSubscription)
+                }
             } else {
                 // incase user is redirect from payment page or payment gateway this._cartService.getCartUpdatesChanges() 
                 // user will receive empty cartSession.
@@ -75,7 +82,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (!this.isUserLoggedIn) {
             this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
         }
-        this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
+        
     }
 
     /** @description updates user status and is used to display the continue CTA*/

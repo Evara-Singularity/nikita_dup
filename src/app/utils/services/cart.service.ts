@@ -989,7 +989,6 @@ export class CartService
     
     validateCartApi(cart)
     {
-        console.trace()
         // used in cart.components.ts
         const cartN = JSON.parse(JSON.stringify(cart));
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_CART, { body: this.buyNow ? cartN : cart }).pipe(
@@ -1895,6 +1894,12 @@ export class CartService
     {
         this.cartNotications = [];
         this.notifications = [];
+        (this.getGenericCartSession['itemsList'] as any[]).forEach((item)=>{
+            delete item['text1'];
+            delete item['text2'];
+            delete item['nPrice'];
+            delete item['oPrice'];
+        })
     }
 
     clearCartNotfications()

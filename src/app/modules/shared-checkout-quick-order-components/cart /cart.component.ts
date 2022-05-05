@@ -55,7 +55,7 @@ export class CartComponent
         this.cartSubscription = this._cartService.getCartUpdatesChanges().pipe(
             map((cartSession: any) =>
             {
-                const delay = this._router.url.includes("quickorder") ? 0 : 500;
+                const delay = this._router.url.includes("quickorder") ? 0 : 400;
                 this._cartService.verifyAndUpdateNotfications(delay);
                 this.sendCritieoDataonView(cartSession);
                 this.sendAdobeAnalyticsData(this.pageEvent);

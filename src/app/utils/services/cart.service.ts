@@ -692,10 +692,10 @@ export class CartService
         // conditional are hacks used because localtion.goback() refresh page and 
         // call getcartsession API from pages component (root module)
         if (
-            !this._buyNow &&
+            !this._buyNow && 
             !this.buyNowSessionDetails &&
             (this._router.url.indexOf('checkout/payment') === -1) &&
-            !(this._router.url.indexOf('checkout/address') > 0 && this.previousUrl.indexOf('checkout/payment') > 0)
+            !(this._router.url.indexOf('checkout/address') > 0 && this.previousUrl.indexOf('checkout/payment') > 0 && this._buyNow )
         ) {
             this.checkForUserAndCartSessionAndNotify().subscribe(status =>
             {

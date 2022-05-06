@@ -1,20 +1,21 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
-import { CheckoutHeaderModel, SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
+import { CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { AddressService } from '@services/address.service';
 import { CartService } from '@services/cart.service';
 import { environment } from 'environments/environment';
 import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
+declare let dataLayer;
 @Component({
     selector: 'checkout-address',
     templateUrl: './checkout-address.component.html',
     styleUrls: ['./checkout-address.component.scss'],
 })
-export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
+export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestroy
 {
     readonly STEPPER: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }, { label: "PAYMENT", status: false }];
     readonly IMG_PATH: string = environment.IMAGE_ASSET_URL;
@@ -39,8 +40,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
     cartUpdatesSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _router: Router, private _toastService: ToastMessageService,private cd: ChangeDetectorRef) { }
-    
+        private _router: Router, private _toastService: ToastMessageService) { }
+
 
     ngOnInit(): void
     {
@@ -60,14 +61,15 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
                 //address is getting updated and cart session is getting updated with some delay.
                 //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
                 if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
-                    this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
+                    this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
                     this.verifyUnserviceableFromCartSubscription = !(this.verifyUnserviceableFromCartSubscription)
                 }
             } else {
                 // incase user is redirect from payment page or payment gateway this._cartService.getCartUpdatesChanges() 
                 // user will receive empty cartSession.
                 // in this case we need explicitly trigger cartSession update.
-                this._cartService.checkForUserAndCartSessionAndNotify().subscribe(status => {
+                this._cartService.checkForUserAndCartSessionAndNotify().subscribe(status =>
+                {
                     if (status) {
                         this._cartService.setCartUpdatesChanges(this.cartSession);
                     } else {
@@ -80,6 +82,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
         if (!this.isUserLoggedIn) {
             this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
         }
+        
     }
 
     /** @description updates user status and is used to display the continue CTA*/
@@ -92,12 +95,17 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
     }
 
     //Address Information
-    handleAddressEvent(addressInformation: SelectedAddressModel)
+    handleDeliveryAddressEvent(address)
     {
-        this.invoiceType = addressInformation.invoiceType;
-        this.deliveryAddress = addressInformation.deliveryAddress;
-        this.billingAddress = addressInformation.billingAddress;
-        this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
+        this.deliveryAddress = address;
+        this._cartService.shippingAddress = address;
+        this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
+    }
+
+    handleBillingAddressEvent(address)
+    {
+        this.billingAddress = address;
+        this._cartService.billingAddress = address;
     }
 
     /**
@@ -106,14 +114,12 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
      * @param deliveryAddress contains deliverable address
      * @param billingAddress contains billing address and optional for 'retail' case
      */
-    verifyDeliveryAndBillingAddress(invoiceType, deliveryAddress, billingAddress)
+    verifyDeliveryAndBillingAddress(invoiceType, deliveryAddress)
     {
         if (deliveryAddress) { this._cartService.shippingAddress = deliveryAddress; }
-        if (billingAddress) { this._cartService.billingAddress = billingAddress; }
         if (invoiceType) { this._cartService.invoiceType = invoiceType; }
         const POST_CODE = deliveryAddress && deliveryAddress['postCode'];
         if (!POST_CODE) return;
-        if (invoiceType === this.INVOICE_TYPES.TAX && (!billingAddress)) return;
         this.verifyServiceablityAndCashOnDelivery(POST_CODE);
     }
 
@@ -151,6 +157,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
             return;
         }
         this._cartService.setUnserviceables([]);
+        this.sendServiceableCriteo();
     }
 
     /**@description updates global object to set in COD is available or not and used in payment section */
@@ -213,6 +220,42 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
     viewUnavailableItemsFromNotifacions(types: string[]) { if (types && types.length) this._cartService.viewUnavailableItems(types); }
 
     handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
+
+    sendServiceableCriteo()
+    {
+        let cartSession = this._cartService.getGenericCartSession;
+        let dlp = [];
+        for (let p = 0; p < cartSession["itemsList"].length; p++) {
+            let product = {
+                id: cartSession["itemsList"][p]['productId'],
+                name: cartSession["itemsList"][p]['productName'],
+                price: cartSession["itemsList"][p]['totalPayableAmount'],
+                variant: '',
+                quantity: cartSession["itemsList"][p]['productQuantity']
+            };
+            dlp.push(product);
+        }
+        dataLayer.push({
+            'event': 'checkout',
+            'ecommerce': {
+                'checkout': {
+                    'actionField': { 'step': 3, 'option': 'address' },
+                    'products': dlp
+                }
+            },
+        });
+        let userSession = this._localAuthService.getUserSession();
+        if (userSession && userSession.authenticated && userSession.authenticated == "true") {
+            /*Start Criteo DataLayer Tags */
+            dataLayer.push({
+                'event': 'setEmail',
+                'email': (userSession && userSession.email) ? userSession.email : ''
+            });
+            /*End Criteo DataLayer Tags */
+        }
+    }
+
+    get displayPage() { return this._cartService.getGenericCartSession?.itemsList && this._cartService.getGenericCartSession?.itemsList.length > 0 }
 
     ngOnDestroy()
     {

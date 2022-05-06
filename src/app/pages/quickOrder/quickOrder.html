@@ -1,9 +1,9 @@
 <div id="quickOrderPage">
     <div *ngIf="_cartService.getGenericCartSession?.itemsList?.length > 0" class="mb-65">
         <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications>
-        <cart [moduleName]="'QUICKORDER'" ></cart>
+        <cart [moduleName]="'QUICKORDER'"></cart>
         <order-summary></order-summary>
-        <button class="btn continue-btn mt-10" (click)="navigateToCheckout()" >{{ _commonService?.userSession?.authenticated === 'true' ? 'Proceed to Checkout' : 'Sign In to Checkout' }}</button>
+        <button class="btn continue-btn mt-10" (click)="navigateToCheckout()">{{ _commonService?.userSession?.authenticated === 'true' ? 'Proceed to Checkout' : 'Sign In to Checkout' }}</button>
     </div>
     <cart-no-item *ngIf="_cartService.getGenericCartSession?.itemsList?.length === 0"></cart-no-item>
 </div>

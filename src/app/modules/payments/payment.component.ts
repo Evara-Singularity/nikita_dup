@@ -105,7 +105,6 @@ export class PaymentComponent implements OnInit {
             data['userId'] = userSession['userId'];
             data['userEmail'] = '';
         }
-        console.log('getSavedCardData ==>', 'called', data, this.invoiceType)
         this._paymentService.getSavedCards(data, this.invoiceType)
             .subscribe((res) => {
                 if (res['status'] === true && res['data']['user_cards'] !== undefined && res['data']['user_cards'] != null) {

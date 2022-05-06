@@ -5,7 +5,6 @@ import { ActivatedRoute } from "@angular/router";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { map } from "rxjs/operators";
 import { Meta } from "@angular/platform-browser";
-import { OrderSummaryService } from "@app/modules/legacyOrderSummary/orderSummary.service";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import CONSTANTS from "@app/config/constants";
 import { CartService } from "@app/utils/services/cart.service";
@@ -13,6 +12,7 @@ import { CommonService } from "@app/utils/services/common.service";
 import { ProductService } from "@app/utils/services/product.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
+import { OrderSummaryService } from "@app/utils/services/orderSummary.service";
 
 declare let dataLayer;
 declare var digitalData: {};

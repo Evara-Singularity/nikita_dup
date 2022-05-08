@@ -9,7 +9,7 @@
     <div class="content-popup card mt-15 pad-15" content>
         <form [formGroup]="addressForm" class="material-form" (ngSubmit)="$event.stopPropagation();saveOrUpdateAddress()"
             *ngIf="addressForm">
-            <div class="input-field">
+            <div class="outline-input-label mb-25">
                 <label [class.is-focus]="displayFocus('addressCustomerName')">
                     <input formControlName="addressCustomerName" type="text" placeholder="">
                     <span class="label">Name*</span>
@@ -23,7 +23,7 @@
                     </p>
                 </ng-container>
             </div>
-            <div class="input-field">
+            <div class="outline-input-label mb-25">
                 <label [class.is-focus]="displayFocus('email')">
                     <input formControlName="email" type="text" placeholder="">
                     <span class="label">Email (Optional)</span>
@@ -37,7 +37,7 @@
                     </p>
                 </ng-container>
             </div>
-            <div class="input-field for-varification">
+            <div class="outline-input-label mb-25 for-varification">
                 <div class="for-varification-l">
                     <label [class.is-focus]="displayFocus('phone')">
                         <input formControlName="phone" type="tel" numbersOnly placeholder="" maxlength="10">
@@ -45,7 +45,7 @@
                     </label>
                 </div>
                 <div class="for-varification-r" *ngIf="phone.valid && phoneVerified.value">
-                    <span class="hidden">VERIFIED<i class="icon-done"></i></span>
+                    <span class="hidden">VERIFIED</span>
                 </div>
                 <ng-container *ngIf="phone.touched || phone.dirty">
                     <p *ngIf="phone.hasError('required')" class="error-txt">
@@ -56,7 +56,7 @@
                     </p>
                 </ng-container>
             </div>
-            <div class="input-field">
+            <div class="outline-input-label mb-25">
                 <label [class.is-focus]="displayFocus('alternatePhone')">
                     <input formControlName="alternatePhone" type="tel" placeholder="" maxlength="10">
                     <span class="label">Alternate Phone Number (Optional)</span>
@@ -66,7 +66,7 @@
                     Kindly enter your 10 digit contact no.
                 </p>
             </div>
-            <div class="input-field">
+            <div class="outline-input-label mb-25">
                 <label [class.is-focus]="displayFocus('addressLine')">
                     <input formControlName="addressLine" type="text" placeholder="" maxlength="150">
                     <span class="label">Address*</span>
@@ -81,7 +81,7 @@
                 </ng-container>
             </div>
             <div class="column-field clearfix">
-                <div class="input-field w-65">
+                <div class="outline-input-label mb-25 w-48">
                     <label [class.is-focus]="displayFocus('idCountry')">
                         <select formControlName="idCountry">
                             <option selected="selected" *ngFor="let country of countryList" [value]="country.idCountry">
@@ -95,7 +95,7 @@
                         Kindly select your country
                     </p>
                 </div>
-                <div class="input-field w-30">
+                <div class="outline-input-label mb-25 w-48 w-48-right">
                     <label [class.is-focus]="displayFocus('postCode')">
                         <input numbersOnly formControlName="postCode" type="tel" placeholder="" maxlength="6">
                         <span class="label">Pin Code*</span>
@@ -112,7 +112,7 @@
                     </p>
                 </div>
             </div>
-            <div class="input-field ">
+            <div class="outline-input-label mb-25">
                 <label [class.is-focus]="displayFocus('idState')">
                     <select formControlName="idState">
                         <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
@@ -124,7 +124,7 @@
                     Kindly select your state
                 </p>
             </div>
-            <div class="input-field">
+            <div class="outline-input-label mb-25">
                 <label [class.is-focus]="displayFocus('city')">
                     <input formControlName="city" type="text" placeholder="" readonly>
                     <span class="label">City*</span>
@@ -138,7 +138,7 @@
                     </p>
                 </ng-container>
             </div>
-            <div class="input-field">
+            <div class="outline-input-label mb-25">
                 <label [class.is-focus]="displayFocus('landmark')">
                     <input formControlName="landmark" type="text" placeholder="">
                     <span class="label">Landmark (Optional)</span>

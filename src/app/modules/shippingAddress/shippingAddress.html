@@ -1,4 +1,4 @@
-<div class="login-card">
+<div>
     <form [formGroup]="addressForm" class="material-form" (ngSubmit)="onSubmit(addressForm.value)">
         <div class="outline-input-label mb-25">
             <label [class.is-focus]="addressCustomerName.value.length!=0">
@@ -32,7 +32,7 @@
                 </label>
             </div>
             <div class="for-varification-r" *ngIf="phoneVerified.value">
-                <span class="hidden" href="">VERIFIED<i class="icon-done"></i></span>
+                <span class="hidden" href="">VERIFIED</span>
             </div>
             <p *ngIf="phone.touched && phone.invalid && phone.errors['required']" class="error-txt">Kindly enter your 10
                 digit contact number</p>

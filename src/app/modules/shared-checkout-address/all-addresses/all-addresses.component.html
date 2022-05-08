@@ -1,15 +1,4 @@
-<section class="invoice-container">
-    <div class="invoice-select">
-        <label>
-            <input type="checkbox" [checked]="isGSTUser" (change)="$event.stopPropagation();updateInvoiceType($event.target.checked)">
-            <span class="custom-box icon-box"></span>
-        </label>
-        <div class="invoice-txt">
-            <p>Get GST Invoice</p>
-            <span class="invoice-subtxt">Claim input tax credit on your purchase.</span>
-        </div>
-    </div>
-</section>
+
 <!--shipping container-->
 <section>
     <ng-container
@@ -55,11 +44,11 @@
             </div>
             <div class="addButtonContainer">
                 <div class="container">
-                    <button class="btn redBgButton center-aligned-button" *ngIf="addressCount > 0"
+                    <button class="btn redBgButton center-aligned-button-noborder" *ngIf="addressCount > 0"
                         (click)="$event.stopPropagation();displayAddressListPopup(label)">
                         CHANGE OR ADD ADDRESS
                     </button>
-                    <button class="btn redBgButton center-aligned-button" *ngIf="addressCount == 0"
+                    <button class="btn redBgButton center-aligned-button-noborder" *ngIf="addressCount == 0"
                         (click)="$event.stopPropagation();displayAddressFormPopup(label, null)">
                         ADD NEW ADDRESS
                     </button>
@@ -69,3 +58,15 @@
         
     </div>
 </ng-template>
+<section class="invoice-container">
+    <div class="invoice-select">
+        <label>
+            <input type="checkbox" [checked]="isGSTUser" (change)="$event.stopPropagation();updateInvoiceType($event.target.checked)">
+            <span class="custom-box icon-box"></span>
+        </label>
+        <div class="invoice-txt">
+            <p>Get GST Invoice</p>
+            <span class="invoice-subtxt">Claim input tax credit on your purchase.</span>
+        </div>
+    </div>
+</section>

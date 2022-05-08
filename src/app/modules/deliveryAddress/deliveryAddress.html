@@ -12,9 +12,9 @@
         </app-address-list>
         <div class="addButtonContainer">
             <div class="container">
-                <button class=" btn redBgButton center-aligned-button" *ngIf="shippingAddressList.length > 0"
+                <button class=" btn redBgButton center-aligned-button-noborder" *ngIf="shippingAddressList.length > 0"
                     style="text-transform: uppercase;" (click)="salpu.shipping = true">Change or Add address</button>
-                <button class="btn redBgButton center-aligned-button" *ngIf="shippingAddressList.length == 0"
+                <button class="btn redBgButton center-aligned-button-noborder" *ngIf="shippingAddressList.length == 0"
                     style="text-transform: uppercase;"
                     (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1, null, true)">Add new
                     address</button>
@@ -33,15 +33,14 @@
         </div>
     </div>
     <div class="shipping-container" *ngIf="invoiceType==='tax'">
-
         <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)"
             [layoutType]="'SINGLE'" [addresses]="billingAddressList" [type]="2" [showRadio]="false">
         </app-address-list>
         <div class="addButtonContainer">
             <div class="container">
-                <button *ngIf="billingAddressList.length > 0" class="btn redBgButton center-aligned-button"
+                <button *ngIf="billingAddressList.length > 0" class="btn redBgButton center-aligned-button-noborder"
                     style="text-transform: uppercase;" (click)="salpu.billing = true">Change or Add address</button>
-                <button *ngIf="billingAddressList.length == 0" class="btn redBgButton center-aligned-button"
+                <button *ngIf="billingAddressList.length == 0" class="btn redBgButton center-aligned-button-noborder"
                     style="text-transform: uppercase;"
                     (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 2, null, true)">Add new
                     address</button>
@@ -62,7 +61,7 @@
         </div>
         <div class="content-popup" content>
             <div class="add-address-substrip">
-                <button class="btn btn-red-bordered center-aligned-button"
+                <button class="btn btn-red-bordered center-aligned-button-noborder"
                     (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1, null, true)">
                     + ADD NEW ADDRESS
                 </button>
@@ -83,9 +82,9 @@
         </div>
         <div class="content-popup" content>
             <div class="add-address-substrip">
-                <button class="btn blue-border-btn-full"
+                <button class="btn btn-red-bordered center-aligned-button-noborder"
                     (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 2, null, true)">
-                    ADD NEW ADDRESS
+                    + ADD NEW ADDRESS
                 </button>
             </div>
             <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)"

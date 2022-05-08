@@ -1,6 +1,5 @@
 @import '../../scss/variables';
 @import '../../scss/components/checkbox';
-@import '../shared-auth-v1/login-card.scss';
 @import './../../scss/layout/forms.scss';
 
 
@@ -22,8 +21,12 @@ button.continue-btn[disabled] {
     position: relative;
     .for-varification-r {
         position: absolute;
-        bottom: 8px;
-        right: 0px;
+        bottom: 5px;
+        right: 5px;
+        padding: 8px;
+        border-radius: 8px;
+
+        background-color: var(--slimy-green);
         a.show {
             color: #176fd8 !important;
             text-align: right;
@@ -31,15 +34,11 @@ button.continue-btn[disabled] {
             font-size: $large-font;
         }
         span.hidden {
-            color: #209F19 !important;
+            color: var(--white) !important;
             font-size: $medium-font;
-            i {
-                font-size: $large-font;
-                display: inline-block;
-                vertical-align: middle;
-                color: #5ba621;
-                padding-left: 5px;
-            }
+            font-weight: normal;
+            text-transform: uppercase;
+            font-weight: bold;
         }
     }
 }

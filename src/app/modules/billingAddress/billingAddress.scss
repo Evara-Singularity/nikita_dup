@@ -1,6 +1,5 @@
 @import "../../scss/variables";
 @import "../../scss/components/checkbox";
-@import "../shared-auth-v1/login-card.scss";
 @import "./../../scss/layout/forms.scss";
 .column-field {
   .w-48 {
@@ -28,4 +27,14 @@ select {
   border-radius: 8px !important;
   padding: 0px 10px !important;
   background-color: var(--white) !important;
+}
+
+.verified{
+  background-color: var(--slimy-green);
+  color: var(--white) !important;
+  padding: 8px;
+  border-radius: 6px;
+  top: 5px !important;
+  right: 5px !important;
+  font-weight: bold !important;
 }

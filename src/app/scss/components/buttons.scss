@@ -130,9 +130,11 @@ button {
     font-weight: 600;
     font-size: $medium-font;
 }
-.center-aligned-button{
+.center-aligned-button-noborder{
     width: 100%;
     text-align: center;
+    border: none !important;
+    border-radius: 9px;
 }
 
 

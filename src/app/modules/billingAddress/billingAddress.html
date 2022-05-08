@@ -7,9 +7,7 @@
                 <input type="text"  #isGstin formControlName="gstin" maxlength="15">
                 <span class="label">GSTIN*</span>
                 <ng-container *ngIf="gstin.valid">
-                    <span class="edit-field verified" *ngIf="isGSTINVerified">VERIFIED
-                        <i class="icon-check-active"></i>
-                    </span>
+                    <span class="edit-field verified" *ngIf="isGSTINVerified">VERIFIED</span>
                     <span class="edit-field" *ngIf="!(isGSTINVerified)" (click)="$event.stopPropagation();verifyGSTIN();">
                         VERIFY NOW
                     </span>

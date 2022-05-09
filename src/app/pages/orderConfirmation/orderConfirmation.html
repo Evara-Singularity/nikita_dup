@@ -12,6 +12,63 @@
                 <p><strong>Order ID : <span>{{orderId}}</span></strong></p>
                 <p class="items">2 Items <span>₹ {{amount}}</span></p>
             </div>
+        </div>
+    </div>
+    <div class="order-horizontal-card-section">
+        <div class="pwa-row order-confirmation-card">
+            <div class="pwa-col-12">
+                <div class="order-horizontal-card">
+                    <div class="horizontal-section">
+                        <div class="image-block">
+                            <img src="https://cdn.moglix.com/p/I/9/D/d/MINI9DWPIGYL3-thumbnail.jpg" alt="">
+                        </div>
+                        <div class="decription-block">
+                            <p class="pwa-text">Karam FS 02 Steel Toe Black Safety Shoes, Size : 6</p>
+                            <div class="main-price">
+                                <p><strong>₹1,174</strong><span>(2 QTY)</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pwa-row order-confirmation-card">
+            <div class="pwa-col-12 order-confirmation-horizontal-card">
+                <div class="order-horizontal-card">
+                    <div class="horizontal-section">
+                        <div class="image-block">
+                            <img src="https://cdn.moglix.com/p/I/9/D/d/MINI9DWPIGYL3-thumbnail.jpg" alt="">
+                        </div>
+                        <div class="decription-block">
+                            <p class="pwa-text">Karam FS 02 Steel Toe Black Safety Shoes, Size : 6</p>
+                            <div class="main-price">
+                                <p><strong>₹1,174</strong><span>(2 QTY)</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pwa-row order-confirmation-card">
+            <div class="pwa-col-12 order-confirmation-horizontal-card">
+                <div class="order-horizontal-card">
+                    <div class="horizontal-section">
+                        <div class="image-block">
+                            <img src="https://cdn.moglix.com/p/I/9/D/d/MINI9DWPIGYL3-thumbnail.jpg" alt="">
+                        </div>
+                        <div class="decription-block">
+                            <p class="pwa-text">Karam FS 02 Steel Toe Black Safety Shoes, Size : 6</p>
+                            <div class="main-price">
+                                <p><strong>₹1,174</strong><span>(2 QTY)</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pwa-row order-item-section">
+        <div class="pwa-col-12">
             <ul class="txt-list">
                 <li class="clearfix">
                     <span class="tag-label"><strong>Payment Mode</strong></span>
@@ -31,16 +88,20 @@
             </ul>
             <p class="note-info"><b>Note:</b> We do not demand your banking and credit card details verbally or telephnocially. Please do not divulge your details to fraudsters falsely claming to be calling on moglix’s behalf.</p>
         </div>
-        <div class="pwa-col-12 button-section">
-            <button class="btn otulineButton" (click)="navigateTo('dashboard/order')">VIEW ORDER</button>
+    </div>
+    <div class="order-confirmation-btn">
+        <button class="btn otulineButton " (click)="navigateTo('dashboard/order')">VIEW ORDER</button>
+        <div class="btn-right">
             <button class="btn btn-variant1"  (click)="navigateTo('/')">SHOP MORE</button>
         </div>
     </div>
+    
     <div class="pwa-row promo-section">
         <div observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)" class="inner-promo">
             <ng-container #appPromo></ng-container>
         </div> 
     </div>
+
     <!-- <app-promo [page]="'order-confirmation'" class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo> -->  
 </section>
 <iframe *ngIf="iFrameUrl != undefined && afType != undefined && afType=='iFrame' && id=='undefined'" [src]="iFrameUrl | safeUrl" width="1" height="1"></iframe>

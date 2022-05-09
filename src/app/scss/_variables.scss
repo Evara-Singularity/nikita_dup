@@ -385,6 +385,10 @@
                     color: #B9B9B9;
                 }
             }
+            .custom-cbox label input[type=radio]:checked+.custom-box:before {
+                content: "";
+                color: #3b9e26;
+            }
             .chk-txt {
                 font-size: 15px;
                 float: left;

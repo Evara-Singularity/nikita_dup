@@ -35,6 +35,7 @@ export class CartService
     public selectedBusinessAddressObservable: Subject<any> = new Subject();
     public productShippingChargesListObservable: Subject<any> = new Subject();
     private notificationsSubject: Subject<any[]> = new Subject<any[]>();
+    public promocodeAppliedSubject: Subject<boolean> = new Subject<boolean>();
     //public slectedAddress: number = -1;
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
@@ -1186,7 +1187,6 @@ export class CartService
                     {
                         this._loaderService.setLoaderState(false);
                         if (status) {
-                            console.log(data);
                             if (data['discount'] <= cartSession['cart']['totalAmount']) {
                                 cartSession['cart']['totalOffer'] = data['discount'];
                                 cartSession['extraOffer'] = null;
@@ -1204,6 +1204,7 @@ export class CartService
                                 this.setGenericCartSession(cartSession);
                                 this._loaderService.setLoaderState(false);
                                 this._toastService.show({ type: 'success', text: 'Promo Code Applied' });
+                                this.promocodeAppliedSubject.next(true);
                             } else {
                                 cartSession['cart']['totalOffer'] = 0;
                                 cartSession['offersList'] = [];

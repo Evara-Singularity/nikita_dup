@@ -1,3 +1,4 @@
+import { AfterViewInit } from '@angular/core';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
@@ -10,7 +11,7 @@ declare let dataLayer: any;
     templateUrl: './promo-code-list.component.html',
     styleUrls: ['./promo-code-list.component.scss']
 })
-export class PromoCodeListComponent implements OnInit {
+export class PromoCodeListComponent implements OnInit, AfterViewInit {
     allPromoCodes: Array<any> = [];
     @Output('closePromoOfferPopup') closePromoOfferPopup = new EventEmitter();
 
@@ -22,6 +23,11 @@ export class PromoCodeListComponent implements OnInit {
 
     ngOnInit() {
         this.getAllPromoCodesByUserId(this._commonService.userSession.userId);
+    }
+
+    ngAfterViewInit(): void
+    {
+        this._cartService.promocodeAppliedSubject.subscribe((isApplied) => { if (isApplied) { this.closePromoOfferPopup.emit(false)}})
     }
 
     getAllPromoCodesByUserId(userId) {

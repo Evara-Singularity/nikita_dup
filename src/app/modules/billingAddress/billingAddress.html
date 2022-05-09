@@ -2,14 +2,12 @@
 <form [formGroup]="addressForm" (ngSubmit)="this.onSubmit(this.addressForm.value, this.addressForm.valid)" class="material-form">
 
     <div formGroupName="businessDetail">
-        <div class="input-field">
+        <div class="outline-input-label mb-25">
             <label [class.is-focus]="isGstin.value.length!=0">
                 <input type="text"  #isGstin formControlName="gstin" maxlength="15">
                 <span class="label">GSTIN*</span>
                 <ng-container *ngIf="gstin.valid">
-                    <span class="edit-field verified" *ngIf="isGSTINVerified">VERIFIED
-                        <i class="icon-check-active"></i>
-                    </span>
+                    <span class="edit-field verified" *ngIf="isGSTINVerified">VERIFIED</span>
                     <span class="edit-field" *ngIf="!(isGSTINVerified)" (click)="$event.stopPropagation();verifyGSTIN();">
                         VERIFY NOW
                     </span>
@@ -20,7 +18,7 @@
                 <p class="error-txt" *ngIf="gstin.hasError('minlength')">Kindly enter a valid GSTIN of 15-digit</p>
             </ng-container>
         </div>
-        <div class="input-field">
+        <div class="outline-input-label mb-25">
             <label [class.is-focus]="isCompanyNameFocused.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                 <input maxlength="75" type="text" formControlName="companyName" #isCompanyNameFocused [readonly]="!(isGSTINVerified)">
                 <span class="label">Business Name*</span>
@@ -28,7 +26,7 @@
             <p class="error-txt" *ngIf="addressForm['controls'].businessDetail['controls']['companyName'].hasError('required') && addressForm['controls'].businessDetail['controls']['companyName'].dirty">
                 Kindly enter your business entity name</p>
         </div>
-        <div class="input-field">
+        <div class="outline-input-label mb-25">
             <label [class.is-focus]="isbusinesscontFocused.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                 <input formControlName="email" type="text" #isbusinesscontFocused [readonly]="!(isGSTINVerified)">
                 <span class="label">Business Email (Optional)</span>
@@ -38,7 +36,7 @@
             <p class="error-txt" *ngIf="!addressForm['controls'].businessDetail['controls']['email'].hasError('required') && addressForm['controls'].businessDetail['controls']['email'].hasError('invalidEmail') && addressForm['controls'].businessDetail['controls']['email'].dirty">
                 Kindly enter valid email</p>
         </div>
-        <div class="input-field">
+        <div class="outline-input-label mb-25">
             <label [class.is-focus]="isbusinessphFocused.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                 <input formControlName="phone" type="text" #isbusinessphFocused [readonly]="!(isGSTINVerified)">
                 <span class="label">Business Phone*</span>
@@ -54,7 +52,7 @@
         <!-- <div class="pad-b-25 mar-t-25 f-size-16 text-uppercase text-500 pad-lr-xs-15">Add Billing Address</div> -->
         <input formControlName="idAddress" type="hidden">
 
-        <div class="input-field">
+        <div class="outline-input-label mb-25">
             <label [class.is-focus]="isAddress.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                 <input formControlName="addressLine" type="text" placeholder="" #isAddress [readonly]="!(isGSTINVerified)">
                 <span class=label>Address*</span>
@@ -66,8 +64,8 @@
             </label>
         </div>
 
-        <div class="column-field clearfix">
-            <div class="input-field w-65">
+        <div class="column-field material-form clearfix">
+            <div class="outline-input-label mb-25 w-48">
                 <label [class.is-focus]="isCountry.value!='Select Country' && isCountry.value!=''">
                     <select formControlName="idCountry" (change)="onCountryChange($event)" #isCountry disabled>
                         <option selected="selected" *ngFor="let country of countryList" [value]="country.idCountry">
@@ -78,7 +76,7 @@
                 </label>
                 <p *ngIf="addressForm['controls'].billingAddress['controls']['idCountry'].touched && !addressForm['controls'].billingAddress['controls']['idCountry'].valid && addressForm['controls'].billingAddress['controls']['idCountry'].errors['required']" class="error-txt">Kindly select your country</p>
             </div>
-            <div class="input-field w-30">
+            <div class="outline-input-label mb-25 w-48 column-r">
                 <label [class.is-focus]="isPincode.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                     <input (keypress)="checkQuantityCode($event);" formControlName="postCode" type="number" #isPincode [readonly]="!(isGSTINVerified)">
                     <span class="label">Pin Code*</span>
@@ -90,7 +88,7 @@
         </div>
 
 
-        <div class="input-field">
+        <div class="outline-input-label mb-25 w-65">
             <label [class.is-focus]="isState.value!='Select State' && isState.value!=''" [class.disableInput]="!(isGSTINVerified)">
                 <select disabled formControlName="idState" #isState disabled>
                     <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
@@ -100,7 +98,7 @@
             </label>
             <p *ngIf="addressForm['controls'].billingAddress['controls']['idState'].touched && !addressForm['controls'].billingAddress['controls']['idState'].valid && addressForm['controls'].billingAddress['controls']['idState'].errors['required']" class="error-txt">Kindly select your state</p>
         </div>
-        <div class="input-field">
+        <div class="outline-input-label mb-25 w-65">
             <label [class.is-focus]="isCity.value.length!=0" class="disableInput">
                 <input formControlName="city" type="text" placeholder="" #isCity readonly>
                 <span class="label">City*</span>
@@ -109,7 +107,7 @@
             <p *ngIf="addressForm['controls'].billingAddress['controls']['city'].touched && !addressForm['controls'].billingAddress['controls']['city'].valid && addressForm['controls'].billingAddress['controls']['city'].errors['pattern']" class="error-txt">Special characters not allowed city/district/town</p>
         </div>
 
-        <div class="input-field">
+        <div class="outline-input-label mb-25 w-65">
             <label [class.is-focus]="isLandmark.value.length != 0" [class.disableInput]="!(isGSTINVerified)">
                 <input formControlName="landmark" type="text" placeholder="" #isLandmark [readonly]="!(isGSTINVerified)">
                 <span class="label">Landmark (Optional)</span>

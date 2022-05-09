@@ -10,7 +10,9 @@
         <div class="pwa-row">
             <form [formGroup]="addressForm" class="material-form" (ngSubmit)="$event.stopPropagation();saveOrUpdateAddress()"
             *ngIf="addressForm">
+
             <div class="outline-input-label">
+
                 <label [class.is-focus]="displayFocus('addressCustomerName')">
                     <input formControlName="addressCustomerName" type="text" placeholder="">
                     <span class="label">Name*</span>
@@ -24,7 +26,9 @@
                     </p>
                 </ng-container>
             </div>
+
             <div class="outline-input-label">
+
                 <label [class.is-focus]="displayFocus('email')">
                     <input formControlName="email" type="text" placeholder="">
                     <span class="label">Email (Optional)</span>
@@ -38,7 +42,9 @@
                     </p>
                 </ng-container>
             </div>
+
             <div class="outline-input-label for-varification">
+
                 <div class="for-varification-l">
                     <label [class.is-focus]="displayFocus('phone')">
                         <input formControlName="phone" type="tel" numbersOnly placeholder="" maxlength="10">
@@ -46,7 +52,7 @@
                     </label>
                 </div>
                 <div class="for-varification-r" *ngIf="phone.valid && phoneVerified.value">
-                    <span class="hidden">VERIFIED<i class="icon-done"></i></span>
+                    <span class="hidden">VERIFIED</span>
                 </div>
                 <ng-container *ngIf="phone.touched || phone.dirty">
                     <p *ngIf="phone.hasError('required')" class="error-txt">
@@ -57,7 +63,9 @@
                     </p>
                 </ng-container>
             </div>
+
             <div class="outline-input-label">
+
                 <label [class.is-focus]="displayFocus('alternatePhone')">
                     <input formControlName="alternatePhone" type="tel" placeholder="" maxlength="10">
                     <span class="label">Alternate Phone Number (Optional)</span>
@@ -67,7 +75,9 @@
                     Kindly enter your 10 digit contact no.
                 </p>
             </div>
+
             <div class="outline-input-label">
+
                 <label [class.is-focus]="displayFocus('addressLine')">
                     <input formControlName="addressLine" type="text" placeholder="" maxlength="150">
                     <span class="label">Address*</span>
@@ -81,8 +91,10 @@
                     </p>
                 </ng-container>
             </div>
+
             <div class="multiple-form-field">
                 <div class="outline-input-label">
+
                     <label [class.is-focus]="displayFocus('postCode')">
                         <input numbersOnly formControlName="postCode" type="tel" placeholder="" maxlength="6">
                         <span class="label">Pin Code*</span>
@@ -113,6 +125,28 @@
                     </ng-container>
                 </div>
             </div>
+
+            <div class="outline-input-label mb-25">
+                <label [class.is-focus]="displayFocus('idState')">
+                    <select formControlName="idState">
+                        <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
+                    </select>
+                    <i class="icon-down"></i>
+                    <span class="label">State*</span>
+                </label>
+                <p *ngIf="idState.hasError('required')" class="error-txt">
+                    Kindly select your state
+                </p>
+            </div>
+            <div class="outline-input-label mb-25">
+                <label [class.is-focus]="displayFocus('city')">
+                    <input formControlName="city" type="text" placeholder="" readonly>
+                    <span class="label">City*</span>
+                </label>
+                <ng-container *ngIf="city.touched || city.dirty">
+                    <p *ngIf="city.hasError('required')" class="error-txt">
+                        Kindly enter your city/district/town
+
             <div class="multiple-form-field">
                 <div class="outline-input-label">
                     <label [class.is-focus]="displayFocus('idCountry')">
@@ -126,6 +160,7 @@
                     </label>
                     <p *ngIf="idCountry.hasError('required')" class="error-txt">
                         Kindly select your country
+
                     </p>
                 </div>
                 <div class="outline-input-label ">
@@ -141,7 +176,9 @@
                     </p>
                 </div>
             </div>
+
             <div class="outline-input-label">
+
                 <label [class.is-focus]="displayFocus('landmark')">
                     <input formControlName="landmark" type="text" placeholder="">
                     <span class="label">Landmark (Optional)</span>

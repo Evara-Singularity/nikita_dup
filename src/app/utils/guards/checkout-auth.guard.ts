@@ -27,7 +27,7 @@ export class IsNotAuthenticatedCheckoutLogin implements CanActivate {
              * For user urls, avoid account gaurd on server side
              */
         if (this.isServer) {
-            return false;
+            return true;
         }
         const user = this.localStorageService.retrieve('user');
         if (!user || (user && user.authenticated === 'true')) {

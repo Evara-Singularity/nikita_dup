@@ -1,3 +1,4 @@
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 /**
  * This is cemtralised component in which shipping & billing address can be viewed, added & edited.
  * AddressListComponent: to display all the address list for selection as pop-up
@@ -27,7 +28,8 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     //trigger to display pop-up for delivery or billing address.
     @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = null;
     //emits invoicetype, selected delivery & billing address which is to used for checkout
-    @Output("emitAddressSelectEvent$") emitAddressSelectEvent$: EventEmitter<SelectedAddressModel> = new EventEmitter<SelectedAddressModel>();
+    @Output("emitDeliveryAddressSelectEvent$") emitDeliveryAddressSelectEvent$: EventEmitter<any> = new EventEmitter<any>();
+    @Output("emitBillingAddressSelectEvent$") emitBillingAddressSelectEvent$: EventEmitter<any> = new EventEmitter<any>();
     @Output("emitInvoiceTypeEvent$") emitInvoiceTypeEvent$: EventEmitter<string> = new EventEmitter<string>();
 
     invoiceType: FormControl = null;
@@ -50,7 +52,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     triggerDeliveryOrBillingSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _localAuthService: LocalAuthService, private cfr: ComponentFactoryResolver,
-        private injector: Injector, private _cartService: CartService) 
+        private injector: Injector, private _cartService: CartService,private _globalAnalyticsService:GlobalAnalyticsService) 
     {
         this.USER_SESSION = this._localAuthService.getUserSession();
     }
@@ -59,6 +61,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     {
         this.fetchCountryList();
         const INVOICE_TYPE = this._cartService.invoiceType ? this._cartService.invoiceType : this.INVOICE_TYPES.RETAIL;
+        this.emitInvoiceTypeEvent$.emit(INVOICE_TYPE)
         this.invoiceType = new FormControl(INVOICE_TYPE);
         this.updateAddressTypes(this.USER_SESSION.userId, INVOICE_TYPE);
     }
@@ -106,10 +109,12 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         this._addressService.getAddressList(params).subscribe((response: AddressListModel) =>
         {
             this.deliveryAddressList = response.deliveryAddressList;
-            const DELIVERY_ADDRESS = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
-            if (!(this.isGSTUser)) { this.emitAddressEvent(DELIVERY_ADDRESS, null); return; }
+            const deliveryAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
+            if (!(this.isGSTUser)) { this.emitDeliveryAddressSelectEvent$.emit(deliveryAddress); return; }
             this.billingAddressList = response.billingAddressList;
-            this.emitAddressEvent(DELIVERY_ADDRESS, this.billingAddressList[0]);
+            const billingAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.billingAddressList, this._cartService.billingAddress);
+            this.emitDeliveryAddressSelectEvent$.emit(deliveryAddress);
+            this.emitBillingAddressSelectEvent$.emit(billingAddress);
         });
     }
 
@@ -164,6 +169,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
      */
     async displayAddressFormPopup(addressType: string, address)
     {
+        this.sendAdobeAnalysis();
         let factory = null;
         let verifiedPhones = null;
         verifiedPhones = SharedCheckoutAddressUtil.getVerifiedPhones(this.USER_SESSION, this.deliveryAddressList);
@@ -204,6 +210,8 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     updateAddressAfterAction(addressType, addresses)
     {
         if (!addresses) return;
+        const canUpdateDelivery = (this.deliveryAddressList.length === 0);
+        const canUpdateBilling = (this.billingAddressList.length === 0);
         const IS_DELIVERY = addressType === this.ADDRESS_TYPES.DELIVERY;
         const SEPARATED_ADDRESS: AddressListModel = this._addressService.separateDeliveryAndBillingAddress(addresses);
         this.deliveryAddressList = SEPARATED_ADDRESS.deliveryAddressList;
@@ -211,9 +219,12 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.addressListInstance) {
             this.addressListInstance.instance['addresses'] = IS_DELIVERY ? this.deliveryAddressList : this.billingAddressList;
         }
-        if (this.deliveryAddressList.length === 1 || this.billingAddressList.length === 1) {
-            const address = this.deliveryAddressList.length === 1 ? this.deliveryAddressList[0] : this.billingAddressList[0];
-            this.updateDeliveryOrBillingAddress(IS_DELIVERY, address);
+        if (canUpdateDelivery)
+        {
+
+        }
+        if (canUpdateBilling) {
+
         }
     }
 
@@ -225,28 +236,16 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     updateDeliveryOrBillingAddress(isDelivery, address)
     {
         if (!(this.isGSTUser)) {
-            this.emitAddressEvent(address, null);
+            this.emitDeliveryAddressSelectEvent$.emit(address);
             return;
         }
         if (this.isGSTUser) {
             if (isDelivery) {
-                this.emitAddressEvent(address, this._cartService.billingAddress);
+                this.emitDeliveryAddressSelectEvent$.emit(address);
             } else {
-                this.emitAddressEvent(this._cartService.shippingAddress, address);
+                this.emitBillingAddressSelectEvent$.emit(address);
             }
         }
-    }
-
-    /**
-     * @description:emits invoicetype, delivery & billling address type to parent in which this module is used
-     * @param deliveryAddress 
-     * @param billingAddress 
-     */
-    emitAddressEvent(deliveryAddress, billingAddress)
-    {
-        const INVOICE_TYPE = this.invoiceType.value;
-        const DATA: SelectedAddressModel = { invoiceType: INVOICE_TYPE, deliveryAddress: deliveryAddress, billingAddress: billingAddress }
-        this.emitAddressSelectEvent$.emit(DATA);
     }
 
     /** @description:closes the address list pop-up depending on address form pop-up     */
@@ -262,6 +261,14 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     get selectedBillingAddress() { return this._cartService.billingAddress; }
     get displayBillingAddresses() { return this.invoiceType.value === this.INVOICE_TYPES.TAX ? 'block' : 'none'; }
     get isGSTUser() { return this.invoiceType.value === this.INVOICE_TYPES.TAX }
+
+    sendAdobeAnalysis()
+    {
+        let data = {page:{}}
+        data['page']['pageName'] = "moglix:order checkout:address details";
+        data['page']['subSection'] = "moglix:order checkout:address details";
+        this._globalAnalyticsService.sendAdobeCall("genericPageLoad");
+    }
 
     ngOnDestroy(): void
     {

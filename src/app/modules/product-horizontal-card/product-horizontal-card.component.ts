@@ -18,8 +18,8 @@ import { ToastMessageService } from '../toastMessage/toast-message.service';
 
 @Component({
   selector: 'product-horizontal-card',
-  templateUrl: './product-horizontal-card.component.html',
-  styleUrls: ['./product-horizontal-card.component.scss'],
+  templateUrl: './product-horizontal-card1.component.html',
+  styleUrls: ['./product-horizontal-card1.component.scss'],
   providers: []
 })
 export class ProductHorizontalCardComponent implements OnInit {

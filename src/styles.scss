@@ -13,6 +13,8 @@
 @import './app/scss/base/typography.scss';
 @import './app/scss/layout/grid.scss';
 @import './app/scss/utils/spacing.scss';
+@import './app/scss/utils/utilities.scss';
+
 * {
     margin: 0;
     padding: 0;
@@ -32,6 +34,7 @@ ul,
 img {
     border: none;
     width: 100%;
+    max-width:100%;
 }
 ul {
     list-style: none;

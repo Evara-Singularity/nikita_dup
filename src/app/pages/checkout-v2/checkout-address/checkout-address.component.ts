@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -9,6 +9,7 @@ import { CartService } from '@services/cart.service';
 import { environment } from 'environments/environment';
 import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
+declare let dataLayer;
 @Component({
     selector: 'checkout-address',
     templateUrl: './checkout-address.component.html',
@@ -51,16 +52,29 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
     {
         this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
-            this.cartSession = cartSession;
-            this.hasCartItems = this.cartSession && this.cartSession['itemsList'] && (this.cartSession['itemsList']).length > 0;
-            if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length) {
-                this.calculatePayableAmount(this.cartSession['cart']);
-            }
-            //address is getting updated and cart session is getting updated with some delay.
-            //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
-            if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
-                this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
-                this.verifyUnserviceableFromCartSubscription = !(this.verifyUnserviceableFromCartSubscription)
+            if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
+                this.cartSession = cartSession;
+                this.hasCartItems = this.cartSession && this.cartSession['itemsList'] && (this.cartSession['itemsList']).length > 0;
+                if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length) {
+                    this.calculatePayableAmount(this.cartSession['cart']);
+                }
+                //address is getting updated and cart session is getting updated with some delay.
+                //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
+                if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
+                    this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
+                    this.verifyUnserviceableFromCartSubscription = !(this.verifyUnserviceableFromCartSubscription)
+                }
+            } else {
+                // incase user is redirect from payment page or payment gateway this._cartService.getCartUpdatesChanges() 
+                // user will receive empty cartSession.
+                // in this case we need explicitly trigger cartSession update.
+                this._cartService.checkForUserAndCartSessionAndNotify().subscribe(status => {
+                    if (status) {
+                        this._cartService.setCartUpdatesChanges(this.cartSession);
+                    } else {
+                        console.trace('cart refresh failed');
+                    }
+                })
             }
         });
         this.logoutSubscription = this._localAuthService.logout$.subscribe(() => { this.isUserLoggedIn = false; });
@@ -85,6 +99,19 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
         this.deliveryAddress = addressInformation.deliveryAddress;
         this.billingAddress = addressInformation.billingAddress;
         this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
+    }
+
+    handleDeliveryAddressEvent(address)
+    {
+        this.deliveryAddress = address;
+        this._cartService.shippingAddress = address;
+        this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress, this.billingAddress);
+    }
+
+    handleBillingAddressEvent(address)
+    {
+        this.billingAddress = address;
+        this._cartService.billingAddress = address;
     }
 
     /**
@@ -138,6 +165,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
             return;
         }
         this._cartService.setUnserviceables([]);
+        this.sendServiceableCriteo();
     }
 
     /**@description updates global object to set in COD is available or not and used in payment section */
@@ -200,6 +228,40 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
     viewUnavailableItemsFromNotifacions(types: string[]) { if (types && types.length) this._cartService.viewUnavailableItems(types); }
 
     handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
+
+    sendServiceableCriteo()
+    {
+        let cartSession = this._cartService.getGenericCartSession;
+        let dlp = [];
+        for (let p = 0; p < cartSession["itemsList"].length; p++) {
+            let product = {
+                id: cartSession["itemsList"][p]['productId'],
+                name: cartSession["itemsList"][p]['productName'],
+                price: cartSession["itemsList"][p]['totalPayableAmount'],
+                variant: '',
+                quantity: cartSession["itemsList"][p]['productQuantity']
+            };
+            dlp.push(product);
+        }
+        dataLayer.push({
+            'event': 'checkout',
+            'ecommerce': {
+                'checkout': {
+                    'actionField': { 'step': 3, 'option': 'address' },
+                    'products': dlp
+                }
+            },
+        });
+        let userSession = this._localAuthService.getUserSession();
+        if (userSession && userSession.authenticated && userSession.authenticated == "true") {
+            /*Start Criteo DataLayer Tags */
+            dataLayer.push({
+                'event': 'setEmail',
+                'email': (userSession && userSession.email) ? userSession.email : ''
+            });
+            /*End Criteo DataLayer Tags */
+        }
+    }
 
     ngOnDestroy()
     {

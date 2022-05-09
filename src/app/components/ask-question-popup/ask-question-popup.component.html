@@ -5,26 +5,26 @@
             <p class="txt header_text page-name">Write Question</p>
         </div>
     </div>
-    <div class="content-popup material-form material-form-boxed" content>
-        <div class="pwa-row ask-question-area">
-            <div class="pwa-col-12">
-                <div class="input-field-boxed">
-                    <textarea [(ngModel)]="questionText" maxlength="200"
-                        placeholder="Type your question"></textarea>
+    <div class="content-popup" content>
+        <div class="ask-question-container">
+            <div class="pwa-row ask-question-field material-form material-form-boxed">
+                <div class="pwa-col-12 input-field-boxed">
+                    <textarea [(ngModel)]="questionText" maxlength="200" placeholder="Type your question"></textarea>
                     <p class="char-counter-text">{{questionText.length}}/200</p>
                 </div>
-                <div class="guidence-text">
+            </div>
+            <div class="pwa-row info-list">
+                <div class="pwa-col-12">
                     <ul>
-                        <li>Be specific, ask questions about the product and not about price, delivery, service etc.
-                        </li>
-                        <li>Ask for information which isn't captured in the product specification.
-                        </li>
+                        <li>Be specific, ask questions about the product and not about price, delivery, service etc.</li>
+                        <li>Ask for information which isn't captured in the product specification.</li>
                     </ul>
                 </div>
             </div>
+            <div class="stickyBottomBtn">
+                <button (click)="postQuestion()" class="btn-red-bg">SUBMIT YOUR QUESTION</button>
+            </div>   
         </div>
-        <div class="bottom-stick">
-            <button (click)="postQuestion()" class="btn-red-bg">SUBMIT YOUR QUESTION</button>
-        </div>
+
     </div>
 </app-pop-up>

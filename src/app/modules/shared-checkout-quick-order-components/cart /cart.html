@@ -48,7 +48,7 @@
             <div class="volume">
                 <span class="f-left txt">Qty :&nbsp;</span>
                 <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')">-</span>
-                <input type="text" maxlength="3" [value]="item.productQuantity" (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget>
+                <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity" (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget>
                 <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')">+</span>
             </div>
             <div class="price-label" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">

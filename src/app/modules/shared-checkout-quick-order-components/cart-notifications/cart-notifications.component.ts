@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
     styleUrls: ['./cart-notifications.scss'],
 })
 
-export class CartNotificationsComponent implements OnInit, OnDestroy
+export class CartNotificationsComponent implements OnInit,  OnDestroy
 {
     readonly SECONDARY_NOTIFICATIONS = ['shipping', 'coupon', 'shippingcoupon'];
     notificationSubscription: Subscription = null;
@@ -17,7 +17,7 @@ export class CartNotificationsComponent implements OnInit, OnDestroy
     is_quickorder = true;
     @Output("viewUnavailableItems$") viewUnavailableItems$: EventEmitter<string[]> = new EventEmitter<string[]>();
     constructor(public _cartService: CartService, private _router: Router) { }
-
+    
     ngOnInit()
     {
         this.is_quickorder = this._router.url.includes("quickorder");
@@ -34,9 +34,12 @@ export class CartNotificationsComponent implements OnInit, OnDestroy
     }
 
     get displayNotifications() { return this.notfications.length > 0 }
+
     displaySecondaryNotifications(type: string) { return this.SECONDARY_NOTIFICATIONS.includes(type) }
+
     ngOnDestroy()
     {
+        this._cartService.clearNotifications();
         if (this.notificationSubscription) this.notificationSubscription.unsubscribe();
     }
 }

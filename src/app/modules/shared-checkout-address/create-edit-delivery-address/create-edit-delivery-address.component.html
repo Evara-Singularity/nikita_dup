@@ -6,10 +6,13 @@
             <p class="txt header_text page-name"> {{modeType }} {{ADDRESS_TYPE}} Address</p>
         </div>
     </div>
-    <div class="content-popup card mt-15 pad-15" content>
-        <form [formGroup]="addressForm" class="material-form" (ngSubmit)="$event.stopPropagation();saveOrUpdateAddress()"
+    <div class="content-popup" content>
+        <div class="pwa-row">
+            <form [formGroup]="addressForm" class="material-form" (ngSubmit)="$event.stopPropagation();saveOrUpdateAddress()"
             *ngIf="addressForm">
-            <div class="outline-input-label mb-25">
+
+            <div class="outline-input-label">
+
                 <label [class.is-focus]="displayFocus('addressCustomerName')">
                     <input formControlName="addressCustomerName" type="text" placeholder="">
                     <span class="label">Name*</span>
@@ -23,7 +26,9 @@
                     </p>
                 </ng-container>
             </div>
-            <div class="outline-input-label mb-25">
+
+            <div class="outline-input-label">
+
                 <label [class.is-focus]="displayFocus('email')">
                     <input formControlName="email" type="text" placeholder="">
                     <span class="label">Email (Optional)</span>
@@ -37,7 +42,9 @@
                     </p>
                 </ng-container>
             </div>
-            <div class="outline-input-label mb-25 for-varification">
+
+            <div class="outline-input-label for-varification">
+
                 <div class="for-varification-l">
                     <label [class.is-focus]="displayFocus('phone')">
                         <input formControlName="phone" type="tel" numbersOnly placeholder="" maxlength="10">
@@ -56,7 +63,9 @@
                     </p>
                 </ng-container>
             </div>
-            <div class="outline-input-label mb-25">
+
+            <div class="outline-input-label">
+
                 <label [class.is-focus]="displayFocus('alternatePhone')">
                     <input formControlName="alternatePhone" type="tel" placeholder="" maxlength="10">
                     <span class="label">Alternate Phone Number (Optional)</span>
@@ -66,7 +75,9 @@
                     Kindly enter your 10 digit contact no.
                 </p>
             </div>
-            <div class="outline-input-label mb-25">
+
+            <div class="outline-input-label">
+
                 <label [class.is-focus]="displayFocus('addressLine')">
                     <input formControlName="addressLine" type="text" placeholder="" maxlength="150">
                     <span class="label">Address*</span>
@@ -80,22 +91,10 @@
                     </p>
                 </ng-container>
             </div>
-            <div class="column-field clearfix">
-                <div class="outline-input-label mb-25 w-48">
-                    <label [class.is-focus]="displayFocus('idCountry')">
-                        <select formControlName="idCountry">
-                            <option selected="selected" *ngFor="let country of countryList" [value]="country.idCountry">
-                                {{country.name}}
-                            </option>
-                        </select>
-                        <i class="icon-down"></i>
-                        <span class="label">Country*</span>
-                    </label>
-                    <p *ngIf="idCountry.hasError('required')" class="error-txt">
-                        Kindly select your country
-                    </p>
-                </div>
-                <div class="outline-input-label mb-25 w-48 w-48-right">
+
+            <div class="multiple-form-field">
+                <div class="outline-input-label">
+
                     <label [class.is-focus]="displayFocus('postCode')">
                         <input numbersOnly formControlName="postCode" type="tel" placeholder="" maxlength="6">
                         <span class="label">Pin Code*</span>
@@ -111,7 +110,22 @@
                     <p *ngIf="postCode.valid && !(isPostcodeValid)" class="error-txt">Invalid Pincode
                     </p>
                 </div>
+                <div class="outline-input-label">
+                    <label [class.is-focus]="displayFocus('city')">
+                        <input formControlName="city" type="text" placeholder="" readonly>
+                        <span class="label">City*</span>
+                    </label>
+                    <ng-container *ngIf="city.touched || city.dirty">
+                        <p *ngIf="city.hasError('required')" class="error-txt">
+                            Kindly enter your city/district/town
+                        </p>
+                        <p *ngIf="city.hasError('pattern')" class="error-txt">
+                            Special characters not allowed in city/district/town
+                        </p>
+                    </ng-container>
+                </div>
             </div>
+
             <div class="outline-input-label mb-25">
                 <label [class.is-focus]="displayFocus('idState')">
                     <select formControlName="idState">
@@ -132,13 +146,39 @@
                 <ng-container *ngIf="city.touched || city.dirty">
                     <p *ngIf="city.hasError('required')" class="error-txt">
                         Kindly enter your city/district/town
+
+            <div class="multiple-form-field">
+                <div class="outline-input-label">
+                    <label [class.is-focus]="displayFocus('idCountry')">
+                        <select formControlName="idCountry">
+                            <option selected="selected" *ngFor="let country of countryList" [value]="country.idCountry">
+                                {{country.name}}
+                            </option>
+                        </select>
+                        <i class="icon-down"></i>
+                        <span class="label">Country*</span>
+                    </label>
+                    <p *ngIf="idCountry.hasError('required')" class="error-txt">
+                        Kindly select your country
+
                     </p>
-                    <p *ngIf="city.hasError('pattern')" class="error-txt">
-                        Special characters not allowed in city/district/town
+                </div>
+                <div class="outline-input-label ">
+                    <label [class.is-focus]="displayFocus('idState')">
+                        <select formControlName="idState">
+                            <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
+                        </select>
+                        <i class="icon-down"></i>
+                        <span class="label">State*</span>
+                    </label>
+                    <p *ngIf="idState.hasError('required')" class="error-txt">
+                        Kindly select your state
                     </p>
-                </ng-container>
+                </div>
             </div>
-            <div class="outline-input-label mb-25">
+
+            <div class="outline-input-label">
+
                 <label [class.is-focus]="displayFocus('landmark')">
                     <input formControlName="landmark" type="text" placeholder="">
                     <span class="label">Landmark (Optional)</span>
@@ -147,10 +187,10 @@
                     Special Characters are not allowed.
                 </p>
             </div>
-            <div class="clearfix"></div>
-            <div class=" mar-t-5 pad-lr-xs-5 o-hidden">
-                <button [disabled]="addressForm.invalid" type="submit" class="btn continue-btn" >SAVE ADDRESS</button>
+            <div>
+                <button [disabled]="addressForm.invalid" type="submit" class="btn continue-btn">SAVE ADDRESS</button>
             </div>
         </form>
+        </div>
     </div>
 </app-pop-up-variant2>

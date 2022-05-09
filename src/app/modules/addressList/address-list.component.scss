@@ -1,24 +1,30 @@
 @import '../../scss/variables';
 .persnName {
-    &:after {
-        content: "|";
-        padding: 0px 10px;
-        position: absolute;
-    }
+    font-size: $medium-font;
+    font-weight: bold;
     &+span {
         padding-left: 10px;
     }
 }
 
 .multiple-address {
+    padding: 15px;
+    &.active-multiple-address{
+        border: 1px solid var(--primary)
+    }
     &.withRadioContainer {
-        padding: 10px 15px;
-        border-bottom: 1px solid $border-grey;
-        &:last-child {
-            border-bottom: none;
-        }
+        @extend %white-card;
+        // &:last-child {
+        //     border-bottom: none;
+        // }
         .chk-txt {
+            font-size: $medium-font;
+            width: calc(100% - 40px);
             margin-left: 5px;
+            .address-name{
+                font-size: $medium-font;
+                font-weight: bold
+            }
         }
     }
     @extend %clear-fix;
@@ -39,9 +45,9 @@
     margin-top: 10px;
     .small-btn {
         color: $btn-color-red;
-        width: 42%;
+        width: 45%;
         padding: 5px;
-        margin-right: 15px;
+        // margin-right: 15px;
         border-radius: 4px;
         text-align: center;
         float: left;
@@ -54,6 +60,8 @@
     .delete {
         background: $btn-color-red;
         color: #fff;
+        float: right;
+
     }
 }
 

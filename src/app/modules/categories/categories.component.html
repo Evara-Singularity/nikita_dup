@@ -3,7 +3,9 @@
         <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + im.image_name" alt="banner add">
     </a>
 </section>
-
+<section >
+    <product-horizontal-card></product-horizontal-card>
+</section>
 
 <ng-container *ngFor="let category of categories | slice:0:5;let i = index;">
     <section *ngIf="carouselData[category.dataKey] && carouselData[category.dataKey]['data']" class="deals-offers card"
@@ -52,11 +54,9 @@
                     </li>
                 </ng-template>
             </ul>
-            <!-- Yajya -->
-            <!-- <product-card-horizontal-scroll></product-card-horizontal-scroll>
-            <product-horizontal-card></product-horizontal-card> -->
-            <!-- carouselData[category.dataKey]{{carouselData[category.dataKey]|json}} -->
-            <ul class="view-products home-grid-view-container"
+
+            <ul class="view-products"
+
                 [ngClass]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers' ? 'list' : 'grid' "
                 [class.border-top]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers'">
                 <li *ngFor="let item of carouselData[category.dataKey]['data']['product_data'] | slice : 0:4">

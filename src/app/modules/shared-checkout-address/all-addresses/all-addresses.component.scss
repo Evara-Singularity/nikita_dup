@@ -1,5 +1,6 @@
 @import "../../../scss/variables";
-@import '../../../scss/components/radio';
+@import "../../../scss/components/radio";
+
 .invoice-container {
     background: $white;
     padding: 15px;
@@ -43,21 +44,15 @@
     @extend %cards;
     padding: 0 0 10px 0;
     border: 0;
-    .sub-strip {
-        background: $selected-color;
-        padding: 15px 10px;
+
+    .shipping-container {
+        @extend %white-card;
+        margin-top: 10px;
+        @extend %cards;
+        padding: 0px;
         border: 0;
-        &:not(:first-child) {
-            margin-top: 20px;
-        }
-        h4 {
-            float: left;
-            font-weight: 500;
-            color: $txt-color;
-            i {
-                font-size: 14px;
-                margin-left: 5px;
-            }
+        .addButtonContainer {
+            padding: 0px 10px 15px;
         }
     }
     .addButtonContainer {
@@ -113,9 +108,10 @@
 }
 
 .multiple-address {
+    background-color: red;
+    padding: 15px;
+    @extend %white-card;
     &.withRadioContainer {
-        padding: 10px 15px;
-        border-bottom: 1px solid $border-grey;
         &:last-child {
             border-bottom: none;
         }
@@ -135,7 +131,17 @@
         width: 7%;
     }
 }
-
+.shipping-container {
+    @extend %white-card;
+    margin-top: 10px;
+    @extend %cards;
+    padding: 0px;
+    border: 0;
+    .addButtonContainer {
+        padding: 0px 10px 15px;
+    }
+    
+}
 .address-btn-section {
     display: block;
     margin-top: 10px;

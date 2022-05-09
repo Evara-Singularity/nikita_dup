@@ -1,12 +1,11 @@
-<section class="payment-container payment-modal-bottom">
+<section class="payment-container payment-modal-bottom pwa-row">
 
     <!-- <div class="card-30">
         <saved-card *ngIf="isSavedCardExist" [savedCardsData]="savedCardsData" [type]="invoiceType" (removeTab$)="removeTab($event)"></saved-card>
     </div> -->
 
     <section class="payment_accordion">
-
-        <div id="creditDebitCardSection" class="payment_accordion_item">
+        <div id="creditDebitCardSection" class="payment_accordion_item pwa-row">
             <div (click)="updatePaymentBlock(globalConstants['creditDebitCard'], 'creditDebitCard', 'creditDebitCardSection')"
                 class="payment-accordion_header">
                 <i class="icon-credit-debit-card ico-accord-left"></i>
@@ -21,7 +20,7 @@
         </div>
 
 
-        <div id="netBankingSection" class="payment_accordion_item">
+        <div id="netBankingSection" class="payment_accordion_item pwa-row">
             <div (click)="updatePaymentBlock(globalConstants['netBanking'], 'netBanking', 'netBankingSection')"
                 class="payment-accordion_header">
                 <i class="icon-net-banking ico-accord-left"></i>
@@ -35,7 +34,7 @@
             </div>
         </div>
 
-        <div id="walletSection" class="payment_accordion_item">
+        <div id="walletSection" class="payment_accordion_item pwa-row">
             <div (click)="updatePaymentBlock(globalConstants['wallet'], 'wallet', 'walletSection')"
                 class="payment-accordion_header">
                 <i class="icon-wallet ico-accord-left"></i>
@@ -49,7 +48,7 @@
             </div>
         </div>
         
-        <div id="emiSection" class="payment_accordion_item">
+        <div id="emiSection" class="payment_accordion_item pwa-row">
             <div (click)="updatePaymentBlock(globalConstants['emi'], 'emi', 'emiSection')"
                 class="payment-accordion_header">
                 <i class="icon-emi ico-accord-left"></i>
@@ -64,7 +63,7 @@
             </div>
         </div>
  
-        <div id="neftRtgsSection" *ngIf="canNEFT_RTGS" class="payment_accordion_item">
+        <div id="neftRtgsSection" *ngIf="canNEFT_RTGS" class="payment_accordion_item pwa-row">
             <div (click)="updatePaymentBlock(globalConstants['neftRtgs'],'neftRtgs', 'neftRtgsSection')"
                 class="payment-accordion_header">
                 <i class="icon-credit-line-home ico-accord-left"></i>
@@ -78,7 +77,7 @@
             </div>
         </div>
 
-        <div id="upiSection" class="payment_accordion_item">
+        <div id="upiSection" class="payment_accordion_item pwa-row">
             <div (click)="updatePaymentBlock(globalConstants['upi'],'upi', 'upiSection')"
                 class="payment-accordion_header">
                 <img class="icon-img" src="assets/img/upi.svg">
@@ -95,7 +94,7 @@
 
 
         <div id="paytmUpiSection" [class.selectedAccordion]="paymentBlock==globalConstants['paytmUpi']"
-            class="payment_accordion_item">
+            class="payment_accordion_item pwa-row">
             <div (click)="updatePaymentBlock(globalConstants['paytmUpi'],'paytmUpi', 'paytmUpiSection')"
                 class="payment-accordion_header">
                 <img class="icon-img" src="assets/img/paytm.svg">

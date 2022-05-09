@@ -1,35 +1,63 @@
 <div class="address-list" *ngIf="addresses && addresses.length>0">
   <form>
-    <div [class.withRadioContainer]="showRadio" class="multiple-address"
+    <div [class.withRadioContainer]="showRadio" class="multiple-address active-multiple-address"
       *ngFor="let address of addresses; let i = index">
+      <!-- for reference -->
+      <!-- <label>
+        Todo
+        <input type="radio" [value]="address.idAddress"
+            [checked]="isAddressSelected(address.idAddress)"
+            (change)="updateAddressId($event, address.idAddress)">
+        <span class="custom-box icon-box"></span>
+        <span class="chk-txt">
+            <span class="heading-container">
+                <span class="heading">
+                    <span class="address-name">{{address.addressCustomerName | slice:0:60}}</span> &nbsp;
+                </span>
+            </span>
+            <span class="txt">{{address | checkoutAddress}}</span>
+            <span class="txt">{{address.phone}}</span>
+            <span class="address-btn-section">
+                <span class="small-btn edit"
+                    (click)="handleAction($event, ACTION_TYPES.EDIT, address)">EDIT</span>
+                <span class="small-btn delete"
+                    (click)="handleAction($event,ACTION_TYPES.SELECTED, address)">
+                    DELIVER HERE
+                </span>
+            </span>
+        </span>
+    </label> -->
+    <!-- for reference end -->
       <label>
         <input *ngIf="showRadio && (router.url.indexOf('/dashboard/address') == -1)" type="radio" name="sai"
           [checked]="(sai===i) || (addresses && addresses.length > 0 && addresses.length < 2)" value="i"
           (change)="ucai(address,type, i)">
         <span *ngIf="showRadio && (router.url.indexOf('/dashboard/address') == -1)" class="custom-box icon-box"></span>
+        <span class="custom-box icon-box"></span>
         <span class="chk-txt">
           <span class="heading-container">
             <span class="heading">
-              <span [ngClass]="{'persnName':!showRadio}">{{address.addressCustomerName | slice:0:60}}</span> &nbsp;
-              <span *ngIf="layoutType == 'SINGLE'">{{address.phone}}</span>
+              <!-- <i class="icon-arrow-right-s-line"></i> -->
+              <span class="address-name" [ngClass]="{'persnName':!showRadio}">{{address.addressCustomerName | slice:0:60}}</span> &nbsp;
             </span>
           </span>
           <span class="txt">{{displayAddress(address)}}</span>
+          <span *ngIf="layoutType == 'SINGLE'">Mobile : {{address.phone}}</span>
           <span class="txt" *ngIf="layoutType == 'LIST' ">{{address.phone}}</span>
           <span *ngIf="showRadio" class="address-btn-section">
             <span class="small-btn edit" (click)="updateAddressV1({index: i, type: type, address: address})">
-              EDIT
+              DELETE
             </span>
-            <span *ngIf="(router.url.indexOf('/dashboard/address') == -1)" class="small-btn delete" (click)="selectAddress(address,type, i)" >
-              DELIVER HERE
+            <span  class="small-btn delete" (click)="selectAddress(address,type, i)" >
+              EDIT
             </span>
           </span>
         </span>
       </label>
-      <span class="bin-icon">
+      <!-- <span class="bin-icon">
         <img *ngIf="showRadio && (layoutType == 'LIST') && (router.url.indexOf('/checkout') == -1)" src="assets/img/delete-bin-fill.svg"
         (click)="deleteAddress(i,type,address)">
-      </span>
+      </span> -->
     </div>
   </form>
 </div>

@@ -87,20 +87,17 @@ export class ProductService {
 
     getSimilarProducts(productName, categoryId, productId, groupId) {
         let URL =
-            this.basePath +
-            ENDPOINTS.SIMILAR_PRODUCTS +
-            "?str=" +
-            productName +
-            "&category=" +
-            categoryId + 
-            "&productId=" +
-            productId;
+            this.basePath + ENDPOINTS.SIMILAR_PRODUCTS +
+            "?str=" + productName +
+            "&category=" + categoryId +
+            "&productId=" + productId +
+            "&abt=" + CONSTANTS.SEARCH_ABT_FLAG;
             
         if (groupId) {
             URL += "&groupId=" + groupId;
         }
         if (this._commonService.abTesting) {
-            URL += '&abt=y'
+            URL += '&abt='+CONSTANTS.SEARCH_ABT_FLAG
         }
         return this._dataService.callRestful("GET", URL).pipe(
             catchError((res: HttpErrorResponse) => {

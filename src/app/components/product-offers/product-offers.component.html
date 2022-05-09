@@ -4,12 +4,14 @@
             Offers & Coupons
         </h3>
     </div>
+    
     <div class="pwa-row coupen-body-area" *ngFor="let item of allofferData; let i=index;">
         <div class="cb-icon">
             <i class="icon-coupon-3-fill-1"></i>
         </div>
         <div class="cb-text">
-            <span>Get GST invoice and save up to {{gstPercentage}}% on business purchases.</span>
+            <span *ngIf="i == 0">Get GST invoice and save up to {{gstPercentage}}% on business purchases.</span>
+            <span *ngIf="i > 0" >{{  item?.block_data?.image_block['0']['image_title'] || 'Get GST invoice and save up to '+gstPercentage+'% on business purchases.'}}</span>
         </div>
         <div class="cb-view">
             <span (click)="sendOfferData(item)">VIEW</span>

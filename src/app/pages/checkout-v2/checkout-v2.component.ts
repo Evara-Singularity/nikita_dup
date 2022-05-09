@@ -22,10 +22,13 @@ export class CheckoutV2Component implements OnInit, AfterViewInit, OnDestroy
         private _router: Router, 
         public _route: ActivatedRoute,
         private _localAuthService: LocalAuthService,
-        private _commonService: CommonService
+        public _commonService: CommonService
     ) { }
     
     ngOnInit() {
+        if (this._commonService.isServer) {
+            return
+        }
         this.isUserLoggedIn = this._localAuthService.isUserLoggedIn();
         this.updateCheckoutFlag(this._router.url.toLowerCase());
         this.subcribers();

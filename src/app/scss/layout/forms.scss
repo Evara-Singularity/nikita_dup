@@ -16,7 +16,16 @@ select {
     position: relative;
 }
 .material-form {
-    // Inside Label Input
+ .multiple-form-field{
+    display:flex;
+    margin: -15px 0 0 -15px;
+    width: calc(100% + 15px);
+    margin-bottom:30px;
+    .outline-input-label{
+        width:50%;
+        margin: 15px 0 0 15px;
+    }
+   }
     .input-field {
         margin-bottom: 30px;
         label {
@@ -119,17 +128,18 @@ select {
         }
     }
     .outline-input-label {
+        margin-bottom:30px;
         label {
             display: block;
             position: relative;
             input,
             select {
                 width: 100%;
-                border: solid $border-sec-color;
-                border-width: 1px;
-                height: 45px;
-                padding: 14px 25px 0 0;
-                font-size: $large-font;
+                height: 40px !important;
+                border: 1px solid var(--spanish-gray);
+                border-radius: 8px !important;
+                padding: 0px 10px !important;
+                background-color: var(--white) !important;
 
                 &.input-password {
                     padding: 14px 140px 0 0;
@@ -261,9 +271,6 @@ select {
             font-weight: bold;
         }
 
-        .multiple-form-field {
-            display: flex;
-        }
     }
 }
 
@@ -302,17 +309,6 @@ select {
             color: $active-border-color;
         }
     }
-}
-
-
-
-input,
-select {
-  
-}
-
-select {
-    z-index: 2;
 }
 
 select.select-form {

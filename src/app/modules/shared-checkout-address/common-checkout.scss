@@ -1,7 +1,14 @@
 @import "../../scss/variables";
 @import '../../scss/components/checkbox';
 @import '../../scss/components/radio';
+@import '../../scss/layout/forms';
 
+.pwa-row{
+    & > *{
+      flex-grow:1;
+    }
+  }
+  
 .invoice-container {
     background: $white;
     padding: 15px;
@@ -187,7 +194,7 @@
     .content-popup {
         height: calc(100% - 100px);
         overflow: auto;
-        margin-top: 0px;
+        margin-top:15px;
     }
 }
 .continue-btn {
@@ -201,17 +208,7 @@
         background: #bdbdbd;;
     }
 }
-.column-field{
-    @extend %clear-fix;
-    .w-65{
-      width: 65%;
-      float: left;
-    }
-    .w-30{
-      width: 30%;
-      float: right;
-    }
-  }
+
   .for-varification {
     position: relative;
     .for-varification-r {

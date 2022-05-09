@@ -3,6 +3,8 @@
 @import './../../scss/checkout-prod-card.scss';
 @import '../../scss/components/checkbox';
 @import '../../scss/components/radio';
+@import '../../scss/layout/forms';
+
 
 
 .payment-options {
@@ -172,6 +174,10 @@ label.payment-radio-btn {
 
 .payment_accordion {
     background: #fff;
+    border-radius:8px;
+    .pwa-row{
+        padding:0px 15px;
+    }
     .payment_accordion_item {
         box-shadow: 0px 1px 0px #00000029;
         .icon-img {
@@ -189,7 +195,7 @@ label.payment-radio-btn {
     display: flex;
     height: 60px;
     align-items: center;
-    padding: 0px 15px;
+    flex:1 1 100%;
     .icon-down {
         margin-left: auto;
         font-size: $small-font;
@@ -204,7 +210,8 @@ label.payment-radio-btn {
 }
 
 .payment-accordion_body {
-    padding: 0px 35px 0px 48px;
+    // padding: 0px 35px 0px 48px;
+    flex:1 1 100%;
 }
 
 .note-section {

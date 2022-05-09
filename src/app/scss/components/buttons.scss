@@ -100,7 +100,7 @@ button {
     }
 }
 
-.otulineButton {
+.outlineButton {
     background: $white-color;
     color: $btn-color-red;
     font-weight: 800;
@@ -174,4 +174,19 @@ button {
     color: $white;
     font-size: $small-font;
     font-weight: bold;
+}
+span.form-inline-cta{
+    padding: 8px 15px;
+    background-color: #d9232d;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: bold;
+    position: absolute;
+    right: 5px;
+    border-radius: 6px;
+    top: 5px;
+    &.success{
+        background-color: #209F19;
+    }
 }

@@ -22,11 +22,13 @@ $default-animation-style: ease-out;
 $assets-root: "assets/";
 $images-root: $assets-root + "img/";
 $fonts-root: $assets-root + "fonts/";
+
+//font weight
 $font-thin: 100;
 $font-light: 300;
 $font-normal: 400;
-$font-bolder: 600;
-$font-bold: 700;
+$font-bold: 600;
+$font-bolder: 700;
 $font-ultraBold: 900;
 
 //colors

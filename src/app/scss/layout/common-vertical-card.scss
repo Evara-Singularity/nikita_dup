@@ -7,17 +7,15 @@
 .product-vertical-card{
     background:var(--white);
     border-bottom:1px solid var(--platinum);
-    .pwa-row{
-        padding:5px 10px;
-    }
-    .pwa-row-noPad{
-        padding:5px 0px;
-    }
-    .pwa-col-left{
-        text-align: center;
-        position: relative;
-    }
-    .pwa-col-right{
+    width:155px;
+    border-radius:$border-radius-8;
+    padding: 10px;
+    position: relative;
+    .pwa-image{
+        img{
+            width:115px
+        }
+       }
         .prod-name {
             text-align: left;
             font-size: $large-font;
@@ -28,8 +26,9 @@
             margin-top: 4px;
             margin-bottom: 4px;
             text-align: left;
-            font-size: $medium-font;
+            font-size: $small-font;
             color: var(--gray-web);
+            font-weight:$font-bold;
         }
         .prod-price-row{
             margin-bottom:4px;
@@ -50,24 +49,19 @@
                 font-weight: $font-bold;
             }
         }
+        .card-btn-row{
+            display:flex;
+            button{
+                flex-basis:calc(100% - 40px);
+            }
+        }
+        .float-card-icon{
+            position:absolute;
+            right:10px;
+            i{
+                font-size:$extra-large-3-font;
+            }
+        }
     }  
-}
-.add_cart_btn {
-    border: 1px solid var(--primary);
-    display: inline-block;
-    border-radius: $border-radius;
-    margin-right: 8px;
-    width: 32px;
-    text-align: center;
-    vertical-align: middle;
-    line-height: $extra-large-line-height;
-    i {
-        font-size: $extra-large-2-font;
-        color: $logo-color;
-        vertical-align: middle;
-    }
-}
 
-button{
-    font-size:$small-font;
-}
+

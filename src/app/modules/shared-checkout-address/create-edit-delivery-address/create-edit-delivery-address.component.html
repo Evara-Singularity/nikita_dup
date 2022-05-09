@@ -146,6 +146,9 @@
                 <ng-container *ngIf="city.touched || city.dirty">
                     <p *ngIf="city.hasError('required')" class="error-txt">
                         Kindly enter your city/district/town
+                    </p>  
+                  </ng-container>    
+            </div>  
 
             <div class="multiple-form-field">
                 <div class="outline-input-label">
@@ -178,7 +181,6 @@
             </div>
 
             <div class="outline-input-label">
-
                 <label [class.is-focus]="displayFocus('landmark')">
                     <input formControlName="landmark" type="text" placeholder="">
                     <span class="label">Landmark (Optional)</span>

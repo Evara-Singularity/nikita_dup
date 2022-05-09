@@ -198,3 +198,18 @@ span.form-inline-cta{
         background-color: #209F19;
     }
 }
+.add_cart_btn {
+    border: 1px solid var(--primary);
+    display: inline-block;
+    border-radius: $border-radius;
+    margin-right: 8px;
+    width: 32px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: $extra-large-line-height;
+    i {
+        font-size: $extra-large-2-font;
+        color: $logo-color;
+        vertical-align: middle;
+    }
+}

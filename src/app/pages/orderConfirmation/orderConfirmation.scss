@@ -1,6 +1,7 @@
 @import '../../../../src/app/modules/continue/continue.scss';
 @import '../../scss/layout/cards.scss';
 @import '../../scss/utils/utilities.scss';
+@import '../../scss/components/buttons.scss';
 
 .order-container {
     .order-confirmation-banner{
@@ -58,17 +59,6 @@
             padding-top: 10px;
         }
     }
-    // .button-section{
-    //     padding: 20px 0 0;
-    //     button{
-    //         width: 48%;
-    //         height: 40px;
-    //         border-radius: 8px;
-    //     }
-    //     .otulineButton{
-    //         margin-right: 13px;
-    //     }
-    // }
     .promo-section{
         margin-top: 30px;
         padding: 0;
@@ -122,7 +112,7 @@
         width: 100%;
         padding: 0px 15px 10px 15px;
         background:var(--white);
-        .otulineButton{
+        .outlineButton{
             width: 48%;
             border-radius: 8px;
         }
@@ -136,5 +126,3 @@
         }
     }
 }
-
-

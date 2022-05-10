@@ -126,7 +126,20 @@ select {
                 pointer-events: none;
             }
         }
+        &.static{
+            margin-bottom:0px;
+            padding-top:5px;
+           span.input-value{
+            width: 100%;
+            border-width: 0 0 1px 0;
+            height: 45px;
+            font-size: $large-font;
+            line-height: 18px;
+            position: relative;
+           } 
+        }
     }
+    
     .outline-input-label {
         margin-bottom:30px;
         label {
@@ -370,22 +383,22 @@ option {
     }
 }
 
-.material-static-form {
-    .static-input-field {
-        padding: 8px 0px;
-        border-bottom: 1px solid var(--ghost-white);
-        &:last-child {
-            border: none !important;
-        }
-        label {
-            font-size: $medium-font;
-            color: var(--silver);
-            line-height: $medium-line-height;
-        }
-        h4 {
-            font-size: $large-font;
-            line-height: $medium-line-height;
-        }
-    }
-}
+// .material-static-form {
+//     .static-input-field {
+//         padding: 8px 0px;
+//         border-bottom: 1px solid var(--ghost-white);
+//         &:last-child {
+//             border: none !important;
+//         }
+//         label {
+//             font-size: $medium-font;
+//             color: var(--silver);
+//             line-height: $medium-line-height;
+//         }
+//         h4 {
+//             font-size: $large-font;
+//             line-height: $medium-line-height;
+//         }
+//     }
+// }
 

@@ -1,193 +1,199 @@
 @import "../../../scss/_variables.scss";
-pagination-controls {
-  ul.ngx-pagination {
-    li {
-      border-radius: 50%;
-      height: 30px;
-      width: 30px;
-      text-align: center;
-      font-size: $medium-font;
-      padding: 0px !important;
-      line-height: 30px;
-      cursor: pointer;
-      font-weight: $font-bolder;
-    }
-    li.current {
-      background: #53534f;
-      span {
-        color: #fff;
-      }
-    }
-  }
+@import '../../../scss/layout/card-boxed';
+.my-rfq-list-item{
+  background:var(--white);
+  padding:10px 0px;
 }
 
-.ngx-pagination a:hover,
-.ngx-pagination button:hover {
-  background: transparent !important;
-}
-
-.orderbox {
-  cursor: pointer;
-  margin-bottom: 10px;
-  padding: 0;
-  .orderSum {
-    padding: 8px 15px 10px;
-    border-bottom: 1px solid #f2f2f2;
-    .orderId {
-      display: block;
-      color: #303030;
-      font-size: $medium-font;
-      font-weight: $font-bolder;
-      margin-bottom: 1px;
-    }
-    .orderOthDet {
-      span {
-        display: inline-block;
-        font-size: $small-font;
-        color: #7a7a7a;
-        padding-left: 3px;
-        &:first-child {
-          padding-left: 0;
-        }
-      }
-    }
-  }
-}
-.orderIdtab {
-  background: #fff;
-}
-.orderdtBox {
-  @extend %cards;
-
-  .orderdtBoxinner {
-    position: relative;
-    min-height: 80px;
-    .orderdtDesc {
-      position: relative;
-      margin-bottom: 15px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 15px;
-      &:last-child {
-        padding-bottom: 0;
-        border-bottom: none;
-        margin-bottom: 0;
-      }
-      .moreOptions {
-        position: absolute;
-        right: -11px;
-        cursor: pointer;
-        font-size: $extra-large-font;
-        top: 0;
-      }
-      .orderproImg {
-        float: left;
-        width: 27%;
-        padding: 5px;
-        border: 1px solid #ddd;
-        img {
-          display: block;
-          max-height: 100%;
-          max-width: 100%;
-        }
-      }
-      .orderproDesc {
-        width: 73%;
-        padding-left: 15px;
-        float: right;
-        padding-right: 10px;
-        p {
-          font-size: $medium-font;
-          color: #000;
-          margin-bottom: 7px;
-          line-height: 17px;
-        }
-        .orderstatus {
-          font-size: $medium-font;
-          display: block;
-          margin-bottom: 7px;
-          span {
-            font-weight: $font-bolder;
-          }
-        }
-        .orderqty {
-          font-size: $medium-font;
-          .qtyleft {
-            float: left;
-            font-weight: $font-bolder;
-          }
-          .priceright {
-            float: right;
-            font-weight: $font-bolder;
-            span {
-              font-weight: $font-bolder;
-              font-size: $small-font;
-              &.text-green {
-                color: $green-color;
-              }
-              &.text-red {
-                color: $error-color;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-// .orderaddressBox {
-//   @extend %cards;
-//   h3 {
-//     color: #323232;
-//     font-size: $extra-large-font;
-//     font-weight: $font-bolder;
-//     text-transform: uppercase;
-//     padding-top: 0;
-//     padding-bottom: 5px;
-//   }
-//   span {
-//     font-size: $medium-font;
-//     line-height: 20px;
-//     display: block;
+// pagination-controls {
+//   ul.ngx-pagination {
+//     li {
+//       border-radius: 50%;
+//       height: 30px;
+//       width: 30px;
+//       text-align: center;
+//       font-size: $medium-font;
+//       padding: 0px !important;
+//       line-height: 30px;
+//       cursor: pointer;
+//       font-weight: $font-bolder;
+//     }
+//     li.current {
+//       background: #53534f;
+//       span {
+//         color: #fff;
+//       }
+//     }
 //   }
 // }
-.ordersumBox {
-  @extend %cards;
-  padding-right: 0;
-  padding-left: 0;
-  margin: 10px 0;
-  h5 {
-    padding: 10px 15px;
-    font-size: $large-font;
-    color: #141414;
-    font-weight: 400;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 12px;
-    span {
-      float: right;
-      display: inline-block;
-      font-weight: $font-bolder;
-    }
-  }
-  .chargestext {
-    padding: 5px 15px;
-    font-size: $medium-font;
-    span {
-      float: right;
-      display: inline-block;
-    }
-  }
-  .totPrice {
-    padding: 10px 15px;
-    font-size: $extra-large-font;
-    color: #141414;
-    font-weight: $font-bolder;
-    margin-top: 12px;
-    border-top: 1px solid #ddd;
-    span {
-      float: right;
-      display: inline-block;
-      font-weight: $font-bolder;
-    }
-  }
-}
+
+// .ngx-pagination a:hover,
+// .ngx-pagination button:hover {
+//   background: transparent !important;
+// }
+
+// .orderbox {
+//   cursor: pointer;
+//   margin-bottom: 10px;
+//   padding: 0;
+//   .orderSum {
+//     padding: 8px 15px 10px;
+//     border-bottom: 1px solid #f2f2f2;
+//     .orderId {
+//       display: block;
+//       color: #303030;
+//       font-size: $medium-font;
+//       font-weight: $font-bolder;
+//       margin-bottom: 1px;
+//     }
+//     .orderOthDet {
+//       span {
+//         display: inline-block;
+//         font-size: $small-font;
+//         color: #7a7a7a;
+//         padding-left: 3px;
+//         &:first-child {
+//           padding-left: 0;
+//         }
+//       }
+//     }
+//   }
+// }
+// .orderIdtab {
+//   background: #fff;
+// }
+// .orderdtBox {
+//   @extend %cards;
+
+//   .orderdtBoxinner {
+//     position: relative;
+//     min-height: 80px;
+//     .orderdtDesc {
+//       position: relative;
+//       margin-bottom: 15px;
+//       border-bottom: 1px solid #eee;
+//       padding-bottom: 15px;
+//       &:last-child {
+//         padding-bottom: 0;
+//         border-bottom: none;
+//         margin-bottom: 0;
+//       }
+//       .moreOptions {
+//         position: absolute;
+//         right: -11px;
+//         cursor: pointer;
+//         font-size: $extra-large-font;
+//         top: 0;
+//       }
+//       .orderproImg {
+//         float: left;
+//         width: 27%;
+//         padding: 5px;
+//         border: 1px solid #ddd;
+//         img {
+//           display: block;
+//           max-height: 100%;
+//           max-width: 100%;
+//         }
+//       }
+//       .orderproDesc {
+//         width: 73%;
+//         padding-left: 15px;
+//         float: right;
+//         padding-right: 10px;
+//         p {
+//           font-size: $medium-font;
+//           color: #000;
+//           margin-bottom: 7px;
+//           line-height: 17px;
+//         }
+//         .orderstatus {
+//           font-size: $medium-font;
+//           display: block;
+//           margin-bottom: 7px;
+//           span {
+//             font-weight: $font-bolder;
+//           }
+//         }
+//         .orderqty {
+//           font-size: $medium-font;
+//           .qtyleft {
+//             float: left;
+//             font-weight: $font-bolder;
+//           }
+//           .priceright {
+//             float: right;
+//             font-weight: $font-bolder;
+//             span {
+//               font-weight: $font-bolder;
+//               font-size: $small-font;
+//               &.text-green {
+//                 color: $green-color;
+//               }
+//               &.text-red {
+//                 color: $error-color;
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+
+// // .orderaddressBox {
+// //   @extend %cards;
+// //   h3 {
+// //     color: #323232;
+// //     font-size: $extra-large-font;
+// //     font-weight: $font-bolder;
+// //     text-transform: uppercase;
+// //     padding-top: 0;
+// //     padding-bottom: 5px;
+// //   }
+// //   span {
+// //     font-size: $medium-font;
+// //     line-height: 20px;
+// //     display: block;
+// //   }
+// // }
+// .ordersumBox {
+//   @extend %cards;
+//   padding-right: 0;
+//   padding-left: 0;
+//   margin: 10px 0;
+//   h5 {
+//     padding: 10px 15px;
+//     font-size: $large-font;
+//     color: #141414;
+//     font-weight: 400;
+//     border-bottom: 1px solid #ddd;
+//     margin-bottom: 12px;
+//     span {
+//       float: right;
+//       display: inline-block;
+//       font-weight: $font-bolder;
+//     }
+//   }
+//   .chargestext {
+//     padding: 5px 15px;
+//     font-size: $medium-font;
+//     span {
+//       float: right;
+//       display: inline-block;
+//     }
+//   }
+//   .totPrice {
+//     padding: 10px 15px;
+//     font-size: $extra-large-font;
+//     color: #141414;
+//     font-weight: $font-bolder;
+//     margin-top: 12px;
+//     border-top: 1px solid #ddd;
+//     span {
+//       float: right;
+//       display: inline-block;
+//       font-weight: $font-bolder;
+//     }
+//   }
+// }

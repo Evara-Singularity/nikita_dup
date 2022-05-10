@@ -69,7 +69,8 @@
             }
         }
         &.addAddressPopup {
-            background: var(--ghost-white) !important;
+          background: var(--ghost-white) !important;
+
             &.screen-view {
                 .head-sec {
                     background: $logo-color !important;

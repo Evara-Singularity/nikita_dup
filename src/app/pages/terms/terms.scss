@@ -4,7 +4,7 @@
 .terms-container{
     background: var(--white);
     .terms_wrap {
-        padding: 10px 20px;
+        padding: 15px;
         h1{
             font-size: $extra-large-font;
             text-align: center;
@@ -19,6 +19,7 @@
         }
         ol li{
             color: var(--text-color);
+            line-height: $medium-line-height;
             ol li{
                 color: var(--text-color);  
             }
@@ -42,7 +43,7 @@
           display: block
         }
         li:before {
-          content: counters(item, ".")" ";
+          content: counters(item, ".");
           counter-increment: item
         }
         section > ol li:before {
@@ -71,4 +72,3 @@
         .sec14 > ol > li::before  { content: "14." counter(item) ".";font-weight: $font-bolder;}
     }
 }
-

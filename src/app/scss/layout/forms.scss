@@ -1,4 +1,4 @@
-@import '../components/checkbox';
+@import "../components/checkbox";
 textarea,
 input.text,
 input,
@@ -16,7 +16,16 @@ select {
     position: relative;
 }
 .material-form {
-    // Inside Label Input
+ .multiple-form-field{
+    display:flex;
+    margin: -15px 0 0 -15px;
+    width: calc(100% + 15px);
+    margin-bottom:30px;
+    .outline-input-label{
+        width:50%;
+        margin: 15px 0 0 15px;
+    }
+   }
     .input-field {
         margin-bottom: 30px;
         label {
@@ -53,14 +62,14 @@ select {
                 display: block;
             }
 
-            select+.icon-down {
+            select + .icon-down {
                 position: absolute;
                 right: 6px;
                 top: 23px;
                 font-size: $large-font;
             }
 
-            select:disabled+.icon-down {
+            select:disabled + .icon-down {
                 color: #898989;
             }
 
@@ -74,13 +83,13 @@ select {
             }
 
             &.is-focus .label,
-            input:focus+.label,
-            select:focus+.label {
+            input:focus + .label,
+            select:focus + .label {
                 font-size: $medium-font;
                 top: 5px;
             }
 
-            textarea:focus+.label {
+            textarea:focus + .label {
                 font-size: $medium-font;
                 top: 3px;
             }
@@ -89,7 +98,7 @@ select {
             textarea:focus {
                 border-color: $active-border-color;
 
-                &+.label {
+                & + .label {
                     color: $active-border-color;
                 }
             }
@@ -104,7 +113,7 @@ select {
                 cursor: pointer;
 
                 &.verified {
-                    color: #36BD40;
+                    color: #36bd40;
 
                     i {
                         padding-left: 5px;
@@ -117,22 +126,39 @@ select {
                 pointer-events: none;
             }
         }
+        &.static{
+            margin-bottom:0px;
+            padding-top:5px;
+           span.input-value{
+            width: 100%;
+            border-width: 0 0 1px 0;
+            height: 45px;
+            font-size: $large-font;
+            line-height: 18px;
+            position: relative;
+           } 
+        }
     }
+    
     .outline-input-label {
+        margin-bottom:30px;
         label {
             display: block;
             position: relative;
             input,
             select {
                 width: 100%;
-                border: solid $border-sec-color;
-                border-width: 1px;
-                height: 45px;
-                padding: 14px 25px 0 0;
-                font-size: $large-font;
+                height: 40px !important;
+                border: 1px solid var(--spanish-gray);
+                border-radius: 8px !important;
+                padding: 0px 10px !important;
+                background-color: var(--white) !important;
 
                 &.input-password {
                     padding: 14px 140px 0 0;
+                }
+                .long-input{
+                    height: 100px !important;
                 }
             }
             .label {
@@ -142,42 +168,43 @@ select {
                 top: 12px;
                 color: $disabled;
                 @extend %transition;
-                .error-txt{
+                .error-txt {
                     margin-left: 10px !important;
                 }
             }
-            i{
+            i {
                 position: absolute;
                 right: 10px;
                 font-size: $large-font;
                 top: 12px;
                 color: $disabled;
             }
-            .active-password-icon{
+            .active-password-icon {
                 color: #303030;
             }
 
             &.is-focus .label,
-            input:focus+.label,
-            select:focus+.label {
+            input:focus + .label,
+            select:focus + .label {
                 font-size: $medium-font;
                 top: -7px;
                 background-color: #ffffff;
                 left: 10px;
                 padding: 0px 5px;
+                z-index: 9;
             }
 
-            textarea:focus+.label {
+            textarea:focus + .label {
                 font-size: $medium-font;
                 top: 3px;
             }
 
             input:focus,
             textarea:focus {
-                border-color: #C4C4C4;
+                border-color: #c4c4c4;
 
-                &+.label {
-                    color: #C4C4C4;
+                & + .label {
+                    color: #c4c4c4;
                 }
             }
 
@@ -191,7 +218,7 @@ select {
                 cursor: pointer;
 
                 &.verified {
-                    color: #36BD40;
+                    color: #36bd40;
 
                     i {
                         padding-left: 5px;
@@ -227,12 +254,11 @@ select {
                 border-radius: 8px;
                 border-width: 1px;
                 height: 65px;
-                padding:10px;
+                padding: 10px;
                 font-size: $large-font;
-
             }
 
-            select+.icon-down {
+            select + .icon-down {
                 position: absolute;
                 right: 6px;
                 top: 23px;
@@ -241,15 +267,15 @@ select {
 
             &.disabled-boxed {
                 input {
-                    background: #F2F2F2;
-                    border: 1px solid var(--spanish-gray);
-                    pointer-events: none;
+                  background: #F2F2F2;
+                   border: 1px solid var(--spanish-gray);
+
                 }
             }
         }
 
         @include placeholder {
-            color: #B5B5B5;
+            color: #b5b5b5;
             font-size: 14px;
         }
 
@@ -261,9 +287,6 @@ select {
             font-weight: bold;
         }
 
-        .multiple-form-field {
-            display: flex;
-        }
     }
 }
 
@@ -290,7 +313,7 @@ select {
     }
 
     &.is-focus .label,
-    input:focus+.label {
+    input:focus + .label {
         font-size: $medium-font;
         top: 5px;
     }
@@ -298,22 +321,12 @@ select {
     input:focus {
         border-color: $active-border-color;
 
-        &+.label {
+        & + .label {
             color: $active-border-color;
         }
     }
 }
 
-
-
-input,
-select {
-  
-}
-
-select {
-    z-index: 2;
-}
 
 select.select-form {
     width: 100%;
@@ -324,15 +337,15 @@ select.select-form {
     border-radius: 1px;
 }
 
-select.select-form+.icon-down {
+select.select-form + .icon-down {
     position: absolute;
     right: 10px;
     top: 11px;
     font-size: 14px;
 }
 
-input[type=text],
-input[type=number] {
+input[type="text"],
+input[type="number"] {
     font-size: $large-font !important;
 }
 
@@ -348,9 +361,9 @@ option {
         @extend %custom-check-box;
     }
 }
-.date-type-select{
+.date-type-select {
     .custom_select_box {
-        color: #B5B5B5;
+        color: #b5b5b5;
     }
     .input-field-boxed {
         width: 22%;
@@ -367,8 +380,28 @@ option {
                 right: -23px;
                 font-size: 20px;
                 padding: 10px;
-                top: 0
+                top: 0;
             }
         }
     }
 }
+
+// .material-static-form {
+//     .static-input-field {
+//         padding: 8px 0px;
+//         border-bottom: 1px solid var(--ghost-white);
+//         &:last-child {
+//             border: none !important;
+//         }
+//         label {
+//             font-size: $medium-font;
+//             color: var(--silver);
+//             line-height: $medium-line-height;
+//         }
+//         h4 {
+//             font-size: $large-font;
+//             line-height: $medium-line-height;
+//         }
+//     }
+// }
+

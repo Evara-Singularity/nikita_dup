@@ -3,6 +3,9 @@
         <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + im.image_name" alt="banner add">
     </a>
 </section>
+<section>
+    <product-horizontal-card></product-horizontal-card>
+</section>
 
 <ng-container *ngFor="let category of categories | slice:0:5;let i = index;">
     <section *ngIf="carouselData[category.dataKey] && carouselData[category.dataKey]['data']" class="deals-offers card"
@@ -43,6 +46,7 @@
                     </li>
                 </ng-template>
             </ul>
+
             <ul class="view-products">
                 <product-card-vertical-container [numberOfItems]="carouselData[category.dataKey]['data']['product_data'].length || 0">
                     <ng-container *ngFor="let item of mapProductData(carouselData[category.dataKey]['data']['product_data']) | slice : 0:4;let pIndex=index">
@@ -55,7 +59,7 @@
                      </product-horizontal-card>
                     </ng-container>
                 </product-card-vertical-container>
-            </ul>
+
         </div>
     </section>
 </ng-container>

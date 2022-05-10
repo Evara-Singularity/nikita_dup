@@ -1,15 +1,4 @@
-<section class="invoice-container">
-    <div class="invoice-select">
-        <label>
-            <input type="checkbox" [checked]="isGSTUser" (change)="$event.stopPropagation();updateInvoiceType($event.target.checked)">
-            <span class="custom-box icon-box"></span>
-        </label>
-        <div class="invoice-txt">
-            <p>Get GST Invoice</p>
-            <span class="invoice-subtxt">Claim input tax credit on your purchase.</span>
-        </div>
-    </div>
-</section>
+
 <!--shipping container-->
 <section>
     <ng-container
@@ -31,38 +20,53 @@
 </section>
 <!--common template to display address-->
 <ng-template #tAddress let-address="address" let-label="label" let-addressCount="addressCount">
-    <div class="address-container">
-        <div class="sub-strip">
-            <div class="container">
-                <h4 class="heading">{{label}} Address ({{addressCount}})</h4>
-            </div>
-        </div>
-        <div class="address-list">
-            <div class="multiple-address" *ngIf="address">
-                <label>
-                    <span class="chk-txt">
-                        <span class="heading-container">
-                            <span class="heading">
-                                <span class="persnName">{{address.addressCustomerName | slice:0:60}}</span> &nbsp;
-                                <span>{{address.phone}}</span>
-                            </span>
-                        </span>
-                        <span class="txt">{{address | checkoutAddress}}</span>
-                    </span>
-                </label>
-            </div>
-        </div>
-        <div class="addButtonContainer">
-            <div class="container">
-                <button class="btn blue-border-btn-full" *ngIf="addressCount > 0"
-                    (click)="$event.stopPropagation();displayAddressListPopup(label)">
-                    CHANGE OR ADD ADDRESS
-                </button>
-                <button class="blue-border-btn-full" *ngIf="addressCount == 0"
-                    (click)="$event.stopPropagation();displayAddressFormPopup(label, null)">
-                    ADD NEW ADDRESS
-                </button>
-            </div>
+    <div class="sub-strip">
+        <div class="container">
+            <h4 class="heading">{{label}} Address ({{addressCount}})</h4>
         </div>
     </div>
+    <div class="address-container">
+        <div class="shipping-container">
+            <div class="address-list">
+                <div class="multiple-address multiple-address-checkout" *ngIf="address">
+                    <label>
+                        <span class="chk-txt">
+                            <span class="heading-container">
+                                <span class="heading">
+                                    <span class="persnName">{{address.addressCustomerName | slice:0:60}}</span> &nbsp; 
+                                </span>
+                            </span>
+                            <span class="txt">{{address | checkoutAddress}}</span>
+                            <span class="txt">Mobile : {{address.phone}}</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <div class="addButtonContainer">
+                <div class="container">
+                    <button class="btn redBgButton center-aligned-button-noborder" *ngIf="addressCount > 0"
+                        (click)="$event.stopPropagation();displayAddressListPopup(label)">
+                        CHANGE OR ADD ADDRESS
+                    </button>
+                    <button class="btn redBgButton center-aligned-button-noborder" *ngIf="addressCount == 0"
+                        (click)="$event.stopPropagation();displayAddressFormPopup(label, null)">
+                        ADD NEW ADDRESS
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
 </ng-template>
+<section class="invoice-container">
+    <div class="invoice-select">
+        <label>
+            <input type="checkbox" [checked]="isGSTUser" (change)="$event.stopPropagation();updateInvoiceType($event.target.checked)">
+            <span class="custom-box icon-box"></span>
+        </label>
+        <div class="invoice-txt">
+            <p>Get GST Invoice</p>
+            <span class="invoice-subtxt">Claim input tax credit on your purchase.</span>
+        </div>
+    </div>
+</section>

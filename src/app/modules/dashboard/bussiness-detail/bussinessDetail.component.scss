@@ -1,9 +1,14 @@
 @import "../../../scss/_variables.scss";
+@import '../../../scss/layout/forms';
+@import '../../../scss/layout/cards';
+
+.full-height {
+  height: 85vh;
+  height: calc(100vh - 56px);
+}
 .business-form {
-  @extend %cards;
-  padding: 15px 0 30px;
-  margin-bottom: 10px;
-  form {
-    @extend %container;
+  background:var(--white);
+  form{
+    flex:1
   }
 }

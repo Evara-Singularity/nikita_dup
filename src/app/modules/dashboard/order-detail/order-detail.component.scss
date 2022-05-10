@@ -1,5 +1,8 @@
 @import "../../../scss/variables";
 @import "../orders.scss";
+@import "../../../scss/layout/forms.scss";
+@import "../../../scss/layout/card-boxed.scss";
+@import "../../../scss/components/buttons.scss";
 
 .singleproStatus {
   border: 1px solid var(--ghost-white) !important;
@@ -231,6 +234,8 @@
   }
 }
 .cancelOrderBox {
+  // background-color: var(--white);
+  @extend %white-card;
   .returnedOrder {
     border: none;
     padding: 10px 0;
@@ -514,5 +519,11 @@
   .need-help{
     color: var(--primary);
     margin-right: 20px;
+  }
+}
+.indusrty{
+  // background-color: red;
+  #long-input{
+    height: 100px !important;
   }
 }

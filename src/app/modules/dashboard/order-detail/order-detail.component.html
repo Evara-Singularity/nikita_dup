@@ -14,6 +14,42 @@
         </div>
     </div>
 </div> -->
+<div class="card-boxed">
+    <div class="card-upper">
+        <div class="card-img">
+            <img alt="" src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
+        </div>
+        <div class="card-desc">
+            <p>
+                <a href="#">{{(detail.product_name | slice:0:30) + (detail.product_name > 30 ? "...":"")}} 
+                </a>
+            </p>
+            <div class="orderqty clearfix">
+                <span class="qtyleft">₹{{detail.price}}<span class="qtynum">({{detail.Quantity}} Qty)</span></span>
+                <span><small class="greytxt">(Price Inclusive of GST)</small></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-bottom">
+            <div class="card-bottom-inner">
+                <span class="orderstatus"><i class="dot">&#x2022;&nbsp;</i> <span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'">{{detail.status}}</span></span>
+            </div>
+            <div class="card-bottom-inner">
+                <span class="orderstatus"><i class="icon-circle-delete danger"></i> <i class="icon-check-active success"></i> <span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'">{{detail.status}}</span></span>
+                <span (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)" class="btn btn-red-small">BUY&nbsp;AGAIN</span>
+            </div>
+        <!-- <div class="card-bottom-inner">
+         One
+        </div>
+        <div class="card-bottom-inner">
+          Two  
+        </div>
+        <div class="card-bottom-inner">
+            Three
+        </div> -->
+    </div>
+</div>
 
 <div class="orderdtBox pad-0 mar-15">
     <div class="orderdtBoxinner">
@@ -122,9 +158,9 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 <app-pop-up *ngIf="openPopup && openPopup=='cancel' " (outData$)="outData($event) " class="bs-popup "
     [data]="{selector: 'openPopup',headerText: ' Cancel Order'} ">
     <div content>
-        <div class="cancelOrderBox "
+        <div class="cancelOrderBox pwa-row material-form"
             [ngClass]="{ 'show': (cancel_step && cancel_step==1 ), 'hide': cancel_step !==1 } ">
-            <div class="input-field pos-rel ">
+            <!-- <div class="outline-input-label mb-25 pos-rel ">
                 <label class="indusrty show ">
                     <select [(ngModel)]="reason_id " class="select-form ">
                         <option [ngValue]="undefined ">Select cancel reason</option>
@@ -133,9 +169,42 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                     </select>
                     <i class="icon-down "></i>
                 </label>
+            </div> -->
+            <div class="outline-input-label mb-25 pos-rel ">
+                <label class="indusrty show ">
+                    <select [(ngModel)]="reason_id " class="select-form ">
+                        <option *ngFor="let item of cancelReasons; let i=i ndex " [ngValue]="item.id ">{{item.text}}
+                        </option>
+                    </select>
+                    <span class="label">Reason for Cancellation</span>
+                </label>
             </div>
+
+            <div class="outline-input-label mb-25 pos-rel ">
+                <label class="indusrty show ">
+                    <input id="long-input">
+                    <span class="label">Add a comment</span>
+                </label>
+            </div>
+
+            <!-- <div class="outline-input-label mb-25 w-48">
+                <label >
+                    <select formControlName="idCountry"  disabled>
+                        <option selected="selected"  >
+                           sachin</option>
+                           <option selected="selected"  >
+                            sachin</option>
+                            <option selected="selected" >
+                                sachin</option>
+                    </select>
+                    <i class="icon-down"></i>
+                    <span class="label">Country*</span>
+                </label>
+                <p class="error-txt">
+                    Kindly select your country</p>
+            </div> -->
             <h4 class="mt-15 mb-10 ">Comments(optional)</h4>
-            <textarea class="commentBox "></textarea>
+            <textarea class="commentBox outline-input-label mb-25"></textarea>
             <button class="bottomBtn confirmbtn btn " (click)="reason_id ? openAlert=true : '' ">Confirm</button>
             <div class="alert-box " *ngIf="openAlert ">
                 <div class="overlay "></div>

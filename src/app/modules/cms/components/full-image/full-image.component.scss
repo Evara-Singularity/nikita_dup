@@ -1,3 +1,5 @@
+@import '../../../../scss/root';
+
 .fullimages-articlewrap {
 	overflow-y: hidden;
 	overflow-x: scroll;
@@ -8,13 +10,13 @@
 	}
 	.fullimages-article {
 		width: 400px;
-		background: white;
+		background: var(--white);
 		margin: 0 10px 0 0;
 		float: left;
 		img {
 			width: 100%;
 			border-radius: 4px;
-			background: #f0f0f0;
+			background: var(--ghost-white);
 		}
 	}
 }

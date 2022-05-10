@@ -1,3 +1,4 @@
+@import '../../../../scss/variables';
 .imagetext-articlewrap {
     img{
         max-width: 100%;
@@ -10,33 +11,33 @@
         text-align: center;
     }
     .imagetext-textarticle {
-        width: 100%;
+        width: $fullwidth;
         margin: 20px 0px;
         h1 {
-            color: #2b2b2b;
-            font-size: 20px;
+            color: var(--onyx-black);
+            font-size: $extra-large-2-font;
             margin: 0;
             // padding: 0 0 5px 0;
         }
         h2 {
-            color: #2b2b2b;
-            font-size: 18px;
+            color:var(--onyx-black);
+            font-size: $extra-large-1-font;
             padding: 20px 0px 0px 0px;
         }
         h3 {
-            color: #2b2b2b;
-            font-size: 16px;
+            color: var(--onyx-black);
+            font-size: $extra-large-font;
             margin: 0;
             padding: 20px 0px 0px 0px;
         }
         p {
-            color: #303030;
-            font-size: 14px;
+            color: var(--onyx-black);
+            font-size: $large-font;
             padding: 10px 0 0 0;
             margin: 0;
-            line-height: 21px;
+            line-height: $medium-line-height;
             a {
-                font-size: 14px;
+                font-size: $large-font;
             }
         }
         ul {
@@ -44,45 +45,45 @@
             margin: 0;
             list-style: unset;
             li {
-                font-size: 14px;
+                font-size: $large-font;
                 padding: 0 0 20px 0;
-                color: #404040;
+                color: var(--onyx-black);
             }
         }
         table {
-            font-size: 12px;
-            border: 1px solid #7b7b7b;
-            width: 100%;
+            font-size: $medium-font;
+            border: 1px solid var(--gray-web);
+            width: $fullwidth;
             margin: 20px 0 0 0;
-            border-radius: 6px;
+            border-radius: $border-radius-6;
             border-collapse: collapse;
             th {
-                background-color: #f0f0f0;
+                background-color: var(--ghost-white);
                 width: 20%;
             }
             th {
-                border: 1px solid #7b7b7b;
+                border: 1px solid var(--gray-web);
                 padding: 10px 5px;
                 text-align: center;
                 width: 20%;
                 p {
-                    font-size: 14px;
+                    font-size: $large-font;
                     padding: 5px;
                     a {
-                        font-size: 14px;
+                        font-size: $large-font;
                     }
                 }
             }
             td {
-                border: 1px solid #7b7b7b;
+                border: 1px solid var(--gray-web);
                 padding: 10px 5px;
                 text-align: center;
                 width: 20%;
                 p {
-                    font-size: 12px;
+                    font-size: $medium-font;
                     padding: 5px;
                     a {
-                        font-size: 12px;
+                        font-size: $medium-font;
                     }
                 }
             }

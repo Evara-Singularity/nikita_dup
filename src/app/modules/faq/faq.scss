@@ -3,11 +3,11 @@
 
 
 .faqfixedhead{
-  padding-top:100px;
+  padding-top:95px;
   position: relative;
   .faq-search{
-    background: var(--silver);
-    padding: 30px 30px 0 !important;
+    background: var(--primary);
+    padding-top: 25px !important;
     text-align: center;
     position: fixed;
     top: 80px;
@@ -25,13 +25,14 @@
       box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
       background: var(--white);
       position: relative;
-      border-radius:3px;
+      border-radius:8px;
       overflow: hidden;
+      border: 1px solid var(--silver);
       input{
-        height: 50px;
+        height: 45px;
         border: none;
         width: $fullwidth;
-        padding: 0 65px 0 10px;
+        padding: 12px 65px 12px 15px;
         font-size:$large-font;
         &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
           color: #C9C9C9;
@@ -63,11 +64,11 @@
         font-size: 16px;
         background: var(--white);
         border: none;
-        border-left: 1px solid #ddd;
         z-index: 1;
         cursor: pointer;
         i{
           font-size:$extra-large-font;
+          color: var(--primary);
         }
       }
       .crosstext{
@@ -104,16 +105,16 @@
     }
   }
   .fq-wrap{
-    box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
     margin-bottom:15px;
-    background:var(--white);
+    padding-top: 0px;
     &.card{
       border:none;
     }
+
     .fqhead{
       background: var(--white);
       box-shadow:0px 1px 6px rgba(0, 0, 0, 0.2);
-      padding: 20px 15px 20px 15px;
+      padding: 18px 15px;
       position: relative;
       font-size:$extra-large-font;
       font-weight:$font-normal;
@@ -142,18 +143,23 @@
         }
       }
     }
+    .faq-top-border{
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+    .faq-bottom-border{
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
     .collapsed-content{
+      background: #fff;
       .questwrap{
         border-top:1px solid var(--ghost-white);
-        padding: 10px 15px 15px;
+        padding: 15px 15px;
         &:first-child{border:none;}
       }
       h4{
-        font-size:$large-font;
-        font-weight:$font-normal;
         margin-bottom:10px;
-        color:var(--onyx-black);    
-        padding-top:10px;
         line-height: $medium-line-height;
         &:first-child{
           border-top:none;
@@ -164,13 +170,13 @@
         }
       }
       p{
-        font-size:$large-font;
+        font-size:$small-font;
         line-height:$medium-line-height;
       }
       ul{
-        font-size:$large-font;
+        font-size:$small-font;
         list-style-type: disc;
-        padding-left: 18px;
+        padding-left: 12px;
         margin-top: 9px;
         li{
           padding: 0 0 4px; 

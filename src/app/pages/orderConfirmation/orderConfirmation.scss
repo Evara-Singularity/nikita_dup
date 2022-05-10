@@ -1,5 +1,7 @@
 @import '../../../../src/app/modules/continue/continue.scss';
 @import '../../scss/layout/cards.scss';
+@import '../../scss/utils/utilities.scss';
+@import '../../scss/components/buttons.scss';
 
 .order-container {
     .order-confirmation-banner{
@@ -38,10 +40,8 @@
         .tag-label{
             font-size: $large-font;
             color: var(--onyx-black);
-            padding-top: 10px;
         }
         .txt-list {
-            margin-left: -10px;
             li {
                 padding: 2px 0;
                 span {
@@ -59,22 +59,70 @@
             padding-top: 10px;
         }
     }
-    .button-section{
-        padding: 20px 0 0;
-        button{
-            width: 48%;
-            height: 40px;
-            border-radius: 8px;
-        }
-        .otulineButton{
-            margin-right: 13px;
-        }
-    }
     .promo-section{
         margin-top: 30px;
         padding: 0;
         .inner-promo{
             width: 100%;
+        }
+    }
+    .order-horizontal-card-section{
+        display: flex;
+        overflow-x: scroll;
+        background: var(--white);
+        .order-confirmation-card{
+            padding: 0 0 0 15px;
+            min-width: 90%;
+            .order-horizontal-card{
+                display: flex;
+                .horizontal-section{
+                    display: inline-flex;
+                    border: 1px solid #CCC;
+                    border-radius: 8px;
+                    padding: 10px;
+                    width: 100%;
+                    .image-block{
+                        padding-right: 15px;
+                        img{
+                            max-width: 90px;
+                        }
+                    }
+                    .decription-block{
+                        .pwa-text{
+                            line-height: $small-line-height;
+                        }
+                        .main-price{
+                            padding-top: 5px;
+                            p{
+                                font-size: $extra-large-font;
+                                color: var(--onyx-black);
+                            }
+                            span{
+                                padding-left: 8px;
+                                font-size: $medium-font;
+                                color: var(--onyx-black);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .order-confirmation-btn{
+        width: 100%;
+        padding: 0px 15px 10px 15px;
+        background:var(--white);
+        .outlineButton{
+            width: 48%;
+            border-radius: 8px;
+        }
+        .btn-right{
+            float: right;
+            width: 48%;
+            .btn-variant1{
+                height: 45px;
+                border-radius: 8px;
+            }
         }
     }
 }

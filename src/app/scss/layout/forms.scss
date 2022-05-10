@@ -144,6 +144,9 @@ select {
                 &.input-password {
                     padding: 14px 140px 0 0;
                 }
+                .long-input{
+                    height: 100px !important;
+                }
             }
             .label {
                 position: absolute;

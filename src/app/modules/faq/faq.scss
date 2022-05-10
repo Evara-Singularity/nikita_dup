@@ -110,100 +110,104 @@
     &.card{
       border:none;
     }
-
-    .fqhead{
+    .faq-inner-wrap{
       background: var(--white);
-      box-shadow:0px 1px 6px rgba(0, 0, 0, 0.2);
-      padding: 18px 15px;
-      position: relative;
-      font-size:$extra-large-font;
-      font-weight:$font-normal;
-      color:var(--onyx-black);
-      display: flex;
-      justify-content: space-between;
-      & > span{
-        i.icon-collaps{
-          visibility:hidden;
-          width:0;
-          height: 0;        
-        }
-      }
-      &.active{
-        span{
-          i.icon-expand{
+      border-radius: 8px;
+      .fqhead{
+        background: var(--white);
+        box-shadow:0px 1px 6px rgba(0, 0, 0, 0.2);
+        padding: 18px 15px;
+        position: relative;
+        font-size:$extra-large-font;
+        font-weight:$font-normal;
+        color:var(--onyx-black);
+        display: flex;
+        justify-content: space-between;
+        & > span{
+          i.icon-collaps{
             visibility:hidden;
             width:0;
-            height: 0; 
-          }
-          i.icon-collaps{
-            visibility:visible;
-            width:auto;
-            height: auto; 
+            height: 0;        
           }
         }
-      }
-    }
-    .faq-top-border{
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
-    }
-    .faq-bottom-border{
-      border-bottom-left-radius: 8px;
-      border-bottom-right-radius: 8px;
-    }
-    .collapsed-content{
-      background: #fff;
-      .questwrap{
-        border-top:1px solid var(--ghost-white);
-        padding: 15px 15px;
-        &:first-child{border:none;}
-      }
-      h4{
-        margin-bottom:10px;
-        line-height: $medium-line-height;
-        &:first-child{
-          border-top:none;
-          margin-top:0px;
-        }
-        &::first-letter{
-          text-transform: capitalize;
+        &.active{
+          span{
+            i.icon-expand{
+              visibility:hidden;
+              width:0;
+              height: 0; 
+            }
+            i.icon-collaps{
+              visibility:visible;
+              width:auto;
+              height: auto; 
+            }
+          }
         }
       }
-      p{
-        font-size:$small-font;
-        line-height:$medium-line-height;
+      .faq-top-border{
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
       }
-      ul{
-        font-size:$small-font;
-        list-style-type: disc;
-        padding-left: 12px;
-        margin-top: 9px;
-        li{
-          padding: 0 0 4px; 
-          line-height: $medium-line-height;      
-        }
+      .faq-bottom-border{
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
       }
-      table{
-        border:1px solid #efefef;
-        border-collapse: collapse;
-        margin-bottom:10px;
-        th{
-          padding:5px 10px;
-          font-weight:500;
-          text-align: left;
-          border-bottom:1px solid #efefef;
+      .collapsed-content{
+        background: #fff;
+        .questwrap{
+          border-top:1px solid var(--ghost-white);
+          padding: 15px 15px;
           &:first-child{
-            border-right:1px solid #efefef;
+            border:none;
+          }
+          h4{
+            margin-bottom:10px;
+            line-height: $medium-line-height;
+            &:first-child{
+              border-top:none;
+              margin-top:0px;
+            }
+            &::first-letter{
+              text-transform: capitalize;
+            }
+          }
+          p{
+            font-size:$small-font;
+            line-height:$medium-line-height;
+          }
+          .list-information{
+            font-size:$small-font;
+            margin-top: 10px;
+            line-height: $medium-line-height;
+            padding-left: 8px;
+            li{
+              padding-bottom: 5px;
+            }
           }
         }
-        td{
-          padding:5px 10px;
-          &:first-child{
-            border-right:1px solid #efefef;
+        table{
+          border:1px solid #efefef;
+          border-collapse: collapse;
+          margin-bottom:10px;
+          th{
+            padding:5px 10px;
+            font-weight:500;
+            text-align: left;
+            border-bottom:1px solid #efefef;
+            &:first-child{
+              border-right:1px solid #efefef;
+            }
+          }
+          td{
+            padding:5px 10px;
+            &:first-child{
+              border-right:1px solid #efefef;
+            }
           }
         }
       }
-    }
+    } 
   }
   .black-overlay{
     position: fixed;

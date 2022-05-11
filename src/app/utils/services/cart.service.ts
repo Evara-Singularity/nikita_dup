@@ -44,6 +44,7 @@ export class CartService
     cartNotications = [];
     notifications = [];
     appliedPromoCode;
+    isPromoCodeApplied;
 
     // checkout related global vars
     private _billingAddress: Address;
@@ -156,6 +157,7 @@ export class CartService
         this.cartSession = JSON.parse(JSON.stringify(cart));
         if (cart && cart.offersList && cart.offersList.length > 0) {
             this.appliedPromoCode = cart.offersList[0]['id'];
+            this.isPromoCodeApplied = true;
         }
     }
 
@@ -1213,13 +1215,16 @@ export class CartService
                                 this._loaderService.setLoaderState(false);
                                 this._toastService.show({ type: 'error', text: 'Your cart amount is less than ' + data['discount'] });
                             }
+                            this.isPromoCodeApplied = true;
                         } else {
+                            this.isPromoCodeApplied = false;
                             this.appliedPromoCode = '';
                             this._toastService.show({ type: 'error', text: message });
                         }
                     });
                 } else {
                     this.appliedPromoCode = '';
+                    this.isPromoCodeApplied = false;
                     this._loaderService.setLoaderState(false);
                     this._toastService.show({ type: 'error', text: message });
                 }
@@ -1229,7 +1234,10 @@ export class CartService
 
     genericRemovePromoCode()
     {
-        if (!this.appliedPromoCode) return;
+        if (!this.appliedPromoCode) {
+            this.isPromoCodeApplied = false;
+            return;
+        }
         this._loaderService.setLoaderState(true);
         let cartSession = this.getGenericCartSession;
         cartSession['offersList'] = [];
@@ -1240,6 +1248,7 @@ export class CartService
             data =>
             {
                 this.appliedPromoCode = '';
+                this.isPromoCodeApplied = false;
                 this.setGenericCartSession(data);
                 this.updateCartSession(data).subscribe(res =>
                 {

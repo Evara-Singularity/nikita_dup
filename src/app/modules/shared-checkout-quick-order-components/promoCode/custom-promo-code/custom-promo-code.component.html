@@ -1,7 +1,8 @@
-<form class="promo-code container applied-code" (ngSubmit)="_cartService.genericApplyPromoCode()">
+<form class="promo-code container applied-code" (ngSubmit)="_cartService.genericApplyPromoCode()" autocomplete="off">
+  <input autocomplete="false" name="hidden" type="text" style="display:none;">
   <div class="pos-rel">
     <input required name="appliedcart" type="text" placeholder="Enter Promocode here" [(ngModel)]="_cartService.appliedPromoCode" />
-    <i class="icon-circle-delete" *ngIf="_cartService.appliedPromoCode" (click)="_cartService.genericRemovePromoCode()"></i>
+    <i class="icon-circle-delete" *ngIf="_cartService.isPromoCodeApplied" (click)="_cartService.genericRemovePromoCode()"></i>
     <button type="submit">APPLY</button>
   </div>
 </form>

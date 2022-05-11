@@ -19,7 +19,8 @@
             </a>
             <ng-template #showPop>
                 <a (click)="openPopup=true;sendDataToPopUP.emit(category.dataKey);getCategoryLabel(carouselData[category.dataKey]['layout_name'])"
-                    class="btn-red f-right">VIEW ALL {{carouselData[category.dataKey]['data']['product_data'].length}}</a>
+                    class="btn-red f-right">VIEW ALL
+                    {{carouselData[category.dataKey]['data']['product_data'].length}}</a>
             </ng-template>
         </div>
         <div class="container clearfix">
@@ -46,20 +47,17 @@
                     </li>
                 </ng-template>
             </ul>
-
             <ul class="view-products">
-                <product-card-vertical-container [numberOfItems]="carouselData[category.dataKey]['data']['product_data'].length || 0">
-                    <ng-container *ngFor="let item of mapProductData(carouselData[category.dataKey]['data']['product_data']) | slice : 0:4;let pIndex=index">
-                        <product-horizontal-card 
-                        [section]="'Bestseller'"
-                        [product]="item"
-                        [cardFeaturesConfig]='cardFeaturesConfig'
-                        [pIndex]="pIndex" 
-                        [enableTracking]="true">
-                     </product-horizontal-card>
+                <product-card-vertical-container
+                    [numberOfItems]="carouselData[category.dataKey]['data']['product_data'].length || 0">
+                    <ng-container
+                        *ngFor="let item of mapProductData(carouselData[category.dataKey]['data']['product_data']) | slice : 0:4;let pIndex=index">
+                        <product-horizontal-card [section]="'Bestseller'" [product]="item"
+                            [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true">
+                        </product-horizontal-card>
                     </ng-container>
                 </product-card-vertical-container>
-
+            </ul>
         </div>
     </section>
 </ng-container>

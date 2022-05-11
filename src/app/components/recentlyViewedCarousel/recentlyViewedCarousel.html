@@ -1,9 +1,11 @@
 <!--Recent View Start-->
-<section *ngIf="prodList && prodList.length>0 && shortDescParsed" class="Recently-view card">
-  <div class="clearfix container pad-tb-10-new" style="padding-top: 10px; padding-bottom: 10px;" >
-    <h3 class="f-left">RECENTLY VIEWED</h3>
-    <a (click)="openPopup=true;viewAllClicked()" class="btn-red f-right">View All</a>
-  </div>
+<section *ngIf="prodList && prodList.length>0 && shortDescParsed" class="Recently-view">
+  <div class="view-all-strip">
+    <h2 class="featr_arrival">RECENTLY VIEWED</h2>
+    <a (click)="openPopup=true;viewAllClicked()" routerLinkActive="router-link-active"
+        class="btn-red">VIEW ALL
+    </a>
+ </div>
   <ul class="list view-products border-top">
     <li *ngFor="let item of prodList | slice : 0:4"
       (click)="goToProducturl(item.url);setCookieLink('Recently_Viewed',item.canonical_url)">

@@ -3,95 +3,82 @@
         <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + im.image_name" alt="banner add">
     </a>
 </section>
-<section>
-    <product-horizontal-card></product-horizontal-card>
-</section>
-
 <ng-container *ngFor="let category of categories | slice:0:5;let i = index;">
-    <section *ngIf="carouselData[category.dataKey] && carouselData[category.dataKey]['data']" class="deals-offers card"
+    <section *ngIf="carouselData[category.dataKey] && carouselData[category.dataKey]['data']" class="card pwa-col-12"
         [class.bestSeller]="i == 0">
-        <div class="container clearfix pad-tb-10">
-            <h2 class="f-left f-14 pad-tb-10 upper-case">{{carouselData[category.dataKey]['layout_name']}}</h2>
-            <a *ngIf="category.viewAllLink; else showPop"
-                [routerLink]="'/'+carouselData[category.dataKey]['layout_url']"
-                (click)="setSourceLink(carouselData[category.dataKey]['layout_url'])"
-                routerLinkActive="router-link-active" class="btn-red f-right">VIEW ALL
-            </a>
-            <ng-template #showPop>
-                <a (click)="openPopup=true;sendDataToPopUP.emit(category.dataKey);getCategoryLabel(carouselData[category.dataKey]['layout_name'])"
-                    class="btn-red f-right">VIEW ALL</a>
-            </ng-template>
-        </div>
-        <div class="container clearfix">
-            <ul class="category-brand border-top"
-                *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'">
-
-                <div *ngIf="carouselData[category.dataKey]['data']['category_block'].length  !== 0 else brandBlock">
-
-                    <li *ngFor="let item of carouselData[category.dataKey]['data']['category_block'] | slice : 0:4">
-
-                        <a [routerLink]="item['category_url']"
-                            (click)="setCategoryorBrandCookie(item['CategoryName'],'tcat')">
-
-                            <img [defaultImage]="defaultImage" [lazyLoad]="imagePath+item.category_image"
-                                alt="category image" class="category-img">
-                            <p>{{item['CategoryName']}}</p>
-                        </a>
-                    </li>
-                </div>
-                <ng-template #brandBlock>
-                    <li *ngFor="let items of carouselData[category.dataKey]['data']['brand_block'] | slice : 0:4">
-                        <a [routerLink]="items['brand_url']"
-                            (click)="setCategoryorBrandCookie(items['brandName'],'tbrand')">
-
-
-                            <img [defaultImage]="defaultImage" [lazyLoad]="imagePath+items.brand_image"
-                                alt="category image" class="category-img">
-                            <p>{{items['brandName']}}</p>
-
-
-                        </a>
-                    </li>
-                </ng-template>
-            </ul>
-
-            <ul class="view-products"
-
-                [ngClass]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers' ? 'list' : 'grid' "
-                [class.border-top]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers'">
-                <li *ngFor="let item of carouselData[category.dataKey]['data']['product_data'] | slice : 0:4">
-
-                    <a [routerLink]="item.productlink"
-                        (click)="setCookieLink(carouselData[category.dataKey]['layout_name'], item.msn, 'pdp')"
-                        class="clearfix">
-                        <div class="product-img">
-                            <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item.imageLink_medium"
-                                alt="product Image">
-                        </div>
-                        <div class="product-description">
-                            <p class="description-txt">
-                                {{item.productName | slice:0: (carouselData[category.dataKey]['layout_name'] ==
-                                'Bestsellers' ? 60 : 30 )}}<span
-                                    *ngIf="item.productName.length>(carouselData[category.dataKey]['layout_name'] == 'Bestsellers' ? 60 : 30 )">...</span>
-                            </p>
-                            <p class="price">
-                                <span
-                                    class="before-discount">{{beforeDiscount(item.sellingPrice,item.discount_percentage)
-                                    | currency: 'INR' : 'symbol'
-                                    : '1.0-0'}}
-                                </span>
-                                <span class="discount">{{item.discount_percentage}}% OFF</span>
-                                <span class="after-discount">{{item.sellingPrice | currency: 'INR' : 'symbol' :
-                                    '1.0-0'}}</span>
-                            </p>
-                            <p class="seller">
-                                <span>By :</span> {{getBrandName(item.short_description)}}
-                            </p>
-                        </div>
+            <div class="view-all-strip">
+                <h2>{{carouselData[category.dataKey]['layout_name']}}</h2>
+                    <a *ngIf="category.viewAllLink; else showPop"
+                        [routerLink]="'/'+carouselData[category.dataKey]['layout_url']"
+                        (click)="setSourceLink(carouselData[category.dataKey]['layout_url'])"
+                        routerLinkActive="router-link-active" class="btn-red">VIEW ALL
                     </a>
-                </li>
-            </ul>
-        </div>
+                    <ng-template #showPop>
+                        <a (click)="openPopup=true;sendDataToPopUP.emit(category.dataKey);getCategoryLabel(carouselData[category.dataKey]['layout_name'])"
+                            class="btn-red">VIEW ALL</a>
+                    </ng-template>
+             </div>
+                <ul class="circle-brand-container"
+                    *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'">
+                    <div *ngIf="carouselData[category.dataKey]['data']['category_block'].length  !== 0 else brandBlock">
+                        <li  *ngFor="let item of carouselData[category.dataKey]['data']['category_block'] | slice : 0:4" class="circle-brand-block">
+                            <a [routerLink]="item['category_url']"
+                                (click)="setCategoryorBrandCookie(item['CategoryName'],'tcat')">
+        
+                                <img [defaultImage]="defaultImage" [lazyLoad]="imagePath+item.category_image"
+                                    alt="category image" class="category-img">
+                                <p>{{item['CategoryName']}}</p>
+                            </a>
+                        </li>
+                    </div>
+                    <ng-template #brandBlock>
+                        <li class="circle-brand-block" *ngFor="let items of carouselData[category.dataKey]['data']['brand_block'] | slice : 0:4">
+                            <a [routerLink]="items['brand_url']"
+                                (click)="setCategoryorBrandCookie(items['brandName'],'tbrand')">
+                                <div class="circle-brand-img">
+                                    <img [defaultImage]="defaultImage" [lazyLoad]="imagePath+items.brand_image"
+                                    alt="category image" class="category-img">
+                                </div>
+                                <p>{{items['brandName']}}</p>
+                            </a>
+                        </li>
+                    </ng-template>
+                </ul>
+                <ul class="view-products"
+                    [ngClass]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers' ? 'list' : 'grid' "
+                    [class.border-top]="carouselData[category.dataKey]['layout_name'] == 'Bestsellers'">
+                    <li *ngFor="let item of carouselData[category.dataKey]['data']['product_data'] | slice : 0:4">
+        
+                        <a [routerLink]="item.productlink"
+                            (click)="setCookieLink(carouselData[category.dataKey]['layout_name'], item.msn, 'pdp')"
+                            class="clearfix">
+                            <div class="product-img">
+                                <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item.imageLink_medium"
+                                    alt="product Image">
+                            </div>
+                            <div class="product-description">
+                                <p class="description-txt">
+                                    {{item.productName | slice:0: (carouselData[category.dataKey]['layout_name'] ==
+                                    'Bestsellers' ? 60 : 30 )}}<span
+                                        *ngIf="item.productName.length>(carouselData[category.dataKey]['layout_name'] == 'Bestsellers' ? 60 : 30 )">...</span>
+                                </p>
+                                <p class="price">
+                                    <span
+                                        class="before-discount">{{beforeDiscount(item.sellingPrice,item.discount_percentage)
+                                        | currency: 'INR' : 'symbol'
+                                        : '1.0-0'}}
+                                    </span>
+                                    <span class="discount">{{item.discount_percentage}}% OFF</span>
+                                    <span class="after-discount">{{item.sellingPrice | currency: 'INR' : 'symbol' :
+                                        '1.0-0'}}</span>
+                                </p>
+                                <p class="seller">
+                                    <span>By :</span> {{getBrandName(item.short_description)}}
+                                </p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
     </section>
 </ng-container>
 <section class="banner-ad mar-b-10 mar-t-10" *ngFor="let im of middleImageJsonData;let i = index;">

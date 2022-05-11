@@ -6,16 +6,30 @@
         @extend %view-all-strip;
     }
 }
-.category-brand {
-    li {
+.circle-brand-container{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    // margin:-10px 0px 0px -10px;
+    background:var(--white);
+    .circle-brand-block{
         font-size: 12px;
         text-align: center;
         padding: 5px;
-        @include gridForCategory('4', null);
-        img {
+        width:25%;
+        margin:10px 0px 0px 10px;
+        .circle-brand-img{
+            width:70px;
+            height:70px;
+            border:2px solid var(--border-red);
+            border-radius:$half-width;
             margin-bottom: 10px;
-            width: 100%;
-        }
+            img {
+                width: 100%;
+                height:100%;
+                border-radius:$half-width;
+             }
+        } 
     }
 }
 .home-grid-view-container{

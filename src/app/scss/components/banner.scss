@@ -2,18 +2,30 @@
 .pwa-banner{
     display:flex;
     flex-wrap:wrap;
-    background:$white;
+    margin-top:10px;
     img {
         width:$fullwidth;
         max-width:$fullwidth;
     }
     .full-banner{
-        padding:5px;
         width:$fullwidth;
+        img{
+            border-radius:$border-radius-8;
+        }
     }
-    .half-banner{
-        padding:5px;
-        width:$half-width;
+    .mutiple-banner{
+        display:inline-flex;
+        flex-flow: wrap;
+        margin:0px 0px 0px -10px;
+        width:calc(100% + 10px);
+        .half-banner{
+            width:47%;
+            margin:10px 0px 0px 10px;
+            img{
+                border-radius:$border-radius-8;
+                height:100%;;
+            }
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 <!--Recent View Start-->
+
 <section *ngIf="prodList && prodList.length>0 && shortDescParsed" class="Recently-view">
   <div class="view-all-strip">
     <h2 class="featr_arrival">RECENTLY VIEWED</h2>
@@ -6,6 +7,7 @@
         class="btn-red">VIEW ALL
     </a>
  </div>
+
   <ul class="list view-products border-top">
     <li *ngFor="let item of prodList | slice : 0:4"
       (click)="goToProducturl(item.url);setCookieLink('Recently_Viewed',item.canonical_url)">
@@ -16,10 +18,8 @@
         </div>
         <div class="product-description">
           <p class="description-txt">{{item.productName}}</p>
-          <!--<p class="description-txt" *ngFor="let desc of item.shortDesc">{{desc.key}}:{{desc.value}}</p>-->
           <p class="price" *ngIf="!item.outOfStock">
             <span class="before-discount">{{item.priceMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
-            <!-- <span class="discount" *ngIf="item.discount > 0">{{item.discount | mathCeil}}% OFF</span> -->
             <span class="discount" *ngIf='item.priceMrp>item.priceWithoutTax'> {{((item.priceMrp -
               item.priceWithoutTax)/item.priceMrp)*100 | mathFloor| number : '1.0-0'}}% OFF</span>
             <span class="after-discount">{{item.priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
@@ -34,12 +34,11 @@
       </a>
     </li>
   </ul>
-</section>
-<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
+</section> -->
+<!-- <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
   [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:'Recently viewed'}">
 
   <div class="content-popup card-30" content>
-    <!-- <p class="pad-10 f-14 bold-txt upper-case">{{categoryNameFromHomePage}}</p> -->
     <ul class="view-products list no-border" [class.border-top]="categoryNameFromHomePage !== ''">
       <li *ngFor="let item of prodList" (click)="goToProducturl(item.url)">
         <a class="clearfix">
@@ -48,10 +47,8 @@
           </div>
           <div class="product-description">
             <p class="description-txt">{{item.productName}}</p>
-            <!--<p class="description-txt" *ngFor="let desc of item.shortDesc">{{desc.key}}:{{desc.value}}</p>-->
             <p class="price" *ngIf="!item.outOfStock">
               <span class="before-discount">{{item.priceMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
-              <!-- <span class="discount" *ngIf="item.discount">{{item.discount | mathCeil}}% OFF</span> -->
               <span class="discount" *ngIf='item.priceMrp>item.priceWithoutTax'> {{((item.priceMrp -
                 item.priceWithoutTax)/item.priceMrp)*100 | mathFloor| number : '1.0-0'}}% OFF</span>
 
@@ -70,5 +67,16 @@
 
 
   </div>
-</app-pop-up>
+</app-pop-up> -->
 <!--Recent View End-->
+
+
+
+
+<section observeVisibility style="margin-top: 10px;" [debounceTime]="100"
+[ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
+<ng-container #recentProducts></ng-container>
+<div class="loader_container" *ngIf="!recentProductsInstance">
+    <div class="loader"></div>
+</div>
+</section>

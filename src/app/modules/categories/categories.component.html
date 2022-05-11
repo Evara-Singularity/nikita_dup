@@ -6,6 +6,7 @@
 <ng-container *ngFor="let category of categories | slice:0:5;let i = index;">
     <section *ngIf="carouselData[category.dataKey] && carouselData[category.dataKey]['data']" class="card pwa-col-12"
         [class.bestSeller]="i == 0">
+
             <div class="view-all-strip">
                 <h2>{{carouselData[category.dataKey]['layout_name']}}</h2>
                     <a *ngIf="category.viewAllLink; else showPop"
@@ -79,6 +80,7 @@
                         </a>
                     </li>
                 </ul>
+
     </section>
 </ng-container>
 <section class="banner-ad mar-b-10 mar-t-10" *ngFor="let im of middleImageJsonData;let i = index;">

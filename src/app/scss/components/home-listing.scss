@@ -113,24 +113,33 @@
     &.grid-variant1{
         flex-direction:row;
         justify-content:center;
+        background: var(--white);
+        border-radius: $border-radius-8;
         li {
             flex-direction:row;
             height: $grid1-card-height;
             text-align: center;
             position: relative;
             display:inline-flex;
+            border-bottom: 1px solid var(--ghost-white);
             .view-products-card{
                 display:flex;
                 align-items:center;
                 text-align:center;
               }
             &:nth-child(odd) {
-                border-right: 1px solid $border-color;
+                border-right: 1px solid var(--ghost-white);
+            }
+            &:nth-last-child(1) {
+                border-bottom: none;
+            }
+            &:nth-last-child(2){
+                border-bottom: none;
             }
             .prod-name {
-                font-size: 14px;
-                font-weight: 500;
-                color: $btn-color;
+                font-size: $large-font;
+                font-weight: $font-normal;
+                color: var(--orange-red);
             }
             .product-img{
                 // width:var(--home-card-width);

@@ -45,6 +45,7 @@ export class CartService
     notifications = [];
     appliedPromoCode;
     isPromoCodeApplied;
+    allPromoCodes: Array<any> = [];
 
     // checkout related global vars
     private _billingAddress: Address;
@@ -152,12 +153,20 @@ export class CartService
     get getGenericCartSession() { return this.cartSession; }
 
     // return the Cart Session Object
-    setGenericCartSession(cart)
-    {
+    setGenericCartSession(cart) {
         this.cartSession = JSON.parse(JSON.stringify(cart));
-        if (cart && cart.offersList && cart.offersList.length > 0) {
-            this.appliedPromoCode = cart.offersList[0]['id'];
-            this.isPromoCodeApplied = true;
+        if (cart && cart.offersList && cart.offersList.length > 0 && this.allPromoCodes.length === 0) {
+            const userSession = this._localStorageService.retrieve('user');
+            this.getAllPromoCodesByUserId(userSession.userId).subscribe(res => {
+                if (res['statusCode'] === 200) {
+                    this.allPromoCodes = res['data'];
+                    const promo = this.allPromoCodes.find(promo => promo.promoId === cart.offersList[0].offerId);
+                    if (promo) {
+                        this.appliedPromoCode = promo['promoCode'];
+                    }
+                    this.isPromoCodeApplied = true;
+                }
+            });
         }
     }
 

@@ -21,7 +21,7 @@
 
             <li>
                 <span class="tag-label">Total Shipping</span>
-                <span class="tag-value">₹{{ shippingCharges | mathFloor | number :'1.2-2' }}</span>
+                <span class="tag-value">₹{{ _cartService?.shippingCharges | mathFloor | number :'1.2-2' }}</span>
             </li>
             <li>
                 <span class="tag-label">Total Coupon Discount</span>
@@ -31,7 +31,7 @@
             </li>
             <li class="bold-txt">
                 <span class="tag-label">Total Price</span>
-                <span class="tag-value">₹{{_cartService.getGenericCartSession.cart.totalAmount + shippingCharges - _cartService.getGenericCartSession.cart.totalOffer |
+                <span class="tag-value">₹{{_cartService.getGenericCartSession.cart.totalAmount + _cartService?.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer |
             mathCeil | number : '1.2-2'}}</span>
             </li>
         </ul>

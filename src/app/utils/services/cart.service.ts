@@ -46,6 +46,7 @@ export class CartService
     appliedPromoCode;
     isPromoCodeApplied;
     allPromoCodes: Array<any> = [];
+    shippingCharges: number = 0;
 
     // checkout related global vars
     private _billingAddress: Address;

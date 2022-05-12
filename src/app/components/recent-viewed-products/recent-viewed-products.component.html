@@ -1,13 +1,9 @@
-<section class="Bestseller card card-wrap" *ngIf="recentProductItems && recentProductItems.length>0">
-    <div class="upper-view-all-sec">
-        <div class="upper-view-all-sec-left">
+<section  *ngIf="recentProductItems && recentProductItems.length>0">
+    <div class="view-all-strip">
             <h4>Recently Viewed</h4>
-        </div>
-        <!-- <div class="upper-view-all-sec-right">
-            <button>VIEW ALL</button>
-        </div> -->
+            <a href="" class="btn-red">VIEW ALL</a>
     </div>
-    <div class="vertical-scroll-container">
+    <!-- <div class="vertical-scroll-container">
         <div class="inner-scroll-container" [style.width.px]="recentProductItems.length * 165">
             <ng-container *ngFor="let product of recentProductItems;let pIndex = index" >
                 <product-horizontal-card 
@@ -21,5 +17,5 @@
                 </product-horizontal-card>
             </ng-container>
         </div>
-    </div>
+    </div> -->
 </section>

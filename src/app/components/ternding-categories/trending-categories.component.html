@@ -1,7 +1,7 @@
 <section *ngIf="flyOutData" class="trending-container pad-tb-10">
-    <div>
-        <h2 class="f-left f-14 pad-tb-10 upper-case">
-            {{tocd && tocd['data'] && tocd['data'].length>0 ? 'MY CATEGORIES' : 'TRENDING CATEGORIES'}}</h2>
+    <div class="view-all-strip">
+        <h2>
+            {{tocd && tocd['data'] && tocd['data'].length>0 ? 'MY CATEGORIES' : 'Trending Categories'}}</h2>
         <!-- <a [routerLink]="['/all-categories']" routerLinkActive="router-link-active" class="btn-red f-right">VIEW ALL
         </a> -->
     </div>

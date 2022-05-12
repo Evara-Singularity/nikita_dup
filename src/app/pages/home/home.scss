@@ -7,7 +7,7 @@
         .home-parent{
             h2 {
                 font-size: $large-font;
-                text-transform: uppercase;
+                text-transform: capitalize;
             }
         }
     }
@@ -49,3 +49,31 @@
         background: #ddd;
         padding-bottom: 10px;
     }
+
+    .vertical-category-container{
+        display:flex;
+        flex-wrap:wrap;
+        margin: -10px 0 0 -10px;
+        width: calc(100% + 10px);
+        justify-content:center;
+        text-align:center;
+        .vertical-category-card{
+            width: 30%;
+            margin: 10px 0 0 10px;
+            // background: var(--white);
+            border-radius: 8px;
+            min-height: 100px;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            display: inline-flex;
+           img {
+            width: 100px;
+           }
+           .category-text{
+               text-align:left;
+               padding-top: 5px;
+           }
+        }
+    }
+  

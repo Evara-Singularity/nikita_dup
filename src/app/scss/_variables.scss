@@ -152,12 +152,15 @@ $default-gap: 15px;
     border: 1px solid $border-color;
     display:flex;
     align-items:center;
-    padding:10px 0px;
-    .view-all-heading{
+    padding:10px 15px;
+    h4{
        width:75%
     }
    .btn-red{
       margin-left:auto;
+      border:none;
+      background:var(--misty-rose);
+      border-radius:$border-radius-4;
    }
 }
 %cards {

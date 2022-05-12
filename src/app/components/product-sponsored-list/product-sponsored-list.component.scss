@@ -1,10 +1,10 @@
 @import '../../scss/layout/horizontalProductListing';
 
-.upper-u-may-like-sec{
+.view-all-strip{
     position: relative;
-    span {
-        top: 10px;
-        right: 10px;
-        position: absolute;
-    }
+    
+}
+.view-all-strip{
+    @extend %view-all-strip;
+    border: none;
 }

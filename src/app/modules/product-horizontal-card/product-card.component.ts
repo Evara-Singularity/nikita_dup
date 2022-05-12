@@ -17,12 +17,12 @@ import { ToastMessageService } from '../toastMessage/toast-message.service';
 
 
 @Component({
-  selector: 'product-horizontal-card',
-  templateUrl: './product-horizontal-card.component.html',
-  styleUrls: ['./product-horizontal-card.component.scss'],
+  selector: 'product-card',
+  templateUrl: './product-card.component.html',
+  styleUrls: ['./product-card.component.scss'],
   providers: []
 })
-export class ProductHorizontalCardComponent implements OnInit {
+export class ProductCardComponent implements OnInit {
 
   readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
   readonly defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;

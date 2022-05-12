@@ -3,11 +3,11 @@
     <div class="horizontal-scroll-container consider-these-products" id="horizontal-scroll-container"
         (scroll)="onScrollOOOSimilar($event)">
         <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 1">
-            <product-horizontal-card [hideAd]="true" *ngFor="let card of similarForOOSContainer; let i = index;"
+            <product-card [hideAd]="true" *ngFor="let card of similarForOOSContainer; let i = index;"
                 [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
                 [moduleUsedIn]="'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP'"
                 [product]="productService.oosSimilarProductsData.similarData[i]">
-            </product-horizontal-card>
+            </product-card>
         </ng-container>
         <ng-container *ngIf="similarForOOSLoaded">
             <product-card-skeleton *ngFor="let skeleton of similarForOOSContainer"

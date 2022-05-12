@@ -18,7 +18,7 @@ import { ProductComponent } from './product.component';
 import { SliceArrayPipeModule } from '@app/utils/pipes/slice-array.pipe';
 import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/product-oos-similar.module';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
-import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
+import { ProductCardModule } from '@app/modules/product-horizontal-card/product-card.module';
 // import { IdleUserSearchNudgeModule } from '@app/modules/Idle-user-search-nudge/Idle-user-search-nudge.module';
 import { PastOrdersModule } from '@app/components/past-orders/past-orders.component';
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
@@ -44,7 +44,7 @@ import { NotFoundModule } from "@app/modules/not-found/not-found.module";
     SliceArrayPipeModule,
     NumberDirectiveModule,
     // Directives
-    ProductHorizontalCardModule,
+    ProductCardModule,
     SwipeDirectiveModule,
     // IdleUserSearchNudgeModule,
     PastOrdersModule,

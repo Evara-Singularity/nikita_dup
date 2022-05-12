@@ -66,15 +66,14 @@
         <product-card-skeleton
             *ngIf="sponseredProductPosition.includes(i)  && isAdsEnable && !sponseredProductLoadStatus">
         </product-card-skeleton>
-        <product-horizontal-card [product]="product" [isFirstView]="(i < 5)">
-        </product-horizontal-card>
-
+        <product-card [product]="product" [isFirstView]="(i < 5)">
+        </product-card>
     </ng-container>
 </ng-container>
 
 <app-search-not-found *ngIf="productsListingData?.products != undefined && productsListingData?.products?.length==0"></app-search-not-found>
 
-<span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination()"></span>
+<span observeVisibility [debounceTime]="100" (visiblxe)="onVisiblePagination()"></span>
 <span observeVisibility [debounceTime]="100" (visible)="onVisiblesearchBannerCard()"></span>
 
 <!-- search-card-plp.svg -->

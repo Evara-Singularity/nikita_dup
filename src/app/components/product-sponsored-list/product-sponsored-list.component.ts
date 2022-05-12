@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
-import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
+import { ProductCardModule } from '@app/modules/product-horizontal-card/product-card.module';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductService } from '@app/utils/services/product.service';
@@ -77,7 +77,7 @@ export class ProductSponsoredListComponent implements OnInit {
   ],
   imports: [
     CommonModule,
-    ProductHorizontalCardModule
+    ProductCardModule
   ],
 })
 export class RecentViewedProductsModule { }

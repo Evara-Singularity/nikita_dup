@@ -26,9 +26,10 @@
             border-top: 1px solid $border-color;
             &.selected {
                 background: $checkbox-overly;
-                .custom-box:before {
-                    content: "";
-                    color: #3b9e26;
+                .custom-box{
+                    &:before {
+                        color: #3b9e26;
+                    }
                 }
             }
             .promo-label {

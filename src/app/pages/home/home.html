@@ -30,8 +30,8 @@
                     </category-card>
                 </div> -->
                 <div class="vertical-category-container">
-                    <div class="vertical-category-card" *ngFor="let item of flyOutData | slice:0:6;let i=index"> 
-                        <a [routerLink]="item.link" (click)="setCookieLink('Trending_Categories',item.categoryCode, 'listing')">
+                    <div *ngFor="let i of [1,2,3,4,5,6]" class="vertical-category-card"> 
+                        <a>
                             <img src="../../../assets/img/category-card.png">
                             <p class="category-text">Office Stationery & Supplies</p>
                         </a>
@@ -58,7 +58,7 @@
                     <ng-container #Categories></ng-container>
                 </div>
                  <!-- Section for feature Arrival -->
-                <div observeVisibility class="featr_arrival pwa-col-12" [debounceTime]="50" (visible)="onVisibleFeaturedArrivals($event)">
+                <div observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [debounceTime]="50" (visible)="onVisibleFeaturedArrivals($event)">
                     <ng-container #FeaturedArrivals></ng-container>
                 </div>
                 <ng-container class="bs-popup" #HomePopupComponet></ng-container>

@@ -5,13 +5,11 @@
 .view-all-strip{
     @extend %view-all-strip;
     border: none;
-    padding: 0 0 10px; 
-    justify-content: space-between;
+    padding: 10px  0px; 
     background: var(--Light-grayish-orange);
 }
 .featr_arrival{
     background: var(--Light-grayish-orange);
-    padding: 15px;
     .view-products{
         border: 1px solid var(--ghost-white);
         li{

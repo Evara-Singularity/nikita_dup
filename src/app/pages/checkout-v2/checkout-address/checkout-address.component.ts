@@ -24,7 +24,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = new Subject();
 
     invoiceType = this.INVOICE_TYPES.RETAIL;
-    payableAmount = 0;
     isUserLoggedIn = false;
     hasCartItems = true;
     verifyUnserviceableFromCartSubscription = false;//to restrict the verification of unserviceable items on every cart subscription.
@@ -39,7 +38,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     logoutSubscription: Subscription = null;
     cartUpdatesSubscription: Subscription = null;
 
-    constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
+    constructor(private _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
         private _router: Router, private _toastService: ToastMessageService) { }
 
 
@@ -55,9 +54,9 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
                 this.cartSession = cartSession;
                 this.hasCartItems = this.cartSession && this.cartSession['itemsList'] && (this.cartSession['itemsList']).length > 0;
-                if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length) {
-                    this.calculatePayableAmount(this.cartSession['cart']);
-                }
+                // if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length) {
+                //     this._cartService.calculatePayableAmount(this.cartSession['cart']);
+                // }
                 //address is getting updated and cart session is getting updated with some delay.
                 //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
                 if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
@@ -174,15 +173,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             let footerOffset = document.getElementById('payment_summary').offsetTop;
             ClientUtility.scrollToTop(1000, footerOffset - 30);
         }
-    }
-
-    /**@description calculates the total payable amount as per cart changes*/
-    calculatePayableAmount(cart)
-    {
-        const TOTAL_AMOUNT = cart['totalAmount'] || 0;
-        const SHIPPING_CHARGES = cart['shippingCharges'] || 0;
-        const TOTAL_OFFER = cart['totalOffer'] || 0;
-        this.payableAmount = TOTAL_AMOUNT + SHIPPING_CHARGES + TOTAL_OFFER;
     }
 
     /**@description decides whether to procees to payment or not.*/

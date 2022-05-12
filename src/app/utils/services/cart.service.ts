@@ -44,6 +44,9 @@ export class CartService
     cartNotications = [];
     notifications = [];
     appliedPromoCode;
+    isPromoCodeApplied;
+    allPromoCodes: Array<any> = [];
+    shippingCharges: number = 0;
 
     // checkout related global vars
     private _billingAddress: Address;
@@ -151,11 +154,20 @@ export class CartService
     get getGenericCartSession() { return this.cartSession; }
 
     // return the Cart Session Object
-    setGenericCartSession(cart)
-    {
+    setGenericCartSession(cart) {
         this.cartSession = JSON.parse(JSON.stringify(cart));
-        if (cart && cart.offersList && cart.offersList.length > 0) {
-            this.appliedPromoCode = cart.offersList[0]['id'];
+        if (cart && cart.offersList && cart.offersList.length > 0 && this.allPromoCodes.length === 0) {
+            const userSession = this._localStorageService.retrieve('user');
+            this.getAllPromoCodesByUserId(userSession.userId).subscribe(res => {
+                if (res['statusCode'] === 200) {
+                    this.allPromoCodes = res['data'];
+                    const promo = this.allPromoCodes.find(promo => promo.promoId === cart.offersList[0].offerId);
+                    if (promo) {
+                        this.appliedPromoCode = promo['promoCode'];
+                    }
+                    this.isPromoCodeApplied = true;
+                }
+            });
         }
     }
 
@@ -1213,13 +1225,16 @@ export class CartService
                                 this._loaderService.setLoaderState(false);
                                 this._toastService.show({ type: 'error', text: 'Your cart amount is less than ' + data['discount'] });
                             }
+                            this.isPromoCodeApplied = true;
                         } else {
+                            this.isPromoCodeApplied = false;
                             this.appliedPromoCode = '';
                             this._toastService.show({ type: 'error', text: message });
                         }
                     });
                 } else {
                     this.appliedPromoCode = '';
+                    this.isPromoCodeApplied = false;
                     this._loaderService.setLoaderState(false);
                     this._toastService.show({ type: 'error', text: message });
                 }
@@ -1229,7 +1244,10 @@ export class CartService
 
     genericRemovePromoCode()
     {
-        if (!this.appliedPromoCode) return;
+        if (!this.appliedPromoCode) {
+            this.isPromoCodeApplied = false;
+            return;
+        }
         this._loaderService.setLoaderState(true);
         let cartSession = this.getGenericCartSession;
         cartSession['offersList'] = [];
@@ -1240,6 +1258,7 @@ export class CartService
             data =>
             {
                 this.appliedPromoCode = '';
+                this.isPromoCodeApplied = false;
                 this.setGenericCartSession(data);
                 this.updateCartSession(data).subscribe(res =>
                 {

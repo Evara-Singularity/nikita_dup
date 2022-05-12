@@ -11,8 +11,7 @@ declare let dataLayer: any;
     templateUrl: './promo-code-list.component.html',
     styleUrls: ['./promo-code-list.component.scss']
 })
-export class PromoCodeListComponent implements OnInit, AfterViewInit {
-    allPromoCodes: Array<any> = [];
+export class PromoCodeListComponent implements OnInit {
     @Output('closePromoOfferPopup') closePromoOfferPopup = new EventEmitter();
 
     constructor(
@@ -35,7 +34,7 @@ export class PromoCodeListComponent implements OnInit, AfterViewInit {
         if (this._commonService.userSession.authenticated === 'true') {
             this._cartService.getAllPromoCodesByUserId(userId).subscribe(res => {
                 if (res['statusCode'] === 200) {
-                    this.allPromoCodes = res['data'];
+                    this._cartService.allPromoCodes = res['data'];
                     this.pushDataLayer();
                 }
                 this._loaderService.setLoaderState(false);
@@ -56,10 +55,10 @@ export class PromoCodeListComponent implements OnInit, AfterViewInit {
         setTimeout(() =>
         {
             const dlp = [];
-            for (let p = 0; p < this.allPromoCodes.length; p++) {
+            for (let p = 0; p < this._cartService.allPromoCodes.length; p++) {
                 const promo = {
-                    id: this.allPromoCodes[p]['promoId'],
-                    name: this.allPromoCodes[p]['promoCode'],
+                    id: this._cartService.allPromoCodes[p]['promoId'],
+                    name: this._cartService.allPromoCodes[p]['promoCode'],
                     'creative': 'banner1',
                     'position': 'slot1'
                 };

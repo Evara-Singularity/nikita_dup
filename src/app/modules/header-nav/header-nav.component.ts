@@ -366,10 +366,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
         const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
 
-        const currentURL = this.router.url;
-        const previousURL = (this._commonService.getPreviousUrl);
-        const backURL = this.backRedirectUrl;
-        console.log(`CurrentURL:${currentURL}, PreviousURL:${previousURL}, BackURL:${backURL}`);
+        // const currentURL = this.router.url;
+        // const previousURL = (this._commonService.getPreviousUrl);
+        // const backURL = this.backRedirectUrl;
+        // console.log(`CurrentURL:${currentURL}, PreviousURL:${previousURL}, BackURL:${backURL}`);
 
         if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false) {
             (window.history.length > 2) ? this.redirectToBackURL() : this.router.navigate(['/']);
@@ -385,18 +385,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     redirectToBackURLFromCheckout() {
-        console.log('redirectToBackURLFromCheckout', 'called');
-
-        // FRONT FLOWS (POST LOGIN)
-        // PDP/PLP --> buynow --> checkout address  --> hit of back button
-        // PDP/PLP --> buynow --> checkout/login --> checkout/top --> checkout address  --> hit of back button
-        // PDP/PLP --> buynow --> checkout address --> checkout payment --> hit of back button
-        // PDP/PLP --> buynow --> checkout/login --> checkout/top --> checkout address --> checkout payment --> hit of back button
-
-        // BACK FLOWS
-        // checkout payment page with no history in browser
-        // checkout address redirected from payment page
-        // checkout address to hit of back button
 
         if (this._commonService.getPreviousUrl.indexOf('checkout/payment') > -1) {
             this.router.navigateByUrl("quickorder", { replaceUrl: true });

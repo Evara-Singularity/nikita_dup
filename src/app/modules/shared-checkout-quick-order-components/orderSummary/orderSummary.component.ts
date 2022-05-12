@@ -12,7 +12,6 @@ declare let dataLayer: any;
     styleUrls: ['./orderSummary.scss'],
 })
 export class OrderSummaryComponent {
-    shippingCharges: number = 0;
     showPromoOfferPopup: boolean = false;
 
     constructor(
@@ -30,12 +29,12 @@ export class OrderSummaryComponent {
     }
     
     updateShippingCharges() {
-        this.shippingCharges = 0;
+        this._cartService.shippingCharges = 0;
         if (this._cartService.getGenericCartSession && this._cartService.getGenericCartSession.itemsList && this._cartService.getGenericCartSession.itemsList.length > 0) {
             this.getGTMData(this._cartService.getGenericCartSession);
             this.sendTrackData(this._cartService.getGenericCartSession);
             this._cartService.getGenericCartSession.itemsList.forEach((item) => {
-                this.shippingCharges = this.shippingCharges + (item.shippingCharges || 0);
+                this._cartService.shippingCharges = this._cartService.shippingCharges + (item.shippingCharges || 0);
             });
         }
     }

@@ -28,7 +28,7 @@ export class CheckoutPaymentComponent implements OnInit {
         (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
     ) {
       this._cartService.checkForUserAndCartSessionAndNotify();
-      this.router.navigate(['/checkout/address']);
+      this.router.navigateByUrl('/checkout/address', { replaceUrl: true }); 
     }else{
       console.log('redirecting to payment ==>', this._cartService.getGenericCartSession);
     }

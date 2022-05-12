@@ -365,45 +365,69 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     goBack() {
         this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
         const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
+
+        // const currentURL = this.router.url;
+        // const previousURL = (this._commonService.getPreviousUrl);
+        // const backURL = this.backRedirectUrl;
+        // console.log(`CurrentURL:${currentURL}, PreviousURL:${previousURL}, BackURL:${backURL}`);
+
         if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false) {
             (window.history.length > 2) ? this.redirectToBackURL() : this.router.navigate(['/']);
         } else {
             if (this.staticPages.indexOf(window.location.pathname) !== -1) {
                 this.router.navigate(['/']);
             } else if (isCheckout) {
-                if (this.sharedAuthService.isAtCheckoutLoginFirstTab) {
-                    let index = this._checkoutService.getCheckoutTabIndex();
-                    if (index === 1) {
-                        this.redirectToBackURL();
-                    }
-                    else if (index === 2) {
-                        this._checkoutService.setCheckoutTabIndex(index - 1);
-                        this.redirectToBackURL();
-                    } else {
-                        this._state.notifyData('routeChanged', index - 2);
-                    }
-                } else {
-                    this.sharedAuthService.resetCheckoutLoginSteps();
-                }
+                this.redirectToBackURLFromCheckout();
             } else {
                 this.router.navigate(['/']);
             }
         }
     }
 
+    redirectToBackURLFromCheckout() {
+
+        if (this._commonService.getPreviousUrl.indexOf('checkout/payment') > -1) {
+            this.router.navigateByUrl("quickorder", { replaceUrl: true });
+            return;
+        }
+
+        // incase redirected back from checkout then we need to call cartsession API
+        if (((this.router.url).indexOf('checkout/address') > -1) || ((this.router.url).indexOf('quickorder') > -1)) {
+            this.cartService.clearBuyNowFlow();
+            if (
+                this._commonService.getPreviousUrl.indexOf('checkout/login') > -1 ||
+                this._commonService.getPreviousUrl.indexOf('checkout/signup') > -1 || 
+                this._commonService.getPreviousUrl.indexOf('checkout/otp') > -1
+            ) {
+                this.router.navigateByUrl("quickorder", { replaceUrl: true });
+            } else {
+                this.location.back();
+            }
+        } else {
+            this.location.back();
+        }
+    }
+
     redirectToBackURL() {
+        
         if (this._commonService.getPreviousUrl.indexOf('checkout/payment') > -1)
         {
             this.router.navigate(["quickorder"]);
             return;
         }
+
+        if (((this.router.url).indexOf('quickorder') > -1) && (this._commonService.getPreviousUrl.indexOf('checkout/address') > -1)) {
+            this.router.navigateByUrl("/", { replaceUrl: true });
+            return;
+        }
+
         // incase redirected back from checkout then we need to call cartsession API
         if (((this.router.url).indexOf('checkout/address') > -1) || ((this.router.url).indexOf('quickorder') > -1)) {
-            console.log('bakbtn cart session API called');
+            // console.log('bakbtn cart session API called');
             //this.cartService.resetBuyNow();
             //this.cartService.refreshCartSesion();
             this.cartService.clearBuyNowFlow();
-            console.log('bakbtn cart session API called commonService.getPreviousUrl', this._commonService.getPreviousUrl);
+            // console.log('bakbtn cart session API called commonService.getPreviousUrl', this._commonService.getPreviousUrl);
             if (
                 this._commonService.getPreviousUrl.indexOf('checkout/login') > -1 ||
                 this._commonService.getPreviousUrl.indexOf('checkout/signup') > -1 || 

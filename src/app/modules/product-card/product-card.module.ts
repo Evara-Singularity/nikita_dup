@@ -10,9 +10,14 @@ import { BrandNamePipeModule } from '@app/utils/pipes/brandName.pipe';
 import { ProductCardHorizontalScrollModule } from '../ui/product-card-horizontal-scroll/product-card-horizontal-scroll.module';
 import { ProductCardSkeletonComponent } from './product-card-skeleton/product-card-skeleton.component';
 import { ProductCardComponent } from './product-card.component';
+import { ProductCardListViewComponent } from './product-card-list-view/product-card-list-view.component';
 
 @NgModule({
-  declarations: [ProductCardComponent, ProductCardSkeletonComponent],
+  declarations: [
+    ProductCardComponent,
+    ProductCardSkeletonComponent,
+    ProductCardListViewComponent,
+  ],
   imports: [
     CommonModule,
     RatingPipeModule,

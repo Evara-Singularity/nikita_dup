@@ -92,7 +92,7 @@
 //Promo PopUp
 .select-offers {
     &.open {
-        background-color: red;
+        background-color: var(--white);
 
         .container {
             height: initial;

@@ -82,8 +82,9 @@
 </div>
 
 <div class="need-help-strip pad-10 mar-15">
-      <span class="cncl-item">CANCEL ITEM</span>
-      <span class="need-help">NEED HELP?</span> 
+      <span class="cncl-item" *ngIf="detail && detail.cancel_active"
+      (click)="openPopup='cancel' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status); ">CANCEL ITEM</span>
+      <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span> 
 </div>
 
 

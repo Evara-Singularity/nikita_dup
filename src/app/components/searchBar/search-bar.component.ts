@@ -12,7 +12,7 @@ import { AutoFocusDirective } from '../../utils/directives/auto-focus.directive'
 import CONSTANTS from '@app/config/constants';
 import { DataService } from '@app/utils/services/data.service';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
-import { ProductCardModule } from '@app/modules/product-horizontal-card/product-card.module';
+import { ProductCardModule } from '@app/modules/product-card/product-card.module';
 import { ProductService } from '@app/utils/services/product.service';
 
 @Component({

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedProductListingComponent } from './shared-product-listing.component';
-import { ProductCardModule } from '../product-horizontal-card/product-card.module';
+import { ProductCardModule } from '../product-card/product-card.module';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FilterMidPlpModule } from '@app/components/filter-mid-plp/filter-mid-plp.component';

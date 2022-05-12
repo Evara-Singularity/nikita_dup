@@ -8,7 +8,7 @@ import { CommonService } from '../../utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
 import { ClientUtility } from '@app/utils/client.utility';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
-import { ProductCardModule } from '@app/modules/product-horizontal-card/product-card.module';
+import { ProductCardModule } from '@app/modules/product-card/product-card.module';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 

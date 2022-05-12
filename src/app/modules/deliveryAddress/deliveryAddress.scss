@@ -41,7 +41,7 @@
         @extend %clear-fix;
         .chk-txt {
             font-size: $medium-font;
-            // width: calc(100% - 40px);
+            width: calc(100% - 40px);
             margin-left: 0px;
             .heading-container {
                 display: block;

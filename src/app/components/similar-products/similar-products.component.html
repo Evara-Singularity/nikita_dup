@@ -1,11 +1,7 @@
 <section class="Bestseller card card-wrap" *ngIf="similarProducts && similarProducts.length>0">
-    <div class="upper-view-all-sec">
-        <div class="upper-view-all-sec-left">
+    <div class="view-all-strip">
             <h4>Similar Products</h4>
-        </div>
-        <!-- <div class="upper-view-all-sec-right">
-            <button>VIEW ALL</button>
-        </div> -->
+            <a href="" class="btn-red">VIEW ALL</a>
     </div>
     <product-card-vertical-container [numberOfItems]="similarProducts.length || 0">
         <ng-container *ngFor="let product of similarProducts;let pIndex=index">

@@ -3,9 +3,15 @@ import {
 	Input,
 	NgModule,
 	Output,
+	Injector,
+	ComponentFactoryResolver,
 	EventEmitter,
+	ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
+
 import { LocalStorageService } from 'ngx-webstorage';
 import {
 	CommonModule,
@@ -20,6 +26,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { SiemaCarouselModule } from '../../modules/siemaCarousel/siemaCarousel.module';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { CharacterremovePipeModule } from '../../utils/pipes/characterRemove.pipe';
+import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { DataService } from '@app/utils/services/data.service';
 import { ENDPOINTS } from '@app/config/endpoints';
 
@@ -45,13 +52,20 @@ export class RecentlyViewedCarouselComponent {
 	imagePath = CONSTANTS.IMAGE_BASE_URL;
 	shortDescParsed: boolean = false;
 	recentProductList: Array<any> = [];
+	productOutOfStock: boolean = false;
 	setCId;
+	recentProductsInstance = null;
+  @ViewChild("recentProducts", { read: ViewContainerRef })
+  recentProductsContainerRef: ViewContainerRef;
 
 	constructor(
 		public localStorageService: LocalStorageService,
 		public _commonService: CommonService,
 		public router: Router,
-		private _dataservice: DataService
+		private _dataservice: DataService,
+		private injector: Injector,
+		private cfr: ComponentFactoryResolver,
+
 	) {
 		this.isServer = _commonService.isServer;
 		this.openPopup = false;
@@ -59,6 +73,7 @@ export class RecentlyViewedCarouselComponent {
 	}
 
 	ngOnInit() {
+
 		if (!this.isServer) {
 			if (window.outerWidth < 768) {
 				this.isMobile = true;
@@ -166,6 +181,41 @@ export class RecentlyViewedCarouselComponent {
 		this.router.navigateByUrl(url);
 	}
 
+	async onVisibleRecentProduct(htmlElement) {
+		// console.log('onVisibleRecentProduct', htmlElement);
+		if (!this.recentProductsInstance) {
+			const { RecentViewedProductsComponent } = await import(
+				"./../../components/recent-viewed-products/recent-viewed-products.component"
+			);
+			const factory = this.cfr.resolveComponentFactory(
+				RecentViewedProductsComponent
+			);
+			this.recentProductsInstance =
+				this.recentProductsContainerRef.createComponent(
+					factory,
+					null,
+					this.injector
+				);
+			this.recentProductsInstance.instance["outOfStock"] =
+				this.productOutOfStock;
+			const custData = this._commonService.custDataTracking;
+			//   const orderData = this.orderTracking;
+			//   const TAXONS = this.taxons;
+			const page = {
+				pageName: null,
+				channel: "pdp",
+				subSection: "Recently Viewed",
+				// linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+				linkName: null,
+				loginStatus: this._commonService.loginStatusTracking,
+			};
+			this.recentProductsInstance.instance["analytics"] = {
+				page: page,
+				custData: custData,
+				// order: orderData,
+			};
+		}
+	}
 	setCookieLink(catName, categoryCodeorBannerName) {
 		var date = new Date();
 		date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000);
@@ -192,6 +242,7 @@ export class RecentlyViewedCarouselComponent {
 		SiemaCarouselModule,
 		MathCeilPipeModule,
 		PopUpModule,
+		ObserveVisibilityDirectiveModule
 	],
 	providers: [],
 })

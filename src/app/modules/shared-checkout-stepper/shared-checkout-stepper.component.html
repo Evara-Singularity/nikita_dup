@@ -1,0 +1,9 @@
+<div class="trackStatusWrap" *ngIf="displayHeaders">
+    <ul class="trackStatusline clearfix">
+        <li class="grsolid" [style.width.%]="width" *ngFor="let header of headers">
+            <span class="trackerStatusHeading"  [ngClass]="{'green':header.status}">{{header.label}}</span>
+            <span class="clearfix"></span>
+            <span [ngClass]="{st_trackerline:true, activeTracker:header.status}"></span>
+        </li>
+    </ul>
+</div>

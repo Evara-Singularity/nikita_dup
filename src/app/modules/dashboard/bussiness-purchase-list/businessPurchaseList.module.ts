@@ -5,9 +5,9 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BussinessPurchaseListComponent } from "./bussinessPurchaseList.component";
 import { routing } from "./businessPurchaseList.routing";
 import { BusinessPurchaseListService } from "./businessPurchaseList.service";
-import { OrderSummaryService } from "@app/modules/orderSummary/orderSummary.service";
 import { ProductService } from "@app/utils/services/product.service";
 import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
+import { OrderSummaryService } from "@app/utils/services/orderSummary.service";
 
 @NgModule({
   imports: [

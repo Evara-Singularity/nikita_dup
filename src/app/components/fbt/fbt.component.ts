@@ -164,7 +164,7 @@ export class FbtComponent implements OnInit
 
     updateCart(result, isNaviagte)
     {
-        this.cartService.setCartSession(result);
+        this.cartService.setGenericCartSession(result);
         if (isNaviagte) {
             this.cartService.cart.next({ count: (result['itemsList'] as any[]).length });
             this.router.navigateByUrl('/quickorder');

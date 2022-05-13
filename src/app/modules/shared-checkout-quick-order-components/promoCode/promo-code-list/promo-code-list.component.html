@@ -1,0 +1,26 @@
+<section class="screen-view popup select-offers open">
+  <div class="container">
+    <div class="head-sec">
+      <i class="icon-circle-delete f-left" (click)="closePromoOfferPopup.emit(false)"></i>
+      <p class="txt">ALL OFFERS</p>
+    </div>
+  </div>
+  
+  <custom-promo-code></custom-promo-code>
+  
+  <div class="custom-cbox">
+    <p class="mt-15 border-top">Take advantage of our exclusive offers</p>
+    <ng-container *ngFor="let item of _cartService?.allPromoCodes; let i = index;">
+      <label for="{{i}}couponcode" [class.selected]="item.promoCode === _cartService.appliedPromoCode" (click)="updateCustomPromoCodeInput($event,item)">
+        <input [id]="i+'couponcode'" type="radio" name="promo-code" value="{{item.promoCode}}" #isCheckedBox>
+        <span class="custom-box"></span>
+        <span class="chk-txt">
+          <span class="promo-label">
+              {{ item.promoCode }}
+          </span>
+          <span class="promo-description">{{item.promoDescription}}</span>
+          </span>
+      </label>
+    </ng-container>
+  </div>
+</section>

@@ -14,7 +14,6 @@ export class ModalService {
     }
 
     show(data) {
-        // console.log('ModalService show called');
         this.subject.next(data);
     }
 

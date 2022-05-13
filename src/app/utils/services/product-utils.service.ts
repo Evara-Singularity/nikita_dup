@@ -65,7 +65,7 @@ export class ProductUtilsService{
 
     checkRootItemInCart(msn)
     {
-        this.rootProduct.next(this.checkItemInCart(this.cartService.getCartSession(), msn));
+        this.rootProduct.next(this.checkItemInCart(this.cartService.getGenericCartSession, msn));
     }
 
     checkItemInCart(sessionDetails, msn: string)
@@ -169,7 +169,7 @@ export class ProductUtilsService{
     }
 
     sendTrackData(cta: string, msn){
-        let cartSession = this.cartService.getCartSession();
+        let cartSession = this.cartService.getGenericCartSession;
         if (cartSession['itemsList'] !== null && cartSession['itemsList']) {
             var totQuantity = 0;
             var trackData = {

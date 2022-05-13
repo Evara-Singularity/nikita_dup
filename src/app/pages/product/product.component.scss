@@ -2041,54 +2041,37 @@
 }
 
 .grouping_wrap_pdp {
-    background: #fff;
+    background: var(--white);
     margin-top: 10px;
-
     .singlewrap {
-        border-bottom: 0.5px solid #e3e3e3;
+        border-bottom: 0.5px solid var(--silver);
         padding: 0px 15px;
         overflow: hidden;
-
         &:last-of-type {
             border-bottom: none;
             padding-bottom: 0px;
         }
-
         ul {
-            @extend %clear-fix;
-            padding: 0px;
             display: flex;
             overflow-x: scroll;
             white-space: nowrap;
-            &::-webkit-scrollbar {
-                display: none;
-            }
-            -ms-overflow-style: none;
             scrollbar-width: none;
-
             li {
-                border: 1px solid #333;
-                border-radius: 2px;
+                border: 1px solid var(--onyx-black);
+                border-radius: $border-radius-2;
                 margin: 0px 10px 10px 0px;
-
                 a {
                     display: inline-block;
                     padding: 10px;
                     font-size: $medium-font;
                     font-weight: $font-bold;
-                    color: $txt-color;
-                    width: 100%;
+                    color:var(--onyx-black);
+                    width: $fullwidth;
                     text-align: center;
-
-                    span {
-                        padding-right: 5px;
-                    }
-
                     &.selected {
-                        background: #333;
-                        color: #fff;
+                        background: var(--onyx-black);
+                        color: var(--white);
                     }
-
                     &.inactive {
                         opacity: 0.5;
                         pointer-events: none;

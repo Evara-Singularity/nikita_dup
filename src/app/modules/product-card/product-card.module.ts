@@ -11,12 +11,16 @@ import { ProductCardHorizontalScrollModule } from '../ui/product-card-horizontal
 import { ProductCardSkeletonComponent } from './product-card-skeleton/product-card-skeleton.component';
 import { ProductCardComponent } from './product-card.component';
 import { ProductCardListViewComponent } from './product-card-list-view/product-card-list-view.component';
+import { ProductCardHorizontalGridComponent } from './product-card-horizontal-grid/product-card-horizontal-grid.component';
+import { ProductCardVericalGridComponent } from './product-card-vertical-grid/product-card-vertical-grid.component';
 
 @NgModule({
   declarations: [
     ProductCardComponent,
     ProductCardSkeletonComponent,
     ProductCardListViewComponent,
+    ProductCardHorizontalGridComponent,
+    ProductCardVericalGridComponent
   ],
   imports: [
     CommonModule,

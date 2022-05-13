@@ -1,4 +1,4 @@
-<product-card-list-view
+<product-card-horizontal-grid
     [product]="product"
     [cardFeaturesConfig]="cardFeaturesConfig"
     [prodUrl]="prodUrl"
@@ -16,7 +16,7 @@
     ($tracking)="sendTracking($event)"
     ($titleTracking)="trackProductTitle($event)"
 >
-</product-card-list-view>
+</product-card-horizontal-grid>
 
 <ng-container #variantPopup></ng-container>
 <ng-container #addToCartToast></ng-container>

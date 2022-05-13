@@ -14,9 +14,12 @@
 
     <!-- wrapper div for card class -->
     <!-- [class.available-item-card]="isOosSimilarCard" -->
-    <div  class="card-vertical-home no-card-border">
+    <div  class="card-vertical-home"
+        [ngClass]="{'no-card-border': !cardFeaturesConfig.enableCard, 'card-vertical': cardFeaturesConfig.verticalOrientation}">
         <!-- add .home-grid-view class in below container -->
-        <div class="card-container list-view" >
+
+        <div class="card-container"
+            [ngClass]="{'list-view': (cardFeaturesConfig.horizontalOrientation), 'grid-view-scrollable': (cardFeaturesConfig.verticalOrientation)}">
 
             <div class="left" (click)="navigateToPDP()">
                 <div class="tags" *ngFor="let tags of product['productTags']">
@@ -46,9 +49,11 @@
                     <!-- <span class="ads" *ngIf="!product.internalProduct && !hideAd">AD</span> -->
                 </div>
                 <div class="name" (click)="trackProductTitle('title');$event.preventDefault()">
-                    <a [href]="prodUrl + '/' + product.productUrl" >
+                    <a [href]="prodUrl + '/' + product.productUrl" *ngIf="cardFeaturesConfig.horizontalOrientation">
                         <span>{{product.productName | slice:0:60}}
                             <span *ngIf="product.productName.length>60">...</span></span></a>
+                    <a [href]="prodUrl + '/' + product.productUrl" class="ellipsis-name"
+                        *ngIf="cardFeaturesConfig.verticalOrientation">{{product.productName}}</a>
                 </div>
                 <div *ngIf="product.brandName" class="brand" (click)="navigateToPDP()">
                     <span>By: {{product.brandName | brandName}}</span>
@@ -83,7 +88,7 @@
                                 (click)="buyNow(true)">BUY NOW</button>
                         </ng-container>
                         <ng-container
-                            *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
+                            *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice) && cardFeaturesConfig.horizontalOrientation">
                             <button class="btn pad-10 btn-red-bordered send-query-btn " (click)="openRfqForm()">SEND
                                 QUERY</button>
                         </ng-container>

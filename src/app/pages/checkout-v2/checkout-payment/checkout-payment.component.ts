@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
 import { CartService } from '@app/utils/services/cart.service';
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 
 @Component({
   selector: 'app-checkout-payment',
@@ -14,7 +15,8 @@ export class CheckoutPaymentComponent implements OnInit {
 
   constructor(
     private _cartService: CartService,
-    private router: Router
+    private router: Router,
+    private loader: GlobalLoaderService,
   ) { }
 
   ngOnInit(): void {
@@ -27,8 +29,11 @@ export class CheckoutPaymentComponent implements OnInit {
       !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
         (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
     ) {
-      this._cartService.checkForUserAndCartSessionAndNotify();
-      this.router.navigateByUrl('/checkout/address', { replaceUrl: true }); 
+      this.loader.setLoaderState(true);
+      this._cartService.checkForUserAndCartSessionAndNotify().subscribe(res=>{
+        this.loader.setLoaderState(false);
+        this.router.navigateByUrl('/checkout/address', { replaceUrl: true }); 
+      }); 
     }else{
       console.log('redirecting to payment ==>', this._cartService.getGenericCartSession);
     }

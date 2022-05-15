@@ -732,6 +732,52 @@ export class ProductService {
         } as ProductsEntity;
     }
 
+
+    wishlistToProductEntity(product: any) {
+        const partNumber = product.productDetail.productBO.partNumber;
+        const productMrp = product.productDetail.productBO.productPartDetails[partNumber].productPriceQuantity.india.mrp;
+        const productPrice =product.productDetail.productBO.productPartDetails[partNumber].productPriceQuantity.india.sellingPrice;
+        const priceWithoutTax = product.productDetail.productBO.productPartDetails[partNumber].productPriceQuantity.india.priceWithoutTax;
+
+        return {
+            moglixPartNumber: partNumber,
+            moglixProductNo: product["idProduct"] || null,
+            mrp: productMrp,
+            salesPrice: productPrice, 
+            priceWithoutTax: priceWithoutTax,
+            productName: product["productName"],
+            variantName: product["productName"],
+            productUrl: product.productDetail.productBO.productPartDetails[partNumber].productLinks.default,
+            shortDesc:  product.productDetail.productBO.shortDesc,
+            brandId: product.productDetail.productBO.brandDetails.idBrand,
+            brandName:  product.productDetail.productBO.brandDetails.brandName,
+            quantityAvailable: product.productDetail.productBO.productPartDetails[partNumber].productPriceQuantity.india.quantityAvailable,
+            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(
+                0
+            ),
+            rating: product.productDetail.productBO.rating|| null,
+            categoryCodes: null,
+            taxonomy: product["taxonomy"],
+            mainImageLink: product["moglixImageNumber"]
+                ? product["mainImageLink"]
+                : "",
+            mainImageThumnailLink: product.productDetail.productBO.productPartDetails[partNumber].images[0].links.thumbnail,
+            mainImageMediumLink:null,
+            productTags: [],
+            filterableAttributes: {},
+            avgRating: product.avgRating,
+            itemInPack: null,
+            ratingCount: product.ratingCount,
+            reviewCount: product.reviewCount,
+            uclid: product.uclid,
+            keyFeatures: product.keyFeatures || [],
+            internalProduct: !product.hasOwnProperty("internalProduct")
+                ? true
+                : product.internalProduct, // if intenal product prop does not exist then it is internal product
+        } as ProductsEntity;
+       
+    }
+
     getForLeadingSlash(imgUrl){
         if(imgUrl && imgUrl.startsWith("/")){
             return imgUrl.substring(1);

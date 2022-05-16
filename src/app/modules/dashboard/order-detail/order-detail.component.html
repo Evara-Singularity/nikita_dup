@@ -32,12 +32,16 @@
     </div>
 
     <div class="card-bottom">
-            <div class="card-bottom-inner">
-                <span class="orderstatus"><i class="dot">&#x2022;&nbsp;</i> <span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'">{{detail.status}}</span></span>
+            <div class="card-bottom-inner card-bottom-inner-order-dtl">
+                <span class="order-track-line line-invisible"></span>
+                <span class="orderstatus"> <span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'">{{detail.status}}</span></span>
             </div>
-            <div class="card-bottom-inner">
-                <span class="orderstatus"><i class="icon-circle-delete danger"></i> <i class="icon-check-active success"></i> <span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'">{{detail.status}}</span></span>
-                <span (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)" class="btn btn-red-small">BUY&nbsp;AGAIN</span>
+            <div class="card-bottom-inner card-bottom-inner-order-dtl success">
+                <span class="order-track-line"></span>
+                <i class="icon-circle-delete order-track-line danger"></i>
+                <i class="icon-check-active order-track-line success"></i>
+                <span class="orderstatus"> <span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'">{{detail.status}}</span></span>
+                <span class="orderstatus">TRACK ORDER <i class="icon-next"></i></span>
             </div>
         <!-- <div class="card-bottom-inner">
          One
@@ -51,35 +55,6 @@
     </div>
 </div>
 
-<div class="orderdtBox pad-0 mar-15">
-    <div class="orderdtBoxinner">
-        <div class="orderdtDesc">
-            <div class="orderproImg">
-                <img alt="" src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
-            </div>
-            <div class="orderproDesc">
-                <p>
-                    <a href="#">{{(detail.product_name | slice:0:30) + (detail.product_name > 30 ? "...":"")}} 
-                    </a>
-                </p>
-                <div class="orderqty clearfix">
-                    <span class="qtyleft">₹{{detail.price}}<span class="qtynum">({{detail.Quantity}} Qty)</span></span>
-                    <span><small class="greytxt">(Price Inclusive of GST)</small></span>
-                </div>
-               
-            </div>
-            
-        </div>
-        <div class="orderdtbottom pad-10">
-            <div class="orderdtbottom-inner">
-                <span class="orderstatus"><i class="dot">&#x2022;&nbsp;</i><span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'">{{detail.status}}</span></span>
-            </div>
-            <div class="orderdtbottom-inner">
-                <span  class="buy-again"><a (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)">BUY&nbsp;AGAIN</a></span>
-            </div>    
-        </div>
-    </div>
-</div>
 
 <div class="need-help-strip pad-10 mar-15">
       <span class="cncl-item" *ngIf="detail && detail.cancel_active"
@@ -88,7 +63,7 @@
 </div>
 
 
-<ng-container *ngIf="detail && detail.requestType !=='cancel' && detail.status !=='PAYMENT FAILED' && detail.status !=='
+<!-- <ng-container *ngIf="detail && detail.requestType !=='cancel' && detail.status !=='PAYMENT FAILED' && detail.status !=='
 AWAITING PAYMENT CONFIRMATION' && !customerReturn">
     <div class="trackOrderBox singleproStatus ">
         <div class="trackerWrap pwa-row">
@@ -129,13 +104,11 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                     AGAIN</a></span>
                         </div>
                     </div>
-                    <!-- {{showReturn(detail.dates.delivered.date)}} {{'ShowReturn'+detail.show_return_exchange }} -->
 
                     <p *ngIf="detail && detail.dates.delivered.flag && showReturn" class="policyTxt">Return Policy valid
                         till {{returnEndDate}}</p>
                     <p *ngIf="detail.dates.delivered.flag &&  !showReturn" class="policyTxt">Return Policy ended on
                         {{returnEndDate}}</p>
-                    <!-- <p *ngIf="!showReturn(detail.dates.delivered.date)">Return Policy ended on {{returnEndDate}}</p> -->
                 </li>
             </ul>
             <div class="bottomft ">
@@ -152,7 +125,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
         <a [href]="detail.customer_invoice " target="_blank ">
             <span><img src="{{imageAssetURL}}assets/img/file-download-line.svg">DOWNLOAD INVOICE</span></a>
     </div>
-</ng-container>
+</ng-container> -->
 
 
 <!-- order cancellation pop up  -->

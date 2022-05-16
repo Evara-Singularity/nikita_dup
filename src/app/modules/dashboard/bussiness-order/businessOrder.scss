@@ -1,5 +1,6 @@
 @import "./../../../scss/variables";
 @import "../orders.scss";
+@import "../../../scss/layout/card-boxed.scss";
 pagination-controls {
     ul.ngx-pagination {
         float: none;
@@ -45,6 +46,7 @@ pagination-controls {
 .orderbox {
     margin-bottom: 10px;
     padding: 0;
+    background-color: var(--white);
     .orderSum {
         padding: 8px 15px 10px;
         // border-bottom: 1px solid var(--ghost-white);

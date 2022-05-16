@@ -21,6 +21,9 @@ export class CheckoutPaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkForValidRedirection();
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
   }
 
   checkForValidRedirection() {

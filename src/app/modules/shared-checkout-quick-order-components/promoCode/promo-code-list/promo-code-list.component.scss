@@ -7,11 +7,11 @@
         @extend %clear-fix;
         padding: 0 15px 15px 15px;
         p {
-            font-weight: 600;
+            font-weight: $font-bold;
             font-size: $large-font;
             margin-bottom: 5px;
         }
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid var(--silver);
     }
     .custom-cbox {
         height: 79%;
@@ -33,7 +33,7 @@
                 display: inline-block;
                 padding: 5px;
                 font-size: $large-font;
-                font-weight: 600;
+                font-weight: $font-bold;
                 border: 1px dashed $border-sec-color;
             }
             .promo-description {
@@ -62,16 +62,13 @@
         }
     }
 }
-
-
 /*new css 20-09-2021*/
-
 .popup {
     position: fixed;
     // display: none;
     z-index: 99;
     &.screen-view {
-        width: 100%;
+        width: $fullwidth;
         height: 100%;
         top: 120%;
         left: 0;
@@ -91,8 +88,8 @@
                 display: block;
             }
             i {
-                font-size: 20px;
-                line-height: 24px;
+                font-size: $extra-large-2-font;
+                line-height: $large-line-height;
                 float: left;
             }
             i+.page-name {
@@ -100,9 +97,9 @@
                 margin-left: 10px;
             }
             .txt {
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 21px;
+                font-size: $extra-large-font;
+                font-weight: $font-bold;
+                line-height: $medium-line-height;
                 margin-left: 20px;
                 float: left;
             }
@@ -113,7 +110,6 @@
 .select-offers {
     &.open {
         background-color: var(--white);
-
         .container {
             height: initial;
         }

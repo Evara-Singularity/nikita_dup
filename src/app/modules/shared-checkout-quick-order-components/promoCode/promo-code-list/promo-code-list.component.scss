@@ -1,4 +1,6 @@
 @import '../../../../scss/variables';
+@import '../../../../scss/layout/cards.scss';
+@import '../../../../scss/utils/utilities.scss';
 .select-offers {
     .head-sec {}
     .promo-code {
@@ -15,14 +17,14 @@
         height: 79%;
         height: calc(100vh - 138px);
         overflow: auto;
-        p {
-            padding: 15px;
-            font-size: $large-font;
-            font-weight: 600;
-            display: block;
+        padding: 15px;
+        border-top: 1px solid var(--silver);
+        margin-top: 15px;
+        .pwa-text{
+            font-weight: $font-bold;
+            padding-bottom: 10px;
         }
         label {
-            padding: 15px;
             border-top: 1px solid $border-color;
             &.selected {
                 background: $checkbox-overly;
@@ -38,6 +40,24 @@
                 display: block;
                 font-size: $large-font;
                 margin-top: 5px;
+            }
+        }
+        .card{
+            padding: 15px;
+            margin-bottom: 10px;
+            .apply-coupon{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                p {
+                    font-size: $large-font;
+                    font-weight: $font-bold;
+                    display: block;
+                }
+            }
+            .cart-value{
+                font-size: $medium-font;
+                line-height:$small-line-height;
             }
         }
     }

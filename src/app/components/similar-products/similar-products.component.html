@@ -5,10 +5,10 @@
     </div>
     <product-card-vertical-container [numberOfItems]="similarProducts.length || 0">
         <ng-container *ngFor="let product of similarProducts;let pIndex=index">
-            <product-card [section]="'similar'" [product]="product" [cardMetaInfo]='cardMetaInfo'
+            <product-card-vertical-grid-view [section]="'similar'" [product]="product" [cardMetaInfo]='cardMetaInfo'
                 [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
                 [analytics]="analytics">
-            </product-card>
+            </product-card-vertical-grid-view>
         </ng-container>
     </product-card-vertical-container>
 </section>

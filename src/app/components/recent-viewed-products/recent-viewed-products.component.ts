@@ -7,7 +7,6 @@ import { ProductService } from '../../utils/services/product.service';
 import CONSTANTS from '../../config/constants';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
-import { ProductCardModule } from '@app/modules/product-card/product-card.module';
 
 @Component({
   selector: 'app-recent-viewed-products',
@@ -71,7 +70,6 @@ export class RecentViewedProductsComponent implements OnInit {
     CommonModule,
     MathCeilPipeModule,
     MathFloorPipeModule,
-    ProductCardModule,
   ],
 })
 export class RecentViewedProductsModule { }

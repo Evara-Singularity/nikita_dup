@@ -8,11 +8,11 @@
         <div class="vertical-scroll-container">
             <div class="inner-scroll-container" [style.width.px]="productList.length * 165">
                 <ng-container *ngFor="let product of productList;let pIndex=index">
-                    <product-card [section]="'past-orders'" [product]="product" [cardMetaInfo]='cardMetaInfo'
+                    <product-card-vertical-grid-view [section]="'past-orders'" [product]="product" [cardMetaInfo]='cardMetaInfo'
                         [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
                         [moduleUsedIn]="'PRODUCT_PAST_ORDER'"
                         [analytics]="analytics">
-                    </product-card>
+                    </product-card-vertical-grid-view>
                 </ng-container>
             </div>
         </div>

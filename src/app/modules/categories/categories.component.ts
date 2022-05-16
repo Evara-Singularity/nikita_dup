@@ -10,7 +10,6 @@ import { RouterModule } from '@angular/router';
 import { CommonService } from '../../utils/services/common.service';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
-import { ProductCardModule } from '../product-card/product-card.module';
 import { ProductCardFeature, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { ProductCardHorizontalScrollModule } from '../ui/product-card-horizontal-scroll/product-card-horizontal-scroll.module';
 import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
@@ -179,7 +178,6 @@ export class Categories {
 		RouterModule,
 		LazyLoadImageModule,
 		ObserveVisibilityDirectiveModule,
-		ProductCardModule,
 		ProductCardHorizontalScrollModule,
 		ProductCardVerticalContainerModule
 	],

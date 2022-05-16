@@ -14,9 +14,9 @@
 
     <!-- wrapper div for card class -->
     <!-- [class.available-item-card]="isOosSimilarCard" -->
-    <div  class="card-vertical-home no-card-border">
+    <div class="card-vertical-home no-card-border">
         <!-- add .home-grid-view class in below container -->
-        <div class="card-container list-view" >
+        <div class="card-container list-view">
 
             <div class="left" (click)="navigateToPDP()">
                 <div class="tags" *ngFor="let tags of product['productTags']">
@@ -46,7 +46,7 @@
                     <!-- <span class="ads" *ngIf="!product.internalProduct && !hideAd">AD</span> -->
                 </div>
                 <div class="name" (click)="trackProductTitle('title');$event.preventDefault()">
-                    <a [href]="prodUrl + '/' + product.productUrl" >
+                    <a [href]="prodUrl + '/' + product.productUrl">
                         <span>{{product.productName | slice:0:60}}
                             <span *ngIf="product.productName.length>60">...</span></span></a>
                 </div>
@@ -82,8 +82,7 @@
                             <button class="btn btn-red-bg pad-10" *ngIf="cardFeaturesConfig.enableBuyNow"
                                 (click)="buyNow(true)">BUY NOW</button>
                         </ng-container>
-                        <ng-container
-                            *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
+                        <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
                             <button class="btn pad-10 btn-red-bordered send-query-btn " (click)="openRfqForm()">SEND
                                 QUERY</button>
                         </ng-container>
@@ -102,5 +101,9 @@
         </div>
 
     </div>
+    <ng-container #variantPopup></ng-container>
+    <ng-container #addToCartToast></ng-container>
+    <ng-container #productRFQ></ng-container>
+    <ng-container #alertBox></ng-container>
 
 </div>

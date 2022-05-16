@@ -3,6 +3,7 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 import { CartService } from '@app/utils/services/cart.service';
+import { Subject } from 'rxjs';
 
 declare let dataLayer: any;
 
@@ -12,6 +13,7 @@ declare let dataLayer: any;
     styleUrls: ['./promo-code-list.component.scss']
 })
 export class PromoCodeListComponent implements OnInit {
+    public nextPromocode: Subject<string> = new Subject<string>();
     @Output('closePromoOfferPopup') closePromoOfferPopup = new EventEmitter();
 
     constructor(
@@ -22,11 +24,6 @@ export class PromoCodeListComponent implements OnInit {
 
     ngOnInit() {
         this.getAllPromoCodesByUserId(this._commonService.userSession.userId);
-    }
-
-    ngAfterViewInit(): void
-    {
-        this._cartService.promocodeAppliedSubject.subscribe((isApplied) => { if (isApplied) { this.closePromoOfferPopup.emit(false)}})
     }
 
     getAllPromoCodesByUserId(userId) {
@@ -46,7 +43,7 @@ export class PromoCodeListComponent implements OnInit {
         e.preventDefault();
         e.stopPropagation();
         if (item.promoCode === this._cartService.appliedPromoCode) return;
-        this._cartService.appliedPromoCode = item.promoCode;
+        this.nextPromocode.next(item.promoCode);
     }
 
     //analytics

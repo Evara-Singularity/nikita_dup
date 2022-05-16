@@ -33,6 +33,9 @@ export class CheckoutPaymentComponent implements OnInit {
       this._cartService.checkForUserAndCartSessionAndNotify().subscribe(res=>{
         this.loader.setLoaderState(false);
         this.router.navigateByUrl('/checkout/address', { replaceUrl: true }); 
+      }, error=>{
+        this.loader.setLoaderState(false);
+        this.router.navigateByUrl('/', { replaceUrl: true }); 
       }); 
     }else{
       console.log('redirecting to payment ==>', this._cartService.getGenericCartSession);

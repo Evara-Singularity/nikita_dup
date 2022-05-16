@@ -1,5 +1,5 @@
 <div class="accordian_footer">
-    <ng-container *ngFor="let item of dataArray; let i = index">
+    <!-- <ng-container *ngFor="let item of dataArray; let i = index">
         <div class="accordian_footer_panel" *ngIf="carouselData[item] && carouselData[item]?.data?.brand_block.length">
             <div class="panel-head" style="margin-top: 0px;" >
                 <div class="container">
@@ -19,7 +19,9 @@
                 </div>
             </div>
         </div>
-    </ng-container>
+    </ng-container> -->
+
+    <app-accordian [accordiansDetails]="accordiansDetails"></app-accordian>
 </div>
 
 

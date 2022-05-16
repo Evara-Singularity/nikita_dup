@@ -1351,18 +1351,20 @@ export class CartService
 
     updateOfferList(cartSession, data)
     {
+        console.log("updateOfferList");
+        let isOfferApplied = false;
+        const TOTAL_AMOUNT = this.cartSession['cart']['totalAmount'];
         const itemsLength = (cartSession['itemsList'] as any[]).length;
         const DISCOUNT = data['discount'];
-        const TOTAL_AMOUNT = this.cartSession['cart']['totalAmount'];
-        let isOfferApplied = false;
-        if (itemsLength && DISCOUNT < TOTAL_AMOUNT) {
+        const discountMsns = data['productDis'] || {};
+        const DISCOUNT_WISE_PRODUCTS = [];
+        for (let msn in discountMsns) {
+            if (discountMsns[msn]) { DISCOUNT_WISE_PRODUCTS.push(msn)};
+        }
+        if (DISCOUNT_WISE_PRODUCTS.length && itemsLength && DISCOUNT < TOTAL_AMOUNT) {
             cartSession['cart']['totalOffer'] = DISCOUNT;
             const ITEMS: any[] = cartSession['itemsList'];
-            const discountMsns = data['productDis'] || {};
-            const DISCOUNT_WISE_PRODUCTS = [];
-            for (let msn in discountMsns) {
-                if (discountMsns[msn]) { DISCOUNT_WISE_PRODUCTS.push(msn)};
-            }
+            console.log("Discount Msns", DISCOUNT_WISE_PRODUCTS);
             ITEMS.forEach((item) =>
             {
                 item['offer'] = null;
@@ -1375,7 +1377,6 @@ export class CartService
         }
         this.isPromoCodeApplied = isOfferApplied;
         if (isOfferApplied) { return cartSession; }
-        console.log("Offer removed")
         cartSession['cart']['totalOffer'] = 0;
         cartSession['offersList'] = [];
         cartSession.itemsList.forEach((item) => item["offer"] = null);
@@ -1435,6 +1436,11 @@ export class CartService
                                 cartSession = this.updateOfferList(cartSession, response['data']);
                                 return cartSession;
                             }
+                            this.isPromoCodeApplied = false;
+                            this.appliedPromoCode = "";
+                            cartSession['cart']['totalOffer'] = 0;
+                            cartSession['offersList'] = [];
+                            cartSession.itemsList.forEach((item) => item["offer"] = null);
                             this._toastService.show(({ type: "error", text: response["statusDescription"] || "Unable to update the offer list." }))
                             return cartSession;
                         }),

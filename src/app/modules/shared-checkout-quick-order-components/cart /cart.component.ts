@@ -85,7 +85,7 @@ export class CartComponent
         e.stopPropagation();
         this._globalLoaderService.setLoaderState(true);
         this.pushDataToDatalayerOnRemove(this.removeIndex);
-        this._cartService.removeUnavailableItems([this._cartService.getGenericCartSession.itemsList[this.removeIndex]]);
+        this._cartService.removeCartItemsByMsns([this._cartService.getGenericCartSession.itemsList[this.removeIndex]['productId']]);
         this.removePopup = false;
     }
 

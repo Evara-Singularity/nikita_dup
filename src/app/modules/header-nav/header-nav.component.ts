@@ -305,6 +305,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             });
 
         this.cartService.cart.subscribe((data) => {
+            
             if (data && data.hasOwnProperty('count')) {
                 this.noOfCart = data.count;
             } else {
@@ -449,6 +450,11 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     setHeader() {
+        this.noOfCart = 0;
+        if (this.cartService.getGenericCartSession && this.cartService.getGenericCartSession['itemsList'])
+        {
+            this.noOfCart = (this.cartService.getGenericCartSession['itemsList'] as any[]).length || 0;
+        }
         this.isLoginPage = false;
         if (
             this.router.url.includes('/forgot-password') ||

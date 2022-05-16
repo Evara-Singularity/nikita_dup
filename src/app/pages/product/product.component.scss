@@ -3147,48 +3147,33 @@
 //         text-align: center;
 //     }
 // }
+
+.ask-question-success-popup{
+    background: var(--ghost-white);
+}
 .success-popup {
-    padding: 20px;
+    padding: 50px 20px 0;
     width: 100%;
-    background-color: $white-color;
-    // .top-cross-area {
-    //     img {
-    //         width: 25px;
-    //     }
-    //     display: flex;
-    //     justify-content: flex-end;
-    // }
+    text-align: center;
     .popup-img-area {
         img {
-            width: 108px;
+            width: 110px;
         }
-        display: flex;
-        justify-content: center;
     }
     .popup-text-area {
         margin-top: 20px;
+        text-align: center;
         h5 {
-            font-size: 18px;
-            line-height: 27px;
-            text-align: center;
+            font-size: $extra-large-1-font;
+            line-height: $extra-large-line-height;   
         }
         p {
-            text-align: center;
-            line-height: 18px;
-            margin-top: 5px;
+            line-height: $medium-line-height;
+            margin-top: 10px;
         }
     }
     .popup-btn {
-        display: flex;
         margin-top: 40px;
-        justify-content: center;
-        button {
-            height: 36px;
-            font-size: 14px;
-            border-radius: 4px;
-            padding: 0px 25px;
-            box-shadow: none;
-        }
     }
 }
 

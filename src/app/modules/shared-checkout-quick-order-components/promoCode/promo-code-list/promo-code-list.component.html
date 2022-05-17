@@ -8,8 +8,8 @@
   
   <custom-promo-code></custom-promo-code>
   
-  <div class="custom-cbox">
-    <!-- <ng-container *ngFor="let item of allPromoCodes; let i = index;">
+  <!-- <div class="custom-cbox">
+    <ng-container *ngFor="let item of allPromoCodes; let i = index;">
       <label for="{{i}}couponcode" [class.selected]="item.promoCode === _cartService.appliedPromoCode" (click)="updateCustomPromoCodeInput($event,item)">
         <input [id]="i+'couponcode'" type="radio" name="promo-code" value="{{item.promoCode}}" #isCheckedBox>
         <span class="custom-box"></span>
@@ -20,7 +20,15 @@
           <span class="promo-description">{{item.promoDescription}}</span>
           </span>
       </label>
-    </ng-container> -->
+    </ng-container>
+  </div> -->
+  <div class="pwa-row no-coupon-card-container">
+    <div class="pwa-col-12 card">
+      <div class="inner-no-coupon-card">
+        <img src="../../../../../../src/assets/img/no_coupon_found.png">
+        <p>No coupon available now</p>
+      </div>
+    </div>
   </div>
   <!-- new design -->
   <div class="coupon-card-container">
@@ -28,11 +36,12 @@
     <div (click)="updateCustomPromoCodeInput($event,item)" class="card" *ngFor="let item of allPromoCodes; let i = index;">
       <div class="apply-coupon">
         <div class="inner-coupon">
-          <p class="cart-value">{{item.promoCode}}</p>
-          <p>{{item.promoDescription}}</p>
+          <h3>{{item.promoCode}}</h3>
+          <p class="promo-description">{{item.promoDescription}}</p>
         </div>
         <button class="btn redBgButton">APPLY</button>
       </div>
     </div>
   </div>
+
 </section>

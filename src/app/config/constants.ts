@@ -366,7 +366,7 @@ export const CONSTANTS = {
   ByVISA: "http://purl.org/goodrelations/v1#VISA",
   TEST_API: "https://newmoglix.moglix.com/test/testgetresponse",
   WHATS_APP_API: "https://api.whatsapp.com/send?phone=",
-  SEO_HOME_ACCORDIANS: ['powerData', 'officeData', 'safetyData', 'pumpData', 'electricalData', 'officeData', 'medicalData'],
+  SEO_HOME_ACCORDIANS: ['powerData', 'officeData', 'safetyData', 'pumpData', 'electricalData', 'medicalData'],
   IMAGE_SIZES_TYPE: ['xlarge', 'large', 'medium', 'small', 'thumbnail', 'icon'],
   NETWORK_SPEED_THRESHOD_LIMIT: 2,
   IMAGE_SIZES_REPLACE_DATA: {

@@ -15,6 +15,7 @@ declare let dataLayer: any;
 export class PromoCodeListComponent implements OnInit {
     public nextPromocode: Subject<string> = new Subject<string>();
     @Output('closePromoOfferPopup') closePromoOfferPopup = new EventEmitter();
+    selectedPromocode = null;
 
     constructor(
         private _commonService: CommonService,
@@ -23,26 +24,29 @@ export class PromoCodeListComponent implements OnInit {
     ){}
 
     ngOnInit() {
-        this.getAllPromoCodesByUserId(this._commonService.userSession.userId);
+        if(this._cartService.appliedPromoCode){
+            this.selectedPromocode = this._cartService.appliedPromoCode;
+        }
+        //this.getAllPromoCodesByUserId(this._commonService.userSession.userId);
     }
 
-    getAllPromoCodesByUserId(userId) {
-        this._loaderService.setLoaderState(true);
-        if (this._commonService.userSession.authenticated === 'true') {
-            this._cartService.getAllPromoCodesByUserId(userId).subscribe(res => {
-                if (res['statusCode'] === 200) {
-                    this._cartService.allPromoCodes = res['data'];
-                    this.pushDataLayer();
-                }
-                this._loaderService.setLoaderState(false);
-            });
-        }
-    }
+    // getAllPromoCodesByUserId(userId) {
+    //     this._loaderService.setLoaderState(true);
+    //     if (this._commonService.userSession.authenticated === 'true') {
+    //         this._cartService.getAllPromoCodesByUserId(userId).subscribe(res => {
+    //             if (res['statusCode'] === 200) {
+    //                 this._cartService.allPromoCodes = res['data'];
+    //                 this.pushDataLayer();
+    //             }
+    //             this._loaderService.setLoaderState(false);
+    //         });
+    //     }
+    // }
 
     updateCustomPromoCodeInput (e, item) {
         e.preventDefault();
         e.stopPropagation();
-        if (item.promoCode === this._cartService.appliedPromoCode) return;
+        this.selectedPromocode = item.promoCode;
         this.nextPromocode.next(item.promoCode);
     }
 

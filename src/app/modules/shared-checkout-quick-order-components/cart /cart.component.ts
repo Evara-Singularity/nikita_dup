@@ -198,21 +198,26 @@ export class CartComponent
 
     updateCart(msn, newCartSession, errorMsg)
     {
+        let totalOffer = null;
         const updateCart$ = this._cartService.updateCartSession(newCartSession).pipe(
             switchMap((newCartSession) =>
             {
-                return this._cartService.verifyPromocode(newCartSession)
+                return this._cartService.verifyAndApplyPromocode(newCartSession, this._cartService.appliedPromoCode,true)
             }),
-            switchMap((newCartSession) =>
+            switchMap((response) =>
             {
-                return this._cartService.verifyShippingCharges(newCartSession)
+                totalOffer = response.cartSession['cart']['totalOffer'] || null;
+                return this._cartService.verifyShippingCharges(response.cartSession);
             }));
         const setValidationMessages$ = this._cartService.removeNotificationsByMsns([msn], true);
         forkJoin([updateCart$, setValidationMessages$]).subscribe((responses) =>
         {
             this._globalLoaderService.setLoaderState(false);
-            const cartSession = responses[0];
-            if (cartSession) {
+            let cartSession = responses[0];
+            if (responses[0]) {
+                const cartSession = this._cartService.generateGenericCartSession(responses[0]);
+                cartSession['cart']['totalOffer'] = totalOffer;
+                cartSession['extraOffer'] = null;
                 this._cartService.setGenericCartSession(cartSession);
                 this._cartService.publishCartUpdateChange(cartSession);
                 this._cartService.orderSummary.next(cartSession);

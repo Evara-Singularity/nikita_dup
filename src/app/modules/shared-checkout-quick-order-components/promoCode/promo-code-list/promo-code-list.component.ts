@@ -1,9 +1,10 @@
+import { OnDestroy } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 import { CartService } from '@app/utils/services/cart.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 declare let dataLayer: any;
 
@@ -12,21 +13,29 @@ declare let dataLayer: any;
     templateUrl: './promo-code-list.component.html',
     styleUrls: ['./promo-code-list.component.scss']
 })
-export class PromoCodeListComponent implements OnInit {
+export class PromoCodeListComponent implements OnInit, OnDestroy
+{
     public nextPromocode: Subject<string> = new Subject<string>();
     @Output('closePromoOfferPopup') closePromoOfferPopup = new EventEmitter();
+    appliedPromocodeSubscription: Subscription = null;
     selectedPromocode = null;
 
     constructor(
         private _commonService: CommonService,
         private _loaderService: GlobalLoaderService,
         public _cartService: CartService
-    ){}
+    ) { }
 
-    ngOnInit() {
-        if(this._cartService.appliedPromoCode){
+
+    ngOnInit()
+    {
+        if (this._cartService.appliedPromoCode) {
             this.selectedPromocode = this._cartService.appliedPromoCode;
         }
+        this.appliedPromocodeSubscription = this._cartService.appliedPromocodeSubject.subscribe((promocode: string) =>
+        {
+            if (promocode) { this.closePromoOfferPopup.emit(false) }
+        })
         //this.getAllPromoCodesByUserId(this._commonService.userSession.userId);
     }
 
@@ -43,7 +52,8 @@ export class PromoCodeListComponent implements OnInit {
     //     }
     // }
 
-    updateCustomPromoCodeInput (e, item) {
+    updateCustomPromoCodeInput(e, item)
+    {
         e.preventDefault();
         e.stopPropagation();
         this.selectedPromocode = item.promoCode;
@@ -75,5 +85,10 @@ export class PromoCodeListComponent implements OnInit {
                 }
             });
         }, 3000);
+    }
+
+    ngOnDestroy(): void
+    {
+        this.appliedPromocodeSubscription.unsubscribe();
     }
 }

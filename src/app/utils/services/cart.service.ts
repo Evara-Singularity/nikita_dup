@@ -1338,7 +1338,14 @@ export class CartService
     {
         //this.isPromoCodeApplied = true;
         const totalOffer = cartSession['cart']['totalOffer'] || null;
-        this.updateCartSession(cartSession).subscribe((newCartSession) =>
+        let tempCartSession = null;
+        this.updateCartSession(cartSession).pipe(
+            switchMap((newCartSession) =>
+            {
+                tempCartSession = newCartSession;
+                return this.verifyShippingCharges(tempCartSession)
+            }),
+        ).subscribe((newCartSession) =>
         {
             //this.appliedPromocodeSubject.next(this.appliedPromoCode);
             const _cartSession = this.generateGenericCartSession(newCartSession);

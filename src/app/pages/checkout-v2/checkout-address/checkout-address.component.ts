@@ -5,6 +5,7 @@ import { ToastMessageService } from '@app/modules/toastMessage/toast-message.ser
 import { ClientUtility } from '@app/utils/client.utility';
 import { CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { AddressService } from '@services/address.service';
 import { CartService } from '@services/cart.service';
 import { environment } from 'environments/environment';
@@ -40,7 +41,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     cartUpdatesSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _router: Router, private _toastService: ToastMessageService) { }
+        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService,) { }
 
 
     ngOnInit(): void
@@ -209,6 +210,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     validateCart()
     {
+        this._globalLoader.setLoaderState(true);
         const _cartSession = this._cartService.getCartSession();
         const _shippingAddress = this._cartService.shippingAddress;
         const _billingAddress = this._cartService.billingAddress;
@@ -262,6 +264,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         }
         this._cartService.validateCartBeforePayment(obj).subscribe(res =>
         {
+            this._globalLoader.setLoaderState(false);
             if (res.status && res.statusCode == 200) {
                 let userSession = this._localAuthService.getUserSession();
                 let criteoItem = [];

@@ -18,8 +18,8 @@ export class CustomPromoCodeComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         if (this._cartService.appliedPromoCode) { this.appliedPromocode = this._cartService.appliedPromoCode; }
-        this.appliedPromocodeSubscription = this._cartService.appliedPromocodeSubject.subscribe((promocode: string) => { this.appliedPromocode = promocode; })
-        if (this.nextPromocode) { this.nextPromocode.subscribe((promocode: string) => { this.appliedPromocode = promocode; }) }
+        this.appliedPromocodeSubscription = this._cartService.appliedPromocodeSubject.subscribe((promocode: string) => { this.appliedPromocode = promocode; });
+        if (this.nextPromocode) { this.nextPromocodeSubscription = this.nextPromocode.subscribe((promocode: string) => { this.appliedPromocode = promocode; }) }
     }
 
     submitPromocode()

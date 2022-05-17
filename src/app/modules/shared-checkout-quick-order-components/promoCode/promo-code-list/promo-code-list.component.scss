@@ -1,8 +1,8 @@
 @import '../../../../scss/variables';
+@import '../../../../scss/base/typography.scss';
 @import '../../../../scss/layout/cards.scss';
 @import '../../../../scss/utils/utilities.scss';
 .select-offers {
-    .head-sec {}
     .promo-code {
         @extend %clear-fix;
         padding: 0 15px 15px 15px;
@@ -14,33 +14,9 @@
         border-bottom: 1px solid var(--silver);
     }
     .coupon-card-container {
-        height: 79%;
-        height: calc(100vh - 138px);
-        overflow: auto;
-        padding: 15px;
-        border-top: 1px solid var(--silver);
-        margin-top: 15px;
+        padding: 20px 15px 15px;
         .pwa-text{
-            font-weight: $font-bold;
             padding-bottom: 10px;
-        }
-        label {
-            border-top: 1px solid $border-color;
-            &.selected {
-                background: $checkbox-overly;
-            }
-            .promo-label {
-                display: inline-block;
-                padding: 5px;
-                font-size: $large-font;
-                font-weight: $font-bold;
-                border: 1px dashed $border-sec-color;
-            }
-            .promo-description {
-                display: block;
-                font-size: $large-font;
-                margin-top: 5px;
-            }
         }
         .card{
             padding: 15px;
@@ -51,18 +27,17 @@
                 .inner-coupon{
                     width:65%;
                 }
-                p {
-                    font-size: $large-font;
-                    display: block;
+                h3{
+                    padding: 0 0 5px;
+                }
+                .promo-description{
+                    font-size: $medium-font;
+                    line-height: $small-line-height;
                 }
                 button{
                     margin-left:auto;
+                    align-self: self-start;
                 }
-            }
-            .cart-value{
-                font-size: $medium-font;
-                line-height:$small-line-height;
-                font-weight: $font-bold;
             }
         }
     }

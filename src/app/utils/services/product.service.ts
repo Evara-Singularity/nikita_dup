@@ -633,6 +633,13 @@ export class ProductService {
         return image.join("/");
     }
 
+    getForLeadingSlash(imgUrl) {
+        if (imgUrl && imgUrl.startsWith("/")) {
+            return imgUrl.substring(1);
+        }
+        return imgUrl;
+    }
+
     searchResponseToProductEntity(product: any) {
         const partNumber =
             product["partNumber"] ||
@@ -732,6 +739,43 @@ export class ProductService {
         } as ProductsEntity;
     }
 
+    productLayoutJsonToProductEntity(product: any) {
+        const productMrp = product["mrp"];
+        const priceWithoutTax = product['pricewithouttax'];
+        return {
+            moglixPartNumber: product['msn'],
+            mrp: productMrp,
+            salesPrice: product['sellingPrice'],
+            priceWithoutTax: priceWithoutTax,
+            productName: product["productName"],
+            variantName: product["productName"],
+            productUrl: product["productlink"],
+            shortDesc: null,
+            brandId: null,
+            brandName: null,
+            quantityAvailable: 1,
+            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            rating: null,
+            categoryCodes: null,
+            taxonomy: null,
+            mainImageLink: product["imageLink_medium"] ? this.getForLeadingSlash(product["imageLink_medium"]) : "",
+            mainImageMediumLink: product["imageLink_medium"]
+                ? this.getForLeadingSlash(product["imageLink_medium"])
+                : "",
+            mainImageThumnailLink: product["imageLink_small"]
+                ? this.getForLeadingSlash(product["imageLink_small"])
+                : "",
+            productTags: [],
+            filterableAttributes: {},
+            avgRating: product.avgRating || 0,
+            itemInPack: null,
+            ratingCount: product.ratingCount || 0,
+            reviewCount: product.reviewCount || 0,
+            internalProduct: true,
+            outOfStock: product.outOfStock,
+        } as ProductsEntity;
+
+    }
 
     wishlistToProductEntity(product: any, overrideProductB0 = null) {
 
@@ -785,13 +829,6 @@ export class ProductService {
         };
         return productEntity;
        
-    }
-
-    getForLeadingSlash(imgUrl){
-        if(imgUrl && imgUrl.startsWith("/")){
-            return imgUrl.substring(1);
-        }
-        return imgUrl;
     }
 
     productEntityFromProductBO(productBO, overrideProductB0 = null) {

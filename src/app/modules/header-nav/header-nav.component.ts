@@ -397,7 +397,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             this.cartService.clearBuyNowFlow();
             if (
                 this._commonService.getPreviousUrl.indexOf('checkout/login') > -1 ||
-                this._commonService.getPreviousUrl.indexOf('checkout/signup') > -1 || 
+                this._commonService.getPreviousUrl.indexOf('checkout/sign-up') > -1 || 
                 this._commonService.getPreviousUrl.indexOf('checkout/otp') > -1
             ) {
                 this.router.navigateByUrl("quickorder", { replaceUrl: true });

@@ -1,60 +1,52 @@
 @import "../../scss/variables";
 @import "../../scss/components/checkbox.scss";
-
+@import '../../scss/layout/forms.scss';
+@import '../../scss/components/buttons.scss';
+ 
 .rfqForm {
     .product-rfq {
         .multiple-form-field {
             display: flex;
-
             &>div {
                 width: 60%;
-
                 &:first-child {
                     width: 40%;
-                    margin-right: 15px;
                 }
             }
+            margin-bottom: 0;
         }
-
-        .input-field {
-            margin-bottom: 15px;
+        .outline-input-label {
+            margin-bottom: 20px !important;
         }
-
         .rfq-checkbox {
             margin-bottom: 15px;
             @extend %clear-fix;
-
             label {
                 @extend %custom-check-box-checkout;
-
                 .custom-box {
-                    font-size: 14px;
+                    font-size: $large-font;
                     width: 14px;
                     height: 14px;
                 }
             }
-
             .chk-txt {
                 font-size: $medium-font;
                 width: calc(100% - 25px);
                 float: right;
-
                 .heading {
-                    font-weight: bold;
+                    font-weight: $font-bold;
                     display: block;
                     font-size: $large-font;
-                    color: #343434;
-                    line-height: 21px;
+                    color: var(--onyx-black);
+                    line-height: $medium-line-height;
                 }
-
                 .txt {
                     font-size: $medium-font;
-                    color: #343434;
-                    font-weight: bold;
+                    color: var(--onyx-black);
+                    font-weight: $font-bold;
                 }
             }
         }
-
         input,
         select {
             width: 100%;
@@ -64,14 +56,12 @@
             padding: 0px 10px 0px 10px;
             font-size: 14px;
             border-radius: 3px;
-            background: #fff;
+            background: var(--white);
             font-family: inherit;
         }
-
         label.indusrty {
             position: relative;
             display: block;
-
             select+.icon-down {
                 position: absolute;
                 right: 10px;
@@ -79,38 +69,22 @@
                 font-size: $large-font;
             }
         }
-
-        textarea {
-            height: 60px;
-            border: 1px solid #343434;
-            padding: 10px 10px 0px 10px;
-            width: 100%;
-            border-width: 1px;
-            font-size: 14px;
-            border-radius: 3px;
-            font-family: inherit;
-        }
-
         @include placeholder {
-            font-size: 14px;
+            font-size: $large-font;
         }
-
         input {
             &:read-only {
                 background: #E7E7E7;
             }
         }
-
         padding: 15px;
-
         p {
-
             // color: #f5681e;
             // font-size: 14px;
             // font-weight: bold;
             // line-height: 19px;
             &.error-txt {
-                color: #D7222C;
+                color: var(--primary);
                 margin-top: 5px;
                 font-weight: normal !important;
 
@@ -119,30 +93,25 @@
                 }
             }
         }
-
         span {
             color: #53534f;
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 16px;
+            font-weight: $font-normal;
+            font-size: $medium-font;
+            line-height: $small-line-height;
         }
-
         .req-qty {
             padding: 20px 0;
             display: flex;
-
             label {
                 width: calc(100% - 160px);
-                font-size: 14px;
-                line-height: 25px;
+                font-size: $large-font;
+                line-height: $large-line-height;
             }
-
             .quantity-block {
                 width: 160px;
                 display: inline-flex;
                 justify-content: flex-end;
                 flex-wrap: wrap;
-
                 .qty-btn {
                     width: 30px;
                     height: 30px;
@@ -150,18 +119,15 @@
                     background: #dbedff;
                     border: 1px solid #8bc5ff;
                     line-height: 30px;
-                    font-size: 14px;
-                    border-radius: 3px;
+                    font-size: $large-font;
+                    border-radius: $border-radius-2;
                 }
-
                 .add-qty {
                     margin-right: 5px;
                 }
-
                 .remove-qty {
                     margin-left: 5px;
                 }
-
                 input {
                     width: 60px;
                     padding: 0px;
@@ -169,97 +135,69 @@
                     background: #ddd;
                     text-align: center;
                     border: none;
-                    background: white;
-                    border-radius: 2px;
+                    background: var(--white);
+                    border-radius: $border-radius-2;
                     border: 1px solid #333;
-                    font-size: 14px;
+                    font-size: $large-font;
                     font-weight: 500;
                 }
             }
         }
-
-        .submit-btn {
-            // margin-top: 30px;
-            background: $btn-color-red;
-            color: #fff;
-            border-radius: 4px;
-            border: none;
-            display: block;
-            padding: 12px;
-            text-align: center;
-            width: 100%;
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
     }
-
     .pdp-rfq-popup {
         .bottom-options.open[_ngcontent-ssr-pwa-c83] .content-box {
             bottom: 50px;
         }
     }
-
     .in-instock {
-        background: #fff;
+        background: var(--white);
         padding: 0px 8px;
     }
-
     .stickyRfqButton {
         position: fixed;
-        width: 100%;
+        width: $fullwidth;
         bottom: 0;
         height: 50px;
         left: 0;
         right: 0;
-
         &.bg-red {
             background: $logo-color;
         }
     }
 }
-
 .rfq_header {
     display: flex;
     margin: 0px -15px;
     padding: 0px 15px 15px;
     border-bottom: 1px solid #E2E2E2;
     align-items: center;
-
     &.rfq-popup-header {
         box-shadow: 0px 2px 3px #00000033;
     }
-
     img {
         width: 30px;
     }
-
     .rfq_header_text {
         margin-left: 15px;
-
         h3 {
             color: $btn-color-red;
-            font-size: 14px;
+            font-size: $large-font;
             padding: 5px 0px;
         }
-
         p {
             color: #53534F;
-            font-size: 12px;
+            font-size: $medium-font;
         }
-
         .ins-text {
-            color: #303030;
+            color: var(--onyx-black);
         }
     }
-
     .del-ico {
         margin-left: auto;
-        font-size: 20px;
+        font-size: $extra-large-2-font;
         padding:5px;
     }
 }
-
 .f-size-26 {
     font-size: 26px;
 }

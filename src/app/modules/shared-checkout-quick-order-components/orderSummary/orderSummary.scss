@@ -1,5 +1,6 @@
 @import '../../../scss/variables';
 
+
 .apply-promo{
   @extend %cards;
   padding: 25px 0 15px 0;
@@ -13,24 +14,27 @@
 }
 
 .order-summary{
-  @extend %cards;
+  @extend %white-card;
   padding: 15px 0;
-  font-size: $large-font;
+  font-size: $medium-font;
+  display: block !important;
   h3{
     padding: 0 0 0 15px;
-    font-size: $extra-large-font
+    font-size: $large-font
   }
   li{
     padding: 8px 15px;
   }
   .border{
     border: solid $border-color;
-    border-width: 1px 0;
-    padding: 15px;
-    margin: 15px 0 5px 0;
+    border-width: 1px 0 0px 0px;
+    margin: 15px 0 0px 0;
+    span{
+      font-size: $large-font;
+    }
   }
   .bold-txt{
-    font-size: $extra-large-font;
+    font-size: $large-font;
     padding:15px 15px 0 15px;
     border-top: 1px solid $border-color;
   }

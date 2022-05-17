@@ -17,7 +17,58 @@
         </div>
         <ng-container *ngIf="order.isOrderVisible">
             <!-- inner box -->
-            <div class="orderdtBox pad-10" id="one">
+            <!-- new card -->
+            <div  class="card-boxed">
+                <div *ngFor="let detail of orderDetail[order.orderId]">
+                    <a href="#" [routerLink]="['../order-detail',order.orderId, detail.item_id]">
+                        <div class="card-upper">
+                            <div class="card-img">
+                                <img alt="" src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
+                            </div>
+                            <div class="card-desc">
+                                <p>
+                                    <a href="#">{{(detail.product_name | slice:0:30) + (detail.product_name > 30 ? "...":"")}} 
+                                    </a>
+                                </p>
+                                <div class="orderqty clearfix">
+                                    <span class="qtyleft">₹{{detail.price}}<span class="qtynum">({{detail.Quantity}} Qty)</span></span>
+                                    <span><small class="greytxt">(Price Inclusive of GST)</small></span>
+                                </div>
+                               
+                            </div>
+                            
+                        </div>
+                        <div class="card-bottom">
+                            <div class="card-bottom-inner">
+                                <span class="orderstatus"><i class="dot">&#x2022;&nbsp;</i><span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'">{{detail.status}}</span></span>
+                                <span  class="buy-again"><a (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)">BUY&nbsp;AGAIN</a></span>
+                            </div>  
+                        </div>
+                    </a>
+                </div>
+                <div class="orderShipDet pwa-container mt-10">
+                    <div class="ordersumBox businessBox pwa-row">
+                        <h3 class="top_txt clearfix">
+                            Payment Summary
+                        </h3>
+                        <div class="chargestext">Payment Mode:
+                            <span>{{orderDetail[order.orderId][0]?.payment_type}}</span>
+                        </div>
+                        <div class="chargestext clearfix">Total Shipping:
+                            <span>₹ {{currentOrderShippingCharges}}</span>
+                        </div>
+            
+                        <div class="chargestext">Total Discount:
+                            <span class="textgreen">₹ {{currentOrderDiscountCharges + currentOrderNoEMIDiscountCharges}}</span>
+                        </div>
+                        <div class="totPrice pad-15">Total Paid 
+                            <span class="paymode">₹ {{getTotalAmount(orderDetail[order.orderId]) | number : '1.0-0'}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- new card -->
+            <!-- <div class="orderdtBox pad-10" id="one">
                 <div *ngFor="let detail of orderDetail[order.orderId]" class="orderdtBoxinner">
                     <a href="#" [routerLink]="['../order-detail',order.orderId, detail.item_id]">
                         <div class="orderdtDesc">
@@ -67,7 +118,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </ng-container>
     </div>
 </div>

@@ -1,4 +1,5 @@
 @import './../../../../scss/variables';
+@import '../../../../scss/layout/forms.scss';
 
 p {
     margin-bottom: 5px;
@@ -8,9 +9,9 @@ i.icon-circle-delete {
     z-index: 2;
 }
 
-.pos-rel {
-    position: relative;
-}
+// .pos-rel {
+//     position: relative;
+// }
 
 .applied-code {
     position: relative;
@@ -26,5 +27,21 @@ i.icon-circle-delete {
         top: 12px;
         right: 128px;
         font-size: 16px;
+    }
+    .outline-input-label{
+        margin-bottom: 0;
+    }
+    .apply-coupon{
+        display: flex;
+        justify-content: space-around;
+        button{
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 400;
+            width: 30%;
+        }
+        &.disabled{
+            
+        }
     }
 }

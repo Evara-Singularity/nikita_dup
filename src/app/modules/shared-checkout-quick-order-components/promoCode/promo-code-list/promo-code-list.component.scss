@@ -13,6 +13,23 @@
         }
         border-bottom: 1px solid var(--silver);
     }
+    .no-coupon-card-container{
+        padding-top: 50px;
+        .card{
+            padding:70px 15px;
+            .inner-no-coupon-card{
+                text-align: center;
+                img{
+                    width: 100px;
+                }
+                p{
+                    font-size: $large-font;
+                    line-height: $small-line-height;
+                    padding-top: 10px;
+                }
+            }
+        }
+    }
     .coupon-card-container {
         padding: 20px 15px 15px;
         .pwa-text{
@@ -41,6 +58,7 @@
             }
         }
     }
+
 }
 /*new css 20-09-2021*/
 .popup {

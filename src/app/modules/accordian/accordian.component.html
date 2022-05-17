@@ -4,7 +4,7 @@
             <div class="panel-head" style="margin-top: 0px;" >
                 <div class="container">
                     <h3 class="heading-3" (click)="changeTab(i)" [ngClass]="{'rotate-icon': isShown[i]}" >
-                        <i [ngClass]="[details.icon]" class="related-icon"></i>&nbsp; {{details.name}}
+                        <i [ngClass]="[details.icon]" class="related-icon"></i>&nbsp; {{details.name | titlecase }}
                             <span class="icon-accordian">
                             <i class="icon-down"></i>
                         </span>

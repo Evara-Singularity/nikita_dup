@@ -6,7 +6,7 @@
 
     <promo-code-list (closePromoOfferPopup)="showPromoOfferPopup = $event" *ngIf="showPromoOfferPopup"></promo-code-list>
 
-    <div class="order-summary no-border" id="payment_summary">
+    <div class="order-summary pwa-row no-border" id="payment_summary">
         <h3>Payment Summary</h3>
         <ul class="txt-list">
             <li class="border">
@@ -30,7 +30,7 @@
                 <span class="tag-value green-txt" *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">₹ 0.00</span>
             </li>
             <li class="bold-txt">
-                <span class="tag-label">Total Price</span>
+                <span class="tag-label">Amount Payable</span>
                 <span class="tag-value">₹ {{_cartService.getGenericCartSession.cart.totalAmount + shippingCharges - _cartService.getGenericCartSession.cart.totalOffer |
             mathCeil | number : '1.2-2'}}</span>
             </li>

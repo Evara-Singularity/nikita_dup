@@ -25,6 +25,7 @@ select {
         width:50%;
         margin: 15px 0 0 15px;
     }
+    
    }
     .input-field {
         margin-bottom: 30px;
@@ -160,6 +161,15 @@ select {
                 .long-input{
                     height: 100px !important;
                 }
+            }
+            textarea {
+                width: 100%;
+                border: 1px solid var(--spanish-gray);
+                border-radius: 8px !important;
+                height: 65px;
+                padding: 14px 25px 0 10px;
+                font-size: $large-font;
+                background-color: var(--white) !important;
             }
             .label {
                 position: absolute;

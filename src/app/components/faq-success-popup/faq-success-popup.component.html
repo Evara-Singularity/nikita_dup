@@ -5,22 +5,18 @@
             <p class="txt header_text page-name">Question posted successfully</p>
         </div>
     </div>
-    <div class="content-popup card mt-15 hp-100 pad-b-70" content>
-        <section class="pdp-section-card">
-            <div class="pwa-row">
-                <div class="ask-question-area pad-15 mt-10">
-                    <div class="success-popup mt-10">
-                        <div class="popup-img-area">
-                            <img src="assets/img/checkbox-circle-fill-m.svg">
-                        </div>
-                        <div class="popup-text-area">
-                            <h5>Question posted successfully</h5>
-                            <p>We will notify you when someone<br> answer your question.</p>
-                        </div>
-                        <div class="popup-btn">
-                            <button (click)="closeVariant2Popup('pdpPage')" class="btn btn-red">BACK TO PRODUCT</button>
-                        </div>
-                    </div>
+    <div class="content-popup ask-question-success-popup" content>
+        <section class="pwa-row">
+            <div class="pa-col-12 success-popup">
+                <div class="popup-img-area">
+                    <img src="assets/img/checkbox-circle-fill-m.svg">
+                </div>
+                <div class="popup-text-area">
+                    <h5>Question posted successfully</h5>
+                    <p>We will notify you when someone<br> answer your question.</p>
+                </div>
+                <div class="popup-btn">
+                    <button (click)="closeVariant2Popup('pdpPage')" class="btn btn-red-bg">BACK TO PRODUCT</button>
                 </div>
             </div>
         </section>

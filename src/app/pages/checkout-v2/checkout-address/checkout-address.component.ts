@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
 import { CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
@@ -81,7 +82,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (!this.isUserLoggedIn) {
             this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
         }
-        
+
     }
 
     /** @description updates user status and is used to display the continue CTA*/
@@ -203,7 +204,105 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             this._cartService.viewUnavailableItems(INVALID_CART_TYPES)
             return;
         }
-        this._router.navigate(['/checkout/payment']);
+        this.validateCart();
+    }
+
+    validateCart()
+    {
+        const _cartSession = this._cartService.getCartSession();
+        const _shippingAddress = this._cartService.shippingAddress;
+        const _billingAddress = this._cartService.billingAddress;
+        let cart = _cartSession.cart;
+        let obj = {
+            "shoppingCartDto": {
+                "cart":
+                {
+                    "cartId": cart["cartId"],
+                    "sessionId": cart["sessionId"],
+                    "userId": cart["userId"],
+                    "agentId": cart["agentId"] ? cart["agentId"] : null,
+                    "isPersistant": true,
+                    "createdAt": null,
+                    "updatedAt": null,
+                    "closedAt": null,
+                    "orderId": null,
+                    "totalAmount": cart["totalAmount"] == null ? 0 : cart["totalAmount"],
+                    "totalOffer": cart["totalOffer"] == null ? 0 : cart["totalOffer"],
+                    "totalAmountWithOffer": cart["totalAmountWithOffer"] == null ? 0 : cart["totalAmountWithOffer"],
+                    "taxes": cart["taxes"] == null ? 0 : cart["taxes"],
+                    "totalAmountWithTaxes": cart["totalAmountWithTax"],
+                    "shippingCharges": cart["shippingCharges"] == null ? 0 : cart["shippingCharges"],
+                    "currency": cart["currency"] == null ? "INR" : cart["currency"],
+                    "isGift": cart["gift"] == null ? false : cart["gift"],
+                    "giftMessage": cart["giftMessage"],
+                    "giftPackingCharges": cart["giftPackingCharges"] == null ? 0 : cart["giftPackingCharges"],
+                    "totalPayableAmount": cart["totalAmount"] == null ? 0 : cart["totalAmount"]
+                },
+                "itemsList": this._cartService.getItemsList(_cartSession.itemsList),
+                "addressList": [
+                    {
+                        "addressId": _shippingAddress.idAddress,
+                        "type": "shipping",
+                        "invoiceType": this._cartService.invoiceType
+                    }
+                ],
+                "payment": null,
+                "deliveryMethod": { "deliveryMethodId": 77, "type": "kjhlh" },
+                "offersList": (_cartSession.offersList != undefined && _cartSession.offersList.length > 0) ? _cartSession.offersList : null
+            }
+        };
+        if (this._cartService.buyNow) { obj['shoppingCartDto']['cart']['buyNow'] = true; }
+        if (_billingAddress) {
+            obj.shoppingCartDto.addressList.push({
+                "addressId": _billingAddress.idAddress,
+                "type": "billing",
+                "invoiceType": this._cartService.invoiceType
+
+            })
+        }
+        this._cartService.validateCartBeforePayment(obj).subscribe(res =>
+        {
+            if (res.status && res.statusCode == 200) {
+                let userSession = this._localAuthService.getUserSession();
+                let criteoItem = [];
+                let eventData = {
+                    'prodId': '', 'prodPrice': 0, 'prodQuantity': 0, 'prodImage': '', 'prodName': '', 'prodURL': ''
+                };
+                for (let p = 0; p < _cartSession["itemsList"].length; p++) {
+                    criteoItem.push({ name: _cartSession["itemsList"][p]['productName'], id: _cartSession["itemsList"][p]['productId'], price: _cartSession["itemsList"][p]['productUnitPrice'], quantity: _cartSession["itemsList"][p]['productQuantity'], image: _cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + _cartSession["itemsList"][p]['productUrl'] });
+                    eventData['prodId'] = _cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
+                    eventData['prodPrice'] = _cartSession["itemsList"][p]['productUnitPrice'] + eventData['prodPrice'];
+                    eventData['prodQuantity'] = _cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
+                    eventData['prodImage'] = _cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
+                    eventData['prodName'] = _cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
+                    eventData['prodURL'] = _cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+                }
+                /*Start Criteo DataLayer Tags */
+                dataLayer.push({
+                    'event': 'viewBasket',
+                    'email': (userSession && userSession.email) ? userSession.email : '',
+                    'currency': 'INR',
+                    'productBasketProducts': criteoItem,
+                    'eventData': eventData
+                });
+                /*End Criteo DataLayer Tags */
+
+                dataLayer.push({
+                    'event': 'checkout',
+                    'ecommerce': {
+                        'checkout': {
+                            'actionField': { 'step': "address", 'option': 'payment' },
+                            'products': criteoItem
+                        }
+                    },
+                });
+                this._router.navigate(['/checkout/payment']);
+            }
+            else {
+                this._toastService.show({ type: 'error', text: res.statusDescription });
+            }
+        });
+
     }
 
     /**@description triggers the unavailbel item pop-up from notfications */

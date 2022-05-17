@@ -9,8 +9,7 @@
   <custom-promo-code></custom-promo-code>
   
   <div class="custom-cbox">
-    <p class="pwa-text">Available Coupons</p>
-    <ng-container *ngFor="let item of allPromoCodes; let i = index;">
+    <!-- <ng-container *ngFor="let item of allPromoCodes; let i = index;">
       <label for="{{i}}couponcode" [class.selected]="item.promoCode === _cartService.appliedPromoCode" (click)="updateCustomPromoCodeInput($event,item)">
         <input [id]="i+'couponcode'" type="radio" name="promo-code" value="{{item.promoCode}}" #isCheckedBox>
         <span class="custom-box"></span>
@@ -21,13 +20,19 @@
           <span class="promo-description">{{item.promoDescription}}</span>
           </span>
       </label>
-    </ng-container>
-    <div class="card" *ngFor="let i of [1,2,3,4]">
+    </ng-container> -->
+  </div>
+  <!-- new design -->
+  <div class="coupon-card-container">
+    <p class="pwa-text">Available Coupons</p>
+    <div (click)="updateCustomPromoCodeInput($event,item)" class="card" *ngFor="let item of allPromoCodes; let i = index;">
       <div class="apply-coupon">
-        <p >MAR75</p>
+        <div class="inner-coupon">
+          <p class="cart-value">{{item.promoCode}}</p>
+          <p>{{item.promoDescription}}</p>
+        </div>
         <button class="btn redBgButton">APPLY</button>
       </div>
-      <p class="cart-value">Flat Rs. 75 Off, min cart value Rs 1700</p>
     </div>
   </div>
 </section>

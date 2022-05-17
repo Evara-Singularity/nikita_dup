@@ -13,7 +13,7 @@
         }
         border-bottom: 1px solid var(--silver);
     }
-    .custom-cbox {
+    .coupon-card-container {
         height: 79%;
         height: calc(100vh - 138px);
         overflow: auto;
@@ -47,17 +47,22 @@
             margin-bottom: 10px;
             .apply-coupon{
                 display: flex;
-                justify-content: space-between;
                 align-items: center;
+                .inner-coupon{
+                    width:65%;
+                }
                 p {
                     font-size: $large-font;
-                    font-weight: $font-bold;
                     display: block;
+                }
+                button{
+                    margin-left:auto;
                 }
             }
             .cart-value{
                 font-size: $medium-font;
                 line-height:$small-line-height;
+                font-weight: $font-bold;
             }
         }
     }

@@ -1,20 +1,10 @@
 <div class="product-card" observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
-    <!-- YOUTUBE FEATURE START -->
-    <div class="youtubeThumbnail-listing"
-        *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0">
-        <div class="thumbnail"
-            [ngStyle]="{'background-image': 'url('+(product['videoInfo'][0]['link'] | ytthumbnail:'hqdefault')+')'}">
-            <input class="youtube_icon" (click)="showYTVideo(product['videoInfo'][0]['link']);$event.stopPropagation();"
-                type="image" src="/assets/img/video_icon.svg" alt="text">
-        </div>
-    </div>
-    <!-- YOUTUBE FEATURE ENDS -->
 
     <a class="s-h-l" [attr.href]="prodUrl+'/'+this.product.productUrl">{{product.productName}}</a>
 
     <!-- wrapper div for card class -->
     <!-- [class.available-item-card]="isOosSimilarCard" -->
-    <div class="card-vertical-home no-card-border">
+    <div class="">
         <!-- add .home-grid-view class in below container -->
         <div class="card-container list-view">
 
@@ -34,7 +24,6 @@
                 </ng-container>
             </div>
 
-
             <div class="right">
                 <div class="rating">
                     <span class="avgrating" *ngIf="cardFeaturesConfig.enableRating && product.avgRating">
@@ -53,6 +42,7 @@
                 <div *ngIf="product.brandName" class="brand" (click)="navigateToPDP()">
                     <span>By: {{product.brandName | brandName}}</span>
                 </div>
+
                 <div class="price-details">
                     <div class="left" (click)="navigateToPDP()">
                         <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
@@ -92,15 +82,8 @@
 
         </div>
 
-        <div class="keyfeatures"
-            *ngIf="cardFeaturesConfig.enableFeatures && product['keyFeatures'] && product['keyFeatures'].length > 0">
-            <ul>
-                <li *ngFor="let features of product['keyFeatures']">{{features.split(" ").splice(0,20).join(" ")}}<span
-                        *ngIf="features.split(' ').length>20">...</span></li>
-            </ul>
-        </div>
-
     </div>
+    
     <ng-container #variantPopup></ng-container>
     <ng-container #addToCartToast></ng-container>
     <ng-container #productRFQ></ng-container>

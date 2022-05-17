@@ -23,6 +23,9 @@ export class OrderSummaryComponent {
     ) {}
 
     ngOnInit(): void {
+        if (this._commonService.userSession.authenticated == "true") {
+            this._cartService.getPromoCodesByUserId(this._commonService.userSession.userId);
+        }
         this._cartService.getCartUpdatesChanges().subscribe(result => {
             this.updateShippingCharges();
         });

@@ -1,26 +1,4 @@
 <div class="accordian_footer">
-    <!-- <ng-container *ngFor="let item of dataArray; let i = index">
-        <div class="accordian_footer_panel" *ngIf="carouselData[item] && carouselData[item]?.data?.brand_block.length">
-            <div class="panel-head" style="margin-top: 0px;" >
-                <div class="container">
-                    <h3 class="heading" [appKpToggle]="{idName: 'openHomeAccoridan'+i , iconMode : true}">
-                        Brands from {{ carouselData[item]['layout_name'] | titlecase }}
-                        <span class="icon-accordian">
-                            <i class="icon-down"></i>
-                        </span>
-                    </h3>
-                </div>
-            </div>
-            <div [id]="'openHomeAccoridan' + i" style="display:none;" class="panel-body">
-                <div class="container category_links">
-                    <div *ngFor="let data of carouselData[item]['data']['brand_block']">
-                        <a (click)="_commonService.navigateTo('/' + data.brand_url, true)">{{ data.brandName }}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </ng-container> -->
-
     <app-accordian [accordiansDetails]="accordiansDetails"></app-accordian>
 </div>
 

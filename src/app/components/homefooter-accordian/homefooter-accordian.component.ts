@@ -1,14 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
-import { SiemaCarouselModule } from '@app/modules/siemaCarousel/siemaCarousel.module';
-import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { CommonService } from '@app/utils/services/common.service';
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 import { AccordianModule } from "@app/modules/accordian/accordian.module";
-
-
 
 @Component({
   selector: 'home-accordians',
@@ -16,6 +11,7 @@ import { AccordianModule } from "@app/modules/accordian/accordian.module";
   styleUrls: ['./homefooter-accordian.component.scss']
 })
 export class HomefooterAccordianComponent {
+
   constructor(public _commonService: CommonService){}
   @Input() carouselData;
   produrl = CONSTANTS.PROD;
@@ -49,9 +45,6 @@ export class HomefooterAccordianComponent {
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule,
-    SiemaCarouselModule,
-    KpToggleDirectiveModule,
     AccordianModule
   ],
   declarations: [

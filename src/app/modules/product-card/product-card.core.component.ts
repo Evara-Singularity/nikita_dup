@@ -15,14 +15,12 @@ import { map } from 'rxjs/operators';
 import { ModalService } from '../modal/modal.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
 
-
 @Component({
-  selector: 'product-horizontal-card',
-  templateUrl: './product-horizontal-card.component.html',
-  styleUrls: ['./product-horizontal-card.component.scss'],
-  providers: []
+  template: `
+    <ng-template #productCardBaseComponent ></ng-template>
+  `,
 })
-export class ProductHorizontalCardComponent implements OnInit {
+export class ProductCardCoreComponent implements OnInit {
 
   readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
   readonly defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
@@ -49,7 +47,7 @@ export class ProductHorizontalCardComponent implements OnInit {
   }
   @Input() isAd: boolean = false;
   @Input() hideAd: boolean = false;
-  @Input() isFirstView: boolean = false;
+  @Input() isPDPImageLazyLoaded: boolean = false;
   @Input() pIndex = 0;
   @Input('section') section: string = '';
   @Input() enableTracking = false;
@@ -78,18 +76,18 @@ export class ProductHorizontalCardComponent implements OnInit {
   productReviewCount: string;
 
   constructor(
-    private _cartService: CartService,
+    public _cartService: CartService,
     public _productListService: ProductListService,
-    private _loader: GlobalLoaderService,
-    private _router: Router,
-    private _cfr: ComponentFactoryResolver,
-    private _injector: Injector,
-    private modalService: ModalService,
-    private _localAuthService: LocalAuthService,
-    private _commonService: CommonService,
-    private _analytics: GlobalAnalyticsService,
-    private _toastMessageService: ToastMessageService,
-    private _productService: ProductService,
+    public _loader: GlobalLoaderService,
+    public _router: Router,
+    public _cfr: ComponentFactoryResolver,
+    public _injector: Injector,
+    public modalService: ModalService,
+    public _localAuthService: LocalAuthService,
+    public _commonService: CommonService,
+    public _analytics: GlobalAnalyticsService,
+    public _toastMessageService: ToastMessageService,
+    public _productService: ProductService,
   ) {
   }
 

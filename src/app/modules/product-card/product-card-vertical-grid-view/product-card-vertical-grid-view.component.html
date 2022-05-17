@@ -1,34 +1,29 @@
 <div class="product-card" observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
-    <div class="youtubeThumbnail-listing"
-        *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0">
-        <div class="thumbnail"
-            [ngStyle]="{'background-image': 'url('+(product['videoInfo'][0]['link'] | ytthumbnail:'hqdefault')+')'}">
-            <input class="youtube_icon" (click)="showYTVideo(product['videoInfo'][0]['link']);$event.stopPropagation();"
-                type="image" src="/assets/img/video_icon.svg" alt="text">
-        </div>
-    </div>
+
     <a class="s-h-l" [attr.href]="prodUrl+'/'+this.product.productUrl">{{product.productName}}</a>
+
     <!-- wrapper div for card class -->
-    <div [class.available-item-card]="isOosSimilarCard" class="card-vertical-home"
-        [ngClass]="{'no-card-border': !cardFeaturesConfig.enableCard, 'card-vertical': cardFeaturesConfig.verticalOrientation}">
+    <!-- [class.available-item-card]="isOosSimilarCard" -->
+    <div class="">
         <!-- add .home-grid-view class in below container -->
-        <div class="card-container"
-            [ngClass]="{'list-view': (cardFeaturesConfig.horizontalOrientation), 'grid-view-scrollable': (cardFeaturesConfig.verticalOrientation)}">
+        <div class="card-container list-view">
+
             <div class="left" (click)="navigateToPDP()">
                 <div class="tags" *ngFor="let tags of product['productTags']">
                     <img [src]="tags['tagImageLink']" />
                 </div>
-                <ng-container *ngIf="isFirstView || !cardFeaturesConfig.lazyLoadImage">
+                <ng-container *ngIf="isPDPImageLazyLoaded || !cardFeaturesConfig.lazyLoadImage">
                     <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}"
                         height="125" width="125"
                         (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
                 </ng-container>
-                <ng-container *ngIf="!isFirstView && cardFeaturesConfig.lazyLoadImage">
+                <ng-container *ngIf="!isPDPImageLazyLoaded && cardFeaturesConfig.lazyLoadImage">
                     <img alt="{{product.productName}}" [src]="defaultImage"
                         [lazyLoad]="imageCdnPath + product.mainImageMediumLink" height="125" width="125"
                         (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
                 </ng-container>
             </div>
+
             <div class="right">
                 <div class="rating">
                     <span class="avgrating" *ngIf="cardFeaturesConfig.enableRating && product.avgRating">
@@ -40,14 +35,14 @@
                     <!-- <span class="ads" *ngIf="!product.internalProduct && !hideAd">AD</span> -->
                 </div>
                 <div class="name" (click)="trackProductTitle('title');$event.preventDefault()">
-                    <a [href]="prodUrl + '/' + product.productUrl" *ngIf="cardFeaturesConfig.horizontalOrientation">
+                    <a [href]="prodUrl + '/' + product.productUrl">
                         <span>{{product.productName | slice:0:60}}
                             <span *ngIf="product.productName.length>60">...</span></span></a>
-                    <a [href]="prodUrl + '/' + product.productUrl" class="ellipsis-name" *ngIf="cardFeaturesConfig.verticalOrientation">{{product.productName}}</a>
                 </div>
                 <div *ngIf="product.brandName" class="brand" (click)="navigateToPDP()">
                     <span>By: {{product.brandName | brandName}}</span>
                 </div>
+
                 <div class="price-details">
                     <div class="left" (click)="navigateToPDP()">
                         <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
@@ -74,26 +69,24 @@
                             <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart" (click)="buyNow()">
                                 <i class="icon-cart1"></i>
                             </span>
-                            <button class="btn btn-red-bg pad-10" *ngIf="cardFeaturesConfig.enableBuyNow" (click)="buyNow(true)">BUY NOW</button>
+                            <button class="btn btn-red-bg pad-10" *ngIf="cardFeaturesConfig.enableBuyNow"
+                                (click)="buyNow(true)">BUY NOW</button>
                         </ng-container>
-                        <ng-container
-                            *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice) && cardFeaturesConfig.horizontalOrientation">
-                            <button class="btn pad-10 btn-red-bordered send-query-btn " (click)="openRfqForm()">SEND QUERY</button>
+                        <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
+                            <button class="btn pad-10 btn-red-bordered send-query-btn " (click)="openRfqForm()">SEND
+                                QUERY</button>
                         </ng-container>
                     </div>
                 </div>
             </div>
+
         </div>
-        <div class="keyfeatures"
-            *ngIf="cardFeaturesConfig.enableFeatures && product['keyFeatures'] && product['keyFeatures'].length > 0">
-            <ul>
-                <li *ngFor="let features of product['keyFeatures']">{{features.split(" ").splice(0,20).join(" ")}}<span
-                        *ngIf="features.split(' ').length>20">...</span></li>
-            </ul>
-        </div>
+
     </div>
+    
     <ng-container #variantPopup></ng-container>
     <ng-container #addToCartToast></ng-container>
     <ng-container #productRFQ></ng-container>
     <ng-container #alertBox></ng-container>
+
 </div>

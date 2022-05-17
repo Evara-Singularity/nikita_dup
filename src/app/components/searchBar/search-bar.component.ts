@@ -12,8 +12,8 @@ import { AutoFocusDirective } from '../../utils/directives/auto-focus.directive'
 import CONSTANTS from '@app/config/constants';
 import { DataService } from '@app/utils/services/data.service';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
-import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
 import { ProductService } from '@app/utils/services/product.service';
+import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
 
 @Component({
     selector: 'app-search-bar',
@@ -358,7 +358,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
         SearchHistoryModule,
         FormsModule,
         ReactiveFormsModule,
-        ProductHorizontalCardModule
+        ProductCardVerticalGridViewModule,
     ],
     declarations: [
         SearchBarComponent,

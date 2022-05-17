@@ -49,6 +49,8 @@ export class BussinessPurchaseListComponent {
   scForm: FormGroup;
   spli: Array<{}>;
   spp: boolean = false;
+  wishlistData;
+  
   set showLoader(value){
     this.loaderService.setLoaderState(value);
   }
@@ -184,7 +186,7 @@ export class BussinessPurchaseListComponent {
       ],
     });
   }
-  wishlistData;
+  
   getWishlistData(products: object[]){
 
 		return this.wishlistData= products.map(product=>{

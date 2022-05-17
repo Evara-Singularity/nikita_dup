@@ -1,8 +1,9 @@
 <section class="purchase-list">
-    <ul class="list view-products">
-        <li *ngFor="let item of purchaseLists; let  ele = index;let i = index;">
-
-            <div class="clearfix">
+    <ng-container *ngFor="let item of wishlistData;let pIndex=index;">
+        <product-horizontal-card  [product]="item" 
+            [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" >
+        </product-horizontal-card>     
+            <!-- <div class="clearfix">
                 <div class="product-img">
                     <img src="{{imagePath}}{{item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].images[0].links.medium}}"
                         alt="product Image">
@@ -37,10 +38,9 @@
                         (click)="addNow(item.productDetail)"> ADD TO CART</div>
                     <div class="cart grayLabel" *ngIf="item.productDetail.productBO.outOfStock"> OUT OF STOCK</div>
                 </div>
-            </div>
-        </li>
-    </ul>
-
+            </div> -->    
+    </ng-container>
+        
     <div class="norder" *ngIf="purchaseLists && purchaseLists.length==0">
         <img src="{{imagePath}}b/I/P/B/d/no-order-image.png" width="200" />
 

@@ -53,7 +53,7 @@ export class ProductCardCoreComponent implements OnInit {
   @Input() enableTracking = false;
   @Input() analytics = null;
   @Input() isOosSimilarCard = null;
-  @Input() moduleUsedIn: 'PRODUCT' | 'LISTING_PAGES' | 'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP' | 'PRODUCT_SIMILAR_OUT_OF_STOCK' | 'SEACRH_SUGGESTION' | 'PRODUCT_PAST_ORDER' = 'LISTING_PAGES';
+  @Input() moduleUsedIn: 'PRODUCT' | 'LISTING_PAGES' | 'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP' | 'PRODUCT_SIMILAR_OUT_OF_STOCK' | 'SEACRH_SUGGESTION' | 'PRODUCT_PAST_ORDER' | 'HOME_RECENT' = 'LISTING_PAGES';
   productGroupData: any = null;
   @Input() @HostBinding("class.blue-color") public isBlue = false;
 

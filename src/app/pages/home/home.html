@@ -14,12 +14,15 @@
         </div>
         <div class="pwa-row pwa-row-noPad">
             <div class="pwa-col-12 pad-lr-15">
+
                 <home-trendingcategories [tocd]="tocd" [flyOutData]="flyOutData"></home-trendingcategories>
+
                 <section class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
                     <a class="full-banner" *ngIf="i==0" href="{{im.image_link}}">
                         <img [src]="imagePath + im.image_name" alt="banner add">
                     </a>
                 </section>
+
                 <!-- <div class="home-card-container">
                     <category-card *ngFor="let item of clustorCategories| slice:0:5" [page]="'home'"
                         [routerLink]="item.category_url" [image]="imagePath + 'img/cluster/'+item.category_image"
@@ -29,6 +32,7 @@
                         [title]="'View All Categories'">
                     </category-card>
                 </div> -->
+
                 <div class="vertical-category-container">
                     <div *ngFor="let i of [1,2,3,4,5,6]" class="vertical-category-card"> 
                         <a>
@@ -37,7 +41,9 @@
                         </a>
                     </div>
                 </div> 
+
             </div>
+            
                 <div class="pwa-col-12 pad-lr-15">
                     <div observeVisibility class="featr_brand clearfix" [debounceTime]="50" (visible)="onVisibleFeaturedBrands($event)">
                         <div>

@@ -1,82 +1,20 @@
-<!--Recent View Start-->
-
-<section *ngIf="prodList && prodList.length>0 && shortDescParsed" class="Recently-view">
+<section *ngIf="isRecentDataLoaded && (recentlyViewedProducts && recentlyViewedProducts.length>0)"
+  class="Recently-view">
   <div class="view-all-strip">
-    <h2 class="featr_arrival">RECENTLY VIEWED</h2>
-    <a (click)="openPopup=true;viewAllClicked()" routerLinkActive="router-link-active"
-        class="btn-red">VIEW ALL
-    </a>
- </div>
-
-  <ul class="list view-products border-top">
-    <li *ngFor="let item of prodList | slice : 0:4"
-      (click)="goToProducturl(item.url);setCookieLink('Recently_Viewed',item.canonical_url)">
-
-      <a class="clearfix">
-        <div class="product-img">
-          <img src="{{imagePath}}{{item.productImage}}">
-        </div>
-        <div class="product-description">
-          <p class="description-txt">{{item.productName}}</p>
-          <p class="price" *ngIf="!item.outOfStock">
-            <span class="before-discount">{{item.priceMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
-            <span class="discount" *ngIf='item.priceMrp>item.priceWithoutTax'> {{((item.priceMrp -
-              item.priceWithoutTax)/item.priceMrp)*100 | mathFloor| number : '1.0-0'}}% OFF</span>
-            <span class="after-discount">{{item.priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
-          </p>
-          <div class='prod_detail pad-t-5 pad-lr-10' *ngIf="item.outOfStock">
-            <span class='f-size-13 text-darkgrey text-400 text-left' style="width: 100% !important;">
-              Available on request
-            </span>
-          </div>
-          <p class="seller"><span>By :</span> {{item.brandName}}</p>
-        </div>
-      </a>
-    </li>
-  </ul>
-</section> 
-<!-- <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
-  [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:'Recently viewed'}">
-
-  <div class="content-popup card-30" content>
-    <ul class="view-products list no-border" [class.border-top]="categoryNameFromHomePage !== ''">
-      <li *ngFor="let item of prodList" (click)="goToProducturl(item.url)">
-        <a class="clearfix">
-          <div class="product-img">
-            <img [defaultImage]="defaultImage" lazyLoad="{{imagePath}}{{item.productImage}}" alt="product Image">
-          </div>
-          <div class="product-description">
-            <p class="description-txt">{{item.productName}}</p>
-            <p class="price" *ngIf="!item.outOfStock">
-              <span class="before-discount">{{item.priceMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
-              <span class="discount" *ngIf='item.priceMrp>item.priceWithoutTax'> {{((item.priceMrp -
-                item.priceWithoutTax)/item.priceMrp)*100 | mathFloor| number : '1.0-0'}}% OFF</span>
-
-              <span class="after-discount">{{item.priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
-            </p>
-            <div class='prod_detail pad-t-5 pad-lr-10' *ngIf="item.outOfStock">
-              <span class='f-size-13 text-darkgrey text-400 text-left' style="width: 100% !important;">
-                Available on request
-              </span>
-            </div>
-            <p class="seller"><span>By :</span> {{item.brandName}}</p>
-          </div>
-        </a>
-      </li>
-    </ul>
-
-
+    <product-card-vertical-container [numberOfItems]="recentlyViewedProducts.length || 0">
+      <h2 class="featr_arrival">RECENTLY VIEWED</h2>
+      <ng-container *ngFor="let product of recentlyViewedProducts">
+        <product-card-horizontal-grid-view [product]="product"> </product-card-horizontal-grid-view>
+      </ng-container>
+    </product-card-vertical-container>
   </div>
-</app-pop-up> -->
-<!--Recent View End-->
-
-
-
-
-<section observeVisibility style="margin-top: 10px;" [debounceTime]="100"
-[ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
-<ng-container #recentProducts></ng-container>
-<div class="loader_container" *ngIf="!recentProductsInstance">
-    <div class="loader"></div>
-</div>
+</section>
+<section *ngIf="!isRecentDataLoaded">
+  <div class="view-all-strip">
+    <product-card-vertical-container [numberOfItems]="2">
+      <h2 class="featr_arrival">RECENTLY VIEWED</h2>
+      <product-card-skeleton></product-card-skeleton>
+      <product-card-skeleton></product-card-skeleton>
+    </product-card-vertical-container>
+  </div>
 </section>

@@ -3174,6 +3174,11 @@
     }
     .popup-btn {
         margin-top: 40px;
+        .btn-red-bg{
+            border-radius: $border-radius-6;
+            font-size: $medium-font;
+            padding: 10px 20px;
+        }
     }
 }
 

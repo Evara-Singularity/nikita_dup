@@ -28,7 +28,7 @@
                             <div class="custom-cbox">
                                 <ng-container *ngFor="let item of filter.terms; let z = index;">
                                     <label [class.selected]="categoryCheckBox.checked" *ngIf="item.count">
-                                        <span class="chk-box">
+                                        <!-- <span class="chk-box"> -->
                                             <input 
                                                 (click)="updateSelectedFilterData($event, filter.name, item)"
                                                 class="hidden" 
@@ -37,7 +37,7 @@
                                                 [checked]="item.selected"
                                                 #categoryCheckBox>
                                             <span class="custom-box icon-box"></span>
-                                        </span>
+                                        <!-- </span> -->
                                         <ng-container *ngIf="filter.name !== 'ratings'">
                                             <div>
                                                 <span class="chk-txt">{{item.term | addFilterSymbol:filter.name}}</span>

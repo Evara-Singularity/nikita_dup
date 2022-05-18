@@ -1277,9 +1277,9 @@ export class CartService
 
     verifyAndApplyPromocode(_cartSession, promcode, isUpdateCart)
     {
-        if (!this.localAuthService.isUserLoggedIn()) { return of(_cartSession)}
+        let returnValue = { cartSession: _cartSession, isUpdated: false };
+        if (!this.localAuthService.isUserLoggedIn()) { return of(returnValue)}
         let cartSession = this.generateGenericCartSession(_cartSession)
-        let returnValue = { cartSession: cartSession, isUpdated: false };
         const cartObject = { 'shoppingCartDto': cartSession };
         return this.applyPromoCode(cartObject).pipe(map((response) =>
         {
@@ -1327,7 +1327,7 @@ export class CartService
         }), catchError((error: HttpErrorResponse) => 
         {
             this._loaderService.setLoaderState(false);
-            return of(returnValue)
+            return of(returnValue);
         }));
     }
 

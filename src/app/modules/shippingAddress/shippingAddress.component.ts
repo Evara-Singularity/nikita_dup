@@ -76,7 +76,7 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
         }
         this.addressForm = this.createFormBuilder(this.address);
         this.phoneVerified.setValue(this.verifyPhone(this.phone.value, this.verifiedPhones));
-        this.cartSession = this._cartService.getCartSession();
+        this.cartSession = this._cartService.getGenericCartSession;
         this.itemsList = (this.cartSession['itemsList'] !== undefined && this.cartSession['itemsList'] !== null) ? this.cartSession['itemsList'] : [];
     }
 
@@ -137,7 +137,6 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
      */
     onSubmit(data)
     {
-        debugger;
         if (!this.isPincodeBusy && this.isPinCodeApiValid) {
             if (this.phoneVerified.value) {
                 this.saveAddress(data);

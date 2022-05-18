@@ -357,7 +357,7 @@ export class ProductOosSimilarCardComponent {
           // this.resetVariantData();
           this._productListService.analyticAddToCart(buyNow ? '/checkout' : '/quickorder', productDetails, 'PRODUCT_SIMILAR_OUT_OF_STOCK');
           if (!buyNow) {
-            this._cartService.setCartSession(result);
+            this._cartService.setGenericCartSession(result);
             this._cartService.cart.next({
               count: result['noOfItems'] || (result['itemsList'] ? result['itemsList'].length : 0),
               currentlyAdded: productDetails

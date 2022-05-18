@@ -1,45 +1,9 @@
-<div *ngIf="isShowLoader && isBrowser">
-    <div *ngIf="itemsList && itemsList.length>0" class="mb-65">
-        <cart-updates [itemsValidationMessage]="itemsValidationMessage"></cart-updates>
-        <cart (itemsValidationMessage$)="itemsValidationMessageUpdated($event)" [isCheckOut]="false" [isCheckoutPage]="'true'" [cartSessionUpdated$]="cartSessionUpdated$"></cart>
-        <order-summary [cartSessionUpdated$]="cartSessionUpdated$"></order-summary>
-        <!-- <button (click)="placeOrder()" class="continue-btn mt-10">{{signInText}}</button> -->
-        <button class="btn continue-btn mt-10" (click)="navigateToCheckout()" >{{signInText}}</button>
+<div id="quickOrderPage">
+    <div *ngIf="_cartService.getGenericCartSession?.itemsList?.length > 0" class="mb-65">
+        <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications>
+        <cart [moduleName]="'QUICKORDER'"></cart>
+        <order-summary></order-summary>
+        <button class="btn continue-btn mt-10" (click)="navigateToCheckout()">{{ _commonService?.userSession?.authenticated === 'true' ? 'Proceed to Checkout' : 'Sign In to Checkout' }}</button>
     </div>
-    <div class="noitem mb-60" *ngIf="itemsList.length == 0 ">
-        <div class="emptycart">
-            <img src="{{imagePath}}web/dist/assets/img/empty_cart.svg">
-        </div>
-        <div class="catlink">
-            <ul class="categories-list">
-                <li [routerLink]="['/electricals/211000000']">
-                    <i class="icon-electricals"></i>
-                    <span>Electricals</span>
-                </li>
-                <li [routerLink]="['/hand-tools/112000000']">
-                    <i class="icon-hand-tool"></i>
-                    <span>Hand Tools</span>
-                </li>
-
-                <li [routerLink]="['/safety-and-security/116000000']">
-                    <i class="icon-safety"></i>
-                    <span>Safety</span>
-                </li>
-                <li [routerLink]="['/security/120000000']">
-                    <i class="icon-security"></i>
-                    <span>Security</span>
-                </li>
-                <li [routerLink]="['/power-tools/114000000']">
-                    <i class="icon-power-tool"></i>
-                    <span>Power Tools</span>
-                </li>
-                <li [routerLink]="['/all-categories']">
-                    <i class="icon-all-category"></i>
-                    <span>more</span>
-                </li>
-            </ul>
-        </div>
-        <button class="continue-btn white-btn" [routerLink]="['/']">CONTINUE SHOPPING</button>
-
-    </div>
+    <cart-no-item *ngIf="_cartService.getGenericCartSession?.itemsList?.length === 0"></cart-no-item>
 </div>

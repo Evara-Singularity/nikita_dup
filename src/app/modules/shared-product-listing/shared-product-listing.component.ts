@@ -154,15 +154,14 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     if (this._commonService.isBrowser) {
       const userSession = this._localAuthService.getUserSession();
       let params = { "sessionid": userSession.sessionId };
-      this._cartService.getCartBySession(params).subscribe((cartSession) => {
-
+      this._cartService.getCartUpdatesChanges().subscribe((cartSession) => {
         let count = 0;
         if (cartSession['noOfItems']) {
           count = cartSession['noOfItems'];
         } else if (cartSession['itemsList']) {
           count = cartSession['itemsList'].length;
         }
-        this._cartService.cart.next({ count });
+        this._cartService.cart.next({ "count" : count });
       })
     }
   }

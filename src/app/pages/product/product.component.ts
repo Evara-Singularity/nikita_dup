@@ -29,7 +29,6 @@ import { ArrayFilterPipe } from "@app/utils/pipes/k-array-filter.pipe";
 import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
 import { CommonService } from "@app/utils/services/common.service";
-import { TrackingService } from '@app/utils/services/tracking.service';
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import { BehaviorSubject, Subject, Subscription } from "rxjs";
@@ -46,6 +45,7 @@ import { FbtComponent } from "./../../components/fbt/fbt.component";
 
 import * as $ from 'jquery';
 import { filter } from "rxjs/operators";
+import { TrackingService } from "@app/utils/services/tracking.service";
 
 interface ProductDataArg
 {
@@ -1575,7 +1575,7 @@ export class ProductComponent implements OnInit, AfterViewInit
 
             if (!result && this.cartService.buyNowSessionDetails) {
                 // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
-                this.router.navigate(['/checkout'], {
+                this.router.navigate(['/checkout/login'], {
                     queryParams: {
                         title: 'Continue to place order',
                     },
@@ -1586,7 +1586,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                 if (result) {
                     this.checkoutService.setCheckoutTabIndex(1);
                     if (!buyNow) {
-                        this.cartService.setCartSession(result);
+                        this.cartService.setGenericCartSession(result);
                         // console.log('cart session', result['noOfItems'] || result.itemsList.length );
                         this.cartService.cart.next({ count: result['noOfItems'] || result.itemsList.length, currentlyAdded: cartAddToCartProductRequest });
                         this.globalLoader.setLoaderState(false);

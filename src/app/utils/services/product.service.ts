@@ -225,14 +225,6 @@ export class ProductService {
         );
     }
 
-    getCartBySession(params) {
-        return this._dataService.callRestful(
-            "GET",
-            this.basePath + ENDPOINTS.GET_CartBySession,
-            { params: params }
-        );
-    }
-
     getSponseredProducts(params) {
         return this._dataService.callRestful(
             "GET",

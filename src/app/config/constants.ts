@@ -332,13 +332,11 @@ export const CONSTANTS = {
   ],
   ASSET_IMG: "assets/img/home_card.webp",
   SCHEMA: "https://schema.org",
-
   RAZORPAY: {
     CHECKOUT: "https://checkout.razorpay.com/v1/razorpay.js",
     IMAGE: "https://i.imgur.com/n5tjHFD.png",
     SUCCESS: "/paymentRazorPayWallet/success",
   },
-
   SL: {
     API: "/login/sociallogin",
     LINKEDIN_OAUTH:
@@ -379,6 +377,8 @@ export const CONSTANTS = {
     'large': 'xxlarge',
     'xlarge': 'xxlarge',
   },
+  NEFT_AMOUNT_LMIT: 2000,
+  EMI_MINIMUM_AMOUNT: 3000,
   CUSTOMER_CARE_TIME:{
     'call_timing_text': 'Call Timings: 9:00 AM - 8:00 PM (Monday to Saturday)'
   },

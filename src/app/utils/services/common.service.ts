@@ -1,5 +1,5 @@
 import { LocalStorageService } from "ngx-webstorage";
-import { map } from "rxjs/operators";
+import { filter, map } from "rxjs/operators";
 import { mergeMap } from "rxjs/operators";
 import { Observer, of } from "rxjs";
 import { catchError } from "rxjs/operators";
@@ -108,6 +108,10 @@ export class CommonService
 
     }
 
+    updateUserSession() {
+        this.userSession = this._localStorageService.retrieve("user");
+    }
+
     private setRoutingInfo() {
         this.currentUrl = this._router.url;
         this._router.events.subscribe(event => {
@@ -118,7 +122,7 @@ export class CommonService
         });
     }
 
-    get getPreviousUrl() {
+    get getPreviousUrl(): string {
         return this.previousUrl;
     } 
 
@@ -713,7 +717,7 @@ export class CommonService
         return actualParams;
     }
 
-    getSession(): Observable<{}>
+    getUserSession(): Observable<{}>
     {
         let user = this._localStorageService.retrieve("user");
         // return user from localstorage OR call API
@@ -836,13 +840,11 @@ export class CommonService
         });
     }
 
-    pay(pdata)
-    {
-        let userSession = this._localStorageService.retrieve("user");
+    pay(pdata) {
+        const userSession = this._localStorageService.retrieve("user");
         return this.getBusinessDetail({ customerId: userSession.userId }).pipe(
             map((res: any) => res),
-            mergeMap((d) =>
-            {
+            mergeMap((d) => {
                 let bd: any = null;
                 if (d && d.status && d.statusCode == 200) {
                     bd = {
@@ -852,17 +854,12 @@ export class CommonService
                     };
                 }
                 pdata["validatorRequest"]["shoppingCartDto"]["businessDetails"] = bd;
-                return this._dataService
-                    .callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, {
-                        body: pdata,
-                    })
+                return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, {})
                     .pipe(
-                        catchError((res: HttpErrorResponse) =>
-                        {
+                        catchError((res: HttpErrorResponse) => {
                             return of({ status: false, statusCode: res.status });
                         }),
-                        map((res: any) =>
-                        {
+                        map((res: any) => {
                             return res;
                         })
                     );
@@ -870,8 +867,7 @@ export class CommonService
         );
     }
 
-    createValidatorRequest(cartSession, userSession, extra)
-    {
+    createValidatorRequest(cartSession, userSession, extra) {
         let cart = cartSession["cart"];
         let cartItems = cartSession["itemsList"];
         let billingAddress: any = this.checkoutService.getBillingAddress();
@@ -1398,12 +1394,18 @@ export class CommonService
             return queryParams;
     }
 
-    customDebugger(data)
-    {
-        console.clear();
-        console.trace();
-        console.log(data);
-        alert('check console');
+    getRoutingData(_aRoute): Observable<any>{
+        return of(_aRoute)
+        .pipe(
+          map((route) => {
+            while (route.firstChild) {
+              route = route.firstChild;
+            }
+            return route;
+          }),
+          filter((route) => route.outlet === "primary"),
+          mergeMap((route) => route.data)
+        )
     }
 
     /**

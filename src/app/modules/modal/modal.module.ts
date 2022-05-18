@@ -15,7 +15,6 @@ import { ModalDirective } from './modal.directive';
         ModalDirective
     ],
     providers: [
-        ModalService
     ],
 })
 export class ModalModule {}

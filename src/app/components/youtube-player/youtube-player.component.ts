@@ -3,7 +3,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { TrackingService } from '@app/utils/services/tracking.service';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -24,7 +23,7 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnDestroy
     readonly youtubeAPI = 'https://www.youtube.com/iframe_api';
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
-    constructor(private sanitizer: DomSanitizer, public _commonService: CommonService, private _trackingService: TrackingService,)
+    constructor(private sanitizer: DomSanitizer, public _commonService: CommonService, private _analytics: GlobalAnalyticsService,)
     {
         this.isBrowser = _commonService.isBrowser;
     }
@@ -60,7 +59,7 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.analyticsDetails)
         {
             this.analyticsDetails['page']['linkName'] = "Video Played";
-            this._trackingService.sendAdobeCall(this.analyticsDetails, "genericClick");
+            this._analytics.sendAdobeCall(this.analyticsDetails, "genericClick");
         }
     }
 

@@ -1277,6 +1277,7 @@ export class CartService
 
     verifyAndApplyPromocode(_cartSession, promcode, isUpdateCart)
     {
+        if (!this.localAuthService.isUserLoggedIn()) { return of(_cartSession)}
         let cartSession = this.generateGenericCartSession(_cartSession)
         let returnValue = { cartSession: cartSession, isUpdated: false };
         const cartObject = { 'shoppingCartDto': cartSession };

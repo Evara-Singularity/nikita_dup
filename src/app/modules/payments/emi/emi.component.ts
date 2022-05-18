@@ -111,13 +111,14 @@ export class EmiComponent {
             this.message = `EMI not available below Rs. ${CONSTANTS.EMI_MINIMUM_AMOUNT}`;
             this.isEmiEnable = false;
         } else {
-            let apiData = { price: (cart.totalPayableAmount) };
+            const payableAmount = (cart['totalAmount'] + cart['shippingCharges']) -cart['totalOffer'];
+            let apiData = { price: (payableAmount) };
             if (this._cartService.invoiceType == "retail") {
                 apiData["gateWay"] = "payu";
             } else {
                 apiData["gateWay"] = "razorpay";
             }
-            this.totalPayableAmount = cart.totalPayableAmount;
+            this.totalPayableAmount = payableAmount;
             this.getEmiValuesCall(apiData).subscribe((res): void => {
                 if (res["status"] != true) {
                     return;

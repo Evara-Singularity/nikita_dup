@@ -1,5 +1,3 @@
-import { cartSession } from './../models/cart.initial';
-import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -8,8 +6,9 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { ModalService } from '@app/modules/modal/modal.service';
 import { SharedCheckoutUnavailableItemsComponent } from '@app/modules/shared-checkout-unavailable-items/shared-checkout-unavailable-items.component';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { BehaviorSubject, forkJoin, Observable, of, Subject, combineLatest } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, of, Subject } from 'rxjs';
 import { catchError, delay, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { Address } from '../models/address.modal';
@@ -17,7 +16,6 @@ import { AddToCartProductSchema } from "../models/cart.initial";
 import { LocalAuthService } from './auth.service';
 import { DataService } from './data.service';
 import { GlobalLoaderService } from './global-loader.service';
-import { response } from 'express';
 
 @Injectable({ providedIn: 'root' })
 export class CartService
@@ -159,53 +157,7 @@ export class CartService
     setGenericCartSession(cart)
     {
         this.cartSession = JSON.parse(JSON.stringify(cart));
-        // if (cart && cart.offersList && cart.offersList.length > 0 && this.allPromoCodes.length === 0) {
-        //     const userSession = this._localStorageService.retrieve('user');
-        //     this.getAllPromoCodesByUserId(userSession.userId).subscribe((response)=>{
-        //         if (response['statusCode'] === 200) {
-        //             this.allPromoCodes = response['data'];
-        //             const promo = this.allPromoCodes.find(promo => promo.promoId === this.cartSession.offersList[0].offerId);
-        //             if (promo) {
-        //                 this.appliedPromoCode = promo['promoCode'];
-        //                 this.appliedPromocodeSubject.next(this.appliedPromoCode);
-        //             }
-        //         }
-        //     })
-        //     //this is all because of backend is not sending totalOffer after updatecart in promocode flow
-        //     //this.updatePromoDetail(userSession.userId, this.cartSession);
-        // }
     }
-
-    //TODO:Pradeep;
-    // msnsWithDiscounts = null;
-    // updatePromoDetail(userId, cartSession)
-    // {
-    //     this.getAllPromoCodesByUserId(userId).pipe(switchMap((response)=>{
-    //         if (response['statusCode'] === 200) {
-    //             this.allPromoCodes = response['data'];
-    //             const promo = this.allPromoCodes.find(promo => promo.promoId === cartSession.offersList[0].offerId);
-    //             if (promo) {
-    //                 this.appliedPromoCode = promo['promoCode'];
-    //                 this.appliedPromocodeSubject.next(this.appliedPromoCode);
-    //             }
-    //             //this.isPromoCodeApplied = true;
-    //         }
-    //         return of(this.appliedPromoCode)
-    //     }),
-    //     switchMap((code)=>{
-    //         if(code){
-    //             return this.applyPromoCode({ 'shoppingCartDto': cartSession })
-    //         }
-    //         return of(null);
-    //     })).subscribe((response)=>{
-    //         if(response && response['status']){
-    //             const { data } = response;
-    //             this.msnsWithDiscounts = data['productDis'];
-    //             cartSession['cart']['totalOffer'] = data['discount'];
-    //             cartSession['extraOffer'] = null;
-    //         }
-    //     });
-    // }
 
     getCartSession() { return JSON.parse(JSON.stringify(this.cartSession)); }
 
@@ -1283,42 +1235,6 @@ export class CartService
                             return;
                         }
                     })
-                    // this.applyPromoCode(cartObject).subscribe(({ status, data, statusDescription: message }: any) =>
-                    // {
-                    //     if (status === true && (data && data['discount'] > 0) && (data['discount'] <= cartSession['cart']['totalAmount'])) {
-                    //         cartSession['cart']['totalOffer'] = data['discount'];
-                    //         cartSession['extraOffer'] = null;
-                    //         const productDiscount = data['productDis'];
-                    //         const productIds = Object.keys(data['productDis'] ? data['productDis'] : {});
-                    //         cartSession['itemsList'].map((item) =>
-                    //         {
-                    //             item['offer'] = null;
-                    //             if (productIds.includes(item['productId'])) {
-                    //                 item['offer'] = productDiscount[item['productId']];
-                    //             }
-                    //             return item['offer'];
-
-                    //         });
-                    //         this.appliedPromoCode = promcode;
-                    //         this.postProcessAfterPromocode(cartSession);
-                    //         return;
-                    //     }
-                    //     if (status === false || (data && data['discount'] === 0)){
-                    //         cartSession['cart']['totalOffer'] = 0;
-                    //         cartSession['offersList'] = [];
-                    //         cartSession['itemsList'].map((item) => item['offer'] = null);
-                    //         this.setGenericCartSession(cartSession);
-                    //         this.appliedPromoCode = '';
-                    //         this.appliedPromocodeSubject.next(this.appliedPromoCode);
-                    //         this._loaderService.setLoaderState(false);
-                    //         if ((data && data['discount'] > 0) && (data['discount'] >= cartSession['cart']['totalAmount'])){
-                    //             this._toastService.show({ type: 'error', text: 'Your cart amount is less than ' + data['discount'] });
-                    //             return;
-                    //         }
-                    //         this._toastService.show({ type: 'error', text: message });
-                    //         return;
-                    //     }
-                    // });
                 } else {
                     this.appliedPromoCode = '';
                     this.appliedPromocodeSubject.next(this.appliedPromoCode);
@@ -1524,72 +1440,6 @@ export class CartService
         this.updateCartAfterItemsDelete(CART_SESSION, NON_REMOVABLE_ITEMS);
     }
 
-    // verifyPromocode(cartSession)
-    // {
-    //     const USER_SESSION = this._localStorageService.retrieve('user');
-    //     if (USER_SESSION && USER_SESSION['authenticated'] === "true") {
-    //             const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CART.validatePromoCode}`;
-    //             let reqobj = { "shoppingCartDto": this.cartSession };
-    //             return this._dataService.callRestful('POST', URL, { body: reqobj })
-    //                 .pipe(
-    //                     map((response) =>
-    //                     {
-    //                         const SUCCESS = response['status'];
-    //                         if (SUCCESS) {
-    //                             cartSession = this.updateOfferList(cartSession, response['data']);
-    //                             return cartSession;
-    //                         }
-    //                         //this.isPromoCodeApplied = false;
-    //                         this.appliedPromoCode = "";
-    //                         this.appliedPromocodeSubject.next("");
-    //                         cartSession['cart']['totalOffer'] = 0;
-    //                         cartSession['offersList'] = [];
-    //                         cartSession.itemsList.forEach((item) => item["offer"] = null);
-    //                         this._toastService.show(({ type: "error", text: response["statusDescription"] || "Unable to update the offer list." }))
-    //                         return cartSession;
-    //                     }),
-    //                     catchError((error: HttpErrorResponse) => cartSession)
-    //                 );
-    //     }
-    //     return of(cartSession);
-    // }
-
-    // updateOfferList(cartSession, data)
-    // {
-    //     console.log("updateOfferList");
-    //     let isOfferApplied = false;
-    //     const TOTAL_AMOUNT = this.cartSession['cart']['totalAmount'];
-    //     const itemsLength = (cartSession['itemsList'] as any[]).length;
-    //     const DISCOUNT = data['discount'];
-    //     const discountMsns = data['productDis'] || {};
-    //     const DISCOUNT_WISE_PRODUCTS = [];
-    //     for (let msn in discountMsns) {
-    //         if (discountMsns[msn]) { DISCOUNT_WISE_PRODUCTS.push(msn) };
-    //     }
-    //     if (DISCOUNT_WISE_PRODUCTS.length && itemsLength && DISCOUNT < TOTAL_AMOUNT) {
-    //         cartSession['cart']['totalOffer'] = DISCOUNT;
-    //         const ITEMS: any[] = cartSession['itemsList'];
-    //         console.log("Discount Msns", DISCOUNT_WISE_PRODUCTS);
-    //         ITEMS.forEach((item) =>
-    //         {
-    //             item['offer'] = null;
-    //             if (DISCOUNT_WISE_PRODUCTS.includes(item['productId'])) {
-    //                 item['offer'] = data["productDis"][item["productId"]];
-    //                 isOfferApplied = true;
-    //             }
-    //         });
-    //         cartSession["itemsList"] = ITEMS;
-    //     }
-    //     //this.isPromoCodeApplied = isOfferApplied;
-    //     this.appliedPromocodeSubject.next("");
-    //     if (isOfferApplied) { return cartSession; }
-    //     cartSession['cart']['totalOffer'] = 0;
-    //     cartSession['offersList'] = [];
-    //     cartSession.itemsList.forEach((item) => item["offer"] = null);
-    //     this.appliedPromoCode = "";
-    //     return cartSession;
-    // }
-
     verifyShippingCharges(cartSession)
     {
         const SHIPPING_DATA = this.getShippingObj(cartSession);
@@ -1653,20 +1503,6 @@ export class CartService
                 }
             })
     }
-
-    // findAndRemovePromocode()
-    // {
-    //     const user = this.localAuthService.getUserSession();
-    //     if(!(this.appliedPromoCode)) {return;}
-    //     const cartSession = this.getGenericCartSession;
-    //     const cartObject = { 'shoppingCartDto': cartSession };
-    //     this.applyPromoCode(cartObject).subscribe(({ status, data, statusDescription: message }: any) =>
-    //     {
-    //         if (status) {
-    //             console.log(data);
-    //         }
-    //     })
-    // }
 
     clearBuyNowFlow()
     {
@@ -2078,20 +1914,10 @@ export class CartService
                 }
                 obj["shoppingCartDto"]["businessDetails"] = bd;
                 return this._dataService
-                    .callRestful(
-                        "POST",
-                        CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_BD,
-                        { body: obj }
-                    )
+                    .callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_BD, { body: obj })
                     .pipe(
-                        catchError((res: HttpErrorResponse) =>
-                        {
-                            return of({ status: false, statusCode: res.status });
-                        }),
-                        map((res: any) =>
-                        {
-                            return res;
-                        })
+                        catchError((res: HttpErrorResponse) => { return of({ status: false, statusCode: res.status }); }),
+                        map((res: any) => { return res; })
                     );
             })
         );

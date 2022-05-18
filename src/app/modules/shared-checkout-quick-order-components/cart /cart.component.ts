@@ -186,11 +186,14 @@ export class CartComponent
         if (productToUpdate['bulkPriceMap'] && productToUpdate['bulkPriceMap']['india'] && (productToUpdate['bulkPriceMap']['india'] as any[]).length) {
             bulkPriceMap = (productToUpdate['bulkPriceMap']['india'] as any[]).filter((bulk) =>
             {
-                return bulk['active'] && typedValue >= bulk['minQty'] && typedValue <= bulk['maxQty']
+                return bulk['active'] && updateQtyTo >= bulk['minQty'] && updateQtyTo <= bulk['maxQty']
             });
             if (bulkPriceMap.length) {
-                newCartSession['itemsList'][itemIndex]['bulkPrice'] = bulkPriceMap[0]['bulkSellingPrice'];;
+                newCartSession['itemsList'][itemIndex]['bulkPrice'] = bulkPriceMap[0]['bulkSellingPrice'];
                 newCartSession['itemsList'][itemIndex]['bulkPriceWithoutTax'] = bulkPriceMap[0]['bulkSPWithoutTax'];
+            }else{
+                newCartSession['itemsList'][itemIndex]['bulkPrice'] = null;
+                newCartSession['itemsList'][itemIndex]['bulkPriceWithoutTax'] = null;
             }
         }
         this.updateCart(msn, newCartSession, errorMsg);

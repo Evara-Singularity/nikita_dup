@@ -85,7 +85,7 @@ export class CartComponent
         e.stopPropagation();
         this._globalLoaderService.setLoaderState(true);
         this.pushDataToDatalayerOnRemove(this.removeIndex);
-        this._cartService.removeUnavailableItems([this._cartService.getGenericCartSession.itemsList[this.removeIndex]]);
+        this._cartService.removeCartItemsByMsns([this._cartService.getGenericCartSession.itemsList[this.removeIndex]['productId']]);
         this.removePopup = false;
     }
 
@@ -186,11 +186,14 @@ export class CartComponent
         if (productToUpdate['bulkPriceMap'] && productToUpdate['bulkPriceMap']['india'] && (productToUpdate['bulkPriceMap']['india'] as any[]).length) {
             bulkPriceMap = (productToUpdate['bulkPriceMap']['india'] as any[]).filter((bulk) =>
             {
-                return bulk['active'] && typedValue >= bulk['minQty'] && typedValue <= bulk['maxQty']
+                return bulk['active'] && updateQtyTo >= bulk['minQty'] && updateQtyTo <= bulk['maxQty']
             });
             if (bulkPriceMap.length) {
-                newCartSession['itemsList'][itemIndex]['bulkPrice'] = bulkPriceMap[0]['bulkSellingPrice'];;
+                newCartSession['itemsList'][itemIndex]['bulkPrice'] = bulkPriceMap[0]['bulkSellingPrice'];
                 newCartSession['itemsList'][itemIndex]['bulkPriceWithoutTax'] = bulkPriceMap[0]['bulkSPWithoutTax'];
+            }else{
+                newCartSession['itemsList'][itemIndex]['bulkPrice'] = null;
+                newCartSession['itemsList'][itemIndex]['bulkPriceWithoutTax'] = null;
             }
         }
         this.updateCart(msn, newCartSession, errorMsg);
@@ -198,23 +201,29 @@ export class CartComponent
 
     updateCart(msn, newCartSession, errorMsg)
     {
+        let totalOffer = null;
         const updateCart$ = this._cartService.updateCartSession(newCartSession).pipe(
             switchMap((newCartSession) =>
             {
-                return this._cartService.verifyPromocode(newCartSession)
+                return this._cartService.verifyAndApplyPromocode(newCartSession, this._cartService.appliedPromoCode,true)
             }),
-            switchMap((newCartSession) =>
+            switchMap((response) =>
             {
-                return this._cartService.verifyShippingCharges(newCartSession)
+                totalOffer = response.cartSession['cart']['totalOffer'] || null;
+                return this._cartService.verifyShippingCharges(response.cartSession);
             }));
         const setValidationMessages$ = this._cartService.removeNotificationsByMsns([msn], true);
         forkJoin([updateCart$, setValidationMessages$]).subscribe((responses) =>
         {
             this._globalLoaderService.setLoaderState(false);
-            const cartSession = responses[0];
-            if (cartSession) {
+            let cartSession = responses[0];
+            if (responses[0]) {
+                const cartSession = this._cartService.generateGenericCartSession(responses[0]);
+                cartSession['cart']['totalOffer'] = totalOffer;
+                cartSession['extraOffer'] = null;
                 this._cartService.setGenericCartSession(cartSession);
                 this._cartService.publishCartUpdateChange(cartSession);
+                this._cartService.orderSummary.next(cartSession);
                 this._cartService.orderSummary.next(cartSession);
                 this._tms.show({ type: 'success', text: errorMsg || "Cart quantity updated successfully" });
                 this.sendMessageAfterCartAction(cartSession);

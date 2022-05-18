@@ -1,10 +1,9 @@
-import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
-import { DataService } from '@app/utils/services/data.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 declare let dataLayer: any;
 @Component({
     templateUrl: 'orderSummary.html',
@@ -23,6 +22,9 @@ export class OrderSummaryComponent {
     ) {}
 
     ngOnInit(): void {
+        if (this._commonService.userSession.authenticated == "true") {
+            this._cartService.getPromoCodesByUserId(this._commonService.userSession.userId);
+        }
         this._cartService.getCartUpdatesChanges().subscribe(result => {
             this.updateShippingCharges();
         });

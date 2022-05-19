@@ -36,7 +36,6 @@ export class CartService
     public productShippingChargesListObservable: Subject<any> = new Subject();
     private notificationsSubject: Subject<any[]> = new Subject<any[]>();
     public appliedPromocodeSubject: Subject<string> = new Subject<string>();
-    //public slectedAddress: number = -1;
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public codNotAvailableObj = {}; // cart.component
@@ -44,7 +43,6 @@ export class CartService
     cartNotications = [];
     notifications = [];
     appliedPromoCode = null;
-    // isPromoCodeApplied;
     allPromoCodes: Array<any> = [];
     shippingCharges: number = 0;
 
@@ -1226,8 +1224,6 @@ export class CartService
                     let obj = [{ offerId: data['promoAttributes']['promoId'], type: '15' }];
                     const cartSession = this.getGenericCartSession;
                     cartSession['offersList'] = obj;
-                    //const cartObject = { 'shoppingCartDto': cartSession };
-                    //this.isPromoCodeApplied = false;
                     this.verifyAndApplyPromocode(cartSession, promcode, false).subscribe(({ cartSession, isUpdated }: any) =>
                     {
                         if (isUpdated) {
@@ -1252,7 +1248,6 @@ export class CartService
 
     postProcessAfterPromocode(cartSession)
     {
-        //this.isPromoCodeApplied = true;
         const totalOffer = cartSession['cart']['totalOffer'] || null;
         let tempCartSession = null;
         this.updateCartSession(cartSession).pipe(
@@ -1333,10 +1328,7 @@ export class CartService
 
     genericRemovePromoCode()
     {
-        if (!this.appliedPromoCode) {
-            //this.isPromoCodeApplied = false;
-            return;
-        }
+        if (!this.appliedPromoCode) { return; }
         this._loaderService.setLoaderState(true);
         let cartSession = this.getGenericCartSession;
         cartSession['offersList'] = [];
@@ -1347,7 +1339,6 @@ export class CartService
             data =>
             {
                 this.appliedPromoCode = '';
-                //this.isPromoCodeApplied = false;
                 this.appliedPromocodeSubject.next("");
                 this.setGenericCartSession(data);
                 this.updateCartSession(data).subscribe(res =>

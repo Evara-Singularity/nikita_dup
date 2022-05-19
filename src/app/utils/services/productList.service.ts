@@ -111,7 +111,6 @@ export class ProductListService {
   }
 
   getFilterBucket(categoryId, pageName, brandName?: string) {
-    console.trace();
     if (this._commonService.isBrowser) {
       this.showMidPlpFilterLoader = true;
 

@@ -208,37 +208,37 @@ export const CONSTANTS = {
     {
       idCategory: "116000000",
       CategoryName: "Safety & PPE Supplies",
-      category_image: "safety.png",
+      category_image: "safety_ppe_supplies.png",
       category_url: "store/safety-ppe-supplies",
     },
     {
       idCategory: "116000000",
       CategoryName: "Office Stationery & Supplies",
-      category_image: "3 (1).png",
+      category_image: "office_stationery_supplies.png",
       category_url: "store/office-stationery-supplies",
     },
     {
       idCategory: "116000000",
       CategoryName: "Electrical Tools & Equipment",
-      category_image: "electricals-1@2x.png",
+      category_image: "electrical_tools_equipment.png",
       category_url: "store/electrical-tools-equipment",
     },
     {
       idCategory: "116000000",
       CategoryName: "Industrial Tools & Equipment",
-      category_image: "power_tool.png",
+      category_image: "industrial_tools_equipment.png",
       category_url: "store/industrial-tools-equipment",
     },
     {
       idCategory: "116000000",
       CategoryName: "Lab & Scientific Equipment",
-      category_image: "electricals-2.png",
+      category_image: "medical_equipment_hospital_supplies.png",
       category_url: "store/lab-scientific-equipment",
     },
     {
       idCategory: "116000000",
       CategoryName: "Medical Care & Hospital Supplies",
-      category_image: "medical.png",
+      category_image: "medical_equipment_hospital_supplies.png",
       category_url: "store/medical-equipment-hospital-supplies",
     },
     {

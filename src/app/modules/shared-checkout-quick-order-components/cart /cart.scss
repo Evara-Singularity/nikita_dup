@@ -1,4 +1,5 @@
 @import '../../../scss/variables';
+@import '../../../scss/components/alert-box.scss';
 .card {
     @extend %white-card;
     padding: 15px 0 0 0;
@@ -439,50 +440,50 @@
     }
 }
 
-.alert-box {
-    .overlay {
-        z-index: 12;
-    }
-    .content-area {
-        transform: translateY(-50%);
-        position: fixed;
-        top: 50%;
-        left: 7.5%;
-        width: 85%;
-        background: #fff;
-        z-index: 12;
-        font-size: 14px;
-        border-radius: 3px;
-        .info-area {
-            padding: 25px;
-            .info {
-                line-height: 20px;
-                font-size: 14px;
-            }
-            .info-title {
-                margin-bottom: 10px;
-                line-height: 19px;
-                font-size: 16px;
-                font-weight: 500;
-            }
-        }
-        .button-area {
-            border-top: 1px solid #e6e6e6;
-            position: relative;
-            button {
-                border: 0;
-                background: #fff;
-                height: 50px;
-                text-align: center;
-                width: 50%;
-                float: left;
-                font-weight: 600;
-                font-size: 14px;
-                &.continue {
-                    color: #3875fd;
-                    border-left: 1px solid #e6e6e6;
-                }
-            }
-        }
-    }
-}
+// .alert-box {
+//     .overlay {
+//         z-index: 12;
+//     }
+//     .content-area {
+//         transform: translateY(-50%);
+//         position: fixed;
+//         top: 50%;
+//         left: 7.5%;
+//         width: 85%;
+//         background: #fff;
+//         z-index: 12;
+//         font-size: 14px;
+//         border-radius: 3px;
+//         .info-area {
+//             padding: 25px;
+//             .info {
+//                 line-height: 20px;
+//                 font-size: 14px;
+//             }
+//             .info-title {
+//                 margin-bottom: 10px;
+//                 line-height: 19px;
+//                 font-size: 16px;
+//                 font-weight: 500;
+//             }
+//         }
+//         .button-area {
+//             border-top: 1px solid #e6e6e6;
+//             position: relative;
+//             button {
+//                 border: 0;
+//                 background: #fff;
+//                 height: 50px;
+//                 text-align: center;
+//                 width: 50%;
+//                 float: left;
+//                 font-weight: 600;
+//                 font-size: 14px;
+//                 &.continue {
+//                     color: #3875fd;
+//                     border-left: 1px solid #e6e6e6;
+//                 }
+//             }
+//         }
+//     }
+// }

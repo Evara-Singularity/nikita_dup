@@ -1,1 +1,136 @@
-@import "../../../scss/components/product-cards";
+// @import "../../../scss/components/product-cards";
+@import '../../../scss/variables';
+@import '../../../scss/components/rating';
+
+
+.product-horizontal-card{
+    background-color: var(--white);
+    width:330px;
+    margin-right:10px;
+    border-radius:$border-radius-8;
+    min-height:125px;
+    .youtubeThumbnail-listing {
+        padding-top: 10px;
+        .thumbnail {
+            background-size: cover;
+            height: 120px;
+            background-position: center center;
+            background-repeat: no-repeat;
+            position: relative;
+            margin: 0px 10px;
+            border-radius: 8px;
+        }
+        .youtube_icon {
+            width: 70px;
+            height: 70px;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+    }
+    .card-container{
+        padding:10px;
+        width: 100%;
+        .inner-container{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            .pwa-image{
+                img{
+                    width:80px
+                }
+              }
+            .left {
+                width: 80px;
+                text-align: center;
+                position: relative;
+                img {
+                    width: 100%;
+                    height: auto;
+                    max-width: 100px;
+                }
+            }
+            .right {
+                width: calc(100% - 90px);
+                .brand{
+                    margin-top: 4px;
+                    text-align: left;
+                    font-size: $small-font;
+                    color: var(--gray-web);
+                    font-weight:$font-bold;
+                  }
+                
+                .price-details {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    color: #2b2b2b;
+                    margin-bottom: 8px;
+                    margin-top:8px;
+                    align-items: center;
+                 .left {
+                    text-align: left;
+                    width: calc(100% - 120px);
+                    .price {
+                        font-size: $small-font;
+                        margin-bottom:4px;
+                        margin-top:4px;
+                        .prod-mrp {
+                            color:var(--gray-web);
+                            text-decoration: line-through;
+                            opacity: 0.5;
+                            margin-right:5px;
+                        }
+                        .prod-discount {
+                            font-weight: bold;
+                            color: #3b9e26;
+                        }
+                    }
+                    .prod-selling-price {
+                        font-size: $large-font;
+                        font-weight: bold;
+                        margin-bottom:4px;
+                        margin-top:4px;
+                    }
+                    .out-of-stock-text {
+                        font-size: $small-font;
+                        opacity: 0.5;
+                    }
+                    .out-of-stock-price {
+                        font-size: $large-font;
+                        opacity: 0.5;
+                        font-weight: bold;
+                        padding-top:4px;
+                    }
+                }
+                .right {
+                    text-align: right;
+                    width: 120px;
+                }
+              }
+            }
+            .card-btn-row{
+                display:flex;
+                button{
+                    flex-basis:calc(100% - 40px);
+                }
+            }
+        }
+    }
+// Key Features
+.keyfeatures {
+    padding: 0px 8px 8px 18px;
+    ul {
+        list-style: disc;
+        li {
+            color: #7b7b7b;
+            font-size: $small-font;
+            margin-bottom: 5px;
+        }
+    }
+  }
+}
+
+

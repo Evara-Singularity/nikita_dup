@@ -2,14 +2,13 @@
 @import '../../../scss/variables';
 @import '../../../scss/components/rating';
 @import '../../../scss/components/buttons';
-
-      .product-vertical-grid-card{
+  .product-vertical-card{
         background:var(--white);
         border:1px solid var(--white);
         border-radius:$border-radius-8;
         padding: 10px;
         position: relative;
-        width:160px;
+        width:50%;
         margin:10px 0px 0px 10px;
         .product-card-upper {
             text-align: center;
@@ -18,7 +17,7 @@
                 img{
                     width:115px
                 }
-          }
+           }
         }
         .product-card-lower {
             .name {

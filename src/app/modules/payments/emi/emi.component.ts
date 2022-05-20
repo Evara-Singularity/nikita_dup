@@ -107,11 +107,11 @@ export class EmiComponent {
         const cart = cartSession["cart"];
         cartSession['nocostEmi'] = 0;
         this.type = this._cartService.invoiceType;
-        if (cartSession["cart"]["totalPayableAmount"] < CONSTANTS.EMI_MINIMUM_AMOUNT) {
+        const payableAmount = (cart['totalAmount'] + cart['shippingCharges']) - cart['totalOffer'];
+        if (payableAmount < CONSTANTS.EMI_MINIMUM_AMOUNT) {
             this.message = `EMI not available below Rs. ${CONSTANTS.EMI_MINIMUM_AMOUNT}`;
             this.isEmiEnable = false;
         } else {
-            const payableAmount = (cart['totalAmount'] + cart['shippingCharges']) -cart['totalOffer'];
             let apiData = { price: (payableAmount) };
             if (this._cartService.invoiceType == "retail") {
                 apiData["gateWay"] = "payu";
@@ -179,7 +179,7 @@ export class EmiComponent {
         const cardTypeResponse = data;
         this.emiResponse = cardTypeResponse;
         this.dataEmi = this._objectToArray.transform(cardTypeResponse, "associative");
-
+        const payableAmount = (cart['totalAmount'] + cart['shippingCharges']) - cart['totalOffer'];
 
         this.dataEmi.forEach((element, index) => {
             if (this.bankMap.hasOwnProperty(element.key)) {
@@ -189,10 +189,10 @@ export class EmiComponent {
             let elementData = this._objectToArray.transform(element.value, "associative");
             elementData.forEach((ele, index) => {
                 if (ele.value['tenure'] == "03 months" || ele.value['tenure'] == "3") {
-                    ele.value['emi_value'] = (cart.totalPayableAmount) / 3;
+                    ele.value['emi_value'] = (payableAmount) / 3;
                     ele.value['emi_interest_paid'] = 0;
                 } else if (ele.value['tenure'] == "06 months" || ele.value['tenure'] == "6") {
-                    ele.value['emi_value'] = (cart.totalPayableAmount) / 6;
+                    ele.value['emi_value'] = (payableAmount) / 6;
                     ele.value['emi_interest_paid'] = 0;
                 } else {
                     ele.value['transactionAmount'] = ele.value['transactionAmount'] + ele.value['emi_interest_paid'];
@@ -547,6 +547,7 @@ export class EmiComponent {
         this.isShowLoader = true;
         let cartSession = this._cartService.getGenericCartSession;
         let cart = cartSession["cart"];
+        const payableAmount = (cart['totalAmount'] + cart['shippingCharges']) - cart['totalOffer'];
         this.nocostEmiDiscount = 0;
         if (month == 3 || month == 6) {
             // ODP-359
@@ -557,10 +558,10 @@ export class EmiComponent {
             }
             //cartSession["nocostEmi"] = 0;
             cartSession['nocostEmi'] = this.nocostEmiDiscount;
-            this.totalPayableAmount = cart.totalPayableAmount - this.nocostEmiDiscount;
+            this.totalPayableAmount = payableAmount - this.nocostEmiDiscount;
         } else {
             cartSession["nocostEmi"] = 0;
-            this.totalPayableAmount = cart.totalPayableAmount;
+            this.totalPayableAmount = payableAmount;
         }
         this._cartService.orderSummary.next(cartSession);
         this.isShowLoader = false;

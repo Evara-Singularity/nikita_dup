@@ -47,6 +47,11 @@ export class CartComponent
     {
         // Get latest cart from API
         this._commonService.updateUserSession();
+        if(this._commonService.isBrowser)
+        {
+            this.sendCriteoPageLoad();
+            this.sendEmailGTMCall();
+        }
         this.loadCartDataFromAPI();
     }
 
@@ -174,10 +179,10 @@ export class CartComponent
                 break;
             }
         }
-        if (removeIndex > -1) { 
+        if (removeIndex > -1) {
             this._globalLoaderService.setLoaderState(false);
-            this.removeItemFromCart(itemIndex); 
-            return 
+            this.removeItemFromCart(itemIndex);
+            return
         }
         let bulkPriceMap = [];
         const newCartSession = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession));
@@ -191,7 +196,7 @@ export class CartComponent
             if (bulkPriceMap.length) {
                 newCartSession['itemsList'][itemIndex]['bulkPrice'] = bulkPriceMap[0]['bulkSellingPrice'];
                 newCartSession['itemsList'][itemIndex]['bulkPriceWithoutTax'] = bulkPriceMap[0]['bulkSPWithoutTax'];
-            }else{
+            } else {
                 newCartSession['itemsList'][itemIndex]['bulkPrice'] = null;
                 newCartSession['itemsList'][itemIndex]['bulkPriceWithoutTax'] = null;
             }
@@ -205,7 +210,7 @@ export class CartComponent
         const updateCart$ = this._cartService.updateCartSession(newCartSession).pipe(
             switchMap((newCartSession) =>
             {
-                return this._cartService.verifyAndApplyPromocode(newCartSession, this._cartService.appliedPromoCode,true)
+                return this._cartService.verifyAndApplyPromocode(newCartSession, this._cartService.appliedPromoCode, true)
             }),
             switchMap((response) =>
             {
@@ -232,6 +237,47 @@ export class CartComponent
             this._tms.show({ type: 'error', text: cartSession["message"] || "Cart quanity is not updated." });
         }, (error) => { this._globalLoaderService.setLoaderState(false); })
     }
+
+    //checkouk-v1
+    sendCriteoPageLoad()
+    {
+        const cartSession = this._cartService.getGenericCartSession;
+        const itemsList = cartSession['itemsList'] ? (cartSession['itemsList'] as any[]) : [];
+        if (itemsList.length === 0) { return; }
+        const cart = cartSession['cart'];
+        const channel = this._router.url.includes("/quickorder") ? "Cart" : "Checkout"
+        var totQuantity = 0;
+        var trackData = {
+            event_type: "page_load",
+            page_type: channel,
+            label: "checkout_started",
+            channel: channel,
+            price: cartSession["cart"]["totalPayableAmount"] ? cartSession["cart"]["totalPayableAmount"].toString() : '0',
+            quantity: itemsList.map(item => { return totQuantity = totQuantity + item.productQuantity; })[itemsList.length - 1],
+            shipping: parseFloat(cartSession["shippingCharges"]),
+            itemList: cartSession.itemsList.map(item =>
+            {
+                return {
+                    category_l1: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[0] : null,
+                    category_l2: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[1] : null,
+                    category_l3: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[2] : null,
+                    price: item["totalPayableAmount"].toString(),
+                    quantity: item["productQuantity"]
+                }
+            })
+        }
+        this._globalAnalyticsService.sendToClicstreamViaSocket(trackData);
+    }
+
+    sendEmailGTMCall()
+    {
+        const userSession = this._localAuthService.getUserSession() || null;
+        dataLayer.push({
+            'event': 'setEmail',
+            'email': (userSession && userSession.email) ? userSession.email : '',
+        });
+    }
+    //end of checkout v1
 
     sendCritieoDataonView(cartSession)
     {

@@ -1918,7 +1918,7 @@ export class CartService
     //Analytics
     sendAdobeOnCheckoutOnVisit(checkoutPageTye)
     {
-        let subsection = (checkoutPageTye === 'address') ? `moglix:order checkout:product summary & address details` : `payment methods`;
+        let subsection = (checkoutPageTye === 'address') ? `product summary & address details` : `payment methods`;
         subsection = `moglix:order checkout:${subsection}`;
         const digitalData = {};
         const cartSession = this.getGenericCartSession;

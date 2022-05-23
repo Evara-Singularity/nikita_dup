@@ -57,6 +57,7 @@ export class PaymentComponent implements OnInit {
     ngOnInit() {
        
         this.intialize();
+        this._cartService.sendAdobeOnCheckoutOnVisit("payment");
         this.getSavedCardData();
         this._cartService.clearCartNotfications();
     }

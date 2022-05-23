@@ -95,7 +95,7 @@
                     </div>
                 </ng-container>
 
-                <section class="creditDebitCardInner noPad">
+                <section class="creditDebitCardInner noPad mt-10">
                     <h3 class="heading-3">Please enter your card details</h3>
                     <div class="material-form material-form-boxed">
                         <div class="input-field-boxed">
@@ -103,54 +103,57 @@
                             <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber
                                 kpAutocompleteOff placeholder="Enter Card Details">
                         </div>
-                        <div class="date-type-select" *ngIf="!(bajajFinservField)">
-                            <label>Expiry Date</label>
-                            <div class="multiple-form-field">
-                                <div class="input-field-boxed">
-                                    <input type="hidden" formControlName="ccexpmon" #expireMonth />
-                                    <div class="custom_select_box" (click)="openMonthPopUp()">
-                                        <div class="custom_select_input" [class.selectedInput]="selectedMonth">
-                                            <span>{{selectedMonth || 'MM'}}</span>
+                        <div class="d-flex-card-dtls">
+                            <div class="date-type-select d-flex-card-dtls-l" *ngIf="!(bajajFinservField)">
+                                <label>Expiry Date</label>
+                                <div class="multiple-form-field">
+                                    <div class="input-field-boxed">
+                                        <input type="hidden" formControlName="ccexpmon" #expireMonth />
+                                        <div class="custom_select_box" (click)="openMonthPopUp()">
+                                            <div class="custom_select_input" [class.selectedInput]="selectedMonth">
+                                                <span>{{selectedMonth || 'MM'}}</span>
+                                            </div>
                                         </div>
+                                        <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'"
+                                            [headerLabel]="'Select Month'" [isVisible]="monthSelectPopupStatus"
+                                            (selectedValue$)="selectMonth($event)" [type]="'MONTH'"
+                                            [compare]="selectedMonth"></select-popup>
+                                        <!-- <select placeholder="MM" formControlName="ccexpmon" #expireMonth>
+                                            <option *ngFor="let expMon of expMons" [value]="expMon.key">{{expMon.value}}</option>
+                                        </select> -->
                                     </div>
-                                    <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'"
-                                        [headerLabel]="'Select Month'" [isVisible]="monthSelectPopupStatus"
-                                        (selectedValue$)="selectMonth($event)" [type]="'MONTH'"
-                                        [compare]="selectedMonth"></select-popup>
-                                    <!-- <select placeholder="MM" formControlName="ccexpmon" #expireMonth>
-                                        <option *ngFor="let expMon of expMons" [value]="expMon.key">{{expMon.value}}</option>
-                                    </select> -->
+                                    <div class="input-field-boxed">
+                                        <input type="hidden" formControlName="ccexpyr" #expireYear />
+                                        <div class="custom_select_box" (click)="openYearPopUp()">
+                                            <div class="custom_select_input" [class.selectedInput]="selectedYear">
+                                                <span>{{selectedYear || 'YYYY'}}</span>
+                                            </div>
+                                        </div>
+                                        <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'"
+                                            [headerLabel]="'Select Year'" [isVisible]="yearSelectPopupStatus"
+                                            (selectedValue$)="selectYear($event)" [type]="'YEAR'" [compare]="selectedYear">
+                                        </select-popup>
+                                        <!-- <select placeholder="YYYY" formControlName="ccexpyr" #expireYear>
+                                            <option *ngFor="let expYr of expYrs" [value]="expYr">{{expYr}}</option>
+                                        </select> -->
+                                    </div>
                                 </div>
-                                <div class="input-field-boxed">
-                                    <input type="hidden" formControlName="ccexpyr" #expireYear />
-                                    <div class="custom_select_box" (click)="openYearPopUp()">
-                                        <div class="custom_select_input" [class.selectedInput]="selectedYear">
-                                            <span>{{selectedYear || 'YYYY'}}</span>
-                                        </div>
+                            </div>
+                            <div class="cvvField d-flex-card-dtls-r" *ngIf="!(bajajFinservField)">
+                                <label>Enter CVV</label>
+                                <div class="multiple-form-field">
+                                    <div class="input-field-boxed">
+                                        <input type="password" id="cc-number" formControlName="ccvv" #ccNumber
+                                            kpAutocompleteOff placeholder="CVV" maxlength="3">
                                     </div>
-                                    <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'"
-                                        [headerLabel]="'Select Year'" [isVisible]="yearSelectPopupStatus"
-                                        (selectedValue$)="selectYear($event)" [type]="'YEAR'" [compare]="selectedYear">
-                                    </select-popup>
-                                    <!-- <select placeholder="YYYY" formControlName="ccexpyr" #expireYear>
-                                        <option *ngFor="let expYr of expYrs" [value]="expYr">{{expYr}}</option>
-                                    </select> -->
+                                    <i class="icon-cvv"></i>
+                                    <!-- <span class="cvv-text">
+                                        Last 3 digits printed on <br /> the back of the card.
+                                    </span> -->
                                 </div>
                             </div>
                         </div>
-                        <div class="cvvField" *ngIf="!(bajajFinservField)">
-                            <label>Enter CVV</label>
-                            <div class="multiple-form-field">
-                                <div class="input-field-boxed">
-                                    <input type="password" id="cc-number" formControlName="ccvv" #ccNumber
-                                        kpAutocompleteOff placeholder="CVV" maxlength="3">
-                                </div>
-                                <i class="icon-cvv"></i>
-                                <span class="cvv-text">
-                                    Last 3 digits printed on <br /> the back of the card.
-                                </span>
-                            </div>
-                        </div>
+                        
                         <div class="input-field-boxed">
                             <label>Name On Card</label>
                             <input type="text" formControlName="ccname" placeholder="Name On Card">

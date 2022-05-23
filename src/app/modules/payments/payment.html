@@ -5,7 +5,7 @@
     </div> -->
 
     <section class="payment_accordion">
-        <div id="creditDebitCardSection" class="payment_accordion_item pwa-row">
+        <div id="creditDebitCardSection" class="payment_accordion_item pwa-row pad-0">
             <div (click)="updatePaymentBlock(globalConstants['creditDebitCard'], 'creditDebitCard', 'creditDebitCardSection')"
                 class="payment-accordion_header">
                 <i class="icon-credit-debit-card ico-accord-left"></i>
@@ -20,7 +20,7 @@
         </div>
 
 
-        <div id="netBankingSection" class="payment_accordion_item pwa-row">
+        <div id="netBankingSection" class="payment_accordion_item pwa-row pad-0">
             <div (click)="updatePaymentBlock(globalConstants['netBanking'], 'netBanking', 'netBankingSection')"
                 class="payment-accordion_header">
                 <i class="icon-net-banking ico-accord-left"></i>
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div id="walletSection" class="payment_accordion_item pwa-row">
+        <div id="walletSection" class="payment_accordion_item pwa-row pad-0">
             <div (click)="updatePaymentBlock(globalConstants['wallet'], 'wallet', 'walletSection')"
                 class="payment-accordion_header">
                 <i class="icon-wallet ico-accord-left"></i>
@@ -48,7 +48,7 @@
             </div>
         </div>
         
-        <div id="emiSection" class="payment_accordion_item pwa-row">
+        <div id="emiSection" class="payment_accordion_item pwa-row pad-0">
             <div (click)="updatePaymentBlock(globalConstants['emi'], 'emi', 'emiSection')"
                 class="payment-accordion_header">
                 <i class="icon-emi ico-accord-left"></i>
@@ -63,7 +63,7 @@
             </div>
         </div>
  
-        <div id="neftRtgsSection" *ngIf="canNEFT_RTGS" class="payment_accordion_item pwa-row">
+        <div id="neftRtgsSection" *ngIf="canNEFT_RTGS" class="payment_accordion_item pwa-row pad-0">
             <div (click)="updatePaymentBlock(globalConstants['neftRtgs'],'neftRtgs', 'neftRtgsSection')"
                 class="payment-accordion_header">
                 <i class="icon-credit-line-home ico-accord-left"></i>
@@ -77,14 +77,14 @@
             </div>
         </div>
 
-        <div id="upiSection" class="payment_accordion_item pwa-row">
+        <div id="upiSection" class="payment_accordion_item pwa-row pad-0">
             <div (click)="updatePaymentBlock(globalConstants['upi'],'upi', 'upiSection')"
                 class="payment-accordion_header">
                 <img class="icon-img" src="assets/img/upi.svg">
                 <span class="accordion-text">UPI</span>
                 <i class="icon-down"></i>
             </div>
-            <div class="payment-accordion_body">
+            <div class="payment-accordion_body pad-lr-15">
                 <div *ngIf="paymentBlock==globalConstants['upi']" class="payment-popup">
                     <upi *ngIf="paymentBlock==globalConstants['upi']" [successPercentageData]="upiSuccessPercentageData"
                         [type]="invoiceType"></upi>
@@ -94,7 +94,7 @@
 
 
         <div id="paytmUpiSection" [class.selectedAccordion]="paymentBlock==globalConstants['paytmUpi']"
-            class="payment_accordion_item pwa-row">
+            class="payment_accordion_item pwa-row pad-0">
             <div (click)="updatePaymentBlock(globalConstants['paytmUpi'],'paytmUpi', 'paytmUpiSection')"
                 class="payment-accordion_header">
                 <img class="icon-img" src="assets/img/paytm.svg">

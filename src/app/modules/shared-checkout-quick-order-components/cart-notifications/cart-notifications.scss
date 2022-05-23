@@ -38,8 +38,9 @@
         float: left;
         width: calc(100% - 100px);
         color: $txt-color;
-        font-weight: 400;
+        font-weight: medium; 
         margin-top: 1px;
+        font-size: $small-font;
     }
     .view-btn {
         float: right;
@@ -52,6 +53,6 @@
     display: inline-block;
     font-size: $medium-font;
     border-radius: 3px;
-    color: #278BED;
+    color: var(--primary);
     font-weight: bold;
 }

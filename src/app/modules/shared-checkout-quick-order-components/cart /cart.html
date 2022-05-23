@@ -1,4 +1,35 @@
 <div *ngIf="_cartService.getGenericCartSession?.itemsList && _cartService.getGenericCartSession?.itemsList.length > 0">
+
+    <div class="pwa-row applycoupen-strip">
+        <div class="pwa-col-2">
+            <i class="icon-coupon-3-fill-1 green-txt"></i>
+        </div>
+        <div class="pwa-col-9">
+            <span class="apply-coupen-txt">APPLY COUPON</span>
+        </div>
+        <div class="pwa-col-1"><i class="icon-next"></i></div>
+    </div>
+
+    <!-- <div class="thanks-pop">
+        <div class="top-cross-area">
+            <img src="assets/img/close-circle-fill.svg">
+        </div>
+        <div class="pop-img-area">
+            <img src="assets/img/checkbox-circle-fill-m.svg">
+        </div>
+        <div class="pop-text-area">
+            <h3>Thanks for submitting the query</h3><br>
+            <h4>Our support member will get in touch with you within 24 hours.</h4>
+        </div><br>
+        <div class="mail-n-call-area">
+            <h4>For further assistance Call or Whatsapp @<span class="mail-or-num">+91 - 9999644044</span></h4><br>
+            <h4>You can also mail us at <span class="mail-or-num">salesenquiry@moglix.com</span>.</h4>
+        </div>
+        <div class="pop-rnr" >
+            <button class="btn redBgButton">EXPLORE AVAILABLE PRODUCTS</button>
+        </div>
+    </div> -->
+
     <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative"
         *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let i = index;">
         <div *ngIf="item['text1']" class="realTimePrice">
@@ -36,7 +67,7 @@
         <div *ngIf="item.oos" class="remove-btn remove-oos" (click)="removePopup = true; removeIndex = i">
             <span>REMOVE</span>
         </div>
-        <div class="alert-box" *ngIf="removePopup">
+        <!-- <div class="alert-box" *ngIf="removePopup">
             <div class="overlay"></div>
             <div class="content-area">
                 <div class="info-area">
@@ -48,11 +79,12 @@
                     <button (click)="deleteProduct($event)" class="continue">REMOVE</button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div [ngClass]="{'oos':item.oos}" class="price_detail_toggle pad-15">
             <div class="volume">
                 <span class="f-left txt">Qty :&nbsp;</span>
-                <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')">-</span>
+                <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')"><span
+                        class="multiple-quantity">-</span><i class="icon-bin single-quantity"></i></span>
                 <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
                     (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget>
                 <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')">+</span>
@@ -105,5 +137,42 @@
             <span>Free Shipping<i class="icon-delivery_y_5"></i></span>
         </div>
     </div>
-
 </div>
+
+<app-bottom-menu *ngIf="removePopup">
+    <div content>
+        <div class="content-area">
+            <div class="top-heading">
+                <h3 class="heading-3">Are you sure to remove this item?</h3>
+                <i (click)="removePopup = false" class="icon-circle-delete"></i>
+            </div>
+            <div [ngClass]="{'realTimeUpdate':item['text1']}" class="cart-popup-card card relative"
+                *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let i = index;">
+                <div *ngIf="item['text1']" class="realTimePrice">
+                    <span>{{item['text1']}}
+                        <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
+                            {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
+                </div>
+                <div class="pwa-row pad-0" [ngClass]="{'oos':item.oos}">
+                    <div class="product-left">
+                        <div class="product-img product-img-v2">
+                            <img (click)="redirectToProductURL(item.productUrl)" src="{{item.productImg}}">
+                        </div>
+
+                    </div>
+                    <div class="product-detail">
+                        <div class="p-name">
+                            <a (click)="redirectToProductURL(item.productUrl)"> {{ (item.productName.length > 50) ?
+                                (item.productName | slice:0:48) + '..' : (item.productName) }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-area">
+                <button (click)="deleteProduct($event)" class="btn-remove redBgButton"><i
+                        class="icon-bin single-quantity"></i>&nbsp;REMOVE</button>
+                <button class="btn-wishlist btn btn-red-bg">MOVE TO WISHLIST</button>
+            </div>
+        </div>
+    </div>
+</app-bottom-menu>

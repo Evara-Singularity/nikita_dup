@@ -1,4 +1,5 @@
 @import '../../scss/variables';
+@import '../../../styles.scss';
 
 .select-container {
     width: 100%;
@@ -261,9 +262,11 @@
         }
     }
 
-    .bottom-options .content-box {
-        max-height: 65%;
+    .bottom-options .verifyPopup {
+        max-height: 75%;
         padding-bottom: 60px;
+        border-radius: 16px 16px 0px 0px;
+        overflow: scroll;
     }
 }
 

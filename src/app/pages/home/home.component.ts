@@ -76,6 +76,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	categories: Array<{}> = CONSTANTS.siemaCategories;
 	imagePath = CONSTANTS.IMAGE_BASE_URL;
+	clusterimagePath='../../../../../assets/';
 	imagePathBanner = CONSTANTS.IMAGE_BASE_URL;
 	pageImages = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.pwaImages.imgFolder;
 	appendSiemaItemSubjects: {};

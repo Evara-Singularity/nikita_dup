@@ -5,15 +5,12 @@ import {
 	Output,
 	EventEmitter,
 	NgModule,
-	HostBinding,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonService } from '../../utils/services/common.service';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
-import { ProductHorizontalCardModule } from '../product-horizontal-card/product-horizontal-card.module';
 import { ProductCardFeature, ProductsEntity } from '@app/utils/models/product.listing.search';
-import { ProductCardHorizontalScrollComponent } from '../ui/product-card-horizontal-scroll/product-card-horizontal-scroll.component';
 import { ProductCardHorizontalScrollModule } from '../ui/product-card-horizontal-scroll/product-card-horizontal-scroll.module';
 import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 
@@ -181,7 +178,6 @@ export class Categories {
 		RouterModule,
 		LazyLoadImageModule,
 		ObserveVisibilityDirectiveModule,
-		ProductHorizontalCardModule,
 		ProductCardHorizontalScrollModule,
 		ProductCardVerticalContainerModule
 	],

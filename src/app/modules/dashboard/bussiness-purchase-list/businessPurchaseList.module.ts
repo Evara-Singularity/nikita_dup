@@ -8,8 +8,7 @@ import { BusinessPurchaseListService } from "./businessPurchaseList.service";
 import { OrderSummaryService } from "@app/modules/legacyOrderSummary/orderSummary.service";
 import { ProductService } from "@app/utils/services/product.service";
 import { MathCeilPipeModule } from "@app/utils/pipes/math-ceil";
-import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
-
+import { ProductCardHorizontalGridViewModule } from "@app/modules/product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module";
 
 @NgModule({
   imports: [
@@ -19,7 +18,7 @@ import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-car
     ReactiveFormsModule,
     routing,
     MathCeilPipeModule,
-    ProductHorizontalCardModule,
+    ProductCardHorizontalGridViewModule
   ],
   declarations: [BussinessPurchaseListComponent],
   exports: [],

@@ -1,8 +1,8 @@
 <section class="purchase-list">
     <ng-container *ngFor="let item of wishlistData;let pIndex=index;">
-        <product-horizontal-card  [product]="item" 
+        <product-card-horizontal-grid-view  [product]="item" 
             [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" >
-        </product-horizontal-card>     
+        </product-card-horizontal-grid-view>     
             <!-- <div class="clearfix">
                 <div class="product-img">
                     <img src="{{imagePath}}{{item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].images[0].links.medium}}"

@@ -58,7 +58,7 @@
                             </ng-container>
                         </div>
                     </ng-container>
-                    <ng-container *ngIf="brandSuggestionList.length > 0">
+                    <ng-container>
                         <h3 class="search_heading">Explore By Brands </h3>
                         <div class="search_product_categories">
                             <ng-container *ngFor="let prod of brandSuggestionList | slice:0:12; let i = index;">
@@ -84,11 +84,11 @@
                     <div class="vertical-scroll-container">
                         <div class="inner-scroll-container" [style.width.px]="searchProducts.length * 165">
                             <ng-container *ngFor="let product of searchProducts;let pIndex=index">
-                                <product-horizontal-card [section]="'search-popup'" [product]="product"
+                                <product-card-vertical-grid-view [section]="'search-popup'" [product]="product"
                                     [enableTracking]="true" [cardMetaInfo]='cardMetaInfo'
                                     [cardFeaturesConfig]='cardFeaturesConfig' [moduleUsedIn]="'SEACRH_SUGGESTION'"
                                     [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
-                                </product-horizontal-card>
+                                </product-card-vertical-grid-view>
                             </ng-container>
                         </div>
                     </div>

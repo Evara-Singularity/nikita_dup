@@ -1,11 +1,24 @@
 @import "../../../scss/variables";
-.vertical-scroll-container {
-    background-color: $white-color;
-    overflow-x: auto;
-    width: 100%;
+.with-scroll-container{
     ::-webkit-scrollbar {
         display: none;
     } 
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none; 
+    .inner-container{
+        display:flex;
+        flex-wrap:nowrap;
+        overflow-x: auto;
+        margin:-10px 0px 0px -10px;
+        width:calc(100% + 10px);
+    }
+}
+.without-scroll-container{
+    .inner-container{
+        display:flex;
+        flex-wrap:wrap;
+        flex-direction: row;
+        margin:-10px 0px 0px -10px;
+        width:calc(100% + 10px);
+    }
 }

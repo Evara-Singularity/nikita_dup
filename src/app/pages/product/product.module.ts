@@ -19,10 +19,10 @@ import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { SliceArrayPipeModule } from '@app/utils/pipes/slice-array.pipe';
 import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/product-oos-similar.module';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
-import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-card/product-horizontal-card.module';
-// import { IdleUserSearchNudgeModule } from '@app/modules/Idle-user-search-nudge/Idle-user-search-nudge.module';
 import { PastOrdersModule } from '@app/components/past-orders/past-orders.component';
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
+import { ProductCardSkeletonModule } from '@app/modules/product-card/product-card-skeleton/product-card-skeleton.module';
+import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -45,7 +45,8 @@ import { NotFoundModule } from "@app/modules/not-found/not-found.module";
     SliceArrayPipeModule,
     NumberDirectiveModule,
     // Directives
-    ProductHorizontalCardModule,
+    ProductCardHorizontalGridViewModule,
+    ProductCardSkeletonModule,
     SwipeDirectiveModule,
     // IdleUserSearchNudgeModule,
     PastOrdersModule,

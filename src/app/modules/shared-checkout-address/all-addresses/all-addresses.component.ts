@@ -193,7 +193,6 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             //Expected Actions: "Add or Edit or null", null implies no action to be taken
             if (response.action) {
                 const isEditMode = response.action === "Edit";
-                console.log(response.action);
                 const ADDRESSES = response['addresses'];
                 this.updateAddressAfterAction(addressType, ADDRESSES, isEditMode);
             }
@@ -269,7 +268,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         let data = {page:{}}
         data['page']['pageName'] = "moglix:order checkout:address details";
         data['page']['subSection'] = "moglix:order checkout:address details";
-        this._globalAnalyticsService.sendAdobeCall("genericPageLoad");
+        this._globalAnalyticsService.sendAdobeCall(data, "genericPageLoad");
     }
 
     ngOnDestroy(): void

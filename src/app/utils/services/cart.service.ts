@@ -36,7 +36,6 @@ export class CartService
     public productShippingChargesListObservable: Subject<any> = new Subject();
     private notificationsSubject: Subject<any[]> = new Subject<any[]>();
     public appliedPromocodeSubject: Subject<string> = new Subject<string>();
-    //public slectedAddress: number = -1;
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public codNotAvailableObj = {}; // cart.component
@@ -44,7 +43,6 @@ export class CartService
     cartNotications = [];
     notifications = [];
     appliedPromoCode = null;
-    // isPromoCodeApplied;
     allPromoCodes: Array<any> = [];
     shippingCharges: number = 0;
 
@@ -1226,8 +1224,6 @@ export class CartService
                     let obj = [{ offerId: data['promoAttributes']['promoId'], type: '15' }];
                     const cartSession = this.getGenericCartSession;
                     cartSession['offersList'] = obj;
-                    //const cartObject = { 'shoppingCartDto': cartSession };
-                    //this.isPromoCodeApplied = false;
                     this.verifyAndApplyPromocode(cartSession, promcode, false).subscribe(({ cartSession, isUpdated }: any) =>
                     {
                         if (isUpdated) {
@@ -1252,7 +1248,6 @@ export class CartService
 
     postProcessAfterPromocode(cartSession)
     {
-        //this.isPromoCodeApplied = true;
         const totalOffer = cartSession['cart']['totalOffer'] || null;
         let tempCartSession = null;
         this.updateCartSession(cartSession).pipe(
@@ -1333,10 +1328,7 @@ export class CartService
 
     genericRemovePromoCode()
     {
-        if (!this.appliedPromoCode) {
-            //this.isPromoCodeApplied = false;
-            return;
-        }
+        if (!this.appliedPromoCode) { return; }
         this._loaderService.setLoaderState(true);
         let cartSession = this.getGenericCartSession;
         cartSession['offersList'] = [];
@@ -1347,7 +1339,6 @@ export class CartService
             data =>
             {
                 this.appliedPromoCode = '';
-                //this.isPromoCodeApplied = false;
                 this.appliedPromocodeSubject.next("");
                 this.setGenericCartSession(data);
                 this.updateCartSession(data).subscribe(res =>
@@ -1925,6 +1916,69 @@ export class CartService
     }
 
     //Analytics
+    sendAdobeOnCheckoutOnVisit(checkoutPageTye)
+    {
+        let subsection = (checkoutPageTye === 'address') ? `product summary & address details` : `payment methods`;
+        subsection = `moglix:order checkout:${subsection}`;
+        const digitalData = {};
+        const cartSession = this.getGenericCartSession;
+        const itemsList = cartSession['itemsList'] ? (cartSession['itemsList'] as []) :[];
+        const user = this.localAuthService.getUserSession();
+        let taxo1 = '', taxo2 = '', taxo3 = '', productList = '', brandList = '', productPriceList = '', 
+        shippingList = '', couponDiscountList = '', quantityList = '', totalDiscount = 0, totalQuantity = 0, totalPrice = 0, totalShipping = 0;
+        for (let p = 0; p < itemsList.length; p++) {
+            let price = itemsList[p]['productUnitPrice'];
+            if (itemsList[p]['bulkPrice'] != '' && itemsList[p]['bulkPrice'] != null) {
+                price = itemsList[p]['bulkPrice'];
+            }
+            taxo1 = itemsList[p]['taxonomyCode'].split("/")[0] + '|' + taxo1;
+            taxo2 = itemsList[p]['taxonomyCode'].split("/")[1] + '|' + taxo2;
+            taxo3 = itemsList[p]['taxonomyCode'].split("/")[2] + '|' + taxo3;
+            productList = itemsList[p]['productId'] + '|' + productList;
+            brandList = itemsList[p]['brandName'] ? itemsList[p]['brandName'] + '|' + brandList : '';
+            productPriceList = price + '|' + productPriceList;
+            shippingList = itemsList[p]['shippingCharges'] + '|' + shippingList;
+            couponDiscountList = itemsList[p]['offer'] ? itemsList[p]['offer'] + '|' + couponDiscountList : '';
+            quantityList = itemsList[p]['productQuantity'] + '|' + quantityList;
+            totalDiscount = itemsList[p]['offer'] + totalDiscount;
+            totalQuantity = itemsList[p]['productQuantity'] + totalQuantity;
+            totalPrice = (price * itemsList[p]['productQuantity']) + totalPrice;
+            totalShipping = itemsList[p]['shippingCharges'] + totalShipping;
+        }
+        let page = {
+            'channel': "checkout",
+            'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest",
+            'pageName': subsection,
+            'subSection': subsection,
+            'order' : this.invoiceType
+        }
+        let custData = {
+            'customerID': (user['userId'] && user['userId']) ? btoa(user['userId']) : '',
+            'emailID': (user && user['email']) ? btoa(user['email']) : '',
+            'mobile': (user && user['phone']) ? btoa(user['phone']) : '',
+            'type': (user && user['userType']) ? user['userType'] : '',
+        }
+        let order = {
+            'productCategoryL1': taxo1,
+            'productCategoryL2': taxo2,
+            'productCategoryL3': taxo3,
+            'productID': productList,
+            'brand': brandList,
+            'productPrice': productPriceList,
+            'shipping': shippingList,
+            'couponDiscount': couponDiscountList,
+            'quantity': quantityList,
+            'totalDiscount': totalDiscount,
+            'totalQuantity': totalQuantity,
+            'totalPrice': totalPrice,
+            'shippingCharges': totalShipping
+        }
+        digitalData["page"] = page;
+        digitalData["custData"] = custData;
+        digitalData["order"] = order;
+        this._globalAnalyticsService.sendAdobeCall(digitalData);
+    }
+
     pushPromocodesDataLayer()
     {
         setTimeout(() =>

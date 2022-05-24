@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation, Input, OnInit, ViewChild, ElementRef, NgModule, Renderer2, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Router, NavigationStart, RouterModule } from '@angular/router';
+import { Router, NavigationStart, RouterModule, ActivatedRoute } from '@angular/router';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { TypeAheadService } from '../../utils/services/typeAhead.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -35,6 +35,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
     @Input() autoFillSearchKeyword: string;
 
     showSuggestionBlockLoader: boolean;
+    searchValue='';
     suggestionList;
     brandSuggestionList;
     categorySuggestionList;
@@ -71,6 +72,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
         private _commonService: CommonService,
         private _dataService: DataService,
         private _productService: ProductService,
+        private route: ActivatedRoute,
     ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -85,8 +87,14 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
         this.categorySuggestionList = [];
         this.topProducts = [];
 
+        if (this.isBrowser) {
+            this.route.queryParams.subscribe(res => {
+                this.searchValue = (res['search_query']) ? res['search_query'] : '';
+            })
+        } else { this.searchValue = '' }
+
         this.searchForm = this._fb.group({
-            'searchTerm': ['', [Validators.required]],
+            'searchTerm': [this.searchValue, [Validators.required]],
         });
 
         /**
@@ -273,7 +281,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
     }
 
     resetSearchBar() {
-        this.searchForm.reset();
+        // this.searchForm.reset();
         this.showSuggestionBlock = false;
         this._commonService.enableNudge = false;
         this._commonService.resetLimitTrendingCategoryNumber();

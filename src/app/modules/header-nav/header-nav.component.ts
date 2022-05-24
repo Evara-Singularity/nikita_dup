@@ -76,6 +76,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     displayMenu: boolean = false;
     displaySearch: boolean = false;
     imgAssetPath: string = environment.IMAGE_ASSET_URL
+    searchValue='';
     @Input('extraData') extraData;
 
     constructor(
@@ -106,6 +107,9 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.isBrowser) {
             this.browserCalc();
             this.refreshIcon();
+            this.route.queryParams.subscribe(res => {
+                this.searchValue = (res['search_query']) ? res['search_query'] : ''
+            })
         }
         this._checkoutService.checkoutHeader.subscribe((tabIndex) => {
             this.setHeader();
@@ -210,7 +214,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             } else {
                 setTimeout(() => {
                     document.getElementById('search-input').focus();
-                    document.getElementById('search-input')['value'] = '';
+                    // document.getElementById('search-input')['value'] = '';
                 }, 350);
             }
 

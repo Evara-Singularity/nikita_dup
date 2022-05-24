@@ -177,17 +177,3 @@ p {
 .multiple-form-field{
     margin: 0px !important;
 }
-.d-flex-card-dtls{
-    display: flex;
-    .d-flex-card-dtls-l{
-        width: 70%;
-        .multiple-form-field{
-            .input-field-boxed{
-                width: 30% !important;
-            }
-        }
-    }
-    .d-flex-card-dtls-r{
-        width: 30%;
-    }
-}

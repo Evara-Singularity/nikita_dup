@@ -1,5 +1,6 @@
 @import '../../scss/variables';
 @import '../../../styles.scss';
+@import '../../modules/bottomMenu/bottom-menu.component.scss';
 
 .select-container {
     width: 100%;
@@ -217,23 +218,23 @@
     height: 100%;
 }
 
-.top-heading {
-    padding: 0px 10px;
-    border-bottom: 1px solid #E2E2E2;
+// .top-heading {
+//     padding: 0px 10px;
+//     border-bottom: 1px solid #E2E2E2;
 
-    .heading-3 {
-        padding-bottom: 0px;
-        padding: 15px 0;
-        position: relative;
-    }
+//     .heading-3 {
+//         padding-bottom: 0px;
+//         padding: 15px 0;
+//         position: relative;
+//     }
 
-    i {
-        position: absolute;
-        right: 15px;
-        top: 15px;
-        font-size: 16px;
-    }
-}
+//     i {
+//         position: absolute;
+//         right: 15px;
+//         top: 15px;
+//         font-size: 16px;
+//     }
+// }
 
 .custom-popup-bottom {
     .open {

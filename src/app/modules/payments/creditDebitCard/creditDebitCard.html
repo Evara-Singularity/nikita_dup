@@ -1,6 +1,6 @@
 <section class="creditDebitCardInner">
     <!-- <h3 class="heading-3">Please Enter Your Debit/Credit Card Details</h3> -->
-    <form class="material-form material-form-boxed" [formGroup]="creditDebitCardForm"
+    <div class="material-form material-form-boxed" [formGroup]="creditDebitCardForm"
         (ngSubmit)="pay(creditDebitCardForm.value,creditDebitCardForm.valid)">
         <div class="radio-with-label-container">
             <label class="radio-with-label ">
@@ -87,7 +87,7 @@
                 <button type="submit" [disabled]="!creditDebitCardForm.valid" class="btn">PAY</button>
             </div>
         </div>
-    </form>
+    </div>
 </section>
 
 

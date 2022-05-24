@@ -805,7 +805,10 @@
     <div content>
         <div class="content-area bottom-layout ">
             <div class="rfq-thanks-popup">
-                <i class="del-ico icon-circle-delete " (click)="$event.stopPropagation();closeRFQAlert()"></i>
+                <div class="top-header-bottom-menu">
+                    <i class="icon-circle-delete" (click)="$event.stopPropagation();closeRFQAlert()"></i>
+                </div>
+                <!-- <i class="del-ico icon-circle-delete " (click)="$event.stopPropagation();closeRFQAlert()"></i> -->
                 <img src="{{imagePathAsset}}assets/img/checkbox-circle-fill-m.png ">
                 <h3 class="heading-2">Thanks for submitting the query.</h3>
                 <p class="grey-txt">

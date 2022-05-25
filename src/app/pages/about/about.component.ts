@@ -1,7 +1,8 @@
 import { Component,  Inject, Renderer2} from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';import { DOCUMENT } from "@angular/common";
 import CONSTANTS from '@app/config/constants';
+
 
 @Component({
   selector: 'about',
@@ -14,16 +15,26 @@ export class AboutComponent {
   isServer: boolean;
 
   API = CONSTANTS;
+  aboutData;
+  memberInfo;
+  companyOverview;
 
   constructor(
     private _renderer2: Renderer2, 
     @Inject(DOCUMENT) private _document, 
     public _router: Router, 
     private title: Title, 
+    private _activatedRoute: ActivatedRoute,
     private meta: Meta) {
   }
 
   ngOnInit(){
+
+    this._activatedRoute.data.subscribe(resolverData => {
+      this.aboutData = resolverData['aboutData']['data'];
+      this.memberInfo = this.aboutData['0']['block_data']['about_us_team']['data'];
+      this.companyOverview = this.aboutData['0']['block_data']['company_overview'].data['0'];
+    });
 
     this.isServer = typeof window !== "undefined" ? false : true;
 

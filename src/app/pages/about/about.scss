@@ -5,7 +5,7 @@
     margin: 0px auto;
     overflow: hidden;
     .about-first-wrap {
-        padding: 30px 80px;
+        padding: 30px 20px;
         background: var(--dark-brown-gradient);
         text-align: center;
         height: 313px;
@@ -63,12 +63,22 @@
         }
     }
     .wall-fame-contatiner{
-        background: var(--ghost-white);
         padding: 0;
         .wall-fame-section{
             background: var(--white);
-            clip-path: polygon(0% 5%, 100% 0, 100% 100%, 0% 100%);
+            position: relative;
             padding: 0 20px 65px;
+            &:before{
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 0;
+                height: 0;
+                border-top: 70px solid var(--ghost-white);
+                border-right: 381px solid var(--white);
+
+            }
             .inner-wall-fame{
                 padding: 130px 20px 40px; 
                 text-align: center;
@@ -118,12 +128,22 @@
         }
     }
     .about-pointer-container{
-        background: var(--white);
         padding: 0;
         .about-pointer-section{
             background: var(--black);
             padding: 140px 20px 50px;
-            clip-path: polygon(0% 10%, 100% 0, 100% 100%, 0% 100%);
+            position: relative;
+            &:before{
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 0;
+                height: 0;
+                border-top: 70px solid var(--white);
+                border-right: 381px solid var(--black);
+
+            }
             h1{
                 color: var(--white);
                 margin-bottom: 30px;

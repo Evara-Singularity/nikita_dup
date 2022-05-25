@@ -27,7 +27,37 @@
         font-size: $large-font;
         @extend %border-radius;
         @extend %clear-fix;
-
+        .info-area {
+            padding: 25px;
+            .info {
+                line-height: 20px;
+                font-size: 14px;
+            }
+            .info-title {
+                margin-bottom: 10px;
+                line-height: 19px;
+                font-size: 16px;
+                font-weight: 500;
+            }
+        }
+        .button-area {
+            border-top: 1px solid #e6e6e6;
+            position: relative;
+            button {
+                border: 0;
+                background: #fff;
+                height: 50px;
+                text-align: center;
+                width: 50%;
+                float: left;
+                font-weight: 600;
+                font-size: 14px;
+                &.continue {
+                    color: #3875fd;
+                    border-left: 1px solid #e6e6e6;
+                }
+            }
+        }
         .green-block {
             background: #36BD40;
 

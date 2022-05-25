@@ -3,14 +3,13 @@
         <h4>You May Also Like</h4>
         <span>AD</span>
     </div>
-    <div class="vertical-scroll-container sponsered-products">
-        <div class="inner-scroll-container" [style.width.px]="productList.length * 165">
-            <ng-container *ngFor="let product of productList;let pIndex=index">
-                <product-card-vertical-grid-view [product]="product" [cardMetaInfo]='cardMetaInfo' [hideAd]="true"
-                    [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
-                    [analytics]="analytics">
-                </product-card-vertical-grid-view >
-            </ng-container>
-        </div>
-    </div>
+    <product-card-vertical-container [numberOfItems]="productList.length" >
+        <ng-container *ngFor="let product of productList;let pIndex=index">
+            <product-card-vertical-grid-view [product]="product" [cardMetaInfo]='cardMetaInfo' [hideAd]="true"
+                [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
+                [analytics]="analytics">
+            </product-card-vertical-grid-view >
+        </ng-container>
+    </product-card-vertical-container>
+    
 </section>

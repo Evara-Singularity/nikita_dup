@@ -47,9 +47,7 @@ export class RecentlyViewedCarouselComponent {
 	ngOnInit() {
 		if (this.isBrowser) {
 			let user_id = this.localStorageService.retrieve('user');
-			if (user_id && user_id['userId']) {
-				this.getRecentViewed(user_id['userId']);
-			}
+			this.getRecentViewed(user_id['userId'] || 'null');
 		}
 	}
 

@@ -36,7 +36,7 @@ export class ProductAccordiansComponent {
     let categoryId = this.categoryBrandDetails.category.categoryCode;
     const apiList = [
       this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryId),
-      this._productListService.getFilterBucket(categoryId, 'CATEGORY'),
+      this._productListService.getFilterBucket(categoryId, 'CATEGORY'), 
       this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + categoryId)
     ];
 
@@ -85,7 +85,8 @@ export class ProductAccordiansComponent {
     CommonModule,
     RouterModule,
     AccordianModule
-  ]
+  ],
+  exports:[ProductAccordiansComponent]
 })
 export default class ProductAccordiansModule {
 }

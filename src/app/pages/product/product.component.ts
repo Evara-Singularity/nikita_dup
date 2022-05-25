@@ -160,9 +160,9 @@ export class ProductComponent implements OnInit, AfterViewInit
     listOfGroupedCategoriesForCanonicalUrl = ["116111700"];
 
     // ondemand loaded components for PDP accordians
-    pdpAccordianInstance = null;
-    @ViewChild("pdpAccordian", { read: ViewContainerRef })
-    pdpAccordianContainerRef: ViewContainerRef;
+    // pdpAccordianInstance = null;
+    // @ViewChild("pdpAccordian", { read: ViewContainerRef })
+    // pdpAccordianContainerRef: ViewContainerRef;
     // ondemand loaded components for share module
     productShareInstance = null;
     @ViewChild("productShare", { read: ViewContainerRef })
@@ -304,6 +304,8 @@ export class ProductComponent implements OnInit, AfterViewInit
     hasGstin: boolean;
     GLOBAL_CONSTANT = GLOBAL_CONSTANT;
     isAskQuestionPopupOpen: boolean;
+    categoryBrandDetails: {};
+    analyticsInfo: { page: { pageName: any; channel: string; subSection: any; linkPageName: string; linkName: any; loginStatus: string; }; custData: { customerID: string; emailID: string; mobile: string; customerType: any; }; order: { productID: string; productCategoryL1: any; productCategoryL2: any; productCategoryL3: any; brand: any; price: number; stockStatus: string; tags: string; }; };
 
 
     set showLoader(value: boolean)
@@ -680,40 +682,40 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
-    async onVisibleProductAccordians($event)
-    {
-        if (!this.pdpAccordianInstance) {
-            const { ProductAccordiansComponent } = await import(
-                "./../../components/product-accordians/product-accordians.component"
-            );
-            const factory = this.cfr.resolveComponentFactory(
-                ProductAccordiansComponent
-            );
-            this.pdpAccordianInstance = this.pdpAccordianContainerRef.createComponent(
-                factory,
-                null,
-                this.injector
-            );
-            this.pdpAccordianInstance.instance["categoryBrandDetails"] = {
-                category: this.rawProductData.categoryDetails[0],
-                brand: this.rawProductData.brandDetails,
-            };
-            const TAXONS = this.taxons;
-            let page = {
-                pageName: null,
-                channel: "pdp",
-                subSection: null,
-                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-                linkName: null,
-                loginStatus: this.commonService.loginStatusTracking,
-            };
-            this.pdpAccordianInstance.instance["analyticsInfo"] = {
-                page: page,
-                custData: this.commonService.custDataTracking,
-                order: this.orderTracking,
-            };
-        }
-    }
+    // async onVisibleProductAccordians($event)
+    // {
+    //     if (!this.pdpAccordianInstance) {
+    //         const { ProductAccordiansComponent } = await import(
+    //             "./../../components/product-accordians/product-accordians.component"
+    //         );
+    //         const factory = this.cfr.resolveComponentFactory(
+    //             ProductAccordiansComponent
+    //         );
+    //         this.pdpAccordianInstance = this.pdpAccordianContainerRef.createComponent(
+    //             factory,
+    //             null,
+    //             this.injector
+    //         );
+    //         this.pdpAccordianInstance.instance["categoryBrandDetails"] = {
+    //             category: this.rawProductData.categoryDetails[0],
+    //             brand: this.rawProductData.brandDetails,
+    //         };
+    //         const TAXONS = this.taxons;
+    //         let page = {
+    //             pageName: null,
+    //             channel: "pdp",
+    //             subSection: null,
+    //             linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+    //             linkName: null,
+    //             loginStatus: this.commonService.loginStatusTracking,
+    //         };
+    //         this.pdpAccordianInstance.instance["analyticsInfo"] = {
+    //             page: page,
+    //             custData: this.commonService.custDataTracking,
+    //             order: this.orderTracking,
+    //         };
+    //     }
+    // }
 
     onVisibleReviews($event)
     {
@@ -871,6 +873,29 @@ export class ProductComponent implements OnInit, AfterViewInit
         // analytics calls moved to this function incase PDP is redirecte to PDP
         this.callAnalyticForVisit();
         this.setMetatag();
+        this.processAccordianData();
+
+    }
+
+    processAccordianData() {
+        this.categoryBrandDetails = {
+            category: this.rawProductData.categoryDetails[0],
+            brand: this.rawProductData.brandDetails,
+        };
+        const TAXONS = this.taxons;
+        let page = {
+            pageName: null,
+            channel: "pdp",
+            subSection: null,
+            linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+            linkName: null,
+            loginStatus: this.commonService.loginStatusTracking,
+        };
+        this.analyticsInfo = {
+            page: page,
+            custData: this.commonService.custDataTracking,
+            order: this.orderTracking,
+        };
     }
 
     updateBulkPriceDiscount()

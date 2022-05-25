@@ -53,7 +53,7 @@
     label.radio-with-label {
         display: inline-flex;
         @extend %pwa-universal-radio;
-        width: 160px;
+        width: 45%;
         align-items: center;
         .custom-box {
             margin-right: 10px;

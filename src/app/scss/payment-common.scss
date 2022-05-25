@@ -57,6 +57,9 @@
     }
     .d-flex-card-dtls-r{
         width: 30%;
+        .multiple-form-field{
+            max-width: 100%;
+        }
     }
 }
 .creditDebitCardInner {
@@ -94,7 +97,7 @@
     .custom_select_input {
         display: flex;
         padding: 5px;
-        border: solid $border-grey;
+        border: 1px solid var(--spanish-gray);
         border-radius: 4px;
         border-width: 1px;
         height: 40px;

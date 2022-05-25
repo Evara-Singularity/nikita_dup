@@ -6,6 +6,7 @@ import { AddToCartProductSchema } from '@app/utils/models/cart.initial';
 import { ProductsEntity } from '@app/utils/models/product.listing.search';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { RatingPipeModule } from '@app/utils/pipes/rating.pipe';
+import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 
 @Component({
   selector: 'product-variant-select-listing-page',
@@ -58,6 +59,7 @@ export class ProductVariantSelectListingPageComponent implements OnInit {
     CommonModule,
     RouterModule,
     RatingPipeModule,
+    BottomMenuModule,
     MathFloorPipeModule
   ],
 })

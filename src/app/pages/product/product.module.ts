@@ -15,6 +15,7 @@ import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ProductInfoModule } from './../../modules/product-info/product-info.module';
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductComponent } from './product.component';
+import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { SliceArrayPipeModule } from '@app/utils/pipes/slice-array.pipe';
 import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/product-oos-similar.module';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
@@ -49,6 +50,7 @@ import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/p
     SwipeDirectiveModule,
     // IdleUserSearchNudgeModule,
     PastOrdersModule,
+    BottomMenuModule,
     NotFoundModule
   ],
   exports: [],

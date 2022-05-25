@@ -1,8 +1,8 @@
 @import '../../scss/variables';
 
 .continue-button {
-    padding: 10px 0;
-    background: #fff;
+    padding: 5px 0;
+    background: var(--ghost-white);
     position: fixed;
     left: 0;
     bottom: 0;
@@ -37,12 +37,12 @@
         width: 175px;
         background: $btn-color-red;
         float: right;
-        height: 55px;
+        height: 50px;
         text-transform: uppercase;
     }
-    button:disabled,
-    button[disabled]{
-        background-color: #bdbdbd;;
-        color: $white;
-    }
+    // button:disabled,
+    // button[disabled]{
+    //     background-color: #bdbdbd;;
+    //     color: $white;
+    // }
 }

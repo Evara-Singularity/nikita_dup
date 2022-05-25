@@ -214,3 +214,12 @@ span.form-inline-cta{
         vertical-align: middle;
     }
 }
+.red-outlineButton{
+    background-color: var(--white);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    box-shadow: none;
+    font-size:$medium-font;
+    padding:10px;
+  }
+

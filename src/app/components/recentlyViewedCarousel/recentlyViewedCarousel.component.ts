@@ -17,6 +17,7 @@ import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/pro
 import { ProductCardSkeletonModule } from '@app/modules/product-card/product-card-skeleton/product-card-skeleton.module';
 import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
+import { ProductCardHorizontalScrollModule } from '@app/modules/ui/product-card-horizontal-scroll/product-card-horizontal-scroll.module';
 
 @Component({
 	selector: 'recently-viewed-carousel',
@@ -102,7 +103,8 @@ export class RecentlyViewedCarouselComponent {
 		RouterModule,
 		ProductCardHorizontalGridViewModule,
 		ProductCardSkeletonModule,
-		ProductCardVerticalContainerModule
+		ProductCardVerticalContainerModule,
+		ProductCardHorizontalScrollModule
 	],
 	providers: [],
 })

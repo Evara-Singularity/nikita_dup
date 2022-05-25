@@ -2,6 +2,7 @@
 @import "../../scss/components/checkbox.scss";
 @import '../../scss/layout/forms.scss';
 @import '../../scss/components/buttons.scss';
+@import '../../modules/bottomMenu/bottom-menu.component.scss';
  
 .rfqForm {
     .product-rfq {
@@ -165,39 +166,7 @@
         }
     }
 }
-.rfq_header {
-    display: flex;
-    margin: 0px -15px;
-    padding: 0px 15px 15px;
-    border-bottom: 1px solid #E2E2E2;
-    align-items: center;
-    &.rfq-popup-header {
-        box-shadow: 0px 2px 3px #00000033;
-    }
-    img {
-        width: 30px;
-    }
-    .rfq_header_text {
-        margin-left: 15px;
-        h3 {
-            color: $btn-color-red;
-            font-size: $large-font;
-            padding: 5px 0px;
-        }
-        p {
-            color: #53534F;
-            font-size: $medium-font;
-        }
-        .ins-text {
-            color: var(--onyx-black);
-        }
-    }
-    .del-ico {
-        margin-left: auto;
-        font-size: $extra-large-2-font;
-        padding:5px;
-    }
-}
+
 .f-size-26 {
     font-size: 26px;
 }

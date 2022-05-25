@@ -1,4 +1,4 @@
-<div class="product-card" observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
+<div class="product-horizontal-card" observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
     <!-- YOUTUBE FEATURE START -->
     <div class="youtubeThumbnail-listing"
         *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0">
@@ -9,15 +9,9 @@
         </div>
     </div>
     <!-- YOUTUBE FEATURE ENDS -->
-
-    <a class="s-h-l" [attr.href]="prodUrl+'/'+this.product.productUrl">{{product.productName}}</a>
-
-    <!-- wrapper div for card class -->
-    <!-- [class.available-item-card]="isOosSimilarCard" -->
-    <div class="card-vertical-home no-card-border">
-        <!-- add .home-grid-view class in below container -->
-        <div class="card-container list-view">
-
+    <!-- <a class="s-h-l" [attr.href]="prodUrl+'/'+this.product.productUrl">{{product.productName}}</a> -->
+    <div class="card-container">
+        <div class="inner-container">
             <div class="left" (click)="navigateToPDP()">
                 <div class="tags" *ngFor="let tags of product['productTags']">
                     <img [src]="tags['tagImageLink']" />
@@ -33,8 +27,6 @@
                         (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
                 </ng-container>
             </div>
-
-
             <div class="right">
                 <div class="rating">
                     <span class="avgrating" *ngIf="cardFeaturesConfig.enableRating && product.avgRating">
@@ -56,11 +48,11 @@
                 <div class="price-details">
                     <div class="left" (click)="navigateToPDP()">
                         <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
-                            <span class="crossed">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
+                            <span class="prod-mrp">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
                                 }}</span>
-                            <span class="green-label">{{product.discount}}% OFF</span>
+                            <span class="prod-discount">{{product.discount}}% OFF</span>
                         </div>
-                        <div class="main-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
+                        <div class="prod-selling-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
                             <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
                                 }}</span>
                         </div>
@@ -74,33 +66,33 @@
                         </div>
                     </div>
                     <div class="right">
-                        <ng-container
+                        <div class="card-btn-row">
+                            <ng-container
                             *ngIf="(cardFeaturesConfig.enableAddToCart || cardFeaturesConfig.enableBuyNow) && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
                             <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart" (click)="buyNow()">
                                 <i class="icon-cart1"></i>
                             </span>
-                            <button class="btn btn-red-bg pad-10" *ngIf="cardFeaturesConfig.enableBuyNow"
+                            <button class="btn btn-red-small" *ngIf="cardFeaturesConfig.enableBuyNow"
                                 (click)="buyNow(true)">BUY NOW</button>
                         </ng-container>
+                        </div>
                         <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
-                            <button class="btn pad-10 btn-red-bordered send-query-btn " (click)="openRfqForm()">SEND
+                            <button class="btn red-outlineButton" (click)="openRfqForm()">SEND
                                 QUERY</button>
                         </ng-container>
                     </div>
                 </div>
             </div>
-
-        </div>
-
-        <div class="keyfeatures"
+      </div>
+      <div class="keyfeatures"
             *ngIf="cardFeaturesConfig.enableFeatures && product['keyFeatures'] && product['keyFeatures'].length > 0">
             <ul>
                 <li *ngFor="let features of product['keyFeatures']">{{features.split(" ").splice(0,20).join(" ")}}<span
                         *ngIf="features.split(' ').length>20">...</span></li>
             </ul>
         </div>
-
     </div>
+       
     <ng-container #variantPopup></ng-container>
     <ng-container #addToCartToast></ng-container>
     <ng-container #productRFQ></ng-container>

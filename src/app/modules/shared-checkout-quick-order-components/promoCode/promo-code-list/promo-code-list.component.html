@@ -5,9 +5,9 @@
       <p class="txt">ALL OFFERS</p>
     </div>
   </div>
-  
+
   <custom-promo-code></custom-promo-code>
-  
+
   <!-- <div class="custom-cbox">
     <ng-container *ngFor="let item of allPromoCodes; let i = index;">
       <label for="{{i}}couponcode" [class.selected]="item.promoCode === _cartService.appliedPromoCode" (click)="updateCustomPromoCodeInput($event,item)">
@@ -30,10 +30,22 @@
       </div>
     </div>
   </div>
+  <div class="alert-box">
+    <div class="overlay"></div>
+    <div class="content-area">
+      <div class="info-area">
+        <i class="icon-coupon-3-fill-1"></i>
+        <p class="applied-coupon">'MAR75' applied</p>
+        <p class="saving-applid-coupon"><span>&#8377;24</span> saving with this coupon</p>
+        <p class="green-text">YAY!</p>
+      </div>
+    </div>
+  </div>
   <!-- new design -->
   <div class="coupon-card-container">
     <p class="pwa-text">Available Coupons</p>
-    <div (click)="updateCustomPromoCodeInput($event,item)" class="card" *ngFor="let item of allPromoCodes; let i = index;">
+    <div (click)="updateCustomPromoCodeInput($event,item)" class="card"
+      *ngFor="let item of allPromoCodes; let i = index;">
       <div class="apply-coupon">
         <div class="inner-coupon">
           <h3>{{item.promoCode}}</h3>

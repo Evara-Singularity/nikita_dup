@@ -1,20 +1,19 @@
 <section *ngIf="isRecentDataLoaded && (recentlyViewedProducts && recentlyViewedProducts.length>0)"
   class="Recently-view">
-  <div class="view-all-strip">
-    <product-card-vertical-container [numberOfItems]="recentlyViewedProducts.length || 0">
-      <h2 class="featr_arrival">RECENTLY VIEWED</h2>
+   <div class="view-all-strip">
+      <h2>RECENTLY VIEWED</h2>
+    </div>
+    <horizontal-scroll-container [numberOfItems]="recentlyViewedProducts.length || 0">
       <ng-container *ngFor="let product of recentlyViewedProducts">
         <product-card-horizontal-grid-view [product]="product"> </product-card-horizontal-grid-view>
       </ng-container>
-    </product-card-vertical-container>
-  </div>
+    </horizontal-scroll-container>
 </section>
 <section *ngIf="!isRecentDataLoaded">
-  <div class="view-all-strip">
-    <product-card-vertical-container [numberOfItems]="2">
-      <h2 class="featr_arrival">RECENTLY VIEWED</h2>
-      <product-card-skeleton></product-card-skeleton>
-      <product-card-skeleton></product-card-skeleton>
-    </product-card-vertical-container>
-  </div>
+  <div class="view-all-strip"></div>
+  <product-card-vertical-container [numberOfItems]="2">
+    <h2 class="featr_arrival">RECENTLY VIEWED</h2>
+    <product-card-skeleton></product-card-skeleton>
+    <product-card-skeleton></product-card-skeleton>
+  </product-card-vertical-container>
 </section>

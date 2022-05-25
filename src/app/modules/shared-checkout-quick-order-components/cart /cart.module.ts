@@ -4,7 +4,7 @@ import { CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { CartComponent} from './cart.component';
-// import { BottomMenuModule } from '../bottomMenu/bottom-menu.module';
+import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { KpToggleDirectiveModule } from '@utils/directives/kp-toggle.directive';
 import { MathFloorPipeModule } from '@pipes/math-floor';
 import { MathCeilPipeModule } from '@pipes/math-ceil';
@@ -20,7 +20,7 @@ import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
         RouterModule,
         MathCeilPipeModule,
         ObjectToArrayPipeModule,
-        // BottomMenuModule,
+        BottomMenuModule,
         HttpClientModule,
         KpToggleDirectiveModule,
         // PopUpModule,

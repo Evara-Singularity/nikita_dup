@@ -19,7 +19,7 @@
 
 <div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
     *ngIf="!productNotFound">
-    
+
     <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages?.length === 1"
         [ngClass]="[carouselInitialized ? '' : 'before-init']">
         <div class="fixed-strip">
@@ -206,7 +206,8 @@
                         class="inner-blk-contain clearfix">
                         <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"
                             (click)="selectProductBulkPrice(items.minQty)">
-                            <div class="bulk-block bulk-block-multi-grp" *ngIf="rawProductData['quantityAvailable']>=items.minQty"
+                            <div class="bulk-block bulk-block-multi-grp"
+                                *ngIf="rawProductData['quantityAvailable']>=items.minQty"
                                 [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                                 <p class="qty">Qty
                                     <span
@@ -242,13 +243,18 @@
                     (click)="selectProductBulkPrice(items.minQty)"
                     [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                     <div *ngIf="rawProductData['quantityAvailable']>=items.minQty">
-                        <h3>Buy <span *ngIf="last!==true && !(rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
-                            {{items.minQty!==items.maxQty ?
-                            -items.maxQty:'' }}</span>
-                        <span *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span> Qty
+                        <h3>Buy <span
+                                *ngIf="last!==true && !(rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
+                                {{items.minQty!==items.maxQty ?
+                                -items.maxQty:'' }}</span>
+                            <span
+                                *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span>
+                            Qty
                             <span *ngIf="items.discount>0" class="green-txt">(Get {{ items.discount |
-                                number:'1.0-2' }}% OFF)</span> <span class="right-text"> {{items.bulkSPWithoutTax | mathFloor |
-                                currency: 'INR' : 'symbol' : '1.0-0'}}<span class="small-txt">&nbsp;/pc</span></span></h3>
+                                number:'1.0-2' }}% OFF)</span> <span class="right-text"> {{items.bulkSPWithoutTax |
+                                mathFloor |
+                                currency: 'INR' : 'symbol' : '1.0-0'}}<span class="small-txt">&nbsp;/pc</span></span>
+                        </h3>
                     </div>
                 </div>
             </div>
@@ -384,8 +390,8 @@
             </div>
         </div>
 
-        <section *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" observeVisibility [debounceTime]="100"
-            (visible)="onVisibleProductRFQ($event)">
+        <section *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" observeVisibility
+            [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
             <ng-container #productRFQ></ng-container>
         </section>
 
@@ -479,7 +485,7 @@
                     <button class="btn-red" (click)="writeReview()">WRITE A REVIEW</button>
                 </div>
             </div>
-        
+
             <div class="pwa-row" *ngIf="overallRating < 1">
                 <p class="review_text">
                     Be the first one to provide review for this product
@@ -594,7 +600,7 @@
                 (click)="$event.stopPropagation();handleReviewRatingPopup()">
                 <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
             </div>
-        </section>   
+        </section>
 
         <section id="ask-question-section" class="Qa">
             <div class="faq-head">
@@ -603,7 +609,7 @@
                 <button (click)="$event.stopPropagation();askQuestion()" class="btn redBgButton">ASK&nbsp;NOW</button>
             </div>
             <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
-        
+
                 <p class="display-qn">
                     Displaying Questions
                     <span>1-2</span> of
@@ -626,11 +632,12 @@
                 </div>
             </ng-container>
         </section>
-        
+
         <!-- New GET Quote section starts -->
-        <div id="get-quote-section" class="buy-nowsec" *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
-            <h4  class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
-            <p  class="small-txt prodct-name"> {{ productName }} </p>
+        <div id="get-quote-section" class="buy-nowsec"
+            *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+            <h4 class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
+            <p class="small-txt prodct-name"> {{ productName }} </p>
             <div class="buynow-flex">
                 <div class="bn-left">
                     <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
@@ -645,7 +652,7 @@
                 <ng-template #nonRaisedTemplate>
                     <p class="small-txt">We will get in touch with you on<br>
                         <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
-                                {{ '+91-' + commonService?.userSession?.phone }}  
+                            {{ '+91-' + commonService?.userSession?.phone }}
                             <ng-container *ngIf="commonService?.userSession?.email">
                                 {{ ' | ' +commonService?.userSession?.email }}
                             </ng-container>
@@ -654,26 +661,28 @@
                     <div class="swipper">
                         <div id="button-background" class="button-area wrapper">
                             <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST </button>
-                            <div id="slider" class="arrow-container next-btn next-btn-invalid"  (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
-                                    <i class="icon-next icon-animate-1"></i>
-                                    <i class="icon-next icon-animate-2"></i>
-                                    <i class="icon-next icon-animate-3"></i>
+                            <div id="slider" class="arrow-container next-btn next-btn-invalid"
+                                (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
+                                <i class="icon-next icon-animate-1"></i>
+                                <i class="icon-next icon-animate-2"></i>
+                                <i class="icon-next icon-animate-3"></i>
                             </div>
                         </div>
                     </div>
                 </ng-template>
                 <ng-template #raisedTemplate>
-                    <p  class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
+                    <p class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
                     <div class="button-area wrapper">
                         <button class="valid-button shimmer-button">REQUESTED SUCCESSFULLY</button>
                     </div>
                 </ng-template>
             </div>
         </div>
-        
-        
+
+
         <!-- GET Quote section starts -->
-        <div class="pwa-row inline-list-item-variant1" *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+        <div class="pwa-row inline-list-item-variant1"
+            *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
             <div class="inline-list-icon">
                 <i class="icon-dropbox-fill"></i>
             </div>
@@ -683,7 +692,7 @@
             </div>
             <div class="inline-list-link">
                 <span class="get-quote" (click)="raiseRFQQuote();">Get Quote</span>
-            </div> 
+            </div>
         </div>
 
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
@@ -792,51 +801,52 @@
 <ng-container #addToCartToast></ng-container>
 <ng-container #popupCrousel></ng-container>
 
-<div *ngIf="this.isBrowser && isRFQSuccessfull" class="alert-box rfq-thanks-alert"
-    [class.rfqThanksPopup]="displayCardCta">
-    <div class="overlay"></div>
-    <div class="content-area bottom-layout ">
-        <div class="rfq-thanks-popup">
-            <i class="del-ico icon-circle-delete " (click)="$event.stopPropagation();closeRFQAlert()"></i>
-            <img src="{{imagePathAsset}}assets/img/checkbox-circle-fill-m.png ">
-            <h3 class="heading-2">Thanks for submitting the query.</h3>
-            <p class="grey-txt">
-                Our support member will get in touch with you
-                <br />
-                within 24 hours
-            </p>
-            <div *ngIf="rfqTotalValue >= 3000 || hasGstin" class="icon-btn-row">
-                <button (click)="openDialer()" class="btn icon-btn"><i class="icon-call"></i>CALL US</button>
-                <span class="grey-txt">OR</span>
-                <button (click)="navigateToWhatsapp()" class="btn icon-btn btn-whatsapp"><i
-                        class="icon-whatsapp"></i>WHATSAPP US</button>
-            </div>
-            <div *ngIf="rfqTotalValue < 3000 || productOutOfStock" class="rfq-support-txt">
-                <p class="rfq-thanks-txt mar-t-10">
-                    For further assistance Call or Whatsapp <br />
-                    @<strong>&nbsp;+91 99996 44044</strong>
+<app-bottom-menu *ngIf="this.isBrowser && isRFQSuccessfull">
+    <div content>
+        <div class="content-area bottom-layout ">
+            <div class="rfq-thanks-popup">
+                <div class="top-header-bottom-menu">
+                    <i class="icon-circle-delete" (click)="$event.stopPropagation();closeRFQAlert()"></i>
+                </div>
+                <!-- <i class="del-ico icon-circle-delete " (click)="$event.stopPropagation();closeRFQAlert()"></i> -->
+                <img src="{{imagePathAsset}}assets/img/checkbox-circle-fill-m.png ">
+                <h3 class="heading-2">Thanks for submitting the query.</h3>
+                <p class="grey-txt">
+                    Our support member will get in touch with you
+                    <br />
+                    within 24 hours
                 </p>
-            </div>
-            <div class="rfq-support-txt">
-                <p class="rfq-thanks-txt">
-                    You can also mail us at <br />
-                    <strong>salesenquiry@moglix.com</strong>
-                </p>
-            </div>
-            <div class="alert-btn-row">
-                <button *ngIf="similarProducts.length>0"
-                    (click)="scrollToId(!productOutOfStock ? '#similarProducts' : '#similarProductsOos') "
-                    class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
-                <!-- <p class="orange-txt mt-5" (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
-                    EXPLORE CATEGORY</p> -->
-                <button class="btn explore-category-btn"
-                    (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
-                    EXPLORE AVAILABLE PRODUCTS
-                </button>
+                <div *ngIf="rfqTotalValue >= 3000 || hasGstin" class="icon-btn-row">
+                    <button (click)="openDialer()" class="btn icon-btn"><i class="icon-call"></i>CALL US</button>
+                    <span class="grey-txt">OR</span>
+                    <button (click)="navigateToWhatsapp()" class="btn icon-btn btn-whatsapp"><i
+                            class="icon-whatsapp"></i>WHATSAPP US</button>
+                </div>
+                <div *ngIf="rfqTotalValue < 3000 || productOutOfStock" class="rfq-support-txt">
+                    <p class="rfq-thanks-txt mar-t-10">
+                        For further assistance Call or Whatsapp <br />
+                        @<strong>&nbsp;+91 99996 44044</strong>
+                    </p>
+                </div>
+                <div class="rfq-support-txt">
+                    <p class="rfq-thanks-txt">
+                        You can also mail us at <br />
+                        <strong>salesenquiry@moglix.com</strong>
+                    </p>
+                </div>
+                <div class="alert-btn-row">
+                    <button *ngIf="similarProducts.length>0"
+                        (click)="scrollToId(!productOutOfStock ? '#similarProducts' : '#similarProductsOos') "
+                        class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
+                    <button class="btn redBgButton"
+                        (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
+                        EXPLORE AVAILABLE PRODUCTS
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</app-bottom-menu>
 
 
 <app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>

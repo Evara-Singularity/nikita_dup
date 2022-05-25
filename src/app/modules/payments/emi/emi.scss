@@ -85,22 +85,26 @@ p {
 
 .emiTabs {
     display: flex;
-    border: 1px solid #E7E7E8;
     border-radius: 4px;
     .emiTab {
-        flex: 1;
-        box-shadow: 0px 3px 8px #455B6314;
+        // flex: 1;
+        // box-shadow: 0px 3px 8px #455B6314;
         color: #3C3C3C;
-        padding: 9px 0px;
+        padding: 9px 10px;
         font-size: $large-font;
         text-align: center;
         font-weight: bold;
+        border-radius: 8px;
+        background: var(--white);
+        &:last-child{
+            margin-left: 20px;
+        }
         &.selectedTab {
-            background: #FEEFE8;
-            color: #F5681E;
-            border-top-left-radius: 4px;
-            border-bottom-left-radius: 4px;
-            border: 1px solid #F5681E;
+            background: var(--champagne-pink);
+            color: var(--primary);
+            // border-top-left-radius: 4px;
+            // border-bottom-left-radius: 4px;
+            border: 1px solid var(--primary);
         }
     }
 }
@@ -128,7 +132,8 @@ p {
     }
     .emi-plans-list {
         border: 1px solid #EFEFF4;
-        border-radius: 4px;
+        border-radius: $border-radius-8;
+        background-color: var(--white);
         .emi-plans-list-item {
             @extend %pwa-universal-radio;
             display: flex;
@@ -168,4 +173,7 @@ p {
 
 .noPad{
     padding-bottom: 10px;
+}
+.multiple-form-field{
+    margin: 0px !important;
 }

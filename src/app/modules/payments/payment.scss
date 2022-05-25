@@ -173,19 +173,20 @@ label.payment-radio-btn {
 }
 
 .payment_accordion {
-    background: #fff;
+    // background: #fff;
     border-radius:8px;
     .pwa-row{
         padding:0px 15px;
     }
     .payment_accordion_item {
-        box-shadow: 0px 1px 0px #00000029;
+        box-shadow: 0px 1px 0px var(--ghost-white);
         .icon-img {
             width: 20px;
         }
         &.selectedAccordion {
             .payment-accordion_body {
                 display: block;
+                padding: 15px;
             }
         }
     }
@@ -196,6 +197,9 @@ label.payment-radio-btn {
     height: 60px;
     align-items: center;
     flex:1 1 100%;
+    background-color: var(--white);
+    padding: 0px 15px;
+    border-top: 1px solid var(--ghost-white);
     .icon-down {
         margin-left: auto;
         font-size: $small-font;

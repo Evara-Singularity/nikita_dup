@@ -12,6 +12,8 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
 
+
+
 @Component({
     selector: 'app-similar-products',
     templateUrl: './similar-products.component.html',
@@ -84,9 +86,9 @@ export class SimilarProductsComponent implements OnInit {
         CommonModule,
         MathFloorPipeModule,
         MathCeilPipeModule,
-        ProductCardVerticalGridViewModule,
         LazyLoadImageModule,
-        ProductCardVerticalContainerModule
+        ProductCardVerticalContainerModule,
+        ProductCardVerticalGridViewModule
     ]
 })
 export class ProductModule { }

@@ -11,17 +11,17 @@
             <h2>{{ carouselData[category.dataKey]['layout_name'] | uppercase }}</h2>
         </div>
 
-        <horizontal-scroll-container *ngIf="carouselData[category.dataKey]['layout_name'] == 'Bestsellers'"
+        <product-card-vertical-container *ngIf="carouselData[category.dataKey]['layout_name'] == 'Bestsellers'"
             [numberOfItems]="carouselData[category.dataKey]['data']['product_data'].length">
             <ng-container *ngFor="let product of carouselData[category.dataKey]['data']['product_data']">
-                <product-card-horizontal-grid-view [product]="product"></product-card-horizontal-grid-view>
+                <product-card-vertical-grid-view [product]="product"></product-card-vertical-grid-view>
             </ng-container>
-        </horizontal-scroll-container>
+        </product-card-vertical-container>
         
         <product-card-vertical-container *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'"
-            [numberOfItems]="4">
+            [numberOfItems]="4" [isScroll]="false" >
             <ng-container *ngFor="let product of carouselData[category.dataKey]['data']['product_data'] | slice : 0:4">
-                <product-card-vertical-grid-view [product]="product"></product-card-vertical-grid-view>
+                <product-card-vertical-block-view [product]="product"></product-card-vertical-block-view>
             </ng-container>
         </product-card-vertical-container>
 

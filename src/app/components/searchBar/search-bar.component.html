@@ -81,17 +81,16 @@
                             <button>VIEW ALL</button>
                         </div> -->
                     </div>
-                    <div class="vertical-scroll-container">
-                        <div class="inner-scroll-container" [style.width.px]="searchProducts.length * 165">
-                            <ng-container *ngFor="let product of searchProducts;let pIndex=index">
-                                <product-card-vertical-grid-view [section]="'search-popup'" [product]="product"
-                                    [enableTracking]="true" [cardMetaInfo]='cardMetaInfo'
-                                    [cardFeaturesConfig]='cardFeaturesConfig' [moduleUsedIn]="'SEACRH_SUGGESTION'"
-                                    [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
-                                </product-card-vertical-grid-view>
-                            </ng-container>
-                        </div>
-                    </div>
+                    
+                    <product-card-vertical-container [numberOfItems]="searchProducts.length">
+                        <ng-container *ngFor="let product of searchProducts;let pIndex=index">
+                            <product-card-vertical-grid-view [section]="'search-popup'" [product]="product" [enableTracking]="true"
+                                [cardMetaInfo]='cardMetaInfo' [cardFeaturesConfig]='cardFeaturesConfig' [moduleUsedIn]="'SEACRH_SUGGESTION'"
+                                [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
+                            </product-card-vertical-grid-view>
+                        </ng-container>
+                    </product-card-vertical-container>
+
                 </section>
             </div>
         </div>

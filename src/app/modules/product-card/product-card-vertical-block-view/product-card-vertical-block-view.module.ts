@@ -11,7 +11,7 @@ import { ProductCardVerticalBlockViewComponent } from './product-card-vertical-b
     ProductCardCoreModule
   ],
   exports: [
-    ProductCardVerticalBlockViewModule
+    ProductCardVerticalBlockViewComponent
   ]
 })
 export class ProductCardVerticalBlockViewModule { }

@@ -3,6 +3,7 @@ import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
+import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { ProductCardFeature, ProductCardMetaInfo } from '@app/utils/models/product.listing.search';
 import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
@@ -74,6 +75,7 @@ export class PastOrdersComponent implements OnInit
         MathFloorPipeModule,
         ProductCardVerticalGridViewModule,
         ObserveVisibilityDirectiveModule,
+        ProductCardVerticalContainerModule,
     ],
     exports: [PastOrdersComponent]
 })

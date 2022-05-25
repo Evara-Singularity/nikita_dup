@@ -53,7 +53,7 @@
     label.radio-with-label {
         display: inline-flex;
         @extend %pwa-universal-radio;
-        width: 160px;
+        width: 45%;
         align-items: center;
         .custom-box {
             margin-right: 10px;
@@ -65,13 +65,4 @@
 }
 .multiple-form-field{
     margin: 0px !important;
-}
-.credit-debit-card-inner{
-    // background-color: red;
-    min-height: 50px;
-    padding: 5px;
-    .sachin{
-        background-color: var(--white);
-        min-height: 20px;
-    }
 }

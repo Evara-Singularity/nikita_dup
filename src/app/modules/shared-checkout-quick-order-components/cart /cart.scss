@@ -2,7 +2,7 @@
 @import '../../../scss/variables';
 @import '../../../scss/components/alert-box.scss';
 @import "../../../scss/variables";
-
+@import '../../bottomMenu/bottom-menu.component.scss';
 .card {
     @extend %white-card;
     padding: 15px 0 0 0;

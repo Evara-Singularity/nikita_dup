@@ -1,4 +1,4 @@
-<section class="creditDebitCardInner">
+<section class="creditDebitCardInner mt-10 mb-10">
     <!-- <h3 class="heading-3">Please Enter Your Debit/Credit Card Details</h3> -->
     <div class="material-form material-form-boxed" [formGroup]="creditDebitCardForm"
         (ngSubmit)="pay(creditDebitCardForm.value,creditDebitCardForm.valid)">
@@ -23,9 +23,9 @@
                     </span>
                 </label>
             </div>
+            <label>Valid thru</label>
             <div class="d-flex-card-dtls">
                 <div class="date-type-select d-flex-card-dtls-l">
-                    <label>Expiry Date</label>
                     <div class="multiple-form-field">
                         <div class="input-field-boxed">
                             <input type="hidden" formControlName="ccexpmon" #expireMonth />
@@ -54,12 +54,13 @@
                     </div>
                 </div>
                 <div class="outline-input-label d-flex-card-dtls-r">
-                    <label>Enter CVV</label>
-                    <div class="multiple-form-field">
-                        <div class="input-field-boxed">
-                            <input type="password" id="cc-cvc" formControlName="ccvv" type="password" placeholder="CVV"
+                    <div class="material-form">
+                        <div class="outline-input-label">
+                            <label>
+                                <input type="password" id="cc-cvc" formControlName="ccvv" type="password"
                                 #ccCvc kpAutocompleteOff maxlength="3">
-                                <i class="icon-cvv"></i>
+                                <span class="label">CVV</span>
+                            </label>
                         </div>
                     </div>
                 </div>

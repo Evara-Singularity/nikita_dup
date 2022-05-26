@@ -64,7 +64,7 @@
                     font-size: $extra-large-font;
                     margin-left: 10px;
                     line-height: 26px;
-                    color: #fff;
+                    color: var(--onyx-black);
                 }
             }
         }
@@ -73,9 +73,9 @@
 
             &.screen-view {
                 .head-sec {
-                    background: $logo-color !important;
+                    background: var(--white) !important;
                     i {
-                        color: $white;
+                        color: var(--onyx-black);
                         font-size:16px;
                     }
                 }

@@ -1,6 +1,6 @@
 <div id="wrapper">
 		<!--1st block logo -->
-		<div class="about_fstwrp">
+		<div class="about_fstwrp" *ngIf="companyOverview && aboutData">
 			<div class="abt-logo about-us">
 				<h2>
 					The
@@ -10,13 +10,7 @@
 				<span class="abt-span">BUSINESS & INDUSTRIAL SUPPLIES</span>
 			</div>
 			<div class="about-text">
-				<p>We are an Asia-based E-commerce company
-					intensively inclined towards B2B procurement of industrial supplies, in particular, MRO, Safety, Electricals,
-					Lighting, Cleaning & Housekeeping, Office Stationary & Supplies, Power Tools and many more industry essentials.</p>
-				<p> We take pride in delivering world-class
-					services and, our clients are well aware of the fact that we do not just deliver products; we deliver a satisfying
-					experience, which has enabled us to forge strong relationship with our customers. It’s a cultural belief that is
-					demonstrated every day, through exceptional customer service, product selection and, paramount industry knowledge.</p>
+				<p>{{companyOverview.element_url}}</p>
 			</div>
 		</div>
 	
@@ -95,11 +89,11 @@
 	
 	
 		<!--4th block -->
-		<div class="about_first about-people">
+		<div class="about_first about-people" *ngIf="memberInfo && aboutData">
 			<div class="about-people-wrap">
 	
 				<h3>
-					<span>PEOPLE BEHIND THE SCENE  </span>
+					<span>PEOPLE BEHIND THE SCENE </span>
 					
 				</h3>
 	
@@ -112,80 +106,17 @@
 	
 			<div class="center-block">
 				<div class="segment">
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/Rahul.png" alt = "ceo">
-						<p class="text-white text-center pad-b-10">Rahul Garg<span>CEO & Founder,</span><span>Moglix</span></p>
+					<div class="about-people-section" *ngFor="let item of memberInfo| slice:0:1">
+						<img src="{{API.IMAGE_BASE_URL}}{{item.image_name}}" alt = "ceo">
+						<p class="text-white text-center pad-b-10">{{item.image_title}}<span>CEO & Founder,</span><span>Moglix</span></p>
 					</div>
 				</div>
-				<div class="segment">
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/sandeep.png" alt = "Sandeep Goel">
-							<p class="text-white text-center pad-b-10">Sandeep Goel <span>Managing Director,</span><span>Strategy & Operations</span></p>
-					</div>
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/mukund_image.png" alt = "Mukund Vasudevan">
-						 <p class="text-white text-center pad-b-10">Mukund Vasudevan <span>Managing Director,</span><span>Enterprise Solutions</span></p>
-					</div>
-				</div>
-				<div class="segment">
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/partha.png" alt = "Partha Dash">
-						<p class="text-white text-center pad-b-10">Partha Dash <span>Managing Director,</span><span>New Business & Growth</span></p>
-					</div>
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/pankaj.png" alt = "Pankaj Kumar">
-						<p class="text-white text-center pad-b-10">Pankaj Kumar<span>Engineering</span></p>
-					</div>
-				</div>
-				<div class="segment">
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/Anamdeepnewimg.png" alt = "Partha Dash">
-						<p class="text-white text-center pad-b-10">Amandeep Singh Bhan<span>Strategic Partnerships</span></p>
-				      </div> 
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/Joyjeet.png" alt = "Joyjeet Maity">
-						<p class="text-white text-center pad-b-10">Joyjeet Maity<span>MaaS Fashion</span></p>
-					</div>
-				</div>
-				<div class="segment">
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/Rahul-Goel-BW.png" alt = "Mukul Gupta">
-						<p class="text-white text-center pad-b-10">Rahul Goel<span>Finance</span></p>
-					</div>
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/Vivek.png" alt = "Shuchita">
-						<p class="text-white text-center pad-b-10">Vivek Kashyap<span>Distributor & Brand
-							Partnerships</span></p>
-					</div>
-				</div>
-				<div class="segment">
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/Jigyasa.png" alt = "Jigyasa Kishor">
-						<p class="text-white text-center pad-b-10">Jigyasa Kishore<span>Brand, Growth & Excellence</span></p>
-					</div>
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/Piyushmalviya.png" alt = "Piyush Malviya">
-						<p class="text-white text-center pad-b-10">Piyush Malviya<span>EMEA Business</span></p>
-					</div>
-				</div>
-				<div class="segment">
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/Mohit.png" alt = "Shuchita">
-						<p class="text-white text-center pad-b-10">Mohit Gulyani<span>MaaS Metal</span></p>
-					</div>
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/Saumya_khare.png" alt = "Shuchita">
-						<p class="text-white text-center pad-b-10">Saumya Khare<span>Human Capital</span></p>
-					</div>
-				</div>
-				<div class="segment">
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/Shobhit.png" alt = "Mukul Gupta">
-						<p class="text-white text-center pad-b-10">Shobhit Goel<span>Packaging & Capex</span></p>
-					</div>
-					<div class="about-people-section">
-						<img src="{{API.IMAGE_BASE_URL}}img/mogli/Jasmeet-Singh-Marwah.png" alt = "Manish Gupta">
-						<p class="text-white text-center pad-b-10">Jasmeet Singh Marwah<span>Supply Chain</span></p>
+				<div class="segment " >
+					<div class="about-people-section" *ngFor="let item of memberInfo | slice:1">
+						<img src="{{API.IMAGE_BASE_URL}}{{item.image_name}}" alt = "Sandeep Goel">
+							<!-- <p class="text-white text-center pad-b-10">{{item.image_title}} <span>Managing Director,</span><span>Strategy & Operations</span></p> -->
+							<p class="text-white text-center pad-b-10">{{item.image_title}} <span></span><span></span></p>
+
 					</div>
 				</div>
 			</div>

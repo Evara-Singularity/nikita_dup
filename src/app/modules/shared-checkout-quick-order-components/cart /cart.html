@@ -1,15 +1,19 @@
 <div *ngIf="_cartService.getGenericCartSession?.itemsList && _cartService.getGenericCartSession?.itemsList.length > 0">
 
     <div class="pwa-row applycoupen-strip">
-        <div class="pwa-col-2">
-            <i class="icon-coupon-3-fill-1 green-txt"></i>
+        <div class="pwa-col-12 applycoupon-section">
+             <div class="left-coupon-block">
+                <i class="icon-coupon-3-fill-1 green-txt"></i>
+                <span class="apply-coupen-txt">APPLY COUPON</span>
+            </div>
+            <i class="icon-next"></i>
         </div>
-        <div class="pwa-col-9">
-            <span class="apply-coupen-txt">APPLY COUPON</span>
-        </div>
-        <div class="pwa-col-1"><i class="icon-next"></i></div>
     </div>
-
+    <div class="pwa-row">
+        <div class="pwa-col-12">
+            <p class="items-in-your-cart">1 items in your cart</p>
+        </div>
+    </div>
     <!-- <div class="thanks-pop">
         <div class="top-cross-area">
             <img src="assets/img/close-circle-fill.svg">

@@ -1,6 +1,34 @@
 
 @import '../../../scss/variables';
 
+.applycoupen-strip{
+    padding: 15px 15px 10px;
+    .applycoupon-section{
+        background: var(--white);
+        padding: 10px 15px;
+        border-radius: $border-radius-8;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .left-coupon-block{
+            
+            .green-txt{
+                font-size: $extra-large-3-font;
+            }
+            span{
+                font-size: $large-font;
+                vertical-align: super;
+                padding-left: 10px;
+            }
+        }
+        i{
+            font-size: $large-font;
+        }
+    }
+}
+.items-in-your-cart{
+    font-size:  $large-font;
+}
 .card {
     @extend %white-card;
     padding: 15px 0 0 0;

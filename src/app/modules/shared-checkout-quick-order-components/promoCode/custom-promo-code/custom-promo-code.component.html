@@ -1,5 +1,5 @@
-<form class="applied-code material-form" (ngSubmit)="_cartService.genericApplyPromoCode()">
-  <div class=" outline-input-label apply-coupon">
+<form class="pwa-row applied-code material-form" (ngSubmit)="_cartService.genericApplyPromoCode()">
+  <div class="pwa-col-12 outline-input-label apply-coupon">
     <label>
       <input required name="appliedcart" type="text" [(ngModel)]="_cartService.appliedPromoCode" />
       <i class="icon-circle-delete" *ngIf="_cartService.appliedPromoCode" (click)="_cartService.genericRemovePromoCode()"></i>

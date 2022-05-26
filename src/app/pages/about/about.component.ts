@@ -15,9 +15,9 @@ export class AboutComponent {
   isServer: boolean;
 
   API = CONSTANTS;
-  aboutData;
-  memberInfo;
-  companyOverview;
+  aboutData=null;
+  memberInfo=null;
+  companyOverview=null;
 
   constructor(
     private _renderer2: Renderer2, 
@@ -31,9 +31,11 @@ export class AboutComponent {
   ngOnInit(){
 
     this._activatedRoute.data.subscribe(resolverData => {
-      this.aboutData = resolverData['aboutData']['data'];
-      this.memberInfo = this.aboutData['0']['block_data']['about_us_team']['data'];
-      this.companyOverview = this.aboutData['0']['block_data']['company_overview'].data['0'];
+      if (resolverData) {     
+        this.aboutData = resolverData['aboutData']['data'] || null;
+        this.memberInfo =this.aboutData['0']?this.aboutData['0']['block_data']['about_us_team']['data']:null;
+        this.companyOverview = this.aboutData['0']?this.aboutData['0']['block_data']['company_overview'].data['0']:null;
+      }
     });
 
     this.isServer = typeof window !== "undefined" ? false : true;
@@ -47,7 +49,7 @@ export class AboutComponent {
     if (this.isServer) {
       let links = this._renderer2.createElement('link');
       links.rel = "canonical";
-      links.href = CONSTANTS.PROD + "/about";
+      links.href = CONSTANTS.PROD + "/about"; 
       // alert(this._router.url);
       this._renderer2.appendChild(this._document.head, links); 
     }

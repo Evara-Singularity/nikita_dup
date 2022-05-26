@@ -40,7 +40,8 @@ export class AboutResolver implements Resolve<boolean> {
           tap(response => {
             if (isPlatformServer(this.platformId)) {
               this.transferState.set(ABOUT_US_KEY, response);
-            }
+              return response;
+            }else return response;
           })
         );
     }

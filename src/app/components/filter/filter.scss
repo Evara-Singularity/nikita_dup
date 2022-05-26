@@ -187,17 +187,16 @@
         }
         .avgrating {
             display: inline;
-            background-color: var(--slimy-green);
             padding: 3px 5px;
-            color: var(--white);
+            color: var(--black);
             border-radius: $border-radius-4;
             font-size: $medium-font;
             i {
                 padding-left: 2px;
-                font-size: $extra-small-font;
+                font-size: $medium-font;
             }
         }
         .count {
-            font-size: $large-font;
+            font-size: $medium-font;
         }
     }

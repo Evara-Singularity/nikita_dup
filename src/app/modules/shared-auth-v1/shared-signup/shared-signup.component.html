@@ -15,15 +15,14 @@
             <div class="outline-input-label">
                 <label [class.is-focus]="firstName.value.length!=0">
                     <input 
-                        [ngClass]="{'invalid-input': (isSubmitted && (firstName.hasError('required') || (!(firstName.hasError('required')) && firstName.hasError('whitespace'))))  }"
                         type="text" formControlName="firstName" maxlength="20">
-                    <span class="label">Enter User Name*</span>
-                    <ng-container *ngIf="isSubmitted && firstName.invalid">
+                    <span class="label">Enter User Name</span>
+                    <!-- <ng-container *ngIf="isSubmitted && firstName.invalid">
                         <p class="error-field error-txt" *ngIf="firstName.hasError('required')">Enter user name</p>
                         <p class="error-field error-txt"
-                            *ngIf="!(firstName.hasError('required')) && firstName.hasError('whitespace')">
+                            *ngIf="firstName.hasError('whitespace')">
                             Username cannot start with space(s)</p>
-                    </ng-container>
+                    </ng-container> -->
                 </label>
             </div>
             <div class="outline-input-label" *ngIf="!(isSingupUsingPhone)">

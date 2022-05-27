@@ -9,6 +9,7 @@
 
         <div class="view-all-strip">
             <h2>{{ carouselData[category.dataKey]['layout_name'] | uppercase }}</h2>
+            <a href="" class="btn-red">VIEW ALL</a>
         </div>
 
         <product-card-vertical-container *ngIf="carouselData[category.dataKey]['layout_name'] == 'Bestsellers'"

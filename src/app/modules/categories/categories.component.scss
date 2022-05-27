@@ -4,6 +4,8 @@
     margin-top:var(--spacing-unit);
     .view-all-strip{
         @extend %view-all-strip;
+        background:none;
+        border:none;
     }
 }
 .circle-brand-container{

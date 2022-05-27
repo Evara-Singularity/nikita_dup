@@ -20,6 +20,12 @@
         flex-direction: row;
         margin:-10px 0px 0px -10px;
         width:calc(100% + 10px);
+        padding: 10px 0px;
     }
+    ::ng-deep{
+        product-card-vertical-block-view{
+            width:50%;
+        }
+      }
 }
 

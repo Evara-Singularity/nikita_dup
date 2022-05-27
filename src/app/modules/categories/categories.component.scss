@@ -1,12 +1,9 @@
 @import '../../scss/variables.scss';
 @import '../../scss/components/home-listing.scss';
+@import '../../scss/components/banner';
+
 .category-wrap{
-    margin-top:var(--spacing-unit);
-    .view-all-strip{
-        @extend %view-all-strip;
-        background:none;
-        border:none;
-    }
+    margin-top:10px;
 }
 .circle-brand-container{
     display:flex;
@@ -35,11 +32,15 @@
         } 
     }
 }
-.home-grid-view-container{
-    display: flex;
-    flex-wrap: wrap;
-    .product-horizontal-card{
-        width: 50%;
+.category-section{
+    background:var(--white);
+    margin-bottom: 10px;
+    padding: 0px 15px;
+    &.bestSeller{
+        background:none;
+    }
+    .view-all-strip{
+        @extend %view-all-strip;
     }
 }
 

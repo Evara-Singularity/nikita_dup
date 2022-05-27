@@ -3,8 +3,4 @@
 @import '../../scss/components/banner.scss';
 .view-all-strip{
     @extend %view-all-strip;
-    border-bottom-width:0px;
-    background:none;
-    border:0px;
-    padding:10px 0px;
 }

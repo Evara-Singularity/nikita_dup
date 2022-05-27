@@ -5,8 +5,8 @@
         <!-- <a [routerLink]="['/all-categories']" routerLinkActive="router-link-active" class="btn-red f-right">VIEW ALL
         </a> -->
     </div>
-    <ul class="vertical-category-container">
-        <li class="vertical-category-card" *ngFor="let item of flyOutData | slice:0:6;let i=index"> 
+    <ul class="category-grid-container">
+        <li class="category-grid-card" *ngFor="let item of flyOutData | slice:0:6;let i=index"> 
             <a [routerLink]="item.link" (click)="setCookieLink('Trending_Categories',item.categoryCode, 'listing')">
                 <img src="{{item.imageUrl}}">
                 <p>{{(item.categoryName) + (item.categoryName.length > 15 ? " ":"")}}</p>

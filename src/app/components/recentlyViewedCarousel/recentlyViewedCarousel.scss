@@ -2,9 +2,6 @@
 @import '../../scss/components/home-listing';
 .view-all-strip{
     @extend %view-all-strip;
-    background:none;
-    border:none;
-    padding:10px 0px;
 }
 .custom-cbox {
     padding: 10px;

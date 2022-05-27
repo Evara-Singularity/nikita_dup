@@ -31,14 +31,14 @@
                     </category-card>
                 </div> -->
 
-                <div class="vertical-category-container">
-                    <div *ngFor="let item of clustorCategories| slice:0:5" class="vertical-category-card" [routerLink]="item.category_url" >
+                <div class="pwa-col-12 category-grid-container">
+                    <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card" [routerLink]="item.category_url" >
                         <a>
                             <img alt={{item.CategoryName}} src="{{clusterimagePath + 'img/cluster/'+item.category_image}}">
                             <p class="category-text">{{item.CategoryName}}</p>
                         </a>
                     </div>
-                    <div class="vertical-category-card" [routerLink]="['/all-categories']">
+                    <div class="category-grid-card" [routerLink]="['/all-categories']">
                         <a>
                             <img alt="View All Categories" src="{{clusterimagePath + 'img/cluster/all_categories.png'}}">
                             <p class="category-text">View All Categories</p>
@@ -47,37 +47,31 @@
                 </div>
 
             </div>
+            <div class="pwa-col-12 pad-lr-15">
+                <div observeVisibility class="featr_brand clearfix" [debounceTime]="50" (visible)="onVisibleFeaturedBrands($event)">
+                    <div>
+                        <ng-container #FeaturedBrands></ng-container>
+                    </div>
+                </div>
+            </div>
+            <div class="pwa-col-12 pad-lr-15">
+                <div observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}" *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
+                    <ng-container #RecentlyViewedCarouselComponent></ng-container>
+                </div>
+            </div>
+            <div observeVisibility class="pwa-col-12" [debounceTime]="50" (visible)="onVisibleCategories($event)">
+                <ng-container #Categories></ng-container>
+            </div>
+                <!-- Section for feature Arrival -->
+            <div observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [debounceTime]="50" (visible)="onVisibleFeaturedArrivals($event)">
+                <ng-container #FeaturedArrivals></ng-container>
+            </div>
+            <ng-container class="bs-popup" #HomePopupComponet></ng-container>
             
-                <div class="pwa-col-12 pad-lr-15">
-                    <div observeVisibility class="featr_brand clearfix" [debounceTime]="50" (visible)="onVisibleFeaturedBrands($event)">
-                        <div>
-                            <ng-container #FeaturedBrands></ng-container>
-                        </div>
-                    </div>
-                </div>
-                <!-- Section for feature Brands -->
-                
-                 <!-- Section for Recently View -->
-                 <div class="pwa-col-12 pad-lr-15">
-                    <div observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}" *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
-                        <ng-container #RecentlyViewedCarouselComponent></ng-container>
-                    </div>
-                 </div>
-                
-                <div observeVisibility class="pwa-col-12 pad-lr-15" [debounceTime]="50" (visible)="onVisibleCategories($event)">
-                    <ng-container #Categories></ng-container>
-                </div>
-                 <!-- Section for feature Arrival -->
-                <div observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [debounceTime]="50" (visible)="onVisibleFeaturedArrivals($event)">
-                    <ng-container #FeaturedArrivals></ng-container>
-                </div>
-                <ng-container class="bs-popup" #HomePopupComponet></ng-container>
-                
-                <div class="pwa-col-12">
-                    <home-accordians [carouselData]="carouselData"></home-accordians>
-                </div>
-                
-                <whatsapp-toast (click)="sendTrackingData()" [customText]="'Hi, I want to buy from Moglix'"></whatsapp-toast>
+            <div class="pwa-col-12">
+                <home-accordians [carouselData]="carouselData"></home-accordians>
+            </div>
+            <whatsapp-toast (click)="sendTrackingData()" [customText]="'Hi, I want to buy from Moglix'"></whatsapp-toast>
             </div>
         
          <!-- section for trending categories-->

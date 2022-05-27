@@ -27,7 +27,7 @@
     padding: 0px;
     border: 0;
     .addButtonContainer {
-        padding: 0px 10px 15px;
+        padding: 15px 10px 15px;
     }
 }
 
@@ -83,6 +83,11 @@
     background: #f2f2f2;
     text-align: center;
     padding: 15px;
+    .btn-red-bordered{
+        font-size: $large-font;
+        border-radius: $border-radius-8;
+        height: 40px;
+    }
     .blue-border-btn-full {
         font-size: $large-font;
         padding: 10px;
@@ -136,9 +141,7 @@
     }
 }
 
-.white_text {
-    color: #fff !important;
-}
+
 
 .header_text {
     line-height: 26px !important;

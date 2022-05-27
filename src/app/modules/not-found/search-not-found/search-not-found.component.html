@@ -1,9 +1,39 @@
-<div class="align-center">
+<!-- <div class="align-center">
     <div class="container pt-15">
         <h3 class="pb-15 mt-15 align-center f-16">No Product Found</h3>
         <img class="no-product" src="{{imagePath}}b/I/P/B/d/no-search-result.svg" />
         <p class="pad-tb-15 f-16">
             Maybe your search was too specific. Contact for this specific product.
         </p>
+    </div>
+</div> -->
+<div class="search-not-found-container">
+    <div class="not-found-section">
+        <h2>No result found <br>for ‘prietfyth’.</h2>
+        <img class="no-product" src="../../../../assets/img/no-product.png">
+        <p>Please check the spelling or try searching for something else</p>
+    </div>
+    <div class="search-banner-section">
+        <div class="search-banner-card">
+            <img _ngcontent-ssr-pwa-c92="" src="/assets/img/search-card-plp.svg">
+        </div>
+    </div>
+    <div>
+        <section *ngIf="flyOutData" class="trending-container pad-tb-10">
+            <div class="view-all-strip">
+                <h2>
+                    {{tocd && tocd['data'] && tocd['data'].length>0 ? 'MY CATEGORIES' : 'Trending Categories'}}</h2>
+                <!-- <a [routerLink]="['/all-categories']" routerLinkActive="router-link-active" class="btn-red f-right">VIEW ALL
+                </a> -->
+            </div>
+            <ul class="vertical-category-container">
+                <li class="vertical-category-card" *ngFor="let item of flyOutData | slice:0:6;let i=index"> 
+                    <a [routerLink]="item.link" (click)="setCookieLink('Trending_Categories',item.categoryCode, 'listing')">
+                        <img src="{{item.imageUrl}}">
+                        <p>{{(item.categoryName) + (item.categoryName.length > 15 ? " ":"")}}</p>
+                    </a>
+                </li>
+            </ul> 
+        </section>
     </div>
 </div>

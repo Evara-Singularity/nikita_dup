@@ -1,0 +1,28 @@
+@import '../../../scss/variables';
+
+.search-not-found-container{
+    background: var(--ghost-white);
+    .not-found-section{
+        background: var(--white);
+        padding: 20px;
+        text-align: center;
+        .no-product{
+            width: 218px;
+            padding: 15px 0;
+        }
+        p{
+            font-size: $medium-font;
+            line-height: $small-line-height;
+            color: var(--spanish-gray);
+        }
+    }
+    .search-banner-section{
+        background: var(--ghost-white);
+        padding: 15px;
+        .search-banner-card{
+            img{
+                border-radius: 8px;
+            }
+        }
+    }
+}

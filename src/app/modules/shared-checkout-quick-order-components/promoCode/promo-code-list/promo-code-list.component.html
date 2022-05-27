@@ -22,7 +22,7 @@
       </label>
     </ng-container>
   </div> -->
-  <div class="pwa-row no-coupon-card-container">
+  <div class="pwa-row no-coupon-card-container" *ngIf="!allPromoCodes || allPromoCodes?.length === 0">
     <div class="pwa-col-12 card">
       <div class="inner-no-coupon-card">
         <img src="../../../../../../src/assets/img/no_coupon_found.png">
@@ -30,8 +30,8 @@
       </div>
     </div>
   </div>
-  <div class="alert-box">
-    <div class="overlay"></div>
+  <div class="alert-box" *ngIf="_cartService?.showAppliedPromoCode">
+    <div class="overlay" (click)="_cartService.showAppliedPromoCode = false"></div>
     <div class="content-area">
       <div class="info-area">
         <i class="icon-coupon-3-fill-1"></i>
@@ -42,7 +42,7 @@
     </div>
   </div>
   <!-- new design -->
-  <div class="coupon-card-container">
+  <div class="coupon-card-container" *ngIf="allPromoCodes?.length > 0">
     <p class="pwa-text">Available Coupons</p>
     <div (click)="updateCustomPromoCodeInput($event,item)" class="card"
       *ngFor="let item of allPromoCodes; let i = index;">

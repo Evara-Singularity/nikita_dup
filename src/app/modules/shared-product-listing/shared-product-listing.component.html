@@ -1,4 +1,4 @@
-<div class="filter-wrapper" [class.translateHeader]="!_commonService.isScrolledHeader">
+<div class="filter-wrapper" *ngIf="productsListingData?.products?.length>0 || filterChipsArray?.length > 0" [class.translateHeader]="!_commonService.isScrolledHeader">
     <button type="button" (click)="toggleSortBy()">
         <i class="icon-short icon-sort-by" aria-hidden="true"></i> <span class="txt"> Sort By
             <span class="red-txt" [ngSwitch]="_commonService.selectedFilterData['sortBy']">
@@ -40,7 +40,7 @@
         </ng-container>
     </div>
 </div>
-<div class="list-heading" [class.list-heading-search]="pageName === 'SEARCH' || 'ALP'">
+<div class="list-heading" *ngIf="productsListingData?.products?.length>0" [class.list-heading-search]="pageName === 'SEARCH' || 'ALP'">
     <ng-container>
         <h1 class="list-name">
             {{ headerName }}
@@ -72,7 +72,11 @@
     </ng-container>
 </ng-container>
 
-<app-search-not-found *ngIf="productsListingData?.products != undefined && productsListingData?.products?.length==0">
+
+<app-search-not-found 
+    [helpText]="['No result found ', 'for your search.']"
+    [helpSubText]="['Please check the spelling or try searching for something else']" 
+     *ngIf="productsListingData?.products != undefined && productsListingData?.products?.length==0">
 </app-search-not-found>
 
 <span observeVisibility [debounceTime]="100" (visiblxe)="onVisiblePagination()"></span>

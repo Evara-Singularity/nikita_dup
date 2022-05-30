@@ -330,6 +330,44 @@ export const CONSTANTS = {
     "Y",
     "Z",
   ],
+  NOT_FOUND_CATEGORY: [
+    {
+      "categoryCode": "116000000",
+      "categoryName": "Safety",
+      "link": "safety-and-security/116000000",
+      "imageUrl": "https://img.moglimg.com/assets/img/safety.png"
+    },
+    {
+      "categoryCode": "211000000",
+      "categoryName": "Electricals",
+      "link": "electricals/211000000",
+      "imageUrl": "https://img.moglimg.com/assets/img/electricals.png"
+    },
+    {
+      "categoryCode": "114000000",
+      "categoryName": "Power Tools",
+      "link": "power-tools/114000000",
+      "imageUrl": "https://img.moglimg.com/assets/img/power_tool.png"
+    },
+    {
+      "categoryCode": "128000000",
+      "categoryName": "Pumps & Motors",
+      "link": "pumps-motors/128000000",
+      "imageUrl": "https://img.moglimg.com/assets/img/pump_motors.png"
+    },
+    {
+      "categoryCode": "214000000",
+      "categoryName": "Office Stationery & Supplies",
+      "link": "office-supplies/214000000",
+      "imageUrl": "https://img.moglimg.com/assets/img/office_supplies.png"
+    },
+    {
+      "categoryCode": "215000000",
+      "categoryName": "Medical Supplies",
+      "link": "medical-supplies/215000000",
+      "imageUrl": "https://img.moglimg.com/assets/img/medical.png"
+    },
+  ],
   ASSET_IMG: "assets/img/home_card.webp",
   SCHEMA: "https://schema.org",
   RAZORPAY: {
@@ -345,7 +383,6 @@ export const CONSTANTS = {
     GOOGLE_OAUTH:
       "https://accounts.google.com/o/oauth2/v2/auth?response_type=token&client_id=",
   },
-
   MOGLIX_HAINA_LOGO: "https://statics.moglix.com/img/newsletter/int/2021/january/210121/moglixhaina_logo.png",
   GET_LAYOUT: "/cmsapi/getLayoutJsonByRequestParam?requestParam=",
   MOGLIX_HAINA_VIDEO: {

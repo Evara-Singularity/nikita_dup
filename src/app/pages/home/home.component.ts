@@ -27,6 +27,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { ClientUtility } from '@app/utils/client.utility';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductService } from '@app/utils/services/product.service';
+import { CategoryData } from '@app/utils/models/categoryData';
 @Component({
 	selector: 'home',
 	templateUrl: './home.html',
@@ -139,7 +140,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['homeData']['error']) {
 				this.fetchHomePageData(rawData.homeData[0]);
-				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'];
+				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'] as CategoryData[];
 			}
 		});
 

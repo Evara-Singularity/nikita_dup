@@ -53,7 +53,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     emailorphonevalueSubscription:Subscription = null;
 
     signupForm = new FormGroup({
-        firstName: new FormControl("", [Validators.required, StartWithSpaceValidator.validateSpaceStart]),
+        firstName: new FormControl(""),
         email: new FormControl("", [UsernameValidator.validateEmail]),
         phone: new FormControl("", [UsernameValidator.validatePhone]),
         password: new FormControl("", [PasswordValidator.validateSignupPassword]),
@@ -157,6 +157,10 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         this._sharedAuthUtilService.pushNormalUser();
         let request = this.signupForm.value;
         request['otp'] = (this.otpForm.value as string[]).join("");
+        if(this.firstName.value==''){
+            request['firstName']=CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER;
+
+        }
         const REQUEST = { ...this.SINGUP_REQUEST, ...request, ... { buildVersion: environment.buildVersion } }
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.signUp(REQUEST).subscribe(

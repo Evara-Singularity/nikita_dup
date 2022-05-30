@@ -44,24 +44,32 @@ export class ProductAccordiansComponent {
   }
 
   loadShopByAttributeData() {
-    let categoryId = this.categoryBrandDetails.category.categoryCode;
-    const apiList = [
-      this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryId),
-      this._productListService.getFilterBucket(categoryId, 'CATEGORY'), 
-      this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + categoryId)
-    ];
-
     if (this._tState.hasKey(ACC)) {
-      console.log("LINE 56")
       let response = this._tState.get(ACC, {});
       this.setAccordianData(response);
+      return;
     }
-    else {
-      forkJoin(apiList).subscribe((response) => {
+    if (this.isServer) {
+      console.log("I am server")
+      console.log(this.categoryBrandDetails);
+      console.log(this.categoryBrandDetails.category.categoryCode)
+    }
+    if (this.categoryBrandDetails && this.categoryBrandDetails.category && this.categoryBrandDetails.category.categoryCode)
+    {
+      console.log("Hitting api")
+      const categoryId = this.categoryBrandDetails.category.categoryCode;
+      const apiList = [
+        this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryId),
+        this._productListService.getFilterBucket(categoryId, 'CATEGORY'),
+        this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + categoryId)
+      ];
+      forkJoin(apiList).subscribe((response) =>
+      {
+        console.log("response");
         if (this.isServer) {
           this._tState.set(ACC, response);
+          this.setAccordianData(response);
         }
-        this.setAccordianData(response);
       });
     }
   }

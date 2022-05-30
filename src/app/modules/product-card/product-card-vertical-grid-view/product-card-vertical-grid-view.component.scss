@@ -59,6 +59,15 @@
                     color: var(--onyx-black);
                     font-weight: $font-bold;
                 }
+                .out-of-stock-text{
+                    color: var(--gray-web);
+                }
+                .out-of-stock-price{
+                    font-size: $large-font;
+                    font-weight: $font-bold;
+                    color: var(--gray-web);
+                    margin-top: 4px;
+                }
             }
         }
         .card-btn-row{

@@ -27,6 +27,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { ClientUtility } from '@app/utils/client.utility';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductService } from '@app/utils/services/product.service';
+import { CategoryData } from '@app/utils/models/categoryData';
 @Component({
 	selector: 'home',
 	templateUrl: './home.html',
@@ -135,10 +136,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
+
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['homeData']['error']) {
 				this.fetchHomePageData(rawData.homeData[0]);
-				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'];
+				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'] as CategoryData[];
 			}
 		});
 
@@ -325,8 +327,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.carouselData = ncd; //carousel data
 			// this.carouselData = (ncd as any[]).map(product => this.productService.searchResponseToProductEntity(product));
 			for (let i = 0; i < this.categories.length; i++) {
-				for (let j = 0; j < this.carouselData[this.categories[i]['dataKey']]['data']['product_data'].length; j++) {
-					this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j] = this._productService.productLayoutJsonToProductEntity(this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]);
+				if (this.categories[i]['dataKey'] && this.carouselData[this.categories[i]['dataKey']]) {
+					for (let j = 0; j < this.carouselData[this.categories[i]['dataKey']]['data']['product_data'].length; j++) {
+						this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j] = this._productService.productLayoutJsonToProductEntity(this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]);
+					}
 				}
 			}
 

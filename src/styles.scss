@@ -22,7 +22,7 @@
     box-sizing: border-box;
 }
 body {
-    background: $body-color;
+    background: var(--ghost-white);
     font-size: 12px;
     color: var(--onyx-black);
     font-family: $font-family;

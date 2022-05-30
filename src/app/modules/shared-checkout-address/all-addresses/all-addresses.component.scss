@@ -28,37 +28,6 @@
     }
 }
 
-.add-address-substrip {
-    background: #f2f2f2;
-    text-align: center;
-    padding: 15px;
-    .blue-border-btn-full {
-        font-size: $large-font;
-        padding: 10px;
-        border-radius: 0px;
-    }
-}
-
-.address-container {
-    margin-top: 10px;
-    @extend %cards;
-    padding: 0 0 10px 0;
-    border: 0;
-
-    .shipping-container {
-        @extend %white-card;
-        margin-top: 10px;
-        @extend %cards;
-        padding: 0px;
-        border: 0;
-        .addButtonContainer {
-            padding: 0px 10px 15px;
-        }
-    }
-    .addButtonContainer {
-        padding: 15px 10px;
-    }
-}
 
 .address-list {
     @extend %clear-fix;
@@ -131,17 +100,7 @@
         width: 7%;
     }
 }
-.shipping-container {
-    @extend %white-card;
-    margin-top: 10px;
-    @extend %cards;
-    padding: 0px;
-    border: 0;
-    .addButtonContainer {
-        padding: 0px 10px 15px;
-    }
-    
-}
+
 .address-btn-section {
     display: block;
     margin-top: 10px;

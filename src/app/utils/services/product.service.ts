@@ -780,11 +780,10 @@ export class ProductService {
     wishlistToProductEntity(product: any, overrideProductB0 = null) {
 
         const productBO = product.productDetail.productBO; 
-        console.log(productBO);
         const partNumber = productBO['partNumber'] || productBO['defaultPartNumber'];
         const isProductPriceValid = productBO['productPartDetails'][partNumber]['productPriceQuantity'] != null;
         const productPartDetails = productBO['productPartDetails'][partNumber];
-        const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, productBO['productPartDetails'][partNumber]['productPriceQuantity']) : null;
+        let priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, productBO['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
         const productMrp = (isProductPriceValid && priceQuantityCountry) ? priceQuantityCountry['mrp'] : null;
         const productTax = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice']) && !isNaN(priceQuantityCountry['sellingPrice'])) ?
             (Number(priceQuantityCountry['sellingPrice']) - Number(priceQuantityCountry['sellingPrice'])) : 0;
@@ -793,8 +792,6 @@ export class ProductService {
         const productBrandDetails = productBO['brandDetails'];
         const productCategoryDetails = productBO['categoryDetails'][0];
         const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1
-
-        console.log(productPartDetails['images'], productPartDetails['images']);
         const productEntity: ProductsEntity = {
             moglixPartNumber: partNumber,
             moglixProductNo: null,
@@ -807,7 +804,8 @@ export class ProductService {
             shortDesc: productBO['shortDesc'],
             brandId: productBrandDetails['idBrand'],
             brandName: productBrandDetails['brandName'],
-            quantityAvailable: (priceQuantityCountry) ? priceQuantityCountry['quantityAvailable'] : 0,
+            outOfStock: productBO['outOfStock'],
+            quantityAvailable: priceQuantityCountry ? priceQuantityCountry['quantityAvailable'] : 0,
             productMinimmumQuantity: productMinimmumQuantity,
             discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
             rating: (overrideProductB0 && overrideProductB0.rating) ? overrideProductB0.rating : null,
@@ -827,8 +825,8 @@ export class ProductService {
             ratingCount: (overrideProductB0 && overrideProductB0.ratingCount) ? overrideProductB0.ratingCount : null, //this.product.ratingCount,
             reviewCount: (overrideProductB0 && overrideProductB0.reviewCount) ? overrideProductB0.reviewCount : null //this.product.reviewCount
         };
+        console.log(productEntity['salesPrice']);
         return productEntity;
-       
     }
 
     productEntityFromProductBO(productBO, overrideProductB0 = null) {

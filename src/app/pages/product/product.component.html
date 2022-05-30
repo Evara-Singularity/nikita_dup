@@ -746,7 +746,7 @@
             <ng-container #appPromo></ng-container>
         </div>
 
-        <section observeVisibility style="margin-top: 10px;" [debounceTime]="100"
+        <section observeVisibility class="pwa-col-12" [debounceTime]="100"
             [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
             <ng-container #recentProducts></ng-container>
             <div class="loader_container" *ngIf="!recentProductsInstance">

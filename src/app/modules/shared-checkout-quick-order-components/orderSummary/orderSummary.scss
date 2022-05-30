@@ -1,6 +1,4 @@
 @import '../../../scss/variables';
-
-
 .apply-promo{
   @extend %cards;
   padding: 25px 0 15px 0;
@@ -12,7 +10,6 @@
     margin-top: 18px;
   }
 }
-
 .order-summary{
   @extend %white-card;
   padding: 15px 0;
@@ -25,23 +22,10 @@
   li{
     position: relative;
     padding: 8px 15px;
-    // background-color: yellowgreen;
-    // display: flex;
-    // justify-content: space-between;
-    // span{
-    //   &:first-child{
-    //     width: 70%;
-    //     background-color: goldenrod;
-    //   }
-    //   &:last-child{
-    //     width: 30%;
-    //     background-color: hotpink;
-    //     display: flex;
-    //     justify-content: flex-end;
-    //   }
-    // }
     &:after{
-      content: ''; display: block; clear: both;
+      content: ''; 
+      display: block; 
+      clear: both;
     }
     .tag-value { 
       position: absolute;
@@ -86,19 +70,3 @@
 
 }
 
-
-/*new css 20-05-2021*/
-// #payment_summary{
-//   .txt-list{   
-//     li{
-//       &:after{
-//         content: ''; display: block; clear: both;
-//       }
-//       .tag-label { float: left; }
-//       .tag-value { float: right; }
-//       &.bold-txt{
-//         font-weight: 600;
-//       }
-//     }
-//   }
-// }

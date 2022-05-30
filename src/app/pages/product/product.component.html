@@ -156,7 +156,6 @@
                 </p>
             </div>
         </div>
-
         <!--recently bought product section -->
         <div class="pwa-inline-tooltip" *ngIf="rawProductCountMessage">
             <i class="icon-trending"></i>
@@ -180,7 +179,7 @@
     <!-- CTA Fixed position -->
 
     <!-- Product bulk quantity section starts -->
-    <div class="grouping_wrap_pdp" *ngIf="!isCommonProduct">
+    <section class="grouping_wrap_pdp" *ngIf="!isCommonProduct">
         <div *ngFor="let list of productFilterAttributesList" class="singlewrap">
             <p class="heading-3">{{list.name}}</p>
             <ul>
@@ -190,7 +189,7 @@
                 </li>
             </ul>
         </div>
-    </div>
+    </section>
     <!-- Product bulk quantity section ends -->
 
     <!-- Product quantity action section starts -->
@@ -476,7 +475,7 @@
             </div>
         </section>
 
-        <section class="pdp-section-card" id="reviewSection">
+        <section class="reviewSection" id="reviewSection">
             <div class="pwa-row">
                 <div class="pwa-col-6">
                     <p class="heading-3">Reviews & Ratings</p>
@@ -555,11 +554,11 @@
                 <div class="pwa-row innerRow">
                     <div class="pwa-col-6 reviewRow-col">
                         <div class="small-stars">
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 0"></i>
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 1"></i>
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 2"></i>
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 3"></i>
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 4"></i>
+                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 0"></i>
+                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 1"></i>
+                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 2"></i>
+                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 3"></i>
+                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 4"></i>
                         </div>
                         <p>{{review?.user_name}}</p>
                         <p class="small-txt grey-txt cust-date">
@@ -658,10 +657,10 @@
                             </ng-container>
                         </ng-container>
                     </p>
-                    <div class="swipper">
+                    <div class="swiper">
                         <div id="button-background" class="button-area wrapper">
                             <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST </button>
-                            <div id="slider" class="arrow-container next-btn next-btn-invalid"
+                            <div id="animate-slider" class="arrow-container next-btn next-btn-invalid"
                                 (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
                                 <i class="icon-next icon-animate-1"></i>
                                 <i class="icon-next icon-animate-2"></i>
@@ -801,6 +800,11 @@
 <ng-container #addToCartToast></ng-container>
 <ng-container #popupCrousel></ng-container>
 
+<app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>
+
+<!-- <idle-user-search-nudge [searchKeyword]="categoryName" [headingKeyword]="categoryName"
+    *ngIf="isBrowser && !productNotFound">
+</idle-user-search-nudge> -->
 <app-bottom-menu *ngIf="this.isBrowser && isRFQSuccessfull">
     <div content>
         <div class="content-area bottom-layout ">
@@ -847,14 +851,6 @@
         </div>
     </div>
 </app-bottom-menu>
-
-
-<app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>
-
-<!-- <idle-user-search-nudge [searchKeyword]="categoryName" [headingKeyword]="categoryName"
-    *ngIf="isBrowser && !productNotFound">
-</idle-user-search-nudge> -->
-
 <div id="pageBottom"></div>
 <whatsapp-toast (click)="sendTrackingData()" [customText]="getWhatsText"></whatsapp-toast>
 <ng-container *ngIf="showScrollToTopButton">

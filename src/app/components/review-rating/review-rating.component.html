@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="content-popup card mt-15 hp-100 pad-b-70" content>
-        <section class="pdp-section-card">
+        <section class="reviewSection">
             <div class="pwa-row">
                 <p class="f-size-14">
                     {{ rawReviewsData?.productName}}
@@ -77,11 +77,11 @@
                 <div class="pwa-row innerRow popup-innerRow">
                     <div class="pwa-col-6 reviewRow-col">
                         <div class="small-stars">
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 0"></i>
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 1"></i>
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 2"></i>
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 3"></i>
-                            <i class="icon-rating-star" [class.ylw-txt]="review?.rating >= 4"></i>
+                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 0"></i>
+                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 1"></i>
+                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 2"></i>
+                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 3"></i>
+                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 4"></i>
                         </div>
                         <p>{{review?.user_name}}</p>
                         <p class="small-txt grey-txt cust-date">

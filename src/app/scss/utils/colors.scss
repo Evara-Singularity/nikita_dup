@@ -1,29 +1,51 @@
-
 .green-txt {
-    color: $green-color;
+    color: var(--slimy-green);
 }
+
 .red-txt {
-    color: $logo-color;
+    color: var(--primary);
 }
+
 .orange-txt {
-    color: $btn-color;
+    color: var(--orange-red);
 }
+
 .success-txt {
-    color: $green-color;
+    color : var(--slimy-green);
     margin: 5px 0;
 }
-.bg-white {
-    background: $white;
+
+.yellow-txt {
+    color: #fdb92c !important;
 }
-// Error Mesgs
+
+.bg-white {
+    background: var(--white);
+}
+
 .error-txt {
-    color: $error-color;
+    color     : var(--primary);
     margin-top: 5px;
-    font-size: $small-font;
+    font-size : $small-font;
+
     &.inline-error {
         margin-left: 10px;
-        font-size: 12px;
-        display: inline-block;
-        margin-top: 0px;
+        font-size  : 12px;
+        display    : inline-block;
+        margin-top : 0px;
     }
+}
+
+.grey-txt {
+    font-size: 12px;
+    color    : var(--onyx-black);
+    opacity  : 0.5;
+}
+
+.light-green {
+    background: #6bcf1b;
+}
+
+.dark-green {
+    background: #309615;
 }

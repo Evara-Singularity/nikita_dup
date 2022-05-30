@@ -16,6 +16,7 @@ export class PageNotDeliveredComponent implements OnInit {
   API: {}
   isBrowser: boolean;
   isServer: boolean;
+  notFoundCategories: any = CONSTANTS.NOT_FOUND_CATEGORY;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -30,6 +31,7 @@ export class PageNotDeliveredComponent implements OnInit {
   ngOnInit(): void {
 
     this.API = CONSTANTS;
+    
     if (isPlatformServer(this.platformId)) {
         this.response.status(404);
     }

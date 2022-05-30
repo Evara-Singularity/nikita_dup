@@ -1,15 +1,18 @@
-<div class="view-all-strip">
-    <h2>Featured Brands</h2>
-    <a [routerLink]="['/store/brands']" routerLinkActive="router-link-active" class="btn-red">VIEW ALL
-    </a>
-</div>
-<div class="pwa-banner">
-    <div *ngFor="let brandBanner of featureBrandData | slice:0:1" class="full-banner">
-            <img [routerLink]="brandBanner.image_link" (click)="setCookieFeatured(brandBanner.image_title)" [defaultImage]="defaultImage" [lazyLoad]="imageBasePath + brandBanner.image_name">
+
+<ng-container *ngIf="featureBrandData && featureBrandData.length > 0 " >
+    <div class="view-all-strip">
+        <h2>Featured Brands</h2>
+        <a [routerLink]="['/store/brands']" routerLinkActive="router-link-active" class="btn-red">VIEW ALL
+        </a>
     </div>
-    <div class="mutiple-banner">
-        <div *ngFor="let brandBanner of featureBrandData | slice:1:3" class="half-banner">
-            <img [routerLink]="brandBanner.image_link" (click)="setCookieFeatured(brandBanner.image_title)" [defaultImage]="defaultImage" [lazyLoad]="imageBasePath + brandBanner.image_name">
-       </div>
+    <div class="pwa-banner">
+        <div *ngFor="let brandBanner of featureBrandData | slice:0:1" class="full-banner">
+                <img [routerLink]="brandBanner.image_link" (click)="setCookieFeatured(brandBanner.image_title)" [defaultImage]="defaultImage" [lazyLoad]="imageBasePath + brandBanner.image_name">
+        </div>
+        <div class="mutiple-banner">
+            <div *ngFor="let brandBanner of featureBrandData | slice:1:3" class="half-banner">
+                <img [routerLink]="brandBanner.image_link" (click)="setCookieFeatured(brandBanner.image_title)" [defaultImage]="defaultImage" [lazyLoad]="imageBasePath + brandBanner.image_name">
+           </div>
+        </div>
     </div>
-</div>
+</ng-container>

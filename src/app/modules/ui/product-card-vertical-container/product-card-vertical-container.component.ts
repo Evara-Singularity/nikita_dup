@@ -8,6 +8,8 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ProductCardVerticalContainerComponent implements OnInit {
 
   @Input() numberOfItems: number = 0;
+  @Input() isScroll: boolean = true;
+
 
   constructor() { }
 

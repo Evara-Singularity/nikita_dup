@@ -150,11 +150,9 @@ $colmax: 12;
 $default-gap: 15px;
 /*Extends*/
 %view-all-strip{
-    background: $white;
-    border: 1px solid $border-color;
     display:flex;
     align-items:center;
-    padding:10px 15px;
+    padding:10px 0px;
     h4{
        width:75%
     }

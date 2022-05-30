@@ -1250,6 +1250,7 @@ export class CartService
         return this._dataService.callRestful('GET', url);
     }
 
+    showAppliedPromoCode: boolean = false;
     genericApplyPromoCode()
     {
         this._loaderService.setLoaderState(true);
@@ -1290,7 +1291,8 @@ export class CartService
                                 });
                                 this.setGenericCartSession(cartSession);
                                 this._loaderService.setLoaderState(false);
-                                this._toastService.show({ type: 'success', text: 'Promo Code Applied' });
+                                this.showAppliedPromoCode = true;
+                                // this._toastService.show({ type: 'success', text: 'Promo Code Applied' });
                             } else {
                                 cartSession['cart']['totalOffer'] = 0;
                                 cartSession['offersList'] = [];
@@ -1301,6 +1303,7 @@ export class CartService
                             }
                         } else {
                             this.appliedPromoCode = '';
+                            this._loaderService.setLoaderState(false);
                             this._toastService.show({ type: 'error', text: message });
                         }
                     });

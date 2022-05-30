@@ -87,8 +87,10 @@
         <div [ngClass]="{'oos':item.oos}" class="price_detail_toggle pad-15">
             <div class="volume">
                 <span class="f-left txt">Qty :&nbsp;</span>
-                <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')"><span
-                        class="multiple-quantity">-</span><i class="icon-bin single-quantity"></i></span>
+                <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')">
+                    <span *ngIf="item.productQuantity > 1" class="multiple-quantity">-</span>
+                    <i *ngIf="item.productQuantity < 2" class="icon-bin single-quantity"></i>
+                </span>
                 <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
                     (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget>
                 <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')">+</span>
@@ -146,7 +148,7 @@
 <app-bottom-menu *ngIf="removePopup">
     <div content>
         <div class="content-area">
-            <div class="top-heading">
+            <div class="top-header-bottom-menu">
                 <h3 class="heading-3">Are you sure to remove this item?</h3>
                 <i (click)="removePopup = false" class="icon-circle-delete"></i>
             </div>
@@ -173,8 +175,8 @@
                 </div>
             </div>
             <div class="button-area">
-                <button (click)="deleteProduct($event)" class="btn-remove redBgButton"><i
-                        class="icon-bin single-quantity"></i>&nbsp;REMOVE</button>
+                <button (click)="deleteProduct($event)" class="btn-remove redBgButton">
+                    <i class="icon-bin single-quantity"></i>&nbsp;REMOVE</button>
                 <button class="btn-wishlist btn btn-red-bg">MOVE TO WISHLIST</button>
             </div>
         </div>

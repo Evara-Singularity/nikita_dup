@@ -1,6 +1,8 @@
 
 @import '../../../scss/variables';
-
+@import '../../../scss/components/alert-box.scss';
+@import "../../../scss/variables";
+@import '../../bottomMenu/bottom-menu.component.scss';
 .applycoupen-strip{
     padding: 15px 15px 10px;
     .applycoupon-section{

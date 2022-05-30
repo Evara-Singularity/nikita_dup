@@ -14,6 +14,7 @@ import { DataService } from '@app/utils/services/data.service';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { ProductService } from '@app/utils/services/product.service';
 import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
+import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 
 @Component({
     selector: 'app-search-bar',
@@ -359,6 +360,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
         FormsModule,
         ReactiveFormsModule,
         ProductCardVerticalGridViewModule,
+        ProductCardVerticalContainerModule,
     ],
     declarations: [
         SearchBarComponent,

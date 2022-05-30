@@ -13,6 +13,9 @@ import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe
 import { ProductCardFeature, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { ProductCardHorizontalScrollModule } from '../ui/product-card-horizontal-scroll/product-card-horizontal-scroll.module';
 import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
+import { ProductCardVerticalGridViewModule } from '../product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
+import { ProductCardHorizontalGridViewModule } from '../product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
+import { ProductCardVerticalBlockViewModule } from '../product-card/product-card-vertical-block-view/product-card-vertical-block-view.module';
 
 
 @Component({
@@ -179,7 +182,10 @@ export class Categories {
 		LazyLoadImageModule,
 		ObserveVisibilityDirectiveModule,
 		ProductCardHorizontalScrollModule,
-		ProductCardVerticalContainerModule
+		ProductCardVerticalContainerModule,
+		ProductCardVerticalGridViewModule,
+		ProductCardHorizontalGridViewModule,
+		ProductCardVerticalBlockViewModule,
 	],
 	providers: [],
 })

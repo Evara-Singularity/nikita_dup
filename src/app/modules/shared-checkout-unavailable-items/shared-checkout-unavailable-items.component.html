@@ -1,12 +1,9 @@
 <ng-container>
-    <div class="unavailableItems product-card">
-        <div class="container">
-            <div class="container-head-sec">
-                <p class="txt">{{itemsList.length}} {{itemsList && itemsList.length > 1 ? "Items" : "Item"}} not
-                    available
-                </p>
-                <i (click)="closeModal()" class="icon-circle-delete f-right"></i>
-            </div>
+    <div class="unavailableItems product-card pad-0">
+        <div class="top-header-bottom-menu">
+            <h3 class="heading-3">{{itemsList.length}} {{itemsList && itemsList.length > 1 ? "Items" : "Item"}} not
+                available</h3>
+            <i class="icon-circle-delete" (click)="closeModal()"></i>
         </div>
         <div [ngClass]="{'oos':item.oos}" class="card relative" *ngFor="let item of itemsList; let i = index">
             <div class="container pb-15">

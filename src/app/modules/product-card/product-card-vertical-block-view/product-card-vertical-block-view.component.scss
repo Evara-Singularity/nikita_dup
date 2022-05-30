@@ -4,11 +4,10 @@
 @import '../../../scss/components/buttons';
   .product-vertical-card{
         background:var(--white);
-        border:1px solid var(--white);
+        border:1px solid var(--ghost-white);
         border-radius:$border-radius-8;
         padding: 10px;
         position: relative;
-        width:50%;
         margin:10px 0px 0px 10px;
         .product-card-upper {
             text-align: center;

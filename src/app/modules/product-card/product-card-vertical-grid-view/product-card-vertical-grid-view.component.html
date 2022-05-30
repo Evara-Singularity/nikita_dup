@@ -63,10 +63,7 @@
                             <button class="btn btn-red-small" *ngIf="cardFeaturesConfig.enableBuyNow"
                                 (click)="buyNow(true)">BUY NOW</button>
                         </ng-container>
-                        <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
-                            <button class="btn pad-10 btn-red-bordered send-query-btn " (click)="openRfqForm()">SEND
-                                QUERY</button>
-                        </ng-container>
+                      
                     </div>
                 </div>
     <ng-container #variantPopup></ng-container>

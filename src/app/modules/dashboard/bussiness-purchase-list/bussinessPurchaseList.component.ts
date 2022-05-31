@@ -158,7 +158,7 @@ export class BussinessPurchaseListComponent {
       .subscribe((res) => {
         this.showLoader = false;
         this.purchaseLists = res;
-        this.getWishlistData( this.purchaseLists);        
+        this.getWishlistData(this.purchaseLists);   
         let list: Array<any> = res;
         let itemRows: Array<FormGroup> = [];
         list.filter((element, index) => {
@@ -188,11 +188,9 @@ export class BussinessPurchaseListComponent {
   }
   
   getWishlistData(products: object[]){
-
-		return this.wishlistData= products.map(product=>{
-			return this.productService.wishlistToProductEntity(product)
-		})
-		
+		return this.wishlistData = products.map(product=>{
+      return this.productService.wishlistToProductEntity(product)
+		});		
 	}
 
   getdata(productdetail) {

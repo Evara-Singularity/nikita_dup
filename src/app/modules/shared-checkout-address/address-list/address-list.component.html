@@ -8,13 +8,13 @@
         <div class="add-address-substrip">
             <!--Todo-->
             <button class="btn btn-red-bordered center-aligned-button-noborder" (click)="handleAction($event, ACTION_TYPES.ADD, null)">
-               + ADD NEW ADDRESS
+                + ADD NEW ADDRESS
             </button>
         </div>
         <div class="address-container">
             <div class="address-list">
                 <form>
-                    <div class="multiple-address active-multiple-address" [class.withRadioContainer]="showRadio"
+                    <div class="multiple-address" [class.active-multiple-address]="isAddressSelected(address.idAddress)" [class.withRadioContainer]="showRadio"
                         *ngFor="let address of addresses; let addressIndex = index">
                         <label>
                             <!--Todo-->

@@ -145,8 +145,11 @@ form {
         &.active-multiple-address{
             border: 1px solid var(--primary);
             .address-btn-section{
-                display: none;
+                display: block;
             }
+        }
+        .address-btn-section{
+            display: none;
         }
         &.withRadioContainer {
             @extend %white-card;

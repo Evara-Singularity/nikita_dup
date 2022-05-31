@@ -9,7 +9,6 @@
 @import '../../scss/utils/colors';
 
 .page-not-found {
-    background: $white;
     img {
         margin: 50px 0 30px 0;
     }
@@ -1906,47 +1905,6 @@
     }
 }
 
-.grouping_wrap_pdp {
-    background: var(--white);
-    margin-top: 10px;
-    .singlewrap {
-        border-bottom: 0.5px solid var(--silver);
-        padding: 0px 15px;
-        overflow: hidden;
-        &:last-of-type {
-            border-bottom: none;
-            padding-bottom: 0px;
-        }
-        ul {
-            display: flex;
-            overflow-x: scroll;
-            white-space: nowrap;
-            scrollbar-width: none;
-            li {
-                border: 1px solid var(--onyx-black);
-                border-radius: $border-radius-2;
-                margin: 0px 10px 10px 0px;
-                a {
-                    display: inline-block;
-                    padding: 10px;
-                    font-size: $medium-font;
-                    font-weight: $font-bold;
-                    color: var(--onyx-black);
-                    width: $fullwidth;
-                    text-align: center;
-                    &.selected {
-                        background: var(--onyx-black);
-                        color: var(--white);
-                    }
-                    &.inactive {
-                        opacity: 0.5;
-                        pointer-events: none;
-                    }
-                }
-            }
-        }
-    }
-}
 
 .more-attribute {
     padding: 0px 15px 10px;
@@ -2789,28 +2747,9 @@
     }
 }
 
-@keyframes bounce {
-    50% {
-        transform: translateX(5px);
-    }
-}
-$bgColor: #3a3d55;
-$slideTextColor: #3a3d55;
 
-@mixin center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-@mixin nonselect {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    cursor: default;
-}
+
+
 
 #button-background {
     position: relative;
@@ -2972,8 +2911,7 @@ $slideTextColor: #3a3d55;
         }
     }
 }
-
-// simmer
+// Raise RFQ Animation
 .shimmer {
     .wrapper {
         width: 0px;
@@ -3003,7 +2941,12 @@ $slideTextColor: #3a3d55;
             background-position: 450px 0;
         }
     }
-    .arrow-container {
+    @keyframes bounce {
+        50% {
+            transform: translateX(5px);
+        }
+    }
+    .arrow-container{
         i {
             margin-left: -8px;
             font-weight: bold;
@@ -3053,13 +2996,13 @@ $slideTextColor: #3a3d55;
           }
       }
       .slide-text {
-          color: $slideTextColor;
+          color: var(--onyx-black);
           font-size: $medium-font;
           text-transform: uppercase;
           font-family: "Roboto", sans-serif;
           @include nonselect;
        }
-      }
+    }
 }
 
 

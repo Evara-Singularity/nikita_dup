@@ -164,7 +164,6 @@
         <!-- Share section is loaded on demand  -->
         <ng-container #productShare></ng-container>
     </div>
-
     <!-- CTA Fixed position -->
     <div class="bottom-bar" [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
         <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="showFBT()">
@@ -175,9 +174,7 @@
             <button class="f-14" (click)="addToCart(true);">BUY NOW</button>
         </div>
     </div>
-
     <!-- CTA Fixed position -->
-
     <!-- Product bulk quantity section starts -->
     <section class="grouping_wrap_pdp" *ngIf="!isCommonProduct">
         <div *ngFor="let list of productFilterAttributesList" class="singlewrap">
@@ -193,7 +190,7 @@
     <!-- Product bulk quantity section ends -->
 
     <!-- Product quantity action section starts -->
-    <div class="product-section-detail"
+    <section class="product-section-detail"
         *ngIf="productBulkPrices && productBulkPrices.length>1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
         <div class="pdp-subdetail container" [class.no-pad]="productOutOfStock && isCommonProduct">
             <div class="bulk-qty">
@@ -228,8 +225,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
+    </section>
     <div class="product-section-detail"
         *ngIf="productBulkPrices && productBulkPrices.length==1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
         <div class="pdp-subdetail container" [class.no-pad]="productOutOfStock && isCommonProduct">
@@ -259,18 +255,15 @@
             </div>
         </div>
     </div>
-
-
+    
     <!-- Product quantity action section ends -->
     <div *ngIf="!productOutOfStock" class="deals-block bg-white" observeVisibility [debounceTime]="300"
         (visible)="onVisibleOffer($event)">
         <ng-container #offerSection></ng-container>
     </div>
-
     <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
         <ng-container #pincodeForm></ng-container>
     </div>
-
     <!-- other sections starts -->
     <div>
         <!-- RFQ section ends -->

@@ -869,12 +869,10 @@ export class ProductComponent implements OnInit, AfterViewInit
 
         this.updateBulkPriceDiscount();
         this.showLoader = false;
-
+        this.processAccordianData();
         // analytics calls moved to this function incase PDP is redirecte to PDP
         this.callAnalyticForVisit();
         this.setMetatag();
-        this.processAccordianData();
-
     }
 
     processAccordianData() {

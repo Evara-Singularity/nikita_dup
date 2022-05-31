@@ -2836,19 +2836,6 @@
         font-weight: 500;
     }
 }
-.prod-description {
-    padding: 20px 15px 5px;
-    background: white;
-    position: relative;
-
-    .prod-name {
-        font-weight: 700;
-        line-height: 24px;
-        letter-spacing: 0.5px;
-        font-size: 18px;
-    }
-
-
 //grouping-attribute-wrap-section
 .grouping_wrap_pdp {
     background: var(--white);
@@ -2870,7 +2857,7 @@
                 margin: 0px 10px 10px 0px;
                 a {
                     display: inline-block;
-                    padding: 10px;
+                    padding: 8px 12px;
                     font-size: $medium-font;
                     font-weight: $font-bold;
                     color: var(--onyx-black);
@@ -2891,6 +2878,117 @@
           }
       } 
    }
-  } 
+ }
+ //Product description
+
+ .prod-description {
+    padding: 20px 15px 5px;
+    background: white;
+    position: relative;
+
+    .prod-name {
+        font-weight: 700;
+        line-height: 24px;
+        letter-spacing: 0.5px;
+        font-size: 18px;
+    }
+
+    .prod-inner-desc {
+        padding: 5px 0px;
+        display: block;
+        display: flex;
+        align-items: center;
+
+        .rating-box {
+            background: #5ba621;
+            padding: 5px;
+            border-radius: 3px;
+            color: white;
+            font-weight: 600;
+            color: white;
+
+            i {
+                color: white;
+                padding-left: 5px;
+            }
+        }
+
+        .prod-status {
+            font-size: 13px;
+            padding-left: 5px;
+
+            .status {
+                color: #5ba621;
+                font-weight: bold;
+
+                &.s_oos {
+                    color: #ea2222;
+                    font-weight: 800;
+                }
+            }
+
+            .prod-status-right {
+                display: block;
+                color: #000;
+
+                .review {
+                    color: rgba(48, 48, 48, 1);
+                    font-size: $medium-font;
+                }
+
+                .left-pipe {
+                    position: relative;
+                    padding-left: 5px;
+
+                    &::after {
+                        position: absolute;
+                        content: "|";
+                        top: 0px;
+                        left: 0px;
+                        color: #000;
+                    }
+                }
+            }
+        }
+    }
+    .price-block {
+        padding: 5px 0px 0px 0px;
+
+        .mrp {
+            font-size: $small-font;
+            color: #a2a2a2;
+
+            span {
+                color: #5ba621;
+                text-decoration: initial;
+                font-weight: bold;
+            }
+
+            small {
+                font-size: 12px;
+                padding-right: 5px;
+                letter-spacing: 0.5px;
+                text-decoration: line-through;
+            }
+        }
+
+        .actual-price {
+            padding: 5px 0px 0 0;
+            color: #000;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+
+            small {
+                font-size: $small-font;
+                font-weight: normal !important;
+                display: block;
+                padding-top: 5px;
+                color: #74777a;
+            }
+        }
+    }
+} 
+
                       
                       

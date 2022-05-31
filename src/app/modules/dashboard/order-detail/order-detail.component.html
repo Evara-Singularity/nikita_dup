@@ -41,7 +41,7 @@
                 <i class="icon-circle-delete order-track-line danger"></i>
                 <i class="icon-check-active order-track-line success"></i>
                 <span class="orderstatus"> <span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'">{{detail.status}}</span></span>
-                <span class="orderstatus">TRACK ORDER <i class="icon-next"></i></span>
+                <span *ngIf="detail.status !== 'CANCELLED'" class="orderstatus">TRACK ORDER <i class="icon-next"></i></span>
             </div>
         <!-- <div class="card-bottom-inner">
          One

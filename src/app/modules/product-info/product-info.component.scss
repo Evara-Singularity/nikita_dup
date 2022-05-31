@@ -1,6 +1,7 @@
 @import '../../scss/variables';
 @import '../../scss/layout/cards.scss';
 @import '../../scss/components/tabs.scss';
+@import '../../scss/components/static-card-container.scss';
 
 .customPopHeight{
       height:calc(100vh - 50px)!important;
@@ -17,4 +18,14 @@ ngx-siema-slide{
   ::ng-deep {
     display:block;
   }
+}
+
+.pwa-tabs-container{
+  .pwa-tab{
+    border-radius: 8px;
+    padding: 10px 15px;
+  }
+}
+.tab-content{
+  margin-top: 5px;
 }

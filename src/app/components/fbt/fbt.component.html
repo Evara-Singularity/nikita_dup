@@ -9,20 +9,18 @@
             <!--backToCartFlow('/quickorder', 'ADD TO CART')-->
         </div>
         <div class="first_fbt_prod">
-            <a>
-                <div class="fbt_prod_img">
-                    <img [src]="rootProduct.productImage">
-                </div>
-                <div class="fbt_prod_desc">
-                    <p class="fbt_prod_name">{{rootProduct.productName}}</p>
-                    <span class="fbt_tag" *ngIf="rootProductInCart">
-                        Added to Cart
-                    </span>
-                    <span class="fbt_price" *ngIf="!rootProductInCart">
-                        {{rootProduct.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
-                    </span>
-                </div>
-            </a>
+            <div class="fbt_prod_img">
+                <img [src]="rootProduct.productImage">
+            </div>
+            <div class="fbt_prod_desc">
+                <p class="fbt_prod_name">{{rootProduct.productName}}</p>
+                <span class="fbt_tag" *ngIf="rootProductInCart">
+                    Added to Cart
+                </span>
+                <span class="fbt_price" *ngIf="!rootProductInCart">
+                    {{rootProduct.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
+                </span>
+            </div>
         </div>
         <ul class="list view-products fbtList">
             <li *ngFor="let product of mFBTProducts;index as fbtIndex">
@@ -32,8 +30,7 @@
                         <span class="custom-box icon-box"></span>
                     </label>
                 </div>
-                <div (click)="navigateToPDP(product.url)" class="fbTrightContainer">
-
+                <div (click)="navigateToPDP(product.url)" class="fbt-static-container">
                     <div class="product-img">
                         <img [src]="product.productImage">
                     </div>
@@ -59,11 +56,11 @@
             </div>
             <!--TODO:Yogender-->
             <div class="f-right" *ngIf="!(isModal)">
-                <button class="addToCart" (click)="$event.stopPropagation();initiateAddToCart()">{{noOfFBTS?'BUY
+                <button class="btn btn-variant1" (click)="$event.stopPropagation();initiateAddToCart()">{{noOfFBTS?'BUY
                     TOGETHER':'ADD TO CART'}}</button>
             </div>
             <div class="f-right" *ngIf="isModal">
-                <button class="addToCart" (click)="$event.stopPropagation();initiateAddToCart()">{{noOfFBTS?'BUY
+                <button class="btn btn-variant1" (click)="$event.stopPropagation();initiateAddToCart()">{{noOfFBTS?'BUY
                     TOGETHER':'SKIP & GO TO CART'}}</button>
             </div>
         </div>

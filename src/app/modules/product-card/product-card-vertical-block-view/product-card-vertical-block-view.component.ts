@@ -47,9 +47,6 @@ export class ProductCardVerticalBlockViewComponent extends ProductCardCoreCompon
       _productService
     );
   }
-  // someField: boolean = false;
-  // alternatively also the host parameter in the @Component()` decorator can be used
-  @HostBinding('style.background') bgColor:'#ddd';
 
   ngOnInit(): void {
     super.ngOnInit();

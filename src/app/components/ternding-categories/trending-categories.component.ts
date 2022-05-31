@@ -1,15 +1,16 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input, NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
+import { CategoryData } from "@app/utils/models/categoryData";
 import { CommonService } from "@app/utils/services/common.service";
 
 @Component({
-    selector: 'home-trendingcategories',
+    selector: 'trending-categories',
     templateUrl: './trending-categories.component.html',
     styleUrls: ['./trending-categories.component.scss']
 })
 export class TrendingCategoriesComponent {
-    @Input('flyOutData') flyOutData;
+    @Input('flyOutData') flyOutData: CategoryData[];
     @Input('tocd') tocd;
     
     constructor(private _commonService: CommonService) {}

@@ -39,9 +39,13 @@
 }
 
 .add-address-substrip {
-    background: #f2f2f2;
     text-align: center;
     padding: 15px;
+    .btn-red-bordered{
+        font-size: $large-font;
+        border-radius: $border-radius-8;
+        height: 40px;
+    }
     .blue-border-btn-full {
         font-size: $large-font;
         padding: 10px;
@@ -54,8 +58,7 @@
     @extend %cards;
     background-color: var(--ghost-white);
     padding: 0 0 0 0;
-    border: 0;
-    
+    border: 0; 
     .addButtonContainer {
         padding: 15px 10px;
     }
@@ -66,7 +69,7 @@
         padding: 0px;
         border: 0;
         .addButtonContainer {
-            padding: 0px 10px 15px;
+            padding: 15px 10px 15px;
         }
     }
 }
@@ -271,7 +274,7 @@ form {
 }
 
 .multiple-address-checkout{
-    padding: 15px !important;
+    padding: 15px 15px 0 !important;
 }
 input,select{
     width: 100%;

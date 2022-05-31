@@ -1,113 +1,131 @@
 @import "../../scss/variables";
 @import "../../scss/components/checkbox.scss";
 
-.fbt-close-ico {
-    font-size: 18px;
-    float: right;
-    padding-right: 10px;
-    line-height: 34px;
-}
-
-.fbtList {
-    li {
-        margin-bottom: 0px;
-        padding: 0px;
-        font-size: 12px;
-        .price {
-            .after-discount {
-                display: inline-block;
-                vertical-align: middle;
-                margin: 0 5px 0 0;
+.fbt-card-container {
+    background: var(--white);
+    .fbt-close-ico {
+        font-size: $extra-large-1-font;
+        float: right;
+        padding-right: 10px;
+        line-height: $extra-large-line-height;
+    }
+    .first_fbt_prod {
+        @extend %clear-fix;
+        padding: 0px 15px 10px;
+        border-top: 1px solid var(--light-gray);
+        border-bottom: 1px solid $border-color;
+        .fbt_prod_img {
+            float: left;
+            img {
+                width: 60px;
+                height: 60px;
             }
         }
-        .fbtCheckBox {
-            width: 50px;
-            float: left;
-            padding: 15px;
-            label {
-                width: 20px;
-                @extend %custom-check-box-checkout;
-                height: 74px;
-                .custom-box {
-                    font-size: 20px;
-                    &::before {
-                        content: "\e9a5";
-                        font-family: 'icomooon_pwa';
-                        color: #A8A8A8;
+        .fbt_prod_desc {
+            width: calc(100% - 80px);
+            float: right;
+            padding-top: 5px;
+            .fbt_prod_name {
+                line-height: $small-line-height;
+                font-size: $medium-font;
+            }
+            .fbt_tag {
+                background: #DBDBDB;
+                color: #74777A;
+                border-radius: $border-radius-6;
+                padding: 4px 8px;
+                margin-top: 4px;
+                display: inline-block;
+                font-size: $medium-font;
+            }
+            .fbt_price {
+                font-weight: bold;
+                font-size: 16px;
+                display: block;
+                margin: 5px 0 5px 0;
+            }
+        }
+    }
+    .fbtList {
+        li {
+            margin-bottom: 0px;
+            padding: 0px;
+            font-size: $medium-font;
+            display: flex;
+            border-bottom: 1px solid var(--light-gray);
+            .fbtCheckBox {
+                width: 50px;
+                padding: 15px;
+                label {
+                    width: 20px;
+                    @extend %custom-check-box-checkout;
+                    height: 74px;
+                    .custom-box {
+                        font-size: $extra-large-2-font;
+                        &::before {
+                            content: "\e9a5";
+                            font-family: 'icomooon_pwa';
+                            color: var(--spanish-gray);
+                        }
                     }
                 }
             }
-            .add-txt {
-                color: #9e9d9d;
+            .fbt-static-container {
+                display: flex;
+                border-left: 1px solid $border-color;
+                width: calc(100% - 50px);
+                float: right;
+                padding: 10px;
+                justify-content: space-between;
+                .product-img {
+                    width: 84px;
+                    height: 84px;
+                }
+                .product-description {
+                    width: calc(100% - 104px);
+                    .description-txt{
+                        font-size: $large-font;
+                        line-height: $medium-line-height;
+                        padding-bottom: 5px;
+                    }
+                    .price{
+                        .after-discount{
+                            display: inline-block;
+                            vertical-align: middle;
+                            margin: 0 5px 0 0;
+                            font-size: $extra-large-font;
+                            font-weight: $font-bold;
+                        }
+                        .before-discount{
+                            font-size: $medium-font;
+                            text-decoration: line-through;
+                            opacity: .5;
+                            margin: 0 6px 0 0;
+                        }
+                        .discount{
+                            font-size: $medium-font;
+                            color: var(--slimy-green);
+                            font-weight: $font-bold;
+                        }
+                    }
+                }
             }
         }
-        .fbTrightContainer {
-            border-left: 1px solid $border-color;
-            width: calc(100% - 50px);
-            float: right;
-            padding: 10px;
+    }
+    .fbdBottom {
+        padding: 15px;
+        h3 {
+            padding: 5px 0px;
+        }
+        .grey-fbt-txt {
+            color: var(--spanish-gray);
+            font-size: $small-font;
+            font-weight: normal;
+            padding-left: 5px;
+        }
+        button{
+            border-radius: $border-radius-6;
+            padding: 10px 15px;
         }
     }
-}
-
-.first_fbt_prod {
-    @extend %clear-fix;
-    padding: 0px 15px 10px;
-    border-top: 1px solid #e6e6e6;
-    border-bottom: 1px solid $border-color;
-    .fbt_prod_img {
-        float: left;
-        img {
-            width: 60px;
-            height: 60px;
-        }
-    }
-    .fbt_prod_desc {
-        width: calc(100% - 80px);
-        float: right;
-        padding-top: 5px;
-        .fbt_prod_name {
-            line-height: 18px;
-            font-size: $medium-font;
-        }
-        .fbt_tag {
-            background: #DBDBDB;
-            color: #74777A;
-            border-radius: 5px;
-            padding: 4px 8px;
-            margin-top: 4px;
-            display: inline-block;
-            font-size: $medium-font;
-        }
-        .fbt_price {
-            font-weight: bold;
-            font-size: 16px;
-            display: block;
-            margin: 5px 0 5px 0;
-        }
-    }
-}
-
-.fbdBottom {
-    padding: 10px 15px;
-    h3 {
-        padding: 5px 0px;
-    }
-    .grey-fbt-txt {
-        color: #9e9d9d;
-        font-size: $small-font;
-        font-weight: normal;
-        padding-left: 5px;
-    }
-}
-
-.addToCart {
-    background: $btn-color-red;
-    height: 40px;
-    padding: 0px 15px;
-    border: none;
-    color: white;
-    border-radius: 3px;
-    font-size: 14px;
-    font-weight: 600;
 }

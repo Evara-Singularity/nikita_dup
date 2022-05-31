@@ -2990,6 +2990,47 @@
     }
 }
 
+.grouping_wrap_pdp {
+    background: var(--white);
+    margin-top: 10px;
+    .singlewrap {
+        border-bottom: 0.5px solid var(--silver);
+        padding: 0px 15px;
+        overflow: hidden;
+        &:last-of-type {
+            border-bottom: none;
+            padding-bottom: 0px;
+        }
+        ul {
+            display: flex;
+            overflow-x: scroll;
+            white-space: nowrap;
+            scrollbar-width: none;
+            li {
+                border: 1px solid var(--onyx-black);
+                border-radius: $border-radius-2;
+                margin: 0px 10px 10px 0px;
+                a {
+                    display: inline-block;
+                    padding: 10px;
+                    font-size: $medium-font;
+                    font-weight: $font-bold;
+                    color:var(--onyx-black);
+                    width: $fullwidth;
+                    text-align: center;
+                    &.selected {
+                        background: var(--onyx-black);
+                        color: var(--white);
+                    }
+                    &.inactive {
+                        opacity: 0.5;
+                        pointer-events: none;
+                    }
+                }
+            }
+        }
+    }
+}
 
 
 

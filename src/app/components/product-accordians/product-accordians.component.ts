@@ -27,6 +27,7 @@ export class ProductAccordiansComponent {
   accordiansDetails:AccordiansDetails[]=[];
   isServer: boolean;
   isBrowser: boolean;
+  categoryId: any;
 
   constructor(
     public _commonService: CommonService,
@@ -46,32 +47,37 @@ export class ProductAccordiansComponent {
   loadShopByAttributeData() {
     if (this._tState.hasKey(ACC)) {
       let response = this._tState.get(ACC, {});
-      this.setAccordianData(response);
+      if (this.categoryBrandDetails && this.categoryBrandDetails.category && this.categoryBrandDetails.category.categoryCode) {
+        this.categoryId = this.categoryBrandDetails.category.categoryCode;
+        this.setDataForPopularBrandCategories(response);
+      }
       return;
     }
-    if (this.isServer) {
-      console.log("I am server")
-      console.log(this.categoryBrandDetails);
-      console.log(this.categoryBrandDetails.category.categoryCode)
-    }
-    if (this.categoryBrandDetails && this.categoryBrandDetails.category && this.categoryBrandDetails.category.categoryCode)
-    {
-      console.log("Hitting api")
-      const categoryId = this.categoryBrandDetails.category.categoryCode;
+
+    if (this.categoryBrandDetails && this.categoryBrandDetails.category && this.categoryBrandDetails.category.categoryCode) {
+      this.categoryId = this.categoryBrandDetails.category.categoryCode;
       const apiList = [
-        this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryId),
-        this._productListService.getFilterBucket(categoryId, 'CATEGORY'),
-        this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + categoryId)
+        this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + this.categoryId),
+        this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + this.categoryId)
       ];
-      forkJoin(apiList).subscribe((response) =>
-      {
-        console.log("response");
+      forkJoin(apiList).subscribe((response) => {
         if (this.isServer) {
           this._tState.set(ACC, response);
-          this.setAccordianData(response);
         }
       });
     }
+  }
+
+  setDataForPopularBrandCategories(response) {
+    this._productListService.getFilterBucket(this.categoryId, 'CATEGORY').subscribe(
+      (res) => {
+        response.push(res);
+        this.setAccordianData(response);
+      },
+      (error) => {
+        console.log("API error", error)
+      }
+    );
   }
 
   setAccordianData(res){
@@ -86,24 +92,24 @@ export class ProductAccordiansComponent {
         });
       }
     }
-    if (res[1].hasOwnProperty('categoryLinkList') && res[1]['categoryLinkList']) {
-      this.ACCORDIAN_DATA[1] = res[1]['categoryLinkList'];
+    if (res[2].hasOwnProperty('categoryLinkList') && res[2]['categoryLinkList']) {
+      this.ACCORDIAN_DATA[2] = res[2]['categoryLinkList'];
 
       // accordian data
       this.accordiansDetails.push({
         name: 'Popular Brand Categories',
         extra: this.categoryBrandDetails.brand.brandName,
-        data: Object.entries(this.ACCORDIAN_DATA[1]).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+        data: Object.entries(this.ACCORDIAN_DATA[2]).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
         icon: 'icon-brand_store'
       });
     }
-    if (res[2].hasOwnProperty('mostSoledSiblingCategories')) {
-      this.ACCORDIAN_DATA[2] = res[2]['mostSoledSiblingCategories'];
+    if (res[1].hasOwnProperty('mostSoledSiblingCategories')) {
+      this.ACCORDIAN_DATA[1] = res[1]['mostSoledSiblingCategories'];
       // accordian data
-      if (this.ACCORDIAN_DATA[2]?.length > 0) {
+      if (this.ACCORDIAN_DATA[1]?.length > 0) {
         this.accordiansDetails.push({
           name: ' Shop by Related Categories',
-          data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
+          data: (this.ACCORDIAN_DATA[1]).map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
           icon:'icon-categories'
         });
       }

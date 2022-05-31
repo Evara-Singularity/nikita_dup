@@ -14,29 +14,6 @@
     background: $gray-color;
 }
 
-.categories-list {
-    li {
-        margin-bottom: 30px;
-        @include gridForCategory("3", "20");
-
-        i {
-            width: 75px;
-            height: 75px;
-            display: block;
-            margin: auto;
-            background: $gray-color;
-            border-radius: 50%;
-            font-size: 35px;
-            line-height: 75px;
-            margin-bottom: 5px;
-        }
-
-        span {
-            font-size: $large-font;
-        }
-    }
-}
-
 .pdp-container {
     padding: 10px 0px;
     background: #f2f2f2;
@@ -190,137 +167,7 @@
         }
     }
 
-    .prod-description {
-        padding: 20px 15px 5px;
-        background: white;
-        position: relative;
-
-        .prod-name {
-            font-weight: 700;
-            line-height: 24px;
-            letter-spacing: 0.5px;
-            font-size: 18px;
-        }
-
-        .prod-inner-desc {
-            padding: 5px 0px;
-            display: block;
-            display: flex;
-            align-items: center;
-
-            .rating-box {
-                background: #5ba621;
-                padding: 5px;
-                border-radius: 3px;
-                color: white;
-                font-weight: 600;
-                color: white;
-
-                i {
-                    color: white;
-                    padding-left: 5px;
-                }
-            }
-
-            .prod-status {
-                font-size: 13px;
-                padding-left: 5px;
-
-                .status {
-                    color: #5ba621;
-                    font-weight: bold;
-
-                    &.s_oos {
-                        color: #ea2222;
-                        font-weight: 800;
-                    }
-                }
-
-                .prod-status-right {
-                    display: block;
-                    color: #000;
-
-                    .review {
-                        color: rgba(48, 48, 48, 1);
-                        font-size: $medium-font;
-                    }
-
-                    .left-pipe {
-                        position: relative;
-                        padding-left: 5px;
-
-                        &::after {
-                            position: absolute;
-                            content: "|";
-                            top: 0px;
-                            left: 0px;
-                            color: #000;
-                        }
-                    }
-                }
-            }
-        }
-
-        .share-prod {
-            color: #0d99ff;
-            font-size: 14px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 500;
-            border-top: 1px solid #a2a2a2;
-            padding-top: 15px;
-            margin-top: 15px;
-
-            span {
-                margin-left: 10px;
-                display: block;
-            }
-        }
-
-        .aor {
-            .prod-inner-desc {
-                padding-bottom: 15px;
-            }
-        }
-
-        .price-block {
-            padding: 5px 0px 0px 0px;
-
-            .mrp {
-                font-size: $small-font;
-                color: #a2a2a2;
-
-                span {
-                    color: #5ba621;
-                    text-decoration: initial;
-                    font-weight: bold;
-                }
-
-                small {
-                    font-size: 12px;
-                    padding-right: 5px;
-                    letter-spacing: 0.5px;
-                    text-decoration: line-through;
-                }
-            }
-
-            .actual-price {
-                padding: 5px 0px 0 0;
-                color: #000;
-                font-size: 20px;
-                font-weight: 700;
-                letter-spacing: 0.5px;
-
-                small {
-                    font-size: $small-font;
-                    font-weight: normal !important;
-                    display: block;
-                    padding-top: 5px;
-                    color: #74777a;
-                }
-            }
-        }
-    }
+  
 
     .bottom-bar {
         width: 100%;
@@ -2989,42 +2836,71 @@
         font-weight: 500;
     }
 }
+.prod-description {
+    padding: 20px 15px 5px;
+    background: white;
+    position: relative;
 
-.grouping_wrap_pdp {
-    background: var(--white);
-    margin-top: 10px;
-    .singlewrap {
-        border-bottom: 0.5px solid var(--silver);
-        padding: 0px 15px;
-        overflow: hidden;
-        &:last-of-type {
-            border-bottom: none;
-            padding-bottom: 0px;
+    .prod-name {
+        font-weight: 700;
+        line-height: 24px;
+        letter-spacing: 0.5px;
+        font-size: 18px;
+    }
+
+    .prod-inner-desc {
+        padding: 5px 0px;
+        display: block;
+        display: flex;
+        align-items: center;
+
+        .rating-box {
+            background: #5ba621;
+            padding: 5px;
+            border-radius: 3px;
+            color: white;
+            font-weight: 600;
+            color: white;
+
+            i {
+                color: white;
+                padding-left: 5px;
+            }
         }
-        ul {
-            display: flex;
-            overflow-x: scroll;
-            white-space: nowrap;
-            scrollbar-width: none;
-            li {
-                border: 1px solid var(--onyx-black);
-                border-radius: $border-radius-2;
-                margin: 0px 10px 10px 0px;
-                a {
-                    display: inline-block;
-                    padding: 10px;
+
+        .prod-status {
+            font-size: 13px;
+            padding-left: 5px;
+
+            .status {
+                color: #5ba621;
+                font-weight: bold;
+
+                &.s_oos {
+                    color: #ea2222;
+                    font-weight: 800;
+                }
+            }
+
+            .prod-status-right {
+                display: block;
+                color: #000;
+
+                .review {
+                    color: rgba(48, 48, 48, 1);
                     font-size: $medium-font;
-                    font-weight: $font-bold;
-                    color:var(--onyx-black);
-                    width: $fullwidth;
-                    text-align: center;
-                    &.selected {
-                        background: var(--onyx-black);
-                        color: var(--white);
-                    }
-                    &.inactive {
-                        opacity: 0.5;
-                        pointer-events: none;
+                }
+
+                .left-pipe {
+                    position: relative;
+                    padding-left: 5px;
+
+                    &::after {
+                        position: absolute;
+                        content: "|";
+                        top: 0px;
+                        left: 0px;
+                        color: #000;
                     }
                 }
             }

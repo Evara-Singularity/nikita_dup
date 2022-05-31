@@ -274,7 +274,7 @@
                     Moglix Benefits
                 </h3>
             </div>
-            <div class="pwa-tabs-container">
+            <div class="pwa-col-12 pwa-tabs-container pad-lr-15">
                 <div class="pwa-image-tab">
                     <span class="tab-img">
                         <i class="icon-Group-14030"></i>
@@ -300,8 +300,12 @@
                     </span>
                 </div>
             </div>
-            <h2 class="heading-3"> Return Policy</h2>
-            <div class="pwa-tabs-container">
+            <div class="pdp-section-header">
+                <h3 class="heading-3">
+                    Return Policy
+                </h3>
+            </div>
+            <div class="pwa-col-12 pwa-tabs-container pad-lr-15">
                 <div class="pwa-image-tab" (click)="$event.stopPropagation(); navigateToFAQ();">
                     <span class="tab-img">
                         <i class="icon-restart-line"></i>
@@ -695,8 +699,9 @@
             <ng-container #similarProduct></ng-container>
         </section>
         <!--widgets section-->
-        <section class="widget-container" *ngIf="productCategoryDetails">
-            <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
+        <section class="widget-container pwa-row pad-0" *ngIf="productCategoryDetails">
+            <div class="pwa-col-12">
+             <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
                 [href]="[baseDomain+'/'+productCategoryDetails['categoryLink']]" class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
@@ -714,6 +719,7 @@
                 <!-- <span>From ₹999</span> -->
                 <i class="icon-next"></i>
             </a>
+           </div>
         </section>
         <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
             <ng-container #sponseredProducts></ng-container>
@@ -737,10 +743,12 @@
         <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
         </past-orders>
 
-        <div class="mt-10" [ngClass]="{'returnPolicyContainer': true}" observeVisibility [debounceTime]="300"
+        <div class="pwa-row app-promo"  observeVisibility [debounceTime]="300"
             (visible)="onVisibleAppPromo($event)">
-            <ng-container #appPromo></ng-container>
-        </div>
+            <div class="pwa-col-12">
+                <ng-container #appPromo></ng-container>
+            </div>
+         </div>
 
         <section observeVisibility class="pwa-col-12" [debounceTime]="100"
             [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">

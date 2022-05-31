@@ -30,7 +30,7 @@
             [categoryName]="API_RESPONSE['category'][0]['categoryDetails']['categoryName']"
             [categoryTaxonomay]="API_RESPONSE['category'][0]['categoryDetails']['taxonomy']"
             [productsListingData]="_productListService?.productListingData"
-            *ngIf="_productListService &&_productListService.productListingData">
+            *ngIf="API_RESPONSE?.category[0] && _productListService &&_productListService.productListingData">
         </shared-product-listing>
     </div>
     
@@ -53,7 +53,7 @@
         <app-accordian [accordiansDetails]="accordiansDetails"></app-accordian>
 
         <!-- This is recently article section -->
-        <div class="recent-article-container" *ngIf="(API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []).length > 0">
+        <div class="recent-article-container" *ngIf="(API_RESPONSE.category && API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []).length > 0">
             <recent-articles [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []"
                 [title]="API_RESPONSE.category[0]?.categoryDetails?.categoryName"></recent-articles>
         </div>
@@ -73,7 +73,7 @@
     
     <breadcrumb-nav [breadcrumb]="API_RESPONSE.category[3]"></breadcrumb-nav>
     <whatsapp-toast
-        (click)="sendWhatsappTrackingData()" [customText]="'Hi, I want to buy ' + API_RESPONSE.category[0].categoryDetails?.categoryName + ' products.'">
+        (click)="sendWhatsappTrackingData()" [customText]="'Hi, I want to buy ' + API_RESPONSE.category[0]?.categoryDetails?.categoryName + ' products.'">
     </whatsapp-toast>
 
 </div>

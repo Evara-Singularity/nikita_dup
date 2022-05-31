@@ -7,8 +7,7 @@
     <section class="payment_accordion">
 
         <div id="creditDebitCardSection" class="payment_accordion_item">
-            <div (click)="updatePaymentBlock(globalConstants['creditDebitCard'], 'creditDebitCard', 'creditDebitCardSection')"
-                class="payment-accordion_header">
+            <div (click)="updatePaymentBlock(globalConstants['creditDebitCard'], 'creditDebitCard', 'creditDebitCardSection')" class="payment-accordion_header">
                 <i class="icon-credit-debit-card ico-accord-left"></i>
                 <span class="accordion-text">Credit/Debit Card</span>
                 <i class="icon-down"></i>
@@ -22,8 +21,7 @@
 
 
         <div id="netBankingSection" class="payment_accordion_item">
-            <div (click)="updatePaymentBlock(globalConstants['netBanking'], 'netBanking', 'netBankingSection')"
-                class="payment-accordion_header">
+            <div (click)="updatePaymentBlock(globalConstants['netBanking'], 'netBanking', 'netBankingSection')" class="payment-accordion_header">
                 <i class="icon-net-banking ico-accord-left"></i>
                 <span class="accordion-text">Net Banking</span>
                 <i class="icon-down"></i>
@@ -36,8 +34,7 @@
         </div>
 
         <div id="walletSection" class="payment_accordion_item">
-            <div (click)="updatePaymentBlock(globalConstants['wallet'], 'wallet', 'walletSection')"
-                class="payment-accordion_header">
+            <div (click)="updatePaymentBlock(globalConstants['wallet'], 'wallet', 'walletSection')" class="payment-accordion_header">
                 <i class="icon-wallet ico-accord-left"></i>
                 <span class="accordion-text">Wallet</span>
                 <i class="icon-down"></i>
@@ -48,10 +45,9 @@
                 </div>
             </div>
         </div>
-        
+
         <div id="emiSection" class="payment_accordion_item">
-            <div (click)="updatePaymentBlock(globalConstants['emi'], 'emi', 'emiSection')"
-                class="payment-accordion_header">
+            <div (click)="updatePaymentBlock(globalConstants['emi'], 'emi', 'emiSection')" class="payment-accordion_header">
                 <i class="icon-emi ico-accord-left"></i>
                 <span class="accordion-text">EMI</span>
                 <span><small class="error-txt inline-error" *ngIf="messageEmi">{{messageEmi}} </small></span>
@@ -63,10 +59,9 @@
                 </div>
             </div>
         </div>
- 
+
         <div id="neftRtgsSection" *ngIf="canNEFT_RTGS" class="payment_accordion_item">
-            <div (click)="updatePaymentBlock(globalConstants['neftRtgs'],'neftRtgs', 'neftRtgsSection')"
-                class="payment-accordion_header">
+            <div (click)="updatePaymentBlock(globalConstants['neftRtgs'],'neftRtgs', 'neftRtgsSection')" class="payment-accordion_header">
                 <i class="icon-credit-line-home ico-accord-left"></i>
                 <span class="accordion-text">EMI</span>
                 <i class="icon-down"></i>
@@ -79,25 +74,21 @@
         </div>
 
         <div id="upiSection" class="payment_accordion_item">
-            <div (click)="updatePaymentBlock(globalConstants['upi'],'upi', 'upiSection')"
-                class="payment-accordion_header">
+            <div (click)="updatePaymentBlock(globalConstants['upi'],'upi', 'upiSection')" class="payment-accordion_header">
                 <img class="icon-img" src="assets/img/upi.svg">
                 <span class="accordion-text">UPI</span>
                 <i class="icon-down"></i>
             </div>
             <div class="payment-accordion_body">
                 <div *ngIf="paymentBlock==globalConstants['upi']" class="payment-popup">
-                    <upi *ngIf="paymentBlock==globalConstants['upi']" [successPercentageData]="upiSuccessPercentageData"
-                        [type]="invoiceType"></upi>
+                    <upi *ngIf="paymentBlock==globalConstants['upi']" [successPercentageData]="upiSuccessPercentageData" [type]="invoiceType"></upi>
                 </div>
             </div>
         </div>
 
 
-        <div id="paytmUpiSection" [class.selectedAccordion]="paymentBlock==globalConstants['paytmUpi']"
-            class="payment_accordion_item">
-            <div (click)="updatePaymentBlock(globalConstants['paytmUpi'],'paytmUpi', 'paytmUpiSection')"
-                class="payment-accordion_header">
+        <div id="paytmUpiSection" [class.selectedAccordion]="paymentBlock==globalConstants['paytmUpi']" class="payment_accordion_item">
+            <div (click)="updatePaymentBlock(globalConstants['paytmUpi'],'paytmUpi', 'paytmUpiSection')" class="payment-accordion_header">
                 <img class="icon-img" src="assets/img/paytm.svg">
                 <span class="accordion-text">Paytm UPI</span>
                 <i class="icon-down"></i>
@@ -109,9 +100,8 @@
             </div>
         </div>
 
-        <div id="cashOnDeliverySection" [class.disableCod]="disableCod">
-            <div (click)="updatePaymentBlock(globalConstants['cashOnDelivery'], 'cashOnDelivery', 'cashOnDeliverySection')"
-                class="payment-accordion_header">
+        <div id="cashOnDeliverySection" [class.disableCod]="disableCod" class="payment_accordion_item">
+            <div (click)="updatePaymentBlock(globalConstants['cashOnDelivery'], 'cashOnDelivery', 'cashOnDeliverySection')" class="payment-accordion_header">
                 <i class="icon-coupon-3-fill ico-accord-left"></i>
                 <span class="accordion-text">Cash on Delivery</span>
                 <span class="learn-more" *ngIf="disableCod" (click)="learnMore($event)">Learn More</span>
@@ -119,26 +109,38 @@
                 <i class="icon-down"></i>
             </div>
             <div class="payment-accordion_body">
-                <div class="payment-accordion_body" *ngIf="paymentBlock==globalConstants['cashOnDelivery']"
-                    class="payment-popup">
-                    <cash-on-delivery *ngIf="paymentBlock==globalConstants['cashOnDelivery']"
-                        (updateTabIndex)="tabIndexUpdated($event)"></cash-on-delivery>
+                <div *ngIf="paymentBlock==globalConstants['cashOnDelivery']" class="payment-popup">
+                    <cash-on-delivery *ngIf="paymentBlock==globalConstants['cashOnDelivery']" (updateTabIndex)="tabIndexUpdated($event)"></cash-on-delivery>
                 </div>
             </div>
         </div>
 
-        <div id="pseudoSection" *ngIf="!isPaymentSelected">
-            <div class="continue-button">
-                <div class="container">
-                    <p class="total-mount">
-                        <span class="payable-amnt">Payable Amount</span> ₹ {{totalAmount | number : '1.2-2'}}
+        <div *ngIf="isSavedCardExist" id="savedCardSection" class="payment_accordion_item">
+            <div class="payment-accordion_header" (click)="updatePaymentBlock(globalConstants['savedCard'], 'savedCard', 'savedCardSection')">
+                <i class="icon-credit-debit-card ico-accord-left"></i>
+                <span class="accordion-text">Saved Card Details</span>
+                <!-- <input [checked]="paymentBlock==globalConstants['savedCard']" type="radio" name="saved_card" value="saved_card"> -->
+                <i class="icon-down"></i>
+            </div>
+            <div class="payment-accordion_body">
+                <div *ngIf=" paymentBlock==globalConstants[ 'savedCard'] " class="payment-popup">
+                    <saved-card [savedCardsData]="savedCardsData " [type]="invoiceType " (removeTab$)="removeTab($event) "></saved-card>
+                </div>
+            </div>
+        </div>
+
+        <div id="pseudoSection " *ngIf="!isPaymentSelected ">
+            <div class="continue-button ">
+                <div class="container ">
+                    <p class="total-mount ">
+                        <span class="payable-amnt ">Payable Amount</span> ₹ {{totalAmount | number : '1.2-2'}}
                     </p>
-                    <button type="submit" [disabled]="true" class="btn">PAY</button>
+                    <button type="submit " [disabled]="true " class="btn ">PAY</button>
                 </div>
             </div>
         </div>
 
-        <div class="note-section">
+        <div class="note-section ">
             <p>Please note: You might be redirected to 3-D secure page to complete your transaction.</p>
         </div>
 
@@ -147,29 +149,29 @@
 </section>
 
 
-<div class="row-eq-height payment_block" style="border: 1px solid #d6d6d6;">
-    <div class="col-sm-3 bg-grey no-padding min-h-470 minh-auto-xs payment_sidebar">
+<div class="row-eq-height payment_block " style="border: 1px solid #d6d6d6; ">
+    <div class="col-sm-3 bg-grey no-padding min-h-470 minh-auto-xs payment_sidebar ">
     </div>
-    <div class="tab-content col-sm-9 pad-tb-30 pad-lr-30 pad-lr-sm-15 pad-tb-sm-15 pad-lr-xs-10 min-h-470">
+    <div class="tab-content col-sm-9 pad-tb-30 pad-lr-30 pad-lr-sm-15 pad-tb-sm-15 pad-lr-xs-10 min-h-470 ">
     </div>
 </div>
 
-<app-pop-up *ngIf="showPopup" (outData$)="outData($event)" class="bs-popup codUnavailable"
-    [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16 page-name-black',class: 'payment-popup',selector:'showPopup',headerText:'COD Unavailable'}">
-    <div class="content-popup" content>
-        <p class="sub-heading">Following product(s) in your Cart are not available for COD</p>
-        <div class="card cod-Popup product-card" *ngFor="let product of unAvailableMsnList">
-            <div class="container pb-15">
-                <div class="product-left">
-                    <div class="product-img">
-                        <img src="{{product.productImg}}">
+<app-pop-up *ngIf="showPopup " (outData$)="outData($event) " class="bs-popup codUnavailable " [data]="{closeClass: 'icon-back f-left',paraClass: 'f-left page-name f-16 page-name-black',class: 'payment-popup',selector: 'showPopup',headerText:
+                    'COD Unavailable'} ">
+    <div class="content-popup " content>
+        <p class="sub-heading ">Following product(s) in your Cart are not available for COD</p>
+        <div class="card cod-Popup product-card " *ngFor="let product of unAvailableMsnList ">
+            <div class="container pb-15 ">
+                <div class="product-left ">
+                    <div class="product-img ">
+                        <img src="{{product.productImg}} ">
                     </div>
                 </div>
-                <div class="product-detail pad-tb-10">
-                    <div class="p-name f-14">
-                        <a class="blue-txt"> {{ (product.productName.length>50)? (product.productName |
+                <div class="product-detail pad-tb-10 ">
+                    <div class="p-name f-14 ">
+                        <a class="blue-txt "> {{ (product.productName.length>50)? (product.productName |
                             slice:0:48)+'..':(product.productName) }}</a>
-                        <!-- <i class="icon-dot" (click)="sbm.index = i; getProductId(item.productId)"></i> -->
+                        <!-- <i class="icon-dot " (click)="sbm.index=i ; getProductId(item.productId) "></i> -->
                     </div>
                 </div>
             </div>

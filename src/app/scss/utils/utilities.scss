@@ -53,4 +53,10 @@
 .pointer-none {
     pointer-events: none;
 }
-
+.pdp-section-header {
+    padding:5px 15px;
+    .heading-3 {
+        font-size: $large-font;
+        font-weight: bold;
+    }
+}

@@ -1,90 +1,9 @@
 @import "../../scss/variables";
-.pdp-section-header{
-    padding:5px 15px;
-    border-bottom:1px solid  $border-color;
-    .heading-3{
-        font-size:$extra-large-font;
-        font-weight:bold;
-    }
-}
-// .deals-list {
-//     .heading-3 {
-//         padding-left: 15px;
-//         border-bottom: 0.5px solid #E3E3E3;
-//     }
-//     li {
-//         @extend %clear-fix;
-//         background-color: #F6FFF5;
-//         border-bottom: 0.5px solid #E3E3E3;
-//         padding: 15px;
-//         &.location {
-//             background: rgba(65, 123, 253, 0.1);
-//         }
-//         .cb-icon{
-//             width: 10%;
-//             i{
-//                 font-size:20px;
-//                 color: #429611;
-//             }
-//         }
-//         .ico_offer {
-//             font-size: $extra-large-font;
-//             float: left;
-//             line-height: initial;
-//             padding-right: 10px;
-//         }
-//         .gst-icon {
-//             float: left;
-//             padding-right: 10px;
-//             img {
-//                 height: 20px;
-//             }
-//         }
-//         .ofr_txt {
-//             font-size: $large-font;
-//             float: left;
-//             width: 70%;
-//             width: calc(100% - 90px);
-//             padding-bottom: 2px;
-//             .first-txt {
-//                 font-weight: 500;
-//                 line-height: 21px;
-//             }
-//             small {
-//                 font-size: $medium-font;
-//                 padding-top: 5px;
-//                 display: block;
-//             }
-//         }
-//         .ico-right {
-//             float: right;
-//             color: #0D99FF;
-//             line-height: 21px;
-//             font-weight: 500;
-//             font-size: $medium-font;
-//         }
-//         small {
-//             color: #303030;
-//             font-size: $medium-font;
-//         }
-//         strong {
-//             font-weight: 500;
-//         }
-//         .full-txt {
-//             color: $btn-color;
-//             font-size: $large-font;
-//             font-weight: bold;
-//             padding-bottom: 10px;
-//         }
-//     }
-//     li.active {
-//         background: rgba(65, 123, 253, 0.1);
-//     }
-// }
-
 .inline-list-item{
         background-color:var(--mint-cream); 
         padding:15px;
+        align-items:center;
+        border-bottom:1px solid var(--light-gray);
         .inline-list-icon{
             width:10%;
             i{
@@ -126,32 +45,4 @@
             font-weight: bold;
         } 
     }
-       
-    //     .cb-text{
-    //         width:80%;
-    //         padding-right:8px;
-    //         p{
-    //             font-size:13px;
-    //             .emi-price{
-    //                 color: #303030;
-    //             }
-    //         }
-    //         .small-txt{
-    //             font-size: $medium-font;
-    //             color: #8e8b8b;
-    //         }
-    //     }
-    //     .cb-view{
-    //         width: 10%;
-    //         span{
-    //             color:#278BED;
-    //             font-size: $medium-font;
-    //             &.disabledViewText{
-    //                 pointer-events:none;
-    //                 color:#181817;
-    //             }
-    //         }
-    //     }
-        
-    // }
-
+    

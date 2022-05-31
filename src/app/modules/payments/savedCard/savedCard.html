@@ -1,12 +1,12 @@
 <div class="saved-details custom-cbox-green" *ngIf="savedCardForm != undefined">
     <form [formGroup]="savedCardForm" (ngSubmit)="pay(savedCardForm.value, savedCardForm.valid)">
         <!-- <h3>Saved Payment Options</h3> -->
-        <div class="card-detail" [class.active]="selectedCardIndex !== undefined && selectedCardIndex===i"
-            formArrayName="cards" *ngFor="let card of savedCardForm.get('cards')['controls']; let i=index">
+        <div class="card-detail" [class.active]="selectedCardIndex !== undefined && selectedCardIndex===i" formArrayName="cards" *ngFor="let card of savedCardForm.get('cards')['controls']; let i=index">
             <ng-container [formGroupName]="i">
                 <!-- <i class="icon-circle-delete delete-ico" (click)="deleteCard(i)"></i> -->
                 <label>
-                    <input id="{{'csc_'+i}}" (click)="changeSavedCard(i, csc.checked)" type="radio" name="saved_card"
+
+                    <input  type="radio"  id="{{'csc_'+i}}" (click)="changeSavedCard(i, csc.checked)" name="saved_card"
                         #csc>
                     <span class="custom-box icon-box"></span>
                     <span class="chk-txt">
@@ -35,14 +35,12 @@
             <div class="continue-button">
                 <div class="container">
                     <p class="total-mount" *ngIf="totalPayableAmount>0">
-                        <span class="payable-amnt">Payable Amount</span>
-                        ₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}}
+                        <span class="payable-amnt">Payable Amount</span> ₹ {{totalPayableAmount | mathCeil | number : '1.2-2'}}
                     </p>
                     <button [disabled]="!payEnable" type="submit" class="btn">PAY</button>
                 </div>
             </div>
-            <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-t-15">Prepaid Discount : ₹ {{prepaidDiscount |
-                number : '1.2-2'}}</div>
+            <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-t-15">Prepaid Discount : ₹ {{prepaidDiscount | number : '1.2-2'}}</div>
         </div>
     </form>
 </div>

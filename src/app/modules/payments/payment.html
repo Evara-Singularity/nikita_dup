@@ -6,6 +6,20 @@
 
     <section class="payment_accordion">
 
+        <div *ngIf="isSavedCardExist" id="savedCardSection" class="payment_accordion_item">
+            <div class="payment-accordion_header" (click)="updatePaymentBlock(globalConstants['savedCard'], 'savedCard', 'savedCardSection')">
+                <i class="icon-credit-debit-card ico-accord-left"></i>
+                <span class="accordion-text">Saved Card Details</span>
+                <!-- <input [checked]="paymentBlock==globalConstants['savedCard']" type="radio" name="saved_card" value="saved_card"> -->
+                <i class="icon-down"></i>
+            </div>
+            <div class="payment-accordion_body">
+                <div *ngIf=" paymentBlock==globalConstants[ 'savedCard']">
+                    <saved-card [savedCardsData]="savedCardsData " [type]="invoiceType " (removeTab$)="removeTab($event) "></saved-card>
+                </div>
+            </div>
+        </div>
+
         <div id="creditDebitCardSection" class="payment_accordion_item">
             <div (click)="updatePaymentBlock(globalConstants['creditDebitCard'], 'creditDebitCard', 'creditDebitCardSection')" class="payment-accordion_header">
                 <i class="icon-credit-debit-card ico-accord-left"></i>
@@ -111,20 +125,6 @@
             <div class="payment-accordion_body">
                 <div *ngIf="paymentBlock==globalConstants['cashOnDelivery']" class="payment-popup">
                     <cash-on-delivery *ngIf="paymentBlock==globalConstants['cashOnDelivery']" (updateTabIndex)="tabIndexUpdated($event)"></cash-on-delivery>
-                </div>
-            </div>
-        </div>
-
-        <div *ngIf="isSavedCardExist" id="savedCardSection" class="payment_accordion_item">
-            <div class="payment-accordion_header" (click)="updatePaymentBlock(globalConstants['savedCard'], 'savedCard', 'savedCardSection')">
-                <i class="icon-credit-debit-card ico-accord-left"></i>
-                <span class="accordion-text">Saved Card Details</span>
-                <!-- <input [checked]="paymentBlock==globalConstants['savedCard']" type="radio" name="saved_card" value="saved_card"> -->
-                <i class="icon-down"></i>
-            </div>
-            <div class="payment-accordion_body">
-                <div *ngIf=" paymentBlock==globalConstants[ 'savedCard'] " class="payment-popup">
-                    <saved-card [savedCardsData]="savedCardsData " [type]="invoiceType " (removeTab$)="removeTab($event) "></saved-card>
                 </div>
             </div>
         </div>

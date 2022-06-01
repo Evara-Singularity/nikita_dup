@@ -21,8 +21,11 @@
             @extend %transition;
             input {
                 border-color: $blue-link-color;
-                padding: 5px 5px 0 0;
                 height: 30px;
+                border: 1px solid #D7D7D7;
+                border-radius: 4px;
+                padding: 5px;
+                margin-top: 10px;
                 &::placeholder {
                     font-size: 14px;
                 }
@@ -54,5 +57,23 @@
 .img-logo {
     img {
         width: 60px;
+    }
+}
+
+.radio-with-label-container {
+    display: flex;
+    margin: 0px 0px 10px;
+    label.radio-with-label {
+        display: inline-flex;
+        @extend %pwa-universal-radio;
+        width: 160px;
+        padding: 10px 0px !important;
+        .custom-box {
+            margin-right: 10px;
+            margin-top: -5px;
+        }
+        .radio-text {
+            font-size: $medium-font;
+        }
     }
 }

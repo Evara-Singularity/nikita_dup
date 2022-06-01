@@ -1,3 +1,7 @@
+<invoice-type (outData$)="outData($event)"
+    [taxHeading]="(invoiceTypeSectionHeadingText)?invoiceTypeSectionHeadingText:'Use GSTIN for Business Purchase'"
+    [taxSubHeading]="(invoiceTypeSectionSubheadingText)?invoiceTypeSectionSubheadingText:'Claim input tax credit on your purchase.'">
+</invoice-type>
 <div class="sub-strip">
     <div class="container">
         <!-- <h4 class="heading" (click)="salpu.shipping = getAddressList(addressList, 1).length > 1 ? true : false">Shipping Address ({{getAddressessCount(addressList, 1)}}) <i class="icon-dropdown" *ngIf="getAddressessCount(addressList, 1) > 1"></i></h4> -->
@@ -5,6 +9,7 @@
         <!-- <span class="add-address" (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1)">ADD</span>  -->
     </div>
 </div>
+
 <div class="address-container">
     <div class="shipping-container">
         <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)"
@@ -21,11 +26,7 @@
             </div>
         </div>
     </div>
-    <invoice-type (outData$)="outData($event)"
-        [taxHeading]="(invoiceTypeSectionHeadingText)?invoiceTypeSectionHeadingText:'Use GSTIN for Business Purchase'"
-        [taxSubHeading]="(invoiceTypeSectionSubheadingText)?invoiceTypeSectionSubheadingText:'Claim input tax credit on your purchase.'">
-    </invoice-type>
-    <div class="sub-strip">
+    <div class="sub-strip" *ngIf="getAddressessCount(addressList, 2) > 0">
         <div class="container">
             <!-- <h4 class="heading" (click)="salpu.billing = getAddressList(addressList, 2).length > 1 ? true : false">Billing Address ({{getAddressessCount(addressList, 2)}}) <i class="icon-dropdown" *ngIf="getAddressessCount(addressList, 2) > 1"></i></h4> -->
             <h4 class="heading">Billing Address ({{getAddressessCount(addressList, 2)}})</h4>

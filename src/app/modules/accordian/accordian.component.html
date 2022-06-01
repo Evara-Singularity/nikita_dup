@@ -14,7 +14,7 @@
             <div class="panel-body" [ngClass]="{'open': isShown[i]}" >
                 <div class="container category_links">
                     <div *ngFor="let data of  details.data | slice:0:10">
-                        <a (click)="$event.preventDefault();accordianNav(getUrlPathName(data.link), details?.outerNavRouteEvent, data)"
+                        <a (click)="$event.preventDefault();accordianNav(getUrlPathName(data.link), details?.outerNavRouteEvent, data);triggerAnalyticsInfo()" 
                             [href]="[data.link.includes('http') ? data.link : prodUrl + '/' + data.link ]">
                             <span *ngIf="details.name=='Popular Brand Categories'"></span>{{data.name}}
                         </a>

@@ -46,7 +46,7 @@ export class ProductAccordiansComponent {
       this.getDataFromAPI(this.categoryBrandDetails.category.categoryCode).subscribe((res) => {
         this.setAccordianData(res);
       }, (error) => {
-        return of(error);
+        console.log("API error",error)
       })
     }
   }
@@ -110,9 +110,6 @@ export class ProductAccordiansComponent {
     }
     const params = { pageName: pageName };
     const actualParams = this._commonService.formatParams(params);
-    if (pageName === "BRAND") {
-      actualParams["brand"] = brandName;
-    }
     return this._dataService.callRestful("GET", filter_url, {
       params: actualParams,
     });
@@ -169,12 +166,6 @@ export class ProductAccordiansComponent {
   sendAnalyticsInfo() {    
     this.globalAnalyticService.sendAdobeCall(this.analyticsInfo, 'genericClick');
   }
-
-  // ngAfterViewInit() {
-  //   if (this.isBrowser) {
-  //     // this._tState.remove(ACC);
-  //   }
-  // }
 
 }
 

@@ -1,0 +1,60 @@
+.moglix-benefits {
+    margin-top: 10px;
+    background: #fff;
+    padding: 15px 15px 5px;
+
+    i {
+        font-size: 16px;
+        color: #d9232d;
+    }
+
+    .moglix-ben-n-ret-policy-InnerContainer {
+        overflow-y: hidden;
+        overflow-x: scroll;
+        display: flex;
+        align-items: center;
+        scrollbar-width: none;
+        padding-bottom: 15px;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        -ms-overflow-style: none;
+        /* IE and Edge */
+        scrollbar-width: none;
+
+        .moglix-ben-n-ret-policy-Inner {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid #efeff4;
+            border-radius: 8px;
+            min-width: 120px;
+            width: 120px;
+            margin-right: 10px;
+            padding: 6px;
+
+            .returnImg {
+                margin-right: 10px;
+                background: #fae0e1;
+                padding: 2px;
+                border-radius: 20%;
+
+                img {
+                    width: 16px;
+                }
+            }
+
+            .returnTxt {
+                color: #278bed;
+                font-size: $small-font;
+                width: calc(100% - 45px);
+                line-height: 14px;
+
+                &.benefits-txt {
+                    color: #74777a;
+                }
+            }
+        }
+    }
+}

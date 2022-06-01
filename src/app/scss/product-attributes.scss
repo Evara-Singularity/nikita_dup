@@ -1,0 +1,113 @@
+//grouping-attribute-wrap-section
+.grouping_wrap_pdp {
+    background: var(--white);
+    margin-top: 10px;
+    .singlewrap {
+        border-bottom: 0.5px solid var(--silver);
+        padding: 0px 15px;
+        overflow: hidden;
+        &:last-of-type {
+            border-bottom: none;
+            padding-bottom: 0px;
+        }
+        ul {
+            display: flex;
+            overflow-x: scroll;
+            white-space: nowrap;
+            scrollbar-width: none;
+            li {
+                margin: 0px 10px 10px 0px;
+                a {
+                    display: inline-block;
+                    padding: 8px 12px;
+                    font-size: $medium-font;
+                    font-weight: $font-bold;
+                    color: var(--onyx-black);
+                    width: $fullwidth;
+                    text-align: center;
+                    border: 1px solid var(--spanish-gray);
+                    border-radius: $border-radius-8;
+                    &.selected {
+                        background: var(--border-red);
+                        color: var(--primary);
+                        border: 1px solid var(--primary);
+                    }
+                    &.inactive {
+                        opacity: 0.5;
+                        pointer-events: none;
+                  }
+              }
+          }
+      } 
+   }
+ }
+ //grouping popup
+ .groupingPopup {
+    padding: 0px;
+
+    .singlewrap {
+        .inner-heading {
+            background: #f2f2f2;
+            padding: 5px 15px;
+            border-top: 1px solid #9e9595;
+            border-bottom: 1px solid #9e9595;
+
+            h3 {
+                color: $txt-color;
+                font-weight: $font-bold;
+                padding: 0px;
+            }
+        }
+
+        ul {
+            @extend %clear-fix;
+            padding: 15px 15px 5px 15px;
+
+            li {
+                float: left;
+                border: 1px solid #333;
+                border-radius: 2px;
+                margin: 0px 10px 10px 0px;
+
+                a {
+                    display: block;
+                    padding: 10px;
+                    font-size: $medium-font;
+                    font-weight: $font-bold;
+                    color: $txt-color;
+
+                    span {
+                        padding-right: 5px;
+                    }
+
+                    &.selected {
+                        background: #333;
+                        color: #fff;
+                    }
+
+                    &.inactive {
+                        opacity: 0.5;
+                        pointer-events: none;
+                    }
+                }
+            }
+        }
+    }
+
+    .button-section {
+        bottom: 0;
+        position: absolute;
+        left: 0;
+        right: 0;
+
+        button {
+            width: 50%;
+            height: 54px;
+            border: none;
+            float: left;
+            text-align: center;
+            font-weight: 600;
+            font-size: $large-font;
+        }
+    }
+}

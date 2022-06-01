@@ -1,0 +1,51 @@
+.qty_section {
+    width: 145px;
+    .quantity-block {
+        height: 30px;
+        width: 140px;
+        border-right: none;
+        border-radius: 3px;
+        vertical-align: middle;
+        display: flex;
+        justify-content: space-around;
+
+        .qty-block {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            background: #DBEDFF;
+            border: 1px solid #8BC5FF;
+            line-height: 30px;
+            font-size: 14px;
+            border-radius: 2px;
+        }
+
+        input {
+            width: 62px;
+            padding: 0px;
+            height: 100%;
+            background: #ddd;
+            text-align: center;
+            border: none;
+            background: white;
+            border: 1px solid #333;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 2px;
+        }
+    }
+
+    .quan-details {
+        padding-top: 5px;
+        text-align: center;
+
+        p {
+            font-size: 11px;
+            margin: 0px;
+            padding: 0px 5px;
+            color: #74777A;
+
+            span {}
+        }
+    }
+}

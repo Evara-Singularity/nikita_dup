@@ -1,0 +1,44 @@
+/*widget css*/
+.widget-container {
+    display: flex;
+    flex-flow: column wrap;
+    margin-top: 10px;
+
+    .widget-items {
+        display: flex;
+        background: #fff;
+        border-bottom: 1px solid #efeff4;
+        padding: 20px 15px;
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        & > i {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            color: #000;
+            font-size: 14px;
+        }
+        p {
+            color: #303030;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 19px;
+        }
+
+        .explore-now {
+            color: #d9232d;
+            font-size: 10px;
+            font-weight: 400;
+            vertical-align: bottom;
+        }
+
+        .contentWrap {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+    }
+}

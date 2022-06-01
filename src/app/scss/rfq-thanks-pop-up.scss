@@ -1,0 +1,67 @@
+//rfq thanks popup
+.rfq-thanks-popup {
+    text-align: center;
+    padding: 15px 20px;
+    position: relative;
+    .top-header-bottom-menu{
+        border-bottom: none;
+    }
+    i.del-ico {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        font-size: 20px;
+    }
+
+    img {
+        width: 110px;
+    }
+    .grey-txt {
+        color: #7b7b7b;
+        opacity: 1;
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .rfq-support-txt {
+        color: #303030;
+
+        p {
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+        span {
+            display: block;
+            font-size: 17px;
+            line-height: 24px;
+        }
+
+        strong {
+            color: #278bed;
+        }
+
+        .rfq-thanks-txt {
+            margin: 30px 0px;
+
+            &:last-child {
+                margin-bottom: 0px;
+            }
+        }
+    }
+
+    .alert-btn-row {
+        margin: 30px 0px;
+        button {
+            font-size: $large-font;
+            font-weight: bold;
+            padding: 10px 25px;
+            border-radius: $border-radius-8;
+        }
+        p {
+            margin: 10px 0px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    }
+}

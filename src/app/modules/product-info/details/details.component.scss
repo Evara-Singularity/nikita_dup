@@ -1,23 +1,2 @@
 @import '../../../scss/variables';
-.prod-detail {
-    padding: 15px 15px;
-    background: var(--white);
-    p {
-        font-size: $large-font;
-        line-height: $medium-line-height;
-    }
-    .blueText {
-        color: var(--blue);
-        font-size: $medium-font;
-    }
-    .read-more {
-        background: none;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-        color: var(--blue);
-        font-size: $large-font;
-        border: none;
-        padding-top: 10px;
-        text-transform: capitalize;
-    }
-}
+@import '../../../scss/product-details.scss';

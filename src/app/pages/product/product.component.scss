@@ -811,19 +811,26 @@
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-                      
-                      
+.show-all-strip {
+    font-size: 12px;
+    padding-top: 10px;
+    text-transform: uppercase;
+    &.spec {
+        padding: 15px;
+    }
+    span {
+        color: #008aff;
+        font-weight: 600;
+        i {
+            padding-left: 5px;
+        }
+    }
+}
+.about-this-product-heading{
+    background: var(--white);
+    border-top: 1px solid var(--silver);
+    border-bottom: 1px solid var(--silver);
+}
+section{
+    margin-bottom: 10px;
+}

@@ -7,21 +7,33 @@
 @import "../../scss/components/alert-box.scss";
 @import '../../scss/utils/colors';
 // componets to be segregated
+
+// sections not required 
+
+
+
+// sections to be segregated but not lazy loaded
+@import '../../scss/product-description';
 @import '../../scss/quantity';
 @import '../../scss/bulk-quantity';
+@import '../../scss/moglix-benfits';
+
 @import '../../scss/product-details';
 @import '../../scss/key-features';
+@import '../../scss/prod-specifications';
+
+//  sections to be segregated but need to be lazy loaded
+
+
 @import '../../scss/pdp-qa';
 @import '../../scss/inline-list-item';
 @import '../../scss/raise-rfq-animation';
-@import '../../scss/moglix-benfits';
 @import '../../scss/bottom-bar';
-@import '../../scss/prod-specifications';
 @import '../../scss/check-pincode';
 @import '../../scss/components/widget';
-@import '../../scss/product-description';
 @import '../../scss/review-rating-popup';
 @import '../../scss/tags';
+
 
 
 //pdp wrapper

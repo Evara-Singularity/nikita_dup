@@ -20,12 +20,18 @@ ngx-siema-slide{
   }
 }
 
-.pwa-tabs-container{
-  .pwa-tab{
-    border-radius: 8px;
-    padding: 10px 15px;
+.about-this-product{
+  background: var(--white);
+  .pwa-tabs-container{
+    .pwa-tab{
+      border-radius: 8px;
+      padding: 10px 15px;
+      border:1px solid var(--silver)
+    }
+  }
+  .tab-content{
+    margin-top: 5px;
+    border-top: 1px solid var(--silver);
   }
 }
-.tab-content{
-  margin-top: 5px;
-}
+

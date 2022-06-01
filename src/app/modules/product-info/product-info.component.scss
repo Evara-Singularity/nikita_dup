@@ -1,6 +1,7 @@
 @import '../../scss/variables';
 @import '../../scss/layout/cards.scss';
 @import '../../scss/components/tabs.scss';
+@import '../../scss/components/static-card-container.scss';
 
 .customPopHeight{
       height:calc(100vh - 50px)!important;
@@ -18,3 +19,19 @@ ngx-siema-slide{
     display:block;
   }
 }
+
+.about-this-product{
+  background: var(--white);
+  .pwa-tabs-container{
+    .pwa-tab{
+      border-radius: 8px;
+      padding: 10px 15px;
+      border:1px solid var(--silver)
+    }
+  }
+  .tab-content{
+    margin-top: 5px;
+    border-top: 1px solid var(--silver);
+  }
+}
+

@@ -1,30 +1,32 @@
+@import '../../../scss/variables';
 .product-specification {
-    background: white;
+    background: var(--white);
     margin-top: 10px;
     .heading-3 {
         padding-left: 15px;
     }
 }
 .product-spec {
-    border-top: 1px dashed #c7c7c7;
+    border-top: 1px dashed var(--silver);
+    font-size: $large-font;
     .spec-row{
         &:nth-child(2n){
-          background:#F1F1F1;
+          background:var(--ghost-white);
         }
     }
     td {
         &.left {
-            border-right: 1px dashed #c7c7c7;
-            border-bottom: 1px dashed #c7c7c7;
+            border-right: 1px dashed var(--silver);
+            border-bottom: 1px dashed var(--silver);
         }
         &.right {
-            border-bottom: 1px dashed #c7c7c7;
+            border-bottom: 1px dashed var(--silver);
         }
         div {
-            width: 100%;
-            padding: 15px 10px;
+            width: $fullwidth;
+            padding: 10px 15px;
             .brandName {
-                color: #006DF0;
+                color: var(--blue);
             }
         }
     }

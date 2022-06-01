@@ -1,5 +1,6 @@
 @import "../../scss/variables";
 @import "../../scss/components/checkbox.scss";
+@import "../../scss/components/static-card-container.scss";
 
 .fbt-card-container {
     background: var(--white);
@@ -70,46 +71,12 @@
                     }
                 }
             }
-            .fbt-static-container {
-                display: flex;
-                border-left: 1px solid $border-color;
-                width: calc(100% - 50px);
-                float: right;
+            .static-card-container{
+                width:calc(100% - 50px);
                 padding: 10px;
-                justify-content: space-between;
-                .product-img {
-                    width: 84px;
-                    height: 84px;
-                }
-                .product-description {
-                    width: calc(100% - 104px);
-                    .description-txt{
-                        font-size: $large-font;
-                        line-height: $medium-line-height;
-                        padding-bottom: 5px;
-                    }
-                    .price{
-                        .after-discount{
-                            display: inline-block;
-                            vertical-align: middle;
-                            margin: 0 5px 0 0;
-                            font-size: $extra-large-font;
-                            font-weight: $font-bold;
-                        }
-                        .before-discount{
-                            font-size: $medium-font;
-                            text-decoration: line-through;
-                            opacity: .5;
-                            margin: 0 6px 0 0;
-                        }
-                        .discount{
-                            font-size: $medium-font;
-                            color: var(--slimy-green);
-                            font-weight: $font-bold;
-                        }
-                    }
-                }
+                border-left: 1px solid $border-color;
             }
+
         }
     }
     .fbdBottom {

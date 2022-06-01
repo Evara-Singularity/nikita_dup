@@ -30,19 +30,21 @@
                         <span class="custom-box icon-box"></span>
                     </label>
                 </div>
-                <div (click)="navigateToPDP(product.url)" class="fbt-static-container">
+                <div (click)="navigateToPDP(product.url)" class="static-card-container">
                     <div class="product-img">
                         <img [src]="product.productImage">
                     </div>
                     <div class="product-description">
                         <p class="description-txt">{{product.productName}}</p>
+                        <p class="fbt-brand"><span>By :</span> Premier</p>
                         <p class="price">
-                            <span class="after-discount">{{product.priceWithoutTax | mathFloor | currency:
-                                'INR' : 'symbol' : '1.0-0'}}</span>
                             <span class="before-discount">{{product.productMRP | mathFloor | currency: 'INR':
                                 'symbol': '1.0-0'}}</span>
                             <span class="discount">{{product.discount | mathFloor}}% OFF</span>
+                            <span class="after-discount">{{product.priceWithoutTax | mathFloor | currency:
+                                'INR' : 'symbol' : '1.0-0'}}</span>
                         </p>
+                        <p class="fbt-product-qty">Qty/Pack : 10 Piece</p>
                     </div>
                 </div>
             </li>

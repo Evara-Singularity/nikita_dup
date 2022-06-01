@@ -852,57 +852,18 @@
 
 <app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>
 
-<!-- <idle-user-search-nudge [searchKeyword]="categoryName" [headingKeyword]="categoryName"
-    *ngIf="isBrowser && !productNotFound">
-</idle-user-search-nudge> -->
-<app-bottom-menu *ngIf="this.isBrowser && isRFQSuccessfull">
-    <div content>
-        <div class="content-area bottom-layout ">
-            <div class="rfq-thanks-popup">
-                <div class="top-header-bottom-menu">
-                    <i class="icon-circle-delete" (click)="$event.stopPropagation();closeRFQAlert()"></i>
-                </div>
-                <!-- <i class="del-ico icon-circle-delete " (click)="$event.stopPropagation();closeRFQAlert()"></i> -->
-                <img src="{{imagePathAsset}}assets/img/checkbox-circle-fill-m.png ">
-                <h3 class="heading-2">Thanks for submitting the query.</h3>
-                <p class="grey-txt">
-                    Our support member will get in touch with you
-                    <br />
-                    within 24 hours
-                </p>
-                <div *ngIf="rfqTotalValue >= 3000 || hasGstin" class="icon-btn-row">
-                    <button (click)="openDialer()" class="btn icon-btn"><i class="icon-call"></i>CALL US</button>
-                    <span class="grey-txt">OR</span>
-                    <button (click)="navigateToWhatsapp()" class="btn icon-btn btn-whatsapp"><i
-                            class="icon-whatsapp"></i>WHATSAPP US</button>
-                </div>
-                <div *ngIf="rfqTotalValue < 3000 || productOutOfStock" class="rfq-support-txt">
-                    <p class="rfq-thanks-txt mar-t-10">
-                        For further assistance Call or Whatsapp <br />
-                        @<strong>&nbsp;+91 99996 44044</strong>
-                    </p>
-                </div>
-                <div class="rfq-support-txt">
-                    <p class="rfq-thanks-txt">
-                        You can also mail us at <br />
-                        <strong>salesenquiry@moglix.com</strong>
-                    </p>
-                </div>
-                <div class="alert-btn-row">
-                    <button *ngIf="similarProducts.length>0"
-                        (click)="scrollToId(!productOutOfStock ? '#similarProducts' : '#similarProductsOos') "
-                        class="btn btn-red">SHOW SIMILAR PRODUCTS</button>
-                    <button class="btn redBgButton"
-                        (click)="$event.stopPropagation();navigateToCategory();closeRFQAlert()">
-                        EXPLORE AVAILABLE PRODUCTS
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</app-bottom-menu>
+// TODO: product-rfq-thanks-popup should be lazy loaded
+<product-rfq-thanks-popup (closeRFQAlert$)="closeRFQAlert()" (scrollToId$)="scrollToId($event)"
+    (navigateToCategory$)="navigateToCategory()" [rfqTotalValue]="rfqTotalValue" [hasGstin]="hasGstin"
+    [getWhatsText]="getWhatsText" [similarProducts]="similarProducts" [productOutOfStock]="productOutOfStock" [isRFQSuccessfull]="isRFQSuccessfull"
+    [imagePathAsset]="imagePathAsset">
+</product-rfq-thanks-popup>
+
 <div id="pageBottom"></div>
+
+// TODO: whatsapp-toast should be lazy loaded
 <whatsapp-toast (click)="sendTrackingData()" [customText]="getWhatsText"></whatsapp-toast>
+
 <ng-container *ngIf="showScrollToTopButton">
     <div class="scroll-arrow-pdp" (click)="scrollToTop()">
         <i class="icon-up"></i>

@@ -15,7 +15,6 @@ import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ProductInfoModule } from './../../modules/product-info/product-info.module';
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductComponent } from './product.component';
-import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { SliceArrayPipeModule } from '@app/utils/pipes/slice-array.pipe';
 import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/product-oos-similar.module';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
@@ -23,6 +22,7 @@ import { PastOrdersModule } from '@app/components/past-orders/past-orders.compon
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
 import { ProductCardSkeletonModule } from '@app/modules/product-card/product-card-skeleton/product-card-skeleton.module';
 import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
+import { ProductRfqThanksPopupModule } from '@app/components/product-rfq-thanks-popup/product-rfq-thanks-popup.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -50,8 +50,8 @@ import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/p
     SwipeDirectiveModule,
     // IdleUserSearchNudgeModule,
     PastOrdersModule,
-    BottomMenuModule,
-    NotFoundModule
+    NotFoundModule,
+    ProductRfqThanksPopupModule
   ],
   exports: [],
   providers: [NgxSiemaService],

@@ -2239,7 +2239,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
           "removed"
           ] as EventEmitter<boolean>
         ).subscribe((status) => {
-          // console.log('writeReview removed', status);
           this.writeReviewPopupInstance = null;
           this.writeReviewPopupContainerRef.detach();
         });
@@ -2479,6 +2478,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
 
+  handlePostHelpful(args: Array<any>) {
+    this.postHelpful(args[0], args[1], args[2], args[3]);
+  }
+
   alreadyLiked: boolean = true;
   postHelpful(item, yes, no, i) {
     if (this.localStorageService.retrieve("user")) {
@@ -2534,6 +2537,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
       modalData.inputs = { videoDetails: videoDetails, analyticsDetails: analyticsDetails };
       this.modalService.show(modalData);
     }
+  }
+  showYTVideo1(event){
+    this.showYTVideo(event.link)
   }
 
   // SEO SECTION STARTS
@@ -3342,6 +3348,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.questionAnswerPopupInstance = null;
       this.reviewRatingPopupContainerRef.remove();
     });
+  }
+
+  async handleProductInfoPopup1(event) {
+      this.handleProductInfoPopup(event.infoType, event.cta)
+
   }
 
   async handleProductInfoPopup(infoType, cta, oosProductIndex: number = -1) {

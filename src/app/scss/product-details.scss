@@ -7,7 +7,6 @@
     p {
         font-size: $large-font;
         line-height: 21px;
-
         &:first-of-type {
             -webkit-line-clamp: 4;
             display: -webkit-box;
@@ -16,13 +15,11 @@
             text-overflow: ellipsis;
             height: 6em;
         }
-
         &.static-desc {
             height: 0;
             visibility: hidden;
         }
     }
-
     .read-more {
         background: none;
         -webkit-box-shadow: none;
@@ -33,11 +30,9 @@
         padding-top: 10px;
         text-transform: capitalize;
     }
-
     &.detail-videos {
         border-top: 1px solid $border-color;
         padding: 5px 15px 15px;
-
         .heading-3 {
             padding-bottom: 10px;
         }

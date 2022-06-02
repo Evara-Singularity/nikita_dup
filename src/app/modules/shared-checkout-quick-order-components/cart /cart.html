@@ -80,7 +80,8 @@
             </div>
             <!-- <div class="qty_section">
                 <div class="quantity-block">
-                    <span (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')" class="remove-qty qty-block">&#43;</span>
+                    <span *ngIf="item.productQuantity > 1" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')" class="remove-qty qty-block">&#43;</span>
+                    <i *ngIf="item.productQuantity < 2" class="icon-bin single-quantity"></i>
                     <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
                     (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget/>
                     <span (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')"class="add-qty qty-block">&#8722;</span>
@@ -130,10 +131,10 @@
             </ul>
         </div>
         <!-- DO NOT REMOVE THIS SECTION IT WAS OF NEW DESIGN TO BE IMPLEMENTED LATER -->
-        <!-- <div class="coupen-and-discount">
+        <div class="coupen-and-discount">
             <span>Coupon discount - ₹100</span>
             <span>Free Shipping<i class="icon-delivery_y_5"></i></span>
-        </div> -->
+        </div>
     </div>
 </div>
 

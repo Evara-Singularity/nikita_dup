@@ -1194,18 +1194,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     }
   }
 
-  selectProductBulkPrice(qunatity) {
-    if (qunatity > this.priceQuantityCountry['quantityAvailable']) {
-      this._tms.show({
-        type: 'error',
-        text: 'Maximum qty can be ordered is: ' + this.priceQuantityCountry['quantityAvailable']
-      })
-      return;
-    }
-    this.qunatityFormControl.setValue(qunatity);
-    this.checkBulkPriceMode();
-  }
-
   // PDP Cart revamp : product quantity handle END HERE
 
   async loadProductShare() {

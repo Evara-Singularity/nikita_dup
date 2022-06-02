@@ -26,6 +26,7 @@ import ProductDescriptionModule from '@app/components/product-description/produc
 
 import { ProductRfqThanksPopupModule } from '@app/components/product-rfq-thanks-popup/product-rfq-thanks-popup.component';
 import { ProductMoreWidgetModule } from '@app/components/product-more-widget/product-more-widget.component';
+import { ProductBulkQuantityModule } from '@app/components/product-bulk-quantity/product-bulk-quantity.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -56,7 +57,8 @@ import { ProductMoreWidgetModule } from '@app/components/product-more-widget/pro
     NotFoundModule,
     ProductDescriptionModule,
     ProductRfqThanksPopupModule,
-    ProductMoreWidgetModule
+    ProductMoreWidgetModule,
+    ProductBulkQuantityModule
   ],
   exports: [],
   providers: [NgxSiemaService],

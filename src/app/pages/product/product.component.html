@@ -125,71 +125,11 @@
 
     <!-- TO DO - create component - product-bulk-qauntity  STARTS
     SCSS - @import '../../scss/bulk-quantity'; -->
-    <section class="product-section-detail"
-        *ngIf="productBulkPrices && productBulkPrices.length>1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
-        <div class="pdp-subdetail container" [class.no-pad]="productOutOfStock && isCommonProduct">
-            <div class="bulk-qty">
-                <div class="bul-qty-head">
-                    <p class="heading-3">Buy More & Save More</p>
-                </div>
-                <div class="blk-contain">
-                    <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)"
-                        class="inner-blk-contain clearfix">
-                        <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"
-                            (click)="selectProductBulkPrice(items.minQty)">
-                            <div class="bulk-block bulk-block-multi-grp"
-                                *ngIf="rawProductData['quantityAvailable']>=items.minQty"
-                                [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
-                                <p class="qty">Qty
-                                    <span
-                                        *ngIf="last!==true && !(rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
-                                        {{items.minQty!==items.maxQty ?
-                                        -items.maxQty:'' }}</span>
-                                    <span
-                                        *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span>
-                                </p>
-                                <p class="per-qty">
-                                    {{items.bulkSPWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
-                                    <span>&nbsp;/pc</span>
-                                </p>
-                                <p *ngIf="items.discount>0" class="green-txt">
-                                    {{ items.discount | number:'1.0-2' }}% OFF</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div class="product-section-detail"
-        *ngIf="productBulkPrices && productBulkPrices.length==1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
-        <div class="pdp-subdetail container" [class.no-pad]="productOutOfStock && isCommonProduct">
-            <div class="bulk-qty">
-                <div class="bul-qty-head">
-                    <p class="heading-3">Buy More & Save More</p>
-                </div>
-                <div class="bulk-block bulk-container-single-grp"
-                    *ngFor="let items of productBulkPrices; let last=last; let index = index;"
-                    (click)="selectProductBulkPrice(items.minQty)"
-                    [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
-                    <div *ngIf="rawProductData['quantityAvailable']>=items.minQty">
-                        <h3>Buy <span
-                                *ngIf="last!==true && !(rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
-                                {{items.minQty!==items.maxQty ?
-                                -items.maxQty:'' }}</span>
-                            <span
-                                *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span>
-                            Qty
-                            <span *ngIf="items.discount>0" class="green-txt">(Get {{ items.discount |
-                                number:'1.0-2' }}% OFF)</span> <span class="right-text"> {{items.bulkSPWithoutTax |
-                                mathFloor |
-                                currency: 'INR' : 'symbol' : '1.0-0'}}<span class="small-txt">&nbsp;/pc</span></span>
-                        </h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" [rawProductData]="rawProductData"
+        [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct"
+        [priceQuantityCountry]="priceQuantityCountry" [productBulkPrices]="productBulkPrices"
+        [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl">
+    </product-bulk-quantity>
 
     <!-- TO DO - create component - product-bulk-qauntity  END
     SCSS - @import '../../scss/bulk-quantity'; -->

@@ -1,14 +1,13 @@
  //Product description
  .prod-description {
-    padding: 20px 15px 5px;
-    background: white;
+    background: var(--white);
     position: relative;
 
     .prod-name {
-        font-weight: 700;
-        line-height: 24px;
+        font-weight: $font-bolder;
+        line-height: $large-line-height;
         letter-spacing: 0.5px;
-        font-size: 18px;
+        font-size: $extra-large-1-font;
     }
 
     .prod-inner-desc {
@@ -18,39 +17,37 @@
         align-items: center;
 
         .rating-box {
-            background: #5ba621;
+            background: var(--slimy-green);
             padding: 5px;
-            border-radius: 3px;
-            color: white;
-            font-weight: 600;
-            color: white;
-
+            border-radius: $border-radius-4;
+            color: var(--white);
+            font-weight: $font-normal;
             i {
-                color: white;
+                color: var(--white);
                 padding-left: 5px;
             }
         }
 
         .prod-status {
-            font-size: 13px;
+            font-size: $medium-font;
             padding-left: 5px;
 
             .status {
-                color: #5ba621;
+                color: var(--slimy-green);
                 font-weight: bold;
 
                 &.s_oos {
-                    color: #ea2222;
-                    font-weight: 800;
+                    color: var(--primary);
+                    font-weight: $font-bolder;
                 }
             }
 
             .prod-status-right {
                 display: block;
-                color: #000;
+                color: var(--black);
 
                 .review {
-                    color: rgba(48, 48, 48, 1);
+                    color: var(--onyx-black);
                     font-size: $medium-font;
                 }
 
@@ -63,7 +60,7 @@
                         content: "|";
                         top: 0px;
                         left: 0px;
-                        color: #000;
+                        color: var(--black);
                     }
                 }
             }
@@ -73,16 +70,16 @@
         padding: 5px 0px 0px 0px;
         .mrp {
             font-size: $small-font;
-            color: #a2a2a2;
+            color: var(--spanish-gray);
 
             span {
-                color: #5ba621;
+                color: var(--slimy-green);
                 text-decoration: initial;
-                font-weight: bold;
+                font-weight: $font-bold;
             }
 
             small {
-                font-size: 12px;
+                font-size: $medium-font;
                 padding-right: 5px;
                 letter-spacing: 0.5px;
                 text-decoration: line-through;
@@ -90,9 +87,9 @@
         }
         .actual-price {
             padding: 5px 0px 0 0;
-            color: #000;
-            font-size: 20px;
-            font-weight: 700;
+            color: var(--black);
+            font-size: $extra-large-2-font;
+            font-weight: $font-bolder;
             letter-spacing: 0.5px;
 
             small {
@@ -100,7 +97,7 @@
                 font-weight: normal !important;
                 display: block;
                 padding-top: 5px;
-                color: #74777a;
+                color: var(--spanish-gray);
             }
         }
     }

@@ -23,9 +23,6 @@
 @import '../../scss/review-rating-popup';
 @import '../../scss/tags';
 @import '../../scss/product-attributes';
-
-
-
 //pdp wrapper
 .pdp-container {
     padding: 10px 0px;
@@ -242,9 +239,9 @@
     }
 }
 // -------- Finalized SCSS
-.pwa-row {
-    margin-top: 10px;
-}
+// .pwa-row {
+//     margin-top: 10px;
+// }
 .icon-btn-row {
     display: flex;
     justify-content: space-around;
@@ -808,19 +805,26 @@
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-                      
-                      
+.show-all-strip {
+    font-size: 12px;
+    padding-top: 10px;
+    text-transform: uppercase;
+    &.spec {
+        padding: 15px;
+    }
+    span {
+        color: #008aff;
+        font-weight: 600;
+        i {
+            padding-left: 5px;
+        }
+    }
+}
+.about-this-product-heading{
+    background: var(--white);
+    border-top: 1px solid var(--silver);
+    border-bottom: 1px solid var(--silver);
+}
+section{
+    margin-bottom: 10px;
+}

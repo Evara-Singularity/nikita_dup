@@ -3,7 +3,8 @@
     <div class="horizontal-scroll-container consider-these-products" id="horizontal-scroll-container"
         (scroll)="onScrollOOOSimilar($event)">
         <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 1">
-            <product-card-horizontal-grid-view [hideAd]="true" *ngFor="let card of similarForOOSContainer; let i = index;"
+            <product-card-horizontal-grid-view [hideAd]="true"
+                *ngFor="let card of similarForOOSContainer; let i = index;"
                 [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
                 [moduleUsedIn]="'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP'"
                 [product]="productService.oosSimilarProductsData.similarData[i]">
@@ -77,47 +78,47 @@
             </div>
         </ng-container>
     </div>
-
-    <div class="prod-description">
-        <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
-        <ng-container *ngIf="productTags && productTags != undefined && refinedProdTags.length > 0">
-            <div class="prod-tag">
-                <div class="tag_container" *ngFor="let tag of refinedProdTags;let i = index;">
-                    <img src="{{tag.imageUrl}}">
+    <section>
+        <div class="prod-description pwa-row">
+            <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
+            <ng-container *ngIf="productTags && productTags != undefined && refinedProdTags.length > 0">
+                <div class="prod-tag">
+                    <div class="tag_container" *ngFor="let tag of refinedProdTags;let i = index;">
+                        <img src="{{tag.imageUrl}}">
+                    </div>
                 </div>
-            </div>
-        </ng-container>
-        <div class="pdp-price-qty-block">
-            <div class="price-block" *ngIf="productMrp > 0">
-                <ng-container *ngIf="productMrp > 0">
-                    <p class="mrp" *ngIf="productMrp > priceWithoutTax">
-                        <small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
-                        <span
-                            *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax==null">
-                            {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
-                        </span>
-                        <span
-                            *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax!=null">
-                            {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF
-                        </span>
-                    </p>
-                    <p class="actual-price" *ngIf="priceWithoutTax > 0 && bulkPriceWithoutTax==null">
-                        {{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
-                        <small *ngIf="taxPercentage">
-                            GST @{{taxPercentage}}% Inc. Price: {{productPrice | mathFloor | currency: 'INR' :
-                            'symbol' : '1.0-0'}}
-                        </small>
-                    </p>
-                    <p class="actual-price" *ngIf="bulkPriceWithoutTax!==null">
-                        {{bulkPriceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
-                        <small *ngIf="taxPercentage">
-                            GST @{{taxPercentage}}% Inc. Price: {{bulkSellingPrice | mathFloor | currency: 'INR' :
-                            'symbol' : '1.0-0'}}
-                        </small>
-                    </p>
-                </ng-container>
-            </div>
-            <!-- <div class="price-block" *ngIf="productMinimmumQuantity > 1 && (productOutOfStock || !productMrp)">
+            </ng-container>
+            <div class="pdp-price-qty-block pwa-col-12">
+                <div class="price-block" *ngIf="productMrp > 0">
+                    <ng-container *ngIf="productMrp > 0">
+                        <p class="mrp" *ngIf="productMrp > priceWithoutTax">
+                            <small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
+                            <span
+                                *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax==null">
+                                {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
+                            </span>
+                            <span
+                                *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax!=null">
+                                {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF
+                            </span>
+                        </p>
+                        <p class="actual-price" *ngIf="priceWithoutTax > 0 && bulkPriceWithoutTax==null">
+                            {{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
+                            <small *ngIf="taxPercentage">
+                                GST @{{taxPercentage}}% Inc. Price: {{productPrice | mathFloor | currency: 'INR' :
+                                'symbol' : '1.0-0'}}
+                            </small>
+                        </p>
+                        <p class="actual-price" *ngIf="bulkPriceWithoutTax!==null">
+                            {{bulkPriceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
+                            <small *ngIf="taxPercentage">
+                                GST @{{taxPercentage}}% Inc. Price: {{bulkSellingPrice | mathFloor | currency: 'INR' :
+                                'symbol' : '1.0-0'}}
+                            </small>
+                        </p>
+                    </ng-container>
+                </div>
+                <!-- <div class="price-block" *ngIf="productMinimmumQuantity > 1 && (productOutOfStock || !productMrp)">
                 <p class="actual-price">
                     <small>
                         Min Order Qty :
@@ -125,45 +126,47 @@
                     </small>
                 </p>
              </div> -->
-            <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
-                <div class="quantity-block">
-                    <span class="add-qty qty-block" (click)="updateProductQunatity('DECREMENT')">&#8722;</span>
-                    <input id="product_quantity" [formControl]="qunatityFormControl" [value]="productMinimmumQuantity"
-                        (focusout)="onChangeCartQuanityValue()" type="text" min="1" maxlength="3" numbersOnly />
-                    <span class="remove-qty qty-block" (click)="updateProductQunatity('INCREMENT')">&#43;</span>
+                <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
+                    <div class="quantity-block">
+                        <span class="add-qty qty-block" (click)="updateProductQunatity('DECREMENT')">&#8722;</span>
+                        <input id="product_quantity" [formControl]="qunatityFormControl"
+                            [value]="productMinimmumQuantity" (focusout)="onChangeCartQuanityValue()" type="text"
+                            min="1" maxlength="3" numbersOnly />
+                        <span class="remove-qty qty-block" (click)="updateProductQunatity('INCREMENT')">&#43;</span>
+                    </div>
+                    <div class="quan-details" *ngIf="productMinimmumQuantity>1">
+                        <p>Qty Per Pack :
+                            <span>{{priceQuantityCountry['packageUnit']}}</span>
+                        </p>
+                        <p>Min Order Qty :
+                            <span>{{productMinimmumQuantity}} Pack</span>
+                        </p>
+                    </div>
                 </div>
-                <div class="quan-details" *ngIf="productMinimmumQuantity>1">
-                    <p>Qty Per Pack :
-                        <span>{{priceQuantityCountry['packageUnit']}}</span>
-                    </p>
-                    <p>Min Order Qty :
-                        <span>{{productMinimmumQuantity}} Pack</span>
+            </div>
+            <div class="prod-inner-desc pwa-col-12" (click)="scrollToResults('reviewSection',-30)">
+                <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
+                    <i class="icon-rating-star"></i>
+                </span>
+                <div class="prod-status">
+                    <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
+                    <p class="prod-status-right">
+                        <small class="review" (click)="scrollToResults('reviewSection',-30)"
+                            *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
+                            Reviews
+                        </small>
                     </p>
                 </div>
             </div>
-        </div>
-        <div class="prod-inner-desc" (click)="scrollToResults('reviewSection',-30)">
-            <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
-                <i class="icon-rating-star"></i>
-            </span>
-            <div class="prod-status">
-                <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
-                <p class="prod-status-right">
-                    <small class="review" (click)="scrollToResults('reviewSection',-30)"
-                        *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
-                        Reviews
-                    </small>
-                </p>
+            <!--recently bought product section -->
+            <div class="pwa-inline-tooltip pwa-col-12" *ngIf="rawProductCountMessage">
+                <i class="icon-trending"></i>
+                <span class="pwa-tooltip-text">>{{rawProductCountMessage}}</span>
             </div>
+            <!-- Share section is loaded on demand  -->
+            <ng-container #productShare></ng-container>
         </div>
-        <!--recently bought product section -->
-        <div class="pwa-inline-tooltip" *ngIf="rawProductCountMessage">
-            <i class="icon-trending"></i>
-            <span class="pwa-tooltip-text">>{{rawProductCountMessage}}</span>
-        </div>
-        <!-- Share section is loaded on demand  -->
-        <ng-container #productShare></ng-container>
-    </div>
+    </section>
     <!-- CTA Fixed position -->
     <div class="bottom-bar" [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
         <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="showFBT()">
@@ -255,7 +258,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Product quantity action section ends -->
     <div *ngIf="!productOutOfStock" class="deals-block bg-white" observeVisibility [debounceTime]="300"
         (visible)="onVisibleOffer($event)">
@@ -265,8 +268,8 @@
         <ng-container #pincodeForm></ng-container>
     </div>
     <!-- other sections starts -->
-    <div>
-        <!-- RFQ section ends -->
+    <!-- RFQ section ends -->
+    <section>
         <div class="pwa-row pwa-row-noPad moglix-benefits" *ngIf="isProductReturnAble && !productOutOfStock">
             <!-- start moglix benifits -->
             <div class="pdp-section-header">
@@ -340,28 +343,30 @@
                 </div>
             </div>
         </div>
-        <div class="pdp-section-header">
+    </section>
+    <section>
+        <div class="pdp-section-header about-this-product-heading">
             <h3 class="heading-3">
                 About This Product
             </h3>
         </div>
-        <div *ngIf="productKeyFeatures && productKeyFeatures.length > 0" class="key-features">
-            <h2 class="heading-3">Key Features</h2>
-            <ul class="feature-list">
+        <div *ngIf="productKeyFeatures && productKeyFeatures.length > 0" class="key-features pwa-row">
+            <h2 class="heading-3 pwa-col-12">Key Features</h2>
+            <ul class="feature-list pwa-col-12">
                 <li *ngFor="let feature of productKeyFeatures | sliceArray:3">
                     <p>
                         <span>{{feature}}.</span>
                     </p>
                 </li>
             </ul>
-            <div (click)="handleProductInfoPopup('key features', 'show all specifications')" class="show-all-strip">
+            <div (click)="handleProductInfoPopup('key features', 'show all specifications')"
+                class="show-all-strip pwa-col-12">
                 <span>Show All Key Features</span>
             </div>
         </div>
-
-        <div class="product-specification" *ngIf=" productAttributes != null">
-            <h2 class="heading-3">Product Specifications</h2>
-            <table width="100%" class="product-spec" cellpadding="0" cellspacing="0">
+        <div class="product-specification pwa-row" *ngIf=" productAttributes != null">
+            <h2 class="heading-3 pwa-col-12">Product Specifications</h2>
+            <table width="100%" class="product-spec pwa-col-12" cellpadding="0" cellspacing="0">
                 <tr>
                     <td class="left">
                         <div>Brand</div>
@@ -385,21 +390,19 @@
                 </tr>
             </table>
             <div (click)="handleProductInfoPopup('specifications', 'show all specifications')"
-                class="show-all-strip spec">
+                class="show-all-strip spec pwa-col-12">
                 <span>Show All Specifications</span>
             </div>
         </div>
-
         <section *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" observeVisibility
             [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
             <ng-container #productRFQ></ng-container>
         </section>
-
-        <div class="prod-detail">
-            <h2 class="heading-3">Product Details</h2>
+        <div class="prod-detail pwa-row">
+            <h2 class="heading-3 pwa-col-12">Product Details</h2>
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
-                <p [innerHTML]="this.productDescripton"></p>
-                <p class="static-desc"> Browse through the extensive list of
+                <p [innerHTML]="this.productDescripton" class="pwa-col-12"></p>
+                <p class="static-desc pwa-col-12"> Browse through the extensive list of
                     <a class="blueText" [href]="baseDomain + '/' + productCategoryDetails['categoryLink']"
                         (click)="$event.preventDefault();navigateLink('/'+ (productCategoryDetails ? productCategoryDetails['categoryLink'] : ''))">
                         {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
@@ -411,7 +414,7 @@
                 </p>
             </ng-container>
             <ng-template #noProdDesc>
-                <p>
+                <p class="pwa-col-12">
                     {{productName}} is a premium quality product from {{productBrandDetails ?
                     productBrandDetails['brandName'] : ''}}. Moglix is a
                     well-known ecommerce platform for qualitative range of <a class="blueText"
@@ -433,11 +436,10 @@
                         productCategoryDetails['categoryName'] : ''}}</a>.
                 </p>
             </ng-template>
-            <div (click)="handleProductInfoPopup('product details', 'read more')" class="show-all-strip">
+            <div (click)="handleProductInfoPopup('product details', 'read more')" class="show-all-strip pwa-col-12">
                 <span>Read More</span>
             </div>
         </div>
-
         <div *ngIf="productVideos && productVideos.length > 0" class="prod-detail detail-videos">
             <h2 class="heading-3">Product Videos</h2>
             <div [style.width]="productVideos.length * 252">
@@ -451,257 +453,257 @@
                 </div>
             </div>
         </div>
+    </section>
+    <section class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" observeVisibility [debounceTime]="100"
+        (visible)="getFbtIntance($event)">
+        <ng-container #fbt></ng-container>
+    </section>
 
-        <section class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" observeVisibility [debounceTime]="100"
-            (visible)="getFbtIntance($event)">
-            <ng-container #fbt></ng-container>
-        </section>
-
-        <section *ngIf="productDocumentInfo && productDocumentInfo.length > 0" class="pdf_section">
-            <h3>Product Specification Document</h3>
-            <div class="pdf_list">
-                <ng-container *ngFor="let pdf of productDocumentInfo">
-                    <a target="_blank" class="pdf_anchr" href="{{DOCUMENT_URL + pdf.path}}">
-                        <div class="pdf_link clearfix">
-                            <span class="pdf-img">
-                                <img src="{{imagePathAsset}}assets/img/download.svg">
-                            </span>
-                            <div class="pdf-text">
-                                <h4>{{pdf.name}}</h4>
-                                <span>DOWNLOAD NOW</span>
-                            </div>
-                        </div>
-                    </a>
-                </ng-container>
-            </div>
-        </section>
-
-        <section class="reviewSection" id="reviewSection">
-            <div class="pwa-row">
-                <div class="pwa-col-6">
-                    <p class="heading-3">Reviews & Ratings</p>
-                </div>
-                <div class="pwa-col-6 align-right" *ngIf="overallRating > 0">
-                    <button class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
-                </div>
-            </div>
-
-            <div class="pwa-row" *ngIf="overallRating < 1">
-                <p class="review_text">
-                    Be the first one to provide review for this product
-                </p>
-                <button [style.width.%]="100" class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
-            </div>
-            <div class="pwa-row" *ngIf="overallRating > 0">
-                <p class="extra-small-txt">
-                    Customer Reviews on {{ productName}}
-                </p>
-            </div>
-            <div class="pwa-row rating-sec" *ngIf="overallRating > 0">
-                <div class="pwa-col-6">
-                    <div class="overall-rating">
-                        <h3>{{ overallRating | number:'1.1-1' }}<i class="icon-rating-star"></i>
-                        </h3>
-                        <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }}
-                            ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
-                    </div>
-                </div>
-                <div class="pwa-col-6">
-                    <div class="rating-scale">
-                        <div class="inner-scale">
-                            <span>5</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.five_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar dark-green"></span>
-                            </span>
-                        </div>
-                        <div class="inner-scale">
-                            <span>4</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.four_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar light-green"></span>
-                            </span>
-                        </div>
-                        <div class="inner-scale">
-                            <span>3</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.three_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar yellow"></span>
-                            </span>
-                        </div>
-                        <div class="inner-scale">
-                            <span>2</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.two_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar light-red"></span>
-                            </span>
-                        </div>
-                        <div class="inner-scale">
-                            <span>1</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.one_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar red"></span>
-                            </span>
+    <section *ngIf="productDocumentInfo && productDocumentInfo.length > 0" class="pdf_section">
+        <h3>Product Specification Document</h3>
+        <div class="pdf_list">
+            <ng-container *ngFor="let pdf of productDocumentInfo">
+                <a target="_blank" class="pdf_anchr" href="{{DOCUMENT_URL + pdf.path}}">
+                    <div class="pdf_link clearfix">
+                        <span class="pdf-img">
+                            <img src="{{imagePathAsset}}assets/img/download.svg">
+                        </span>
+                        <div class="pdf-text">
+                            <h4>{{pdf.name}}</h4>
+                            <span>DOWNLOAD NOW</span>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div *ngFor="let review of rawReviewsData?.reviewList | slice:0:2;let i=index" class="reviewRow">
-                <div class="pwa-row innerRow">
-                    <div class="pwa-col-6 reviewRow-col">
-                        <div class="small-stars">
-                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 0"></i>
-                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 1"></i>
-                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 2"></i>
-                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 3"></i>
-                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 4"></i>
-                        </div>
-                        <p>{{review?.user_name}}</p>
-                        <p class="small-txt grey-txt cust-date">
-                            {{ review?.date_unix | date: 'longDate' }}
-                        </p>
-                    </div>
-                    <div class="pwa-col-6 align-right">
-                        <p class="small-txt green-txt" *ngIf="review?.is_approved">Verified Purchase</p>
-                    </div>
-                    <div>
-                        <h3 class="heading-3-txt">
-                            {{ review?.review_subject }}
-                        </h3>
-                        <p class="content">
-                            {{ review?.review_text }}
-                        </p>
-                    </div>
-                </div>
-                <div class="pwa-row like-unlikeRow">
-                    <div class="pwa-col-6">
-                        <!-- <strong>Report Abuse</strong> -->
-                    </div>
-                    <div class="pwa-col-6 align-right">
-                        <button class="suggstn-btn" [ngClass]="{'active':review.like == '1'}"
-                            (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
-                            <span class="small-txt">{{review.yes}}</span>
-                            <i class="icon-like"></i>
-                        </button>
-                        <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}"
-                            (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
-                            <span class="small-txt">{{review.no}}</span>
-                            <i class="icon-dislike"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review"
-                (click)="$event.stopPropagation();handleReviewRatingPopup()">
-                <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
-            </div>
-        </section>
-
-        <section id="ask-question-section" class="Qa">
-            <div class="faq-head">
-                <h3 *ngIf="questionAnswerList?.data.qlist.length <= 1">Have doubts regarding this product?&nbsp;</h3>
-                <h3 *ngIf="questionAnswerList?.data.qlist.length > 1">Frequently Asked Questions</h3>
-                <button (click)="$event.stopPropagation();askQuestion()" class="btn redBgButton">ASK&nbsp;NOW</button>
-            </div>
-            <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
-
-                <p class="display-qn">
-                    Displaying Questions
-                    <span>1-2</span> of
-                    <span>{{questionAnswerList.data.qlist.length}} </span>
-                </p>
-                <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
-                    <div class="qn">
-                        <span class="qn-number heading-3">Q{{i+1}}:</span>
-                        <span class="qn-right heading-3">{{item.questionText}}</span>
-                    </div>
-                    <div class="answers">
-                        <div class="answer-block">
-                            <p class=" answer">Ans:</p>
-                            <p class="ans-details answer">{{item.answerText}}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup()">
-                    <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line small-txt"></i></p>
-                </div>
+                </a>
             </ng-container>
-        </section>
+        </div>
+    </section>
 
-        <!-- New GET Quote section starts -->
-        <div id="get-quote-section" class="buy-nowsec"
-            *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
-            <h4 class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
-            <p class="small-txt prodct-name"> {{ productName }} </p>
-            <div class="buynow-flex">
-                <div class="bn-left">
-                    <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
-                    <p class="heading-4"><i class="icon-check-active"></i>&nbsp;Get at best price for your business</p>
-                </div>
-                <div class="bn-right">
-                    <img [attr.src]="productAllImages[0]['small']" width="50" height="50">
+    <section class="reviewSection" id="reviewSection">
+        <div class="pwa-row">
+            <div class="pwa-col-6">
+                <p class="heading-3">Reviews & Ratings</p>
+            </div>
+            <div class="pwa-col-6 align-right" *ngIf="overallRating > 0">
+                <button class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
+            </div>
+        </div>
+
+        <div class="pwa-row" *ngIf="overallRating < 1">
+            <p class="review_text">
+                Be the first one to provide review for this product
+            </p>
+            <button [style.width.%]="100" class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
+        </div>
+        <div class="pwa-row" *ngIf="overallRating > 0">
+            <p class="extra-small-txt">
+                Customer Reviews on {{ productName}}
+            </p>
+        </div>
+        <div class="pwa-row rating-sec" *ngIf="overallRating > 0">
+            <div class="pwa-col-6">
+                <div class="overall-rating">
+                    <h3>{{ overallRating | number:'1.1-1' }}<i class="icon-rating-star"></i>
+                    </h3>
+                    <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }}
+                        ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
                 </div>
             </div>
-            <div class="button-sec shimmer">
-                <ng-container *ngIf="rfqQuoteRaised; then raisedTemplate else nonRaisedTemplate"></ng-container>
-                <ng-template #nonRaisedTemplate>
-                    <p class="small-txt">We will get in touch with you on<br>
-                        <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
-                            {{ '+91-' + commonService?.userSession?.phone }}
-                            <ng-container *ngIf="commonService?.userSession?.email">
-                                {{ ' | ' +commonService?.userSession?.email }}
-                            </ng-container>
-                        </ng-container>
+            <div class="pwa-col-6">
+                <div class="rating-scale">
+                    <div class="inner-scale">
+                        <span>5</span>
+                        <span class="rating-bar">
+                            <span class="bar"
+                                [style.width.%]="(rawReviewsData?.summaryData?.five_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                class="bar dark-green"></span>
+                        </span>
+                    </div>
+                    <div class="inner-scale">
+                        <span>4</span>
+                        <span class="rating-bar">
+                            <span class="bar"
+                                [style.width.%]="(rawReviewsData?.summaryData?.four_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                class="bar light-green"></span>
+                        </span>
+                    </div>
+                    <div class="inner-scale">
+                        <span>3</span>
+                        <span class="rating-bar">
+                            <span class="bar"
+                                [style.width.%]="(rawReviewsData?.summaryData?.three_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                class="bar yellow"></span>
+                        </span>
+                    </div>
+                    <div class="inner-scale">
+                        <span>2</span>
+                        <span class="rating-bar">
+                            <span class="bar"
+                                [style.width.%]="(rawReviewsData?.summaryData?.two_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                class="bar light-red"></span>
+                        </span>
+                    </div>
+                    <div class="inner-scale">
+                        <span>1</span>
+                        <span class="rating-bar">
+                            <span class="bar"
+                                [style.width.%]="(rawReviewsData?.summaryData?.one_star_count/rawReviewsData?.summaryData?.review_count)*100"
+                                class="bar red"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngFor="let review of rawReviewsData?.reviewList | slice:0:2;let i=index" class="reviewRow">
+            <div class="pwa-row innerRow">
+                <div class="pwa-col-6 reviewRow-col">
+                    <div class="small-stars">
+                        <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 0"></i>
+                        <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 1"></i>
+                        <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 2"></i>
+                        <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 3"></i>
+                        <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 4"></i>
+                    </div>
+                    <p>{{review?.user_name}}</p>
+                    <p class="small-txt grey-txt cust-date">
+                        {{ review?.date_unix | date: 'longDate' }}
                     </p>
-                    <div class="swiper">
-                        <div id="button-background" class="button-area wrapper">
-                            <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST </button>
-                            <div id="animate-slider" class="arrow-container next-btn next-btn-invalid"
-                                (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
-                                <i class="icon-next icon-animate-1"></i>
-                                <i class="icon-next icon-animate-2"></i>
-                                <i class="icon-next icon-animate-3"></i>
-                            </div>
+                </div>
+                <div class="pwa-col-6 align-right">
+                    <p class="small-txt green-txt" *ngIf="review?.is_approved">Verified Purchase</p>
+                </div>
+                <div>
+                    <h3 class="heading-3-txt">
+                        {{ review?.review_subject }}
+                    </h3>
+                    <p class="content">
+                        {{ review?.review_text }}
+                    </p>
+                </div>
+            </div>
+            <div class="pwa-row like-unlikeRow">
+                <div class="pwa-col-6">
+                    <!-- <strong>Report Abuse</strong> -->
+                </div>
+                <div class="pwa-col-6 align-right">
+                    <button class="suggstn-btn" [ngClass]="{'active':review.like == '1'}"
+                        (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
+                        <span class="small-txt">{{review.yes}}</span>
+                        <i class="icon-like"></i>
+                    </button>
+                    <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}"
+                        (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
+                        <span class="small-txt">{{review.no}}</span>
+                        <i class="icon-dislike"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review"
+            (click)="$event.stopPropagation();handleReviewRatingPopup()">
+            <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
+        </div>
+    </section>
+
+    <section id="ask-question-section" class="Qa">
+        <div class="faq-head">
+            <h3 *ngIf="questionAnswerList?.data.qlist.length <= 1">Have doubts regarding this product?&nbsp;</h3>
+            <h3 *ngIf="questionAnswerList?.data.qlist.length > 1">Frequently Asked Questions</h3>
+            <button (click)="$event.stopPropagation();askQuestion()" class="btn redBgButton">ASK&nbsp;NOW</button>
+        </div>
+        <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
+
+            <p class="display-qn">
+                Displaying Questions
+                <span>1-2</span> of
+                <span>{{questionAnswerList.data.qlist.length}} </span>
+            </p>
+            <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
+                <div class="qn">
+                    <span class="qn-number heading-3">Q{{i+1}}:</span>
+                    <span class="qn-right heading-3">{{item.questionText}}</span>
+                </div>
+                <div class="answers">
+                    <div class="answer-block">
+                        <p class=" answer">Ans:</p>
+                        <p class="ans-details answer">{{item.answerText}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup()">
+                <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line small-txt"></i></p>
+            </div>
+        </ng-container>
+    </section>
+
+    <!-- New GET Quote section starts -->
+    <div id="get-quote-section" class="buy-nowsec"
+        *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+        <h4 class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
+        <p class="small-txt prodct-name"> {{ productName }} </p>
+        <div class="buynow-flex">
+            <div class="bn-left">
+                <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
+                <p class="heading-4"><i class="icon-check-active"></i>&nbsp;Get at best price for your business</p>
+            </div>
+            <div class="bn-right">
+                <img [attr.src]="productAllImages[0]['small']" width="50" height="50">
+            </div>
+        </div>
+        <div class="button-sec shimmer">
+            <ng-container *ngIf="rfqQuoteRaised; then raisedTemplate else nonRaisedTemplate"></ng-container>
+            <ng-template #nonRaisedTemplate>
+                <p class="small-txt">We will get in touch with you on<br>
+                    <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
+                        {{ '+91-' + commonService?.userSession?.phone }}
+                        <ng-container *ngIf="commonService?.userSession?.email">
+                            {{ ' | ' +commonService?.userSession?.email }}
+                        </ng-container>
+                    </ng-container>
+                </p>
+                <div class="swiper">
+                    <div id="button-background" class="button-area wrapper">
+                        <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST </button>
+                        <div id="animate-slider" class="arrow-container next-btn next-btn-invalid"
+                            (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
+                            <i class="icon-next icon-animate-1"></i>
+                            <i class="icon-next icon-animate-2"></i>
+                            <i class="icon-next icon-animate-3"></i>
                         </div>
                     </div>
-                </ng-template>
-                <ng-template #raisedTemplate>
-                    <p class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
-                    <div class="button-area wrapper">
-                        <button class="valid-button shimmer-button">REQUESTED SUCCESSFULLY</button>
-                    </div>
-                </ng-template>
-            </div>
+                </div>
+            </ng-template>
+            <ng-template #raisedTemplate>
+                <p class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
+                <div class="button-area wrapper">
+                    <button class="valid-button shimmer-button">REQUESTED SUCCESSFULLY</button>
+                </div>
+            </ng-template>
         </div>
+    </div>
 
 
-        <!-- GET Quote section starts -->
-        <div class="pwa-row inline-list-item-variant1"
-            *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
-            <div class="inline-list-icon">
-                <i class="icon-dropbox-fill"></i>
-            </div>
-            <div class="inline-list-text">
-                <strong>Interested to buy in bulk</strong>
-                <small>Get customized price</small>
-            </div>
-            <div class="inline-list-link">
-                <span class="get-quote" (click)="raiseRFQQuote();">Get Quote</span>
-            </div>
+    <!-- GET Quote section starts -->
+    <div class="pwa-row inline-list-item-variant1"
+        *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+        <div class="inline-list-icon">
+            <i class="icon-dropbox-fill"></i>
         </div>
+        <div class="inline-list-text">
+            <strong>Interested to buy in bulk</strong>
+            <small>Get customized price</small>
+        </div>
+        <div class="inline-list-link">
+            <span class="get-quote" (click)="raiseRFQQuote();">Get Quote</span>
+        </div>
+    </div>
 
-        <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
-            <ng-container #similarProduct></ng-container>
-        </section>
-        <!--widgets section-->
-        <section class="widget-container pwa-row pad-0" *ngIf="productCategoryDetails">
-            <div class="pwa-col-12">
-             <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
+    <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
+        <ng-container #similarProduct></ng-container>
+    </section>
+    <!--widgets section-->
+    <section class="widget-container pwa-row pad-0" *ngIf="productCategoryDetails">
+        <div class="pwa-col-12">
+            <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
                 [href]="[baseDomain+'/'+productCategoryDetails['categoryLink']]" class="widget-items">
                 <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
@@ -719,50 +721,48 @@
                 <!-- <span>From ₹999</span> -->
                 <i class="icon-next"></i>
             </a>
-           </div>
-        </section>
-        <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
-            <ng-container #sponseredProducts></ng-container>
-        </section>
+        </div>
+    </section>
+    <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+        <ng-container #sponseredProducts></ng-container>
+    </section>
 
 
-        <section id="productAccordianSection" observeVisibility [debounceTime]="100"
-            (visible)="onVisibleProductAccordians($event)">
-            <ng-container #pdpAccordian></ng-container>
-        </section>
+    <section id="productAccordianSection" observeVisibility [debounceTime]="100"
+        (visible)="onVisibleProductAccordians($event)">
+        <ng-container #pdpAccordian></ng-container>
+    </section>
 
-        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
-            <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
-        </ng-container>
+    <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
+        <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+    </ng-container>
 
-        <section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100"
-            (visible)="onVisibleSimilarOOS($event)">
-            <ng-container #similarProductOOS></ng-container>
-        </section>
+    <section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100"
+        (visible)="onVisibleSimilarOOS($event)">
+        <ng-container #similarProductOOS></ng-container>
+    </section>
 
-        <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
-        </past-orders>
+    <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
+    </past-orders>
 
-        <div class="pwa-row app-promo"  observeVisibility [debounceTime]="300"
-            (visible)="onVisibleAppPromo($event)">
-            <div class="pwa-col-12">
-                <ng-container #appPromo></ng-container>
-            </div>
-         </div>
-
-        <section observeVisibility class="pwa-col-12" [debounceTime]="100"
-            [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
-            <ng-container #recentProducts></ng-container>
-            <div class="loader_container" *ngIf="!recentProductsInstance">
-                <div class="loader"></div>
-            </div>
-        </section>
-
-        <div [class.mb-60]="productOutOfStock && productService.oosSimilarProductsData.similarData.length < 3"></div>
-        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && !productOutOfStock">
-            <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
-        </ng-container>
+    <div class="pwa-row app-promo" observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
+        <div class="pwa-col-12">
+            <ng-container #appPromo></ng-container>
+        </div>
     </div>
+
+    <section observeVisibility class="pwa-col-12" [debounceTime]="100"
+        [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
+        <ng-container #recentProducts></ng-container>
+        <div class="loader_container" *ngIf="!recentProductsInstance">
+            <div class="loader"></div>
+        </div>
+    </section>
+
+    <div [class.mb-60]="productOutOfStock && productService.oosSimilarProductsData.similarData.length < 3"></div>
+    <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && !productOutOfStock">
+        <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+    </ng-container>
     <!-- other sections ends -->
 
     <ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>

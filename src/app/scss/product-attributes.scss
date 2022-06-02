@@ -1,7 +1,6 @@
 //grouping-attribute-wrap-section
 .grouping_wrap_pdp {
     background: var(--white);
-    margin-top: 10px;
     .singlewrap {
         border-bottom: 0.5px solid var(--silver);
         padding: 0px 15px;
@@ -44,16 +43,15 @@
  //grouping popup
  .groupingPopup {
     padding: 0px;
-
     .singlewrap {
         .inner-heading {
-            background: #f2f2f2;
+            background: var(--ghost-white);
             padding: 5px 15px;
-            border-top: 1px solid #9e9595;
-            border-bottom: 1px solid #9e9595;
+            border-top: 1px solid var(--silver);
+            border-bottom: 1px solid var(--silver);
 
             h3 {
-                color: $txt-color;
+                color: var(--onyx-black);
                 font-weight: $font-bold;
                 padding: 0px;
             }
@@ -65,8 +63,8 @@
 
             li {
                 float: left;
-                border: 1px solid #333;
-                border-radius: 2px;
+                border: 1px solid var(--onyx-black);
+                border-radius: $border-radius-2;
                 margin: 0px 10px 10px 0px;
 
                 a {
@@ -74,15 +72,15 @@
                     padding: 10px;
                     font-size: $medium-font;
                     font-weight: $font-bold;
-                    color: $txt-color;
+                    color:var(--onyx-black);
 
                     span {
                         padding-right: 5px;
                     }
 
                     &.selected {
-                        background: #333;
-                        color: #fff;
+                        background: var(--onyx-black);
+                        color: var(--white);
                     }
 
                     &.inactive {
@@ -93,7 +91,6 @@
             }
         }
     }
-
     .button-section {
         bottom: 0;
         position: absolute;
@@ -106,7 +103,7 @@
             border: none;
             float: left;
             text-align: center;
-            font-weight: 600;
+            font-weight: $font-bold;
             font-size: $large-font;
         }
     }

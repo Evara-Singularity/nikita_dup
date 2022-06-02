@@ -1,13 +1,10 @@
+@import '../scss/variables';
 .prod-detail {
     padding: 5px 15px 15px;
-    background: white;
-    .heading-3 {
-        padding-bottom: 5px;
-    }
+    background: var(--white);
     p {
         font-size: $large-font;
-        line-height: 21px;
-
+        line-height: $medium-line-height;
         &:first-of-type {
             -webkit-line-clamp: 4;
             display: -webkit-box;
@@ -16,28 +13,28 @@
             text-overflow: ellipsis;
             height: 6em;
         }
-
         &.static-desc {
             height: 0;
             visibility: hidden;
         }
     }
-
+    .blueText {
+        color: var(--blue);
+        font-size: $medium-font;
+    }
     .read-more {
         background: none;
         -webkit-box-shadow: none;
         box-shadow: none;
-        color: #0d99ff;
-        font-size: 14px;
+        color: var(--blue);
+        font-size: $large-font;
         border: none;
         padding-top: 10px;
         text-transform: capitalize;
     }
-
     &.detail-videos {
-        border-top: 1px solid $border-color;
+        border-top: 1px solid var(--silver);
         padding: 5px 15px 15px;
-
         .heading-3 {
             padding-bottom: 10px;
         }

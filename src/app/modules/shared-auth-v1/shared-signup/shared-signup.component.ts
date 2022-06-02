@@ -15,6 +15,7 @@ import { environment } from 'environments/environment';
 import { Subscription } from 'rxjs';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 /**
  * User must have auth flow information
@@ -64,6 +65,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _commonService: CommonService,
+        private _localStorageService: LocalStorageService,
         private _sharedAuthService: SharedAuthService, private _router: Router, private _globalLoader: GlobalLoaderService, private _checkoutLoginService: CheckoutLoginService,
         private _sharedAuthUtilService: SharedAuthUtilService, private _toastService: ToastMessageService, private _localAuthService: LocalAuthService,) { }
     
@@ -132,6 +134,64 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         );
     }
 
+    validateUserProfileAndUpdate($event) {
+        this.isSubmitted = true;
+        $event.stopPropagation();
+        if (this.signupForm.invalid) return;
+
+        // if valid email check if user exists 
+        if (this.email.value != '') {
+            const userInfo = { email: this.email.value, phone: '', type: 'e' };
+            this._globalLoader.setLoaderState(true);
+            this._sharedAuthService.isUserExist(userInfo).subscribe(
+                (response) => {
+                    this._globalLoader.setLoaderState(false);
+                    if (response['statusCode'] == 200) {
+                        this.isUserExists = response['exists'];
+                        if (!this.isUserExists) {
+                            this.updateUserProfile();
+                        }
+                    } else {
+                        this._toastService.show({ type: 'error', text: response['message'] });
+                    }
+                },
+                (error) => { this._globalLoader.setLoaderState(false); }
+            );
+        } else {
+            this.updateUserProfile();
+        }
+    }
+
+    private updateUserProfile() {
+        let userSession = this._localAuthService.getUserSession();
+        this._globalLoader.setLoaderState(true);
+        let user = this._localStorageService.retrieve("user");
+        let obj = {
+            userid: user.userId,
+            pname: this.firstName.value || CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER,
+        };
+        this._sharedAuthService.updatePersonalInfo(obj).subscribe((res) => {
+            this._globalLoader.setLoaderState(false);
+            if (res["status"]) {
+                userSession['userName'] = this.firstName.value || CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER;
+                this.handleSuccessProfileUpdate();
+            } else {
+                this._toastService.show({
+                    type: "error",
+                    text: "Something went wrong.",
+                });
+            }
+        });
+    }
+
+    private handleSuccessProfileUpdate() {
+        this._toastService.show({
+            type: "success",
+            text: (this.firstName.value) ? `Welcome to Moglix, ${this.firstName.value}` : `Welcome to Moglix`,
+        });
+        this._commonService.redirectPostAuth(this.getRedirectURL());
+    }
+
     captureOTP(otpValue)
     {
         if (!otpValue) return;
@@ -159,7 +219,6 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         request['otp'] = (this.otpForm.value as string[]).join("");
         if(this.firstName.value==''){
             request['firstName']=CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER;
-
         }
         const REQUEST = { ...this.SINGUP_REQUEST, ...request, ... { buildVersion: environment.buildVersion } }
         this._globalLoader.setLoaderState(true);
@@ -172,28 +231,56 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
                     return;
                 }
                 this._sharedAuthUtilService.sendGenericPageClickTracking(false);
-                const BACKURLTITLE = this._localAuthService.getBackURLTitle();
-                let REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || "/";
-                const queryParams = this._commonService.extractQueryParamsManually(location.search.substring(1))
-                if (queryParams.hasOwnProperty('state') && ((
-                    queryParams.state === 'raiseRFQQuote') ||
-                    queryParams.state === 'askQuestion')) {
-                    REDIRECT_URL += '?state=' + queryParams['state'];
-                }
+                let REDIRECT_URL = this.getRedirectURL();
                 this._localAuthService.clearAuthFlow();
                 this._localAuthService.clearBackURLTitle();
-                this._sharedAuthUtilService.postSignup(request, response, this.isCheckout, (this.isCheckout ? this.CHECKOUT_ADDRESS_URL : REDIRECT_URL));
+                this._sharedAuthUtilService.postSignup(
+                    request, response,
+                    this.isCheckout,
+                    (this.isCheckout ? this.CHECKOUT_ADDRESS_URL : REDIRECT_URL),
+                    ((this.isSingupUsingPhone) ? this.isCheckout : true)
+                );
             },
             (error) => { this._globalLoader.setLoaderState(false); }
         );
     }
 
-    updateSignupStep(value) { 
-        this.currentStep = (this.isSingupUsingPhone) ? this.SIGN_UP_PHONE_STEPS[value] : this.SIGN_UP_EMAIL_STEPS[value];
-        if(this.currentStep === "DETAILS")
-        {
-            const SUB_SECTION = this.isSingupUsingPhone ? "phone" : "email";
-            this._sharedAuthUtilService.sendSingupDetailsPageLoadTracking(SUB_SECTION);
+    private getRedirectURL() {
+        const BACKURLTITLE = this._localAuthService.getBackURLTitle();
+        let REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || "/";
+        const queryParams = this._commonService.extractQueryParamsManually(location.search.substring(1));
+        if (queryParams.hasOwnProperty('state') && ((
+            queryParams.state === 'raiseRFQQuote') ||
+            queryParams.state === 'askQuestion')) {
+            REDIRECT_URL += '?state=' + queryParams['state'];
+        }
+        return REDIRECT_URL;
+    }
+
+    handleBackBtnInPhoneSignUp(){
+        this.handleSuccessProfileUpdate();
+    }
+
+    updateSignupStep(value) {
+        if (this.isSingupUsingPhone && value == 2) {
+            // Feature includes: Signup user with phone number, if user is not registered
+            // Feature includes: Update session and authenticated user details
+            // Feature includes: Incase of checkout, redirect to checkout address page,
+            // Feature includes: Incase of simple signup using phone, allow profile update and redirect to home page on submit
+            if ((this.isSingupUsingPhone) ? this.SIGN_UP_PHONE_STEPS[value] : this.SIGN_UP_EMAIL_STEPS[value] == "DETAILS") {
+                const SUB_SECTION = this.isSingupUsingPhone ? "phone" : "email";
+                this._sharedAuthUtilService.sendSingupDetailsPageLoadTracking(SUB_SECTION);
+            }
+            this.initiateSingup();
+            if(!this.isCheckout){
+                this.currentStep = (this.isSingupUsingPhone) ? this.SIGN_UP_PHONE_STEPS[value] : this.SIGN_UP_EMAIL_STEPS[value];
+            }
+        } else {
+            this.currentStep = (this.isSingupUsingPhone) ? this.SIGN_UP_PHONE_STEPS[value] : this.SIGN_UP_EMAIL_STEPS[value];
+            if (this.currentStep === "DETAILS") {
+                const SUB_SECTION = this.isSingupUsingPhone ? "phone" : "email";
+                this._sharedAuthUtilService.sendSingupDetailsPageLoadTracking(SUB_SECTION);
+            }
         }
     }
 

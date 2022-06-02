@@ -54,18 +54,17 @@ export class SharedAuthUtilService implements OnInit
         this.updateCartSession(`Welcome to Moglix, ${response['userName']}`, isCheckout, redirectUrl);
     }
 
-    updateCartSession(message, isCheckout, redirectUrl)
-    {
+    updateCartSession(message, isCheckout, redirectUrl = null) {
         this._globalLoader.setLoaderState(true);
         this._cartService.performAuthAndCartMerge({
             enableShippingCheck: true,
             redirectUrl: redirectUrl,
-        }).subscribe(cartSession =>
-        {
+        }).subscribe(cartSession => {
             this._globalLoader.setLoaderState(false);
             if (cartSession) {
-                this._commonService.redirectPostAuth(redirectUrl);
-                this._toastService.show({ type: 'success', text: message });
+                redirectUrl && this._commonService.redirectPostAuth(redirectUrl)
+                redirectUrl && this._toastService.show({ type: 'success', text: message });
+                !redirectUrl && console.log('express sign up completed');
             } else {
                 this._toastService.show({ type: 'error', text: 'Something went wrong' });
             }
@@ -73,13 +72,12 @@ export class SharedAuthUtilService implements OnInit
     }
 
     //common section
-    postSignup(params, response, isCheckout, redirectUrl)
-    {
+    postSignup(params, response, isCheckout, redirectUrl, expressSignup) {
         this._localStorage.clear('tocd');
         this._localStorage.store('user', response);
         let cartSession = Object.assign(this._cartService.getGenericCartSession);
         cartSession['cart']['userId'] = response['userId'];
-        this.updateCartSession(`Welcome to Moglix, ${params['firstName']}`, isCheckout, redirectUrl);
+        this.updateCartSession(`Welcome to Moglix, ${params['firstName']}`, isCheckout, (expressSignup) ? redirectUrl : null );
     }
 
     updateOTPControls(otpForm: FormArray, length: number) 

@@ -2550,6 +2550,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.modalService.show(modalData);
     }
   }
+  showYTVideo1(event){
+    this.showYTVideo(event.link)
+  }
 
   // SEO SECTION STARTS
   /**
@@ -3357,6 +3360,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
       this.questionAnswerPopupInstance = null;
       this.reviewRatingPopupContainerRef.remove();
     });
+  }
+
+  async handleProductInfoPopup1(event) {
+      this.handleProductInfoPopup(event.infoType, event.cta)
+
   }
 
   async handleProductInfoPopup(infoType, cta, oosProductIndex: number = -1) {

@@ -69,6 +69,7 @@
         </div> -->
         <div [ngClass]="{'oos':item.oos}" class="price-details-n-qty pad-15">
             <div class="qty_section">
+                <span class="qty-txt">Qty</span>
                 <div class="quantity-block">
                     <span *ngIf="item.productQuantity > 1"
                         (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')"

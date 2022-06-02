@@ -67,7 +67,7 @@
                 </div>
             </div>
         </div> -->
-        <div [ngClass]="{'oos':item.oos}" class="price-details-n-qty pad-15">
+        <div [ngClass]="{'oos':item.oos}" class="cart-item-block pad-15">
             <div class="qty_section">
                 <span class="qty-txt">Qty</span>
                 <div class="quantity-block">
@@ -81,8 +81,8 @@
                         class="add-qty qty-block">&#43;</span>
                 </div>
             </div>
-            <div class="price-dtl-sec" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
-                <div class="price-lbl-inner">
+            <div class="price-dtl-block" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
+                <div class="price-block-left">
                     <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
                         item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
                     <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax *
@@ -90,10 +90,10 @@
                     <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
                     <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
                     <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
-                        Details</span>
+                        </span>
                     <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
                 </div>
-                <div class="price-lbl-drop-icon">
+                <div class="price-label-dropdown-icon">
                     <i class="icon-down"></i>
                 </div>
             </div>

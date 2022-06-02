@@ -106,7 +106,7 @@
     //         }
     //     }
     // }
-    .price-details-n-qty{
+    .cart-item-block{
         display: flex;
         .qty_section{
             width: 150px;
@@ -122,11 +122,11 @@
                 }
             }
         }
-        .price-dtl-sec{
+        .price-dtl-block{
             display: flex;
             align-items: center;
             width: calc(100% - 150px);
-            .price-lbl-inner{
+            .price-block-left{
                 width: calc(100% - 25px);
                 text-align: right;
                 h3{
@@ -136,7 +136,7 @@
                     font-size: 10px;
                 }
             }
-            .price-lbl-drop-icon{
+            .price-label-dropdown-icon{
                 width: 15px;
                 margin-left: 10px;
             }

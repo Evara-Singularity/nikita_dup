@@ -87,16 +87,14 @@
     <!-- CTA Fixed position -->
 
     <!-- Product bulk quantity section starts -->
-    <section class="grouping_wrap_pdp" *ngIf="!isCommonProduct">
-        <div *ngFor="let list of productFilterAttributesList" class="singlewrap">
-            <p class="heading-3">{{list.name}}</p>
-            <ul>
-                <li *ngFor="let item of list.items;let i = index;" (click)="!item.selected && item.active ? updateAttr(item.msn) : removeOosSimilarSection();">
-                    <a [ngClass]="{'selected': item.selected , 'inactive': !item.active}">{{item.value}}</a>
-                </li>
-            </ul>
-        </div>
-    </section>
+    <app-product-quantity
+        [isCommonProduct]="isCommonProduct"
+        [productFilterAttributesList]="productFilterAttributesList"
+        (updateAttr)="updateAttr($event)"
+        (removeOosSimilarSection)="removeOosSimilarSection()"
+
+    ></app-product-quantity>
+    
     <!-- Product bulk quantity section ends -->
 
     <!-- Product quantity action section starts -->

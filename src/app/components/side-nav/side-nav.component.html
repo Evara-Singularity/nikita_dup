@@ -5,7 +5,7 @@
         <div class="menu-header" (click)="sideMenu();redirectProfile();">
             <i class="icon-profile"></i>
             <p class="customer-detail" *ngIf="!user || user.authenticated == 'false' || user.status=='User logged out'">
-                Sign In | Join Free
+                Login | Join Free
             </p>
             <p class="customer-detail" *ngIf="user && user.authenticated == 'true' && user.status!=='User logged out'">
                 <span class="user-name">

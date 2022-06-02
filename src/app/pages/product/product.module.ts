@@ -26,6 +26,8 @@ import ProductDescriptionModule from '@app/components/product-description/produc
 import {ProductFeatureDetailsModule} from '@app/components/product-feature-details/product-feature-details.component';
 import { ProductRfqThanksPopupModule } from '@app/components/product-rfq-thanks-popup/product-rfq-thanks-popup.component';
 import { ProductMoreWidgetModule } from '@app/components/product-more-widget/product-more-widget.component';
+import { ProductReviewModule } from '@app/components/product-review/product-review.component';
+import { ProductQaModule } from '@app/components/product-qa/product-qa.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -56,6 +58,9 @@ import { ProductMoreWidgetModule } from '@app/components/product-more-widget/pro
     NotFoundModule,
     ProductDescriptionModule,
     ProductRfqThanksPopupModule,
+    ProductMoreWidgetModule,
+    ProductReviewModule,
+    ProductQaModule,
     ProductFeatureDetailsModule,
     ProductMoreWidgetModule
   ],

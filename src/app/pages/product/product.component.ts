@@ -2251,7 +2251,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
           "removed"
           ] as EventEmitter<boolean>
         ).subscribe((status) => {
-          // console.log('writeReview removed', status);
           this.writeReviewPopupInstance = null;
           this.writeReviewPopupContainerRef.detach();
         });
@@ -2489,6 +2488,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     ).subscribe((status) => {
       this.appPromoVisible = status;
     });
+  }
+
+  handlePostHelpful(args: Array<any>) {
+    this.postHelpful(args[0], args[1], args[2], args[3]);
   }
 
   alreadyLiked: boolean = true;

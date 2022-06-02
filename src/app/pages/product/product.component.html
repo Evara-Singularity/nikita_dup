@@ -211,8 +211,7 @@
         <app-product-qa [questionAnswerList]="questionAnswerList" (handleFaqListPopup)="handleFaqListPopup()" (askQuestion)="askQuestion()">
         </app-product-qa>
 
-        <app-product-get-quote (sliderMouseDownEvent$)="sliderMouseDownEvent($event)" (raiseRFQQuote$)="raiseRFQQuote()" [rfqQuoteRaised]="rfqQuoteRaised" [productOutOfStock]="productOutOfStock" [productMrp]="productMrp" [productCategoryDetails]="productCategoryDetails"
-            [productName]="productName" [productAllImages]="productAllImages"></app-product-get-quote>
+        <app-product-get-quote (raiseRFQQuote$)="raiseRFQQuote()" [rfqQuoteRaised]="rfqQuoteRaised" [productOutOfStock]="productOutOfStock" [productMrp]="productMrp" [productCategoryDetails]="productCategoryDetails" [productName]="productName" [productAllImages]="productAllImages"></app-product-get-quote>
 
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
             <ng-container #similarProduct></ng-container>

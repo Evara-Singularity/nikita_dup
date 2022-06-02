@@ -3,9 +3,6 @@
 .list-heading {
     width: 100%;
     padding: 7px 10px;
-    background: #fff;
-    border-bottom: 1px solid #d7d7d7;
-    border-top: 1px solid #d7d7d7;
     .list-num {
         font-size: 10px;
     }
@@ -167,4 +164,10 @@
 .titleDescription{
     padding-top: 5px;
     font-size: 12px !important;
+}
+.plp-card-list{
+    &.pwa-row{
+        padding:0px 10px !important;
+        margin-bottom:10px;
+    }
 }

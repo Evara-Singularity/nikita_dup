@@ -23,7 +23,7 @@ import { NotFoundModule } from "@app/modules/not-found/not-found.module";
 import { ProductCardSkeletonModule } from '@app/modules/product-card/product-card-skeleton/product-card-skeleton.module';
 import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
 import ProductDescriptionModule from '@app/components/product-description/product-description.component';
-
+import {ProductFeatureDetailsModule} from '@app/components/product-feature-details/product-feature-details.component';
 import { ProductRfqThanksPopupModule } from '@app/components/product-rfq-thanks-popup/product-rfq-thanks-popup.component';
 import { ProductMoreWidgetModule } from '@app/components/product-more-widget/product-more-widget.component';
 @NgModule({
@@ -56,6 +56,7 @@ import { ProductMoreWidgetModule } from '@app/components/product-more-widget/pro
     NotFoundModule,
     ProductDescriptionModule,
     ProductRfqThanksPopupModule,
+    ProductFeatureDetailsModule,
     ProductMoreWidgetModule
   ],
   exports: [],

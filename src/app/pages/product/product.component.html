@@ -688,20 +688,21 @@
 
 
     <!-- GET Quote section starts -->
-    <div class="pwa-row inline-list-item-variant1"
-        *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
-        <div class="inline-list-icon">
-            <i class="icon-dropbox-fill"></i>
+    <section>
+        <div class="pwa-row inline-list-item-variant1"
+            *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+            <div class="inline-list-icon">
+                <i class="icon-dropbox-fill"></i>
+            </div>
+            <div class="inline-list-text">
+                <strong>Interested to buy in bulk</strong>
+                <small>Get customized price</small>
+            </div>
+            <div class="inline-list-link">
+                <span class="get-quote" (click)="raiseRFQQuote();">Get Quote</span>
+            </div>
         </div>
-        <div class="inline-list-text">
-            <strong>Interested to buy in bulk</strong>
-            <small>Get customized price</small>
-        </div>
-        <div class="inline-list-link">
-            <span class="get-quote" (click)="raiseRFQQuote();">Get Quote</span>
-        </div>
-    </div>
-
+    </section>
     <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
         <ng-container #similarProduct></ng-container>
     </section>

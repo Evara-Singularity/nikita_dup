@@ -1,40 +1,30 @@
 <div id="oosSimilarTopSection" class="oosSimilarTopSection" *ngIf="productOutOfStock">
     <h2 *ngIf="productService.oosSimilarProductsData.similarData.length > 1">Consider These Available Items</h2>
-    <div class="horizontal-scroll-container consider-these-products" id="horizontal-scroll-container"
-        (scroll)="onScrollOOOSimilar($event)">
+    <div class="horizontal-scroll-container consider-these-products" id="horizontal-scroll-container" (scroll)="onScrollOOOSimilar($event)">
         <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 1">
-            <product-card-horizontal-grid-view [hideAd]="true" *ngFor="let card of similarForOOSContainer; let i = index;"
-                [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
-                [moduleUsedIn]="'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP'"
-                [product]="productService.oosSimilarProductsData.similarData[i]">
+            <product-card-horizontal-grid-view [hideAd]="true" *ngFor="let card of similarForOOSContainer; let i = index;" [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true" [moduleUsedIn]="'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP'" [product]="productService.oosSimilarProductsData.similarData[i]">
             </product-card-horizontal-grid-view>
         </ng-container>
         <ng-container *ngIf="similarForOOSLoaded">
-            <product-card-skeleton *ngFor="let skeleton of similarForOOSContainer"
-                class="skeleton-pd-card-container skeleton-card-view">
+            <product-card-skeleton *ngFor="let skeleton of similarForOOSContainer" class="skeleton-pd-card-container skeleton-card-view">
             </product-card-skeleton>
         </ng-container>
     </div>
 </div>
 
-<div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}"
-    *ngIf="!productNotFound">
+<div class="pdp-container display-block" [ngClass]="{'pdp-container-remove': productOutOfStock}" *ngIf="!productNotFound">
 
-    <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages?.length === 1"
-        [ngClass]="[carouselInitialized ? '' : 'before-init']">
+    <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages?.length === 1" [ngClass]="[carouselInitialized ? '' : 'before-init']">
         <div class="fixed-strip">
             <span class="fixed_ico" (click)="loadProductShare()"><i class="icon-product_share"></i></span>
             <span class="fixed_ico wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
                 <i [ngClass]="isPurcahseListProduct ? 'icon-wishlist1-active' : 'icon-wishlist1-inactive'"></i>
             </span>
-            <span *ngIf="productOutOfStock  && productService.oosSimilarProductsData.similarData.length > 2"
-                (click)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
-                class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">
+            <span *ngIf="productOutOfStock  && productService.oosSimilarProductsData.similarData.length > 2" (click)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')" class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">
             </span>
         </div>
         <ng-container #productCrousel></ng-container>
-        <div class="prod-carsl-pseudo" (click)="openPopUpcrousel(0)" swipe (next)="onRotateNext()" #productCrouselPseudo
-            (previous)="onRotatePrevious()">
+        <div class="prod-carsl-pseudo" (click)="openPopUpcrousel(0)" swipe (next)="onRotateNext()" #productCrouselPseudo (previous)="onRotatePrevious()">
             <div class="oos-tag" *ngIf="productOutOfStock">
                 <span>
                     AVAILABLE ON REQUEST
@@ -42,23 +32,17 @@
             </div>
             <div class="img-block-pseudo">
                 <div class="inner-block-pseudo">
-                    <div class="pinch-zoom element-pseudo" (click)="sendProductImageClickTracking()"
-                        style="transform-origin: 0% 0%;">
-                        <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['large'] }}" height="330"
-                            width="330" alt="{{productName}}">
-                        <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
-                            class="loader-image" />
+                    <div class="pinch-zoom element-pseudo" (click)="sendProductImageClickTracking()" style="transform-origin: 0% 0%;">
+                        <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['large'] }}" height="330" width="330" alt="{{productName}}">
+                        <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif" class="loader-image" />
                     </div>
                 </div>
                 <ul class="pager">
-                    <ng-container
-                        *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions?.pager && productAllImages?.length>1">
+                    <ng-container *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions?.pager && productAllImages?.length>1">
                         <ng-container *ngFor="let item of productAllImages;let i=index">
-                            <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)"
-                                [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
+                            <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)" [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
                             </li>
-                            <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)"
-                                class="pager_icon_dot">
+                            <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)" class="pager_icon_dot">
                                 <em class="icon-youtube"></em>
                             </li>
                         </ng-container>
@@ -70,8 +54,7 @@
         <!-- TODO: check how this section is used in PQA -->
         <ng-container *ngIf="productTags != undefined && !this.productOutOfStock">
             <div class="image_tag">
-                <div class="tag_container"
-                    *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'image': 'object' | slice:0:1;let i = index;">
+                <div class="tag_container" *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'image': 'object' | slice:0:1;let i = index;">
                     <img src="{{tag.imageUrl}}">
                 </div>
             </div>
@@ -91,18 +74,16 @@
             </div>
         </ng-container>
         <div class="pdp-price-qty-block">
-    
-    
+
+
             <div class="price-block" *ngIf="productMrp > 0">
                 <ng-container *ngIf="productMrp > 0">
                     <p class="mrp" *ngIf="productMrp > priceWithoutTax">
                         <small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
-                        <span
-                            *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax==null">
+                        <span *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax==null">
                             {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
                         </span>
-                        <span
-                            *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax!=null">
+                        <span *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0 && bulkPriceWithoutTax!=null">
                             {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF
                         </span>
                     </p>
@@ -130,12 +111,11 @@
                         </small>
                     </p>
                  </div> -->
-    
+
             <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
                 <div class="quantity-block">
                     <span class="add-qty qty-block" (click)="updateProductQunatity('DECREMENT')">&#8722;</span>
-                    <input id="product_quantity" [formControl]="qunatityFormControl" [value]="productMinimmumQuantity"
-                        (focusout)="onChangeCartQuanityValue()" type="text" min="1" maxlength="3" numbersOnly />
+                    <input id="product_quantity" [formControl]="qunatityFormControl" [value]="productMinimmumQuantity" (focusout)="onChangeCartQuanityValue()" type="text" min="1" maxlength="3" numbersOnly />
                     <span class="remove-qty qty-block" (click)="updateProductQunatity('INCREMENT')">&#43;</span>
                 </div>
                 <div class="quan-details" *ngIf="productMinimmumQuantity>1">
@@ -147,7 +127,7 @@
                     </p>
                 </div>
             </div>
-    
+
         </div>
         <div class="prod-inner-desc" (click)="scrollToResults('reviewSection',-30)">
             <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
@@ -156,8 +136,7 @@
             <div class="prod-status">
                 <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
                 <p class="prod-status-right">
-                    <small class="review" (click)="scrollToResults('reviewSection',-30)"
-                        *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
+                    <small class="review" (click)="scrollToResults('reviewSection',-30)" *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
                         Reviews
                     </small>
                 </p>
@@ -191,8 +170,7 @@
         <div *ngFor="let list of productFilterAttributesList" class="singlewrap">
             <p class="heading-3">{{list.name}}</p>
             <ul>
-                <li *ngFor="let item of list.items;let i = index;"
-                    (click)="!item.selected && item.active ? updateAttr(item.msn) : removeOosSimilarSection();">
+                <li *ngFor="let item of list.items;let i = index;" (click)="!item.selected && item.active ? updateAttr(item.msn) : removeOosSimilarSection();">
                     <a [ngClass]="{'selected': item.selected , 'inactive': !item.active}">{{item.value}}</a>
                 </li>
             </ul>
@@ -204,28 +182,21 @@
 
     <!-- TO DO - create component - product-bulk-qauntity  STARTS
     SCSS - @import '../../scss/bulk-quantity'; -->
-    <section class="product-section-detail"
-        *ngIf="productBulkPrices && productBulkPrices.length>1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
+    <section class="product-section-detail" *ngIf="productBulkPrices && productBulkPrices.length>1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
         <div class="pdp-subdetail container" [class.no-pad]="productOutOfStock && isCommonProduct">
             <div class="bulk-qty">
                 <div class="bul-qty-head">
                     <p class="heading-3">Buy More & Save More</p>
                 </div>
                 <div class="blk-contain">
-                    <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)"
-                        class="inner-blk-contain clearfix">
-                        <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"
-                            (click)="selectProductBulkPrice(items.minQty)">
-                            <div class="bulk-block bulk-block-multi-grp"
-                                *ngIf="rawProductData['quantityAvailable']>=items.minQty"
-                                [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
+                    <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)" class="inner-blk-contain clearfix">
+                        <div *ngFor="let items of productBulkPrices; let last=last; let index = index;" (click)="selectProductBulkPrice(items.minQty)">
+                            <div class="bulk-block bulk-block-multi-grp" *ngIf="rawProductData['quantityAvailable']>=items.minQty" [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                                 <p class="qty">Qty
-                                    <span
-                                        *ngIf="last!==true && !(rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
+                                    <span *ngIf="last!==true && !(rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
                                         {{items.minQty!==items.maxQty ?
                                         -items.maxQty:'' }}</span>
-                                    <span
-                                        *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span>
+                                    <span *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span>
                                 </p>
                                 <p class="per-qty">
                                     {{items.bulkSPWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
@@ -240,25 +211,18 @@
             </div>
         </div>
     </section>
-    <div class="product-section-detail"
-        *ngIf="productBulkPrices && productBulkPrices.length==1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
+    <div class="product-section-detail" *ngIf="productBulkPrices && productBulkPrices.length==1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && rawProductData.quantityAvailable >1">
         <div class="pdp-subdetail container" [class.no-pad]="productOutOfStock && isCommonProduct">
             <div class="bulk-qty">
                 <div class="bul-qty-head">
                     <p class="heading-3">Buy More & Save More</p>
                 </div>
-                <div class="bulk-block bulk-container-single-grp"
-                    *ngFor="let items of productBulkPrices; let last=last; let index = index;"
-                    (click)="selectProductBulkPrice(items.minQty)"
-                    [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
+                <div class="bulk-block bulk-container-single-grp" *ngFor="let items of productBulkPrices; let last=last; let index = index;" (click)="selectProductBulkPrice(items.minQty)" [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                     <div *ngIf="rawProductData['quantityAvailable']>=items.minQty">
-                        <h3>Buy <span
-                                *ngIf="last!==true && !(rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
+                        <h3>Buy <span *ngIf="last!==true && !(rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
                                 {{items.minQty!==items.maxQty ?
                                 -items.maxQty:'' }}</span>
-                            <span
-                                *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span>
-                            Qty
+                            <span *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span> Qty
                             <span *ngIf="items.discount>0" class="green-txt">(Get {{ items.discount |
                                 number:'1.0-2' }}% OFF)</span> <span class="right-text"> {{items.bulkSPWithoutTax |
                                 mathFloor |
@@ -272,10 +236,9 @@
 
     <!-- TO DO - create component - product-bulk-qauntity  END
     SCSS - @import '../../scss/bulk-quantity'; -->
-    
+
     <!-- Product quantity action section ends -->
-    <div *ngIf="!productOutOfStock" class="deals-block bg-white" observeVisibility [debounceTime]="300"
-        (visible)="onVisibleOffer($event)">
+    <div *ngIf="!productOutOfStock" class="deals-block bg-white" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
         <ng-container #offerSection></ng-container>
     </div>
     <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
@@ -286,7 +249,7 @@
     <div>
         <!-- RFQ section ends -->
 
-        
+
         <!-- TO DO - create component - product-feature-benefits  STARTS
             SCSS - @import '../../scss/moglix-benfits'; -->
         <div class="pwa-row pwa-row-noPad moglix-benefits" *ngIf="isProductReturnAble && !productOutOfStock">
@@ -367,13 +330,13 @@
 
 
 
-<!-- TO DO - create component - product-feature-details  STARTS
+        <!-- TO DO - create component - product-feature-details  STARTS
             SCSS -
 @import '../../scss/product-details';
 @import '../../scss/key-features';
-@import '../../scss/prod-specifications';; -->  
+@import '../../scss/prod-specifications';; -->
 
-        <div class="pdp-section-header">
+        <!-- <div class="pdp-section-header">
             <h3 class="heading-3">
                 About This Product
             </h3>
@@ -402,8 +365,7 @@
                     </td>
                     <td class="right">
                         <div>
-                            <a class="brandName"
-                                (click)="commonService.navigateTo(getBrandLink(productBrandDetails))">{{productBrandDetails['brandName']}}</a>
+                            <a class="brandName" (click)="commonService.navigateTo(getBrandLink(productBrandDetails))">{{productBrandDetails['brandName']}}</a>
                         </div>
                     </td>
                 </tr>
@@ -418,8 +380,7 @@
                     </td>
                 </tr>
             </table>
-            <div (click)="handleProductInfoPopup('specifications', 'show all specifications')"
-                class="show-all-strip spec">
+            <div (click)="handleProductInfoPopup('specifications', 'show all specifications')" class="show-all-strip spec">
                 <span>Show All Specifications</span>
             </div>
         </div>
@@ -429,11 +390,9 @@
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
                 <p [innerHTML]="this.productDescripton"></p>
                 <p class="static-desc"> Browse through the extensive list of
-                    <a class="blueText" [href]="baseDomain + '/' + productCategoryDetails['categoryLink']"
-                        (click)="$event.preventDefault();navigateLink('/'+ (productCategoryDetails ? productCategoryDetails['categoryLink'] : ''))">
+                    <a class="blueText" [href]="baseDomain + '/' + productCategoryDetails['categoryLink']" (click)="$event.preventDefault();navigateLink('/'+ (productCategoryDetails ? productCategoryDetails['categoryLink'] : ''))">
                         {{productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
-                    <a class="blueText" [href]="baseDomain + '/' + productBrandCategoryUrl"
-                        (click)="$event.preventDefault();navigateLink('/'+ productBrandCategoryUrl)">{{productBrandDetails
+                    <a class="blueText" [href]="baseDomain + '/' + productBrandCategoryUrl" (click)="$event.preventDefault();navigateLink('/'+ productBrandCategoryUrl)">{{productBrandDetails
                         ?
                         productBrandDetails['brandName'] : ''}}
                         {{productCategoryDetails['categoryName']}}.</a> available at Moglix in the lowest price range.
@@ -441,23 +400,12 @@
             </ng-container>
             <ng-template #noProdDesc>
                 <p>
-                    {{productName}} is a premium quality product from {{productBrandDetails ?
-                    productBrandDetails['brandName'] : ''}}. Moglix is a
-                    well-known ecommerce platform for qualitative range of <a class="blueText"
-                        [href]="baseDomain + '/' + productCategoryDetails['categoryLink']"
+                    {{productName}} is a premium quality product from {{productBrandDetails ? productBrandDetails['brandName'] : ''}}. Moglix is a well-known ecommerce platform for qualitative range of <a class="blueText" [href]="baseDomain + '/' + productCategoryDetails['categoryLink']"
                         (click)="$event.preventDefault();navigateLink('/'+productCategoryDetails['categoryLink'])">{{productCategoryDetails
                         ?
-                        productCategoryDetails['categoryName'] : ''}}</a>.
-                    All {{productName}} are manufactured by using quality assured material and advanced techniques,
-                    which make them up to the standard in this highly challenging field. The materials utilized to
-                    manufacture {{productName}}, are sourced
-                    from the most reliable and official vendors, chosen after performing detailed market surveys.
-                    {{productBrandDetails ? productBrandDetails['brandName'] : ''}} products are widely acknowledged in
-                    the market for their high
-                    quality. We are dedicatedly involved in
-                    providing an excellent quality array of <a class="blueText"
-                        [href]="baseDomain + '/' + productBrandCategoryUrl"
-                        (click)="$event.preventDefault();navigateLink('/'+productBrandCategoryUrl)">
+                        productCategoryDetails['categoryName'] : ''}}</a>. All {{productName}} are manufactured by using quality assured material and advanced techniques, which make them up to the standard in this highly challenging field. The materials
+                    utilized to manufacture {{productName}}, are sourced from the most reliable and official vendors, chosen after performing detailed market surveys. {{productBrandDetails ? productBrandDetails['brandName'] : ''}} products are widely
+                    acknowledged in the market for their high quality. We are dedicatedly involved in providing an excellent quality array of <a class="blueText" [href]="baseDomain + '/' + productBrandCategoryUrl" (click)="$event.preventDefault();navigateLink('/'+productBrandCategoryUrl)">
                         {{productBrandDetails ? productBrandDetails['brandName'] : ''}} {{productCategoryDetails ?
                         productCategoryDetails['categoryName'] : ''}}</a>.
                 </p>
@@ -472,9 +420,7 @@
             <div [style.width]="productVideos.length * 252">
                 <div class="prod-desc-video-container clearfix">
                     <div *ngFor="let video of productVideos" class="prod-desc-video">
-                        <input class="youtube_icon" (click)="$event.stopPropagation();showYTVideo(video['link'])"
-                            type="image" src="{{imagePathAsset}}assets/img/youtube_icon.svg"
-                            border="border of the image" alt="text">
+                        <input class="youtube_icon" (click)="$event.stopPropagation();showYTVideo(video['link'])" type="image" src="{{imagePathAsset}}assets/img/youtube_icon.svg" border="border of the image" alt="text">
                         <img [src]="video['link'] | ytthumbnail:'hqdefault'">
                     </div>
                 </div>
@@ -498,26 +444,30 @@
                     </a>
                 </ng-container>
             </div>
-        </section>
+        </section> -->
 
-<!-- TO DO - create component - product-feature-details  ENDS
+        <app-product-feature-details (handleProductInfoPopup$)="handleProductInfoPopup('key features', 'show all specifications')" [productKeyFeatures]="productKeyFeatures" [productAttributes]="productAttributes"></app-product-feature-details>
+
+        <product-rfq-thanks-popup (closeRFQAlert$)="closeRFQAlert()" (scrollToId$)="scrollToId($event)" (navigateToCategory$)="navigateToCategory()" [rfqTotalValue]="rfqTotalValue" [hasGstin]="hasGstin" [getWhatsText]="getWhatsText" [similarProducts]="similarProducts"
+            [productOutOfStock]="productOutOfStock" [isRFQSuccessfull]="isRFQSuccessfull" [imagePathAsset]="imagePathAsset">
+        </product-rfq-thanks-popup>
+
+        <!-- TO DO - create component - product-feature-details  ENDS
             SCSS -
 @import '../../scss/product-details';
 @import '../../scss/key-features';
-@import '../../scss/prod-specifications';; -->  
+@import '../../scss/prod-specifications';; -->
 
 
-        <section *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" observeVisibility
-            [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
+        <section *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" observeVisibility [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
             <ng-container #productRFQ></ng-container>
         </section>
 
-        <section class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" observeVisibility [debounceTime]="100"
-            (visible)="getFbtIntance($event)">
+        <section class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" observeVisibility [debounceTime]="100" (visible)="getFbtIntance($event)">
             <ng-container #fbt></ng-container>
         </section>
 
-        
+
 
         <section class="reviewSection" id="reviewSection">
             <div class="pwa-row">
@@ -545,8 +495,7 @@
                     <div class="overall-rating">
                         <h3>{{ overallRating | number:'1.1-1' }}<i class="icon-rating-star"></i>
                         </h3>
-                        <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }}
-                            ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
+                        <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }} ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
                     </div>
                 </div>
                 <div class="pwa-col-6">
@@ -626,21 +575,18 @@
                         <!-- <strong>Report Abuse</strong> -->
                     </div>
                     <div class="pwa-col-6 align-right">
-                        <button class="suggstn-btn" [ngClass]="{'active':review.like == '1'}"
-                            (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
+                        <button class="suggstn-btn" [ngClass]="{'active':review.like == '1'}" (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
                             <span class="small-txt">{{review.yes}}</span>
                             <i class="icon-like"></i>
                         </button>
-                        <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}"
-                            (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
+                        <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}" (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
                             <span class="small-txt">{{review.no}}</span>
                             <i class="icon-dislike"></i>
                         </button>
                     </div>
                 </div>
             </div>
-            <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review"
-                (click)="$event.stopPropagation();handleReviewRatingPopup()">
+            <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review" (click)="$event.stopPropagation();handleReviewRatingPopup()">
                 <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
             </div>
         </section>
@@ -677,8 +623,7 @@
         </section>
 
         <!-- New GET Quote section starts -->
-        <div id="get-quote-section" class="buy-nowsec"
-            *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+        <div id="get-quote-section" class="buy-nowsec" *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
             <h4 class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
             <p class="small-txt prodct-name"> {{ productName }} </p>
             <div class="buynow-flex">
@@ -704,8 +649,7 @@
                     <div class="swiper">
                         <div id="button-background" class="button-area wrapper">
                             <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST </button>
-                            <div id="animate-slider" class="arrow-container next-btn next-btn-invalid"
-                                (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
+                            <div id="animate-slider" class="arrow-container next-btn next-btn-invalid" (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
                                 <i class="icon-next icon-animate-1"></i>
                                 <i class="icon-next icon-animate-2"></i>
                                 <i class="icon-next icon-animate-3"></i>
@@ -724,8 +668,7 @@
 
 
         <!-- GET Quote section starts -->
-        <div class="pwa-row inline-list-item-variant1"
-            *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+        <div class="pwa-row inline-list-item-variant1" *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
             <div class="inline-list-icon">
                 <i class="icon-dropbox-fill"></i>
             </div>
@@ -745,34 +688,33 @@
 
         <section class="widget-container pwa-row pad-0" *ngIf="productCategoryDetails">
             <div class="pwa-col-12">
-             <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
-                [href]="[baseDomain+'/'+productCategoryDetails['categoryLink']]" class="widget-items">
-                <span class="content-wrap">
+                <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)" [href]="[baseDomain+'/'+productCategoryDetails['categoryLink']]"
+                    class="widget-items">
+                    <span class="content-wrap">
                     <p>More from {{productCategoryDetails['categoryName']}}</p>
                     <span class="explore-now">Explore Now</span>
-                </span>
-                <i class="icon-next"></i>
-            </a>
-            <a (click)="$event.preventDefault();sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true);$event.preventDefault()"
-                [href]="[baseDomain+'/'+productBrandCategoryUrl]" class="widget-items">
-                <span class="content-wrap">
+                    </span>
+                    <i class="icon-next"></i>
+                </a>
+                <a (click)="$event.preventDefault();sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true);$event.preventDefault()" [href]="[baseDomain+'/'+productBrandCategoryUrl]"
+                    class="widget-items">
+                    <span class="content-wrap">
                     <p>More from {{productBrandDetails ? productBrandDetails['brandName'] : ''}}
                         {{productCategoryDetails ? productCategoryDetails['categoryName'] : ''}}</p>
                     <span class="explore-now">Explore Now</span>
-                </span>
-                <!-- <span>From ₹999</span> -->
-                <i class="icon-next"></i>
-            </a>
-           </div>
+                    </span>
+                    <!-- <span>From ₹999</span> -->
+                    <i class="icon-next"></i>
+                </a>
+            </div>
         </section>
-        
+
         <section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
             <ng-container #sponseredProducts></ng-container>
         </section>
 
 
-        <section id="productAccordianSection" observeVisibility [debounceTime]="100"
-            (visible)="onVisibleProductAccordians($event)">
+        <section id="productAccordianSection" observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
             <ng-container #pdpAccordian></ng-container>
         </section>
 
@@ -780,23 +722,20 @@
             <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
         </ng-container>
 
-        <section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100"
-            (visible)="onVisibleSimilarOOS($event)">
+        <section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
             <ng-container #similarProductOOS></ng-container>
         </section>
 
         <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
         </past-orders>
 
-        <div class="pwa-row app-promo"  observeVisibility [debounceTime]="300"
-            (visible)="onVisibleAppPromo($event)">
+        <div class="pwa-row app-promo" observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
             <div class="pwa-col-12">
                 <ng-container #appPromo></ng-container>
             </div>
-         </div>
+        </div>
 
-        <section observeVisibility class="pwa-col-12" [debounceTime]="100"
-            [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
+        <section observeVisibility class="pwa-col-12" [debounceTime]="100" [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
             <ng-container #recentProducts></ng-container>
             <div class="loader_container" *ngIf="!recentProductsInstance">
                 <div class="loader"></div>
@@ -829,11 +768,9 @@
 <!-- <div *ngIf="productOutOfStock && !showScrollToTopButton" class="stickyBottomBtn">
     <button (click)="getBestPrice($event)" class="btn-red submit-btn">GET BEST PRICE</button>
 </div> -->
-<div *ngIf="productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2"
-    class="pdp-container">
+<div *ngIf="productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2" class="pdp-container">
     <div class="bottom-bar stickyBottomBtn">
-        <button (click)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
-            class="cart-btn ml-5 bold-txt f-14 f-left">
+        <button (click)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')" class="cart-btn ml-5 bold-txt f-14 f-left">
             <span>VIEW IN-STOCK</span>
         </button>
         <div class="buy-now f-right f-14">
@@ -842,8 +779,7 @@
     </div>
 </div>
 
-<div *ngIf="productOutOfStock && !showScrollToTopButton  && (!productService.oosSimilarProductsData.similarData  || productService.oosSimilarProductsData.similarData.length <= 2 )"
-    class="stickyBottomBtn">
+<div *ngIf="productOutOfStock && !showScrollToTopButton  && (!productService.oosSimilarProductsData.similarData  || productService.oosSimilarProductsData.similarData.length <= 2 )" class="stickyBottomBtn">
     <button (click)="getBestPrice($event)" class="btn-red submit-btn">GET BEST PRICE</button>
 </div>
 
@@ -853,10 +789,8 @@
 <app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>
 
 // TODO: product-rfq-thanks-popup should be lazy loaded
-<product-rfq-thanks-popup (closeRFQAlert$)="closeRFQAlert()" (scrollToId$)="scrollToId($event)"
-    (navigateToCategory$)="navigateToCategory()" [rfqTotalValue]="rfqTotalValue" [hasGstin]="hasGstin"
-    [getWhatsText]="getWhatsText" [similarProducts]="similarProducts" [productOutOfStock]="productOutOfStock" [isRFQSuccessfull]="isRFQSuccessfull"
-    [imagePathAsset]="imagePathAsset">
+<product-rfq-thanks-popup (closeRFQAlert$)="closeRFQAlert()" (scrollToId$)="scrollToId($event)" (navigateToCategory$)="navigateToCategory()" [rfqTotalValue]="rfqTotalValue" [hasGstin]="hasGstin" [getWhatsText]="getWhatsText" [similarProducts]="similarProducts"
+    [productOutOfStock]="productOutOfStock" [isRFQSuccessfull]="isRFQSuccessfull" [imagePathAsset]="imagePathAsset">
 </product-rfq-thanks-popup>
 
 <div id="pageBottom"></div>

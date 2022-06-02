@@ -29,6 +29,7 @@ import { ProductMoreWidgetModule } from '@app/components/product-more-widget/pro
 import { ProductBulkQuantityModule } from '@app/components/product-bulk-quantity/product-bulk-quantity.component';
 import { ProductReviewModule } from '@app/components/product-review/product-review.component';
 import { ProductQaModule } from '@app/components/product-qa/product-qa.component';
+import { ProductGetQuoteModule } from '@app/components/product-get-quote/product-get-quote.component';
 import { ProductQuantityModule } from '@app/components/product-quantity/product-quantity.component';
 @NgModule({
   declarations: [ProductComponent],
@@ -66,6 +67,7 @@ import { ProductQuantityModule } from '@app/components/product-quantity/product-
     ProductQaModule,
     ProductFeatureDetailsModule,
     ProductMoreWidgetModule,
+    ProductGetQuoteModule,
     ProductQuantityModule
   ],
   exports: [],

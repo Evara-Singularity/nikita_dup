@@ -137,7 +137,6 @@
         </div>
     </div>
 </div>
-
 <app-bottom-menu *ngIf="removePopup">
     <div content>
         <div class="content-area">
@@ -146,7 +145,7 @@
                 <i (click)="removePopup = false" class="icon-circle-delete"></i>
             </div>
             <div [ngClass]="{'realTimeUpdate':item['text1']}" class="cart-popup-card card relative"
-                *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let i = index;">
+                *ngFor="let item of [_cartService.getGenericCartSession?.itemsList[removeIndex]]; let i = index;">
                 <div *ngIf="item['text1']" class="realTimePrice">
                     <span>{{item['text1']}}
                         <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>

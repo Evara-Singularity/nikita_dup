@@ -1,5 +1,5 @@
 <ng-container *ngIf="!_productListService?.showMidPlpFilterLoader && (inlineFilterData | checkForCount)">
-    <div class="filter-container">
+    <div class="filter-container m-tb-10">
         <p class="filter-heading" *ngIf="inlineFilterData.name !== 'category-search-plp'">
             Shop by {{ inlineFilterData.name | titlecase}} <ng-container *ngIf="inlineFilterData.name === 'price'">Range
             </ng-container>

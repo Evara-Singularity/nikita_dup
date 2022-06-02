@@ -745,7 +745,7 @@
     <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
     </past-orders>
 
-    <div class="pwa-row app-promo" observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
+    <div class="pwa-row pwa-row-noPad app-promo" observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
         <div class="pwa-col-12">
             <ng-container #appPromo></ng-container>
         </div>

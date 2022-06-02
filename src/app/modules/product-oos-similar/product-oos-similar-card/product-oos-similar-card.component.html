@@ -156,9 +156,9 @@
                     </div>
                 </div>
                 <!--Specifications-->
-                <div *ngSwitchCase="'specifications'" class="product-specification">
-                    <h2 class="heading-3">Product Specifications</h2>
-                    <table width="100%" class="product-spec" cellpadding="0" cellspacing="0">
+                <div *ngSwitchCase="'specifications'" class="product-specification pwa-row">
+                    <h2 class="heading-3 pwa-col-12">Product Specifications</h2>
+                    <table width="100%" class="product-spec pwa-col-12" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="left">
                                 <div>Brand</div>
@@ -183,18 +183,18 @@
                         </tr>
                     </table>
                     <div (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'specifications', type: 'show all specifications'});"
-                        class="show-all-strip spec">
+                        class="show-all-strip spec pwa-col-12">
                         <span>View Details
                             <i class="icon-next"></i>
                         </span>
                     </div>
                 </div>
                 <!--Details-->
-                <div *ngSwitchCase="'details'" class="prod-detail">
-                    <h2 class="heading-3">Product Details</h2>
+                <div *ngSwitchCase="'details'" class="prod-detail pwa-row">
+                    <h2 class="heading-3 pwa-col-12">Product Details</h2>
                     <ng-container *ngIf="product.productDescripton != undefined else noProdDesc">
-                        <p [innerHTML]="product.productDescripton"></p>
-                        <p class="static-desc"> Browse through the extensive list of
+                        <p [innerHTML]="product.productDescripton" class="pwa-col-12"></p>
+                        <p class="static-desc pwa-col-12"> Browse through the extensive list of
                             <a class="blueText"
                                 (click)="navigateLink('/'+ (product.productCategoryDetails ? product.productCategoryDetails['categoryLink'] : ''))">
                                 {{product.productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
@@ -208,7 +208,7 @@
                         </p>
                     </ng-container>
                     <ng-template #noProdDesc>
-                        <p>
+                        <p class="pwa-col-12">
                             {{product.productName}} is a premium quality product from {{product.productBrandDetails ?
                             product.productBrandDetails['brandName'] : ''}}. Moglix is a
                             well-known ecommerce platform for qualitative range of <a class="blueText"
@@ -234,7 +234,7 @@
                         </p>
                     </ng-template>
                     <div (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'product details', type: 'read more'});"
-                        class="show-all-strip">
+                        class="show-all-strip pwa-col-12">
                         <span>View Details
                             <i class="icon-next"></i>
                         </span>

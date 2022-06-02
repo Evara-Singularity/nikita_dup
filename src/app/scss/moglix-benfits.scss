@@ -1,11 +1,11 @@
+@import '../scss/variables';
 .moglix-benefits {
-    margin-top: 10px;
-    background: #fff;
+    background: var(--white);
     padding: 15px 15px 5px;
 
     i {
-        font-size: 16px;
-        color: #d9232d;
+        font-size: $extra-large-font;
+        color: var(--primary);
     }
 
     .moglix-ben-n-ret-policy-InnerContainer {
@@ -27,8 +27,8 @@
         .moglix-ben-n-ret-policy-Inner {
             display: inline-flex;
             align-items: center;
-            border: 1px solid #efeff4;
-            border-radius: 8px;
+            border: 1px solid var(--ghost-white);
+            border-radius: $border-radius-8;
             min-width: 120px;
             width: 120px;
             margin-right: 10px;
@@ -36,9 +36,9 @@
 
             .returnImg {
                 margin-right: 10px;
-                background: #fae0e1;
+                background: var(--misty-rose);
                 padding: 2px;
-                border-radius: 20%;
+                border-radius: $border-radius-4;
 
                 img {
                     width: 16px;
@@ -46,13 +46,13 @@
             }
 
             .returnTxt {
-                color: #278bed;
+                color: var(--bleu-de-france);
                 font-size: $small-font;
-                width: calc(100% - 45px);
+                width: calc($fullwidth - 45px);
                 line-height: 14px;
 
                 &.benefits-txt {
-                    color: #74777a;
+                    color: var(--gray-web);
                 }
             }
         }

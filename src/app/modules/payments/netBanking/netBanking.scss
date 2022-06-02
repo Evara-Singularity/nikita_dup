@@ -1,14 +1,13 @@
 @import '../../../scss/variables';
-@import '../../../scss/payment-common';
 @import '../payment-continue-btn.scss';
 @import '../../../scss/components/radio';
+@import '../../../scss/layout/forms';
 
 .netBankingInner {
     padding-bottom: 20px;
     @extend %pwa-universal-radio;
     background-color: var(--white);
 }
-
 span.lowsuccessRate {
     font-size: $small-font;
     color: $logo-color;
@@ -18,7 +17,6 @@ span.lowsuccessRate {
     width: 80%;
     margin-left: 15%;
     background-color: var(--ghost-white);
-    // border: none;
     border-radius: $border-radius-8;
     .custom_select_input{
         border: none;

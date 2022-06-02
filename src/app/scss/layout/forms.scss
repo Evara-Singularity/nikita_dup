@@ -14,7 +14,11 @@ select {
     background: none;
     line-height: 18px;
     position: relative;
+    
 }
+input[type=number] {
+    -moz-appearance: textfield;
+  }
 .material-form {
  .multiple-form-field{
     display:flex;
@@ -252,7 +256,7 @@ select {
             select {
                 width: 100%;
                 border: solid var(--spanish-gray);
-                border-radius: 8px;
+                border-radius:$border-radius-8;
                 border-width: 1px;
                 height: 40px;
                 padding: 0px 10px 0px 10px;
@@ -292,9 +296,7 @@ select {
         label {
             display: block;
             font-size: $small-font;
-            margin-bottom: 5px;
             color: #606060;
-            font-weight: bold;
         }
 
     }
@@ -375,43 +377,50 @@ option {
     .custom_select_box {
         color: #b5b5b5;
     }
-    .input-field-boxed {
-        width: 22%;
-        margin-bottom: 0px;
+    .multiple-form-field{
+        margin: 0px !important;
+    }
+    .input-field-boxed{
+        width:40%;
+        margin-bottom: 0px !important;
+        label{
+            font-weight:$font-normal;
+        }
         select {
             text-align: center;
         }
         &:first-child {
             position: relative;
-            margin-right: 20px;
-            &:after {
-                content: "/";
-                position: absolute;
-                right: -23px;
-                font-size: 20px;
-                padding: 10px;
-                top: 0;
-            }
+            margin-right:10px;
+        }
+    }
+}
+.custom_select_box {
+    label {
+        display: block;
+        font-size: $small-font;
+        margin-bottom: 5px;
+    }
+    .custom_select_input {
+        display: flex;
+        padding: 5px;
+        border: 1px solid var(--spanish-gray);
+        border-radius:$border-radius-8;
+        border-width: 1px;
+        height: 40px;
+        padding: 0px 10px 0px 10px;
+        font-size: $large-font;
+        align-items: center;
+        justify-content: flex-start;
+        i {
+            margin-left: auto;
+            font-size: $medium-font;
+            color:var(--onyx-black);
+        }
+        &.selectedInput {
+            color: #303030;
         }
     }
 }
 
-// .material-static-form {
-//     .static-input-field {
-//         padding: 8px 0px;
-//         border-bottom: 1px solid var(--ghost-white);
-//         &:last-child {
-//             border: none !important;
-//         }
-//         label {
-//             font-size: $medium-font;
-//             color: var(--silver);
-//             line-height: $medium-line-height;
-//         }
-//         h4 {
-//             font-size: $large-font;
-//             line-height: $medium-line-height;
-//         }
-//     }
-// }
 

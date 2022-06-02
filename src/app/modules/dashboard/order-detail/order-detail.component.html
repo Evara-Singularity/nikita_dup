@@ -55,13 +55,22 @@
                 </ng-container>
                 <ng-container *ngIf="detail?.status !== 'ACCEPTED' && detail?.status !== 'PROCESSING'">
                     {{detail?.status}}
+                    <ng-container *ngIf="detail && detail?.dates.delivered.flag">
+                        : {{ detail?.dates.delivered.date }}
+                    </ng-container>
                 </ng-container>
             </span></span>
             <span *ngIf="detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED'" class="orderstatus" (click)="fetchTrackingData(detail)">TRACK ORDER <i class="icon-next"></i></span>
         </div>
+        <!-- Return Policy added Yajya please check css for the same  -->
+        <div style="overflow: hidden; padding: 10px;">
+            <p *ngIf="detail && detail?.dates.delivered.flag && showReturn" class="policyTxt">Return Policy valid
+                till {{returnEndDate}}</p>
+            <p *ngIf="detail?.dates.delivered.flag &&  !showReturn" class="policyTxt">Return Policy ended on
+                {{returnEndDate}}</p>
+        </div>
     </div>
 </div>
-
 
 <div class="need-help-strip pad-10 mar-15">
     <span class="cncl-item" *ngIf="detail && detail?.cancel_active" (click)="openPopup='cancel' ;getDataforCancel(detail?.product_name,detail?.price,detail?.customer_id,detail?.item_id,detail?.status); ">CANCEL ITEM</span>

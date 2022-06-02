@@ -14,9 +14,6 @@
     }
     &.withRadioContainer {
         @extend %white-card;
-        // &:last-child {
-        //     border-bottom: none;
-        // }
         .chk-txt {
             font-size: $medium-font;
             width: calc(100% - 40px);

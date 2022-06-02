@@ -40,9 +40,9 @@
         height: 50px;
         text-transform: uppercase;
     }
-    // button:disabled,
-    // button[disabled]{
-    //     background-color: #bdbdbd;;
-    //     color: $white;
-    // }
+    button:disabled,
+    button[disabled]{
+        background-color: #bdbdbd;;
+        color: $white;
+    }
 }

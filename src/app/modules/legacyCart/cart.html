@@ -1,4 +1,4 @@
-<div *ngIf="itemsList != null && itemsList.length>0">
+<div class="pwa-row" *ngIf="itemsList != null && itemsList.length>0">
     <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of itemsList; let i = index">
         <!-- <div class="product-order-time">
             <p><span>You ordered this product 4 hours ago</span></p>
@@ -33,7 +33,6 @@
                     <span>REMOVE</span>
                     <!-- <span class="discount" *ngIf="item.offer && item.offer>0">Coupon Discount: ₹ {{item.offer | mathFloor | number : '1.2-2'}}</span> -->
                 </div>
-
             </div>
         </div>
         <div *ngIf="item.oos" class="remove-btn remove-oos" (click)="showPopup(sbm.index = i)">

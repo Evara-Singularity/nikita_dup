@@ -23,7 +23,7 @@
 
     <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages?.length === 1"
         [ngClass]="[carouselInitialized ? '' : 'before-init']">
-        <div class="fixed-strip">
+        <div class="floating-cta-strip">
             <span class="fixed_ico" (click)="loadProductShare()"><i class="icon-product_share"></i></span>
             <span class="fixed_ico wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
                 <i [ngClass]="isPurcahseListProduct ? 'icon-wishlist1-active' : 'icon-wishlist1-inactive'"></i>

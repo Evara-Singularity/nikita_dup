@@ -72,7 +72,7 @@
         &::before {
             font-family: "icomooon_pwa";
             content: "\e9a7";
-            font-size: $extra-large-3-font;
+            font-size: $large-icon-font;
             color: var(--onyx-black);
         }
     }
@@ -94,7 +94,6 @@
     }
 }
 .pwa-radio-list {
-    padding-left: 15px;
     background-color: var(--white);
     .pwa-radio-list-item {
         display: flex;

@@ -23,8 +23,6 @@
 @import '../../scss/review-rating-popup';
 @import '../../scss/tags';
 @import '../../scss/product-attributes';
-
-
 //pdp wrapper
 .pdp-container {
     padding: 10px 0px;
@@ -321,20 +319,6 @@
         width: calc(100% - 110px) !important;
     }
 }
-.oos-tag {
-    position: absolute;
-    top: 30px;
-    left: 15px;
-
-    span {
-        padding: 5px 10px;
-        background: #707070;
-        color: #fff;
-        border-radius: 4px;
-        font-size: 10px;
-        font-weight: bold;
-    }
-}
 .highIndex {
     z-index: 105 !important;
 }
@@ -378,8 +362,22 @@
 }
 .prod-carsl-pseudo {
     background-color: #ffffff;
+    .oos-tag {
+        position: absolute;
+        top: 30px;
+        left: 15px;
+        span {
+            padding: 5px 10px;
+            background: #707070;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+    }
 }
-.fixed-strip {
+//floating cta on product image
+.floating-cta-strip {
     position: absolute;
     right: 20px;
     display: flex;
@@ -764,14 +762,12 @@
 }
 //mobikwik wallet
 .mobikwik-wallet {
-    // display:block;
     img {
         padding-bottom: 15px;
         width: 200px;
         margin: auto;
         display: table;
     }
-
     .top-txt {
         background: #efefef;
         padding: 20px 60px 20px 20px;
@@ -780,13 +776,11 @@
         font-weight: 500;
         color: #303030;
     }
-
     .head-sec {
         i {
             font-size: 20px;
         }
     }
-
     .wallet-body {
         .paytm_head {
             font-size: 16px;

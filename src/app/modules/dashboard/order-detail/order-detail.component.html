@@ -1,31 +1,31 @@
 <!-- <div class="orderdtDesc pad-10 pwa-row" *ngIf="detail">
     <div class="orderproImg">
         <img
-            src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
+            src="{{(detail?.productImg && detail?.productImg.length > 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
     </div>
-    <div class="orderproDesc" *ngIf="detail.product_name">
-        <p (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)">
-            {{detail.product_name}}</p>
+    <div class="orderproDesc" *ngIf="detail?.product_name">
+        <p (click)="trackAndNavigateToProductPage(detail?.productUrl, detail?.product_msn, $event)">
+            {{detail?.product_name}}</p>
         <div class="orderqty clearfix ">
-            <span class="qtyleft "><span>Qty :{{detail.Quantity}} | {{detail.price}}</span><small
+            <span class="qtyleft "><span>Qty :{{detail?.Quantity}} | {{detail?.price}}</span><small
                     class="greytxt ">(Price Inclusive of GST)</small></span>
             <span class="orderstatus f-left">Status:<span
-                    [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED' || detail.status == 'DELIVERED' || detail.status == 'RETURN DONE' || detail.status == 'RETURN REQUESTED' || detail.status == 'RETURN APPROVED' || detail.status == 'RETURN PICKED' || detail.status == 'EXCHANGE REQUESTED' || detail.status == 'EXCHANGE PICKED' || detail.status == 'EXCHANGE APPROVED' || detail.status == 'EXCHANGE DONE' ? 'green-txt':'red-txt'">{{detail.status}}</span></span>
+                    [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED' || detail?.status == 'DELIVERED' || detail?.status == 'RETURN DONE' || detail?.status == 'RETURN REQUESTED' || detail?.status == 'RETURN APPROVED' || detail?.status == 'RETURN PICKED' || detail?.status == 'EXCHANGE REQUESTED' || detail?.status == 'EXCHANGE PICKED' || detail?.status == 'EXCHANGE APPROVED' || detail?.status == 'EXCHANGE DONE' ? 'green-txt':'red-txt'">{{detail?.status}}</span></span>
         </div>
     </div>
 </div> -->
 <div class="card-boxed">
     <div class="card-upper">
         <div class="card-img">
-            <img alt="" src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
+            <img alt="" src="{{(detail?.productImg && detail?.productImg.length > 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
         </div>
         <div class="card-desc">
             <p>
-                <a href="#">{{(detail.product_name | slice:0:30) + (detail.product_name > 30 ? "...":"")}} 
+                <a href="#">{{(detail?.product_name | slice:0:30) + (detail?.product_name > 30 ? "...":"")}} 
                 </a>
             </p>
             <div class="orderqty clearfix">
-                <span class="qtyleft">₹{{detail.price}}<span class="qtynum">({{detail.Quantity}} Qty)</span></span>
+                <span class="qtyleft">₹{{detail?.price}}<span class="qtynum">({{detail?.Quantity}} Qty)</span></span>
                 <span><small class="greytxt">(Price Inclusive of GST)</small></span>
             </div>
         </div>
@@ -34,8 +34,13 @@
         <div class="card-bottom-inner card-bottom-inner-order-dtl">
             <span class="order-track-line line-invisible"></span>
             <span class="orderstatus"> 
-                <span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'"> 
-                    ACCEPTED : {{ detail.dates.accepted.date }}
+                <span [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'"> 
+                    <ng-container *ngIf="detail?.status != 'PROCESSING'">
+                        ORDERED & APPROVED : {{ detail?.dates.accepted.date }}
+                    </ng-container>
+                    <ng-container *ngIf="detail?.status == 'PROCESSING'">
+                        {{detail?.status}}
+                    </ng-container>
                 </span>
             </span>
         </div>
@@ -44,26 +49,36 @@
             <i class="icon-circle-delete order-track-line danger"></i>
             <i class="icon-check-active order-track-line success"></i>
             <span class="orderstatus"> <span [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'">
-                <ng-container *ngIf="detail?.status == 'ACCEPTED'">
-                    ESTIMATED DELIVERY
+                <ng-container *ngIf="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING'">
+                    ESTIMATED DELIVERY :
+                    {{ detail?.dates.delivered.date }}
                 </ng-container>
-                <ng-container *ngIf="detail?.status !== 'ACCEPTED'">
+                <ng-container *ngIf="detail?.status !== 'ACCEPTED' && detail?.status !== 'PROCESSING'">
                     {{detail?.status}}
+                    <ng-container *ngIf="detail && detail?.dates.delivered.flag">
+                        : {{ detail?.dates.delivered.date }}
+                    </ng-container>
                 </ng-container>
             </span></span>
-            <span *ngIf="detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED'" class="orderstatus">TRACK ORDER <i class="icon-next"></i></span>
+            <span *ngIf="detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED'" class="orderstatus" (click)="fetchTrackingData(detail)">TRACK ORDER <i class="icon-next"></i></span>
+        </div>
+        <!-- Return Policy added Yajya please check css for the same  -->
+        <div style="overflow: hidden; padding: 10px;">
+            <p *ngIf="detail && detail?.dates.delivered.flag && showReturn" class="policyTxt">Return Policy valid
+                till {{returnEndDate}}</p>
+            <p *ngIf="detail?.dates.delivered.flag &&  !showReturn" class="policyTxt">Return Policy ended on
+                {{returnEndDate}}</p>
         </div>
     </div>
 </div>
 
-
 <div class="need-help-strip pad-10 mar-15">
-    <span class="cncl-item" *ngIf="detail && detail.cancel_active" (click)="openPopup='cancel' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status); ">CANCEL ITEM</span>
+    <span class="cncl-item" *ngIf="detail && detail?.cancel_active" (click)="openPopup='cancel' ;getDataforCancel(detail?.product_name,detail?.price,detail?.customer_id,detail?.item_id,detail?.status); ">CANCEL ITEM</span>
     <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span> 
 </div>
 
 
-<!-- <ng-container *ngIf="detail && detail.requestType !=='cancel' && detail.status !=='PAYMENT FAILED' && detail.status !=='
+<!-- <ng-container *ngIf="detail && detail?.requestType !=='cancel' && detail?.status !=='PAYMENT FAILED' && detail?.status !=='
 AWAITING PAYMENT CONFIRMATION' && !customerReturn">
     <div class="trackOrderBox singleproStatus ">
         <div class="trackerWrap pwa-row">
@@ -72,23 +87,23 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                     <span class="grtrackerline "></span>
                     <div class="trackerdate dateTxt " *ngIf="detail && trackOrderBoxDetail ">
                         <div class="dateTxt ">
-                            <span>{{trackOrderBoxDetail.firstDateLabel}}</span>
-                            <small>{{trackOrderBoxDetail.firstDate | date : 'dd-MM-yyyy'}}</small>
+                            <span>{{trackOrderBoxDetail?.firstDateLabel}}</span>
+                            <small>{{trackOrderBoxDetail?.firstDate | date : 'dd-MM-yyyy'}}</small>
                         </div>
                     </div>
                 </li>
                 <li
-                    [ngClass]="trackOrderBoxDetail.lastDateFlag ? (detail.requestType=='forward' && (detail.status !=='RETURN REJECTED' && detail.status !=='EXCHANGE REJECTED' )) ? 'grsolid' : 'yellsolid' : 'grdashed' ">
+                    [ngClass]="trackOrderBoxDetail?.lastDateFlag ? (detail?.requestType=='forward' && (detail?.status !=='RETURN REJECTED' && detail?.status !=='EXCHANGE REJECTED' )) ? 'grsolid' : 'yellsolid' : 'grdashed' ">
                     <span class="grtrackerline "></span>
                     <div class="track-id-info "
-                        *ngIf="(detail.status==='DELIVERED' || detail.status==='SHIPPED' ) && detail[ 'shipment_detail'] !='null' ">
+                        *ngIf="(detail?.status==='DELIVERED' || detail?.status==='SHIPPED' ) && detail[ 'shipment_detail'] !='null' ">
                         <span class="track_id ">Tracking ID: &nbsp;{{detail['shipment_detail']['awb']}}</span>
                         <span class="track_id ">Courier By: &nbsp;{{detail['shipment_detail']['shipper_name']}}</span>
                     </div>
                     <div class="trackerdate flex-date-col " *ngIf="detail && trackOrderBoxDetail ">
                         <div>
-                            <span class="dateTxt ">{{trackOrderBoxDetail.lastDateLabel}}
-                                <small>{{trackOrderBoxDetail.lastDate | date : 'dd-MM-yyyy'}}</small>
+                            <span class="dateTxt ">{{trackOrderBoxDetail?.lastDateLabel}}
+                                <small>{{trackOrderBoxDetail?.lastDate | date : 'dd-MM-yyyy'}}</small>
                             </span>
                         </div>
 
@@ -100,29 +115,29 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         </div>
                         <div>
                             <span *ngIf="showBuyAgain_Invoice(detail['status']) " class="buy-again "><a
-                                    (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)">BUY
+                                    (click)="trackAndNavigateToProductPage(detail?.productUrl, detail?.product_msn, $event)">BUY
                                     AGAIN</a></span>
                         </div>
                     </div>
 
-                    <p *ngIf="detail && detail.dates.delivered.flag && showReturn" class="policyTxt">Return Policy valid
+                    <p *ngIf="detail && detail?.dates.delivered.flag && showReturn" class="policyTxt">Return Policy valid
                         till {{returnEndDate}}</p>
-                    <p *ngIf="detail.dates.delivered.flag &&  !showReturn" class="policyTxt">Return Policy ended on
+                    <p *ngIf="detail?.dates.delivered.flag &&  !showReturn" class="policyTxt">Return Policy ended on
                         {{returnEndDate}}</p>
                 </li>
             </ul>
             <div class="bottomft ">
-                <span *ngIf="detail && detail.cancel_active"
-                    (click)="openPopup='cancel' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status); ">CANCEL</span>
+                <span *ngIf="detail && detail?.cancel_active"
+                    (click)="openPopup='cancel' ;getDataforCancel(detail?.product_name,detail?.price,detail?.customer_id,detail?.item_id,detail?.status); ">CANCEL</span>
                 <span
-                    *ngIf="detail && detail.status==='DELIVERED' && detail.requestType !='return' && detail.requestType !='exchange' && showReturn && detail.show_return_exchange "
-                    (click)="openPopup='return' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status); ">RETURN/EXCHANGE</span>
+                    *ngIf="detail && detail?.status==='DELIVERED' && detail?.requestType !='return' && detail?.requestType !='exchange' && showReturn && detail?.show_return_exchange "
+                    (click)="openPopup='return' ;getDataforCancel(detail?.product_name,detail?.price,detail?.customer_id,detail?.item_id,detail?.status); ">RETURN/EXCHANGE</span>
                 <span [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP ?</span>
             </div>
         </div>
     </div>
     <div *ngIf="showBuyAgain_Invoice(detail[ 'status']) " class="invoiceSection ">
-        <a [href]="detail.customer_invoice " target="_blank ">
+        <a [href]="detail?.customer_invoice " target="_blank ">
             <span><img src="{{imageAssetURL}}assets/img/file-download-line.svg">DOWNLOAD INVOICE</span></a>
     </div>
 </ng-container> -->
@@ -201,25 +216,25 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                     <div class="orderdtDesc clearfix ">
                         <div class="orderproImg ">
                             <img
-                                src="{{(detail.productImg && detail.productImg.length> 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
+                                src="{{(detail?.productImg && detail?.productImg.length> 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
                         </div>
 
                         <div class="orderproDesc">
-                            <p>{{detail.product_name}}</p>
+                            <p>{{detail?.product_name}}</p>
                             <div class="orderqty clearfix mt-10">
                                 <span class="priceright">Order Cancelled :
                                     <span>{{currentDate | date: 'd-MMMM-y'}}</span>
                                 </span>
                                 <span class="priceright">Price Inclusive of GST
-                                    <span>&#8377; {{detail.price}}</span>
+                                    <span>&#8377; {{detail?.price}}</span>
                                 </span>
                             </div>
                         </div>
 
                     </div>
-                    <p *ngIf="detail.payment_type === 'COD' || detail.payment_type === 'NEFT'">Your order has been
+                    <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'">Your order has been
                         cancelled.</p>
-                    <p *ngIf="detail.payment_type != 'COD' && detail.payment_type != 'NEFT'">Your order has been
+                    <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'">Your order has been
                         cancelled the amount will be reflected in your account within 7-10 business days</p>
                 </div>
             </div>
@@ -398,22 +413,22 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         <form [formGroup]="returnForm" class="form-horizontal">
                             <div class="" class="returnwrap" [ngClass]="{'show': step == 3, 'hide': step !== 3}">
                                 <div class="cancitem clearfix">
-                                    <img src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}"
+                                    <img src="{{(detail?.productImg && detail?.productImg.length > 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}"
                                         width="100" height="100" alt="imagename" />
                                     <div class="itemname">
-                                        <h3 class="">{{detail.product_name}}</h3>
+                                        <h3 class="">{{detail?.product_name}}</h3>
                                         <p class="mb-10">Qty :
-                                            <span class="text-500">{{detail.Quantity}}</span>
+                                            <span class="text-500">{{detail?.Quantity}}</span>
                                         </p>
                                         <p>Price :
-                                            <span class="text-500 price">₹ {{detail.price}}</span>
+                                            <span class="text-500 price">₹ {{detail?.price}}</span>
                                         </p>
                                     </div>
                                 </div>
                                 <div class="returnMesg clearfix">
-                                    <p *ngIf="detail.payment_type === 'COD' || detail.payment_type === 'NEFT'"
+                                    <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'"
                                         class="light-txt">Your order has been Returned.</p>
-                                    <p *ngIf="detail.payment_type != 'COD' && detail.payment_type != 'NEFT'"
+                                    <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'"
                                         class="light-txt">Your order has been Returned the amount will be reflected in
                                         your account within 7-10 business days once the product reaches to our
                                         fulfillment center</p>
@@ -446,13 +461,13 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
         <div class="trackOrderBox pwa-row static_pos">
             <!-- <h3>Order Status</h3> -->
             <div class="orderdet">
-                <h4>Order Id : {{detail.order_id}}</h4>
-                <p class="">{{detail.product_name}} </p>
-                <p class="">Qty:{{detail.Quantity}}</p>
+                <h4>Order Id : {{detail?.order_id}}</h4>
+                <p class="">{{detail?.product_name}} </p>
+                <p class="">Qty:{{detail?.Quantity}}</p>
                 <p><span class="track_id"
-                        *ngIf="detail.status === 'DELIVERED' && detail['shipment_detail'] != null">Tracking
+                        *ngIf="detail?.status === 'DELIVERED' && detail['shipment_detail'] != null">Tracking
                         ID:{{detail['shipment_detail']['awb']}}</span>
-                    <span class="shipper_id" *ngIf="shipmentDetail != null">{{shipmentDetail.shipper_name}}</span>
+                    <span class="shipper_id" *ngIf="shipmentDetail != null">{{shipmentDetail?.shipper_name}}</span>
                 </p>
 
             </div>
@@ -460,7 +475,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                 <ul>
 
                     <li class="newTrackerStyle"
-                        *ngFor="let obj of detail.dates | trackOrderStatus: detail.requestType : detail.status: true ; let i = index"
+                        *ngFor="let obj of detail?.dates | trackOrderStatus: detail?.requestType : detail?.status: true ; let i = index"
                         [ngClass]="obj.cClass">
                         <div class="grLeftTracker">
                             <strong>{{obj.date | date:'EEEE, dd MMM yyyy'}}</strong>
@@ -479,50 +494,50 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 </app-pop-up>
 
 <div class="orderShipDet pwa-container">
-    <div class="orderaddressBox pwa-row" *ngIf="detail && detail.address.shipping_address">
+    <div class="orderaddressBox pwa-row" *ngIf="detail && detail?.address.shipping_address">
         <h3>Shipping address</h3>
         <div class="adressbox-inner">
             <span class="address-type">Default</span>
-            <span class="order-name mt-10">{{detail.address.shipping_address.firstname}}</span>
-            <span>{{detail.address.shipping_address.address}}, {{detail.address.shipping_address.address2}},
-                {{detail.address.shipping_address.city}}, {{detail.address.shipping_address.pincode}},
-                {{detail.address.shipping_address.state}}</span>
-            <span>Mobile: {{detail.address.shipping_address.phone}}</span>
+            <span class="order-name mt-10">{{detail?.address.shipping_address.firstname}}</span>
+            <span>{{detail?.address.shipping_address.address}}, {{detail?.address.shipping_address.address2}},
+                {{detail?.address.shipping_address.city}}, {{detail?.address.shipping_address.pincode}},
+                {{detail?.address.shipping_address.state}}</span>
+            <span>Mobile: {{detail?.address.shipping_address.phone}}</span>
         </div>
 
     </div>
-    <div class="mt-10 orderaddressBox pwa-row" *ngIf="detail && detail.address.billing_address">
+    <div class="mt-10 orderaddressBox pwa-row" *ngIf="detail && detail?.address.billing_address">
         <h3>Billing address</h3>
-        <span>{{detail.address.billing_address.firstname}}</span>
-        <span>{{detail.address.billing_address.address}}</span>
-        <span>{{detail.address.billing_address.address2}}</span>
-        <span>{{detail.address.billing_address.city}}</span>
-        <span>{{detail.address.billing_address.pincode}}</span>
-        <span>{{detail.address.billing_address.state}}</span>
-        <span>Contact: {{detail.address.billing_address.phone}}</span>
+        <span>{{detail?.address.billing_address.firstname}}</span>
+        <span>{{detail?.address.billing_address.address}}</span>
+        <span>{{detail?.address.billing_address.address2}}</span>
+        <span>{{detail?.address.billing_address.city}}</span>
+        <span>{{detail?.address.billing_address.pincode}}</span>
+        <span>{{detail?.address.billing_address.state}}</span>
+        <span>Contact: {{detail?.address.billing_address.phone}}</span>
 
     </div>
     <div class="ordersumBox pwa-row pad-0">
-        <h5 class="clearfix pad-15" *ngIf="detail && detail.dates && detail.dates.accepted.date">Order Date
-            <span>{{detail.dates.accepted.date | date : 'dd-MM-yyyy'}}</span>
+        <h5 class="clearfix pad-15" *ngIf="detail && detail?.dates && detail?.dates.accepted.date">Order Date
+            <span>{{detail?.dates.accepted.date | date : 'dd-MM-yyyy'}}</span>
         </h5>
 
-        <div class="chargestext clearfix" *ngIf="detail && detail.shipping_charge">Shipping
-            <span>₹ {{detail.shipping_charge}}</span>
+        <div class="chargestext clearfix" *ngIf="detail && detail?.shipping_charge">Shipping
+            <span>₹ {{detail?.shipping_charge}}</span>
         </div>
 
-        <div class="chargestext " *ngIf="detail && detail.discount > 0">Discount
-            <span class="textgreen">₹ {{detail.discount | mathFloor | number : '1.2-2'}}</span>
+        <div class="chargestext " *ngIf="detail && detail?.discount > 0">Discount
+            <span class="textgreen">₹ {{detail?.discount | mathFloor | number : '1.2-2'}}</span>
         </div>
-        <div class="chargestext " *ngIf="detail && detail.emi_discount > 0">No Cost EMI Discount:
-            <span class="textgreen">₹ {{detail.emi_discount | mathFloor | number : '1.2-2'}}</span>
+        <div class="chargestext " *ngIf="detail && detail?.emi_discount > 0">No Cost EMI Discount:
+            <span class="textgreen">₹ {{detail?.emi_discount | mathFloor | number : '1.2-2'}}</span>
         </div>
-        <div class="chargestext " *ngIf="detail && detail.payment_type">Payment Mode
-            <span>{{detail.payment_type}}</span>
+        <div class="chargestext " *ngIf="detail && detail?.payment_type">Payment Mode
+            <span>{{detail?.payment_type}}</span>
         </div>
-        <div class="totPrice pad-15" *ngIf="detail && detail.price">Amount Payable 
-            <span class="paymode">₹ {{totalPrice(detail.price, detail.Quantity, detail.shipping_charge,
-                detail.discount)}}</span>
+        <div class="totPrice pad-15" *ngIf="detail && detail?.price">Amount Payable 
+            <span class="paymode">₹ {{totalPrice(detail?.price, detail?.Quantity, detail?.shipping_charge,
+                detail?.discount)}}</span>
         </div>
     </div>
 </div>

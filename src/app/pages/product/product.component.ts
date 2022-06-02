@@ -3585,22 +3585,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
   }
 
-  sendWidgetTracking(widgetType) {
-    const TAXONS = this.taxons;
-    let page = {
-      pageName: null,
-      channel: "pdp",
-      subSection: null,
-      linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-      linkName: `More from ${widgetType}`,
-      loginStatus: this.commonService.loginStatusTracking,
-    };
-    const custData = this.commonService.custDataTracking;
-    const order = this.orderTracking;
-    this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
-    this.commonService.setSectionClickInformation("pdp_widget", "listing");
-  }
-
   getRefinedProductTags() {
     const pipe = new ArrayFilterPipe();
     this.refinedProdTags = pipe.transform(

@@ -22,6 +22,8 @@ import { PastOrdersModule } from '@app/components/past-orders/past-orders.compon
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
 import { ProductCardSkeletonModule } from '@app/modules/product-card/product-card-skeleton/product-card-skeleton.module';
 import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
+import ProductDescriptionModule from '@app/components/product-description/product-description.component';
+
 import { ProductRfqThanksPopupModule } from '@app/components/product-rfq-thanks-popup/product-rfq-thanks-popup.component';
 @NgModule({
   declarations: [ProductComponent],
@@ -51,6 +53,7 @@ import { ProductRfqThanksPopupModule } from '@app/components/product-rfq-thanks-
     // IdleUserSearchNudgeModule,
     PastOrdersModule,
     NotFoundModule,
+    ProductDescriptionModule,
     ProductRfqThanksPopupModule
   ],
   exports: [],

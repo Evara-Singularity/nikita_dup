@@ -1166,53 +1166,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return parseInt(this.qunatityFormControl.value) || 1;
   }
 
-  onChangeCartQuanityValue() {
-    this.checkCartQuantityAndUpdate(this.qunatityFormControl.value);
-  }
-
-  private checkCartQuantityAndUpdate(value): void {
-    if (!value) {
-      this._tms.show({
-        type: 'error',
-        text: (value == 0) ? 'Minimum qty can be ordered is: 1' : 'Please enter a value quantity',
-      })
-      this.qunatityFormControl.setValue(this.productMinimmumQuantity);
-    } else {
-      if (parseInt(value) < parseInt(this.productMinimmumQuantity)) {
-        this._tms.show({
-          type: 'error',
-          text: 'Minimum qty can be ordered is: ' + this.productMinimmumQuantity
-        })
-        this.qunatityFormControl.setValue(this.productMinimmumQuantity);
-      } else if (parseInt(value) > parseInt(this.priceQuantityCountry['quantityAvailable'])) {
-        this._tms.show({
-          type: 'error',
-          text: 'Maximum qty can be ordered is: ' + this.priceQuantityCountry['quantityAvailable']
-        })
-        this.qunatityFormControl.setValue(this.priceQuantityCountry['quantityAvailable']);
-      } else if (isNaN(parseInt(value))) {
-        this.qunatityFormControl.setValue(this.productMinimmumQuantity);
-        this.checkBulkPriceMode();
-      } else {
-        this.qunatityFormControl.setValue(value);
-        this.checkBulkPriceMode();
-      }
-    }
-  }
-
-  updateProductQunatity(type: 'INCREMENT' | 'DECREMENT') {
-    switch (type) {
-      case 'DECREMENT':
-        this.checkCartQuantityAndUpdate((this.cartQunatityForProduct - 1))
-        break;
-      case 'INCREMENT':
-        this.checkCartQuantityAndUpdate((this.cartQunatityForProduct + 1))
-        break;
-      default:
-        break;
-    }
-  }
-
   checkForBulkPricesProduct() {
     if (this.rawProductData['productPartDetails'][this.productSubPartNumber]['productPriceQuantity']) {
       const productBulkPrices = this.rawProductData['productPartDetails'][this.productSubPartNumber]['productPriceQuantity']['india']['bulkPrices']['india'] || {};
@@ -3917,6 +3870,5 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.clearImageCrouselPopup();
     this.closeProductInfoPopup();
   }
-
 
 }

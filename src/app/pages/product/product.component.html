@@ -103,9 +103,7 @@
 
     <!-- TO DO - create component - product-bulk-qauntity  STARTS
     SCSS - @import '../../scss/bulk-quantity'; -->
-    <product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" [rawProductData]="rawProductData"
-        [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct"
-        [priceQuantityCountry]="priceQuantityCountry" [productBulkPrices]="productBulkPrices"
+    <product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" [rawProductData]="rawProductData" [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct" [priceQuantityCountry]="priceQuantityCountry" [productBulkPrices]="productBulkPrices"
         [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl">
     </product-bulk-quantity>
 
@@ -216,24 +214,12 @@
             <ng-container #fbt></ng-container>
         </section>
 
-        <app-product-review 
-            [productName]= "productName"
-            [reviewLength]="reviewLength"
-            [overallRating]="overallRating"
-            [rawReviewsData]= "rawReviewsData"
-            (writeReview)="writeReview($event)"
-            (reviewRatingPopup)="handleReviewRatingPopup($event)"
-            (postHelpful)="handlePostHelpful($event)"
-        ></app-product-review>
+        <app-product-review [productName]="productName" [reviewLength]="reviewLength" [overallRating]="overallRating" [rawReviewsData]="rawReviewsData" (writeReview)="writeReview($event)" (reviewRatingPopup)="handleReviewRatingPopup($event)" (postHelpful)="handlePostHelpful($event)"></app-product-review>
 
-        <app-product-qa
-            [questionAnswerList]="questionAnswerList"
-            (handleFaqListPopup)="handleFaqListPopup()"
-            (askQuestion)="askQuestion()"
-        >
+        <app-product-qa [questionAnswerList]="questionAnswerList" (handleFaqListPopup)="handleFaqListPopup()" (askQuestion)="askQuestion()">
         </app-product-qa>
 
-        <div id="get-quote-section" class="buy-nowsec" *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+        <!-- <div id="get-quote-section" class="buy-nowsec" *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
             <h4 class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
             <p class="small-txt prodct-name"> {{ productName }} </p>
             <div class="buynow-flex">
@@ -288,7 +274,10 @@
             <div class="inline-list-link">
                 <span class="get-quote" (click)="raiseRFQQuote();">Get Quote</span>
             </div>
-        </div>
+        </div> -->
+
+        <app-product-get-quote (sliderMouseDownEvent$)="sliderMouseDownEvent($event)" (raiseRFQQuote$)="raiseRFQQuote()" [rfqQuoteRaised]="rfqQuoteRaised" [productOutOfStock]="productOutOfStock" [productMrp]="productMrp" [productCategoryDetails]="productCategoryDetails"
+            [productName]="productName" [productAllImages]="productAllImages"></app-product-get-quote>
 
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
             <ng-container #similarProduct></ng-container>

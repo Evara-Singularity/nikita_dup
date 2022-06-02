@@ -29,8 +29,7 @@ export class ProductFeatureDetailsComponent implements OnInit {
   @Output() handleProductInfoPopup$: EventEmitter<any> = new EventEmitter<any>();
   @Output() showYTVideo$: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor( private router: Router, public commonService: CommonService,
-    ) { }
+  constructor( private router: Router, public commonService: CommonService) { }
 
   ngOnInit(): void {
   }

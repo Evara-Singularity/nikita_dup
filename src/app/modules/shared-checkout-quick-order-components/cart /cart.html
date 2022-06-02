@@ -67,43 +67,67 @@
                 </div>
             </div>
         </div> -->
-        <div [ngClass]="{'oos':item.oos}" class="price_detail_toggle pad-15">
-            <div class="volume">
-                <span class="f-left txt">Qty :&nbsp;</span>
-                <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')">
-                    <span *ngIf="item.productQuantity > 1" class="multiple-quantity">-</span>
-                    <i *ngIf="item.productQuantity < 2" class="icon-bin single-quantity"></i>
-                </span>
-                <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
-                    (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget>
-                <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')">+</span>
-            </div>
-            <!-- <div class="qty_section">
+        <div [ngClass]="{'oos':item.oos}" class="price-details-n-qty pad-15">
+            <div class="qty_section">
                 <div class="quantity-block">
-                    <span *ngIf="item.productQuantity > 1" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')" class="remove-qty qty-block">&#43;</span>
-                    <i *ngIf="item.productQuantity < 2" class="icon-bin single-quantity"></i>
+                    <span *ngIf="item.productQuantity > 1"
+                        (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')"
+                        class="remove-qty qty-block">&#8722;</span>
+                    <i *ngIf="item.productQuantity < 2" class="icon-bin qty-block single-quantity"></i>
                     <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
-                    (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget/>
-                    <span (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')"class="add-qty qty-block">&#8722;</span>
+                        (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget />
+                    <span (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')"
+                        class="add-qty qty-block">&#43;</span>
                 </div>
-            </div> -->
-            <div class="price-label" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
-                <div class="f-right">
-                    <div class="f-left">
-                        <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
-                            item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
-                        <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax *
-                            item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
-                        <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
-                        <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
-                        <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
-                            Details</span>
-                        <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
-                    </div>
+            </div>
+            <div class="price-dtl-sec" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
+                <div class="price-lbl-inner">
+                    <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
+                        item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                    <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax *
+                        item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                    <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
+                    <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
+                    <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
+                        Details</span>
+                    <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
+                </div>
+                <div class="price-lbl-drop-icon">
                     <i class="icon-down"></i>
                 </div>
             </div>
         </div>
+        
+        <!-- <div [ngClass]="{'oos':item.oos}" class="price_detail_toggle pad-15">
+            <div class="qty_section">
+                <div class="quantity-block">
+                    <span *ngIf="item.productQuantity > 1"
+                        (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')"
+                        class="remove-qty qty-block">&#8722;</span>
+                    <i *ngIf="item.productQuantity < 2" class="icon-bin qty-block single-quantity"></i>
+                    <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
+                        (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget />
+                    <span (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')"
+                        class="add-qty qty-block">&#43;</span>
+                </div>
+            </div>
+            <div class="price-label" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
+                <div class="price-lbl-inner-l">
+                    <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
+                        item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                    <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax *
+                        item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                    <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
+                    <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
+                    <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
+                        Details</span>
+                    <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
+                </div>
+                <div class="price-lbl-inner-l">
+                    <i class="icon-down"></i>
+                </div>
+            </div>
+        </div> -->
         <div [ngClass]="{'oos':item.oos}" class="price-breakup" [id]="'showPrice'+(i+1)" style="display: none">
             <ul class="txt-list">
                 <li>

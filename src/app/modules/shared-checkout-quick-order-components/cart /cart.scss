@@ -60,70 +60,71 @@
             }
         }
     }
-    .price_detail_toggle {
-        @extend %clear-fix;
-        padding-bottom: 10px !important;
-        .volume {
-            float: left;
-            width: 50%;
-            .btn-volume {
-                width: 18%;
-                line-height: 30px;
-                text-align: center;
-                border: 1px solid #8bc5ff;
-                background: #dbedff;
-                float: left;
-                font-size: $large-font;
-                font-weight: 600;
-                border-radius: 2px;
-            }
-            input {
-                width: 30%;
-                padding: 5px;
-                text-align: center;
-                height: 32px;
-                border: 1px solid $border-sec-color;
-                float: left;
-                margin: 0px 4px;
-                border-radius: 2px;
-            }
-            .txt {
-                line-height: 34px;
-                font-size: 14px;
-            }
+    // .price_detail_toggle {
+    //     @extend %clear-fix;
+    //     padding-bottom: 10px !important;
+    //     display: flex;
+    //     width: 100%;
+    //     background-color: darkgoldenrod;
+    //     .qty_section{
+    //         width: 130px;
+    //         margin-right: 10px;
+    //         background-color: cyan;
+    //     }
+    //     .price-label {
+    //         width: calc(100% - 140px) !important;
+    //         text-align: right;
+    //         display: flex;
+    //         background-color: chartreuse;
+    //         span {
+    //             line-height: 20px;
+    //         }
+    //         i {
+    //             font-size: 12px;
+    //             margin-left: 10px;
+    //             float: left;
+    //             padding-top: 5px;
+    //             &::before {
+    //                 line-height: 20px;
+    //                 display: block;
+    //             }
+    //         }
+    //         .price-val {
+    //             padding: 0px;
+    //             font-size: 14px;
+    //         }
+    //         .grey-txt {
+    //             color: #9c9292;
+    //             font-size: 10px;
+    //         }
+    //         &.ico-expand {
+    //             // background: #f6f6f6;
+    //             i {
+    //                 transform: rotate(180deg);
+    //                 margin-top: 5px;
+    //             }
+    //         }
+    //     }
+    // }
+    .price-details-n-qty{
+        display: flex;
+        .qty_section{
+            width: 130px;
         }
-        .price-label {
-            float: left;
-            width: 50%;
-            text-align: right;
-            span {
-                float: left;
-                line-height: 20px;
-            }
-            i {
-                font-size: 12px;
-                margin-left: 10px;
-                float: left;
-                padding-top: 5px;
-                &::before {
-                    line-height: 20px;
-                    display: block;
+        .price-dtl-sec{
+            display: flex;
+            align-items: center;
+            width: calc(100% - 140px);
+            .price-lbl-inner{
+                width: calc(100% - 20px);
+                text-align: right;
+                h3{
+                    padding: 0px;
                 }
             }
-            .price-val {
-                padding: 0px;
-                font-size: 14px;
-            }
-            .grey-txt {
-                color: #9c9292;
-                font-size: 10px;
-            }
-            &.ico-expand {
-                // background: #f6f6f6;
-                i {
-                    transform: rotate(180deg);
-                    margin-top: 5px;
-                }
+            .price-lbl-drop-icon{
+                width: 15px;
+                margin-left: 5px;
             }
         }
     }
@@ -470,6 +471,11 @@
         padding-bottom: 15px;
     }
 }
+// .qty_section{
+//     .quantity-block{
+//         display: flex;
+//     }
 
+// }
 
 

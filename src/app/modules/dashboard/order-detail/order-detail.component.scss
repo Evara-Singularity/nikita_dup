@@ -535,14 +535,14 @@
     position: relative;
     height: 55px;
     &.success{
-      background-color: var(--slimy-green);
+      // background-color: var(--slimy-green);
       i{
-        color: var(--white);
+        color: var(--slimy-green);
       }
       .orderstatus{
-        color: var(--white) !important;
+        // color: var(--white) !important;
         span{
-          color: var(--white);
+          // color: var(--white);
         }
       }
     }

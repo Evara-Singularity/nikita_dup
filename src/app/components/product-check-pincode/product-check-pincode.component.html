@@ -1,6 +1,6 @@
 <div class="content-popup" content>
-    <div class="delivery-details-area">
-        <div class="delivery-details container">
+    <div class="delivery-details-area pwa-row">
+        <div class="delivery-details container pwa-col-12">
             <h3 class="heading-3">Delivery Details</h3>
             <div class="delivery-details-inner">
                 <div class="delivery-details-inner-img">
@@ -23,10 +23,10 @@
                 
             </div>
         </div>
-        <div *ngIf="pincode.hasError('pattern')" class="invalid-txt">
+        <div *ngIf="pincode.hasError('pattern')" class="invalid-txt pwa-col-12">
             <p class="right-txt">Invalid pincode provided</p>
         </div>
-        <div class="about-delivery" *ngIf="!(itemShippingAmount > 0)">
+        <div class="about-delivery pwa-col-12" *ngIf="!(itemShippingAmount > 0)">
             <span class="st-icon-shipping">
                 <span class="icon-delivery_1"></span>
                 <span class="icon-delivery_2"></span>
@@ -42,7 +42,7 @@
                 <span class="green-txt">No shipping charge on this order</span>
             </div>
         </div>
-        <div class="about-delivery" *ngIf="isServiceable && isPincodeAvailble && itemShippingAmount > 0">
+        <div class="about-delivery pwa-col-12" *ngIf="isServiceable && isPincodeAvailble && itemShippingAmount > 0">
             <span class="st-icon-shipping">
                 <span class="icon-delivery_1"></span>
                 <span class="icon-delivery_2"></span>
@@ -59,7 +59,7 @@
             </div>
         </div>
         <ng-container *ngIf="isPincodeAvailble && !pincode.hasError('pattern')">
-            <div class="about-delivery" *ngIf="isServiceable">
+            <div class="about-delivery pwa-col-12" *ngIf="isServiceable">
                 <span class="st-icon-delivery_available">
                     <span class="icon-delivery_y_1"></span>
                     <span class="icon-delivery_y_2"></span>
@@ -71,7 +71,7 @@
                     <h4>Delivery available at {{pincode.value}} in {{deliveryDays}}</h4>
                 </div>
             </div>
-            <div class="about-delivery" *ngIf="!(isServiceable)">
+            <div class="about-delivery pwa-col-12" *ngIf="!(isServiceable)">
                 <span class="st-icon-delivery_not_available">
                     <span class="icon-delivery_n_1"></span>
                     <span class="icon-delivery_n_2"></span>
@@ -83,7 +83,7 @@
                     <h4 class="red-txt">Delivery unavailable at {{pincode.value}}</h4>
                 </div>
             </div>
-            <div class="about-delivery" *ngIf="isServiceable && (isCashOnDelivery)">
+            <div class="about-delivery pwa-col-12" *ngIf="isServiceable && (isCashOnDelivery)">
                 <span class="st-icon-cod">
                     <span class="icon-cod_1"></span>
                     <span class="icon-cod_2"></span>
@@ -95,7 +95,7 @@
                     <span>You can pay at the time of delivery</span>
                 </div>
             </div>
-            <div class="about-delivery" *ngIf="isServiceable && !isCashOnDelivery">
+            <div class="about-delivery pwa-col-12" *ngIf="isServiceable && !isCashOnDelivery">
                 <span class="st-icon-prepaid">
                     <span class="icon-prepaid_1"></span>
                     <span class="icon-prepaid_2"></span>

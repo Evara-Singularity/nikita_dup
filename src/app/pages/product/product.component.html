@@ -260,13 +260,18 @@
     </div>
 
     <!-- Product quantity action section ends -->
-    <div *ngIf="!productOutOfStock" class="deals-block bg-white" observeVisibility [debounceTime]="300"
-        (visible)="onVisibleOffer($event)">
-        <ng-container #offerSection></ng-container>
-    </div>
-    <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
-        <ng-container #pincodeForm></ng-container>
-    </div>
+    <section>
+        <div *ngIf="!productOutOfStock" class="deals-block bg-white" observeVisibility [debounceTime]="300"
+            (visible)="onVisibleOffer($event)">
+            <ng-container #offerSection></ng-container>
+        </div>
+    </section>
+    <section>
+        <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)"
+            *ngIf="!productOutOfStock">
+            <ng-container #pincodeForm></ng-container>
+        </div>
+    </section>
     <!-- other sections starts -->
     <!-- RFQ section ends -->
     <section>

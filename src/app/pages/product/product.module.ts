@@ -25,6 +25,7 @@ import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/p
 import ProductDescriptionModule from '@app/components/product-description/product-description.component';
 import {ProductFeatureDetailsModule} from '@app/components/product-feature-details/product-feature-details.component';
 import { ProductRfqThanksPopupModule } from '@app/components/product-rfq-thanks-popup/product-rfq-thanks-popup.component';
+import { ProductMoreWidgetModule } from '@app/components/product-more-widget/product-more-widget.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -55,7 +56,8 @@ import { ProductRfqThanksPopupModule } from '@app/components/product-rfq-thanks-
     NotFoundModule,
     ProductDescriptionModule,
     ProductRfqThanksPopupModule,
-    ProductFeatureDetailsModule
+    ProductFeatureDetailsModule,
+    ProductMoreWidgetModule
   ],
   exports: [],
   providers: [NgxSiemaService],

@@ -29,6 +29,7 @@ import { ProductMoreWidgetModule } from '@app/components/product-more-widget/pro
 import { ProductBulkQuantityModule } from '@app/components/product-bulk-quantity/product-bulk-quantity.component';
 import { ProductReviewModule } from '@app/components/product-review/product-review.component';
 import { ProductQaModule } from '@app/components/product-qa/product-qa.component';
+import { ProductQuantityModule } from '@app/components/product-quantity/product-quantity.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -64,7 +65,8 @@ import { ProductQaModule } from '@app/components/product-qa/product-qa.component
     ProductReviewModule,
     ProductQaModule,
     ProductFeatureDetailsModule,
-    ProductMoreWidgetModule
+    ProductMoreWidgetModule,
+    ProductQuantityModule
   ],
   exports: [],
   providers: [NgxSiemaService],

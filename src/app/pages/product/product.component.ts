@@ -3726,18 +3726,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return "Something!!!";
   }
 
-  openDialer() {
-    if (this.commonService.isBrowser) {
-      window.location.href = "tel:+91 99996 44044";
-    }
-  }
 
-
-  navigateToWhatsapp() {
-    if (this.isBrowser) {
-      window.location.href = CONSTANTS.WHATS_APP_API + GLOBAL_CONSTANT.whatsapp_number + '&text=' + encodeURIComponent(this.getWhatsText);
-    }
-  }
   
   get pastOrderAnalytics() {
     const TAXONS = this.taxons;

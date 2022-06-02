@@ -15,7 +15,6 @@ import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ProductInfoModule } from './../../modules/product-info/product-info.module';
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductComponent } from './product.component';
-import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { SliceArrayPipeModule } from '@app/utils/pipes/slice-array.pipe';
 import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/product-oos-similar.module';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
@@ -25,6 +24,7 @@ import { ProductCardSkeletonModule } from '@app/modules/product-card/product-car
 import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
 import ProductDescriptionModule from '@app/components/product-description/product-description.component';
 
+import { ProductRfqThanksPopupModule } from '@app/components/product-rfq-thanks-popup/product-rfq-thanks-popup.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -52,9 +52,9 @@ import ProductDescriptionModule from '@app/components/product-description/produc
     SwipeDirectiveModule,
     // IdleUserSearchNudgeModule,
     PastOrdersModule,
-    BottomMenuModule,
     NotFoundModule,
-    ProductDescriptionModule
+    ProductDescriptionModule,
+    ProductRfqThanksPopupModule
   ],
   exports: [],
   providers: [NgxSiemaService],

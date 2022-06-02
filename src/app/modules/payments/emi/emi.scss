@@ -1,5 +1,4 @@
 @import '../../../scss/variables';
-@import '../../../scss/payment-common';
 @import '../payment-continue-btn.scss';
 @import '../../../scss/components/radio';
 @import '../../../scss/layout/forms.scss';
@@ -14,12 +13,11 @@
     .step-2 {
         .tab-head {
             text-align: center;
-            font-weight: 600;
+            font-weight:$font-bold;
             font-size: $extra-large-font;
             padding: 10px 30px;
             background: #dedede;
             li {
-                // @include gridForCategory('3' , null);
                 width: 37%;
                 float: left;
                 &:first-child {
@@ -31,7 +29,6 @@
             label {
                 padding: 10px;
                 span {
-                    // @include gridForCategory('3' , null);
                     width: 37%;
                     float: left;
                     font-size: $medium-font;
@@ -40,7 +37,7 @@
                     }
                     text-align: center;
                     .chk-txt {
-                        font-weight: bold;
+                        font-weight:$font-bold;
                         margin-left: 0;
                     }
                 }
@@ -61,23 +58,6 @@
     }
 }
 
-.cvv-info {
-    .icon-cvv {
-        font-size: 22px;
-        float: left;
-        margin-top: 22px;
-    }
-    p {
-        width: calc(100% - 45px);
-        float: right;
-        margin-top: 17px;
-    }
-}
-
-.card-30 {
-    padding-bottom: 10px;
-}
-
 p {
     a {
         color: $blue-link-color;
@@ -88,23 +68,20 @@ p {
     display: flex;
     border-radius: 4px;
     .emiTab {
-        // flex: 1;
-        // box-shadow: 0px 3px 8px #455B6314;
-        color: #3C3C3C;
+        color:var(--onyx-black);
         padding: 9px 10px;
-        font-size: $large-font;
+        font-size: $medium-font;
         text-align: center;
         font-weight: bold;
-        border-radius: 8px;
+        border-radius:$border-radius-8;
         background: var(--white);
+        border:1px solid var(--spanish-gray);
         &:last-child{
-            margin-left: 20px;
+            margin-left: 10px;
         }
         &.selectedTab {
             background: var(--champagne-pink);
             color: var(--primary);
-            // border-top-left-radius: 4px;
-            // border-bottom-left-radius: 4px;
             border: 1px solid var(--primary);
         }
     }
@@ -152,16 +129,11 @@ p {
             }
             .emi-total-payable {
                 margin-left: auto;
-                font-weight: bold;
+                font-weight: $font-bold;
             }
         }
     }
 }
-
-.medium-heading {
-    font-size: $medium-font;
-}
-
 .emi-note-text {
     color: $note-text;
     font-size: $small-font;
@@ -171,10 +143,18 @@ p {
         color: #303030;
     }
 }
-
-.noPad{
-    padding-bottom: 10px;
+.card-row{
+    display:flex;
+    .date-type-select{
+        width:70%;
+    }
+    .outline-input-label{
+       width:30%;
+    }
 }
-.multiple-form-field{
-    margin: 0px !important;
+.emiTabInner{
+    .outline-input-label{
+        margin-bottom:20px;
+    }
 }
+  

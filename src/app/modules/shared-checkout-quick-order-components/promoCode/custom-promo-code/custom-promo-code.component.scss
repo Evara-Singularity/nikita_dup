@@ -1,18 +1,8 @@
 @import './../../../../scss/variables';
 @import '../../../../scss/layout/forms.scss';
-
-p {
-    margin-bottom: 5px;
-}
-
 i.icon-circle-delete {
     z-index: 2;
 }
-
-// .pos-rel {
-//     position: relative;
-// }
-
 .applied-code {
     position: relative;
     input:read-only {
@@ -33,15 +23,14 @@ i.icon-circle-delete {
     }
     .apply-coupon{
         display: flex;
-        justify-content: space-between;
+        label{
+            margin-right:10px;
+        }
         button{
             border-radius: 8px;
             font-size: 14px;
             font-weight: 400;
             width: 30%;
-        }
-        &.disabled{
-            
         }
     }
 }

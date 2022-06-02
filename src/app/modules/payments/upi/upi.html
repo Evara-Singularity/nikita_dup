@@ -4,15 +4,18 @@
             payment mode</span>
     </div>
     <div id="upi_block" class="upi-block continer">
-        <form [formGroup]="upiForm" (ngSubmit)="pay(upiForm.value, upiForm.valid)" class="form-horizontal">
-            <div class="material-form material-form-boxed" *ngIf="upiChecked">
-                <div class="input-field-boxed">
-                    <label>Please enter your UPI ID</label>
-                    <input type="text" class="upicode" formControlName="upi" [value]=""
-                        placeholder="Ex: mobileNumber@upi" #upicode>
-                    <span *ngIf="upicode?.value?.length!=''" class="clearupi" (click)="upicode.value=''"><i
+        <form [formGroup]="upiForm" (ngSubmit)="pay(upiForm.value, upiForm.valid)">
+            <div class="material-form" *ngIf="upiChecked">
+                <div class="outline-input-label">
+                    <label [class.is-focus]="upicode.value.length!=0">
+                        <input type="text" class="upicode" formControlName="upi" [value]=""
+                        placeholder="" #upicode>
+                        <span *ngIf="upicode?.value?.length!=''" class="clearupi" (click)="upicode.value=''"><i
                             class="fa fa-times"></i></span>
+                        <span class="label">Please enter your UPI ID</span>
+                    </label>
                 </div>
+                <p class="info-txt">Ex: mobileNumber@upi</p>
             </div>
             <div class="upi_icons">
                 <span class="upi_label">We support following UPI IDs</span>

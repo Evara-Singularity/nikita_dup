@@ -41,7 +41,7 @@
                 <ng-container *ngIf="emiResponse">
                     <div class="emi-plans"
                         *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['noCost'] > 0">
-                        <h3 class="heading medium-heading">No Cost EMI Plans</h3>
+                        <h3 class="heading-5">No Cost EMI Plans</h3>
                         <div class="emi-plans-list">
                             <ng-container
                                 *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative' | sortByEMIMonths; index as i;">
@@ -68,7 +68,7 @@
 
                     <div class="emi-plans"
                         *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['withCost'] > 0">
-                        <h3 class="heading medium-heading">Standard EMI Plans </h3>
+                        <h3 class="heading-5">Standard EMI Plans </h3>
                         <div class="emi-plans-list">
                             <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'| sortByEMIMonths">
                                 <label *ngIf="emi.value.emi_interest_paid !== 0" class="emi-plans-list-item">
@@ -99,7 +99,7 @@
                     <h3 class="heading-3">Please enter your card details</h3>
                     <div class="material-form material-form-boxed">
                         <div class="outline-input-label">
-                            <label>
+                            <label [class.is-focus]="ccNumber.value.length!=0">
                                 <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber
                                 kpAutocompleteOff>
                                 <span class="label">
@@ -108,15 +108,18 @@
                             </label>
                             
                         </div>
-                        <label>Valid thru</label>
-                        <div class="d-flex-card-dtls">
-                            <div class="date-type-select d-flex-card-dtls-l" *ngIf="!(bajajFinservField)">
+                        <span class="small-heading">
+                            Valid thru
+                        </span>
+                        <div class="card-row">
+                            <div class="date-type-select" *ngIf="!(bajajFinservField)">
                                 <div class="multiple-form-field">
                                     <div class="input-field-boxed">
                                         <input type="hidden" formControlName="ccexpmon" #expireMonth />
                                         <div class="custom_select_box" (click)="openMonthPopUp()">
                                             <div class="custom_select_input" [class.selectedInput]="selectedMonth">
                                                 <span>{{selectedMonth || 'MM'}}</span>
+                                                <i class="icon-down"></i>
                                             </div>
                                         </div>
                                         <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'"
@@ -129,6 +132,7 @@
                                         <div class="custom_select_box" (click)="openYearPopUp()">
                                             <div class="custom_select_input" [class.selectedInput]="selectedYear">
                                                 <span>{{selectedYear || 'YYYY'}}</span>
+                                                <i class="icon-down"></i>
                                             </div>
                                         </div>
                                         <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'"
@@ -138,23 +142,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="cvvField d-flex-card-dtls-r" *ngIf="!(bajajFinservField)">
-                                <div class="material-form material-form-boxed">
-                                    <div class="outline-input-label">
-                                        <label>
-                                            <input type="password" id="cc-number" formControlName="ccvv" #ccNumber
-                                            kpAutocompleteOff maxlength="3">
-                                            <span class="label">CVV</span>
-                                        </label>
-                                        
-                                    </div>
-                                </div>
+                            <div class="outline-input-label" *ngIf="!(bajajFinservField)">
+                                <label [class.is-focus]="cvNumber.value.length!=0">
+                                    <input type="password" id="cc-number" formControlName="ccvv" #cvNumber
+                                    kpAutocompleteOff maxlength="3">
+                                    <span class="label">CVV</span>
+                                </label>
                             </div>
                         </div>
                         
                         <div class="outline-input-label">
-                            <label>
-                                <input type="text" class="name-card" formControlName="ccname">
+                            <label [class.is-focus]="nameOnCardNumber.value.length!=0">
+                                <input type="text" class="name-card" formControlName="ccname" #nameOnCardNumber>
                                 <span class="label">Name On Card</span>
                             </label> 
                         </div>

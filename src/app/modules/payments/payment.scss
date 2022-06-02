@@ -1,12 +1,10 @@
 @import '../../scss/variables';
 @import './payment-continue-btn.scss';
-@import './../../scss/checkout-prod-card.scss';
 @import '../../scss/components/checkbox';
 @import '../../scss/components/radio';
 @import '../../scss/layout/forms';
-
-
-
+@import '../../scss/product-card';
+@import '../../scss/components/payment-accordion';
 .payment-options {
     &>div {
         @extend %cards;
@@ -17,7 +15,6 @@
         }
     }
 }
-
 ::ng-deep {
     .wp-50 {
         width: 50%;
@@ -171,61 +168,13 @@ label.payment-radio-btn {
 .payment-modal-bottom {
     margin-bottom: 90px;
 }
-
-.payment_accordion {
-    // background: #fff;
-    border-radius:8px;
-    .pwa-row{
-        padding:0px 15px;
-    }
-    .payment_accordion_item {
-        box-shadow: 0px 1px 0px var(--ghost-white);
-        .icon-img {
-            width: 20px;
-        }
-        &.selectedAccordion {
-            .payment-accordion_body {
-                display: block;
-                padding: 15px;
-            }
-        }
-    }
-}
-
-.payment-accordion_header {
-    display: flex;
-    height: 60px;
-    align-items: center;
-    flex:1 1 100%;
-    background-color: var(--white);
-    padding: 0px 15px;
-    border-top: 1px solid var(--ghost-white);
-    .icon-down {
-        margin-left: auto;
-        font-size: $small-font;
-    }
-    .ico-accord-left {
-        font-size: 20px;
-    }
-    .accordion-text {
-        font-size: $large-font;
-        margin-left: 15px;
-    }
-}
-
-.payment-accordion_body {
-    // padding: 0px 35px 0px 48px;
-    flex:1 1 100%;
-}
-
 .note-section {
     padding: 30px 15px 0px;
-    background: #F2F2F2;
     p {
         border-top: 1px solid $border-grey;
         color: #606060;
         font-size: 13px;
-        padding: 20px 15px 15px;
+        padding: 10px 15px;
         line-height: 20px;
     }
 }

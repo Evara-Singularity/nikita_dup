@@ -107,6 +107,7 @@
         </div>
     </div>
     <!-- CTA Fixed position -->
+
     <!-- Product bulk quantity section starts -->
     <section class="grouping_wrap_pdp" *ngIf="!isCommonProduct">
         <div *ngFor="let list of productFilterAttributesList" class="singlewrap">
@@ -438,164 +439,22 @@
             <ng-container #fbt></ng-container>
         </section>
 
-        
+        <app-product-review 
+            [productName]= "productName"
+            [reviewLength]="reviewLength"
+            [overallRating]="overallRating"
+            [rawReviewsData]= "rawReviewsData"
+            (writeReview)="writeReview($event)"
+            (reviewRatingPopup)="handleReviewRatingPopup($event)"
+            (postHelpful)="handlePostHelpful($event)"
+        ></app-product-review>
 
-        <section class="reviewSection" id="reviewSection">
-            <div class="pwa-row">
-                <div class="pwa-col-6">
-                    <p class="heading-3">Reviews & Ratings</p>
-                </div>
-                <div class="pwa-col-6 align-right" *ngIf="overallRating > 0">
-                    <button class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
-                </div>
-            </div>
-
-            <div class="pwa-row" *ngIf="overallRating < 1">
-                <p class="review_text">
-                    Be the first one to provide review for this product
-                </p>
-                <button [style.width.%]="100" class="btn redBgButton" (click)="writeReview()">WRITE A REVIEW</button>
-            </div>
-            <div class="pwa-row" *ngIf="overallRating > 0">
-                <p class="extra-small-txt">
-                    Customer Reviews on {{ productName}}
-                </p>
-            </div>
-            <div class="pwa-row rating-sec" *ngIf="overallRating > 0">
-                <div class="pwa-col-6">
-                    <div class="overall-rating">
-                        <h3>{{ overallRating | number:'1.1-1' }}<i class="icon-rating-star"></i>
-                        </h3>
-                        <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }}
-                            ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
-                    </div>
-                </div>
-                <div class="pwa-col-6">
-                    <div class="rating-scale">
-                        <div class="inner-scale">
-                            <span>5</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.five_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar dark-green"></span>
-                            </span>
-                        </div>
-                        <div class="inner-scale">
-                            <span>4</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.four_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar light-green"></span>
-                            </span>
-                        </div>
-                        <div class="inner-scale">
-                            <span>3</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.three_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar yellow"></span>
-                            </span>
-                        </div>
-                        <div class="inner-scale">
-                            <span>2</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.two_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar light-red"></span>
-                            </span>
-                        </div>
-                        <div class="inner-scale">
-                            <span>1</span>
-                            <span class="rating-bar">
-                                <span class="bar"
-                                    [style.width.%]="(rawReviewsData?.summaryData?.one_star_count/rawReviewsData?.summaryData?.review_count)*100"
-                                    class="bar red"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div *ngFor="let review of rawReviewsData?.reviewList | slice:0:2;let i=index" class="reviewRow">
-                <div class="pwa-row innerRow">
-                    <div class="pwa-col-6 reviewRow-col">
-                        <div class="small-stars">
-                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 0"></i>
-                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 1"></i>
-                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 2"></i>
-                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 3"></i>
-                            <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 4"></i>
-                        </div>
-                        <p>{{review?.user_name}}</p>
-                        <p class="small-txt grey-txt cust-date">
-                            {{ review?.date_unix | date: 'longDate' }}
-                        </p>
-                    </div>
-                    <div class="pwa-col-6 align-right">
-                        <p class="small-txt green-txt" *ngIf="review?.is_approved">Verified Purchase</p>
-                    </div>
-                    <div>
-                        <h3 class="heading-3-txt">
-                            {{ review?.review_subject }}
-                        </h3>
-                        <p class="content">
-                            {{ review?.review_text }}
-                        </p>
-                    </div>
-                </div>
-                <div class="pwa-row like-unlikeRow">
-                    <div class="pwa-col-6">
-                        <!-- <strong>Report Abuse</strong> -->
-                    </div>
-                    <div class="pwa-col-6 align-right">
-                        <button class="suggstn-btn" [ngClass]="{'active':review.like == '1'}"
-                            (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
-                            <span class="small-txt">{{review.yes}}</span>
-                            <i class="icon-like"></i>
-                        </button>
-                        <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}"
-                            (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
-                            <span class="small-txt">{{review.no}}</span>
-                            <i class="icon-dislike"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review"
-                (click)="$event.stopPropagation();handleReviewRatingPopup()">
-                <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
-            </div>
-        </section>
-
-        <section id="ask-question-section" class="Qa">
-            <div class="faq-head">
-                <h3 *ngIf="questionAnswerList?.data.qlist.length <= 1">Have doubts regarding this product?&nbsp;</h3>
-                <h3 *ngIf="questionAnswerList?.data.qlist.length > 1">Frequently Asked Questions</h3>
-                <button (click)="$event.stopPropagation();askQuestion()" class="btn redBgButton">ASK&nbsp;NOW</button>
-            </div>
-            <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
-
-                <p class="display-qn">
-                    Displaying Questions
-                    <span>1-2</span> of
-                    <span>{{questionAnswerList.data.qlist.length}} </span>
-                </p>
-                <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
-                    <div class="qn">
-                        <span class="qn-number heading-3">Q{{i+1}}:</span>
-                        <span class="qn-right heading-3">{{item.questionText}}</span>
-                    </div>
-                    <div class="answers">
-                        <div class="answer-block">
-                            <p class=" answer">Ans:</p>
-                            <p class="ans-details answer">{{item.answerText}}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup()">
-                    <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line small-txt"></i></p>
-                </div>
-            </ng-container>
-        </section>
+        <app-product-qa
+            [questionAnswerList]="questionAnswerList"
+            (handleFaqListPopup)="handleFaqListPopup()"
+            (askQuestion)="askQuestion()"
+        >
+        </app-product-qa>
 
         <div id="get-quote-section" class="buy-nowsec"
             *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">

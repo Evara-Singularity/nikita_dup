@@ -31,7 +31,6 @@ export class ProductGetQuoteComponent implements OnInit {
     this.sliderMouseDownEvent$.emit(event)
   }
 
-
 }
 
 
@@ -40,10 +39,7 @@ export class ProductGetQuoteComponent implements OnInit {
     ProductGetQuoteComponent
   ],
   imports: [
-    CommonModule,
-    // SliceArrayPipeModule,
-    // YTThumnailPipeModule,
-    // ObjectToArrayPipeModule
+    CommonModule
   ],
   exports: [
     ProductGetQuoteComponent

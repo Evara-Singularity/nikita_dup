@@ -80,7 +80,7 @@
                             <button *ngIf="cardFeaturesConfig.enableBuyNow" (click)="buyNow(true)">BUY NOW</button>
                         </ng-container>
                         <ng-container
-                            *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice) && cardFeaturesConfig.horizontalOrientation">
+                            *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
                             <button class="white send-query-btn " (click)="openRfqForm()">SEND QUERY</button>
                         </ng-container>
                     </div>

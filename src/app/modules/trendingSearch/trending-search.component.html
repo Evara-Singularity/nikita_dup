@@ -1,5 +1,5 @@
 <div class="trending-search-container" *ngIf="trendingCatName?.length > 0">
-    <h3 class="search_heading"><i class="icon-trending"></i>Trending Searches</h3>
+    <h3 class="search_heading mb-10"><i class="icon-trending"></i>Trending Searches</h3>
 </div>
 <div class="pwa-tabs-container">
     <ul class="pwa-inline-tab" id="elementTabs">
@@ -16,7 +16,9 @@
                     _commonService.limitTrendingCategoryNumber) + ' more searches...' : 'Show less' }}
                 </div> -->
             </ng-container>
-            
+        </li>
+        <li class="mb-10">
+            <div class="show_more">Show more...</div>
         </li>
     </ul>
 </div>

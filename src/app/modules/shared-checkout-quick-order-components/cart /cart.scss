@@ -4,6 +4,7 @@
 @import "../../../scss/variables";
 @import '../../bottomMenu/bottom-menu.component.scss';
 @import '../../../scss/quantity';
+@import '../../../scss/components/static-small-card-container';
 
 .applycoupen-strip{
     padding: 15px 15px 10px;
@@ -485,11 +486,39 @@
         padding-bottom: 15px;
     }
 }
-// .qty_section{
-//     .quantity-block{
-//         display: flex;
-//     }
-
-// }
+.removePopup{
+    .top-header-bottom-menu{
+        border-bottom:none;
+        .heading-3{
+            padding: 20px 10px;
+        }
+    }
+    .static-small-card-container{
+        margin-bottom: 20px;
+    }
+}
+.cta-row{
+    display:flex;
+    margin-bottom:10px;
+    button{
+        display:inline-flex;
+        justify-content:center;
+        align-items:center;
+        font-size:$medium-font;
+        border-radius:$border-radius-8;
+        padding: 10px 15px;
+        i{
+            font-size:$extra-large-1-font;
+            margin-right:5px;
+        }
+    }
+    .light-red-button{
+        flex:2;
+        margin-right:10px;
+    }
+    .btn-red-bg{
+        flex:3;
+    }
+}
 
 

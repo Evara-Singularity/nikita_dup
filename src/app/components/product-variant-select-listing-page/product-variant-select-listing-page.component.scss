@@ -1,58 +1,54 @@
 @import '../../scss/variables';
 @import '../../../styles.scss';
 @import '../../modules/bottomMenu/bottom-menu.component.scss';
-
 .select-container {
     width: 100%;
-    background-color: #fff;
-
+    background-color: var(--white);
+    padding-bottom:60px;
     .select-warp {
         padding: 10px;
-        width: 100%;
-
+        width:$fullwidth;
         .heading-3 {
             padding-bottom: 5px;
         }
-
         ul {
-            width: 100%;
+            width:$fullwidth;
             list-style: none;
             display: flex;
             flex-wrap: wrap;
-
             li {
                 font-size: 14px;
                 padding: 0px 10px;
-                border: 1px solid #303030;
+                border: 1px solid var(--platinum);
                 margin-right: 8px;
                 margin-top: 4px;
-                border-radius: 4px;
+                margin-bottom: 4px;
+                border-radius:$border-radius-8;
                 line-height: 33px;
-                font-weight: bold;
+                font-weight: $font-bold;
                 min-width: 34px;
                 min-height: 34px;
                 text-align: center;
             }
-
             li.selected {
-                background-color: #F4E1E5;
-                border: 1px solid #D9232D;
-                color: #D9232D;
+                background-color: var(--misty-rose);
+                border: 1px solid var(--primary);
+                color: var(--primary);
             }
 
             li.inactive {
-                background-color: #FFF;
-                border: 1px solid #CCC;
-                color: #CCC;
+                background-color: var(--white);
+                border: 1px solid var(--platinum);
+                color:var(--silver);
             }
         }
     }
 }
-
+// TODO : static card replacement
 .card-container {
     width: 100%;
     padding: 15px 10px;
-    background-color: #fff;
+    background-color: var(--white);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -208,41 +204,7 @@
         }
     }
 }
-
-.custom-popup-bottom {
-    .open {
-        .bottom-options {
-            .content-box {
-                bottom: 0;
-            }
-        }
-    }
-    .bottom-options {
-        .overlay {
-            z-index: 13;
-        }
-
-        .content-box {
-            position: fixed;
-            bottom: -100%;
-            left: 0;
-            padding: 0px;
-            background: $white;
-            z-index: 15;
-            width: 100%;
-            overflow: auto;
-            @extend %transition;
-        }
-    }
-
-    .bottom-options .verifyPopup {
-        max-height: 75%;
-        padding-bottom: 60px;
-        border-radius: 16px 16px 0px 0px;
-        overflow: scroll;
-    }
-}
-
+// TODO : pooja button changes
 .stickyBottomBtn {
     position: fixed;
     bottom: 0;
@@ -252,7 +214,6 @@
     padding: 5px;
     box-shadow: 0px -3px 6px #00000029;
     background: #fff;
-
     .continue-btn {
         width: 100%;
         color: #FFF;

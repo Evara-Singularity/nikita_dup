@@ -61,30 +61,14 @@
         </ng-container>
     </div>
 
-    <!-- TO DO - create component - product-description  END
-        SCSS - @import '@import '../../scss/product-description';
-        @import '../../scss/quantity';'; -->
 
     <product-description (checkBulkPriceMode)="checkBulkPriceMode()" [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPrices" [selectedProductBulkPrice]="selectedProductBulkPrice" [qunatityFormControl]="qunatityFormControl" [productPrice]="productPrice"
         [productName]="productName" [productTags]="productTags" [refinedProdTags]="refinedProdTags" [productMrp]="productMrp" [priceWithoutTax]="priceWithoutTax" [productDiscount]="productDiscount" [bulkPriceWithoutTax]="bulkPriceWithoutTax" [bulkDiscount]="bulkDiscount"
         [taxPercentage]="taxPercentage" [bulkSellingPrice]="bulkSellingPrice" [productOutOfStock]="productOutOfStock" [productMinimmumQuantity]="productMinimmumQuantity" [priceQuantityCountry]="priceQuantityCountry" [starsCount]="starsCount" [rawReviewsData]="rawReviewsData"
         [rawProductCountMessage]="rawProductCountMessage">
     </product-description>
-    <!-- TO DO - create component - product-description  END
-        SCSS -@import '../../scss/product-description';
-    @import '../../scss/quantity'; -->
 
-    <!-- CTA Fixed position -->
-    <div class="bottom-bar" [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
-        <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="showFBT()">
-            <i class="icon-cart1"></i>
-            <span>ADD TO CART</span>
-        </button>
-        <div class="buy-now f-right f-14">
-            <button class="f-14" (click)="addToCart(true);">BUY NOW</button>
-        </div>
-    </div>
-    <!-- CTA Fixed position -->
+    
 
     <!-- Product bulk quantity section starts -->
     <section class="grouping_wrap_pdp" *ngIf="!isCommonProduct">
@@ -108,7 +92,6 @@
         [priceQuantityCountry]="priceQuantityCountry" [productBulkPrices]="productBulkPrices"
         [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl">
     </product-bulk-quantity>
-
     <!-- TO DO - create component - product-bulk-qauntity  END
     SCSS - @import '../../scss/bulk-quantity'; -->
 
@@ -124,84 +107,7 @@
     <div>
         <!-- RFQ section ends -->
 
-
-        <!-- TO DO - create component - product-feature-benefits  STARTS
-            SCSS - @import '../../scss/moglix-benfits'; -->
-        <div class="pwa-row pwa-row-noPad moglix-benefits" *ngIf="isProductReturnAble && !productOutOfStock">
-            <!-- start moglix benifits -->
-            <div class="pdp-section-header">
-                <h3 class="heading-3">
-                    Moglix Benefits
-                </h3>
-            </div>
-            <div class="pwa-col-12 pwa-tabs-container pad-lr-15">
-                <div class="pwa-image-tab">
-                    <span class="tab-img">
-                        <i class="icon-Group-14030"></i>
-                    </span>
-                    <span class="tab-img-txt">
-                        GST Invoice<br> Available
-                    </span>
-                </div>
-                <div class="pwa-image-tab">
-                    <span class="tab-img">
-                        <i class="icon-secure-payment-fill"></i>
-                    </span>
-                    <span class="tab-img-txt">
-                        Secure <br> Payments
-                    </span>
-                </div>
-                <div class="pwa-image-tab">
-                    <span class="tab-img">
-                        <i class="icon-customer-service-fill"></i>
-                    </span>
-                    <span class="tab-img-txt">
-                        365 Days <br> Help Desk
-                    </span>
-                </div>
-            </div>
-            <div class="pdp-section-header">
-                <h3 class="heading-3">
-                    Return Policy
-                </h3>
-            </div>
-            <div class="pwa-col-12 pwa-tabs-container pad-lr-15">
-                <div class="pwa-image-tab" (click)="$event.stopPropagation(); navigateToFAQ();">
-                    <span class="tab-img">
-                        <i class="icon-restart-line"></i>
-                    </span>
-                    <span class="tab-img-txt">
-                        Upto 7 days <br /> returnable
-                    </span>
-                </div>
-                <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
-                    <span class="tab-img">
-                        <i class="icon-restart-line-1"></i>
-                    </span>
-                    <span class="tab-img-txt">
-                        Wrong <br /> Product
-                    </span>
-                </div>
-                <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
-                    <span class="tab-img">
-                        <i class="icon-restart-line-3"></i>
-                    </span>
-                    <span class="tab-img-txt">
-                        Damaged <br /> Product
-                    </span>
-                </div>
-                <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
-                    <span class="tab-img">
-                        <i class="icon-restart-line-2"></i>
-                    </span>
-                    <span class="tab-img-txt">
-                        Defective <br />Product
-                    </span>
-                </div>
-            </div>
-        </div>
-        <!-- TO DO - create component - product-bulk-benefits  END
-            SCSS - @import '../../scss/moglix-benfits'; -->
+        <product-benefits [isProductReturnAble]="isProductReturnAble" [productOutOfStock]="productOutOfStock" (navigateToFAQ$)="navigateToFAQ()"  ></product-benefits>
 
 
         <app-product-feature-details (showYTVideo$)="showYTVideo1($event)" (handleProductInfoPopup$)="handleProductInfoPopup1($event)" [productKeyFeatures]="productKeyFeatures" [productAttributes]="productAttributes" [productDescripton]="productDescripton" [productCategoryDetails]="productCategoryDetails"
@@ -276,7 +182,6 @@
             </div>
         </div>
 
-
         <div class="pwa-row inline-list-item-variant1" *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
             <div class="inline-list-icon">
                 <i class="icon-dropbox-fill"></i>
@@ -335,22 +240,26 @@
             <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
         </ng-container>
     </div>
+
+    
 </div>
 
-<div *ngIf="productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2" class="pdp-container">
-    <div class="bottom-bar stickyBottomBtn">
-        <button (click)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')" class="cart-btn ml-5 bold-txt f-14 f-left">
-            <span>VIEW IN-STOCK</span>
-        </button>
-        <div class="buy-now f-right f-14">
-            <button (click)="getBestPrice($event)" class="f-14">GET BEST PRICE</button>
-        </div>
-    </div>
-</div>
 
-<div *ngIf="productOutOfStock && !showScrollToTopButton  && (!productService.oosSimilarProductsData.similarData  || productService.oosSimilarProductsData.similarData.length <= 2 )" class="stickyBottomBtn">
-    <button (click)="getBestPrice($event)" class="btn-red submit-btn">GET BEST PRICE</button>
-</div>
+<!-- CTA Fixed position -->
+<floating-button-container *ngIf="!productOutOfStock">
+    <floating-button [label]="'ADD TO CART'" [type]="'RED'" (onClick)="showFBT()"></floating-button>
+    <floating-button [label]="'BUY NOW'" [type]="'RED'" (onClick)="addToCart(true)"></floating-button>
+</floating-button-container>
+
+<floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2" >
+    <floating-button [label]="'VIEW IN-STOCK'" [type]="'RED'" (onClick)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"></floating-button>
+    <floating-button [label]="'GET BEST PRICE'" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
+</floating-button-container>
+
+<floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton  && (!productService.oosSimilarProductsData.similarData  || productService.oosSimilarProductsData.similarData.length <= 2 )">
+    <floating-button [label]="'GET BEST PRICE'" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
+</floating-button-container>
+<!-- CTA Fixed position -->
 
 <app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>
 

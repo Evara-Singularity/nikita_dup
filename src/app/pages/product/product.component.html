@@ -260,13 +260,18 @@
     </div>
 
     <!-- Product quantity action section ends -->
-    <div *ngIf="!productOutOfStock" class="deals-block bg-white" observeVisibility [debounceTime]="300"
-        (visible)="onVisibleOffer($event)">
-        <ng-container #offerSection></ng-container>
-    </div>
-    <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
-        <ng-container #pincodeForm></ng-container>
-    </div>
+    <section>
+        <div *ngIf="!productOutOfStock" class="deals-block bg-white" observeVisibility [debounceTime]="300"
+            (visible)="onVisibleOffer($event)">
+            <ng-container #offerSection></ng-container>
+        </div>
+    </section>
+    <section>
+        <div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)"
+            *ngIf="!productOutOfStock">
+            <ng-container #pincodeForm></ng-container>
+        </div>
+    </section>
     <!-- other sections starts -->
     <!-- RFQ section ends -->
     <section>
@@ -604,20 +609,20 @@
         </div>
     </section>
 
-    <section id="ask-question-section" class="Qa">
-        <div class="faq-head">
+    <section id="ask-question-section" class="Qa pwa-row">
+        <div class="faq-head pwa-col-12">
             <h3 *ngIf="questionAnswerList?.data.qlist.length <= 1">Have doubts regarding this product?&nbsp;</h3>
             <h3 *ngIf="questionAnswerList?.data.qlist.length > 1">Frequently Asked Questions</h3>
             <button (click)="$event.stopPropagation();askQuestion()" class="btn redBgButton">ASK&nbsp;NOW</button>
         </div>
         <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
 
-            <p class="display-qn">
+            <p class="display-qn pwa-col-12">
                 Displaying Questions
                 <span>1-2</span> of
                 <span>{{questionAnswerList.data.qlist.length}} </span>
             </p>
-            <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
+            <div class="qna-block pwa-col-12" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
                 <div class="qn">
                     <span class="qn-number heading-3">Q{{i+1}}:</span>
                     <span class="qn-right heading-3">{{item.questionText}}</span>
@@ -629,74 +634,77 @@
                     </div>
                 </div>
             </div>
-            <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup()">
-                <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line small-txt"></i></p>
+            <div class="view-more-faq-strip pwa-col-12" (click)="$event.stopPropagation();handleFaqListPopup()">
+                <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line"></i></p>
             </div>
         </ng-container>
     </section>
 
     <!-- New GET Quote section starts -->
-    <div id="get-quote-section" class="buy-nowsec"
-        *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
-        <h4 class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
-        <p class="small-txt prodct-name"> {{ productName }} </p>
-        <div class="buynow-flex">
-            <div class="bn-left">
-                <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
-                <p class="heading-4"><i class="icon-check-active"></i>&nbsp;Get at best price for your business</p>
+    <section>
+        <div id="get-quote-section" class="buy-nowsec pwa-row"
+            *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+            <h4 class="heading-3 pwa-col-12">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
+            <p class="small-txt prodct-name pwa-col-12"> {{ productName }} </p>
+            <div class="buynow-flex pwa-col-12">
+                <div class="bn-left">
+                    <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
+                    <p class="heading-4"><i class="icon-check-active"></i>&nbsp;Get at best price for your business</p>
+                </div>
+                <div class="bn-right">
+                    <img [attr.src]="productAllImages[0]['small']" width="50" height="50">
+                </div>
             </div>
-            <div class="bn-right">
-                <img [attr.src]="productAllImages[0]['small']" width="50" height="50">
-            </div>
-        </div>
-        <div class="button-sec shimmer">
-            <ng-container *ngIf="rfqQuoteRaised; then raisedTemplate else nonRaisedTemplate"></ng-container>
-            <ng-template #nonRaisedTemplate>
-                <p class="small-txt">We will get in touch with you on<br>
-                    <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
-                        {{ '+91-' + commonService?.userSession?.phone }}
-                        <ng-container *ngIf="commonService?.userSession?.email">
-                            {{ ' | ' +commonService?.userSession?.email }}
+            <div class="button-sec shimmer pwa-col-12">
+                <ng-container *ngIf="rfqQuoteRaised; then raisedTemplate else nonRaisedTemplate"></ng-container>
+                <ng-template #nonRaisedTemplate>
+                    <p class="small-txt">We will get in touch with you on<br>
+                        <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
+                            {{ '+91-' + commonService?.userSession?.phone }}
+                            <ng-container *ngIf="commonService?.userSession?.email">
+                                {{ ' | ' +commonService?.userSession?.email }}
+                            </ng-container>
                         </ng-container>
-                    </ng-container>
-                </p>
-                <div class="swiper">
-                    <div id="button-background" class="button-area wrapper">
-                        <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST </button>
-                        <div id="animate-slider" class="arrow-container next-btn next-btn-invalid"
-                            (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
-                            <i class="icon-next icon-animate-1"></i>
-                            <i class="icon-next icon-animate-2"></i>
-                            <i class="icon-next icon-animate-3"></i>
+                    </p>
+                    <div class="swiper">
+                        <div id="button-background" class="button-area wrapper">
+                            <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST </button>
+                            <div id="animate-slider" class="arrow-container next-btn next-btn-invalid"
+                                (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
+                                <i class="icon-next icon-animate-1"></i>
+                                <i class="icon-next icon-animate-2"></i>
+                                <i class="icon-next icon-animate-3"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </ng-template>
-            <ng-template #raisedTemplate>
-                <p class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
-                <div class="button-area wrapper">
-                    <button class="valid-button shimmer-button">REQUESTED SUCCESSFULLY</button>
-                </div>
-            </ng-template>
+                </ng-template>
+                <ng-template #raisedTemplate>
+                    <p class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
+                    <div class="button-area wrapper">
+                        <button class="valid-button shimmer-button">REQUESTED SUCCESSFULLY</button>
+                    </div>
+                </ng-template>
+            </div>
         </div>
-    </div>
+    </section>
 
 
     <!-- GET Quote section starts -->
-    <div class="pwa-row inline-list-item-variant1"
-        *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
-        <div class="inline-list-icon">
-            <i class="icon-dropbox-fill"></i>
+    <section>
+        <div class="pwa-row inline-list-item-variant1"
+            *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+            <div class="inline-list-icon">
+                <i class="icon-dropbox-fill"></i>
+            </div>
+            <div class="inline-list-text">
+                <strong>Interested to buy in bulk</strong>
+                <small>Get customized price</small>
+            </div>
+            <div class="inline-list-link">
+                <span class="get-quote" (click)="raiseRFQQuote();">Get Quote</span>
+            </div>
         </div>
-        <div class="inline-list-text">
-            <strong>Interested to buy in bulk</strong>
-            <small>Get customized price</small>
-        </div>
-        <div class="inline-list-link">
-            <span class="get-quote" (click)="raiseRFQQuote();">Get Quote</span>
-        </div>
-    </div>
-
+    </section>
     <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
         <ng-container #similarProduct></ng-container>
     </section>

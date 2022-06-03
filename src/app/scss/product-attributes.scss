@@ -2,7 +2,7 @@
 .grouping_wrap_pdp {
     background: var(--white);
     .singlewrap {
-        border-bottom: 0.5px solid var(--silver);
+        border-bottom: 0.5px solid var(--platinum);
         padding: 0px 15px;
         overflow: hidden;
         &:last-of-type {
@@ -47,8 +47,8 @@
         .inner-heading {
             background: var(--ghost-white);
             padding: 5px 15px;
-            border-top: 1px solid var(--silver);
-            border-bottom: 1px solid var(--silver);
+            border-top: 1px solid var(--platinum);
+            border-bottom: 1px solid var(--platinum);
 
             h3 {
                 color: var(--onyx-black);

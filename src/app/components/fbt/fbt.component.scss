@@ -13,7 +13,7 @@
     .first_fbt_prod {
         @extend %clear-fix;
         padding: 0px 15px 10px;
-        border-top: 1px solid var(--light-gray);
+        border-top: 1px solid var(--platinum);
         border-bottom: 1px solid $border-color;
         .fbt_prod_img {
             float: left;
@@ -53,7 +53,7 @@
             padding: 0px;
             font-size: $medium-font;
             display: flex;
-            border-bottom: 1px solid var(--light-gray);
+            border-bottom: 1px solid var(--platinum);
             .fbtCheckBox {
                 width: 50px;
                 padding: 15px;

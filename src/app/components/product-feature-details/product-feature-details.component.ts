@@ -8,7 +8,7 @@ import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ObjectToArrayPipeModule } from '../../utils/pipes/object-to-array.pipe';
 
 @Component({
-  selector: 'app-product-feature-details',
+  selector: 'product-feature-details',
   templateUrl: './product-feature-details.component.html',
   styleUrls: ['./product-feature-details.component.scss']
 })

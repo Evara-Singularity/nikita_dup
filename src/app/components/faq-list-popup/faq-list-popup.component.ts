@@ -7,7 +7,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 @Component({
     selector: 'faq-list-popup',
     templateUrl: './faq-list-popup.component.html',
-    styleUrls: [ './../../scss/faq-popup.scss']
+    styleUrls: [ './faq-list-popup.component.scss' ]
 })
 export class FaqListPopoupComponent {
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();

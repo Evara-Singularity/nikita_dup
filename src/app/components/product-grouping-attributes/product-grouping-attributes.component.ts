@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-product-quantity',
-  templateUrl: './product-quantity.component.html',
-  styleUrls: ['./product-quantity.component.scss']
+  selector: 'product-grouping-attributes',
+  templateUrl: './product-grouping-attributes.component.html',
+  styleUrls: ['./product-grouping-attributes.component.scss']
 })
-export class ProductQuantityComponent {
+export class ProductGroupingAttributesComponent {
   @Input('isCommonProduct') isCommonProduct;
   @Output('updateAttr') updateAttr = new EventEmitter();
   @Input('productFilterAttributesList') productFilterAttributesList;
@@ -15,13 +15,13 @@ export class ProductQuantityComponent {
 
 @NgModule({
   declarations: [
-    ProductQuantityComponent
+    ProductGroupingAttributesComponent
   ],
   imports: [
     CommonModule,
   ],
   exports: [
-    ProductQuantityComponent
+    ProductGroupingAttributesComponent
   ]
 })
-export class ProductQuantityModule { }
+export class ProductGroupingAttributesModule { }

@@ -9,6 +9,7 @@ export class FloatingButtonComponent implements OnInit {
 
   @Input() type: 'RED' | 'WHITE' = 'RED';
   @Input() label: string = 'Button';
+  @Input() iconClass: string = '';
   @Output() onClick: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }

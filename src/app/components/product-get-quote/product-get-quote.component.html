@@ -1,4 +1,4 @@
-<div id="get-quote-section" class="buy-nowsec" *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+<div id="get-quote-section" class="buy-nowsec mt-10" *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
     <h4 class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
     <p class="small-txt prodct-name"> {{ productName }} </p>
     <div class="buynow-flex">
@@ -42,7 +42,7 @@
 </div>
 
 
-<div class="pwa-row inline-list-item-variant1" *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+<div class="pwa-row inline-list-item-variant1 mt-10" *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
     <div class="inline-list-icon">
         <i class="icon-dropbox-fill"></i>
     </div>

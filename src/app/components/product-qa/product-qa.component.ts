@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-product-qa',
+  selector: 'product-qa',
   templateUrl: './product-qa.component.html',
   styleUrls: ['./product-qa.component.scss']
 })

@@ -4,7 +4,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 @Component({
-  selector: 'app-product-more-widget',
+  selector: 'product-more-widget',
   templateUrl: './product-more-widget.component.html',
   styleUrls: ['./product-more-widget.component.scss']
 })

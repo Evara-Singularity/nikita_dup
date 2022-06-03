@@ -118,8 +118,10 @@
             </div>
         </div>
     </div>
-    <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="view-review"
-        (click)="$event.stopPropagation(); reviewRatingPopup.emit()">
-        <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
+    <div class="pwa-row">
+        <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="show-all-strip"
+            (click)="$event.stopPropagation(); reviewRatingPopup.emit()">
+            <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
+        </div>
     </div>
 </section>

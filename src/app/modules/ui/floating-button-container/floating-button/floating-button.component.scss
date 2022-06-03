@@ -1,22 +1,28 @@
 @import "../../../../scss/variables";
 
-.cart-btn {
-    background: $white;
+.cart-btn{
     border: 0;
     width: 49%;
     height: 100%;
     font-weight: 600;
-    color: $btn-color-red;
-
     i {
         font-size: 24px;
         display: inline-block;
         vertical-align: middle;
         padding-right: 8px;
     }
-
     span {
         display: inline-block;
         vertical-align: middle;
     }
+}
+
+.red {
+    background: $btn-color-red;
+    color: $white;
+}
+
+.white {
+    background: $white;
+    color: $btn-color-red;
 }

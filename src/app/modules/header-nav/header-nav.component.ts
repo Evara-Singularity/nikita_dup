@@ -203,19 +203,30 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.searchBarInstance = null;
                 this.sideMenuContainerRef.detach();
             });
-            if (toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
+            if (toBeAutoFilledKeyword) { 
+                this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword 
+            } else {
+                // console.log('already not loaded', this.route.snapshot.queryParams['search_query'])
+                setTimeout(() => {
+                    this.searchBarInstance.instance.handleSendTextToSearchBar(this.route.snapshot.queryParams['search_query'] || '');
+                    document.getElementById('search-input').focus();
+                    // document.getElementById('search-input')['value'] = '';
+                }, 500);
+            };
         } else {
 
             if (toBeAutoFilledKeyword) {
                 setTimeout(() => {
-                    console.log('toBeAutoFilledKeyword after', toBeAutoFilledKeyword)
+                    
                     this.searchBarInstance.instance.handleSendTextToSearchBar(toBeAutoFilledKeyword);
                 }, 500);
             } else {
+                // console.log('already loaded', this.route.snapshot.queryParams['search_query'])
                 setTimeout(() => {
+                    this.searchBarInstance.instance.handleSendTextToSearchBar(this.route.snapshot.queryParams['search_query'] || '');
                     document.getElementById('search-input').focus();
                     // document.getElementById('search-input')['value'] = '';
-                }, 350);
+                }, 600);
             }
 
             this.searchBarInstance.instance['data'] = {

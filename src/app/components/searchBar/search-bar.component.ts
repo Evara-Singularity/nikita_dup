@@ -119,27 +119,31 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
             )
             .subscribe(
                 term => {
-                    if (term && term.length > 0) {
-                        this.service.getSuggession(term).subscribe((data) => {
-                            if (data) {
-                                this.suggestionList = (data.suggestionList != undefined && data.suggestionList.length) > 0 ? data.suggestionList : [];
-                                this.brandSuggestionList = (data.brandSuggestionList != undefined && data.brandSuggestionList.length > 0) ? data.brandSuggestionList : [];
-                                this.categorySuggestionList = (data.categorySuggestionList != undefined && data.categorySuggestionList.length > 0) ? data.categorySuggestionList : [];
-                                this.searchProducts = ((data.topProducts || []) as any[]).map(product => this._productService.searchResponseToProductEntity(product));
-                                if (cTerm && cTerm.length > 0) {
-                                    this.showSuggestionBlock = true;
-                                }
-                            }
-                        });
-                    } else {
-                        this.showSuggestionBlock = false;
-                        this._commonService.resetLimitTrendingCategoryNumber();
-                    }
+                    this.searchTermApi(term, cTerm);
 
                 }
             );
     }
 
+
+    private searchTermApi(term: any, cTerm: any) {
+        if (term && term.length > 0) {
+            this.service.getSuggession(term).subscribe((data) => {
+                if (data) {
+                    this.suggestionList = (data.suggestionList != undefined && data.suggestionList.length) > 0 ? data.suggestionList : [];
+                    this.brandSuggestionList = (data.brandSuggestionList != undefined && data.brandSuggestionList.length > 0) ? data.brandSuggestionList : [];
+                    this.categorySuggestionList = (data.categorySuggestionList != undefined && data.categorySuggestionList.length > 0) ? data.categorySuggestionList : [];
+                    this.searchProducts = ((data.topProducts || []) as any[]).map(product => this._productService.searchResponseToProductEntity(product));
+                    if (cTerm && cTerm.length > 0) {
+                        this.showSuggestionBlock = true;
+                    }
+                }
+            });
+        } else {
+            this.showSuggestionBlock = false;
+            this._commonService.resetLimitTrendingCategoryNumber();
+        }
+    }
 
     ngOnInit(): void {
         // Below code is used to hide the search bar popup on route change.
@@ -157,11 +161,13 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
 
 
     handleSendTextToSearchBar(data: string, e?: Event) {
-        if (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        this.searchForm.get('searchTerm').patchValue(data);
+        // console.log('handleSendTextToSearchBar ==>', data)
+        // if (e) {
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        // }
+        this.searchForm.get('searchTerm').setValue(data);
+        this.searchTermApi(data,data);
     }
 
 

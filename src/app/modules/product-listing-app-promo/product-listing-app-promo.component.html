@@ -1,3 +1,5 @@
-<div observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
-  <ng-container #appPromo></ng-container>
+<div class="pwa-row pwa-row-noPad" observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
+  <div class="pwa-col-12">
+    <ng-container #appPromo></ng-container>
+  </div>
 </div>

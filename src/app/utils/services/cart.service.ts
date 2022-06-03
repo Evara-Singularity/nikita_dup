@@ -199,7 +199,6 @@ export class CartService
 
     getCartBySession(params): Observable<any>
     {
-        console.trace();
         /**
          *  Return cart from server session.
          *  Save returned to service local variable: `cartSession`

@@ -2,15 +2,14 @@
 @import './utils/colors';
 
 .reviewSection {
-    margin-top: 10px;
     background: $white;
     .rating-sec {
         padding-bottom: 20px !important;
     }
     .review_text {
-        width: 100%;
+        width: $fullwidth;
         padding-bottom: 20px;
-        font-size: 12px;
+        font-size: $medium-font;
         margin-top: -20px;
     }
     .rating-scale {
@@ -26,9 +25,8 @@
         .rating-bar {
             position: relative;
             height: 10px;
-            background: #ededed;
-            border-radius: 2px;
-            // margin-bottom: 10px;
+            background: var(--ghost-white);
+            border-radius: $border-radius-2;
             width: 90%;
     
             span.bar {
@@ -36,7 +34,7 @@
                 top: 0;
                 left: 0;
                 height: 100%;
-                border-radius: 2px;
+                border-radius: $border-radius-2;
             }
         }
     }
@@ -46,17 +44,17 @@
         padding-right: 10px;
     
         h3 {
-            font-size: 32px;
+            font-size: $extra-large-6-font;
             color: $dark-green;
             padding: 0px 0px 30px;
     
             i {
-                font-size: 24px;
+                font-size: $extra-large-3-font;
                 padding-left: 5px;
             }
         }
         .small-txt {
-            line-height: 16px;
+            line-height: $small-line-height;
         }
     }
     .popup-reviewRow {
@@ -72,11 +70,11 @@
     
         .heading-3-txt {
             color: $txt-color;
-            font-size: 13px;
+            font-size: $medium-font;
         }
     
         .innerRow {
-            border-top: 1px dashed #a2a2a2;
+            border-top: 1px dashed var(--silver);
             align-items: flex-start;
             padding: 20px 0px;
         }
@@ -95,33 +93,36 @@
             }
         }
         .small-stars i {
-            color: #ddd;
-            font-size: 12px;
+            color: var(--ghost-white);
+            font-size: $medium-font;
             padding-right: 5px;
         }
     
         .suggstn-btn {
             display: inline-flex;
             align-items: center;
-            border: 1px solid #707070;
+            border: 1px solid var(--gray-web);
             background: none;
             padding: 5px 7px;
             text-align: center;
-            border-radius: 2px;
+            border-radius: $border-radius-2;
             margin-right: 10px;
-            color: #a5a5a5;
+            color: var(--spanish-gray);
     
             i {
                 font-size: $extra-large-font;
-                color: #a5a5a5;
+                color: var(--spanish-gray);
                 padding-left: 5px;
             }
         }
     }
+    .btn-variant1{
+        border-radius: $border-radius-8;
+    }
 }
  .pdp-review {
         padding: 15px;
-        background: white;
+        background: var(--white);
         margin-top: 10px;
         .rating-box {
             padding-top: 15px;
@@ -144,7 +145,7 @@
                     left: 50%;
                     top: 47%;
                     color: white;
-                    font-size: 20px;
+                    font-size: $extra-large-2-font;
                     font-weight: 500;
                     font-style: normal;
                     letter-spacing: 1px;
@@ -152,12 +153,12 @@
             }
             .rating-scale {
                 float: left;
-                width: 50%;
+                width: $half-width;
                 .rating-bar {
                     position: relative;
                     height: 10px;
-                    background: #ddd;
-                    border-radius: 2px;
+                    background: var(--silver);
+                    border-radius: $border-radius-2;
                     margin-bottom: 10px;
                     span {
                         float: left;
@@ -166,21 +167,21 @@
                         left: 0;
                         height: 100%;
                         width: 70%;
-                        border-radius: 2px;
+                        border-radius: $border-radius-2;
                     }
                 }
             }
         }
         .revw-btn {
-            width: 100%;
+            width: $fullwidth;
             padding: 10px 0px;
-            font-size: 14px;
+            font-size: $large-font;
             margin-top: 10px;
-            background: #303030;
+            background: var(--onyx-black);
         }
         .all-revw {
             .inner-div {
-                border-top: 1px dashed #a2a2a2;
+                border-top: 1px dashed var(--silver);
                 //border-bottom: 1px dashed #a2a2a2;
                 margin: 20px 0px 0px 0px;
                 padding: 20px 0px;
@@ -204,8 +205,8 @@
                     font-weight: 500;
                 }
                 .revw-txt {
-                    font-size: 14px;
-                    line-height: 21px;
+                    font-size: $large-font;
+                    line-height: $medium-line-height;
                     padding: 5px 0px 30px;
                 }
                 .sug_txt {

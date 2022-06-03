@@ -112,7 +112,7 @@ button {
 
 .redBgButton {
     background: $color-red-light;
-    color: $btn-color-red;
+    color: var(--primary);
     font-weight: bold;
     font-size: $medium-font;
     padding: 8px 15px;
@@ -176,7 +176,7 @@ button {
     }
 }
 .btn-red-small{
-    padding: 10px 15px;
+    padding: 10px;
     background-color: var(--primary);
     text-transform: uppercase;
     color: $white;
@@ -222,4 +222,13 @@ span.form-inline-cta{
     font-size:$medium-font;
     padding:10px;
   }
+  
+ .light-red-button{
+    border:none;
+    border-radius:$border-radius-8;
+    background:var(--misty-rose);
+    border-radius:$border-radius-4;
+    color: var(--primary);
+    font-size:$medium-font;
+ } 
 

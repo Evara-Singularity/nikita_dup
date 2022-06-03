@@ -29,9 +29,10 @@ ngx-siema-slide{
       border:1px solid var(--silver)
     }
   }
-  .tab-content{
-    margin-top: 5px;
-    border-top: 1px solid var(--silver);
-  }
+}
+.tab-content{
+  margin-top: 5px;
+  border-top: 1px solid var(--silver) !important;
+  border: none;
 }
 

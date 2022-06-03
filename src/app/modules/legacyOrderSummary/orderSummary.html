@@ -1,4 +1,4 @@
-<div *ngIf="noOfCart>0">
+<div class="pwa-row" *ngIf="noOfCart>0">
     <div class="apply-promo no-border">
         <app-promo-apply (updateCartSession$)="updateCartSession($event)" (outData$)="outData($event)" [iData]="pad"></app-promo-apply>
         <p class="open-offers" (click)="openOfferPopUp()">VIEW ALL OFFERS</p>

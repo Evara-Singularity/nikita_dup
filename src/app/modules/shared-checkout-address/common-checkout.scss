@@ -139,7 +139,6 @@
 }
 
 form {
-    background-color: var(--ghost-white);
     &.material-form{
         background-color: var(--white) !important;
     }
@@ -275,12 +274,4 @@ form {
 
 .multiple-address-checkout{
     padding: 15px 15px 0 !important;
-}
-input,select{
-    width: 100%;
-    height: 40px !important;
-    border: 1px solid var(--silver);
-    border-radius: 8px !important;
-    padding: 0px 10px !important;
-    background-color: var(--white) !important;
 }

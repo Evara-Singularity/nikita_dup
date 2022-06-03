@@ -1,17 +1,19 @@
 @import '../../../scss/variables';
 .apply-promo{
-  @extend %cards;
-  padding: 25px 0 15px 0;
-  margin: 10px 0;
+  @extend %white-card;
+  margin:0px;
+  padding:10px 0px;
+  margin-bottom: 10px;
   .open-offers{
     text-align: center;
     font-weight: 600;
     color:$blue-link-color;
-    margin-top: 18px;
+    margin-top: 5px;
   }
 }
 .order-summary{
   @extend %white-card;
+  margin:0px;
   padding: 15px 0;
   // font-size: $medium-font;
   display: block !important;

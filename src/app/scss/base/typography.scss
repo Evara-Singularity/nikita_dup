@@ -54,3 +54,10 @@ h3,
     color:var(--bleu-de-france);
     font-size:$medium-font;
 }
+.small-heading{
+    font-size:$small-font;
+    color:var(--spanish-gray);
+    display: inline-block;
+    font-weight:$font-bold;
+    margin-bottom:10px;
+}

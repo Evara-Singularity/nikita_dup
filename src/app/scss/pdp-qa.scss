@@ -1,25 +1,17 @@
 .Qa {
-    background: white;
-    margin-top: 10px;
-    padding: 12px 15px;
+    background: var(--white);
     .faq-head {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        // h3 {
-        //     width: 75%;
-        // }
-        button {
-            max-height: 32%;
-        }
     }
     .display-qn {
-        border-bottom: 1px dashed #e3e3e3;
+        border-bottom: 1px dashed var(--silver);
         font-size: $medium-font;
         padding: 10px 0px 5px 0px;
     }
     .qna-block {
-        border-bottom: 1px dashed #a2a2a2;
+        border-bottom: 1px dashed var(--silver);
         .qn {
             display: flex;
             margin-top: 10px;
@@ -38,7 +30,6 @@
             margin-left: 32px;
             .answer-block {
                 padding-bottom: 5px;
-                // border-bottom: 1px solid #70707036;
                 display: flex;
                 .answer {
                     padding: 10px 0px;
@@ -48,7 +39,7 @@
                 }
             }
             .view-all {
-                color: #0d99ff;
+                color: var(--bleu-de-france);
                 font-size: $large-font;
                 line-height: 50px;
                 margin-left: -30px;
@@ -68,12 +59,12 @@
     .view-more-faq-strip {
         padding: 15px 0px 5px;
         .small-txt {
-            color: #0d99ff;
+            color: var(--bleu-de-france);
             font-weight: bold;
             position: relative;
         }
         i {
-            font-size: 20px;
+            font-size: $extra-large-2-font;
             float: right;
             position: absolute;
             right: 0px;
@@ -83,5 +74,5 @@
 }
 //Ask Question
 .ask-question-success-popup {
-    background: var(--ghost-white);
+     background: var(--ghost-white);
 }

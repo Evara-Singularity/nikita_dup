@@ -209,33 +209,6 @@
     }
 }
 
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    background: rgba(0, 0, 0, .2);
-    width: 100%;
-    height: 100%;
-}
-
-// .top-heading {
-//     padding: 0px 10px;
-//     border-bottom: 1px solid #E2E2E2;
-
-//     .heading-3 {
-//         padding-bottom: 0px;
-//         padding: 15px 0;
-//         position: relative;
-//     }
-
-//     i {
-//         position: absolute;
-//         right: 15px;
-//         top: 15px;
-//         font-size: 16px;
-//     }
-// }
-
 .custom-popup-bottom {
     .open {
         .bottom-options {
@@ -244,7 +217,6 @@
             }
         }
     }
-
     .bottom-options {
         .overlay {
             z-index: 13;

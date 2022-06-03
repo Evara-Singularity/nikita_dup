@@ -1,33 +1,4 @@
-@import '../../../scss/variables';
+@import '../../../scss/prod-specifications.scss';
 .product-specification {
-    background: var(--white);
-    margin-top: 10px;
-    .heading-3 {
-        padding-left: 15px;
-    }
-}
-.product-spec {
-    border-top: 1px dashed var(--silver);
-    font-size: $large-font;
-    .spec-row{
-        &:nth-child(2n){
-          background:var(--ghost-white);
-        }
-    }
-    td {
-        &.left {
-            border-right: 1px dashed var(--silver);
-            border-bottom: 1px dashed var(--silver);
-        }
-        &.right {
-            border-bottom: 1px dashed var(--silver);
-        }
-        div {
-            width: $fullwidth;
-            padding: 10px 15px;
-            .brandName {
-                color: var(--blue);
-            }
-        }
-    }
+    border-bottom: none;
 }

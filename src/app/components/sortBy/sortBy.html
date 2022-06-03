@@ -1,39 +1,46 @@
-<div class="bottom-options sort-by" id="sortBy {{ _commonService.selectedFilterData['sortBy'] }} ">
+<!-- <div class="bottom-options sort-by" >
     <div class="overlay" (click)="toggleFilter.emit(true)"></div>
     <div class="content-box roundedBox">
-        <div class="container">
             <h3 class="heading-3">Sort By <i class="icon-circle-delete" (click)="toggleFilter.emit(true)"></i></h3>
-            <div class="sortByLayout">
-                <label>
-          <span class="chk-box">
-            <input class="hidden" type="radio" name="sortBy"
-              [checked]="_commonService.selectedFilterData['sortBy'] == 'popularity'"
-              (change)="toggleFilter.emit(true); _commonService.selectedFilterData['sortBy'] = 'popularity'; _commonService.applyFilter()">
-            <span class="custom-box icon-box"></span>
-          </span>
-          <span class="chk-txt">Popularity</span>
-        </label>
-
-                <label>
-          <span class="chk-box">
-            <input class="hidden" type="radio" name="sortBy"
-              [checked]="_commonService.selectedFilterData['sortBy'] == 'lowPrice'"
-              (change)="toggleFilter.emit(true);  _commonService.selectedFilterData['sortBy'] = 'lowPrice'; _commonService.applyFilter()">
-            <span class="custom-box icon-box"></span>
-          </span>
-          <span class="chk-txt"> Price - Low To High</span>
-        </label>
-
-                <label>
-          <span class="chk-box">
-            <input class="hidden" type="radio" name="sortBy"
-              [checked]="_commonService.selectedFilterData['sortBy'] == 'highPrice'"
-              (change)="toggleFilter.emit(true);  _commonService.selectedFilterData['sortBy'] = 'highPrice'; _commonService.applyFilter()">
-            <span class="custom-box icon-box"></span>
-          </span>
-          <span class="chk-txt">Price - High To Low</span>
-        </label>
-            </div>
-        </div>
     </div>
-</div>
+</div> -->
+<app-bottom-menu>
+  <div class="overlay" (click)="toggleFilter.emit(true)"></div>
+  <div content class="sort-by roundedBox" id="sortBy {{ _commonService.selectedFilterData['sortBy'] }} ">
+    <div class="top-header-bottom-menu">
+      <h3 class="heading-3">Sort By</h3>
+      <i class="icon-circle-delete" (click)="toggleFilter.emit(true)"></i>
+    </div>
+    <div class="sortByLayout">
+      <label>
+        <span class="chk-box">
+          <input class="hidden" type="radio" name="sortBy"
+            [checked]="_commonService.selectedFilterData['sortBy'] == 'popularity'"
+            (change)="toggleFilter.emit(true); _commonService.selectedFilterData['sortBy'] = 'popularity'; _commonService.applyFilter()">
+          <span class="custom-box icon-box"></span>
+        </span>
+        <span class="chk-txt">Popularity</span>
+      </label>
+  
+      <label>
+        <span class="chk-box">
+          <input class="hidden" type="radio" name="sortBy"
+            [checked]="_commonService.selectedFilterData['sortBy'] == 'lowPrice'"
+            (change)="toggleFilter.emit(true);  _commonService.selectedFilterData['sortBy'] = 'lowPrice'; _commonService.applyFilter()">
+          <span class="custom-box icon-box"></span>
+        </span>
+        <span class="chk-txt"> Price - Low To High</span>
+      </label>
+  
+      <label>
+        <span class="chk-box">
+          <input class="hidden" type="radio" name="sortBy"
+            [checked]="_commonService.selectedFilterData['sortBy'] == 'highPrice'"
+            (change)="toggleFilter.emit(true);  _commonService.selectedFilterData['sortBy'] = 'highPrice'; _commonService.applyFilter()">
+          <span class="custom-box icon-box"></span>
+        </span>
+        <span class="chk-txt">Price - High To Low</span>
+      </label>
+    </div>
+  </div>
+</app-bottom-menu>

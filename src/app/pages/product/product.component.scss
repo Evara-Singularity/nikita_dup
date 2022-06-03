@@ -30,6 +30,7 @@
 
 
 
+@import '../../scss/product-attributes';
 //pdp wrapper
 .pdp-container {
     padding: 10px 0px;
@@ -246,9 +247,9 @@
     }
 }
 // -------- Finalized SCSS
-.pwa-row {
-    margin-top: 10px;
-}
+// .pwa-row {
+//     margin-top: 10px;
+// }
 .icon-btn-row {
     display: flex;
     justify-content: space-around;
@@ -326,20 +327,6 @@
         width: calc(100% - 110px) !important;
     }
 }
-.oos-tag {
-    position: absolute;
-    top: 30px;
-    left: 15px;
-
-    span {
-        padding: 5px 10px;
-        background: #707070;
-        color: #fff;
-        border-radius: 4px;
-        font-size: 10px;
-        font-weight: bold;
-    }
-}
 .highIndex {
     z-index: 105 !important;
 }
@@ -383,8 +370,22 @@
 }
 .prod-carsl-pseudo {
     background-color: #ffffff;
+    .oos-tag {
+        position: absolute;
+        top: 30px;
+        left: 15px;
+        span {
+            padding: 5px 10px;
+            background: #707070;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+    }
 }
-.fixed-strip {
+//floating cta on product image
+.floating-cta-strip {
     position: absolute;
     right: 20px;
     display: flex;
@@ -528,15 +529,6 @@
         }
         
     }
-}
-
-.youtube_icon {
-    width: 50px;
-    height: 50px;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    top: 50%;
-    left: 50%;
 }
 //product pdf section
 .pdf_section {
@@ -769,14 +761,12 @@
 }
 //mobikwik wallet
 .mobikwik-wallet {
-    // display:block;
     img {
         padding-bottom: 15px;
         width: 200px;
         margin: auto;
         display: table;
     }
-
     .top-txt {
         background: #efefef;
         padding: 20px 60px 20px 20px;
@@ -785,13 +775,11 @@
         font-weight: 500;
         color: #303030;
     }
-
     .head-sec {
         i {
             font-size: 20px;
         }
     }
-
     .wallet-body {
         .paytm_head {
             font-size: 16px;
@@ -816,19 +804,26 @@
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-                      
-                      
+.show-all-strip {
+    font-size: 12px;
+    padding-top: 10px;
+    text-transform: uppercase;
+    &.spec {
+        padding: 15px;
+    }
+    span {
+        color: var(--bleu-de-france);
+        font-weight: 600;
+        i {
+            padding-left: 5px;
+        }
+    }
+}
+.about-this-product-heading{
+    background: var(--white);
+    border-top: 1px solid var(--platinum);
+    border-bottom: 1px solid var(--platinum);
+}
+section{
+    margin-bottom: 10px;
+}

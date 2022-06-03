@@ -9,13 +9,14 @@
                 <div>
                     <a (click)="navigateTo(prod.categoryLink, {tS:'yes'})">{{prod.categoryName}}</a>
                 </div>
-                <div class="show_more"
+                <!-- <div class="show_more"
                     *ngIf="(i === ((trendingCatName | slice:0: _commonService.limitTrendingCategoryNumber).length - 1) && ((trendingCatName.length - _commonService.limitTrendingCategoryNumber) >= 0))"
                     (click)="updateLimitTrendingCategoryNumber()">
                     {{ trendingCatName.length !== _commonService.limitTrendingCategoryNumber ? (trendingCatName.length -
                     _commonService.limitTrendingCategoryNumber) + ' more searches...' : 'Show less' }}
-                </div>
+                </div> -->
             </ng-container>
+            
         </li>
     </ul>
 </div>

@@ -130,6 +130,14 @@ header {
                 }
             }
         }
+        // header varient 4
+        .pwa-header-4{
+            display: flex;
+            justify-content: flex-start;
+            i{
+                margin-right: 15px;
+            }
+        }
         // header varient 3
         .scrolledHeader {
             margin: auto;

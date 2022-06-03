@@ -1,0 +1,230 @@
+// Product Section Detail (product-bulk-quantity.scss)
+@import '../../scss/variables';
+
+.product-section-detail {
+    background: white;
+    margin: 10px 0px;
+    .pdp-subdetail {
+        padding: 15px 0px;
+    }
+    .size-block {
+        clear: both;
+        .prod_size_container {
+            overflow-x: scroll;
+            width: auto;
+        }
+        .product_size_sec {
+            li {
+                list-style: none;
+                display: inline-block;
+                width: 35px;
+                height: 35px;
+                line-height: 33px;
+                font-size: 15px;
+                border: 1px solid #333;
+                text-align: center;
+                border-radius: 2px;
+                margin: 0px 8px 5px 0px;
+
+                span {
+                    color: #000 !important;
+                }
+
+                &.active {
+                    background: #303030;
+
+                    span {
+                        color: #fff !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .update-quantity {
+        overflow: auto;
+        scrollbar-width: none;
+        /* Firefox 64 */
+        margin-bottom: 15px;
+
+        .bul-qty-head {
+            h4 {
+                font-size: 20px;
+                height: 25px;
+                text-align: left;
+            }
+        }
+
+        .quantity-block {
+            height: 40px;
+            width: 160px;
+            clear: both;
+            border-right: none;
+            border-radius: 3px;
+            vertical-align: middle;
+            float: left;
+
+            .qty-block {
+                width: 40px;
+                height: 100%;
+                text-align: center;
+                background: #DBEDFF;
+                border: 1px solid #8BC5FF;
+                line-height: 40px;
+                font-size: 14px;
+                border-radius: 2px;
+            }
+
+            .add-qty {
+                float: left;
+                border-right: none;
+            }
+
+            input {
+                width: 80px;
+                padding: 0px;
+                height: 100%;
+                background: #ddd;
+                text-align: center;
+                border: none;
+                background: white;
+                border-radius: 1px;
+                border: 1px solid #333;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .remove-qty {
+                float: right;
+                border-left: none;
+            }
+        }
+
+        .quan-details {
+            float: left;
+            padding-top: 10px;
+
+            p {
+                font-size: 11px;
+                margin: 0px;
+                padding: 0px 5px;
+                columns: #343434;
+
+                span {}
+            }
+        }
+    }
+
+    .bulk-qty {
+        .blk-contain {
+            overflow-y: hidden;
+            overflow-x: scroll;
+            scrollbar-width: none;
+            /* Firefox 64 */
+            width: auto;
+
+            .inner-blk-contain {
+                //  width: 210%;
+            }
+        }
+
+        .blk-block {
+            padding: 10px 10px;
+            margin: 15px 0px;
+            min-height: 90px;
+            border: 0.5px solid #e2e2e2;
+            width: 125px;
+            background: white;
+            margin: 0 10px 0 0;
+            float: left;
+            text-align: center;
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+            -webkit-box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+            font-weight: 500;
+
+            .qty {
+                font-size: $large-font;
+                color: #333;
+                padding-bottom: 10px;
+            }
+
+            .per-qty {
+                font-size: 13px;
+                padding-bottom: 8px;
+                font-weight: bold;
+                letter-spacing: 0.5px;
+            }
+
+            .qty-discount {
+                font-size: $medium-font;
+                color: #5BA621;
+            }
+
+            &.selected {
+                border: 0.5px solid $btn-color-red;
+                border: 0.5px solid $btn-color-red;
+                background: $color-red-light;
+            }
+        }
+    }
+}
+.bulk-qty {
+    .blk-contain {
+        overflow-y: hidden;
+        overflow-x: scroll;
+        scrollbar-width: none;
+        /* Firefox 64 */
+        width: auto;
+    }
+    .bulk-block {
+        border: 1px solid #e2e2e2;
+        border-radius: 6px;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+        .qty {
+            font-size: $large-font;
+            color: #333;
+            padding-bottom: 10px;
+        }
+        .per-qty {
+            font-size: 13px;
+            padding-bottom: 8px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        &.selected {
+            border: 1px solid $btn-color-red;
+            background: $color-red-light;
+        }
+    }
+    .bulk-block-multi-grp {
+        padding: 10px 10px;
+        margin: 15px 0px;
+        min-height: 90px;
+        width: 125px;
+        margin: 0 10px 0 0;
+        float: left;
+        text-align: center;
+        font-weight: 500;
+    }
+    .bulk-container-single-grp {
+        padding: 5px 8px;
+        h3 {
+            font-size: 13px;
+            .green-txt {
+                font-size: 12px;
+                font-weight: bold;
+            }
+            .right-text {
+                float: right;
+            }
+        }
+    }
+}
+.pdp-price-qty-block {
+    display: flex;
+    clear: both;
+    justify-content: space-between;
+    padding-top: 5px;
+    align-items: center;
+}

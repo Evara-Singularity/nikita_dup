@@ -1,0 +1,73 @@
+<div class="pwa-row pwa-row-noPad moglix-benefits" *ngIf="isProductReturnAble && !productOutOfStock">
+    <!-- start moglix benifits -->
+    <div class="pdp-section-header">
+        <h3 class="heading-3">
+            Moglix Benefits
+        </h3>
+    </div>
+    <div class="pwa-col-12 pwa-tabs-container pad-lr-15">
+        <div class="pwa-image-tab">
+            <span class="tab-img">
+                <i class="icon-Group-14030"></i>
+            </span>
+            <span class="tab-img-txt">
+                GST Invoice<br> Available
+            </span>
+        </div>
+        <div class="pwa-image-tab">
+            <span class="tab-img">
+                <i class="icon-secure-payment-fill"></i>
+            </span>
+            <span class="tab-img-txt">
+                Secure <br> Payments
+            </span>
+        </div>
+        <div class="pwa-image-tab">
+            <span class="tab-img">
+                <i class="icon-customer-service-fill"></i>
+            </span>
+            <span class="tab-img-txt">
+                365 Days <br> Help Desk
+            </span>
+        </div>
+    </div>
+    <div class="pdp-section-header">
+        <h3 class="heading-3">
+            Return Policy
+        </h3>
+    </div>
+    <div class="pwa-col-12 pwa-tabs-container pad-lr-15">
+        <div class="pwa-image-tab" (click)="$event.stopPropagation(); navigateToFAQ();">
+            <span class="tab-img">
+                <i class="icon-restart-line"></i>
+            </span>
+            <span class="tab-img-txt">
+                Upto 7 days <br /> returnable
+            </span>
+        </div>
+        <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
+            <span class="tab-img">
+                <i class="icon-restart-line-1"></i>
+            </span>
+            <span class="tab-img-txt">
+                Wrong <br /> Product
+            </span>
+        </div>
+        <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
+            <span class="tab-img">
+                <i class="icon-restart-line-3"></i>
+            </span>
+            <span class="tab-img-txt">
+                Damaged <br /> Product
+            </span>
+        </div>
+        <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
+            <span class="tab-img">
+                <i class="icon-restart-line-2"></i>
+            </span>
+            <span class="tab-img-txt">
+                Defective <br />Product
+            </span>
+        </div>
+    </div>
+</div>

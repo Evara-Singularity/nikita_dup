@@ -1,0 +1,56 @@
+<div id="get-quote-section" class="buy-nowsec" *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+    <h4 class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
+    <p class="small-txt prodct-name"> {{ productName }} </p>
+    <div class="buynow-flex">
+        <div class="bn-left">
+            <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
+            <p class="heading-4"><i class="icon-check-active"></i>&nbsp;Get at best price for your business</p>
+        </div>
+        <div class="bn-right">
+            <img [attr.src]="productAllImages[0]['small']" width="50" height="50">
+        </div>
+    </div>
+    <div class="button-sec shimmer">
+        <ng-container *ngIf="rfqQuoteRaised; then raisedTemplate else nonRaisedTemplate"></ng-container>
+        <ng-template #nonRaisedTemplate>
+            <p class="small-txt">We will get in touch with you on<br>
+                <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
+                    {{ '+91-' + commonService?.userSession?.phone }}
+                    <ng-container *ngIf="commonService?.userSession?.email">
+                        {{ ' | ' +commonService?.userSession?.email }}
+                    </ng-container>
+                </ng-container>
+            </p>
+            <div class="swiper">
+                <div id="button-background" class="button-area wrapper">
+                    <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST </button>
+                    <div id="animate-slider" class="arrow-container next-btn next-btn-invalid" (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
+                        <i class="icon-next icon-animate-1"></i>
+                        <i class="icon-next icon-animate-2"></i>
+                        <i class="icon-next icon-animate-3"></i>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #raisedTemplate>
+            <p class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
+            <div class="button-area wrapper">
+                <button class="valid-button shimmer-button">REQUESTED SUCCESSFULLY</button>
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+
+<div class="pwa-row inline-list-item-variant1" *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+    <div class="inline-list-icon">
+        <i class="icon-dropbox-fill"></i>
+    </div>
+    <div class="inline-list-text">
+        <strong>Interested to buy in bulk</strong>
+        <small>Get customized price</small>
+    </div>
+    <div class="inline-list-link">
+        <span class="get-quote" (click)="raiseRFQQuote();">Get Quote</span>
+    </div>
+</div>

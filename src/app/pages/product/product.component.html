@@ -71,25 +71,15 @@
     
 
     <!-- Product bulk quantity section starts -->
-    <section class="grouping_wrap_pdp" *ngIf="!isCommonProduct">
-        <div *ngFor="let list of productFilterAttributesList" class="singlewrap">
-            <p class="heading-3">{{list.name}}</p>
-            <ul>
-                <li *ngFor="let item of list.items;let i = index;" (click)="!item.selected && item.active ? updateAttr(item.msn) : removeOosSimilarSection();">
-                    <a [ngClass]="{'selected': item.selected , 'inactive': !item.active}">{{item.value}}</a>
-                </li>
-            </ul>
-        </div>
-    </section>
+    <app-product-quantity [isCommonProduct]="isCommonProduct" [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)" (removeOosSimilarSection)="removeOosSimilarSection()"></app-product-quantity>
+
     <!-- Product bulk quantity section ends -->
 
     <!-- Product quantity action section starts -->
 
     <!-- TO DO - create component - product-bulk-qauntity  STARTS
     SCSS - @import '../../scss/bulk-quantity'; -->
-    <product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" [rawProductData]="rawProductData"
-        [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct"
-        [priceQuantityCountry]="priceQuantityCountry" [productBulkPrices]="productBulkPrices"
+    <product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" [rawProductData]="rawProductData" [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct" [priceQuantityCountry]="priceQuantityCountry" [productBulkPrices]="productBulkPrices"
         [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl">
     </product-bulk-quantity>
     <!-- TO DO - create component - product-bulk-qauntity  END
@@ -122,78 +112,12 @@
             <ng-container #fbt></ng-container>
         </section>
 
-        <app-product-review 
-            [productName]= "productName"
-            [reviewLength]="reviewLength"
-            [overallRating]="overallRating"
-            [rawReviewsData]= "rawReviewsData"
-            (writeReview)="writeReview($event)"
-            (reviewRatingPopup)="handleReviewRatingPopup($event)"
-            (postHelpful)="handlePostHelpful($event)"
-        ></app-product-review>
+        <app-product-review [productName]="productName" [reviewLength]="reviewLength" [overallRating]="overallRating" [rawReviewsData]="rawReviewsData" (writeReview)="writeReview($event)" (reviewRatingPopup)="handleReviewRatingPopup($event)" (postHelpful)="handlePostHelpful($event)"></app-product-review>
 
-        <app-product-qa
-            [questionAnswerList]="questionAnswerList"
-            (handleFaqListPopup)="handleFaqListPopup()"
-            (askQuestion)="askQuestion()"
-        >
+        <app-product-qa [questionAnswerList]="questionAnswerList" (handleFaqListPopup)="handleFaqListPopup()" (askQuestion)="askQuestion()">
         </app-product-qa>
 
-        <div id="get-quote-section" class="buy-nowsec" *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
-            <h4 class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
-            <p class="small-txt prodct-name"> {{ productName }} </p>
-            <div class="buynow-flex">
-                <div class="bn-left">
-                    <p class="heading-4"><i class="icon-check-active"></i>&nbsp; Purchase item in bulk quantity</p>
-                    <p class="heading-4"><i class="icon-check-active"></i>&nbsp;Get at best price for your business</p>
-                </div>
-                <div class="bn-right">
-                    <img [attr.src]="productAllImages[0]['small']" width="50" height="50">
-                </div>
-            </div>
-            <div class="button-sec shimmer">
-                <ng-container *ngIf="rfqQuoteRaised; then raisedTemplate else nonRaisedTemplate"></ng-container>
-                <ng-template #nonRaisedTemplate>
-                    <p class="small-txt">We will get in touch with you on<br>
-                        <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
-                            {{ '+91-' + commonService?.userSession?.phone }}
-                            <ng-container *ngIf="commonService?.userSession?.email">
-                                {{ ' | ' +commonService?.userSession?.email }}
-                            </ng-container>
-                        </ng-container>
-                    </p>
-                    <div class="swiper">
-                        <div id="button-background" class="button-area wrapper">
-                            <button class="slide-text shimmer-button">SLIDE TO RAISE REQUEST </button>
-                            <div id="animate-slider" class="arrow-container next-btn next-btn-invalid" (mousedown)="sliderMouseDownEvent($event)" (touchstart)="sliderMouseDownEvent($event)">
-                                <i class="icon-next icon-animate-1"></i>
-                                <i class="icon-next icon-animate-2"></i>
-                                <i class="icon-next icon-animate-3"></i>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template #raisedTemplate>
-                    <p class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
-                    <div class="button-area wrapper">
-                        <button class="valid-button shimmer-button">REQUESTED SUCCESSFULLY</button>
-                    </div>
-                </ng-template>
-            </div>
-        </div>
-
-        <div class="pwa-row inline-list-item-variant1" *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
-            <div class="inline-list-icon">
-                <i class="icon-dropbox-fill"></i>
-            </div>
-            <div class="inline-list-text">
-                <strong>Interested to buy in bulk</strong>
-                <small>Get customized price</small>
-            </div>
-            <div class="inline-list-link">
-                <span class="get-quote" (click)="raiseRFQQuote();">Get Quote</span>
-            </div>
-        </div>
+        <app-product-get-quote (raiseRFQQuote$)="raiseRFQQuote()" [rfqQuoteRaised]="rfqQuoteRaised" [productOutOfStock]="productOutOfStock" [productMrp]="productMrp" [productCategoryDetails]="productCategoryDetails" [productName]="productName" [productAllImages]="productAllImages"></app-product-get-quote>
 
         <section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
             <ng-container #similarProduct></ng-container>

@@ -3831,12 +3831,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     
   }
 
-  sliderMouseDownEvent(event) {
-    this.mouseIsDown = true;
-    this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
-    this.initialMouse = event.clientX || (event.originalEvent ? (event.originalEvent.touches[0].pageX) : 0);
-  }
-
 
   ngOnDestroy() {
     if (this.isBrowser) {

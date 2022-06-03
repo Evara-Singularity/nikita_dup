@@ -2,13 +2,13 @@
  .product-specification {
     background: var(--white);
     padding: 5px 0 0;
-    border-bottom: 1px solid var(--silver);
+    border-bottom: 1px solid var(--platinum);
     .heading-3 {
         padding: 10px 15px 15px;
     }
 }
 .product-spec {
-    border-top: 1px dashed var(--silver);
+    border-top: 1px dashed var(--platinum);
     font-size: $large-font;
     tr {
         &:nth-child(2n) {

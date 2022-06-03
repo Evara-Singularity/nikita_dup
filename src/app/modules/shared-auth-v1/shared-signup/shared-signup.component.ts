@@ -174,7 +174,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
             this._globalLoader.setLoaderState(false);
             if (res["status"]) {
                 userSession['userName'] = this.firstName.value || CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER;
-                this.handleSuccessProfileUpdate();
+                this.handleSuccessProfileUpdate(obj.pname);
             } else {
                 this._toastService.show({
                     type: "error",
@@ -184,12 +184,14 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         });
     }
 
-    private handleSuccessProfileUpdate() {
-        this._toastService.show({
-            type: "success",
-            text: (this.firstName.value) ? `Welcome to Moglix, ${this.firstName.value}` : `Welcome to Moglix`,
-        });
-        this._commonService.redirectPostAuth(this.getRedirectURL());
+    private handleSuccessProfileUpdate(name) {
+        setTimeout(() => {
+            this._toastService.show({
+                type: "success",
+                text: (name) ? `Welcome to Moglix, ${name}` : `Welcome to Moglix!`,
+            });
+        }, 500);
+        this._router.navigateByUrl(this.getRedirectURL() || '/');
     }
 
     captureOTP(otpValue)
@@ -254,11 +256,12 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
             queryParams.state === 'askQuestion')) {
             REDIRECT_URL += '?state=' + queryParams['state'];
         }
-        return REDIRECT_URL;
+        // console.log('getRedirectURL ==>', REDIRECT_URL , this._sharedAuthService.redirectUrl);
+        return (this._sharedAuthService.redirectUrl)? this._sharedAuthService.redirectUrl : REDIRECT_URL;
     }
 
     handleBackBtnInPhoneSignUp(){
-        this.handleSuccessProfileUpdate();
+        this.handleSuccessProfileUpdate(null);
     }
 
     updateSignupStep(value) {

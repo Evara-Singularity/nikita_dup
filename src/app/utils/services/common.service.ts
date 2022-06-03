@@ -1296,6 +1296,13 @@ export class CommonService
         }
     }
 
+    checkDefaultUserAndReplace(username: string) {
+        if (username.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) {
+            return ''
+        }
+        return username;
+    }
+
     redirectCheck(url: string)
     {
         const exceptUrl = ['login', 'otp', 'forgot-password', 'sign-up']

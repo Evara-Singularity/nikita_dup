@@ -185,12 +185,13 @@ export class ShippingAddressComponent implements OnInit, AfterViewInit
         }
     }
 
+
     createFormBuilder(address)
     {
         const sFileds = {
             'idAddress': address && address.idAddress ? address.idAddress : null,
             'addressCustomerName': [
-                (address && address.addressCustomerName) ? address.addressCustomerName : this.user['userName'],
+                (address && address.addressCustomerName) ? this._commonService.checkDefaultUserAndReplace(address.addressCustomerName) : this._commonService.checkDefaultUserAndReplace(this.user['userName']),
                 [
                     Validators.required, Validators.pattern('[a-zA-Z ]*')
                 ]

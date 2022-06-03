@@ -2,7 +2,8 @@
     <div class="shared-auth-header" [class.white-shared-auth-header]="isWhiteHeader">
         <i class="icon-back-arrow" *ngIf="overrideBackBtn" (click)="$event.stopPropagation();onBackBtnClick();"></i>
         <i class="icon-back-arrow" *ngIf="!overrideBackBtn" (click)="$event.stopPropagation();navigateBack()"></i>
-        <i class="icon-logo" (click)="$event.stopPropagation();navigateToHome(HOME_URL)"></i>
+        <i class="icon-logo" *ngIf="overrideBackBtn" (click)="$event.stopPropagation();onBackBtnClick();"></i>
+        <i class="icon-logo" *ngIf="!overrideBackBtn" (click)="$event.stopPropagation();navigateToHome(HOME_URL)"></i>
         <button class="btn skip-btn" (click)="onSkipBtnClick$.emit(true)" *ngIf="enableSkipBtn">SKIP NOW</button>
     </div>
 </ng-container>

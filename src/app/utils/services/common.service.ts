@@ -636,8 +636,8 @@ export class CommonService
         if (params.queryParams != undefined) queryParams = params.queryParams;
 
         actualParams["type"] = "m";
-        actualParams["abt"] = CONSTANTS.SEARCH_ABT_FLAG;
-        actualParams["onlineab"] = CONSTANTS.SEARCH_ONLINE_ABT_FLAG;
+        //actualParams["abt"] = CONSTANTS.SEARCH_ABT_FLAG;
+        //actualParams["onlineab"] = CONSTANTS.SEARCH_ONLINE_ABT_FLAG;
 
         if (queryParams["preProcessRequired"]) {
             actualParams["preProcessRequired"] = queryParams["preProcessRequired"];

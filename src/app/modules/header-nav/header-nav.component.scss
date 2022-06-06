@@ -14,44 +14,7 @@ header {
     .main-header {
         background: var(--white);
         // start header varient 1
-        .pwa-header-1 {
-            display: flex;
-            padding: 10px;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin: auto;
-            min-height: 52px;
-            .head-d-flex-inner {
-                display: flex;
-                align-items: center;
-                flex-grow: 1;
-                &:last-child {
-                    justify-content: flex-end;
-                }
-                .icon-menu {
-                    margin-top: -5px;
-                }
-                & > * {
-                    padding: 5px 5px 5px 0px;
-                    color: var(--onyx-black);
-                    margin-right: 10px;
-                    &:last-child {
-                        margin-right: 0px;
-                    }
-                    &:first-child {
-                        padding-left: 0px !important;
-                    }
-                }
-                .login-txt {
-                    color: var(--primary);
-                    background-color: var(--champagne-pink);
-                    border-radius: $border-radius-4;
-                    margin-right: 10px;
-                    font-weight: bold;
-                    padding: 5px 10px !important;
-                }
-            }
-        }
+        
         // header varient-2
         .pwa-header-2 {
             display: flex;

@@ -29,5 +29,6 @@
             (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
         <cart [moduleName]="'CHECKOUT'"></cart>
         <order-summary></order-summary>
+        <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems" [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } "></shared-checkout-unavailable-items>
     </ng-container>
 </div>

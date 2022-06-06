@@ -1,7 +1,7 @@
-<ng-container>
-    <div class="unavailableItems product-card pad-0">
+<app-bottom-menu  (outData$)="onUpdate($event)">
+    <div content class="unavailableItems product-card pad-0">
         <div class="top-header-bottom-menu">
-            <h3 class="heading-3">{{itemsList.length}} {{itemsList && itemsList.length > 1 ? "Items" : "Item"}} not
+            <h3 class="heading-3">{{itemsList?.length}} {{itemsList && itemsList?.length > 1 ? "Items" : "Item"}} not
                 available</h3>
             <i class="icon-circle-delete" (click)="closeModal()"></i>
         </div>
@@ -35,4 +35,4 @@
         <button (click)="removeUnavailableItems(data.removeUnavailableItems)" class="continue-btn btn fixed-cta"> REMOVE
             UNAVAILABLE ITEMS</button>
     </div>
-</ng-container>
+</app-bottom-menu>

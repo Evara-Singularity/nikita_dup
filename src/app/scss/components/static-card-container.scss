@@ -11,19 +11,14 @@
         .description-txt{
             font-size: $large-font;
             line-height: $medium-line-height;
-            padding-bottom: 5px;
         }
         .brand{
             font-size: $small-font;
             line-height: $small-line-height;
-            font-weight: $font-bold;
-            span{
-                display: inline-block;
-                color: var(--spanish-gray);
-            }
+            color: var(--spanish-gray);
         }
         .price{
-            margin: 5px 0 0;
+            margin: 10px 0 0;
             font-size: $small-font;
             .after-discount{
                 display: block;

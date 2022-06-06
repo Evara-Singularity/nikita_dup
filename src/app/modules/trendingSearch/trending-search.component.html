@@ -1,5 +1,5 @@
 <div class="trending-search-container" *ngIf="trendingCatName?.length > 0">
-    <h3 class="search_heading"><i class="icon-trending"></i>Trending Searches</h3>
+    <h3 class="search_heading mb-10"><i class="icon-trending"></i>Trending Searches</h3>
 </div>
 <div class="pwa-tabs-container">
     <ul class="pwa-inline-tab" id="elementTabs">
@@ -9,13 +9,16 @@
                 <div>
                     <a (click)="navigateTo(prod.categoryLink, {tS:'yes'})">{{prod.categoryName}}</a>
                 </div>
-                <div class="show_more"
+                <!-- <div class="show_more"
                     *ngIf="(i === ((trendingCatName | slice:0: _commonService.limitTrendingCategoryNumber).length - 1) && ((trendingCatName.length - _commonService.limitTrendingCategoryNumber) >= 0))"
                     (click)="updateLimitTrendingCategoryNumber()">
                     {{ trendingCatName.length !== _commonService.limitTrendingCategoryNumber ? (trendingCatName.length -
                     _commonService.limitTrendingCategoryNumber) + ' more searches...' : 'Show less' }}
-                </div>
+                </div> -->
             </ng-container>
+        </li>
+        <li class="mb-10">
+            <div class="show_more">Show more...</div>
         </li>
     </ul>
 </div>

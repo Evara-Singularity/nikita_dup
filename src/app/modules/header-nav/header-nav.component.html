@@ -78,6 +78,15 @@
                     (click)="loadBottomSheet()" class="icon-more_options"></a>
             </ng-container>
         </div>
+        <div class="pwa-header-2 pwa-header-4">
+            <i *ngIf="!_commonService.isHomeHeader && router.url.includes('dashboard/')  || routerData['title'] == 'Feedback'"
+                    class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
+                <i *ngIf="!_commonService.isHomeHeader && (routerData && !routerData['menuBar']) && !router.url.includes('dashboard/')"
+                    [ngClass]="{'login-back-icon': (routerData && routerData['title'])}" (click)="goBack()"
+                    class="icon-back-arrow" id="icon-back"></i>
+                <span class="page-name f-16" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }}
+                    {{cartHeaderText}}</span>
+        </div>
         <!-- Category Header, header varient-2  END -->
 
         <!-- dashboard header -->

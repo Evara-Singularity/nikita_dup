@@ -1,0 +1,16 @@
+<div class="pwa-header-1">
+    <div class="head-d-flex-inner ">
+        <a class="icon-menu header-icon mt-10" (click)="loadSideNav$.emit()"></a>
+        <a>
+            <span class="page-name f-16" *ngIf="title">
+                {{ title }}
+            </span>
+        </a>
+    </div>
+    <div class="head-d-flex-inner logo-container">
+        <a (click)="loadSearchNav$.emit()" class="icon-search "></a>
+        <a (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
+            <span class="badge" *ngIf="noOfCart != 0">{{ noOfCart }}</span>
+        </a>
+    </div>
+</div>

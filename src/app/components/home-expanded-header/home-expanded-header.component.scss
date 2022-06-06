@@ -1,0 +1,152 @@
+@import "../../scss/variables";
+
+.pwa-header-1 {
+    display: flex;
+    padding: 10px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: auto;
+    min-height: 52px;
+
+    .head-d-flex-inner {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+
+        &:last-child {
+            justify-content: flex-end;
+        }
+
+        .icon-menu {
+            margin-top: -5px;
+        }
+
+        &>* {
+            padding: 5px 5px 5px 0px;
+            color: var(--onyx-black);
+            margin-right: 10px;
+
+            &:last-child {
+                margin-right: 0px;
+            }
+
+            &:first-child {
+                padding-left: 0px !important;
+            }
+        }
+
+        .login-txt {
+            color: var(--primary);
+            background-color: var(--champagne-pink);
+            border-radius: $border-radius-4;
+            margin-right: 10px;
+            font-weight: bold;
+            padding: 5px 10px !important;
+        }
+    }
+}
+
+// global icons
+.icon-menu {
+    font-size: $large-font  !important;
+    color: var(--onyx-black);
+}
+
+.icon-cart1 {
+    font-size: $extra-large-3-font  !important;
+    color: var(--onyx-black);
+}
+
+.icon-back-arrow {
+    font-size: $extra-large-2_5-font  !important;
+    color: var(--onyx-black);
+}
+
+.icon-more_options {
+    font-size: $extra-large-2-font  !important;
+    color: var(--onyx-black);
+}
+
+.icon-moglix_app_logo {
+    font-size: $extra-large-3-font  !important;
+    color: var(--primary);
+}
+
+.icon-search {
+    font-size: $extra-large-1-font  !important;
+}
+
+.icon-brand_store {
+    font-size: $extra-large-3-font;
+}
+
+.search-bar {
+    margin: 0px 10px 10px 10px;
+    position: relative;
+
+    @include placeholder {
+        color: $place-holder-color;
+        font-size: $extra-large-font;
+    }
+
+    .search-bar-input {
+        height: 45px;
+        width: 100%;
+        border: 0;
+        padding: 0 25px 0 40px;
+        letter-spacing: -0.2px;
+        display: inline-block;
+        vertical-align: middle;
+        border-radius: $border-radius-8;
+        background-color: var(--white);
+        line-height: 40px;
+        border: 1px solid var(--silver);
+        box-shadow: 0px 3px 6px #c4c4c429;
+    }
+
+    &:after {
+        content: "\e972";
+        font-family: "icomooon_pwa";
+        position: absolute;
+        left: 10px;
+        top: 12px;
+        color: var(--primary);
+        font-size: $extra-large-1-font;
+    }
+}
+
+.logo-2x {
+    width: 64px;
+    height: 22px;
+}
+
+.icon-cart1 {
+    position: relative;
+    padding: 5px 5px !important;
+    display: block;
+
+    .badge {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        padding: 2px 4px;
+        border-radius: $border-radius-6;
+        color: var(--white);
+        background: var(--primary);
+        font-size: $extra-small-font;
+        border: 2px solid var(--white);
+        font-family: "Roboto", sans-serif;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.logo-container {
+    justify-content: flex-end;
+}
+.search-bar{
+    width: 100%;
+}

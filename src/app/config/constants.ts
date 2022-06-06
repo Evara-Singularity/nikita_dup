@@ -197,7 +197,7 @@ export const CONSTANTS = {
       pageSize: 20,
     },
     codMin: 300,
-    codMax: 25000,
+    codMax: 30000,
     userType: {
       business: "business",
       online: "online",

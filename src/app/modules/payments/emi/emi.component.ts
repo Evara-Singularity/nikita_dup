@@ -107,7 +107,7 @@ export class EmiComponent {
         const cart = cartSession["cart"];
         cartSession['nocostEmi'] = 0;
         this.type = this._cartService.invoiceType;
-        const payableAmount = (cart['totalAmount'] + cart['shippingCharges']) - cart['totalOffer'];
+        const payableAmount = (cart['totalAmount'] + cart['shippingCharges']) - (cart['totalOffer'] || 0);
         if (payableAmount < CONSTANTS.EMI_MINIMUM_AMOUNT) {
             this.message = `EMI not available below Rs. ${CONSTANTS.EMI_MINIMUM_AMOUNT}`;
             this.isEmiEnable = false;
@@ -179,7 +179,7 @@ export class EmiComponent {
         const cardTypeResponse = data;
         this.emiResponse = cardTypeResponse;
         this.dataEmi = this._objectToArray.transform(cardTypeResponse, "associative");
-        const payableAmount = (cart['totalAmount'] + cart['shippingCharges']) - cart['totalOffer'];
+        const payableAmount = (cart['totalAmount'] + cart['shippingCharges']) - (cart['totalOffer'] || 0);
 
         this.dataEmi.forEach((element, index) => {
             if (this.bankMap.hasOwnProperty(element.key)) {
@@ -391,7 +391,7 @@ export class EmiComponent {
 
         let shippingInformation = {
             'shippingCost': cartSession['cart']['shippingCharges'],
-            'couponUsed': cartSession['cart']['totalOffer'],
+            'couponUsed': cartSession['cart']['totalOffer'] || 0,
             'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
         };
 

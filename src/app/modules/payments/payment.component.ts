@@ -57,6 +57,7 @@ export class PaymentComponent implements OnInit {
     ngOnInit() {
        
         this.intialize();
+        this._cartService.sendAdobeOnCheckoutOnVisit("payment");
         this.getSavedCardData();
         this._cartService.clearCartNotfications();
     }
@@ -118,11 +119,10 @@ export class PaymentComponent implements OnInit {
 
     updatePaymentBlock(block, mode?, elementId?) {
         let cart = this._cartService.getGenericCartSession['cart'];
-        this.totalAmount = (cart['totalAmount'] + ['shippingCharges']) - cart['totalOffer'];
+        this.totalAmount = (cart['totalAmount'] + cart['shippingCharges']) - (cart['totalOffer'] || 0);
         this.messageEmi = "";
         this.messageCod = "";
         this.messageNeft = "";
-        // console.log('totalAmount',this.totalAmount);
         if (block == 4 && this.totalAmount < 3000) {
             this.messageEmi = "Not available below Rs. 3000";
             this.paymentBlock == null;

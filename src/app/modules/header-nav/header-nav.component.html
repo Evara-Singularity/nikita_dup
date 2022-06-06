@@ -1,5 +1,7 @@
 <header class="inner-pages inner-pages-for-listing" *ngIf="!extraData.hideHeader">
     <div class="main-header">
+
+
         <!-- start header varient 1 -->
         <div *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (!_commonService.isScrolledHeader)"
             class="pwa-header-1">
@@ -78,6 +80,7 @@
                     (click)="loadBottomSheet()" class="icon-more_options"></a>
             </ng-container>
         </div>
+
         <div class="pwa-header-2 pwa-header-4">
             <i *ngIf="!_commonService.isHomeHeader && router.url.includes('dashboard/')  || routerData['title'] == 'Feedback'"
                     class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
@@ -111,27 +114,15 @@
         </div> -->
 
         <!-- When Home page Header is scrolled , header varient 3 -->
-        <div class="scrolledHeader pad-10" *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader"
-            [ngClass]="{'headerFixed': _commonService.isScrolledHeader}">
-            <a *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader" class="icon-menu header-icon mt-10"
-                id="icon-menu" (click)="loadSideNav()"></a>
-            <a class="search-bar">
-                <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();"
-                    placeholder="Search Product/Category/Brand...">
-                <div class="home-search-animation">
-
-                </div>
-            </a>
-            <a *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader"
-                (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1 header-icon">
-                <span class="badge onw" *ngIf="noOfCart != 0">{{noOfCart}}</span>
-            </a>
-        </div>
-        <ng-container #searchBar></ng-container>
-        <!--Search Popup-->
+        <ng-container *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader">
+            <home-fixed-header [noOfCart]="noOfCart" (loadSearchNav$)="loadSearchNav()" (loadSideNav$)="loadSideNav()">
+            </home-fixed-header>
+        </ng-container>
+       
     </div>
 </header>
 
 <!-- sideMenu component is loaded on demand  -->
 <ng-container #sideMenu></ng-container>
 <ng-container #bottomSheet></ng-container>
+<ng-container #searchBar></ng-container>

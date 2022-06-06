@@ -1,0 +1,25 @@
+// header varient 3
+.scrolledHeader {
+    margin: auto;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    // align-items: center;
+
+    a {
+        color: var(--onyx-black);
+
+        &.search-bar {
+            width: 75%;
+            margin: 2px 0px 2px 10px;
+
+            input {
+                height: 35px !important;
+            }
+
+            &:after {
+                top: 8px !important;
+            }
+        }
+    }
+}

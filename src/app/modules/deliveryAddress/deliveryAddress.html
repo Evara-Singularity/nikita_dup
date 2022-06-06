@@ -16,14 +16,12 @@
             [layoutType]="'SINGLE'" [addresses]="shippingAddressList" [type]="1" [showRadio]="false">
         </app-address-list>
         <div class="addButtonContainer">
-            <div class="container">
-                <button class=" btn redBgButton center-aligned-button-noborder" *ngIf="shippingAddressList.length > 0"
-                    style="text-transform: uppercase;" (click)="salpu.shipping = true">Change or Add address</button>
-                <button class="btn redBgButton center-aligned-button-noborder" *ngIf="shippingAddressList.length == 0"
-                    style="text-transform: uppercase;"
-                    (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1, null, true)">Add new
-                    address</button>
-            </div>
+            <button class=" btn quaternary-btn-2" *ngIf="shippingAddressList.length > 0"
+                style="text-transform: uppercase;" (click)="salpu.shipping = true">Change or Add address</button>
+            <button class="btn quaternary-btn-2" *ngIf="shippingAddressList.length == 0"
+                style="text-transform: uppercase;"
+                (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1, null, true)">Add new
+                address</button>
         </div>
     </div>
     <div class="sub-strip" *ngIf="getAddressessCount(addressList, 2) > 0">
@@ -38,14 +36,12 @@
             [layoutType]="'SINGLE'" [addresses]="billingAddressList" [type]="2" [showRadio]="false">
         </app-address-list>
         <div class="addButtonContainer">
-            <div class="container">
-                <button *ngIf="billingAddressList.length > 0" class="btn redBgButton center-aligned-button-noborder"
-                    style="text-transform: uppercase;" (click)="salpu.billing = true">Change or Add address</button>
-                <button *ngIf="billingAddressList.length == 0" class="btn redBgButton center-aligned-button-noborder"
-                    style="text-transform: uppercase;"
-                    (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 2, null, true)">Add new
-                    address</button>
-            </div>
+            <button *ngIf="billingAddressList.length > 0" class="btn quaternary-btn-2"
+                style="text-transform: uppercase;" (click)="salpu.billing = true">Change or Add address</button>
+            <button *ngIf="billingAddressList.length == 0" class="btn quaternary-btn-2"
+                style="text-transform: uppercase;"
+                (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 2, null, true)">Add new
+                address</button>
         </div>
 
 
@@ -62,7 +58,7 @@
         </div>
         <div class="content-popup" content>
             <div class="add-address-substrip">
-                <button class="btn btn-red-bordered center-aligned-button-noborder"
+                <button class="btn secondry-full-btn"
                     (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1, null, true)">
                     + ADD NEW ADDRESS
                 </button>
@@ -83,7 +79,7 @@
         </div>
         <div class="content-popup" content>
             <div class="add-address-substrip">
-                <button class="btn btn-red-bordered center-aligned-button-noborder"
+                <button class="btn secondry-full-btn"
                     (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 2, null, true)">
                     + ADD NEW ADDRESS
                 </button>

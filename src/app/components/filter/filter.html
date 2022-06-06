@@ -4,8 +4,8 @@
         <span class="txt-name">FILTER</span>
         <span (click)="_commonService.selectedFilterData.filter = {}; toggleFilter.emit(); _commonService.applyFilter()" class="clear-filter">CLEAR ALL</span>
     </div>
-    <div (click)="toggleFilter.emit(); _commonService.applyFilter()" class="apply-filter">
-        <button class="btn continue-btn">APPLY</button>
+    <div (click)="toggleFilter.emit(); _commonService.applyFilter()" class="fixed-bottom-cta">
+        <button class="btn primary-full-btn">APPLY</button>
     </div>
 
     <div class="filters-content">

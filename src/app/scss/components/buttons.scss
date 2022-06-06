@@ -1,6 +1,6 @@
-button {
-    outline: 0;
-}
+// button {
+//     outline: 0;
+// }
 .btn-red {
     border: 1px solid $logo-color;
     padding: 7px 9px;
@@ -25,24 +25,19 @@ button {
 }
 // Buttons
 .btn {
-    padding: 7px 9px;
+    // padding: 7px 9px;
     color: $white;
     border: 0;
     outline: 0;
-    font-size: $extra-large-font;
-    font-weight: 600;
-    @extend %border-radius;
-    @extend %box-shadow;
-    border: 0;
-    outline: 0;
+    // font-size: $extra-large-font;
+     font-weight: $font-bold;
+    // @extend %border-radius;
+    // @extend %box-shadow;
+    // border: 0;
+    // outline: 0;
     @extend %ripple;
 
-    &.disabledButton {
-        background: #ccc;
-        pointer-events: none;
-        color: $disable-txt;
-        border: 1px solid $disabled;
-    }
+   
     &.btn-variant1 {
         width: 100%;
         color: #fff;
@@ -81,6 +76,12 @@ button {
         color: var(--primary);
         border: 1px solid var(--primary);
         box-shadow: none;
+    }
+    &:disabled {
+        background: var(--silver);
+    }
+    &.disabled {
+        background: var(--silver);
     }
 }
 
@@ -146,35 +147,7 @@ button {
     bottom: 0;
     z-index: 2;
 }
-.stickyBottomBtn {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 5;
-    padding: 5px;
-    box-shadow: 0px -3px 6px #00000029;
-    background: #f2f2f2;
 
-    .continue-btn {
-        width: 100%;
-        color: #fff;
-        background-color: #d9232d;
-        border: 0;
-        height: 50px;
-    }
-    .btn-variant1 {
-        width: 100%;
-        color: #fff;
-        background-color: #d9232d;
-        border: 0;
-        height: 40px;
-        &.btn-dark-grey {
-            background-color: #3c3c3c;
-            color: #ffffff;
-        }
-    }
-}
 .btn-red-small{
     padding: 10px;
     background-color: var(--primary);
@@ -199,10 +172,91 @@ span.form-inline-cta{
         background-color: #209F19;
     }
 }
+
+
+  
+
+
+
+
+
+
+// final button scss
+ .primary-btn{
+    border-radius: $border-radius-8;
+    padding: 0px 15px;
+    height: 50px;
+    background: var(--primary);
+    font-size: $large-font;
+}
+.primary-full-btn{
+    border-radius: $border-radius-8;
+    padding: 0px 15px;
+    height: 50px;
+    background: var(--primary);
+    font-size: $large-font;
+    width: $fullwidth;
+}
+
+.secondry-btn{
+    border-radius: $border-radius-8;
+    padding: 0px 15px;
+    height: 40px;
+    font-size: $large-font;
+    background: var(--primary);
+}
+
+.secondry-full-btn{
+    border-radius: $border-radius-8;
+    padding: 0px 15px;
+    height: 40px;
+    font-size: $large-font;
+    width: $fullwidth;
+    color: var(--primary);
+    background: var(--white);
+}
+.secondry-btn-2{
+    border-radius: $border-radius-8;
+    padding: 0px 15px;
+    height: 40px;
+    font-size: $large-font;
+    background:var(--misty-rose);
+    color: var(--primary);
+ } 
+.tertiary-btn{
+    border-radius: $border-radius-6;
+    padding: 10px 15px;
+    background: var(--primary);
+    font-size: $small-font;
+}
+.tertiary-outline-cta{
+    background: var(--white);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    font-size: $small-font;
+    padding:10px 15px;
+    border-radius: $border-radius-6;
+  }
+.quaternary-btn{
+    border-radius: $border-radius-6;
+    font-size: $medium-font;
+    padding: 5px 15px; 
+    height: 30px;
+    background: var(--primary);
+
+}
+.quaternary-btn-2{
+    border-radius: $border-radius-6;
+    font-size: $medium-font;
+    padding: 5px 15px; 
+    height: 30px;
+    background: var(--misty-rose);
+    color: var(--primary);
+}
 .add_cart_btn {
     border: 1px solid var(--primary);
     display: inline-block;
-    border-radius: $border-radius;
+    border-radius: $border-radius-6;
     margin-right: 8px;
     width: 32px;
     text-align: center;
@@ -214,21 +268,31 @@ span.form-inline-cta{
         vertical-align: middle;
     }
 }
-.red-outlineButton{
-    background-color: var(--white);
-    color: var(--primary);
-    border: 1px solid var(--primary);
-    box-shadow: none;
-    font-size:$medium-font;
-    padding:10px;
-  }
-  
- .light-red-button{
-    border:none;
-    border-radius:$border-radius-8;
-    background:var(--misty-rose);
-    border-radius:$border-radius-4;
-    color: var(--primary);
-    font-size:$medium-font;
- } 
-
+.fixed-bottom-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 15;
+    padding: 5px;
+    box-shadow: 0px -3px 6px #00000029;
+    background: var(--ghost-white);
+    .continue-btn {
+        width: 100%;
+        color: #fff;
+        background-color: #d9232d;
+        border: 0;
+        height: 50px;
+    }
+    .btn-variant1 {
+        width: 100%;
+        color: #fff;
+        background-color: #d9232d;
+        border: 0;
+        height: 40px;
+        &.btn-dark-grey {
+            background-color: #3c3c3c;
+            color: #ffffff;
+        }
+    }
+}

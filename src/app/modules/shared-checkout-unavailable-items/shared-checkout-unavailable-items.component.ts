@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CartService } from '@app/utils/services/cart.service';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -15,9 +16,17 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit
     private cDistroyed = new Subject();
     itemsList: [] = [];
 
-    constructor() { }
+    constructor(public _cartService: CartService) { }
 
-    ngOnInit() { this.itemsList = this.data['items']; }
+    ngOnInit() { 
+        console.clear();
+        console.log(this.data);
+        this.itemsList = this.data['items']; 
+    }
+
+    onUpdate($event) {
+        this._cartService.showUnavailableItems = false;
+    }
 
     closeModal() { this.closePopup$.emit(); }
 

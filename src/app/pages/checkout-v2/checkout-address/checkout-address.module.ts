@@ -19,7 +19,6 @@ import { CheckoutAddressComponent } from './checkout-address.component';
     CartNoItemModule,
     OrderSummaryModule,
     CartNotificationsModule,
-    SharedCheckoutUnavailableItemsModule,
     CheckoutAddressRoutingModule,
     SharedCheckoutAddressModule,
     SharedCheckoutStepperModule,

@@ -231,7 +231,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
                     this.showSuggestionBlock = false;
                     this._commonService.resetLimitTrendingCategoryNumber();
                     this.ssp = false;
-                    this._r.navigate([data['redirectionLink']], { queryParams: { sC: 'no' } });
+                    this._r.navigate([data['redirectionLink']], { queryParams: { sC: 'no', search_query: dataD.searchTerm } });
                 }
                 else {
                     if (document.getElementById("search-input")) {
@@ -326,7 +326,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
             this._r.navigate(['search'], extras);
         } else {
             this._cs.setGaGtmData({ list: 'Site Search' });
-            this._r.navigate([data.productUrl], { queryParams: { source: 'topProduct' } });
+            this._r.navigate([data.productUrl], { queryParams: { source: 'topProduct', search_query: data } });
         }
     }
 

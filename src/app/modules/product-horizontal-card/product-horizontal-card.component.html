@@ -28,7 +28,7 @@
                         (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
                 </ng-container>
             </div>
-            <div class="right">
+            <div class="right card-height">
                 <div class="rating">
                     <span class="avgrating" *ngIf="cardFeaturesConfig.enableRating && product.avgRating">
                         {{product.avgRating | rating | number : '1.1-1' }}

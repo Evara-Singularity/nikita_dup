@@ -63,6 +63,7 @@
 .vertical-scroll-container {
     background-color: $white-color;
     overflow-x: auto;
+    overflow-y:hidden;
     width: 100%;
     ::-webkit-scrollbar {
         display: none;

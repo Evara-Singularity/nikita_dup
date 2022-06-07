@@ -1,10 +1,6 @@
 <div class="cart-header">
-    <div class="head-d-flex-inner ">
-        <i class="icon-back-arrow" id="icon-back" (click)="goBack$.emit()"></i>
-        <a>
-            <span class="page-name f-16" *ngIf="title">
-                {{ title }} (2)
-            </span>
-        </a>
-    </div>
+    <i class="icon-back-arrow" id="icon-back" (click)="goBack$.emit()"></i>
+    <span class="page-name" *ngIf="title">
+        {{ title }} (2)
+    </span>
 </div>

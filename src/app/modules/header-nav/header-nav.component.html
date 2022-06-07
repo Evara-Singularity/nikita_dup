@@ -1,6 +1,5 @@
 <header class="inner-pages inner-pages-for-listing" *ngIf="!extraData.hideHeader">
     <div class="main-header">
-       
         <ng-container
             *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (!_commonService.isScrolledHeader)">
             <home-expanded-header (loadSideNav$)="loadSideNav()" (navigateToLogin$)="navigateToLogin($event)"
@@ -23,7 +22,6 @@
             (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
             [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
         </dashboard-header> -->
-
         <!-- <cart-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
             (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
             [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">

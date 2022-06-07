@@ -9,7 +9,32 @@
     font-size: $extra-large-3-font  !important;
     color: var(--onyx-black);
 }
-
+.icon-cart1 {
+    position: relative;
+    padding: 5px 5px !important;
+    display: block;
+    .badge {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        padding: 2px 4px;
+        border-radius: $border-radius-6;
+        color: var(--white);
+        background: var(--primary);
+        font-size: $extra-small-font;
+        border: 2px solid var(--white);
+        font-family: "Roboto", sans-serif;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+.logo-2x {
+    width: 64px;
+    height: 22px;
+}
 .icon-back-arrow {
     font-size: $extra-large-2_5-font  !important;
     color: var(--onyx-black);

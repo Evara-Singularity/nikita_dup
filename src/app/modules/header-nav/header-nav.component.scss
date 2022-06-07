@@ -7,187 +7,185 @@ header {
         top: 0;
         width: 100vw;
         z-index: 6;
-        &.inner-pages-for-listing{
-            // box-shadow: none;
-        }
     }
     .main-header {
         background: var(--white);
+        
         // start header varient 1
         
         // header varient-2
-        .pwa-header-2 {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            width: 100%;
-            flex-grow: 1;
-            padding: 0px 10px;
-            align-items: center;
-            & > * {
-                padding: 12px 0px;
-                vertical-align: middle;
-                display: flex;
-                justify-content: center;
-                position: relative;
-                font-size: $large-font;
-                color: var(--onyx-black);
-                // width: 30px;
-            }
-            .page-name {
-                width: 60%;
-                justify-content: flex-start;
-                font-size: $extra-large-font;
-            }
-            .moglix-app-logo {
-                i {
-                    font-size: $extra-large-3-font;
-                }
-            }
-            .search-bar-mini {
-                position: relative;
-                width: 55%;
-                margin-left: 5px;
-                input {
-                    background: var(--white);
-                    border: none;
-                    font-size: $medium-font !important;
-                    font-weight: 400;
-                    height: 35px;
-                    width: 100%;
-                    padding: 0px 5px 0 30px;
-                    border-radius: $border-radius-8;
-                    border: 1px solid var(--silver);
-                }
-                i {
-                    color: #303030;
-                    font-size: $large-font;
-                    position: absolute;
-                    z-index: 1;
-                    left: 8px;
-                    top: 20px;
-                    border-radius: 6px 0 0 6px;
-                }
-            }
-        }
-        // header dashboard varient
-        .pwa-header-dashboard {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 5px 0px;
-            .hvd-inner {
-                width: 50%;
-                display: flex;
-                align-items: center;
-                &:nth-child(2) {
-                    justify-content: flex-end;
-                }
-                a {
-                    margin-right: 10px;
-                    &:last-child {
-                        margin-right: 0px;
-                    }
-                    .page-name {
-                        font-size: $extra-large-font;
-                    }
-                }
-            }
-        }
-        // header varient 4
-        .pwa-header-4{
-            display: flex;
-            justify-content: flex-start;
-            i{
-                margin-right: 15px;
-            }
-        }
+        // .pwa-header-2 {
+        //     display: flex;
+        //     flex-wrap: wrap;
+        //     justify-content: space-between;
+        //     width: 100%;
+        //     flex-grow: 1;
+        //     padding: 0px 10px;
+        //     align-items: center;
+        //     & > * {
+        //         padding: 12px 0px;
+        //         vertical-align: middle;
+        //         display: flex;
+        //         justify-content: center;
+        //         position: relative;
+        //         font-size: $large-font;
+        //         color: var(--onyx-black);
+        //         // width: 30px;
+        //     }
+        //     .page-name {
+        //         width: 60%;
+        //         justify-content: flex-start;
+        //         font-size: $extra-large-font;
+        //     }
+        //     .moglix-app-logo {
+        //         i {
+        //             font-size: $extra-large-3-font;
+        //         }
+        //     }
+        //     .search-bar-mini {
+        //         position: relative;
+        //         width: 55%;
+        //         margin-left: 5px;
+        //         input {
+        //             background: var(--white);
+        //             border: none;
+        //             font-size: $medium-font !important;
+        //             font-weight: 400;
+        //             height: 35px;
+        //             width: 100%;
+        //             padding: 0px 5px 0 30px;
+        //             border-radius: $border-radius-8;
+        //             border: 1px solid var(--silver);
+        //         }
+        //         i {
+        //             color: #303030;
+        //             font-size: $large-font;
+        //             position: absolute;
+        //             z-index: 1;
+        //             left: 8px;
+        //             top: 20px;
+        //             border-radius: 6px 0 0 6px;
+        //         }
+        //     }
+        // }
+        // // header dashboard varient
+        // .pwa-header-dashboard {
+        //     display: flex;
+        //     flex-wrap: wrap;
+        //     padding: 5px 0px;
+        //     .hvd-inner {
+        //         width: 50%;
+        //         display: flex;
+        //         align-items: center;
+        //         &:nth-child(2) {
+        //             justify-content: flex-end;
+        //         }
+        //         a {
+        //             margin-right: 10px;
+        //             &:last-child {
+        //                 margin-right: 0px;
+        //             }
+        //             .page-name {
+        //                 font-size: $extra-large-font;
+        //             }
+        //         }
+        //     }
+        // }
+        // // header varient 4
+        // .pwa-header-4{
+        //     display: flex;
+        //     justify-content: flex-start;
+        //     i{
+        //         margin-right: 15px;
+        //     }
+        // }
 
-        // Common Search Bar
-        .search-bar {
-            margin: 0px 10px 10px 10px;
-            position: relative;
-            @include placeholder {
-                color: $place-holder-color;
-                font-size: $extra-large-font;
-            }
-            .search-bar-input {
-                height: 45px;
-                width: 100%;
-                border: 0;
-                padding: 0 25px 0 40px;
-                letter-spacing: -0.2px;
-                display: inline-block;
-                vertical-align: middle;
-                border-radius: $border-radius-8;
-                background-color: var(--white);
-                line-height: 40px;
-                border: 1px solid var(--silver);
-                box-shadow: 0px 3px 6px #c4c4c429;
-            }
-            &:after {
-                content: "\e972";
-                font-family: "icomooon_pwa";
-                position: absolute;
-                left: 10px;
-                top: 12px;
-                color: var(--primary);
-                font-size: $extra-large-1-font;
-            }
-        }
+        // // Common Search Bar
+        // .search-bar {
+        //     margin: 0px 10px 10px 10px;
+        //     position: relative;
+        //     @include placeholder {
+        //         color: $place-holder-color;
+        //         font-size: $extra-large-font;
+        //     }
+        //     .search-bar-input {
+        //         height: 45px;
+        //         width: 100%;
+        //         border: 0;
+        //         padding: 0 25px 0 40px;
+        //         letter-spacing: -0.2px;
+        //         display: inline-block;
+        //         vertical-align: middle;
+        //         border-radius: $border-radius-8;
+        //         background-color: var(--white);
+        //         line-height: 40px;
+        //         border: 1px solid var(--silver);
+        //         box-shadow: 0px 3px 6px #c4c4c429;
+        //     }
+        //     &:after {
+        //         content: "\e972";
+        //         font-family: "icomooon_pwa";
+        //         position: absolute;
+        //         left: 10px;
+        //         top: 12px;
+        //         color: var(--primary);
+        //         font-size: $extra-large-1-font;
+        //     }
+        // }
 
-        .logo-2x {
-            width: 64px;
-            height: 22px;
-        }
-        .icon-cart1 {
-            position: relative;
-            padding: 5px 5px !important;
-            display: block;
-            .badge {
-                position: absolute;
-                top: 0px;
-                right: 0px;
-                padding: 2px 4px;
-                border-radius: $border-radius-6;
-                color: var(--white);
-                background: var(--primary);
-                font-size: $extra-small-font;
-                border: 2px solid var(--white);
-                font-family: "Roboto", sans-serif;
-                width: 20px;
-                height: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        }
+        // .logo-2x {
+        //     width: 64px;
+        //     height: 22px;
+        // }
+        // .icon-cart1 {
+        //     position: relative;
+        //     padding: 5px 5px !important;
+        //     display: block;
+        //     .badge {
+        //         position: absolute;
+        //         top: 0px;
+        //         right: 0px;
+        //         padding: 2px 4px;
+        //         border-radius: $border-radius-6;
+        //         color: var(--white);
+        //         background: var(--primary);
+        //         font-size: $extra-small-font;
+        //         border: 2px solid var(--white);
+        //         font-family: "Roboto", sans-serif;
+        //         width: 20px;
+        //         height: 20px;
+        //         display: flex;
+        //         align-items: center;
+        //         justify-content: center;
+        //     }
+        // }
     }
 }
 
 // global icons
-.icon-menu {
-    font-size: $large-font !important;
-    color: var(--onyx-black);
-}
-.icon-cart1 {
-    font-size: $extra-large-3-font !important;
-    color: var(--onyx-black);
-}
-.icon-back-arrow {
-    font-size: $extra-large-2_5-font !important;
-    color: var(--onyx-black);
-}
-.icon-more_options {
-    font-size: $extra-large-2-font !important;
-    color: var(--onyx-black);
-}
-.icon-moglix_app_logo {
-    font-size: $extra-large-3-font !important;
-    color: var(--primary);
-}
-.icon-search {
-    font-size: $extra-large-1-font !important;
-}
-.icon-brand_store {
-    font-size: $extra-large-3-font;
-}
+// .icon-menu {
+//     font-size: $large-font !important;
+//     color: var(--onyx-black);
+// }
+// .icon-cart1 {
+//     font-size: $extra-large-3-font !important;
+//     color: var(--onyx-black);
+// }
+// .icon-back-arrow {
+//     font-size: $extra-large-2_5-font !important;
+//     color: var(--onyx-black);
+// }
+// .icon-more_options {
+//     font-size: $extra-large-2-font !important;
+//     color: var(--onyx-black);
+// }
+// .icon-moglix_app_logo {
+//     font-size: $extra-large-3-font !important;
+//     color: var(--primary);
+// }
+// .icon-search {
+//     font-size: $extra-large-1-font !important;
+// }
+// .icon-brand_store {
+//     font-size: $extra-large-3-font;
+// }

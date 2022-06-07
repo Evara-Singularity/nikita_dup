@@ -504,7 +504,13 @@ $default-gap: 15px;
         width: calc(100% - 38px);
     }
 }
-
+%hide-scrollbar{
+    ::-webkit-scrollbar {
+        display: none;
+    } 
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none; 
+}
 
       
          

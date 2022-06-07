@@ -10,7 +10,6 @@
         .popup-head {
             padding: 10px;
             position: relative;
-            @extend %box-shadow;
             @extend %clear-fix;
             i {
                 float: left;

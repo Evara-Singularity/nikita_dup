@@ -92,7 +92,6 @@
 }
 .address-list {
     @extend %clear-fix;
-    // @extend %container;
     label {
         display: block;
         @extend %custom-radio-checkout;

@@ -1,0 +1,23 @@
+.ask-question-success-popup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .popup-img-area{
+        text-align: center;
+        img{
+            width: 200px;
+        }
+    }
+    .popup-text-area{
+        h5{
+            font-size: $extra-large-1-font;
+            padding-top: 30px;
+            color: var(--onyx-black);
+            padding-bottom: 10px;
+        }
+        p{
+            font-size: $medium-font;
+            color: var(--silver);
+        }
+    }
+}

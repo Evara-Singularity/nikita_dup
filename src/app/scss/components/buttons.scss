@@ -182,6 +182,8 @@ span.form-inline-cta{
 
 
 // final button scss
+
+// Primery Buttons
  .primary-btn{
     border-radius: $border-radius-8;
     padding: 0px 15px;
@@ -198,6 +200,7 @@ span.form-inline-cta{
     width: $fullwidth;
 }
 
+// Secondry Buttons
 .secondry-btn{
     border-radius: $border-radius-8;
     padding: 0px 15px;
@@ -215,7 +218,7 @@ span.form-inline-cta{
     color: var(--primary);
     background: var(--white);
 }
-.secondry-btn-2{
+.secondry-btn-1{
     border-radius: $border-radius-8;
     padding: 0px 15px;
     height: 40px;
@@ -223,20 +226,23 @@ span.form-inline-cta{
     background:var(--misty-rose);
     color: var(--primary);
  } 
+//  Tertiary Buttons
 .tertiary-btn{
     border-radius: $border-radius-6;
     padding: 10px 15px;
     background: var(--primary);
-    font-size: $small-font;
+    font-size: $medium-font;
 }
 .tertiary-outline-cta{
     background: var(--white);
     color: var(--primary);
     border: 1px solid var(--primary);
-    font-size: $small-font;
+    font-size: $medium-font;
     padding:10px 15px;
     border-radius: $border-radius-6;
   }
+
+//   Quaternary Buttons
 .quaternary-btn{
     border-radius: $border-radius-6;
     font-size: $medium-font;
@@ -245,13 +251,23 @@ span.form-inline-cta{
     background: var(--primary);
 
 }
-.quaternary-btn-2{
+.quaternary-btn-1{
     border-radius: $border-radius-6;
     font-size: $medium-font;
     padding: 5px 15px; 
     height: 30px;
     background: var(--misty-rose);
     color: var(--primary);
+}
+// Quinary Buttons
+
+.quinary-btn{
+    background: var(--misty-rose);
+    color: var(--primary);
+    padding: 8px 10px;
+    font-size: $small-font;
+    font-weight: $font-bold;
+    border-radius: $border-radius-6;
 }
 .add_cart_btn {
     border: 1px solid var(--primary);

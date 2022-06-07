@@ -28,12 +28,15 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit
         this._cartService.showUnavailableItems = false;
     }
 
-    closeModal() { this.closePopup$.emit(); }
 
     removeUnavailableItems(callback)
     {
         this.closeModal();
         callback(this.itemsList);
+    }
+
+    closeModal(){
+        this._cartService.showUnavailableItems = false;
     }
 
     ngOnDestroy()

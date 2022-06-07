@@ -58,11 +58,11 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
             {
                 this._globalLoader.setLoaderState(false)
                 if (response['statusCode'] == 200) {
-                    this._toastService.show({ type: 'success', text: 'Password updated successfully. Now try Sign-In' });
+                    this._toastService.show({ type: 'success', text: 'Password updated successfully. Now try Login' });
                     //@checkout flow need to integrated here
                     if (this.isCheckout) {
                         this._checkoutLoginService.setPasswordResetStatus({
-                            status: true, message: 'Password updated successfully. Now try Sign-In',
+                            status: true, message: 'Password updated successfully. Now try Login',
                         })
                         this.navigateTo(this.CHECKOUT_LOGIN_URL);
                         return;

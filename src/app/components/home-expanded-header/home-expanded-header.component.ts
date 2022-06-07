@@ -22,6 +22,7 @@ export class HomeExpandedHeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.isUserLogin)
   }
 
 }

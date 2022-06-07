@@ -1,20 +1,19 @@
-import { CommonService } from '@app/utils/services/common.service';
 import { Location } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
+import { CheckoutService } from '@app/utils/services/checkout.service';
+import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { environment } from 'environments/environment';
+import { LocalStorageService } from 'ngx-webstorage';
 import { of } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
-import { CartService } from '../../utils/services/cart.service';
-import { LocalAuthService } from '../../utils/services/auth.service';
-import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { GlobalState } from '../../utils/global.state';
-import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
-import { environment } from 'environments/environment';
-import { CheckoutService } from '@app/utils/services/checkout.service';
-import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { LocalStorageService } from 'ngx-webstorage';
+import { LocalAuthService } from '../../utils/services/auth.service';
+import { CartService } from '../../utils/services/cart.service';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 import { SharedAuthService } from '../shared-auth-v1/shared-auth.service';
-import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: 'header-nav',
@@ -24,7 +23,7 @@ import CONSTANTS from '@app/config/constants';
 export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 
     readonly MODULE_NAME = CONSTANTS.MODULE_NAME;
-
+    readonly imgAssetPath: string = environment.IMAGE_ASSET_URL
     isHomePage: boolean;
     routerData: any = null;
     user: any = null;
@@ -43,10 +42,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     bottomSheetInstance = null;
     @ViewChild('bottomSheet', { read: ViewContainerRef })
     bottomSheetContainerRef: ViewContainerRef;
-    hideElLogin: boolean = false;
     searhNav: any;
-    cartHeaderText: string = '';
-    currentUrl: string;
     checkoutTabMap = {
         1: 'Login',
         2: 'Checkout',
@@ -74,16 +70,12 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         '/moglix-originals',
         '/contact',
     ];
-    isLoginPage: boolean = false;
-    displayCart: boolean = false;
-    displayMenu: boolean = false;
-    displaySearch: boolean = false;
-    imgAssetPath: string = environment.IMAGE_ASSET_URL
+
     @Input('extraData') extraData;
+    activeModuleName = this.MODULE_NAME.HOME;
 
     constructor(
         public router: Router,
-        private route: ActivatedRoute,
         private localAuthService: LocalAuthService,
         public cartService: CartService,
         private location: Location,
@@ -91,12 +83,12 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         private cfr: ComponentFactoryResolver,
         private injector: Injector,
         public _commonService: CommonService,
-        private changeDetectorRef: ChangeDetectorRef,
         private globalLoader: GlobalLoaderService,
         private localStorageService: LocalStorageService,
         private _state: GlobalState,
         private _checkoutService: CheckoutService,
-        private _analytics: GlobalAnalyticsService
+        private _analytics: GlobalAnalyticsService,
+        private _activatedRoute: ActivatedRoute
     ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -105,12 +97,9 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit() {
         if (this.isBrowser) {
-            this.browserCalc();
-            this.refreshIcon();
+            this.isUserLogin = this.localAuthService.isUserLoggedIn();
         }
-        this._checkoutService.checkoutHeader.subscribe((tabIndex) => {
-            this.setHeader();
-        })
+        this.createHeaderData(this._activatedRoute);
     }
 
     ngAfterViewInit() {
@@ -221,8 +210,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             };
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
             this.searchBarInstance.instance['ssp'] = true;
-
-
         }
     }
 
@@ -257,7 +244,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     loadBottomSheetAnalyticEvent() {
-
         const user = this.localStorageService.retrieve('user');
         let page = {
             'linkPageName': "moglix:hamburger-menu",
@@ -275,16 +261,19 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     addBrowserSubcribers() {
-        this.router.events
-            .pipe(filter((event) => event instanceof NavigationEnd))
-            .subscribe((evt: any) => {
-                this.currentUrl = evt.url;
-                this.backRedirectUrl = this.currentUrl || '';
+        this._commonService.currentUrl = this.router.url;
+        this.router.events.subscribe((event) =>
+        {
+            if (event instanceof NavigationEnd) {
+                this.createHeaderData(this._activatedRoute);
+                //TODO:set common service previous url and current url
+                //TODO:Remove current URL nad backRedirectURL logic.
                 localStorage.setItem('backRedirectUrl', this.backRedirectUrl);
-                if (evt instanceof NavigationEnd) {
-                    this.refreshIcon();
-                }
-            });
+                this._commonService.previousUrl = this._commonService.currentUrl;
+                this._commonService.currentUrl = event.url;
+                this.backRedirectUrl = this._commonService.currentUrl || '';
+            }
+        });
 
         this.cartService.cart.subscribe((data) => {
             if (data && data.hasOwnProperty('count')) {
@@ -292,17 +281,14 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             } else {
                 throw new Error('Cart update count should always be present');
             }
-            this.setHeader();
         });
 
         this.localAuthService.login$.subscribe((data) => {
-            this.user = this.localAuthService.getUserSession();
-            this.checkUserLoginState();
+            this.isUserLogin = this.localAuthService.isUserLoggedIn();
         });
 
         this.localAuthService.logout$.subscribe((data) => {
-            this.user = this.localAuthService.getUserSession();
-            this.checkUserLoginState();
+            this.isUserLogin = this.localAuthService.isUserLoggedIn();
         });
 
         this._commonService.getSearchPopupStatus().subscribe((searchKeyword) => {
@@ -310,20 +296,27 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         })
     }
 
-    browserCalc() {
-        this.checkUserLoginState();
+    createHeaderData(_aRoute)
+    {
+        of(_aRoute)
+            .pipe(
+                map((route) =>
+                {
+                    while (route.firstChild) {
+                        route = route.firstChild;
+                    }
+                    return route;
+                }),
+                filter((route) => route.outlet === 'primary'),
+                mergeMap((route) => route.data)
+            )
+            .subscribe((rData) =>
+            {
+                console.log(rData);
+                this.routerData = rData;
+                this.activeModuleName = rData['moduleName'];
+            });
     }
-
-    checkUserLoginState() {
-        // load user information
-        this.user = this.localAuthService.getUserSession();
-        this.isUserLogin =
-            this.user && this.user.authenticated
-                ? (this.user.authenticated as boolean)
-                : false;
-    }
-
-
 
     goBack() {
         this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
@@ -366,49 +359,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             this.location.back();
         }
         
-    }
-
-    refreshIcon() {
-        this.cartHeaderText = '';
-        this.hideElLogin = true;
-        this.setHeader();
-    }
-
-    setHeader() {
-        this.isLoginPage = false;
-        if (
-            this.router.url.includes('/forgot-password') ||
-            this.router.url.includes('/login') ||
-            this.router.url.includes('/quickorder') ||
-            this.router.url.includes('/checkout') ||
-            this.router.url.includes('/online-assist') ||
-            this.router.url.includes('/forgot-password') ||
-            this.router.url.includes('/sign-up') ||
-            this.router.url.includes('/feedback')
-        ) {
-            this.isLoginPage = true;
-            this.hideElLogin = false;
-            this.changeDetectorRef.detectChanges();
-            // console.log('refreshIcon 3', this.router.url);
-
-            if (this.router.url.includes('/quickorder')) {
-                if (this.noOfCart && this.noOfCart != 0) {
-                    this.cartHeaderText = `(${this.noOfCart})`;
-                } else {
-                    this.cartHeaderText = '';
-                }
-            } else if (this.router.url.includes('/checkout')) {
-                this.cartHeaderText = '';
-                this.routerData['title'] = this.router.url.includes('/payment') ? 'Payment' : 'Checkout';
-            } else {
-                this.cartHeaderText = '';
-                this.hideElLogin = false;
-            }
-        } else {
-            this.hideElLogin = true;
-            this.changeDetectorRef.detectChanges();
-            this.cartHeaderText = '';
-        }
     }
 
     navigateToLogin($event)

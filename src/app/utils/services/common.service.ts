@@ -80,9 +80,8 @@ export class CommonService
     idleNudgeTimer: IdleTimer;
     private _renderer2: Renderer2
     ;
-    private previousUrl: string = null;
-    private currentUrl: string = null;
-    public _activeModuleName: string = null; // this is supplied from pages.routing data
+    public previousUrl: string = null;
+    public currentUrl: string = null;
 
     constructor(
         @Inject(PLATFORM_ID) platformId,
@@ -108,48 +107,10 @@ export class CommonService
         this.userSession = this._localStorageService.retrieve("user");
         this._renderer2 = this.rendererFactory.createRenderer(null, null);
         // this.abTesting = this._dataService.getCookie('AB_TESTING');
-        this.setRoutingInfo();
     }
 
     updateUserSession() {
         this.userSession = this._localStorageService.retrieve("user");
-    }
-
-    private setRoutingInfo() {
-        this.currentUrl = this._router.url;
-        this._router.events.subscribe(event => {
-            if (event instanceof NavigationEnd) {
-                this.createHeaderData(this._route);
-                this.previousUrl = this.currentUrl;
-                this.currentUrl = event.url;
-            };
-        });
-    }
-
-    changeActiveModule(moduleName) {
-        this._activeModuleName = moduleName;
-    }
-
-    get activeModuleName() {
-        return this._activeModuleName;
-    }
-
-    createHeaderData(_aRoute) {
-        of(_aRoute)
-            .pipe(
-                map((route) => {
-                    while (route.firstChild) {
-                        route = route.firstChild;
-                    }
-                    return route;
-                }),
-                filter((route) => route.outlet === 'primary'),
-                mergeMap((route) => route.data)
-            )
-            .subscribe((rData) => {
-                console.log('rData ==>', rData);
-                this.changeActiveModule(rData['moduleName'] || null)
-            });
     }
 
     get getPreviousUrl() {

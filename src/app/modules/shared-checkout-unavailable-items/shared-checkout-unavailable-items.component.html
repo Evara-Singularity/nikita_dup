@@ -1,34 +1,39 @@
 <app-bottom-menu  (outData$)="onUpdate($event)">
-    <div content class="unavailableItems product-card pad-0">
+    <div content class="unavailableItems">
         <div class="top-header-bottom-menu">
             <h3 class="heading-3">{{itemsList?.length}} {{itemsList && itemsList?.length > 1 ? "Items" : "Item"}} not
                 available</h3>
             <i class="icon-circle-delete" (click)="closeModal()"></i>
         </div>
-        <div [ngClass]="{'oos':item.oos}" class="card relative" *ngFor="let item of itemsList; let i = index">
-            <div class="container pb-15">
-                <div class="product-left">
-                    <div class="product-img">
-                        <img [routerLink]="showLink ? '/'+item.productUrl:[]" src="{{item.productImg}}">
+        <div [ngClass]="{'oos':item.oos}" *ngFor="let item of itemsList; let i = index">
+            <div class="pwa-row">
+                <div class="static-card-container pwa-col-12">
+                    <div class="pwa-row">
+                        <div class="product-img">
+                            <img [routerLink]="showLink ? '/'+item.productUrl:[]" src="{{item.productImg}}">
+                        </div>
+                        <div class="product-description">
+                            <p class="description-txt"
+                                 [ngClass]="{'cursor-initial':!showLink}" [routerLink]="showLink ? '/'+item.productUrl:[]">
+                                    {{ (item.productName.length>50)? (item.productName | slice:0:48)+'..':(item.productName)
+                                    }}
+                            </p>
+                            <p class="brand">Brand :{{item.brandName}}</p>
+                            <div class="price">
+                                <p class="before-discount" *ngIf="item.bulkPrice !==null" >
+                                    {{item.bulkPriceWithoutTax | currency:'INR' : 'symbol' : '1.2-2'}}
+                                </p>
+                                <p class="after-discount" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">
+                                    {{item.priceWithoutTax | currency:'INR' : 'symbol' : '1.2-2'}}
+                                </p>
+                            </div>
+                            <p class="red-txt">
+                                {{item.oos ? "Product is not available for order" : "Product is not deliverable at your shipping
+                                address"}}
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="product-detail">
-                    <div class="p-name f-14">
-                        <a [ngClass]="{'cursor-initial':!showLink}" [routerLink]="showLink ? '/'+item.productUrl:[]">
-                            {{ (item.productName.length>50)? (item.productName | slice:0:48)+'..':(item.productName)
-                            }}</a>
-                    </div>
-                    <p class=" f-size-11 Brandtext-grey text-400">Brand :{{item.brandName}}</p>
-
-                    <p *ngIf="item.bulkPrice !==null" class="price">
-                        {{item.bulkPriceWithoutTax | currency:'INR' : 'symbol' : '1.2-2'}}</p>
-                    <p *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null" class="price">
-                        {{item.priceWithoutTax | currency:'INR' : 'symbol' : '1.2-2'}}
-                    </p>
-                    <p class="red-text">
-                        {{item.oos ? "Product is not available for order" : "Product is not deliverable at your shipping
-                        address"}}
-                    </p>
+               
                 </div>
             </div>
         </div>

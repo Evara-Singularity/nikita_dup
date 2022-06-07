@@ -226,7 +226,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.searchBarInstance.instance.handleSendTextToSearchBar(this.route.snapshot.queryParams['search_query'] || '');
                     document.getElementById('search-input').focus();
                     // document.getElementById('search-input')['value'] = '';
-                }, 600);
+                }, 0);
             }
 
             this.searchBarInstance.instance['data'] = {

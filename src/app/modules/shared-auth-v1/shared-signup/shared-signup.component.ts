@@ -184,11 +184,11 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         });
     }
 
-    private handleSuccessProfileUpdate(name) {
+    private handleSuccessProfileUpdate(name = '') {
         setTimeout(() => {
             this._toastService.show({
                 type: "success",
-                text: (name) ? `Welcome to Moglix, ${name}` : `Welcome to Moglix!`,
+                text: ((name.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) || name == '') ? `Welcome to Moglix!` : `Welcome to Moglix, ${name}`,
             });
         }, 500);
         this._router.navigateByUrl(this.getRedirectURL() || '/');
@@ -256,8 +256,8 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
             queryParams.state === 'askQuestion')) {
             REDIRECT_URL += '?state=' + queryParams['state'];
         }
-        // console.log('getRedirectURL ==>', REDIRECT_URL , this._sharedAuthService.redirectUrl);
-        return (this._sharedAuthService.redirectUrl)? this._sharedAuthService.redirectUrl : REDIRECT_URL;
+        console.log('getRedirectURL ==>', REDIRECT_URL , this._sharedAuthService.redirectUrl, BACKURLTITLE);
+        return (this._sharedAuthService.redirectUrl) ? this._sharedAuthService.redirectUrl : ((BACKURLTITLE) ? BACKURLTITLE : REDIRECT_URL);
     }
 
     handleBackBtnInPhoneSignUp(){

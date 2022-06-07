@@ -14,6 +14,7 @@ import { CheckoutService } from '@app/utils/services/checkout.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { SharedAuthService } from '../shared-auth-v1/shared-auth.service';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: 'header-nav',
@@ -21,6 +22,8 @@ import { SharedAuthService } from '../shared-auth-v1/shared-auth.service';
     styleUrls: ['./header-nav.component.scss'],
 })
 export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
+
+    readonly MODULE_NAME = CONSTANTS.MODULE_NAME;
 
     isHomePage: boolean;
     routerData: any = null;
@@ -97,8 +100,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
-
-        this.commonSubcribers();
     }
 
 
@@ -273,25 +274,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         this._analytics.sendAdobeCall({ page, custData, order }, "genericClick");
     }
 
-    commonSubcribers() {
-        this.router.events.subscribe((val) => {
-            this.createHeaderData(this.route);
-            if (val instanceof NavigationEnd) {
-                if (val['url'] === '/' || val['url'] === '/?back=1') {
-                    this._commonService.isHomeHeader = true;
-                    this._commonService.isPLPHeader = false;
-                } else if (this._commonService.isBrowser && (location.pathname.search(/\d{9}$/) > 0 || location.pathname.search('brands') > 0 || location.pathname.search('search') > 0 || location.pathname.search('alp') > 0)) {
-                    this._commonService.isHomeHeader = false;
-                    this._commonService.isPLPHeader = true;
-                }
-                else {
-                    this._commonService.isHomeHeader = false;
-                    this._commonService.isPLPHeader = false;
-                }
-            }
-        });
-    }
-
     addBrowserSubcribers() {
         this.router.events
             .pipe(filter((event) => event instanceof NavigationEnd))
@@ -341,25 +323,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 : false;
     }
 
-    createHeaderData(_aRoute) {
-        of(_aRoute)
-            .pipe(
-                map((route) => {
-                    while (route.firstChild) {
-                        route = route.firstChild;
-                    }
-                    return route;
-                }),
-                filter((route) => route.outlet === 'primary'),
-                mergeMap((route) => route.data)
-            )
-            .subscribe((rData) => {
-                this.routerData = rData;
-                this.displayCart = (this.routerData['cart'] != undefined) ? this.routerData['cart'] : true;
-                this.displayMenu = (this.routerData['menuBar'] != undefined) ? this.routerData['menuBar'] : true;
-                this.displaySearch = (this.routerData['searchBar'] != undefined) ? this.routerData['searchBar'] : true;
-            });
-    }
 
 
     goBack() {

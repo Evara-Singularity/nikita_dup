@@ -4,7 +4,7 @@ import { mergeMap } from "rxjs/operators";
 import { Observer, of, Subscription } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
-import { NavigationEnd, NavigationExtras, Router } from "@angular/router";
+import { NavigationEnd, NavigationExtras, NavigationStart, Router } from "@angular/router";
 import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from "@angular/core";
 import { ClientUtility } from "@app/utils/client.utility";
 import { CartService } from "./cart.service";
@@ -82,6 +82,7 @@ export class CommonService
     ;
     private previousUrl: string = null;
     private currentUrl: string = null;
+    public _activeModuleName: string = null; // this is supplied from pages.routing data
 
     constructor(
         @Inject(PLATFORM_ID) platformId,
@@ -93,7 +94,8 @@ export class CommonService
         private _analytics: GlobalAnalyticsService,
         private _loaderService: GlobalLoaderService,
         private rendererFactory: RendererFactory2,
-        private _router: Router
+        private _router: Router,
+        private _route: ActivatedRoute,
     )
     {
         this.windowLoaded = false;
@@ -107,7 +109,6 @@ export class CommonService
         this._renderer2 = this.rendererFactory.createRenderer(null, null);
         // this.abTesting = this._dataService.getCookie('AB_TESTING');
         this.setRoutingInfo();
-
     }
 
     updateUserSession() {
@@ -118,10 +119,37 @@ export class CommonService
         this.currentUrl = this._router.url;
         this._router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
+                this.createHeaderData(this._route);
                 this.previousUrl = this.currentUrl;
                 this.currentUrl = event.url;
             };
         });
+    }
+
+    changeActiveModule(moduleName) {
+        this._activeModuleName = moduleName;
+    }
+
+    get activeModuleName() {
+        return this._activeModuleName;
+    }
+
+    createHeaderData(_aRoute) {
+        of(_aRoute)
+            .pipe(
+                map((route) => {
+                    while (route.firstChild) {
+                        route = route.firstChild;
+                    }
+                    return route;
+                }),
+                filter((route) => route.outlet === 'primary'),
+                mergeMap((route) => route.data)
+            )
+            .subscribe((rData) => {
+                console.log('rData ==>', rData);
+                this.changeActiveModule(rData['moduleName'] || null)
+            });
     }
 
     get getPreviousUrl() {

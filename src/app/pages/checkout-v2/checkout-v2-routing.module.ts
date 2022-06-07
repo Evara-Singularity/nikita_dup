@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
 import { IsNotAuthenticatedCheckoutLogin } from '@app/utils/guards/checkout-auth.guard';
 import { IsAuthenticatedCheckoutLogin } from '@app/utils/guards/checkout-login.guard';
 import { CheckoutV2Component } from './checkout-v2.component';
@@ -49,6 +50,7 @@ const routes: Routes = [
         data: {
 					footer: false,
 					title: 'Checkout',
+          moduleName: CONSTANTS.MODULE_NAME.CART
 				},
       },
       {
@@ -58,6 +60,7 @@ const routes: Routes = [
         data: {
 					footer: false,
 					title: 'Payment',
+          moduleName: CONSTANTS.MODULE_NAME.CART
 				},
       },
       

@@ -1,40 +1,57 @@
 <header class="inner-pages inner-pages-for-listing" *ngIf="!extraData.hideHeader">
-    <div class="main-header">
-        <ng-container
-            *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (!_commonService.isScrolledHeader)">
-            <home-expanded-header (loadSideNav$)="loadSideNav()" (navigateToLogin$)="navigateToLogin($event)"
-                (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
-                [noOfCart]="noOfCart" [isUserLogin]="isUserLogin" [imgAssetPath]="imgAssetPath"
-                [enableBackBtn]="(!_commonService.isHomeHeader || _commonService.isPLPHeader) && (routerData && !routerData['menuBar'])">
-            </home-expanded-header>
+    <div class="main-header" [ngSwitch]="_commonService._activeModuleName">
+
+        <ng-container *ngSwitchCase="MODULE_NAME.HOME">
+            <ng-container *ngIf="!_commonService.isScrolledHeader">
+                <home-expanded-header (loadSideNav$)="loadSideNav()" (navigateToLogin$)="navigateToLogin($event)"
+                    (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()" [noOfCart]="noOfCart"
+                    [isUserLogin]="isUserLogin" [imgAssetPath]="imgAssetPath"
+                    [enableBackBtn]="(!_commonService.isHomeHeader || _commonService.isPLPHeader) && (routerData && !routerData['menuBar'])">
+                </home-expanded-header>
+            </ng-container>
+            <ng-container *ngIf="_commonService.isScrolledHeader">
+                <home-fixed-header [noOfCart]="noOfCart" (loadSearchNav$)="loadSearchNav()"
+                    (loadSideNav$)="loadSideNav()">
+                </home-fixed-header>
+            </ng-container>
         </ng-container>
-        <ng-container *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader && !_commonService.isPLPHeader">
-            <home-fixed-header [noOfCart]="noOfCart" (loadSearchNav$)="loadSearchNav()" (loadSideNav$)="loadSideNav()">
-            </home-fixed-header>
+
+        <ng-container *ngSwitchCase="MODULE_NAME.PRODUCT_LISTING_PAGE">
+            <ng-container *ngIf="!_commonService.isScrolledHeader">
+                <home-expanded-header (loadSideNav$)="loadSideNav()" (navigateToLogin$)="navigateToLogin($event)"
+                    (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()" [noOfCart]="noOfCart"
+                    [isUserLogin]="isUserLogin" [imgAssetPath]="imgAssetPath"
+                    [enableBackBtn]="(!_commonService.isHomeHeader || _commonService.isPLPHeader) && (routerData && !routerData['menuBar'])">
+                </home-expanded-header>
+            </ng-container>
+            <ng-container *ngIf="_commonService.isScrolledHeader">
+                <plp-fixed-header [noOfCart]="noOfCart" (goBack$)="goBack()" (loadBottomSheet$)="loadBottomSheet()"
+                    (loadSearchNav$)="loadSearchNav()">
+                </plp-fixed-header>
+            </ng-container>
         </ng-container>
-        <ng-container *ngIf="_commonService.isPLPHeader && _commonService.isScrolledHeader && !_commonService.isHomeHeader " >
+
+        <ng-container *ngSwitchCase="MODULE_NAME.CART">
+            <cart-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
+                (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
+                [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
+            </cart-header>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="MODULE_NAME.DASHBOARD">
+            <dashboard-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
+                (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
+                [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
+            </dashboard-header>
+        </ng-container>
+
+
+        <ng-container *ngSwitchDefault>
             <plp-fixed-header [noOfCart]="noOfCart" (goBack$)="goBack()" (loadBottomSheet$)="loadBottomSheet()"
                 (loadSearchNav$)="loadSearchNav()">
             </plp-fixed-header>
         </ng-container>
 
-        <!-- <dashboard-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
-            (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
-            [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
-        </dashboard-header> -->
-        <!-- <cart-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
-            (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
-            [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
-        </cart-header> -->
-
-        <!-- <ng-container >
-            <plp-fixed-header [noOfCart]="noOfCart" (goBack$)="goBack()" (loadBottomSheet$)="loadBottomSheet()"
-                (loadSearchNav$)="loadSearchNav()">
-            </plp-fixed-header>
-        </ng-container> -->
-
-
-       
     </div>
 </header>
 
@@ -45,8 +62,8 @@
 
 
 <!-- LEAGCY CODE -->
-        
-        <!-- <div *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (!_commonService.isScrolledHeader)"
+
+<!-- <div *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (!_commonService.isScrolledHeader)"
             class="pwa-header-1">
         
             <div class="head-d-flex-inner logo-container">
@@ -84,7 +101,7 @@
             </div>
         </div> -->
 
-        <!-- <div *ngIf="(_commonService.isHomeHeader  || _commonService.isPLPHeader) && !(_commonService.isScrolledHeader)"
+<!-- <div *ngIf="(_commonService.isHomeHeader  || _commonService.isPLPHeader) && !(_commonService.isScrolledHeader)"
             class="search-bar">
             <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();"
                 placeholder="Search Product/Category/Brand...">
@@ -93,8 +110,8 @@
         </div> -->
 
 
-        <!-- Category Header, header varient-2 -->
-        <!-- <div class="pwa-header-2">
+<!-- Category Header, header varient-2 -->
+<!-- <div class="pwa-header-2">
             <ng-container
                 *ngIf="(_commonService.isPLPHeader && _commonService.isScrolledHeader) || !_commonService.isPLPHeader">
                 <i *ngIf="!_commonService.isHomeHeader && router.url.includes('dashboard/')  || routerData['title'] == 'Feedback'"
@@ -124,7 +141,7 @@
             </ng-container>
         </div> -->
 
-        <!-- <div class="pwa-header-2 pwa-header-4">
+<!-- <div class="pwa-header-2 pwa-header-4">
             <i *ngIf="!_commonService.isHomeHeader && router.url.includes('dashboard/')  || routerData['title'] == 'Feedback'"
                     class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
                 <i *ngIf="!_commonService.isHomeHeader && (routerData && !routerData['menuBar']) && !router.url.includes('dashboard/')"
@@ -133,10 +150,10 @@
                 <span class="page-name f-16" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }}
                     {{cartHeaderText}}</span>
         </div> -->
-        <!-- Category Header, header varient-2  END -->
+<!-- Category Header, header varient-2  END -->
 
-        <!-- dashboard header -->
-        <!-- <div class="pwa-header-dashboard container">
+<!-- dashboard header -->
+<!-- <div class="pwa-header-dashboard container">
             <div class="hvd-inner">
                 <a><i (click)="goBack()" class="icon-back-arrow" id="icon-back"></i></a>
                 <a>
@@ -156,5 +173,4 @@
             </div>
         </div> -->
 
-        <!-- When Home page Header is scrolled , header varient 3 -->
-        
+<!-- When Home page Header is scrolled , header varient 3 -->

@@ -1,28 +1,28 @@
 // button {
 //     outline: 0;
 // }
-.btn-red {
-    border: 1px solid $logo-color;
-    padding: 7px 9px;
-    color: $logo-color;
-    border-radius: 2px;
-    text-transform: uppercase;
-    font-weight: 600;
-    background:$white;
-}
+// .btn-red {
+//     border: 1px solid $logo-color;
+//     padding: 7px 9px;
+//     color: $logo-color;
+//     border-radius: 2px;
+//     text-transform: uppercase;
+//     font-weight: 600;
+//     background:$white;
+// }
 
-.btn-red-bg {
-    padding: 10px 20px;
-    background-color: $btn-color-red;
-    text-transform: uppercase;
-    color: #fff;
-    border: 0;
-    margin: 0;
-    border-radius: 3px;
-    display: inline;
-    font-size: $medium-font;
-    font-weight: bold;
-}
+// .btn-red-bg {
+//     padding: 10px 20px;
+//     background-color: $btn-color-red;
+//     text-transform: uppercase;
+//     color: #fff;
+//     border: 0;
+//     margin: 0;
+//     border-radius: 3px;
+//     display: inline;
+//     font-size: $medium-font;
+//     font-weight: bold;
+// }
 // Buttons
 .btn {
     // padding: 7px 9px;
@@ -55,11 +55,11 @@
             background: #c4c4c4;
         }
     }
-    &.btn-white{
-        background:var(--white);
-        padding: 8px 15px;
-        color:var(--primary);
-    }
+    // &.btn-white{
+    //     background:var(--white);
+    //     padding: 8px 15px;
+    //     color:var(--primary);
+    // }
 
     &.btn-transparent-red {
         background: transparent;
@@ -131,12 +131,12 @@
     font-weight: 600;
     font-size: $medium-font;
 }
-.center-aligned-button-noborder{
-    width: 100%;
-    text-align: center;
-    border: none !important;
-    border-radius: 9px;
-}
+// .center-aligned-button-noborder{
+//     width: 100%;
+//     text-align: center;
+//     border: none !important;
+//     border-radius: 9px;
+// }
 
 
 // Fixed Button
@@ -199,6 +199,14 @@ span.form-inline-cta{
     font-size: $large-font;
     width: $fullwidth;
 }
+.primary-btn-1{
+    border-radius: $border-radius-8;
+    padding: 0px 15px;
+    height: 50px;
+    background: var(--white);
+    font-size: $large-font;
+    color: var(--primary);
+}
 
 // Secondry Buttons
 .secondry-btn{
@@ -232,6 +240,7 @@ span.form-inline-cta{
     padding: 10px 15px;
     background: var(--primary);
     font-size: $medium-font;
+    height: 35px;
 }
 .tertiary-outline-cta{
     background: var(--white);
@@ -257,6 +266,14 @@ span.form-inline-cta{
     padding: 5px 15px; 
     height: 30px;
     background: var(--misty-rose);
+    color: var(--primary);
+}
+.quaternary-btn-2{
+    border-radius: $border-radius-6;
+    font-size: $medium-font;
+    padding: 5px 15px; 
+    height: 30px;
+    background: var(--white);
     color: var(--primary);
 }
 // Quinary Buttons

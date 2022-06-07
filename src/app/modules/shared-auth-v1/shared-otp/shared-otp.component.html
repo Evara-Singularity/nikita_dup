@@ -17,7 +17,7 @@
             <!--Use this shared-otp-card:use this for forgot paswword-->
             <div class="login-card shared-otp-card pad-15 mar-15">
                 <div class="login-seperator-text "> <span>Or</span></div>
-                <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
+                <button class="btn secondry-full-btn" (click)="toggleOTPPassword($event)">
                     SIGN-IN WITH PASSWORD
                 </button>
             </div>
@@ -49,13 +49,13 @@
                     <p class="error-field error-txt" *ngIf="password.valid && incorrectPassword">Incorrect password, please try with correct password</p>
                 </label>
             </div>
-            <button class="btn btn-variant1" [class.btn-disabled]="password.invalid"
+            <button class="btn secondry-btn" [class.disabled]="password.invalid"
                 (click)="$event.stopPropagation();submitPassword()">CONTINUE</button>
               <div class="forgot-pass">
                 <a  (click)="$event.stopPropagation();navigateToForgotPassword()"> FORGOT PASSWORD?</a>
               </div>  
             <div class="login-seperator-text"> <span>Or</span></div>
-            <button class="btn btn-variant1 btn-dark-grey" (click)="toggleOTPPassword($event)">
+            <button class="btn secondry-full-btn" (click)="toggleOTPPassword($event)">
                 SIGN-IN WITH OTP
             </button>
         </form>

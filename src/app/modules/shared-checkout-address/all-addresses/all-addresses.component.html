@@ -1,4 +1,3 @@
-
 <!--shipping container-->
 <section>
     <ng-container
@@ -33,7 +32,7 @@
                         <span class="chk-txt">
                             <span class="heading-container">
                                 <span class="heading">
-                                    <span class="persnName">{{address.addressCustomerName | slice:0:60}}</span> &nbsp; 
+                                    <span class="persnName">{{address.addressCustomerName | slice:0:60}}</span> &nbsp;
                                 </span>
                             </span>
                             <span class="txt">{{address | checkoutAddress}}</span>
@@ -43,25 +42,24 @@
                 </div>
             </div>
             <div class="addButtonContainer">
-                <div class="container">
-                    <button class="btn redBgButton center-aligned-button-noborder" *ngIf="addressCount > 0"
-                        (click)="$event.stopPropagation();displayAddressListPopup(label)">
-                        CHANGE OR ADD ADDRESS
-                    </button>
-                    <button class="btn redBgButton center-aligned-button-noborder" *ngIf="addressCount == 0"
-                        (click)="$event.stopPropagation();displayAddressFormPopup(label, null)">
-                        ADD NEW ADDRESS
-                    </button>
-                </div>
+                <button class="btn quaternary-btn-2" *ngIf="addressCount > 0"
+                    (click)="$event.stopPropagation();displayAddressListPopup(label)">
+                    CHANGE OR ADD ADDRESS
+                </button>
+                <button class="btn quaternary-btn-2" *ngIf="addressCount == 0"
+                    (click)="$event.stopPropagation();displayAddressFormPopup(label, null)">
+                    ADD NEW ADDRESS
+                </button>
             </div>
         </div>
-        
+
     </div>
 </ng-template>
 <section class="invoice-container">
     <div class="invoice-select">
         <label>
-            <input type="checkbox" [checked]="isGSTUser" (change)="$event.stopPropagation();updateInvoiceType($event.target.checked)">
+            <input type="checkbox" [checked]="isGSTUser"
+                (change)="$event.stopPropagation();updateInvoiceType($event.target.checked)">
             <span class="custom-box icon-box"></span>
         </label>
         <div class="invoice-txt">

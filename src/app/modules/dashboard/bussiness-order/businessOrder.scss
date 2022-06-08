@@ -1,37 +1,7 @@
 @import "./../../../scss/variables";
 @import "../orders.scss";
 @import "../../../scss/layout/card-boxed.scss";
-pagination-controls {
-    ul.ngx-pagination {
-        float: none;
-        text-align: center;
-        width: 100%;
-        overflow: hidden;
-        margin-top: 0px;
-        li {
-            border-radius: 50%;
-            height: 30px;
-            width: 30px;
-            text-align: center;
-            font-size: $medium-font;
-            padding: 0px !important;
-            line-height: 30px;
-            cursor: pointer;
-            font-weight: $font-bolder;
-        }
-        li.current {
-            background: var(--spanish-gray);
-            span {
-                color: var(--white);
-            }
-        }
-    }
-}
 
-.ngx-pagination a:hover,
-.ngx-pagination button:hover {
-    background: transparent !important;
-}
 .orderShipDet {
     .businessBox {
         margin: 0px;

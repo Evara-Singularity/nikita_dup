@@ -1,8 +1,7 @@
 import { Component,  Inject, Renderer2} from '@angular/core';
-import { Router,ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';import { DOCUMENT } from "@angular/common";
 import CONSTANTS from '@app/config/constants';
-
 
 @Component({
   selector: 'about',
@@ -15,28 +14,16 @@ export class AboutComponent {
   isServer: boolean;
 
   API = CONSTANTS;
-  aboutData=null;
-  memberInfo=null;
-  companyOverview=null;
 
   constructor(
     private _renderer2: Renderer2, 
     @Inject(DOCUMENT) private _document, 
     public _router: Router, 
     private title: Title, 
-    private _activatedRoute: ActivatedRoute,
     private meta: Meta) {
   }
 
   ngOnInit(){
-
-    this._activatedRoute.data.subscribe(resolverData => {
-      if (resolverData) {     
-        this.aboutData = resolverData['aboutData']['data'] || null;
-        this.memberInfo =this.aboutData['0']?this.aboutData['0']['block_data']['about_us_team']['data']:null;
-        this.companyOverview = this.aboutData['0']?this.aboutData['0']['block_data']['company_overview'].data['0']:null;
-      }
-    });
 
     this.isServer = typeof window !== "undefined" ? false : true;
 
@@ -49,7 +36,7 @@ export class AboutComponent {
     if (this.isServer) {
       let links = this._renderer2.createElement('link');
       links.rel = "canonical";
-      links.href = CONSTANTS.PROD + "/about"; 
+      links.href = CONSTANTS.PROD + "/about";
       // alert(this._router.url);
       this._renderer2.appendChild(this._document.head, links); 
     }
@@ -129,7 +116,3 @@ export class AboutComponent {
   }
 
 }
-
-
-
-

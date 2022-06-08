@@ -111,9 +111,9 @@
         &:last-child {
             border-bottom: none;
         }
-        .chk-txt {
-            margin-left: 5px;
-        }
+        // .chk-txt {
+        //     margin-left: 5px;
+        // }
     }
     @extend %clear-fix;
     label {

@@ -98,7 +98,8 @@
         @extend %clear-fix;
         .chk-txt {
             font-size: $medium-font;
-            width: calc(100% - 40px);
+            // width: calc(100% - 40px);
+            width: 100%;
             margin-left: 0px;
             .heading-container {
                 display: block;
@@ -154,12 +155,6 @@ form {
         }
         &.withRadioContainer {
             @extend %white-card;
-            // &:last-child {
-            //     border-bottom: none;
-            // }
-            .chk-txt {
-                margin-left: 5px !important;
-            }
         }
         @extend %clear-fix;
         label {

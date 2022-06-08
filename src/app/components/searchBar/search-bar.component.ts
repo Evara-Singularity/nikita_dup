@@ -287,7 +287,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
     }
 
     resetSearchBar() {
-        // this.searchForm.reset();
+        this.searchForm.reset();
         this.showSuggestionBlock = false;
         this._commonService.enableNudge = false;
         this._commonService.resetLimitTrendingCategoryNumber();

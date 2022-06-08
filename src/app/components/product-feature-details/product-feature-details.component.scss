@@ -1,6 +1,9 @@
 @import "../../scss/variables";
 @import "../../scss/prod-specifications.scss";
 
+:host{
+    width: 100%;
+}
 .prod-detail {
     padding: 5px 15px 15px;
     background: var(--white);

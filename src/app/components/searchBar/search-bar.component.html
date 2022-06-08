@@ -10,7 +10,7 @@
                 <input formControlName="searchTerm" type="text"  [value]="searchValue" autocomplete="off"
                     placeholder="Search Product/Category/Brand..." aria-describedby="basic-addon2" id="search-input">
                 <i class="icon-circle-delete icon-del" *ngIf="ssp && showSuggestionBlock"
-                    (click)="resetSearchBar()"></i>
+                    (click)="resetSearchInput(); resetSearchBar();"></i>
                 <button *ngIf="ssp" class="searchBtn" type="submit"><i class="icon-search"
                         style="display: block;"></i></button>
             </form>

@@ -292,6 +292,10 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
         this._commonService.enableNudge = false;
         this._commonService.resetLimitTrendingCategoryNumber();
     }
+    
+    resetSearchInput(){
+        this.searchForm.get('searchTerm').setValue('');
+    }
 
     navigateTo(page, data, redirectUrl, categoryId, attributes, brandFilterData = null) {
         this._cs.resetSelectedFilterData();

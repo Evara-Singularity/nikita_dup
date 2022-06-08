@@ -37,30 +37,6 @@
     // outline: 0;
     @extend %ripple;
 
-   
-    &.btn-variant1 {
-        width: 100%;
-        color: #fff;
-        background-color: #d9232d;
-        border: 0;
-        height: 40px;
-        font-size: $large-font;
-        &.btn-dark-grey {
-            background-color: #3c3c3c;
-            color: #ffffff;
-        }
-        &.btn-disabled {
-            border-color: $disabled;
-            color: #fff;
-            background: #c4c4c4;
-        }
-    }
-    // &.btn-white{
-    //     background:var(--white);
-    //     padding: 8px 15px;
-    //     color:var(--primary);
-    // }
-
     &.btn-transparent-red {
         background: transparent;
         color: var(--primary);
@@ -249,6 +225,8 @@ span.form-inline-cta{
     font-size: $medium-font;
     padding:10px 15px;
     border-radius: $border-radius-6;
+    height: 35px;
+
   }
 
 //   Quaternary Buttons
@@ -259,6 +237,15 @@ span.form-inline-cta{
     height: 30px;
     background: var(--primary);
 
+}
+.quaternary-full-btn{
+    border-radius: $border-radius-6;
+    font-size: $medium-font;
+    padding: 5px 15px; 
+    height: 30px;
+    background: var(--misty-rose);
+    color: var(--primary);
+    width: 100%;
 }
 .quaternary-btn-1{
     border-radius: $border-radius-6;
@@ -281,6 +268,13 @@ span.form-inline-cta{
 .quinary-btn{
     background: var(--misty-rose);
     color: var(--primary);
+    padding: 8px 10px;
+    font-size: $small-font;
+    font-weight: $font-bold;
+    border-radius: $border-radius-6;
+}
+.quinary-btn-1{
+    background: var(--light-black);
     padding: 8px 10px;
     font-size: $small-font;
     font-weight: $font-bold;
@@ -311,21 +305,10 @@ span.form-inline-cta{
     box-shadow: 0px -3px 6px #00000029;
     background: var(--ghost-white);
     .continue-btn {
-        width: 100%;
-        color: #fff;
-        background-color: #d9232d;
-        border: 0;
-        height: 50px;
-    }
-    .btn-variant1 {
-        width: 100%;
-        color: #fff;
-        background-color: #d9232d;
-        border: 0;
-        height: 40px;
-        &.btn-dark-grey {
-            background-color: #3c3c3c;
-            color: #ffffff;
-        }
-    }
+                width: 100%;
+                color: #fff;
+                background-color: #d9232d;
+                border: 0;
+                height: 50px;
+            }
 }

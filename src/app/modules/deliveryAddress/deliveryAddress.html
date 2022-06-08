@@ -20,7 +20,7 @@
                 style="text-transform: uppercase;" (click)="salpu.shipping = true">Change or Add address</button>
             <button class="btn quaternary-btn-1" *ngIf="shippingAddressList.length == 0"
                 style="text-transform: uppercase;"
-                (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1, null, true)">Add new
+                (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1, null, true)">+ Add new
                 address</button>
         </div>
     </div>
@@ -40,7 +40,7 @@
                 style="text-transform: uppercase;" (click)="salpu.billing = true">Change or Add address</button>
             <button *ngIf="billingAddressList.length == 0" class="btn quaternary-btn-1"
                 style="text-transform: uppercase;"
-                (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 2, null, true)">Add new
+                (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 2, null, true)">+ Add new
                 address</button>
         </div>
 

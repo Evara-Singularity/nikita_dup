@@ -81,7 +81,6 @@ export class ProductOosSimilarCardComponent {
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
   rawProductData: any;
 
-
   constructor(
     public productService: ProductService,
     private cfr: ComponentFactoryResolver,
@@ -101,6 +100,10 @@ export class ProductOosSimilarCardComponent {
       this.createSiemaOption(this.index);
       this.getProductData();
     }
+  }
+
+  get similarProductData() {
+    return this.productService.oosSimilarProductsData.similarData;
   }
 
   navigateTo(link: string) {

@@ -8,7 +8,7 @@ import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ObjectToArrayPipeModule } from '../../utils/pipes/object-to-array.pipe';
 
 @Component({
-  selector: 'app-product-feature-details',
+  selector: 'product-feature-details',
   templateUrl: './product-feature-details.component.html',
   styleUrls: ['./product-feature-details.component.scss']
 })
@@ -18,6 +18,7 @@ export class ProductFeatureDetailsComponent implements OnInit {
   readonly baseDomain = CONSTANTS.PROD;
   readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;  @Input() productKeyFeatures: any;
+  @Input() isFromOosSimilarCard: boolean = false;
   @Input() productAttributes : any;
   @Input() productDescripton : any;
   @Input() productCategoryDetails : any;

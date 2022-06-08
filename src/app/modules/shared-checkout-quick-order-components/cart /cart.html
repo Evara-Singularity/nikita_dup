@@ -39,21 +39,21 @@
                 <!-- <p class="seller">
                     Brand: {{item.brandName}}
                 </p> -->
-                <p class="price clearfix">
-                    <span class="before-discount gray-txt">MRP ₹1,999 <span class="green-txt">(12% OFF) </span></span>
+                <p *ngIf="!item.oos" class="price clearfix">
+                    <span class="before-discount gray-txt">MRP ₹1,999 <span class="green-txt">(12% OFF)</span></span>
                     <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">₹
                         {{item.priceWithoutTax | mathFloor | number : '1.2-2'}}</span>
                     <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax | mathFloor |
                         number : '1.2-2'}}</span>
                 </p>
-                <!-- <div *ngIf="!item.oos" class="remove-btn" (click)="removePopup = true; removeIndex = i">
-                    <span>REMOVE</span>
-                </div> -->
+                <p *ngIf="item.oos" class="price mt-10">
+                    <span class="small-heading">
+                        Product is not available for order
+                    </span>
+                </p>
             </div>
         </div>
-        <div *ngIf="item.oos" class="remove-btn remove-oos" (click)="removePopup = true; removeIndex = i">
-            <span>REMOVE</span>
-        </div>
+       
         <!-- <div class="alert-box" *ngIf="removePopup">
             <div class="overlay"></div>
             <div class="content-area">
@@ -67,8 +67,8 @@
                 </div>
             </div>
         </div> -->
-        <div [ngClass]="{'oos':item.oos}" class="cart-item-block pad-15">
-            <div class="qty_section">
+        <div *ngIf="!item.oos" class="cart-item-block pad-15">
+            <div  class="qty_section">
                 <span class="qty-txt">Qty</span>
                 <div class="quantity-block">
                     <span *ngIf="item.productQuantity > 1"
@@ -98,7 +98,17 @@
                 </div>
             </div>
         </div>
-        
+        <div *ngIf="item.oos" class="oos-item-block">
+            <div (click)="removePopup=true; removeIndex = i">
+                <span>
+                    <i class="icon-bin"></i>
+                     REMOVE
+                </span>
+            </div>
+            <div class="oos-text">
+                <h3 class="heading-3">Not Available</h3>
+            </div>
+        </div>
         <!-- <div [ngClass]="{'oos':item.oos}" class="price_detail_toggle pad-15">
             <div class="qty_section">
                 <div class="quantity-block">
@@ -156,10 +166,10 @@
             </ul>
         </div>
         <!-- DO NOT REMOVE THIS SECTION IT WAS OF NEW DESIGN TO BE IMPLEMENTED LATER -->
-        <div class="coupen-and-discount">
+        <!-- <div  class="coupen-and-discount">
             <span>Coupon discount - ₹100</span>
             <span>Free Shipping<i class="icon-delivery_y_5"></i></span>
-        </div>
+        </div> -->
     </div>
 </div>
 <app-bottom-menu *ngIf="removePopup">
@@ -189,9 +199,9 @@
                 </div>
             
             <div class="cta-row">
-                <button (click)="deleteProduct($event)" class="btn light-red-button">
+                <button (click)="deleteProduct($event)" class="btn secondry-btn-1">
                     <i class="icon-bin single-quantity"></i>&nbsp;REMOVE</button>
-                <button class="btn btn-red-bg">MOVE TO WISHLIST</button>
+                <button class="btn secondry-btn">MOVE TO WISHLIST</button>
             </div>
            </div>
          </div>

@@ -9,7 +9,6 @@ import { NgxPaginationModule } from "ngx-pagination";
     selector: 'pagination',
     templateUrl: 'pagination.html',
     styleUrls: ['./pagination.scss'],
-    encapsulation: ViewEncapsulation.None
 })
 
 export class PaginationComponent {

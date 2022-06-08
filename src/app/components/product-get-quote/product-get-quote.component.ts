@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { DOCUMENT } from "@angular/common";
 @Component({
-  selector: 'app-product-get-quote',
+  selector: 'product-get-quote',
   templateUrl: './product-get-quote.component.html',
   styleUrls: ['./product-get-quote.component.scss']
 })

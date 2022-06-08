@@ -39,13 +39,14 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
     logoutSubscription: Subscription = null;
     cartUpdatesSubscription: Subscription = null;
 
-    constructor(private _addressService: AddressService, private _cartService: CartService, private _localAuthService: LocalAuthService,
+    constructor(private _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
         private _router: Router, private _toastService: ToastMessageService,private cd: ChangeDetectorRef) { }
     
 
     ngOnInit(): void
     {
         this.updateUserStatus();
+        this._cartService.showUnavailableItems = false;
     }
 
     ngAfterViewInit(): void
@@ -137,7 +138,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit,OnDestroy
      */
     verifyServiceablityAndCashOnDelivery(postCode)
     {
-        const cartItems: any[] = this.cartSession['itemsList'] || [];
+        const cartItems: any[] = this.cartSession ? this.cartSession['itemsList'] || [] : [];
         if ((!cartItems) || (cartItems.length === 0)) return;
         const MSNS = cartItems.map(item => item.productId);
         this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode }).subscribe((response) =>

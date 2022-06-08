@@ -2,7 +2,7 @@
     <div [id]="'oos-card-' + index" class="pdp-container pdpCard" *ngIf="showProduct">
         <span class="blueTag">{{(index - GLOBAL_CONSTANT.oosSimilarCardCountTop) + 1}}</span>
         <div class="prod-carsl" addClass
-            [class.hasOneImage]="productService.oosSimilarProductsData.similarData[index].productAllImages?.length === 1"
+            [class.hasOneImage]="similarProductData[index].productAllImages?.length === 1"
             [ngClass]="[carouselInitialized ? '' : 'before-init']">
             <ng-container #productCrousel></ng-container>
             <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo
@@ -11,18 +11,18 @@
                     <div class="inner-block-pseudo" (click)="firstImageClicked()">
                         <div class="pinch-zoom element-pseudo" style="transform-origin: 0% 0%;">
                             <img *ngIf="!isProductCrouselLoaded" enhanceImgByNetwork
-                                src="{{productService.oosSimilarProductsData.similarData[index].productAllImages[0]['large'] }}"
+                                src="{{similarProductData[index].productAllImages[0]['large'] }}"
                                 height="330" width="330"
-                                alt="{{productService.oosSimilarProductsData.similarData[index].productName}}">
+                                alt="{{similarProductData[index].productName}}">
                             <img *ngIf="isProductCrouselLoaded"
                                 src="{{productService.imagePathAsset}}assets/img/loader_new.gif" class="loader-image" />
                         </div>
                     </div>
                     <ul class="pager">
                         <ng-container
-                            *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions.pager && productService.oosSimilarProductsData.similarData[index].productAllImages.length>1">
+                            *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions.pager && similarProductData[index].productAllImages.length>1">
                             <ng-container
-                                *ngFor="let item of productService.oosSimilarProductsData.similarData[index].productAllImages;let i=index">
+                                *ngFor="let item of similarProductData[index].productAllImages;let i=index">
                                 <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot"
                                     (click)="loadProductCrousel(i)"
                                     [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
@@ -38,49 +38,49 @@
             </div>
         </div>
         <div class="prod-description">
-            <h1 class="prod-name heading" *ngIf="productService.oosSimilarProductsData.similarData[index].productName">
-                {{productService.oosSimilarProductsData.similarData[index].productName}}</h1>
+            <h1 class="prod-name heading" *ngIf="similarProductData[index].productName">
+                {{similarProductData[index].productName}}</h1>
             <div class="pdp-price-qty-block">
                 <div class="price-block"
-                    *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > 0">
-                    <ng-container *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > 0">
+                    *ngIf="similarProductData[index].productMrp > 0">
+                    <ng-container *ngIf="similarProductData[index].productMrp > 0">
                         <p class="mrp"
-                            *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > productService.oosSimilarProductsData.similarData[index].priceWithoutTax">
-                            <small>{{productService.oosSimilarProductsData.similarData[index].productMrp | currency:
+                            *ngIf="similarProductData[index].productMrp > similarProductData[index].priceWithoutTax">
+                            <small>{{similarProductData[index].productMrp | currency:
                                 'INR' :
                                 'symbol' : '1.0-0'}}</small>
                             <span
-                                *ngIf="productService.oosSimilarProductsData.similarData[index].productDiscount != undefined && productService.oosSimilarProductsData.similarData[index].productDiscount>0 && productService.oosSimilarProductsData.similarData[index].productMrp > 0 && productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax==null">
-                                {{((productService.oosSimilarProductsData.similarData[index].productMrp -
-                                productService.oosSimilarProductsData.similarData[index].priceWithoutTax)/productService.oosSimilarProductsData.similarData[index].productMrp)*100
+                                *ngIf="similarProductData[index].productDiscount != undefined && similarProductData[index].productDiscount>0 && similarProductData[index].productMrp > 0 && similarProductData[index].bulkPriceWithoutTax==null">
+                                {{((similarProductData[index].productMrp -
+                                similarProductData[index].priceWithoutTax)/similarProductData[index].productMrp)*100
                                 | mathFloor | number:'1.0-0'}}% OFF
                             </span>
                             <span
-                                *ngIf="productService.oosSimilarProductsData.similarData[index].productDiscount != undefined && productService.oosSimilarProductsData.similarData[index].productDiscount>0 && productService.oosSimilarProductsData.similarData[index].productMrp > 0 && productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax!=null">
-                                {{ productService.oosSimilarProductsData.similarData[index].bulkDiscount | mathFloor |
+                                *ngIf="similarProductData[index].productDiscount != undefined && similarProductData[index].productDiscount>0 && similarProductData[index].productMrp > 0 && similarProductData[index].bulkPriceWithoutTax!=null">
+                                {{ similarProductData[index].bulkDiscount | mathFloor |
                                 number:'1.0-0'}}% OFF
                             </span>
                         </p>
                         <p class="actual-price"
-                            *ngIf="productService.oosSimilarProductsData.similarData[index].priceWithoutTax > 0 && productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax==null">
-                            {{productService.oosSimilarProductsData.similarData[index].priceWithoutTax | currency: 'INR'
+                            *ngIf="similarProductData[index].priceWithoutTax > 0 && similarProductData[index].bulkPriceWithoutTax==null">
+                            {{similarProductData[index].priceWithoutTax | currency: 'INR'
                             :
                             'symbol' : '1.0-0'}}
-                            <small *ngIf="productService.oosSimilarProductsData.similarData[index].taxPercentage">
-                                GST @{{productService.oosSimilarProductsData.similarData[index].taxPercentage}}% Inc.
+                            <small *ngIf="similarProductData[index].taxPercentage">
+                                GST @{{similarProductData[index].taxPercentage}}% Inc.
                                 Price:
-                                {{productService.oosSimilarProductsData.similarData[index].productPrice | mathFloor |
+                                {{similarProductData[index].productPrice | mathFloor |
                                 currency: 'INR' :
                                 'symbol' : '1.0-0'}}
                             </small>
                         </p>
                         <!-- <p class="actual-price"
-                            *ngIf="productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax!==null">
-                            {{productService.oosSimilarProductsData.similarData[index].bulkPriceWithoutTax | currency: 'INR'
+                            *ngIf="similarProductData[index].bulkPriceWithoutTax!==null">
+                            {{similarProductData[index].bulkPriceWithoutTax | currency: 'INR'
                             : 'symbol' : '1.0-0'}}
-                            <small *ngIf="productService.oosSimilarProductsData.similarData[index].taxPercentage">
-                                GST @{{productService.oosSimilarProductsData.similarData[index].taxPercentage}}% Inc. Price:
-                                {{productService.oosSimilarProductsData.similarData[index].bulkSellingPrice | mathFloor |
+                            <small *ngIf="similarProductData[index].taxPercentage">
+                                GST @{{similarProductData[index].taxPercentage}}% Inc. Price:
+                                {{similarProductData[index].bulkSellingPrice | mathFloor |
                                 currency: 'INR' :
                                 'symbol' : '1.0-0'}}
                             </small>
@@ -88,7 +88,7 @@
                     </ng-container>
                 </div>
                 <div class="qty_section"
-                    *ngIf="productService.oosSimilarProductsData.similarData[index].productMrp > 0">
+                    *ngIf="similarProductData[index].productMrp > 0">
                     <div class="quantity-block">
                         <span class="add-qty qty-block" (click)="updateProductQunatity('DECREMENT')">&#8722;</span>
                         <input id="product_quantity" [formControl]="qunatityFormControl"
@@ -96,12 +96,12 @@
                         <span class="remove-qty qty-block" (click)="updateProductQunatity('INCREMENT')">&#43;</span>
                     </div>
                     <div class="quan-details"
-                        *ngIf="productService.oosSimilarProductsData.similarData[index].productMinimmumQuantity>1">
+                        *ngIf="similarProductData[index].productMinimmumQuantity>1">
                         <p>Qty Per Pack :
-                            <span>{{productService.oosSimilarProductsData.similarData[index].priceQuantityCountry['packageUnit']}}</span>
+                            <span>{{similarProductData[index].priceQuantityCountry['packageUnit']}}</span>
                         </p>
                         <p>Min Order Qty :
-                            <span>{{productService.oosSimilarProductsData.similarData[index].productMinimmumQuantity}}
+                            <span>{{similarProductData[index].productMinimmumQuantity}}
                                 Pack</span>
                         </p>
                     </div>
@@ -109,15 +109,15 @@
             </div>
             <div class="prod-inner-desc">
                 <span (click)="getReviewsAndRatings()" class="rating-box"
-                    *ngIf="productService.oosSimilarProductsData.similarData[index].avgRating > 0">{{productService.oosSimilarProductsData.similarData[index].avgRating
+                    *ngIf="similarProductData[index].avgRating > 0">{{similarProductData[index].avgRating
                     | number : '1.1-1'}}
                     <i class="icon-rating-star"></i>
                 </span>
                 <div class="prod-status">
                     <p class="prod-status-right">
                         <small (click)="getReviewsAndRatings()" class="review"
-                            *ngIf="productService.oosSimilarProductsData.similarData[index].reviewCount > 0">
-                            {{productService.oosSimilarProductsData.similarData[index].reviewCount}}
+                            *ngIf="similarProductData[index].reviewCount > 0">
+                            {{similarProductData[index].reviewCount}}
                             Reviews
                         </small>
                     </p>
@@ -125,28 +125,29 @@
             </div>
             <!--recently bought product section -->
             <div class="recent-bought-wrap"
-                *ngIf="productService.oosSimilarProductsData.similarData[index].recentBoughtMessage">
+                *ngIf="similarProductData[index].recentBoughtMessage">
                 <i class="icon-trending"></i>
                 <span
-                    class="inner-text">{{productService.oosSimilarProductsData.similarData[index].recentBoughtMessage}}</span>
+                    class="inner-text">{{similarProductData[index].recentBoughtMessage}}</span>
             </div>
         </div>
         <!--fallback keyfeatures|specifications|details-->
         <ng-template #pdpinfo [ngTemplateOutlet]="pdpinfo" let-section="section" let-product="product"
-            [ngTemplateOutletContext]="{ product:productService.oosSimilarProductsData.similarData[index] , section: productService.oosSimilarProductsData.similarData[index] | productInfoSection }">
+            [ngTemplateOutletContext]="{ product:similarProductData[index] , section: similarProductData[index] | productInfoSection }">
             <ng-container [ngSwitch]="section">
                 <!--Features-->
                 <div *ngSwitchCase="'features'" class="key-features">
-                    <div class="inline-heading">
+                    <!-- <div class="inline-heading">
                         <h3 class="heading-3">Key Features</h3>
-                    </div>
-                    <ul class="feature-list">
+                    </div> -->
+                    <product-feature-details [isFromOosSimilarCard]="true" [productKeyFeatures]="product.productKeyFeatures | sliceArray:3"></product-feature-details>
+                    <!-- <ul class="feature-list">
                         <li *ngFor="let feature of product.productKeyFeatures | sliceArray:3">
                             <p>
                                 <span>{{feature}}.</span>
                             </p>
                         </li>
-                    </ul>
+                    </ul> -->
                     <div class="show-all-strip">
                         <span
                             (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'key features', type: 'show all specifications'});">View
@@ -157,8 +158,10 @@
                 </div>
                 <!--Specifications-->
                 <div *ngSwitchCase="'specifications'" class="product-specification pwa-row">
-                    <h2 class="heading-3 pwa-col-12">Product Specifications</h2>
-                    <table width="100%" class="product-spec pwa-col-12" cellpadding="0" cellspacing="0">
+                    <!-- <product-feature-details [productKeyFeatures]="product.productKeyFeatures | sliceArray:3"></product-feature-details> -->
+                    <h2 *ngIf="product.productAttributes?.length > 0" class="heading-3 pwa-col-12">Product Specifications</h2>
+                    <product-feature-details [productAttributes]="product.productAttributes" [isFromOosSimilarCard]="true" [productKeyFeatures]="product.productKeyFeatures | sliceArray:3"></product-feature-details>
+                    <!-- <table width="100%" class="product-spec pwa-col-12" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="left">
                                 <div>Brand</div>
@@ -181,7 +184,7 @@
                                 </div>
                             </td>
                         </tr>
-                    </table>
+                    </table> -->
                     <div (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'specifications', type: 'show all specifications'});"
                         class="show-all-strip spec pwa-col-12">
                         <span>View Details
@@ -251,15 +254,9 @@
                 <button class="f-14" (click)="buyNow(true)">BUY NOW</button>
             </div>
         </div>
-        <div class="pdp-card-breadcrumb" *ngIf="breadcrumData?.length > 0">
-            <ul class="oos-card-{{index}}">
-                <li *ngFor="let bread of breadcrumData">
-                    <span (click)="navigateTo(bread?.categoryLink)">
-                        {{ bread?.categoryName }}
-                    </span>
-                </li>
-            </ul>
-        </div>
+        <ng-container *ngIf="breadcrumData && breadcrumData.length > 0">
+            <breadcrumb-nav [breadcrumb]="breadcrumData"></breadcrumb-nav>
+        </ng-container>
     </div>
 </div>
 

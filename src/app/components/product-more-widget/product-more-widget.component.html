@@ -1,4 +1,4 @@
-<section class="widget-container pwa-row pad-0" *ngIf="productCategoryDetails">
+<section class="widget-container pwa-row pad-0 mt-10" *ngIf="productCategoryDetails">
     <div class="pwa-col-12">
         <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
             [href]="[baseDomain+'/'+productCategoryDetails['categoryLink']]" class="widget-items">

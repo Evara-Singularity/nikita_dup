@@ -2,6 +2,7 @@
 @import "../../scss/components/checkbox";
 @import "../../scss/components/radio";
 @import "../../scss/layout/forms.scss";
+@import '../../../app/modules/shared-checkout-address/common-checkout.scss';
 .sub-strip {
     padding: 15px 10px 0px;
     border: 0;
@@ -20,20 +21,9 @@
         }
     }
 }
-.shipping-container {
-    @extend %white-card;
-    margin-top: 10px;
-    @extend %cards;
-    padding: 0px;
-    border: 0;
-    .addButtonContainer {
-        padding: 15px 10px 15px;
-    }
-}
 
 .address-list {
     @extend %clear-fix;
-    // @extend %container;
     label {
         // padding: 10px 0;
         display: block;
@@ -104,14 +94,7 @@
 //       }
 //     }
 //   }
-.continue-btn {
-    height: 60px;
-    @extend %ripple;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-}
+
 
 .addAddressPopup {
     .header_add_edit {

@@ -7,23 +7,18 @@
         height: 84px;
        }
     .product-description {
-        width: calc(100% - 104px);
+        width: calc(100% - 95px);
         .description-txt{
-            font-size: $large-font;
+            font-size: $medium-font;
             line-height: $medium-line-height;
-            padding-bottom: 5px;
         }
         .brand{
             font-size: $small-font;
             line-height: $small-line-height;
-            font-weight: $font-bold;
-            span{
-                display: inline-block;
-                color: var(--spanish-gray);
-            }
+            color: var(--spanish-gray);
         }
         .price{
-            margin: 5px 0 0;
+            margin: 10px 0 0;
             font-size: $small-font;
             .after-discount{
                 display: block;

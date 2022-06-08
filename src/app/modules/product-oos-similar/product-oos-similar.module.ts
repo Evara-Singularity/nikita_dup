@@ -10,6 +10,8 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { ProductInfoSectionPipeModule } from '@app/utils/pipes/product-oos-similar-card-section.pipe';
 import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
 import { ObserveVisibilityDirectiveModule } from "@app/utils/directives/observe-visibility.directive";
+import { ProductFeatureDetailsModule } from "@app/components/product-feature-details/product-feature-details.component";
+import { BreadcrumbNavModule } from "../breadcrumb-nav/breadcrumb-nav.module";
 
 @NgModule({
   declarations: [ProductOosSimilarComponent, ProductOosSimilarCardComponent],
@@ -19,9 +21,12 @@ import { ObserveVisibilityDirectiveModule } from "@app/utils/directives/observe-
     CommonModule,
     MathFloorPipeModule,
     SliceArrayPipeModule,
+    BreadcrumbNavModule,
     ReactiveFormsModule,
+    ProductFeatureDetailsModule,
     ProductInfoSectionPipeModule,
     ObjectToArrayPipeModule,
+    ProductFeatureDetailsModule,
     ObserveVisibilityDirectiveModule
   ],
   exports: [ProductOosSimilarComponent, ProductOosSimilarCardComponent],

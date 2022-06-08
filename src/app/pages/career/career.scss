@@ -36,12 +36,6 @@
             }
             button{
                 margin-top: 50px;
-                &.explorebtn{
-                    padding: 15px 30px;
-                    font-size: $large-font;
-                    font-weight:$font-bold;
-                    border-radius: $border-radius-8;
-                }
             }
         }
         h1 {
@@ -305,9 +299,6 @@
         }
         button{
             margin-top:35px;
-            font-size: $large-font;
-            border-radius: $border-radius-8;
-            padding: 15px 30px;
         }
     }
 }

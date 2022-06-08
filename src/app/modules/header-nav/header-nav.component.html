@@ -1,128 +1,63 @@
 <header class="inner-pages inner-pages-for-listing" *ngIf="!extraData.hideHeader">
-    <div class="main-header">
-        <!-- start header varient 1 -->
-        <div *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (!_commonService.isScrolledHeader)"
-            class="pwa-header-1">
-            <div class="head-d-flex-inner logo-container">
-                <i *ngIf="(_commonService.isHomeHeader) || (routerData && routerData['menuBar'])" class="icon-menu"
-                    id="icon-menu" (click)="loadSideNav()"></i>
-                <i *ngIf="(!_commonService.isHomeHeader || _commonService.isPLPHeader) && (routerData && !routerData['menuBar'])"
-                    (click)="goBack()" class="icon-back-arrow" id="icon-back"></i>
-                <!-- <a [routerLink]="['/']" class="icon-logo" *ngIf="(routerData && routerData['logo']) && (_commonService.isHomeHeader || _commonService.isPLPHeader)"></a> -->
-                <a *ngIf="(routerData && routerData['logo']) && (_commonService.isHomeHeader || _commonService.isPLPHeader)"
-                    class="moglix-app-logo" [routerLink]="['/']">
-                    <img class="logo-2x" src="{{imgAssetPath}}assets/img/moglix_logo_red@3x.png">
-                </a>
-                <a *ngIf="!(_commonService.isHomeHeader || _commonService.isPLPHeader) && !(routerData && routerData['title'])"
-                    class="moglix-app-logo" [routerLink]="['/']">
-                    <!-- <img src="{{imgAssetPath}}assets/img/moglix-logo.svg"> -->
-                    <i class="icon-moglix_app_logo"></i>
-                </a>
-            </div>
-            <div class="head-d-flex-inner head-icons"
-                [ngClass]="{'home-icons': (_commonService.isHomeHeader || _commonService.isPLPHeader)}"
-                *ngIf="hideElLogin">
-                <a (click)="navigateToLogin($event)"
-                    *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader) && (isUserLogin == 'false' || !isUserLogin )"
-                    class="extra-large-font login-txt text-500">LOGIN</a>
-                <a [routerLink]="['/store/brands']" *ngIf="(_commonService.isHomeHeader || _commonService.isPLPHeader)"
-                    class="icon-brand_store red-txt"></a>
-                <!-- <a *ngIf="!(_commonService.isHomeHeader || _commonService.isPLPHeader)" (click)="loadSearchNav()" class="icon-search red-txt"></a> -->
-                <div class="search-bar" *ngIf="!(_commonService.isHomeHeader || _commonService.isPLPHeader)">
-                    <i class="icon-search"></i>
-                    <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
-                </div>
-                <a (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
-                    <span class="badge" *ngIf="noOfCart != 0">{{ noOfCart }}</span>
-                </a>
-                <a *ngIf="!(_commonService.isHomeHeader || _commonService.isPLPHeader) && (routerData && !routerData['menuBar'])"
-                    (click)="loadBottomSheet()" class="icon-more_options"></a>
-            </div>
-        </div>
+    <div class="main-header" [ngSwitch]="activeModuleName">
 
-        <div *ngIf="(_commonService.isHomeHeader  || _commonService.isPLPHeader) && !(_commonService.isScrolledHeader)"
-            class="search-bar">
-            <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();"
-                placeholder="Search Product/Category/Brand...">
-            <div class="home-search-animation">
-            </div>
-        </div>
-        <!-- Category Header, header varient-2 -->
-        <div class="pwa-header-2">
-            <ng-container
-                *ngIf="(_commonService.isPLPHeader && _commonService.isScrolledHeader) || !_commonService.isPLPHeader">
-                <i *ngIf="!_commonService.isHomeHeader && router.url.includes('dashboard/')  || routerData['title'] == 'Feedback'"
-                    class="icon-menu" id="icon-menu" (click)="loadSideNav()"></i>
-                <i *ngIf="!_commonService.isHomeHeader && (routerData && !routerData['menuBar']) && !router.url.includes('dashboard/')"
-                    [ngClass]="{'login-back-icon': (routerData && routerData['title'])}" (click)="goBack()"
-                    class="icon-back-arrow" id="icon-back"></i>
-                <span class="page-name f-16" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }}
-                    {{cartHeaderText}}</span>
-                <a *ngIf="!_commonService.isHomeHeader && !(routerData && routerData['title'])" class="moglix-app-logo"
-                    [routerLink]="['/']">
-                    <i class="icon-moglix_app_logo"></i>
-                </a>
-                <a class="search-bar-mini"
-                    *ngIf="!_commonService.isHomeHeader && !isLoginPage && !(routerData && routerData['title'])  && displaySearch">
-                    <i class="icon-search"></i>
-                    <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
-
-                </a>
-                <a *ngIf="!_commonService.isHomeHeader  && !isLoginPage && (routerData && routerData['title'])"
-                    (click)="loadSearchNav()" class="icon-search red-txt"></a>
-                <a *ngIf="!_commonService.isHomeHeader && !isLoginPage && displayCart"
-                    (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
-                    <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
-                </a>
-                <a *ngIf="!_commonService.isHomeHeader && !isLoginPage && (routerData && !routerData['menuBar']) && displayMenu"
-                    (click)="loadBottomSheet()" class="icon-more_options"></a>
+        <ng-container *ngSwitchCase="MODULE_NAME.HOME">
+            <ng-container *ngIf="!_commonService.isScrolledHeader">
+                <home-expanded-header (loadSideNav$)="loadSideNav()" (navigateToLogin$)="navigateToLogin($event)"
+                    (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()" [noOfCart]="noOfCart"
+                    [isUserLogin]="isUserLogin" [imgAssetPath]="imgAssetPath"
+                    [enableBackBtn]="(!_commonService.isHomeHeader || _commonService.isPLPHeader) && (routerData && !routerData['menuBar'])">
+                </home-expanded-header>
             </ng-container>
-        </div>
-        <!-- Category Header, header varient-2  END -->
+            <ng-container *ngIf="_commonService.isScrolledHeader">
+                <home-fixed-header [noOfCart]="noOfCart" (loadSearchNav$)="loadSearchNav()"
+                    (loadSideNav$)="loadSideNav()">
+                </home-fixed-header>
+            </ng-container>
+        </ng-container>
 
-        <!-- dashboard header -->
-        <!-- <div class="pwa-header-dashboard container">
-            <div class="hvd-inner">
-                <a><i (click)="goBack()" class="icon-back-arrow" id="icon-back"></i></a>
-                <a>
-                    <i class="icon-moglix_app_logo"></i>
-                </a>
-                <a><span class="page-name f-16" *ngIf="(routerData && routerData['title'])">{{ routerData['title'] }}
-                    {{cartHeaderText}}</span></a>
-            </div>
-            <div class="hvd-inner">
-                <a *ngIf="!_commonService.isHomeHeader  && !isLoginPage && (routerData && routerData['title'])"
-                    (click)="loadSearchNav()" class="icon-search "></a>
-                <a *ngIf="!_commonService.isHomeHeader && !isLoginPage && displayCart"
-                    (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
-                    <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
-                </a>
-                <a class="icon-more_options"></a>
-            </div>
-        </div> -->
+        <ng-container *ngSwitchCase="MODULE_NAME.PRODUCT_LISTING_PAGE">
+            <ng-container *ngIf="!_commonService.isScrolledHeader">
+                <home-expanded-header (loadSideNav$)="loadSideNav()" (navigateToLogin$)="navigateToLogin($event)"
+                    (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()" [noOfCart]="noOfCart"
+                    [isUserLogin]="isUserLogin" [imgAssetPath]="imgAssetPath"
+                    [enableBackBtn]="(!_commonService.isHomeHeader || _commonService.isPLPHeader) && (routerData && !routerData['menuBar'])">
+                </home-expanded-header>
+            </ng-container>
+            <ng-container *ngIf="_commonService.isScrolledHeader">
+                <plp-fixed-header [noOfCart]="noOfCart" (goBack$)="goBack()" (loadBottomSheet$)="loadBottomSheet()"
+                    (loadSearchNav$)="loadSearchNav()">
+                </plp-fixed-header>
+            </ng-container>
+        </ng-container>
 
-        <!-- When Home page Header is scrolled , header varient 3 -->
-        <div class="scrolledHeader pad-10" *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader"
-            [ngClass]="{'headerFixed': _commonService.isScrolledHeader}">
-            <a *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader" class="icon-menu header-icon mt-10"
-                id="icon-menu" (click)="loadSideNav()"></a>
-            <a class="search-bar">
-                <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();"
-                    placeholder="Search Product/Category/Brand...">
-                <div class="home-search-animation">
+        <ng-container *ngSwitchCase="MODULE_NAME.CART">
+            <cart-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
+                (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
+                [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
+            </cart-header>
+        </ng-container>
 
-                </div>
-            </a>
-            <a *ngIf="_commonService.isHomeHeader && _commonService.isScrolledHeader"
-                (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1 header-icon">
-                <span class="badge onw" *ngIf="noOfCart != 0">{{noOfCart}}</span>
-            </a>
-        </div>
-        <ng-container #searchBar></ng-container>
-        <!--Search Popup-->
+        <ng-container *ngSwitchCase="MODULE_NAME.DASHBOARD">
+            <dashboard-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
+                (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
+                [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
+            </dashboard-header>
+        </ng-container>
+
+
+        <ng-container *ngSwitchDefault>
+            <plp-fixed-header [noOfCart]="noOfCart" (goBack$)="goBack()" (loadBottomSheet$)="loadBottomSheet()"
+                (loadSearchNav$)="loadSearchNav()">
+            </plp-fixed-header>
+        </ng-container>
+
     </div>
 </header>
 
 <!-- sideMenu component is loaded on demand  -->
 <ng-container #sideMenu></ng-container>
 <ng-container #bottomSheet></ng-container>
+<ng-container #searchBar></ng-container>
+
+<!-- When Home page Header is scrolled , header varient 3 -->

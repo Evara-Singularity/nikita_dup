@@ -1,0 +1,23 @@
+<div class="expanded-home-header">
+    <div class="head-d-flex-inner ">
+        <a class="icon-menu header-icon mt-10" *ngIf="!enableBackBtn" (click)="loadSideNav$.emit()"></a>
+        <i class="icon-back-arrow" id="icon-back" *ngIf="enableBackBtn" (click)="goBack$.emit()"></i>
+        <a class="moglix-app-logo" [routerLink]="['/']">
+            <img class="logo-2x" src="{{imgAssetPath}}assets/img/moglix_logo_red@3x.png">
+        </a>
+    </div>
+    <div class="head-d-flex-inner logo-container">
+        <a (click)="navigateToLogin$.emit($event)" *ngIf="!isUserLogin"
+            class="extra-large-font login-txt text-500">LOGIN</a>
+        <a [routerLink]="['/store/brands']" class="icon-brand_store red-txt"></a>
+        <a (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
+            <span class="badge" *ngIf="noOfCart != 0">{{ noOfCart }}</span>
+        </a>
+    </div>
+    <div class="search-bar">
+        <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav$.emit();"
+            placeholder="Search Product/Category/Brand...">
+        <div class="home-search-animation">
+        </div>
+    </div>
+</div>

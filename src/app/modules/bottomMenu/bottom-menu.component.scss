@@ -31,31 +31,31 @@
     border-bottom: 1px solid #E2E2E2;
     align-items: center;
     &.rfq-popup-header {
-    box-shadow: 0px 2px 3px #00000033;
+      box-shadow: 0px 2px 3px #00000033;
     }
     img {
-    width: 30px;
+     width: 30px;
     }
     .rfq_header_text {
-    margin-left: 15px;
+      margin-left: 15px;
     h3 {
-    color: $btn-color-red;
-    font-size: $large-font;
-    padding: 5px 0px;
+      color: $btn-color-red;
+      font-size: $large-font;
+      padding: 5px 0px;
     }
     p {
-    color: #53534F;
-    font-size: $medium-font;
-    }
+      color: #53534F;
+      font-size: $medium-font;
+      }
     .ins-text {
-    color: var(--onyx-black);
+       color: var(--onyx-black);
      }
     }
     
   .del-ico {
-    margin-left: auto;
-    font-size: $extra-large-2-font;
-    padding:5px;
+      margin-left: auto;
+      font-size: $extra-large-2-font;
+      padding:5px;
     }
-    }
+  }
 

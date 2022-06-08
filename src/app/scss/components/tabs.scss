@@ -6,9 +6,7 @@
   transition: transform 300ms ease-in-out;
   scroll-behavior: smooth;
   overflow: auto;
-  &::-webkit-scrollbar {
-    width: 0px;
-  }
+  @extend %hide-scrollbar;
   .pwa-tab {
     font-size: $medium-font;
     margin-right: 10px;

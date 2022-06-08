@@ -1,9 +1,10 @@
-@import '../../scss/layout/horizontalProductListing';
+@import "../../scss/variables";
 
-.Bestseller{
-    padding-top: 5px;
-}
 .view-all-strip{
     position: relative;
     @extend %view-all-strip;
+}
+
+.sponsered{
+    background-color: var(--white);
 }

@@ -3,60 +3,64 @@
 @import "../../scss/utils/utilities.scss";
 
 .submit-review {
-    .write-review-section{
+    .write-review-section {
         background: var(--white);
         padding: 15px 15px 0;
+
         .product-name {
             font-size: $extra-large-font;
             padding-bottom: 30px;
             line-height: $medium-line-height;
         }
+
         .stars-block {
             font-size: $extra-large-5-font;
             padding: 0px 0px 30px;
             justify-content: space-between;
             display: flex;
+
             .icon-rating-star {
                 margin-right: 10px;
-                &:last-child{
+
+                &:last-child {
                     margin-right: 0;
                 }
             }
         }
+
         .with-rating {
             color: var(--orange-red);
         }
+
         .without-rating {
             color: var(--silver);
         }
-        .max-char{
+
+        .max-char {
             font-size: $extra-small-font;
             text-align: end;
             color: var(--silver);
         }
     }
+
     .rate_review-text {
         font-size: $large-font;
         padding-bottom: 10px;
         font-weight: $font-bold;
     }
-    .info-list{
+
+    .info-list {
         padding: 15px 15px 10px;
         border-top: 1px dashed var(--silver);
+
         .list-information {
             li {
-              margin: 10px 0 0 10px;
-              &:last-child{
-                  margin-bottom: 10px;
-              }
+                margin: 10px 0 0 10px;
+
+                &:last-child {
+                    margin-bottom: 10px;
+                }
             }
         }
-      }
-    .stickyBottomBtn{
-        button{
-         width:$fullwidth;
-         height:50px;
-         font-size: $large-font;
-        }
-      }
+    }
 }

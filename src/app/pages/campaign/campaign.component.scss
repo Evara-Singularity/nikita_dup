@@ -23,13 +23,9 @@
             color: var(--white);
             line-height: $large-line-height;
         }
-        .watch-now {
-            background: var(--white);
-            border-radius: 5px;
+        .quaternary-btn-2 {
             color: var(--onyx-black);
-            padding: 9px 20px;
-            font-size: $small-font;
-            font-weight: $font-normal;
+            font-weight: 400;
             margin: 25px 0;
         }
     }
@@ -115,9 +111,6 @@
                         line-height: $medium-line-height;
                     }
                     .explore-now {
-                        font-size: $small-font;
-                        padding: 12px 8px;
-                        border-radius: $border-radius;
                         margin-top: 20px;
                     }
                 } 

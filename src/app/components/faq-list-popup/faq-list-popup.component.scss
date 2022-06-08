@@ -100,16 +100,14 @@
     position: fixed;
     bottom: 0px;
     box-shadow: 0px -3px 6px #00000029;
-    background-color: #ffffff;
-    width: 100%;
+    background-color: var(--white);
+    width: $fullwidth;
     padding: 20px 10px;
     p {
         text-align: center;
     }
     button {
-        width: 100%;
-        height: 40px;
-        font-size: 12px;
+        width: $fullwidth;
         margin-top: 12px;
     }
 }

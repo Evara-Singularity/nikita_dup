@@ -16,9 +16,9 @@
             [layoutType]="'SINGLE'" [addresses]="shippingAddressList" [type]="1" [showRadio]="false">
         </app-address-list>
         <div class="addButtonContainer">
-            <button class=" btn quaternary-btn-2" *ngIf="shippingAddressList.length > 0"
+            <button class=" btn quaternary-btn-1" *ngIf="shippingAddressList.length > 0"
                 style="text-transform: uppercase;" (click)="salpu.shipping = true">Change or Add address</button>
-            <button class="btn quaternary-btn-2" *ngIf="shippingAddressList.length == 0"
+            <button class="btn quaternary-btn-1" *ngIf="shippingAddressList.length == 0"
                 style="text-transform: uppercase;"
                 (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1, null, true)">Add new
                 address</button>
@@ -36,9 +36,9 @@
             [layoutType]="'SINGLE'" [addresses]="billingAddressList" [type]="2" [showRadio]="false">
         </app-address-list>
         <div class="addButtonContainer">
-            <button *ngIf="billingAddressList.length > 0" class="btn quaternary-btn-2"
+            <button *ngIf="billingAddressList.length > 0" class="btn quaternary-btn-1"
                 style="text-transform: uppercase;" (click)="salpu.billing = true">Change or Add address</button>
-            <button *ngIf="billingAddressList.length == 0" class="btn quaternary-btn-2"
+            <button *ngIf="billingAddressList.length == 0" class="btn quaternary-btn-1"
                 style="text-transform: uppercase;"
                 (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 2, null, true)">Add new
                 address</button>

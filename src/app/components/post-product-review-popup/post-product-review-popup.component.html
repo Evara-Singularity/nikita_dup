@@ -36,8 +36,8 @@
                 </ul>
             </div>
         </div>
-        <div class="stickyBottomBtn">
-            <button class="btn-red-bg" [ngClass]="{'active':reviewForm.valid && ratingValue > 0}" (click)="postReview();">SUBMIT</button>
+        <div class="fixed-bottom-cta">
+            <button class="btn primary-full-btn" [ngClass]="{'active':reviewForm.valid && ratingValue > 0}" (click)="postReview();">SUBMIT</button>
         </div>   
     </div>
 </app-pop-up>

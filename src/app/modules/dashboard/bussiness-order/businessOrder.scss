@@ -101,7 +101,7 @@
     right: 0;
     bottom: 0;
     text-align: center;
-    top: 60px;
+    top: 0px;
     img {
         position: absolute;
         left: 0;
@@ -117,18 +117,6 @@
         position: absolute;
         left: 0;
         right: 0;
-    }
-    .startshop {
-        position: absolute;
-        bottom: 0;
-        height: 50px;
-        width: 100%;
-        box-shadow: 1px 1px 15px var(--ghost-white);
-        left: 0;
-        right: 0;
-        font-size: $large-font;
-        background: var(--white);
-        color: $blue-link-color;
     }
 }
 .textgreen {

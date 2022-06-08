@@ -21,7 +21,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
     selector: 'quick-order',
     templateUrl: './quickOrder.html',
     styleUrls: ['./quickOrder.scss'],
-    encapsulation: ViewEncapsulation.None
+   
 })
 
 export class QuickOrderComponent {

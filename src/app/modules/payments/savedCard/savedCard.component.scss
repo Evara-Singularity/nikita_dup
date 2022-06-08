@@ -1,58 +1,79 @@
 @import '../../../scss/variables';
+@import '../../../scss/payment-common';
+@import '../payment-continue-btn.scss';
+.saved-details {
+    h3 {
+        padding-left: 15px;
+    }
+    .detail-txt {
+        //float: left;
+        width: 80%;
+        width: calc(100% - 45px);
+        .card-no {
+            display: block;
+            // margin: 6px 0;
+        }
+        .input-sec {
+            width: 80px;
+            padding-right: 0;
+            max-height: 0;
+            overflow: hidden;
+            @extend %transition;
+            input {
+                border-color: $blue-link-color;
+                height: 30px;
+                border: 1px solid #D7D7D7;
+                border-radius: 4px;
+                padding: 5px;
+                margin-top: 10px;
+                &::placeholder {
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+    input:checked~.chk-txt .input-sec {
+        max-height: 100px
+    }
+    .card-detail {
+        position: relative;
+        .delete-ico {
+            position: absolute;
+            right: 15px;
+            top: 20px;
+        }
+        label {
+            padding: 10px 10px;
+            // border-bottom: 1px solid $border-color;
+        }
+        &:last-child {
+            label {
+                border-bottom: 0;
+            }
+        }
+    }
+}
 
-.saved-details{
-   h3{
-      padding-left: 15px;
+.img-logo {
+    img {
+        width: 60px;
     }
-    .detail-txt{
-      float: left;
-      width: 80%;
-      width: calc(100% - 45px);
-      .card-no{
-        display: block;
-        // margin: 6px 0;
-      }
-      .input-sec{
-        width:80px;
-        padding-right: 0;
-        max-height: 0;
-        overflow: hidden;
-        @extend %transition;
-        input{
-          border-color: $blue-link-color; 
-          padding: 5px 5px 0 0;
-          height: 30px;
-           &::placeholder{
-             font-size:14px;
-           }
+}
+
+.radio-with-label-container {
+    display: flex;
+    margin: 0px 0px 10px;
+    label.radio-with-label {
+        display: inline-flex;
+        @extend %pwa-universal-radio;
+        width: 160px;
+        padding: 10px 0px !important;
+        .custom-box {
+            margin-right: 10px;
+            margin-top: -5px;
         }
-      }
-      
-    }
-    input:checked ~ .chk-txt .input-sec{
-      max-height: 100px
-    }
-    .card-detail{
-      position: relative;
-      .delete-ico{
-        position: absolute;
-        right: 15px;
-        top:20px;
-      }
-      label{
-        padding: 10px 10px;
-        // border-bottom: 1px solid $border-color;
-      }
-      &:last-child{
-        label{
-          border-bottom: 0;
+        .radio-text {
+            font-size: $medium-font;
         }
-      }
     }
-    
-  }
-.img-logo{
-  img {
-      width: 60px;
-  }
 }

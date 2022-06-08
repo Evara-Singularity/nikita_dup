@@ -94,6 +94,11 @@ export class SharedAuthService implements OnInit
         return this.dataService.callRestful(this.BASEURLS.UPDATEPASSWORD.method, this.BASEURLS.UPDATEPASSWORD.url, { body: data });
     }
 
+    updatePersonalInfo(obj) {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.UC;
+        return this.dataService.callRestful("POST", url, { body: obj });
+    }
+
     soicalAuthenticate(params) {
         params['device'] = CONSTANTS.DEVICE.device;
         let curl = CONSTANTS.NEW_MOGLIX_API + CONSTANTS.SL.API;

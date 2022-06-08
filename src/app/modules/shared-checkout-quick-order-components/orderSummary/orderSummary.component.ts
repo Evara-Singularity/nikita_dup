@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
@@ -46,7 +46,10 @@ export class OrderSummaryComponent {
             this.showPromoOfferPopup = true;
         } else {
             this._localAuthService.setBackURLTitle('/quickorder', null);
-            this.router.navigate(["/login"]);
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'backurl': '/quickorder' },
+            };
+            this.router.navigate(["/login"], navigationExtras);
         }
     }
 

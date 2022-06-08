@@ -10,7 +10,7 @@ import { CommonService } from '@app/utils/services/common.service';
   selector: 'bulk-enquiry',
   templateUrl: './bulkEnquiry.html',
   styleUrls: ['./bulkEnquiry.scss'],
-  encapsulation: ViewEncapsulation.None
+  
 })
 export class BulkEnquiryComponent {
 

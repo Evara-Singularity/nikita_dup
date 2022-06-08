@@ -59,9 +59,6 @@
     background-color: var(--ghost-white);
     padding: 0 0 0 0;
     border: 0; 
-    .addButtonContainer {
-        padding: 15px 10px;
-    }
     .shipping-container {
         @extend %white-card;
         margin-top: 10px;
@@ -69,7 +66,10 @@
         padding: 0px;
         border: 0;
         .addButtonContainer {
-            padding: 15px 10px 15px;
+            padding: 15px;
+            .quaternary-btn-1{
+                width: $fullwidth;
+            }
         }
     }
 }
@@ -92,7 +92,6 @@
 }
 .address-list {
     @extend %clear-fix;
-    // @extend %container;
     label {
         display: block;
         @extend %custom-radio-checkout;
@@ -223,17 +222,6 @@ form {
         height: calc(100% - 100px);
         overflow: auto;
         margin-top:15px;
-    }
-}
-.continue-btn {
-    height: 60px;
-    @extend %ripple;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-    &:disabled {
-        background: #bdbdbd;
     }
 }
 

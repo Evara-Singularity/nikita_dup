@@ -32,6 +32,6 @@
                 (click)="$event.stopPropagation();resendOTP()">RESEND OTP</button>
         </div>
     </div>
-    <button class="btn btn-variant1" [class.btn-disabled]="isDisabled" *ngIf="withLabel"
+    <button class="btn secondry-btn" [class.disabled]="isDisabled" *ngIf="withLabel"
         (click)="$event.stopPropagation();emitVerifiedOTP()">{{label | uppercase}}</button>
 </div>

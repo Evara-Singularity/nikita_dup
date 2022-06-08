@@ -12,16 +12,13 @@
             }
         }
     }
-
     .overlay-bg {
         z-index: 13;
         top: 120%;
     }
-
     .overlay {
         z-index: 13;
     }
-
     .content-box {
         position: fixed;
         bottom: -100%;
@@ -58,12 +55,13 @@
             }
         }
     }
-
     &.open {
+        .overlay{
+            z-index:16;
+        }
         .overlay-bg {
             top: 0;
         }
-
         .content-box {
             bottom: 0;
         }

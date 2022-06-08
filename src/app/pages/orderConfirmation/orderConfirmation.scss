@@ -43,7 +43,7 @@
         }
         .txt-list {
             li {
-                padding: 2px 0;
+                padding: 5px 0;
                 span {
                     width: 50%;
                     float: left !important;
@@ -113,17 +113,10 @@
         width: 100%;
         padding: 0px 15px 15px 15px;
         background:var(--white);
-        .outlineButton{
+        display: flex;
+        justify-content: space-between;
+        button{
             width: 48%;
-            border-radius: 8px;
-        }
-        .btn-right{
-            float: right;
-            width: 48%;
-            .btn-variant1{
-                height: 45px;
-                border-radius: 8px;
-            }
         }
     }
 }

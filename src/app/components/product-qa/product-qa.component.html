@@ -3,7 +3,7 @@
         <div class="faq-head">
             <h3 *ngIf="questionAnswerList?.data.qlist.length <= 1">Have doubts regarding this product?&nbsp;</h3>
             <h3 *ngIf="questionAnswerList?.data.qlist.length > 1">Frequently Asked Questions</h3>
-            <button (click)="$event.stopPropagation();askQuestion.emit()" class="btn redBgButton">ASK&nbsp;NOW</button>
+            <button (click)="$event.stopPropagation();askQuestion.emit()" class="btn quaternary-btn-1">ASK&nbsp;NOW</button>
         </div>
         <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
 

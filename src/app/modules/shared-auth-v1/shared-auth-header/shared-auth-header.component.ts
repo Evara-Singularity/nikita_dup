@@ -19,6 +19,7 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     @Input('enableSkipBtn') enableSkipBtn: boolean = false;
     @Output() onBackBtnClick$: EventEmitter<any> = new EventEmitter<any>();
     @Output() onSkipBtnClick$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onHomepageBtnClick$: EventEmitter<any> = new EventEmitter<any>();
     checkOutTabSubscriber: Subscription = null;
     tab: string = null;
 
@@ -54,6 +55,10 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
 
     onBackBtnClick(){
         this.onBackBtnClick$.emit(true);
+    }
+
+    onHomepageBtnClick(){
+        this.onHomepageBtnClick$.emit(true);
     }
 
     ngOnDestroy(): void

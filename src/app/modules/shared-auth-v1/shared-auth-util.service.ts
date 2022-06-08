@@ -1,6 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
@@ -77,7 +78,9 @@ export class SharedAuthUtilService implements OnInit
         this._localStorage.store('user', response);
         let cartSession = Object.assign(this._cartService.getGenericCartSession);
         cartSession['cart']['userId'] = response['userId'];
-        this.updateCartSession(`Welcome to Moglix, ${params['firstName']}`, isCheckout, (expressSignup) ? redirectUrl : null );
+        const firstName = params['firstName'] || '';
+        const welcomeText = ((firstName.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) || firstName == '') ? `Welcome to Moglix!` : `Welcome to Moglix, ${firstName}`
+        this.updateCartSession(welcomeText, isCheckout, (expressSignup) ? redirectUrl : null );
     }
 
     updateOTPControls(otpForm: FormArray, length: number) 

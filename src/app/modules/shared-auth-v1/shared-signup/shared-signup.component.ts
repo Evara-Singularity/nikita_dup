@@ -185,13 +185,25 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     private handleSuccessProfileUpdate(name = '') {
+        const text = ((name.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) || name == '') ? `Welcome to Moglix!` : `Welcome to Moglix, ${name}`
+        // console.log('handleSuccessProfileUpdate name ==>', text);
         setTimeout(() => {
             this._toastService.show({
                 type: "success",
-                text: ((name.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) || name == '') ? `Welcome to Moglix!` : `Welcome to Moglix, ${name}`,
+                text,
             });
         }, 500);
         this._router.navigateByUrl(this.getRedirectURL() || '/');
+    }
+
+    handleSuccessProfileUpdateHomeRedirection() {
+        setTimeout(() => {
+            this._toastService.show({
+                type: "success",
+                text: `Welcome to Moglix!`,
+            });
+        }, 500);
+        this._router.navigateByUrl('/');
     }
 
     captureOTP(otpValue)
@@ -261,7 +273,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     handleBackBtnInPhoneSignUp(){
-        this.handleSuccessProfileUpdate(null);
+        this.handleSuccessProfileUpdate('');
     }
 
     updateSignupStep(value) {

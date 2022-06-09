@@ -112,9 +112,9 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.isSingupUsingPhone && !(this.email.value)) { this.initiateSingup(); return;}
         let userInfo = null;
         if (this.isSingupUsingPhone) {
-            userInfo = { email: this.email.value, phone: '', type: 'e' };
+            userInfo = { email: this.email.value, phone:  this.phone.value ? this.phone.value : '', type: 'e' };
         } else {
-            userInfo = { email: '', phone: this.phone.value, type: 'p' };
+            userInfo = { email: this.email.value ? this.email.value :'', phone: this.phone.value, type: 'p' };
         }
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.isUserExist(userInfo).subscribe(

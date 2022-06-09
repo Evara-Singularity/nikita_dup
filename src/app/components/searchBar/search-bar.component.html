@@ -38,7 +38,7 @@
                                     <div class="search-count">
                                         <span class="prodCount" *ngIf="prod.productCount">{{prod.productCount}}</span>
                                         <!-- <img (click)="handleSendTextToSearchBar(prod.term, $event)" src="{{imageAssetPath}}assets/img/interface.png"> -->
-                                        <i (click)="handleSendTextToSearchBar(prod.term, $event)"
+                                        <i (click)="$event.stopPropagation();handleSendTextToSearchBar(prod.term, $event)"
                                             class="icon-share-box-line interfaceIcon"></i>
                                     </div>
                                 </li>

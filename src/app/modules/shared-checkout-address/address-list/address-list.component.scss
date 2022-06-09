@@ -111,15 +111,8 @@
         &:last-child {
             border-bottom: none;
         }
-        // .chk-txt {
-        //     margin-left: 5px;
-        // }
     }
     @extend %clear-fix;
-    label {
-        float: left;
-        width: 93%;
-    }
     .bin-icon {
         float: right;
         text-align: right;

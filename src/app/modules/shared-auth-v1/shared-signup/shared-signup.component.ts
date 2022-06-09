@@ -267,8 +267,9 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
             queryParams.state === 'raiseRFQQuote') ||
             queryParams.state === 'askQuestion')) {
             REDIRECT_URL += '?state=' + queryParams['state'];
+            this._sharedAuthService.redirectUrl += '?state=' + queryParams['state'];
         }
-        console.log('getRedirectURL ==>', REDIRECT_URL , this._sharedAuthService.redirectUrl, BACKURLTITLE);
+        
         return (this._sharedAuthService.redirectUrl) ? this._sharedAuthService.redirectUrl : ((BACKURLTITLE) ? BACKURLTITLE : REDIRECT_URL);
     }
 

@@ -270,7 +270,6 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
             this._sharedAuthService.redirectUrl += '?state=' + queryParams['state'];
         }
         
-        console.log('getRedirectURL ==>', REDIRECT_URL , this._sharedAuthService.redirectUrl, BACKURLTITLE);
         return (this._sharedAuthService.redirectUrl) ? this._sharedAuthService.redirectUrl : ((BACKURLTITLE) ? BACKURLTITLE : REDIRECT_URL);
     }
 

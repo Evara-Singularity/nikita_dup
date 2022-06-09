@@ -358,6 +358,7 @@ export class OrderDetailComponent implements OnInit {
     if (data && data.hide) {
       this.openPopup = null;
       this.step = 1;
+      this.reason_id = null;
       this.resetReturnRefund();
     }
   }

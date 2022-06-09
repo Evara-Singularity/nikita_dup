@@ -11,6 +11,7 @@ declare let dataLayer: any;
     styleUrls: ['./promo-code-list.component.scss']
 })
 export class PromoCodeListComponent implements OnInit {
+    displayPage = false;
     allPromoCodes: Array<any> = [];
     @Output('closePromoOfferPopup') closePromoOfferPopup = new EventEmitter();
 
@@ -33,6 +34,7 @@ export class PromoCodeListComponent implements OnInit {
                     this.pushDataLayer();
                 }
                 this._loaderService.setLoaderState(false);
+                this.displayPage = true
             });
         }
     }

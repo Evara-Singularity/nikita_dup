@@ -1437,6 +1437,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       quantity: this.cartQunatityForProduct
     });
     this.cartService.addToCart({ buyNow, productDetails: cartAddToCartProductRequest }).subscribe(result => {
+      console.log(result);
       // analytic events needs to called here
       this.analyticAddToCart(buyNow, this.cartQunatityForProduct);
       this.intialAddtoCartSocketAnalyticEvent(buyNow);

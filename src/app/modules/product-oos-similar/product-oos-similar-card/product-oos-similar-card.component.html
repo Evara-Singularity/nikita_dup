@@ -80,48 +80,9 @@
                 </div>
                 <!--Details-->
                 <div *ngSwitchCase="'details'" class="prod-detail pwa-row">
-                    <h2 class="heading-3 pwa-col-12">Product Details</h2>
-                    <ng-container *ngIf="product.productDescripton != undefined else noProdDesc">
-                        <p [innerHTML]="product.productDescripton" class="pwa-col-12"></p>
-                        <p class="static-desc pwa-col-12"> Browse through the extensive list of
-                            <a class="blueText"
-                                (click)="navigateLink('/'+ (product.productCategoryDetails ? product.productCategoryDetails['categoryLink'] : ''))">
-                                {{product.productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
-                            <a class="blueText"
-                                (click)="navigateLink('/'+ product.productBrandCategoryUrl)">{{product.productBrandDetails
-                                ?
-                                product.productBrandDetails['brandName'] : ''}}
-                                {{product.productCategoryDetails['categoryName']}}.</a> available at Moglix in the
-                            lowest
-                            price range.
-                        </p>
-                    </ng-container>
-                    <ng-template #noProdDesc>
-                        <p class="pwa-col-12">
-                            {{product.productName}} is a premium quality product from {{product.productBrandDetails ?
-                            product.productBrandDetails['brandName'] : ''}}. Moglix is a
-                            well-known ecommerce platform for qualitative range of <a class="blueText"
-                                (click)="navigateLink('/'+product.productCategoryDetails['categoryLink'])">{{product.productCategoryDetails
-                                ?
-                                product.productCategoryDetails['categoryName'] : ''}}</a>.
-                            All {{product.productName}} are manufactured by using quality assured material and advanced
-                            techniques,
-                            which make them up to the standard in this highly challenging field. The materials utilized
-                            to
-                            manufacture {{product.productName}}, are sourced
-                            from the most reliable and official vendors, chosen after performing detailed market
-                            surveys.
-                            {{product.productBrandDetails ? product.productBrandDetails['brandName'] : ''}} products are
-                            widely acknowledged in
-                            the market for their high
-                            quality. We are dedicatedly involved in
-                            providing an excellent quality array of <a class="blueText"
-                                (click)="navigateLink('/'+product.productBrandCategoryUrl)">
-                                {{product.productBrandDetails ? product.productBrandDetails['brandName'] : ''}}
-                                {{product.productCategoryDetails ?
-                                product.productCategoryDetails['categoryName'] : ''}}</a>.
-                        </p>
-                    </ng-template>
+                    <app-product-oos-similar-product-detail 
+                        [product]="product"
+                    ></app-product-oos-similar-product-detail>                    
                     <div (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'product details', type: 'read more'});"
                         class="show-all-strip pwa-col-12">
                         <span>View Details

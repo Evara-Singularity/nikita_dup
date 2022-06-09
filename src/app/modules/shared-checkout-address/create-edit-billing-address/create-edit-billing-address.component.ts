@@ -17,7 +17,7 @@ import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 @Component({
     selector: 'create-edit-billing-address',
     templateUrl: './create-edit-billing-address.component.html',
-    styleUrls: ['../common-checkout.scss'],
+    styleUrls: ['./create-edit-billing-address.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy

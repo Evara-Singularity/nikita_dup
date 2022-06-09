@@ -1,24 +1,25 @@
-<div id="oosSimilarTopSection" class="oosSimilarTopSection" *ngIf="productOutOfStock">
-    <h2 *ngIf="productService.oosSimilarProductsData.similarData.length > 1">Consider These Available Items</h2>
-    <div class="horizontal-scroll-container consider-these-products" id="horizontal-scroll-container"
-        (scroll)="onScrollOOOSimilar($event)">
-        <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 1">
-            <product-card-horizontal-grid-view [hideAd]="true"
-                *ngFor="let card of similarForOOSContainer; let i = index;"
-                [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
-                [moduleUsedIn]="'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP'"
-                [product]="productService.oosSimilarProductsData.similarData[i]">
-            </product-card-horizontal-grid-view>
-        </ng-container>
-        <ng-container *ngIf="similarForOOSLoaded">
-            <product-card-skeleton *ngFor="let skeleton of similarForOOSContainer"
-                class="skeleton-pd-card-container skeleton-card-view">
-            </product-card-skeleton>
-        </ng-container>
+<div class="pwa-row">
+    <div id="oosSimilarTopSection" class="pwa-col-12 oosSimilarTopSection" *ngIf="productOutOfStock">
+        <h2 *ngIf="productService.oosSimilarProductsData.similarData.length > 1">Consider These Available Items</h2>
+        <div class="horizontal-scroll-container consider-these-products" id="horizontal-scroll-container"
+            (scroll)="onScrollOOOSimilar($event)">
+            <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 1">
+                <product-card-horizontal-grid-view [hideAd]="true"
+                    *ngFor="let card of similarForOOSContainer; let i = index;"
+                    [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
+                    [moduleUsedIn]="'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP'"
+                    [product]="productService.oosSimilarProductsData.similarData[i]">
+                </product-card-horizontal-grid-view>
+            </ng-container>
+            <ng-container *ngIf="similarForOOSLoaded">
+                <product-card-skeleton *ngFor="let skeleton of similarForOOSContainer"
+                    class="skeleton-pd-card-container skeleton-card-view">
+                </product-card-skeleton>
+            </ng-container>
+        </div>
     </div>
 </div>
-
-<div style="margin-top:70px" ></div>
+<div style="margin-top:10px"></div>
 
 <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages?.length === 1"
     [ngClass]="[carouselInitialized ? '' : 'before-init']">
@@ -68,7 +69,7 @@
     </div>
     <!-- TODO: check how this section is used in PQA -->
     <ng-container *ngIf="productTags != undefined && !this.productOutOfStock">
-       
+
         <div class="image_tag">
             <div class="tag_container"
                 *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'image': 'object' | slice:0:1;let i = index;">
@@ -89,8 +90,9 @@
     [rawProductCountMessage]="rawProductCountMessage">
 </product-description>
 
-<product-grouping-attributes [isCommonProduct]="isCommonProduct" [productFilterAttributesList]="productFilterAttributesList"
-    (updateAttr)="updateAttr($event)" (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
+<product-grouping-attributes [isCommonProduct]="isCommonProduct"
+    [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)"
+    (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
 
 <product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" [rawProductData]="rawProductData"
     [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct"
@@ -99,8 +101,7 @@
 </product-bulk-quantity>
 
 <!-- TODO: skeleton to be implemented -->
-<div *ngIf="!productOutOfStock" observeVisibility [debounceTime]="300"
-    (visible)="onVisibleOffer($event)">
+<div *ngIf="!productOutOfStock" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
     <ng-container #offerSection></ng-container>
 </div>
 

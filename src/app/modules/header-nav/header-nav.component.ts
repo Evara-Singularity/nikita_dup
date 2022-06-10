@@ -312,7 +312,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             )
             .subscribe((rData) =>
             {
-                console.log(rData);
                 this.routerData = rData;
                 this.activeModuleName = rData['moduleName'];
             });

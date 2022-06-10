@@ -40,9 +40,10 @@
                     Brand: {{item.brandName}}
                 </p> -->
                 <p *ngIf="!item.oos" class="price clearfix">
-                    <span class="before-discount gray-txt">MRP ₹1,999 <span class="green-txt">(12% OFF)</span></span>
-                    <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">₹
-                        {{item.priceWithoutTax | mathFloor | number : '1.2-2'}}</span>
+                    <span class="before-discount gray-txt">MRP ₹{{item.amount | mathFloor | number : '1.2-2'}} <span class="green-txt">({{item.taxPercentage}}% OFF)</span></span>
+                    <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">
+                        ₹{{item.priceWithoutTax | mathFloor | number : '1.2-2'}}
+                    </span>
                     <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax | mathFloor |
                         number : '1.2-2'}}</span>
                 </p>
@@ -156,7 +157,7 @@
                 </li>
                 <li>
                     <span class="tag-label">Coupon Discount</span>
-                    <span class="tag-value green-txt">₹100</span>
+                    <span class="tag-value green-txt">₹{{(item.offer ? item.offer : 0) | mathFloor | number : '1.2-2'}}</span>
                 </li>
                 <li class="bold-txt">
                     <span class="tag-label">Total</span>

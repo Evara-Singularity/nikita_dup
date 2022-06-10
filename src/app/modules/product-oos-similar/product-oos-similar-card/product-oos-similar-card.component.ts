@@ -263,7 +263,7 @@ export class ProductOosSimilarCardComponent {
     if (!this.productCrouselInstance) {
       this.isProductCrouselLoaded = true;
       const { ProductCrouselComponent } = await import(
-        "../../../modules/product-crousel/ProductCrousel.component"
+        "../../product-crousel/ProductCrousel.component"
       ).finally(() => {
         this.clearPseudoImageCrousel();
       });

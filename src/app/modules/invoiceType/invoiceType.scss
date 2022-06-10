@@ -1,8 +1,9 @@
 @import '../../scss/variables';
 @import '../../scss/components/checkbox';
 .invoice-container {
+    margin-top: 75px !important;
     .invoice-select {
-        @extend %white-card;
+        // @extend %white-card;
         display: flex;
         align-items: center;
         label {

@@ -39,8 +39,7 @@
 }
 .category-grid-container{
     .category-grid-card{
-        width: 30%;
-        margin: 10px 0 0 10px;
+        width: calc(33.3% - 6px);
         background: var(--white);
        a{
            padding:5px;

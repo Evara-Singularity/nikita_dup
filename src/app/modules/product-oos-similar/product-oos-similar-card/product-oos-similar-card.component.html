@@ -37,117 +37,28 @@
                 </div>
             </div>
         </div>
-        <div class="prod-description">
-            <h1 class="prod-name heading" *ngIf="similarProductData[index].productName">
-                {{similarProductData[index].productName}}</h1>
-            <div class="pdp-price-qty-block">
-                <div class="price-block"
-                    *ngIf="similarProductData[index].productMrp > 0">
-                    <ng-container *ngIf="similarProductData[index].productMrp > 0">
-                        <p class="mrp"
-                            *ngIf="similarProductData[index].productMrp > similarProductData[index].priceWithoutTax">
-                            <small>{{similarProductData[index].productMrp | currency:
-                                'INR' :
-                                'symbol' : '1.0-0'}}</small>
-                            <span
-                                *ngIf="similarProductData[index].productDiscount != undefined && similarProductData[index].productDiscount>0 && similarProductData[index].productMrp > 0 && similarProductData[index].bulkPriceWithoutTax==null">
-                                {{((similarProductData[index].productMrp -
-                                similarProductData[index].priceWithoutTax)/similarProductData[index].productMrp)*100
-                                | mathFloor | number:'1.0-0'}}% OFF
-                            </span>
-                            <span
-                                *ngIf="similarProductData[index].productDiscount != undefined && similarProductData[index].productDiscount>0 && similarProductData[index].productMrp > 0 && similarProductData[index].bulkPriceWithoutTax!=null">
-                                {{ similarProductData[index].bulkDiscount | mathFloor |
-                                number:'1.0-0'}}% OFF
-                            </span>
-                        </p>
-                        <p class="actual-price"
-                            *ngIf="similarProductData[index].priceWithoutTax > 0 && similarProductData[index].bulkPriceWithoutTax==null">
-                            {{similarProductData[index].priceWithoutTax | currency: 'INR'
-                            :
-                            'symbol' : '1.0-0'}}
-                            <small *ngIf="similarProductData[index].taxPercentage">
-                                GST @{{similarProductData[index].taxPercentage}}% Inc.
-                                Price:
-                                {{similarProductData[index].productPrice | mathFloor |
-                                currency: 'INR' :
-                                'symbol' : '1.0-0'}}
-                            </small>
-                        </p>
-                        <!-- <p class="actual-price"
-                            *ngIf="similarProductData[index].bulkPriceWithoutTax!==null">
-                            {{similarProductData[index].bulkPriceWithoutTax | currency: 'INR'
-                            : 'symbol' : '1.0-0'}}
-                            <small *ngIf="similarProductData[index].taxPercentage">
-                                GST @{{similarProductData[index].taxPercentage}}% Inc. Price:
-                                {{similarProductData[index].bulkSellingPrice | mathFloor |
-                                currency: 'INR' :
-                                'symbol' : '1.0-0'}}
-                            </small>
-                        </p> -->
-                    </ng-container>
-                </div>
-                <div class="qty_section"
-                    *ngIf="similarProductData[index].productMrp > 0">
-                    <div class="quantity-block">
-                        <span class="add-qty qty-block" (click)="updateProductQunatity('DECREMENT')">&#8722;</span>
-                        <input id="product_quantity" [formControl]="qunatityFormControl"
-                            (focusout)="onChangeCartQuanityValue()" type="text" min="1" maxlength="3" numbersOnly />
-                        <span class="remove-qty qty-block" (click)="updateProductQunatity('INCREMENT')">&#43;</span>
-                    </div>
-                    <div class="quan-details"
-                        *ngIf="similarProductData[index].productMinimmumQuantity>1">
-                        <p>Qty Per Pack :
-                            <span>{{similarProductData[index].priceQuantityCountry['packageUnit']}}</span>
-                        </p>
-                        <p>Min Order Qty :
-                            <span>{{similarProductData[index].productMinimmumQuantity}}
-                                Pack</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="prod-inner-desc">
-                <span (click)="getReviewsAndRatings()" class="rating-box"
-                    *ngIf="similarProductData[index].avgRating > 0">{{similarProductData[index].avgRating
-                    | number : '1.1-1'}}
-                    <i class="icon-rating-star"></i>
-                </span>
-                <div class="prod-status">
-                    <p class="prod-status-right">
-                        <small (click)="getReviewsAndRatings()" class="review"
-                            *ngIf="similarProductData[index].reviewCount > 0">
-                            {{similarProductData[index].reviewCount}}
-                            Reviews
-                        </small>
-                    </p>
-                </div>
-            </div>
-            <!--recently bought product section -->
-            <div class="recent-bought-wrap"
-                *ngIf="similarProductData[index].recentBoughtMessage">
-                <i class="icon-trending"></i>
-                <span
-                    class="inner-text">{{similarProductData[index].recentBoughtMessage}}</span>
-            </div>
-        </div>
-        <!--fallback keyfeatures|specifications|details-->
+        
+        <product-description 
+            [productName]="similarProductData[index].productName" 
+            [productDiscount]="similarProductData[index].productDiscount"
+            [bulkPriceWithoutTax]="similarProductData[index].bulkPriceWithoutTax"
+            [priceWithoutTax]="similarProductData[index].priceWithoutTax"
+            [productMrp]="similarProductData[index].productMrp"
+            [taxPercentage]="similarProductData[index].taxPercentage" 
+            [bulkSellingPrice]="similarProductData[index].bulkSellingPrice"
+            [productMinimmumQuantity]="similarProductData[index].productMinimmumQuantity"
+            [priceQuantityCountry]="similarProductData[index].priceQuantityCountry"
+            [starsCount]="similarProductData[index].avgRating" 
+            [rawReviewsData]="similarProductData[index].rawReviewsData"
+            [rawProductCountMessage]="similarProductData[index].recentBoughtMessage"
+        ></product-description>
+
         <ng-template #pdpinfo [ngTemplateOutlet]="pdpinfo" let-section="section" let-product="product"
             [ngTemplateOutletContext]="{ product:similarProductData[index] , section: similarProductData[index] | productInfoSection }">
             <ng-container [ngSwitch]="section">
                 <!--Features-->
                 <div *ngSwitchCase="'features'" class="key-features">
-                    <!-- <div class="inline-heading">
-                        <h3 class="heading-3">Key Features</h3>
-                    </div> -->
                     <product-feature-details [isFromOosSimilarCard]="true" [productKeyFeatures]="product.productKeyFeatures | sliceArray:3"></product-feature-details>
-                    <!-- <ul class="feature-list">
-                        <li *ngFor="let feature of product.productKeyFeatures | sliceArray:3">
-                            <p>
-                                <span>{{feature}}.</span>
-                            </p>
-                        </li>
-                    </ul> -->
                     <div class="show-all-strip">
                         <span
                             (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'key features', type: 'show all specifications'});">View
@@ -158,33 +69,8 @@
                 </div>
                 <!--Specifications-->
                 <div *ngSwitchCase="'specifications'" class="product-specification pwa-row">
-                    <!-- <product-feature-details [productKeyFeatures]="product.productKeyFeatures | sliceArray:3"></product-feature-details> -->
                     <h2 *ngIf="product.productAttributes?.length > 0" class="heading-3 pwa-col-12">Product Specifications</h2>
                     <product-feature-details [productAttributes]="product.productAttributes" [isFromOosSimilarCard]="true" [productKeyFeatures]="product.productKeyFeatures | sliceArray:3"></product-feature-details>
-                    <!-- <table width="100%" class="product-spec pwa-col-12" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td class="left">
-                                <div>Brand</div>
-                            </td>
-                            <td class="right">
-                                <div>
-                                    <a class="brandName"
-                                        (click)="commonService.navigateTo(getBrandLink(product.productBrandDetails))">{{product['brandName']}}</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr
-                            *ngFor="let attr of product.productAttributes | objectToArray:'associative' | sliceArray:3s">
-                            <td class="left">
-                                <div>{{attr.key}}</div>
-                            </td>
-                            <td class="right">
-                                <div *ngFor="let item of attr.value">
-                                    {{item}}
-                                </div>
-                            </td>
-                        </tr>
-                    </table> -->
                     <div (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'specifications', type: 'show all specifications'});"
                         class="show-all-strip spec pwa-col-12">
                         <span>View Details
@@ -194,48 +80,9 @@
                 </div>
                 <!--Details-->
                 <div *ngSwitchCase="'details'" class="prod-detail pwa-row">
-                    <h2 class="heading-3 pwa-col-12">Product Details</h2>
-                    <ng-container *ngIf="product.productDescripton != undefined else noProdDesc">
-                        <p [innerHTML]="product.productDescripton" class="pwa-col-12"></p>
-                        <p class="static-desc pwa-col-12"> Browse through the extensive list of
-                            <a class="blueText"
-                                (click)="navigateLink('/'+ (product.productCategoryDetails ? product.productCategoryDetails['categoryLink'] : ''))">
-                                {{product.productCategoryDetails['categoryName']}}</a> at Moglix. Shop online for other
-                            <a class="blueText"
-                                (click)="navigateLink('/'+ product.productBrandCategoryUrl)">{{product.productBrandDetails
-                                ?
-                                product.productBrandDetails['brandName'] : ''}}
-                                {{product.productCategoryDetails['categoryName']}}.</a> available at Moglix in the
-                            lowest
-                            price range.
-                        </p>
-                    </ng-container>
-                    <ng-template #noProdDesc>
-                        <p class="pwa-col-12">
-                            {{product.productName}} is a premium quality product from {{product.productBrandDetails ?
-                            product.productBrandDetails['brandName'] : ''}}. Moglix is a
-                            well-known ecommerce platform for qualitative range of <a class="blueText"
-                                (click)="navigateLink('/'+product.productCategoryDetails['categoryLink'])">{{product.productCategoryDetails
-                                ?
-                                product.productCategoryDetails['categoryName'] : ''}}</a>.
-                            All {{product.productName}} are manufactured by using quality assured material and advanced
-                            techniques,
-                            which make them up to the standard in this highly challenging field. The materials utilized
-                            to
-                            manufacture {{product.productName}}, are sourced
-                            from the most reliable and official vendors, chosen after performing detailed market
-                            surveys.
-                            {{product.productBrandDetails ? product.productBrandDetails['brandName'] : ''}} products are
-                            widely acknowledged in
-                            the market for their high
-                            quality. We are dedicatedly involved in
-                            providing an excellent quality array of <a class="blueText"
-                                (click)="navigateLink('/'+product.productBrandCategoryUrl)">
-                                {{product.productBrandDetails ? product.productBrandDetails['brandName'] : ''}}
-                                {{product.productCategoryDetails ?
-                                product.productCategoryDetails['categoryName'] : ''}}</a>.
-                        </p>
-                    </ng-template>
+                    <app-product-oos-similar-product-detail 
+                        [product]="product"
+                    ></app-product-oos-similar-product-detail>                    
                     <div (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'product details', type: 'read more'});"
                         class="show-all-strip pwa-col-12">
                         <span>View Details

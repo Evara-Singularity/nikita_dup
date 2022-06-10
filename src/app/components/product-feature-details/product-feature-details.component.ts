@@ -18,6 +18,7 @@ export class ProductFeatureDetailsComponent implements OnInit {
   readonly baseDomain = CONSTANTS.PROD;
   readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;  @Input() productKeyFeatures: any;
+  @Input() isFromOosSimilarCard: boolean = false;
   @Input() productAttributes : any;
   @Input() productDescripton : any;
   @Input() productCategoryDetails : any;

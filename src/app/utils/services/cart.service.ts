@@ -1435,10 +1435,10 @@ export class CartService
         // });
     }
 
-    removeUnavailableItems(items: any[])
-    {
+    removeUnavailableItems(items: any[]) {
         const MSNS = items.map(item => item['productId']);
         this.removeCartItemsByMsns(MSNS)//postprocessing
+        this.showUnavailableItems = false;
     }
 
     //Post processing
@@ -1968,4 +1968,6 @@ export class CartService
         this._globalAnalyticsService.sendAdobeCall(data, trackingname);
         /*End Adobe Analytics Tags */
     }
+
+    
 }

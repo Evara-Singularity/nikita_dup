@@ -169,6 +169,8 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         let obj = {
             userid: user.userId,
             pname: this.firstName.value || CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER,
+            email: this.email.value, 
+            password: this.password.value
         };
         this._sharedAuthService.updatePersonalInfo(obj).subscribe((res) => {
             this._globalLoader.setLoaderState(false);

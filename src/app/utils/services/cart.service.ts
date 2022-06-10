@@ -35,6 +35,7 @@ export class CartService
     public selectedBusinessAddressObservable: Subject<any> = new Subject();
     public productShippingChargesListObservable: Subject<any> = new Subject();
     private notificationsSubject: Subject<any[]> = new Subject<any[]>();
+    public appliedPromocodeSubject: Subject<string> = new Subject<string>();
     //public slectedAddress: number = -1;
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
@@ -42,7 +43,8 @@ export class CartService
     itemsValidationMessage = [];
     cartNotications = [];
     notifications = [];
-    appliedPromoCode;
+    appliedPromoCode = null;
+    allPromoCodes: Array<any> = [];
 
     // checkout related global vars
     private _billingAddress: Address;
@@ -153,9 +155,9 @@ export class CartService
     setGenericCartSession(cart)
     {
         this.cartSession = JSON.parse(JSON.stringify(cart));
-        if (cart && cart.offersList && cart.offersList.length > 0) {
-            this.appliedPromoCode = cart.offersList[0]['id'];
-        }
+        // if (cart && cart.offersList && cart.offersList.length > 0) {
+        //     this.appliedPromoCode = cart.offersList[0]['id'];
+        // }
     }
 
     getCartSession() { return JSON.parse(JSON.stringify(this.cartSession)); }
@@ -1249,70 +1251,160 @@ export class CartService
         return this._dataService.callRestful('GET', url);
     }
 
-    showAppliedPromoCode: boolean = false;
-    genericApplyPromoCode()
+    //promo code section
+    getPromoCodesByUserId(userId)
+    {
+        this._loaderService.setLoaderState(true);
+        if (!userId) { return }
+        const cartSession = this.getCartSession();
+        const offerId = (cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
+        this.getAllPromoCodesByUserId(userId).subscribe(res =>
+        {
+            if (res['statusCode'] === 200) {
+                this.allPromoCodes = res['data'];
+                const promo = this.allPromoCodes.find(promo => promo.promoId === offerId);
+                if (promo) {
+                    this.appliedPromoCode = promo['promoCode'];
+                    this.appliedPromocodeSubject.next(this.appliedPromoCode);
+                    //back end code as getCartBysession is not updating with offerdetails of promocde applied
+                    this.updatePromoDetail(this.appliedPromoCode);
+                }
+                this.pushPromocodesDataLayer();
+            }
+            this._loaderService.setLoaderState(false);
+        });
+    }
+
+    //if back end work expected then remove this functionality
+    updatePromoDetail(promoCode)
+    {
+        const cartSession = this.getCartSession();
+        if (promoCode) {
+            this.applyPromoCode({ 'shoppingCartDto': cartSession }).subscribe((response) =>
+            {
+                if (response && response['status']) {
+                    const data = response['data'];
+                    cartSession['cart']['totalOffer'] = data['discount'];
+                    cartSession['extraOffer'] = null;
+                    const newCartSession = this.generateGenericCartSession(cartSession);
+                    this.setGenericCartSession(newCartSession);
+                }
+            });
+        }
+    }
+
+    genericApplyPromoCode(promcode)
     {
         this._loaderService.setLoaderState(true);
         const user = this.localAuthService.getUserSession();
         if (user.authenticated !== 'true') {
             this._toastService.show({ type: 'error', text: "To Avail Offer Please Login" });
         } else {
-            this.getPromoCodeDetailByName(this.appliedPromoCode).subscribe(({ status, data, statusDescription: message }: any) =>
+            this.getPromoCodeDetailByName(promcode).subscribe(({ status, data, statusDescription: message }: any) =>
             {
                 if (status) {
-                    let obj = [{
-                        offerId: data['promoAttributes']['promoId'],
-                        type: '15'
-                    }];
+                    let obj = [{ offerId: data['promoAttributes']['promoId'], type: '15' }];
                     const cartSession = this.getGenericCartSession;
                     cartSession['offersList'] = obj;
-                    const cartObject = {
-                        'shoppingCartDto': cartSession
-                    };
-                    this.applyPromoCode(cartObject).subscribe(({ status, data, statusDescription: message }: any) =>
+                    this.verifyAndApplyPromocode(cartSession, promcode, false).subscribe(({ cartSession, isUpdated }: any) =>
                     {
-                        this._loaderService.setLoaderState(false);
-                        if (status) {
-                            console.log(data);
-                            if (data['discount'] <= cartSession['cart']['totalAmount']) {
-                                cartSession['cart']['totalOffer'] = data['discount'];
-                                cartSession['extraOffer'] = null;
-                                const productDiscount = data['productDis'];
-                                const productIds = Object.keys(data['productDis'] ? data['productDis'] : {});
-
-                                cartSession.itemsList.map((item) =>
-                                {
-                                    if (productIds.indexOf(item['productId']) !== -1) {
-                                        return item['offer'] = productDiscount[item['productId']];
-                                    } else {
-                                        return item['offer'] = null;
-                                    }
-                                });
-                                this.setGenericCartSession(cartSession);
-                                this._loaderService.setLoaderState(false);
-                                this.showAppliedPromoCode = true;
-                                // this._toastService.show({ type: 'success', text: 'Promo Code Applied' });
-                            } else {
-                                cartSession['cart']['totalOffer'] = 0;
-                                cartSession['offersList'] = [];
-                                cartSession.itemLists.map((item) => item['offer'] = null);
-                                this.setGenericCartSession(cartSession);
-                                this._loaderService.setLoaderState(false);
-                                this._toastService.show({ type: 'error', text: 'Your cart amount is less than ' + data['discount'] });
-                            }
-                        } else {
-                            this.appliedPromoCode = '';
-                            this._loaderService.setLoaderState(false);
-                            this._toastService.show({ type: 'error', text: message });
+                        if (isUpdated) {
+                            this.postProcessAfterPromocode(cartSession);
+                            return;
                         }
-                    });
+                    })
                 } else {
                     this.appliedPromoCode = '';
+                    this.appliedPromocodeSubject.next(this.appliedPromoCode);
                     this._loaderService.setLoaderState(false);
                     this._toastService.show({ type: 'error', text: message });
                 }
+            }, error =>
+            {
+                this.appliedPromoCode = '';
+                this.appliedPromocodeSubject.next(this.appliedPromoCode);
+                this._loaderService.setLoaderState(false);
             });
         }
+    }
+
+    postProcessAfterPromocode(cartSession)
+    {
+        const totalOffer = cartSession['cart']['totalOffer'] || null;
+        let tempCartSession = null;
+        this.updateCartSession(cartSession).pipe(
+            switchMap((newCartSession) =>
+            {
+                tempCartSession = newCartSession;
+                return this.verifyShippingCharges(tempCartSession)
+            }),
+        ).subscribe((newCartSession) =>
+        {
+            const _cartSession = this.generateGenericCartSession(newCartSession);
+            _cartSession['cart']['totalOffer'] = totalOffer;
+            _cartSession['extraOffer'] = null;
+            this.setGenericCartSession(_cartSession);
+            this.orderSummary.next(_cartSession);
+            this._loaderService.setLoaderState(false);
+            if (totalOffer) { this._toastService.show({ type: 'success', text: 'Promo Code Applied' }); }
+        }
+        )
+    }
+
+    verifyAndApplyPromocode(_cartSession, promcode, isUpdateCart)
+    {
+        let returnValue = { cartSession: _cartSession, isUpdated: false };
+        if (!this.localAuthService.isUserLoggedIn()) { return of(returnValue) }
+        let cartSession = this.generateGenericCartSession(_cartSession)
+        const cartObject = { 'shoppingCartDto': cartSession };
+        return this.applyPromoCode(cartObject).pipe(map((response) =>
+        {
+            const status = response['status'];
+            const data = response['data'] ? response['data'] : null;
+            const message = response['statusDescription'] || null;
+            returnValue.isUpdated = true;
+            if (status === true && (data && data['discount'] > 0) && (data['discount'] <= cartSession['cart']['totalAmount'])) {
+                cartSession['cart']['totalOffer'] = data['discount'];
+                cartSession['extraOffer'] = null;
+                const productDiscount = data['productDis'];
+                const productIds = Object.keys(data['productDis'] ? data['productDis'] : {});
+                cartSession['itemsList'].map((item) =>
+                {
+                    item['offer'] = null;
+                    if (productIds.includes(item['productId'])) {
+                        item['offer'] = productDiscount[item['productId']];
+                    }
+                    return item['offer'];
+
+                });
+                returnValue['cartSession'] = cartSession;
+                this.appliedPromoCode = promcode;
+                this.appliedPromocodeSubject.next(this.appliedPromoCode);
+                return returnValue;
+            }
+            if (status === false || (data && data['discount'] === 0)) {
+                cartSession['cart']['totalOffer'] = 0;
+                cartSession['offersList'] = [];
+                cartSession['itemsList'].map((item) => item['offer'] = null);
+                this.appliedPromoCode = '';
+                this.appliedPromocodeSubject.next(this.appliedPromoCode);
+                this._loaderService.setLoaderState(false);
+                returnValue['cartSession'] = cartSession;
+                if ((data && data['discount'] > 0) && (data['discount'] >= cartSession['cart']['totalAmount'])) {
+                    this._toastService.show({ type: 'error', text: 'Your cart amount is less than ' + data['discount'] });
+                    return returnValue;
+                }
+                if (!isUpdateCart) {
+                    this._toastService.show({ type: 'error', text: message });
+                }
+                return returnValue;
+            }
+            return returnValue;
+        }), catchError((error: HttpErrorResponse) => 
+        {
+            this._loaderService.setLoaderState(false);
+            return of(returnValue);
+        }));
     }
 
     genericRemovePromoCode()
@@ -1328,6 +1420,7 @@ export class CartService
             data =>
             {
                 this.appliedPromoCode = '';
+                this.appliedPromocodeSubject.next("");
                 this.setGenericCartSession(data);
                 this.updateCartSession(data).subscribe(res =>
                 {
@@ -1887,6 +1980,32 @@ export class CartService
     }
 
     //Analytics
+    pushPromocodesDataLayer()
+    {
+        setTimeout(() =>
+        {
+            const dlp = [];
+            for (let p = 0; p < this.allPromoCodes.length; p++) {
+                const promo = {
+                    id: this.allPromoCodes[p]['promoId'],
+                    name: this.allPromoCodes[p]['promoCode'],
+                    'creative': 'banner1',
+                    'position': 'slot1'
+                };
+                dlp.push(promo);
+            }
+            const data = {
+                'event': 'promo- impressions',
+                'ecommerce': {
+                    'promoView': {
+                        'promotions': dlp
+                    }
+                }
+            }
+            this._globalAnalyticsService.sendGTMCall(data);
+        }, 3000);
+    }
+
     sendCritieoDataonView(cartSession)
     {
         if (this._router.url !== '/quickorder') { return }

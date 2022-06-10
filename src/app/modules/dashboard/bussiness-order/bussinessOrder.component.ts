@@ -183,7 +183,6 @@ export class BussinessOrderComponent {
           }
         }
         this.orders = res["data"];
-        console.log(JSON.stringify(this.orders, null, 2));
         this.orders.forEach((element) => {
           element["isOrderVisible"] = false;
         });

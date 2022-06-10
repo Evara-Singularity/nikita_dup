@@ -19,7 +19,7 @@
     </div>
   </div>
 </div>
-<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup'}">
+<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup" [data]="{}">
     <div class="allCategoryBlock content-popup" content>
       <div class="pwa-row pwa-row-noPad">
         <div *ngFor="let prod of data['data'] ;let i=index" class="pwa-col-4 all-category-setion">

@@ -145,6 +145,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 
 <!-- order cancellation pop up  -->
 <app-pop-up *ngIf="openPopup && openPopup=='cancel' " (outData$)="outData($event) " class="bs-popup "
+    [headerType]="'pop-up-header'"
     [data]="{selector: 'openPopup',headerText: ' Cancel Order'} ">
     <div content>
         <div class="cancelOrderBox pwa-row material-form"
@@ -244,6 +245,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 
 <!-- final message after confirmation -->
 <app-pop-up *ngIf="openPopup && openPopup=='return'" (outData$)="outData($event)" class="bs-popup returnPopup"
+[headerType]="'pop-up-header1'"
     [data]="{selector: 'openPopup', headerText:' Return Order'}">
     <div class="content-popup" content>
         <form [formGroup]="returnForm" enctype="multipart/form-data"
@@ -456,7 +458,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 </app-pop-up>
 
 
-<app-pop-up *ngIf="spp" class="" (outData$)="outData($event)" [data]="{selector: 'spp',headerText:'Order Status'}">
+<app-pop-up *ngIf="spp" class="" (outData$)="outData($event)" [headerType]="'pop-up-header1'" [data]="{selector: 'spp',headerText:'Order Status'}">
     <div class="content-popup" content>
         <div class="trackOrderBox pwa-row static_pos">
             <!-- <h3>Order Status</h3> -->

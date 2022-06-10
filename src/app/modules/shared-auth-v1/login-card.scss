@@ -20,8 +20,12 @@
             border: 1px solid var(--primary) !important;
         }
     }
-    .btn {
-        border-radius: 8px;
+    .secondry-btn{
+        width: $fullwidth;
+    }
+    .secondry-full-btn{
+        background: var(--onyx-black);
+        color: var(--white);
     }
     .forgot-pass {
         color: #278bed;

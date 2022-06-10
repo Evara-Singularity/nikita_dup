@@ -42,17 +42,8 @@
         margin-top: 1px;
         font-size: $small-font;
     }
-    .view-btn {
+    .quaternary-btn-2 {
         float: right;
+        padding: 5px 8px;
     }
-}
-
-.view-btn {
-    background: $white;
-    padding: 5px 8px;
-    display: inline-block;
-    font-size: $medium-font;
-    border-radius: 3px;
-    color: var(--primary);
-    font-weight: bold;
 }

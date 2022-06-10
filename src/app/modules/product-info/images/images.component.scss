@@ -12,15 +12,12 @@
        overflow-x:auto;
        background: var(--ghost-white);
        padding:15px;
-       &::-webkit-scrollbar {
-           display: none;
-       } 
-       -ms-overflow-style: none;  /* IE and Edge */
-       scrollbar-width: none; 
+       @extend %hide-scrollbar;
        &>div{
         margin-right:15px;
         .activeImgSlide{
           border: 1px solid var(--primary);
+          border-radius:$border-radius-8;
         }
         &:last-child{
             margin-right:0px;
@@ -28,6 +25,8 @@
          img{
              width:100px;
              height:100px;
+             max-width:100px;
+             border-radius:$border-radius-8;
          }
      }
     }

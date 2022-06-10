@@ -1,11 +1,11 @@
-<app-pop-up (outData$)="outData($event)" [class.open1]="displayVariant2Popup" *ngIf="displayVariant2Popup"
-    [data]="{class: 'payment-popup addAddressPopup', headerCustom:true}">
-    <div class="head-sec header_add_edit" header>
+<app-pop-up (outData$)="outData($event)" [class.open1]="displayVariant2Popup" [headerType]="'pop-up-header'" 
+    [data]="{headerText: 'Reviews and Ratings'}">
+    <!-- <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeVariant2Popup()"></i>
             <p class="txt header_text page-name">Reviews and Ratings</p>
         </div>
-    </div>
+    </div> -->
     <div class="content-popup card mt-15 hp-100 pad-b-70" content>
         <section class="reviewSection">
             <div class="pwa-row">
@@ -70,7 +70,7 @@
             </div>
             <div class="pwa-row">
                 <div class="pwa-col-12">
-                    <button class="btn btn-variant1" (click)="emitWriteReview()">WRITE A REVIEW</button>
+                    <button class="btn secondry-btn" (click)="emitWriteReview()">WRITE A REVIEW</button>
                 </div>
             </div>
             <div *ngFor="let review of rawReviewsData?.reviewList; let i = index;" class="reviewRow popup-reviewRow">

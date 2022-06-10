@@ -1,4 +1,4 @@
-<app-pop-up (outData$)="outData($event)" [data]="{headerText: 'REVIEW & RATING', selector:'openReviewPopup'}">
+<app-pop-up (outData$)="outData($event)" [headerType]="'pop-up-header'" [data]="{headerText: 'REVIEW & RATING', selector:'openReviewPopup'}">
     <div class="content-popup submit-review"   content>
         <div class="pwa-row write-review-section">
             <div class="pwa-col-12">
@@ -36,8 +36,8 @@
                 </ul>
             </div>
         </div>
-        <div class="stickyBottomBtn">
-            <button class="btn-red-bg" [ngClass]="{'active':reviewForm.valid && ratingValue > 0}" (click)="postReview();">SUBMIT</button>
+        <div class="fixed-bottom-cta">
+            <button class="btn primary-full-btn" [ngClass]="{'active':reviewForm.valid && ratingValue > 0}" (click)="postReview();">SUBMIT</button>
         </div>   
     </div>
 </app-pop-up>

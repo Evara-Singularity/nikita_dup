@@ -521,19 +521,16 @@
         display:inline-flex;
         justify-content:center;
         align-items:center;
-        font-size:$medium-font;
-        border-radius:$border-radius-8;
-        padding: 10px 15px;
         i{
             font-size:$extra-large-1-font;
             margin-right:5px;
         }
     }
-    .light-red-button{
+    .secondry-btn-1{
         flex:2;
         margin-right:10px;
     }
-    .btn-red-bg{
+    .secondry-btn{
         flex:3;
     }
 }

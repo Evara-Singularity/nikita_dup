@@ -126,7 +126,10 @@
 <div class="norder pwa-row" *ngIf="orders && orders.length===0">
     <img alt="" src="{{imagePath}}b/I/P/B/d/no-order-image.png" width="200" />
     <div class="noordertext"> No Orders placed yet. Add items to your cart and make a purchase.</div>
-    <button [routerLink]="['/']" class="btn startshop">START SHOPPING</button>
+
+</div>
+<div class="fixed-bottom-cta">
+    <button [routerLink]="['/']" class="btn primary-full-btn">START SHOPPING</button>
 </div>
 <!-- <div class="bottom-options hide">
     <div class="overlay"></div>

@@ -1,5 +1,6 @@
 <app-pop-up-variant2 *ngIf="displayCreateEditPopup" (outData$)="handlePopup($event)"
-    [class.open1]="displayCreateEditPopup" [data]="{class: 'payment-popup addAddressPopup',headerCustom:true}">
+[headerType]="'pop-up-header1'"
+    [class.open1]="displayCreateEditPopup" [data]="{headerText: modeType + ' ' + ADDRESS_TYPE + ' Address'}">
     <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="handlePopup($event)"></i>
@@ -188,8 +189,8 @@
                     Special Characters are not allowed.
                 </p>
             </div>
-            <div>
-                <button [disabled]="addressForm.invalid" type="submit" class="btn continue-btn">SAVE ADDRESS</button>
+            <div class="fixed-bottom-cta">
+                <button [disabled]="addressForm.invalid" type="submit" class="btn primary-full-btn">SAVE ADDRESS</button>
             </div>
         </form>
         </div>

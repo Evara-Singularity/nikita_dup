@@ -141,7 +141,8 @@
 </div>
 
 <app-pop-up *ngIf="showPopup" (outData$)="outData($event)" class="bs-popup codUnavailable"
-    [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16 page-name-black',class: 'payment-popup',selector:'showPopup',headerText:'COD Unavailable'}">
+[headerType]="'pop-up-header1'"
+    [data]="{headerText:'COD Unavailable'}">
     <div class="content-popup" content>
         <p class="sub-heading">Following product(s) in your Cart are not available for COD</p>
         <div class="card cod-Popup product-card" *ngFor="let product of unAvailableMsnList">

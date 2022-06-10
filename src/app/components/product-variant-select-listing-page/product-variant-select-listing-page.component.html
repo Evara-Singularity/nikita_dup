@@ -42,12 +42,12 @@
                     </ul>
                 </div>
             </div>
-            <div class="stickyBottomBtn">
-                <button *ngIf="!isSelectedVariantOOO && product.priceWithoutTax != 0" class="btn continue-btn"
+            <div class="fixed-bottom-cta">
+                <button *ngIf="!isSelectedVariantOOO && product.priceWithoutTax != 0" class="btn primary-full-btn"
                     (click)="continueToCart()">
                     CONTINUE
                 </button>
-                <button *ngIf="isSelectedVariantOOO || product.priceWithoutTax == 0" class="btn continue-btn"
+                <button *ngIf="isSelectedVariantOOO || product.priceWithoutTax == 0" class="btn primary-full-btn"
                     (click)="continueToSendQuery()">
                     SEND QUERY
                 </button>

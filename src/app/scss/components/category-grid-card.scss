@@ -1,19 +1,16 @@
 .category-grid-container{
     display:flex;
     flex-wrap:wrap;
-    margin: -10px 0 0 -10px;
-    width: calc(100% + 10px);
-    justify-content:center;
+    width: 100%;
+    justify-content: space-between;
     text-align:center;
         .category-grid-card{
-            width: 30%;
-            margin: 10px 0 0 10px;
-            // background: var(--white);
+            width: calc(33.3% - 6px);
             border-radius: 8px;
             min-height: 100px;
             text-align: center;
-            justify-content: center;
             align-items: center;
+            margin-top: 10px;
            img {
             width: 100px;
            }

@@ -26,7 +26,10 @@ ngx-siema-slide{
     .pwa-tab{
       border-radius: 8px;
       padding: 10px 15px;
-      border:1px solid var(--silver)
+      border:1px solid var(--silver);
+      &.selectedTab{
+        border:1px solid var(--primary);
+      }
     }
   }
 }

@@ -1,10 +1,10 @@
-<app-pop-up [data]="{class: 'payment-popup addAddressPopup', headerCustom:true}">
-    <div class="head-sec header_add_edit" header>
+<app-pop-up [headerType]="'pop-up-header1'" [data]="{headerText:'Frequently Asked Questions'}">
+    <!-- <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeVariant2Popup()"></i>
             <p class="txt header_text page-name">Frequently Asked Questions</p>
         </div>
-    </div>
+    </div> -->
     <div class="content-popup" content>
         <section class="pwa-row Qa">
             <div class="pwa-col-12">
@@ -31,7 +31,7 @@
         </section>
         <div class="question-submit">
             <p>Didn’t get the right answer you are looking for</p>
-            <button (click)="toggleAskQuestionPopup()" class="btn btn-red-bg">ASK YOUR QUESTION</button>
+            <button (click)="toggleAskQuestionPopup()" class="btn secondry-btn">ASK YOUR QUESTION</button>
         </div>
     </div>
 </app-pop-up>

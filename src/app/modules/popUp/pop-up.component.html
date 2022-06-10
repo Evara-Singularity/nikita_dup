@@ -1,15 +1,22 @@
 <section class="{{pClass}}">    
-    <ng-container *ngIf="!headerCustom">
+    <div *ngIf="headerType === 'pop-up-header'" class="pop-up-header">
         <div class="head-sec">
             <div class="container">
-                <i class="{{closeClass}}" (click)="closePopup()"></i>
-                <p class="{{paraClass}}">{{headerText}}</p>
+                <i class="icon-circle-delete" (click)="closePopup()"></i>
+                <p class="txt">{{headerText}}</p>
             </div>
         </div>
-    </ng-container>
-    <ng-container *ngIf="headerCustom">
+    </div>
+    <div *ngIf="headerType === 'pop-up-header1'" class="pop-up-header1">
+        <i class="icon-back-arrow"  (click)="closePopup()"></i>
+        <span class="page-name">
+            {{headerText}}
+        </span>
+    </div>
+    
+    <!-- <ng-container *ngIf="headerCustom">
         <ng-content select="[header]"></ng-content>
-    </ng-container>
+    </ng-container> -->
     <ng-content select="[content]"></ng-content>
     <ng-content select="[footer]"></ng-content>
 </section>

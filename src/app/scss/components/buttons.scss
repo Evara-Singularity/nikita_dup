@@ -1,70 +1,20 @@
-button {
-    outline: 0;
-}
-.btn-red {
-    border: 1px solid $logo-color;
-    padding: 7px 9px;
-    color: $logo-color;
-    border-radius: 2px;
-    text-transform: uppercase;
-    font-weight: 600;
-    background:$white;
-}
+// .btn-red {
+//     border: 1px solid $logo-color;
+//     padding: 7px 9px;
+//     color: $logo-color;
+//     border-radius: 2px;
+//     text-transform: uppercase;
+//     font-weight: 600;
+//     background:$white;
+// }
 
-.btn-red-bg {
-    padding: 10px 20px;
-    background-color: $btn-color-red;
-    text-transform: uppercase;
-    color: #fff;
-    border: 0;
-    margin: 0;
-    border-radius: 3px;
-    display: inline;
-    font-size: $medium-font;
-    font-weight: bold;
-}
 // Buttons
 .btn {
-    padding: 7px 9px;
     color: $white;
     border: 0;
     outline: 0;
-    font-size: $extra-large-font;
-    font-weight: 600;
-    @extend %border-radius;
-    @extend %box-shadow;
-    border: 0;
-    outline: 0;
+    font-weight: $font-bold;
     @extend %ripple;
-
-    &.disabledButton {
-        background: #ccc;
-        pointer-events: none;
-        color: $disable-txt;
-        border: 1px solid $disabled;
-    }
-    &.btn-variant1 {
-        width: 100%;
-        color: #fff;
-        background-color: #d9232d;
-        border: 0;
-        height: 40px;
-        font-size: $large-font;
-        &.btn-dark-grey {
-            background-color: #3c3c3c;
-            color: #ffffff;
-        }
-        &.btn-disabled {
-            border-color: $disabled;
-            color: #fff;
-            background: #c4c4c4;
-        }
-    }
-    &.btn-white{
-        background:var(--white);
-        padding: 8px 15px;
-        color:var(--primary);
-    }
 
     &.btn-transparent-red {
         background: transparent;
@@ -72,27 +22,25 @@ button {
         text-align: center;
         box-shadow: none;
         font-size: $large-font;
+
         &.btn-disabled {
             color: #c4c4c4;
         }
     }
-    &.btn-red-bordered {
-        background-color: var(--white);
-        color: var(--primary);
-        border: 1px solid var(--primary);
-        box-shadow: none;
+    &:disabled {
+        background: var(--silver);
+    }
+    &.disabled {
+        background: var(--silver);
     }
 }
-
-.continue-btn,
-.signInbtn {
+.continue-btn {
     background: $btn-color-red;
     text-align: center;
     width: 100%;
     height: 45px;
     @extend %ripple;
     font-weight: 800;
-
     &.disabledButton {
         border-color: $disabled;
         color: #fff;
@@ -100,61 +48,166 @@ button {
     }
 }
 
-.outlineButton {
-    background: $white-color;
-    color: $btn-color-red;
-    font-weight: 800;
-    width: 100%;
-    height: 45px;
-    border: 1px solid $btn-color-red;
+// final button scss
+
+// Primery Buttons
+.primary-btn {
+    border-radius: $border-radius-8;
+    padding: 0px 15px;
+    height: 50px;
+    background: var(--primary);
     font-size: $large-font;
 }
 
-.redBgButton {
-    background: $color-red-light;
+.primary-full-btn {
+    border-radius: $border-radius-8;
+    padding: 0px 15px;
+    height: 50px;
+    background: var(--primary);
+    font-size: $large-font;
+    width: $fullwidth;
+}
+
+.primary-btn-1 {
+    border-radius: $border-radius-8;
+    padding: 0px 15px;
+    height: 50px;
+    background: var(--white);
+    font-size: $large-font;
     color: var(--primary);
-    font-weight: bold;
-    font-size: $medium-font;
-    padding: 8px 15px;
-    box-shadow: none;
-    box-shadow: none !important;
 }
-// Blue btn
-.blue-border-btn-full {
-    color: $blue-link-color;
-    border: 1px solid #278bed;
+
+// Secondry Buttons
+.secondry-btn {
+    border-radius: $border-radius-8;
+    padding: 0px 15px;
+    height: 40px;
+    font-size: $large-font;
+    background: var(--primary);
+}
+
+.secondry-full-btn {
+    border-radius: $border-radius-8;
+    padding: 0px 15px;
+    height: 40px;
+    font-size: $large-font;
+    width: $fullwidth;
+    color: var(--primary);
+    background: var(--white);
+}
+
+.secondry-btn-1 {
+    border-radius: $border-radius-8;
+    padding: 0px 15px;
+    height: 40px;
+    font-size: $large-font;
+    background: var(--misty-rose);
+    color: var(--primary);
+}
+
+//  Tertiary Buttons
+.tertiary-btn {
+    border-radius: $border-radius-6;
+    padding: 10px 15px;
+    background: var(--primary);
+    font-size: $medium-font;
+    height: 35px;
+}
+
+.tertiary-outline-cta {
+    background: var(--white);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    font-size: $medium-font;
+    padding: 10px 15px;
+    border-radius: $border-radius-6;
+    height: 35px;
+
+}
+
+//   Quaternary Buttons
+.quaternary-btn {
+    border-radius: $border-radius-6;
+    font-size: $medium-font;
+    padding: 5px 15px;
+    height: 30px;
+    background: var(--primary);
+
+}
+
+.quaternary-full-btn {
+    border-radius: $border-radius-6;
+    font-size: $medium-font;
+    padding: 5px 15px;
+    height: 30px;
+    background: var(--misty-rose);
+    color: var(--primary);
+    width: 100%;
+}
+
+.quaternary-btn-1 {
+    border-radius: $border-radius-6;
+    font-size: $medium-font;
+    padding: 5px 15px;
+    height: 30px;
+    background: var(--misty-rose);
+    color: var(--primary);
+}
+
+.quaternary-btn-2 {
+    border-radius: $border-radius-6;
+    font-size: $medium-font;
+    padding: 5px 15px;
+    height: 30px;
+    background: var(--white);
+    color: var(--primary);
+}
+
+// Quinary Buttons
+
+.quinary-btn {
+    background: var(--misty-rose);
+    color: var(--primary);
     padding: 8px 10px;
-    width: 100%;
-    text-align: center;
-    background: $white;
-    font-weight: 600;
-    font-size: $medium-font;
-}
-.center-aligned-button-noborder{
-    width: 100%;
-    text-align: center;
-    border: none !important;
-    border-radius: 9px;
+    font-size: $small-font;
+    font-weight: $font-bold;
+    border-radius: $border-radius-6;
 }
 
-
-// Fixed Button
-.bottom-stick {
-    position: fixed;
-    left: 0;
-    width: 100%;
-    bottom: 0;
-    z-index: 2;
+.quinary-btn-1 {
+    background: var(--light-black);
+    padding: 8px 10px;
+    font-size: $small-font;
+    font-weight: $font-bold;
+    border-radius: $border-radius-6;
 }
-.stickyBottomBtn {
+
+.add_cart_btn {
+    border: 1px solid var(--primary);
+    display: inline-block;
+    border-radius: $border-radius-6;
+    margin-right: 8px;
+    width: 32px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: $extra-large-line-height;
+
+    i {
+        font-size: $extra-large-2-font;
+        color: $logo-color;
+        vertical-align: middle;
+    }
+}
+
+.fixed-bottom-cta {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 5;
+    z-index: 13;
     padding: 5px;
     box-shadow: 0px -3px 6px #00000029;
-    background: #f2f2f2;
+    background: var(--ghost-white);
 
     .continue-btn {
         width: 100%;
@@ -163,72 +216,4 @@ button {
         border: 0;
         height: 50px;
     }
-    .btn-variant1 {
-        width: 100%;
-        color: #fff;
-        background-color: #d9232d;
-        border: 0;
-        height: 40px;
-        &.btn-dark-grey {
-            background-color: #3c3c3c;
-            color: #ffffff;
-        }
-    }
 }
-.btn-red-small{
-    padding: 10px;
-    background-color: var(--primary);
-    text-transform: uppercase;
-    color: $white;
-    font-size: $small-font;
-    font-weight: bold;
-    color: var(--white);
-}
-span.form-inline-cta{
-    padding: 8px 15px;
-    background-color: #d9232d;
-    text-transform: uppercase;
-    color: #ffffff;
-    font-size: 10px;
-    font-weight: bold;
-    position: absolute;
-    right: 5px;
-    border-radius: 6px;
-    top: 5px;
-    &.success{
-        background-color: #209F19;
-    }
-}
-.add_cart_btn {
-    border: 1px solid var(--primary);
-    display: inline-block;
-    border-radius: $border-radius;
-    margin-right: 8px;
-    width: 32px;
-    text-align: center;
-    vertical-align: middle;
-    line-height: $extra-large-line-height;
-    i {
-        font-size: $extra-large-2-font;
-        color: $logo-color;
-        vertical-align: middle;
-    }
-}
-.red-outlineButton{
-    background-color: var(--white);
-    color: var(--primary);
-    border: 1px solid var(--primary);
-    box-shadow: none;
-    font-size:$medium-font;
-    padding:10px;
-  }
-  
- .light-red-button{
-    border:none;
-    border-radius:$border-radius-8;
-    background:var(--misty-rose);
-    border-radius:$border-radius-4;
-    color: var(--primary);
-    font-size:$medium-font;
- } 
-

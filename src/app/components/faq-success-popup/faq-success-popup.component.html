@@ -1,13 +1,13 @@
-<app-pop-up-variant2 [data]="{class: 'payment-popup addAddressPopup', headerCustom:true}">
-    <div class="head-sec header_add_edit" header>
+<app-pop-up-variant2 [headerType]="'pop-up-header1'" [data]="{headerText: 'Question posted successfully'}">
+    <!-- <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeVariant2Popup('backToAskQues')"></i>
             <p class="txt header_text page-name">Question posted successfully</p>
         </div>
-    </div>
+    </div> -->
     <div class="content-popup ask-question-success-popup" content>
         <section class="pwa-row">
-            <div class="pa-col-12 success-popup">
+            <div class="pwa-col-12 success-popup">
                 <div class="popup-img-area">
                     <img src="assets/img/checkbox-circle-fill-m.svg">
                 </div>
@@ -15,9 +15,7 @@
                     <h5>Question posted successfully</h5>
                     <p>We will notify you when someone<br> answer your question.</p>
                 </div>
-                <div class="popup-btn">
-                    <button (click)="closeVariant2Popup('pdpPage')" class="btn btn-red-bg">BACK TO PRODUCT</button>
-                </div>
+                <button (click)="closeVariant2Popup('pdpPage')" class="btn tertiary-btn">BACK TO PRODUCT</button>
             </div>
         </section>
     </div>

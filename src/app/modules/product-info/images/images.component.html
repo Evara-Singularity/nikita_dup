@@ -4,7 +4,7 @@
     </div>
     <div (touchstart)="$event.stopPropagation();" class="thumbnailImageSlider">
         <div class ="thumbnailImageSlider-wrap">
-           <div *ngFor="let image of images;let imgIndex=index;" [class.activeImgSlide]="true">
+           <div *ngFor="let image of images;let imgIndex=index;">
             <img src="{{image.medium}}"
                 [class.activeImgSlide]="imgIndex === currentImageIndex"
                 (click)="$event.stopPropagation();updateImageIndex(imgIndex)">

@@ -1,2 +1,11 @@
 @import "../../../scss/variables";
 @import '../../../scss/layout/forms';
+span.quaternary-btn{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    line-height: $medium-line-height;
+    &.success{
+        background-color: var(--slimy-green);
+    }
+}

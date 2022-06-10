@@ -25,6 +25,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     readonly ADDRESS_TYPES = { DELIVERY: "Delivery", BILLING: "Billing" };
     readonly USER_SESSION = null;
 
+    @Input('showDelete') showDelete = false;
     //trigger to display pop-up for delivery or billing address.
     @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = null;
     //emits invoicetype, selected delivery & billing address which is to used for checkout
@@ -138,6 +139,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             cIdAddress = this._cartService.billingAddress['idAddress'];
         }
         this.addressListInstance.instance['addresses'] = ADDRESSES;
+        this.addressListInstance.instance['showDelete'] = this.showDelete;
         this.addressListInstance.instance['cIdAddress'] = cIdAddress;
         this.addressListInstance.instance['addressType'] = addressType;
         this.addressListInstance.instance['displayAddressListPopup'] = true;

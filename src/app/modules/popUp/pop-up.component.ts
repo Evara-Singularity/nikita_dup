@@ -11,7 +11,7 @@ import { CommonService } from '@app/utils/services/common.service';
 export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @Input() data;
-    // @Input() headerCustom: any;
+    @Input('headerType') headerType: any;
     @Output() outData$: EventEmitter<any> = new EventEmitter<any>();
     // closeClass: any = "icon-circle-delete";
     // paraClass: any = "txt";

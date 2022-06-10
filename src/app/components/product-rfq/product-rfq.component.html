@@ -166,7 +166,8 @@
 </app-bottom-menu>
 <!--Popup-->
 <app-pop-up *ngIf="!isOutOfStock && isPopup"
-    [data]="{class: 'bulkRequest ', selector: '!isOutOfStock ', headerCustom:true}">
+    [headerType]="'pop-up-header'"
+    [data]="{headerText: 'Interested to buy in bulk', headerSubText: 'Add more details to get the best deal'}">
     <div class="head-sec" header>
         <div class="container">
             <i class="icon-circle-delete f-left" (click)="close()"></i>

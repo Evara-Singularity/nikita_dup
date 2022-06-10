@@ -1,5 +1,6 @@
 <app-pop-up (outData$)="handleClose($event)" class="bs-popup" *ngIf="displayAddressListPopup"
-    [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup addAddressPopup addCustomHeight',selector:displayAddressListPopup, headerText:headerText}">
+[headerType]="'pop-up-header1'"
+    [data]="{headerText:headerText}">
     <div class="head-sec" header>
         <i class="icon-circle-delete f-left"></i>
         <p class="txt">headerText ({{addresses.length}})</p>

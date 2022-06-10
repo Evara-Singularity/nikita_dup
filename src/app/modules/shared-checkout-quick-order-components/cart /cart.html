@@ -17,8 +17,7 @@
         </div>
     </div> -->
 
-    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative"
-        *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let i = index;">
+    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let i = index;">
         <div *ngIf="item['text1']" class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
@@ -54,7 +53,7 @@
                 </p>
             </div>
         </div>
-       
+
         <!-- <div class="alert-box" *ngIf="removePopup">
             <div class="overlay"></div>
             <div class="content-area">
@@ -69,25 +68,19 @@
             </div>
         </div> -->
         <div *ngIf="!item.oos" class="cart-item-block pad-15">
-            <div  class="qty_section">
+            <div class="qty_section">
                 <span class="qty-txt">Qty</span>
                 <div class="quantity-block">
-                    <span *ngIf="item.productQuantity > 1"
-                        (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')"
-                        class="remove-qty qty-block">&#8722;</span>
-                    <i  (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')" *ngIf="item.productQuantity < 2" class="icon-bin qty-block single-quantity"></i>
-                    <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
-                        (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget />
-                    <span (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')"
-                        class="add-qty qty-block">&#43;</span>
+                    <span *ngIf="item.productQuantity > 1" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')" class="remove-qty qty-block">&#8722;</span>
+                    <i (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')" *ngIf="item.productQuantity < 2" class="icon-bin qty-block single-quantity"></i>
+                    <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity" (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget />
+                    <span (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')" class="add-qty qty-block">&#43;</span>
                 </div>
             </div>
             <div class="price-dtl-block" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
                 <div class="price-block-left">
-                    <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
-                        item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
-                    <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax *
-                        item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                    <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                    <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
                     <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
                     <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
                     <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
@@ -180,32 +173,30 @@
                 <h3 class="heading-3">Are you sure to remove this item?</h3>
                 <i (click)="removePopup = false" class="icon-circle-delete"></i>
             </div>
-            <div [ngClass]="{'realTimeUpdate':item['text1']}" class="pwa-row pad-tb-0"
-                *ngFor="let item of [_cartService.getGenericCartSession?.itemsList[removeIndex]]; let i = index;">
+            <div [ngClass]="{'realTimeUpdate':item['text1']}" class="pwa-row pad-tb-0" *ngFor="let item of [_cartService.getGenericCartSession?.itemsList[removeIndex]]; let i = index;">
                 <div class="pwa-col-12">
-                <div *ngIf="item['text1']" class="realTimePrice">
-                    <span>{{item['text1']}}
+                    <div *ngIf="item['text1']" class="realTimePrice">
+                        <span>{{item['text1']}}
                         <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
                             {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
-                </div>
-                <div class="pwa-row static-small-card-container">
-                    <div class="product-img">
-                        <img (click)="redirectToProductURL(item.productUrl)" src="{{item.productImg}}">
                     </div>
-                    <div class="product-description">
-                        <p class="description-txt">{{ (item.productName.length > 50) ?
-                            (item.productName | slice:0:48) + '..' : (item.productName) }}</p>
-                        <p class="product-qty">Qty/Pack : 10 Piece</p>
+                    <div class="pwa-row static-small-card-container">
+                        <div class="product-img">
+                            <img (click)="redirectToProductURL(item.productUrl)" src="{{item.productImg}}">
+                        </div>
+                        <div class="product-description">
+                            <p class="description-txt">{{ (item.productName.length > 50) ? (item.productName | slice:0:48) + '..' : (item.productName) }}</p>
+                            <p class="product-qty">Qty/Pack : {{item.productQuantity}} Piece</p>
+                        </div>
                     </div>
-                </div>
-            
-            <div class="cta-row">
-                <button (click)="deleteProduct($event)" class="btn secondry-btn-1">
+
+                    <div class="cta-row">
+                        <button (click)="deleteProduct($event)" class="btn secondry-btn-1">
                     <i class="icon-bin single-quantity"></i>&nbsp;REMOVE</button>
-                <button class="btn secondry-btn">MOVE TO WISHLIST</button>
+                        <button class="btn secondry-btn">MOVE TO WISHLIST</button>
+                    </div>
+                </div>
             </div>
-           </div>
-         </div>
         </div>
     </div>
 </app-bottom-menu>

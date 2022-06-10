@@ -41,16 +41,6 @@
 .add-address-substrip {
     text-align: center;
     padding: 15px;
-    .btn-red-bordered{
-        font-size: $large-font;
-        border-radius: $border-radius-8;
-        height: 40px;
-    }
-    .blue-border-btn-full {
-        font-size: $large-font;
-        padding: 10px;
-        border-radius: 0px;
-    }
 }
 
 .address-container {
@@ -259,3 +249,5 @@ form {
 .multiple-address-checkout{
     padding: 15px 15px 0 !important;
 }
+
+

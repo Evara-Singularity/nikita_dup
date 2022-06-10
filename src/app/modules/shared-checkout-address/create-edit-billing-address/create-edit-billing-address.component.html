@@ -15,8 +15,8 @@
                             <input type="text" formControlName="gstin" maxlength="15">
                             <span class="label">GSTIN*</span>
                             <ng-container *ngIf="gstin.valid">
-                                <span class="form-inline-cta success" *ngIf="isGSTINVerified">VERIFIED</span>
-                                <span class="form-inline-cta" *ngIf="!(isGSTINVerified)"
+                                <span class="btn quaternary-btn success" *ngIf="isGSTINVerified">VERIFIED</span>
+                                <span class="btn quaternary-btn" *ngIf="!(isGSTINVerified)"
                                     (click)="$event.stopPropagation();verifyGSTIN($event);">
                                     VERIFY
                                 </span>

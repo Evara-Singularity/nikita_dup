@@ -2,7 +2,7 @@
 @import '../../../scss/components/checkbox.scss';
 .purchase-list {
     @extend %cards;
-    padding: 0;
+    padding: 15px 0 0;
     background: none;
     border-bottom: none;
     label {
@@ -54,6 +54,10 @@
                 }
             }
         }
+    }
+    .plp-card-list{
+        padding: 0 10px;
+        margin-bottom: 10px;
     }
 }
 

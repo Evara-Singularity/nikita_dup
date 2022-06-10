@@ -14,18 +14,21 @@
         <div class="address-container">
             <div class="address-list">
                 <form>
-                    <div class="multiple-address" [class.active-multiple-address]="isAddressSelected(address.idAddress)" [class.withRadioContainer]="showRadio"
+                    <div class="multiple-address" [class.active-multiple-address]="isAddressSelected(address.idAddress)"
+                        [class.withRadioContainer]="showRadio"
                         *ngFor="let address of addresses; let addressIndex = index">
                         <label>
                             <!--Todo-->
-                            <input type="radio" [value]="address.idAddress"
-                                [checked]="isAddressSelected(address.idAddress)"
-                                (change)="updateAddressId($event, address.idAddress)">
-                            <span class="custom-box icon-box"></span>
+
                             <span class="chk-txt">
+                                <input type="radio" [value]="address.idAddress"
+                                    [checked]="isAddressSelected(address.idAddress)"
+                                    (change)="updateAddressId($event, address.idAddress)">
+                                <span class="custom-box icon-box"></span>
                                 <span class="heading-container">
                                     <span class="heading">
-                                        <span class="address-name">{{address.addressCustomerName | slice:0:60}}</span> &nbsp;
+                                        <span class="address-name">{{address.addressCustomerName | slice:0:60}}</span>
+                                        &nbsp;
                                     </span>
                                 </span>
                                 <span class="txt">{{address | checkoutAddress}}</span>

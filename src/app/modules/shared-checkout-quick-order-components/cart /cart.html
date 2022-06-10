@@ -39,21 +39,21 @@
                 <!-- <p class="seller">
                     Brand: {{item.brandName}}
                 </p> -->
-                <p class="price clearfix">
-                    <span class="before-discount gray-txt">MRP ₹1,999 <span class="green-txt">(12% OFF) </span></span>
+                <p *ngIf="!item.oos" class="price clearfix">
+                    <span class="before-discount gray-txt">MRP ₹1,999 <span class="green-txt">(12% OFF)</span></span>
                     <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">₹
                         {{item.priceWithoutTax | mathFloor | number : '1.2-2'}}</span>
                     <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax | mathFloor |
                         number : '1.2-2'}}</span>
                 </p>
-                <!-- <div *ngIf="!item.oos" class="remove-btn" (click)="removePopup = true; removeIndex = i">
-                    <span>REMOVE</span>
-                </div> -->
+                <p *ngIf="item.oos" class="price mt-10">
+                    <span class="small-heading">
+                        Product is not available for order
+                    </span>
+                </p>
             </div>
         </div>
-        <div *ngIf="item.oos" class="remove-btn remove-oos" (click)="removePopup = true; removeIndex = i">
-            <span>REMOVE</span>
-        </div>
+       
         <!-- <div class="alert-box" *ngIf="removePopup">
             <div class="overlay"></div>
             <div class="content-area">
@@ -67,43 +67,78 @@
                 </div>
             </div>
         </div> -->
-        <div [ngClass]="{'oos':item.oos}" class="price_detail_toggle pad-15">
-            <div class="volume">
-                <span class="f-left txt">Qty :&nbsp;</span>
-                <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')">
-                    <span *ngIf="item.productQuantity > 1" class="multiple-quantity">-</span>
-                    <i *ngIf="item.productQuantity < 2" class="icon-bin single-quantity"></i>
-                </span>
-                <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
-                    (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget>
-                <span class="btn-volume" (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')">+</span>
-            </div>
-            <!-- <div class="qty_section">
+        <div *ngIf="!item.oos" class="cart-item-block pad-15">
+            <div  class="qty_section">
+                <span class="qty-txt">Qty</span>
                 <div class="quantity-block">
-                    <span *ngIf="item.productQuantity > 1" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')" class="remove-qty qty-block">&#43;</span>
-                    <i *ngIf="item.productQuantity < 2" class="icon-bin single-quantity"></i>
+                    <span *ngIf="item.productQuantity > 1"
+                        (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')"
+                        class="remove-qty qty-block">&#8722;</span>
+                    <i  (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')" *ngIf="item.productQuantity < 2" class="icon-bin qty-block single-quantity"></i>
                     <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
-                    (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget/>
-                    <span (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')"class="add-qty qty-block">&#8722;</span>
+                        (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget />
+                    <span (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')"
+                        class="add-qty qty-block">&#43;</span>
                 </div>
-            </div> -->
-            <div class="price-label" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
-                <div class="f-right">
-                    <div class="f-left">
-                        <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
-                            item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
-                        <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax *
-                            item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
-                        <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
-                        <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
-                        <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
-                            Details</span>
-                        <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
-                    </div>
+            </div>
+            <div class="price-dtl-block" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
+                <div class="price-block-left">
+                    <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
+                        item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                    <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax *
+                        item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                    <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
+                    <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
+                    <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
+                        </span>
+                    <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
+                </div>
+                <div class="price-label-dropdown-icon">
                     <i class="icon-down"></i>
                 </div>
             </div>
         </div>
+        <div *ngIf="item.oos" class="oos-item-block">
+            <div (click)="removePopup=true; removeIndex = i">
+                <span>
+                    <i class="icon-bin"></i>
+                     REMOVE
+                </span>
+            </div>
+            <div class="oos-text">
+                <h3 class="heading-3">Not Available</h3>
+            </div>
+        </div>
+        <!-- <div [ngClass]="{'oos':item.oos}" class="price_detail_toggle pad-15">
+            <div class="qty_section">
+                <div class="quantity-block">
+                    <span *ngIf="item.productQuantity > 1"
+                        (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')"
+                        class="remove-qty qty-block">&#8722;</span>
+                    <i *ngIf="item.productQuantity < 2" class="icon-bin qty-block single-quantity"></i>
+                    <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
+                        (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget />
+                    <span (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')"
+                        class="add-qty qty-block">&#43;</span>
+                </div>
+            </div>
+            <div class="price-label" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
+                <div class="price-lbl-inner-l">
+                    <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
+                        item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                    <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax *
+                        item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                    <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
+                    <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
+                    <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
+                        Details</span>
+                    <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
+                </div>
+                <div class="price-lbl-inner-l">
+                    <i class="icon-down"></i>
+                </div>
+            </div>
+        </div> -->
         <div [ngClass]="{'oos':item.oos}" class="price-breakup" [id]="'showPrice'+(i+1)" style="display: none">
             <ul class="txt-list">
                 <li>
@@ -131,47 +166,45 @@
             </ul>
         </div>
         <!-- DO NOT REMOVE THIS SECTION IT WAS OF NEW DESIGN TO BE IMPLEMENTED LATER -->
-        <div class="coupen-and-discount">
+        <!-- <div  class="coupen-and-discount">
             <span>Coupon discount - ₹100</span>
             <span>Free Shipping<i class="icon-delivery_y_5"></i></span>
-        </div>
+        </div> -->
     </div>
 </div>
-
 <app-bottom-menu *ngIf="removePopup">
     <div content>
-        <div class="content-area">
+        <div class="content-area removePopup">
             <div class="top-header-bottom-menu">
                 <h3 class="heading-3">Are you sure to remove this item?</h3>
                 <i (click)="removePopup = false" class="icon-circle-delete"></i>
             </div>
-            <div [ngClass]="{'realTimeUpdate':item['text1']}" class="cart-popup-card card relative"
-                *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let i = index;">
+            <div [ngClass]="{'realTimeUpdate':item['text1']}" class="pwa-row pad-tb-0"
+                *ngFor="let item of [_cartService.getGenericCartSession?.itemsList[removeIndex]]; let i = index;">
+                <div class="pwa-col-12">
                 <div *ngIf="item['text1']" class="realTimePrice">
                     <span>{{item['text1']}}
                         <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
                             {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
                 </div>
-                <div class="pwa-row pad-0" [ngClass]="{'oos':item.oos}">
-                    <div class="product-left">
-                        <div class="product-img product-img-v2">
-                            <img (click)="redirectToProductURL(item.productUrl)" src="{{item.productImg}}">
-                        </div>
-
+                <div class="pwa-row static-small-card-container">
+                    <div class="product-img">
+                        <img (click)="redirectToProductURL(item.productUrl)" src="{{item.productImg}}">
                     </div>
-                    <div class="product-detail">
-                        <div class="p-name">
-                            <a (click)="redirectToProductURL(item.productUrl)"> {{ (item.productName.length > 50) ?
-                                (item.productName | slice:0:48) + '..' : (item.productName) }}</a>
-                        </div>
+                    <div class="product-description">
+                        <p class="description-txt">{{ (item.productName.length > 50) ?
+                            (item.productName | slice:0:48) + '..' : (item.productName) }}</p>
+                        <p class="product-qty">Qty/Pack : 10 Piece</p>
                     </div>
                 </div>
-            </div>
-            <div class="button-area">
-                <button (click)="deleteProduct($event)" class="btn-remove redBgButton">
+            
+            <div class="cta-row">
+                <button (click)="deleteProduct($event)" class="btn secondry-btn-1">
                     <i class="icon-bin single-quantity"></i>&nbsp;REMOVE</button>
-                <button class="btn-wishlist btn btn-red-bg">MOVE TO WISHLIST</button>
+                <button class="btn secondry-btn">MOVE TO WISHLIST</button>
             </div>
+           </div>
+         </div>
         </div>
     </div>
 </app-bottom-menu>

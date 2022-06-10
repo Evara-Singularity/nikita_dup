@@ -6,6 +6,8 @@ import { Meta } from '@angular/platform-browser';
 import CONSTANTS from '@app/config/constants';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
+import { AddressService } from '@app/utils/services/address.service';
+import { Subject } from 'rxjs';
 declare var digitalData: {};
 declare let _satellite;
 
@@ -18,6 +20,7 @@ declare let _satellite;
 })
 
 export class BussinessAddressComponent {
+  addDeliveryOrBilling: Subject<string> = new Subject();
   addressList: Array<any>;
   showAddressList: boolean = true;
   addressHeader: string = "shipping address";
@@ -32,7 +35,7 @@ export class BussinessAddressComponent {
   isServer: boolean;
   isBrowser: boolean;
 
-  constructor(private _localAuthService: LocalAuthService, private meta: Meta, @Inject(PLATFORM_ID) platformId, private _router: Router, public _commonService:CommonService) {
+  constructor(public _addressService: AddressService, private _localAuthService: LocalAuthService, private meta: Meta, @Inject(PLATFORM_ID) platformId, private _router: Router, public _commonService:CommonService) {
     this.invoiceType = "retail";
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;

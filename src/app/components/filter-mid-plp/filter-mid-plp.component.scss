@@ -24,8 +24,8 @@
         vertical-align: top;
     }
     .inline-filter-card-value {
-        border-radius: 4px;
-        background-color: $white-color;
+        border-radius:$border-radius-8;
+        background-color:var(--white);
         margin: 5px 0px;
         font-weight: bold;
         font-size: $medium-font;

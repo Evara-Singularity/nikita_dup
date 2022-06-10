@@ -1,10 +1,9 @@
 // @import "../../../scss/components/product-cards";
 @import '../../../scss/variables';
 @import '../../../scss/components/rating';
-
-
 .product-horizontal-card{
     background-color: var(--white);
+    border-radius:$border-radius-8;
     .youtubeThumbnail-listing {
         padding-top: 10px;
         .thumbnail {
@@ -26,9 +25,8 @@
         }
     }
     .card-container{
-        padding: 15px 10px;
+        padding: 10px;
         width: 100%;
-        border-bottom: 1px solid var(--spanish-gray);
         .inner-container{
             display: flex;
             flex-direction: row;
@@ -45,7 +43,7 @@
                 }
             }
             .right {
-                width: calc(100% - 115px);
+                width: calc(100% - 110px);
                 .brand{
                     margin-top: 4px;
                     text-align: left;
@@ -99,7 +97,7 @@
                 }
                 .right {
                     text-align: right;
-                    width: 120px;
+                    width: 110px;
                 }
               }
             }
@@ -107,6 +105,7 @@
                 display:flex;
                 button{
                     flex-basis:calc(100% - 40px);
+                    padding: 0;
                 }
             }
         }

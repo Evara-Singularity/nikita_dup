@@ -15,7 +15,6 @@ import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ProductInfoModule } from './../../modules/product-info/product-info.module';
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductComponent } from './product.component';
-import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { SliceArrayPipeModule } from '@app/utils/pipes/slice-array.pipe';
 import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/product-oos-similar.module';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
@@ -23,6 +22,17 @@ import { PastOrdersModule } from '@app/components/past-orders/past-orders.compon
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
 import { ProductCardSkeletonModule } from '@app/modules/product-card/product-card-skeleton/product-card-skeleton.module';
 import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
+import ProductDescriptionModule from '@app/components/product-description/product-description.component';
+import {ProductFeatureDetailsModule} from '@app/components/product-feature-details/product-feature-details.component';
+import { ProductRfqThanksPopupModule } from '@app/components/product-rfq-thanks-popup/product-rfq-thanks-popup.component';
+import { ProductMoreWidgetModule } from '@app/components/product-more-widget/product-more-widget.component';
+import { ProductBulkQuantityModule } from '@app/components/product-bulk-quantity/product-bulk-quantity.component';
+import { ProductReviewModule } from '@app/components/product-review/product-review.component';
+import { ProductQaModule } from '@app/components/product-qa/product-qa.component';
+import { FloatingButtonContainerModule } from '@app/modules/ui/floating-button-container/floating-button-container.module';
+import { ProductBenefitsModule } from '@app/components/product-benefits/product-benefits.component';
+import { ProductGetQuoteModule } from '@app/components/product-get-quote/product-get-quote.component';
+import { ProductGroupingAttributesComponent, ProductGroupingAttributesModule } from '@app/components/product-grouping-attributes/product-grouping-attributes.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -50,8 +60,19 @@ import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/p
     SwipeDirectiveModule,
     // IdleUserSearchNudgeModule,
     PastOrdersModule,
-    BottomMenuModule,
-    NotFoundModule
+    NotFoundModule,
+    ProductDescriptionModule,
+    ProductRfqThanksPopupModule,
+    ProductMoreWidgetModule,
+    ProductBulkQuantityModule,
+    ProductReviewModule,
+    ProductQaModule,
+    ProductFeatureDetailsModule,
+    ProductMoreWidgetModule,
+    FloatingButtonContainerModule,
+    ProductBenefitsModule,
+    ProductGetQuoteModule,
+    ProductGroupingAttributesModule
   ],
   exports: [],
   providers: [NgxSiemaService],

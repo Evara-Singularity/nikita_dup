@@ -17,7 +17,7 @@
                 <div class="product-description" *ngIf="productMrp > 0">
                     <p class="description-txt">{{productName}}</p>
 
-                    <p class="fbt-brand"><span>By :</span>  {{brandName}}</p>
+                    <p class="brand"><span>By :</span>  {{brandName}}</p>
 
                     <p class="price" *ngIf="productMrp > priceWithoutTax">   
                         <span class="before-discount" >{{productMrp | currency: 'INR' : 'symbol' :
@@ -42,12 +42,13 @@
                 </div>
             </div>
         </div>
-        <section id="infoTabs" class="pwa-row">
-            <ul [style.width.px]="250 * tabs.length" class="pwa-tabs-container" id="elementTabs">
+        <section class="pwa-row">
+            <ul id="infoTabs" [style.width.px]="250 * tabs.length" class="pwa-tabs-container">
                 <ng-container *ngFor="let tab of tabs;let tabIndex = index">
                     <li [id]="'tab'+tabIndex" class="pwa-tab" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"
                         (click)="goTo(tabIndex,ngxSiemaOptions.selector,tab)">
-                        {{tab | titlecase}}</li>
+                        {{tab | titlecase}}
+                    </li>
                 </ng-container>
             </ul>
         </section>

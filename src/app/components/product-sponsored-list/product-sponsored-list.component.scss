@@ -1,6 +1,10 @@
-@import '../../scss/layout/horizontalProductListing';
+@import "../../scss/variables";
 
 .view-all-strip{
     position: relative;
     @extend %view-all-strip;
+}
+
+.sponsered{
+    background-color: var(--white);
 }

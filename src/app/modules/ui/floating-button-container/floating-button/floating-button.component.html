@@ -1,0 +1,5 @@
+<button class="cart-btn" [ngClass]="{'red': type == 'RED', 'white': type == 'WHITE'}"
+    (click)="onClickButton()">
+    <i *ngIf="iconClass" class="{{iconClass}}"></i>
+    <span>{{label}}</span>
+</button>

@@ -57,20 +57,24 @@
         </div>
     </ng-container>
 </div>
-
-<ng-container *ngIf="productsListingData?.products?.length > 0">
-    <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
-        <filter-mid-plp (categoryClicked)="categoryClicked.emit($event)"
-            [categoryMidPlpFilterData]="categoryMidPlpFilterData" [pageName]="pageName" [position]="i"
-            [filterData]="productsListingData?.filterData" *ngIf="(i === 5 || i === 10 || i === 15 || i === 20)">
-        </filter-mid-plp>
-        <product-card-skeleton
-            *ngIf="sponseredProductPosition.includes(i)  && isAdsEnable && !sponseredProductLoadStatus">
-        </product-card-skeleton>
-        <product-card-horizontal-list-view [product]="product" [isPDPImageLazyLoaded]="(i < 5)">
-        </product-card-horizontal-list-view>
+    <ng-container *ngIf="productsListingData?.products?.length > 0">
+        <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
+            <filter-mid-plp (categoryClicked)="categoryClicked.emit($event)"
+                [categoryMidPlpFilterData]="categoryMidPlpFilterData" [pageName]="pageName" [position]="i"
+                [filterData]="productsListingData?.filterData" *ngIf="(i === 5 || i === 10 || i === 15 || i === 20)">
+            </filter-mid-plp>
+            <div class="pwa-row plp-card-list">
+                <div class="pwa-col-12">
+                    <product-card-skeleton
+                    *ngIf="sponseredProductPosition.includes(i)  && isAdsEnable && !sponseredProductLoadStatus">
+                </product-card-skeleton>
+                <product-card-horizontal-list-view [product]="product" [isPDPImageLazyLoaded]="(i < 5)">
+                </product-card-horizontal-list-view>
+                </div>
+            </div>
+        </ng-container>
     </ng-container>
-</ng-container>
+
 
 
 <app-search-not-found 

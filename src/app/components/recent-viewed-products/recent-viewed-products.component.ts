@@ -11,7 +11,7 @@ import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/pro
 import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 
 @Component({
-  selector: 'app-recent-viewed-products',
+  selector: 'recent-viewed-products',
   templateUrl: './recent-viewed-products.component.html',
   styleUrls: ['./recent-viewed-products.component.scss']
 })

@@ -1166,53 +1166,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return parseInt(this.qunatityFormControl.value) || 1;
   }
 
-  onChangeCartQuanityValue() {
-    this.checkCartQuantityAndUpdate(this.qunatityFormControl.value);
-  }
-
-  private checkCartQuantityAndUpdate(value): void {
-    if (!value) {
-      this._tms.show({
-        type: 'error',
-        text: (value == 0) ? 'Minimum qty can be ordered is: 1' : 'Please enter a value quantity',
-      })
-      this.qunatityFormControl.setValue(this.productMinimmumQuantity);
-    } else {
-      if (parseInt(value) < parseInt(this.productMinimmumQuantity)) {
-        this._tms.show({
-          type: 'error',
-          text: 'Minimum qty can be ordered is: ' + this.productMinimmumQuantity
-        })
-        this.qunatityFormControl.setValue(this.productMinimmumQuantity);
-      } else if (parseInt(value) > parseInt(this.priceQuantityCountry['quantityAvailable'])) {
-        this._tms.show({
-          type: 'error',
-          text: 'Maximum qty can be ordered is: ' + this.priceQuantityCountry['quantityAvailable']
-        })
-        this.qunatityFormControl.setValue(this.priceQuantityCountry['quantityAvailable']);
-      } else if (isNaN(parseInt(value))) {
-        this.qunatityFormControl.setValue(this.productMinimmumQuantity);
-        this.checkBulkPriceMode();
-      } else {
-        this.qunatityFormControl.setValue(value);
-        this.checkBulkPriceMode();
-      }
-    }
-  }
-
-  updateProductQunatity(type: 'INCREMENT' | 'DECREMENT') {
-    switch (type) {
-      case 'DECREMENT':
-        this.checkCartQuantityAndUpdate((this.cartQunatityForProduct - 1))
-        break;
-      case 'INCREMENT':
-        this.checkCartQuantityAndUpdate((this.cartQunatityForProduct + 1))
-        break;
-      default:
-        break;
-    }
-  }
-
   checkForBulkPricesProduct() {
     if (this.rawProductData['productPartDetails'][this.productSubPartNumber]['productPriceQuantity']) {
       const productBulkPrices = this.rawProductData['productPartDetails'][this.productSubPartNumber]['productPriceQuantity']['india']['bulkPrices']['india'] || {};
@@ -1239,18 +1192,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       const selectedProductBulkPrice = this.productBulkPrices.filter(prices => (this.cartQunatityForProduct >= prices.minQty && this.cartQunatityForProduct <= prices.maxQty));
       this.selectedProductBulkPrice = (selectedProductBulkPrice.length > 0) ? selectedProductBulkPrice[0] : null;
     }
-  }
-
-  selectProductBulkPrice(qunatity) {
-    if (qunatity > this.priceQuantityCountry['quantityAvailable']) {
-      this._tms.show({
-        type: 'error',
-        text: 'Maximum qty can be ordered is: ' + this.priceQuantityCountry['quantityAvailable']
-      })
-      return;
-    }
-    this.qunatityFormControl.setValue(qunatity);
-    this.checkBulkPriceMode();
   }
 
   // PDP Cart revamp : product quantity handle END HERE
@@ -2298,7 +2239,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
           "removed"
           ] as EventEmitter<boolean>
         ).subscribe((status) => {
-          // console.log('writeReview removed', status);
           this.writeReviewPopupInstance = null;
           this.writeReviewPopupContainerRef.detach();
         });
@@ -2538,6 +2478,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
 
+  handlePostHelpful(args: Array<any>) {
+    this.postHelpful(args[0], args[1], args[2], args[3]);
+  }
+
   alreadyLiked: boolean = true;
   postHelpful(item, yes, no, i) {
     if (this.localStorageService.retrieve("user")) {
@@ -2593,6 +2537,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
       modalData.inputs = { videoDetails: videoDetails, analyticsDetails: analyticsDetails };
       this.modalService.show(modalData);
     }
+  }
+  showYTVideo1(event){
+    this.showYTVideo(event.link)
   }
 
   // SEO SECTION STARTS
@@ -3403,6 +3350,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
 
+  async handleProductInfoPopup1(event) {
+      this.handleProductInfoPopup(event.infoType, event.cta)
+
+  }
+
   async handleProductInfoPopup(infoType, cta, oosProductIndex: number = -1) {
     this.holdRFQForm = true;
     this.sendProductInfotracking(cta);
@@ -3632,22 +3584,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
   }
 
-  sendWidgetTracking(widgetType) {
-    const TAXONS = this.taxons;
-    let page = {
-      pageName: null,
-      channel: "pdp",
-      subSection: null,
-      linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-      linkName: `More from ${widgetType}`,
-      loginStatus: this.commonService.loginStatusTracking,
-    };
-    const custData = this.commonService.custDataTracking;
-    const order = this.orderTracking;
-    this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
-    this.commonService.setSectionClickInformation("pdp_widget", "listing");
-  }
-
   getRefinedProductTags() {
     const pipe = new ArrayFilterPipe();
     this.refinedProdTags = pipe.transform(
@@ -3773,18 +3709,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     return "Something!!!";
   }
 
-  openDialer() {
-    if (this.commonService.isBrowser) {
-      window.location.href = "tel:+91 99996 44044";
-    }
-  }
 
-
-  navigateToWhatsapp() {
-    if (this.isBrowser) {
-      window.location.href = CONSTANTS.WHATS_APP_API + GLOBAL_CONSTANT.whatsapp_number + '&text=' + encodeURIComponent(this.getWhatsText);
-    }
-  }
   
   get pastOrderAnalytics() {
     const TAXONS = this.taxons;
@@ -3906,12 +3831,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     
   }
 
-  sliderMouseDownEvent(event) {
-    this.mouseIsDown = true;
-    this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
-    this.initialMouse = event.clientX || (event.originalEvent ? (event.originalEvent.touches[0].pageX) : 0);
-  }
-
 
   ngOnDestroy() {
     if (this.isBrowser) {
@@ -3928,6 +3847,5 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.clearImageCrouselPopup();
     this.closeProductInfoPopup();
   }
-
 
 }

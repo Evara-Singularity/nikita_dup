@@ -102,3 +102,11 @@
         }
     }
 } 
+
+.pdp-price-qty-block {
+    display: flex;
+    clear: both;
+    justify-content: space-between;
+    padding-top: 5px;
+    align-items: center;
+}

@@ -1,7 +1,10 @@
+@import '../scss/variables';
 //inline list item
 .inline-list-item {
     background-color: var(--mint-cream);
     padding: 15px;
+    align-items:center;
+    border-bottom:1px solid var(--platinum);
     .inline-list-icon {
         width: 10%;
         i {
@@ -16,15 +19,13 @@
     .inline-list-link {
         width: 10%;
     }
-
     p {
         font-size: $small-font;
     }
     small {
-        color: #303030;
+        color: var(--onyx-black);
         font-size: $medium-font;
     }
-
     strong {
         font-weight: 500;
     }
@@ -48,10 +49,10 @@
         margin-left: auto;
         .get-quote {
             padding: 6px 8px;
-            color: #d9232d;
-            background: #fae0e1;
-            border-radius: 3px;
-            font-weight: bold;
+            color: var(--primary);
+            background: var(--misty-rose);
+            border-radius: $border-radius-4;
+            font-weight: $font-bold;
         }
     }
     small {

@@ -4,7 +4,7 @@ import { mergeMap } from "rxjs/operators";
 import { Observer, of, Subscription } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
-import { NavigationEnd, NavigationExtras, Router } from "@angular/router";
+import { NavigationEnd, NavigationExtras, NavigationStart, Router } from "@angular/router";
 import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from "@angular/core";
 import { ClientUtility } from "@app/utils/client.utility";
 import { CartService } from "./cart.service";
@@ -80,8 +80,8 @@ export class CommonService
     idleNudgeTimer: IdleTimer;
     private _renderer2: Renderer2
     ;
-    private previousUrl: string = null;
-    private currentUrl: string = null;
+    public previousUrl: string = null;
+    public currentUrl: string = null;
 
     constructor(
         @Inject(PLATFORM_ID) platformId,
@@ -93,7 +93,8 @@ export class CommonService
         private _analytics: GlobalAnalyticsService,
         private _loaderService: GlobalLoaderService,
         private rendererFactory: RendererFactory2,
-        private _router: Router
+        private _router: Router,
+        private _route: ActivatedRoute,
     )
     {
         this.windowLoaded = false;
@@ -106,22 +107,10 @@ export class CommonService
         this.userSession = this._localStorageService.retrieve("user");
         this._renderer2 = this.rendererFactory.createRenderer(null, null);
         // this.abTesting = this._dataService.getCookie('AB_TESTING');
-        this.setRoutingInfo();
-
     }
 
     updateUserSession() {
         this.userSession = this._localStorageService.retrieve("user");
-    }
-
-    private setRoutingInfo() {
-        this.currentUrl = this._router.url;
-        this._router.events.subscribe(event => {
-            if (event instanceof NavigationEnd) {
-                this.previousUrl = this.currentUrl;
-                this.currentUrl = event.url;
-            };
-        });
     }
 
     get getPreviousUrl() {

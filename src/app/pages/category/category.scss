@@ -105,6 +105,9 @@
 //         border-bottom: 1px solid $border-color;
 //     }
 // }
+.category-list{
+    background:#C6DCF9;
+}
 .productTags {
     position: absolute;
     width: 70px;
@@ -407,8 +410,6 @@
     padding: 15px 0px 0px 0px;
 }
 .sub-cate-container{
-    background-color: #C6DCF9;
-    padding: 3px 15px;
     padding-bottom: 20px;
     .sub_category_heading {
         font-size: $large-font;

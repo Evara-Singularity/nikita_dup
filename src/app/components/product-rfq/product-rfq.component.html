@@ -154,8 +154,8 @@
                     <p class="error-txt" *ngIf="isRFQSubmitted && tin.errors ==null && gstinError">{{gstinError}}</p>
                 </label>
             </div>
-            <div [class.stickyBottomBtn]="isOutOfStock" [class.mt-60]="!isOutOfStock">
-                <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="btn btn-variant1">SUBMIT YOUR REQUIREMENT</button>
+            <div [class.fixed-bottom-cta]="isOutOfStock" [class.mt-60]="!isOutOfStock">
+                <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="btn primary-full-btn">SUBMIT YOUR REQUIREMENT</button>
             </div>
         </div>
     </form>

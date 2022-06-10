@@ -1,4 +1,8 @@
-@import '../../scss/layout/horizontalProductListing';
+@import "../../scss/variables";
+
+.recent-viewed{
+    background: var(--white);
+}
 .view-all-strip{
     @extend %view-all-strip;
 }

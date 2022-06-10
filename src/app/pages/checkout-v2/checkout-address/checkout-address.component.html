@@ -3,31 +3,29 @@
     <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
     <ng-container>
         <section>
-            <div *ngIf="isUserLoggedIn else hideContinue" class="continue-button">
-                <div class="container payable">
-                    <p class="total-mount">
-                        <span class="payable-amnt">Amount Payable
-                            <span (click)="scrollPaymentSummary();">
-                                <img src="{{IMG_PATH}}assets/img/info.png">
-                            </span>
+            <div *ngIf="isUserLoggedIn else hideContinue" class="fixed-bottom-cta payment-strip">
+                <div class="amount-left-section">
+                    <span class="payable-amnt">Amount Payable
+                        <span (click)="scrollPaymentSummary();">
+                            <img src="{{IMG_PATH}}assets/img/info.png">
                         </span>
-                        ₹ {{ payableAmount | mathCeil | number : '1.2-2'}}
-                    </p>
-                    <button [disabled]="!(hasCartItems)" class="btn"
-                        (click)="$event.stopPropagation();continueToPayment()">
-                        CONTINUE
-                    </button>
+                    </span>
+                    ₹ {{ payableAmount | mathCeil | number : '1.2-2'}}
                 </div>
+                <button [disabled]="!(hasCartItems)" class="btn primary-btn" (click)="$event.stopPropagation();continueToPayment()">
+                    CONTINUE
+                </button>
             </div>
             <ng-template #hideContinue>
                 <div></div>
             </ng-template>
         </section>
         <all-addresses [addDeliveryOrBilling]="addDeliveryOrBilling"
-            (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
-            (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
-            (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
+            (emitDeliveryAddressSelectEvent$)="_addressService?.handleDeliveryAddressEvent($event)"
+            (emitBillingAddressSelectEvent$)="_addressService?.handleBillingAddressEvent($event)"
+            (emitInvoiceTypeEvent$)="_addressService?.handleInvoiceTypeEvent($event)"></all-addresses>
         <cart [moduleName]="'CHECKOUT'"></cart>
         <order-summary></order-summary>
+        <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems" [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } "></shared-checkout-unavailable-items>
     </ng-container>
 </div>

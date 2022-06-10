@@ -2,7 +2,7 @@
 .grouping_wrap_pdp {
     background: var(--white);
     .singlewrap {
-        border-bottom: 0.5px solid var(--silver);
+        border-bottom: 0.5px solid var(--platinum);
         padding: 0px 15px;
         overflow: hidden;
         &:last-of-type {
@@ -40,71 +40,3 @@
       } 
    }
  }
- //grouping popup
- .groupingPopup {
-    padding: 0px;
-    .singlewrap {
-        .inner-heading {
-            background: var(--ghost-white);
-            padding: 5px 15px;
-            border-top: 1px solid var(--silver);
-            border-bottom: 1px solid var(--silver);
-
-            h3 {
-                color: var(--onyx-black);
-                font-weight: $font-bold;
-                padding: 0px;
-            }
-        }
-
-        ul {
-            @extend %clear-fix;
-            padding: 15px 15px 5px 15px;
-
-            li {
-                float: left;
-                border: 1px solid var(--onyx-black);
-                border-radius: $border-radius-2;
-                margin: 0px 10px 10px 0px;
-
-                a {
-                    display: block;
-                    padding: 10px;
-                    font-size: $medium-font;
-                    font-weight: $font-bold;
-                    color:var(--onyx-black);
-
-                    span {
-                        padding-right: 5px;
-                    }
-
-                    &.selected {
-                        background: var(--onyx-black);
-                        color: var(--white);
-                    }
-
-                    &.inactive {
-                        opacity: 0.5;
-                        pointer-events: none;
-                    }
-                }
-            }
-        }
-    }
-    .button-section {
-        bottom: 0;
-        position: absolute;
-        left: 0;
-        right: 0;
-
-        button {
-            width: 50%;
-            height: 54px;
-            border: none;
-            float: left;
-            text-align: center;
-            font-weight: $font-bold;
-            font-size: $large-font;
-        }
-    }
-}

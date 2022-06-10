@@ -415,6 +415,13 @@ export const CONSTANTS = {
     'xlarge': 'xxlarge',
   },
   NEFT_AMOUNT_LMIT: 2000,
-  EMI_MINIMUM_AMOUNT: 3000
+  EMI_MINIMUM_AMOUNT: 3000,
+  MODULE_NAME: {
+    HOME: 'HOME',
+    PRODUCT_LISTING_PAGE: 'PRODUCT_LISTING_PAGE',
+    DASHBOARD: 'DASHBOARD',
+    CART: 'CART',
+    PRODUCT: 'PRODUCT'
+  }
 };
 export default CONSTANTS;

@@ -1,40 +1,31 @@
 <app-bottom-menu>
     <div content>
-        <div class=" verifyPopup">
+        <div class="verifyPopup">
             <div class="top-header-bottom-menu">
                 <h3 class="heading-3">Select Variant</h3>
                 <i class="icon-circle-delete" (click)="hide()"></i>
             </div>
             <div class="select-container" *ngIf="productGroupData">
-                <div class="card-container">
-                    <div class="left">
-                        <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}" height="125"
-                            width="125" />
+                <div class="static-card-container">
+                    <div class="product-img">
+                        <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}" />
                     </div>
-                    <div class="right">
-                        <div class="name">
-                            <span>{{product.productName | slice:0:60 }}<span
-                                    *ngIf="product.productName.length>60">...</span></span>
+                    <div class="product-description">
+                        <p class="description-txt">{{product.productName | slice:0:60 }} <span
+                            *ngIf="product.productName.length>60">...</span></p>
+                        <p class="brand">By : {{product.brandName}}</p>
+                        <div class="price">
+                            <span class="before-discount">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' :
+                                '1.0-0' }}</span>
+                            <span class="discount">{{product.discount}}% OFF</span>
+                            <span class="after-discount">{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' :
+                                '1.0-0' }}</span>
                         </div>
-                        <div class="brand">
-                            <span>By: {{product.brandName}}</span>
-                        </div>
-                        <div class="price-details" *ngIf="product.priceWithoutTax != 0">
-                            <div class="left">
-                                <div class="price">
-                                    <span class="crossed">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' :
-                                        '1.0-0' }}</span>
-                                    <span class="green-label">{{product.discount}}% OFF</span>
-                                </div>
-                                <div class="main-price">
-                                    <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' :
-                                        '1.0-0' }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="price-details" *ngIf="product.priceWithoutTax == 0">
+                        <div class="oos-listing-section" *ngIf="product.priceWithoutTax == 0">
                             <div class="out-of-stock-text">
-                                <span>Available on Request</span>
+                                <p>Available on Request</p>
+                                <span class="after-discount">{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' :
+                                    '1.0-0' }}</span>
                             </div>
                         </div>
                     </div>
@@ -51,12 +42,12 @@
                     </ul>
                 </div>
             </div>
-            <div class="stickyBottomBtn">
-                <button *ngIf="!isSelectedVariantOOO && product.priceWithoutTax != 0" class="btn continue-btn"
+            <div class="fixed-bottom-cta">
+                <button *ngIf="!isSelectedVariantOOO && product.priceWithoutTax != 0" class="btn primary-full-btn"
                     (click)="continueToCart()">
                     CONTINUE
                 </button>
-                <button *ngIf="isSelectedVariantOOO || product.priceWithoutTax == 0" class="btn continue-btn"
+                <button *ngIf="isSelectedVariantOOO || product.priceWithoutTax == 0" class="btn primary-full-btn"
                     (click)="continueToSendQuery()">
                     SEND QUERY
                 </button>

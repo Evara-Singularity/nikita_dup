@@ -1,0 +1,81 @@
+@import "../../scss/variables";
+@import "../../scss/prod-specifications.scss";
+
+:host{
+    width: 100%;
+}
+.prod-detail {
+    padding: 5px 15px 15px;
+    background: var(--white);
+    p {
+        font-size: $large-font;
+        line-height: $medium-line-height;
+        &:first-of-type {
+            -webkit-line-clamp: 4;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 6em;
+        }
+        &.static-desc {
+            height: 0;
+            visibility: hidden;
+        }
+    }
+    .blueText {
+        color: var(--blue);
+        font-size: $medium-font;
+    }
+    .youtube_icon {
+        width: 50px;
+        height: 50px;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+    }
+    .read-more {
+        background: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        color: var(--blue);
+        font-size: $large-font;
+        border: none;
+        padding-top: 10px;
+        text-transform: capitalize;
+    }
+    &.detail-videos {
+        border-top: 1px solid var(--platinum);
+        padding: 5px 15px 15px;
+        .heading-3 {
+            padding-bottom: 10px;
+        }
+    }
+}
+
+.key-features {
+    padding: 5px 15px 15px;
+    background: var(--white);
+    font-size: $large-font;
+    border-bottom: 1px solid var(--platinum);
+    .feature-list {
+        li {
+            padding-bottom: 5px;
+            p:before {
+                content: "•";
+                font-size: $extra-large-4-font;
+                padding-right: 10px;
+                vertical-align: top;
+                line-height: $medium-line-height;
+            }
+
+            span {
+                display: inline-block;
+                width: 90%;
+                line-height: $medium-line-height;
+                vertical-align: top;
+            }
+        }
+    }
+}

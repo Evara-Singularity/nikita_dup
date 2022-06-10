@@ -12,6 +12,7 @@ import { CommonService } from "@app/utils/services/common.service";
 import { GlobalState } from "@app/utils/global.state";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { FormControl, FormGroup } from "@angular/forms";
 
 @Component({
   selector: "bussiness-info",
@@ -28,7 +29,10 @@ export class BussinessInfoComponent {
   isHomePage: boolean;
   public isMenuCollapsed: boolean = false;
   currentRoute: string;
-  set showLoader(value){
+  userNameform = new FormGroup({
+    fname: new FormControl(''),
+   });  
+   set showLoader(value){
     this.loaderService.setLoaderState(value);
   }
 

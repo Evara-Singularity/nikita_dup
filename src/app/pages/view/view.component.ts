@@ -21,7 +21,7 @@ export class ViewComponent {
 	childCatIcons = false;
 	currentL1Index = -1;
 	currentL1Id = -1;
-	clusterCategoryData;
+	clusterCategoryData :any =[];
 	defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
 
 	constructor(

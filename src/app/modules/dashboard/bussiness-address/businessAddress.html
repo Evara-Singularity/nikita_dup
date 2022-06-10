@@ -1,8 +1,8 @@
 <div>
-    <router-outlet></router-outlet>
-    <!-- <all-addresses [addDeliveryOrBilling]="addDeliveryOrBilling"
+    <!-- <router-outlet></router-outlet> -->
+    <all-addresses [addDeliveryOrBilling]="addDeliveryOrBilling"
         [showDelete]="true"
         (emitDeliveryAddressSelectEvent$)="_addressService?.handleDeliveryAddressEvent($event)"
         (emitBillingAddressSelectEvent$)="_addressService?.handleBillingAddressEvent($event)"
-        (emitInvoiceTypeEvent$)="_addressService?.handleInvoiceTypeEvent($event)"></all-addresses> -->
+        (emitInvoiceTypeEvent$)="_addressService?.handleInvoiceTypeEvent($event)"></all-addresses>
 </div>

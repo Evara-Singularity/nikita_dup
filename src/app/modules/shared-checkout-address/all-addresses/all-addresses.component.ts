@@ -161,6 +161,11 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
                 this.updateDeliveryOrBillingAddress(IS_DELIVERY, actionInfo.address);
                 return;
             }
+            //Below code is to handle "Delete functionality"
+            if (actionInfo.action === "DELETE") {
+                this.deleteAddress(addressType, actionInfo.address);
+                return;
+            }
         });
     }
 
@@ -248,6 +253,43 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
                 this.emitBillingAddressSelectEvent$.emit(address);
             }
         }
+    }
+
+    deleteAddress(addressType, address)
+    {
+        const deleteAddress = {
+            'idAddress': address['idAddress'],
+            'addressCustomerName': address['addressCustomerName'],
+            'phone': address['phone'],
+            'email': address['email'] != null ? address['email'] : this.USER_SESSION['email'],
+            'postCode': address['postCode'],
+            'addressLine': address['addressLine'],
+            'city': address['city'],
+            'idState': address['state']['idState'],
+            'idCountry': address['country']['idCountry'],
+            'idCustomer': address['idCustomer'],
+            'idAddressType': address['addressType']['idAddressType'],
+            'active': false,
+            'invoiceType':this.invoiceType.value
+        };
+        this._addressService.postAddress(deleteAddress).subscribe((addressList)=>{
+            if (address) {
+                const addressType = address['addressType']['addressType'];
+                const idAddress = address['idAddress']
+                if (addressType === 'shipping' && this._cartService.shippingAddress) {
+                    const cidAddress = this._cartService.shippingAddress['idAddress'];
+                    if (idAddress === cidAddress) { this._cartService.shippingAddress = null; }
+                } else if (this._cartService.billingAddress) {
+                    const cidAddress = this._cartService.billingAddress['idAddress'];
+                    if (idAddress === cidAddress) { this._cartService.billingAddress = null; }
+                }
+            } else {
+                this._cartService.shippingAddress = null;
+                this._cartService.billingAddress = null;
+            }
+            this.updateAddressAfterAction(addressType, addressList);
+        });
+        this.closeAddressListPopup();
     }
 
     /** @description:closes the address list pop-up depending on address form pop-up     */

@@ -14,6 +14,7 @@ export class AccordianComponent implements OnInit {
 
   @Input() accordiansDetails: AccordiansDetails[] = [];
   @Output('outerRoutingEvent') outerRoutingEvent = new EventEmitter<any>();
+  @Output() sendAnalyticsInfo: EventEmitter<any> = new EventEmitter<any>();
   prodUrl = CONSTANTS.PROD;
   currentOpenIndex = 0;
   isShown:Array<boolean>=[];
@@ -53,5 +54,9 @@ export class AccordianComponent implements OnInit {
   toggleShow(index) {
 
     this.isShown[index] = !this.isShown[index];
+  }
+  
+  triggerAnalyticsInfo(){
+    this.sendAnalyticsInfo.emit();
   }
 }

@@ -146,7 +146,7 @@ export class ProductListService {
         params: actualParams,
       });
     } else {
-      return new Observable();
+      return of({});
     }
   }
 

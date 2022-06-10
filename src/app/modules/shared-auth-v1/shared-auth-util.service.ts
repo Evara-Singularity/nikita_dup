@@ -1,6 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
@@ -51,21 +52,21 @@ export class SharedAuthUtilService implements OnInit
         }
         let cartSession = Object.assign(this._cartService.getGenericCartSession);
         cartSession['cart']['userId'] = response['userId'];
-        this.updateCartSession(`Welcome to Moglix, ${response['userName']}`, isCheckout, redirectUrl);
+        const userName = response['userName'] === 'User' ? "!" : " ," + response['userName'];
+        this.updateCartSession(`Welcome to Moglix${userName}`, isCheckout, redirectUrl || '/');
     }
 
-    updateCartSession(message, isCheckout, redirectUrl)
-    {
+    updateCartSession(message, isCheckout, redirectUrl = null) {
         this._globalLoader.setLoaderState(true);
         this._cartService.performAuthAndCartMerge({
             enableShippingCheck: true,
             redirectUrl: redirectUrl,
-        }).subscribe(cartSession =>
-        {
+        }).subscribe(cartSession => {
             this._globalLoader.setLoaderState(false);
             if (cartSession) {
-                this._commonService.redirectPostAuth(redirectUrl);
-                this._toastService.show({ type: 'success', text: message });
+                redirectUrl && this._commonService.redirectPostAuth(redirectUrl)
+                redirectUrl && this._toastService.show({ type: 'success', text: message });
+                !redirectUrl && console.log('express sign up completed');
             } else {
                 this._toastService.show({ type: 'error', text: 'Something went wrong' });
             }
@@ -73,13 +74,14 @@ export class SharedAuthUtilService implements OnInit
     }
 
     //common section
-    postSignup(params, response, isCheckout, redirectUrl)
-    {
+    postSignup(params, response, isCheckout, redirectUrl, expressSignup) {
         this._localStorage.clear('tocd');
         this._localStorage.store('user', response);
         let cartSession = Object.assign(this._cartService.getGenericCartSession);
         cartSession['cart']['userId'] = response['userId'];
-        this.updateCartSession(`Welcome to Moglix, ${params['firstName']}`, isCheckout, redirectUrl);
+        const firstName = params['firstName'] || '';
+        const welcomeText = ((firstName.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) || firstName == '') ? `Welcome to Moglix!` : `Welcome to Moglix, ${firstName}`
+        this.updateCartSession(welcomeText, isCheckout, (expressSignup) ? redirectUrl : null );
     }
 
     updateOTPControls(otpForm: FormArray, length: number) 

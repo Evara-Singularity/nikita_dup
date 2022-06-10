@@ -798,6 +798,7 @@ export class ProductService {
             mrp: productMrp,
             salesPrice: productPrice,
             priceWithoutTax: priceWithoutTax,
+            keyFeatures:productBO['keyFeatures'],
             productName: productBO['productName'],
             variantName: productBO['productName'],
             productUrl: productBO['defaultCanonicalUrl'],
@@ -825,7 +826,7 @@ export class ProductService {
             ratingCount: (overrideProductB0 && overrideProductB0.ratingCount) ? overrideProductB0.ratingCount : null, //this.product.ratingCount,
             reviewCount: (overrideProductB0 && overrideProductB0.reviewCount) ? overrideProductB0.reviewCount : null //this.product.reviewCount
         };
-        console.log(productEntity['salesPrice']);
+
         return productEntity;
     }
 

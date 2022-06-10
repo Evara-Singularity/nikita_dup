@@ -58,7 +58,7 @@ export class BussinessPurchaseListComponent {
     // feature config
     enableAddToCart: true,
     enableBuyNow: true,
-    enableFeatures: false,
+    enableFeatures: true,
     enableRating: true,
     enableVideo: false,
     // design config

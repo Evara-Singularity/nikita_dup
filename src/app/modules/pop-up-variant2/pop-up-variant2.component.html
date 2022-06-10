@@ -1,11 +1,8 @@
 <section class="{{pClass}}">
-    <div class="container">
         <div class="pop-header">
             <div class="head-sec">
-                <div class="container">
                     <i class="icon-circle-delete" (click)="closePopup()"></i>
                     <p class="txt">{{headerText}}</p>
-                </div>
             </div>
         </div>
         <!-- <ng-container *ngIf="headerCustom">
@@ -20,5 +17,4 @@
         <!-- <app-address-list [addresses]="data.addresses" [type]="data.type"></app-address-list>       -->
 
         <ng-content select="[footer]"></ng-content>
-    </div>
 </section>

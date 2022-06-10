@@ -112,9 +112,9 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.isSingupUsingPhone && !(this.email.value)) { this.initiateSingup(); return;}
         let userInfo = null;
         if (this.isSingupUsingPhone) {
-            userInfo = { email: this.email.value, phone: '', type: 'e' };
+            userInfo = { email: this.email.value, phone:  this.phone.value ? this.phone.value : '', type: 'e' };
         } else {
-            userInfo = { email: '', phone: this.phone.value, type: 'p' };
+            userInfo = { email: this.email.value ? this.email.value :'', phone: this.phone.value, type: 'p' };
         }
         this._globalLoader.setLoaderState(true);
         this._sharedAuthService.isUserExist(userInfo).subscribe(
@@ -267,8 +267,9 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
             queryParams.state === 'raiseRFQQuote') ||
             queryParams.state === 'askQuestion')) {
             REDIRECT_URL += '?state=' + queryParams['state'];
+            this._sharedAuthService.redirectUrl += '?state=' + queryParams['state'];
         }
-        console.log('getRedirectURL ==>', REDIRECT_URL , this._sharedAuthService.redirectUrl, BACKURLTITLE);
+        
         return (this._sharedAuthService.redirectUrl) ? this._sharedAuthService.redirectUrl : ((BACKURLTITLE) ? BACKURLTITLE : REDIRECT_URL);
     }
 

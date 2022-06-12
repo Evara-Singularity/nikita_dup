@@ -38,7 +38,7 @@
                                     <span class="small-btn edit"
                                         (click)="handleAction($event, ACTION_TYPES.EDIT, address)">EDIT</span>
                                     <span *ngIf="showDelete" class="small-btn delete"
-                                        (click)="handleAction($event,ACTION_TYPES.SELECTED, address)">
+                                        (click)="handleAction($event,ACTION_TYPES.DELETE, address)">
                                         DELETE
                                     </span>
                                     <span *ngIf="!showDelete" class="small-btn delete"

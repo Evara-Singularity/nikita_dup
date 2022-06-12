@@ -1,35 +1,48 @@
 @import './../../scss/variables';
+
 #subcCategoryTop {
   background: $white;
-  border-radius: 8px;
+  border-radius: $border-radius-8;
+
   li {
     @include gridForCategory('2');
     min-height: 155px;
     max-height: 155px;
-    &:nth-child(1){
-      border-right: 1px solid #EFEFF4;
-      border-bottom: 1px solid #EFEFF4;
+
+    &:nth-child(1) {
+      border-right: 1px solid var(--ghost-white);
+      border-bottom: 1px solid var(--ghost-white);
     }
-    &:nth-child(odd){
-      border-right: 1px solid #EFEFF4;
-      border-bottom: 1px solid #EFEFF4;
+
+    &:nth-child(odd) {
+      border-right: 1px solid var(--ghost-white);
+      border-bottom: 1px solid var(--ghost-white);
     }
-    &:nth-child(2n){
-      border-bottom: 1px solid #EFEFF4;
-      
+
+    &:nth-child(2n) {
+      border-bottom: 1px solid var(--ghost-white);
+
     }
+
     .prod-image {
       min-height: 92px;
       text-align: center;
     }
+
     h4 {
       font-size: $medium-font;
-      font-weight: 400;
+      font-weight: $font-normal;
       text-align: center;
     }
   }
   .show-more {
     display: block;
     padding: 20px;
+  }
+  .primary-full-btn {
+    background: var(--white);
+    color: var(--primary);
+    text-align: center;
+    line-height: 10px;
   }
 }

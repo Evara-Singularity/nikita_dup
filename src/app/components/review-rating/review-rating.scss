@@ -1,1 +1,5 @@
 @import '../../scss/review-rating-popup';
+.reviewSection{
+    height: calc(100% - 60px);
+    overflow: auto;
+}

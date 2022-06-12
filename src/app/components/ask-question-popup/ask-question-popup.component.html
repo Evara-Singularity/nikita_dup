@@ -5,8 +5,7 @@
             <p class="txt header_text page-name">Write Question</p>
         </div>
     </div> -->
-    <div class="content-popup" content>
-        <div class="ask-question-container">
+    <div class="content-popup ask-question-container" content>
             <div class="pwa-row ask-question-field material-form material-form-boxed">
                 <div class="pwa-col-12 input-field-boxed">
                     <textarea [(ngModel)]="questionText" maxlength="200" placeholder="Type your question"></textarea>
@@ -23,8 +22,6 @@
             </div>
             <div class="fixed-bottom-cta">
                 <button (click)="postQuestion()" class="btn primary-full-btn">SUBMIT YOUR QUESTION</button>
-            </div>   
-        </div>
-
+            </div> 
     </div>
 </app-pop-up>

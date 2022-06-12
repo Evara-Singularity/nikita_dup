@@ -108,18 +108,4 @@
 }
 
 
-.submit-btn {
-    width: 100%;
-    color: white;
-    text-align: center;
-    height: 45px;
-    font-size: 16px;
-    border-radius: 0px !important;
-    border: none;
-    background: #A9A9A9;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    &.active {
-        background: $btn-color;
-    }
-}
+

@@ -1,15 +1,15 @@
 @import '../../scss/variables';
-.container {
-    height: 100%;
-    // padding-top: 1px;
-}
+// .container {
+//     height: 100%;
+//     // padding-top: 1px;
+// }
 
 
 
 // .info-update-popup {
 //     .head-sec {
 //         @extend %ico-txt;
-//         margin: 20px 0;
+//         mrfqFormTemplateargin: 20px 0;
 //         .txt {
 //             font-size: $extra-large-font;
 //             font-weight: 600;
@@ -166,12 +166,7 @@
 //         height: calc(100% - 50px) !important;
 //     }
 // }
-// .page-name {
-//     line-height: 26px;
-//     font-weight: 500;
-//     text-transform: capitalize;
-//     color: $white;
-// }
+
 //finalized scss
 .popup {
     position: fixed;
@@ -274,9 +269,6 @@
             height: 85%;
             height: calc(100% - 54px);
             overflow: auto;
-            &.bulkRequest {
-                height: calc(100% - 120px);
-            }
         }
     }
 }
@@ -287,7 +279,8 @@
         // min-height: 50px;
         align-items: center;
         padding: 10px;
-        box-shadow: 0px 3px 6px #c4c4c429;
+        box-shadow: rgba(0, 0, 0, 0.16) -1px 2px 2px;
+        position: relative;
        i{
            margin-right:15px;
            font-size: $extra-large-3-font;
@@ -300,8 +293,16 @@
 }
 .pop-up-header{
     background:var(--white);
+    box-shadow: rgba(0, 0, 0, 0.16) -1px 2px 2px;
+    position: relative;
     .head-sec{
         padding:10px 15px;
     }
+}
+.page-name {
+    line-height: 26px;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: $white;
 }
 

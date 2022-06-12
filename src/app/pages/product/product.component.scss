@@ -141,6 +141,14 @@
         }
     }
 }
+.highIndex {
+    ::ng-deep{
+       .bottom-bar{
+        z-index: 105 !important;
+       }
+    }
+    
+}
 
 // to be moved in crousel css start 
 

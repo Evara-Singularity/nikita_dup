@@ -1,10 +1,10 @@
 <app-pop-up *ngIf="openBulkRequestPopup"
     [headerType]="'pop-up-header1'"
     [data]="{headerText: ' '}">
-    <div class="head-sec" header>
+    <!-- <div class="head-sec" header>
         <i *ngIf="!isOutOfStockSuccessfull" class="icon-circle-delete f-left" (click)="close()" ></i>
         <p *ngIf="!isOutOfStockSuccessfull" class="txt"> </p>
-    </div>
+    </div> -->
     <div class="content-popup bulkRequest" content>
         <p *ngIf="!isOutOfStockSuccessfull" class="prod-name">
             {{productInfo.productName}}

@@ -2,6 +2,8 @@
 @import '../../../styles.scss';
 @import '../../modules/bottomMenu/bottom-menu.component.scss';
 @import '../../scss/components/static-card-container.scss';
+@import '../../scss/components/bottom-popup';
+
 .select-container {
     width: $fullwidth;
     background-color: var(--white);

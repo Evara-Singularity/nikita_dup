@@ -19,7 +19,7 @@
     </div>
   </div>
 </div>
-<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup" [data]="{}">
+<app-pop-up *ngIf="openPopup" (outData$)="outData($event)"  [data]="{headerText: ''}" [headerType]="'pop-up-header1'">
     <div class="allCategoryBlock content-popup" content>
       <div class="pwa-row pwa-row-noPad">
         <div *ngFor="let prod of data['data'] ;let i=index" class="pwa-col-4 all-category-setion">

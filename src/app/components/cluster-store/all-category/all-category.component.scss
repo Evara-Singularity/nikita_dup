@@ -5,6 +5,8 @@
 .allCategoryBlock{
     background: var(--ghost-white);
     padding: 15px 5px;
+    height: calc(100% - 54px);
+    overflow: auto;
     &.grey_bg{
         background:var(--ghost-white);
     }

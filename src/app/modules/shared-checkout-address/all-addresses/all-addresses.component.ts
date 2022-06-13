@@ -226,13 +226,13 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.addressListInstance) {
             this.addressListInstance.instance['addresses'] = IS_DELIVERY ? this.deliveryAddressList : this.billingAddressList;
         }
-        if (canUpdateDelivery)
-        {
+        // if (canUpdateDelivery)
+        // {
 
-        }
-        if (canUpdateBilling) {
+        // }
+        // if (canUpdateBilling) {
 
-        }
+        // }
     }
 
     /**

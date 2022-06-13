@@ -154,10 +154,8 @@
                     <p class="error-txt" *ngIf="isRFQSubmitted && tin.errors ==null && gstinError">{{gstinError}}</p>
                 </label>
             </div>
-            <!-- <div class="fixed-bottom-cta" [class.fixed-bottom-cta]="isOutOfStock" [class.mt-60]="!isOutOfStock"> -->
-            <div [class.fixed-bottom-cta]="isOutOfStock">
-                <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)"
-                    class="btn primary-full-btn sachin">SUBMIT YOUR REQUIREMENT</button>
+            <div [class.fixed-bottom-cta]="isOutOfStock" [class.mt-60]="!isOutOfStock">
+                <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="btn primary-full-btn">SUBMIT YOUR REQUIREMENT</button>
             </div>
         </div>
     </form>
@@ -167,7 +165,8 @@
     <ng-container content *ngTemplateOutlet="rfqFormTemplate"></ng-container>
 </app-bottom-menu>
 <!--Popup-->
-<app-pop-up *ngIf="!isOutOfStock && isPopup" [headerType]="'pop-up-header'"
+<app-pop-up *ngIf="!isOutOfStock && isPopup"
+    [headerType]="'pop-up-header'"
     [data]="{headerText: 'Interested to buy in bulk', headerSubText: 'Add more details to get the best deal'}">
     <div class="head-sec" header>
         <div class="container">

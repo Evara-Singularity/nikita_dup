@@ -1,5 +1,5 @@
 <div *ngIf="orders && orders.length>0">
-    <div class="orderbox pwa-container pb-15" *ngFor="let order of orders;let i=index">
+    <div class="orderbox pwa-container" *ngFor="let order of orders;let i=index">
         <div class="orderIdtab pwa-row pad-0" (click)="showOrder(order.orderId,i)" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="footwear">
             <div class="orderSum">
                 <span class="orderId">Order ID : {{order.orderId}}</span>
@@ -21,7 +21,7 @@
             <div  class="card-boxed">
                 <div *ngFor="let detail of orderDetail[order.orderId]">
                     <a href="#" [routerLink]="['../order-detail',order.orderId, detail.item_id]">
-                        <div class="card-upper mt-15">
+                        <div class="card-upper">
                             <div class="card-img">
                                 <img alt="" src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
                             </div>

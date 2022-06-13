@@ -9,16 +9,16 @@
                 <div>
                     <a (click)="navigateTo(prod.categoryLink, {tS:'yes'})">{{prod.categoryName}}</a>
                 </div>
-                <!-- <div class="show_more"
-                    *ngIf="(i === ((trendingCatName | slice:0: _commonService.limitTrendingCategoryNumber).length - 1) && ((trendingCatName.length - _commonService.limitTrendingCategoryNumber) >= 0))"
-                    (click)="updateLimitTrendingCategoryNumber()">
-                    {{ trendingCatName.length !== _commonService.limitTrendingCategoryNumber ? (trendingCatName.length -
-                    _commonService.limitTrendingCategoryNumber) + ' more searches...' : 'Show less' }}
-                </div> -->
             </ng-container>
         </li>
-        <li class="mb-10">
-            <div class="show_more">Show more...</div>
+        <li class="mb-10" (click)="updateLimitTrendingCategoryNumber()"
+            *ngFor="let prod of trendingCatName | slice:0: _commonService.limitTrendingCategoryNumber; let i = index;">
+            <ng-container *ngIf="(i === ((trendingCatName | slice:0: _commonService.limitTrendingCategoryNumber).length - 1) && ((trendingCatName.length - _commonService.limitTrendingCategoryNumber) >= 0))">
+                <div class="show_more">
+                    {{ trendingCatName.length !== _commonService.limitTrendingCategoryNumber ? (trendingCatName.length -
+                    _commonService.limitTrendingCategoryNumber) + ' more searches...' : 'Show less' }}
+                </div>
+            </ng-container>
         </li>
     </ul>
 </div>

@@ -3,6 +3,7 @@
 @import '../../../../scss/layout/cards.scss';
 @import '../../../../scss/utils/utilities.scss';
 .select-offers {
+    margin-top: 10px;
     .promo-code {
         @extend %clear-fix;
         padding: 0 15px 15px 15px;
@@ -145,8 +146,8 @@
 .select-offers {
     &.open {
         background-color: var(--white);
-        .container {
-            height: initial;
-        }
+        // .container {
+        //     height: initial;
+        // }
     }
 }

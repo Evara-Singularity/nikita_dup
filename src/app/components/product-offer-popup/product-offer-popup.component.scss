@@ -2,6 +2,8 @@
 @import "../../scss/variables";
 @import "../../scss/utils/utilities.scss";
 .mobikwik-wallet {
+    height: calc(100% - 60px);
+    overflow: auto;
     background: var(--white);
     .wallet-block{
         background: var(--ghost-white);

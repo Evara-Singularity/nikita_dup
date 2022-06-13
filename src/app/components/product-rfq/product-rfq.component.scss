@@ -4,6 +4,12 @@
 @import '../../scss/components/buttons.scss';
 @import '../../modules/bottomMenu/bottom-menu.component.scss';
  
+.rfqPopup{
+  height:calc(100% - 50px);  
+  overflow-y:scroll;
+  background:var(--white);
+  padding-bottom:10px;
+}
 .rfqForm {
     .product-rfq {
         .multiple-form-field {
@@ -165,8 +171,4 @@
             background: $logo-color;
         }
     }
-}
-
-.f-size-26 {
-    font-size: 26px;
 }

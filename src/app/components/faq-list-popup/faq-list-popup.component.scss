@@ -2,13 +2,13 @@
 
 .Qa {
     background: var(--white);
-
+    height: calc(100% - 150px);
+    overflow: auto;
     .faq-head {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-
     .display-qn {
         border-bottom: 1px dashed var(--silver);
         font-size: $medium-font;

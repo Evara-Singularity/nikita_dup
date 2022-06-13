@@ -71,6 +71,7 @@
         h2.slp-heading {
             font-size: $large-font;
             text-transform: uppercase;
+            padding-top: 15px;
         }
         .safetyshopbywrap {
             background: #fff;
@@ -192,16 +193,19 @@
                 }
             }
         }
-        .safetysh-shopby {
+        .safetysh_sect1{
             background: url(/assets/img/shopbybanner.png) no-repeat center;
-            padding: 20px 10px;
-            background-size: cover;
-            .slp-heading {
-                &:before {
-                    width: 57px;
+            .safetysh-shopby {
+                padding: 0px 10px;
+                background-size: cover;
+                .slp-heading {
+                    &:before {
+                        width: 57px;
+                    }
                 }
             }
         }
+
         .shopbyrow {
             margin: 0 -5px;
         }

@@ -2,14 +2,6 @@
 @import '../../scss/components/checkbox';
 @import '../../scss/components/radio';
 @import '../../scss/layout/forms';
-
-
-.pwa-row{
-    & > *{
-      flex-grow:1;
-    }
-  }
-  
 .invoice-container {
     @extend %white-card;
     background: $white;

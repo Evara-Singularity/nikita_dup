@@ -22,7 +22,7 @@ import { FormControl, FormGroup } from "@angular/forms";
 export class BussinessInfoComponent {
   error: boolean = true;
   errorMsg: string = "";
-  userInfo;
+  userInfo:any;
   isBrowser: boolean;
   user: any;
   isServer: boolean;

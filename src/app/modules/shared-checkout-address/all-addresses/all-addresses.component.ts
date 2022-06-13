@@ -133,10 +133,14 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         let cIdAddress = null;
         if (IS_DELIVERY) {
             ADDRESSES = this.deliveryAddressList;
-            cIdAddress = this._cartService.shippingAddress['idAddress'];
+            if (this._cartService.shippingAddress) {
+                cIdAddress = this._cartService.shippingAddress['idAddress'];
+            }
         } else {
             ADDRESSES = this.billingAddressList;
-            cIdAddress = this._cartService.billingAddress['idAddress'];
+            if (this._cartService.billingAddress) {
+                cIdAddress = this._cartService.billingAddress['idAddress'];
+            }
         }
         this.addressListInstance.instance['addresses'] = ADDRESSES;
         this.addressListInstance.instance['showDelete'] = this.showDelete;
@@ -226,6 +230,8 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.addressListInstance) {
             this.addressListInstance.instance['addresses'] = IS_DELIVERY ? this.deliveryAddressList : this.billingAddressList;
         }
+        const INVOICE_TYPE = this._cartService.invoiceType ? this._cartService.invoiceType : this.INVOICE_TYPES.RETAIL;
+        this.updateAddressTypes(this.USER_SESSION.userId, INVOICE_TYPE);
         // if (canUpdateDelivery)
         // {
 
@@ -316,6 +322,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
 
     ngOnDestroy(): void
     {
+        alert('destroyed');
         this.addressListInstance = null;
         this.createEditAddressInstance = null;
         if (this.addressListCloseSubscription) this.addressListCloseSubscription.unsubscribe();

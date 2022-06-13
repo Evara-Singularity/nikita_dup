@@ -107,6 +107,7 @@
         height: 100%;
         top: 120%;
         left: 0;
+        overflow: scroll;
         background: $white;
         @extend %transition;
         &.open {

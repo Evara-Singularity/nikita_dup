@@ -94,6 +94,7 @@
         background: var(--white);
         padding: 10px;
         display: flex;
+        border-radius: 8px 8px 0px 0px;
         .card-img {
             width: 27%;
             padding: 5px;
@@ -194,7 +195,7 @@
     padding-right: 0;
     background-color: var(--white);
     padding-left: 0;
-    margin: 10px 15px;
+    margin: 10px 15px 70px;
     border-radius: $border-radius-8;
     display: block;
     h5 {

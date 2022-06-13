@@ -78,6 +78,7 @@
             align-items: center;
             padding: 10px 15px;
             border: 1px solid var(--ghost-white);
+            border-top: none;
             &:last-child{
                 border-radius: 0px 0px 8px 8px;
             }

@@ -1,11 +1,11 @@
-<app-pop-up  *ngIf="openProductInfo" (outData$)="closeProducInfo($event)" [class.open1]="openProductInfo"
-    [data]="{class: 'payment-popup addAddressPopup',headerCustom:true, selector:'openProductInfo'}">
-    <div class="head-sec header_add_edit" header>
+<app-pop-up  *ngIf="openProductInfo" (outData$)="closeProducInfo($event)" [headerType]="'pop-up-header1'" [class.open1]="openProductInfo"
+    [data]="{class: 'payment-popup addAddressPopup', headerText: 'About this Product', selector:'openProductInfo'}">
+    <!-- <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeProducInfo($event)"></i>
             <p class="txt header_text page-name">About this Product</p>
         </div>
-    </div>
+    </div> -->
     <div class="content-popup about-this-product" content [class.customPopHeight]="productOutOfStock">
         <div class="pwa-row">
             <div class="static-card-container pwa-col-12">

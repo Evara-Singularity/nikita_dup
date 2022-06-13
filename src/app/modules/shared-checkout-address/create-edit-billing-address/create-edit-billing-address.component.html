@@ -1,11 +1,12 @@
 <app-pop-up-variant2 *ngIf="displayCreateEditPopup" (outData$)="handlePopup($event)"
-    [class.open1]="displayCreateEditPopup" [data]="{class: 'payment-popup addAddressPopup addr1',headerCustom:true}">
-    <div class="head-sec header_add_edit" header>
+[headerType]="'pop-up-header1'"
+[class.open1]="displayCreateEditPopup" [data]="{headerText: modeType + ' ' + ADDRESS_TYPE + ' Address'}">
+    <!-- <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="$event.stopPropagation();handlePopup($event)"></i>
             <p class="txt header_text page-name"> {{modeType }} {{ADDRESS_TYPE}} Address</p>
         </div>
-    </div>
+    </div> -->
     <div class="content-popup" content>
         <div class="pwa-row">
             <form class="material-form" [formGroup]="businessForm" (ngSubmit)="$event.stopPropagation();onSubmit()">

@@ -1,5 +1,5 @@
 <section class="{{pClass}}">    
-    <div class="pop-header">
+    <div *ngIf="headerType === 'pop-up-header'" class="pop-up-header">
         <div class="head-sec">
             <div class="container">
                 <i class="icon-circle-delete" (click)="closePopup()"></i>
@@ -7,10 +7,10 @@
             </div>
         </div>
     </div>
-    <div class="pop-up-header1">
-        <i class="icon-back-arrow"></i>
+    <div *ngIf="headerType === 'pop-up-header1'" class="pop-up-header1">
+        <i class="icon-back-arrow"  (click)="closePopup()"></i>
         <span class="page-name">
-            Dummy text
+            {{headerText}}
         </span>
     </div>
     

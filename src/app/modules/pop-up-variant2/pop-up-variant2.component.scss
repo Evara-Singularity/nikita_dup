@@ -1,122 +1,146 @@
-@import "../../scss/variables";
 
-.container {
-    height: 100%;
-}
+// @import "../../scss/variables";
+@import '../../scss/components/popup';
+// .container {
+//     height: 100%;
+// }
 
-.popup {
-    position: fixed;
-    // display: none;
-    z-index: 99;
-    &.screen-view {
-        width: 100%;
-        height: 100%;
-        top: 120%;
-        left: 0;
-        background: $white;
-        @extend %transition;
-        .head-sec {
-            padding: 12px 0;
-            margin: 0;
-            z-index: 5;
-            position: relative;
-            @extend %box-shadow;
-            background: $white;
-            i {
-                font-size: 20px;
-                line-height: 24px;
-            }
-            i+.page-name {
-                font-size: $extra-large-font;
-                margin-left: 10px;
-            }
-            .txt {
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 21px;
-                margin-left: 20px;
-            }
-        }
-        &.payment-popup {
-            background: $body-color;
-            .head-sec {
-                @extend %box-shadow;
-                background: $white;
-            }
-            &>.container {
-                width: 100%;
-            }
-            .head-sec {
-                padding: 12px 0;
-                margin: 0;
-                @extend %box-shadow;
-                background: $white;
-                i {
-                    font-size: 20px;
-                    line-height: 24px;
-                    color: var(--onyx-black);
-                }
-                i+.page-name {
-                    font-size: $extra-large-font;
-                    margin-left: 10px;
-                    line-height: 26px;
-                    color: #fff;
-                }
-            }
-        }
-        &.addAddressPopup {
-            background: #fff !important;
-            &.screen-view {
-                .head-sec {
-                    background: $logo-color !important;
-                    i {
-                        color: $white
-                    }
-                }
-                .content-popup {
-                    height: calc(100% - 100px);
-                    overflow: auto;
-                    margin-top: 0px;
-                    padding-top: 0px;
-                    .address-list {
-                        padding: 15px;
-                    }
-                }
-            }
-        }
-    }
-}
+// .popup {
+//     position: fixed;
+//     // display: none;
+//     z-index: 99;
+//     &.screen-view {
+//         width: 100%;
+//         height: 100%;
+//         top: 120%;
+//         left: 0;
+//         background: $white;
+//         @extend %transition;
+//         .head-sec {
+//             padding: 12px 0;
+//             margin: 0;
+//             z-index: 5;
+//             position: relative;
+//             @extend %box-shadow;
+//             background: $white;
+//             i {
+//                 font-size: 20px;
+//                 line-height: 24px;
+//             }
+//             i+.page-name {
+//                 font-size: $extra-large-font;
+//                 margin-left: 10px;
+//             }
+//             .txt {
+//                 font-size: 16px;
+//                 font-weight: 600;
+//                 line-height: 21px;
+//                 margin-left: 20px;
+//             }
+//         }
+//         &.payment-popup {
+//             background: $body-color;
+//             .head-sec {
+//                 @extend %box-shadow;
+//                 background: $white;
+//             }
+//             &>.container {
+//                 width: 100%;
+//             }
+//             .head-sec {
+//                 padding: 12px 0;
+//                 margin: 0;
+//                 @extend %box-shadow;
+//                 background: $white;
+//                 i {
+//                     font-size: 20px;
+//                     line-height: 24px;
+//                     color: var(--onyx-black);
+//                 }
+//                 i+.page-name {
+//                     font-size: $extra-large-font;
+//                     margin-left: 10px;
+//                     line-height: 26px;
+//                     color: #fff;
+//                 }
+//             }
+//         }
+//         &.addAddressPopup {
+//             background: #fff !important;
+//             &.screen-view {
+//                 .head-sec {
+//                     background: $logo-color !important;
+//                     i {
+//                         color: $white
+//                     }
+//                 }
+//                 .content-popup {
+//                     height: calc(100% - 100px);
+//                     overflow: auto;
+//                     margin-top: 0px;
+//                     padding-top: 0px;
+//                     .address-list {
+//                         padding: 15px;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
 
-.info-update-popup {
-    .head-sec {
-        @extend %ico-txt;
-        margin: 20px 0;
-        .txt {
-            font-size: $extra-large-font;
-            font-weight: 600;
-            line-height: 21px;
-            margin-left: 20px;
-        }
-    }
-    .input-field {
-        margin-bottom: 20px;
-    }
-    .help-txt {
-        position: absolute;
-        right: 0;
-        top: 24px;
-        font-size: 14px;
-        color: $blue-link-color;
-    }
-}
-.addr1{
-    .content-popup {
-        height: calc(100% - 100px);
-        overflow: auto;
-        margin-top: 0px;
-        padding-top: 0px;
-        .address-list {
-            padding: 15px;
-        }
-    }
-}
+// .info-update-popup {
+//     .head-sec {
+//         @extend %ico-txt;
+//         margin: 20px 0;
+//         .txt {
+//             font-size: $extra-large-font;
+//             font-weight: 600;
+//             line-height: 21px;
+//             margin-left: 20px;
+//         }
+//     }
+//     .input-field {
+//         margin-bottom: 20px;
+//     }
+//     .help-txt {
+//         position: absolute;
+//         right: 0;
+//         top: 24px;
+//         font-size: 14px;
+//         color: $blue-link-color;
+//     }
+// }
+// .addr1{
+//     .content-popup {
+//         height: calc(100% - 100px);
+//         overflow: auto;
+//         margin-top: 0px;
+//         padding-top: 0px;
+//         .address-list {
+//             padding: 15px;
+//         }
+//     }
+// }
+
+// .pop-up-header1{
+//     background:var(--white);
+//     display: flex;
+//     justify-content: flex-start;
+//     min-height: 50px;
+//     align-items: center;
+//     padding: 10px;
+//     box-shadow: 0px 3px 6px #c4c4c429;
+//     i{
+//     margin-right:15px;
+//     font-size: $extra-large-3-font;
+//     }
+//     .page-name {
+//     font-size: $large-font;
+//     color:var(--onyx-black);
+//     }
+//     }
+//     .pop-up-header{
+//     .head-sec{
+//     padding:10px 15px;
+//     }
+//     }

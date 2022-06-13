@@ -48,6 +48,11 @@
   <ng-container *ngFor="let list of myRfqList; index as i;">
     <div class="my-rfq-list-item">
       <div *ngFor="let data of list.itemData; index as i" class="card-boxed">
+        <div>
+          <p>
+            <span>RFQ ID. {{list.id}} ({{list.itemData.length}} Item)</span>
+          </p>
+        </div>
         <div class="card-upper">
             <div class="card-img">
                  <img src="{{imagePath}}web/dist/assets/img/placeholder.svg">
@@ -60,17 +65,22 @@
               </p>
               <!-- <span class="orderstatus"><span>Brand:</span> {{ data.brand }} </span> -->
               <div class="orderqty">
-                <span class="qtyleft">1888 {{data.quantity}}(2 Qty)</span>
+                <span class="qtyleft"> 
+                  <span>Qty:{{data.quantity}}</span>
+                </span>
+                
              </div>
           </div>
         </div>
         <div class="card-bottom">
               <div class="card-bottom-inner">
-                <span class="orderstatus"><i class="dot">&#x2022;&nbsp;</i><span *ngIf="data.customerStatusText=='New'"
-                  class="text-green">Created</span>
-                  </span>
+                <span class="orderstatus">
+                  <i class="dot">&#x2022;&nbsp;</i>
+                  <span *ngIf="data.customerStatusText=='New'" class="text-green">Created</span>
                   <span *ngIf="data.customerStatusText!=='New'" class="text-green">{{data.customerStatusText}}</span>
-              </div>
+                  <ng-container><p>Placed on {{list.createdDate | date }}</p> </ng-container>  
+                </span>              
+              </div>  
         </div>
       </div>  
     </div>

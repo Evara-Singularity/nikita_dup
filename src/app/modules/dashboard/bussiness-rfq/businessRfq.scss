@@ -1,8 +1,20 @@
 @import "../../../scss/_variables.scss";
 @import '../../../scss/layout/card-boxed';
-.my-rfq-list-item{
-  background:var(--white);
-  padding:10px 0px;
+
+.my-rfq-list {
+  padding-top: 15px;
+  .my-rfq-list-item {
+    background:var(--white);
+    padding: 1px 0;
+    margin-bottom: 15px;
+    p{
+      padding-bottom: 10px;
+    }
+    .card-upper {
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+  }
 }
 
 // pagination-controls {

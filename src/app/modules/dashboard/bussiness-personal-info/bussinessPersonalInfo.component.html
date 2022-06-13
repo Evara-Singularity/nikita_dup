@@ -1,9 +1,9 @@
 <div class="profile-card profile-name">
-  <div class="profile-card-inner name">
-    <i class="icon-profile"></i>
-    <span class="profile-card-inner-2 name-space">Name<br> <span class="name-main">{{ user?.userName }}</span></span>
-  </div>
-  <span class="update-name">UPDATE NAME</span>
+    <div class="profile-card-inner name">
+        <i class="icon-profile"></i>
+        <span class="profile-card-inner-2 name-space">Name<br> <span class="name-main">{{ user?.userName }}</span></span>
+    </div>
+    <span class="update-name">UPDATE NAME</span>
 </div>
 <div class="profile-card profile-name">
   <div class="profile-card-inner name">
@@ -61,34 +61,33 @@
 </form> -->
 
 <!-- email and phone -->
-<form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value)" class="material-form profile-form"
-  novalidate>
-  <div class="container input-field custom-profile-input">
-    <label class="is-focus">
+<form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value)" class="material-form profile-form" novalidate>
+    <div class="container input-field custom-profile-input">
+        <label class="is-focus">
       <input type="text" name="email" [ngModel]="userInfo?.email" readonly>
       <span class="label">Email *</span>
     </label>
-    <label class="is-focus">
+        <label class="is-focus">
       <input type="number" name="phone" [ngModel]="userInfo?.phone" readonly>
       <span class="label">Phone No. *</span>
     </label>
-  </div>
+    </div>
 </form>
 
 <div class="profile-card profile-bottom-card " (click)="toPasswordPage()">
-  <div class="profile-card-inner profile-bottom-card-inner">
-    <i class="icon-map-pin-fill"></i>
-    <span class="profile-card-inner-2 ">Change Password</span>
-  </div>
-  <span><i class="icon-next"></i></span>
+    <div class="profile-card-inner profile-bottom-card-inner">
+        <i class="icon-map-pin-fill"></i>
+        <span class="profile-card-inner-2 ">Change Password</span>
+    </div>
+    <span><i class="icon-next"></i></span>
 </div>
 
 <div class="profile-card profile-bottom-card" (click)="logout()">
-  <div class="profile-card-inner profile-bottom-card-inner">
-    <i class="icon-map-pin-fill"></i>
-    <span class="profile-card-inner-2 ">Logout</span>
-  </div>
-  <span><i class="icon-logout"></i></span>
+    <div class="profile-card-inner profile-bottom-card-inner">
+        <i class="icon-map-pin-fill"></i>
+        <span class="profile-card-inner-2 ">Logout</span>
+    </div>
+    <span><i class="icon-logout"></i></span>
 </div>
 <!-- 
 <div class="card logout" (click)="logout()">

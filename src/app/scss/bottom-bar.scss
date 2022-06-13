@@ -3,7 +3,7 @@
     width: $fullwidth;
     height: 60px;
     padding: 4px;
-    box-shadow: 0px -4px 6px 0px rgba(0, 0, 0, 0.16);
+    box-shadow: var(--boxshadow-1);
     position: fixed;
     background: var(--ghost-white);
     left: 0px;
@@ -14,7 +14,7 @@
         width: calc(20% - 2px);
         padding: 0px;
         float: left;
-        background: $white;
+        background: var(--white);
         text-align: center;
         height: 100%;
         i {

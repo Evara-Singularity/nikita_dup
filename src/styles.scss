@@ -113,3 +113,8 @@ header-nav {
     max-height: 40%;
     overflow: auto;
 }
+.scrolled-content-popup{
+    overflow: scroll;
+    height: 100%;
+    background-color: var(--white);
+}

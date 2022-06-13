@@ -7,8 +7,8 @@
             <p class="txt header_text page-name"> {{modeType }} {{ADDRESS_TYPE}} Address</p>
         </div>
     </div>
-    <div class="content-popup" content>
-        <div class="pwa-row">
+    <div class="content-popup scrolled-content-popup" content>
+        <div class="pwa-row mt-10 pb-60">
             <form [formGroup]="addressForm" class="material-form" (ngSubmit)="$event.stopPropagation();saveOrUpdateAddress()"
             *ngIf="addressForm">
 

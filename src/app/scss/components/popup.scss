@@ -179,6 +179,7 @@
         left: 0;
         background: var(--ghost-white);
         @extend %transition;
+        overflow: scroll;
         .head-sec {
             padding: 12px 0;
             margin: 0;
@@ -271,6 +272,9 @@
             overflow: auto;
         }
     }
+}
+.scrolled-content-popup{
+    overflow: scroll;
 }
 .pop-up-header1{
         background:var(--white);

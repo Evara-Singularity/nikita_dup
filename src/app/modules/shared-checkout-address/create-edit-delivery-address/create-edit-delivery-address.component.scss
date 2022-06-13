@@ -1,6 +1,6 @@
-@import './../../scss/variables';
-@import '../../../scss/components/checkbox';
-@import '../../../scss/layout/forms';
+@import "./../../scss/variables";
+@import "../../../scss/components/checkbox";
+@import "../../../scss/layout/forms";
 
 .column-field {
     .w-65 {
@@ -12,7 +12,6 @@
         float: right;
     }
 }
-
 
 .for-varification {
     position: relative;
@@ -27,7 +26,7 @@
             font-size: $large-font;
         }
         span.hidden {
-            color: #209F19 !important;
+            color: #209f19 !important;
             font-size: $medium-font;
             i {
                 font-size: $large-font;
@@ -41,35 +40,33 @@
 }
 
 .varified-checkbox {
-    @extend %custom-check-box-checkout
+    @extend %custom-check-box-checkout;
 }
 
 .addAddressPopup {
-        .header_add_edit {
-            background: #d9232d !important;
-            &.head-sec {
-                padding: 12px 0;
-                margin: 0;
-                @extend %box-shadow;
-                background: $white;
-                i {
-                    font-size: 20px;
-                    line-height: 24px;
-                }
-                i+.page-name {
-                    font-size: $extra-large-font;
-                    margin-left: 10px;
-                    line-height: 26px;
-                    color: #fff;
-                    float: left;
-                }
+    .header_add_edit {
+        background: #d9232d !important;
+        &.head-sec {
+            padding: 12px 0;
+            margin: 0;
+            @extend %box-shadow;
+            background: $white;
+            i {
+                font-size: 20px;
+                line-height: 24px;
+            }
+            i + .page-name {
+                font-size: $extra-large-font;
+                margin-left: 10px;
+                line-height: 26px;
+                color: #fff;
+                float: left;
             }
         }
-        .content-popup {
-            height: calc(100% - 100px);
-            overflow: auto;
-            margin-top: 0px;
-        }
     }
-
-   
+    // .content-popup {
+    //     height: calc(100% - 100px);
+    //     overflow: auto;
+    //     margin-top: 0px;
+    // }
+}

@@ -7,8 +7,8 @@
             <p class="txt header_text page-name"> {{modeType }} {{ADDRESS_TYPE}} Address</p>
         </div>
     </div>
-    <div class="content-popup scroll-content-popup" content>
-        <div class="pwa-row popup-varient-2-inner">
+    <div class="content-popup" content>
+        <div class="pwa-row">
             <form [formGroup]="addressForm" class="material-form" (ngSubmit)="$event.stopPropagation();saveOrUpdateAddress()"
             *ngIf="addressForm">
 
@@ -16,7 +16,7 @@
 
                 <label [class.is-focus]="displayFocus('addressCustomerName')">
                     <input formControlName="addressCustomerName" type="text" placeholder="">
-                    <span class="label">Nae*</span>
+                    <span class="label">Name*</span>
                 </label>
                 <ng-container *ngIf="addressCustomerName.touched || addressCustomerName.dirty">
                     <p *ngIf="addressCustomerName.hasError('required')" class="error-txt">

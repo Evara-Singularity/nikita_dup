@@ -22,17 +22,15 @@ import { FormControl, FormGroup } from "@angular/forms";
 export class BussinessInfoComponent {
   error: boolean = true;
   errorMsg: string = "";
-  userInfo;
+  userInfo:any;
   isBrowser: boolean;
   user: any;
   isServer: boolean;
   isHomePage: boolean;
   public isMenuCollapsed: boolean = false;
   currentRoute: string;
-  userNameform = new FormGroup({
-    fname: new FormControl(''),
-   });  
-   set showLoader(value){
+  isNameInputDisabled: boolean =true;
+  set showLoader(value){
     this.loaderService.setLoaderState(value);
   }
 
@@ -91,13 +89,17 @@ export class BussinessInfoComponent {
   }
 
   onSubmit(data) {
+    if (!data) {
+      this._tms.show({type: "success", text: "User name cannot be empty."});
+      return;
+    }
     let userSession = this._localAuthService.getUserSession();
     this.showLoader = true;
     let user = this.localStorageService.retrieve("user");
     let obj = {
       userid: user.userId,
-      pname: data.fname,
-      lname: data.lname,
+      pname: data.substring(0, data.indexOf(' ')),
+      lname: data.substring(data.indexOf(' ') + 1),
     };
 
     this._dashboardService.updatePersonalInfo(obj).subscribe((res) => {
@@ -109,7 +111,8 @@ export class BussinessInfoComponent {
           type: "success",
           text: "Profile updated successfully.",
         });
-        userSession['userName'] = data.fname;
+        this.isNameInputDisabled = true;
+        userSession['userName'] = data;
         if (this.localStorageService.retrieve("user")) {
           let user = this.localStorageService.retrieve("user");
           if (user.authenticated == "true") {
@@ -127,4 +130,9 @@ export class BussinessInfoComponent {
   toPasswordPage() {
     this._router.navigate(["dashboard/password"]);
   }
+
+  activateInput(){
+    this.isNameInputDisabled = false;
+  }
+
 }

@@ -36,21 +36,51 @@
             padding-left: 0;
         }
     }
-    
+    .promotion-nonLogin {
+        padding: 12px 15px;
+        display: flex;
+        align-items: center;
+        background: var(--white);
+        .mobile {
+            padding-left: 0px;
+        }
+        img {
+            width: auto;
+        }
+        .text {
+            width: 50%;
+            padding: 5px 0 0px 12px;
+            strong {
+                font-size: 13px;
+                display: block;
+                font-weight: 700;
+            }
+            p {
+                color: #74777A;
+                font-size: 11px;
+                font-weight: 400;
+                padding-top: 5px;
+            }
+        }
+        .mobile {
+            padding-left: 8px;
+        }
+        .play-store {
+            padding: 5px 0px 0 0;
+            margin-left: auto;
+            display: inline-flex;
+            img {
+                width: 115px;
+            }
+        }
+    }
     .content-mobile-app {
         background: #fff;
         // padding: 12px 10px 12px 5px;
         // margin-top: -1px;
         display: flex;
         // align-items: center;
-        &.promotion-nonLogin {
-            // padding: 12px 15px;
-            // display: flex;
-            // align-items: center;
-            .mobile {
-                padding-left: 0px;
-            }
-        }
+        
         img {
             width: auto;
         }

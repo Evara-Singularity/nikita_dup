@@ -118,7 +118,7 @@ input[type=number] {
                 cursor: pointer;
 
                 &.verified {
-                    color: #36bd40;
+                    color: var(--slimy-green);
 
                     i {
                         padding-left: 5px;

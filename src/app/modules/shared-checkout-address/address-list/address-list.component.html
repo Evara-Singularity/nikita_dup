@@ -1,5 +1,6 @@
 <app-pop-up (outData$)="handleClose($event)" class="bs-popup" *ngIf="displayAddressListPopup"
-    [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup addAddressPopup addCustomHeight',selector:displayAddressListPopup, headerText:headerText}">
+[headerType]="'pop-up-header1'"
+    [data]="{headerText:headerText}">
     <div class="head-sec" header>
         <i class="icon-circle-delete f-left"></i>
         <p class="txt">headerText ({{addresses.length}})</p>
@@ -14,18 +15,21 @@
         <div class="address-container">
             <div class="address-list">
                 <form>
-                    <div class="multiple-address" [class.active-multiple-address]="isAddressSelected(address.idAddress)" [class.withRadioContainer]="showRadio"
+                    <div class="multiple-address" [class.active-multiple-address]="isAddressSelected(address.idAddress)"
+                        [class.withRadioContainer]="showRadio"
                         *ngFor="let address of addresses; let addressIndex = index">
                         <label>
                             <!--Todo-->
-                            <input type="radio" [value]="address.idAddress"
-                                [checked]="isAddressSelected(address.idAddress)"
-                                (change)="updateAddressId($event, address.idAddress)">
-                            <span class="custom-box icon-box"></span>
+
                             <span class="chk-txt">
+                                <input type="radio" [value]="address.idAddress"
+                                    [checked]="isAddressSelected(address.idAddress)"
+                                    (change)="updateAddressId($event, address.idAddress)">
+                                <span class="custom-box icon-box"></span>
                                 <span class="heading-container">
                                     <span class="heading">
-                                        <span class="address-name">{{address.addressCustomerName | slice:0:60}}</span> &nbsp;
+                                        <span class="address-name">{{address.addressCustomerName | slice:0:60}}</span>
+                                        &nbsp;
                                     </span>
                                 </span>
                                 <span class="txt">{{address | checkoutAddress}}</span>
@@ -34,7 +38,7 @@
                                     <span class="small-btn edit"
                                         (click)="handleAction($event, ACTION_TYPES.EDIT, address)">EDIT</span>
                                     <span *ngIf="showDelete" class="small-btn delete"
-                                        (click)="handleAction($event,ACTION_TYPES.SELECTED, address)">
+                                        (click)="handleAction($event,ACTION_TYPES.DELETE, address)">
                                         DELETE
                                     </span>
                                     <span *ngIf="!showDelete" class="small-btn delete"

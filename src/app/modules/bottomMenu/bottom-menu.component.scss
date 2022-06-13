@@ -1,12 +1,8 @@
 @import '../../scss/root';
 @import '../../scss/variables';
+@import '../../scss/components/bottom-popup';
 
-.bottom-options.open .content-box {
-    bottom: 0;
-    padding: 0px;
-    border-radius: 20px 20px 0px 0px;
-    max-height: 70% !important;
-}
+
 .top-header-bottom-menu {
     padding: 0px 10px;
     border-bottom: 1px solid #E2E2E2;

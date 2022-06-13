@@ -61,8 +61,10 @@
         }
         .card-btn-row{
             display:flex;
+            margin-top: 10px;
             button{
                 flex-basis:calc(100% - 40px);
+                padding: 0px;
             }
         }
       }

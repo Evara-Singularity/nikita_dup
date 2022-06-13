@@ -1,4 +1,4 @@
-@import '../../scss/variables';
+@import "../../scss/variables";
 .container {
     height: 100%;
     // padding-top: 1px;
@@ -8,6 +8,11 @@
     position: fixed;
     // display: none;
     z-index: 99;
+    &.emiStepContent {
+        background: red !important;
+        height: 100% !important;
+        overflow: scroll;
+    }
     &.screen-view {
         width: 100%;
         height: 100%;
@@ -15,6 +20,7 @@
         left: 0;
         background: var(--ghost-white);
         @extend %transition;
+        overflow: scroll;
         .head-sec {
             padding: 12px 0;
             margin: 0;
@@ -25,7 +31,7 @@
                 line-height: 24px;
                 float: left;
             }
-            i+.page-name {
+            i + .page-name {
                 font-size: $extra-large-font;
                 margin-left: 10px;
             }
@@ -48,7 +54,7 @@
                 @extend %box-shadow;
                 background: $white;
             }
-            &>.container {
+            & > .container {
                 width: 100%;
             }
             .head-sec {
@@ -61,7 +67,7 @@
                     line-height: 24px;
                     color: var(--onyx-black);
                 }
-                i+.page-name {
+                i + .page-name {
                     font-size: $extra-large-font;
                     margin-left: 10px;
                     line-height: 26px;
@@ -70,14 +76,14 @@
             }
         }
         &.addAddressPopup {
-          background: var(--ghost-white) !important;
+            background: var(--ghost-white) !important;
 
             &.screen-view {
                 .head-sec {
                     background: var(--white) !important;
                     i {
                         color: var(--onyx-black);
-                        font-size:16px;
+                        font-size: 16px;
                     }
                 }
                 .content-popup {
@@ -90,15 +96,16 @@
                     }
                 }
             }
-            &.addEmi{
-                background:#F7F7FA !important;
+            &.addEmi {
+                background: #f7f7fa !important;
             }
-            &.addEmiSteps{
-                    .emiStepContent{
-                        background:#F7F7FA !important;
-                        height:100% !important;
-                    }
+            &.addEmiSteps {
+                .emiStepContent {
+                    background: #f7f7fa !important;
+                    height: 100% !important;
+                    overflow: scroll;
                 }
+            }
         }
         .content-popup {
             height: 85%;
@@ -161,7 +168,7 @@
         @extend %border-radius;
         @extend %clear-fix;
         .green-block {
-            background: #36BD40;
+            background: #36bd40;
             .del-ico {
                 color: white;
                 font-size: 20px;
@@ -253,7 +260,7 @@
                 button {
                     font-size: 12px;
                     font-weight: bold;
-                    background: #F2720F;
+                    background: #f2720f;
                     padding: 10px 20px;
                 }
                 p {
@@ -277,26 +284,25 @@
     text-transform: capitalize;
     color: $white;
 }
-.pop-up-header1{
-        background:var(--white);
-        display: flex;
-        justify-content: flex-start;
-        min-height: 50px;
-        align-items: center;
-        padding: 10px;
-        box-shadow: 0px 3px 6px #c4c4c429;
-       i{
-           margin-right:15px;
-           font-size: $extra-large-3-font;
-       }
-       .page-name {
+.pop-up-header1 {
+    background: var(--white);
+    display: flex;
+    justify-content: flex-start;
+    min-height: 50px;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0px 3px 6px #c4c4c429;
+    i {
+        margin-right: 15px;
+        font-size: $extra-large-3-font;
+    }
+    .page-name {
         font-size: $large-font;
-        color:var(--onyx-black);
-      }
-    
+        color: var(--onyx-black);
+    }
 }
-.pop-up-header{
-    .head-sec{
-        padding:10px 15px;
+.pop-up-header {
+    .head-sec {
+        padding: 10px 15px;
     }
 }

@@ -1,4 +1,8 @@
 @import "../../../scss/variables";
+@import "../../../scss/components/radio";
+@import '../../../scss/components/bottom-popup';
+
+
 .invoice-container {
     background: $white;
     padding: 15px;
@@ -26,43 +30,6 @@
     }
 }
 
-.add-address-substrip {
-    background: #f2f2f2;
-    text-align: center;
-    padding: 15px;
-    .blue-border-btn-full {
-        font-size: $large-font;
-        padding: 10px;
-        border-radius: 0px;
-    }
-}
-
-.address-container {
-    margin-top: 10px;
-    @extend %cards;
-    padding: 0 0 10px 0;
-    border: 0;
-    .sub-strip {
-        background: $selected-color;
-        padding: 15px 10px;
-        border: 0;
-        &:not(:first-child) {
-            margin-top: 20px;
-        }
-        h4 {
-            float: left;
-            font-weight: 500;
-            color: $txt-color;
-            i {
-                font-size: 14px;
-                margin-left: 5px;
-            }
-        }
-    }
-    .addButtonContainer {
-        padding: 15px 10px;
-    }
-}
 
 .address-list {
     @extend %clear-fix;
@@ -112,9 +79,10 @@
 }
 
 .multiple-address {
+    background-color: red;
+    padding: 15px;
+    @extend %white-card;
     &.withRadioContainer {
-        padding: 10px 15px;
-        border-bottom: 1px solid $border-grey;
         &:last-child {
             border-bottom: none;
         }
@@ -123,10 +91,6 @@
         }
     }
     @extend %clear-fix;
-    label {
-        float: left;
-        width: 93%;
-    }
     .bin-icon {
         float: right;
         text-align: right;

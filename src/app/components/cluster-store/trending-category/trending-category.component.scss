@@ -1,0 +1,56 @@
+@import '../../../scss/variables';
+@import '../../../scss/root';
+// @import '../../../scss/layout/grid.scss';
+
+.otherCategoryBlock {
+    padding: 15px 5px;
+    background: var(--ghost-white);
+    .l0_heading {
+        font-size: $extra-large-font;
+        margin-bottom: 8px;
+        text-transform: capitalize;
+        padding: 0px;
+        &.center {
+            text-align: center;
+        }
+    }
+    .trending-category-block {
+        margin: 0px;
+        padding: 0px;
+        .inner-trending-category {
+            list-style: none;
+            float: left;
+            width: 50%;
+            padding: 5px;
+            .innerCategory {
+                background: var(--white);
+                border: 1px solid var(--silver);
+                border-radius: 3px;
+                box-shadow: 0px 3px 6px #00000005;
+                min-height: 235px;
+                img {
+                    max-height: 100%;
+                    max-width: 100%;
+                    width: $fullwidth;
+                }
+                .imgBlock {
+                    height: 160px;
+                }
+            }
+            .detailsBlock {
+                position: relative;
+                text-align: center;
+                padding: 10px 10px 10px 10px;
+                h3 {
+                    font-size: $large-font;
+                    color: var(--onyx-black);
+                    padding: 0px 0px 5px 0px;
+                }
+                p {
+                    color: var(--primary);
+                    font-size: $medium-font;
+                }
+            }
+        }
+    }
+}

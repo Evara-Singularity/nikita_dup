@@ -1,10 +1,10 @@
-@import '../../scss/horizontalProductListing';
+@import "../../scss/variables";
 
-.upper-u-may-like-sec{
+.view-all-strip{
     position: relative;
-    span {
-        top: 10px;
-        right: 10px;
-        position: absolute;
-    }
+    @extend %view-all-strip;
+}
+
+.sponsered{
+    background-color: var(--white);
 }

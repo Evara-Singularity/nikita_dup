@@ -1,46 +1,122 @@
 @import '../../../../src/app/modules/continue/continue.scss';
+@import '../../scss/layout/cards.scss';
+@import '../../scss/utils/utilities.scss';
+@import '../../scss/components/buttons.scss';
+
 .order-container {
-    padding-top: 10px;
-    padding-bottom: 80px;
-    .card-30 {
-        padding: 10px 15px 30px;
-    }
-    .f-16 {
-        font-size: 16px;
-    }
-    .f-12 {
-        font-size: 12px;
-    }
-    .f-14 {
-        font-size: 14px;
-    }
-    .bold-txt {
-        font-weight: 600;
-    }
-    .txt-list {
-        margin: 15px 0px;
-        li {
-            padding: 2px 0;
-            span {
-                width: 50%;
-                float: left !important;
+    .order-confirmation-banner{
+        padding: 15px;
+        .card{
+            padding: 20px;
+            border: 1px solid var(--cultured);
+            text-align: center;
+            .green-txt{
+                font-size:$extra-large-1-font;
+                font-weight: $font-bolder;
             }
-            .tag-label {
-                font-weight: bold;
+            img{
+                width: 120px;
+                margin: auto;
+                padding: 25px 0 15px 0;
             }
         }
     }
-    .main-img {
-        width: 120px;
+    .order-item-section{
+        background: var(--white);
+        padding: 15px;
+        .item-number{
+            display: flex;
+            span{
+                display: block;
+            }
+            p{
+                font-size: $large-font;
+                color: var(--onyx-black);
+            }
+            .items{
+                margin-left: auto;
+            }
+        }
+        .tag-label{
+            font-size: $large-font;
+            color: var(--onyx-black);
+        }
+        .txt-list {
+            li {
+                padding: 5px 0;
+                span {
+                    width: 50%;
+                    float: left !important;
+                }
+                .tag-label {
+                    font-weight: bold;
+                }
+            }
+        }
+        .note-info{
+            font-size: $medium-font;
+            color: var(--onyx-black);
+            padding-top: 8px;
+        }
     }
-}
-
-.order-detail {
-    text-align: left;
-}
-
-.continue-button p {
-    line-height: 20px;
-    margin: 10px 0 0 20px;
-    font-size: 16px;
+    .promo-section{
+        margin-top: 30px;
+        padding: 0;
+        .inner-promo{
+            width: 100%;
+        }
+    }
+    .order-horizontal-card-section{
+        display: flex;
+        overflow-x: scroll;
+        background: var(--white);
+        scrollbar-width: none;
+        .order-confirmation-card{
+            padding: 0 0 0 15px;
+            min-width: 90%;
+            .order-horizontal-card{
+                display: flex;
+                .horizontal-section{
+                    display: inline-flex;
+                    border: 1px solid #CCC;
+                    border-radius: 8px;
+                    padding: 10px;
+                    width: 100%;
+                    .image-block{
+                        padding-right: 15px;
+                        img{
+                            max-width: 90px;
+                        }
+                    }
+                    .decription-block{
+                        .pwa-text{
+                            line-height: $small-line-height;
+                        }
+                        .main-price{
+                            padding-top: 5px;
+                            p{
+                                font-size: $extra-large-font;
+                                color: var(--onyx-black);
+                            }
+                            span{
+                                padding-left: 8px;
+                                font-size: $medium-font;
+                                color: var(--onyx-black);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .order-confirmation-btn{
+        width: 100%;
+        padding: 0px 15px 15px 15px;
+        background:var(--white);
+        display: flex;
+        justify-content: space-between;
+        button{
+            width: 48%;
+        }
+    }
 }

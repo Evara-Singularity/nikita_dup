@@ -1,0 +1,426 @@
+@import "../components/checkbox";
+textarea,
+input.text,
+input,
+select,
+.input-checkbox {
+    -webkit-appearance: none;
+    border-radius: 0;
+    outline: none;
+}
+input,
+select {
+    background-image: none;
+    background: none;
+    line-height: 18px;
+    position: relative;
+    
+}
+input[type=number] {
+    -moz-appearance: textfield;
+  }
+.material-form {
+ .multiple-form-field{
+    display:flex;
+    margin: -15px 0 0 -15px;
+    width: calc(100% + 15px);
+    margin-bottom:30px;
+    .outline-input-label{
+        width:50%;
+        margin: 15px 0 0 15px;
+    }
+    
+   }
+    .input-field {
+        margin-bottom: 30px;
+        label {
+            display: block;
+            position: relative;
+
+            input,
+            select {
+                width: 100%;
+                border: solid $border-sec-color;
+                border-width: 0 0 1px 0;
+                height: 45px;
+                padding: 14px 25px 0 0;
+                font-size: $large-font;
+                line-height: 18px;
+                position: relative;
+                &.input-password {
+                    padding: 14px 140px 0 0;
+                }
+            }
+
+            textarea {
+                width: 100%;
+                border: solid $border-sec-color;
+                border-width: 0 0 1px 0;
+                height: 65px;
+                padding: 14px 25px 0 0;
+                font-size: $large-font;
+            }
+
+            .input-value {
+                font-size: $extra-large-font;
+                padding-top: 20px;
+                display: block;
+            }
+
+            select + .icon-down {
+                position: absolute;
+                right: 6px;
+                top: 23px;
+                font-size: $large-font;
+            }
+
+            select:disabled + .icon-down {
+                color: #898989;
+            }
+
+            .label {
+                position: absolute;
+                left: 0;
+                font-size: $large-font;
+                top: 20px;
+                color: $disabled;
+                @extend %transition;
+            }
+
+            &.is-focus .label,
+            input:focus + .label,
+            select:focus + .label {
+                font-size: $medium-font;
+                top: 5px;
+            }
+
+            textarea:focus + .label {
+                font-size: $medium-font;
+                top: 3px;
+            }
+
+            input:focus,
+            textarea:focus {
+                border-color: $active-border-color;
+
+                & + .label {
+                    color: $active-border-color;
+                }
+            }
+
+            .edit-field {
+                position: absolute;
+                right: 0;
+                top: 24px;
+                font-size: $medium-font;
+                font-weight: 500;
+                color: $blue-link-color;
+                cursor: pointer;
+
+                &.verified {
+                    color: var(--slimy-green);
+
+                    i {
+                        padding-left: 5px;
+                    }
+                }
+            }
+
+            &.disableInput {
+                opacity: 0.4;
+                pointer-events: none;
+            }
+        }
+        &.static{
+            margin-bottom:0px;
+            padding-top:5px;
+           span.input-value{
+            width: 100%;
+            border-width: 0 0 1px 0;
+            height: 45px;
+            font-size: $large-font;
+            line-height: 18px;
+            position: relative;
+           } 
+        }
+    }
+    
+    .outline-input-label {
+        margin-bottom:30px;
+        label {
+            display: block;
+            position: relative;
+            input,
+            select {
+                width: 100%;
+                height: 40px !important;
+                border: 1px solid var(--spanish-gray);
+                border-radius: 8px !important;
+                padding: 0px 10px !important;
+                background-color: var(--white) !important;
+
+                &.input-password {
+                    padding: 14px 140px 0 0;
+                }
+                .long-input{
+                    height: 100px !important;
+                }
+            }
+            textarea {
+                width: 100%;
+                border: 1px solid var(--spanish-gray);
+                border-radius: 8px !important;
+                height: 65px;
+                padding: 14px 25px 0 10px;
+                font-size: $large-font;
+                background-color: var(--white) !important;
+            }
+            .label {
+                position: absolute;
+                left: 10px;
+                font-size: $large-font;
+                top: 12px;
+                color: $disabled;
+                @extend %transition;
+                .error-txt {
+                    margin-left: 10px !important;
+                }
+            }
+            i {
+                position: absolute;
+                right: 10px;
+                font-size: $large-font;
+                top: 12px;
+                color: $disabled;
+            }
+            .active-password-icon {
+                color: #303030;
+            }
+
+            &.is-focus .label,
+            input:focus + .label,
+            select:focus + .label {
+                font-size: $medium-font;
+                top: -7px;
+                background-color: #ffffff;
+                left: 10px;
+                padding: 0px 5px;
+                z-index: 9;
+            }
+
+            textarea:focus + .label {
+                font-size: $medium-font;
+                top: 3px;
+            }
+
+            input:focus,
+            textarea:focus {
+                border-color: #c4c4c4;
+
+                & + .label {
+                    color: #c4c4c4;
+                }
+            }
+
+            .edit-field {
+                position: absolute;
+                right: 0;
+                top: 24px;
+                font-size: $medium-font;
+                font-weight: 500;
+                color: $blue-link-color;
+                cursor: pointer;
+
+                &.verified {
+                    color: #36bd40;
+
+                    i {
+                        padding-left: 5px;
+                    }
+                }
+            }
+
+            &.disableInput {
+                opacity: 0.4;
+                pointer-events: none;
+            }
+        }
+    }
+
+    &.material-form-boxed {
+        .input-field-boxed {
+            margin-bottom: 20px;
+            position: relative;
+
+            input,
+            select {
+                width: 100%;
+                border: solid var(--spanish-gray);
+                border-radius:$border-radius-8;
+                border-width: 1px;
+                height: 40px;
+                padding: 0px 10px 0px 10px;
+                font-size: $large-font;
+            }
+            textarea {
+                width: 100%;
+                border: solid var(--spanish-gray);
+                border-radius: 8px;
+                border-width: 1px;
+                height: 65px;
+                padding: 10px;
+                font-size: $large-font;
+            }
+
+            select + .icon-down {
+                position: absolute;
+                right: 6px;
+                top: 23px;
+                font-size: $large-font;
+            }
+
+            &.disabled-boxed {
+                input {
+                  background: #F2F2F2;
+                   border: 1px solid var(--spanish-gray);
+
+                }
+            }
+        }
+
+        @include placeholder {
+            color: #b5b5b5;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: $small-font;
+            color: #606060;
+        }
+
+    }
+}
+
+.input-sec {
+    display: block;
+    position: relative;
+
+    input {
+        width: 100%;
+        border: solid $border-sec-color;
+        border-width: 0 0 1px 0;
+        height: 45px;
+        padding: 14px 25px 0 0;
+        font-size: $large-font;
+    }
+
+    .label {
+        position: absolute;
+        left: 0;
+        font-size: $large-font;
+        top: 20px;
+        color: $disabled;
+        @extend %transition;
+    }
+
+    &.is-focus .label,
+    input:focus + .label {
+        font-size: $medium-font;
+        top: 5px;
+    }
+
+    input:focus {
+        border-color: $active-border-color;
+
+        & + .label {
+            color: $active-border-color;
+        }
+    }
+}
+
+
+select.select-form {
+    width: 100%;
+    border: 1px solid #343434;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 14px;
+    border-radius: 1px;
+}
+
+select.select-form + .icon-down {
+    position: absolute;
+    right: 10px;
+    top: 11px;
+    font-size: 14px;
+}
+
+input[type="text"],
+input[type="number"] {
+    font-size: $large-font !important;
+}
+
+option {
+    padding: 5px;
+}
+// Sort By Filter
+.custom-cbox {
+    label {
+        display: block;
+        padding: 10px 0;
+        @extend %clear-fix;
+        @extend %custom-check-box;
+    }
+}
+.date-type-select {
+    .custom_select_box {
+        color: #b5b5b5;
+    }
+    .multiple-form-field{
+        margin: 0px !important;
+    }
+    .input-field-boxed{
+        width:40%;
+        margin-bottom: 0px !important;
+        label{
+            font-weight:$font-normal;
+        }
+        select {
+            text-align: center;
+        }
+        &:first-child {
+            position: relative;
+            margin-right:10px;
+        }
+    }
+}
+.custom_select_box {
+    label {
+        display: block;
+        font-size: $small-font;
+        margin-bottom: 5px;
+    }
+    .custom_select_input {
+        display: flex;
+        padding: 5px;
+        border: 1px solid var(--spanish-gray);
+        border-radius:$border-radius-8;
+        border-width: 1px;
+        height: 40px;
+        padding: 0px 10px 0px 10px;
+        font-size: $large-font;
+        align-items: center;
+        justify-content: flex-start;
+        i {
+            margin-left: auto;
+            font-size: $medium-font;
+            color:var(--onyx-black);
+        }
+        &.selectedInput {
+            color: #303030;
+        }
+    }
+}
+
+

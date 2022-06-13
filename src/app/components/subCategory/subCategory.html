@@ -2,10 +2,10 @@
     <div id="subcCategoryTop" class="">
         <ul>
             <ng-container class="" *ngFor="let item of relatedCatgoryList; let i=index">
-                <li *ngIf="i<4 || isAllListShow" >
+                <li class="pad-10" *ngIf="i<4 || isAllListShow" >
                     <div class="sub-cat-product">
                         <a  (click)="commonService.setSectionClickInformation('child_categories', 'listing')" [routerLink]="'/'+item?.categoryDetails?.categoryLink">
-                            <div class="prod-image">
+                            <div class="prod-image pad-10">
                                 <img style="height: 78px; width: 78px;" [alt]="item.categoryDetails.categoryName" [src]="defaultImage" lazyLoad="{{imageBasePath}}{{item?.categoryDetails?.mainImageLink}}">
                             </div>
                             <h4>{{item?.categoryDetails?.categoryName}}</h4>
@@ -15,7 +15,7 @@
             </ng-container>
         </ul>
         <div *ngIf="relatedCatgoryList!==null && relatedCatgoryList.length > 4">
-            <a (click)="showList()" class=" show-more">
+            <a (click)="showList()" class="btn primary-full-btn show-more">
                 {{moreLessCategoryText}}
             </a>
         </div>

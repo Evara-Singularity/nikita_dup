@@ -208,37 +208,37 @@ export const CONSTANTS = {
     {
       idCategory: "116000000",
       CategoryName: "Safety & PPE Supplies",
-      category_image: "safety.png",
+      category_image: "safety_ppe_supplies.png",
       category_url: "store/safety-ppe-supplies",
     },
     {
       idCategory: "116000000",
       CategoryName: "Office Stationery & Supplies",
-      category_image: "3 (1).png",
+      category_image: "office_stationery_supplies.png",
       category_url: "store/office-stationery-supplies",
     },
     {
       idCategory: "116000000",
       CategoryName: "Electrical Tools & Equipment",
-      category_image: "electricals-1@2x.png",
+      category_image: "electrical_tools_equipment.png",
       category_url: "store/electrical-tools-equipment",
     },
     {
       idCategory: "116000000",
       CategoryName: "Industrial Tools & Equipment",
-      category_image: "power_tool.png",
+      category_image: "industrial_tools_equipment.png",
       category_url: "store/industrial-tools-equipment",
     },
     {
       idCategory: "116000000",
       CategoryName: "Lab & Scientific Equipment",
-      category_image: "electricals-2.png",
+      category_image: "medical_equipment_hospital_supplies.png",
       category_url: "store/lab-scientific-equipment",
     },
     {
       idCategory: "116000000",
       CategoryName: "Medical Care & Hospital Supplies",
-      category_image: "medical.png",
+      category_image: "medical_equipment_hospital_supplies.png",
       category_url: "store/medical-equipment-hospital-supplies",
     },
     {
@@ -330,6 +330,44 @@ export const CONSTANTS = {
     "Y",
     "Z",
   ],
+  NOT_FOUND_CATEGORY: [
+    {
+      "categoryCode": "116000000",
+      "categoryName": "Safety",
+      "link": "safety-and-security/116000000",
+      "imageUrl": "https://img.moglimg.com/assets/img/safety.png"
+    },
+    {
+      "categoryCode": "211000000",
+      "categoryName": "Electricals",
+      "link": "electricals/211000000",
+      "imageUrl": "https://img.moglimg.com/assets/img/electricals.png"
+    },
+    {
+      "categoryCode": "114000000",
+      "categoryName": "Power Tools",
+      "link": "power-tools/114000000",
+      "imageUrl": "https://img.moglimg.com/assets/img/power_tool.png"
+    },
+    {
+      "categoryCode": "128000000",
+      "categoryName": "Pumps & Motors",
+      "link": "pumps-motors/128000000",
+      "imageUrl": "https://img.moglimg.com/assets/img/pump_motors.png"
+    },
+    {
+      "categoryCode": "214000000",
+      "categoryName": "Office Stationery & Supplies",
+      "link": "office-supplies/214000000",
+      "imageUrl": "https://img.moglimg.com/assets/img/office_supplies.png"
+    },
+    {
+      "categoryCode": "215000000",
+      "categoryName": "Medical Supplies",
+      "link": "medical-supplies/215000000",
+      "imageUrl": "https://img.moglimg.com/assets/img/medical.png"
+    },
+  ],
   ASSET_IMG: "assets/img/home_card.webp",
   SCHEMA: "https://schema.org",
   RAZORPAY: {
@@ -345,7 +383,6 @@ export const CONSTANTS = {
     GOOGLE_OAUTH:
       "https://accounts.google.com/o/oauth2/v2/auth?response_type=token&client_id=",
   },
-
   MOGLIX_HAINA_LOGO: "https://statics.moglix.com/img/newsletter/int/2021/january/210121/moglixhaina_logo.png",
   GET_LAYOUT: "/cmsapi/getLayoutJsonByRequestParam?requestParam=",
   MOGLIX_HAINA_VIDEO: {
@@ -366,7 +403,7 @@ export const CONSTANTS = {
   ByVISA: "http://purl.org/goodrelations/v1#VISA",
   TEST_API: "https://newmoglix.moglix.com/test/testgetresponse",
   WHATS_APP_API: "https://api.whatsapp.com/send?phone=",
-  SEO_HOME_ACCORDIANS: ['powerData', 'officeData', 'safetyData', 'pumpData', 'electricalData', 'officeData', 'medicalData'],
+  SEO_HOME_ACCORDIANS: ['powerData', 'officeData', 'safetyData', 'pumpData', 'electricalData', 'medicalData'],
   IMAGE_SIZES_TYPE: ['xlarge', 'large', 'medium', 'small', 'thumbnail', 'icon'],
   NETWORK_SPEED_THRESHOD_LIMIT: 2,
   IMAGE_SIZES_REPLACE_DATA: {
@@ -385,5 +422,12 @@ export const CONSTANTS = {
   DEFAULT_USER_NAME_PLACE_HOLDER:'User',
   SEARCH_ABT_FLAG: 'y',
   SEARCH_ONLINE_ABT_FLAG: 'y',
+  MODULE_NAME: {
+    HOME: 'HOME',
+    PRODUCT_LISTING_PAGE: 'PRODUCT_LISTING_PAGE',
+    DASHBOARD: 'DASHBOARD',
+    CART: 'CART',
+    PRODUCT: 'PRODUCT'
+  }
 };
 export default CONSTANTS;

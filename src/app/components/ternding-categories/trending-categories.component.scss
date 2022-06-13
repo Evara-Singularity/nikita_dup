@@ -1,11 +1,10 @@
 /*Trending Categories*/
 @import '../../scss/variables';
+@import '../../scss/components/category-grid-card';
 
-.pad-tb-10{
-    padding-top: 10px;
-    padding-bottom: 10px;
+.view-all-strip{
+    @extend %view-all-strip;
 }
-
 .trending-container {
     padding: 0 0 0px 0;
     margin-bottom: 10px;
@@ -33,8 +32,22 @@
             p {
                 word-break: break-all;
             }
-            @include gridForCategory('3', null);
+            // @include gridForCategory('3', null);
         }
     }
-    @extend %cards;
+    // @extend %cards;
+}
+.category-grid-container{
+    .category-grid-card{
+        width: calc(33.3% - 6px);
+        background: var(--white);
+       a{
+           padding:5px;
+           display:block;
+       }
+       img {
+        width: 50px;
+        height: 50px;
+       }
+    }
 }

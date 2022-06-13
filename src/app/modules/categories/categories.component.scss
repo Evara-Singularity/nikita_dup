@@ -1,53 +1,46 @@
 @import '../../scss/variables.scss';
-@import '../../pages/home/common_grid.scss';
+@import '../../scss/components/home-listing.scss';
+@import '../../scss/components/banner';
 
-.pad-tb-10{
-    padding-top: 10px;
-    padding-bottom: 10px;
+.category-wrap{
+    margin-top:10px;
 }
-
-.banner-ad {
-    margin: 10px 0px;
-    a {
-        display: block;
-    }
-    img {
-        width: 100%;
-    }
-    &.bulk {
-        margin-bottom: 0px;
-    }
-}
-
-.deals-offers {
-    margin-top: 0px;
-    margin-bottom: 10px;
-}
-
-.category-brand {
-    margin: 5px 0 0 0;
-    padding-bottom: 5px;
-    border-bottom: 1px solid $border-color;
-    li {
+.circle-brand-container{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin:-10px 0px 0px -10px;
+    background:var(--white);
+    overflow:auto;
+    .circle-brand-block{
         font-size: 12px;
         text-align: center;
         padding: 5px;
-        @include gridForCategory('4', null);
-        img {
+        width:25%;
+        margin:10px 0px 0px 10px;
+        .circle-brand-img{
+            width:70px;
+            height:70px;
+            border:2px solid var(--border-red);
+            border-radius:$half-width;
             margin-bottom: 10px;
-            width: 100%;
-        }
+            img {
+                width: 100%;
+                height:100%;
+                border-radius:$half-width;
+             }
+        } 
+    }
+}
+.category-section{
+    background:var(--white);
+    margin-bottom: 10px;
+    padding: 0px 15px;
+    &.bestSeller{
+        background:none;
+    }
+    .view-all-strip{
+        @extend %view-all-strip;
     }
 }
 
-// Listing View
-.icon-list-view,
-.icon-grid-view {
-    font-size: 21px;
-    line-height: 30px;
-}
-
-.bestSeller {
-    background: #ddd;
-    padding-bottom: 10px;
-}

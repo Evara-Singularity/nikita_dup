@@ -1,25 +1,29 @@
 @import '../../scss/variables';
+@import '../../scss/components/checkbox';
+@import './../../scss/layout/forms.scss';
+
+
 .column-field {
-    .w-65 {
-        width: 65%;
+    .w-48 {
+        width: 48%;
         float: left;
     }
-    .w-30 {
-        width: 30%;
+    .column-r {
         float: right;
     }
 }
 
-button.continue-btn[disabled] {
-    background: #bdbdbd;
-}
 
 .for-varification {
     position: relative;
     .for-varification-r {
         position: absolute;
-        bottom: 8px;
-        right: 0px;
+        bottom: 5px;
+        right: 5px;
+        padding: 8px;
+        border-radius: 8px;
+
+        background-color: var(--slimy-green);
         a.show {
             color: #176fd8 !important;
             text-align: right;
@@ -27,19 +31,25 @@ button.continue-btn[disabled] {
             font-size: $large-font;
         }
         span.hidden {
-            color: #209F19 !important;
+            color: var(--white) !important;
             font-size: $medium-font;
-            i {
-                font-size: $large-font;
-                display: inline-block;
-                vertical-align: middle;
-                color: #5ba621;
-                padding-left: 5px;
-            }
+            font-weight: normal;
+            text-transform: uppercase;
+            font-weight: bold;
         }
     }
 }
 
 .varified-checkbox {
     @extend %custom-check-box-checkout
+}
+
+
+input,select{
+    width: 100%;
+    height: 40px !important;
+    border: 1px solid var(--silver);
+    border-radius: 8px !important;
+    padding: 0px 10px !important;
+    background-color: var(--white) !important;
 }

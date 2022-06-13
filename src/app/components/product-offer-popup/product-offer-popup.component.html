@@ -1,30 +1,34 @@
-<app-pop-up *ngIf="openMobikwikPopup" (outData$)="outData($event)" class="openMobikwikPopup"
-    [data]="{class: 'mobikwik-wallet', selector:'openMobikwikPopup', headerText:'Offer Details'}">
+<app-pop-up *ngIf="openMobikwikPopup" (outData$)="outData($event)"  class="openMobikwikPopup" [headerType]="'pop-up-header'" [data]="{headerText:'Offer Details'}">
     <div class="content-popup mobikwik-wallet" content>
-        <div class="wallet-block">
-            <img src="{{IMG_PATH}}{{data['image_block'][0].image_name}}" width="80%">
+        <div class="pwa-row wallet-block">
+            <div class="pwa-col-12 ">
+                <img src="{{IMG_PATH}}{{data['image_block'][0].image_name}}">
+            </div>
+            <div class="pwa-col-12 top-txt">
+                <ng-container *ngIf="offerIndex != null && offerIndex == 0">
+                    <b>
+                        Get GST invoice and save up to {{gstPercentage}}% on
+                        business
+                        purchases.
+                    </b><br>
+                </ng-container>
+                <ng-container *ngIf="offerIndex != null && offerIndex > 0">
+                    <b>{{data['image_block'][0]['image_title']}}</b><br>
+                </ng-container>
+                <ng-container *ngFor="let item of data['image_block'][0].image_general">
+                    <b>{{item.general_url}} </b>
+                </ng-container>
+                <p *ngFor="let item of data['image_block'][0].image_general">{{item.general_url}} </p>
+            </div>
         </div>
-        <div class="top-txt">
-            <ng-container *ngIf="offerIndex != null && offerIndex == 0">
-                <b>
-                    Get GST invoice and save up to {{gstPercentage}}% on
-                    business
-                    purchases.
-                </b><br>
-            </ng-container>
-            <ng-container *ngIf="offerIndex != null && offerIndex > 0">
-                <b>{{data['image_block'][0]['image_title']}}</b><br>
-            </ng-container>
-            <ng-container *ngFor="let item of data['image_block'][0].image_general">
-                <b>{{item.general_url}} </b>
-            </ng-container>
-        </div>
-        <div class="wallet-body">
-            <div class="inner-mobikwik">
+        <div class="pwa-row wallet-body">
+            <div class="pwa-col-12 inner-mobikwik">
                 <p class="heading-3" *ngIf="data.general_block?.length > 0"> {{data.general_block[0].element_url}}</p>
-                <p class="wallet-condtn" *ngFor="let item of data.general_block | slice:1 ;let i=index;">
-                    {{item.element_url}}
-                </p>
+                <ul>
+                    <li class="wallet-condtn" *ngFor="let item of data.general_block | slice:1 ;let i=index;">
+                        {{item.element_url}}
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

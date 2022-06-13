@@ -1,9 +1,52 @@
-<form #personalInfodForm="ngForm" (ngSubmit)="onSubmit(personalInfodForm.value)" class="material-form" novalidate>
+<div class="profile-card profile-name">
+    <div class="profile-card-inner name">
+        <i class="icon-profile"></i>
+        <span class="profile-card-inner-2 name-space">Name<br> <span class="name-main">{{ user?.userName }}</span></span>
+    </div>
+    <span class="update-name">UPDATE NAME</span>
+</div>
+<div class="profile-card profile-name">
+    <div class="profile-card-inner name">
+        <i class="icon-profile"></i>
+    </div>
+    <div class="material-form">
+        <form name="form" [formGroup]="userNameform">
+            <div class="outline-input-label">
+                <label>
+        <input type="text" class="form-control" formControlName="fname" >
+        <span class="label">Update Name</span>
+        <span class="form-inline-cta" (click)="onSubmit(userNameform.value)">UPDATE</span>
+    </label>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- <div class="personal-details">
+  <div class="personal-details-inner">
+    <label>Email</label>
+    <h4>ashish.kumar@gmail.com</h4>
+  </div>
+  <div class="personal-details-inner">
+    <label>Mobile Number</label>
+    <h4>+91 - 9717311486</h4>
+  </div>
+</div> -->
 
+<!-- <div class="material-static-form">
+  <div class="static-input-field">
+    <label>Email</label>
+    <h4>ashish.kumar@gmail.com</h4>
+  </div>
+  <div class="static-input-field">
+    <label>Mobile Number</label>
+    <h4>+91 - 9717311486</h4>
+  </div>
+</div> -->
+<!-- <form #personalInfodForm="ngForm" (ngSubmit)="onSubmit(personalInfodForm.value)" class="material-form" novalidate>
   <div class="card">
     <div class="container input-field">
       <label [class.is-focus]="(userInfo?.pname+''+ll.value).length!==0">
-        <input type="text" name="fname" [ngModel]="userInfo?.pname" #ll>
+        <input type="text" name="fname"  #ll>
         <span class="label">First Name *</span>
       </label>
 
@@ -16,37 +59,45 @@
   <div>
     <button class="edit-form">UPDATE</button>
   </div>
-</form>
+</form> -->
 
 <!-- email and phone -->
-<form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value)" class="material-form" novalidate>
-  <div class="card">
-    <div class="container input-field">
-      <label class="is-focus">
-        <input type="text" name="email" [ngModel]="userInfo?.email" readonly>
-        <span class="label">Email *</span>
-      </label>
-      <label class="is-focus">
-        <input type="number" name="phone" [ngModel]="userInfo?.phone" readonly>
-        <span class="label">Phone No. *</span>
-      </label>
+<form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value)" class="material-form profile-form" novalidate>
+    <div class="container input-field custom-profile-input">
+        <label class="is-focus">
+      <input type="text" name="email" [ngModel]="userInfo?.email" readonly>
+      <span class="label">Email *</span>
+    </label>
+        <label class="is-focus">
+      <input type="number" name="phone" [ngModel]="userInfo?.phone" readonly>
+      <span class="label">Phone No. *</span>
+    </label>
     </div>
-  </div>
 </form>
 
-<div class="card" (click)="toPasswordPage()">
-  <a class="other-strip">
-    <h3>Change Password</h3>
-    <i class="icon-next"></i>
-  </a>
+<div class="profile-card profile-bottom-card " (click)="toPasswordPage()">
+    <div class="profile-card-inner profile-bottom-card-inner">
+        <i class="icon-map-pin-fill"></i>
+        <span class="profile-card-inner-2 ">Change Password</span>
+    </div>
+    <span><i class="icon-next"></i></span>
 </div>
 
+<div class="profile-card profile-bottom-card" (click)="logout()">
+    <div class="profile-card-inner profile-bottom-card-inner">
+        <i class="icon-map-pin-fill"></i>
+        <span class="profile-card-inner-2 ">Logout</span>
+    </div>
+    <span><i class="icon-logout"></i></span>
+</div>
+<!-- 
 <div class="card logout" (click)="logout()">
+  <i class="icon-map-pin-fill"></i>
   <a class="other-strip">
     <h3>Logout</h3>
     <i class="icon-logout"></i>
   </a>
-</div>
+</div> -->
 
 <!--Search Popup-->
 <!-- <section class="screen-view popup info-update-popup">

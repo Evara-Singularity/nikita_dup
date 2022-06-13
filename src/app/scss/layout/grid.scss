@@ -1,0 +1,26 @@
+@import '../../scss/variables';
+.pwa-row {
+   display: flex;
+   flex-wrap: wrap;
+   padding:10px 15px;
+   justify-content: space-between;
+  //  align-items: center;
+}
+@for $i from 1 through 12 {
+    $colnum: $i;
+    .pwa-col-#{$i} { 
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 ($fullwidth / $colmax)*$colnum;
+        flex: 0 0 ($fullwidth / $colmax)*$colnum;
+        max-width: ($fullwidth / $colmax)*$colnum;
+      //   padding-left: $default-gap15;
+      //   padding-right: $default-gap15;
+     }
+}
+.pwa-row-noPad{
+  padding:10px 0px !important;
+}
+.pwa--15{
+  margin:0px -15px;
+}
+

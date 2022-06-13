@@ -1,58 +1,54 @@
-<app-pop-up  *ngIf="openProductInfo" (outData$)="closeProducInfo($event)" [class.open1]="openProductInfo"
-    [data]="{class: 'payment-popup addAddressPopup',headerCustom:true, selector:'openProductInfo'}">
-    <div class="head-sec header_add_edit" header>
+<app-pop-up  *ngIf="openProductInfo" (outData$)="closeProducInfo($event)" [headerType]="'pop-up-header1'" [class.open1]="openProductInfo"
+    [data]="{class: 'payment-popup addAddressPopup', headerText: 'About this Product', selector:'openProductInfo'}">
+    <!-- <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeProducInfo($event)"></i>
             <p class="txt header_text page-name">About this Product</p>
         </div>
-    </div>
-    <div class="content-popup card mt-15" content [class.customPopHeight]="productOutOfStock">
-        <div class="card-container list-view">
-            <div class="left">
-                <ng-container>
-                    <img src="{{imgURL}}"  height="125" width="125" />
-                </ng-container>
-            </div>
-            <div class="right">
-                <div class="name">
-                    <span>{{productName}}</span>
+    </div> -->
+    <div class="content-popup about-this-product" content [class.customPopHeight]="productOutOfStock">
+        <div class="pwa-row">
+            <div class="static-card-container pwa-col-12">
+                <div class="product-img">
+                    <ng-container>
+                        <img src="{{imgURL}}"/>
+                    </ng-container>
                 </div>
-                <div class="brand">
-                    <span>By: {{brandName}}</span>
-                </div>
-                <div class="price-details" *ngIf="productMrp > 0">
-                    <div class="left">
-                        <div class="price" *ngIf="productMrp > productPrice">
-                            <span class="crossed">{{productMrp | currency: 'INR' : 'symbol' :
-                                '1.0-0'}}</span>
-                            <ng-container *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0">
-                                <span class="green-label" *ngIf="bulkSellingPrice==null">
-                                    {{ productDiscount | number:'1.0-0'}}% OFF
-                                </span>
-                                <span class="green-label" *ngIf="bulkSellingPrice!=null">
-                                    {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF% OFF
-                                </span>
-                            </ng-container>
-                        </div>
-                        <div class="main-price">
-                            <span *ngIf="productPrice > 0 && bulkSellingPrice==null">
-                                {{productPrice | currency: 'INR' : 'symbol' : '1.0-0'}}</span> <span
-                                *ngIf="bulkSellingPrice!==null">
-                                {{bulkSellingPrice | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
-                        </div>
-                        <div class="out-of-stock-text" *ngIf="productOutOfStock">
-                            <span>Available on Request</span>
-                        </div>
-                    </div>
+                <div class="product-description" *ngIf="productMrp > 0">
+                    <p class="description-txt">{{productName}}</p>
+
+                    <p class="brand"><span>By :</span>  {{brandName}}</p>
+
+                    <p class="price" *ngIf="productMrp > priceWithoutTax">   
+                        <span class="before-discount" >{{productMrp | currency: 'INR' : 'symbol' :
+                            '1.0-0'}}
+                        </span>
+                        <ng-container *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0">
+                            <span class="discount"  *ngIf="bulkPriceWithoutTax==null">
+                                {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
+                            </span>
+                            <span class="discount"  *ngIf="bulkPriceWithoutTax!=null">
+                                {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF
+                            </span>
+                        </ng-container>
+
+                        <span class="after-discount" *ngIf="priceWithoutTax > 0 && bulkPriceWithoutTax==null">
+                            {{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
+                        </span>
+                        <span class="after-discount" *ngIf="bulkPriceWithoutTax!==null">
+                            {{bulkPriceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
+                        </span>
+                    </p>  
                 </div>
             </div>
         </div>
-        <section id="infoTabs" class="tabs-container">
-            <ul [style.width.px]="250 * tabs.length" class="tabs" id="elementTabs">
+        <section class="pwa-row">
+            <ul id="infoTabs" [style.width.px]="250 * tabs.length" class="pwa-tabs-container">
                 <ng-container *ngFor="let tab of tabs;let tabIndex = index">
-                    <li [id]="'tab'+tabIndex" class="tab" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"
+                    <li [id]="'tab'+tabIndex" class="pwa-tab" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"
                         (click)="goTo(tabIndex,ngxSiemaOptions.selector,tab)">
-                        {{tab | titlecase}}</li>
+                        {{tab | titlecase}}
+                    </li>
                 </ng-container>
             </ul>
         </section>

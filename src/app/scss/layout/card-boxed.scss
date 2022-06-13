@@ -1,0 +1,103 @@
+.card-boxed {
+    margin: 15px;
+    background-color: var(--white);
+    border-radius: 8px;
+    .card-upper {
+        position: relative;
+        border: 1px solid var(--ghost-white);
+        background: var(--white);
+        padding: 10px;
+        display: flex;
+        border-radius: 8px 8px 0p 0px !important;
+        .card-img {
+            width: 27%;
+            padding: 5px;
+            img {
+                display: block;
+                max-height: 100%;
+                max-width: 100%;
+            }
+        }
+        .card-desc {
+            width: 73%;
+            padding-left: 15px;
+            padding-right: 5px;
+            p {
+                font-size: $medium-font;
+                line-height: $small-line-height;
+                color: var(--black);
+                color: var(--onyx-black);
+                cursor: pointer;
+                margin-bottom: 5px;
+                line-height: 17px;
+            }
+            .orderstatus {
+                font-size: $medium-font;
+                display: block;
+                span {
+                    display: block;
+                    padding-top: 3px;
+                }
+            }
+            .orderqty {
+                font-size: $medium-font;
+                margin-bottom: 8px;
+                .qtyleft {
+                    display: block;
+                    margin-bottom: 5px;
+                    color: #444;
+                    font-weight: bold;
+                    font-size: $extra-large-font;
+                    .qtynum {
+                        font-size: $medium-font;
+                        font-weight: normal;
+                    }
+                    span {
+                        font-weight: $font-bolder;
+                        color: #111;
+                    }
+                    small {
+                        color: #989898;
+                        padding-left: 5px;
+                    }
+                }
+                .priceright {
+                    display: block;
+                    span {
+                        font-weight: $font-bolder;
+                        font-size: $large-font;
+                    }
+                }
+            }
+        }
+    }
+    .card-bottom {
+        .card-bottom-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border: 1px solid var(--ghost-white);
+            &:last-child{
+                border-radius: 0px 0px 8px 8px;
+            }
+        }
+        .orderstatus {
+            color: var(--onyx-black) !important;
+            font-size: $small-font;
+            font-weight: bold;
+            .dot {
+                color: var(--primary);
+            }
+            i{
+                font-size: $extra-large-font;
+                &.success{
+                    color: var(--slimy-green);
+                }
+                &.danger{
+                    color: var(--primary);
+                }
+            }
+        }
+    }
+}

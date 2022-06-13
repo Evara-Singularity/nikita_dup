@@ -158,6 +158,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     // Q&A vars
     questionMessage: string;
     listOfGroupedCategoriesForCanonicalUrl = ["116111700"];
+    alreadyLiked: boolean = true;
 
     productShareInstance = null;
     @ViewChild("productShare", { read: ViewContainerRef })
@@ -274,6 +275,9 @@ export class ProductComponent implements OnInit, AfterViewInit
     faqSuccessPopupInstance = null;
     @ViewChild("faqSuccessPopup", { read: ViewContainerRef })
     faqSuccessPopupContainerRef: ViewContainerRef;
+    pdpAccordianInstance = null;
+    @ViewChild("pdpAccordian", { read: ViewContainerRef })
+    pdpAccordianContainerRef: ViewContainerRef;
 
     iOptions: any = null;
 
@@ -671,6 +675,40 @@ export class ProductComponent implements OnInit, AfterViewInit
         } else {
             this.starsCount = rating;
             //this.productResult['rating'] = rating;
+        }
+    }
+
+    async onVisibleProductAccordians($event) {
+        if (!this.pdpAccordianInstance) {
+            const { ProductAccordiansComponent } = await import(
+                "./../../components/product-accordians/product-accordians.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(
+                ProductAccordiansComponent
+            );
+            this.pdpAccordianInstance = this.pdpAccordianContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.pdpAccordianInstance.instance["categoryBrandDetails"] = {
+                category: this.rawProductData.categoryDetails[0],
+                brand: this.rawProductData.brandDetails,
+            };
+            const TAXONS = this.taxons;
+            let page = {
+                pageName: null,
+                channel: "pdp",
+                subSection: null,
+                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+                linkName: null,
+                loginStatus: this.commonService.loginStatusTracking,
+            };
+            this.pdpAccordianInstance.instance["analyticsInfo"] = {
+                page: page,
+                custData: this.commonService.custDataTracking,
+                order: this.orderTracking,
+            };
         }
     }
 
@@ -2676,9 +2714,8 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
-    alreadyLiked: boolean = true;
-    postHelpful(item, yes, no, i)
-    {
+
+    postHelpful(item, yes, no, i) {
         if (this.localStorageService.retrieve("user")) {
             let user = this.localStorageService.retrieve("user");
             if (user.authenticated == "true") {
@@ -2691,8 +2728,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     is_review_helpful_count_no: no,
                     is_review_helpful_count_yes: yes,
                 };
-                this.productService.postHelpful(obj).subscribe((res) =>
-                {
+                this.productService.postHelpful(obj).subscribe((res) => {
                     if (res["code"] === "200") {
                         this._tms.show({
                             type: "success",
@@ -2722,9 +2758,12 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.goToLoginPage(this.productUrl);
         }
     }
+    
+    handlePostHelpful(args: Array<any>) {
+        this.postHelpful(args[0], args[1], args[2], args[3]);
+    }
 
-    async showYTVideo(link)
-    {
+    async showYTVideo(link) {
         if (!this.youtubeModalInstance) {
             const PRODUCT = this._trackingService.basicPDPTracking(this.rawProductData);
             let analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "pdp");
@@ -2734,6 +2773,10 @@ export class ProductComponent implements OnInit, AfterViewInit
             modalData.inputs = { videoDetails: videoDetails, analyticsDetails: analyticsDetails };
             this.modalService.show(modalData);
         }
+    }
+
+    showYTVideo1(event) {
+        this.showYTVideo(event.link)
     }
 
     // SEO SECTION STARTS
@@ -3581,16 +3624,14 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
-    async handleProductInfoPopup(infoType, cta, oosProductIndex: number = -1)
-    {
+    async handleProductInfoPopup(infoType, cta, oosProductIndex: number = -1) {
         this.holdRFQForm = true;
         this.sendProductInfotracking(cta);
         this.showLoader = true;
         this.displayCardCta = true;
         const { ProductInfoComponent } = await import(
             "./../../modules/product-info/product-info.component"
-        ).finally(() =>
-        {
+        ).finally(() => {
             this.showLoader = false;
         });
         const factory = this.cfr.resolveComponentFactory(ProductInfoComponent);
@@ -3611,13 +3652,16 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.productInfoPopupInstance.instance[
             "closePopup$"
             ] as EventEmitter<boolean>
-        ).subscribe((data) =>
-        {
+        ).subscribe((data) => {
             this.closeProductInfoPopup();
             this.handleRestoreRoutingForPopups();
         });
         this.handleRoutingForPopUps();
         this.backTrackIndex = oosProductIndex;
+    }
+
+    async handleProductInfoPopup1(event) {
+        this.handleProductInfoPopup(event.infoType, event.cta)
     }
 
     private closeProductInfoPopup()

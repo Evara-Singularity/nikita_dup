@@ -1,8 +1,8 @@
-<div class="prod-detail">
-    <h2 class="heading-3">Product Details</h2>
+<div class="prod-detail pwa-row">
+    <h2 class="heading-3 pwa-col-12">Product Details</h2>
     <ng-container *ngIf="details.description != null else noProdDesc">
-        <p [innerHTML]="details.description"></p>
-        <p> Browse through the extensive list of
+        <p [innerHTML]="details.description" class="pwa-col-12"></p>
+        <p class="pwa-col-12"> Browse through the extensive list of
             <a [href]="prodUrl + '/' + details['category']['categoryLink']" class="blueText" (click)="$event.preventDefault();_commonService.navigateTo('/'+ details['category']['categoryLink'], true)">
                 {{details['category']['categoryName']}}</a> at Moglix. Shop online for other
             <a [href]="prodUrl + '/' + details['brandCategoryURL']" class="blueText" (click)="$event.preventDefault();_commonService.navigateTo('/'+ details['brandCategoryURL'], true)">{{details['brand']['brandName']}}
@@ -10,7 +10,7 @@
         </p>
     </ng-container>
     <ng-template #noProdDesc>
-        <p>
+        <p class="pwa-col-12">
             {{details['productName']}} is a premium quality product from {{details['brand']['brandName']}}. Moglix is a
             well-known ecommerce platform for qualitative range of <a class="blueText" [href]="prodUrl + '/' + details['category']['categoryLink']"
                 (click)="$event.preventDefault();_commonService.navigateTo('/'+details['category']['categoryLink'], true)">{{details['category']['categoryName']}}</a>.

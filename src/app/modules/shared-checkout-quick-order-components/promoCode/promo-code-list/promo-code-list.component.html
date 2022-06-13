@@ -5,22 +5,39 @@
       <p class="txt">ALL OFFERS</p>
     </div>
   </div>
-  
   <custom-promo-code [nextPromocode]="nextPromocode"></custom-promo-code>
-  
-  <div class="custom-cbox">
-    <p class="mt-15 border-top">Take advantage of our exclusive offers</p>
+  <div class="pwa-row no-coupon-card-container" *ngIf="_cartService?.allPromoCodes.length == 0">
+    <div class="pwa-col-12 card">
+      <div class="inner-no-coupon-card">
+        <img src="../../../../../../src/assets/img/no_coupon_found.png">
+        <p>No coupon available now</p>
+      </div>
+    </div>
+  </div>
+  <div class="alert-box" *ngIf="showAppliedPromoCode">
+    <div class="overlay" (click)="$event.stopPropagation();closePopUp()"></div>
+    <div class="content-area">
+      <div class="info-area">
+        <i class="icon-coupon-3-fill-1"></i>
+        <p class="applied-coupon">'{{_cartService?.appliedPromoCode}}' applied</p>
+        <p class="saving-applid-coupon"><span>&#8377;24</span> saving with this coupon</p>
+        <p class="green-text">YAY!</p>
+      </div>
+    </div>
+  </div>
+  <!-- new design -->
+  <div class="coupon-card-container" *ngIf="_cartService?.allPromoCodes.length">
+    <p class="pwa-text">Available Coupons</p>
     <ng-container *ngFor="let item of _cartService?.allPromoCodes; let i = index;">
-      <label for="{{i}}couponcode" [class.selected]="item.promoCode === selectedPromocode" (click)="updateCustomPromoCodeInput($event,item)">
-        <input [id]="i+'couponcode'" type="radio" name="promo-code" value="{{item.promoCode}}" #isCheckedBox>
-        <span class="custom-box"></span>
-        <span class="chk-txt">
-          <span class="promo-label">
-              {{ item.promoCode }}
-          </span>
-          <span class="promo-description">{{item.promoDescription}}</span>
-          </span>
-      </label>
+      <div (click)="updateCustomPromoCodeInput($event,item)" class="card" [class.selected]="item.promoCode === selectedPromocode">
+        <div class="apply-coupon">
+          <div class="inner-coupon">
+            <h3>{{item.promoCode}}</h3>
+            <p class="promo-description">{{item.promoDescription}}</p>
+          </div>
+          <button class="btn redBgButton">APPLY</button>
+        </div>
+      </div>
     </ng-container>
   </div>
 </section>

@@ -1,4 +1,6 @@
-@import '../../scss/variables';
+@import "../../scss/variables";
+@import '../../scss/components/home-listing';
+
 .fixedCategory {
     position: relative;
     display: block;
@@ -12,7 +14,7 @@
 }
 
 .cluster-body {
-    padding-top: 100px;
+    // padding-top: 100px;
     img {
         width: auto;
     }
@@ -20,61 +22,6 @@
         min-height: 140px;
     }
 }
-
-.l0_heading {
-    font-size: 16px;
-    margin-bottom: 8px;
-    text-transform: capitalize;
-    padding: 0px;
-    &.center {
-        text-align: center;
-    }
-}
-
-.otherCategoryBlock {
-    padding: 15px 5px;
-    background: #ECECEC;
-    ul {
-        margin: 0px;
-        padding: 0px;
-        li {
-            list-style: none;
-            float: left;
-            width: 50%;
-            padding: 5px;
-            .innerCategory {
-                background: #fff;
-                border: 1px solid #C4C4C4;
-                border-radius: 3px;
-                box-shadow: 0px 3px 6px #00000005;
-                height: 235px;
-                img {
-                    max-height: 100%;
-                    max-width: 100%;
-                    width: 100%;
-                }
-                .imgBlock {
-                    height: 160px;
-                }
-            }
-            .detailsBlock {
-                position: relative;
-                text-align: center;
-                padding: 10px 10px 10px 10px;
-                h3 {
-                    font-size: 14px;
-                    padding: 0px 0px 5px 0px;
-                }
-                p {
-                    color: #D9232D;
-                    font-size: 12px;
-                    font-weight: 500;
-                }
-            }
-        }
-    }
-}
-
 .product_h3 {
     background: #fff;
     padding: 15px 5px 5px;
@@ -103,7 +50,7 @@
         padding-bottom: 10px;
     }
     a {
-        color: #0061D5 !important;
+        color: #0061d5 !important;
     }
     hr {
         margin-bottom: 10px;
@@ -127,7 +74,7 @@
 .categories-list {
     li {
         margin-bottom: 30px;
-        @include gridForCategory('3', '20');
+        @include gridForCategory("3", "20");
         i {
             width: 75px;
             height: 75px;
@@ -142,5 +89,31 @@
         span {
             font-size: $large-font;
         }
+    }
+}
+
+.category-card-scroll-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: auto;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+    padding: 10px;
+    background: #f8f8f8;
+    category-card {
+        .category-card-container {
+            background: #f8f8f8;
+            .category-OverBlk {
+                .category-block {
+                    min-width: 180px;
+                    &.selected-block {
+                        border: 1px solid #d9232d;
+                        background: #f4e1e5;
+                    }
+                }
+            }
+        }
+    }
+    &::-webkit-scrollbar{
+        display: block;
     }
 }

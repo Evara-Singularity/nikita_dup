@@ -1,0 +1,17 @@
+@import "../../../scss/variables";
+.horizontal-scroll-container{
+    padding: 0px;
+    ::-webkit-scrollbar {
+        display: none;
+    } 
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none; 
+    .inner-scroll-container{
+        display: flex;
+        overflow: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
+
+

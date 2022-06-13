@@ -23,6 +23,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     readonly ADDRESS_TYPES = { DELIVERY: "Delivery", BILLING: "Billing" };
     readonly USER_SESSION = null;
 
+    @Input('showDelete') showDelete = false;
     //trigger to display pop-up for delivery or billing address.
     @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = null;
     //emits invoicetype, selected delivery & billing address which is to used for checkout
@@ -130,12 +131,17 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         let cIdAddress = null;
         if (IS_DELIVERY) {
             ADDRESSES = this.deliveryAddressList;
-            cIdAddress = this._cartService.shippingAddress['idAddress'];
+            if (this._cartService.shippingAddress) {
+                cIdAddress = this._cartService.shippingAddress['idAddress'];
+            }
         } else {
             ADDRESSES = this.billingAddressList;
-            cIdAddress = this._cartService.billingAddress['idAddress'];
+            if (this._cartService.billingAddress) {
+                cIdAddress = this._cartService.billingAddress['idAddress'];
+            }
         }
         this.addressListInstance.instance['addresses'] = ADDRESSES;
+        this.addressListInstance.instance['showDelete'] = this.showDelete;
         this.addressListInstance.instance['cIdAddress'] = cIdAddress;
         this.addressListInstance.instance['addressType'] = addressType;
         this.addressListInstance.instance['displayAddressListPopup'] = true;
@@ -155,6 +161,11 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             if (actionInfo.action === "SELECTED") {
                 this.closeAddressListPopup();
                 this.updateDeliveryOrBillingAddress(IS_DELIVERY, actionInfo.address);
+                return;
+            }
+            //Below code is to handle "Delete functionality"
+            if (actionInfo.action === "DELETE") {
+                this.deleteAddress(addressType, actionInfo.address);
                 return;
             }
         });
@@ -218,15 +229,8 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.addressListInstance) {
             this.addressListInstance.instance['addresses'] = IS_DELIVERY ? this.deliveryAddressList : this.billingAddressList;
         }
-        if (IS_DELIVERY && (canUpdateDelivery || isEditMode)) {
-            const deliveryAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
-            this.updateDeliveryOrBillingAddress(IS_DELIVERY, deliveryAddress);
-            return;
-        }
-        if ((!IS_DELIVERY) || (canUpdateBilling && isEditMode)) {
-            const billingAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.billingAddressList, this._cartService.billingAddress);
-            this.updateDeliveryOrBillingAddress(IS_DELIVERY, billingAddress);
-        }
+        const INVOICE_TYPE = this._cartService.invoiceType ? this._cartService.invoiceType : this.INVOICE_TYPES.RETAIL;
+        this.updateAddressTypes(this.USER_SESSION.userId, INVOICE_TYPE);
     }
 
     /**
@@ -247,6 +251,43 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
                 this.emitBillingAddressSelectEvent$.emit(address);
             }
         }
+    }
+
+    deleteAddress(addressType, address)
+    {
+        const deleteAddress = {
+            'idAddress': address['idAddress'],
+            'addressCustomerName': address['addressCustomerName'],
+            'phone': address['phone'],
+            'email': address['email'] != null ? address['email'] : this.USER_SESSION['email'],
+            'postCode': address['postCode'],
+            'addressLine': address['addressLine'],
+            'city': address['city'],
+            'idState': address['state']['idState'],
+            'idCountry': address['country']['idCountry'],
+            'idCustomer': address['idCustomer'],
+            'idAddressType': address['addressType']['idAddressType'],
+            'active': false,
+            'invoiceType':this.invoiceType.value
+        };
+        this._addressService.postAddress(deleteAddress).subscribe((addressList)=>{
+            if (address) {
+                const addressType = address['addressType']['addressType'];
+                const idAddress = address['idAddress']
+                if (addressType === 'shipping' && this._cartService.shippingAddress) {
+                    const cidAddress = this._cartService.shippingAddress['idAddress'];
+                    if (idAddress === cidAddress) { this._cartService.shippingAddress = null; }
+                } else if (this._cartService.billingAddress) {
+                    const cidAddress = this._cartService.billingAddress['idAddress'];
+                    if (idAddress === cidAddress) { this._cartService.billingAddress = null; }
+                }
+            } else {
+                this._cartService.shippingAddress = null;
+                this._cartService.billingAddress = null;
+            }
+            this.updateAddressAfterAction(addressType, addressList, false); // as we are deleting address
+        });
+        this.closeAddressListPopup();
     }
 
     /** @description:closes the address list pop-up depending on address form pop-up     */

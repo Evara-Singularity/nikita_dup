@@ -1,0 +1,33 @@
+@import '../variables';
+.pwa-banner{
+    display:flex;
+    flex-wrap:wrap;
+    img {
+        width:$fullwidth;
+        max-width:$fullwidth;
+    }
+    .full-banner{
+        width:$fullwidth;
+        img{
+            border-radius:$border-radius-8;
+        }
+    }
+    .mutiple-banner{
+        display:inline-flex;
+        flex-flow: wrap;
+        justify-content: space-between;
+        // margin:0px 0px 0px -10px;
+        width: 100%;
+        .half-banner{
+            width:48%;
+            // margin:10px 0px 0px 10px;
+            img{
+                border-radius:$border-radius-8;
+                height:100%;;
+            }
+        }
+    }
+}
+
+
+

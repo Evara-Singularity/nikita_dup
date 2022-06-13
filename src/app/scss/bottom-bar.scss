@@ -1,0 +1,88 @@
+@import '../scss/variables';
+.bottom-bar {
+    width: $fullwidth;
+    height: 60px;
+    padding: 4px;
+    box-shadow: 0px -4px 6px 0px rgba(0, 0, 0, 0.16);
+    position: fixed;
+    background: var(--ghost-white);
+    left: 0px;
+    bottom: 0px;
+    z-index: 5;
+    .wishlist,
+    .cart {
+        width: calc(20% - 2px);
+        padding: 0px;
+        float: left;
+        background: $white;
+        text-align: center;
+        height: 100%;
+        i {
+            font-size: $extra-large-2_5-font;
+            top: 31%;
+            transform: translate(-50%);
+            position: relative;
+        }
+        &.active {
+            i {
+                color: var(--primary);
+            }
+        }
+    }
+    .cart-btn {
+        background: var(--white);
+        border: 0;
+        width: 49%;
+        height: 100%;
+        font-weight: $font-bold;
+        color: var(--primary);
+        i {
+            font-size: $extra-large-3-font;
+            display: inline-block;
+            vertical-align: middle;
+            padding-right: 8px;
+        }
+        span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    .buy-now {
+        width: $half-width;
+        height: 100%;
+
+        &.extnd-btn {
+            width: $fullwidth;
+        }
+        button {
+            width: $fullwidth;
+            background: var(--primary);
+            height: 100%;
+            border: none;
+            color: var(--white);
+            font-weight: $font-bold;
+        }
+    }
+    .avalOnRequest {
+        width: 80%;
+        height: 100%;
+        float: left;
+
+        button {
+            width: $fullwidth;
+            background: var(--primary);
+            height: 100%;
+            border: none;
+            color: var(--white);
+        }
+    }
+    &.nonFixed {
+        position: relative;
+        box-shadow: none;
+        height: 58px;
+        z-index: 2;
+        button {
+            border-radius: $border-radius-4;
+        }
+    }
+}

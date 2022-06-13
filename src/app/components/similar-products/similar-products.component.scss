@@ -1,1 +1,8 @@
-@import '../../scss/horizontalProductListing'
+@import '../../scss/layout/horizontalProductListing';
+.similar-product{
+    background: var(--white);
+    padding-top: 5px;
+    .view-all-strip{
+        @extend %view-all-strip;
+    }
+}

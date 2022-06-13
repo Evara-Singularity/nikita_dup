@@ -1,5 +1,6 @@
 <app-pop-up-variant2 (outData$)="outData($event)" [class.open1]="openEMIStepsPopup" *ngIf="openEMIStepsPopup"
-    [data]="{class: 'payment-popup addAddressPopup addEmiSteps',headerCustom:true}">
+[headerType]="'pop-up-header'"    
+[data]="{class: 'payment-popup addAddressPopup addEmiSteps',headerText: 'Pay In Installment in 4 Easy Steps...'}">
     <!-- <div class="head-sec" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeEMISteps($event)"></i>

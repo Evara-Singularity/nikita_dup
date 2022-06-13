@@ -33,7 +33,7 @@ import { environment } from '../environments/environment';
     // ErrorHandlerModule
   ],
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   providers: [
     {

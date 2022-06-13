@@ -219,7 +219,16 @@
                 }
             }
         }
+        .view-card-category{
+            display: flex;
+            flex-wrap: wrap;
+            background: #F2F2F2;
+            category-card{
+                width: 50%;
+            }
+        }
     }
+
 }
 
 

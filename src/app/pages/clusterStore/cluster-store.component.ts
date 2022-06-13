@@ -18,7 +18,6 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { LocalStorageService } from 'ngx-webstorage';
 import { Subject } from 'rxjs';
 import CONSTANTS from '../../config/constants';
-import * as kfooter from '../../config/k.footer';
 import { ToastMessageService } from '../../modules/toastMessage/toast-message.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
@@ -70,7 +69,6 @@ export class ClusterStoreComponent implements OnInit {
 	isServer: boolean;
 	isBrowser: boolean;
 	pageNotFound:boolean=false;
-	kfooter: any = kfooter;
 	footerVisible = false;
 	readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
 	extraData: {};
@@ -409,14 +407,6 @@ export class ClusterStoreComponent implements OnInit {
 			this.clusterVideoContainerRef.remove();
 		}
 	}
-
-	clickFooter() {
-		this.footerVisible = !this.footerVisible;
-		if (this.footerVisible && document.getElementById('footerContainer')) {
-		  let footerOffset = document.getElementById('footerContainer').offsetTop;
-		  ClientUtility.scrollToTop(1000, footerOffset - 50);
-		}
-	  }
 
 	ngOnDestroy() {
 		this.cDistryoyed.next();

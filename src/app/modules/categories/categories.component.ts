@@ -10,6 +10,13 @@ import { RouterModule } from '@angular/router';
 import { CommonService } from '../../utils/services/common.service';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
+import { ProductCardFeature, ProductsEntity } from '@app/utils/models/product.listing.search';
+import { ProductCardHorizontalScrollModule } from '../ui/product-card-horizontal-scroll/product-card-horizontal-scroll.module';
+import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
+import { ProductCardVerticalGridViewModule } from '../product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
+import { ProductCardHorizontalGridViewModule } from '../product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
+import { ProductCardVerticalBlockViewModule } from '../product-card/product-card-vertical-block-view/product-card-vertical-block-view.module';
+
 
 @Component({
 	selector: 'home-categories',
@@ -24,7 +31,33 @@ export class Categories {
 	@Input('imagePath') imagePath;
 	@Input('recentProductList') recentProductList;
 	@Output('sendDataToPopUP') sendDataToPopUP = new EventEmitter();
-
+	readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {
+		// feature config
+		enableAddToCart: false,
+		enableBuyNow: false,
+		enableFeatures: false,
+		enableRating: true,
+		enableVideo: false,
+		// design config
+		enableCard: false,
+		verticalOrientation: true,
+		horizontalOrientation: false,
+		lazyLoadImage: true
+	  }
+	  readonly cardFeaturesConfig: ProductCardFeature = {
+        // feature config
+        enableAddToCart: true,
+        enableBuyNow: true,
+        enableFeatures: false,
+        enableRating: true,
+        enableVideo: false,
+        // design config
+        enableCard: true,
+        verticalOrientation: true,
+        horizontalOrientation: false,
+		verticalOrientationV2:true,
+        lazyLoadImage: false
+    }
 	openPopup;
 	categoryNameFromHomePage;
 
@@ -98,6 +131,47 @@ export class Categories {
 	setSourceLink(url) {
 		localStorage.setItem('src', url);
 	}
+
+	mapProductData(products: object[]){
+
+		return products.map(product=>{
+			return this.mapingProductSchema(product)
+		})
+		
+	}
+
+	mapingProductSchema(product: any){
+		const productInfo: ProductsEntity= {
+            moglixPartNumber: product['moglixPartNumber'],
+            moglixProductNo: product['moglixProductNumber'],
+            mrp: product['mrp'],
+            salesPrice: product['sellingPrice'],
+            priceWithoutTax: product['pricewithouttax'],
+            productName: product['productName'],
+            variantName: null,
+            productUrl: product['productlink'],
+            shortDesc: product['short_description'],
+            brandId: null,
+            brandName: null,
+            quantityAvailable: product['quantityAvailable'],
+            productMinimmumQuantity: null,
+            discount: product['discount'],
+            rating:null,
+            categoryCodes:null,
+            taxonomy:null,
+			mainImageThumnailLink:product['mainImageThumnailLink'],
+            mainImageLink: product['mainImageThumnailLink'],
+            productTags:null,
+            filterableAttributes: null,
+            avgRating:null, //this.product.avgRating,
+            itemInPack: null,
+            ratingCount:  null, //this.product.ratingCount,
+            reviewCount:  null //this.product.reviewCount
+        };
+        return productInfo;
+	}
+
+
 }
 
 @NgModule({
@@ -107,6 +181,11 @@ export class Categories {
 		RouterModule,
 		LazyLoadImageModule,
 		ObserveVisibilityDirectiveModule,
+		ProductCardHorizontalScrollModule,
+		ProductCardVerticalContainerModule,
+		ProductCardVerticalGridViewModule,
+		ProductCardHorizontalGridViewModule,
+		ProductCardVerticalBlockViewModule,
 	],
 	providers: [],
 })

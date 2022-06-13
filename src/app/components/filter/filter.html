@@ -4,8 +4,8 @@
         <span class="txt-name">FILTER</span>
         <span (click)="_commonService.selectedFilterData.filter = {}; toggleFilter.emit(); _commonService.applyFilter()" class="clear-filter">CLEAR ALL</span>
     </div>
-    <div (click)="toggleFilter.emit(); _commonService.applyFilter()" class="apply-filter">
-        <button class="btn continue-btn">APPLY</button>
+    <div (click)="toggleFilter.emit(); _commonService.applyFilter()" class="fixed-bottom-cta">
+        <button class="btn primary-full-btn">APPLY</button>
     </div>
 
     <div class="filters-content">
@@ -28,7 +28,7 @@
                             <div class="custom-cbox">
                                 <ng-container *ngFor="let item of filter.terms; let z = index;">
                                     <label [class.selected]="categoryCheckBox.checked" *ngIf="item.count">
-                                        <span class="chk-box">
+                                        <!-- <span class="chk-box"> -->
                                             <input 
                                                 (click)="updateSelectedFilterData($event, filter.name, item)"
                                                 class="hidden" 
@@ -37,7 +37,7 @@
                                                 [checked]="item.selected"
                                                 #categoryCheckBox>
                                             <span class="custom-box icon-box"></span>
-                                        </span>
+                                        <!-- </span> -->
                                         <ng-container *ngIf="filter.name !== 'ratings'">
                                             <div>
                                                 <span class="chk-txt">{{item.term | addFilterSymbol:filter.name}}</span>

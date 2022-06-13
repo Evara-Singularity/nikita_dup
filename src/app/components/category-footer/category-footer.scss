@@ -4,12 +4,12 @@
         padding: 0px 15px;
         background: #f2f2f2;
         h2 {
-            font-size: 14px;
+            font-size: $large-font;
             padding: 10px 0;
             text-transform: none;
         }
         p {
-            font-size: 12px;
+            font-size: $medium-font;
             color: #7B7B7B;
             line-height: 18px;
             strong{
@@ -37,39 +37,6 @@
         background: #ffffff;
         #openCat2{
             padding: 0px 10px 15px 10px;
-            // &.seo-table-container{
-            //     background-color: #ffffff;
-            //     padding: 0px 10px 15px 10px;
-            //     .seo-table-data{
-            //         box-shadow: 0px 3px 6px #0000001A;
-            //         background: #f2f2f2;
-            //         border-radius: 4px;
-            //         margin-bottom: 10px;
-            //         thead{
-            //             tr{
-            //                 border: none;
-            //                 th{
-            //                     border: none;
-            //                     font-size: 12px;
-            //                     text-align: left;
-            //                     padding: 5px;
-            //               }  }
-            //         }
-            //         tbody{
-            //            background-color: #ffffff;
-            //            tr{
-            //             border: none;
-            //             td{
-            //                 border: none;
-            //                 font-size: 12px;
-            //                 font-weight: normal;
-            //                 text-align: left;
-            //                 padding: 5px;
-            //             }
-            //         }           
-            //      }
-            //     }
-            // }
         }
     }
 }
@@ -77,7 +44,7 @@
     background-color: #fff;
     padding: 10px 3px;
     h2{
-        font-size: 16px;
+        font-size: $extra-large-font;
         padding: 5px 0px 10px;
         
     }
@@ -108,16 +75,16 @@
 .m_faqHeading {
     padding: 25px 0 10px 10px;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: $large-font;
 }
 
 .m_faqQuestion {
     padding: 10px 15px;
-    font-size: 14px;
+    font-size: $large-font;
     position: relative;
      :before {
         content: "Q:";
-        font-size: 14px;
+        font-size: $large-font;
         position: absolute;
         left: -8px;
         font-weight: bold;
@@ -125,39 +92,18 @@
 }
 
 .m_faqAnswer {
-    font-size: 12px;
+    font-size: $medium-font;
     line-height: 18px;
     position: relative;
     padding: 0px 15px;
     &:before {
         content: "A:";
-        font-size: 14px;
+        font-size: $large-font;
         position: absolute;
         left: -8px;
         font-weight: bold;
     }
 }
-
-// .category-tbl {
-//     th,
-//     td {
-//         font-size: 12px;
-//         text-align: left;
-//         border-bottom: 1px solid $border-color;
-//         padding: 5px;
-//     }
-// }
-
-
-// .common_table {
-//     th,
-//     td {
-//         font-size: 12px;
-//         text-align: left;
-//         border-bottom: 1px solid $border-color;
-//         padding: 5px;
-//     }
-// }
 
 #openFaq{
     padding: 5px 0px 15px;

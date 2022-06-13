@@ -1,0 +1,91 @@
+// Common Alert Box
+.alert-box {
+    &.rfq-thanks-alert{
+        .content-area{
+            border-radius:12px !important;
+        }
+        &.rfqThanksPopup{
+            .overlay{
+              z-index:106 !important;
+            }
+            .content-area{
+                z-index:106 !important;
+            }  
+        }
+    }
+    .overlay {
+        z-index: 11;
+    }
+    .content-area {
+        @include translate(0, -50%);
+        position: fixed;
+        top: 50%;
+        left: 7.5%;
+        width: 85%;
+        background: $white;
+        z-index: 12;
+        font-size: $large-font;
+        @extend %border-radius;
+        @extend %clear-fix;
+        .info-area {
+            padding: 25px;
+            .info {
+                line-height: 20px;
+                font-size: 14px;
+            }
+            .info-title {
+                margin-bottom: 10px;
+                line-height: 19px;
+                font-size: 16px;
+                font-weight: 500;
+            }
+        }
+        .button-area {
+            border-top: 1px solid #e6e6e6;
+            position: relative;
+            button {
+                border: 0;
+                background: #fff;
+                height: 50px;
+                text-align: center;
+                width: 50%;
+                float: left;
+                font-weight: 600;
+                font-size: 14px;
+                &.continue {
+                    color: #3875fd;
+                    border-left: 1px solid #e6e6e6;
+                }
+            }
+        }
+        .green-block {
+            background: #36BD40;
+
+            .del-ico {
+                color: white;
+                font-size: 20px;
+                padding: 10px 0px 0px 10px;
+                display: inline-block;
+            }
+
+            .inner-txt {
+                padding: 10px 0px 50px 0px;
+                text-align: center;
+                color: white;
+
+                .info-title {
+                    font-weight: 600;
+                    color: white;
+                    font-size: 16px;
+                    letter-spacing: 0.5px;
+                }
+
+                i {
+                    font-size: 35px;
+                    display: inline-block;
+                    padding-bottom: 15px;
+                }
+            }
+        }
+    }
+}

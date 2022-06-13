@@ -1,9 +1,12 @@
 @import '../../scss/variables';
+@import '../../scss/root';
+// @import '../../scss/layout/grid.scss';
 
-.revamped-contact {
+.contact-container {
     .top-banner {
-        background: #fff;
-        border-radius: 8pt;
+        padding: 0;
+        background:  var(--white);
+        border-radius: 11px;
         margin: 20px 10px;
         display: inline-block;
         .banner-content {
@@ -16,15 +19,14 @@
                 padding: 20px 15px;
                 display: block;
                 h1 {
-                    font-size: 12pt;
-                    color: #3C3C3C;
-                    font-weight: 600;
-                    line-height: 18px;
+                    font-size: $extra-large-font;
+                    color: var(--text-color);
+                    font-weight: $font-bolder;
                 }
                 p {
-                    font-size: 10pt;
-                    font-weight: 400;
-                    line-height: 16px;
+                    font-size: $medium-font;
+                    font-weight: $font-normal;
+                    line-height: $small-line-height;
                     padding-top: 10px;
                 }
             }
@@ -39,18 +41,18 @@
     .contact-description {
         padding: 0 15px;
         p {
-            font-size: 10pt;
-            color: #3C3C3C;
-            font-weight: 400;
-            line-height: 1.5;
+            font-size: $medium-font;
+            color: var(--text-color);
+            font-weight: $font-normal;
+            line-height: $medium-line-height;
         }
     }
     .contact-info {
         padding: 15px 10px;
         .faq-wrap {
-            border: 1px solid #EFEFF4;
-            background: #fff;
-            border-radius: 8pt;
+            border: 1px solid var(--ghost-white);
+            background:  var(--white);
+            border-radius: 11px;
             padding: 20px 7px;
             margin-bottom: 15px;
             &:last-child {
@@ -59,16 +61,17 @@
             span {
                 display: inline-block;
                 h6 {
-                    font-size: 12pt;
-                    color: #303030;
-                    font-weight: 600;
-                    line-height: 18px;
+                    font-size: $extra-large-font;
+                    color:var(--text-color);
+                    font-weight: $font-bolder;
+                    line-height: $medium-line-height;
                 }
                 p {
-                    font-size: 9pt;
-                    font-weight: 400;
-                    line-height: 16px;
+                    font-size: $medium-font;
+                    font-weight: $font-normal;
+                    line-height: $small-line-height;
                     padding-top: 2px;
+                    color:var(--text-color);
                 }
             }
             .contact-content {
@@ -82,7 +85,7 @@
             .icons {
                 vertical-align: top;
                 img {
-                    width: 21pt;
+                    width: 28px;
                     vertical-align: middle;
                 }
             }
@@ -92,42 +95,42 @@
     .customer-care {
         padding: 30px 10px;
         p {
-            font-size: 12pt;
-            font-weight: 500;
-            line-height: 18px;
+            font-size: $extra-large-font;
+            font-weight: $font-normal;
+            line-height: $medium-line-height;
             padding-bottom: 10px;
         }
         .international {
-            background: #fff;
-            border-radius: 8pt;
+            background:  var(--white);
+            border-radius: 11px;
             padding: 15px;
             margin-bottom: 15px;
             &:last-child {
                 margin-bottom: 0;
             }
             span {
-                background: #EFEFF4;
-                border-radius: 4pt;
-                color: #979797;
-                font-size: 10pt;
-                font-weight: 600;
-                line-height: 16px;
+                background: var(--ghost-white);
+                border-radius: $border-radius;
+                color: var(--spanish-gray);
+                font-size: $medium-font;
+                font-weight: $font-bolder;
+                line-height: $small-line-height;
                 padding: 5px 10px;
                 margin-bottom: 12px;
                 display: inline-block;
             }
             h6 {
-                color: #3C3C3C;
-                font-size: 12pt;
-                font-weight: 700;
-                line-height: 18px;
+                color: var(--text-color);
+                font-size: $extra-large-font;
+                font-weight: $font-bold;
+                line-height: $medium-line-height;
                 padding-bottom: 5px;
             }
             p {
-                font-size: 10pt;
-                color: #303030;
-                font-weight: 400;
-                line-height: 16px;
+                font-size: $medium-font;
+                color: var(--text-color);
+                font-weight: $font-normal;
+                line-height: $small-line-height;
             }
             .call-timings {
                 padding: 8px 0;
@@ -137,19 +140,4 @@
     .customer-care {
         padding: 0 10px 30px;
     }
-}
-
-@media only screen and (max-width: 320px) {
-    .contact-content {
-        width: 79% !important;
-    }
-}
-
-.upper-case {
-    text-transform: uppercase;
-}
-
-.card-30 {
-    @extend %cards;
-    padding: 30px 15px;
 }

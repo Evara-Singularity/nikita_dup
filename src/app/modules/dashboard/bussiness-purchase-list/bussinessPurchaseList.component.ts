@@ -13,6 +13,9 @@ import { ProductService } from "@app/utils/services/product.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { OrderSummaryService } from "@app/utils/services/orderSummary.service";
+import { ProductCardFeature} from '@app/utils/models/product.listing.search';
+
+
 
 declare let dataLayer;
 declare var digitalData: {};
@@ -45,9 +48,24 @@ export class BussinessPurchaseListComponent {
   scForm: FormGroup;
   spli: Array<{}>;
   spp: boolean = false;
+  wishlistData;
+  
   set showLoader(value){
     this.loaderService.setLoaderState(value);
   }
+  readonly cardFeaturesConfig: ProductCardFeature = {
+    // feature config
+    enableAddToCart: true,
+    enableBuyNow: true,
+    enableFeatures: true,
+    enableRating: true,
+    enableVideo: false,
+    // design config
+    enableCard: true,
+    verticalOrientation: false,
+    horizontalOrientation: true,
+    lazyLoadImage: false
+}
 
   constructor(
     private meta: Meta,
@@ -61,6 +79,7 @@ export class BussinessPurchaseListComponent {
     private orderSummaryService: OrderSummaryService,
     private _productService: ProductService,
     private _tms: ToastMessageService,
+    private productService: ProductService,
     private loaderService:GlobalLoaderService) {
     
     this.showLoader = false;
@@ -138,6 +157,7 @@ export class BussinessPurchaseListComponent {
       .subscribe((res) => {
         this.showLoader = false;
         this.purchaseLists = res;
+        this.getWishlistData(this.purchaseLists);   
         let list: Array<any> = res;
         let itemRows: Array<FormGroup> = [];
         list.filter((element, index) => {
@@ -165,6 +185,12 @@ export class BussinessPurchaseListComponent {
       ],
     });
   }
+  
+  getWishlistData(products: object[]){
+		return this.wishlistData = products.map(product=>{
+      return this.productService.wishlistToProductEntity(product)
+		});		
+	}
 
   getdata(productdetail) {
     let index = 0;

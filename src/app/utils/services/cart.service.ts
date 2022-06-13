@@ -36,6 +36,7 @@ export class CartService
     public productShippingChargesListObservable: Subject<any> = new Subject();
     private notificationsSubject: Subject<any[]> = new Subject<any[]>();
     public appliedPromocodeSubject: Subject<string> = new Subject<string>();
+    //public slectedAddress: number = -1;
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public codNotAvailableObj = {}; // cart.component
@@ -1396,25 +1397,29 @@ export class CartService
     }
 
     /**@description display unavailable items in pop-up */
+    showUnavailableItems: boolean = false;
+    unavailableItemsList: any[];
     viewUnavailableItems(types: string[])
     {
+        alert('a');
         const itemsList: any[] = JSON.parse(JSON.stringify(this.getGenericCartSession['itemsList']));
         const unserviceableMsns = JSON.parse(JSON.stringify(this.notifications))
             .filter(item => types.includes(item['type'])).reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);
-        const LIST: any[] = itemsList.filter(item => item['oos'] || unserviceableMsns.indexOf(item['productId']) != -1);
-        if (LIST.length === 0) return;
-        this._modalService.show({
-            component: SharedCheckoutUnavailableItemsComponent,
-            inputs: { data: { page: 'all', items: LIST, removeUnavailableItems: this.removeUnavailableItems.bind(this) } },
-            outputs: {},
-            mConfig: { className: 'ex' }
-        });
+        this.unavailableItemsList = itemsList.filter(item => item['oos'] || unserviceableMsns.indexOf(item['productId']) != -1);
+        if (this.unavailableItemsList.length === 0) return;
+        this.showUnavailableItems = true;
+        // this._modalService.show({
+        //     component: SharedCheckoutUnavailableItemsComponent,
+        //     inputs: { data: { page: 'all', items: LIST, removeUnavailableItems: this.removeUnavailableItems.bind(this) } },
+        //     outputs: {},
+        //     mConfig: { className: 'ex' }
+        // });
     }
 
-    removeUnavailableItems(items: any[])
-    {
+    removeUnavailableItems(items: any[]) {
         const MSNS = items.map(item => item['productId']);
-        this.removeCartItemsByMsns(MSNS);
+        this.removeCartItemsByMsns(MSNS)//postprocessing
+        this.showUnavailableItems = false;
     }
 
     //Post processing
@@ -2086,4 +2091,6 @@ export class CartService
         this._globalAnalyticsService.sendAdobeCall(data, trackingname);
         /*End Adobe Analytics Tags */
     }
+
+    
 }

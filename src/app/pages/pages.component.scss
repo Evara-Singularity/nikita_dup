@@ -1,5 +1,5 @@
 @import '../scss/variables';
-@import '../../app/pages/home/common_grid.scss';
+// @import '../../app/scss/layout/grid.scss';
 footer {
     font-size: $large-font;
     &.card-30 {
@@ -17,86 +17,6 @@ footer {
     }
 }
 
-.social-links {
-    display: table;
-    margin: auto;
-    li {
-        display: table-cell;
-        a {
-            font-size: 32px;
-            margin-right: 10px;
-            display: block;
-            color: $logo-color !important;
-        }
-        &:last-child {
-            a {
-                margin-right: 0;
-            }
-        }
-        .icon-facebook {
-            color: #3B5998;
-        }
-        .icon-instagram {
-            color: #852CAE;
-        }
-        .icon-linkedin {
-            color: #0077B5;
-        }
-        .icon-twitter {
-            color: #1DA1F2;
-        }
-        .icon-google {
-            color: #DD4B39;
-        }
-        .icon-blog {
-            color: #E96E1D;
-        }
-        .icon-mail {
-            color: #1451d8;
-        }
-        .icon-whatsapp {
-            color: #25D366;
-        }
-    }
-}
-
-.links {
-    padding: 20px 0;
-    display: table;
-    margin: auto;
-    width: auto;
-    li {
-        display: inline-block;
-        padding: 0;
-        a {
-            margin: 5px 0;
-            padding: 0 10px;
-            font-size: 12px;
-            display: block;
-            border-right: 1px solid #303030;
-        }
-        &:last-child {
-            a {
-                border: none;
-            }
-        }
-        &.no-border {
-            border-right: 0;
-        }
-        &.ml {
-            margin-left: 65px;
-        }
-        &:last-child {
-            border-right: 0;
-        }
-    }
-}
-
-.main-links {
-    width: 100%;
-    text-align: center;
-}
-
 .other-links {
     text-align: center;
     font-size: $small-font;
@@ -104,25 +24,6 @@ footer {
         padding: 0;
         display: inline-block;
     }
-}
-
-.copyright {
-    font-size: $small-font;
-    text-align: center;
-}
-
-.footer-note {
-    font-size: $small-font;
-    background: $body-color;
-    line-height: 18px;
-    padding: 10px;
-    p {
-        margin-bottom: 15px;
-    }
-}
-
-.socsharehead {
-    padding: 20px;
 }
 
 .subscription-content {

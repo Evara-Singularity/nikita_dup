@@ -1,29 +1,17 @@
-@import '../../pages/home/common_grid.scss';
+// @import '../../scss/layout/grid.scss';
 @import '../../scss/variables';
-.featr_arrival {
-    background: #ddd;
-    margin-top: 10px;
-    .grid {
-        padding-bottom: 10px;
-        li {
-            height: 210px;
-            text-align: center;
-            .prod-name {
-                font-size: 14px;
-                font-weight: 500;
-                color: #ff7000;
-            }
-            .product_helpLink {
-                padding-top: 10px;
-                a {
-                    font-size: 14px;
-                    font-weight: 300;
-                }
-            }
-        }
-    }
+@import '../../scss/components/home-listing.scss';
+
+.view-all-strip{
+    @extend %view-all-strip;
+    background: var(--Light-grayish-orange);
 }
-.pad-tb-10{
-    padding-top: 10px;
-    padding-bottom: 10px;
+.featr_arrival{
+    background: var(--Light-grayish-orange);
+    .view-products{
+        border: 1px solid var(--ghost-white);
+        li{
+            background: none;
+        }
+    }  
 }

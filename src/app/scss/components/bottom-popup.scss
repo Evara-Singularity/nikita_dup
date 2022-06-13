@@ -1,0 +1,105 @@
+//Bottom Popup Design 
+#bottom-options-rfq {
+        .overlay{
+            z-index:106;
+        }
+        &.open {
+            .content-box {
+                padding-bottom: 50px !important;
+                max-height: 80% !important;
+                z-index:107;
+        }
+    }
+}
+.bottom-options {
+    .overlay-bg {
+        z-index: 13;
+        top: 120%;
+    }
+    .overlay {
+        z-index: 10;
+    }
+    .content-box {
+        position: fixed;
+        bottom: -100%;
+        left: 0;
+        padding: 15px 0;
+        background: $white;
+        z-index: 14;
+        width: 100%;
+        max-height: 70%;
+        overflow: auto;
+        @extend %transition;
+        z-index:108;
+        border-radius: 20px 20px 0px 0px;
+        li {
+            padding: 10px 0;
+            font-size: $extra-large-font;
+        }
+
+        .container-head-sec {
+            @extend %ico-txt-right;
+            margin-bottom: 10px;
+
+            .txt {
+                font-size: $extra-large-font;
+                font-weight: 700;
+                line-height: 21px;
+
+                span {
+                    display: block;
+                    font-size: $medium-font;
+                    font-weight: 400;
+                    padding-top: 5px;
+                }
+            }
+        }
+    }
+    &.open {
+        .overlay{
+            z-index:10;
+            top: 120%;
+        }
+        .overlay-bg {
+            top: 0;
+        }
+        .content-box {
+            bottom: 0;
+            padding: 0px;
+            border-radius: 20px 20px 0px 0px;
+            max-height: 70% !important;
+        }
+    }
+}
+// .bottom-options .content-box {
+//     position: fixed;
+//     bottom: -100%;
+//     left: 0;
+//     padding: 0px;
+//     background: #fff;
+//     z-index: 14;
+//     width: 100%;
+//     max-height: 45%;
+//     overflow: auto;
+//     &.open {
+//         .overlay {
+//             top: 120%;
+//         }
+//         &.content-box {
+//             bottom: 0;
+//         }
+//     }
+// }
+.close-popup{
+    .bottom-options {
+        .overlay {
+            top: 0;
+        }
+        .content-box {
+            bottom: 0;
+        }
+    }
+}
+.roundedBox {
+    border-radius:$border-radius-16;
+}

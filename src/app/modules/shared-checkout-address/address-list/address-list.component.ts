@@ -12,7 +12,8 @@ import { CheckoutAddressPipeModule } from '@app/utils/pipes/checkout-address.pip
 })
 export class AddressListComponent implements OnInit
 {
-    readonly ACTION_TYPES = { ADD: 'ADD', EDIT: 'EDIT', SELECTED: 'SELECTED' };
+    readonly ACTION_TYPES = { ADD: 'ADD', EDIT: 'EDIT', SELECTED: 'SELECTED', DELETE:'DELETE' };
+    @Input('showDelete') showDelete;
     @Input("addressType") addressType = "Delivery";
     @Input("displayAddressListPopup") displayAddressListPopup = false;
     @Input("addresses") addresses = [];

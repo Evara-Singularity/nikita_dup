@@ -1,17 +1,14 @@
-<section *ngIf="isBrowser" class="business-form">
+<section *ngIf="isBrowser" class="business-form pwa-row full-height">
     <form [formGroup]="businessDetailForm" (ngSubmit)="this.onSubmit(this.businessDetailForm.value, this.businessDetailForm.valid)" class="material-form" novalidate>
-        <div>
-            <div>
                 <!--GSTIN-->
-                <div class="input-field">
+                <div class="outline-input-label">
                     <label [class.is-focus]="gstin.value.length!=0">
                         <input type="text" formControlName="gstin" maxlength="15">
                         <span class="label">GSTIN*</span>
                         <ng-container *ngIf="gstin.valid">
-                            <span class="edit-field verified" *ngIf="isGSTINVerified">VERIFIED
-                                <i class="icon-check-active"></i>
+                            <span class="form-inline-cta success" *ngIf="isGSTINVerified">VERIFIED
                             </span>
-                            <span class="edit-field" *ngIf="!(isGSTINVerified)"
+                            <span class="form-inline-cta" *ngIf="!(isGSTINVerified)"
                                 (click)="$event.stopPropagation();verifyGSTIN();">
                                 VERIFY NOW
                             </span>
@@ -24,7 +21,7 @@
                     </ng-container>
                 </div>
                 <!--Business Entity Name-->
-                <div class="input-field">
+                <div class="outline-input-label">
                     <label [class.is-focus]="companyName.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                         <input maxlength="75" type="text" formControlName="companyName" [readonly]="!(isGSTINVerified)">
                         <span class="label">Business Entity Name*</span>
@@ -36,7 +33,7 @@
                     </ng-container>
                 </div>
                 <!--Business Email Id-->
-                <div class="input-field">
+                <div class="outline-input-label">
                     <label [class.is-focus]="email.value != null && email.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                         <input formControlName="email" type="text" [readonly]="!(isGSTINVerified)">
                         <span class="label">Business Email Id (Optional)</span>
@@ -48,7 +45,7 @@
                     </ng-container>
                 </div>
                 <!--Business  Phone No.-->
-                <div class="input-field">
+                <div class="outline-input-label">
                     <label [class.is-focus]="phone.value != null && phone.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                         <input formControlName="phone" type="text" [readonly]="!(isGSTINVerified)">
                         <span class="label">Business Phone No.*</span>
@@ -63,7 +60,7 @@
                     </ng-container>
                 </div>
                 <!--PIN-->
-                <div class="input-field">
+                <div class="outline-input-label">
                     <label [class.is-focus]="postCode.value != null && postCode.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                         <input formControlName="postCode" type="text" [readonly]="!(isGSTINVerified)">
                         <span class="label">PIN*</span>
@@ -77,11 +74,10 @@
                         </p>
                     </ng-container>
                 </div>
-            </div>
-            <div>
+            
                 <div formGroupName="address">
                     <!--Registered Address-->
-                    <div class="input-field">
+                    <div class="outline-input-label">
                         <label [class.is-focus]="addressLine.value != null && addressLine.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                             <input formControlName="addressLine" type="text" [readonly]="!(isGSTINVerified)">
                             <span class="label">Registered Address*</span>
@@ -96,14 +92,14 @@
                         </ng-container>
                     </div>
                     <!--City-->
-                    <div class="input-field">
+                    <div class="outline-input-label">
                         <label [class.is-focus]="city.value != null && city.value.length!=0" class="disableInput">
                             <input formControlName="city" type="text" readonly>
                             <span class="label">City*</span>
                         </label>
                     </div>
                     <!--State-->
-                    <div class="input-field">
+                    <div class="outline-input-label">
                         <label class="is-focus">
                             <select disabled formControlName="idState" #isSelectedState disabled>
                                 <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
@@ -113,8 +109,9 @@
                         </label>
                     </div>
                 </div>
-            </div>
-        </div>
-        <button [disabled]="!(canSave)" class="btn continue-btn bottom-stick" [class.disabledButton]="!(canSave)" type="submit">SAVE</button>
+        
+                <div class="fixed-bottom-cta">
+                    <button [disabled]="!(canSave)" class="btn primary-full-btn" [class.disabledButton]="!(canSave)" type="submit">SAVE</button>
+                </div>
     </form>
 </section>

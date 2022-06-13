@@ -1,9 +1,13 @@
 @import "../../scss/variables";
+@import '../../scss/components/checkbox';
+@import '../../scss/components/radio';
+@import '../../scss/layout/forms';
 .invoice-container {
+    @extend %white-card;
     background: $white;
     padding: 15px;
     margin-top: 10px;
-    @extend %cards;
+    border: none;
     .invoice-select {
         display: flex;
         align-items: center;
@@ -27,55 +31,58 @@
 }
 
 .add-address-substrip {
-    background: #f2f2f2;
     text-align: center;
     padding: 15px;
-    .blue-border-btn-full {
-        font-size: $large-font;
-        padding: 10px;
-        border-radius: 0px;
-    }
 }
 
 .address-container {
     margin-top: 10px;
     @extend %cards;
-    padding: 0 0 10px 0;
-    border: 0;
-    .sub-strip {
-        background: $selected-color;
-        padding: 15px 10px;
+    background-color: var(--ghost-white);
+    padding: 0 0 0 0;
+    border: 0; 
+    .shipping-container {
+        @extend %white-card;
+        margin-top: 10px;
+        @extend %cards;
+        padding: 0px;
         border: 0;
-        &:not(:first-child) {
-            margin-top: 20px;
-        }
-        h4 {
-            float: left;
-            font-weight: 500;
-            color: $txt-color;
-            i {
-                font-size: 14px;
-                margin-left: 5px;
+        .addButtonContainer {
+            padding: 15px;
+            .quaternary-btn-1{
+                width: $fullwidth;
             }
         }
     }
-    .addButtonContainer {
-        padding: 15px 10px;
+}
+.sub-strip {
+    padding: 15px 10px 0px !important;
+    border: 0;
+    &:not(:first-child) {
+        margin-top: 20px;
+    }
+    h4 {
+        float: left;
+        font-weight: bold;
+        color: $txt-color;
+        font-size: $medium-font;
+        i {
+            font-size: 14px;
+            margin-left: 5px;
+        }
     }
 }
-
 .address-list {
     @extend %clear-fix;
-    // @extend %container;
     label {
-        padding: 10px 0;
         display: block;
         @extend %custom-radio-checkout;
         @extend %clear-fix;
         .chk-txt {
             font-size: $medium-font;
-            width: calc(100% - 40px);
-            margin-left: 20px;
+            // width: calc(100% - 40px);
+            width: 100%;
+            margin-left: 0px;
             .heading-container {
                 display: block;
                 @extend %clear-fix;
@@ -92,61 +99,70 @@
             }
             .txt {
                 display: block;
-                font-size: $large-font;
-                width: 65%;
-                line-height: 21px;
+                font-size: $medium-font;
+                width: 100%;
+                line-height: $small-line-height;
             }
         }
     }
 }
 
 .persnName {
-    &:after {
-        content: "|";
-        padding: 0px 10px;
-        position: absolute;
-    }
+    font-size: $medium-font;
+    font-weight: bold;
+    // &:after {
+    //     content: "|";
+    //     padding: 0px 10px;
+    //     position: absolute;
+    // }
     & + span {
         padding-left: 10px;
     }
 }
 
-.multiple-address {
-    &.withRadioContainer {
-        padding: 10px 15px;
-        border-bottom: 1px solid $border-grey;
-        &:last-child {
-            border-bottom: none;
-        }
-        .chk-txt {
-            margin-left: 5px !important;
-        }
+form {
+    &.material-form{
+        background-color: var(--white) !important;
     }
-    @extend %clear-fix;
-    label {
-        float: left;
-        width: 93%;
-    }
-    .bin-icon {
-        float: right;
-        text-align: right;
-        padding: 10px 0;
-        width: 7%;
+    .multiple-address {
+        padding: 15px;
+        &.active-multiple-address{
+            border: 1px solid var(--primary);
+            .address-btn-section{
+                display: block;
+            }
+        }
+        .address-btn-section{
+            display: none;
+        }
+        &.withRadioContainer {
+            @extend %white-card;
+        }
+        @extend %clear-fix;
+        .bin-icon {
+            float: right;
+            text-align: right;
+            padding: 10px 0;
+            width: 7%;
+        }
     }
 }
-
 .address-btn-section {
     display: block;
     margin-top: 10px;
     .small-btn {
         color: $btn-color-red;
-        width: 42%;
+        width: calc(50% - 10px);
         padding: 5px;
-        margin-right: 15px;
+        // margin-right: 15px;
         border-radius: 4px;
         text-align: center;
         float: left;
         font-weight: bold;
+        &:last-child{
+            // margin-right: 0px;
+            float: right;
+        }
     }
     .edit {
         background: $color-red-light;
@@ -158,63 +174,44 @@
     }
 }
 
+// .addAddressPopup {
+//     .header_add_edit {
+//         // background: #ffffff !important;
+//         &.head-sec {
+//             padding: 12px 0;
+//             margin: 0;
+//             @extend %box-shadow;
+//             background: $white;
+//             i {
+//                 font-size: 20px;
+//                 line-height: 24px;
+//                 color: #fff;
+//             }
+//             i + .page-name {
+//                 font-size: $extra-large-font;
+//                 margin-left: 10px;
+//                 line-height: 26px;
+//                 color: #fff;
+//                 float: left;
+//             }
+//         }
+//     }
+//     .content-popup {
+//         height: calc(100% - 100px);
+//         overflow: auto;
+//         margin-top:15px;
+//     }
+// }
 
-.addAddressPopup {
-    .header_add_edit {
-        background: #d9232d !important;
-        &.head-sec {
-            padding: 12px 0;
-            margin: 0;
-            @extend %box-shadow;
-            background: $white;
-            i {
-                font-size: 20px;
-                line-height: 24px;
-                color:#fff;
-            }
-            i+.page-name {
-                font-size: $extra-large-font;
-                margin-left: 10px;
-                line-height: 26px;
-                color: #fff;
-                float: left;
-            }
-        }
-    }
-    .content-popup {
-        height: calc(100% - 100px);
-        overflow: auto;
-        margin-top: 0px;
-    }
-}
-.continue-btn {
-    height: 60px;
-    @extend %ripple;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-    &:disabled{
-        background: #bdbdbd;;
-    }
-}
-.column-field{
-    @extend %clear-fix;
-    .w-65{
-      width: 65%;
-      float: left;
-    }
-    .w-30{
-      width: 30%;
-      float: right;
-    }
-  }
-  .for-varification {
-    position: relative;
+.for-varification {
+   position: relative;
     .for-varification-r {
         position: absolute;
-        bottom: 8px;
-        right: 0px;
+        bottom: 5px;
+        background-color: var(--slimy-green);
+        right: 5px;
+        padding: 8px;
+        border-radius: 6px;
         a.show {
             color: #176fd8 !important;
             text-align: right;
@@ -222,8 +219,10 @@
             font-size: $large-font;
         }
         span.hidden {
-            color: #209F19 !important;
+            color: var(--white) !important;
             font-size: $medium-font;
+            text-transform: uppercase;
+            font-weight: bold;
             i {
                 font-size: $large-font;
                 display: inline-block;
@@ -236,6 +235,11 @@
 }
 
 .varified-checkbox {
-    @extend %custom-check-box-checkout
+    @extend %custom-check-box-checkout;
 }
+
+.multiple-address-checkout{
+    padding: 15px 15px 0 !important;
+}
+
 

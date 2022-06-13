@@ -1,0 +1,33 @@
+@import '../../scss/variables';
+@import '../../scss/utils/spacing.scss';
+
+.category-card-container{
+    // padding: var(--base-padding);  
+    background: $body-color; 
+    .category-OverBlk{
+        display: flex;
+        .category-block{
+            display: inline-flex;
+            margin: var(--base-margin);
+            padding: var(--card-padding);
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            background: var(--white);
+            .category-Img{
+                display: inline-flex;
+                width: 45px;
+                margin-right: 5px;
+                img{
+                    width: $fullwidth;
+                }        
+            }
+            .category-Name{
+                display: inline-flex;
+                font-size: $medium-font;
+                font-weight: $font-normal;
+                margin-top: 5px;
+            }    
+            
+        }
+    }
+}

@@ -1,4 +1,8 @@
-@import '../../../app/pages/home/common_grid.scss';
+// @import '../../../app/scss/layout/grid.scss';
+@import '../../scss/components/home-listing';
+.view-all-strip{
+    @extend %view-all-strip;
+}
 .custom-cbox {
     padding: 10px;
 }

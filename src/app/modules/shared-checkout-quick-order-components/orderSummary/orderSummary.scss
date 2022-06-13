@@ -1,38 +1,52 @@
 @import '../../../scss/variables';
-
 .apply-promo{
-  @extend %cards;
-  padding: 25px 0 15px 0;
-  margin: 10px 0;
+  @extend %white-card;
+  margin:0px;
+  padding:10px 0px;
+  margin-bottom: 10px;
   .open-offers{
     text-align: center;
     font-weight: 600;
     color:$blue-link-color;
-    margin-top: 18px;
+    margin-top: 5px;
   }
 }
-
 .order-summary{
-  @extend %cards;
+  @extend %white-card;
+  margin:0px;
   padding: 15px 0;
-  font-size: $large-font;
+  // font-size: $medium-font;
+  display: block !important;
   h3{
     padding: 0 0 0 15px;
-    font-size: $extra-large-font
+    font-size: $large-font
   }
   li{
+    position: relative;
     padding: 8px 15px;
-  }
-  .border{
-    border: solid $border-color;
-    border-width: 1px 0;
-    padding: 15px;
-    margin: 15px 0 5px 0;
-  }
-  .bold-txt{
-    font-size: $extra-large-font;
-    padding:15px 15px 0 15px;
-    border-top: 1px solid $border-color;
+    &:after{
+      content: ''; 
+      display: block; 
+      clear: both;
+    }
+    .tag-value { 
+      position: absolute;
+      right: 15px;
+    }
+    &.border{
+      border: solid var(--ghost-white);
+      border-width: 1px 0 0px 0px;
+      margin: 15px 0 0px 0;
+      span{
+        font-size: $large-font;
+      }
+    }
+    &.bold-txt{
+      font-weight: bold;
+      font-size: $large-font;
+      padding:15px 15px 0 15px;
+      border-top: 1px solid var(--ghost-white);
+    }
   }
 }
 .shop-btn{
@@ -58,19 +72,3 @@
 
 }
 
-
-/*new css 20-05-2021*/
-#payment_summary{
-  .txt-list{   
-    li{
-      &:after{
-        content: ''; display: block; clear: both;
-      }
-      .tag-label { float: left; }
-      .tag-value { float: right; }
-      &.bold-txt{
-        font-weight: 600;
-      }
-    }
-  }
-}

@@ -1,0 +1,74 @@
+.Qa {
+    background: var(--white);
+    .faq-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .display-qn {
+        border-bottom: 1px dashed var(--silver);
+        font-size: $medium-font;
+        padding: 10px 0px 5px 0px;
+    }
+    .qna-block {
+        border-bottom: 1px dashed var(--silver);
+        .qn {
+            display: flex;
+            margin-top: 10px;
+            .heading-3 {
+                padding-bottom: 0px !important;
+            }
+            .qn-number {
+                width: 30px;
+            }
+            .qn-right {
+                margin-left: 2px;
+            }
+        }
+        .answers {
+            padding: 5px 0px;
+            margin-left: 32px;
+            .answer-block {
+                padding-bottom: 5px;
+                display: flex;
+                .answer {
+                    padding: 10px 0px;
+                }
+                .ans-details {
+                    margin-left: 3px;
+                }
+            }
+            .view-all {
+                color: var(--bleu-de-france);
+                font-size: $large-font;
+                line-height: 50px;
+                margin-left: -30px;
+                display: flex;
+                align-items: center;
+                .view-txt {
+                    float: left;
+                    margin-right: 10px;
+                }
+
+                i {
+                    line-height: 21px;
+                }
+            }
+        }
+    }
+    .view-more-faq-strip {
+        padding: 15px 0px 5px;
+        .small-txt {
+            color: var(--bleu-de-france);
+            font-weight: bold;
+            position: relative;
+        }
+        i {
+            font-size: $extra-large-2-font;
+            float: right;
+            position: absolute;
+            right: 0px;
+            top: -3px;
+        }
+    }
+}

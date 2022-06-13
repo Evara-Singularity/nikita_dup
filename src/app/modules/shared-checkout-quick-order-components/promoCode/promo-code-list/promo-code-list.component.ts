@@ -1,17 +1,18 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { CartService } from '@app/utils/services/cart.service';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, timer } from 'rxjs';
 @Component({
     selector: 'promo-code-list',
     templateUrl: './promo-code-list.component.html',
     styleUrls: ['./promo-code-list.component.scss']
 })
-export class PromoCodeListComponent implements OnInit, OnDestroy
-{
+export class PromoCodeListComponent implements OnInit, OnDestroy {
+
     public nextPromocode: Subject<string> = new Subject<string>();
     @Output('closePromoOfferPopup') closePromoOfferPopup = new EventEmitter();
     appliedPromocodeSubscription: Subscription = null;
     selectedPromocode = null;
+    showAppliedPromoCode = false;
 
     constructor(public _cartService: CartService) { }
 
@@ -22,7 +23,10 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
         }
         this.appliedPromocodeSubscription = this._cartService.appliedPromocodeSubject.subscribe((promocode: string) =>
         {
-            if (promocode) { this.closePromoOfferPopup.emit(false) }
+            if (promocode) 
+            { 
+                this.showAppliedPromoCode = true;
+            }
         })
     }
 
@@ -32,6 +36,12 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
         e.stopPropagation();
         this.selectedPromocode = item.promoCode;
         this.nextPromocode.next(item.promoCode);
+    }
+
+    closePopUp()
+    {
+        this.showAppliedPromoCode = false; 
+        this.closePromoOfferPopup.emit(false);
     }
 
     ngOnDestroy(): void

@@ -1,203 +1,83 @@
 @import "../../scss/variables";
 
-.check-pincode {
-    .container {
-        width: 88%;
-    }
-
-    .head-sec {
-        margin: 15px 0 25px;
-
-        i {
-            font-size: 20px;
-            line-height: 20px;
-        }
-
-        .txt {
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 22px;
-            margin-left: 15px;
-        }
-    }
-
-    .input-pincode {
-        overflow: hidden;
-
-        .inp-box {
-            height: 40px;
-            border: 1px solid #707070;
-            padding-left: 10px;
-            width: 70%;
-            float: left;
-        }
-
-        .inp-box::-webkit-input-placeholder {
-            font-size: 13px;
-        }
-
-        .btn-submit {
-            float: left;
-            height: 40px;
-            width: 30%;
-            background: #303030;
-            color: #fff;
-            font-size: 12px;
-            font-weight: bold;
-            border: none;
-        }
-    }
-
-    .current-location {
-        @extend %ico-txt;
-        color: #0D99FF;
-        margin: 15px 0px 15px;
-
-        i {
-            font-size: 16px;
-            line-height: 20px;
-        }
-
-        .right-txt {
-            line-height: 20px;
-            margin-left: 30px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-    }
-
-    .validity-pin {
-        margin: 0px 0px 20px 0px;
-    }
-
-    .pin-validation {
-        font-size: $medium-font;
-        margin-top: 10px;
-
-        i {
-            font-size: $medium-font;
-            line-height: 20px;
-            padding-right: 10px;
-        }
-
-        .right-txt {
-            line-height: 20px;
-            margin-left: 20px;
-            font-size: 12px;
-        }
-    }
-
-    .valid {
-        color: #5BA621;
-    }
-
-    .invalid {
-        color: #D9232D;
-
-        input {
-            pointer-events: none;
-        }
-    }
-
-    .ship-txt {
-        font-size: $medium-font;
-        color: #303030;
-        opacity: 0.5;
-    }
-
-    .delivery-txt {
-        font-size: 11px;
-        padding: 5px 0px 0px 0px;
-    }
-}
-
 .delivery-details-area {
-    padding: 0px 5px 15px;
-    background-color: #fff;
-
+    background-color: var(--white);
+    padding:5px 0 10;
     .delivery-details {
-        padding: 5px 2px 20px;
-
         .delivery-details-inner {
             display: flex;
             align-items: center;
-
             .delivery-details-inner-img {
                 width: 10%;
-
                 i {
-                    font-size: 24px;
-                    color: #D9232D;
+                    font-size: $extra-large-3-font;
+                    color: var(--primary);
                 }
             }
-
-            .delivery-details-inner-box {
-                width: 85%;
-                border: 1px solid #707070;
-                border-radius: 4px;
-                height: 40px;
-                position: relative;
-
-                input {
-                    height: 40px;
-                    width: 75%;
-                    border: none;
-                    padding: 0px 10px;
+            .details-right{
+                width: 90%;
+                .pwa-search-input{
+                    display:flex;
+                    position: relative;
+                    input {
+                        -webkit-box-flex: 1;
+                        -ms-flex: 1 1 auto;
+                        flex: 1 1 auto;
+                        padding: 0px 10px;
+                        position: relative;
+                        width: 1%;
+                        border: 1px solid var(--silver);
+                        border-radius: $border-radius-8;
+                        border-top-right-radius: 0;
+                        border-bottom-right-radius: 0;
+                        outline:0px;
+                    }
+                    .input-group-append{
+                        margin-left: -1px;
+                        span{
+                            white-space: nowrap;
+                            background-color:var(--primary);
+                            border: $border-radius-2 solid var(--primary);
+                            border-top-right-radius: $border-radius-8;
+                            border-bottom-right-radius:$border-radius-8;
+                            color: $white;
+                            font-weight: $font-bold;
+                            display: flex;
+                            align-items: center;
+                            padding: 10px 15px;
+                        }
+                    }   
                 }
-
-                button {
-                    cursor: pointer;
-                    position: absolute;
-                    width: 30%;
-                    top: -1px;
-                    right: -1px;
-                    bottom: 0px;
-                    border: none;
-                    background-color: #D9232D;
-                    border: 2px solid #D9232D;
-                    border-top-right-radius: 4px;
-                    border-bottom-right-radius: 4px;
-                    color: #fff;
-                    font-weight: bold;
+                .availability-text {
+                    font-size: $small-font;
+                    color: var(--gray-web);
+                    margin-top: 4px;
                 }
             }
-
         }
-
-        .availability-text {
-            font-size: 10px;
-            color: #74777A;
-            margin-top: 4px;
+    }
+    .invalid-txt {
+        padding: 5px 45px 0px;
+        color: var(--primary);
+    }
+    .about-delivery {
+        min-height: 56px;
+        display: flex;
+        align-items: center;
+        img {
+            width: 24px;
+        }
+        .about-delivery-txt {
+            h4 {
+                font-size: $medium-font;
+            }
+    
+            span {
+                font-size: $small-font;
+                color: var(--gray-web);
+            }
         }
     }
 }
 
-.about-delivery {
-    min-height: 56px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
 
-    // &:last-child{
-    //     border-bottom: 1px solid #E3E3E3;
-    // }
-    img {
-        width: 24px;
-    }
-
-    .about-delivery-txt {
-        h4 {
-            font-size: 12px;
-        }
-
-        span {
-            font-size: 10px;
-            color: #74777A;
-        }
-    }
-}
-
-.invalid-txt {
-    padding: 5px 45px 0px;
-    color: #D9232D;
-}

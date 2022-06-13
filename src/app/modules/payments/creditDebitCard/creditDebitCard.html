@@ -1,6 +1,7 @@
-<section class="creditDebitCardInner">
-    <h3 class="heading-3">Please Enter Your Debit/Credit Card Details</h3>
-    <form class="material-form material-form-boxed" [formGroup]="creditDebitCardForm"
+<section class="pwa-row pad-0 creditDebitSection">
+    <!-- <h3 class="heading-3">Please Enter Your Debit/Credit Card Details</h3> -->
+  <div class="pwa-col-12">
+        <div class="material-form material-form-boxed" [formGroup]="creditDebitCardForm"
         (ngSubmit)="pay(creditDebitCardForm.value,creditDebitCardForm.valid)">
         <div class="radio-with-label-container">
             <label class="radio-with-label ">
@@ -15,64 +16,68 @@
             </label>
         </div>
         <ng-container formGroupName="requestParams">
-            <div class="input-field-boxed">
-                <label>Card Number</label>
-                <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber kpAutocompleteOff
-                    placeholder="Enter Card Details">
-            </div>
-            <div class="card-expiryDate">
-                <label>Expiry Date</label>
-                <div class="multiple-form-field">
-                    <div class="input-field-boxed">
-                        <input type="hidden" formControlName="ccexpmon" #expireMonth />
-                        <div class="custom_select_box" (click)="openMonthPopUp()">
-                            <div class="custom_select_input" [class.selectedInput]="selectedMonth">
-                                <span>{{selectedMonth || 'MM'}}</span>
-                            </div>
-                        </div>
-                        <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'"
-                            [headerLabel]="'Select Month'" [isVisible]="monthSelectPopupStatus"
-                            (selectedValue$)="selectMonth($event)" [type]="'MONTH'" [compare]="selectedMonth">
-                        </select-popup>
-                    </div>
-                    <div class="input-field-boxed">
-                        <input type="hidden" formControlName="ccexpyr" #expireYear />
-                        <div class="custom_select_box" (click)="openYearPopUp()">
-                            <div class="custom_select_input" [class.selectedInput]="selectedYear">
-                                <span>{{selectedYear || 'YYYY'}}</span>
-                            </div>
-                        </div>
-                        <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'"
-                            [headerLabel]="'Select Year'" [isVisible]="yearSelectPopupStatus"
-                            (selectedValue$)="selectYear($event)" [type]="'YEAR'" [compare]="selectedYear">
-                        </select-popup>
-                    </div>
-                </div>
-            </div>
-            <div class="cvvField">
-                <label>Enter CVV</label>
-                <div class="multiple-form-field">
-                    <div class="input-field-boxed">
-                        <input type="password" placeholder="CVV" id="cc-cvc" formControlName="ccvv" type="password"
-                            class="w-60" #ccCvc kpAutocompleteOff maxlength="3">
-                    </div>
-                    <i class="icon-cvv"></i>
-                    <span class="cvv-text">
-                        Last 3 digits printed on <br /> the back of the card.
+            <div class="outline-input-label">
+                <label [class.is-focus]="ccNumber.value.length!=0">
+                    <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber kpAutocompleteOff>
+                    <span class="label">
+                        Card Number
                     </span>
-                </div>
+                </label>
             </div>
-            <div class="input-field-boxed">
-                <label>Name On Card</label>
-                <input type="text" placeholder="Name On Card" formControlName="ccname" type="text" #nameOnCard>
+            <span class="small-heading">Valid thru</span>
+            <div class="card-row">
+                <div class="date-type-select">
+                    <div class="multiple-form-field">
+                        <div class="input-field-boxed">
+                            <input type="hidden" formControlName="ccexpmon" #expireMonth />
+                            <div class="custom_select_box" (click)="openMonthPopUp()">
+                                <div class="custom_select_input" [class.selectedInput]="selectedMonth">
+                                    <span>{{selectedMonth || 'MM'}}</span>
+                                    <i class="icon-down"></i>
+                                </div>
+                            </div>
+                            <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'"
+                                [headerLabel]="'Select Month'" [isVisible]="monthSelectPopupStatus"
+                                (selectedValue$)="selectMonth($event)" [type]="'MONTH'" [compare]="selectedMonth">
+                            </select-popup>
+                        </div>
+                        <div class="input-field-boxed">
+                            <input type="hidden" formControlName="ccexpyr" #expireYear />
+                            <div class="custom_select_box" (click)="openYearPopUp()">
+                                <div class="custom_select_input" [class.selectedInput]="selectedYear">
+                                    <span>{{selectedYear || 'YYYY'}}</span>
+                                    <i class="icon-down"></i>
+                                </div>
+                            </div>
+                            <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'"
+                                [headerLabel]="'Select Year'" [isVisible]="yearSelectPopupStatus"
+                                (selectedValue$)="selectYear($event)" [type]="'YEAR'" [compare]="selectedYear">
+                            </select-popup>
+                        </div>
+                    </div>
+                </div>
+                 <div class="outline-input-label">
+                            <label [class.is-focus]="ccCvc.value.length!=0">
+                                <input type="password" id="cc-cvc" formControlName="ccvv" type="password"
+                                #ccCvc kpAutocompleteOff maxlength="3">
+                                <span class="label">CVV</span>
+                            </label>
+                        </div>
+                    
+                </div>
+            <div class="outline-input-label">
+                <label [class.is-focus]="nameOnCard.value.length!=0">
+                    <input type="text" formControlName="ccname" type="text" #nameOnCard>
+                    <span class="label">Name On Card</span>
+                </label>
             </div>
         </ng-container>
         <div class="custom-cbox save_faster_label">
             <label>
-                <input class="hidden" type="checkbox" formControlName="store_card">
-                <span class="custom-box icon-box"></span>
-                <span class="chk-txt">Save this card for faster payments</span>
+                <input type="checkbox" formControlName="store_card">
+                <span class="custom-box"></span>
             </label>
+            <span class="chk-txt">Save this card</span>
         </div>
         <div class="continue-button">
             <div class="container">
@@ -83,9 +88,8 @@
                 <button type="submit" [disabled]="!creditDebitCardForm.valid" class="btn">PAY</button>
             </div>
         </div>
-    </form>
+    </div>
+  </div>
 </section>
-
-
 <payu-form *ngIf="isValid&&type=='retail'" [data]="payuData"></payu-form>
 <razor-pay *ngIf="isValid&&type=='tax'" [data]="payuData"></razor-pay>

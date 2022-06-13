@@ -1,73 +1,11 @@
 @import '../../scss/variables';
-@import '../../scss/cards.scss';
-.tabs-container{
-    overflow-x: scroll;
-    display: flex;
-    align-items: center;
-    &::-webkit-scrollbar {
-        display: none;
-    } 
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none; 
-  }
-  
-  .tabs {
-    display: flex;
-    align-items: center;
-    flex-wrap: no-wrap;
-    transition: transform 300ms ease-in-out;
-    padding:0 15px;
-    scroll-behavior: smooth;
-  }
-  
-  .tab{
-    color:$txt-color;
-    font-size:$large-font;
-    margin-right:10px;
-    flex-shrink: 0;
-    text-align: center;
-    border:1px solid #E7E7E8;
-    border-radius:4px;
-    padding:10px 15px;
-    font-weight:bold;
-    box-shadow: 0px 3px 8px #455B6314;
-
-    &.selectedTab{
-        border:1px solid $logo-color; 
-        background:$color-red-light;
-        color:$logo-color;
-    }
-  }
-
-  .tab-content{
-    margin-top:15px;
-    position: relative;
-    overflow:hidden;
-    border:1px solid #E7E7E8;
-    .inner-tab-content{
-      display: flex;
-      flex-wrap: nowrap;
-      will-change: transform;
-      transition: transform .25s cubic-bezier(0,0,.3,1);
-      // overflow-x:scroll;
-  }
-    //  .inner-tab-content{
-    //   width:100%;
-    //   opacity:0;
-    //   transition:opacity 500ms ease-in-out 0ms,
-    //   transform 500ms ease-in-out 0ms;
-    //   transform: translate3d(-375px, 0px, 0px);
-    //   &.activeTab{
-    //     right:0px;
-    //     opacity:1;
-    //   }
-    // }
-  }
+@import '../../scss/layout/cards.scss';
+@import '../../scss/components/tabs.scss';
+@import '../../scss/components/static-card-container.scss';
 
 .customPopHeight{
       height:calc(100vh - 50px)!important;
   }
-
 .oos-btn-cta{
   position: fixed;
   bottom: 0px;
@@ -81,3 +19,25 @@ ngx-siema-slide{
     display:block;
   }
 }
+
+.about-this-product{
+  background: var(--white);
+  height: calc(100% - 80px);
+  overflow-y:auto;
+  .pwa-tabs-container{
+    .pwa-tab{
+      border-radius: $border-radius-8;
+      padding: 10px 15px;
+      border:1px solid var(--silver);
+      &.selectedTab{
+        border:1px solid var(--primary);
+      }
+    }
+  }
+}
+.tab-content{
+  margin-top: 5px;
+  border-top: 1px solid var(--silver) !important;
+  border: none;
+}
+

@@ -1,110 +1,86 @@
 <section class="static-container faqfixedhead">
-    <div class="faq-search">
-        <div class="searchfield">
-            <!-- <input type="text"  value="" placeholder="Search"> -->
-            <input id="searchvalue" #searchValue (keyup)="showSearchSuggestion(searchValue?.value,$event)" value=""
-                placeholder="Search for topics or questions">
-            <span *ngIf="searchValue.value.length>0" class="crosstext" (click)="cleartext()"><i class="icon-delete"></i>
-            </span>
-            <button (click)="searchFaq(searchValue?.value)" type="submit"><i class="icon-search"></i></button>
+    <div class="pwa-row faq-search faq-search-container">
+        <div class="pwa-col-12">
+            <div class="searchfield">
+                <input id="searchvalue" #searchValue (keyup)="showSearchSuggestion(searchValue?.value,$event)" value=""
+                    placeholder="Search for topics or questions">
+                <span *ngIf="searchValue.value.length>0" class="crosstext" (click)="cleartext()"><i class="icon-delete"></i>
+                </span>
+                <button (click)="searchFaq(searchValue?.value)" type="submit"><i class="icon-search"></i></button>
+            </div>
+            <ul [class.hidden-sm-down]="hideSuggestionInMobile" class="searchresult"
+                *ngIf="searchValue?.value?.length > 0">
+                <li *ngFor="let result of suggestionArr">
+                    <a (click)="showQuestion(result?.question);">{{ result?.question }}</a>
+                </li>
+                <li *ngIf="noResults">
+                    <a class=""> No Result Found </a>
+                </li>
+            </ul>
         </div>
-
-        <!-- Search suggestion -->
-        <ul [class.hidden-sm-down]="hideSuggestionInMobile" class="no-padding no-margin no-list-style searchresult"
-            *ngIf="searchValue?.value?.length > 0">
-            <li class="f-size-15 f-size-xs-14 pointer sidebar_li active-faq" *ngFor="let result of suggestionArr">
-                <a class="pad-tb-15 pad-lr-20" (click)="showQuestion(result?.question);">{{ result?.question }}</a>
-            </li>
-
-            <li *ngIf="noResults">
-                <a class=""> No Result Found </a>
-            </li>
-        </ul>
-        <!-- Search suggestion -->
     </div>
-    <div class="clearfix">
-        <ul data-tabe='scrollItem' class="no-padding no-margin no-list-style faqUllist" *ngIf="showSideMenu">
-            <li class="f-size-15 f-size-xs-14 pointer sidebar_li active-faq" (click)="scrollTo('#faq0',0)">
-                <a class="pad-tb-15 pad-lr-20">Order Tracking</a>
-            </li>
-            <li class="f-size-15 f-size-xs-14 pointer sidebar_li" (click)="scrollTo('#faq1',1)" #CRP>
-                <a class="pad-tb-15 pad-lr-20">Customer Return Policy</a>
-            </li>
-            <li class="f-size-15 f-size-xs-14 pointer sidebar_li" (click)="scrollTo('#faq2',2)">
-                <a class="pad-tb-15 pad-lr-20">Refund</a>
-            </li>
-            <li class="f-size-15 f-size-xs-14 pointer sidebar_li" (click)="scrollTo('#faq3',3)">
-                <a class="pad-tb-15 pad-lr-20">Payment Options</a>
-            </li>
-        </ul>
-    </div>
-
-    <!--Initial data -->
-    <div class="fq-wrap card">
-        <div *ngIf="filteredArray?.length > 0;then filterd else original"></div>
-        <!-- start of Original content -->
-        <ng-template #original>
-            <ng-container *ngFor="let block of faqData; let i = index;">
-                <div [attr.id]="'faq' + i">
-                    <h3 class="fqhead" *ngIf="i ==0" [appKpToggle]="{idName: 'open0' , iconMode : true}">
-                        Order Tracking
-                        <span>
+    <div class="pwa-row fq-wrap card">
+        <div class="pwa-col-12 faq-inner-wrap">
+            <div *ngIf="filteredArray?.length > 0;then filterd else original"></div>
+            <ng-template #original>
+                <ng-container *ngFor="let block of faqData; let i = index;">
+                    <div [attr.id]="'faq' + i">
+                        <h3 class="fqhead faq-top-border" *ngIf="i ==0" [appKpToggle]="{idName: 'open0' , iconMode : true}">
+                            Order Tracking
+                            <span>
+                                <i class="icon-expand"></i>
+                            </span>
+                        </h3>
+                        <h3 class="fqhead" *ngIf="i ==1" [appKpToggle]="{idName: 'open1' , iconMode : true}">Customer Return
+                            Policy
+                            <span>
+                                <i class="icon-expand"></i>
+                            </span>
+                        </h3>
+                        <h3 class="fqhead" *ngIf="i ==2" [appKpToggle]="{idName: 'open2' , iconMode : true}">Refund
+                            <span>
+                                <i class="icon-expand"></i>
+                            </span>
+                        </h3>
+                        <h3 class="fqhead faq-bottom-border" *ngIf="i ==3" [appKpToggle]="{idName: 'open3' , iconMode : true}">Payment Options
+                            <span>
+                                <i class="icon-expand"></i>
+                            </span>
+                        </h3>
+    
+                        <div class="collapsed-content" id="{{'open' + i}}" style="display:none">
+                            <div class="questwrap" *ngFor="let block of faqData[i];">
+                                <h4>{{block?.question}}</h4>
+                                <p *ngFor="let para of block?.para | splitPipe"> {{para}} </p>
+                                <ul class="list-information">
+                                    <li *ngFor="let item of block?.answer | splitPipe;">{{ item }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-template>
+            <ng-template #filterd>
+                <div id="order_tracking">
+                    <h3 class="fqhead" *ngIf="!hideSuggestionInMobile">Order Tracking <span>
                             <i class="icon-expand"></i>
+                            <i class="icon-collaps"></i>
                         </span>
                     </h3>
-                    <h3 class="fqhead" *ngIf="i ==1" [appKpToggle]="{idName: 'open1' , iconMode : true}">Customer Return
-                        Policy
-                        <span>
-                            <i class="icon-expand"></i>
-                        </span>
-                    </h3>
-                    <h3 class="fqhead" *ngIf="i ==2" [appKpToggle]="{idName: 'open2' , iconMode : true}">Refund
-                        <span>
-                            <i class="icon-expand"></i>
-                        </span>
-                    </h3>
-                    <h3 class="fqhead" *ngIf="i ==3" [appKpToggle]="{idName: 'open3' , iconMode : true}">Payment Options
-                        <span>
-                            <i class="icon-expand"></i>
-                        </span>
-                    </h3>
-
-                    <div class="collapsed-content" id="{{'open' + i}}" style="display:none">
-                        <div class="questwrap" *ngFor="let block of faqData[i];">
-                            <h4 class="acc-head">{{block?.question}}</h4>
-                            <p *ngFor="let para of block?.para | splitPipe"> {{para}} </p>
-                            <ul class="points_text">
+                    <div class="collapsed-content" [class.showResult]="hideSuggestionInMobile">
+                        <div class="questwrap" [class.pad-t-30]="hideSuggestionInMobile"
+                            *ngFor="let block of filteredArray;">
+                            <h4>{{block?.question}}</h4>
+                            <p *ngFor="let para of block?.para | splitPipe;"> {{para}} </p>
+                            <ul class="list-information">
                                 <li *ngFor="let item of block?.answer | splitPipe;">{{ item }}</li>
                             </ul>
                         </div>
                     </div>
-
                 </div>
-            </ng-container>
-        </ng-template>
-        <!--End of Original content-->
-        <!--Start of Filtered content-->
-        <ng-template #filterd>
-            <div id="order_tracking">
-                <!-- <h3 class="fqhead" >Order Tracking</h3> -->
-                <h3 class="fqhead" *ngIf="!hideSuggestionInMobile">Order Tracking <span>
-                        <i class="icon-expand"></i>
-                        <i class="icon-collaps"></i>
-                    </span>
-                </h3>
-                <div class="collapsed-content" [class.showResult]="hideSuggestionInMobile">
-                    <div class="questwrap faq_text_wrap" [class.pad-t-30]="hideSuggestionInMobile"
-                        *ngFor="let block of filteredArray;">
-                        <h4 class="acc-head">{{block?.question}}</h4>
-                        <p *ngFor="let para of block?.para | splitPipe;"> {{para}} </p>
-                        <ul class="points_text">
-                            <li *ngFor="let item of block?.answer | splitPipe;">{{ item }}</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-        <!--End of Filtered content-->
+            </ng-template>
+        </div>
     </div>
     <div class="black-overlay" *ngIf="overlaysuggestion"></div>
 </section>
+

@@ -8,8 +8,6 @@ import { map } from "rxjs/operators";
 import { LocalAuthService } from "../utils/services/auth.service";
 import { CartService } from "../utils/services/cart.service";
 import { CommonService } from "../utils/services/common.service";
-import * as kfooter from "../config/k.footer";
-import { ClientUtility } from "../utils/client.utility";
 import { filter, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
 import { DataService } from "@app/utils/services/data.service";
@@ -31,8 +29,6 @@ export class PagesComponent implements OnInit {
   isBrowser: boolean = false;
   iData: { footer?: true; logo?: boolean; title?: string, hideHeader?: boolean };
   isFooter: boolean = true;
-  kfooter: any = kfooter;
-  footerVisible = false;
   isHomePage: boolean;
   constructor(
     public _commonService: CommonService,
@@ -243,14 +239,6 @@ export class PagesComponent implements OnInit {
     this._commonService.getRoutingData(_aRoute).subscribe((rData) => {
       this.iData = rData;
     });
-  }
-
-  clickFooter() {
-    this.footerVisible = !this.footerVisible;
-    if (this.footerVisible && document.getElementById("footerContainer")) {
-      let footerOffset = document.getElementById("footerContainer").offsetTop;
-      ClientUtility.scrollToTop(1000, footerOffset - 50);
-    }
   }
 
   setEnvIdentiferCookie() {

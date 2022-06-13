@@ -1,7 +1,7 @@
 <div class="row prod_list BestSellerSection" *ngIf="data['data'] && data['data'].length > 0">
-    <div class="clearfix product_h3">
-        <h3 class="f-left">{{data.title}}</h3>
-        <a *ngIf="data['data'].length > 4" (click)="openPopup = true" class="btn-red f-right">View All</a>
+    <div class="view-all-strip">
+        <h4>{{data.title}}</h4>
+        <a *ngIf="data['data'].length > 4" (click)="openPopup = true" class="quinary-btn">View All</a>
     </div>
     <ul class="view-products grid border-top">
         <ng-container *ngFor="let product of data['data'] | slice:0:4; let i = index">
@@ -37,7 +37,8 @@
     </ul>
 </div>
 <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
-    [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:'Bestsellers'}">
+    [headerType]="'pop-up-header1'"
+    [data]="{headerText:'Bestsellers'}">
     <div class="content-popup otherCategoryBlock grey_bg" content>
         <ul class="view-products grid border-top">
             <ng-container *ngFor="let product of data['data']; let i = index">

@@ -1,0 +1,85 @@
+// Aligment Classes
+.align-right {
+    text-align: right;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-center {
+    text-align: center;
+}
+
+//float --- backup
+.f-left {
+    float: left;
+}
+
+.f-right {
+    float: right;
+}
+
+//border
+.no-border {
+    border: 0 !important;
+}
+
+// border
+.border-top {
+    border-top: 1px solid $border-color;
+}
+
+//common classes
+.container {
+    @extend %container;
+}
+
+// align items
+.align-center {
+    align-items: center;
+}
+
+.pwa-text {
+    font-size: $medium-font;
+    line-height: $medium-line-height;
+    padding-bottom: 5px;
+}
+
+
+.list-information {
+    list-style: disc;
+    font-size: $medium-font;
+    line-height: $small-line-height;
+}
+
+.pointer-none {
+    pointer-events: none;
+}
+
+.pdp-section-header {
+    padding: 5px 15px;
+    background-color: var(--white);
+
+    .heading-3 {
+        font-size: $large-font;
+        font-weight: bold;
+    }
+}
+
+.show-all-strip {
+    font-size: $medium-font;
+    padding-top: 10px;
+    text-transform: uppercase;
+    &.spec {
+        padding: 15px;
+    }
+    span {
+        color: var(--bleu-de-france);
+        font-weight: $font-bold;
+        i {
+            padding-left: 5px;
+        }
+    }
+
+}

@@ -5,14 +5,14 @@
     </div> -->
 
     <div id="net_block">
-        <ul class="bank-list">
-            <li class="bank-list-item" (click)="selectBank(banks, true)" *ngFor="let banks of topBanks">
-                <label class="payment-radio-btn">
+        <ul class="pwa-radio-list">
+            <li class="pwa-radio-list-item" (click)="selectBank(banks, true)" *ngFor="let banks of topBanks">
+                <label class="pwa-radio-list-label">
                     <input [checked]="selectedBankCode==banks['code']" type="radio" name="net_radio" >
                     <span class="custom-box"></span>
                 </label>
                 <img src="{{imagePath}}assets/payments/{{bankImages[banks['id']]}}">
-                <div class="bank-name">
+                <div class="pwa-radio-list-text">
                     <p class="">{{banks['name']}}</p>
                     <span *ngIf="!banks['up_status']" class="lowsuccessRate">Low success rate observed</span>
                 </div>
@@ -25,19 +25,16 @@
                     <input formControlName="paymentId" hidden>
                     <input formControlName="bankname" #bank hidden>
 
-                    <div class="custom_select_box" (click)="openYearPopUp()">
+                    <div class="custom_select_box other-banks-strip" (click)="openYearPopUp()">
                         <div class="custom_select_input">
-                            <span>{{ selectedBankName || 'Other Banks'}}</span>
-                            <i class="icon-dropdown"></i>
+                            <span>{{ selectedBankName || 'All Other Banks'}}</span>
+                            <i class="icon-next"></i>
                         </div>
                     </div>
-
                     <select-popup [itemArray]="othersBanks" [displayKey]="'name'" [valueKey]="'code'" [headerLabel]="'Select Bank'" [compare]="selectedBankCode" [type]="'NETBANKING'" [isVisible]="bankSelectPopupStatus" (selectedValue$)="selectBank($event)"></select-popup>
-
                     <div class="payment-notification mt-15" *ngIf="commonFailureMsg">
                         <span>Low success rate observed</span>
                     </div>
-
                 </div>
             </div>
 

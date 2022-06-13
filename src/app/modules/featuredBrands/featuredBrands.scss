@@ -1,18 +1,6 @@
-.banner_container{
-    .featr_Banner{
-        width:50%;
-        float:left;
-        padding:5px;
-        &:first-child{
-          width:100%;   
-        }
-        img{
-          width:100%;
-        }  
-    }
-  }
-
-  .pad-tb-10{
-    padding-top: 10px;
-    padding-bottom: 10px;
+@import '../../../../src/app/scss/utils/spacing.scss';
+@import '../../scss/variables';
+@import '../../scss/components/banner.scss';
+.view-all-strip{
+    @extend %view-all-strip;
 }

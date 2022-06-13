@@ -1,3 +1,5 @@
+@import '../../../../scss/variables';
+
 .productdetails-article {
     margin: 0px;
     padding: 0px 15px;
@@ -5,25 +7,25 @@
         text-align: right;
         span{
             padding: 7px;
-            font-size: 14px;
-            color: red;
-            border: 2px solid red;
+            font-size: $large-font;
+            color: var(--primary);
+            border: 2px solid var(--primary);
         }
     }
     .attributeHeading {
-        font-size: 16px;
-        font-weight: bold;
-        line-height: 21px;
+        font-size: $extra-large-font;
+        font-weight: $font-bold;
+        line-height: $medium-line-height;
         text-transform: capitalize;
-        color: #2b2b2b;
+        color: var(--onyx-black);
         margin: 15px 0px;
     }
     .innerContentWrapper{
-        background: #fff;
-        border-radius: 4px;
+        background: var(--white);
+        border-radius: $border-radius-4;
         box-sizing: border-box;
         margin: 0px;
-        border: 1px solid #e0e0e0;
+        border: 1px solid var(--silver);
         padding: 15px;
         ul {
             margin: 0;
@@ -31,7 +33,7 @@
             list-style: none;
             li {
                 cursor: pointer;
-                width: 100%;
+                width: $fullwidth;
                 text-align: left;
                 display: flex;
                 justify-content: space-between;
@@ -39,50 +41,50 @@
                     width: 30%;
                     .product-img {
                         display: inline-block;
-                        width: 100%;
+                        width: $fullwidth;
                     }
                 }
                 .rightSide {
                     width: 68%;
                     padding: 0 0 0 2%;
                     .productName {
-                        font-size: 12px;
-                        color: #3c3c3c;
+                        font-size: $medium-font;
+                        color: var(--onyx-black);
                         padding: 5px 0 2px 0;
                     }
                     .productBrand {
-                        color: #c9c9c9;
-                        font-size: 10px;
+                        color: var(--silver);
+                        font-size: $small-font;
                         line-height: 8px;
                         font-weight: 500;
                         padding: 5px 0 10px;
                     }
                     .pricedetails {
                         span {
-                            color: #7b7b7b;
-                            font-size: 12px;
-                            font-weight: 400;
+                            color: var(--spanish-gray);
+                            font-size: $medium-font;
+                            font-weight: $font-normal;
                             line-height: 11px;
                             text-decoration: line-through;
                         }
                         strong {
-                            color: #299e22;
-                            font-size: 12px;
-                            font-weight: 400;
+                            color: var(--slimy-green);
+                            font-size: $medium-font;
+                            font-weight: $font-normal;
                             line-height: 13px;
                             display: inline-block;
                             padding-left: 6px;
                         }
                     }
                     .fixedPrice {
-                        font-size: 16px;
-                        color: #000;
+                        font-size: $extra-large-font;
+                        color: var(--black);
                         padding: 5px 0;
-                        font-weight: bold;
+                        font-weight: $font-bold;
                     }
                     .packSize {
-                        font-size: 10px;
-                        color: #3c3c3c;
+                        font-size: $small-font;
+                        color: var(--onyx-black);
                     }
                 }
             }

@@ -1,0 +1,175 @@
+@import "../../scss/variables";
+// Raise RFQ Animation
+.shimmer {
+    .wrapper {
+        width: 0px;
+        animation: fullView 0.5s forwards linear;
+    }
+    @keyframes fullView {
+        100% {
+            width: $fullwidth;
+        }
+    }
+    .shimmer-button {
+        animation: shimmer 5s;
+        animation-iteration-count: infinite;
+        background: linear-gradient(to right, #d9232d 5%, #ffbebe5c 25%, #d9232d 35%);
+        background-size: 1000px 100%;
+        &.valid-button {
+            background: linear-gradient(to right, #6bac39 5%, #ffbebe5c 25%, #6bac10 35%);
+        }
+    }
+    @keyframes shimmer {
+        0% {
+            background-position: -450px 0;
+        }
+        100% {
+            background-position: 450px 0;
+        }
+    }
+    @keyframes bounce {
+        50% {
+            transform: translateX(5px);
+        }
+    }
+    .arrow-container{
+        i {
+            margin-left: -8px;
+            font-weight: $font-bold;
+            font-size: $extra-large-font;
+        }
+        i {
+            display: inline-block;
+        }
+        .icon-animate-1 {
+            animation: bounce 1s infinite;
+            animation-delay: 0.6ms;
+            animation-timing-function: linear;
+            opacity: 0.3;
+        }
+        .icon-animate-2 {
+            animation: bounce 1s infinite;
+            animation-delay: 0.4ms;
+            animation-timing-function: ease-in;
+            opacity: 0.7;
+        }
+        .icon-animate-3 {
+            animation: bounce 1s infinite;
+            animation-delay: 0.4ms;
+            animation-timing-function: ease-in-out;
+            opacity: 1;
+        }
+        transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.75s;
+    }
+    .swiper{
+        #animate-slider {
+          transition: width 0.3s, border-radius 0.3s, height 0.3s;
+          position: absolute;
+          left: 0px;
+          background-color: var(--primary);
+          width: 60px;
+          height: 45px;
+          border-radius: $border-radius-8;
+          @include center;
+          &.unlocked {
+              transition: all 0.3s;
+              width: $fullwidth;
+              left: 0 !important;
+              height: inherit;
+              border-radius: $border-radius-8;
+          }
+      }
+      .slide-text {
+          color: var(--onyx-black);
+          font-size: $medium-font;
+          text-transform: uppercase;
+          font-family: "Roboto", sans-serif;
+          @include nonselect;
+       } 
+    }
+    #button-background {
+        position: relative;
+        width: $fullwidth;
+        height: 45px;
+        border: var(--white);
+        border-radius: 0px;
+        @include center;
+    }
+}
+.buy-nowsec {
+    background-color: var(--white);
+    padding: 5px 15px 15px; 
+    .prodct-name {
+        -webkit-line-clamp: 1;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .buynow-flex {
+        display: flex;
+        align-items: center;
+        margin: 10px 0px;
+        .bn-left {
+            width: 75%;
+            p {
+                margin: 10px 0px;
+                i {
+                    color: var(--slimy-green);
+                }
+            }
+        }
+        .bn-right {
+            width: 25%;
+            img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    }
+    .button-sec {
+        background-color: var(--ghost-white);
+        padding: 10px;
+        border-radius: $border-radius-12;
+        p {
+            text-align: center;
+        }
+        .button-area {
+            margin-top: 10px;
+            position: relative;
+            .next-btn {
+                i {
+                    color: var(--white);
+                }
+                position: absolute;
+                top: 0px;
+                width: 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 45px;
+                border-radius: $border-radius-8;
+                &.next-btn-valid {
+                    background-color: var(--slimy-green);
+                    right: 0px;
+                }
+                &.next-btn-invalid {
+                    background-color: var(--primary);
+                    left: 0px;
+                }
+            }
+            button {
+                background-color: var(--primary);
+                opacity: 0.7;
+                border: none;
+                width: $fullwidth;
+                color: var(--white);
+                height: 45px;
+                border-radius: $border-radius-8;
+                font-weight: $font-bold;
+                &.valid-button {
+                    background-color: var(--slimy-green);
+                }
+            }
+        }
+    }
+}

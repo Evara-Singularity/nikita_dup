@@ -1,14 +1,14 @@
 <section *ngIf="mFBTProducts.length>0">
-    <div class="container pad-tb-10">
-        <h3 class="f-left">Frequently Bought Together With
-        </h3>
-        <!--TODO:Yogender-->
-        <i class="fbt-close-ico icon-circle-delete" (click)="$event.stopPropagation();backToCartFlow()"
-            *ngIf="isModal"></i>
-        <!--backToCartFlow('/quickorder', 'ADD TO CART')-->
-    </div>
-    <div class="first_fbt_prod">
-        <a>
+    <div class="fbt-card-container mb-10">
+        <div class="container pad-tb-10">
+            <h3 class="f-left">Frequently Bought Together With
+            </h3>
+            <!--TODO:Yogender-->
+            <i class="fbt-close-ico icon-circle-delete" (click)="$event.stopPropagation();backToCartFlow()"
+                *ngIf="isModal"></i>
+            <!--backToCartFlow('/quickorder', 'ADD TO CART')-->
+        </div>
+        <!-- <div class="first_fbt_prod">
             <div class="fbt_prod_img">
                 <img [src]="rootProduct.productImage">
             </div>
@@ -21,52 +21,64 @@
                     {{rootProduct.sellingPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
                 </span>
             </div>
-        </a>
-    </div>
-    <ul class="list view-products fbtList">
-        <li *ngFor="let product of mFBTProducts;index as fbtIndex">
-            <a class="clearfix">
+        </div> -->
+        <div class="pwa-row static-small-card-container">
+            <div class="product-img">
+                <img [src]="rootProduct.productImage">
+            </div>
+            <div class="product-description">
+                <p class="description-txt">{{rootProduct.productName}}</p>
+                <span class="fbt_tag" *ngIf="rootProductInCart">
+                    Added to Cart
+                </span>
+                <span class="fbt_price" *ngIf="!rootProductInCart">
+                    {{rootProduct.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
+                </span>
+            </div>
+        </div>
+        <ul class="fbtList">
+            <li *ngFor="let product of mFBTProducts;index as fbtIndex">
                 <div class="fbtCheckBox custom-cbox">
                     <label>
                         <input type="checkbox" [checked]="product['isSelected']" (change)="updateFBT(product,fbtIndex)">
                         <span class="custom-box icon-box"></span>
                     </label>
                 </div>
-                <div class="fbTrightContainer">
-                    <a (click)="navigateToPDP(product.url)">
-                        <div class="product-img">
-                            <img [src]="product.productImage">
-                        </div>
-                        <div class="product-description">
-                            <p class="description-txt">{{product.productName}}</p>
-                            <p class="price">
-                                <span class="after-discount">{{product.sellingPrice | mathFloor | currency:
-                                    'INR' : 'symbol' : '1.0-0'}}</span>
-                                <span class="before-discount" *ngIf="product.discount > 0" >{{product.productMRP | mathFloor | currency: 'INR':
-                                    'symbol': '1.0-0'}}</span>
-                                <span class="discount" *ngIf="product.discount > 0" >{{product.discount | mathFloor}}% OFF</span>
-                            </p>
-                        </div>
-                    </a>
+                <div (click)="navigateToPDP(product.url)" class="static-card-container">
+                    <div class="product-img">
+                        <img [src]="product.productImage">
+                    </div>
+                    <div class="product-description">
+                        <p class="description-txt">{{product.productName}}</p>
+                        <p class="brand"><span>By :</span> Premier</p>
+                        <p class="price">
+                            <span class="before-discount">{{product.productMRP | mathFloor | currency: 'INR':
+                                'symbol': '1.0-0'}}</span>
+                            <span class="discount">{{product.discount | mathFloor}}% OFF</span>
+                            <span class="after-discount">{{product.priceWithoutTax | mathFloor | currency:
+                                'INR' : 'symbol' : '1.0-0'}}</span>
+                        </p>
+                        <p class="product-qty">Qty/Pack : 10 Piece</p>
+                    </div>
                 </div>
-            </a>
-        </li>
-    </ul>
-    <div class="fbdBottom clearfix">
-        <div class="f-left">
-            Total Payable ({{noOfFBTS ? ( noOfFBTS + ' Add ' + (noOfFBTS>1?'ons' : 'on')): 'No Add ons'}})
-            <h3>{{totalPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}<span class="grey-fbt-txt">(GST
-                    Extra)</span>
-            </h3>
-        </div>
-        <!--TODO:Yogender-->
-        <div class="f-right" *ngIf="!(isModal)">
-            <button class="addToCart" (click)="$event.stopPropagation();initiateAddToCart()">{{noOfFBTS?'BUY
-                TOGETHER':'ADD TO CART'}}</button>
-        </div>
-        <div class="f-right" *ngIf="isModal">
-            <button class="addToCart" (click)="$event.stopPropagation();initiateAddToCart()">{{noOfFBTS?'BUY
-                TOGETHER':'SKIP & GO TO CART'}}</button>
+            </li>
+        </ul>
+        <div class="fbdBottom clearfix">
+            <div class="f-left">
+                Total Payable ({{noOfFBTS ? ( noOfFBTS + ' Add ' + (noOfFBTS>1?'ons' : 'on')): 'No Add ons'}})
+                <h3>{{totalPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}<span class="grey-fbt-txt">(GST
+                        Extra)</span>
+                </h3>
+            </div>
+            <!--TODO:Yogender-->
+            <div class="f-right" *ngIf="!(isModal)">
+                <button class="btn secondry-btn" (click)="$event.stopPropagation();initiateAddToCart()">{{noOfFBTS?'BUY
+                    TOGETHER':'ADD TO CART'}}</button>
+            </div>
+            <div class="f-right" *ngIf="isModal">
+                <button class="btn secondry-btn" (click)="$event.stopPropagation();initiateAddToCart()">{{noOfFBTS?'BUY
+                    TOGETHER':'SKIP & GO TO CART'}}</button>
+            </div>
         </div>
     </div>
 </section>

@@ -1,0 +1,72 @@
+@import "../variables";
+.pwa-tabs-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  transition: transform 300ms ease-in-out;
+  scroll-behavior: smooth;
+  overflow: auto;
+  @extend %hide-scrollbar;
+  .pwa-tab {
+    font-size: $medium-font;
+    margin-right: 10px;
+    flex-shrink: 0;
+    text-align: center;
+    border: 1px solid var(--blue);;
+    border-radius: 4px;
+    padding: 7px 10px;
+    font-weight: bold;
+    box-shadow: 0px 3px 8px #455b6314;
+    &.selectedTab {
+      border: 1px solid $logo-color;
+      background: $color-red-light;
+      color: $logo-color;
+    }
+    a{
+      color: var(--blue);
+    }
+  }
+  .pwa-inline-tab {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .pwa-image-tab {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #efeff4;
+    border-radius: 8px;
+    min-width: 120px;
+    width: 120px;
+    margin-right: 10px;
+    padding: 5px;
+    .tab-img {
+      margin-right: 10px;
+      background: var(--misty-rose);
+      padding: 2px;
+      border-radius: 20%;
+      i {
+        font-size: $large-font;
+        color: var(--primary);
+      }
+    }
+    .tab-img-txt {
+      color: var(--gray-web);
+      font-size: 10px;
+      width: calc(100% - 45px);
+      line-height: 14px;
+    }
+  }
+}
+.tab-content {
+  margin-top: 15px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #e7e7e8;
+  .inner-tab-content {
+    display: flex;
+    flex-wrap: nowrap;
+    will-change: transform;
+    transition: transform 0.25s cubic-bezier(0, 0, 0.3, 1);
+  }
+}

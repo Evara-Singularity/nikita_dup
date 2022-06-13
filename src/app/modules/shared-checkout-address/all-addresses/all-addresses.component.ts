@@ -322,7 +322,6 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
 
     ngOnDestroy(): void
     {
-        alert('destroyed');
         this.addressListInstance = null;
         this.createEditAddressInstance = null;
         if (this.addressListCloseSubscription) this.addressListCloseSubscription.unsubscribe();

@@ -10,15 +10,15 @@
                 <span class="orderDate">
                         Placed on : {{order.createdOn | date : 'dd-MM-yyyy'}}
                     </span>
-                <span class="ico-order" *ngIf="order.isOrderVisible"><img src ="../../../../../assets/img/icons/collaps.png"></span>
-                <span class="ico-order" *ngIf="!order.isOrderVisible"><img src ="../../../../../assets/img/icons/expand.png"></span>
+                <span class="ico-order" *ngIf="order.isOrderVisible" style="cursor: pointer;"><img src ="../../../../../assets/img/icons/collaps.png"></span>
+                <span class="ico-order" *ngIf="!order.isOrderVisible" style="cursor: pointer;"><img src ="../../../../../assets/img/icons/expand.png"></span>
                 </span>
             </div>
         </div>
         <ng-container *ngIf="order.isOrderVisible">
             <!-- inner box -->
             <!-- new card -->
-            <div  class="card-boxed">
+            <div class="card-boxed">
                 <div *ngFor="let detail of orderDetail[order.orderId]">
                     <a href="#" [routerLink]="['../order-detail',order.orderId, detail.item_id]">
                         <div class="card-upper">
@@ -34,15 +34,15 @@
                                     <span class="qtyleft">₹{{detail.price}}<span class="qtynum">&nbsp;({{detail.Quantity}} Qty)</span></span>
                                     <span><small class="greytxt">(Price Inclusive of GST)</small></span>
                                 </div>
-                               
+
                             </div>
-                            
+
                         </div>
                         <div class="card-bottom">
                             <div class="card-bottom-inner">
                                 <span class="orderstatus"><i class="dot">&#x2022;&nbsp;</i><span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'">{{ detail.status }}</span></span>
-                                <span  class="buy-again" *ngIf="detail.status !== 'ACCEPTED' && detail.status !== 'CANCELLED' && detail.status !=='PAYMENT FAILED'"><a (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)">BUY&nbsp;AGAIN</a></span>
-                            </div>  
+                                <span class="buy-again" *ngIf="detail.status !== 'ACCEPTED' && detail.status !== 'CANCELLED' && detail.status !=='PAYMENT FAILED'"><a (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)">BUY&nbsp;AGAIN</a></span>
+                            </div>
                         </div>
                     </a>
                 </div>
@@ -57,11 +57,11 @@
                         <div class="chargestext clearfix">Total Shipping:
                             <span>₹ {{currentOrderShippingCharges}}</span>
                         </div>
-            
+
                         <div class="chargestext">Total Discount:
                             <span class="textgreen">₹ {{currentOrderDiscountCharges + currentOrderNoEMIDiscountCharges}}</span>
                         </div>
-                        <div class="totPrice pad-15">Total Paid 
+                        <div class="totPrice pad-15">Total Paid
                             <span class="paymode">₹ {{getTotalAmount(orderDetail[order.orderId]) | number : '1.0-0'}}</span>
                         </div>
                     </div>

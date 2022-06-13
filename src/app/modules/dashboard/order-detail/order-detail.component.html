@@ -64,17 +64,16 @@
         </div>
         <!-- Return Policy added Yajya please check css for the same  -->
         <div style="overflow: hidden; padding: 10px;">
-            <p *ngIf="detail && detail?.dates.delivered.flag && showReturn" class="policyTxt">Return Policy valid
-                till {{returnEndDate}}</p>
-            <p *ngIf="detail?.dates.delivered.flag &&  !showReturn" class="policyTxt">Return Policy ended on
-                {{returnEndDate}}</p>
+            <p *ngIf="detail && detail?.dates.delivered.flag && showReturn" class="policyTxt">Return Policy valid till {{returnEndDate}}</p>
+            <p *ngIf="detail?.dates.delivered.flag &&  !showReturn" class="policyTxt">Return Policy ended on {{returnEndDate}}
+            </p>
         </div>
     </div>
 </div>
 
 <div class="need-help-strip pad-10 mar-15">
     <span class="cncl-item" *ngIf="detail && detail?.cancel_active" (click)="openPopup='cancel' ;getDataforCancel(detail?.product_name,detail?.price,detail?.customer_id,detail?.item_id,detail?.status); ">CANCEL ITEM</span>
-    <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span> 
+    <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span>
 </div>
 
 
@@ -144,12 +143,9 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 
 
 <!-- order cancellation pop up  -->
-<app-pop-up *ngIf="openPopup && openPopup=='cancel' " (outData$)="outData($event) " class="bs-popup "
-    [headerType]="'pop-up-header'"
-    [data]="{selector: 'openPopup',headerText: ' Cancel Order'} ">
+<app-pop-up *ngIf="openPopup && openPopup=='cancel' " (outData$)="outData($event) " class="bs-popup " [headerType]="'pop-up-header'" [data]="{selector: 'openPopup',headerText: ' Cancel Order'} ">
     <div content>
-        <div class="cancelOrderBox pwa-row material-form"
-            [ngClass]="{ 'show': (cancel_step && cancel_step==1 ), 'hide': cancel_step !==1 } ">
+        <div class="cancelOrderBox pwa-row material-form" [ngClass]="{ 'show': (cancel_step && cancel_step==1 ), 'hide': cancel_step !==1 } ">
             <!-- <div class="outline-input-label mb-25 pos-rel ">
                 <label class="indusrty show ">
                     <select [(ngModel)]="reason_id " class="select-form ">
@@ -194,7 +190,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                     Kindly select your country</p>
             </div> -->
             <h4 class="mt-15 mb-10 ">Comments(optional)</h4>
-            <textarea class="commentBox outline-input-label mb-25"></textarea>
+            <textarea class="commentBox outline-input-label mb-25" maxlength="100"></textarea>
             <button class="bottomBtn confirmbtn btn " (click)="reason_id ? openAlert=true : '' ">Confirm</button>
             <div class="alert-box " *ngIf="openAlert ">
                 <div class="overlay "></div>
@@ -216,8 +212,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                 <div class="orderdtBoxinner ">
                     <div class="orderdtDesc clearfix ">
                         <div class="orderproImg ">
-                            <img
-                                src="{{(detail?.productImg && detail?.productImg.length> 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
+                            <img src="{{(detail?.productImg && detail?.productImg.length> 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
                         </div>
 
                         <div class="orderproDesc">
@@ -233,10 +228,9 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         </div>
 
                     </div>
-                    <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'">Your order has been
-                        cancelled.</p>
-                    <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'">Your order has been
-                        cancelled the amount will be reflected in your account within 7-10 business days</p>
+                    <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'">Your order has been cancelled.
+                    </p>
+                    <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'">Your order has been cancelled the amount will be reflected in your account within 7-10 business days</p>
                 </div>
             </div>
         </div>
@@ -244,12 +238,9 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 </app-pop-up>
 
 <!-- final message after confirmation -->
-<app-pop-up *ngIf="openPopup && openPopup=='return'" (outData$)="outData($event)" class="bs-popup returnPopup"
-[headerType]="'pop-up-header1'"
-    [data]="{selector: 'openPopup', headerText:' Return Order'}">
+<app-pop-up *ngIf="openPopup && openPopup=='return'" (outData$)="outData($event)" class="bs-popup returnPopup" [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup', headerText:' Return Order'}">
     <div class="content-popup" content>
-        <form [formGroup]="returnForm" enctype="multipart/form-data"
-            (ngSubmit)="returnProduct(returnForm.value, returnForm.valid)" class="form-horizontal">
+        <form [formGroup]="returnForm" enctype="multipart/form-data" (ngSubmit)="returnProduct(returnForm.value, returnForm.valid)" class="form-horizontal">
             <div class="cancelOrderBox material-form">
 
                 <div [ngClass]="{'show': step == 1, 'hide': step !== 1}">
@@ -264,8 +255,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                             </select>
                             <i class="icon-down"></i>
                         </label>
-                        <p *ngIf="returnForm.controls['requestType']?.touched && !returnForm.controls['requestType'].valid && returnForm.controls['requestType'].errors.required"
-                            class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                        <p *ngIf="returnForm.controls['requestType']?.touched && !returnForm.controls['requestType'].valid && returnForm.controls['requestType'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
                     </div>
                     <div class="input-field">
                         <label class="indusrty show pos-rel" [class.is-focus]="reason.value.length > 0">
@@ -278,8 +268,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                             </select>
                             <i class="icon-down"></i>
                         </label>
-                        <p *ngIf="returnForm.controls['reason']?.touched && !returnForm.controls['reason'].valid && returnForm.controls['reason'].errors.required"
-                            class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                        <p *ngIf="returnForm.controls['reason']?.touched && !returnForm.controls['reason'].valid && returnForm.controls['reason'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
                     </div>
 
                     <div class="input-field">
@@ -289,12 +278,9 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                             <!-- <i class="icon-down"></i> -->
                         </label>
 
-                        <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.required"
-                            class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
-                        <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.min"
-                            class="f-size-10 text-red text-400 absolute top-33 error-txt">Enter valid quantity</p>
-                        <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.max"
-                            class="f-size-10 text-red text-400 absolute top-33 error-txt">Maximum quantity exceeded</p>
+                        <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                        <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.min" class="f-size-10 text-red text-400 absolute top-33 error-txt">Enter valid quantity</p>
+                        <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.max" class="f-size-10 text-red text-400 absolute top-33 error-txt">Maximum quantity exceeded</p>
 
                     </div>
                     <div class="input-field commentFld mb-10">
@@ -326,9 +312,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                     </div>
 
                     <!-- {{returnForm.controls['quantity'].valid}} -->
-                    <button class="bottomBtn confirmbtn btn" *ngIf="step==1"
-                        [disabled]="!returnForm.controls['quantity'].valid || !returnForm.controls['reason'].valid || !returnForm.controls['requestType'].valid || this.itemImages.length == 0"
-                        (click)="returnForm.controls['quantity'].valid && returnForm.controls['reason'].valid && returnForm.controls['requestType'].valid && this.itemImages.length>0 ? step = 2 : ''">NEXT</button>
+                    <button class="bottomBtn confirmbtn btn" *ngIf="step==1" [disabled]="!returnForm.controls['quantity'].valid || !returnForm.controls['reason'].valid || !returnForm.controls['requestType'].valid || this.itemImages.length == 0" (click)="returnForm.controls['quantity'].valid && returnForm.controls['reason'].valid && returnForm.controls['requestType'].valid && this.itemImages.length>0 ? step = 2 : ''">NEXT</button>
 
                 </div>
                 <ng-container *ngIf="returnForm['controls']['bankDetail']">
@@ -340,12 +324,11 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                         formControlName="bankName" #bankName>
                                     <span class="label">Bank Name*</span>
                                 </label>
-                                <p *ngIf="returnForm?.get['bankDetail']?.get['bankName']?.touched && !returnForm?.get['bankDetail']?.get['bankName'].valid && returnForm?.get['bankDetail']?.get['bankName']?.errors?.required"
-                                    class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                                <p *ngIf="returnForm?.get['bankDetail']?.get['bankName']?.touched && !returnForm?.get['bankDetail']?.get['bankName'].valid && returnForm?.get['bankDetail']?.get['bankName']?.errors?.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
 
                                 <p *ngIf="returnForm['controls']['bankDetail']?.get['bankName']?.touched && !returnForm?.get['bankDetail']?.get['bankName'].valid && returnForm?.get['bankDetail']?.get['bankName'].errors.invalidBankName && returnForm?.get['bankDetail']?.get['bankName'].value.length>0"
-                                    class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Bank name is
-                                    invalid</p>
+                                    class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Bank name is invalid
+                                </p>
                             </div>
 
                             <div class="input-field">
@@ -354,12 +337,10 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                         onCopy="return false" formControlName="ifscCode" #IFSCCode>
                                     <span class="label">IFSC Code(11-digit)*</span>
                                 </label>
-                                <p *ngIf="returnForm?.get['bankDetail']?.get['ifscCode']?.touched && !returnForm?.get['bankDetail']?.get['ifscCode'].valid && returnForm?.get['bankDetail']?.get['ifscCode'].errors.required"
-                                    class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                                <p *ngIf="returnForm?.get['bankDetail']?.get['ifscCode']?.touched && !returnForm?.get['bankDetail']?.get['ifscCode'].valid && returnForm?.get['bankDetail']?.get['ifscCode'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
 
                                 <p *ngIf="returnForm['controls']['bankDetail']?.get['ifscCode']?.touched && !returnForm?.get['bankDetail']?.get['ifscCode'].valid && returnForm?.get['bankDetail']?.get['ifscCode'].errors.invalidIfsc && returnForm?.get['bankDetail']?.get['ifscCode'].value.length>0"
-                                    class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Only
-                                    alpha-numerical values allowed</p>
+                                    class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Only alpha-numerical values allowed</p>
                             </div>
 
                             <div class="input-field">
@@ -368,12 +349,10 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                         onCopy="return false" formControlName="acountName" #accountName>
                                     <span class="label">Account Holder Name*</span>
                                 </label>
-                                <p *ngIf="returnForm?.get['bankDetail']?.get['acountName']?.touched && !returnForm?.get['bankDetail']?.get['acountName'].valid && returnForm?.get['bankDetail']?.get['acountName'].errors.required"
-                                    class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                                <p *ngIf="returnForm?.get['bankDetail']?.get['acountName']?.touched && !returnForm?.get['bankDetail']?.get['acountName'].valid && returnForm?.get['bankDetail']?.get['acountName'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
 
                                 <p *ngIf="returnForm['controls']['bankDetail']?.get['acountName']?.touched && !returnForm?.get['bankDetail']?.get['acountName'].valid && returnForm?.get['bankDetail'].controls['acountName'].errors.invalidBankName && returnForm?.get['bankDetail']?.get['acountName'].value.length>0"
-                                    class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter
-                                    a valid name</p>
+                                    class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter a valid name</p>
 
 
                             </div>
@@ -384,12 +363,10 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                         formControlName="acountNo" #accountNum>
                                     <span class="label">Account Number*</span>
                                 </label>
-                                <p *ngIf="returnForm?.get['bankDetail']?.get['acountNo']?.touched && !returnForm?.get['bankDetail']?.get['acountNo'].valid && returnForm?.get['bankDetail']?.get['acountNo'].errors.required"
-                                    class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                                <p *ngIf="returnForm?.get['bankDetail']?.get['acountNo']?.touched && !returnForm?.get['bankDetail']?.get['acountNo'].valid && returnForm?.get['bankDetail']?.get['acountNo'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
 
                                 <p *ngIf="returnForm['controls']['bankDetail']?.get['acountNo']?.touched && !returnForm?.get['bankDetail']?.get['acountNo'].valid && returnForm?.get['bankDetail']?.get['acountNo'].errors.invalidAccount && returnForm?.get['bankDetail']?.get['acountNo'].value.length>0"
-                                    class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter
-                                    a valid account number</p>
+                                    class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter a valid account number</p>
                             </div>
                             <div class="clearfix">
                                 <p class="photoNotetxt">Upload Cheque (optional) <span class="note-txt">jpeg, jpg & png
@@ -415,8 +392,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         <form [formGroup]="returnForm" class="form-horizontal">
                             <div class="" class="returnwrap" [ngClass]="{'show': step == 3, 'hide': step !== 3}">
                                 <div class="cancitem clearfix">
-                                    <img src="{{(detail?.productImg && detail?.productImg.length > 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}"
-                                        width="100" height="100" alt="imagename" />
+                                    <img src="{{(detail?.productImg && detail?.productImg.length > 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}" width="100" height="100" alt="imagename" />
                                     <div class="itemname">
                                         <h3 class="">{{detail?.product_name}}</h3>
                                         <p class="mb-10">Qty :
@@ -428,12 +404,8 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                     </div>
                                 </div>
                                 <div class="returnMesg clearfix">
-                                    <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'"
-                                        class="light-txt">Your order has been Returned.</p>
-                                    <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'"
-                                        class="light-txt">Your order has been Returned the amount will be reflected in
-                                        your account within 7-10 business days once the product reaches to our
-                                        fulfillment center</p>
+                                    <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'" class="light-txt">Your order has been Returned.</p>
+                                    <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'" class="light-txt">Your order has been Returned the amount will be reflected in your account within 7-10 business days once the product reaches to our fulfillment center</p>
                                     <span class="f-left note">Note :</span>
                                     <p class="f-left">Please return the package in the same condition as received</p>
                                 </div>
@@ -442,14 +414,10 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                     </div>
                 </div>
 
-                <button class="continue bottomBtn white-bg" (click)="navigateTo('/')"
-                    *ngIf="step == 3">Continue</button>
-                <div class="bottomBar"
-                    [ngClass]="{'show': step == 2 || !returnForm['controls']['bankDetail'], 'hide': step !== 2}">
+                <button class="continue bottomBtn white-bg" (click)="navigateTo('/')" *ngIf="step == 3">Continue</button>
+                <div class="bottomBar" [ngClass]="{'show': step == 2 || !returnForm['controls']['bankDetail'], 'hide': step !== 2}">
                     <i class="icon-back" *ngIf="step==2" (click)="step = 1" id="icon-profile"></i>
-                    <button type="submit" [style.width.%]="!returnForm['controls']['bankDetail'] ? 100 : 85"
-                        class="confirmbtn btn" type="submit"
-                        [disabled]="!returnForm.valid || this.itemImages.length == 0">Confirm</button>
+                    <button type="submit" [style.width.%]="!returnForm['controls']['bankDetail'] ? 100 : 85" class="confirmbtn btn" type="submit" [disabled]="!returnForm.valid || this.itemImages.length == 0">Confirm</button>
                 </div>
 
             </div>
@@ -466,8 +434,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                 <h4>Order Id : {{detail?.order_id}}</h4>
                 <p class="">{{detail?.product_name}} </p>
                 <p class="">Qty:{{detail?.Quantity}}</p>
-                <p><span class="track_id"
-                        *ngIf="detail?.status === 'DELIVERED' && detail['shipment_detail'] != null">Tracking
+                <p><span class="track_id" *ngIf="detail?.status === 'DELIVERED' && detail['shipment_detail'] != null">Tracking
                         ID:{{detail['shipment_detail']['awb']}}</span>
                     <span class="shipper_id" *ngIf="shipmentDetail != null">{{shipmentDetail?.shipper_name}}</span>
                 </p>
@@ -476,9 +443,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
             <div class="trackerWrap">
                 <ul>
 
-                    <li class="newTrackerStyle"
-                        *ngFor="let obj of detail?.dates | trackOrderStatus: detail?.requestType : detail?.status: true ; let i = index"
-                        [ngClass]="obj.cClass">
+                    <li class="newTrackerStyle" *ngFor="let obj of detail?.dates | trackOrderStatus: detail?.requestType : detail?.status: true ; let i = index" [ngClass]="obj.cClass">
                         <div class="grLeftTracker">
                             <strong>{{obj.date | date:'EEEE, dd MMM yyyy'}}</strong>
                             <span class="grtrackerline grtrackerline-40"></span>
@@ -537,7 +502,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
         <div class="chargestext " *ngIf="detail && detail?.payment_type">Payment Mode
             <span>{{detail?.payment_type}}</span>
         </div>
-        <div class="totPrice pad-15" *ngIf="detail && detail?.price">Amount Payable 
+        <div class="totPrice pad-15" *ngIf="detail && detail?.price">Amount Payable
             <span class="paymode">₹ {{totalPrice(detail?.price, detail?.Quantity, detail?.shipping_charge,
                 detail?.discount)}}</span>
         </div>

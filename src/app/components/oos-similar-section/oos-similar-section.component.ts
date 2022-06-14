@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-oos-similar-section',
@@ -8,15 +7,10 @@ import { Component, Input, EventEmitter, NgModule, OnInit, Output } from '@angul
 })
 export class OosSimilarSectionComponent  {
 
-  // @Input('productOutOfStock') productOutOfStock;
+  @Input('productOutOfStock') productOutOfStock;
   @Input('productService') productService;
-  // @Input('oosSimilarcardFeaturesConfig') oosSimilarcardFeaturesConfig;
-  // @Input('similarForOOSContainer') similarForOOSContainer; 
-  
-  OnInit(){
-    console.log("i am in the oss module ,,");
-    // console.log("productOutOfStock-------" , this.productOutOfStock);
-    // console.log("productService------------" , this.productService);
-  }
-
-} 
+  @Input('oosSimilarcardFeaturesConfig') oosSimilarcardFeaturesConfig;
+  @Input('similarForOOSContainer') similarForOOSContainer; 
+  @Input('similarForOOSLoaded') similarForOOSLoaded; 
+    
+}

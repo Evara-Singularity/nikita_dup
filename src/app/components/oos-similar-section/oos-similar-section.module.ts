@@ -14,6 +14,9 @@ import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/p
     CommonModule, 
     ProductCardSkeletonModule,
     ProductCardHorizontalGridViewModule
+  ],
+  exports: [
+    OosSimilarSectionComponent
   ]
 })
 export class OosSimilarSectionModule { } 

@@ -32,8 +32,9 @@ import { ProductQaModule } from '@app/components/product-qa/product-qa.component
 import { FloatingButtonContainerModule } from '@app/modules/ui/floating-button-container/floating-button-container.module';
 import { ProductBenefitsModule } from '@app/components/product-benefits/product-benefits.component';
 import { ProductGetQuoteModule } from '@app/components/product-get-quote/product-get-quote.component';
-import { ProductGroupingAttributesComponent, ProductGroupingAttributesModule } from '@app/components/product-grouping-attributes/product-grouping-attributes.component';
+import { ProductGroupingAttributesModule } from '@app/components/product-grouping-attributes/product-grouping-attributes.component';
 import { OosSimilarSectionModule } from '@app/components/oos-similar-section/oos-similar-section.module';
+import { ProductCarouselSectionModule } from '@app/components/product-carousel-section/product-carousel-section.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -74,7 +75,8 @@ import { OosSimilarSectionModule } from '@app/components/oos-similar-section/oos
     ProductBenefitsModule,
     ProductGetQuoteModule,
     ProductGroupingAttributesModule,
-    OosSimilarSectionModule
+    OosSimilarSectionModule,
+    ProductCarouselSectionModule
   ],
   exports: [],
   providers: [NgxSiemaService],

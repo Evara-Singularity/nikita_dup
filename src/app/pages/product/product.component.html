@@ -10,26 +10,26 @@
                     [moduleUsedIn]="'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP'"
                     [product]="productService.oosSimilarProductsData.similarData[i]">
                 </product-card-horizontal-grid-view>
-            </ng-container>
+            </ng-container> 
             <ng-container *ngIf="similarForOOSLoaded">
                 <product-card-skeleton *ngFor="let skeleton of similarForOOSContainer"
                     class="skeleton-pd-card-container skeleton-card-view">
-                </product-card-skeleton>
-            </ng-container>
+                </product-card-skeleton> 
+            </ng-container> 
         </div>
     </div>
 </div> -->
 
 <app-oos-similar-section 
 [productOutOfStock]="productOutOfStock"
-[productService]="productService00"
+[productService]="productService.oosSimilarProductsData.similarData"
 [similarForOOSContainer]="similarForOOSContainer" 
 [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig"
 [similarForOOSLoaded]="similarForOOSLoaded" >
 </app-oos-similar-section>
 <div style="margin-top:10px"></div>
 
-<div class="prod-carsl" addClass [class.hasOneImage]="productAllImages?.length === 1"
+<!-- <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages?.length === 1"
     [ngClass]="[carouselInitialized ? '' : 'before-init']">
     <div class="floating-cta-strip">
         <span class="fixed_ico" (click)="loadProductShare()"><i class="icon-product_share"></i></span>
@@ -75,7 +75,6 @@
             </ul>
         </div>
     </div>
-    <!-- TODO: check how this section is used in PQA -->
     <ng-container *ngIf="productTags != undefined && !this.productOutOfStock">
 
         <div class="image_tag">
@@ -85,7 +84,26 @@
             </div>
         </div>
     </ng-container>
-</div>
+</div> -->
+<app-product-carousel-section
+[productAllImages]="productAllImages"
+[carouselInitialized]="carouselInitialized"
+(loadProductShare)="loadProductShare()" 
+[isPurcahseListProduct]="isPurcahseListProduct"
+(addToPurchaseList)="addToPurchaseList()"
+(loadProductCrousel)="loadProductCrousel()"
+[productOutOfStock]="productOutOfStock"
+[productService]="productService.oosSimilarProductsData.similarData"
+(scrollToId)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
+[imagePathAsset]="imagePathAsset"
+(openPopUpcrousel)="openPopUpcrousel(0)"
+(onRotateNext)="onRotateNext()"
+(onRotatePrevious)="onRotatePrevious()"
+[isProductCrouselLoaded]="isProductCrouselLoaded"
+[productCrouselInstance]="productCrouselInstance"
+[iOptions]="iOptions"
+[productTags]="productTags"
+></app-product-carousel-section>
 
 <product-description (checkBulkPriceMode)="checkBulkPriceMode()" [isBulkPricesProduct]="isBulkPricesProduct"
     [productBulkPrices]="productBulkPrices" [selectedProductBulkPrice]="selectedProductBulkPrice"
@@ -98,7 +116,7 @@
     [rawProductCountMessage]="rawProductCountMessage">
 </product-description>
 
-<product-grouping-attributes [isCommonProduct]="isCommonProduct"
+<product-grouping-attributes [isCommonProduct]="isCommonProduct" 
     [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)"
     (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
 

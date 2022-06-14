@@ -352,9 +352,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.createSiemaOption();
     this.setProductSeoSchema();
     this.setQuestionAnswerSchema();
-    this.productService.resetOOOSimilarProductsData();
-   // this.productService00 = this.productService.oosSimilarProductsData.similarData;
-   this.productService00 = " iam here lekwnflkjewfnw 09876654";
+    this.productService.resetOOOSimilarProductsData(); 
   }
 
   scrollToTop() {

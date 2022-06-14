@@ -1,5 +1,5 @@
 .card-boxed {
-    margin: 15px;
+    margin: 0px 15px 15px;
     background-color: var(--white);
     border-radius: 8px;
     .card-upper {
@@ -74,7 +74,7 @@
     .card-bottom {
         .card-bottom-inner {
             display: flex;
-            justify-content: space-between;
+            justify-content:flex-start;
             align-items: center;
             padding: 10px 15px;
             border: 1px solid var(--ghost-white);

@@ -46,8 +46,6 @@
         </div>
         <div class="card-bottom-inner card-bottom-inner-order-dtl state-done">
             <span class="order-track-line"></span>
-            <i class="icon-circle-delete order-track-line danger"></i>
-            <i class="icon-check-active order-track-line success"></i>
             <span class="orderstatus"> <span [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'">
                 <ng-container *ngIf="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING'">
                     ESTIMATED DELIVERY :

@@ -18,6 +18,9 @@
     padding: 0;
     padding-bottom: 1px;
     background-color: var(--white);
+    &:first-child{
+        padding-top:10px;
+    }
     .orderSum {
         padding: 8px 15px 10px;
         // border-bottom: 1px solid var(--ghost-white);
@@ -25,7 +28,7 @@
         position: relative;
         .orderId {
             // display: block;
-            color: var(--onyx-black);
+            color: var(--spanish-gray);
             font-size: $large-font;
             font-weight: $font-bolder;
             margin-bottom: 1px;
@@ -91,9 +94,7 @@
                 color: var(--onyx-black) !important;
                 font-size: $small-font;
                 font-weight: bold;
-                .dot{
-                    color: red;
-                }
+                
             }
         }
     }
@@ -132,3 +133,10 @@
     top: 10px;
 }
 
+.status-circle{
+    background:var(--primary);
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    margin-right:10px;
+}

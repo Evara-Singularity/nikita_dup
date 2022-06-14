@@ -3,7 +3,9 @@
 @import "../../../scss/layout/forms.scss";
 @import "../../../scss/layout/card-boxed.scss";
 @import "../../../scss/components/buttons.scss";
-
+.card-boxed{
+  margin-top: 65px !important;
+}
 .singleproStatus {
   border: 1px solid var(--ghost-white) !important;
 }
@@ -569,6 +571,18 @@
       background-color: var(--slimy-green);
       &.grtrackerline-40 {
         left: calc(30% - 6px);
+
+      }
+      &.state-done{
+        &:before{
+          position:absolute;
+          top:0px;
+          left:0;
+          right:0;
+          content: "\e912";
+          font-family: "icomooon_pwa";
+          color:#fff;
+        }
       }
     }
     // &:before {

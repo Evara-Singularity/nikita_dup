@@ -57,7 +57,7 @@
                         width="330" alt="{{productName}}">
                     <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
                         class="loader-image" />
-                </div>
+                </div> 
             </div>
             <ul class="pager">
                 <ng-container
@@ -90,6 +90,7 @@
 [carouselInitialized]="carouselInitialized"
 (loadProductShare)="loadProductShare()" 
 [isPurcahseListProduct]="isPurcahseListProduct"
+[productName]="productName"
 (addToPurchaseList)="addToPurchaseList()"
 (loadProductCrousel)="loadProductCrousel($event)"
 [productOutOfStock]="productOutOfStock"
@@ -99,6 +100,7 @@
 (openPopUpcrousel)="openPopUpcrousel(0)"
 (onRotateNext)="onRotateNext()"
 (onRotatePrevious)="onRotatePrevious()"
+(sendProductImageClickTracking)="sendProductImageClickTracking()" 
 [isProductCrouselLoaded]="isProductCrouselLoaded"
 [productCrouselInstance]="productCrouselInstance"
 [iOptions]="iOptions"

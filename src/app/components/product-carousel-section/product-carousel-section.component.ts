@@ -17,7 +17,9 @@ export class ProductCarouselSectionComponent {
   @Input('isProductCrouselLoaded') isProductCrouselLoaded;
   @Input('productCrouselInstance') productCrouselInstance; 
   @Input('iOptions') iOptions; 
-  @Input('productTags') productTags; 
+  @Input('productTags') productTags;  
+  @Input('productName') productName; 
+  @Input('arrayFilterPipe') arrayFilterPipe; 
   @Output() loadProductShare: EventEmitter<any> = new EventEmitter<any>();
   @Output() addToPurchaseList: EventEmitter<any> = new EventEmitter<any>();
   @Output() scrollToId: EventEmitter<any> = new EventEmitter<any>();
@@ -25,8 +27,9 @@ export class ProductCarouselSectionComponent {
   @Output() onRotateNext: EventEmitter<any> = new EventEmitter<any>();
   @Output() onRotatePrevious: EventEmitter<any> = new EventEmitter<any>();
   @Output() loadProductCrousel: EventEmitter<any> = new EventEmitter<any>();
+  @Output() sendProductImageClickTracking: EventEmitter<any> = new EventEmitter<any>();
   
-method(i){
+  OnloadProductCrousel(i){
   this.loadProductCrousel.emit(i);
 }
 
@@ -38,7 +41,7 @@ method(i){
     CommonModule
   ],
   exports: [
-    ProductCarouselSectionComponent
+    ProductCarouselSectionComponent 
   ]
 })
 export class ProductCarouselSectionModule { }

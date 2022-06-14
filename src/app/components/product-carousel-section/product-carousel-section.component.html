@@ -35,7 +35,7 @@
                         <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="method(i)"
                             [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
                         </li>
-                        <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)"
+                        <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="OnloadProductCrousel(i)"
                             class="pager_icon_dot">
                             <em class="icon-youtube"></em>
                         </li>

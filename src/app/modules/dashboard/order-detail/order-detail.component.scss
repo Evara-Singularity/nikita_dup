@@ -3,7 +3,9 @@
 @import "../../../scss/layout/forms.scss";
 @import "../../../scss/layout/card-boxed.scss";
 @import "../../../scss/components/buttons.scss";
-
+.card-boxed{
+  margin-top: 65px !important;
+}
 .singleproStatus {
   border: 1px solid var(--ghost-white) !important;
 }

@@ -32,7 +32,7 @@
                 <ng-container
                     *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions?.pager && productAllImages?.length>1">
                     <ng-container *ngFor="let item of productAllImages;let i=index">
-                        <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)"
+                        <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="method(i)"
                             [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
                         </li>
                         <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)"

@@ -91,7 +91,7 @@
 (loadProductShare)="loadProductShare()" 
 [isPurcahseListProduct]="isPurcahseListProduct"
 (addToPurchaseList)="addToPurchaseList()"
-(loadProductCrousel)="loadProductCrousel()"
+(loadProductCrousel)="loadProductCrousel($event)"
 [productOutOfStock]="productOutOfStock"
 [productService]="productService.oosSimilarProductsData.similarData"
 (scrollToId)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"

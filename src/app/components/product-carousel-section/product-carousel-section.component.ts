@@ -26,6 +26,9 @@ export class ProductCarouselSectionComponent {
   @Output() onRotatePrevious: EventEmitter<any> = new EventEmitter<any>();
   @Output() loadProductCrousel: EventEmitter<any> = new EventEmitter<any>();
   
+method(i){
+  this.loadProductCrousel.emit(i);
+}
 
 }
 

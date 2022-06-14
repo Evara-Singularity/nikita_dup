@@ -22,6 +22,7 @@ import { ProductHorizontalCardModule } from '@app/modules/product-horizontal-car
 // import { IdleUserSearchNudgeModule } from '@app/modules/Idle-user-search-nudge/Idle-user-search-nudge.module';
 import { PastOrdersModule } from '@app/components/past-orders/past-orders.component';
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
+import ProductAccordiansModule from '@app/components/product-accordians/product-accordians.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -48,7 +49,8 @@ import { NotFoundModule } from "@app/modules/not-found/not-found.module";
     SwipeDirectiveModule,
     // IdleUserSearchNudgeModule,
     PastOrdersModule,
-    NotFoundModule
+    NotFoundModule,
+    ProductAccordiansModule
   ],
   exports: [],
   providers: [NgxSiemaService],

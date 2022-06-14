@@ -76,6 +76,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     displayMenu: boolean = false;
     displaySearch: boolean = false;
     imgAssetPath: string = environment.IMAGE_ASSET_URL
+    searchValue='';
     @Input('extraData') extraData;
 
     constructor(
@@ -106,6 +107,9 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.isBrowser) {
             this.browserCalc();
             this.refreshIcon();
+            this.route.queryParams.subscribe(res => {
+                this.searchValue = (res['search_query']) ? res['search_query'] : ''
+            })
         }
         this._checkoutService.checkoutHeader.subscribe((tabIndex) => {
             this.setHeader();
@@ -199,19 +203,30 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.searchBarInstance = null;
                 this.sideMenuContainerRef.detach();
             });
-            if (toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
+            if (toBeAutoFilledKeyword) { 
+                this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword 
+            } else {
+                // console.log('already not loaded', this.route.snapshot.queryParams['search_query'])
+                setTimeout(() => {
+                    this.searchBarInstance.instance.handleSendTextToSearchBar(this.route.snapshot.queryParams['search_query'] || '');
+                    document.getElementById('search-input').focus();
+                    // document.getElementById('search-input')['value'] = '';
+                }, 500);
+            };
         } else {
 
             if (toBeAutoFilledKeyword) {
                 setTimeout(() => {
-                    console.log('toBeAutoFilledKeyword after', toBeAutoFilledKeyword)
+                    
                     this.searchBarInstance.instance.handleSendTextToSearchBar(toBeAutoFilledKeyword);
-                }, 500);
+                }, 100);
             } else {
+                // console.log('already loaded', this.route.snapshot.queryParams['search_query'])
                 setTimeout(() => {
+                    this.searchBarInstance.instance.handleSendTextToSearchBar(this.route.snapshot.queryParams['search_query'] || '');
                     document.getElementById('search-input').focus();
-                    document.getElementById('search-input')['value'] = '';
-                }, 350);
+                    // document.getElementById('search-input')['value'] = '';
+                }, 0);
             }
 
             this.searchBarInstance.instance['data'] = {

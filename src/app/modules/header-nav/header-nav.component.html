@@ -41,7 +41,7 @@
 
         <div *ngIf="(_commonService.isHomeHeader  || _commonService.isPLPHeader) && !(_commonService.isScrolledHeader)"
             class="search-bar search-bar-custom">
-            <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav();"
+            <input class="search-bar-input" type="text" [value]="searchValue" autocomplete="off" (click)="loadSearchNav();"
                 placeholder="Search Product/Category/Brand...">
             <div class="home-search-animation">
             </div>
@@ -64,7 +64,7 @@
                 <a class="search-bar-mini"
                     *ngIf="!_commonService.isHomeHeader && !isLoginPage && !(routerData && routerData['title'])  && displaySearch">
                     <i class="icon-search"></i>
-                    <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
+                    <input type="text" placeholder="Search Product/Category/Brand..." [value]="searchValue" (click)="loadSearchNav()">
                     
                 </a>
                 <a *ngIf="!_commonService.isHomeHeader  && !isLoginPage && (routerData && routerData['title'])"

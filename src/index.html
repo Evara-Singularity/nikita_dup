@@ -23,7 +23,7 @@
     <base href="/">
     <meta name="environment" content="development" />
     <!--- preload & preconnects -->
-    <link rel="icon" type="image/vnd.microsoft.icon" href="https://cdn.moglix.com/favicon.ico" />
+    <link rel="icon" type="image/vnd.microsoft.icon" href="favicon.ico" />
     <link rel="manifest" href="manifest.webmanifest" crossorigin="use-credentials">
 
     <!-- INSERT DYNAMIC CSS PRELOAD DURING BBUILD HERE -->
@@ -52,7 +52,7 @@
                     var f = d.getElementsByTagName(s)[0],
                         j = d.createElement(s),
                         dl = l != 'dataLayer' ? '&l=' + l : '';
-                    j.async = true;
+                    j.defer = true;
                     j.src =
                         'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
                     setTimeout(() => {
@@ -64,8 +64,8 @@
         digitalData = {};
         digitalData.event = [];
     </script>
-    <script src="//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js" async=""></script>
-    <script src="https://www.google-analytics.com/analytics.js" async></script>
+    <script defer src="//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js" ></script>
+    <script defer src="https://www.google-analytics.com/analytics.js" ></script>
     <!-- Adobe Tag Manager -->
     <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>

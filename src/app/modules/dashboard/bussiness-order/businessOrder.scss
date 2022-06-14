@@ -24,11 +24,14 @@
         width: 100%;
         position: relative;
         .orderId {
-            display: block;
+            // display: block;
             color: var(--onyx-black);
             font-size: $large-font;
             font-weight: $font-bolder;
             margin-bottom: 1px;
+        }
+        .orderDate{
+            display:block !important;
         }
         .orderOthDet {
             span {

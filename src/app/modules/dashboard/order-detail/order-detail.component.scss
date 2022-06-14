@@ -534,7 +534,7 @@
   .card-bottom-inner-order-dtl{
     position: relative;
     height: 55px;
-    &.success{
+    &.state-done{
       // background-color: var(--slimy-green);
       i{
         color: var(--slimy-green);
@@ -544,6 +544,14 @@
         span{
           // color: var(--white);
         }
+      }
+      &:before {
+        content: "";
+        position: absolute;
+        left: 17px;
+        border-left: 1px solid var(--ghost-white);
+        height: 45px;
+        top: -25px;
       }
     }
     .orderstatus{
@@ -563,13 +571,13 @@
         left: calc(30% - 6px);
       }
     }
-    &:before {
-      content: "";
-      position: absolute;
-      left: 17px;
-      border-left: 1px solid var(--ghost-white);
-      height: 45px;
-      top: -25px;
-    }
+    // &:before {
+    //   content: "";
+    //   position: absolute;
+    //   left: 17px;
+    //   border-left: 1px solid var(--ghost-white);
+    //   height: 45px;
+    //   top: -25px;
+    // }
   }
 }

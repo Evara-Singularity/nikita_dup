@@ -1401,7 +1401,6 @@ export class CartService
     unavailableItemsList: any[];
     viewUnavailableItems(types: string[])
     {
-        alert('a');
         const itemsList: any[] = JSON.parse(JSON.stringify(this.getGenericCartSession['itemsList']));
         const unserviceableMsns = JSON.parse(JSON.stringify(this.notifications))
             .filter(item => types.includes(item['type'])).reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);

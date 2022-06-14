@@ -1,12 +1,12 @@
 <app-pop-up-variant2 *ngIf="displayCreateEditPopup" (outData$)="handlePopup($event)"
 [headerType]="'pop-up-header1'"
     [class.open1]="displayCreateEditPopup" [data]="{headerText: modeType + ' ' + ADDRESS_TYPE + ' Address'}">
-    <div class="head-sec header_add_edit" header>
+    <!-- <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="handlePopup($event)"></i>
             <p class="txt header_text page-name"> {{modeType }} {{ADDRESS_TYPE}} Address</p>
         </div>
-    </div>
+    </div> -->
     <div class="content-popup scrolled-content-popup" content>
         <div class="pwa-row mt-10 pb-60">
             <form [formGroup]="addressForm" class="material-form" (ngSubmit)="$event.stopPropagation();saveOrUpdateAddress()"
@@ -52,7 +52,7 @@
                         <span class="label">Phone Number*</span>
                     </label>
                 </div>
-                <div class="for-varification-r" *ngIf="phone.valid && phoneVerified.value">
+                <div class="form-inline-cta" *ngIf="phone.valid && phoneVerified.value">
                     <span class="hidden">VERIFIED</span>
                 </div>
                 <ng-container *ngIf="phone.touched || phone.dirty">

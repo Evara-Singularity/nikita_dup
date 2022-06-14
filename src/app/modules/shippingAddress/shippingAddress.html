@@ -31,7 +31,7 @@
                     <span class="label">Phone Number*</span>
                 </label>
             </div>
-            <div class="for-varification-r" *ngIf="phoneVerified.value">
+            <div class="form-inline-cta" *ngIf="phoneVerified.value">
                 <span class="hidden" href="">VERIFIED</span>
             </div>
             <p *ngIf="phone.touched && phone.invalid && phone.errors['required']" class="error-txt">Kindly enter your 10

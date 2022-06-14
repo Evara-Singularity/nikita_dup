@@ -13,7 +13,7 @@ import { CheckoutAddressPipeModule } from '@app/utils/pipes/checkout-address.pip
 export class AddressListComponent implements OnInit
 {
     readonly ACTION_TYPES = { ADD: 'ADD', EDIT: 'EDIT', SELECTED: 'SELECTED', DELETE:'DELETE' };
-    @Input('showDelete') showDelete;
+    @Input('parentModule') parentModule = 'Checkout';
     @Input("addressType") addressType = "Delivery";
     @Input("displayAddressListPopup") displayAddressListPopup = false;
     @Input("addresses") addresses = [];
@@ -43,6 +43,9 @@ export class AddressListComponent implements OnInit
     }
 
     get headerText() { return `${this.addressType} Address` }
+
+    get showDelete() { return this.parentModule === 'Dashboard'}
+
     isAddressSelected(idAddress) { return idAddress === this.cIdAddress }
 }
 

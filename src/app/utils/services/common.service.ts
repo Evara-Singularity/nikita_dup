@@ -79,7 +79,7 @@ export class CommonService
     idleNudgeTimer: IdleTimer;
     private _renderer2: Renderer2
     ;
-    public previousUrl: string = null;
+    public previousUrl: string = "/";
     public currentUrl: string = null;
 
     constructor(

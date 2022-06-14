@@ -1,4 +1,4 @@
-import { Component, Output, Input, EventEmitter, OnInit, AfterViewInit, OnDestroy, ChangeDetectionStrategy, ViewChild, } from '@angular/core';
+import { Component, Output, Input, EventEmitter, OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild, } from '@angular/core';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { AddressListService } from './address-list.service';
@@ -59,7 +59,6 @@ export class AddressListComponent implements OnInit, OnDestroy {
 
     setAddressIndex() {
         const selectedAddress = (this.type == 1) ? this._checkoutService.getCheckoutAddress() : this._checkoutService.getBillingAddress();
-
         if (this.addresses && selectedAddress && this.addresses.length > 0) {
             this.addresses.forEach((address, index) => {
                 if (address['idAddress'] == selectedAddress['idAddress']) {

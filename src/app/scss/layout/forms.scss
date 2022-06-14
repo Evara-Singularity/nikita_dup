@@ -28,16 +28,6 @@ input[type=number] {
     .outline-input-label{
         width:50%;
         margin: 15px 0 0 15px;
-        .form-inline-cta{
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            padding: 8px;
-            border-radius: 8px;
-            &.success{
-                background-color: var(--slimy-green);
-            }
-        }
     }
    }
     .input-field {
@@ -156,6 +146,16 @@ input[type=number] {
     
     .outline-input-label {
         margin-bottom:30px;
+        .form-inline-cta{
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            padding: 8px;
+            border-radius: 8px;
+            &.success{
+                background-color: var(--slimy-green);
+            }
+        }
         label {
             display: block;
             position: relative;

@@ -504,4 +504,18 @@
     }
 }
 
-
+.cta-row{
+    display: flex;
+    margin-top: 10px;
+    button{
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .secondry-btn-1{
+        flex-grow: 2;
+        margin-right: 10px;
+    }.secondry-btn{
+        flex-grow: 3;
+    }
+}

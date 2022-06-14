@@ -342,7 +342,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.isServer = commonService.isServer;
     this.isBrowser = commonService.isBrowser;
   }
-
+  productService00:any
   ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     // this.scrollToTop();
@@ -353,6 +353,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.setProductSeoSchema();
     this.setQuestionAnswerSchema();
     this.productService.resetOOOSimilarProductsData();
+   // this.productService00 = this.productService.oosSimilarProductsData.similarData;
+   this.productService00 = " iam here lekwnflkjewfnw 09876654";
   }
 
   scrollToTop() {

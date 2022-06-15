@@ -1,4 +1,4 @@
-<app-bottom-menu (outData$)="togglePopUp()">
+<app-bottom-menu *ngIf="displayPopup" (outData$)="togglePopUp()">
     <div class="otp-modal">
         <div class="otp-top-area">
             <div class="otp-entertext">

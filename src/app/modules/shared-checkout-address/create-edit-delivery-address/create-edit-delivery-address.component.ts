@@ -64,7 +64,6 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
     {
         this.createAddressForm(this.address);
         this.fetchStateList(this.countryList[0]['idCountry']);
-        this.displayOTPPopup(this.phone.value);
     }
 
     ngAfterViewInit()

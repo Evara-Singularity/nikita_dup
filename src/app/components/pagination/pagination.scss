@@ -9,162 +9,74 @@
 pagination-controls {
     display: block;
     text-align: center;
-}
-pagination-controls {
     ul.ngx-pagination {
-        float: none;
+        float: none !important;
         text-align: center;
-        width: 100%;
+        width: $fullwidth;
         overflow: hidden;
         margin-top: 0px;
+        padding: 15px 0px;
+        background: var(--white);
         li {
+            font-size: $medium-font;
+            background: transparent;
+            margin: 0 2px;
+            font-weight: normal;
+            color: #565656!important;
             border-radius: 50%;
             height: 30px;
             width: 30px;
             text-align: center;
-            font-size: $medium-font;
-            padding: 0px !important;
-            line-height: 30px;
-            cursor: pointer;
-            font-weight: $font-bolder;
-        }
-        li.current {
-            background: var(--spanish-gray);
-            span {
-                color: var(--white);
+            line-height: $large-line-height;
+        
+            &.disabled {
+                opacity: 0.45 !important;
+            }
+            a {
+                font-size: $medium-font;
+                font-weight: $font-normal;
+            }
+            &.current {
+                background: var(--onyx-black);
+                padding: 3px 0;
+                font-size: 11px;
+                span {
+                    color: var(--white);
+                }
             }
         }
     }
+} 
+.ngx-pagination .pagination-previous a::before,
+.ngx-pagination .pagination-previous.disabled::before {
+    content: 'PREV' !important;
+    color: var(--blue);
+    display: none;
 }
-
-.ngx-pagination a:hover,
-.ngx-pagination button:hover {
-    background: transparent !important;
+.ngx-pagination .pagination-next a::after,
+.ngx-pagination .pagination-next.disabled::after {
+    content: 'NEXT' !important;
+    color: var(--blue);
 }
-
-ul.ngx-pagination {
-    float: none;
-    margin: 0px;
-    padding: 10px 0px;
-    background: #fff;
-    li {
-        font-size: 12px;
-        background: transparent;
-        //border: 1px solid #d9dfe4;
-        margin: 0px 2px;
-        font-weight: bold;
-        color: #565656 !important;
-        border-radius: 50%;
-        height: 30px;
-        width: 30px;
-        text-align: center;
-        line-height: 23px;
-        &:first-child {
-            a:before {
-                margin: 0px !important;
-            }
-        }
-        &.pagination-next {
-            a:after {
-                margin: 0px !important;
-            }
-            span:after {
-                margin: 0px !important;
-            }
-        }
-        &.current {
-            background: #53534f;
-            padding: 0px !important;
-            padding-top: 4px !important;
-            //box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.4);
-            span {
-                color: white !important;
-            }
-        }
-        a:hover {
-            background: #53534f;
-            border-radius: 50% !important;
-            color: white !important;
-            span {
-                color: white !important;
-            }
-        }
-        a {
-            font-size: 13px;
-            font-weight: 500;
-            &:hover {
-                color: white !important;
-            }
-        }
-        &.disabled {
-            opacity: 0.45 !important;
-        }
-    }
+.ngx-pagination a,
+.ngx-pagination button {
+    line-height: $extra-large-1-line-height;
+    height: 30px;
+    padding: 0 !important;
 }
-
 li.pagination-previous {
     margin-right: 30px !important;
     display: inline-block !important;
     opacity: 1 !important;
 }
-
-li.pagination-previous:hover {
-    background: transparent !important;
-    a:hover {
-        background: transparent !important;
-    }
-}
-
-li.pagination-next:hover {
-    background: transparent !important;
-    a:hover {
-        background: transparent !important;
-    }
-}
-
-.ngx-pagination .pagination-previous a::before,
-.ngx-pagination .pagination-previous.disabled::before {
-    content: 'PREV' !important;
-    color: #2667db;
-    ;
-    display: none;
-}
-
-.ngx-pagination .pagination-next a::after,
-.ngx-pagination .pagination-next.disabled::after {
-    content: 'NEXT' !important;
-    color: #2667db;
-    ;
-}
-
-.business_pagination {
-    .ngx-pagination .current {
-        background: transparent !important;
-    }
-}
-
-.ngx-pagination a,
-.ngx-pagination button {
-    line-height: 30px;
-    height: 30px;
-    padding: 0 !important;
-    ;
-}
-
-@media screen and (max-width:1024px) {
-    pagination-controls {
-        // border: none !important;
-    }
-    pagination {
-        height: auto !important;
-    }
-}
-
+.ngx-pagination a:hover, .ngx-pagination button:hover {
+    background: none !important;
+  }
 @media only screen and (max-width:768px) {
     ul.ngx-pagination {
         float: none;
         text-align: center;
-        width: 100%;
+        width: $fullwidth;
         overflow: hidden;
         margin-top: 0px;
     }

@@ -1,33 +1,35 @@
 <app-bottom-menu *ngIf="displayPopup" (outData$)="togglePopUp()">
-    <div class="otp-modal">
-        <div class="otp-top-area">
-            <div class="otp-entertext">
-                <h5>Enter the OTP</h5>
-                <p>OTP has been sent to <strong>{{phone}}</strong> for verification.</p>
+    <div class="content-popup" content>
+        <div class="otp-modal">
+            <div class="otp-top-area">
+                <div class="otp-entertext">
+                    <h5>Enter the OTP</h5>
+                    <p>OTP has been sent to <strong>{{phone}}</strong> for verification.</p>
+                </div>
+                <div class="otp-crossbtn">
+                    <i (click)="$event.stopPropagation();closeModal()" class="icon-circle-delete"></i>
+                </div>
             </div>
-            <div class="otp-crossbtn">
-                <i (click)="$event.stopPropagation();closeModal()" class="icon-circle-delete"></i>
+            <div class="otp-time-counter">
+                <p>Resend OTP in <span>{{tickerLabel}}</span></p>
             </div>
+            <div class="otp-area">
+                <div class="otp-area-l">
+                    <input type="text" maxlength="6" placeholder="Enter OTP" [formControl]="otp"
+                        (keypress)="checkNumeric($event);">
+                </div>
+                <div class="otp-area-r">
+                    <button (click)="$event.stopPropagation();sendOTP();" [disabled]="isTicking">RESEND OTP</button>
+                    <span *ngIf="isPhoneVerfied">VERIFIED<i class="icon-done"></i></span>
+                </div>
+            </div>
+            <ng-container *ngIf="otp.touched || otp.dirty">
+                <p class="error-text" *ngIf="otp.hasError('required')">Please provide valid OTP.</p>
+                <p class="error-text" *ngIf="otp.hasError('pattern')">OTP must contain 6 digits.</p>
+            </ng-container>
+            <p class="error-text" *ngIf="otp.valid && otpErrorMessage">{{otpErrorMessage}}</p>
+            <button class="btn-cont" (click)="$event.stopPropagation();validateOTP(otp.value)"
+                [disabled]="otp.invalid">CONTINUE</button>
         </div>
-        <div class="otp-time-counter">
-            <p>Resend OTP in <span>{{tickerLabel}}</span></p>
-        </div>
-        <div class="otp-area">
-            <div class="otp-area-l">
-                <input type="text" maxlength="6" placeholder="Enter OTP" [formControl]="otp"
-                    (keypress)="checkNumeric($event);">
-            </div>
-            <div class="otp-area-r">
-                <button (click)="$event.stopPropagation();sendOTP();" [disabled]="isTicking">RESEND OTP</button>
-                <span *ngIf="isPhoneVerfied">VERIFIED<i class="icon-done"></i></span>
-            </div>
-        </div>
-        <ng-container *ngIf="otp.touched || otp.dirty">
-            <p class="error-text" *ngIf="otp.hasError('required')">Please provide valid OTP.</p>
-            <p class="error-text" *ngIf="otp.hasError('pattern')">OTP must contain 6 digits.</p>
-        </ng-container>
-        <p class="error-text" *ngIf="otp.valid && otpErrorMessage">{{otpErrorMessage}}</p>
-        <button class="btn-cont" (click)="$event.stopPropagation();validateOTP(otp.value)"
-            [disabled]="otp.invalid">CONTINUE</button>
     </div>
 </app-bottom-menu>

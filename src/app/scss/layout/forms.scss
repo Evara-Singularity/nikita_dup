@@ -146,14 +146,21 @@ input[type=number] {
     
     .outline-input-label {
         margin-bottom:30px;
+        position: relative;
         .form-inline-cta{
             position: absolute;
             bottom: 5px;
             right: 5px;
             padding: 8px;
             border-radius: 8px;
+            font-weight: bold;
             &.success{
                 background-color: var(--slimy-green);
+                color:var(--white);
+            }
+            &.danger{
+                background-color: var(--primary);
+                color:var(--white);
             }
         }
         label {

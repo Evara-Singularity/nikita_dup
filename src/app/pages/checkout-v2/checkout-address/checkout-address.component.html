@@ -21,9 +21,9 @@
             </ng-template>
         </section>
         <all-addresses [addDeliveryOrBilling]="addDeliveryOrBilling"
-            (emitDeliveryAddressSelectEvent$)="_addressService?.handleDeliveryAddressEvent($event)"
-            (emitBillingAddressSelectEvent$)="_addressService?.handleBillingAddressEvent($event)"
-            (emitInvoiceTypeEvent$)="_addressService?.handleInvoiceTypeEvent($event)"></all-addresses>
+            (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
+            (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
+            (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
         <cart [moduleName]="'CHECKOUT'"></cart>
         <order-summary></order-summary>
         <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems" [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } "></shared-checkout-unavailable-items>

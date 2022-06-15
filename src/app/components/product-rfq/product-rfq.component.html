@@ -35,22 +35,23 @@
                 </div>
             </div>
             <div class="outline-input-label">
-                <label>
-                    <input type="text" placeholder="Full Name*" class="user-name" formControlName="firstName"
-                        maxlength="30" placeholder="Full Name*" (click)="isOutOfStock?initiateLogin():false"
-                        name="firstName">
+                <label [class.is-focus]="firstName.value.length > 0">
+                    <input type="text"  class="user-name" formControlName="firstName"
+                        maxlength="30"  (click)="isOutOfStock?initiateLogin():false"
+                        name="firstName" #firstName>
                     <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (firstName.touched || firstName.dirty)">
                         <p class="error-txt" *ngIf="firstName.hasError('required')">Kindly enter your full name.</p>
                         <p class="error-txt" *ngIf="firstName.hasError('pattern')">Special characters are not allowed.
                         </p>
                     </ng-container>
+                    <span class="label">Full Name*</span>
                 </label>
             </div>
             <div class="multiple-form-field">
                 <div class="outline-input-label">
-                    <label>
-                        <input type="text" name="phone-no" placeholder="Mobile*" type="text" formControlName="mobile"
-                            maxlength="10" (click)="isOutOfStock?initiateLogin():false">
+                    <label [class.is-focus]="mobile.value.length > 0">
+                        <input type="text" name="phone-no"  type="text" formControlName="mobile"
+                            maxlength="10" (click)="isOutOfStock?initiateLogin():false" #mobile>
                         <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (mobile.touched || mobile.dirty)">
                             <p class="error-txt" *ngIf="mobile.hasError('required')">Kindly enter your mobile no.</p>
                             <p class="error-txt" *ngIf="mobile.hasError('pattern')">Mobile should contain only digits.
@@ -58,26 +59,28 @@
                             <p class="error-txt" *ngIf="!mobile.hasError('pattern') && mobile.hasError('minlength')">
                                 Mobile should contain 10 digits.</p>
                         </ng-container>
+                        <span class="label">Mobile*</span>
                     </label>
                 </div>
                 <div class="outline-input-label">
-                    <label>
-                        <input type="email" name="email" formControlName="email" placeholder="Email" maxlength="150"
-                            (click)="isOutOfStock?initiateLogin():false">
+                    <label [class.is-focus]="email.value.length > 0">
+                        <input type="email" name="email" formControlName="email"  maxlength="150"
+                            (click)="isOutOfStock?initiateLogin():false" #email>
                         <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (email.touched || email.dirty)">
                             <p class="error-txt" *ngIf="email.hasError('required')">Kindly enter your email id.</p>
                             <p class="error-txt" *ngIf="email.hasError('invalidEmail')">Kindly enter valid email id.
                             </p>
                         </ng-container>
+                        <span class="label">Email</span>
                     </label>
                 </div>
             </div>
             <div class="multiple-form-field">
                 <div class="outline-input-label">
-                    <label>
+                    <label [class.is-focus]="pincode.value.length > 0">
                         <input type="text" name="Pincode*" class="pincode" formControlName="pincode" maxlength="6"
-                            placeholder="Pincode" [readonly]="isPincodeUnKnown.value"
-                            (click)="isOutOfStock?initiateLogin():false">
+                            placeholder="" [readonly]="isPincodeUnKnown.value"
+                            (click)="isOutOfStock?initiateLogin():false" #pincode>
                         <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (pincode.touched || pincode.dirty)">
                             <!-- <p class="error-txt" *ngIf="pincode.hasError('required')">Kindly enter your pincode.</p> -->
                             <p class="error-txt" *ngIf="pincode.hasError('pattern')">Pincode should contain only digits.
@@ -90,13 +93,14 @@
                         <p class="error-txt" *ngIf="isRFQSubmitted && pincode.valid && isInvalidPincode">
                             Invalid pincode
                         </p>
+                        <span class="label">Pincode</span>
                     </label>
                 </div>
                 <div class="outline-input-label">
-                    <label>
-                        <input type="text" placeholder="City" name="City*" formControlName="city" maxlength="30"
+                    <label [class.is-focus]="city.value.length > 0">
+                        <input type="text" placeholder="" name="City*" formControlName="city" maxlength="30"
                             [readonly]="!(isPincodeUnKnown.value)" (click)="isOutOfStock?initiateLogin():false"
-                            (paste)="$event.preventDefault()">
+                            (paste)="$event.preventDefault()" #city>
                         <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (pincode.touched ||  city.dirty)">
                             <p class="error-txt" *ngIf="isPincodeUnKnown.value && city.hasError('required')">
                                 Kindly enter your city name.</p>
@@ -107,6 +111,7 @@
                                 City should contain 30 characters.
                             </p>
                         </ng-container>
+                        <span class="label">City</span>
                     </label>
                 </div>
             </div>
@@ -166,18 +171,8 @@
 </app-bottom-menu>
 <!--Popup-->
 <app-pop-up *ngIf="!isOutOfStock && isPopup"
-    [headerType]="'pop-up-header'"
+    [headerType]="'pop-up-header2'"
     [data]="{headerText: 'Interested to buy in bulk', headerSubText: 'Add more details to get the best deal'}">
-    <div class="head-sec" header>
-        <div class="container">
-            <i class="icon-circle-delete f-left" (click)="close()"></i>
-            <p class="txt">Interested to buy in bulk
-                <span class="subtxt">
-                    Add more details to get the best deal.
-                </span>
-            </p>
-        </div>
-    </div>
     <div class="content-popup rfqPopup" content>
         <ng-container *ngTemplateOutlet="rfqFormTemplate "></ng-container>
     </div>

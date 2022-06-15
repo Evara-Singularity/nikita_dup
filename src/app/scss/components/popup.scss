@@ -280,21 +280,40 @@
         background:var(--white);
         display: flex;
         justify-content: flex-start;
-        // min-height: 50px;
         align-items: center;
         padding: 10px;
         box-shadow: rgba(0, 0, 0, 0.16) -1px 2px 2px;
         position: relative;
        i{
            margin-right:15px;
-           font-size: $extra-large-3-font;
+           font-size: $extra-large-2-font;
        }
        .page-name {
         font-size: $large-font;
         color:var(--onyx-black);
       }
-    
 }
+.pop-up-header2{
+    background:var(--white);
+    display: flex;
+    justify-content: flex-start;
+    align-items:center;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) -1px 2px 2px;
+    position: relative;
+    i{
+        margin-right:15px;
+        font-size: $extra-large-2-font;
+    }
+    .page-name {
+     font-size: $large-font;
+     color:var(--onyx-black);
+   }
+   .text-section{
+       width:calc(100% - 30px);
+   }
+}
+
 .pop-up-header{
     background:var(--white);
     box-shadow: rgba(0, 0, 0, 0.16) -1px 2px 2px;

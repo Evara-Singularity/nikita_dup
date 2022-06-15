@@ -13,6 +13,18 @@
             {{headerText}}
         </span>
     </div>
+    <div *ngIf="headerType === 'pop-up-header2'" class="pop-up-header2">
+         <i class="icon-circle-delete"  (click)="closePopup()"></i>
+        <div class="text-section">
+            <h3 class="heading-3 pad-tb-0">
+                {{headerText}}
+            </h3>
+            <p class="page-name">
+                {{headerText}}
+            </p>
+        </div>
+    </div>
+   
     
     <!-- <ng-container *ngIf="headerCustom">
         <ng-content select="[header]"></ng-content>

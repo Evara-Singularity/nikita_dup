@@ -32,16 +32,12 @@
                         </p>
                     </ng-container>
                 </div>
-                <div class="outline-input-label for-varification">
-                    <div class="for-varification-l">
+                <div class="outline-input-label">
                         <label [class.is-focus]="displayFocus('phone')">
                             <input formControlName="phone" type="tel" numbersOnly placeholder="" maxlength="10">
                             <span class="label">Phone Number*</span>
                         </label>
-                    </div>
-                    <div class="form-inline-cta" *ngIf="phone.valid && phoneVerified.value">
-                        <span class="hidden">VERIFIED</span>
-                    </div>
+                    <span class="form-inline-cta" *ngIf="phone.valid && phoneVerified.value">VERIFIED</span>
                     <ng-container *ngIf="phone.touched || phone.dirty">
                         <p *ngIf="phone.hasError('required')" class="error-txt">
                             Kindly enter your 10 digit contact number

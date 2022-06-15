@@ -1,18 +1,8 @@
 @import '../../scss/variables';
-.ngx-pagination .pagination-previous a::before,
-.ngx-pagination .pagination-previous.disabled::before,
-.ngx-pagination .pagination-next a::after,
-.ngx-pagination .pagination-next.disabled::after {
-    margin: 0px !important;
-}
-
 pagination-controls {
     display: block;
     text-align: center;
     ul.ngx-pagination {
-        float: none !important;
-        text-align: center;
-        width: $fullwidth;
         overflow: hidden;
         margin-top: 0px;
         padding: 15px 0px;
@@ -20,7 +10,7 @@ pagination-controls {
         li {
             font-size: $medium-font;
             background: transparent;
-            margin: 0 2px;
+            margin: 0 1px;
             font-weight: normal;
             color: #565656!important;
             border-radius: 50%;
@@ -29,12 +19,15 @@ pagination-controls {
             text-align: center;
             line-height: $large-line-height;
         
-            &.disabled {
-                opacity: 0.45 !important;
-            }
             a {
                 font-size: $medium-font;
                 font-weight: $font-normal;
+                line-height: $extra-large-1-line-height;
+                height: 30px;
+                padding: 0 !important;
+                &:hover{
+                    background: none !important;
+                }
             }
             &.current {
                 background: var(--onyx-black);
@@ -44,6 +37,16 @@ pagination-controls {
                     color: var(--white);
                 }
             }
+            &.pagination-previous {
+                display: inline-block !important;
+                opacity: 1 !important;
+
+
+            }
+            &.disabled {
+                opacity: 0.45 !important;
+                margin-right: 30px;
+             }
         }
     }
 } 
@@ -57,36 +60,11 @@ pagination-controls {
 .ngx-pagination .pagination-next.disabled::after {
     content: 'NEXT' !important;
     color: var(--blue);
+  
 }
-.ngx-pagination a,
-.ngx-pagination button {
-    line-height: $extra-large-1-line-height;
-    height: 30px;
-    padding: 0 !important;
-}
-li.pagination-previous {
-    margin-right: 30px !important;
-    display: inline-block !important;
-    opacity: 1 !important;
-}
-.ngx-pagination a:hover, .ngx-pagination button:hover {
-    background: none !important;
+
+@media screen and (min-width: 340px) {
+    body {
+      margin: 0 2px !important;
+    }
   }
-@media only screen and (max-width:768px) {
-    ul.ngx-pagination {
-        float: none;
-        text-align: center;
-        width: $fullwidth;
-        overflow: hidden;
-        margin-top: 0px;
-    }
-    .prod_nav {
-        margin-top: 20px !important;
-        margin-bottom: 20px !important;
-    }
-    brand {
-        .prod_nav {
-            margin-bottom: 40px !important;
-        }
-    }
-}

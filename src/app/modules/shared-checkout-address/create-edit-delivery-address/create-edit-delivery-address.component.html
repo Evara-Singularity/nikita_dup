@@ -37,7 +37,7 @@
                             <input formControlName="phone" type="tel" numbersOnly placeholder="" maxlength="10">
                             <span class="label">Phone Number*</span>
                         </label>
-                    <span class="form-inline-cta" *ngIf="phone.valid && phoneVerified.value">VERIFIED</span>
+                    <span class="form-inline-cta success" *ngIf="phone.valid && phoneVerified.value">VERIFIED</span>
                     <ng-container *ngIf="phone.touched || phone.dirty">
                         <p *ngIf="phone.hasError('required')" class="error-txt">
                             Kindly enter your 10 digit contact number

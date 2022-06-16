@@ -33,7 +33,6 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() isBulkPricesProduct;
   @Input() productBulkPrices;
   @Input() selectedProductBulkPrice;
- // @Output() checkBulkPriceMode$: EventEmitter<any> = new EventEmitter<any>();
   @Output() scrollToResults$: EventEmitter<any> = new EventEmitter<any>();
   singlePeacePrice:any;
 

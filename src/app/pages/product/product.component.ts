@@ -378,7 +378,6 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.productStatusCount();
             this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
-            this.attachSwipeEvents();
             this.attachBackClickHandler();
         }
     }
@@ -4088,112 +4087,6 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     get isLoggedIn() { let user = this.localStorageService.retrieve("user"); return user && user.authenticated == "true" }
-
-    initialMouse;
-    slideMovementTotal;
-    mouseIsDown;
-    slider;
-    attachSwipeEvents()
-    {
-        this.initialMouse = 0;
-        this.slideMovementTotal = 0;
-        this.mouseIsDown = false;
-
-        let slider = this.document.getElementById('slider');
-        if (!slider) {
-            return;
-        }
-
-        // Custom events on slider
-        slider.addEventListener('mouseup', (e) => this.mouseUpTouched(e), false);
-        slider.addEventListener('touchend', (e) => this.mouseUpTouched(e), false);
-
-        // Custom events on Body
-        this.document.body.addEventListener('mousemove', (e) => this.mouseMoveTouchMoveEvent(e), false);
-        this.document.body.addEventListener('touchmove', (e) => this.mouseMoveTouchMoveEvent(e), false);
-
-    }
-
-    sliderAnimation()
-    {
-        let id = null;
-        let pos = 0;
-        const elem = document.getElementById("slider");
-        clearInterval(id);
-        id = setInterval(() =>
-        {
-            if (pos == 100) {
-                clearInterval(id);
-            } else {
-                pos++;
-                elem.style.left = 0 + 'px';
-            }
-        }, 5);
-    }
-
-    mouseUpTouched(event)
-    {
-        let sliderId = this.document.getElementById('slider');
-        if (!this.mouseIsDown) {
-            return;
-        }
-        this.mouseIsDown = false;
-        let currentMouse = event.clientX || event.changedTouches[0].pageX;
-        let relativeMouse = currentMouse - this.initialMouse;
-        console.log('currentMouse -> ' + currentMouse);
-        console.log('relativeMouse -> ' + relativeMouse);
-
-        if (relativeMouse < this.slideMovementTotal) {
-            // $('.slide-text').fadeTo(300, 1);
-            this.sliderAnimation();
-            return;
-        }
-        sliderId.classList.add('unlocked');
-        this.raiseRFQQuote();
-    }
-
-    toggleSliderClasses(event)
-    {
-        let sliderId = this.document.getElementById('slider');
-        if (!sliderId.classList.contains('unlocked')) {
-            return;
-        }
-        sliderId.classList.remove('unlocked');
-        sliderId.removeEventListener('click', this.toggleSliderClasses);
-        sliderId.removeEventListener('tap', this.toggleSliderClasses);
-    }
-
-    mouseMoveTouchMoveEvent(event)
-    {
-        let sliderId = this.document.getElementById('slider');
-        if (!this.mouseIsDown) {
-            return;
-        }
-
-        let currentMouse = event.clientX || (event.originalEvent ? event.originalEvent.touches[0].pageX : 0);
-        let relativeMouse = currentMouse - this.initialMouse;
-        let slidePercent = 1 - (relativeMouse / this.slideMovementTotal);
-        // $('.slide-text').fadeTo(0, slidePercent);
-
-        if (relativeMouse <= 0) {
-            sliderId.style.left = '0px';
-            return;
-        }
-        if (relativeMouse >= this.slideMovementTotal + 10) {
-            sliderId.style.left = this.slideMovementTotal + 'px';
-            return;
-        }
-        sliderId.style.left = relativeMouse - 10 + 'px';
-
-    }
-
-    sliderMouseDownEvent(event)
-    {
-        this.mouseIsDown = true;
-        this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
-        this.initialMouse = event.clientX || (event.originalEvent ? (event.originalEvent.touches[0].pageX) : 0);
-    }
-
 
     ngOnDestroy()
     {

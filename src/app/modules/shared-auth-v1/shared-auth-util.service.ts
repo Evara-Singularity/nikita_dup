@@ -52,8 +52,8 @@ export class SharedAuthUtilService implements OnInit
         }
         let cartSession = Object.assign(this._cartService.getGenericCartSession);
         cartSession['cart']['userId'] = response['userId'];
-        const userName = response['userName'] === 'User' ? "!" : " ," + response['userName'];
-        this.updateCartSession(`Welcome to Moglix, ${userName}`, isCheckout, redirectUrl || '/');
+        const userName = response['userName'] === 'User' ? "!" : ", " + response['userName'];
+        this.updateCartSession(`Welcome to Moglix ${userName}`, isCheckout, redirectUrl || '/');
     }
 
     updateCartSession(message, isCheckout, redirectUrl = null) {

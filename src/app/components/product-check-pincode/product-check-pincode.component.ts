@@ -103,10 +103,15 @@ export class ProductCheckPincodeComponent implements OnInit
                         this.isCashOnDelivery = (pincodeResponse.aggregate.codAvailable) || this.FALSE;
                         this.isServiceable = (pincodeResponse.aggregate.serviceable) || this.FALSE;
                         if (this.isServiceable) {
-                            let avgLogisticEstimated = pincodeResponse['avgDay'] || null;
-                            let avgPlatformEstimated = null;
-                            let estimatedDelivery = this.pageData['estimatedDelivery'] || null;
-                            this.processEstimationInfo(avgLogisticEstimated, avgPlatformEstimated, estimatedDelivery);
+                            if(pincodeResponse['orderDelivered']){
+                                this.setAvgDeliveryInfo(pincodeResponse['orderDelivered'], 'YES');
+                            }
+                            else {
+                                let avgLogisticEstimated = pincodeResponse['avgDay'] || null;
+                                let avgPlatformEstimated = null;
+                                let estimatedDelivery = this.pageData['estimatedDelivery'] || null;
+                                this.processEstimationInfo(avgLogisticEstimated, avgPlatformEstimated, estimatedDelivery);
+                            }
                         }
                         this.sendAnalyticsCall.emit({
                             serviceability: this.isServiceable,

@@ -1,10 +1,15 @@
 @import "../../scss/variables";
 @import '../../scss/layout/forms.scss';
 @import "../../scss/utils/utilities.scss";
-
+.pop-up-header1{
+    .page-name{
+        font-weight: 600;
+    }
+}
 .submit-review {
     height: calc(100% - 100px);
     overflow: auto;
+
     .write-review-section {
         background: var(--white);
         padding: 15px 15px 0;
@@ -39,10 +44,14 @@
         }
 
         .max-char {
-            font-size: $extra-small-font;
+            font-size: $small-font;
             text-align: end;
             color: var(--silver);
         }
+        textarea {
+            height: 100px !important;
+        }
+
     }
 
     .rate_review-text {

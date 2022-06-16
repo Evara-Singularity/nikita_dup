@@ -82,3 +82,43 @@
         }
     }
 }
+.pdf_section {
+    margin-top: 0px;
+    padding: 0px;
+    background: var(--white);
+    .heading-3{
+        border-top: 1px solid #ccc;
+        padding:10px 15px;
+    }
+    .pdf_list {
+        padding: 10px 0px;
+        .pdf_anchr {
+            display: block;
+            border-bottom: 1px solid #ccc;
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+        .pdf_link {
+            justify-content: flex-start;
+            .pdf-img {
+                img {
+                    width: 16px;
+                }
+            }
+            .pdf-text {
+                padding-left: 10px;
+
+                h4 {
+                    font-size: 12px;
+                    padding: 5px 0px;
+                }
+                span {
+                    display: block;
+                    font-size: 10px;
+                    color: #008aff;
+                }
+            }
+        }
+    }
+}

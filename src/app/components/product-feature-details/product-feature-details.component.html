@@ -107,12 +107,12 @@
             </div>
         </div>
 
-        <div *ngIf="productDocumentInfo && productDocumentInfo.length > 0" class="pdf_section">
-            <h3>Product Specification Document</h3>
-            <div class="pdf_list">
+        <div *ngIf="productDocumentInfo && productDocumentInfo.length > 0" class="pdf_section mt-10">
+            <h3 class="heading-3">Product Specification Document</h3>
+            <div class=" pwa-row pdf_list">
                 <ng-container *ngFor="let pdf of productDocumentInfo">
                     <a target="_blank" class="pdf_anchr" href="{{DOCUMENT_URL + pdf.path}}">
-                        <div class="pdf_link clearfix">
+                        <div class="pwa-row pad-tb-0 pdf_link">
                             <span class="pdf-img">
                                 <img src="{{imagePathAsset}}assets/img/download.svg">
                             </span>

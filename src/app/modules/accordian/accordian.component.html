@@ -16,7 +16,7 @@
                     <div *ngFor="let data of  details.data | slice:0:10">
                         <a (click)="$event.preventDefault();accordianNav(getUrlPathName(data.link), details?.outerNavRouteEvent, data);triggerAnalyticsInfo()" 
                             [href]="[data.link.includes('http') ? data.link : prodUrl + '/' + data.link ]">
-                            <span *ngIf="details.name=='Popular Brand Categories'"></span>{{data.name}}
+                            <span *ngIf="details.name=='Popular Brand Categories'">{{data.extra}}</span>{{data.name}}
                         </a>
                         <i class="icon-arrow-right-s-line"></i>
                     </div>

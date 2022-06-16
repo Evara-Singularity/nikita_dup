@@ -121,7 +121,7 @@ export class BrandComponent {
         this.accordiansDetails.push({
             name: 'Popular Brand Categories',
             extra: this.API_RESPONSE['brand'][0].brandName,
-            data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+            data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: this.API_RESPONSE['brand'][0].brandName+' '+x[0], link: x[1] }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
         this.accordiansDetails.push({

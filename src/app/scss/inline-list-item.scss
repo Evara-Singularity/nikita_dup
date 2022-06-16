@@ -32,6 +32,8 @@
 }
 .inline-list-item-variant1 {
     background-color: var(--white);
+    display: flex;
+    align-items: center;
     padding: 15px;
     .inline-list-icon {
         width: 10%;
@@ -48,16 +50,15 @@
         width: auto;
         margin-left: auto;
         .get-quote {
-            padding: 6px 8px;
+            padding: 10px 6px;
             color: var(--primary);
             background: var(--misty-rose);
-            border-radius: $border-radius-4;
+            border-radius: $border-radius-6;
             font-weight: $font-bold;
         }
     }
     small {
         font-size: $medium-font;
-        padding-top: 5px;
         display: block;
         color: var(--gray-web);
     }
@@ -65,6 +66,7 @@
         font-size: $small-font;
     }
     strong {
-        font-weight: 500;
+        font-weight: bold;
+        font-size: $large-font;
     }
 }

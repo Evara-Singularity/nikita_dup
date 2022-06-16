@@ -1,3 +1,4 @@
+@import "../../scss/variables";
 /*widget css*/
 .widget-container {
     display: flex;
@@ -19,18 +20,18 @@
             display: flex;
             align-items: center;
             color: #000;
-            font-size: 14px;
+            font-size: $large-font;
         }
         p {
             color: #303030;
-            font-size: 14px;
+            font-size: $large-font;
             font-weight: 500;
             line-height: 19px;
+            font-weight: bold;
         }
-
         .explore-now {
-            color: #d9232d;
-            font-size: 10px;
+            color: var(--primary);
+            font-size: $small-font;
             font-weight: 400;
             vertical-align: bottom;
         }

@@ -1,4 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
 import { DashboardBussinessComponent } from './bussiness.component';
 
 const routes: Routes = [
@@ -9,47 +10,47 @@ const routes: Routes = [
             {
                 path: '',
                 loadChildren: () => import('../../modules/dashboard/bussiness-personal-info/businessInfo.module').then(m => m.BusinessInfoModule),
-                data: { title: 'My Profile', menuBar: true }
+                data: { title: 'My Profile', menuBar: true, moduleName: CONSTANTS.MODULE_NAME.DASHBOARD }
             },
             {
                 path: 'business-detail',
                 loadChildren: () => import('../../modules/dashboard/bussiness-detail/businessDetail.module').then(m => m.BusinessDeatailDashboardModule),
-                data: { title: 'My Business Details', menuBar: true }
+                data: { title: 'My Business Details', menuBar: true, moduleName: CONSTANTS.MODULE_NAME.DASHBOARD }
             },
             {
                 path: 'address',
                 loadChildren: () => import('../../modules/dashboard/bussiness-address/businessAddress.module').then(m => m.BusinessAddressModule),
-                data: { title: 'My Address', menuBar: true }
+                data: { title: 'My Address', menuBar: true, moduleName: CONSTANTS.MODULE_NAME.DASHBOARD }
             },
             {
                 path: 'order',
                 loadChildren: () => import('../../modules/dashboard/bussiness-order/businessOrder.module').then(m => m.BusinessOrderModule),
-                data: { title: 'My Order', menuBar: true }
+                data: { title: 'My Order', menuBar: true, moduleName: CONSTANTS.MODULE_NAME.DASHBOARD }
             },
             {
                 path: 'password',
                 loadChildren: () => import('../../modules/dashboard/bussiness-password/businessPassword.module').then(m => m.BusinessPasswordModule),
-                data: { title: 'Change Password' }
+                data: { title: 'Change Password', moduleName: CONSTANTS.MODULE_NAME.DASHBOARD }
             },
             {
                 path: 'info',
                 loadChildren: () => import('../../modules/dashboard/bussiness-personal-info/businessInfo.module').then(m => m.BusinessInfoModule),
-                data: { title: 'My Profile', menuBar: true }
+                data: { title: 'My Profile', menuBar: true, moduleName: CONSTANTS.MODULE_NAME.DASHBOARD }
             },
             {
                 path: 'purchase-list',
                 loadChildren: () => import('../../modules/dashboard/bussiness-purchase-list/businessPurchaseList.module').then(m => m.BusinessPurchaseListModule),
-                data: { title: 'My  Wishlist', menuBar: true }
+                data: { title: 'My  Wishlist', menuBar: true, moduleName: CONSTANTS.MODULE_NAME.DASHBOARD }
             },
             {
                 path: 'rfq',
                 loadChildren: () => import('../../modules/dashboard/bussiness-rfq/businessRfq.module').then(m => m.BusinessRfqModule),
-                data: { title: 'My RFQ', addRfq: true, menuBar: true }
+                data: { title: 'My RFQ', addRfq: true, menuBar: true, moduleName: CONSTANTS.MODULE_NAME.DASHBOARD }
             },
             {
                 path: 'order-detail',
                 loadChildren: () => import('../../modules/dashboard/order-detail/order-detail.module').then(m => m.OrderDetailModule),
-                data: { title: 'Order Detail' }
+                data: { title: 'Order Detail', moduleName: CONSTANTS.MODULE_NAME.DASHBOARD }
             },
             {
 				path: '**',

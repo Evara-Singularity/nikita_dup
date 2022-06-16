@@ -24,7 +24,8 @@
         border-radius: 8px;
         padding: 5px;
         margin-right: 10px;
-        width: 48%;
+        // width: 48%;
+        width: fit-content;
         margin-bottom: 10px;
         overflow: hidden;
         &:last-child {

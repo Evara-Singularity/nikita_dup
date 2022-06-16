@@ -535,6 +535,7 @@ const routes: Routes = [
 					footer: true,
 					logo: true,
 					moreOpt: true,
+					moduleName: CONSTANTS.MODULE_NAME.DASHBOARD
 				},
 			},
 			{

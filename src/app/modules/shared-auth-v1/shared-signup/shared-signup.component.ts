@@ -176,6 +176,8 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
             this._globalLoader.setLoaderState(false);
             if (res["status"]) {
                 userSession['userName'] = this.firstName.value || CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER;
+                userSession['email'] = this.email.value || "";
+                this.updateProfileLocalStorage(userSession['userName'], userSession['email']);
                 this.handleSuccessProfileUpdate(obj.pname);
             } else {
                 this._toastService.show({
@@ -184,6 +186,11 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
                 });
             }
         });
+    }
+
+    updateProfileLocalStorage(userName, email){
+        let userSession = Object.assign({}, this._localAuthService.getUserSession(), { userName, email });
+        this._localAuthService.setUserSession(userSession);
     }
 
     private handleSuccessProfileUpdate(name = '') {

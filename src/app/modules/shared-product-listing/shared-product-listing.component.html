@@ -1,6 +1,6 @@
 <div class="filter-wrapper" *ngIf="productsListingData?.products?.length>0 || filterChipsArray?.length > 0" [class.translateHeader]="!_commonService.isScrolledHeader">
     <button type="button" (click)="toggleSortBy()">
-        <i class="icon-short icon-sort-by" aria-hidden="true"></i> <span class="txt"> Sort By
+        <i class="icon-short icon-sort-by" aria-hidden="true"></i> <span class="txt"> SSort By
             <span class="red-txt" [ngSwitch]="_commonService.selectedFilterData['sortBy']">
                 <ng-container *ngSwitchCase="'popularity'">
                     Popularity

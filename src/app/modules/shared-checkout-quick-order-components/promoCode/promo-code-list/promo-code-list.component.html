@@ -10,18 +10,6 @@
           </div>
         </div>
       </div>
-      <div class="alert-box" *ngIf="showAppliedPromoCode">
-        <div class="overlay" (click)="$event.stopPropagation();closePopUp()"></div>
-        <div class="content-area">
-          <div class="info-area">
-            <i class="icon-coupon-3-fill-1"></i>
-            <p class="applied-coupon">'{{_cartService?.appliedPromoCode}}' applied</p>
-            <p class="saving-applid-coupon"><span>&#8377;24</span> saving with this coupon</p>
-            <p class="green-text">YAY!</p>
-          </div>
-        </div>
-      </div>
-      <!-- new design -->
       <div class="coupon-card-container" *ngIf="_cartService?.allPromoCodes.length">
         <p class="pwa-text">Available Coupons</p>
         <ng-container *ngFor="let item of _cartService?.allPromoCodes; let i = index;">

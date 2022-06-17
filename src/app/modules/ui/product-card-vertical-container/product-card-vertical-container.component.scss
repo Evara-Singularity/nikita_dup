@@ -1,10 +1,6 @@
 @import "../../../scss/variables";
 .with-scroll-container{
-    ::-webkit-scrollbar {
-        display: none;
-    } 
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none; 
+    @extend %hide-scrollbar; 
     .inner-container{
         display:flex;
         flex-wrap:nowrap;

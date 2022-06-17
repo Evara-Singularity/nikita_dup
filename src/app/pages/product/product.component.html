@@ -1,5 +1,5 @@
-<div class="pwa-row">
-    <div id="oosSimilarTopSection" class="pwa-col-12 oosSimilarTopSection" *ngIf="productOutOfStock">
+<div class="pwa-row" *ngIf="productOutOfStock" >
+    <div id="oosSimilarTopSection" class="pwa-col-12 oosSimilarTopSection" >
         <h2 *ngIf="productService.oosSimilarProductsData.similarData.length > 1">Consider These Available Items</h2>
         <div class="horizontal-scroll-container consider-these-products" id="horizontal-scroll-container"
             (scroll)="onScrollOOOSimilar($event)">
@@ -201,8 +201,8 @@
 
 <!-- CTA Fixed position -->
 <floating-button-container  [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
-    <floating-button [label]="'ADD TO CART'" [type]="'WHITE'" (onClick)="showFBT()"></floating-button>
-    <floating-button [label]="'BUY NOW'" [type]="'RED'" (onClick)="addToCart(true)"></floating-button>
+    <floating-button [iconClass]="'icon-cart1'" [label]="'ADD TO CART'" [type]="'WHITE'" (onClick)="showFBT()"></floating-button>
+    <floating-button [iconClass]="''" [label]="'BUY NOW'" [type]="'RED'" (onClick)="addToCart(true)"></floating-button>
 </floating-button-container>
 
 <floating-button-container

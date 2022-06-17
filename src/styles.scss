@@ -20,6 +20,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    
+}*:focus {
+    outline: none;
 }
 body {
     background: var(--ghost-white);
@@ -84,7 +87,7 @@ a {
 header-nav {
     &.inner_head {
         &+div {
-            margin-top: 50px;
+            margin-top: 55px;
         }
     }
     &.remove_inner_head {

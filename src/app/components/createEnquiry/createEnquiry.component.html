@@ -1,7 +1,6 @@
 
 
 <div id="create_rfq">
-
     <div class="rfq">
         <div class="bannerBlock">
             <p>Buying for Your Business?</p>
@@ -15,41 +14,47 @@
                         <span>All of this within 30 min.</span>
                     </p>
                 </div>
-                <div class="material-form material-form-boxed">
-                    <div class="input-field-boxed">
-                        <label>Full Name*</label>
-                        <input type="text" formControlName='name' placeholder="Enter full name">
-                        <div class="error-txt" *ngIf="isFormSubmitted && nameFC.invalid" >
-                            Kindly enter your fullname
-                        </div>
+                <div class="material-form">
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="nameFC.value.length!=0">
+                            <input type="text" formControlName='name'>
+                            <div class="error-txt" *ngIf="isFormSubmitted && nameFC.invalid" #rfq>
+                                Kindly enter your fullname
+                            </div>
+                            <span class="label">Full Name*</span>
+                        </label>
                     </div>
-                    <div class="input-field-boxed">
-                        <label>Email ID*</label>
-                        <input type="text" formControlName='email' placeholder="Enter Email ID">
-                        <div class="error-txt" *ngIf="isFormSubmitted && emailFC.invalid" >
-                            Kindly enter valid email
-                        </div>
+                    <div class="outline-input-label">
+                        <label>
+                            <input type="text" formControlName='email'>
+                            <div class="error-txt" *ngIf="isFormSubmitted && emailFC.invalid" >
+                                Kindly enter valid email
+                            </div>
+                            <span class="label">Email ID*</span>
+                      </label>
+                  </div>
+                <div class="outline-input-label">
+                  <label>
+                    <input type="text" numbersOnly formControlName='phoneno'>
+                    <div class="error-txt" *ngIf="isFormSubmitted && phoneFC.invalid" >
+                        Kindly enter valid mobile number
                     </div>
-                    <div class="input-field-boxed">
-                        <label>Mobile No*</label>
-                        <input type="text" numbersOnly formControlName='phoneno' placeholder="Enter Mobile No">
-                        <div class="error-txt" *ngIf="isFormSubmitted && phoneFC.invalid" >
-                            Kindly enter valid mobile number
-                        </div>
-                    </div>
-                    <div class="input-field-boxed">
-                        <label>Company (Optional)</label>
-                        <input type="text" formControlName='company_name' placeholder="Enter Company (Optional)">
-                    </div>
-                    <button class="btn secondry-btn" (click)="submit()" >SUBMIT REQUEST</button>
+                    <span class="label">Mobile No*</span>
+                  </label>
+                </div>
+                <div class="outline-input-label">
+                    <label>
+                    <input type="text" formControlName='company_name' placeholder="">
+                    <span class="label">Company (Optional)</span>
+                    </label>
+                </div>
+                 <button class="btn secondry-btn" (click)="submit()">SUBMIT REQUEST</button>
                 </div>
             </div>
         </div>  
     </div>
-    <!-- success popup -->
-    
 </div>
-
+<!-- success popup -->
 <app-bottom-menu *ngIf="showThanksPopup" (outData$)="togglePopUp()">
     <div content>
         <div class="thanks-pop">

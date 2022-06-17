@@ -9,10 +9,10 @@
     background-color: var(--white);
     padding-bottom:60px;
     .select-warp {
-        padding: 10px;
+        padding: 0 10px 10px;
         width:$fullwidth;
         .heading-3 {
-            padding-bottom: 5px;
+            padding: 5px 0 5px;
         }
         ul {
             width:$fullwidth;
@@ -52,6 +52,7 @@
 .static-card-container{
     padding: 15px;
     border-bottom: 1px solid var(--platinum);
+    margin-bottom: 10px;
     .oos-listing-section{
         padding-top: 10px;
         .out-of-stock-text{

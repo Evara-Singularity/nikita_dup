@@ -3,7 +3,7 @@
 @import '../../../../scss/layout/cards.scss';
 @import '../../../../scss/utils/utilities.scss';
 .select-offers {
-    margin-top: 10px;
+    padding-top: 10px;
     .promo-code {
         @extend %clear-fix;
         padding: 0 15px 15px 15px;
@@ -35,9 +35,10 @@
         padding: 20px 15px 15px;
         .pwa-text{
             padding-bottom: 10px;
+            font-weight: $font-bold;
         }
         .card{
-            padding: 15px;
+            padding: 20px 15px;
             margin-bottom: 10px;
             .apply-coupon{
                 display: flex;
@@ -109,7 +110,7 @@
         top: 120%;
         left: 0;
         overflow: scroll;
-        background: $white;
+        background: var(--white) !important;
         @extend %transition;
         &.open {
             top: 0;
@@ -145,6 +146,7 @@
 }
 //Promo PopUp
 .select-offers {
+    background: var(--white);
     &.open {
         background-color: var(--white);
         // .container {

@@ -1,3 +1,4 @@
+import { CartService } from './../../utils/services/cart.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 
@@ -17,12 +18,16 @@ export class CartHeaderComponent implements OnInit {
   @Input() isUserLogin: boolean = false;
   @Input() enableBackBtn: boolean = false;
   @Input() imgAssetPath: boolean = false;
+  cartSession = null;
 
   constructor(
-    public _commonService: CommonService
+    public _commonService: CommonService,
+    private _cartService:CartService
   ) { }
 
   ngOnInit(): void {
+    this.cartSession = this._cartService.getCartSession();
+    this.noOfCart = (this.cartSession['itemsList'] as any[]).length || 0
   }
 
 }

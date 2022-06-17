@@ -94,6 +94,9 @@
 }
 
 .profile-card {
+    &:last-child{
+        margin-bottom: 75px
+    }
     @extend %white-card;
     display: flex;
     justify-content: space-between;
@@ -114,15 +117,19 @@
                     border: 1px solid var(--white);
                     background-color: var(--primary) !important;
                     color: var(--white);
+                    padding-right: 82px !important; 
                 }
                 .label {
-                    color: var(--white) !important;
+                    color:#ffffff85 !important;
+                    font-weight: 400;
                 }
                 .form-inline-cta {
                     background-color: var(--white);
                     color: var(--primary);
                     font-size: $medium-font;
                     border-radius:$border-radius-4;
+                    min-width: 70px;
+                    text-align: center;
                 }
                 &.is-focus .label,
                 input:focus + .label,
@@ -139,6 +146,7 @@
     margin-top: 65px;
     padding: 25px 15px;
     .name {
+        width: 50px;
         .icon-profile {
             font-size: 40px;
         }
@@ -152,8 +160,9 @@
             }
         }
     }
-    .update-name {
-        background-color: #e72b35;
+    .update-name-form {
+        width: calc(100% - 50px);
+        background-color: var(--primary);
         padding: 5px 10px;
         font-weight: bold;
         border-radius: $border-radius-4;

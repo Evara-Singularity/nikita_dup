@@ -484,7 +484,7 @@ i[class^="icon-"],
 }
 
 .icon-menu:before {
-    content: "\e959";
+    content: "\ea48";
 }
 
 .icon-my-orders:before {
@@ -589,7 +589,7 @@ i[class^="icon-"],
 }
 
 .icon-search:before {
-    content: "\e972";
+    content: "\ea63";
 }
 
 .icon-security:before,
@@ -781,4 +781,10 @@ i[class^="icon-"],
 }
 .icon-bin:before{
     content: "\e9fe";
+}
+.icon-change_password:before{
+    content: "\ea19";
+}
+.icon-logout1:before{
+    content: "\ea56";
 }

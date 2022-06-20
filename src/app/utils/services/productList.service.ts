@@ -459,7 +459,7 @@ export class ProductListService {
             eventData["prodId"];
           eventData["prodPrice"] =
             cartSession["itemsList"][p]["productUnitPrice"] *
-              cartSession["itemsList"][p]["productQuantity"] +
+            cartSession["itemsList"][p]["productQuantity"] +
             eventData["prodPrice"];
           eventData["prodQuantity"] =
             cartSession["itemsList"][p]["productQuantity"] +

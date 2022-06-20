@@ -49,6 +49,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   sponseredProductLoadStatus: boolean = false;
   isHomeHeader: boolean = true;
   public appliedFilterCount: number = 0;
+  showSortBy: boolean = true;
 
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
@@ -284,15 +285,11 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       const factory = this._componentFactoryResolver.resolveComponentFactory(SortByComponent);
       this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this._injector);
 
-      (this.sortByInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
-        this.toggleSortBy();
-      });
-    } else {
-      const sortByFilter = document.querySelector('sort-by');
-      if (sortByFilter) {
-        sortByFilter.classList.toggle('open');
-      }
+    } 
+    else{
+      this.sortByInstance.instance['showFilter'] = true;
     }
+
   }
 
   resetLazyComponents() {

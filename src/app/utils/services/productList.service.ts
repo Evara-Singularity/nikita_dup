@@ -84,7 +84,7 @@ export class ProductListService {
               "large",
               "medium"
             );
-          this.setProductTags(product);
+          product['productTags'] = this.getProductTag(product);
           product["internalProduct"] = true;
           product["discount"] = this._commonService.calculcateDiscount(
             product["discount"],
@@ -115,8 +115,13 @@ export class ProductListService {
     }
   }
 
-  setProductTags(product) {
-    product["productTags"] = product["productTags"];
+  getProductTag(product) {
+    if (product["productTags"]) {
+      if (product["productTags"].length > 1) {
+        return product["productTags"][product["productTags"].length - 1]["tagImageLink"];
+      } else if (product["productTags"][0])
+        return product["productTags"][0]["tagImageLink"];
+    }
   }
 
   getFilterBucket(categoryId, pageName, brandName?: string) {

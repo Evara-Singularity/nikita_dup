@@ -47,16 +47,6 @@ export class ProductCardHorizontalListViewComponent extends ProductCardCoreCompo
     );
   }
 
-  method() {
-    console.log("this.product['productTags']", this.product["productTags"]);
-    if (this.product["productTags"]) {
-      if (this.product["productTags"].length > 1) {
-        return this.product["productTags"][1]["tagImageLink"];
-      } else if (this.product["productTags"][0])
-        return this.product["productTags"][0]["tagImageLink"];
-    }
-  }
-
   ngOnInit(): void {
     super.ngOnInit();
   }

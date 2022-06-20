@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'plp-fixed-header',
@@ -12,12 +14,18 @@ export class PlpFixedHeaderComponent implements OnInit {
   @Output() loadSearchNav$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() goBack$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() noOfCart: number = 0;
+  searchValue='';
 
   constructor(
-    public _commonService: CommonService
+    public _commonService: CommonService,
+    public route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
+
+    this.route.queryParams.subscribe(res => {
+      this.searchValue = (res['search_query']) ? res['search_query'] : ''
+    })
   }
 
 }

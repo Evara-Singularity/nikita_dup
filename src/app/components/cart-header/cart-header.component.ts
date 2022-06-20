@@ -30,4 +30,6 @@ export class CartHeaderComponent implements OnInit {
     this.noOfCart = (this.cartSession['itemsList'] as any[]).length || 0
   }
 
+  get isCheckout() { return this.title === "Checkout"}
+
 }

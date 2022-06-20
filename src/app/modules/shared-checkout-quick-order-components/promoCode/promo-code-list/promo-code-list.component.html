@@ -1,6 +1,6 @@
-<app-pop-up [headerType]="'pop-up-header'" [data]="{headerText: 'ALL OFFERS'}">
-  <div class="content-popup" content>
-    <section class="select-offers open">
+<app-pop-up [headerType]="'pop-up-header1'" [data]="{headerText: 'Apply Coupons'}">
+  <div class="content-popup select-offers" content>
+    <section class=" open">
       <custom-promo-code [nextPromocode]="nextPromocode"></custom-promo-code>
       <div class="pwa-row no-coupon-card-container" *ngIf="_cartService?.allPromoCodes.length == 0">
         <div class="pwa-col-12 card">
@@ -20,7 +20,7 @@
                 <h3>{{item.promoCode}}</h3>
                 <p class="promo-description">{{item.promoDescription}}</p>
               </div>
-              <button class="btn quaternary-btn-1">APPLY</button>
+              <button class="btn quaternary-btn-1" >APPLY</button>
             </div>
           </div>
         </ng-container>

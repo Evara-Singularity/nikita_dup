@@ -20,6 +20,7 @@ i.icon-circle-delete {
     }
     .outline-input-label{
         margin-bottom: 0;
+        width: 70%;
     }
     .apply-coupon{
         display: flex;
@@ -27,9 +28,7 @@ i.icon-circle-delete {
             margin-right:10px;
         }
         button{
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 400;
+            font-weight: 600;
             width: 30%;
         }
     }

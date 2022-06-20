@@ -116,11 +116,11 @@ export class ProductListService {
   }
 
   getProductTag(product) {
-    if (product["productTags"]) {
-      if (product["productTags"].length > 1) {
-        return product["productTags"][product["productTags"].length - 1]["tagImageLink"];
-      } else if (product["productTags"][0])
-        return product["productTags"][0]["tagImageLink"];
+    if (product && product["productTags"] && product["productTags"].length > 1) {
+      return product["productTags"][product["productTags"].length - 1]["tagImageLink"];
+    }
+    else if (product["productTags"][0]) {
+      return product["productTags"][0]["tagImageLink"];
     }
   }
 

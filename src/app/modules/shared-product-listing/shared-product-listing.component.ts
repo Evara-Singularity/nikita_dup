@@ -49,6 +49,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   sponseredProductLoadStatus: boolean = false;
   isHomeHeader: boolean = true;
   public appliedFilterCount: number = 0;
+  showSortBy: boolean = true;
 
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
@@ -260,10 +261,11 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       this.filterInstance.instance['brandName'] = this.brandName;
       this.filterInstance.instance['brandUrl'] = this.brandUrl;
       (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
-        this.filterUp();
+        this.filterInstance = null;
+        this.filterContainerRef.remove()
       });
     } else {
-      this._commonService.toggleFilter();
+      // this._commonService.toggleFilter();
       const discountIndex = this.productsListingData.filterData.findIndex(f => f.name === 'discount');
       if (discountIndex>-1) {
         this.productsListingData.filterData[discountIndex].terms.sort((a, b) => (a.term < b.term) ? 1 : ((b.term < a.term) ? -1 : 0)); //ODP-1570, Ratings  asecending to descending
@@ -283,15 +285,12 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
       const factory = this._componentFactoryResolver.resolveComponentFactory(SortByComponent);
       this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this._injector);
-
       (this.sortByInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
-        this.toggleSortBy();
+        if (!data) {
+          this.sortByInstance = null;
+          this.sortByContainerRef.remove();
+        }
       });
-    } else {
-      const sortByFilter = document.querySelector('sort-by');
-      if (sortByFilter) {
-        sortByFilter.classList.toggle('open');
-      }
     }
   }
 

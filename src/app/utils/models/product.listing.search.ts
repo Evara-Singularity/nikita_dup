@@ -48,7 +48,7 @@ export interface ProductsEntity {
     mainImageLink: string;
     mainImageThumnailLink?: string;
     mainImageMediumLink?: string;
-    productTags?: (null)[] | null;
+    productTags?: any ;
     filterableAttributes: FilterableAttributes;
     itemInPack: string;
     ratingCount: number;

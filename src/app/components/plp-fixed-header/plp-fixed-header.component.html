@@ -5,7 +5,7 @@
     </a>
     <a class="search-bar-mini">
         <i class="icon-search"></i>
-        <input type="text" placeholder="Search Product/Category/Brand..." (click)="loadSearchNav$.emit()">
+        <input type="text" placeholder="Search Product/Category/Brand..."  [value]="searchValue" (click)="loadSearchNav$.emit()">
     </a>
     <a (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
         <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>

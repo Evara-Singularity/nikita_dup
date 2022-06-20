@@ -4,7 +4,6 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-declare let dataLayer: any;
 @Component({
     templateUrl: 'orderSummary.html',
     selector: 'order-summary',
@@ -12,6 +11,7 @@ declare let dataLayer: any;
 })
 export class OrderSummaryComponent {
     showPromoOfferPopup: boolean = false;
+    showPromoSuccessPopup: boolean = false;
 
     constructor(
         public router: Router,
@@ -28,6 +28,9 @@ export class OrderSummaryComponent {
         this._cartService.getCartUpdatesChanges().subscribe(result => {
             this.updateShippingCharges();
         });
+        this._cartService.promocodePopupSubject.subscribe((isApplied)=>{
+            this.showPromoSuccessPopup = isApplied;
+        })
     }
     
     updateShippingCharges() {
@@ -51,6 +54,11 @@ export class OrderSummaryComponent {
             };
             this.router.navigate(["/login"], navigationExtras);
         }
+    }
+
+    closePromoSuccessPopUp()
+    {
+        this.showPromoSuccessPopup = false;
     }
 
     //analytics

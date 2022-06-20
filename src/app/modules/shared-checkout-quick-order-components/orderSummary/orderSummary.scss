@@ -48,6 +48,43 @@
       border-top: 1px solid var(--ghost-white);
     }
   }
+  .alert-box{
+        .content-area{
+            border-radius: 12px;
+            .info-area{
+                text-align: center;
+                padding: 30px;
+                i{
+                    font-size: 35px;
+                    color: var(--slimy-green);
+                    padding-bottom: 15px;
+                    display: block;
+                }
+                .applied-coupon{
+                    font-weight: 600;
+                    font-size: 14px;
+                    padding-bottom: 20px;
+                }
+                .saving-applid-coupon{
+                    font-size: 10px;
+                    line-height: 16px;
+                    display: grid;
+                    line-height: $large-line-height;
+                    padding-bottom: 15px;
+                    span{
+                        font-size: 28px;
+                        font-weight: 600;
+                    }
+                }
+                .green-text{
+                    font-size: 14px;
+                    color: var(--slimy-green);
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+
 }
 .shop-btn{
   

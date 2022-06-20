@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { ModalService } from '@app/modules/modal/modal.service';
-import { SharedCheckoutUnavailableItemsComponent } from '@app/modules/shared-checkout-unavailable-items/shared-checkout-unavailable-items.component';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -36,6 +35,7 @@ export class CartService
     public productShippingChargesListObservable: Subject<any> = new Subject();
     private notificationsSubject: Subject<any[]> = new Subject<any[]>();
     public appliedPromocodeSubject: Subject<string> = new Subject<string>();
+    public promocodePopupSubject: Subject<boolean> = new Subject<boolean>();
     //public slectedAddress: number = -1;
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
@@ -1259,16 +1259,14 @@ export class CartService
             }),
         ).subscribe((newCartSession) =>
         {
-            //this.appliedPromocodeSubject.next(this.appliedPromoCode);
             const _cartSession = this.generateGenericCartSession(newCartSession);
             _cartSession['cart']['totalOffer'] = totalOffer;
             _cartSession['extraOffer'] = null;
             this.setGenericCartSession(_cartSession);
             this.orderSummary.next(_cartSession);
             this._loaderService.setLoaderState(false);
-            if (totalOffer) { this._toastService.show({ type: 'success', text: 'Promo Code Applied' }); }
-        }
-        )
+            if (totalOffer) { this.promocodePopupSubject.next(true); }
+        })
     }
 
     verifyAndApplyPromocode(_cartSession, promcode, isUpdateCart)

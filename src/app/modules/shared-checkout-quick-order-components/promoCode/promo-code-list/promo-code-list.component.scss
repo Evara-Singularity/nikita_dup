@@ -3,7 +3,7 @@
 @import '../../../../scss/layout/cards.scss';
 @import '../../../../scss/utils/utilities.scss';
 .select-offers {
-    margin-top: 10px;
+    padding-top: 10px;
     .promo-code {
         @extend %clear-fix;
         padding: 0 15px 15px 15px;
@@ -35,9 +35,10 @@
         padding: 20px 15px 15px;
         .pwa-text{
             padding-bottom: 10px;
+            font-weight: $font-bold;
         }
         .card{
-            padding: 15px;
+            padding: 20px 15px;
             margin-bottom: 10px;
             .apply-coupon{
                 display: flex;
@@ -59,7 +60,45 @@
             }
         }
     }
-    
+    .alert-box{
+        .overlay{
+            background: rgba(0, 0, 0, 0.7);
+        }
+        .content-area{
+            border-radius: 12px;
+            .info-area{
+                text-align: center;
+                padding: 30px;
+                i{
+                    font-size: 35px;
+                    color: var(--slimy-green);
+                    padding-bottom: 15px;
+                    display: block;
+                }
+                .applied-coupon{
+                    font-weight: 600;
+                    font-size: 14px;
+                    padding-bottom: 20px;
+                }
+                .saving-applid-coupon{
+                    font-size: 10px;
+                    line-height: 16px;
+                    display: grid;
+                    line-height: $large-line-height;
+                    padding-bottom: 15px;
+                    span{
+                        font-size: 28px;
+                        font-weight: 600;
+                    }
+                }
+                .green-text{
+                    font-size: 14px;
+                    color: var(--slimy-green);
+                    font-weight: 600;
+                }
+            }
+        }
+    }
 }
 
 
@@ -74,7 +113,7 @@
         top: 120%;
         left: 0;
         overflow: scroll;
-        background: $white;
+        background: var(--white) !important;
         @extend %transition;
         &.open {
             top: 0;
@@ -110,6 +149,7 @@
 }
 //Promo PopUp
 .select-offers {
+    background: var(--white);
     &.open {
         background-color: var(--white);
         // .container {

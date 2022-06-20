@@ -1,5 +1,5 @@
 import { CommonService } from "@app/utils/services/common.service";
-import { Component, ViewEncapsulation, Input } from '@angular/core';
+import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'sort-by',
@@ -12,13 +12,9 @@ import { Component, ViewEncapsulation, Input } from '@angular/core';
 })
 
 export class SortByComponent {
-  @Input() showFilter;
 
+  @Output('toggleFilter') toggleFilter: EventEmitter<any> = new EventEmitter<any>();
   constructor(public _commonService: CommonService) {};
-
-  toggleFilter() {
-    this.showFilter = !this.showFilter;
-  }
 
   ngOnInit() {
   }

@@ -18,5 +18,10 @@ export class SortByComponent {
 
   ngOnInit() {
   }
+
+  togglePopup(data){
+    this.toggleFilter.emit(data);
+  }
+  
 }
 

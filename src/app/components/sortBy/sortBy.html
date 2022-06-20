@@ -5,18 +5,18 @@
     </div>
 </div> -->
 <app-bottom-menu>
-  <div class="overlay" (click)="toggleFilter.emit(false)"></div>
+  <div class="overlay" (click)="togglePopup(false)"></div>
   <div content class="sort-by roundedBox" id="sortBy {{ _commonService.selectedFilterData['sortBy'] }} ">
     <div class="top-header-bottom-menu">
       <h3 class="heading-3">Sort By</h3>
-      <i class="icon-circle-delete" (click)="toggleFilter.emit(false)"></i>
+      <i class="icon-circle-delete" (click)="togglePopup(false)"></i>
     </div>
     <div class="sortByLayout">
       <label>
         <span class="chk-box">
           <input class="hidden" type="radio" name="sortBy"
             [checked]="_commonService.selectedFilterData['sortBy'] == 'popularity'"
-            (change)="toggleFilter.emit(false); _commonService.selectedFilterData['sortBy'] = 'popularity'; _commonService.applyFilter()">
+            (change)="togglePopup(false); _commonService.selectedFilterData['sortBy'] = 'popularity'; _commonService.applyFilter()">
           <span class="custom-box icon-box"></span>
         </span>
         <span class="chk-txt">Popularity</span>
@@ -26,7 +26,7 @@
         <span class="chk-box">
           <input class="hidden" type="radio" name="sortBy"
             [checked]="_commonService.selectedFilterData['sortBy'] == 'lowPrice'"
-            (change)="toggleFilter.emit(false);  _commonService.selectedFilterData['sortBy'] = 'lowPrice'; _commonService.applyFilter()">
+            (change)="togglePopup(false);  _commonService.selectedFilterData['sortBy'] = 'lowPrice'; _commonService.applyFilter()">
           <span class="custom-box icon-box"></span>
         </span>
         <span class="chk-txt"> Price - Low To High</span>
@@ -36,7 +36,7 @@
         <span class="chk-box">
           <input class="hidden" type="radio" name="sortBy"
             [checked]="_commonService.selectedFilterData['sortBy'] == 'highPrice'"
-            (change)="toggleFilter.emit(false);  _commonService.selectedFilterData['sortBy'] = 'highPrice'; _commonService.applyFilter()">
+            (change)="togglePopup(false);  _commonService.selectedFilterData['sortBy'] = 'highPrice'; _commonService.applyFilter()">
           <span class="custom-box icon-box"></span>
         </span>
         <span class="chk-txt">Price - High To Low</span>

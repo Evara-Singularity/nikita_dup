@@ -1,5 +1,5 @@
-<div class="pwa-row" *ngIf="productOutOfStock" >
-    <div id="oosSimilarTopSection" class="pwa-col-12 oosSimilarTopSection" >
+<div class="pwa-row" *ngIf="productOutOfStock">
+    <div id="oosSimilarTopSection" class="pwa-col-12 oosSimilarTopSection">
         <h2 *ngIf="productService.oosSimilarProductsData.similarData.length > 1">Consider These Available Items</h2>
         <div class="horizontal-scroll-container consider-these-products" id="horizontal-scroll-container"
             (scroll)="onScrollOOOSimilar($event)">
@@ -20,6 +20,51 @@
     </div>
 </div>
 <div style="margin-top:10px"></div>
+<app-bottom-menu>
+    <div content>
+        <div class="bottom-rfq-popup pwa-row">
+            <div class="top-header-bottom-menu">
+                <h3 class="heading-3">Thank you for raising the request</h3>
+                <i class="icon-circle-delete"></i>
+            </div>
+            <div class="product-name-n-img">
+                <div class="left">
+                    <img src="https://m.media-amazon.com/images/I/416zD6w2ITL._SX342_.jpg">
+                </div>
+                <div class="right">
+                    <div class="name">
+                        <a>
+                            <span>Safari Pro Power PVC Steel Toe Labour Safety Shoes, Size: 9 </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="qty-card pwa-row">
+                <p class="upper-txt">Please help with the below details to prioritise your query</p>
+                <div class="qty-area">
+                    <div class="qty-area-l">
+                        <h4>Enter your required quantity</h4>
+                    </div>
+                    <div class="qty-area-r">
+                        <span class="add-qty qty-block">&#8722;</span>
+                        <input id="product_quantity" type="text" min="1" maxlength="3" numbersOnly />
+                        <span class="remove-qty qty-block">&#43;</span>
+
+                    </div>
+                    <span class="error">Please mention your required quantity</span>
+                </div>
+                <div class="purchase-for-business">
+                    <div class="purchase-for-business-txt">
+                        <h4>Select if purchasing for business</h4>
+                        <span class="ask-txt">We’ll ask for GST details later</span>
+                    </div>
+                    <span class="custom-box icon-box"></span>
+                </div>
+                <button class="btn primary-full-btn btn-submit">SUBMIT YOUR REQUIREMENT</button>
+            </div>
+        </div>
+    </div>
+</app-bottom-menu>
 
 <div class="prod-carsl" addClass [class.hasOneImage]="productAllImages?.length === 1"
     [ngClass]="[carouselInitialized ? '' : 'before-init']">
@@ -201,8 +246,9 @@
 
 
 <!-- CTA Fixed position -->
-<floating-button-container  [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
-    <floating-button [iconClass]="'icon-cart1'" [label]="'ADD TO CART'" [type]="'WHITE'" (onClick)="showFBT()"></floating-button>
+<floating-button-container [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
+    <floating-button [iconClass]="'icon-cart1'" [label]="'ADD TO CART'" [type]="'WHITE'" (onClick)="showFBT()">
+    </floating-button>
     <floating-button [iconClass]="''" [label]="'BUY NOW'" [type]="'RED'" (onClick)="addToCart(true)"></floating-button>
 </floating-button-container>
 

@@ -170,3 +170,134 @@
 
 
 // Common CSS in PDP, do not remove
+
+.bottom-rfq-popup{
+    padding: 15px;
+    background-color: var(--ghost-white);
+    .top-header-bottom-menu {
+        position: relative;
+        .heading-3 {
+            padding-bottom: 0px;
+            padding: 0 0 15px;
+            
+            color: var(--slimy-green);
+            font-size: 18px;
+        }
+        i {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: $extra-large-1-font;
+        }
+    }
+    .product-name-n-img {
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid var(--silver);
+        border-radius: $border-radius-8;
+        .left {
+            width: 80px;
+            position: relative;
+            img {
+                width: 100%;
+                height: auto;
+                max-width: 65px;
+            }
+        }
+        .right {
+            width: calc(100% - 80px);
+            .name {
+                span {
+                    font-size: $large-font;
+                    color: var(--onyx-black);
+                    line-height: 16px;
+                }
+            }
+        }
+    }
+    .qty-card {
+        padding: 15px;
+        margin: 15px 0px;
+        background-color: var(--white);
+        border-radius: 8px;
+        p {
+            padding: 10px 0px 20px;
+            color: var(--silver);
+        }
+        .qty-area {
+            display: flex;
+            flex-wrap: wrap;
+            .qty-area-l {
+                width: calc(100% - 130px);
+            }
+            .qty-area-r {
+                height: 30px;
+                width: 120;
+                .qty-block {
+                    width: 30px;
+                    height: 100%;
+                    text-align: center;
+                    background: #dbedff;
+                    border: 1px solid #8bc5ff;
+                    line-height: 30px;
+                    font-size: 14px;
+                    border-radius: 6px;
+                    &.remove-qty {
+                        float: right;
+                    }
+                    &.add-qty {
+                        float: left;
+                    }
+                }
+                input {
+                    width: 60px;
+                    height: 100%;
+                    text-align: center;
+                    background: white;
+                    border-radius: 6px;
+                    border: 1px solid #707070;
+                    margin: 0px 5px;
+                }
+                
+                
+            }
+            .error{
+                font-size: 10px;
+                color: var(--primary);
+                text-align: right;
+                width: 100%;
+                margin-top: 5px;
+            }
+        }
+        .btn-submit {
+            height: 40px;
+        }
+        .purchase-for-business {
+            padding: 15px 0px;
+            width: 100%;
+            position: relative;
+            .purchase-for-business-txt{
+                width: 90%;
+                h4{
+                    font-size: $large-font;
+                }
+                .ask-txt{
+                    font-size: $small-font;
+                    color: var(--silver);
+                }
+            }
+            .custom-box {
+                position: absolute;
+                right: 0px;
+                top: 40%;
+                &::before {
+                    content: "";
+                    color: var(--black);
+                    font-size: 15px;
+                }
+            }
+        }
+    }
+}

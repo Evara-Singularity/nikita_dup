@@ -105,30 +105,19 @@
                         </ng-container>
                     </div>
                 </div>
-                <div class="outline-input-label mb-25">
-                    <label [class.is-focus]="displayFocus('idState')">
-                        <select formControlName="idState">
-                            <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
-                        </select>
-                        <i class="icon-down"></i>
-                        <span class="label">State*</span>
-                    </label>
-                    <p *ngIf="idState.hasError('required')" class="error-txt">
-                        Kindly select your state
-                    </p>
-                </div>
-                <div class="outline-input-label mb-25">
-                    <label [class.is-focus]="displayFocus('city')">
-                        <input formControlName="city" type="text" placeholder="" readonly>
-                        <span class="label">City*</span>
-                    </label>
-                    <ng-container *ngIf="city.touched || city.dirty">
-                        <p *ngIf="city.hasError('required')" class="error-txt">
-                            Kindly enter your city/district/town
-                        </p>
-                    </ng-container>
-                </div>
                 <div class="multiple-form-field">
+                    <div class="outline-input-label ">
+                        <label [class.is-focus]="displayFocus('idState')">
+                            <select formControlName="idState">
+                                <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
+                            </select>
+                            <i class="icon-down"></i>
+                            <span class="label">State*</span>
+                        </label>
+                        <p *ngIf="idState.hasError('required')" class="error-txt">
+                            Kindly select your state
+                        </p>
+                    </div>
                     <div class="outline-input-label">
                         <label [class.is-focus]="displayFocus('idCountry')">
                             <select formControlName="idCountry">
@@ -145,18 +134,7 @@
 
                         </p>
                     </div>
-                    <div class="outline-input-label ">
-                        <label [class.is-focus]="displayFocus('idState')">
-                            <select formControlName="idState">
-                                <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
-                            </select>
-                            <i class="icon-down"></i>
-                            <span class="label">State*</span>
-                        </label>
-                        <p *ngIf="idState.hasError('required')" class="error-txt">
-                            Kindly select your state
-                        </p>
-                    </div>
+                    
                 </div>
 
                 <div class="outline-input-label">

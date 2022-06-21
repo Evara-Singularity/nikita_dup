@@ -4,8 +4,21 @@
             <custom-promo-code></custom-promo-code>
             <p class="open-offers" (click)="openOfferPopUp()">VIEW ALL OFFERS</p>
         </div>
-        <promo-code-list (closePromoOfferPopup)="showPromoOfferPopup = $event" *ngIf="showPromoOfferPopup"></promo-code-list>
+        <promo-code-list (closePromoOfferPopup)="showPromoOfferPopup=$event" *ngIf="showPromoOfferPopup"></promo-code-list>
         <div class="order-summary pwa-row no-border" id="payment_summary">
+            <!--Move promocode popup-->
+            <div class="alert-box" *ngIf="showPromoSuccessPopup">
+                <div class="overlay" (click)="$event.stopPropagation();closePromoSuccessPopUp()"></div>
+                <div class="content-area">
+                    <div class="info-area">
+                        <i class="icon-coupon-3-fill-1"></i>
+                        <p class="applied-coupon">'{{_cartService?.appliedPromoCode}}' applied</p>
+                        <p class="saving-applid-coupon"><span>&#8377;24</span> saving with this coupon</p>
+                        <p class="green-text">YAY!</p>
+                    </div>
+                </div>
+            </div>
+            <!--Move promocode popup-->
             <h3>Payment Summary</h3>
             <ul class="txt-list">
                 <li class="border">

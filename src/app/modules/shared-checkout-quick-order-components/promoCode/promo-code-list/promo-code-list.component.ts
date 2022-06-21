@@ -12,7 +12,6 @@ export class PromoCodeListComponent implements OnInit, OnDestroy {
     @Output('closePromoOfferPopup') closePromoOfferPopup = new EventEmitter();
     appliedPromocodeSubscription: Subscription = null;
     selectedPromocode = null;
-    showAppliedPromoCode = false;
 
     constructor(public _cartService: CartService) { }
 
@@ -25,7 +24,7 @@ export class PromoCodeListComponent implements OnInit, OnDestroy {
         {
             if (promocode) 
             { 
-                this.showAppliedPromoCode = true;
+                this.closePromoOfferPopup.emit(false);
             }
         })
     }
@@ -36,12 +35,6 @@ export class PromoCodeListComponent implements OnInit, OnDestroy {
         e.stopPropagation();
         this.selectedPromocode = item.promoCode;
         this.nextPromocode.next(item.promoCode);
-    }
-
-    closePopUp()
-    {
-        this.showAppliedPromoCode = false; 
-        this.closePromoOfferPopup.emit(false);
     }
 
     ngOnDestroy(): void

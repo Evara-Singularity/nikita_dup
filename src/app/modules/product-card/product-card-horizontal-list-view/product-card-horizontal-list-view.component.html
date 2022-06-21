@@ -13,8 +13,8 @@
     <div class="card-container">
         <div class="inner-container">
             <div class="left" (click)="navigateToPDP()">
-                <div class="tags" *ngFor="let tags of product['productTags']">
-                    <img [src]="tags['tagImageLink']" />
+                <div *ngIf="this.product && this.product['productTags']" class="tags">
+                    <img [src]="this.product['productTags']" />
                 </div>
                 <ng-container *ngIf="isPDPImageLazyLoaded || !cardFeaturesConfig.lazyLoadImage">
                     <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}"

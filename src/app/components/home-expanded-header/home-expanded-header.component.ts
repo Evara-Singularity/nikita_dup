@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'home-expanded-header',
@@ -16,13 +18,19 @@ export class HomeExpandedHeaderComponent implements OnInit {
   @Input() isUserLogin: boolean = false;
   @Input() enableBackBtn: boolean = false;
   @Input() imgAssetPath: boolean = false;
+  searchValue='';
+
 
   constructor(
-    public _commonService: CommonService
+    public _commonService: CommonService,
+    public route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
     console.log(this.isUserLogin)
+    this.route.queryParams.subscribe(res => {
+      this.searchValue = (res['search_query']) ? res['search_query'] : ''
+    })
   }
 
 }

@@ -223,8 +223,10 @@
             display: flex;
             flex-wrap: wrap;
             background: #F2F2F2;
+            justify-content:space-between;
+            padding:10px 15px;
             category-card{
-                width: 50%;
+                width: 48%;
             }
         }
     }

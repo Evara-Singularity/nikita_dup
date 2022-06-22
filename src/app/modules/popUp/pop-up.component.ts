@@ -33,7 +33,7 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.paraClass = (this.data && this.data.paraClass) ? this.data.paraClass : this.paraClass;
         // this.closeClass = (this.data && this.data.closeClass) ? this.data.closeClass : this.closeClass;
         this.headerText = (this.data && this.data.headerText) ? this.data.headerText : "";
-        this.headerSubText=(this.data && this.data.headerText) ? this.data.headerText : "";
+        this.headerSubText=(this.data && this.data.headerSubText) ? this.data.headerSubText : "";
         this.selector = (this.data && this.data.selector) ? this.data.selector : "";
         // this.headerCustom = (this.data && this.data.headerCustom) ? this.data.headerCustom : false;
         if (this.isBrowser) {

@@ -17,6 +17,7 @@ export class OrderFailureComponent {
   data: {};
   API: {};
   queryParams: {};
+  imagePath = CONSTANTS.IMAGE_BASE_URL;
 
   constructor(
     private _router: Router,

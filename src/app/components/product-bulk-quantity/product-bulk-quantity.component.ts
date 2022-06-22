@@ -18,6 +18,7 @@ export class ProductBulkQuantityComponent implements OnInit {
   @Input() cartQunatityForProduct;
   @Input() qunatityFormControl;
   @Output() checkBulkPriceMode$: EventEmitter<any> = new EventEmitter<any>();
+  @Output() selectProductBulkPrice$: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private _tms: ToastMessageService) { }
 
@@ -25,15 +26,8 @@ export class ProductBulkQuantityComponent implements OnInit {
   }
 
   selectProductBulkPrice(qunatity) {
-    if (qunatity > this.priceQuantityCountry['quantityAvailable']) {
-      this._tms.show({
-        type: 'error',
-        text: 'Maximum qty can be ordered is: ' + this.priceQuantityCountry['quantityAvailable']
-      })
-      return;
-    }
     this.qunatityFormControl.setValue(qunatity);
-    this.checkBulkPriceMode$.emit();
+    this.selectProductBulkPrice$.emit(qunatity);
   }
 
 }

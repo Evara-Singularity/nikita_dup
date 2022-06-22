@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RatingPipeModule } from '@app/utils/pipes/rating.pipe';
-import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
+import { YTThumbnailPipe, YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
@@ -31,6 +31,7 @@ import { ProductCardHorizontalScrollModule } from '../ui/product-card-horizontal
     ProductCardHorizontalScrollModule
   ],
   providers: [
+    YTThumbnailPipe
   ]
 })
 export class ProductCardCoreModule { }

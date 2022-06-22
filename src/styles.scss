@@ -109,6 +109,10 @@ header-nav {
     height:calc(100% - 50px);
     background-color: var(--white);
 }
+.content-popup-with-grey-bg{
+    height: 100%;
+    background-color: var(--ghost-white);
+}
 input{
     outline: none !important;
 }

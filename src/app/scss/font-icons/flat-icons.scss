@@ -93,7 +93,7 @@ i[class^="icon-"],
 }
 
 .icon-home-deal:before {
-    content: "\e957";
+    content: "\ea0c";
 }
 
 .icon-email-invoice:before {
@@ -127,7 +127,7 @@ i[class^="icon-"],
 }
 
 .icon-all-categories:before {
-    content: "\e905";
+    content: "\e9c0";
 }
 
 .icon-angle-grinder:before {
@@ -173,6 +173,9 @@ i[class^="icon-"],
 
 .icon-call:before {
     content: "\e90f";
+}
+.icon-contact-us:before{
+    content: "\ea24";
 }
 
 .icon-camera:before {
@@ -382,6 +385,9 @@ i[class^="icon-"],
 .icon-home:before {
     content: "\e940";
 }
+.icon-home2:before {
+    content: "\ea4b";
+}
 
 .icon-hydraulics-pneumatics:before,
 .icon-119000000::before {
@@ -488,11 +494,11 @@ i[class^="icon-"],
 }
 
 .icon-my-orders:before {
-    content: "\e95a";
+    content: "\ea5b";
 }
 
 .icon-my-rfq:before {
-    content: "\e95b";
+    content: "\e9c6";
 }
 
 .icon-next:before {
@@ -548,7 +554,7 @@ i[class^="icon-"],
 }
 
 .icon-profile:before {
-    content: "\e968";
+    content: "\ea5e";
 }
 
 .icon-puchase_active:before {
@@ -562,7 +568,9 @@ i[class^="icon-"],
 .icon-purchase-list:before {
     content: "\e96b";
 }
-
+.icon-wishlist:before{
+    content: "\e9c8";
+}
 .icon-rating-star:before {
     content: "\e96c";
 }

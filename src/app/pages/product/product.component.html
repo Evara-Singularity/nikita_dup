@@ -79,7 +79,7 @@
     </ng-container>
 </div>
 
-<product-description (checkBulkPriceMode)="checkBulkPriceMode()" [isBulkPricesProduct]="isBulkPricesProduct"
+<product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)" [isBulkPricesProduct]="isBulkPricesProduct"
     [productBulkPrices]="productBulkPrices" [selectedProductBulkPrice]="selectedProductBulkPrice"
     [qunatityFormControl]="qunatityFormControl" [productPrice]="productPrice" [productName]="productName"
     [productTags]="productTags" [refinedProdTags]="refinedProdTags" [productMrp]="productMrp"
@@ -94,7 +94,7 @@
     [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)"
     (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
 
-<product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" [rawProductData]="rawProductData"
+<product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" (selectProductBulkPrice$)="selectProductBulkPrice($event)" [rawProductData]="rawProductData"
     [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct"
     [priceQuantityCountry]="priceQuantityCountry" [productBulkPrices]="productBulkPrices"
     [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl">

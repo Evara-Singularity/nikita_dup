@@ -264,7 +264,6 @@ export class OrderDetailComponent implements OnInit {
     let trackOrderBoxDetail: any = {};
     if (detail && detail.dates && detail.requestType !== 'cancel') {
       if (detail.requestType === 'forward') {
-        console.log(detail);
         trackOrderBoxDetail.firstDate = detail.dates.accepted.date;
         trackOrderBoxDetail.firstDateLabel = 'Ordered & Approved';
 

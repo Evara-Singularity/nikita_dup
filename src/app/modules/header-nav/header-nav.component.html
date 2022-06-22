@@ -31,14 +31,14 @@
             </ng-container>
         </ng-container>
 
-        <ng-container *ngSwitchCase="MODULE_NAME.CART">
+        <ng-container *ngSwitchCase="MODULE_NAME.CART || MODULE_NAME.QUICKORDER">
             <cart-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
                 (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
                 [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
             </cart-header>
         </ng-container>
 
-        <ng-container *ngSwitchCase="MODULE_NAME.DASHBOARD">
+        <ng-container *ngSwitchCase="MODULE_NAME.DASHBOARD || MODULE_NAME.ORDER_FAILURE">
             <dashboard-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
                 (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
                 [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">

@@ -150,7 +150,7 @@ const routes: Routes = [
 					footer: false,
 					title: 'My Cart',
 					moreOpt: true,
-					moduleName: CONSTANTS.MODULE_NAME.CART
+					moduleName: CONSTANTS.MODULE_NAME.QUICKORDER
 				},
 			},
 			{
@@ -221,6 +221,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					menuBar: true,
+					moduleName: CONSTANTS.MODULE_NAME.ORDER_FAILURE
 				},
 			},
 			{

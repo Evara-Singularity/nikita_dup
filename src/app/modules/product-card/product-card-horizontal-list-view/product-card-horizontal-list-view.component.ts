@@ -2,6 +2,7 @@ import { Component, ComponentFactoryResolver, Injector, OnInit } from '@angular/
 import { Router } from '@angular/router';
 import { ModalService } from '@app/modules/modal/modal.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { YTThumbnailPipe } from '@app/utils/pipes/ytthumbnail.pipe';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
@@ -17,6 +18,7 @@ import { ProductCardCoreComponent } from '../product-card.core.component';
   styleUrls: ["./product-card-horizontal-list-view.component.scss"],
 })
 export class ProductCardHorizontalListViewComponent extends ProductCardCoreComponent {
+
   constructor(
     public _cartService: CartService,
     public _productListService: ProductListService,
@@ -29,7 +31,8 @@ export class ProductCardHorizontalListViewComponent extends ProductCardCoreCompo
     public _commonService: CommonService,
     public _analytics: GlobalAnalyticsService,
     public _toastMessageService: ToastMessageService,
-    public _productService: ProductService
+    public _productService: ProductService,
+    private _ytThumbnail: YTThumbnailPipe,
   ) {
     super(
       _cartService,
@@ -50,4 +53,10 @@ export class ProductCardHorizontalListViewComponent extends ProductCardCoreCompo
   ngOnInit(): void {
     super.ngOnInit();
   }
+
+  get youtubeThumbnail(){
+    return this._ytThumbnail.transform(this.product['videoInfo'][0]['link'],'hqdefault') || null;
+  }
+
+
 }

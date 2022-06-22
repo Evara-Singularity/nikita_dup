@@ -33,9 +33,8 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() isBulkPricesProduct;
   @Input() productBulkPrices;
   @Input() selectedProductBulkPrice;
-  @Output() checkBulkPriceMode$: EventEmitter<any> = new EventEmitter<any>();
-  @Output() scrollToResults$: EventEmitter<any> = new EventEmitter<any>();
-
+  @Output() checkCartQuantityAndUpdate$: EventEmitter<any> = new EventEmitter<any>();
+  
 
   constructor(private _tms: ToastMessageService) { }
 
@@ -60,37 +59,7 @@ export class ProductDescriptionComponent implements OnInit {
   }
 
   private checkCartQuantityAndUpdate(value): void {
-    if (!value) {
-      this._tms.show({
-        type: 'error',
-        text: (value == 0) ? 'Minimum qty can be ordered is: 1' : 'Please enter a value quantity',
-      })
-      this.qunatityFormControl.setValue(this.productMinimmumQuantity);
-    } else {
-      if (parseInt(value) < parseInt(this.productMinimmumQuantity)) {
-        this._tms.show({
-          type: 'error',
-          text: 'Minimum qty can be ordered is: ' + this.productMinimmumQuantity
-        })
-        this.qunatityFormControl.setValue(this.productMinimmumQuantity);
-      } else if (parseInt(value) > parseInt(this.priceQuantityCountry['quantityAvailable'])) {
-        this._tms.show({
-          type: 'error',
-          text: 'Maximum qty can be ordered is: ' + this.priceQuantityCountry['quantityAvailable']
-        })
-        this.qunatityFormControl.setValue(this.priceQuantityCountry['quantityAvailable']);
-      } else if (isNaN(parseInt(value))) {
-        this.qunatityFormControl.setValue(this.productMinimmumQuantity);
-        this.checkBulkPriceMode();
-      } else {
-        this.qunatityFormControl.setValue(value);
-        this.checkBulkPriceMode();
-      }
-    }
-  }
-
-  checkBulkPriceMode() {
-    this.checkBulkPriceMode$.emit();
+    this.checkCartQuantityAndUpdate$.emit(value);
   }
 
   onChangeCartQuanityValue() {

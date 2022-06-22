@@ -122,6 +122,7 @@ export class ProductListService {
     else if (product["productTags"] && product["productTags"][0]) {
       return product["productTags"][0]["tagImageLink"];
     }
+    return null;
   }
 
   getFilterBucket(categoryId, pageName, brandName?: string) {

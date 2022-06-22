@@ -27,11 +27,11 @@
                         <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax | mathFloor |
                             number : '1.2-2'}}</span>
                     </p>
-                    <p *ngIf="item.oos" class="price mt-10">
+                    <!-- <p *ngIf="item.oos" class="price mt-10">
                         <span class="small-heading">
                             Product is not available for order
                         </span>
-                    </p>
+                    </p> -->
                 </div>
             </div>
             <div *ngIf="!item.oos" class="cart-item-block pad-15">

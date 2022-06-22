@@ -2,6 +2,6 @@
     <i class="icon-back-arrow" id="icon-back" (click)="goBack$.emit()"></i>
     <span class="page-name" *ngIf="title">
         {{ title }} <span *ngIf="!isCheckout">({{noOfCart}})</span>
-        <span *ngIf="!isCheckout">{{payableAmount | mathCeil | number : '1.2-2'}}</span>
+        <span *ngIf="isQuickorder">{{payableAmount | mathCeil | number : '1.2-2'}}</span>
     </span>
 </div>

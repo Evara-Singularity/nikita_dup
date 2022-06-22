@@ -321,6 +321,8 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     get isGSTUser() { return this.invoiceType.value === this.INVOICE_TYPES.TAX }
     get isCheckoutModule() { return this.parentModule === 'Checkout'; }
 
+    getLabel(label) { return label == 'Billing' ? ' GST' : ' ADDRESS'}
+
     sendAdobeAnalysis()
     {
         let data = { page: {} }

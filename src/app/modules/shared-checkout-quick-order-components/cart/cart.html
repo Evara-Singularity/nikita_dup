@@ -1,105 +1,116 @@
 <div *ngIf="_cartService.getGenericCartSession?.itemsList && _cartService.getGenericCartSession?.itemsList.length > 0">
-    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let itemIndex = index;">
+    <ng-container *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let itemIndex = index;">
         <div *ngIf="item['text1']" class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
                     {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
         </div>
-        <div class="pwa-row pad-0" [ngClass]="{'oos':item.oos}">
-            <div class="product-left">
-                <div class="product-img product-img-v2">
-                    <img (click)="redirectToProductURL(item.productUrl)" src="{{item.productImg}}">
+        <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative">
+            
+            <div class="pwa-row pad-0" [ngClass]="{'oos':item.oos}">
+                <div class="product-left">
+                    <div class="product-img product-img-v2">
+                        <img (click)="redirectToProductURL(item.productUrl)" src="{{item.productImg}}">
+                    </div>
                 </div>
-
-            </div>
-            <div class="product-detail">
-                <div class="p-name">
-                    <a (click)="redirectToProductURL(item.productUrl)"> {{ (item.productName.length > 50) ?
-                        (item.productName | slice:0:48) + '..' : (item.productName) }}</a>
-                </div>
-                <p *ngIf="!item.oos" class="price clearfix">
-                    <span class="before-discount gray-txt">MRP ₹{{item.amount | mathFloor | number : '1.2-2'}} <span class="green-txt">({{item.taxPercentage}}% OFF)</span></span>
-                    <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">
-                        ₹{{item.priceWithoutTax | mathFloor | number : '1.2-2'}}
-                    </span>
-                    <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax | mathFloor |
-                        number : '1.2-2'}}</span>
-                </p>
-                <p *ngIf="item.oos" class="price mt-10">
-                    <span class="small-heading">
-                        Product is not available for order
-                    </span>
-                </p>
-            </div>
-        </div>
-        <div *ngIf="!item.oos" class="cart-item-block pad-15">
-            <div class="qty_section">
-                <span class="qty-txt">Qty</span>
-                <div class="quantity-block">
-                    <span *ngIf="item.productQuantity > 1" (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'decrement')" class="remove-qty qty-block">&#8722;</span>
-                    <i (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'decrement')" *ngIf="item.productQuantity < 2" class="icon-bin qty-block single-quantity"></i>
-                    <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity" (focusout)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'update', $event.target.value)" />
-                    <span (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'increment')" class="add-qty qty-block">&#43;</span>
-                </div>
-            </div>
-            <div class="price-dtl-block" [appKpToggle]="{idName:'showPrice'+(itemIndex+1),iconMode : true}">
-                <div class="price-block-left">
-                    <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
-                    <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
-                    <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
-                    <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
-                    <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
+                <div class="product-detail">
+                    <div class="p-name">
+                        <a (click)="redirectToProductURL(item.productUrl)"> {{ (item.productName.length > 50) ?
+                            (item.productName | slice:0:48) + '..' : (item.productName) }}</a>
+                    </div>
+                    <p *ngIf="!item.oos" class="price clearfix">
+                        <span class="before-discount gray-txt">MRP ₹{{item.amount | mathFloor | number : '1.2-2'}} <span
+                                class="green-txt">({{item.taxPercentage}}% OFF)</span></span>
+                        <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">
+                            ₹{{item.priceWithoutTax | mathFloor | number : '1.2-2'}}
                         </span>
-                    <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
+                        <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax | mathFloor |
+                            number : '1.2-2'}}</span>
+                    </p>
+                    <p *ngIf="item.oos" class="price mt-10">
+                        <span class="small-heading">
+                            Product is not available for order
+                        </span>
+                    </p>
                 </div>
-                <div class="price-label-dropdown-icon">
-                    <i class="icon-down"></i>
+            </div>
+            <div *ngIf="!item.oos" class="cart-item-block pad-15">
+                <div class="qty_section">
+                    <span class="qty-txt">Qty</span>
+                    <div class="quantity-block">
+                        <span *ngIf="item.productQuantity > 1"
+                            (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'decrement')"
+                            class="remove-qty qty-block">&#8722;</span>
+                        <i (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'decrement')"
+                            *ngIf="item.productQuantity < 2" class="icon-bin qty-block single-quantity"></i>
+                        <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
+                            (focusout)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'update', $event.target.value)" />
+                        <span (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'increment')"
+                            class="add-qty qty-block">&#43;</span>
+                    </div>
+                </div>
+                <div class="price-dtl-block" [appKpToggle]="{idName:'showPrice'+(itemIndex+1),iconMode : true}">
+                    <div class="price-block-left">
+                        <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
+                            item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                        <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax *
+                            item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                        <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
+                        <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
+                        <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
+                        </span>
+                        <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
+                    </div>
+                    <div class="price-label-dropdown-icon">
+                        <i class="icon-down"></i>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div *ngIf="item.oos" class="oos-item-block">
-            <div (click)="removePopup=true; removeIndex = itemIndex">
-                <span>
-                    <i class="icon-bin"></i>
-                     REMOVE
-                </span>
+            <div *ngIf="item.oos" class="oos-item-block">
+                <div (click)="removePopup=true; removeIndex = itemIndex">
+                    <span>
+                        <i class="icon-bin"></i>
+                        REMOVE
+                    </span>
+                </div>
+                <div class="oos-text">
+                    <h3 class="heading-3">Not Available</h3>
+                </div>
             </div>
-            <div class="oos-text">
-                <h3 class="heading-3">Not Available</h3>
+            <div [ngClass]="{'oos':item.oos}" class="price-breakup" [id]="'showPrice'+(itemIndex+1)" style="display: none">
+                <ul class="txt-list">
+                    <li>
+                        <span class="tag-label">Price</span>
+                        <span class="tag-value">{{item.priceWithoutTax *
+                            item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</span>
+                    </li>
+                    <li>
+                        <span class="tag-label">{{item.taxPercentage}}% GST </span>
+                        <span class="tag-value">₹{{ (item.tax | mathFloor | number : '1.2-2') || 0 }}</span>
+                    </li>
+                    <li>
+                        <span class="tag-label">Shipping</span>
+                        <span class="tag-value">₹{{ (item.shippingCharges | mathFloor | number : '1.2-2') || 0 }}</span>
+                    </li>
+                    <li>
+                        <span class="tag-label">Coupon Discount</span>
+                        <span class="tag-value green-txt">₹{{(item.offer ? item.offer : 0) | mathFloor | number :
+                            '1.2-2'}}</span>
+                    </li>
+                    <li class="bold-txt">
+                        <span class="tag-label">Total</span>
+                        <span class="tag-value">₹{{ (item.totalPayableAmount + item.shippingCharges - item.offer |
+                            mathFloor |number : '1.2-2') || 0 }}</span>
+                    </li>
+                </ul>
             </div>
+            <!-- DO NOT REMOVE THIS SECTION IT WAS OF NEW DESIGN TO BE IMPLEMENTED LATER -->
+            <!-- <div  class="coupen-and-discount">
+                    <span>Coupon discount - ₹100</span>
+                    <span>Free Shipping<i class="icon-delivery_y_5"></i></span>
+                </div> -->
         </div>
-        <div [ngClass]="{'oos':item.oos}" class="price-breakup" [id]="'showPrice'+(itemIndex+1)" style="display: none">
-            <ul class="txt-list">
-                <li>
-                    <span class="tag-label">Price</span>
-                    <span class="tag-value">{{item.priceWithoutTax *
-                        item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</span>
-                </li>
-                <li>
-                    <span class="tag-label">{{item.taxPercentage}}% GST </span>
-                    <span class="tag-value">₹{{ (item.tax | mathFloor | number : '1.2-2') || 0 }}</span>
-                </li>
-                <li>
-                    <span class="tag-label">Shipping</span>
-                    <span class="tag-value">₹{{ (item.shippingCharges | mathFloor | number : '1.2-2') || 0 }}</span>
-                </li>
-                <li>
-                    <span class="tag-label">Coupon Discount</span>
-                    <span class="tag-value green-txt">₹{{(item.offer ? item.offer : 0) | mathFloor | number : '1.2-2'}}</span>
-                </li>
-                <li class="bold-txt">
-                    <span class="tag-label">Total</span>
-                    <span class="tag-value">₹{{ (item.totalPayableAmount + item.shippingCharges - item.offer |
-                        mathFloor |number : '1.2-2') || 0 }}</span>
-                </li>
-            </ul>
-        </div>
-        <!-- DO NOT REMOVE THIS SECTION IT WAS OF NEW DESIGN TO BE IMPLEMENTED LATER -->
-        <!-- <div  class="coupen-and-discount">
-            <span>Coupon discount - ₹100</span>
-            <span>Free Shipping<i class="icon-delivery_y_5"></i></span>
-        </div> -->
-    </div>
+    </ng-container>
 </div>
 <app-bottom-menu *ngIf="removePopup">
     <div content>

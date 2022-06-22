@@ -38,7 +38,6 @@ export class ProductDescriptionComponent implements OnInit {
   constructor(private _tms: ToastMessageService) { }
 
   ngOnInit(): void {
-   this.singlePeacePrice = this.priceWithoutTax;
   }
 
   updateProductQunatity(type: 'INCREMENT' | 'DECREMENT') {

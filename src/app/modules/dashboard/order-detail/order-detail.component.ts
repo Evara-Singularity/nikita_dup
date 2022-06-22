@@ -494,6 +494,7 @@ export class OrderDetailComponent implements OnInit {
     * @param detail : item details
     */
   fetchTrackingData(itemDetails) {
+    console.log(itemDetails);
     let status = (itemDetails['status'] as string).trim().toUpperCase();
     itemDetails['hasInfo'] = false;
 

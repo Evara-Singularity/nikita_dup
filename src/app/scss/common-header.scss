@@ -132,7 +132,12 @@
    }
    .page-name {
     font-size: $large-font;
-  }
+   }
+   .right-content{
+       margin-left:auto;
+       padding-left:5px;
+       font-size: $large-font;
+   }
 }
 .dashboard-header{
     display: flex;

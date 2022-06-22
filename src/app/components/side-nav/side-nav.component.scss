@@ -50,7 +50,7 @@
       }
     }
     .menu-list{
-      margin-top: 10px;
+      margin-top: 15px;
       padding-left: 10px;
       background-color: var(--white);
       border: 1px solid var(--ghost-white);
@@ -66,15 +66,15 @@
           border-bottom: none
         }
         a{
-          @extend %clear-fix;
-          display: block;
+          display: flex;
+          align-items: center;
           padding: 15px 10px;
         }
         i{
-          font-size: $extra-large-1-font;
-          margin-right: 16px;
+          font-size: $extra-large-3-font;
+          margin-right: 15px;
           float: left;
-          line-height: $medium-line-height;
+          line-height: $large-line-height;
         }
         .text{
           font-size: $extra-large-font;

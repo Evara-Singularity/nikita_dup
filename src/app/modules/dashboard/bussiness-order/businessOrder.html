@@ -41,7 +41,7 @@
                         <div class="card-bottom">
                             <div class="card-bottom-inner">
                                 <!-- <span class="orderstatus"><i class="dot">&#x2022;&nbsp;</i><span </span></span> -->
-                                <span class="status-circle" [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'"></span>
+                                <span class="status-circle created"></span>
                                 <span class="status">{{ detail.status }}</span>
                                 <span class="buy-again" *ngIf="detail.status !== 'ACCEPTED' && detail.status !== 'CANCELLED' && detail.status !=='PAYMENT FAILED'"><a (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)">BUY&nbsp;AGAIN</a></span>
                             </div>

@@ -15,7 +15,7 @@
         </a>
     </div>
     <div class="search-bar">
-        <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav$.emit();"
+        <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav$.emit();" [value]="searchValue"
             placeholder="Search Product/Category/Brand...">
         <div class="home-search-animation">
         </div>

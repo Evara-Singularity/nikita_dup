@@ -1,13 +1,6 @@
 <div class="pwa-row prod-description mb-10">
     <div class="pwa-col-12">
         <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
-        <ng-container *ngIf="productTags && productTags != undefined && refinedProdTags.length > 0">
-            <div class="prod-tag">
-                <div class="tag_container" *ngFor="let tag of refinedProdTags;let i = index;">
-                    <img src="{{tag.imageUrl}}">
-                </div>
-            </div>
-        </ng-container>
         <div class="pdp-price-qty-block">
             <div class="price-block" *ngIf="productMrp > 0">
                 <ng-container *ngIf="productMrp > 0">

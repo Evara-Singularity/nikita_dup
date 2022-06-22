@@ -427,6 +427,8 @@ export const CONSTANTS = {
     PRODUCT_LISTING_PAGE: 'PRODUCT_LISTING_PAGE',
     DASHBOARD: 'DASHBOARD',
     CART: 'CART',
+    QUICKORDER:'QUICKORDER',//Need to create-header
+    ORDERFAILURE: 'ORDERFAILURE',//Need to create-header
     PRODUCT: 'PRODUCT'
   }
 };

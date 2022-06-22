@@ -221,6 +221,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					menuBar: true,
+					moduleName: CONSTANTS.MODULE_NAME.DASHBOARD
 				},
 			},
 			{

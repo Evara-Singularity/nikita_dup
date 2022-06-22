@@ -14,6 +14,7 @@
         </div>
     </div>
 </div> -->
+
 <div class="card-boxed">
     <div class="card-upper">
         <div class="card-img">
@@ -58,7 +59,7 @@
                     </ng-container>
                 </ng-container>
             </span></span>
-            <span *ngIf="detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED'" class="orderstatus" (click)="fetchTrackingData(detail)">TRACK ORDER <i class="icon-next"></i></span>
+            <span *ngIf="detail?.status !== 'DELIVERED' && detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED'" class="orderstatus" (click)="fetchTrackingData(detail)">TRACK ORDER <i class="icon-next"></i></span>
         </div>
         <!-- Return Policy added Yajya please check css for the same  -->
         <div style="overflow: hidden; padding: 10px;">

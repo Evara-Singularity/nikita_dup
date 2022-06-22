@@ -33,13 +33,14 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() isBulkPricesProduct;
   @Input() productBulkPrices;
   @Input() selectedProductBulkPrice;
-  @Output() checkBulkPriceMode$: EventEmitter<any> = new EventEmitter<any>();
   @Output() scrollToResults$: EventEmitter<any> = new EventEmitter<any>();
+  singlePeacePrice:any;
 
 
   constructor(private _tms: ToastMessageService) { }
 
   ngOnInit(): void {
+   this.singlePeacePrice = this.priceWithoutTax;
   }
 
   updateProductQunatity(type: 'INCREMENT' | 'DECREMENT') {
@@ -90,7 +91,15 @@ export class ProductDescriptionComponent implements OnInit {
   }
 
   checkBulkPriceMode() {
-    this.checkBulkPriceMode$.emit();
+    if (this.isBulkPricesProduct) {
+      const selectedProductBulkPrice = this.productBulkPrices.filter(prices => (this.cartQunatityForProduct >= prices.minQty && this.cartQunatityForProduct <= prices.maxQty));
+      this.selectedProductBulkPrice = (selectedProductBulkPrice.length > 0) ? selectedProductBulkPrice[0] : null;
+      if(this.cartQunatityForProduct > 1 && this.selectedProductBulkPrice){
+        this.priceWithoutTax = this.selectedProductBulkPrice['bulkSPWithoutTax'] ?? this.priceWithoutTax;
+      }else{
+        this.priceWithoutTax = this.singlePeacePrice;
+      }
+    }
   }
 
   onChangeCartQuanityValue() {

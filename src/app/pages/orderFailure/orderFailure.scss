@@ -8,9 +8,12 @@
   .order-failure-inner{
     padding:25px;
   }
+  .heading-2{
+    color:var(--primary);
+  }
   img{
-    width:150px;
-    margin:20px 0px;
+    width:180px;
+    margin:10px 0px;
   }
   p{
     line-height: $medium-line-height;

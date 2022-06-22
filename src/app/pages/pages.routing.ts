@@ -219,6 +219,7 @@ const routes: Routes = [
 					),
 				data: {
 					footer: false,
+					title: 'Order Failure',
 					logo: true,
 					menuBar: true,
 					moduleName: CONSTANTS.MODULE_NAME.ORDER_FAILURE

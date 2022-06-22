@@ -160,6 +160,15 @@
     background: var(--white);
     color: var(--primary);
 }
+.quaternary-btn-3{
+    border-radius: $border-radius-6;
+    font-size: $medium-font;
+    padding: 5px 15px;
+    height: 30px;
+    background: var(--primary);
+    color: var(--white);
+    width:100%;
+}
 
 // Quinary Buttons
 

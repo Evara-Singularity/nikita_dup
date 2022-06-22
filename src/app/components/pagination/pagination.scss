@@ -18,7 +18,6 @@ pagination-controls {
             width: 30px;
             text-align: center;
             line-height: $large-line-height;
-        
             a {
                 font-size: $medium-font;
                 font-weight: $font-normal;
@@ -40,8 +39,6 @@ pagination-controls {
             &.pagination-previous {
                 display: inline-block !important;
                 opacity: 1 !important;
-
-
             }
             &.disabled {
                 opacity: 0.45 !important;
@@ -60,11 +57,5 @@ pagination-controls {
 .ngx-pagination .pagination-next.disabled::after {
     content: 'NEXT' !important;
     color: var(--blue);
-  
 }
 
-@media screen and (min-width: 340px) {
-    body {
-      margin: 0 2px !important;
-    }
-  }

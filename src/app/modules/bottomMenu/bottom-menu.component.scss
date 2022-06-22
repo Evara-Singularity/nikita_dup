@@ -22,8 +22,7 @@
 }
   .rfq_header {
     display: flex;
-    margin: 0px -15px;
-    padding: 0px 15px 15px;
+    padding: 5px 15px;
     border-bottom: 1px solid #E2E2E2;
     align-items: center;
     &.rfq-popup-header {
@@ -31,6 +30,9 @@
     }
     img {
      width: 30px;
+    }
+    i{
+      font-size: $extra-large-2-font;
     }
     .rfq_header_text {
       margin-left: 15px;
@@ -47,8 +49,7 @@
        color: var(--onyx-black);
      }
     }
-    
-  .del-ico {
+   .del-ico {
       margin-left: auto;
       font-size: $extra-large-2-font;
       padding:5px;

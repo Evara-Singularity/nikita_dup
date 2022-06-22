@@ -199,6 +199,7 @@ export class CreateEnquiryComponent {
   get companyFC(){
     return this.bulkEnquiryForm.get('company_name')
   }
+  
 
 
 }

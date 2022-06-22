@@ -3,6 +3,7 @@
 @import '../../../../scss/layout/cards.scss';
 @import '../../../../scss/utils/utilities.scss';
 .select-offers {
+    padding-top: 10px;
     .promo-code {
         @extend %clear-fix;
         padding: 0 15px 15px 15px;
@@ -34,9 +35,10 @@
         padding: 20px 15px 15px;
         .pwa-text{
             padding-bottom: 10px;
+            font-weight: $font-bold;
         }
         .card{
-            padding: 15px;
+            padding: 20px 15px;
             margin-bottom: 10px;
             .apply-coupon{
                 display: flex;
@@ -59,6 +61,9 @@
         }
     }
     .alert-box{
+        .overlay{
+            background: rgba(0, 0, 0, 0.7);
+        }
         .content-area{
             border-radius: 12px;
             .info-area{
@@ -107,7 +112,8 @@
         height: 100%;
         top: 120%;
         left: 0;
-        background: $white;
+        overflow: scroll;
+        background: var(--white) !important;
         @extend %transition;
         &.open {
             top: 0;
@@ -143,10 +149,11 @@
 }
 //Promo PopUp
 .select-offers {
+    background: var(--white);
     &.open {
         background-color: var(--white);
-        .container {
-            height: initial;
-        }
+        // .container {
+        //     height: initial;
+        // }
     }
 }

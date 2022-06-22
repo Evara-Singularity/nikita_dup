@@ -53,7 +53,11 @@
                 width: $fullwidth;
             }
         }
+        &.billing-adress-container{
+            // background-color: rebeccapurple;
+        }
     }
+    
 }
 .sub-strip {
     padding: 15px 10px 0px !important;
@@ -203,36 +207,6 @@ form {
 //     }
 // }
 
-.for-varification {
-   position: relative;
-    .for-varification-r {
-        position: absolute;
-        bottom: 5px;
-        background-color: var(--slimy-green);
-        right: 5px;
-        padding: 8px;
-        border-radius: 6px;
-        a.show {
-            color: #176fd8 !important;
-            text-align: right;
-            display: none;
-            font-size: $large-font;
-        }
-        span.hidden {
-            color: var(--white) !important;
-            font-size: $medium-font;
-            text-transform: uppercase;
-            font-weight: bold;
-            i {
-                font-size: $large-font;
-                display: inline-block;
-                vertical-align: middle;
-                color: #5ba621;
-                padding-left: 5px;
-            }
-        }
-    }
-}
 
 .varified-checkbox {
     @extend %custom-check-box-checkout;
@@ -241,5 +215,6 @@ form {
 .multiple-address-checkout{
     padding: 15px 15px 0 !important;
 }
+
 
 

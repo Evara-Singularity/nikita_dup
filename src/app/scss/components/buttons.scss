@@ -108,10 +108,9 @@
 //  Tertiary Buttons
 .tertiary-btn {
     border-radius: $border-radius-6;
-    padding: 10px 15px;
+    padding: 10px 12px;
     background: var(--primary);
     font-size: $medium-font;
-    height: 35px;
 }
 
 .tertiary-outline-cta {
@@ -119,9 +118,8 @@
     color: var(--primary);
     border: 1px solid var(--primary);
     font-size: $medium-font;
-    padding: 10px 15px;
+    padding: 10px 12px;
     border-radius: $border-radius-6;
-    height: 35px;
 
 }
 

@@ -14,7 +14,7 @@
                 <div class="bs_item_desc">
                     <h3>{{product.productName | slice:0:30}} </h3>
                     <p class="safetysh_discount"><span>₹{{product.mrp}}</span> {{product.discount_percentage}}% OFF</p>
-                    <p class="safetysh_price">₹{{product.pricewithouttax}}</p>
+                    <p class="safetysh_price">₹{{product.sellingPrice}}</p>
                     <p class="brandname">By: <span>{{getBrandBy(product.short_description)}}</span></p>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                             <span class="before-discount">₹{{product.mrp}}
                             </span>
                             <span class="discount">{{product.discount_percentage}}% OFF</span>
-                            <span class="after-discount">{{product.pricewithouttax}}</span>
+                            <span class="after-discount">{{product.sellingPrice}}</span>
                         </p>
                         <p class="seller">
                             <span>By :</span>{{getBrandBy(product.short_description)}}

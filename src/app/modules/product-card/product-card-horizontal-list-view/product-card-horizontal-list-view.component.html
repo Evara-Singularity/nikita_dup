@@ -13,8 +13,8 @@
     <div class="card-container">
         <div class="inner-container">
             <div class="left" (click)="navigateToPDP()">
-                <div class="tags" *ngFor="let tags of product['productTags']">
-                    <img [src]="tags['tagImageLink']" />
+                <div *ngIf="this.product && this.product['productTags']" class="tags">
+                    <img [src]="this.product['productTags']" />
                 </div>
                 <ng-container *ngIf="isPDPImageLazyLoaded || !cardFeaturesConfig.lazyLoadImage">
                     <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}"
@@ -60,31 +60,35 @@
                             <span>Available on Request</span>
                         </div>
                         <div class="out-of-stock-price"
-                            *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice && product.priceWithoutTax!=0">
-                            <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
+                            *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice!=0">
+                            <span>{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
                                 }}</span>
                         </div>
                     </div>
                     <div class="right">
                         <div class="card-btn-row">
                             <ng-container
-                            *ngIf="(cardFeaturesConfig.enableAddToCart || cardFeaturesConfig.enableBuyNow) && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
-                            <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart" (click)="buyNow()">
-                                <i class="icon-cart1"></i>
-                            </span>
-                            <button class="btn tertiary-btn" *ngIf="cardFeaturesConfig.enableBuyNow"
-                                (click)="buyNow(true)">BUY NOW</button>
-                        </ng-container>
+                                *ngIf="(cardFeaturesConfig.enableAddToCart || cardFeaturesConfig.enableBuyNow) && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
+                                <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart"
+                                    (click)="buyNow()">
+                                    <i class="icon-cart1"></i>
+                                </span>
+                                <button class="btn tertiary-btn" *ngIf="cardFeaturesConfig.enableBuyNow"
+                                    (click)="buyNow(true)">
+                                    BUY NOW
+                                </button>
+                            </ng-container>
                         </div>
                         <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
-                            <button class="btn tertiary-outline-cta" (click)="openRfqForm()">SEND
-                                QUERY</button>
+                            <button class="btn tertiary-outline-cta" (click)="openRfqForm()">
+                                SEND QUERY
+                            </button>
                         </ng-container>
                     </div>
                 </div>
             </div>
-      </div>
-      <div class="keyfeatures"
+        </div>
+        <div class="keyfeatures"
             *ngIf="cardFeaturesConfig.enableFeatures && product['keyFeatures'] && product['keyFeatures'].length > 0">
             <ul>
                 <li *ngFor="let features of product['keyFeatures']">{{features.split(" ").splice(0,20).join(" ")}}<span
@@ -92,7 +96,7 @@
             </ul>
         </div>
     </div>
-       
+
     <ng-container #variantPopup></ng-container>
     <ng-container #addToCartToast></ng-container>
     <ng-container #productRFQ></ng-container>

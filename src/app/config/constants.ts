@@ -197,7 +197,7 @@ export const CONSTANTS = {
       pageSize: 20,
     },
     codMin: 300,
-    codMax: 25000,
+    codMax: 30000,
     userType: {
       business: "business",
       online: "online",
@@ -416,6 +416,12 @@ export const CONSTANTS = {
   },
   NEFT_AMOUNT_LMIT: 2000,
   EMI_MINIMUM_AMOUNT: 3000,
+  CUSTOMER_CARE_TIME:{
+    'call_timing_text': 'Call Timings: 9:00 AM - 8:00 PM (Monday to Saturday)'
+  },
+  DEFAULT_USER_NAME_PLACE_HOLDER:'User',
+  SEARCH_ABT_FLAG: 'y',
+  SEARCH_ONLINE_ABT_FLAG: 'y',
   MODULE_NAME: {
     HOME: 'HOME',
     PRODUCT_LISTING_PAGE: 'PRODUCT_LISTING_PAGE',

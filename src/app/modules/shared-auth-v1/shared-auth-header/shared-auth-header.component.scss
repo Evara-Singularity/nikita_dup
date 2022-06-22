@@ -1,5 +1,16 @@
 @import "../../../scss/variables";
 .shared-auth-header{
+    position: relative;
+    .skip-btn {
+        position: absolute;
+        top: 12px;
+        z-index: 99;
+        right: 20px;
+        font-size: 10px;
+        background-color: #fae0e1;
+        color: #D9232D;
+        box-shadow: none;
+    }
     height: 50px;
     display: flex;
     background: transparent;

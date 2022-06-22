@@ -1,15 +1,14 @@
-import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { ModalService } from '@app/modules/modal/modal.service';
-import { SharedCheckoutUnavailableItemsComponent } from '@app/modules/shared-checkout-unavailable-items/shared-checkout-unavailable-items.component';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { BehaviorSubject, forkJoin, Observable, of, Subject } from 'rxjs';
-import { catchError, delay, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, delay, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { Address } from '../models/address.modal';
 import { AddToCartProductSchema } from "../models/cart.initial";
@@ -36,6 +35,7 @@ export class CartService
     public productShippingChargesListObservable: Subject<any> = new Subject();
     private notificationsSubject: Subject<any[]> = new Subject<any[]>();
     public appliedPromocodeSubject: Subject<string> = new Subject<string>();
+    public promocodePopupSubject: Subject<boolean> = new Subject<boolean>();
     //public slectedAddress: number = -1;
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
@@ -45,6 +45,7 @@ export class CartService
     notifications = [];
     appliedPromoCode = null;
     allPromoCodes: Array<any> = [];
+    shippingCharges: number = 0;
 
     // checkout related global vars
     private _billingAddress: Address;
@@ -68,7 +69,7 @@ export class CartService
     constructor(
         private _dataService: DataService, private _localStorageService: LocalStorageService, private localAuthService: LocalAuthService,
         private _modalService: ModalService, private _loaderService: GlobalLoaderService, private _toastService: ToastMessageService,
-        private _router: Router, private _globalLoader: GlobalLoaderService, private _location: Location, private _globalAnalyticsService:GlobalAnalyticsService
+        private _router: Router, private _globalLoader: GlobalLoaderService, private _location: Location, private _globalAnalyticsService: GlobalAnalyticsService,
     ) { this.setRoutingInfo(); }
 
     set billingAddress(address: Address) { this._billingAddress = address }
@@ -155,9 +156,6 @@ export class CartService
     setGenericCartSession(cart)
     {
         this.cartSession = JSON.parse(JSON.stringify(cart));
-        // if (cart && cart.offersList && cart.offersList.length > 0) {
-        //     this.appliedPromoCode = cart.offersList[0]['id'];
-        // }
     }
 
     getCartSession() { return JSON.parse(JSON.stringify(this.cartSession)); }
@@ -446,7 +444,7 @@ export class CartService
         return obj;
     }
 
-    private getItemsList(cartItems)
+    public getItemsList(cartItems)
     {
         let itemsList = [];
         if (cartItems != undefined && cartItems != null && cartItems.length > 0) {
@@ -683,7 +681,8 @@ export class CartService
         return this._cartUpdatesChanges.asObservable()
     }
 
-    public setCartUpdatesChanges(cartsession): void {
+    public setCartUpdatesChanges(cartsession): void
+    {
         this._cartUpdatesChanges.next(cartsession);
     }
 
@@ -691,12 +690,18 @@ export class CartService
     public refreshCartSesion()
     {
         // we do not want to refresh cart by pages component in case buynow event
-        // conditional are hacks used because localtion.goback() refrsh page and call getcartsession API from pages component (root module)
+        // conditional are hacks used because localtion.goback() refresh page and 
+        // call getcartsession API from pages component (root module)
+        console.log('WINDOW Histroy', window.history.length, this.previousUrl, this.currentUrl, this._router.url);
         if (
-            !this._buyNow &&
-            !this.buyNowSessionDetails &&
-            (this._router.url.indexOf('checkout/payment') === -1) &&
-            !(this._router.url.indexOf('checkout/address') > 0 && this.previousUrl.indexOf('checkout/payment') > 0)
+            (
+                !this._buyNow &&
+                !this.buyNowSessionDetails &&
+                (this._router.url.indexOf('checkout/payment') === -1) &&
+                !(this._router.url.indexOf('checkout/address') > 0 && this.previousUrl.indexOf('checkout/payment') > 0 && this._buyNow)
+            ) || (
+                (this._router.url.indexOf('checkout/payment') > 0) && (this.previousUrl.indexOf('checkout/payment') > 0)
+            )
         ) {
             this.checkForUserAndCartSessionAndNotify().subscribe(status =>
             {
@@ -708,12 +713,6 @@ export class CartService
             })
         }
     }
-
-    // resetBuyNow()
-    // {
-    //     this._buyNow = false;
-    //     this.buyNowSessionDetails = null;
-    // }
 
     // incase of update use this to notify cart session
     publishCartUpdateChange(cartSession) { this._cartUpdatesChanges.next(cartSession); }
@@ -784,6 +783,7 @@ export class CartService
         const productBrandDetails = args.productGroupData['brandDetails'];
         const productCategoryDetails = args.productGroupData['categoryDetails'][0];
         const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
+        const incrementUnit = (priceQuantityCountry && priceQuantityCountry['incrementUnit']) ? priceQuantityCountry['incrementUnit'] : 1;
         const productLinks = productPartDetails['productLinks'];
         const product = {
             cartId: null,
@@ -813,7 +813,7 @@ export class CartService
             taxonomyCode: productCategoryDetails['taxonomyCode'],
             buyNow: args.buyNow,
             filterAttributesList: args.productGroupData['filterAttributesList'] || null,
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            discount: this.calculcateDiscount(priceQuantityCountry['discount'], productMrp, productPrice),
             category: productCategoryDetails['taxonomy'],
             isOutOfStock: this._setOutOfStockFlag(priceQuantityCountry),
             quantityAvailable: priceQuantityCountry['quantityAvailable'] || 0,
@@ -822,6 +822,9 @@ export class CartService
             productImage: CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.medium,
             url: productPartDetails.canonicalUrl,
             isProductUpdate: 0,
+            sellingPrice: productPrice,
+            moq: productMinimmumQuantity,
+            incrementUnit: incrementUnit
         } as AddToCartProductSchema;
         if (args.isFbt) {
             product['isFbt'] = args.isFbt;
@@ -831,6 +834,24 @@ export class CartService
             product['bulkPriceWithoutTax'] = args.selectPriceMap['bulkSPWithoutTax']
         }
         return product
+    }
+
+    /**
+ * 
+ * @param discountIfExist : If discount is given then it will make sure it has 0 places after decimal & is floor value
+ * @param mrp : used if discountIfExist does not exist
+ * @param SellingPrice  used if discountIfExist does not exist
+ * @returns discount or 0
+ */
+    calculcateDiscount(discountIfExist, mrp, SellingPrice): number
+    {
+        if (discountIfExist && !Number.isNaN(discountIfExist)) {
+            return +Math.floor(+(discountIfExist)).toFixed(0)
+        } else if (mrp && SellingPrice && !Number.isNaN(mrp) && !Number.isNaN(SellingPrice)) {
+            return +(Math.floor(+(((mrp - SellingPrice) / mrp) * 100)).toFixed(0))
+        } else {
+            return 0;
+        }
     }
 
     private _checkProductItemExistInCart(productId, cartSession)
@@ -984,11 +1005,15 @@ export class CartService
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SET_SetCartValidationMessages, { body: data });
     }
 
+
     validateCartApi(cart)
     {
         // used in cart.components.ts
         const cartN = JSON.parse(JSON.stringify(cart));
-        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_CART, { body: this.buyNow ? cartN : cart });
+        return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_CART, { body: this.buyNow ? cartN : cart }).pipe(
+            tap((response) => { return response; }),
+            shareReplay(1)
+        );
     }
 
     getSessionByUserId(cart)
@@ -1087,112 +1112,6 @@ export class CartService
             });
         }
         return messageList;
-    }
-
-    //TODO:Remove after new notification revampe
-    /**
-     * 
-     * @param itemsValidationMessage : new updates in item: price, shipping, coupon
-     * This function add new items validation or update the older one for oos, and price.
-     */
-    setValidationMessageLocalstorage(itemsValidationMessageNew, itemsValidationMessageOld)
-    {
-        if (itemsValidationMessageOld && itemsValidationMessageOld.length > 0) {
-            itemsValidationMessageNew.forEach((itemValidationMessageNew) =>
-            {
-                let isExist = false;
-                for (let i = 0; i < itemsValidationMessageOld.length; i++) {
-                    let itemValidationMessageOld = itemsValidationMessageOld[i];
-                    if (itemValidationMessageOld['msnid'] == itemValidationMessageNew['msnid']) {
-                        isExist = true;
-                        if (itemValidationMessageNew['type'] == 'price' || itemValidationMessageNew['type'] == 'oos') {
-                            itemsValidationMessageOld[i] = Object.assign({}, itemValidationMessageNew);
-                        }
-                        break;
-                    }
-                }
-                if (!isExist) {
-                    itemsValidationMessageOld.push(itemValidationMessageNew);
-                }
-                else {
-                    itemsValidationMessageOld = itemsValidationMessageNew;
-                }
-            })
-        } else {
-            itemsValidationMessageOld = itemsValidationMessageNew;
-        }
-        // Remove oos validation message, if it is instock after sometime
-        itemsValidationMessageOld = itemsValidationMessageOld.filter((itemValidationMessageOld) =>
-        {
-            if (itemValidationMessageOld['type'] == 'oos') {
-                return itemsValidationMessageNew.some(itemValidationMessageNew => itemValidationMessageOld['msnid'] == itemValidationMessageNew['msnid']);
-            }
-            return true;
-
-        })
-        return itemsValidationMessageOld;
-    }
-
-    //TODO:Remove after new notification revampe
-    deleteValidationMessageLocalstorage(item, type?)
-    {
-        const user = this._localStorageService.retrieve('user');
-        if (user && user.authenticated == "true") {
-            //remove cart item message from local storage
-            let itemsValidationMessage: Array<{}> = this.itemsValidationMessage;
-            if (!itemsValidationMessage.length) { return itemsValidationMessage; }
-            let itemsUnServicableMessage = [];
-            if (!type || type != "delete") {
-                itemsUnServicableMessage = itemsValidationMessage.filter(ivm => ivm['type'] == "unservicable");
-            }
-            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['msnid'] != item['productId']);
-            if (type && type == "delete") {
-                itemsUnServicableMessage = itemsValidationMessage.filter(ivm => ivm['type'] == "unservicable");
-            }
-            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "unservicable");
-            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "coupon");
-            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "shipping");
-            itemsValidationMessage = itemsValidationMessage.filter(ivm => ivm['type'] != "shippingcoupon");
-            this.setValidateCartMessageApi({ userId: user['userId'], data: itemsValidationMessage }).subscribe(() => { });
-            return [...itemsValidationMessage, ...itemsUnServicableMessage];
-        } else {
-            return null;
-        }
-    }
-
-    //TODO:Remove after new notification revampe
-    getValidationMessageLocalstorage()
-    {
-        // return itemValidationMessage;
-        // const user = this.localStorageService.retrieve('user');
-        // return user["itemsValidationMessage"] ? user["itemsValidationMessage"] : [];
-        return this.itemsValidationMessage;
-    }
-
-    //TODO:Remove after new notification revampe
-    addPriceUpdateToCart(itemsList, itemsValidationMessage)
-    {
-        let itemsListNew = JSON.parse(JSON.stringify(itemsList));
-        let itemsValidationMessageT = {}; //Transformed Items validation messages;
-        for (let ivm in itemsValidationMessage) {
-            itemsValidationMessageT[itemsValidationMessage[ivm]['msnid']] = itemsValidationMessage[ivm];
-        }
-        itemsListNew = itemsListNew.map((item) =>
-        {
-            item.text1 = null;
-            item.text2 = null;
-            item.oPrice = null;
-            item.nPrice = null;
-            if (itemsValidationMessageT[item['productId']] && itemsValidationMessageT[item['productId']]['type'] == 'price') {
-                const data = itemsValidationMessageT[item['productId']]['data'];
-                item.text1 = data['text1'];
-                item.text2 = data['text2'];
-                item.oPrice = data['oPrice'];
-                item.nPrice = data['nPrice'];
-            }
-            return item;
-        })
-        return itemsListNew;
     }
 
     updateCartItem(item, productResult)
@@ -1346,15 +1265,14 @@ export class CartService
             this.setGenericCartSession(_cartSession);
             this.orderSummary.next(_cartSession);
             this._loaderService.setLoaderState(false);
-            if (totalOffer) { this._toastService.show({ type: 'success', text: 'Promo Code Applied' }); }
-        }
-        )
+            if (totalOffer) { this.promocodePopupSubject.next(true); }
+        })
     }
 
     verifyAndApplyPromocode(_cartSession, promcode, isUpdateCart)
     {
         let returnValue = { cartSession: _cartSession, isUpdated: false };
-        if (!this.localAuthService.isUserLoggedIn()) { return of(returnValue) }
+        if (!this.localAuthService.isUserLoggedIn()) { return of(returnValue)}
         let cartSession = this.generateGenericCartSession(_cartSession)
         const cartObject = { 'shoppingCartDto': cartSession };
         return this.applyPromoCode(cartObject).pipe(map((response) =>
@@ -1409,7 +1327,7 @@ export class CartService
 
     genericRemovePromoCode()
     {
-        if (!this.appliedPromoCode) return;
+        if (!this.appliedPromoCode) { return; }
         this._loaderService.setLoaderState(true);
         let cartSession = this.getGenericCartSession;
         cartSession['offersList'] = [];
@@ -1476,45 +1394,11 @@ export class CartService
         );
     }
 
-    //cart removal logic
-    deleteValidationMessages(removableItems: any[])
-    {
-        const DELETE = "delete";
-        let NEW_VALIDATION_MSGS = [];
-        removableItems.forEach((item) => { NEW_VALIDATION_MSGS = this.deleteValidationMessageLocalstorage(item, DELETE); });
-        this.itemsValidationMessage = NEW_VALIDATION_MSGS;
-    }
-
-    updateOfferList(cartSession, data)
-    {
-        const DISCOUNT = data['discount'];
-        const TOTAL_AMOUNT = this.cartSession['cart']['totalAmount'];
-        if (DISCOUNT < TOTAL_AMOUNT) {
-            cartSession['cart']['totalOffer'] = DISCOUNT;
-            const ITEMS: any[] = cartSession['itemsList'];
-            const DISCOUNT_WISE_PRODUCTS = data['productDis'] ? Object.keys(data['productDis']) : [];
-            ITEMS.forEach((item) =>
-            {
-                item['offer'] = null;
-                if (DISCOUNT_WISE_PRODUCTS.includes(item['productId'])) {
-                    item['offer'] = data["productDis"][item["productId"]];
-                }
-            });
-            cartSession["itemsList"] = ITEMS;
-            return cartSession;
-        }
-        cartSession['cart']['totalOffer'] = 0;
-        cartSession['offersList'] = [];
-        cartSession.itemsList.forEach((item) => item["offer"] = null);
-        return cartSession;
-    }
-
     /**@description display unavailable items in pop-up */
     showUnavailableItems: boolean = false;
     unavailableItemsList: any[];
     viewUnavailableItems(types: string[])
     {
-        alert('a');
         const itemsList: any[] = JSON.parse(JSON.stringify(this.getGenericCartSession['itemsList']));
         const unserviceableMsns = JSON.parse(JSON.stringify(this.notifications))
             .filter(item => types.includes(item['type'])).reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);
@@ -1546,35 +1430,8 @@ export class CartService
             if (msns.includes(item['productId'])) { REMOVABLE_ITEMS.push(item); return; }
             NON_REMOVABLE_ITEMS.push(item);
         });
-        this.deleteValidationMessages(REMOVABLE_ITEMS);
-        this.removeNotificationsByMsns(msns).subscribe((response) => console.log("removeCartItemsByMsns"))
+        this.removeNotificationsByMsns(msns).subscribe((response) => console.log("removed notfication by msns"));
         this.updateCartAfterItemsDelete(CART_SESSION, NON_REMOVABLE_ITEMS);
-    }
-
-    verifyPromocode(cartSession)
-    {
-        const USER_SESSION = this._localStorageService.retrieve('user');
-        if (USER_SESSION && USER_SESSION['authenticated'] === "true") {
-            if (cartSession['offersList'] && cartSession['offersList'].length) {
-                const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CART.validatePromoCode}`;
-                let reqobj = { "shoppingCartDto": this.cartSession };
-                return this._dataService.callRestful('POST', URL, { body: reqobj })
-                    .pipe(
-                        map((response) =>
-                        {
-                            const SUCCESS = response['status'];
-                            if (SUCCESS) {
-                                cartSession = this.updateOfferList(cartSession, response['data']);
-                                return cartSession;
-                            }
-                            this._toastService.show(({ type: "error", text: response["statusDescription"] || "Unable to update the offer list." }))
-                            return cartSession;
-                        }),
-                        catchError((error: HttpErrorResponse) => cartSession)
-                    );
-            }
-        }
-        return of(cartSession);
     }
 
     verifyShippingCharges(cartSession)
@@ -1598,40 +1455,45 @@ export class CartService
         );
     }
 
-    updateCartAfterItemsDelete(CART_SESSION, items: any[])
+    updateCartAfterItemsDelete(cartSession, items: any[])
     {
-        CART_SESSION['itemsList'] = items;
+        cartSession['itemsList'] = [];
+        if (items.length) { cartSession['itemsList'] = items; }
         this._globalLoader.setLoaderState(true);
-        let newCartSessionFromSwitchMap;
-        this.updateCartSession(CART_SESSION).pipe(
-            switchMap((newCartSession) =>
+        let tempCartSession = null;
+        let totalOffer = null;
+        this.verifyAndApplyPromocode(cartSession, this.appliedPromoCode, true).pipe(
+            switchMap((response) =>
             {
-                console.log('verifyPromocode', newCartSession);
-                return this.verifyPromocode(newCartSession)
+                tempCartSession = response['cartSession'];
+                totalOffer = tempCartSession['cart']['totalOffer'] || null;
+                return this.updateCartSession(tempCartSession);
             }),
             switchMap((newCartSession) =>
             {
-                newCartSessionFromSwitchMap = newCartSession;
-                return this.verifyShippingCharges(newCartSession)
+                tempCartSession = newCartSession;
+                return this.verifyShippingCharges(tempCartSession)
             }),
             switchMap((newCartSession) =>
             {
-                newCartSessionFromSwitchMap = newCartSession;
-                return this.validateCartApi(newCartSession)
+                tempCartSession = newCartSession;
+                return this.validateCartApi(tempCartSession)
             })).
-            subscribe((newCartSession) =>
+            subscribe((response) =>
             {
                 this._globalLoader.setLoaderState(false);
                 this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
-                const ITEM_LIST = newCartSessionFromSwitchMap['itemsList'];
+                const ITEM_LIST = tempCartSession['itemsList'];
                 if (ITEM_LIST && ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {
                     this.clearBuyNowFlow();
                     // clears browser history so they can't navigate with back button
                     this._location.replaceState('/');
                     this._router.navigateByUrl('/quickorder');
                 }
-                if (newCartSessionFromSwitchMap.hasOwnProperty('itemsList')) {
-                    this._notifyCartChanges(newCartSessionFromSwitchMap, null);
+                if (tempCartSession.hasOwnProperty('itemsList')) {
+                    tempCartSession['cart']['totalOffer'] = totalOffer;
+                    tempCartSession['extraOffer'] = null;
+                    this._notifyCartChanges(tempCartSession, null);
                 }
             })
     }
@@ -1708,10 +1570,23 @@ export class CartService
         let info = this.buildNotifications(FILTERED_CART_ITEMS, validateCartData);
         let newNotfications: any[] = info['messageList'];
         let increasedPrice: string[] = info['increasedPriceMSNS'];
-        oldNotfications = oldNotfications.filter((notification) => !increasedPrice.includes(notification['msnid']));
+        oldNotfications = this.filterOldNotifcations(oldNotfications, increasedPrice);
         this.cartNotications = this.mergeNotifications(oldNotfications, newNotfications);
         this.updateCartItemsAfterNotfications(items, validateCartData);
         this.setCartNotifications(this.cartNotications);
+    }
+
+    filterOldNotifcations(oldNotfications: any[], increasedPrice: any[])
+    {
+        return oldNotfications.filter((notification) =>
+        {
+            const nType: string = notification['type'];
+            const isPriceIncreased = increasedPrice.includes(notification['msnid'])
+            if (isPriceIncreased || nType === "oos" || nType === "unserviceable") {
+                return false;
+            }
+            return true;
+        })
     }
 
     buildNotifications(FILTERED_ITEMS: any[], validateCartData): { messageList: any[], increasedPriceMSNS: string[] }
@@ -1890,19 +1765,23 @@ export class CartService
 
     updateCartAfterNotifcations(cartSession, setValidation$)
     {
+        let totalOffer = null;
         const cartUpdate$ = this.updateCartSession(cartSession).pipe(
             switchMap((newCartSession) =>
             {
-                return this.verifyPromocode(newCartSession)
+                return this.verifyAndApplyPromocode(newCartSession, this.appliedPromoCode, true);
             }),
-            switchMap((newCartSession) =>
+            switchMap((response) =>
             {
-                return this.verifyShippingCharges(newCartSession)
+                totalOffer = response.cartSession['cart']['totalOffer'] || null;
+                return this.verifyShippingCharges(response.cartSession)
             }));
         forkJoin([setValidation$, cartUpdate$]).subscribe(
             (responses) =>
             {
                 const cartSession = this.generateGenericCartSession(responses[1]);
+                cartSession['cart']['totalOffer'] = totalOffer;
+                cartSession['extraOffer'] = null;
                 this.setGenericCartSession(cartSession);
                 this.modifyCartItemsForPriceNotfication();
                 this.orderSummary.next(cartSession);
@@ -1960,7 +1839,9 @@ export class CartService
                 return false;
             });
         }
-        return this.setValidateCartMessageApi({ userId: userSession['userId'], data: this.notifications })
+        const saveNotfications = this.notifications.filter((notification) => notification['type'] == "unserviceable");
+        return this.setValidateCartMessageApi({ userId: userSession['userId'], data: saveNotfications });
+
     }
 
     getCartNotificationsSubject(): Observable<any> { return this.notificationsSubject.asObservable(); }
@@ -1971,6 +1852,13 @@ export class CartService
     {
         this.cartNotications = [];
         this.notifications = [];
+        (this.getGenericCartSession['itemsList'] as any[]).forEach((item) =>
+        {
+            delete item['text1'];
+            delete item['text2'];
+            delete item['nPrice'];
+            delete item['oPrice'];
+        })
     }
 
     clearCartNotfications()
@@ -1980,7 +1868,119 @@ export class CartService
         this.setValidateCartMessageApi({ userId: user['userId'], data: this.cartNotications }).subscribe(() => { console.log("cleared all notfication"); })
     }
 
+    findInvalidItem()
+    {
+        const items = (this.getGenericCartSession['itemsList'] as any[]);
+        const index = items.findIndex((item) => item['productQuantity'] === 0 || item['productQuantity'] === "");
+        if (index > -1) {
+            const item = this.getGenericCartSession.itemsList[index]
+            const errorTxt = `${item.productName} cannot have invalid quantity.`;
+            this._toastService.show({ type: 'error', text: errorTxt });
+        }
+        return index;
+    }
+
+    getBusinessDetail(data)
+    {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CBD;
+        return this._dataService.callRestful("GET", url, { params: data }).pipe(
+            catchError((res: HttpErrorResponse) =>
+            {
+                return of({ status: false, statusCode: res.status });
+            })
+        );
+    }
+
+    validateCartBeforePayment(obj)
+    {
+        let userSession = this._localStorageService.retrieve("user");
+        return this.getBusinessDetail({ customerId: userSession.userId }).pipe(
+            map((res: any) => res),
+            mergeMap((d) =>
+            {
+                let bd: any = null;
+                if (d && d.status && d.statusCode == 200) {
+                    bd = {
+                        company: d["data"]["companyName"],
+                        gstin: d["data"]["gstin"],
+                        is_gstin: d["data"]["isGstInvoice"],
+                    };
+                }
+                obj["shoppingCartDto"]["businessDetails"] = bd;
+                return this._dataService
+                    .callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.VALIDATE_BD, { body: obj })
+                    .pipe(
+                        catchError((res: HttpErrorResponse) => { return of({ status: false, statusCode: res.status }); }),
+                        map((res: any) => { return res; })
+                    );
+            })
+        );
+    }
+
     //Analytics
+    sendAdobeOnCheckoutOnVisit(checkoutPageTye)
+    {
+        let subsection = (checkoutPageTye === 'address') ? `product summary & address details` : `payment methods`;
+        subsection = `moglix:order checkout:${subsection}`;
+        const digitalData = {};
+        const cartSession = this.getGenericCartSession;
+        const itemsList = cartSession['itemsList'] ? (cartSession['itemsList'] as []) :[];
+        const user = this.localAuthService.getUserSession();
+        let taxo1 = '', taxo2 = '', taxo3 = '', productList = '', brandList = '', productPriceList = '', 
+        shippingList = '', couponDiscountList = '', quantityList = '', totalDiscount = 0, totalQuantity = 0, totalPrice = 0, totalShipping = 0;
+        for (let p = 0; p < itemsList.length; p++) {
+            let price = itemsList[p]['productUnitPrice'];
+            if (itemsList[p]['bulkPrice'] != '' && itemsList[p]['bulkPrice'] != null) {
+                price = itemsList[p]['bulkPrice'];
+            }
+            taxo1 = itemsList[p]['taxonomyCode'].split("/")[0] + '|' + taxo1;
+            taxo2 = itemsList[p]['taxonomyCode'].split("/")[1] + '|' + taxo2;
+            taxo3 = itemsList[p]['taxonomyCode'].split("/")[2] + '|' + taxo3;
+            productList = itemsList[p]['productId'] + '|' + productList;
+            brandList = itemsList[p]['brandName'] ? itemsList[p]['brandName'] + '|' + brandList : '';
+            productPriceList = price + '|' + productPriceList;
+            shippingList = itemsList[p]['shippingCharges'] + '|' + shippingList;
+            couponDiscountList = itemsList[p]['offer'] ? itemsList[p]['offer'] + '|' + couponDiscountList : '';
+            quantityList = itemsList[p]['productQuantity'] + '|' + quantityList;
+            totalDiscount = itemsList[p]['offer'] + totalDiscount;
+            totalQuantity = itemsList[p]['productQuantity'] + totalQuantity;
+            totalPrice = (price * itemsList[p]['productQuantity']) + totalPrice;
+            totalShipping = itemsList[p]['shippingCharges'] + totalShipping;
+        }
+        let page = {
+            'channel': "checkout",
+            'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest",
+            'pageName': subsection,
+            'subSection': subsection,
+            'order' : this.invoiceType
+        }
+        let custData = {
+            'customerID': (user['userId'] && user['userId']) ? btoa(user['userId']) : '',
+            'emailID': (user && user['email']) ? btoa(user['email']) : '',
+            'mobile': (user && user['phone']) ? btoa(user['phone']) : '',
+            'type': (user && user['userType']) ? user['userType'] : '',
+        }
+        let order = {
+            'productCategoryL1': taxo1,
+            'productCategoryL2': taxo2,
+            'productCategoryL3': taxo3,
+            'productID': productList,
+            'brand': brandList,
+            'productPrice': productPriceList,
+            'shipping': shippingList,
+            'couponDiscount': couponDiscountList,
+            'quantity': quantityList,
+            'totalDiscount': totalDiscount,
+            'totalQuantity': totalQuantity,
+            'totalPrice': totalPrice,
+            'shippingCharges': totalShipping
+        }
+        digitalData["page"] = page;
+        digitalData["custData"] = custData;
+        digitalData["order"] = order;
+        this._globalAnalyticsService.sendAdobeCall(digitalData);
+    }
+
     pushPromocodesDataLayer()
     {
         setTimeout(() =>

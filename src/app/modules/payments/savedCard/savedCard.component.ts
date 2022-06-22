@@ -67,11 +67,7 @@ export class SavedCardComponent {
     private checkPrepaidDiscount() {
         let data = {};
         const userSession = this._localAuthService.getUserSession();
-        if (this.type == "tax") {
-            data["userId"] = userSession["userId"];
-        } else {
-            data['userEmail'] = (userSession && userSession["email"]) ? userSession["email"] : userSession["phone"];
-        }
+        this.type == "tax" ? (data["userId"] = userSession["userId"]) :(data['userEmail'] = (userSession && userSession["email"]) ? userSession["email"] : userSession["phone"]);
         this.getPrePaidDiscount(0);
         this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
             this.getPrePaidDiscount();
@@ -80,6 +76,10 @@ export class SavedCardComponent {
 
     private initForm() {
         this.savedCards = this._objectToArray.transform(this.savedCardsData);
+        this.savedCardsForm();
+    }
+
+    savedCardsForm(){
         this.savedCardForm = this._formBuilder.group({
             cards: this._formBuilder.array(this.createSavedCardForm(this.savedCards))
         });
@@ -110,11 +110,7 @@ export class SavedCardComponent {
             cardToken: this.savedCards[index]['card_token'],
             userId: userSession["userId"]
         };
-        if (this.type == "tax") {
-            data["gateWay"] = "razorpay";
-        } else {
-            data["gateWay"] = "payu";
-        }
+        this.type == "tax" ?  (data["gateWay"] = "razorpay") : (data["gateWay"] = "payu");
         this.deleteSavedCard(data).subscribe((res) => {
             if (res['status'] == true) {//delete card
                 if (this.savedCards.length === 1) {
@@ -125,9 +121,7 @@ export class SavedCardComponent {
                     this.savedCards.splice(index, 1);
                     this.selectedCardIndex = 0;
                     this.getPrePaidDiscount();
-                    this.savedCardForm = this._formBuilder.group({
-                        cards: this._formBuilder.array(this.createSavedCardForm(this.savedCards))
-                    });
+                    this.savedCardsForm();
                 }
             } else {// show message returned from api
             }

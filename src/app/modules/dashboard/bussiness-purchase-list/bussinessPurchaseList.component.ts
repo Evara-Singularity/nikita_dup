@@ -5,7 +5,6 @@ import { ActivatedRoute } from "@angular/router";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { map } from "rxjs/operators";
 import { Meta } from "@angular/platform-browser";
-import { OrderSummaryService } from "@app/modules/legacyOrderSummary/orderSummary.service";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import CONSTANTS from "@app/config/constants";
 import { CartService } from "@app/utils/services/cart.service";
@@ -13,8 +12,8 @@ import { CommonService } from "@app/utils/services/common.service";
 import { ProductService } from "@app/utils/services/product.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
-import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
-import { ProductListService } from '@app/utils/services/productList.service';
+import { OrderSummaryService } from "@app/utils/services/orderSummary.service";
+import { ProductCardFeature} from '@app/utils/models/product.listing.search';
 
 
 
@@ -793,12 +792,6 @@ export class BussinessPurchaseListComponent {
     this.spp = true;
   }
   discountPrice(markedPrice, sellingPrice) {
-    if (!markedPrice) {
-      return 0;
-    }
-    const discount = markedPrice - sellingPrice;
-    const discountPercentage = (discount / markedPrice) * 100;
-    const roundOff = Math.floor(discountPercentage); // Round off to two digits after decimal.
-    return roundOff;
+    return this.commonService.calculcateDiscount(null,markedPrice, sellingPrice);
   }
 }

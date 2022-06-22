@@ -13,6 +13,9 @@ import { CommonService } from '@app/utils/services/common.service';
   styleUrls: ['./campaign.component.scss']
 })
 export class CampaignComponent implements OnInit {
+
+  readonly CUSTOMER_CARE_TIME=CONSTANTS.CUSTOMER_CARE_TIME.call_timing_text;
+
   options: NgxSiemaOptions = {
     selector: '.moglix-hain-na-siema',
     duration: 200,

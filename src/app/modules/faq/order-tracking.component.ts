@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: 'order',
@@ -8,6 +9,9 @@ import { Title } from '@angular/platform-browser';
 })
 
 export class OrderTrackingComponent implements OnInit {
+
+    readonly CONSTANTS = CONSTANTS
+
     constructor(private title:Title) { }
 
     ngOnInit() { 

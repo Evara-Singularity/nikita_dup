@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="address-container">
-        <div class="shipping-container">
+        <div class="shipping-container  billing-adress-container">
             <div class="address-list">
                 <div class="multiple-address multiple-address-checkout" *ngIf="address">
                     <label>
@@ -48,11 +48,10 @@
                 </button>
                 <button class="btn quaternary-btn-1" *ngIf="addressCount == 0"
                     (click)="$event.stopPropagation();displayAddressFormPopup(label, null)">
-                    ADD NEW ADDRESS
+                   + ADD NEW ADDRESS
                 </button>
             </div>
         </div>
-
     </div>
 </ng-template>
 <section class="invoice-container">

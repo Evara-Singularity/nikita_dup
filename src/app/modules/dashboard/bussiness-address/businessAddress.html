@@ -1,8 +1,6 @@
 <div>
     <!-- <router-outlet></router-outlet> -->
-    <all-addresses [addDeliveryOrBilling]="addDeliveryOrBilling"
-        [showDelete]="true"
-        (emitDeliveryAddressSelectEvent$)="_addressService?.handleDeliveryAddressEvent($event)"
-        (emitBillingAddressSelectEvent$)="_addressService?.handleBillingAddressEvent($event)"
-        (emitInvoiceTypeEvent$)="_addressService?.handleInvoiceTypeEvent($event)"></all-addresses>
+    <all-addresses [parentModule]="'Dashboard'" (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
+        (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
+        (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
 </div>

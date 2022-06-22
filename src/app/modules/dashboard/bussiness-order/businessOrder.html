@@ -1,11 +1,11 @@
 <div *ngIf="orders && orders.length>0">
-    <div class="orderbox pwa-container" *ngFor="let order of orders;let i=index">
+    <div class="orderbox pwa-container pb-10" *ngFor="let order of orders;let i=index">
         <div class="orderIdtab pwa-row pad-0" (click)="showOrder(order.orderId,i)" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="footwear">
             <div class="orderSum">
-                <span class="orderId">Order ID : {{order.orderId}}</span>
+                <span class="orderId">Order ID : {{order.orderId}}&nbsp;</span>
                 <span class="orderOthDet">
-                    <span class="ordernoItems">{{(order.numberOfItem != undefined && order.numberOfItem != null) ?
-                        order.numberOfItem: 0}} {{(order.numberOfItem && order.numberOfItem>1) ? 'Items' : 'Item'}}&nbsp;| &nbsp;
+                    <span class="ordernoItems">({{(order.numberOfItem != undefined && order.numberOfItem != null) ?
+                        order.numberOfItem: 0}}) {{(order.numberOfItem && order.numberOfItem>1) ? 'Items' : 'Item'}} &nbsp;
                     </span>
                 <span class="orderDate">
                         Placed on : {{order.createdOn | date : 'dd-MM-yyyy'}}
@@ -19,7 +19,7 @@
             <!-- inner box -->
             <!-- new card -->
             <div class="card-boxed">
-                <div *ngFor="let detail of orderDetail[order.orderId]">
+                <div *ngFor="let detail of orderDetail[order.orderId]" class="mt-10">
                     <a href="#" [routerLink]="['../order-detail',order.orderId, detail.item_id]">
                         <div class="card-upper">
                             <div class="card-img">
@@ -40,7 +40,9 @@
                         </div>
                         <div class="card-bottom">
                             <div class="card-bottom-inner">
-                                <span class="orderstatus"><i class="dot">&#x2022;&nbsp;</i><span [ngClass]="detail.status == 'ACCEPTED' || detail.status == 'PROCESSING' || detail.status == 'PACKED' || detail.status == 'SHIPPED'">{{ detail.status }}</span></span>
+                                <!-- <span class="orderstatus"><i class="dot">&#x2022;&nbsp;</i><span </span></span> -->
+                                <span class="status-circle created"></span>
+                                <span class="status">{{ detail.status }}</span>
                                 <span class="buy-again" *ngIf="detail.status !== 'ACCEPTED' && detail.status !== 'CANCELLED' && detail.status !=='PAYMENT FAILED'"><a (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)">BUY&nbsp;AGAIN</a></span>
                             </div>
                         </div>

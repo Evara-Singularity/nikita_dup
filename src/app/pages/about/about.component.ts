@@ -116,7 +116,3 @@ export class AboutComponent {
   }
 
 }
-
-
-
-

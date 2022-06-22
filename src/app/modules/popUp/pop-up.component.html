@@ -1,11 +1,9 @@
 <section class="{{pClass}}">    
     <div *ngIf="headerType === 'pop-up-header'" class="pop-up-header">
-        <div class="head-sec">
-            <div class="container">
-                <i class="icon-circle-delete" (click)="closePopup()"></i>
-                <p class="txt">{{headerText}}</p>
-            </div>
-        </div>
+        <i class="icon-circle-delete" (click)="closePopup()"></i>
+        <span class="page-name">
+            {{headerText}}
+        </span>
     </div>
     <div *ngIf="headerType === 'pop-up-header1'" class="pop-up-header1">
         <i class="icon-back-arrow"  (click)="closePopup()"></i>
@@ -13,6 +11,18 @@
             {{headerText}}
         </span>
     </div>
+    <div *ngIf="headerType === 'pop-up-header2'" class="pop-up-header2">
+         <i class="icon-circle-delete"  (click)="closePopup()"></i>
+        <div class="text-section">
+            <h3 class="heading-3 pad-tb-0">
+                {{headerText}}
+            </h3>
+            <p class="page-name">
+                {{headerText}}
+            </p>
+        </div>
+    </div>
+   
     
     <!-- <ng-container *ngIf="headerCustom">
         <ng-content select="[header]"></ng-content>

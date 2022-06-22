@@ -21,11 +21,9 @@
                         </span>
                         <span class="discount">
                             {{product.discount_percentage}} % OFF
-                            <!-- {{((product.mrp -
-                  product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}}% OFF -->
                         </span>
                         <span class="after-discount">
-                            {{product.pricewithouttax | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}
+                            {{product.sellingPrice | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}
                         </span>
                     </p>
                     <ng-container *ngFor="let item of product.short_description | characterremove;let i=index">
@@ -59,10 +57,10 @@
                                 <span class="discount">
                                     {{product.discount_percentage}} % OFF
                                     <!-- {{((product.mrp -
-                          product.priceWithoutTax)/product.mrp)*100 | mathFloor | number : '1.0-0'}}% OFF -->
+                          product.sellingPrice)/product.mrp)*100 | mathFloor | number : '1.0-0'}}% OFF -->
                                 </span>
                                 <span class="after-discount">
-                                    {{product.pricewithouttax | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}
+                                    {{product.sellingPrice | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}
                                 </span>
                             </p>
                             <ng-container *ngFor="let item of product.short_description | characterremove;let i=index">

@@ -503,36 +503,19 @@
         padding-bottom: 15px;
     }
 }
-.removePopup{
-    .top-header-bottom-menu{
-        border-bottom:none;
-        .heading-3{
-            padding: 20px 10px;
-        }
-    }
-    .static-small-card-container{
-        margin-bottom: 20px;
-    }
-}
+
 .cta-row{
-    display:flex;
-    margin-bottom:10px;
+    display: flex;
+    margin-top: 10px;
     button{
-        display:inline-flex;
-        justify-content:center;
-        align-items:center;
-        i{
-            font-size:$extra-large-1-font;
-            margin-right:5px;
-        }
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
     }
     .secondry-btn-1{
-        flex:2;
-        margin-right:10px;
-    }
-    .secondry-btn{
-        flex:3;
+        flex-grow: 2;
+        margin-right: 10px;
+    }.secondry-btn{
+        flex-grow: 3;
     }
 }
-
-

@@ -14,31 +14,7 @@
 }
 
 
-.for-varification {
-    position: relative;
-    .for-varification-r {
-        position: absolute;
-        bottom: 5px;
-        right: 5px;
-        padding: 8px;
-        border-radius: 8px;
 
-        background-color: var(--slimy-green);
-        a.show {
-            color: #176fd8 !important;
-            text-align: right;
-            display: none;
-            font-size: $large-font;
-        }
-        span.hidden {
-            color: var(--white) !important;
-            font-size: $medium-font;
-            font-weight: normal;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-    }
-}
 
 .varified-checkbox {
     @extend %custom-check-box-checkout

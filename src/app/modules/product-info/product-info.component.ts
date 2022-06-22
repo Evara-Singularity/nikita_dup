@@ -24,6 +24,7 @@ import { LocalStorageService } from "ngx-webstorage";
 })
 export class ProductInfoComponent implements OnInit
 {
+  
     @Input("openProductInfo") openProductInfo = false;
     @Input("modalData") modalData = null;
     @Input("oosProductIndex") oosProductIndex = -1;
@@ -42,8 +43,10 @@ export class ProductInfoComponent implements OnInit
     //prices
     productMrp = 0;
     priceWithoutTax = 0;
+    productPrice = 0;
     productDiscount = 0;
     bulkPriceWithoutTax = 0;
+    bulkSellingPrice = 0;
     bulkDiscount = 0;
     imgURL = null;
     productName = "";
@@ -75,7 +78,7 @@ export class ProductInfoComponent implements OnInit
 
     constructor(
         private globalAnalyticService: GlobalAnalyticsService,
-        private _commonService: CommonService,
+        public _commonService: CommonService,
         public localStorageService: LocalStorageService,
         private _productService: ProductService,
         private ngxSiemaService: NgxSiemaService,
@@ -120,6 +123,8 @@ export class ProductInfoComponent implements OnInit
         this.imgURL = mainInfo["imgURL"];
         this.productName = mainInfo["productName"];
         this.brandName = mainInfo["brandName"];
+        this.productPrice = mainInfo["productPrice"];
+        this.bulkSellingPrice = mainInfo["bulkSellingPrice"];
     }
 
     processContentInfo(contentInfo, infoType)
@@ -157,7 +162,13 @@ export class ProductInfoComponent implements OnInit
         if(this.siemaTab && this.slides)
         {
             this.siemaTab.style.height = `${this.slides[currentSlide].clientHeight+20}px`;
+            
         }
+    }
+    callSpecification(event){
+       setTimeout(() => {
+        this.updateTabContentHeight(this.selectedIndex);
+     }, 0);
     }
 
     moveTheSelectedIndex(selectedValue)

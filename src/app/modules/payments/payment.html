@@ -1,7 +1,7 @@
 <section class="payment-container payment-modal-bottom pwa-row">
-    <!-- <div class="card-30">
+    <div class="card-30">
         <saved-card *ngIf="isSavedCardExist" [savedCardsData]="savedCardsData" [type]="invoiceType" (removeTab$)="removeTab($event)"></saved-card>
-    </div> -->
+    </div>
     <div class="pwa-col-12">
         <section class="payment_accordion">
             <div id="creditDebitCardSection" class="payment_accordion_item pwa-row pad-0">
@@ -133,10 +133,10 @@
 </section>
 
 
-<div class="row-eq-height payment_block" style="border: 1px solid #d6d6d6;">
-    <div class="col-sm-3 bg-grey no-padding min-h-470 minh-auto-xs payment_sidebar">
+<div class="row-eq-height payment_block " style="border: 1px solid #d6d6d6; ">
+    <div class="col-sm-3 bg-grey no-padding min-h-470 minh-auto-xs payment_sidebar ">
     </div>
-    <div class="tab-content col-sm-9 pad-tb-30 pad-lr-30 pad-lr-sm-15 pad-tb-sm-15 pad-lr-xs-10 min-h-470">
+    <div class="tab-content col-sm-9 pad-tb-30 pad-lr-30 pad-lr-sm-15 pad-tb-sm-15 pad-lr-xs-10 min-h-470 ">
     </div>
 </div>
 
@@ -152,11 +152,11 @@
                         <img src="{{product.productImg}}">
                     </div>
                 </div>
-                <div class="product-detail pad-tb-10">
-                    <div class="p-name f-14">
-                        <a class="blue-txt"> {{ (product.productName.length>50)? (product.productName |
+                <div class="product-detail pad-tb-10 ">
+                    <div class="p-name f-14 ">
+                        <a class="blue-txt "> {{ (product.productName.length>50)? (product.productName |
                             slice:0:48)+'..':(product.productName) }}</a>
-                        <!-- <i class="icon-dot" (click)="sbm.index = i; getProductId(item.productId)"></i> -->
+                        <!-- <i class="icon-dot " (click)="sbm.index=i ; getProductId(item.productId) "></i> -->
                     </div>
                 </div>
             </div>

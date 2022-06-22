@@ -5,7 +5,19 @@
                 <img src="{{IMG_PATH}}{{data['image_block'][0].image_name}}">
             </div>
             <div class="pwa-col-12 top-txt">
-                <b>Get GST invoice and save up to {{gstPercentage}}% on business purchases.</b><br>
+                <ng-container *ngIf="offerIndex != null && offerIndex == 0">
+                    <b>
+                        Get GST invoice and save up to {{gstPercentage}}% on
+                        business
+                        purchases.
+                    </b><br>
+                </ng-container>
+                <ng-container *ngIf="offerIndex != null && offerIndex > 0">
+                    <b>{{data['image_block'][0]['image_title']}}</b><br>
+                </ng-container>
+                <ng-container *ngFor="let item of data['image_block'][0].image_general">
+                    <b>{{item.general_url}} </b>
+                </ng-container>
                 <p *ngFor="let item of data['image_block'][0].image_general">{{item.general_url}} </p>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation, Input, OnInit, ViewChild, ElementRef, NgModule, Renderer2, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Router, NavigationStart, RouterModule } from '@angular/router';
+import { Router, NavigationStart, RouterModule, ActivatedRoute } from '@angular/router';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { TypeAheadService } from '../../utils/services/typeAhead.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -36,6 +36,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
     @Input() autoFillSearchKeyword: string;
 
     showSuggestionBlockLoader: boolean;
+    searchValue='';
     suggestionList;
     brandSuggestionList;
     categorySuggestionList;
@@ -72,6 +73,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
         private _commonService: CommonService,
         private _dataService: DataService,
         private _productService: ProductService,
+        private route: ActivatedRoute,
     ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -86,8 +88,14 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
         this.categorySuggestionList = [];
         this.topProducts = [];
 
+        if (this.isBrowser) {
+            this.route.queryParams.subscribe(res => {
+                this.searchValue = (res['search_query']) ? res['search_query'] : '';
+            })
+        } else { this.searchValue = '' }
+
         this.searchForm = this._fb.group({
-            'searchTerm': ['', [Validators.required]],
+            'searchTerm': [this.searchValue, [Validators.required]],
         });
 
         /**
@@ -112,27 +120,31 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
             )
             .subscribe(
                 term => {
-                    if (term && term.length > 0) {
-                        this.service.getSuggession(term).subscribe((data) => {
-                            if (data) {
-                                this.suggestionList = (data.suggestionList != undefined && data.suggestionList.length) > 0 ? data.suggestionList : [];
-                                this.brandSuggestionList = (data.brandSuggestionList != undefined && data.brandSuggestionList.length > 0) ? data.brandSuggestionList : [];
-                                this.categorySuggestionList = (data.categorySuggestionList != undefined && data.categorySuggestionList.length > 0) ? data.categorySuggestionList : [];
-                                this.searchProducts = ((data.topProducts || []) as any[]).map(product => this._productService.searchResponseToProductEntity(product));
-                                if (cTerm && cTerm.length > 0) {
-                                    this.showSuggestionBlock = true;
-                                }
-                            }
-                        });
-                    } else {
-                        this.showSuggestionBlock = false;
-                        this._commonService.resetLimitTrendingCategoryNumber();
-                    }
+                    this.searchTermApi(term, cTerm);
 
                 }
             );
     }
 
+
+    private searchTermApi(term: any, cTerm: any) {
+        if (term && term.length > 0) {
+            this.service.getSuggession(term).subscribe((data) => {
+                if (data) {
+                    this.suggestionList = (data.suggestionList != undefined && data.suggestionList.length) > 0 ? data.suggestionList : [];
+                    this.brandSuggestionList = (data.brandSuggestionList != undefined && data.brandSuggestionList.length > 0) ? data.brandSuggestionList : [];
+                    this.categorySuggestionList = (data.categorySuggestionList != undefined && data.categorySuggestionList.length > 0) ? data.categorySuggestionList : [];
+                    this.searchProducts = ((data.topProducts || []) as any[]).map(product => this._productService.searchResponseToProductEntity(product));
+                    if (cTerm && cTerm.length > 0) {
+                        this.showSuggestionBlock = true;
+                    }
+                }
+            });
+        } else {
+            this.showSuggestionBlock = false;
+            this._commonService.resetLimitTrendingCategoryNumber();
+        }
+    }
 
     ngOnInit(): void {
         // Below code is used to hide the search bar popup on route change.
@@ -150,11 +162,13 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
 
 
     handleSendTextToSearchBar(data: string, e?: Event) {
-        if (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        this.searchForm.get('searchTerm').patchValue(data);
+        // console.log('handleSendTextToSearchBar ==>', data)
+        // if (e) {
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        // }
+        this.searchForm.get('searchTerm').setValue(data);
+        this.searchTermApi(data,data);
     }
 
 
@@ -218,7 +232,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
                     this.showSuggestionBlock = false;
                     this._commonService.resetLimitTrendingCategoryNumber();
                     this.ssp = false;
-                    this._r.navigate([data['redirectionLink']], { queryParams: { sC: 'no' } });
+                    this._r.navigate([data['redirectionLink']], { queryParams: { sC: 'no', search_query: dataD.searchTerm } });
                 }
                 else {
                     if (document.getElementById("search-input")) {
@@ -279,6 +293,10 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
         this._commonService.enableNudge = false;
         this._commonService.resetLimitTrendingCategoryNumber();
     }
+    
+    resetSearchInput(){
+        this.searchForm.get('searchTerm').setValue('');
+    }
 
     navigateTo(page, data, redirectUrl, categoryId, attributes, brandFilterData = null) {
         this._cs.resetSelectedFilterData();
@@ -313,7 +331,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
             this._r.navigate(['search'], extras);
         } else {
             this._cs.setGaGtmData({ list: 'Site Search' });
-            this._r.navigate([data.productUrl], { queryParams: { source: 'topProduct' } });
+            this._r.navigate([data.productUrl], { queryParams: { source: 'topProduct', search_query: data } });
         }
     }
 

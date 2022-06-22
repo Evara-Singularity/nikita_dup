@@ -113,6 +113,7 @@
     <ng-container #similarProductOOS></ng-container>
 </section>
 
+<!-- // TODO: whatsapp-toast should be lazy loaded ngafterviewinit with sketon -->
 <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
 </past-orders>
 
@@ -136,8 +137,8 @@
 
 <!-- CTA Fixed position -->
 <floating-button-container  [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
-    <floating-button [label]="'ADD TO CART'" [type]="'WHITE'" (onClick)="showFBT()"></floating-button>
-    <floating-button [label]="'BUY NOW'" [type]="'RED'" (onClick)="addToCart(true)"></floating-button>
+    <floating-button [iconClass]="'icon-cart1'" [label]="'ADD TO CART'" [type]="'WHITE'" (onClick)="showFBT()"></floating-button>
+    <floating-button [iconClass]="''" [label]="'BUY NOW'" [type]="'RED'" (onClick)="addToCart(true)"></floating-button>
 </floating-button-container>
 
 <floating-button-container
@@ -181,10 +182,10 @@
     [isRFQSuccessfull]="isRFQSuccessfull" [imagePathAsset]="imagePathAsset">
 </product-rfq-thanks-popup>
 
-<!-- // TODO: whatsapp-toast should be lazy loaded -->
+<!-- // TODO: whatsapp-toast should be lazy loaded ngafterviewinit -->
 <whatsapp-toast (click)="sendTrackingData()" [customText]="getWhatsText"></whatsapp-toast>
 
-<!-- // TODO: move to top lazy loaded  -->
+<!-- // TODO: move to top lazy loaded after ngafterviewinit  -->
 <ng-container *ngIf="showScrollToTopButton">
     <div class="scroll-arrow-pdp" (click)="scrollToTop()">
         <i class="icon-up"></i>

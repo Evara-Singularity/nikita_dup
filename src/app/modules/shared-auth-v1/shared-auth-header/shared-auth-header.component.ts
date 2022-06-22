@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LocalAuthService } from './../../../utils/services/auth.service';
@@ -15,6 +15,11 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     readonly LOGIN_URL = "/login";
     @Input('isCheckout') isCheckout = false;
     @Input('isWhiteHeader') isWhiteHeader = false;
+    @Input('overrideBackBtn') overrideBackBtn: boolean = false;
+    @Input('enableSkipBtn') enableSkipBtn: boolean = false;
+    @Output() onBackBtnClick$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onSkipBtnClick$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onHomepageBtnClick$: EventEmitter<any> = new EventEmitter<any>();
     checkOutTabSubscriber: Subscription = null;
     tab: string = null;
 
@@ -48,6 +53,13 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
 
     navigateTo(link) { this._router.navigate([link]); }
 
+    onBackBtnClick(){
+        this.onBackBtnClick$.emit(true);
+    }
+
+    onHomepageBtnClick(){
+        this.onHomepageBtnClick$.emit(true);
+    }
 
     ngOnDestroy(): void
     {

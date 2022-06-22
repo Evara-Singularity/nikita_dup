@@ -27,6 +27,7 @@ $fonts-root: $assets-root + "fonts/";
 $font-thin: 100;
 $font-light: 300;
 $font-normal: 400;
+$font-medium:500;
 $font-bold: 600;
 $font-bolder: 700;
 $font-ultraBold: 900;
@@ -170,7 +171,7 @@ $default-gap: 15px;
     border: 1px solid #C0C0C0;
     border-radius: 4px;
     padding: 3px 5px;
-}
+ }
 }
 %cards {
     padding: 10px;

@@ -1,19 +1,17 @@
-import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
-import { DataService } from '@app/utils/services/data.service';
-declare let dataLayer: any;
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 @Component({
     templateUrl: 'orderSummary.html',
     selector: 'order-summary',
     styleUrls: ['./orderSummary.scss'],
 })
 export class OrderSummaryComponent {
-    shippingCharges: number = 0;
     showPromoOfferPopup: boolean = false;
+    showPromoSuccessPopup: boolean = false;
 
     constructor(
         public router: Router,
@@ -30,15 +28,18 @@ export class OrderSummaryComponent {
         this._cartService.getCartUpdatesChanges().subscribe(result => {
             this.updateShippingCharges();
         });
+        this._cartService.promocodePopupSubject.subscribe((isApplied)=>{
+            this.showPromoSuccessPopup = isApplied;
+        })
     }
     
     updateShippingCharges() {
-        this.shippingCharges = 0;
+        this._cartService.shippingCharges = 0;
         if (this._cartService.getGenericCartSession && this._cartService.getGenericCartSession.itemsList && this._cartService.getGenericCartSession.itemsList.length > 0) {
             this.getGTMData(this._cartService.getGenericCartSession);
             this.sendTrackData(this._cartService.getGenericCartSession);
             this._cartService.getGenericCartSession.itemsList.forEach((item) => {
-                this.shippingCharges = this.shippingCharges + (item.shippingCharges || 0);
+                this._cartService.shippingCharges = this._cartService.shippingCharges + (item.shippingCharges || 0);
             });
         }
     }
@@ -48,8 +49,16 @@ export class OrderSummaryComponent {
             this.showPromoOfferPopup = true;
         } else {
             this._localAuthService.setBackURLTitle('/quickorder', null);
-            this.router.navigate(["/login"]);
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'backurl': '/quickorder' },
+            };
+            this.router.navigate(["/login"], navigationExtras);
         }
+    }
+
+    closePromoSuccessPopUp()
+    {
+        this.showPromoSuccessPopup = false;
     }
 
     //analytics

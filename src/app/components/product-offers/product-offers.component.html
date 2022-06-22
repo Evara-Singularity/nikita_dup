@@ -10,13 +10,14 @@
                 <i class="icon-coupon-3-fill-1"></i>
             </div>
             <div class="inline-list-text">
-                <span >Get GST invoice and save up to {{gstPercentage}}% on business purchases.</span>
+                <span *ngIf="i == 0">Get GST invoice and save up to {{gstPercentage}}% on business purchases.</span>
+                <span *ngIf="i > 0">{{ item?.block_data?.image_block['0']['image_title'] || 'Get GST invoice and save upto '+gstPercentage+'% on business purchases.'}}</span>
             </div>
             <div class="nline-list-link">
                 <span class="link-text" (click)="sendOfferData(item)">VIEW</span>
             </div>
         </div>
-        <div class="pwa-row inline-list-item"  (click)="openEmiPopup()">
+        <div class="pwa-row inline-list-item" (click)="openEmiPopup()">
             <div class="inline-list-icon">
                 <i class="icon-coupon-3-fill1"></i>
             </div>
@@ -29,16 +30,16 @@
             </div>
         </div>
         <div class="pwa-row inline-list-item" (click)="openEmiPopup()">
-        <div class="inline-list-icon">
-            <i class="icon-coupon-3-fill-1"></i>
-        </div>
-        <div class="inline-list-text">
-            <strong>EMIs Available </strong>
-            <small>On min. purchase of Rs. 3000 across banks and Rs. 4500 for Bajaj Finserv</small>
-        </div>
-        <div class="inline-list-link">
-            <span class="link-text" *ngIf="!disableEMIView">VIEW</span>
+            <div class="inline-list-icon">
+                <i class="icon-coupon-3-fill-1"></i>
+            </div>
+            <div class="inline-list-text">
+                <strong>EMIs Available </strong>
+                <small>On min. purchase of Rs. 3000 across banks and Rs. 4500 for Bajaj Finserv</small>
+            </div>
+            <div class="inline-list-link">
+                <span class="link-text" *ngIf="!disableEMIView">VIEW</span>
+            </div>
         </div>
     </div>
-  </div>
 </div>

@@ -18,7 +18,7 @@
                     Added to Cart
                 </span>
                 <span class="fbt_price" *ngIf="!rootProductInCart">
-                    {{rootProduct.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
+                    {{rootProduct.sellingPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
                 </span>
             </div>
         </div> -->

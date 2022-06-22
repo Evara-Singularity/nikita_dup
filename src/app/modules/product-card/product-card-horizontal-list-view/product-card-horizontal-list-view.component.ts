@@ -12,12 +12,11 @@ import { ProductListService } from '@app/utils/services/productList.service';
 import { ProductCardCoreComponent } from '../product-card.core.component';
 
 @Component({
-  selector: 'product-card-horizontal-list-view',
-  templateUrl: './product-card-horizontal-list-view.component.html',
-  styleUrls: ['./product-card-horizontal-list-view.component.scss']
+  selector: "product-card-horizontal-list-view",
+  templateUrl: "./product-card-horizontal-list-view.component.html",
+  styleUrls: ["./product-card-horizontal-list-view.component.scss"],
 })
 export class ProductCardHorizontalListViewComponent extends ProductCardCoreComponent {
-
   constructor(
     public _cartService: CartService,
     public _productListService: ProductListService,
@@ -30,7 +29,7 @@ export class ProductCardHorizontalListViewComponent extends ProductCardCoreCompo
     public _commonService: CommonService,
     public _analytics: GlobalAnalyticsService,
     public _toastMessageService: ToastMessageService,
-    public _productService: ProductService,
+    public _productService: ProductService
   ) {
     super(
       _cartService,
@@ -51,5 +50,4 @@ export class ProductCardHorizontalListViewComponent extends ProductCardCoreCompo
   ngOnInit(): void {
     super.ngOnInit();
   }
-
 }

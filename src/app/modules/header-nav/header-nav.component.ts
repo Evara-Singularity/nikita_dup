@@ -70,7 +70,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         '/moglix-originals',
         '/contact',
     ];
-
     @Input('extraData') extraData;
     activeModuleName = this.MODULE_NAME.HOME;
 
@@ -189,19 +188,30 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.searchBarInstance = null;
                 this.sideMenuContainerRef.detach();
             });
-            if (toBeAutoFilledKeyword) this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword;
+            if (toBeAutoFilledKeyword) { 
+                this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword 
+            } else {
+                // console.log('already not loaded', this._activatedRoute.snapshot.queryParams['search_query'])
+                setTimeout(() => {
+                    this.searchBarInstance.instance.handleSendTextToSearchBar(this._activatedRoute.snapshot.queryParams['search_query'] || '');
+                    document.getElementById('search-input').focus();
+                    // document.getElementById('search-input')['value'] = '';
+                }, 500);
+            };
         } else {
 
             if (toBeAutoFilledKeyword) {
                 setTimeout(() => {
-                    console.log('toBeAutoFilledKeyword after', toBeAutoFilledKeyword)
+                    
                     this.searchBarInstance.instance.handleSendTextToSearchBar(toBeAutoFilledKeyword);
-                }, 500);
+                }, 100);
             } else {
+                // console.log('already loaded', this._activatedRoute.snapshot.queryParams['search_query'])
                 setTimeout(() => {
+                    this.searchBarInstance.instance.handleSendTextToSearchBar(this._activatedRoute.snapshot.queryParams['search_query'] || '');
                     document.getElementById('search-input').focus();
-                    document.getElementById('search-input')['value'] = '';
-                }, 350);
+                    // document.getElementById('search-input')['value'] = '';
+                }, 0);
             }
 
             this.searchBarInstance.instance['data'] = {
@@ -276,6 +286,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         this.cartService.cart.subscribe((data) => {
+            
             if (data && data.hasOwnProperty('count')) {
                 this.noOfCart = data.count;
             } else {
@@ -320,44 +331,81 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     goBack() {
         this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
         const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
+
+        // const currentURL = this.router.url;
+        // const previousURL = (this._commonService.getPreviousUrl);
+        // const backURL = this.backRedirectUrl;
+        // console.log(`CurrentURL:${currentURL}, PreviousURL:${previousURL}, BackURL:${backURL}`);
+
         if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false) {
             (window.history.length > 2) ? this.redirectToBackURL() : this.router.navigate(['/']);
         } else {
             if (this.staticPages.indexOf(window.location.pathname) !== -1) {
                 this.router.navigate(['/']);
             } else if (isCheckout) {
-                if (this.sharedAuthService.isAtCheckoutLoginFirstTab) {
-                    let index = this._checkoutService.getCheckoutTabIndex();
-                    if (index === 1) {
-                        this.redirectToBackURL();
-                    }
-                    else if (index === 2) {
-                        this._checkoutService.setCheckoutTabIndex(index - 1);
-                        this.redirectToBackURL();
-                    } else {
-                        this._state.notifyData('routeChanged', index - 2);
-                    }
-                } else {
-                    this.sharedAuthService.resetCheckoutLoginSteps();
-                }
+                this.redirectToBackURLFromCheckout();
             } else {
                 this.router.navigate(['/']);
             }
         }
     }
 
-    redirectToBackURL() {
+    redirectToBackURLFromCheckout() {
+
+        if (this._commonService.getPreviousUrl.indexOf('checkout/payment') > -1) {
+            this.router.navigateByUrl("quickorder", { replaceUrl: true });
+            return;
+        }
+
         // incase redirected back from checkout then we need to call cartsession API
-        if( ((this.router.url).indexOf('checkout/address')  > -1) || ((this.router.url).indexOf('quickorder')  > -1) ){
-            console.log('bakbtn cart session API called');
+        if (((this.router.url).indexOf('checkout/address') > -1) || ((this.router.url).indexOf('quickorder') > -1)) {
+            this.cartService.clearBuyNowFlow();
+            if (
+                this._commonService.getPreviousUrl.indexOf('checkout/login') > -1 ||
+                this._commonService.getPreviousUrl.indexOf('checkout/sign-up') > -1 || 
+                this._commonService.getPreviousUrl.indexOf('checkout/otp') > -1
+            ) {
+                this.router.navigateByUrl("quickorder", { replaceUrl: true });
+            } else {
+                this.location.back();
+            }
+        } else {
+            this.location.back();
+        }
+    }
+
+    redirectToBackURL() {
+        
+        if (this._commonService.getPreviousUrl.indexOf('checkout/payment') > -1)
+        {
+            this.router.navigate(["quickorder"]);
+            return;
+        }
+
+        if (((this.router.url).indexOf('quickorder') > -1) && (this._commonService.getPreviousUrl.indexOf('checkout/address') > -1)) {
+            this.router.navigateByUrl("/", { replaceUrl: true });
+            return;
+        }
+
+        // incase redirected back from checkout then we need to call cartsession API
+        if (((this.router.url).indexOf('checkout/address') > -1) || ((this.router.url).indexOf('quickorder') > -1)) {
+            // console.log('bakbtn cart session API called');
             //this.cartService.resetBuyNow();
             //this.cartService.refreshCartSesion();
             this.cartService.clearBuyNowFlow();
-            this.location.back();
-        }else{
+            // console.log('bakbtn cart session API called commonService.getPreviousUrl', this._commonService.getPreviousUrl);
+            if (
+                this._commonService.getPreviousUrl.indexOf('checkout/login') > -1 ||
+                this._commonService.getPreviousUrl.indexOf('checkout/signup') > -1 || 
+                this._commonService.getPreviousUrl.indexOf('checkout/otp') > -1
+            ) {
+                this.router.navigate(['/']);
+            } else {
+                this.location.back();
+            }
+        } else {
             this.location.back();
         }
-        
     }
 
     navigateToLogin($event)

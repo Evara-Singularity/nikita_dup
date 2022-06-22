@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { ProductInfoSectionPipeModule } from '@app/utils/pipes/product-oos-similar-card-section.pipe';
 import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
 import { ObserveVisibilityDirectiveModule } from "@app/utils/directives/observe-visibility.directive";
+import {  MathCeilPipeModule } from "@app/utils/pipes/math-ceil";
 import { ProductFeatureDetailsModule } from "@app/components/product-feature-details/product-feature-details.component";
 import { BreadcrumbNavModule } from "../breadcrumb-nav/breadcrumb-nav.module";
 import ProductDescriptionModule from "@app/components/product-description/product-description.component";
@@ -24,6 +25,7 @@ import ProductDescriptionModule from "@app/components/product-description/produc
     SwipeDirectiveModule,
     CommonModule,
     MathFloorPipeModule,
+    MathCeilPipeModule,
     SliceArrayPipeModule,
     BreadcrumbNavModule,
     ProductDescriptionModule,

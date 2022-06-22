@@ -1,3 +1,4 @@
+import { SharedPhoneVerificationModule } from './../shared-phone-verification/shared-phone-verification.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,7 +11,7 @@ import { CheckoutAddressPipeModule } from '@app/utils/pipes/checkout-address.pip
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    CheckoutAddressPipeModule
+    CheckoutAddressPipeModule,
   ],
   exports: [AllAddressesComponent]
 })

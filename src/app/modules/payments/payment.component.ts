@@ -57,6 +57,7 @@ export class PaymentComponent implements OnInit {
     ngOnInit() {
        
         this.intialize();
+        this._cartService.sendAdobeOnCheckoutOnVisit("payment");
         this.getSavedCardData();
         this._cartService.clearCartNotfications();
     }
@@ -67,7 +68,7 @@ export class PaymentComponent implements OnInit {
             const cartData = this._cartService.getGenericCartSession;
 
             this.canNEFT_RTGS = cartData['cart']['agentId'];
-            this.totalAmount = (cartData['cart']['totalAmount']) + +(cartData['cart']['shippingCharges']) - +(cartData['cart']['totalOffer']); // intialize total amount
+            this.totalAmount = (cartData['cart']['totalAmount']) + (cartData['cart']['shippingCharges']) - (cartData['cart']['totalOffer']); // intialize total amount
 
             const _cartItems = cartData['itemsList'] || [];
             const _cartMSNs = (_cartItems as any[]).map(item => item['productId']);
@@ -105,7 +106,6 @@ export class PaymentComponent implements OnInit {
             data['userId'] = userSession['userId'];
             data['userEmail'] = '';
         }
-        console.log('getSavedCardData ==>', 'called', data, this.invoiceType)
         this._paymentService.getSavedCards(data, this.invoiceType)
             .subscribe((res) => {
                 if (res['status'] === true && res['data']['user_cards'] !== undefined && res['data']['user_cards'] != null) {
@@ -118,12 +118,11 @@ export class PaymentComponent implements OnInit {
     }
 
     updatePaymentBlock(block, mode?, elementId?) {
-        let cart = this._cartService.getGenericCartSession;
-        this.totalAmount = cart['cart']['totalAmount'] + cart['cart']['shippingCharges'] - cart['cart']['totalOffer'];
+        let cart = this._cartService.getGenericCartSession['cart'];
+        this.totalAmount = (cart['totalAmount'] + cart['shippingCharges']) - (cart['totalOffer'] || 0);
         this.messageEmi = "";
         this.messageCod = "";
         this.messageNeft = "";
-        // console.log('totalAmount',this.totalAmount);
         if (block == 4 && this.totalAmount < 3000) {
             this.messageEmi = "Not available below Rs. 3000";
             this.paymentBlock == null;

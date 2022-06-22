@@ -1,23 +1,5 @@
 <div *ngIf="_cartService.getGenericCartSession?.itemsList && _cartService.getGenericCartSession?.itemsList.length > 0">
-
-    <!-- DO NOT REMOVE THIS SECTION IT WAS OF NEW DESIGN TO BE IMPLEMENTED LATER -->
-    <!-- <div class="pwa-row applycoupen-strip">
-        <div class="pwa-col-12 applycoupon-section">
-             <div class="left-coupon-block">
-                <i class="icon-coupon-3-fill-1 green-txt"></i>
-                <span class="apply-coupen-txt">APPLY COUPON</span>
-            </div>
-            <i class="icon-next"></i>
-        </div>
-    </div> -->
-
-    <!-- <div class="pwa-row">
-        <div class="pwa-col-12">
-            <p class="items-in-your-cart">1 items in your cart</p>
-        </div>
-    </div> -->
-
-    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let i = index;">
+    <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative" *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let itemIndex = index;">
         <div *ngIf="item['text1']" class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
@@ -35,9 +17,6 @@
                     <a (click)="redirectToProductURL(item.productUrl)"> {{ (item.productName.length > 50) ?
                         (item.productName | slice:0:48) + '..' : (item.productName) }}</a>
                 </div>
-                <!-- <p class="seller">
-                    Brand: {{item.brandName}}
-                </p> -->
                 <p *ngIf="!item.oos" class="price clearfix">
                     <span class="before-discount gray-txt">MRP ₹{{item.amount | mathFloor | number : '1.2-2'}} <span class="green-txt">({{item.taxPercentage}}% OFF)</span></span>
                     <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">
@@ -53,31 +32,17 @@
                 </p>
             </div>
         </div>
-
-        <!-- <div class="alert-box" *ngIf="removePopup">
-            <div class="overlay"></div>
-            <div class="content-area">
-                <div class="info-area">
-                    <p class="info-title">Remove Item</p>
-                    <p class="info">Are you sure you want to remove this item?</p>
-                </div>
-                <div class="button-area">
-                    <button (click)="removePopup = false" class="cancel">CANCEL</button>
-                    <button (click)="deleteProduct($event)" class="continue">REMOVE</button>
-                </div>
-            </div>
-        </div> -->
         <div *ngIf="!item.oos" class="cart-item-block pad-15">
             <div class="qty_section">
                 <span class="qty-txt">Qty</span>
                 <div class="quantity-block">
-                    <span *ngIf="item.productQuantity > 1" (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')" class="remove-qty qty-block">&#8722;</span>
-                    <i (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')" *ngIf="item.productQuantity < 2" class="icon-bin qty-block single-quantity"></i>
-                    <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity" (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget />
-                    <span (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')" class="add-qty qty-block">&#43;</span>
+                    <span *ngIf="item.productQuantity > 1" (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'decrement')" class="remove-qty qty-block">&#8722;</span>
+                    <i (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'decrement')" *ngIf="item.productQuantity < 2" class="icon-bin qty-block single-quantity"></i>
+                    <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity" (focusout)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'update', $event.target.value)" />
+                    <span (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'increment')" class="add-qty qty-block">&#43;</span>
                 </div>
             </div>
-            <div class="price-dtl-block" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
+            <div class="price-dtl-block" [appKpToggle]="{idName:'showPrice'+(itemIndex+1),iconMode : true}">
                 <div class="price-block-left">
                     <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
                     <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax * item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
@@ -93,7 +58,7 @@
             </div>
         </div>
         <div *ngIf="item.oos" class="oos-item-block">
-            <div (click)="removePopup=true; removeIndex = i">
+            <div (click)="removePopup=true; removeIndex = itemIndex">
                 <span>
                     <i class="icon-bin"></i>
                      REMOVE
@@ -103,37 +68,7 @@
                 <h3 class="heading-3">Not Available</h3>
             </div>
         </div>
-        <!-- <div [ngClass]="{'oos':item.oos}" class="price_detail_toggle pad-15">
-            <div class="qty_section">
-                <div class="quantity-block">
-                    <span *ngIf="item.productQuantity > 1"
-                        (click)="updateCartItemQuantity(quantityTarget.value, i, 'decrement')"
-                        class="remove-qty qty-block">&#8722;</span>
-                    <i *ngIf="item.productQuantity < 2" class="icon-bin qty-block single-quantity"></i>
-                    <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
-                        (focusout)="updateCartItemQuantity(quantityTarget.value, i, 'update')" #quantityTarget />
-                    <span (click)="updateCartItemQuantity(quantityTarget.value, i, 'increment')"
-                        class="add-qty qty-block">&#43;</span>
-                </div>
-            </div>
-            <div class="price-label" [appKpToggle]="{idName:'showPrice'+(i+1),iconMode : true}">
-                <div class="price-lbl-inner-l">
-                    <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
-                        item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
-                    <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax *
-                        item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
-                    <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
-                    <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
-                    <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
-                        Details</span>
-                    <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
-                </div>
-                <div class="price-lbl-inner-l">
-                    <i class="icon-down"></i>
-                </div>
-            </div>
-        </div> -->
-        <div [ngClass]="{'oos':item.oos}" class="price-breakup" [id]="'showPrice'+(i+1)" style="display: none">
+        <div [ngClass]="{'oos':item.oos}" class="price-breakup" [id]="'showPrice'+(itemIndex+1)" style="display: none">
             <ul class="txt-list">
                 <li>
                     <span class="tag-label">Price</span>
@@ -173,7 +108,7 @@
                 <h3 class="heading-3">Are you sure to remove this item?</h3>
                 <i (click)="removePopup = false" class="icon-circle-delete"></i>
             </div>
-            <div [ngClass]="{'realTimeUpdate':item['text1']}" class="pwa-row pad-tb-0" *ngFor="let item of [_cartService.getGenericCartSession?.itemsList[removeIndex]]; let i = index;">
+            <div [ngClass]="{'realTimeUpdate':item['text1']}" class="pwa-row pad-tb-10" *ngFor="let item of [_cartService.getGenericCartSession?.itemsList[removeIndex]]; let i = index;">
                 <div class="pwa-col-12">
                     <div *ngIf="item['text1']" class="realTimePrice">
                         <span>{{item['text1']}}

@@ -15,9 +15,9 @@
         &:last-child {
             justify-content: flex-end;
         }
-        .icon-menu {
-            margin-top: -5px;
-        }
+        // .icon-menu {
+        //     margin-top: -5px;
+        // }
         &>* {
             padding: 5px 5px 5px 0px;
             color: var(--onyx-black);
@@ -59,7 +59,9 @@
                 height: 35px !important;
             }
             &:after {
-                top: 8px !important;
+                top: 6px !important;
+                font-size: 20px;
+                color: var(--onyx-black);
             }
         }
     }
@@ -98,7 +100,8 @@
         input {
             background: var(--white);
             border: none;
-            font-size: $medium-font  !important;
+            font-size: $extra-large-font  !important;
+            color: var(--silver);
             font-weight: 400;
             height: 35px;
             width: 100%;
@@ -112,7 +115,7 @@
             font-size: $large-font;
             position: absolute;
             z-index: 1;
-            left: 8px;
+            left: 6px;
             top: 8px;
             border-radius: 6px 0 0 6px;
         }
@@ -174,13 +177,13 @@
     }
 
     &:after {
-        content: "\e972";
+        content: "\ea63";
         font-family: "icomooon_pwa";
         position: absolute;
         left: 10px;
-        top: 12px;
+        top: 10px;
         color: var(--primary);
-        font-size: $extra-large-1-font;
+        font-size: $extra-large-3-font;
     }
 }
 .page-name {

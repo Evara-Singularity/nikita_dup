@@ -1,44 +1,30 @@
-<section class="screen-view popup select-offers open">
-  <div class="container">
-    <div class="head-sec">
-      <i class="icon-circle-delete f-left" (click)="closePromoOfferPopup.emit(false)"></i>
-      <p class="txt">ALL OFFERS</p>
-    </div>
-  </div>
-
-  <custom-promo-code [nextPromocode]="nextPromocode"></custom-promo-code>
-  <div class="pwa-row no-coupon-card-container" *ngIf="_cartService?.allPromoCodes.length == 0">
-    <div class="pwa-col-12 card">
-      <div class="inner-no-coupon-card">
-        <img src="../../../../../../src/assets/img/no_coupon_found.png">
-        <p>No coupon available now</p>
-      </div>
-    </div>
-  </div>
-  <div class="alert-box" *ngIf="showAppliedPromoCode">
-    <div class="overlay" (click)="$event.stopPropagation();closePopUp()"></div>
-    <div class="content-area">
-      <div class="info-area">
-        <i class="icon-coupon-3-fill-1"></i>
-        <p class="applied-coupon">'{{_cartService?.appliedPromoCode}}' applied</p>
-        <p class="saving-applid-coupon"><span>&#8377;24</span> saving with this coupon</p>
-        <p class="green-text">YAY!</p>
-      </div>
-    </div>
-  </div>
-  <!-- new design -->
-  <div class="coupon-card-container" *ngIf="_cartService?.allPromoCodes.length">
-    <p class="pwa-text">Available Coupons</p>
-    <ng-container *ngFor="let item of _cartService?.allPromoCodes; let i = index;">
-      <div (click)="updateCustomPromoCodeInput($event,item)" class="card" [class.selected]="item.promoCode === selectedPromocode">
-        <div class="apply-coupon">
-          <div class="inner-coupon">
-            <h3>{{item.promoCode}}</h3>
-            <p class="promo-description">{{item.promoDescription}}</p>
+<app-pop-up [headerType]="'pop-up-header1'" [data]="{headerText: 'Apply Coupons'}">
+  <div class="content-popup select-offers" content>
+    <section class=" open">
+      <custom-promo-code [nextPromocode]="nextPromocode"></custom-promo-code>
+      <div class="pwa-row no-coupon-card-container" *ngIf="_cartService?.allPromoCodes.length == 0">
+        <div class="pwa-col-12 card">
+          <div class="inner-no-coupon-card">
+            <img src="../../../../../../src/assets/img/no_coupon_found.png">
+            <p>No coupon available now</p>
           </div>
-          <button class="btn redBgButton">APPLY</button>
         </div>
       </div>
-    </ng-container>
+      <div class="coupon-card-container" *ngIf="_cartService?.allPromoCodes.length">
+        <p class="pwa-text">Available Coupons</p>
+        <ng-container *ngFor="let item of _cartService?.allPromoCodes; let i = index;">
+          <div (click)="updateCustomPromoCodeInput($event,item)" class="card"
+            [class.selected]="item.promoCode === selectedPromocode">
+            <div class="apply-coupon">
+              <div class="inner-coupon">
+                <h3>{{item.promoCode}}</h3>
+                <p class="promo-description">{{item.promoDescription}}</p>
+              </div>
+              <button class="btn quaternary-btn-1" >APPLY</button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </section>
   </div>
-</section>
+</app-pop-up>

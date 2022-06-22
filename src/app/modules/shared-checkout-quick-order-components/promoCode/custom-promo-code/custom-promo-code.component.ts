@@ -1,6 +1,6 @@
+import { Subscription, Subject } from 'rxjs';
 import { CartService } from '@app/utils/services/cart.service';
 import { Component, Input } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
 @Component({
     selector: 'custom-promo-code',
     templateUrl: './custom-promo-code.component.html',

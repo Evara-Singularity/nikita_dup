@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { NavigationExtras, Router, RouterModule } from '@angular/router';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { LocalAuthService } from '../../utils/services/auth.service';
@@ -90,7 +90,10 @@ export class SideNavComponent implements OnInit {
       this.router.navigate([url]);
     } else {
       this._localAuthService.setBackURLTitle(url, title);
-      this.router.navigate(['/login']);
+      let navigationExtras: NavigationExtras = {
+        queryParams: { 'backurl': url },
+      };
+      this.router.navigate(['/login'], navigationExtras);
     }
   }
 

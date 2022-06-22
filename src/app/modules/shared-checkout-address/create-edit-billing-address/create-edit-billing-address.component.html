@@ -7,8 +7,8 @@
             <p class="txt header_text page-name"> {{modeType }} {{ADDRESS_TYPE}} Address</p>
         </div>
     </div> -->
-    <div class="content-popup" content>
-        <div class="pwa-row">
+    <div class="content-popup scrolled-content-popup" content>
+        <div class="pwa-row mt-10 pb-60">
             <form class="material-form" [formGroup]="businessForm" (ngSubmit)="$event.stopPropagation();onSubmit()">
                 <div formGroupName="businessDetail">
                     <div class="outline-input-label">
@@ -16,8 +16,8 @@
                             <input type="text" formControlName="gstin" maxlength="15">
                             <span class="label">GSTIN*</span>
                             <ng-container *ngIf="gstin.valid">
-                                <span class="btn quaternary-btn success" *ngIf="isGSTINVerified">VERIFIED</span>
-                                <span class="btn quaternary-btn" *ngIf="!(isGSTINVerified)"
+                                <span class="form-inline-cta success" *ngIf="isGSTINVerified">VERIFIED</span>
+                                <span class="form-inline-cta danger" *ngIf="!(isGSTINVerified)"
                                     (click)="$event.stopPropagation();verifyGSTIN($event);">
                                     VERIFY
                                 </span>

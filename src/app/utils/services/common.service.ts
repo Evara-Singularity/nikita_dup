@@ -1,16 +1,15 @@
 import { LocalStorageService } from "ngx-webstorage";
 import { filter, map } from "rxjs/operators";
 import { mergeMap } from "rxjs/operators";
-import { Observer, of, Subscription } from "rxjs";
+import { Observer, of } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { NavigationEnd, NavigationExtras, NavigationStart, Router } from "@angular/router";
 import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from "@angular/core";
 import { ClientUtility } from "@app/utils/client.utility";
-import { CartService } from "./cart.service";
 import { DataService } from "./data.service";
 import { CheckoutService } from "./checkout.service";
-import { isPlatformServer, isPlatformBrowser, DOCUMENT } from "@angular/common";
+import { isPlatformServer, isPlatformBrowser } from "@angular/common";
 import { Observable } from "rxjs";
 import { Subject } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
@@ -80,7 +79,7 @@ export class CommonService
     idleNudgeTimer: IdleTimer;
     private _renderer2: Renderer2
     ;
-    public previousUrl: string = null;
+    public previousUrl: string = "/";
     public currentUrl: string = null;
 
     constructor(
@@ -89,7 +88,6 @@ export class CommonService
         private _localStorageService: LocalStorageService,
         private _activatedRoute: ActivatedRoute,
         private _dataService: DataService,
-        public _cartService: CartService,
         private _analytics: GlobalAnalyticsService,
         private _loaderService: GlobalLoaderService,
         private rendererFactory: RendererFactory2,
@@ -113,7 +111,17 @@ export class CommonService
         this.userSession = this._localStorageService.retrieve("user");
     }
 
-    get getPreviousUrl() {
+    private setRoutingInfo() {
+        this.currentUrl = this._router.url;
+        this._router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+                this.previousUrl = this.currentUrl;
+                this.currentUrl = event.url;
+            };
+        });
+    }
+
+    get getPreviousUrl(): string {
         return this.previousUrl;
     } 
 
@@ -627,8 +635,8 @@ export class CommonService
         if (params.queryParams != undefined) queryParams = params.queryParams;
 
         actualParams["type"] = "m";
-        actualParams["abt"] = "n";
-        actualParams["onlineab"] = "y";
+        //actualParams["abt"] = CONSTANTS.SEARCH_ABT_FLAG;
+        //actualParams["onlineab"] = CONSTANTS.SEARCH_ONLINE_ABT_FLAG;
 
         if (queryParams["preProcessRequired"]) {
             actualParams["preProcessRequired"] = queryParams["preProcessRequired"];
@@ -1287,6 +1295,13 @@ export class CommonService
         }
     }
 
+    checkDefaultUserAndReplace(username: string) {
+        if (username.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) {
+            return ''
+        }
+        return username;
+    }
+
     redirectCheck(url: string)
     {
         const exceptUrl = ['login', 'otp', 'forgot-password', 'sign-up']
@@ -1397,6 +1412,23 @@ export class CommonService
           filter((route) => route.outlet === "primary"),
           mergeMap((route) => route.data)
         )
+    }
+
+    /**
+     * 
+     * @param discountIfExist : If discount is given then it will make sure it has 0 places after decimal & is floor value
+     * @param mrp : used if discountIfExist does not exist
+     * @param SellingPrice  used if discountIfExist does not exist
+     * @returns discount or 0
+     */
+    calculcateDiscount(discountIfExist, mrp, SellingPrice): number {
+        if (discountIfExist && !Number.isNaN(discountIfExist)) {
+            return +Math.floor(+(discountIfExist)).toFixed(0)
+        } else if (mrp && SellingPrice && !Number.isNaN(mrp) && !Number.isNaN(SellingPrice)) {
+            return +(Math.floor(+(((mrp - SellingPrice) / mrp) * 100)).toFixed(0))
+        } else {
+            return 0;
+        }
     }
 
 }

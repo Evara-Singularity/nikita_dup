@@ -1,5 +1,6 @@
 <!-- sign-up-form -->
-<shared-auth-header [isCheckout]="isCheckout"></shared-auth-header>
+<shared-auth-header [isCheckout]="isCheckout" [enableSkipBtn]="(isSingupUsingPhone && (currentStep === 'DETAILS'))" (onHomepageBtnClick$)="handleSuccessProfileUpdateHomeRedirection()" (onSkipBtnClick$)="handleBackBtnInPhoneSignUp()"
+    [overrideBackBtn]="(isSingupUsingPhone && (currentStep === 'DETAILS'))" (onBackBtnClick$)="handleBackBtnInPhoneSignUp()"></shared-auth-header>
 <ng-container *ngIf="currentStep === 'OTP'">
     <shared-auth-otp [otpFormArray]="otpForm" [isCheckout]="isCheckout" [source]="'signup'" [identifier]="phone.value"
         (otpEmitter)="captureOTP($event)" [withLabel]="false"></shared-auth-otp>
@@ -8,43 +9,45 @@
 <ng-container *ngIf="currentStep === 'DETAILS'">
     <div class="outer-card">
         <h3 class="heading-custom-3">{{isSingupUsingPhone?'Almost Done!':'Looks like you’re new here!'}}</h3>
-        <p class="error-field error-txt">{{isSingupUsingPhone?'Just a few more details':'Please provide below information'}}</p>
+        <p class="error-field error-txt">{{isSingupUsingPhone?'Just a few more details':'Please provide below
+            information'}}</p>
     </div>
     <div class="login-card pad-15 mar-15">
         <form class="material-form" [formGroup]="signupForm">
             <div class="outline-input-label mb-25">
                 <label [class.is-focus]="firstName.value.length!=0">
-                    <input 
-                        [ngClass]="{'invalid-input': (isSubmitted && (firstName.hasError('required') || (!(firstName.hasError('required')) && firstName.hasError('whitespace'))))  }"
-                        type="text" formControlName="firstName" maxlength="20">
-                    <span class="label">Enter User Name*</span>
-                    <ng-container *ngIf="isSubmitted && firstName.invalid">
+                    <input type="text" formControlName="firstName" maxlength="20">
+                    <span class="label">Enter User Name (Optional)</span>
+                    <!-- <ng-container *ngIf="isSubmitted && firstName.invalid">
                         <p class="error-field error-txt" *ngIf="firstName.hasError('required')">Enter user name</p>
                         <p class="error-field error-txt"
-                            *ngIf="!(firstName.hasError('required')) && firstName.hasError('whitespace')">
+                            *ngIf="firstName.hasError('whitespace')">
                             Username cannot start with space(s)</p>
-                    </ng-container>
+                    </ng-container> -->
                 </label>
             </div>
             <div class="outline-input-label mb-25" *ngIf="!(isSingupUsingPhone)">
                 <label [class.is-focus]="phone.value.length!=0">
-                    <input 
+                    <input
                         [ngClass]="{'invalid-input': ( isSubmitted && ((phone.invalid && phone.hasError('startwithzero')) || (phone.invalid && !phone.hasError('startwithzero')) || (signupForm.valid && isUserExists)) )} "
                         type="tel" numbersOnly formControlName="phone" maxlength="10" autocomplete="off">
                     <span class="label">Enter Mobile Number*</span>
                     <ng-container *ngIf="isSubmitted && phone.invalid">
-                        <p class="error-field error-txt" *ngIf="phone.invalid && phone.hasError('startwithzero')">Mobile Number should not begin with 0</p>
-                        <p class="error-field error-txt" *ngIf="phone.invalid && !phone.hasError('startwithzero')">Enter 10 digit mobile number</p>
+                        <p class="error-field error-txt" *ngIf="phone.invalid && phone.hasError('startwithzero')">Mobile
+                            Number should not begin with 0</p>
+                        <p class="error-field error-txt" *ngIf="phone.invalid && !phone.hasError('startwithzero')">Enter
+                            10 digit mobile number</p>
                     </ng-container>
-                    <p class="error-field error-txt" *ngIf="isSubmitted && signupForm.valid && isUserExists">Number already exists, try different number or try
-                        sign-in</p>
+                    <p class="error-field error-txt" *ngIf="isSubmitted && signupForm.valid && isUserExists">Number
+                        already exists, try different number or try
+                        login</p>
                 </label>
             </div>
             <div class="outline-input-label mb-25" *ngIf="isSingupUsingPhone">
                 <label [class.is-focus]="email.value.length!=0">
-                    <input 
-                    [ngClass]="{'invalid-input': (isSubmitted && ((email.errors && email.errors.invalidCharT) || (signupForm.valid && isUserExists)) ) }"
-                    type="text" formControlName="email" maxlength="100" autocomplete="off">
+                    <input
+                        [ngClass]="{'invalid-input': (isSubmitted && ((email.errors && email.errors.invalidCharT) || (signupForm.valid && isUserExists)) ) }"
+                        type="text" formControlName="email" maxlength="100" autocomplete="off">
                     <span class="label">Enter Email-ID (Optional)</span>
                     <ng-container *ngIf="isSubmitted && email.invalid">
                         <p class="error-field error-txt" *ngIf="email.errors && email.errors.invalidCharT">
@@ -52,24 +55,34 @@
                         </p>
                     </ng-container>
                     <p class="error-field error-txt" *ngIf="isSubmitted && signupForm.valid && isUserExists">
-                        Email already exists, try different email or try sign-in</p>
+                        Email already exists, try different email or try login</p>
                 </label>
             </div>
             <div class="outline-input-label mb-25">
                 <label [class.is-focus]="password.value.length!=0">
-                    <input 
-                       [ngClass]="{'invalid-input': (isSubmitted && ( (password.hasError('minlength')) || (password.hasError('space')) ))}"
-                        [type]="isPasswordType?'password':'text'" formControlName="password" maxlength="20" autocomplete="off">
+                    <input
+                        [ngClass]="{'invalid-input': (isSubmitted && ( (password.hasError('minlength')) || (password.hasError('space')) ))}"
+                        [type]="isPasswordType?'password':'text'" formControlName="password" maxlength="20"
+                        autocomplete="off">
                     <span class="label">Enter Password (Optional)</span>
-                    <i class="icon-view-password" [class.active-password-icon]="!isPasswordType" *ngIf="password.value" (click)="$event.stopPropagation();togglePasswordType()"></i>
+                    <i class="icon-view-password" [class.active-password-icon]="!isPasswordType" *ngIf="password.value"
+                        (click)="$event.stopPropagation();togglePasswordType()"></i>
                     <ng-container *ngIf="isSubmitted && password.invalid">
-                        <p class="error-field error-txt" *ngIf="password.hasError('minlength')">{{password.errors.minlength}}</p>
-                        <p class="error-field error-txt" *ngIf="password.hasError('space')">{{password.errors.space}}</p>
+                        <p class="error-field error-txt" *ngIf="password.hasError('minlength')">
+                            {{password.errors.minlength}}</p>
+                        <p class="error-field error-txt" *ngIf="password.hasError('space')">{{password.errors.space}}
+                        </p>
                     </ng-container>
                 </label>
             </div>
-            <button class="btn secondry-btn" (click)="validateUser($event)">
+            <!-- TODO: change text below and function is using is signed up using phone -->
+            <!-- Signup API needs to called -->
+            <button class="btn secondry-btn" *ngIf="!isSingupUsingPhone" (click)="validateUser($event)">
                 SIGN-UP NOW
+            </button>
+            <!-- Update Profile API needs to called -->
+            <button class="btn btn-variant1" *ngIf="isSingupUsingPhone" (click)="validateUserProfileAndUpdate($event)">
+                SUBMIT NOW
             </button>
         </form>
         <p class="safe-text">Your details are safe with us.</p>

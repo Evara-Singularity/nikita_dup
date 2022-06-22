@@ -24,8 +24,8 @@ export class RecentViewedProductsComponent implements OnInit {
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config
-    enableAddToCart: false,
-    enableBuyNow: false,
+    enableAddToCart: true,
+    enableBuyNow: true,
     enableFeatures: false,
     enableRating: true,
     enableVideo: false,

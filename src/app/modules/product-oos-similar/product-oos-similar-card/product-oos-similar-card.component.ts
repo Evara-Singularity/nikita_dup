@@ -551,7 +551,9 @@ export class ProductOosSimilarCardComponent {
     this._analytic.sendAdobeCall(anaytics, 'genericPageLoad');
   }
 
-
+  get similarData(){
+    return this.productService.oosSimilarProductsData.similarData
+  }
 
 
 }

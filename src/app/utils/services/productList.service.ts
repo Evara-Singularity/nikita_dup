@@ -30,7 +30,7 @@ export class ProductListService {
     private _activatedRoute: ActivatedRoute,
     private _cartService: CartService,
     public _localStorageService: LocalStorageService
-  ) { }
+  ) {}
 
   showMidPlpFilterLoader: boolean = true;
   excludeAttributes: string[] = [];
@@ -84,7 +84,13 @@ export class ProductListService {
               "large",
               "medium"
             );
+          product['productTags'] = this.getProductTag(product);
           product["internalProduct"] = true;
+          product["discount"] = this._commonService.calculcateDiscount(
+            product["discount"],
+            product["mrp"],
+            product["salesPrice"]
+          );
           return product;
         }
       ),
@@ -106,6 +112,15 @@ export class ProductListService {
           fragment
         );
       this.initializeSortBy();
+    }
+  }
+
+  getProductTag(product) {
+    if (product && product["productTags"] && product["productTags"].length > 1) {
+      return product["productTags"][product["productTags"].length - 1]["tagImageLink"];
+    }
+    else if (product["productTags"][0]) {
+      return product["productTags"][0]["tagImageLink"];
     }
   }
 
@@ -145,7 +160,7 @@ export class ProductListService {
         params: actualParams,
       });
     } else {
-      return new Observable();
+      return of({});
     }
   }
 
@@ -179,7 +194,9 @@ export class ProductListService {
   }
 
   initializeSortBy() {
-    const queryParams = this._commonService.extractQueryParamsManually(location.search.substring(1));
+    const queryParams = this._commonService.extractQueryParamsManually(
+      location.search.substring(1)
+    );
 
     if (
       queryParams.hasOwnProperty("orderBy") &&
@@ -288,34 +305,34 @@ export class ProductListService {
   }
 
   getModuleString(module) {
-    let str = 'listing';
+    let str = "listing";
     switch (module) {
-      case 'PRODUCT':
-        str = 'pdp'
+      case "PRODUCT":
+        str = "pdp";
         break;
-      case 'LISTING':
-        str = 'listing'
+      case "LISTING":
+        str = "listing";
         break;
-      case 'PRODUCT_SIMILAR_OUT_OF_STOCK':
-        str = 'pdp:oos:similar'
+      case "PRODUCT_SIMILAR_OUT_OF_STOCK":
+        str = "pdp:oos:similar";
         break;
-      case 'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP':
-        str = 'pdp:oos:similar:top'
+      case "PRODUCT_SIMILAR_OUT_OF_STOCK_TOP":
+        str = "pdp:oos:similar:top";
         break;
-      case 'SEACRH_SUGGESTION':
-        str = 'search:suggestion'
+      case "SEACRH_SUGGESTION":
+        str = "search:suggestion";
         break;
-      case 'PRODUCT_PAST_ORDER':
-        str = 'pdp:past_order'
+      case "PRODUCT_PAST_ORDER":
+        str = "pdp:past_order";
         break;
       default:
-        str = 'pdp-extra'
+        str = "pdp-extra";
         break;
     }
     return str;
   }
 
-  analyticAddToCart(routerlink, productDetails, usedInModule = 'PRODUCT') {
+  analyticAddToCart(routerlink, productDetails, usedInModule = "PRODUCT") {
     const user = this._localStorageService.retrieve("user");
     const taxonomy = productDetails["taxonomyCode"];
     const pageName = this.pageName.toLowerCase();
@@ -331,9 +348,17 @@ export class ProductListService {
     let ele = [];
     const tagsForAdobe = ele.join("|");
     let page = {
-      'linkPageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + this.getModuleString(usedInModule),
-      'linkName': routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
-      'channel': pageName !== 'category' ? pageName : "listing",
+      linkPageName:
+        "moglix:" +
+        taxo1 +
+        ":" +
+        taxo2 +
+        ":" +
+        taxo3 +
+        ":" +
+        this.getModuleString(usedInModule),
+      linkName: routerlink == "/quickorder" ? "Add to cart" : "Buy Now",
+      channel: pageName !== "category" ? pageName : "listing",
       // 'pageName': pageName + "_page" // removing as we need same as visiting
     };
     let custData = {
@@ -468,5 +493,4 @@ export class ProductListService {
     this._analytics.sendGTMCall(dataLayerObj);
     this._dataService.sendMessage(dataLayerObj);
   }
-
 }

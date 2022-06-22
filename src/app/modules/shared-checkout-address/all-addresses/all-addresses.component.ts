@@ -1,19 +1,17 @@
+import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { AddressListActionModel, AddressListModel, CountryListModel, CreateEditAddressModel } from '@app/utils/models/shared-checkout.models';
+import { AddressService } from '@app/utils/services/address.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CartService } from '@app/utils/services/cart.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { Subject, Subscription } from 'rxjs';
+import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 /**
  * This is cemtralised component in which shipping & billing address can be viewed, added & edited.
  * AddressListComponent: to display all the address list for selection as pop-up
  * CreateEditDeliveryComponent/CreateEditDeliveryComponent: to handle add or edit of shipping or billing details as pop-up
  */
-
-import { AfterViewInit } from '@angular/core';
-import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { AddressListActionModel, AddressListModel, CountryListModel, CreateEditAddressModel, SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
-import { AddressService } from '@app/utils/services/address.service';
-import { LocalAuthService } from '@app/utils/services/auth.service';
-import { CartService } from '@app/utils/services/cart.service';
-import { Subject, Subscription } from 'rxjs';
-import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 @Component({
     selector: 'all-addresses',
     templateUrl: './all-addresses.component.html',
@@ -25,7 +23,8 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     readonly ADDRESS_TYPES = { DELIVERY: "Delivery", BILLING: "Billing" };
     readonly USER_SESSION = null;
 
-    @Input('showDelete') showDelete = false;
+    //provide module name like checkout or dashboard
+    @Input("parentModule") parentModule = "Checkout";
     //trigger to display pop-up for delivery or billing address.
     @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = null;
     //emits invoicetype, selected delivery & billing address which is to used for checkout
@@ -53,7 +52,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     triggerDeliveryOrBillingSubscription: Subscription = null;
 
     constructor(private _addressService: AddressService, private _localAuthService: LocalAuthService, private cfr: ComponentFactoryResolver,
-        private injector: Injector, private _cartService: CartService,private _globalAnalyticsService:GlobalAnalyticsService) 
+        private injector: Injector, private _cartService: CartService, private _globalAnalyticsService: GlobalAnalyticsService) 
     {
         this.USER_SESSION = this._localAuthService.getUserSession();
     }
@@ -61,7 +60,12 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     ngOnInit()
     {
         this.fetchCountryList();
-        const INVOICE_TYPE = this._cartService.invoiceType ? this._cartService.invoiceType : this.INVOICE_TYPES.RETAIL;
+        if (!this.isCheckoutModule) {
+            this._cartService.invoiceType = null;
+            this._cartService.shippingAddress = null;
+            this._cartService.billingAddress = null;
+        }
+        const INVOICE_TYPE = (this._cartService.invoiceType && this.isCheckoutModule) ? this._cartService.invoiceType : this.INVOICE_TYPES.RETAIL;
         this.emitInvoiceTypeEvent$.emit(INVOICE_TYPE)
         this.invoiceType = new FormControl(INVOICE_TYPE);
         this.updateAddressTypes(this.USER_SESSION.userId, INVOICE_TYPE);
@@ -133,17 +137,17 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         let cIdAddress = null;
         if (IS_DELIVERY) {
             ADDRESSES = this.deliveryAddressList;
-            if (this._cartService.shippingAddress) {
+            if (this._cartService.shippingAddress && this.isCheckoutModule) {
                 cIdAddress = this._cartService.shippingAddress['idAddress'];
             }
         } else {
             ADDRESSES = this.billingAddressList;
-            if (this._cartService.billingAddress) {
+            if (this._cartService.billingAddress && this.isCheckoutModule) {
                 cIdAddress = this._cartService.billingAddress['idAddress'];
             }
         }
         this.addressListInstance.instance['addresses'] = ADDRESSES;
-        this.addressListInstance.instance['showDelete'] = this.showDelete;
+        this.addressListInstance.instance['parentModule'] = this.parentModule;
         this.addressListInstance.instance['cIdAddress'] = cIdAddress;
         this.addressListInstance.instance['addressType'] = addressType;
         this.addressListInstance.instance['displayAddressListPopup'] = true;
@@ -180,7 +184,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
      */
     async displayAddressFormPopup(addressType: string, address)
     {
-        this.sendAdobeAnalysis();
+        if(this.isCheckoutModule) {this.sendAdobeAnalysis()};
         let factory = null;
         let verifiedPhones = null;
         verifiedPhones = SharedCheckoutAddressUtil.getVerifiedPhones(this.USER_SESSION, this.deliveryAddressList);
@@ -205,8 +209,9 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         {
             //Expected Actions: "Add or Edit or null", null implies no action to be taken
             if (response.action) {
+                const isEditMode = response.action === "Edit";
                 const ADDRESSES = response['addresses'];
-                this.updateAddressAfterAction(addressType, ADDRESSES);
+                this.updateAddressAfterAction(addressType, ADDRESSES, isEditMode);
             }
             this.createEditAddressInstance.instance['displayCreateEditPopup'] = false;
             this.createEditAddressRef.remove();
@@ -218,7 +223,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
      * @param addressType:Delivery or Billing
      * @param addresses :can be delivery or billing address or 'null' in case of addition
      */
-    updateAddressAfterAction(addressType, addresses)
+    updateAddressAfterAction(addressType, addresses, isEditMode)
     {
         if (!addresses) return;
         const canUpdateDelivery = (this.deliveryAddressList.length === 0);
@@ -230,15 +235,15 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.addressListInstance) {
             this.addressListInstance.instance['addresses'] = IS_DELIVERY ? this.deliveryAddressList : this.billingAddressList;
         }
-        const INVOICE_TYPE = this._cartService.invoiceType ? this._cartService.invoiceType : this.INVOICE_TYPES.RETAIL;
-        this.updateAddressTypes(this.USER_SESSION.userId, INVOICE_TYPE);
-        // if (canUpdateDelivery)
-        // {
-
-        // }
-        // if (canUpdateBilling) {
-
-        // }
+        if (IS_DELIVERY && (canUpdateDelivery || isEditMode)) {
+            const deliveryAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
+            this.updateDeliveryOrBillingAddress(IS_DELIVERY, deliveryAddress);
+            return;
+        }
+        if ((!IS_DELIVERY) || (canUpdateBilling && isEditMode)) {
+            const billingAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.billingAddressList, this._cartService.billingAddress);
+            this.updateDeliveryOrBillingAddress(IS_DELIVERY, billingAddress);
+        }
     }
 
     /**
@@ -261,8 +266,10 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
+    /**@description deletes the delivery or billing address and this enabled only if parentModule=dashboard */
     deleteAddress(addressType, address)
     {
+        
         const deleteAddress = {
             'idAddress': address['idAddress'],
             'addressCustomerName': address['addressCustomerName'],
@@ -276,24 +283,11 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             'idCustomer': address['idCustomer'],
             'idAddressType': address['addressType']['idAddressType'],
             'active': false,
-            'invoiceType':this.invoiceType.value
+            'invoiceType': this.invoiceType.value
         };
-        this._addressService.postAddress(deleteAddress).subscribe((addressList)=>{
-            if (address) {
-                const addressType = address['addressType']['addressType'];
-                const idAddress = address['idAddress']
-                if (addressType === 'shipping' && this._cartService.shippingAddress) {
-                    const cidAddress = this._cartService.shippingAddress['idAddress'];
-                    if (idAddress === cidAddress) { this._cartService.shippingAddress = null; }
-                } else if (this._cartService.billingAddress) {
-                    const cidAddress = this._cartService.billingAddress['idAddress'];
-                    if (idAddress === cidAddress) { this._cartService.billingAddress = null; }
-                }
-            } else {
-                this._cartService.shippingAddress = null;
-                this._cartService.billingAddress = null;
-            }
-            this.updateAddressAfterAction(addressType, addressList);
+        this._addressService.postAddress(deleteAddress).subscribe((addressList) =>
+        {
+            this.updateAddressAfterAction(addressType, addressList, false); // as we are deleting address
         });
         this.closeAddressListPopup();
     }
@@ -307,17 +301,32 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         this.addressListInstance = null;
     }
 
-    get selectedDeliveryAddress() { return this._cartService.shippingAddress; }
-    get selectedBillingAddress() { return this._cartService.billingAddress; }
+    get selectedDeliveryAddress()
+    {
+        if (this.isCheckoutModule) {
+            return this._cartService.shippingAddress;
+        }
+        return this.deliveryAddressList.length ? this.deliveryAddressList[0] : null;
+    }
+
+    get selectedBillingAddress()
+    {
+        if (this.isCheckoutModule) {
+            return this._cartService.billingAddress;
+        }
+        return this.billingAddressList.length ? this.billingAddressList[0] : null;
+    }
+
     get displayBillingAddresses() { return this.invoiceType.value === this.INVOICE_TYPES.TAX ? 'block' : 'none'; }
     get isGSTUser() { return this.invoiceType.value === this.INVOICE_TYPES.TAX }
+    get isCheckoutModule() { return this.parentModule === 'Checkout'; }
 
     sendAdobeAnalysis()
     {
-        let data = {page:{}}
+        let data = { page: {} }
         data['page']['pageName'] = "moglix:order checkout:address details";
         data['page']['subSection'] = "moglix:order checkout:address details";
-        this._globalAnalyticsService.sendAdobeCall("genericPageLoad");
+        this._globalAnalyticsService.sendAdobeCall(data, "genericPageLoad");
     }
 
     ngOnDestroy(): void

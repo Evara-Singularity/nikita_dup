@@ -1,198 +1,157 @@
-<app-pop-up-variant2 *ngIf="displayCreateEditPopup" (outData$)="handlePopup($event)"
-[headerType]="'pop-up-header1'"
+<app-pop-up-variant2 *ngIf="displayCreateEditPopup" (outData$)="handlePopup($event)" [headerType]="'pop-up-header1'"
     [class.open1]="displayCreateEditPopup" [data]="{headerText: modeType + ' ' + ADDRESS_TYPE + ' Address'}">
-    <div class="head-sec header_add_edit" header>
-        <div class="container">
-            <i class="icon-back f-left white_text" (click)="handlePopup($event)"></i>
-            <p class="txt header_text page-name"> {{modeType }} {{ADDRESS_TYPE}} Address</p>
-        </div>
-    </div>
-    <div class="content-popup" content>
-        <div class="pwa-row">
-            <form [formGroup]="addressForm" class="material-form" (ngSubmit)="$event.stopPropagation();saveOrUpdateAddress()"
-            *ngIf="addressForm">
-
-            <div class="outline-input-label">
-
-                <label [class.is-focus]="displayFocus('addressCustomerName')">
-                    <input formControlName="addressCustomerName" type="text" placeholder="">
-                    <span class="label">Name*</span>
-                </label>
-                <ng-container *ngIf="addressCustomerName.touched || addressCustomerName.dirty">
-                    <p *ngIf="addressCustomerName.hasError('required')" class="error-txt">
-                        Kindly enter your full name
-                    </p>
-                    <p *ngIf="addressCustomerName.hasError('pattern')" class="error-txt">
-                        Name cannot contain numeric values
-                    </p>
-                </ng-container>
-            </div>
-
-            <div class="outline-input-label">
-
-                <label [class.is-focus]="displayFocus('email')">
-                    <input formControlName="email" type="text" placeholder="">
-                    <span class="label">Email (Optional)</span>
-                </label>
-                <ng-container *ngIf="email.dirty">
-                    <p *ngIf="email.hasError('required')" class="error-txt">
-                        Kindly enter your email
-                    </p>
-                    <p *ngIf="email.hasError('invalidEmail') && email.value.length>0" class="error-txt">
-                        Enter valid email
-                    </p>
-                </ng-container>
-            </div>
-
-            <div class="outline-input-label for-varification">
-
-                <div class="for-varification-l">
-                    <label [class.is-focus]="displayFocus('phone')">
-                        <input formControlName="phone" type="tel" numbersOnly placeholder="" maxlength="10">
-                        <span class="label">Phone Number*</span>
+    <div class="content-popup scrolled-content-popup" content>
+        <div class="pwa-row mt-10 pb-60">
+            <form [formGroup]="addressForm" class="material-form"
+                (ngSubmit)="$event.stopPropagation();saveOrUpdateAddress()" *ngIf="addressForm">
+                <div class="outline-input-label">
+                    <label [class.is-focus]="displayFocus('addressCustomerName')">
+                        <input formControlName="addressCustomerName" type="text" placeholder="">
+                        <span class="label">Name*</span>
                     </label>
+                    <ng-container *ngIf="addressCustomerName.touched || addressCustomerName.dirty">
+                        <p *ngIf="addressCustomerName.hasError('required')" class="error-txt">
+                            Kindly enter your full name
+                        </p>
+                        <p *ngIf="addressCustomerName.hasError('pattern')" class="error-txt">
+                            Name cannot contain numeric values
+                        </p>
+                    </ng-container>
                 </div>
-                <div class="for-varification-r" *ngIf="phone.valid && phoneVerified.value">
-                    <span class="hidden">VERIFIED</span>
+                <div class="outline-input-label">
+                    <label [class.is-focus]="displayFocus('email')">
+                        <input formControlName="email" type="text" placeholder="">
+                        <span class="label">Email (Optional)</span>
+                    </label>
+                    <ng-container *ngIf="email.dirty">
+                        <p *ngIf="email.hasError('required')" class="error-txt">
+                            Kindly enter your email
+                        </p>
+                        <p *ngIf="email.hasError('invalidEmail') && email.value.length>0" class="error-txt">
+                            Enter valid email
+                        </p>
+                    </ng-container>
                 </div>
-                <ng-container *ngIf="phone.touched || phone.dirty">
-                    <p *ngIf="phone.hasError('required')" class="error-txt">
-                        Kindly enter your 10 digit contact number
-                    </p>
-                    <p *ngIf="phone.hasError('invalidPhone') && phone.value.length>0" class="error-txt">
+                <div class="outline-input-label">
+                        <label [class.is-focus]="displayFocus('phone')">
+                            <input formControlName="phone" type="tel" numbersOnly placeholder="" maxlength="10">
+                            <span class="label">Phone Number*</span>
+                        </label>
+                    <span class="form-inline-cta success" *ngIf="phone.valid && phoneVerified.value">VERIFIED</span>
+                    <ng-container *ngIf="phone.touched || phone.dirty">
+                        <p *ngIf="phone.hasError('required')" class="error-txt">
+                            Kindly enter your 10 digit contact number
+                        </p>
+                        <p *ngIf="phone.hasError('invalidPhone') && phone.value.length>0" class="error-txt">
+                            Kindly enter your 10 digit contact no.
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="outline-input-label">
+
+                    <label [class.is-focus]="displayFocus('alternatePhone')">
+                        <input formControlName="alternatePhone" type="tel" placeholder="" maxlength="10">
+                        <span class="label">Alternate Phone Number (Optional)</span>
+                    </label>
+                    <p *ngIf="alternatePhone.hasError('pattern') && alternatePhone.value.length>0" class="error-txt">
                         Kindly enter your 10 digit contact no.
                     </p>
-                </ng-container>
-            </div>
-
-            <div class="outline-input-label">
-
-                <label [class.is-focus]="displayFocus('alternatePhone')">
-                    <input formControlName="alternatePhone" type="tel" placeholder="" maxlength="10">
-                    <span class="label">Alternate Phone Number (Optional)</span>
-                </label>
-                <p *ngIf="alternatePhone.hasError('pattern') && alternatePhone.value.length>0"
-                    class="error-txt">
-                    Kindly enter your 10 digit contact no.
-                </p>
-            </div>
-
-            <div class="outline-input-label">
-
-                <label [class.is-focus]="displayFocus('addressLine')">
-                    <input formControlName="addressLine" type="text" placeholder="" maxlength="150">
-                    <span class="label">Address*</span>
-                </label>
-                <ng-container *ngIf="addressLine.touched || addressLine.dirty">
-                    <p *ngIf="addressLine.hasError('required')" class="error-txt">
-                        Kindly enter your address
-                    </p>
-                    <p *ngIf="addressLine.hasError('pattern')" class="error-txt">
-                        Special characters are not allowed in address.
-                    </p>
-                </ng-container>
-            </div>
-
-            <div class="multiple-form-field">
-                <div class="outline-input-label">
-
-                    <label [class.is-focus]="displayFocus('postCode')">
-                        <input numbersOnly formControlName="postCode" type="tel" placeholder="" maxlength="6">
-                        <span class="label">Pin Code*</span>
-                    </label>
-                    <ng-container *ngIf="postCode.touched || postCode.dirty">
-                        <p *ngIf="postCode.hasError('required')" class="error-txt">
-                            Kindly enter your pincode
-                        </p>
-                        <p *ngIf="!(postCode.hasError('required')) && postCode.hasError('invalidPostCode')" class="error-txt">
-                            Pincode should contain valid 6 digits
-                        </p>
-                    </ng-container>
-                    <p *ngIf="postCode.valid && !(isPostcodeValid)" class="error-txt">Invalid Pincode
-                    </p>
                 </div>
                 <div class="outline-input-label">
-                    <label [class.is-focus]="displayFocus('city')">
-                        <input formControlName="city" type="text" placeholder="" readonly>
-                        <span class="label">City*</span>
+                    <label [class.is-focus]="displayFocus('addressLine')">
+                        <input formControlName="addressLine" type="text" placeholder="" maxlength="150">
+                        <span class="label">Address*</span>
                     </label>
-                    <ng-container *ngIf="city.touched || city.dirty">
-                        <p *ngIf="city.hasError('required')" class="error-txt">
-                            Kindly enter your city/district/town
+                    <ng-container *ngIf="addressLine.touched || addressLine.dirty">
+                        <p *ngIf="addressLine.hasError('required')" class="error-txt">
+                            Kindly enter your address
                         </p>
-                        <p *ngIf="city.hasError('pattern')" class="error-txt">
-                            Special characters not allowed in city/district/town
+                        <p *ngIf="addressLine.hasError('pattern')" class="error-txt">
+                            Special characters are not allowed in address.
                         </p>
                     </ng-container>
                 </div>
-            </div>
+                <div class="multiple-form-field">
+                    <div class="outline-input-label">
 
-            <div class="outline-input-label mb-25">
-                <label [class.is-focus]="displayFocus('idState')">
-                    <select formControlName="idState">
-                        <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
-                    </select>
-                    <i class="icon-down"></i>
-                    <span class="label">State*</span>
-                </label>
-                <p *ngIf="idState.hasError('required')" class="error-txt">
-                    Kindly select your state
-                </p>
-            </div>
-            <div class="outline-input-label mb-25">
-                <label [class.is-focus]="displayFocus('city')">
-                    <input formControlName="city" type="text" placeholder="" readonly>
-                    <span class="label">City*</span>
-                </label>
-                <ng-container *ngIf="city.touched || city.dirty">
-                    <p *ngIf="city.hasError('required')" class="error-txt">
-                        Kindly enter your city/district/town
-                    </p>  
-                  </ng-container>    
-            </div>  
-            <div class="multiple-form-field">
+                        <label [class.is-focus]="displayFocus('postCode')">
+                            <input numbersOnly formControlName="postCode" type="tel" placeholder="" maxlength="6">
+                            <span class="label">Pin Code*</span>
+                        </label>
+                        <ng-container *ngIf="postCode.touched || postCode.dirty">
+                            <p *ngIf="postCode.hasError('required')" class="error-txt">
+                                Kindly enter your pincode
+                            </p>
+                            <p *ngIf="!(postCode.hasError('required')) && postCode.hasError('invalidPostCode')"
+                                class="error-txt">
+                                Pincode should contain valid 6 digits
+                            </p>
+                        </ng-container>
+                        <p *ngIf="postCode.valid && !(isPostcodeValid)" class="error-txt">Invalid Pincode
+                        </p>
+                    </div>
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="displayFocus('city')">
+                            <input formControlName="city" type="text" placeholder="" readonly>
+                            <span class="label">City*</span>
+                        </label>
+                        <ng-container *ngIf="city.touched || city.dirty">
+                            <p *ngIf="city.hasError('required')" class="error-txt">
+                                Kindly enter your city/district/town
+                            </p>
+                            <p *ngIf="city.hasError('pattern')" class="error-txt">
+                                Special characters not allowed in city/district/town
+                            </p>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="multiple-form-field">
+                    <div class="outline-input-label ">
+                        <label [class.is-focus]="displayFocus('idState')">
+                            <select formControlName="idState">
+                                <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
+                            </select>
+                            <i class="icon-down"></i>
+                            <span class="label">State*</span>
+                        </label>
+                        <p *ngIf="idState.hasError('required')" class="error-txt">
+                            Kindly select your state
+                        </p>
+                    </div>
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="displayFocus('idCountry')">
+                            <select formControlName="idCountry">
+                                <option selected="selected" *ngFor="let country of countryList"
+                                    [value]="country.idCountry">
+                                    {{country.name}}
+                                </option>
+                            </select>
+                            <i class="icon-down"></i>
+                            <span class="label">Country*</span>
+                        </label>
+                        <p *ngIf="idCountry.hasError('required')" class="error-txt">
+                            Kindly select your country
+
+                        </p>
+                    </div>
+                    
+                </div>
+
                 <div class="outline-input-label">
-                    <label [class.is-focus]="displayFocus('idCountry')">
-                        <select formControlName="idCountry">
-                            <option selected="selected" *ngFor="let country of countryList" [value]="country.idCountry">
-                                {{country.name}}
-                            </option>
-                        </select>
-                        <i class="icon-down"></i>
-                        <span class="label">Country*</span>
+                    <label [class.is-focus]="displayFocus('landmark')">
+                        <input formControlName="landmark" type="text" placeholder="">
+                        <span class="label">Landmark (Optional)</span>
                     </label>
-                    <p *ngIf="idCountry.hasError('required')" class="error-txt">
-                        Kindly select your country
-
+                    <p *ngIf="landmark.hasError('pattern')" class="error-txt">
+                        Special Characters are not allowed.
                     </p>
                 </div>
-                <div class="outline-input-label ">
-                    <label [class.is-focus]="displayFocus('idState')">
-                        <select formControlName="idState">
-                            <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
-                        </select>
-                        <i class="icon-down"></i>
-                        <span class="label">State*</span>
-                    </label>
-                    <p *ngIf="idState.hasError('required')" class="error-txt">
-                        Kindly select your state
-                    </p>
+                <div class="fixed-bottom-cta">
+                    <button [disabled]="addressForm.invalid" type="submit" class="btn primary-full-btn">SAVE
+                        ADDRESS</button>
                 </div>
-            </div>
-
-            <div class="outline-input-label">
-                <label [class.is-focus]="displayFocus('landmark')">
-                    <input formControlName="landmark" type="text" placeholder="">
-                    <span class="label">Landmark (Optional)</span>
-                </label>
-                <p *ngIf="landmark.hasError('pattern')" class="error-txt">
-                    Special Characters are not allowed.
-                </p>
-            </div>
-            <div class="fixed-bottom-cta">
-                <button [disabled]="addressForm.invalid" type="submit" class="btn primary-full-btn">SAVE ADDRESS</button>
-            </div>
-        </form>
+            </form>
         </div>
+        <ng-container #phoneVerification></ng-container>
     </div>
 </app-pop-up-variant2>

@@ -3,9 +3,6 @@
     [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
 </app-oos-similar-section>
 
-
-
-
 <app-product-carousel-section [productAllImages]="productAllImages" [carouselInitialized]="carouselInitialized"
     (loadProductShare)="loadProductShare()" [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName"
     (addToPurchaseList)="addToPurchaseList()" (loadProductCrousel)="loadProductCrousel($event)"
@@ -175,6 +172,7 @@
 <ng-container #productShare></ng-container>
 <ng-container #addToCartToast></ng-container>
 <ng-container #popupCrousel></ng-container>
+<ng-container #productCrousel></ng-container>
 
 
 <!-- // TODO: product-rfq-thanks-popup should be lazy loaded -->

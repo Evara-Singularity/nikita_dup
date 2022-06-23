@@ -10,7 +10,6 @@
             class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">
         </span>
     </div>
-    <ng-container #productCrousel></ng-container>
     <div class="prod-carsl-pseudo" (click)="openPopUpCrousel(0)" swipe (next)="onRotatenext()" #productCrouselPseudo
         (previous)="onRotateprevious()">
         <div class="oos-tag" *ngIf="productOutOfStock">

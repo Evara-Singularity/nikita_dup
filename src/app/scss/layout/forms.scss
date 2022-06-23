@@ -14,11 +14,17 @@ select {
     background: none;
     line-height: 18px;
     position: relative;
+    outline: none !important;
     
 }
 input[type=number] {
     -moz-appearance: textfield;
   }
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+ }
 .material-form {
  .multiple-form-field{
     display:flex;

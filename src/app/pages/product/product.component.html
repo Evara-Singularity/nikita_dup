@@ -1,85 +1,19 @@
-<div class="pwa-row" *ngIf="productOutOfStock" >
-    <div id="oosSimilarTopSection" class="pwa-col-12 oosSimilarTopSection" >
-        <h2 *ngIf="productService.oosSimilarProductsData.similarData.length > 1">Consider These Available Items</h2>
-        <div class="horizontal-scroll-container consider-these-products" id="horizontal-scroll-container"
-            (scroll)="onScrollOOOSimilar($event)">
-            <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 1">
-                <product-card-horizontal-grid-view [hideAd]="true"
-                    *ngFor="let card of similarForOOSContainer; let i = index;"
-                    [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
-                    [moduleUsedIn]="'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP'"
-                    [product]="productService.oosSimilarProductsData.similarData[i]">
-                </product-card-horizontal-grid-view>
-            </ng-container>
-            <ng-container *ngIf="similarForOOSLoaded">
-                <product-card-skeleton *ngFor="let skeleton of similarForOOSContainer"
-                    class="skeleton-pd-card-container skeleton-card-view">
-                </product-card-skeleton>
-            </ng-container>
-        </div>
-    </div>
-</div>
-<div style="margin-top:10px"></div>
 
-<div class="prod-carsl" addClass [class.hasOneImage]="productAllImages?.length === 1"
-    [ngClass]="[carouselInitialized ? '' : 'before-init']">
-    <div class="floating-cta-strip">
-        <span class="fixed_ico" (click)="loadProductShare()"><i class="icon-product_share"></i></span>
-        <span class="fixed_ico wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
-            <i [ngClass]="isPurcahseListProduct ? 'icon-wishlist1-active' : 'icon-wishlist1-inactive'"></i>
-        </span>
-        <span *ngIf="productOutOfStock  && productService.oosSimilarProductsData.similarData.length > 2"
-            (click)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
-            class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">
-        </span>
-    </div>
-    <ng-container #productCrousel></ng-container>
-    <div class="prod-carsl-pseudo" (click)="openPopUpcrousel(0)" swipe (next)="onRotateNext()" #productCrouselPseudo
-        (previous)="onRotatePrevious()">
-        <div class="oos-tag" *ngIf="productOutOfStock">
-            <span>
-                AVAILABLE ON REQUEST
-            </span>
-        </div>
-        <div class="img-block-pseudo">
-            <div class="inner-block-pseudo">
-                <div class="pinch-zoom element-pseudo" (click)="sendProductImageClickTracking()"
-                    style="transform-origin: 0% 0%;">
-                    <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['large'] }}" height="330"
-                        width="330" alt="{{productName}}">
-                    <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
-                        class="loader-image" />
-                </div>
-            </div>
-            <ul class="pager">
-                <ng-container
-                    *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions?.pager && productAllImages?.length>1">
-                    <ng-container *ngFor="let item of productAllImages;let i=index">
-                        <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)"
-                            [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
-                        </li>
-                        <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)"
-                            class="pager_icon_dot">
-                            <em class="icon-youtube"></em>
-                        </li>
-                    </ng-container>
-                </ng-container>
-            </ul>
-        </div>
-    </div>
-    <!-- TODO: check how this section is used in PQA -->
-    <ng-container *ngIf="productTags != undefined && !this.productOutOfStock">
+<app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer"
+    [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
+</app-oos-similar-section>
 
-        <div class="image_tag">
-            <div class="tag_container"
-                *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'image': 'object' | slice:0:1;let i = index;">
-                <img src="{{tag.imageUrl}}">
-            </div>
-        </div>
-    </ng-container>
-</div>
+<app-product-carousel-section [productAllImages]="productAllImages" [carouselInitialized]="carouselInitialized"
+    (loadProductShare)="loadProductShare()" [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName"
+    (addToPurchaseList)="addToPurchaseList()" (loadProductCrousel)="loadProductCrousel($event)"
+    [productOutOfStock]="productOutOfStock"
+    (scrollToId)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
+    [imagePathAsset]="imagePathAsset" (openPopUpcrousel)="openPopUpcrousel(0)" (onRotateNext)="onRotateNext()"
+    (onRotatePrevious)="onRotatePrevious()" (sendProductImageClickTracking)="sendProductImageClickTracking()"
+    [isProductCrouselLoaded]="isProductCrouselLoaded" [productCrouselInstance]="productCrouselInstance"
+    [iOptions]="iOptions" [productTags]="productTags"></app-product-carousel-section>
 
-<product-description (checkBulkPriceMode)="checkBulkPriceMode()" [isBulkPricesProduct]="isBulkPricesProduct"
+<product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)" [isBulkPricesProduct]="isBulkPricesProduct"
     [productBulkPrices]="productBulkPrices" [selectedProductBulkPrice]="selectedProductBulkPrice"
     [qunatityFormControl]="qunatityFormControl" [productPrice]="productPrice" [productName]="productName"
     [productTags]="productTags" [refinedProdTags]="refinedProdTags" [productMrp]="productMrp"
@@ -90,11 +24,11 @@
     [rawProductCountMessage]="rawProductCountMessage">
 </product-description>
 
-<product-grouping-attributes [isCommonProduct]="isCommonProduct"
+<product-grouping-attributes [isCommonProduct]="isCommonProduct" 
     [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)"
     (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
 
-<product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" [rawProductData]="rawProductData"
+<product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" (selectProductBulkPrice$)="selectProductBulkPrice($event)" [rawProductData]="rawProductData"
     [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct"
     [priceQuantityCountry]="priceQuantityCountry" [productBulkPrices]="productBulkPrices"
     [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl">
@@ -238,6 +172,7 @@
 <ng-container #productShare></ng-container>
 <ng-container #addToCartToast></ng-container>
 <ng-container #popupCrousel></ng-container>
+<ng-container #productCrousel></ng-container>
 
 
 <!-- // TODO: product-rfq-thanks-popup should be lazy loaded -->

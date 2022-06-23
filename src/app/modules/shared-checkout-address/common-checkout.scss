@@ -6,7 +6,7 @@
     @extend %white-card;
     background: $white;
     padding: 15px;
-    margin-top: 10px;
+    margin-top: 15px;
     border: none;
     .invoice-select {
         display: flex;
@@ -60,7 +60,7 @@
     
 }
 .sub-strip {
-    padding: 15px 10px 0px !important;
+    padding: 10px 10px 0px !important;
     border: 0;
     &:not(:first-child) {
         margin-top: 20px;

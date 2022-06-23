@@ -261,8 +261,6 @@ export class ProductComponent implements OnInit, AfterViewInit
     productCrouselInstance = null;
     @ViewChild("productCrousel", { read: ViewContainerRef })
     productCrouselContainerRef: ViewContainerRef;
-    @ViewChild("productCrouselPseudo", { read: ElementRef })
-    productCrouselPseudoContainerRef: ElementRef;
     // ondemad loaded components for FAQ listing
     faqListPopupInstance = null;
     @ViewChild("faqListPopup", { read: ViewContainerRef })
@@ -1233,7 +1231,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.checkCartQuantityAndUpdate(this.qunatityFormControl.value);
     }
 
-    private checkCartQuantityAndUpdate(value): void
+    checkCartQuantityAndUpdate(value): void
     {
         if (!value) {
             this._tms.show({
@@ -1307,7 +1305,9 @@ export class ProductComponent implements OnInit, AfterViewInit
         if (this.isBulkPricesProduct) {
             const selectedProductBulkPrice = this.productBulkPrices.filter(prices => (this.cartQunatityForProduct >= prices.minQty && this.cartQunatityForProduct <= prices.maxQty));
             this.selectedProductBulkPrice = (selectedProductBulkPrice.length > 0) ? selectedProductBulkPrice[0] : null;
-            // this.bulkSellingPrice = this.selectedProductBulkPrice['bulkSellingPrice'];
+            if(this.selectedProductBulkPrice){
+                this.bulkPriceWithoutTax = this.selectedProductBulkPrice['bulkSPWithoutTax'];
+            }
         }
     }
 
@@ -1320,7 +1320,6 @@ export class ProductComponent implements OnInit, AfterViewInit
             })
             return;
         }
-        this.qunatityFormControl.setValue(qunatity);
         this.checkBulkPriceMode();
     }
 
@@ -2604,7 +2603,6 @@ export class ProductComponent implements OnInit, AfterViewInit
     clearPseudoImageCrousel()
     {
         this.isProductCrouselLoaded = false;
-        this.productCrouselPseudoContainerRef.nativeElement.remove();
     }
 
     onRotatePrevious()

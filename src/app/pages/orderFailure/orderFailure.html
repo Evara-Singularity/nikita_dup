@@ -1,4 +1,4 @@
-<section class="order-container container pwa-container mt-10">
+<!-- <section class="order-container container pwa-container mt-10">
     <div class="card-30 pt-10 pad-lr-15 align-center pwa-row pad-lr-0">
         <p class="red-txt mb-15 align-center"><i class="icon-done"></i> Transaction Declined</p>
         <p class="f-14 mb-15">Transaction was declined due to some technical reason/fault</p>
@@ -23,6 +23,29 @@
         <div class="container">
             <p class="orange-txt mt-5 ml-15" (click)="navigateTo('/')"> CONTINUE <br> SHOPPING</p>
             <button class="btn" (click)="navigateTo('dashboard/order')">VIEW ORDER</button>
+        </div>
+    </div>
+</section> -->
+<section class="pwa-row order-failure">
+    <div class="pwa-col-12">
+        <div class="card pad-0">
+            <div class="order-failure-inner">
+                <h3 class="heading-2">Transaction Declined</h3>
+                <p>We are having trouble processing <br/> your request</p>
+                <img width="150"  src="{{imagePath}}assets/img/transaction-decline.gif">
+                <p class="note-text">This may be because our system in down temporarily or may be there’s a problem with the connection</p>
+            </div>
+            <div class="pwa-row button-wrapper">
+                <div class="pwa-col-12">
+                    <button (click)="navigateTo('/')" class="btn quaternary-btn-3">
+                        CONTINUE
+                    </button>
+                    <div class="or-seperator-text"><span>or</span></div>
+                    <button (click)="navigateTo('dashboard/order')" class="btn quaternary-full-btn">
+                        VIEW ORDER
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </section>

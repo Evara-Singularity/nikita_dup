@@ -4,7 +4,7 @@
         <cart [moduleName]="'QUICKORDER'"></cart>
         <order-summary></order-summary>
         <div class="fixed-bottom-cta">
-            <button class="btn primary-full-btn" (click)="navigateToCheckout()" >{{ _commonService?.userSession?.authenticated === 'true' ? 'PROCEED TO CHECKOUT' : 'Sign In to Checkout' }}</button>
+            <button class="btn primary-full-btn" (click)="navigateToCheckout()" >{{ _commonService?.userSession?.authenticated === 'true' ? 'CONTINUE TO CHECKOUT' : 'SIGN IN TO CHECKOUT' }}</button>
         </div>
     </div>
     <cart-no-item *ngIf="_cartService.getGenericCartSession?.itemsList?.length === 0"></cart-no-item>

@@ -3,4 +3,5 @@
     <span class="page-name" *ngIf="title">
         {{ title }} <span *ngIf="!isCheckout">({{noOfCart}})</span>
     </span>
+    <span class="right-content" *ngIf="isQuickorder">Amount:&nbsp;&#8377;{{payableAmount | mathCeil | number : '1.2-2'}}</span>
 </div>

@@ -73,11 +73,14 @@
    }
    .text-section{
        width:calc(100% - 30px);
+       .page-name{
+        font-weight:$font-normal;
+       }
    }
 }
 .page-name {
     line-height:$extra-large-line-height;
-    font-weight:$font-normal;
+    font-weight:$font-bold;
     text-transform: capitalize;
     color:var(--white);
 }

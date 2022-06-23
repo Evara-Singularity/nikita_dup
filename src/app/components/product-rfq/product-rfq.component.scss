@@ -9,6 +9,9 @@
   overflow-y:scroll;
   background:var(--white);
   padding-bottom:10px;
+  .rfq-container{
+      padding:0px !important;
+  }
 }
 .rfqForm {
     .product-rfq {
@@ -49,8 +52,7 @@
                 }
                 .txt {
                     font-size: $medium-font;
-                    color: var(--onyx-black);
-                    font-weight: $font-bold;
+                    color: var(--form-label-grey);
                 }
             }
         }
@@ -84,7 +86,7 @@
                 background: #E7E7E7;
             }
         }
-        padding: 15px;
+       
         p {
             // color: #f5681e;
             // font-size: 14px;
@@ -107,7 +109,7 @@
             line-height: $small-line-height;
         }
         .req-qty {
-            padding: 20px 0;
+            padding-bottom: 20px;
             display: flex;
             label {
                 width: calc(100% - 160px);
@@ -146,7 +148,7 @@
                     border-radius: $border-radius-2;
                     border: 1px solid #333;
                     font-size: $large-font;
-                    font-weight: 500;
+                    font-weight:$font-medium;
                 }
             }
         }
@@ -157,8 +159,7 @@
         }
     }
     .in-instock {
-        background: var(--white);
-        padding: 0px 8px;
+       padding-bottom:20px;
     }
     .stickyRfqButton {
         position: fixed;

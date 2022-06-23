@@ -1,7 +1,11 @@
 export const environment = {
   production: false,
   PROD_NAME: 'https://www.moglix.com',
+<<<<<<< HEAD
   //BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
+=======
+  // BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
+>>>>>>> e5d078aaa07d29612fa313862ae4ff3428ab89e8
   BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   IMAGE_ASSET_URL: '/',
   SOCKET_URL: "https://socketqa.moglilabs.com",  

@@ -10,7 +10,6 @@ import { ProductService } from '@app/utils/services/product.service';
 })
 export class ProductCarouselSectionComponent implements OnInit, AfterViewInit
 {
-
 	@Input('productAllImages') productAllImages;
 	@Input('carouselInitialized') carouselInitialized;
 	@Input('isPurcahseListProduct') isPurcahseListProduct;

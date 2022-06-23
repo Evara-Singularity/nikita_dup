@@ -3,15 +3,14 @@
     [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
 </app-oos-similar-section>
 
-<app-product-carousel-section [productAllImages]="productAllImages" [carouselInitialized]="carouselInitialized"
+<shared-product-carousel [productAllImages]="productAllImages" [carouselInitialized]="carouselInitialized"
     (loadProductShare)="loadProductShare()" [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName"
-    (addToPurchaseList)="addToPurchaseList()" (loadProductCrousel)="loadProductCrousel($event)"
-    [productOutOfStock]="productOutOfStock"
+    (addToPurchaseList)="addToPurchaseList()" [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$"
+    [productOutOfStock]="productOutOfStock" [rawProductData]="rawProductData"
     (scrollToId)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
-    [imagePathAsset]="imagePathAsset" (openPopUpcrousel)="openPopUpcrousel(0)" (onRotateNext)="onRotateNext()"
-    (onRotatePrevious)="onRotatePrevious()" (sendProductImageClickTracking)="sendProductImageClickTracking()"
-    [isProductCrouselLoaded]="isProductCrouselLoaded" [productCrouselInstance]="productCrouselInstance"
-    [iOptions]="iOptions" [productTags]="productTags"></app-product-carousel-section>
+    [imagePathAsset]="imagePathAsset" (openPopUpcrousel)="openPopUpcrousel(0)" (sendProductImageClickTracking)="sendProductImageClickTracking()"
+    [isProductCrouselLoaded]="isProductCrouselLoaded" 
+    [iOptions]="iOptions" [productTags]="productTags"></shared-product-carousel>
 
 <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)" [isBulkPricesProduct]="isBulkPricesProduct"
     [productBulkPrices]="productBulkPrices" [selectedProductBulkPrice]="selectedProductBulkPrice"
@@ -172,7 +171,6 @@
 <ng-container #productShare></ng-container>
 <ng-container #addToCartToast></ng-container>
 <ng-container #popupCrousel></ng-container>
-<ng-container #productCrousel></ng-container>
 
 
 <!-- // TODO: product-rfq-thanks-popup should be lazy loaded -->

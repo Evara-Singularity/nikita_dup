@@ -168,55 +168,31 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
     </a>
 </div>
 <!-- order cancellation pop up  -->
-<app-pop-up *ngIf="openPopup && openPopup=='cancel' " (outData$)="outData($event) " class="bs-popup " [headerType]="'pop-up-header'" [data]="{selector: 'openPopup',headerText: ' Cancel Order'} ">
-    <div content>
-        <div class="cancelOrderBox pwa-row material-form" [ngClass]="{ 'show': (cancel_step && cancel_step==1 ), 'hide': cancel_step !==1 } ">
-            <!-- <div class="outline-input-label mb-25 pos-rel ">
-                <label class="indusrty show ">
-                    <select [(ngModel)]="reason_id " class="select-form ">
-                        <option [ngValue]="undefined ">Select cancel reason</option>
-                        <option *ngFor="let item of cancelReasons; let i=i ndex " [ngValue]="item.id ">{{item.text}}
-                        </option>
-                    </select>
-                    <i class="icon-down "></i>
-                </label>
-            </div> -->
-            <div class="outline-input-label mb-25 pos-rel">
-                <label class="indusrty show" [class.is-focus]="reason_id">
-                    <select [(ngModel)]="reason_id " class="select-form">
-                        <option *ngFor="let item of cancelReasons; let i=i ndex " [ngValue]="item.id ">{{item.text}}
-                        </option>
-                    </select>
-                    <span class="label">Reason for Cancellation</span>
-                </label>
+<app-pop-up *ngIf="openPopup && openPopup=='cancel' " (outData$)="outData($event) " class="bs-popup "
+    [headerType]="'pop-up-header'" [data]="{selector: 'openPopup',headerText: ' Cancel Order'} ">
+    <div class="content-for-popups" content>
+        <div class="cancelOrderBox pwa-row"
+            [ngClass]="{ 'show': (cancel_step && cancel_step==1 ), 'hide': cancel_step !==1 } ">
+            <h4 class="reason-text mt-15">Reason For Cancellation</h4>
+            <div class="material-form bg-white pad-15 br-8">
+                <div class="outline-input-label mb-25 pos-rel">
+                    <label class="indusrty show" [class.is-focus]="reason_id">
+                        <select [(ngModel)]="reason_id " class="select-form">
+                            <option *ngFor="let item of cancelReasons; let i=i ndex " [ngValue]="item.id ">{{item.text}}
+                            </option>
+                        </select>
+                        <span class="label">Reason for Cancellation</span>
+                    </label>
+                </div>
+                <div class="outline-input-label pos-rel mb-0">
+                    <label class="indusrty show ">
+                        <input id="long-input">
+                        <span class="label">Add a comment</span>
+                    </label>
+                </div>
+                <button class="bottomBtn primary-full-btn confirmbtn btn "
+                    (click)="reason_id ? openAlert=true : '' ">Confirm</button>
             </div>
-
-            <div class="outline-input-label mb-25 pos-rel ">
-                <label class="indusrty show ">
-                    <input id="long-input">
-                    <span class="label">Add a comment</span>
-                </label>
-            </div>
-
-            <!-- <div class="outline-input-label mb-25 w-48">
-                <label >
-                    <select formControlName="idCountry"  disabled>
-                        <option selected="selected"  >
-                           sachin</option>
-                           <option selected="selected"  >
-                            sachin</option>
-                            <option selected="selected" >
-                                sachin</option>
-                    </select>
-                    <i class="icon-down"></i>
-                    <span class="label">Country*</span>
-                </label>
-                <p class="error-txt">
-                    Kindly select your country</p>
-            </div> -->
-            <h4 class="mt-15 mb-10 ">Comments(optional)</h4>
-            <textarea class="commentBox outline-input-label mb-25" maxlength="100"></textarea>
-            <button class="bottomBtn confirmbtn btn " (click)="reason_id ? openAlert=true : '' ">Confirm</button>
             <div class="alert-box " *ngIf="openAlert ">
                 <div class="overlay "></div>
                 <div class="content-area ">
@@ -233,30 +209,44 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
         </div>
 
         <div class="cancelOrderBox pwa-row" [ngClass]="{ 'show': cancel_step==2 , 'hide': cancel_step !==2 } ">
-            <div class="returnedOrder orderdtBox ">
-                <div class="orderdtBoxinner ">
-                    <div class="orderdtDesc clearfix ">
-                        <div class="orderproImg ">
-                            <img src="{{(detail?.productImg && detail?.productImg.length> 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
+            <div class="returnedOrder orderdtBox">
+                <div class="cancelorder-details">
+                    <div class="cancelorder-upper">
+                        <div class=" card-img">
+                            <img
+                                src="{{(detail?.productImg && detail?.productImg.length> 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
                         </div>
-
-                        <div class="orderproDesc">
+                        <div class="card-desc">
                             <p>{{detail?.product_name}}</p>
                             <div class="orderqty clearfix mt-10">
-                                <span class="priceright">Order Cancelled :
-                                    <span>{{currentDate | date: 'd-MMMM-y'}}</span>
-                                </span>
-                                <span class="priceright">Price Inclusive of GST
-                                    <span>&#8377; {{detail?.price}}</span>
+                                <span class="qtyleft"> <span>&#8377; {{detail?.price}}</span> <span class="qtynum">(1
+                                        QTY)</span>
                                 </span>
                             </div>
                         </div>
-
                     </div>
-                    <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'">Your order has been cancelled.
+                    <div class="cancelorder-bottom">
+                        <div class="cancelorder-bottom-inner">
+                            <i class="icon-circle-delete del-ico red-txt"></i>
+                            <div class="cancelorder-bottom-inner-details">
+                                <span class="block-txt red-txt">Cancelled :
+                                    <span class="grey-txt">on {{currentDate | date: 'd-MMMM-y'}}</span>
+                                </span>
+                                <span class="grey-txt">Tracking Details</span>
+                            </div>
+                        </div>
+                        <button class="btn tertiary-btn">BUY AGAIN</button>
+                    </div>
+                    <!-- <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'">Your order has been cancelled.
                     </p>
-                    <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'">Your order has been cancelled the amount will be reflected in your account within 7-10 business days</p>
+                    <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'">Your order has been cancelled the amount will be reflected in your account within 7-10 business days</p> -->
                 </div>
+                
+            </div>
+            <div class="need-help-strip pad-10">
+                <span class="get-in-touch-txt">Get in touch with us in case you face any issues</span>
+                <span class="need-help" [routerLink]="[ '/faq'] "
+                    [queryParams]="{redirectUrl:pageUrl}">NEED&nbsp;HELP?</span>
             </div>
         </div>
     </div>

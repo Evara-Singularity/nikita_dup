@@ -432,22 +432,23 @@
 .invoiceSection {
   background: $white;
   padding: 15px 20px;
-  margin-top: 10px;
+  margin:15px;
   border: 1px solid var(--ghost-white);
+  border-radius:$border-radius-8;
   a {
-    color: var(--bleu-de-france);
     display: block;
-    font-size: $large-font;
+    color: var(--bleu-de-france);
+    display:flex;
+    align-items:center;
   }
-  span {
+  .pwa-text{
+    font-size:$medium-font;
     display: inline-block;
-    line-height: 20px;
+    padding-bottom:0px;
   }
   img {
-    width: 20px;
-    height: 20px;
+    width: 24px;
     margin-right: 10px;
-    vertical-align: middle;
   }
 }
 .flex-date-col {

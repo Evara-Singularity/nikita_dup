@@ -159,12 +159,14 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
             </div>
         </div>
     </div>
-    <div *ngIf="showBuyAgain_Invoice(detail[ 'status']) " class="invoiceSection ">
-        <a [href]="detail?.customer_invoice " target="_blank ">
-            <span><img src="{{imageAssetURL}}assets/img/file-download-line.svg">DOWNLOAD INVOICE</span></a>
-    </div>
+    
 </ng-container> -->
-
+<div *ngIf="showBuyAgain_Invoice(detail[ 'status']) " class="invoiceSection ">
+    <a [href]="detail?.customer_invoice " target="_blank ">
+        <img src="{{imageAssetURL}}assets/img/bill-fill.svg">
+        <span class="pwa-text">DOWNLOAD INVOICE</span>
+    </a>
+</div>
 <!-- order cancellation pop up  -->
 <app-pop-up *ngIf="openPopup && openPopup=='cancel' " (outData$)="outData($event) " class="bs-popup " [headerType]="'pop-up-header'" [data]="{selector: 'openPopup',headerText: ' Cancel Order'} ">
     <div content>

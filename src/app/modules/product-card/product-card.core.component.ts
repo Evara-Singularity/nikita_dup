@@ -66,8 +66,8 @@ export class ProductCardCoreComponent implements OnInit {
   productRFQInstance = null;
   @ViewChild('productRFQ', { read: ViewContainerRef }) productRFQContainerRef: ViewContainerRef;
   // ondemad loaded components for green aleart box as success messge
-  alertBoxInstance = null;
-  @ViewChild('alertBox', { read: ViewContainerRef }) alertBoxContainerRef: ViewContainerRef;
+  rfqThankyouInstance = null;
+  @ViewChild('rfqThankyou', { read: ViewContainerRef }) rfqThankyouContainerRef: ViewContainerRef;
   // ondemand load of youtube video player in modal
   youtubeModalInstance = null;
   // ondemad loaded components for select variant popup
@@ -92,6 +92,7 @@ export class ProductCardCoreComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.product)
     this.isOutOfStockByQuantity = !this.product.quantityAvailable || this.product.outOfStock;
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
     // randomize product feature
@@ -276,6 +277,8 @@ export class ProductCardCoreComponent implements OnInit {
   }
 
   async intiateRFQQuote(product) {
+    let hasGstin = null;
+    let rfqValue = 0;
     this._loader.setLoaderState(true);
     this._commonService.enableNudge = false;
     const { ProductRFQComponent } = await import('../../components/product-rfq/product-rfq.component');
@@ -288,36 +291,35 @@ export class ProductCardCoreComponent implements OnInit {
     (this.productRFQInstance.instance['isLoading'] as EventEmitter<boolean>).subscribe(loaderStatus => {
       this._loader.setLoaderState(loaderStatus);
     });
+    (this.productRFQInstance.instance["hasGstin"] as EventEmitter<boolean>).subscribe((value) =>{hasGstin=value});
+    //productPrice
+    (this.productRFQInstance.instance["rfqQuantity"] as EventEmitter<string>).subscribe((rfqQuantity) => { rfqValue = rfqQuantity * Math.floor(this.product['salesPrice'] || 0);    });
     (this.productRFQInstance.instance['onRFQSuccess'] as EventEmitter<boolean>).subscribe((status) => {
-      const headerText = 'Thanks for submitting the query.';
-      const subHeaderText = 'Our support member will get in touch with you within 24 hours. For further assistance either Call or Whatsapp @ +91 99996 44044. You can also mail us at salesenquiry@moglix.com.';
-      this.loadAlertBox(headerText, subHeaderText, null);
+      this.loadRFQThankyouPopup(hasGstin, rfqValue);
       this._productListService.analyticRFQ(true, product);
     });
   }
 
 
-  async loadAlertBox(mainText, subText = null, extraSectionName: string = null) {
-    if (!this.alertBoxInstance) {
+  async loadRFQThankyouPopup(hasGstin, rfqValue) {
+    if (!this.rfqThankyouInstance) {
       this._loader.setLoaderState(true);
-      const { AlertBoxToastComponent } = await import('../../components/alert-box-toast/alert-box-toast.component').finally(() => {
+      const { ProductRfqThanksPopupComponent } = await import('../../components/product-rfq-thanks-popup/product-rfq-thanks-popup.component').finally(() => {
         this._loader.setLoaderState(false);
       });
-      const factory = this._cfr.resolveComponentFactory(AlertBoxToastComponent);
-      this.alertBoxInstance = this.alertBoxContainerRef.createComponent(factory, null, this._injector);
-      this.alertBoxInstance.instance['mainText'] = mainText;
-      this.alertBoxInstance.instance['subText'] = subText;
-      if (extraSectionName) {
-        this.alertBoxInstance.instance['extraSectionName'] = extraSectionName;
-      }
-      (this.alertBoxInstance.instance['removed'] as EventEmitter<boolean>).subscribe(status => {
-        this.alertBoxInstance = null;
-        this.alertBoxContainerRef.detach();
+      const factory = this._cfr.resolveComponentFactory(ProductRfqThanksPopupComponent);
+      this.rfqThankyouInstance = this.rfqThankyouContainerRef.createComponent(factory, null, this._injector);
+      this.rfqThankyouInstance.instance['rfqTotalValue'] = rfqValue;
+      this.rfqThankyouInstance.instance['hasGstin'] = hasGstin;
+      this.rfqThankyouInstance.instance['getWhatsText'] = this.getWhatsText;
+      this.rfqThankyouInstance.instance['imagePathAsset'] = CONSTANTS.IMAGE_ASSET_URL;
+      this.rfqThankyouInstance.instance['productOutOfStock'] = true;
+      this.rfqThankyouInstance.instance['isRFQSuccessfull'] = true;
+      (this.rfqThankyouInstance.instance['closeRFQAlert$'] as EventEmitter<boolean>).subscribe(status => {
+        this.rfqThankyouInstance.instance['isRFQSuccessfull'] = false;
+        this.rfqThankyouInstance = null;
+        this.rfqThankyouContainerRef.detach();
       });
-      setTimeout(() => {
-        this.alertBoxInstance = null;
-        this.alertBoxContainerRef.detach();
-      }, 2000);
     }
   }
 
@@ -404,5 +406,7 @@ export class ProductCardCoreComponent implements OnInit {
       this._analytics.sendAdobeCall({ page, custData, order }, "genericClick")
     }
   }
+
+  get getWhatsText() { return `Hi, I want to buy ${this.product['productName']} (${this.product['moglixPartNumber']})`; }
 
 }

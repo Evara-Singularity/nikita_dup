@@ -61,7 +61,7 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 
 	ngOnDestroy(): void
 	{
-		throw new Error('Method not implemented.');
+		this.cartUpdatesSubscription.unsubscribe();
 	}
 
 }

@@ -261,8 +261,6 @@ export class ProductComponent implements OnInit, AfterViewInit
     productCrouselInstance = null;
     @ViewChild("productCrousel", { read: ViewContainerRef })
     productCrouselContainerRef: ViewContainerRef;
-    @ViewChild("productCrouselPseudo", { read: ElementRef })
-    productCrouselPseudoContainerRef: ElementRef;
     // ondemad loaded components for FAQ listing
     faqListPopupInstance = null;
     @ViewChild("faqListPopup", { read: ViewContainerRef })
@@ -2605,7 +2603,6 @@ export class ProductComponent implements OnInit, AfterViewInit
     clearPseudoImageCrousel()
     {
         this.isProductCrouselLoaded = false;
-        this.productCrouselPseudoContainerRef.nativeElement.remove();
     }
 
     onRotatePrevious()

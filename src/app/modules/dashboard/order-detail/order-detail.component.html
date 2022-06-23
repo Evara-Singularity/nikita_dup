@@ -46,35 +46,58 @@
             </span>
         </div>
         <div class="card-bottom-inner card-bottom-inner-order-dtl state-done">
-            <span class="order-track-line"></span>
+            <span class="order-track-line" *ngIf="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING'" ></span>
+            <span class="order-track-line order-track-line-normal" *ngIf="detail?.status !== 'ACCEPTED' || detail?.status !== 'PROCESSING'" ></span>
+            <span class="order-track-line order-track-line-error" *ngIf="detail?.status !== 'CANCELLED' ||  detail?.status !=='PAYMENT FAILED'" ></span>
             <span class="orderstatus"> <span [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'">
                 <ng-container *ngIf="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING'">
                     ESTIMATED DELIVERY :
                     {{ detail?.dates.delivered.date }}
                 </ng-container>
-                <ng-container *ngIf="detail?.status !== 'ACCEPTED' && detail?.status !== 'PROCESSING'">
+                <ng-container >
                     {{detail?.status}}
                     <ng-container *ngIf="detail && detail?.dates.delivered.flag">
                         : {{ detail?.dates.delivered.date }}
                     </ng-container>
                 </ng-container>
             </span></span>
-            <span *ngIf="detail?.status !== 'DELIVERED' && detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED'" class="orderstatus" (click)="fetchTrackingData(detail)">TRACK ORDER <i class="icon-next"></i></span>
+            
+            <span *ngIf="detail?.status !== 'DELIVERED' && detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED'" class="track-order-cta" (click)="fetchTrackingData(detail)">
+                TRACK ORDER 
+                <i class="icon-next"></i>
+            </span>
         </div>
         <!-- Return Policy added Yajya please check css for the same  -->
-        <div style="overflow: hidden; padding: 10px;">
-            <p *ngIf="detail && detail?.dates.delivered.flag && showReturn" class="policyTxt">Return Policy valid till {{returnEndDate}}</p>
-            <p *ngIf="detail?.dates.delivered.flag &&  !showReturn" class="policyTxt">Return Policy ended on {{returnEndDate}}
-            </p>
-        </div>
+
+ 
+
     </div>
 </div>
 
-<div class="need-help-strip pad-10 mar-15" *ngIf="detail?.status !== 'CANCELLED'">
-    <span class="cncl-item" *ngIf="detail && detail?.cancel_active" (click)="openPopup='cancel' ;getDataforCancel(detail?.product_name,detail?.price,detail?.customer_id,detail?.item_id,detail?.status); ">CANCEL ITEM</span>
-    <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span>
+<div class="need-help-parent" *ngIf="detail && detail.status==='DELIVERED' && detail.requestType !='return' && detail.requestType !='exchange' && showReturn && detail.show_return_exchange " >
+    <div class="need-help-strip">
+        <div>
+            <span class="cncl-item"
+                (click)="openPopup='return' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status); ">RETURN</span>
+            <span class="cncl-item"
+                (click)="openPopup='return' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status); ">EXCHANGE</span>
+        </div>
+        <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span>
+    </div>
+    <div class="need-help-strip-btm" *ngIf="detail && detail.dates.delivered.flag" >
+        <p *ngIf="detail && detail.dates.delivered.flag && showReturn">Return Policy valid till {{returnEndDate}}</p>
+        <p *ngIf="detail.dates.delivered.flag &&  !showReturn">Return Policy ended on {{returnEndDate}}</p>
+    </div>
 </div>
 
+<div class="need-help-parent" *ngIf="detail?.status.toLowerCase() !== 'cancelled' && detail?.status.toLowerCase() != 'payment failed' && detail?.status.toLowerCase() != 'delivered' " >
+    <div class="need-help-strip">
+        <span class="cncl-item" *ngIf="detail && detail?.cancel_active"
+            (click)="openPopup='cancel' ;getDataforCancel(detail?.product_name,detail?.price,detail?.customer_id,detail?.item_id,detail?.status); ">CANCEL
+            ITEM</span>
+        <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span>
+    </div>
+</div>
 
 <!-- <ng-container *ngIf="detail && detail?.requestType !=='cancel' && detail?.status !=='PAYMENT FAILED' && detail?.status !=='
 AWAITING PAYMENT CONFIRMATION' && !customerReturn">
@@ -139,7 +162,6 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
             <span><img src="{{imageAssetURL}}assets/img/file-download-line.svg">DOWNLOAD INVOICE</span></a>
     </div>
 </ng-container> -->
-
 
 <!-- order cancellation pop up  -->
 <app-pop-up *ngIf="openPopup && openPopup=='cancel' " (outData$)="outData($event) " class="bs-popup " [headerType]="'pop-up-header'" [data]="{selector: 'openPopup',headerText: ' Cancel Order'} ">

@@ -190,9 +190,12 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         <span class="label">Add a comment</span>
                     </label>
                 </div>
-                <button class="bottomBtn primary-full-btn confirmbtn btn "
-                    (click)="reason_id ? openAlert=true : '' ">Confirm</button>
+                <div class="fixed-bottom-cta">
+                    <button class="btn primary-full-btn" (click)="reason_id ? openAlert=true : '' ">SUBMIT REQUEST</button>
+                </div> 
             </div>
+            <h4 class="reason-text mt-15">Refund Status</h4>
+            <p>There will be no refund as the order is purchased using Cash-On-Delivery</p>
             <div class="alert-box " *ngIf="openAlert ">
                 <div class="overlay "></div>
                 <div class="content-area ">
@@ -209,7 +212,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
         </div>
 
         <div class="cancelOrderBox pwa-row" [ngClass]="{ 'show': cancel_step==2 , 'hide': cancel_step !==2 } ">
-            <div class="returnedOrder orderdtBox">
+            <div class="returnedOrder order-details-for-cancelled orderdtBox">
                 <div class="cancelorder-details">
                     <div class="cancelorder-upper">
                         <div class=" card-img">
@@ -243,7 +246,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                 </div>
                 
             </div>
-            <div class="need-help-strip pad-10">
+            <div class="need-help-strip pad-10 mt-15">
                 <span class="get-in-touch-txt">Get in touch with us in case you face any issues</span>
                 <span class="need-help" [routerLink]="[ '/faq'] "
                     [queryParams]="{redirectUrl:pageUrl}">NEED&nbsp;HELP?</span>

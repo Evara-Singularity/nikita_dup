@@ -235,9 +235,22 @@
     color: var(--white);
   }
 }
+.content-for-popups{
+  height: 100%;
+}
+.reason-text{
+  font-size: $large-font;
+}
+.order-details-for-cancelled{
+  padding: 0px !important
+}
 .cancelOrderBox {
-  // background-color: var(--white);
   @extend %white-card;
+  height: 100%;
+  margin: 0px;
+  border-radius: none;
+  background-color: var(--ghost-white) !important;
+  border-radius: 0px;
   .returnedOrder {
     border: none;
     padding: 10px 0;
@@ -701,6 +714,7 @@
     justify-content: space-between;
     padding: 10px 15px;
     align-items: center;
+    border-radius: 0px 0px 8px 8px;
     .cancelorder-bottom-inner {
       display: flex;
       justify-content: flex-start;

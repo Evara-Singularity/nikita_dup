@@ -34,10 +34,11 @@
     <div class="card-bottom">
         <div class="card-bottom-inner card-bottom-inner-order-dtl">
             <span class="order-track-line line-invisible"></span>
-            <span class="orderstatus"> 
-                <span [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'"> 
+            <span class="orderstatus" > 
+                <!-- [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'" -->
+                <span > 
                     <ng-container *ngIf="detail?.status != 'PROCESSING'">
-                        ORDERED & APPROVED : {{ detail?.dates.accepted.date }}
+                        ORDERED & APPROVED : <br/>{{ detail?.dates.accepted.date }}
                     </ng-container>
                     <ng-container *ngIf="detail?.status == 'PROCESSING'">
                         {{detail?.status}}
@@ -46,21 +47,22 @@
             </span>
         </div>
         <div class="card-bottom-inner card-bottom-inner-order-dtl state-done">
-            <span class="order-track-line" *ngIf="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING'" ></span>
-            <span class="order-track-line order-track-line-normal" *ngIf="detail?.status !== 'ACCEPTED' || detail?.status !== 'PROCESSING'" ></span>
-            <span class="order-track-line order-track-line-error" *ngIf="detail?.status !== 'CANCELLED' ||  detail?.status !=='PAYMENT FAILED'" ></span>
-            <span class="orderstatus"> <span [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'">
-                <ng-container *ngIf="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING'">
-                    ESTIMATED DELIVERY :
-                    {{ detail?.dates.delivered.date }}
-                </ng-container>
-                <ng-container >
-                    {{detail?.status}}
-                    <ng-container *ngIf="detail && detail?.dates.delivered.flag">
-                        : {{ detail?.dates.delivered.date }}
+            <span class="order-track-line gray-bg" [ngClass]="{'gray-bg': detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING', 'red-bg': detail?.status == 'CANCELLED' ||  detail?.status =='PAYMENT FAILED'}" ></span>
+            <span class="orderstatus">
+                <!-- [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'" -->
+                <span>
+                    <ng-container *ngIf="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING'">
+                        ESTIMATED DELIVERY :<br />
+                        &nbsp;{{ detail?.dates.delivered.date }}
                     </ng-container>
-                </ng-container>
-            </span></span>
+                    <ng-container *ngIf="!(detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING')" >
+                        {{detail?.status}}
+                        <ng-container *ngIf="detail && detail?.dates.delivered.flag">
+                            : <br/>{{ detail?.dates.delivered.date }}
+                        </ng-container>
+                    </ng-container>
+                </span>
+            </span>
             
             <span *ngIf="detail?.status !== 'DELIVERED' && detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED'" class="track-order-cta" (click)="fetchTrackingData(detail)">
                 TRACK ORDER 

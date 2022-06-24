@@ -1,3 +1,4 @@
+import { SharedProductCarouselModule } from './../../modules/shared-product-carousel/shared-product-carousel.module';
 import { EmiPlansModule } from './../../modules/emi-plans/emi-plans.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -76,7 +77,8 @@ import { ProductCarouselSectionModule } from '@app/components/product-carousel-s
     ProductGetQuoteModule,
     ProductGroupingAttributesModule,
     OosSimilarSectionModule,
-    ProductCarouselSectionModule
+    ProductCarouselSectionModule,
+    SharedProductCarouselModule
   ],
   exports: [],
   providers: [NgxSiemaService],

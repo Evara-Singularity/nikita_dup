@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
+import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 
 @Component({
   selector: 'app-product-share',
@@ -23,19 +24,19 @@ export class ProductShareComponent implements OnInit {
   }
 
   hide() {
-    this.show = false;
-    this.removed.emit(true);
+    // this.show = false;
+    // this.removed.emit(true);
   }
 
-  share(){
+  share() {
   }
 
 }
 
 @NgModule({
   declarations: [
-    ProductShareComponent
+    ProductShareComponent,
   ],
-  imports: [CommonModule],
+  imports: [CommonModule, BottomMenuModule],
 })
 export class ProductShareModule { }

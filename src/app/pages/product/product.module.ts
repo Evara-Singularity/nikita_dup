@@ -35,7 +35,6 @@ import { ProductBenefitsModule } from '@app/components/product-benefits/product-
 import { ProductGetQuoteModule } from '@app/components/product-get-quote/product-get-quote.component';
 import { ProductGroupingAttributesModule } from '@app/components/product-grouping-attributes/product-grouping-attributes.component';
 import { OosSimilarSectionModule } from '@app/components/oos-similar-section/oos-similar-section.module';
-import { ProductCarouselSectionModule } from '@app/components/product-carousel-section/product-carousel-section.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -77,7 +76,6 @@ import { ProductCarouselSectionModule } from '@app/components/product-carousel-s
     ProductGetQuoteModule,
     ProductGroupingAttributesModule,
     OosSimilarSectionModule,
-    ProductCarouselSectionModule,
     SharedProductCarouselModule
   ],
   exports: [],

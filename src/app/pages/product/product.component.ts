@@ -1040,7 +1040,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
         if (this.productRFQUpdateInstance) {
             this.productRFQUpdateInstance = null;
-            this.productRFQUpdateInstance.remove();
+            this.productRFQUpdateContainerRef.remove();
         }
         if (this.youtubeModalInstance) {
             this.youtubeModalInstance = null;
@@ -2144,7 +2144,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         );
 
         const factory = this.cfr.resolveComponentFactory(ProductRfqUpdatePopupComponent);
-        this.productRFQUpdateInstance = this.productRFQContainerRef.createComponent(
+        this.productRFQUpdateInstance = this.productRFQUpdateContainerRef.createComponent(
             factory,
             null,
             this.injector

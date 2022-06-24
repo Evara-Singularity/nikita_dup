@@ -34,6 +34,7 @@ import { FloatingButtonContainerModule } from '@app/modules/ui/floating-button-c
 import { ProductBenefitsModule } from '@app/components/product-benefits/product-benefits.component';
 import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { ProductGetQuoteModule } from '@app/components/product-get-quote/product-get-quote.component';
+import { ProductRfqUpdatePopupModule } from '@app/components/product-rfq-update-popup/product-rfq-update-popup.component';
 import { ProductGroupingAttributesComponent, ProductGroupingAttributesModule } from '@app/components/product-grouping-attributes/product-grouping-attributes.component';
 @NgModule({
   declarations: [ProductComponent],
@@ -75,6 +76,7 @@ import { ProductGroupingAttributesComponent, ProductGroupingAttributesModule } f
     FloatingButtonContainerModule,
     ProductBenefitsModule,
     ProductGetQuoteModule,
+    ProductRfqUpdatePopupModule,
     ProductGroupingAttributesModule
   ],
   exports: [],

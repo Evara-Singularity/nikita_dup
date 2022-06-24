@@ -1,17 +1,19 @@
 <section class="pwa-row mt-10 pad-r-0 pastOrders" [debounceTime]="200" observeVisibility (visible)="onVisiblePastOrders($event)" *ngIf="pageDisplay">
-    <ng-container id="past-orders" class="Bestseller card similar-prod" >
-        <div class="view-all-strip">
-            <h3>Buy It Again</h3>
-        </div>
-        <product-card-vertical-container [numberOfItems]="productList.length" >
-            <ng-container *ngFor="let product of productList;let pIndex=index">
-                <product-card-vertical-grid-view [section]="'past-orders'" [product]="product" [cardMetaInfo]='cardMetaInfo'
-                    [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
-                    [moduleUsedIn]="'PRODUCT_PAST_ORDER'"
-                    [analytics]="analytics">
-                </product-card-vertical-grid-view>
-            </ng-container>
-        </product-card-vertical-container>
-
-    </ng-container>
+    <div class="pwa-col-12">
+        <ng-container id="past-orders" class="Bestseller card similar-prod" >
+            <div class="view-all-strip">
+                <h3>Buy It Again</h3>
+            </div>
+            <product-card-vertical-container [numberOfItems]="productList.length" >
+                <ng-container *ngFor="let product of productList;let pIndex=index">
+                    <product-card-vertical-grid-view [section]="'past-orders'" [product]="product" [cardMetaInfo]='cardMetaInfo'
+                        [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
+                        [moduleUsedIn]="'PRODUCT_PAST_ORDER'"
+                        [analytics]="analytics">
+                    </product-card-vertical-grid-view>
+                </ng-container>
+            </product-card-vertical-container>
+    
+        </ng-container>
+    </div>
 </section>

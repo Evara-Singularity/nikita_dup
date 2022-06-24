@@ -24,8 +24,8 @@ export class ProductShareComponent implements OnInit {
   }
 
   hide() {
-    // this.show = false;
-    // this.removed.emit(true);
+    this.show = false;
+    this.removed.emit(true);
   }
 
   share() {

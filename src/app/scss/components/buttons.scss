@@ -29,9 +29,7 @@
     }
     &:disabled {
         background: var(--silver);
-    }
-    &.disabled {
-        background: var(--silver);
+        border-radius: 8px !important;
     }
 }
 .continue-btn {

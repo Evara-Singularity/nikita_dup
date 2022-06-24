@@ -1,19 +1,26 @@
+@import '../../scss/variables';
+@import '../../scss/components/bottom-popup.scss';
+
 .share-container {
     padding: 0px 4px;
+
     li {
         float: left;
         width: 16.6%;
         text-align: center;
         padding: 0px;
+
         a {
             font-size: 24px;
             padding-right: 2px;
             margin-right: 0px;
+
             span {
                 display: block;
                 padding-top: 7px;
                 font-size: 12px;
             }
+
             &.more {
                 i {
                     display: block;
@@ -21,6 +28,7 @@
                     -ms-transform: rotate(90deg);
                     -webkit-transform: rotate(90deg);
                 }
+
                 a {
                     font-size: 30px;
                     color: #666;

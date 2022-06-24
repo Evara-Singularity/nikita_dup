@@ -7,7 +7,7 @@ import { FilterMidPlpModule } from '@app/components/filter-mid-plp/filter-mid-pl
 import { AddFilterSymbolPipeModule } from '@app/utils/pipes/addSymbol.pipe';
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
 import { ProductCardHorizontalListViewModule } from '../product-card/product-card-horizontal-list-view/product-card-horizontal-list-view.module';
-import { ProductCardSkeletonModule } from '../product-card/product-card-skeleton/product-card-skeleton.module';
+import { ProductCardSkeletonModule } from '../ui/skeletons/product-card-skeleton/product-card-skeleton.module';
 
 @NgModule({
   declarations: [SharedProductListingComponent],

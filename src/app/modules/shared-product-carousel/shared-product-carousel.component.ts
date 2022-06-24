@@ -43,10 +43,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 
   ngAfterViewInit(): void
   {
-    if (this.commonService.isBrowser)
-    {
-      this.loadProductCrousel(0);
-    }
+   
   }
 
   async loadProductCrousel(slideIndex)

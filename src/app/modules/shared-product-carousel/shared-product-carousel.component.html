@@ -47,7 +47,6 @@
     </div>
     <!-- TODO: check how this section is used in PQA -->
     <ng-container *ngIf="productTags != undefined && !this.productOutOfStock">
-
         <div class="image_tag">
             <div class="tag_container"
                 *ngFor="let tag of productTags | arrayFilterPipe : 'type': 'image': 'object' | slice:0:1;let i = index;">

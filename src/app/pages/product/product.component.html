@@ -4,8 +4,8 @@
 </app-oos-similar-section>
 
 <shared-product-carousel [productAllImages]="productAllImages" [carouselInitialized]="carouselInitialized"
-    (loadProductShare)="loadProductShare()" [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName"
-    (addToPurchaseList)="addToPurchaseList()" [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$"
+    (loadProductShare$)="loadProductShare()" [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName"
+    (addToPurchaseList$)="addToPurchaseList()" [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$"
     [productOutOfStock]="productOutOfStock" [rawProductData]="rawProductData"
     (scrollToId)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
     [imagePathAsset]="imagePathAsset" (openPopUpcrousel)="openPopUpcrousel(0)" (sendProductImageClickTracking)="sendProductImageClickTracking()"

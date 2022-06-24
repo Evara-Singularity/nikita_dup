@@ -122,6 +122,7 @@ close() {
     if (this.rfqUpdateForm.valid) {
       console.log("rfqDetails ---> ",rfqDetails);
     // api is not integrated  yet thus output of onRFQUpdateSuccess sent true
+    this.isLoading.emit(false);
     this.isRFQSubmitted = true;
     this.onRFQUpdateSuccess.emit(true);
     // end ...........

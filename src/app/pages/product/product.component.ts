@@ -1038,6 +1038,10 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.productRFQInstance = null;
             this.productRFQContainerRef.remove();
         }
+        if (this.productRFQUpdateInstance) {
+            this.productRFQUpdateInstance = null;
+            this.productRFQUpdateInstance.remove();
+        }
         if (this.youtubeModalInstance) {
             this.youtubeModalInstance = null;
         }
@@ -2103,6 +2107,11 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         let data = this.processRFQGetQuoteData(user);
         let params = { customerId: user.userId, invoiceType: "retail" };
+        let product = {
+            url: this.productUrl,
+            productName: this.productName,
+            moq: this.productMinimmumQuantity,
+        };
         this.raiseRFQGetQuoteSubscription = this.commonService.getAddressList(params).subscribe(res =>
         {
             if (res['status'] && res['addressList'].length > 0) {
@@ -2114,6 +2123,8 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.productService.postBulkEnquiry(data).subscribe((response) =>
             {
                 if (response['statusCode'] == 200) {
+                    let rfqId = response['data'] ?? '';
+                    this.intiateRFQQuoteUpdate(product , rfqId);
                     this._tms.show({ type: 'success', text: response['statusDescription'] });
                     this.rfqQuoteRaised = true;
                     this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
@@ -2142,7 +2153,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.productRFQUpdateInstance.instance["productUrl"] = this.productAllImages[0]['large'];
         this.productRFQUpdateInstance.instance["rfqId"] = rfqid;
         (
-            this.productRFQInstance.instance["isLoading"] as EventEmitter<boolean>
+            this.productRFQUpdateInstance.instance["isLoading"] as EventEmitter<boolean>
         ).subscribe((loaderStatus) =>
         {
             this.toggleLoader(loaderStatus);

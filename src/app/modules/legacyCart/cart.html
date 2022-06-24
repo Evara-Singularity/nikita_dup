@@ -3,7 +3,7 @@
         <!-- <div class="product-order-time">
             <p><span>You ordered this product 4 hours ago</span></p>
         </div> -->
-        <div *ngIf="item['text1']" class="realTimePrice">
+        <div class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
                     {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>

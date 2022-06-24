@@ -235,9 +235,22 @@
     color: var(--white);
   }
 }
+.content-for-popups{
+  height: 100%;
+}
+.reason-text{
+  font-size: $large-font;
+}
+.order-details-for-cancelled{
+  padding: 0px !important
+}
 .cancelOrderBox {
-  // background-color: var(--white);
   @extend %white-card;
+  height: 100%;
+  margin: 0px;
+  border-radius: none;
+  background-color: var(--ghost-white) !important;
+  border-radius: 0px;
   .returnedOrder {
     border: none;
     padding: 10px 0;
@@ -623,5 +636,127 @@
   margin-left: auto;
   i{
     color: var(--primary) !important; 
+  }
+}
+.cancelorder-details {
+  margin: 0px 0px 15px;
+  background-color: var(--white);
+  border-radius: 8px;
+  .cancelorder-upper {
+    position: relative;
+    border: 1px solid var(--ghost-white);
+    background: var(--white);
+    padding: 10px;
+    display: flex;
+    border-radius: 8px 8px 0px 0px !important;
+    .card-img {
+      width: 27%;
+      padding: 5px;
+      img {
+        display: block;
+        max-height: 100%;
+        max-width: 100%;
+      }
+    }
+    .card-desc {
+      width: 73%;
+      padding-left: 15px;
+      padding-right: 5px;
+      p {
+        font-size: $medium-font;
+        line-height: $small-line-height;
+        color: var(--black);
+        color: var(--onyx-black);
+        cursor: pointer;
+        margin-bottom: 5px;
+        line-height: 17px;
+      }
+      // .orderstatus {
+      //   font-size: $medium-font;
+      //   display: block;
+      //   span {
+      //     display: block;
+      //     padding-top: 3px;
+      //   }
+      // }
+      .orderqty {
+        font-size: $medium-font;
+        margin-bottom: 8px;
+        .qtyleft {
+          display: block;
+          margin-bottom: 5px;
+          color: #444;
+          font-weight: bold;
+          font-size: $extra-large-font;
+          .qtynum {
+            font-size: $medium-font;
+            font-weight: normal;
+          }
+          span {
+            font-weight: $font-bolder;
+            color: #111;
+          }
+        }
+        // .priceright {
+        //     display: block;
+        //     span {
+        //         font-weight: $font-bolder;
+        //         font-size: $large-font;
+        //     }
+        // }
+      }
+    }
+  }
+  .cancelorder-bottom {
+    border: 1px solid var(--ghost-white);
+    border-top: 0px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    align-items: center;
+    border-radius: 0px 0px 8px 8px;
+    .cancelorder-bottom-inner {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      
+      border-top: none;
+      &:last-child {
+        border-radius: 0px 0px 8px 8px;
+      }
+
+      i {
+        font-size: 15px;
+        margin-right: 10px;
+      }
+      .cancelorder-bottom-inner-details {
+        .block-txt {
+          display: block;
+          .grey-txt {
+            font-size: $small-font;
+          }
+        }
+      }
+    }
+    // button{
+    //   height: 30px;
+    // }
+    // .orderstatus {
+    //     color: var(--onyx-black) !important;
+    //     font-size: $small-font;
+    //     font-weight: bold;
+    //     .dot {
+    //         color: var(--primary);
+    //     }
+    //     i{
+    //         font-size: $extra-large-font;
+    //         &.success{
+    //             color: var(--slimy-green);
+    //         }
+    //         &.danger{
+    //             color: var(--primary);
+    //         }
+    //     }
+    // }
   }
 }

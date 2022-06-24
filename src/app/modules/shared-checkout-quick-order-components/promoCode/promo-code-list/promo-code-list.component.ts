@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import CONSTANTS from '@app/config/constants';
 import { CartService } from '@app/utils/services/cart.service';
 import { Subject, Subscription, timer } from 'rxjs';
 @Component({
@@ -12,6 +13,7 @@ export class PromoCodeListComponent implements OnInit, OnDestroy {
     @Output('closePromoOfferPopup') closePromoOfferPopup = new EventEmitter();
     appliedPromocodeSubscription: Subscription = null;
     selectedPromocode = null;
+    readonly assetImgPath: string = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(public _cartService: CartService) { }
 

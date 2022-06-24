@@ -169,7 +169,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 </div>
 <!-- order cancellation pop up  -->
 <app-pop-up *ngIf="openPopup && openPopup=='cancel' " (outData$)="outData($event) " class="bs-popup "
-    [headerType]="'pop-up-header'" [data]="{selector: 'openPopup',headerText: ' Cancel Order'} ">
+    [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup',headerText: 'Request Cancellation'} ">
     <div class="content-for-popups" content>
         <div class="cancelOrderBox pwa-row"
             [ngClass]="{ 'show': (cancel_step && cancel_step==1 ), 'hide': cancel_step !==1 } ">
@@ -260,7 +260,6 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
     <div class="content-popup" content>
         <form [formGroup]="returnForm" enctype="multipart/form-data" (ngSubmit)="returnProduct(returnForm.value, returnForm.valid)" class="form-horizontal">
             <div class="cancelOrderBox material-form">
-
                 <div [ngClass]="{'show': step == 1, 'hide': step !== 1}">
                     <div class="input-field">
                         <label class="indusrty show pos-rel" [class.is-focus]="actionType.value.length > 0">
@@ -489,7 +488,6 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                 {{detail?.address.shipping_address.state}}</span>
             <span>Mobile: {{detail?.address.shipping_address.phone}}</span>
         </div>
-
     </div>
     <div class="mt-10 orderaddressBox pwa-row" *ngIf="detail && detail?.address.billing_address">
         <h3>Billing address</h3>

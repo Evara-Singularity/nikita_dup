@@ -1,4 +1,6 @@
-
+.emiStepContent{
+    background: var(--ghost-white);
+    padding-top: 15px;
 .emi-steps{
     .emiStepHeading{
         display: flex;
@@ -54,4 +56,4 @@
         }
     }
 }
-
+}

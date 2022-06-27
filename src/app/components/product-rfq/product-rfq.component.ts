@@ -15,6 +15,7 @@ import { ProductUtilsService } from './../../utils/services/product-utils.servic
 import { CommonService } from '@app/utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
 import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
+import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 
 @Component({
     selector: 'product-rfq',
@@ -401,7 +402,8 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         ReactiveFormsModule,
         PopUpModule,
         BottomMenuModule,
-        RouterModule
+        RouterModule,
+        NumberDirectiveModule
     ],
 })
 export class ProductRFQModule { }

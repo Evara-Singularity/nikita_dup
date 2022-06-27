@@ -18,7 +18,26 @@
                 <div class="pwa col-12">
                     <div class="req-qty">
                         <label>Enter the required quantity</label>
-                        <div class="quantity-block">
+                        <!--As per Yajya-->
+                        <div class="qty_section">
+                            <div class="quantity-block">
+                                <span class="add-qty qty-block" (click)="$event.stopPropagation();decreaseQuantity()">&#8722;</span>
+                                <input type="text" formControlName="quantity" maxlength=3 (click)="isOutOfStock?initiateLogin():false"
+                                    (keypress)="checkPinocdeKey($event)" numbersOnly>
+                                <span class="remove-qty qty-block" (click)="$event.stopPropagation();increaseQuantity()">&#43;</span>
+                                <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (quantity.touched || quantity.dirty)">
+                                    <p class="error-txt break-line" *ngIf="quantity.hasError('required')">Kindly enter valid
+                                        quantity.</p>
+                                    <p class="error-txt break-line" *ngIf="quantity.hasError('pattern')">
+                                        Quantity should contain only digits.
+                                    </p>
+                                    <p class="error-txt break-line" *ngIf="quantity.hasError('min')">
+                                        RFQ Quantity should be greater than {{productMOQ}}.</p>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <!--Old Implementation:remove if above code works-->
+                        <!-- <div class="quantity-block">
                             <button class="add-qty qty-btn"
                                 (click)="$event.stopPropagation();decreaseQuantity()">&#8722;</button>
                             <input type="text" formControlName="quantity" maxlength=3
@@ -34,7 +53,7 @@
                                 <p class="error-txt break-line" *ngIf="quantity.hasError('min')">
                                     RFQ Quantity should be greater than {{productMOQ}}.</p>
                             </ng-container>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="outline-input-label">
                         <label [class.is-focus]="firstName.value.length > 0">

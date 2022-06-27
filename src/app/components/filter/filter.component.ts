@@ -1,4 +1,4 @@
-import { EventEmitter, Component, Input, Output, SimpleChanges } from '@angular/core';
+import { EventEmitter, Component, Input, Output, SimpleChanges, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 
@@ -9,7 +9,7 @@ import { CommonService } from '@app/utils/services/common.service';
 })
 
 
-export class FilterComponent {
+export class FilterComponent{
     // input variable to get filter data from parent component
     @Input() filterData: Array<any>;
     @Input() isBrandPage: Array<any>;
@@ -53,6 +53,8 @@ export class FilterComponent {
             this._commonService.selectedFilterData.filter[filterName] = [filterRow.term];
         }
     }
+
+    isFilterApplied() { return Object.keys(this._commonService.selectedFilterData.filter).length;}
 
 }
 

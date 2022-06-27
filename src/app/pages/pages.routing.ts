@@ -537,6 +537,7 @@ const routes: Routes = [
 					footer: true,
 					logo: true,
 					moreOpt: true,
+					title:"FAQ's",
 					moduleName: CONSTANTS.MODULE_NAME.DASHBOARD
 				},
 			},
@@ -611,6 +612,8 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					title: 'Contact Us',
+					moduleName: CONSTANTS.MODULE_NAME.DASHBOARD
 				},
 			},
 			{

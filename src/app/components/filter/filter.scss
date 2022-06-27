@@ -28,7 +28,7 @@
                 margin-left:auto;
                 font-weight:bold;
                 color:var(--silver);
-                .applied{
+                &.applied{
                   color:var(--primary);
                 }
             }

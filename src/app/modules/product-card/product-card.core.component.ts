@@ -92,7 +92,6 @@ export class ProductCardCoreComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.product)
     this.isOutOfStockByQuantity = !this.product.quantityAvailable || this.product.outOfStock;
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
     // randomize product feature

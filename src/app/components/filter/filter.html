@@ -2,7 +2,7 @@
     <div class="popup-head">
         <i class="icon-back" (click)="toggleFilter.emit()"></i>
         <span class="txt-name">FILTER</span>
-        <span (click)="_commonService.selectedFilterData.filter = {}; toggleFilter.emit(); _commonService.applyFilter()" class="clear-filter">CLEAR ALL</span>
+        <span (click)="_commonService.selectedFilterData.filter = {}; toggleFilter.emit(); _commonService.applyFilter()" [class.clear-filter]="isFilterApplied">CLEAR ALL</span>
     </div>
     <div (click)="toggleFilter.emit(); _commonService.applyFilter()" class="fixed-bottom-cta">
         <button class="btn primary-full-btn">APPLY</button>

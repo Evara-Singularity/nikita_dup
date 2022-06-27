@@ -4,31 +4,33 @@
         @extend %transition;
         top: 115%;
         display: block;
+        .custom-cbox {
+            label {
+                display: block;
+                padding: 10px 0;
+                @extend %clear-fix;
+                @extend %custom-check-box-checkout;
+            }
+        }
         &.upTrans {
             top: 0;
         }
-        .popup-head {
-            padding: 10px;
-            position: relative;
-            @extend %clear-fix;
-            i {
-                float: left;
-                font-size: $large-font;
-                line-height: $large-line-height;
+        .filter-header{
+            display:flex;
+            align-items:center;
+            padding:15px;
+            border:1px solid var(--ghost-white);
+            i{
+                font-size: $extra-large-3-font;
+                margin-right:10px;
             }
-            .txt-name {
-                font-size: $medium-font;
-                font-weight: $font-bold;
-                float: left;
-                line-height: $large-line-height;
-                margin-left: 15px;
-            }
-            .clear-filter {
-                float: right;
-                color: var(--silver);
-                line-height: $large-line-height;
-                font-size: $medium-font;
-                font-weight: $font-bold;
+            .clear-filter{
+                margin-left:auto;
+                font-weight:bold;
+                color:var(--silver);
+                .applied{
+                  color:var(--primary);
+                }
             }
         }
         &.upTrans {
@@ -37,7 +39,6 @@
             }
         }
     }
-    
     .filters-content {
         width: $fullwidth;
         display: flex;
@@ -45,25 +46,23 @@
         height: calc(100vh - 60px);
 
         .side-filters {
-            height: 95%;
-            height: calc(100% - 32px);
-            overflow: auto;
+            height: calc(100% - 55px);
+            overflow-y: auto;
             background: var(--ghost-white);
-            width: $filter-fix-width;
+            width: 135px;
             display: inline-flex;
             flex-direction: column;
+            overflow-x: hidden;
             li {
-                padding: 20px 10px 20px 15px;
-                @extend %clear-fix;
+                padding: 18px 15px;
                 border-bottom: 1px solid var(--silver);
                 .filter-parent {
                     font-size: $large-font;
                     line-height: $medium-line-height;
-                    // float: left;
                     text-transform: capitalize;
                 }
                 .selected-no {
-                    float: right;
+                    // float: right;
                     font-size: $small-font;
                     line-height: $medium-line-height;
                     margin-left: 10px;
@@ -82,13 +81,12 @@
         app-f-category {
             display: inline-flex;
             flex-direction: column;
-            
         }
         .filter-options {
             display: none;
             position: absolute;
             left: 135px;
-            top: 52px;
+            top: 58px;
             width: 70%;
             width: calc(100% - 135px);
             height: 100%;
@@ -131,7 +129,7 @@
                     label {
                         padding: 15px;
                         &.selected {
-                            background: var(--mint-cream);
+                            // background: var(--mint-cream);
                         }
                         .chk-txt{
                             font-size: $medium-font;
@@ -142,29 +140,6 @@
             }
         }
     }
-    
-    .custom-cbox {
-        label {
-            display: block;
-            padding: 10px 0;
-            @extend %clear-fix;
-            @extend %custom-check-box-checkout;
-        }
-    }
-    
-    .popup.screen-view {
-        position: fixed;
-        width: $fullwidth;
-        height: 100%;
-        top: 120%;
-        left: 0;
-        background: var(--white);
-        &.upTrans {
-            top: 0px;
-            z-index: 99;
-        }
-    }
-    
     .filter-rating {
         font-size: $small-font;
         display: inline-block;
@@ -189,3 +164,18 @@
             font-size: $medium-font;
         }
     }
+    // to be removed when app-popup is integrated
+    .popup.screen-view {
+        position: fixed;
+        width: $fullwidth;
+        height: 100%;
+        top: 120%;
+        left: 0;
+        background: var(--white);
+        &.upTrans {
+            top: 0px;
+            z-index: 99;
+        }
+    }
+    
+    

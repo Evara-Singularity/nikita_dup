@@ -1,13 +1,9 @@
 <section class="screen-view popup mob_filter" *ngIf="filterData && filterData.length" id="mob_filter">
-    <div class="popup-head">
-        <i class="icon-back" (click)="toggleFilter.emit()"></i>
+    <div class="filter-header">
+        <i class="icon-back-arrow" (click)="toggleFilter.emit()"></i>
         <span class="txt-name">FILTER</span>
-        <span (click)="_commonService.selectedFilterData.filter = {}; toggleFilter.emit(); _commonService.applyFilter()" class="clear-filter">CLEAR ALL</span>
+        <span (click)="_commonService.selectedFilterData.filter = {}; toggleFilter.emit(); _commonService.applyFilter()" class="clear-filter applied">CLEAR FILTER</span>
     </div>
-    <div (click)="toggleFilter.emit(); _commonService.applyFilter()" class="fixed-bottom-cta">
-        <button class="btn primary-full-btn">APPLY</button>
-    </div>
-
     <div class="filters-content">
         <ul class="side-filters">
             <li *ngFor="let filter of filterData; let i = index;" (click)="selectedFilterIndex = i" [class.active]="selectedFilterIndex == i">
@@ -60,5 +56,8 @@
                 </div>
             </li>
         </ul>
+    </div>
+    <div (click)="toggleFilter.emit(); _commonService.applyFilter()" class="fixed-bottom-cta">
+        <button class="btn primary-full-btn">APPLY</button>
     </div>
 </section>

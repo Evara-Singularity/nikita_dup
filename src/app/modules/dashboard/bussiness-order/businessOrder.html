@@ -59,14 +59,14 @@
                             <span>{{orderDetail[order.orderId][0]?.payment_type}}</span>
                         </div>
                         <div class="chargestext clearfix">Total Shipping:
-                            <span>₹ {{currentOrderShippingCharges | number : '1.2-2' }}</span>
+                            <span>₹{{currentOrderShippingCharges | number : '1.2-2' }}</span>
                         </div>
 
                         <div class="chargestext">Total Discount:
-                            <span class="textgreen">₹ {{(currentOrderDiscountCharges + currentOrderNoEMIDiscountCharges) | number : '1.2-2' }}</span>
+                            <span class="textgreen">₹{{(currentOrderDiscountCharges + currentOrderNoEMIDiscountCharges) | number : '1.2-2' }}</span>
                         </div>
                         <div class="totPrice pad-15">Total Paid
-                            <span class="paymode">₹ {{getTotalAmount(orderDetail[order.orderId]) | number : '1.2-2'}}</span>
+                            <span class="paymode">₹{{getTotalAmount(orderDetail[order.orderId]) | number : '1.2-2'}}</span>
                         </div>
                     </div>
                 </div>

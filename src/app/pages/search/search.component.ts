@@ -226,7 +226,7 @@ export class SearchComponent implements OnInit {
       }));
     }
 
-    if (this._productListService.productListingData.totalCount &&  this._productListService.productListingData.products) {
+    if (this._productListService.productListingData.totalCount &&  this._productListService.productListingData.products.length) {
             digitalData['page']['totalProductCount'] =((  this._productListService.productListingData.totalCount > (this._productListService.productListingData.products.length)) ? (this._productListService.productListingData.totalCount ):(
               this._productListService.productListingData.products.length) );    
     }

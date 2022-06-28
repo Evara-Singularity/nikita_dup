@@ -1,6 +1,7 @@
-import { CartService } from '@services/cart.service';
+import { Component, OnInit } from '@angular/core';
+import { CommonService } from '@app/utils/services/common.service';
 import { CONSTANTS } from '@config/constants';
-import { Component } from '@angular/core';
+import { CartService } from '@services/cart.service';
 
 @Component({
     selector: 'cart-no-item',
@@ -8,8 +9,14 @@ import { Component } from '@angular/core';
     styleUrls: ['./cart-no-item.component.scss'],
 })
 
-export class CartNoItemComponent {
-    imagePath = CONSTANTS.IMAGE_BASE_URL;
+export class CartNoItemComponent implements OnInit{
 
-    constructor(public cartService: CartService){}
+    readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
+
+    constructor(public cartService: CartService, private _commonService:CommonService){}
+
+    ngOnInit(): void
+    {
+        this._commonService.getTrendingCategories().subscribe((data)=>console.log(data))
+    }
 }

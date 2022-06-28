@@ -1,4 +1,85 @@
 @import "../../scss/variables";
-@import '../../scss/inline-list-item.scss';
-@import '../../scss/utils/utilities.scss';
-
+@import "../../scss/inline-list-item.scss";
+@import "../../scss/utils/utilities.scss";
+.coupon-skeleton {
+  background: var(--white);
+  .skeleton-header {
+    padding: 5px 15px 0;
+  }
+  .inline-list-item {
+    background: var(--white);
+    .inline-list-icon {
+      width: 20px;
+      height: 20px;
+      background: var(--ghost-white);
+      border-radius: $border-radius-4;
+    }
+    .inline-list-text {
+      height: 30px;
+      background: var(--ghost-white);
+      border-radius: $border-radius-4;
+    }
+    .inline-list-link {
+      width: 35px;
+      height: 15px;
+      background: var(--ghost-white);
+      border-radius: $border-radius-4;
+    }
+  }
+}
+.pincode-skeleton {
+  .delivery-details {
+    .skeleton-inner {
+      margin-bottom: 10px;
+      .delivery-details-inner {
+        .delivery-skeleton-img {
+          width: 25px;
+          height: 25px;
+          background: var(--ghost-white);
+          border-radius: $border-radius-4;
+          margin-right: 10px;
+        }
+        .details-right {
+          .pwa-search-input {
+            width: 100%;
+            height: 40px;
+            background: var(--ghost-white);
+            border-radius: $border-radius-8;
+          }
+          .availability-text {
+            .available-skeleton-txt {
+              width: 210px;
+              height: 12px;
+              background: var(--ghost-white);
+              border-radius: $border-radius-4;
+            }
+          }
+        }
+      }
+    }
+  }
+  .about-delivery {
+    .skeleton-icon-shipping {
+      width: 25px;
+      height: 25px;
+      background: var(--ghost-white);
+      margin-right: 10px;
+      border-radius: $border-radius-4;
+    }
+    div {
+      .skeleton-delivery-txt {
+        width: 65%;
+        height: 20px;
+        background: var(--ghost-white);
+        border-radius: $border-radius-4;
+      }
+      .skeleton-small-txt {
+        margin-top: 5px;
+        width: 210px;
+        height: 12px;
+        background: var(--ghost-white);
+        border-radius: $border-radius-4;
+      }
+    }
+  }
+}

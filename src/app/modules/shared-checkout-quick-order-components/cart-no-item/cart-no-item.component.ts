@@ -1,3 +1,4 @@
+import { LocalAuthService } from './../../../utils/services/auth.service';
 import { DataService } from '@utils/services/data.service';
 import { NullTemplateVisitor } from '@angular/compiler';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -23,7 +24,7 @@ export class CartNoItemComponent implements OnInit, OnDestroy
     flyOutData: CategoryData[] = [];
     flyOutDataSubscription: Subscription = null;
 
-    constructor(public cartService: CartService, private _dataService: DataService) { }
+    constructor(public cartService: CartService, private _dataService: DataService, private _localAuthService:LocalAuthService) { }
 
 
     ngOnInit(): void
@@ -35,6 +36,8 @@ export class CartNoItemComponent implements OnInit, OnDestroy
             return [];
         })).subscribe((data) => this.flyOutData = data);
     }
+
+    get isLoggedIn() { return this._localAuthService.isUserLoggedIn()}
 
     ngOnDestroy(): void
     {

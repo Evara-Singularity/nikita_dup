@@ -9,7 +9,6 @@
 .singleproStatus {
   border: 1px solid var(--ghost-white) !important;
 }
-
 .rateprod.singrating {
   background: var(--white);
   margin-top: 0;
@@ -288,8 +287,8 @@
   }
 }
 .upload-img {
-  border: 1px solid #d6d6d6;
-  @extend %border-radius;
+  border: 1px dashed  var(--bleu-de-france);
+  border-radius:$border-radius-8;
   width: 70px;
   height: 70px;
   overflow: hidden;
@@ -300,6 +299,8 @@
   display: block;
   float: left;
   font-size: 23px;
+  color:var(--bleu-de-france);
+  background:var(--light-cyan);
   img {
     max-width: 100%;
     width: 100%;
@@ -310,7 +311,7 @@
     top: 0px;
     right: 0px;
     line-height: initial;
-    color: #a7a7a7;
+    color: var(--black);
     font-size: 16px;
   }
   &.imgDisable {
@@ -766,4 +767,9 @@
     //     }
     // }
   }
+}
+//return popup
+.returnForm{
+  background:var(--white);
+  height: calc(100% - 60px);
 }

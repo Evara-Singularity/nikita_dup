@@ -32,6 +32,7 @@ export class CartComponent
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     cartSubscription: Subscription;
     pageEvent = "genericPageLoad";
+    noOfCart = 0;
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -53,6 +54,8 @@ export class CartComponent
             this.sendEmailGTMCall();
         }
         this.loadCartDataFromAPI();
+        const cartSession = this._cartService.getCartSession();
+        this.noOfCart = (cartSession['itemsList'] as any[]).length || 0;
     }
 
     // Function to get and set the latest cart
@@ -453,6 +456,8 @@ export class CartComponent
             this._globalAnalyticsService.sendToClicstreamViaSocket(trackData);
         }
     }
+
+    get isQuickorder() { return this.moduleName === "QUICKORDER" }
 
     ngOnDestroy() { if (this.cartSubscription) this.cartSubscription.unsubscribe(); }
 }

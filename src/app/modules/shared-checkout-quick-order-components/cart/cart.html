@@ -1,12 +1,12 @@
 <div *ngIf="_cartService.getGenericCartSession?.itemsList && _cartService.getGenericCartSession?.itemsList.length > 0">
+    <div class="pwa-row pt-0 pb-0" *ngIf="isQuickorder">
+        <h3 class="pad-0">{{noOfCart}} of items in your cart</h3>
+    </div>
     <ng-container *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let itemIndex = index;">
         <div *ngIf="item['text1']" class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
                     {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
-        </div>
-        <div class="pwa-row pt-0 pb-0">
-            <h3 class="pad-0">Number of items in your cart</h3>
         </div>
         <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative">
             
@@ -65,7 +65,7 @@
                 </div>
             </div>
             <div *ngIf="item.oos" class="oos-item-block">
-                <div (click)="$event.stopPropagation();removeItemFromCart(itemIndex)">
+                <div (click)="$event.stopPropagation();removeItemFromCart(itemIndex);deleteProduct($event);">
                     <span>
                         <i class="icon-bin"></i>
                         REMOVE
@@ -115,7 +115,7 @@
         <div class="content-area removePopup">
             <div class="top-header-bottom-menu">
                 <h3 class="heading-3">Are you sure to remove this item?</h3>
-                <i (click)="removePopup = false" class="icon-circle-delete"></i>
+                <i (click)="$event.stopPropagation();resetRemoveItemCart()" class="icon-circle-delete"></i>
             </div>
             <div [ngClass]="{'realTimeUpdate':item['text1']}" class="pwa-row pad-tb-10" *ngFor="let item of [_cartService.getGenericCartSession?.itemsList[removeIndex]]; let i = index;">
                 <div class="pwa-col-12">

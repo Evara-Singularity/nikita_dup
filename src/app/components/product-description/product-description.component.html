@@ -16,7 +16,7 @@
                         <p class="actual-price main-price">
                             <strong>{{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
                                 <small class="inline-price" *ngIf="(+(productPrice-priceWithoutTax) > 0)" >
-                                    <i class="icon-expand"></i>{{ +(productPrice-priceWithoutTax) | currency: 'INR' : 'symbol' : '1.0-0'}} GST
+                                    <i class="icon-expand"></i>{{ (productPrice-priceWithoutTax) | currency: 'INR' : 'symbol' : '1.0-0'}} GST
                                 </small>
                             </strong>
                             

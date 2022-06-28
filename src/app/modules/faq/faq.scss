@@ -3,11 +3,11 @@
 
 
 .faqfixedhead{
-  padding-top:95px;
+  padding-top:140px;
   position: relative;
   .faq-search{
     background: var(--primary);
-    padding-top: 25px !important;
+    padding-top: 35px !important;
     text-align: center;
     position: fixed;
     top: 80px;
@@ -21,6 +21,12 @@
     padding:0 15px;
     margin-top: -30px;
     margin-bottom: 30px;
+    .help-txt{
+      font-size: $extra-large-font;
+      color: var(--white);
+      font-weight: $font-bold;
+      padding-bottom: 22px;
+    }
     .searchfield{
       box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
       background: var(--white);

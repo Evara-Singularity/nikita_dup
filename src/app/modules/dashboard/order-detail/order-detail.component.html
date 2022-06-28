@@ -257,8 +257,8 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 </app-pop-up>
 
 <!-- final message after confirmation -->
-<!-- *ngIf="openPopup && openPopup=='return'" -->
-<app-pop-up  (outData$)="outData($event)" [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup', headerText:' Return Order'}">
+
+<app-pop-up *ngIf="openPopup && openPopup=='return'"   (outData$)="outData($event)" [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup', headerText:' Return Order'}">
     <div class="content-popup returnForm" content>
         <form [formGroup]="returnForm" enctype="multipart/form-data" (ngSubmit)="returnProduct(returnForm.value, returnForm.valid)" class="form-horizontal">
             <div class="material-form pwa-row">

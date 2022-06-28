@@ -408,6 +408,11 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
+    handleCheckoutRedirect()
+    {
+        
+    }
+
     navigateToLogin($event)
     {
         $event.preventDefault();

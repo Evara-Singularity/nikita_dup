@@ -54,7 +54,7 @@ export class FilterComponent{
         }
     }
 
-    isFilterApplied() { return Object.keys(this._commonService.selectedFilterData.filter).length;}
+    get isFilterApplied() { return Object.keys(this._commonService.selectedFilterData.filter).length;}
 
 }
 

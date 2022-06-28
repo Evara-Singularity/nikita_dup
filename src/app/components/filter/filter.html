@@ -2,7 +2,7 @@
     <div class="filter-header">
         <i class="icon-back-arrow" (click)="toggleFilter.emit()"></i>
         <span class="txt-name">FILTER</span>
-        <span class="clear-filter" (click)="_commonService.selectedFilterData.filter = {}; toggleFilter.emit();" [class.applied]="isFilterApplied">CLEAR ALL</span>
+        <span class="clear-filter" (click)="_commonService.selectedFilterData.filter = {}; toggleFilter.emit();_commonService.applyFilter()" [class.applied]="isFilterApplied">CLEAR ALL</span>
     </div>
     <div class="filters-content">
         <ul class="side-filters">

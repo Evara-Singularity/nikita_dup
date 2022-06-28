@@ -1,15 +1,7 @@
 <app-pop-up (outData$)="outData($event)" [class.open1]="openEMIPopup" *ngIf="openEMIPopup"
     [headerType]="'pop-up-header1'"
     [data]="{headerText:'EMI Plans'}">
-    <!-- <div class="head-sec header_add_edit" header>
-        <div class="container">
-            <i class="icon-back f-left white_text" (click)="closeEMIPalns($event)"></i>
-            <p class="txt header_text page-name">EMI Plans</p>
-        </div>
-    </div> -->
     <div class="content-popup" content>
-        <!--10766:Design Changes start-->
-        <!--cards tab code start-->
         <div class="emi-top-details pd-15">
             <div class="emi-top-details-inner intrst-plan">
                 <span class="bullet">&#8226;</span>
@@ -47,7 +39,6 @@
         <!--cards tab code end-->
             <div *ngFor="let item of dataEmi" class="payment-dropdown-listItem" >
                 <div (click)="selectedBankChange(item)" class="payment-accordion_header">
-                    <!-- <img class="ico-accord-left" src="{{imagePathAsset}}assets/img/emi-bajaj.png"/> -->
                     <span>{{item['bankname']}}</span>
                     <i  class="icon-down"></i>
                 </div>

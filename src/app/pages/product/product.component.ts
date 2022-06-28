@@ -812,7 +812,6 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.productPrice = this.priceQuantityCountry && !isNaN(this.priceQuantityCountry["sellingPrice"]) ? Number(this.priceQuantityCountry["sellingPrice"]) : 0;
         if (this.priceQuantityCountry && this.priceQuantityCountry["mrp"] > 0 && this.priceQuantityCountry["sellingPrice"] > 0) {
             this.productDiscount = this.commonService.calculcateDiscount(this.priceQuantityCountry["discount"], this.priceQuantityCountry["mrp"], this.priceQuantityCountry["sellingPrice"]);
-            console.log('this.productDiscount', this.productDiscount);
         }
         this.taxPercentage = this.priceQuantityCountry ? this.priceQuantityCountry["taxRule"]["taxPercentage"] : null;
 

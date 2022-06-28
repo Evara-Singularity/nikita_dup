@@ -387,7 +387,6 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     }
 
     onUpdate(event) {
-        console.log(event);
         this.isPopup = false;
     }
 }

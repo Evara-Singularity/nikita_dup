@@ -4,7 +4,7 @@
             <li id= "expId"  *ngFor="let item of categoryFilterData">
                 <div class="heading-name" >
                          <i  *ngIf="item.childCategoryList && item.childCategoryList.length > 0" class="icon-next" [appApplyRemoveClassOnParent]="{className : 'openMenu' }"></i>
-                         <a (click)="$event.stopPropagation();applyFilter(item)">
+                         <a (click)="$event.stopPropagation(); toggleFilter.emit(); applyFilter(item)">
                              <span class="name">{{item.term}}</span>
                         </a>
                         <span class="total-count" *ngIf="item.childCategoryList">({{item?.childCategoryList?.length}})</span>

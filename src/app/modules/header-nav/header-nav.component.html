@@ -61,7 +61,7 @@
     </cart-header>
 </ng-template>
 <ng-template #dashboardheader>
-    <dashboard-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
+    <dashboard-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']" (loadBottomSheet$)="loadBottomSheet()"
         (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
         [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
     </dashboard-header>

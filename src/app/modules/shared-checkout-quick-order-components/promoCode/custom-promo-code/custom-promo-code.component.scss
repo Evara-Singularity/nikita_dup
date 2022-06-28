@@ -30,6 +30,11 @@ i.icon-circle-delete {
         button{
             font-weight: 600;
             width: 30%;
+            border-radius: $border-radius-8;
+            font-size: $large-font;
         }
     }
+}
+.disabled{
+    background: var(--form-label-grey);
 }

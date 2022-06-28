@@ -55,8 +55,6 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 		}
 	}
 
-	get isCheckout() { return this.title === "Checkout" }
-	
 	get isQuickorder() { return this.title === "My Cart" }
 
 	ngOnDestroy(): void

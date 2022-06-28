@@ -8,7 +8,7 @@
                         <ng-container *ngIf="gstin.valid">
                             <span class="form-inline-cta success" *ngIf="isGSTINVerified">VERIFIED
                             </span>
-                            <span class="form-inline-cta" *ngIf="!(isGSTINVerified)"
+                            <span class="form-inline-cta danger" *ngIf="!(isGSTINVerified)"
                                 (click)="$event.stopPropagation();verifyGSTIN();">
                                 VERIFY NOW
                             </span>

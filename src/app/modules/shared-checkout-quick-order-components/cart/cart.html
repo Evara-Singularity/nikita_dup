@@ -5,6 +5,9 @@
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
                     {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
         </div>
+        <div class="pwa-row pt-0 pb-0">
+            <h3 class="pad-0">Numberof items in your cart</h3>
+        </div>
         <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative">
             
             <div class="pwa-row pad-0" [ngClass]="{'oos':item.oos}">
@@ -138,10 +141,6 @@
 
                     <div class="cta-row">
                         <button (click)="deleteProduct($event)" class="btn secondry-btn-1">CANCEL</button>
-                        <button class="btn secondry-btn"><i class="icon-bin single-quantity"></i>&nbsp;REMOVE</button>
                     </div>
-                </div>
-            </div>
-        </div>
     </div>
 </app-bottom-menu>

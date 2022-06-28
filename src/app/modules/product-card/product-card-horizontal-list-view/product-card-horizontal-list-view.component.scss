@@ -62,7 +62,7 @@
                     align-items: center;
                  .left {
                     text-align: left;
-                    width: calc(100% - 120px);
+                    width: calc(100% - 105px);
                     .price {
                         font-size: $small-font;
                         margin-bottom:4px;
@@ -97,7 +97,7 @@
                 }
                 .right {
                     text-align: right;
-                    width: 110px;
+                    width:105px;
                 }
               }
             }
@@ -105,7 +105,8 @@
                 display:flex;
                 button{
                     flex-basis:calc(100% - 40px);
-                    padding: 0;
+                    padding:8px;
+                    font-size:10px;
                 }
             }
         }

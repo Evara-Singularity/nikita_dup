@@ -25,7 +25,7 @@
                                 (click)="isOutOfStock?initiateLogin():false" (keypress)="checkPinocdeKey($event)">
                             <button class="remove-qty qty-btn"
                                 (click)="$event.stopPropagation();increaseQuantity()">&#43;</button>
-                            <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (quantity.touched || quantity.dirty)">
+                            <ng-container *ngIf="isUserLoggedIn && isRFQSubmitted && (quantity.touched || quantity.dirty)">
                                 <p class="error-txt break-line" *ngIf="quantity.hasError('required')">Kindly enter valid
                                     quantity.</p>
                                 <p class="error-txt break-line" *ngIf="quantity.hasError('pattern')">

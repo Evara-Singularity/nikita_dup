@@ -13,4 +13,9 @@ export class FilterCategoryComponent {
     @Input('brandUrl') brandUrl: any;
 
     constructor(public _commonService: CommonService){}
+
+    applyFilter(item)
+    {
+        this._commonService.applyFilter(this.isBrandPage ? ('/brands/' + this.brandUrl + '/' + item?.categoryLink) : item?.categoryLink)
+    }
 }

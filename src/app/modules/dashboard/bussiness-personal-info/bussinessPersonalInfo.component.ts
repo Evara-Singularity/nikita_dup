@@ -131,4 +131,11 @@ export class BussinessInfoComponent {
     this.isNameInputDisabled = false;
   }
 
+  get userName() {
+    if (!this.userInfo){return ""};
+    const pname = this.userInfo['pname'] || "";
+    const lname = this.userInfo['lname']  || "";
+    return `${pname} ${lname}`;
+  }
+
 }

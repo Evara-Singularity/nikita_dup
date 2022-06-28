@@ -4,7 +4,7 @@
     </div>
     <div class="material-form update-name-form">
       <div class="outline-input-label"><label [class.is-focus]="nameVal.value.length">
-        <input [value]="userInfo?.pname + ' ' +userInfo?.lname" [disabled]="isNameInputDisabled" #nameVal type="text">
+        <input [value]="userName" [disabled]="isNameInputDisabled" #nameVal type="text">
         <span class="label">Update Name</span><span *ngIf="!isNameInputDisabled" (click)="onSubmit(nameVal.value.trim())" class="form-inline-cta">UPDATE</span>
         <span *ngIf="isNameInputDisabled" (click)="activateInput()" class="form-inline-cta">Edit</span></label>
       </div>

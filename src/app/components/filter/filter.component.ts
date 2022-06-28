@@ -18,6 +18,7 @@ export class FilterComponent{
 
     // Output event to toggle filter
     @Output('toggleFilter') toggleFilter: EventEmitter<any> = new EventEmitter<any>();
+    @Output('closeFilter') closeFilter: EventEmitter<any> = new EventEmitter<any>();
 
     public selectedFilterIndex: number = 0;
 
@@ -52,6 +53,12 @@ export class FilterComponent{
         } else {
             this._commonService.selectedFilterData.filter[filterName] = [filterRow.term];
         }
+    }
+
+    applyFilter()
+    {
+        this.toggleFilter.emit(); 
+        this._commonService.applyFilter()
     }
 
     get isFilterApplied() { return Object.keys(this._commonService.selectedFilterData.filter).length;}

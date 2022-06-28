@@ -118,7 +118,7 @@
     }
 }
 
-::ng-deep category-card {
+:host category-card {
     background-color: #d9232d;
     padding-left: 50px;
     .category-OverBlk {

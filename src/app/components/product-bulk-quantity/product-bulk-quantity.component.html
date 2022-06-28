@@ -24,7 +24,7 @@
                                 </p>
                                 <p class="per-qty">
                                     {{items.bulkSPWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
-                                    <span>&nbsp;/pc</span>
+                                    <span class="small">/pc</span>
                                 </p>
                                 <p *ngIf="items.discount>0" class="green-txt">
                                     {{ items.discount | number:'1.0-2' }}% OFF</p>

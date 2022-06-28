@@ -513,6 +513,9 @@
         display: inline-flex;
         justify-content: center;
         align-items: center;
+        i{
+            padding-left:10px;
+        }
     }
     .secondry-btn-1{
         flex-grow: 2;

@@ -1,5 +1,5 @@
 @import "../../scss/variables";
-@import '../../scss/components/home-listing';
+@import "../../scss/components/home-listing";
 
 .fixedCategory {
     position: relative;
@@ -113,7 +113,23 @@
             }
         }
     }
-    &::-webkit-scrollbar{
+    &::-webkit-scrollbar {
         display: block;
     }
 }
+
+::ng-deep category-card {
+    background-color: #d9232d;
+    padding-left: 50px;
+    .category-OverBlk {
+        .category-block {
+            min-width: 180px;
+            background-color: #d9232d;
+            &.selected-block {
+                border: 1px solid #d9232d;
+                background: #f4e1e5;
+            }
+        }
+    }
+}
+

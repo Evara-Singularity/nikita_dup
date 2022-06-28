@@ -53,75 +53,106 @@
       <!-- <div>
                 <h1>FBT seketon here</h1>
             </div> -->
-        <div class="fbt-card-container mb-10 fbt-skeleton">
-          <div class="container pad-tb-10">
-            <div class="fbt-skeleton-heading"></div>
-          </div>
-          <div class="pwa-row static-small-card-container">
-            <div class="product-img">
-              <div class="skeleton-product-img"></div>
-            </div>
-            <div class="product-description">
-              <p class="skeleton-desc-txt"></p>
-              <p class="skeleton-desc-txt1"></p>
-              <div class="fbt_price">
-                <p class="skeleton-fbt-price"></p>
+            <div class="fbt-card-container mb-10 fbt-skeleton">
+              <div class="container pad-tb-10">
+                <div class="fbt-skeleton-heading"></div>
               </div>
-            </div>
-          </div>
-          <ul class="fbtList">
-            <li *ngFor="let product of mFBTProducts; index as fbtIndex">
-              <div class="fbtCheckBox custom-cbox">
-                <label>
-                  <div class="skeleton-checkbox"></div>
-                </label>
-              </div>
-              <div
-                (click)="navigateToPDP(product.url)"
-                class="static-card-container"
-              >
+              <div class="pwa-row static-small-card-container">
                 <div class="product-img">
-                  <div class="skeleton-img"></div>
+                  <div class="skeleton-product-img"></div>
                 </div>
                 <div class="product-description">
-                  <div class="description-txt skeleton-section">
-                    <p class="skeleton-desc"></p>
-                    <p class="skeleton-desc1"></p>
-                  </div>
-                  <div class="brand">
-                    <p class="brand-skeleton"></p>
-                  </div>
-                  <div class="price">
-                    <p class="skeleton-price"></p>
-                  </div>
-                  <div class="product-qty">
-                    <p class="skeleton-qty"></p>
+                  <p class="skeleton-desc-txt"></p>
+                  <p class="skeleton-desc-txt1"></p>
+                  <div class="fbt_price">
+                    <p class="skeleton-fbt-price"></p>
                   </div>
                 </div>
               </div>
-            </li>
-          </ul>
-          <div class="fbdBottom clearfix">
-            <div class="f-left">
-              <p class="no-add-ons"></p>
-              <p class="prices"></p>
+              <ul class="fbtList">
+                <li>
+                  <div class="fbtCheckBox custom-cbox">
+                    <label>
+                      <div class="skeleton-checkbox"></div>
+                    </label>
+                  </div>
+                  <div
+                    class="static-card-container">
+                    <div class="product-img">
+                      <div class="skeleton-img"></div>
+                    </div>
+                    <div class="product-description">
+                      <div class="description-txt skeleton-section">
+                        <p class="skeleton-desc"></p>
+                        <p class="skeleton-desc1"></p>
+                      </div>
+                      <div class="brand">
+                        <p class="brand-skeleton"></p>
+                      </div>
+                      <div class="price">
+                        <p class="skeleton-price"></p>
+                      </div>
+                      <div class="product-qty">
+                        <p class="skeleton-qty"></p>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <div class="fbdBottom ">
+                <div class="fbt-left">
+                  <p class="no-add-ons"></p>
+                  <p class="prices"></p>
+                </div>
+                  <p class="bought-together"></p>
+              </div>
             </div>
-            <!--TODO:Yogender-->
-            <div class="f-right" *ngIf="!isModal">
-              <p class="bought-together"></p>
-            </div>
-          </div>
-        </div>
     </ng-container>
     <ng-container *ngSwitchCase="'SIMILAR'">
       <!-- <div>
                 <h1>SIMILAR seketon here</h1>
             </div> -->
+            <section class="skeleton-container similar-product mt-10">
+              <p class="heading"></p>
+              <div class="vertical-card-section">
+                  <div class="vertical-card-conatiner"  *ngFor="let i of [1,2,3,4,5]">
+                      <div class="skeleton-img"></div>
+                      <div class="skeleton-prod-name"></div>
+                      <div class="skeleton-prod-name1"></div>
+                      <div class="skeleton-brand-name"></div>
+                      <div class="skeleton-price"></div>
+                      <div class="buy-now-section">
+                          <div class="skeleton-cart"></div>
+                          <div class="skeleton-btn"></div>
+                      </div>
+                  </div>
+              </div>
+            </section>
     </ng-container>
     <ng-container *ngSwitchCase="'SPONSERED'">
       <!-- <div>
                 <h1>SPONSERED seketon here</h1>
             </div> -->
+            <section class="skeleton-container similar-product mt-10">
+              <div class="prod-sponsore-list">
+                  <p class="heading"></p>
+                  <p class="add-card"></p>
+            
+              </div>
+              <div class="vertical-card-section">
+                  <div class="vertical-card-conatiner"  *ngFor="let i of [1,2,3,4,5]">
+                      <div class="skeleton-img"></div>
+                      <div class="skeleton-prod-name"></div>
+                      <div class="skeleton-prod-name1"></div>
+                      <div class="skeleton-brand-name"></div>
+                      <div class="skeleton-price"></div>
+                      <div class="buy-now-section">
+                          <div class="skeleton-cart"></div>
+                          <div class="skeleton-btn"></div>
+                      </div>
+                  </div>
+              </div>
+            </section>
     </ng-container>
     <ng-container *ngSwitchCase="'APP_PROMO'">
       <!-- <div>
@@ -132,6 +163,22 @@
       <!-- <div>
                 <h1>RECENT seketon here</h1>
             </div> -->
+            <section class="skeleton-container similar-product mt-10">
+              <p class="heading"></p>
+              <div class="vertical-card-section">
+                  <div class="vertical-card-conatiner"  *ngFor="let i of [1,2,3,4,5]">
+                      <div class="skeleton-img"></div>
+                      <div class="skeleton-prod-name"></div>
+                      <div class="skeleton-prod-name1"></div>
+                      <div class="skeleton-brand-name"></div>
+                      <div class="skeleton-price"></div>
+                      <div class="buy-now-section">
+                          <div class="skeleton-cart"></div>
+                          <div class="skeleton-btn"></div>
+                      </div>
+                  </div>
+              </div>
+            </section>
     </ng-container>
   </ng-container>
 </ng-container>

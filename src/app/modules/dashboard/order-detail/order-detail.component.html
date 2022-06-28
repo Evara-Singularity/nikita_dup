@@ -177,17 +177,18 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
             <div class="material-form bg-white pad-15 br-8">
                 <div class="outline-input-label mb-25 pos-rel">
                     <label class="indusrty show" [class.is-focus]="reason_id">
-                        <select [(ngModel)]="reason_id " class="select-form">
+                        <select [(ngModel)]="reason_id " class="select-form" id="select-with-drop-icon">
                             <option *ngFor="let item of cancelReasons; let i=i ndex " [ngValue]="item.id ">{{item.text}}
                             </option>
                         </select>
                         <span class="label">Reason for Cancellation</span>
+                        <i class="icon-down"></i>
                     </label>
                 </div>
                 <div class="outline-input-label pos-rel mb-0">
                     <label class="indusrty show ">
                         <input id="long-input">
-                        <span class="label">Add a comment</span>
+                        <span class="label">Add Comment (Optional)</span>
                     </label>
                 </div>
                 <div class="fixed-bottom-cta">

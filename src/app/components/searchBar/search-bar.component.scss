@@ -4,7 +4,6 @@
 .rel-cat {
     margin-top: 15px;
 }
-
 .search_heading {
     color: #a8a8a8;
     font-size: $small-font;
@@ -13,20 +12,13 @@
         margin-right: 5px;
     }
 }
-
-.mar-t--10 {
-    margin-top: -10px;
-}
-
 .search-popup {
     display: none;
-
     .search-result {
         // padding: 15px 0;
         .heading-4 {
             color: #969696;
         }
-
         .plan-list {
             // padding: 0 0 0 25px;
             li {

@@ -6,7 +6,7 @@
                     {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
         </div>
         <div class="pwa-row pt-0 pb-0">
-            <h3 class="pad-0">Numberof items in your cart</h3>
+            <h3 class="pad-0">Number of items in your cart</h3>
         </div>
         <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative">
             
@@ -30,11 +30,6 @@
                         <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax | mathFloor |
                             number : '1.2-2'}}</span>
                     </p>
-                    <!-- <p *ngIf="item.oos" class="price mt-10">
-                        <span class="small-heading">
-                            Product is not available for order
-                        </span>
-                    </p> -->
                 </div>
             </div>
             <div *ngIf="!item.oos" class="cart-item-block pad-15">
@@ -70,7 +65,7 @@
                 </div>
             </div>
             <div *ngIf="item.oos" class="oos-item-block">
-                <div (click)="removePopup=true; removeIndex = itemIndex">
+                <div (click)="$event.stopPropagation();removeItemFromCart(itemIndex)">
                     <span>
                         <i class="icon-bin"></i>
                         REMOVE
@@ -139,7 +134,8 @@
                         </div>
                     </div>
                     <div class="cta-row">
-                        <button (click)="deleteProduct($event)" class="btn secondry-btn-1">CANCEL</button>
+                        <button (click)="$event.stopPropagation();resetRemoveItemCart();" class="btn secondry-btn-1">CANCEL</button>
+                        <button class="btn secondry-btn" (click)="$event.stopPropagation();deleteProduct($event)"><i class="icon-bin"></i>&nbsp;REMOVE</button>
                     </div>
              </div>
         </div>

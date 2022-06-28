@@ -83,6 +83,12 @@ export class CartComponent
         this.removeIndex = itemIndex;
     }
 
+    resetRemoveItemCart()
+    {
+        this.removePopup = false;
+        this.removeIndex = -1;
+    }
+
     // make cosmetic changes after deleting an item from cart
     deleteProduct(e)
     {

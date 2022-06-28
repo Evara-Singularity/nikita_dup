@@ -13,7 +13,7 @@
                 </div>
                 <div class="filter-options">
                     <ng-container *ngIf="filter.name === 'category'">
-                        <filter-category-list [brandName]='brandName' [brandUrl]='brandUrl' [isBrandPage]="isBrandPage" [categoryFilterData]="filter.terms"></filter-category-list>
+                        <filter-category-list (toggleFilter)="toggleFilter.emit($event);" [brandName]='brandName' [brandUrl]='brandUrl' [isBrandPage]="isBrandPage" [categoryFilterData]="filter.terms"></filter-category-list>
                     </ng-container>
                     <ng-container *ngIf="filter.name != 'category'">
                         <div class="filter-list">
@@ -57,7 +57,7 @@
             </li>
         </ul>
     </div>
-    <div (click)="toggleFilter.emit(); _commonService.applyFilter()" class="fixed-bottom-cta">
-        <button class="btn primary-full-btn">APPLY</button>
+    <div class="fixed-bottom-cta">
+        <button (click)="$event.stopPropagation();applyFilter()" class="btn primary-full-btn">APPLY</button>
     </div>
 </section>

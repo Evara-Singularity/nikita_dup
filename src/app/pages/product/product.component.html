@@ -90,6 +90,10 @@
     <ng-container #similarProduct></ng-container>
 </section>
 
+<section id="popularDeals" observeVisibility [debounceTime]="100" (visible)="onVisiblePopularDeals($event)">
+    <ng-container #popularDeals></ng-container>
+</section>
+
 <product-more-widget [taxons]="taxons" [baseDomain]="baseDomain" [orderTracking]="orderTracking"
     [productBrandDetails]="productBrandDetails" [productCategoryDetails]="productCategoryDetails"
     [productBrandCategoryUrl]="productBrandCategoryUrl">

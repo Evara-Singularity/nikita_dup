@@ -66,8 +66,9 @@
         <div class="fbdBottom clearfix">
             <div class="f-left">
                 Total Payable ({{noOfFBTS ? ( noOfFBTS + ' Add ' + (noOfFBTS>1?'ons' : 'on')): 'No Add ons'}})
-                <h3>{{totalPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}<span class="grey-fbt-txt">(GST
-                        Extra)</span>
+                <h3>{{totalPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
+                    <!-- <span class="grey-fbt-txt">(GST
+                        Extra)</span> -->
                 </h3>
             </div>
             <!--TODO:Yogender-->

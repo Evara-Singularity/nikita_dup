@@ -1,6 +1,6 @@
 <div *ngIf="_cartService.getGenericCartSession?.itemsList && _cartService.getGenericCartSession?.itemsList.length > 0">
     <div class="pwa-row pt-0 pb-0" *ngIf="isQuickorder">
-        <h3 class="pad-0">{{noOfCart}} of items in your cart</h3>
+        <h3 class="pad-0">{{noOfCart}} items in your cart</h3>
     </div>
     <ng-container *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let itemIndex = index;">
         <div *ngIf="item['text1']" class="realTimePrice">

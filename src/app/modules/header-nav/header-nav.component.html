@@ -39,7 +39,10 @@
             <ng-container *ngTemplateOutlet="dashboardheader"></ng-container>
         </ng-container>
         <ng-container *ngSwitchCase="MODULE_NAME.ORDER_FAILURE">
-            <ng-container *ngTemplateOutlet="dashboardheader"></ng-container>
+            <ng-container *ngTemplateOutlet="logoheader"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="MODULE_NAME.ORDER_CONFIRMATION">
+            <ng-container *ngTemplateOutlet="logoheader"></ng-container>
         </ng-container>
         <ng-container *ngSwitchDefault>
             <plp-fixed-header [noOfCart]="noOfCart" (goBack$)="goBack()" (loadBottomSheet$)="loadBottomSheet()"
@@ -57,7 +60,7 @@
 <ng-template #cartheader>
     <cart-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
         (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
-        [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
+        [imgAssetPath]="imgAssetPath">
     </cart-header>
 </ng-template>
 <ng-template #dashboardheader>
@@ -66,5 +69,10 @@
         [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
     </dashboard-header>
 </ng-template>
+<ng-template #logoheader>
+    <logo-header [imgAssetPath]="imgAssetPath"></logo-header>
+</ng-template>
+
+
 
 <!-- When Home page Header is scrolled , header varient 3 -->

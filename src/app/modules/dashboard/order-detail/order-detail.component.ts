@@ -89,6 +89,7 @@ export class OrderDetailComponent implements OnInit {
   };
   itemImages: Array<{}>;
   chequeImage: {};
+  statusListForReturnExchange = ['EXCHANGE REQUESTED', 'EXCHANGE REJECTED','RETURN REQUESTED', 'RETURN REJECTED', 'EXCHANGE APPROVED', 'EXCHANGE PICKED', 'RETURN APPROVED', 'RETURN PICKED', 'RETURN DONE']
   private cDistryoyed = new Subject();
   set showLoader(value){
     this.loaderService.setLoaderState(value);

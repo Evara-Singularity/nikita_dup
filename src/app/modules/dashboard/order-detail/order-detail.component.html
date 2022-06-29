@@ -32,16 +32,19 @@
         </div>
     </div>
     <div class="card-bottom">
-        <div class="card-bottom-inner card-bottom-inner-order-dtl" *ngIf="detail?.status != 'CANCELLED'">
+        <div class="card-bottom-inner card-bottom-inner-order-dtl" *ngIf="!['CANCELLED'].includes(detail?.status)">
             <span class="order-track-line line-invisible"></span>
             <span class="orderstatus">
                 <!-- [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'" -->
                 <span>
-                    <ng-container *ngIf="detail?.status != 'PROCESSING'">
+                    <ng-container *ngIf="detail?.status != 'PROCESSING' && !statusListForReturnExchange.includes(detail?.status)">
                         ORDERED & APPROVED <br />{{ detail?.dates.accepted.date }}
                     </ng-container>
                     <ng-container *ngIf="detail?.status == 'PROCESSING'">
                         {{detail?.status}}
+                    </ng-container>
+                    <ng-container *ngIf="statusListForReturnExchange.includes(detail?.status)">
+                        DELIVERED<br />{{ detail?.dates.delivered.date }}
                     </ng-container>
                 </span>
             </span>
@@ -52,7 +55,7 @@
             </div>
         </div>
         <div class="card-bottom-inner card-bottom-inner-order-dtl " [ngClass]="{'state-done': detail?.status != 'CANCELLED'}" >
-            <span class="order-track-line gray-bg" [ngClass]="{'gray-bg': detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING', 'red-bg': detail?.status == 'CANCELLED' ||  detail?.status =='PAYMENT FAILED'}" ></span>
+            <span class="order-track-line gray-bg" [ngClass]="{'gray-bg': (detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING'), 'red-bg': (detail?.status == 'CANCELLED' ||  detail?.status =='PAYMENT FAILED'), 'yellow-bg': statusListForReturnExchange.includes(detail?.status) }" ></span>
             <span class="orderstatus">
                 <!-- [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'" -->
                 <span>
@@ -110,12 +113,13 @@
 </div>
 
 
-<div class="need-help-parent" *ngIf="detail?.status.toLowerCase() !== 'cancelled' && detail?.status.toLowerCase() != 'payment failed' && detail?.status.toLowerCase() != 'delivered' " >
+<div class="need-help-parent" *ngIf="detail?.status.toLowerCase() !== 'cancelled' && detail?.status.toLowerCase() != 'payment failed' && detail?.status.toLowerCase() != 'delivered'" >
     <div class="need-help-strip">
         <span class="cncl-item" *ngIf="detail && detail?.cancel_active"
             (click)="openPopup='cancel' ;getDataforCancel(detail?.product_name,detail?.price,detail?.customer_id,detail?.item_id,detail?.status); ">CANCEL
             ITEM</span>
-        <span class="get-in-touch-txt" *ngIf="detail && !detail?.cancel_active" >Item can't be cancelled. You can raise return request after delivery.</span>
+        <span class="get-in-touch-txt" *ngIf="detail && !detail?.cancel_active && !statusListForReturnExchange.includes(detail?.status)"  >Item can't be cancelled. You can raise return request after delivery.</span>
+        <span class="get-in-touch-txt" *ngIf="detail && !detail?.cancel_active && statusListForReturnExchange.includes(detail?.status) " >Get in touch with us in case you face any issues.</span>
         <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span>
     </div>
 </div>
@@ -277,7 +281,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 
 <!-- final message after confirmation -->
 
-<app-pop-up *ngIf="openPopup && openPopup=='return'"   (outData$)="outData($event)" [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup', headerText:' Return Order'}">
+<app-pop-up *ngIf="openPopup && openPopup=='return'"   (outData$)="outData($event)" [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup', headerText:' Return/Exchange Order'}">
     <div class="content-popup returnForm" content>
         <form [formGroup]="returnForm" enctype="multipart/form-data" (ngSubmit)="returnProduct(returnForm.value, returnForm.valid)" class="form-horizontal">
             <div class="material-form pwa-row">
@@ -312,7 +316,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         <div class="outline-input-label">
                             <label class="indusrty show pos-rel" [class.is-focus]="quantity.value.length > 0">
                                 <input type="number" formControlName="quantity" min="1" #quantity>
-                                <span class="label">Select Quantity*</span>
+                                <span class="label">Quantity*</span>
                                 <!-- <i class="icon-down"></i> -->
                             </label>
                             <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>

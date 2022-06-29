@@ -2151,7 +2151,8 @@ export class ProductComponent implements OnInit, AfterViewInit
         );
         this.productRFQUpdateInstance.instance["product"] = product;
         this.productRFQUpdateInstance.instance["productUrl"] = this.productAllImages[0]['large'];
-        this.productRFQUpdateInstance.instance["rfqId"] = rfqid;
+        this.productRFQUpdateInstance.instance["enquiryId"] = rfqid['enquiryId'];
+        this.productRFQUpdateInstance.instance["rfqId"] = rfqid.enquiryItemList[0]['id'];
         (
             this.productRFQUpdateInstance.instance["isLoading"] as EventEmitter<boolean>
         ).subscribe((loaderStatus) =>

@@ -21,6 +21,7 @@ export class ProductRfqUpdatePopupComponent implements OnInit {
   @Input('product') product;
   @Input('productUrl') productUrl;
   @Input('rfqId') rfqId;
+  @Input('enquiryId') enquiryId;
 
   //outputs
   @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -118,21 +119,24 @@ close() {
 
   verifyData(rfqDetails) {
     this.isRFQSubmitted = true;
-    this.rfqUpdateForm.markAllAsTouched();
     if (this.rfqUpdateForm.valid) {
-    console.log("rfqDetails ---> ",rfqDetails);
-    // api is not integrated  yet thus output of onRFQUpdateSuccess sent true
-    this.isLoading.emit(false);
-    this.isRFQSubmitted = true;
-    this.onRFQUpdateSuccess.emit(true);
-    this.close();
-    // end ...........
-    //this.updateRFQ(rfqDetails);
+      this.updateRFQ(rfqDetails);
     }
   }
 
   updateRFQ(rfqDetails) {
-    let data = {};
+    let data = {
+      "rfqEnquiryCustomer": {
+        "id": this.rfqId,
+        "businessUser": rfqDetails.businessPurchase ?? false,
+      },
+      "rfqEnquiryItemsList": [
+        {
+          "enquiryItemId": this.enquiryId,
+          "quantity": this.quantity.value
+        }
+      ]
+    };
     this.productService.postBulkEnquiry(data).subscribe(
       (response) => {
         if (response['statusCode'] == 200) {

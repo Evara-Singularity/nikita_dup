@@ -539,6 +539,11 @@
   align-items: center;
   font-weight: bold;
   padding: 10px;
+  .get-in-touch-txt{
+    width: 70%;
+    padding-right: 10px;
+    font-weight: normal;
+  }
   .cncl-item{
     background-color: var(--ghost-white);
     padding: 8px 25px;
@@ -550,7 +555,8 @@
   }
   .need-help{
     color: var(--primary);
-    margin-right: 20px;
+    // margin-right: 20px;
+    text-align: right;
   }
 }
 .indusrty{

@@ -2745,8 +2745,8 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
     }
 
-    showYTVideo1(event) {
-        this.showYTVideo(event.link)
+    showYTVideo1(link) {
+        this.showYTVideo(link)
     }
 
     // SEO SECTION STARTS

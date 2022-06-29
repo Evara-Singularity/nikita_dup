@@ -25,6 +25,9 @@ ngx-siema-slide{
   height: calc(100% - 80px);
   overflow-y:auto;
   .pwa-tabs-container{
+    &::-webkit-scrollbar {
+      display: none; 
+    }
     .pwa-tab{
       border-radius: $border-radius-8;
       padding: 10px 15px;

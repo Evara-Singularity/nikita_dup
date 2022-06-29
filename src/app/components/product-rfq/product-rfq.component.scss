@@ -1,23 +1,23 @@
 @import "../../scss/variables";
 @import "../../scss/components/checkbox.scss";
-@import '../../scss/layout/forms.scss';
-@import '../../scss/components/buttons.scss';
-@import '../../modules/bottomMenu/bottom-menu.component.scss';
- 
-.rfqPopup{
-  height:calc(100% - 50px);  
-  overflow-y:scroll;
-  background:var(--white);
-  padding-bottom:10px;
-  .rfq-container{
-      padding:0px !important;
-  }
+@import "../../scss/layout/forms.scss";
+@import "../../scss/components/buttons.scss";
+@import "../../modules/bottomMenu/bottom-menu.component.scss";
+
+.rfqPopup {
+    height: calc(100% - 50px);
+    overflow-y: scroll;
+    background: var(--white);
+    padding-bottom: 10px;
+    .rfq-container {
+        padding: 0px !important;
+    }
 }
 .rfqForm {
     .product-rfq {
         .multiple-form-field {
             display: flex;
-            &>div {
+            & > div {
                 width: 60%;
                 &:first-child {
                     width: 40%;
@@ -71,7 +71,7 @@
         label.indusrty {
             position: relative;
             display: block;
-            select+.icon-down {
+            select + .icon-down {
                 position: absolute;
                 right: 10px;
                 top: 15px;
@@ -83,7 +83,7 @@
         }
         input {
             &:read-only {
-                background: #E7E7E7;
+                background: #e7e7e7;
             }
         }
         p {
@@ -119,12 +119,15 @@
                 .qty-btn {
                     width: 30px;
                     height: 30px;
-                    text-align: center;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     background: #dbedff;
                     border: 1px solid #8bc5ff;
                     line-height: 30px;
-                    font-size: $large-font;
+                    font-size: $extra-large-font;
                     border-radius: $border-radius-2;
+                    font-weight: bold;
                 }
                 .add-qty {
                     margin-right: 5px;
@@ -143,7 +146,7 @@
                     border-radius: $border-radius-2;
                     border: 1px solid #333;
                     font-size: $large-font;
-                    font-weight:$font-medium;
+                    font-weight: $font-medium;
                 }
             }
         }
@@ -154,7 +157,7 @@
         }
     }
     .in-instock {
-       padding-bottom:20px;
+        padding-bottom: 20px;
     }
     .stickyRfqButton {
         position: fixed;

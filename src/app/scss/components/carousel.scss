@@ -163,15 +163,15 @@ ul.pager {
     }
   }
 .blueTag{
-    background:#008AFF;
-    color:#fff;
+    background: var(--bleu-de-france);
+    color: var(--white);
     font-size:$extra-large-font;
-    border-top-right-radius:3px;
-    border-bottom-right-radius:3px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
     position: absolute;
     padding: 4px 8px;
     font-weight: 700;
-    top: 30px;
+    top: 15px;
   }
 
   

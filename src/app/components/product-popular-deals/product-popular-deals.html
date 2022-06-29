@@ -11,9 +11,8 @@
                 </div>
             </ng-container>
         </div>
-
         <product-card-vertical-container [numberOfItems]="selectedProduct['productList']?.length || 0">
-            <ng-container *ngFor="let product of selectedProduct['productList'];let pIndex=index">
+            <ng-container *ngFor="let product of selectedProduct['productList']; let pIndex=index">
                 <product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
                     [cardMetaInfo]='cardMetaInfo' [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex"
                     [enableTracking]="true" [analytics]="analytics">

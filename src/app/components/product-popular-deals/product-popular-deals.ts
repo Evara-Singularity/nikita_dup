@@ -61,13 +61,13 @@ export class ProductPopularDealsComponent implements OnInit {
 
     getProductPopularDeals() {
         this.productService.getProductPopular(this.categoryCode).subscribe((response: any) => {
-             this.resultArray = Object.keys(response['taggedProducts']).map(index => {
+            this.resultArray = Object.keys(response['taggedProducts']).map(index => {
                 return response['taggedProducts'][index];
             });
-            this.setProductList(0,this.resultArray[0]['productList']);
+            this.setProductList(0,this.resultArray[0]);
         })
     }
-
+    
 
     setProductList(index, products) {
         this.selectedIndex = index

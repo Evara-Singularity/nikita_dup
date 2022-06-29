@@ -41,6 +41,9 @@ export class ProductPopularDealsComponent implements OnInit {
         lazyLoadImage: false
     }
     cardMetaInfo: ProductCardMetaInfo = null;
+    resultArray: any[];
+    selectedIndex: any;
+    selectedProduct: any;
 
     constructor(
         public commonService: CommonService,
@@ -52,25 +55,25 @@ export class ProductPopularDealsComponent implements OnInit {
         this.getProductPopularDeals();
         this.cardMetaInfo = {
             redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
-            redirectedSectionName: this.outOfStock ? 'similar_product_oos' : 'similar_products'
+            redirectedSectionName: this.outOfStock ? 'product_popular_deals_oos' : 'product_popular_deals_oos'
         }
     }
 
     getProductPopularDeals() {
-        this.productService.getSimilarProducts(this.productName, this.categoryCode, this.partNumber, this.groupId).subscribe((response: any) => {
-            let products = response['products'];
-            if (products && (products as []).length > 0) {
-                this.polpularDealsProducts = (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));
-                this.popularDealsDataLoaded$.emit(true);
-            }
+        this.productService.getProductPopular(this.categoryCode).subscribe((response: any) => {
+             this.resultArray = Object.keys(response['taggedProducts']).map(index => {
+                return response['taggedProducts'][index];
+            });
+            this.setProductList(0,this.resultArray[0]['productList']);
         })
     }
 
-    navigateTo(url) {
-        this.commonService.setSectionClickInformation(this.outOfStock ? 'similar_product_oos' : 'similar_products', 'pdp')
-        this.router.navigateByUrl(url);
-        if (this.commonService.isBrowser) {
-            ClientUtility.scrollToTop(100);
+
+    setProductList(index, products) {
+        this.selectedIndex = index
+        this.selectedProduct = products
+        if (this.selectedProduct && (this.selectedProduct as []).length > 0) {
+            this.selectedProduct = (this.selectedProduct as any[]).map(product => this.productService.searchResponseToProductEntity(product));
         }
     }
 

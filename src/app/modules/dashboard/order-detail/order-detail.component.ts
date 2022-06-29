@@ -136,10 +136,13 @@ export class OrderDetailComponent implements OnInit {
   }
 
   showReturnHandler(deliveryDate) {
+    // console.log('deliveryDate ==>', deliveryDate);
     let currDate = new Date();
-    deliveryDate = new Date(deliveryDate);
+    const newdeliveryDate = new Date(deliveryDate);
+    const handleNegativeYear = (newdeliveryDate.getFullYear() < 0) ? (newdeliveryDate.getFullYear() * -1) : newdeliveryDate.getFullYear();
+    let date2 = new Date(handleNegativeYear, newdeliveryDate.getMonth(), newdeliveryDate.getDate());
 
-    const diffTime = Math.abs(currDate.getTime() - deliveryDate.getTime());
+    const diffTime = Math.abs(currDate.getTime() - date2.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays <= 8) {
@@ -229,10 +232,12 @@ export class OrderDetailComponent implements OnInit {
             this.showReturn = this.showReturnHandler(this.detail.dates.delivered.date);
           }
           this.returnReasons = this.getReturnReasons(item.dates.delivered.date);
-          let deliveryDate = this.datePipe.transform(item.dates.delivered.date, 'yyyy-MM-dd');
-          let crrDate = new Date(deliveryDate);
-          crrDate.setDate(crrDate.getDate() + 7);
-          this.returnEndDate = this.datePipe.transform(crrDate, 'dd-MM-yyyy');
+          let deliveryDate = new Date(item.dates.delivered.date);
+          let crrDate = new Date(deliveryDate.getFullYear(), deliveryDate.getMonth(), deliveryDate.getDate() + 7); 
+          // crrDate.setDate(crrDate.getDate() + 7);
+          this.returnEndDate = this.getFomrattedDate(crrDate.getFullYear(), crrDate.getMonth(), crrDate.getDate());
+          // const mydate = new Date(item.dates.delivered.date);
+          // console.log('this.returnEndDate', item.dates.delivered.date, deliveryDate, crrDate, this.returnEndDate);
           this.createReturnForm(item);
           this.setDataForTracData(item);
         }
@@ -258,6 +263,12 @@ export class OrderDetailComponent implements OnInit {
       this.shipped = new Date(newDate).getTime();
       this.currentDate = this.today;
     });
+  }
+
+  getFomrattedDate(yyyy, mm, dd) {
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    return dd + '-' + mm + '-' + ((yyyy < 0) ? (yyyy * -1) : yyyy);
   }
 
   setDataForTracData(detail) {
@@ -576,6 +587,7 @@ export class OrderDetailComponent implements OnInit {
     this.closePopup$.emit();
   }
   orderTrackingPopup(itemDetails) {
+    console.log('itemDetails', itemDetails);
     this._modalService.show({
       component: TrackOrderComponent,
       inputs: { itemDetails: itemDetails },
@@ -584,6 +596,7 @@ export class OrderDetailComponent implements OnInit {
     });
   }
   showBuyAgain_Invoice(status: string) {
+    if(!status) return false;
     return this.validBuyAgainStatus.indexOf(status.toUpperCase()) > -1;
   }
 

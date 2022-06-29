@@ -41,7 +41,7 @@
                                 <span class="status-circle dark-green" [ngClass]="{'red-bg': detail.status == 'CANCELLED' || detail.status =='PAYMENT FAILED'}"  ></span>
                                 <span class="status">{{ detail.status }}</span>
                                 <button  
-                                    *ngIf="detail.status !== 'ACCEPTED' && detail.status !== 'PROCESSING' && detail.status !== 'PACKED' && detail.status !== 'ORDERED'" class="btn quinary-btn" 
+                                    *ngIf="detail.status !== 'ACCEPTED' && detail.status !== 'PROCESSING' && detail.status !== 'PACKED' && detail.status !== 'ORDERED' && detail.status !== 'SHIPPED'" class="btn quinary-btn" 
                                     (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)" >
                                     BUY AGAIN
                                 </button>

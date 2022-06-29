@@ -339,7 +339,6 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
                     this.close();
                     this.rfqForm.markAsUntouched();
                     this.isRFQSubmitted = false;
-                    console.log("response['data']--->" , response['data']);
                     this.rfqId.emit(response['data']);
                 } else {
                     this.isLoading.emit(false);

@@ -41,7 +41,7 @@ export class ProductPopularDealsComponent implements OnInit {
     cardMetaInfo: ProductCardMetaInfo = null;
     resultArray: any[];
     selectedIndex: any;
-    selectedProduct: any;
+    selectedProducts: ProductsEntity[] = null;
 
     constructor(
         public commonService: CommonService,
@@ -67,10 +67,9 @@ export class ProductPopularDealsComponent implements OnInit {
     
 
     setProductList(index, products) {
-        this.selectedIndex = index
-        this.selectedProduct = products
-        if (this.selectedProduct && (this.selectedProduct as []).length > 0) {
-            this.selectedProduct = (this.selectedProduct as any[]).map(product => this.productService.searchResponseToProductEntity(product));
+        this.selectedIndex = index;
+        if (products['productList'] && (products['productList'] as []).length > 0) {
+            this.selectedProducts = (products['productList'] as any[]).map(product => this.productService.searchResponseToProductEntity(product));
         }
     }
 

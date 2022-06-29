@@ -5,6 +5,9 @@
 }
 .view-all-strip{
     @extend %view-all-strip;
+    .heading-3{
+        font-size: $extra-large-font;
+    }
 }
 .skeleton-container {
     padding: 15px 15px 15px 5px;

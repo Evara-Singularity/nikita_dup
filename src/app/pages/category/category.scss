@@ -6,9 +6,8 @@
 
 :host {
     display: block;
-    margin-top: 165px;
+    margin-top: 115px;
     &.translateCategory{
-        // transform: translateY(64px);
         transition-timing-function: ease-in-out;
         transition: 0.5s all;
         margin-top:165px;

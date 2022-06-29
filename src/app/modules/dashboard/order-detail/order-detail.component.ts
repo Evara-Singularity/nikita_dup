@@ -576,6 +576,7 @@ export class OrderDetailComponent implements OnInit {
     this.closePopup$.emit();
   }
   orderTrackingPopup(itemDetails) {
+    console.log('itemDetails', itemDetails);
     this._modalService.show({
       component: TrackOrderComponent,
       inputs: { itemDetails: itemDetails },
@@ -584,6 +585,7 @@ export class OrderDetailComponent implements OnInit {
     });
   }
   showBuyAgain_Invoice(status: string) {
+    if(!status) return false;
     return this.validBuyAgainStatus.indexOf(status.toUpperCase()) > -1;
   }
 

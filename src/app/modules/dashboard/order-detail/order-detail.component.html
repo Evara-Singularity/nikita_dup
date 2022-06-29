@@ -97,15 +97,13 @@
         
         <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span>
     </div>
-    <!-- <div class="need-help-strip-btm" *ngIf="detail && detail.dates.delivered.flag" >
-        <p *ngIf="detail && detail.dates.delivered.flag && showReturn">Return Policy valid till {{returnEndDate}}</p>
-        <p *ngIf="detail.dates.delivered.flag &&  !showReturn">Return Policy ended on {{returnEndDate}}</p>
-    </div> -->
+    <div class="need-help-strip-btm" *ngIf="detail && detail.dates.delivered.flag" >
+        <p *ngIf="detail.dates.delivered.flag && showReturn">Return Policy valid till {{returnEndDate}}</p>
+    </div>
 </div>
 
-<div class="need-help-parent" *ngIf="(showReturn || (detail && detail.show_return_exchange)) && detail.dates.delivered.flag" >
+<div class="need-help-parent" *ngIf="(showReturn || (detail && detail.show_return_exchange)) && detail.dates.delivered.flag && !showReturn" >
     <div class="need-help-strip">
-        <span class="get-in-touch-txt" *ngIf="detail && detail.dates.delivered.flag && showReturn" >Return Policy valid till {{returnEndDate}}</span>
         <span class="get-in-touch-txt" *ngIf="detail.dates.delivered.flag &&  !showReturn" >Return Policy ended on {{returnEndDate}}</span>
         <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span>
     </div>

@@ -41,7 +41,7 @@ export class ProductPopularDealsComponent implements OnInit {
     cardMetaInfo: ProductCardMetaInfo = null;
     resultArray: any[];
     selectedIndex: any;
-    selectedProducts = null;;
+    selectedProducts: ProductsEntity[] = null;
 
     constructor(
         public commonService: CommonService,

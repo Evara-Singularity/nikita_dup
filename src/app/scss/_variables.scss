@@ -502,11 +502,12 @@ $default-gap: 15px;
     }
 }
 %hide-scrollbar{
-    ::-webkit-scrollbar {
+    &::-webkit-scrollbar {
         display: none;
     } 
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none; 
+   
 }
 
       

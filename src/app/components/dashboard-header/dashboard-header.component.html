@@ -1,14 +1,8 @@
 <div class="dashboard-header">
     <div class="dashboard-inner">
-        <a class="icon-menu header-icon" (click)="loadSideNav$.emit()"></a>
-        <a class="moglix-app-logo" [routerLink]="['/']">
-            <i class="icon-moglix_app_logo" ></i>
-        </a>
-        <a>
-            <span class="page-name" *ngIf="title">
-                {{ title }}
-            </span>
-        </a>
+        <a [routerLink]="['/']"><i class="icon-back-arrow" id="icon-back"></i></a>
+        <a class="moglix-app-logo" [routerLink]="['/']"><i class="icon-moglix_app_logo"></i></a>
+        <a> <span class="page-name" *ngIf="title"> {{ title }} </span> </a>
     </div>
     <div class="dashboard-inner">
         <a (click)="loadSearchNav$.emit()" class="icon-search "></a>

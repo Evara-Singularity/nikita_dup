@@ -490,7 +490,10 @@
         }
     }
 }
-
+.product-qty{
+    font-size: 11px !important;
+    font-weight: 400 !important; 
+}
 .product-img-v2 {
     img {
         width: 80%;
@@ -509,18 +512,11 @@
 .cta-row{
     display: flex;
     margin-top: 10px;
+    justify-content: space-between;
     button{
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
+        width: calc(50% - 10px);
         i{
-            padding-left:10px;
+            padding-right:2px;
         }
-    }
-    .secondry-btn-1{
-        flex-grow: 2;
-        margin-right: 10px;
-    }.secondry-btn{
-        flex-grow: 3;
     }
 }

@@ -138,7 +138,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	ngOnInit() {
 
 		this.route.data.subscribe((rawData) => {
-			console.log(rawData);
 			if (!rawData['homeData']['error']) {
 				this.fetchHomePageData(rawData.homeData[0]);
 				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'] as CategoryData[];

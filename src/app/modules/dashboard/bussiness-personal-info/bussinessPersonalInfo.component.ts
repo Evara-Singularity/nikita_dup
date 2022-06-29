@@ -1,6 +1,5 @@
 import { LocalStorageService } from "ngx-webstorage";
 import { DashboardService } from "../dashboard.service";
-import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { Component } from "@angular/core";
 import { LocalAuthService } from "@app/utils/services/auth.service";
@@ -33,8 +32,6 @@ export class BussinessInfoComponent {
   constructor(
     private _state: GlobalState,
     private _router: Router,
-    private _location: Location,
-    private _localStorageService: LocalStorageService,
     private _commonService: CommonService,
     private _cartService: CartService,
     private _localAuthService: LocalAuthService,
@@ -84,7 +81,7 @@ export class BussinessInfoComponent {
     this._cartService.logOutAndClearCart('/');
   }
 
-  onSubmit(data) {
+  onSubmit(data:string) {
     if (!data) {
       this._tms.show({type: "success", text: "User name cannot be empty."});
       return;
@@ -92,12 +89,8 @@ export class BussinessInfoComponent {
     let userSession = this._localAuthService.getUserSession();
     this.showLoader = true;
     let user = this.localStorageService.retrieve("user");
-    let obj = {
-      userid: user.userId,
-      pname: data.substring(0, data.indexOf(' ')),
-      lname: data.substring(data.indexOf(' ') + 1),
-    };
-
+    const names:string[] = data.split(" ");
+    let obj = { userid: user.userId, pname: names[0] || " ", lname: names[1] || " ", };
     this._dashboardService.updatePersonalInfo(obj).subscribe((res) => {
       this.showLoader = false;
       if (res["status"]) {

@@ -1,0 +1,20 @@
+<div class="pwa-row" *ngIf="productOutOfStock" >
+    <div id="oosSimilarTopSection" class="pwa-col-12 oosSimilarTopSection" >
+        <h2 *ngIf="productService.oosSimilarProductsData.similarData.length > 1">Consider These Available Items</h2>
+        <div class="horizontal-scroll-container consider-these-products" id="horizontal-scroll-container">
+            <ng-container *ngIf="productService.oosSimilarProductsData.similarData.length > 1">
+                <product-card-horizontal-grid-view [hideAd]="true"
+                    *ngFor="let card of similarForOOSContainer; let i = index;"
+                    [cardFeaturesConfig]='oosSimilarcardFeaturesConfig' [isOosSimilarCard]="true"
+                    [moduleUsedIn]="'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP'"
+                    [product]="productService.oosSimilarProductsData.similarData[i]">
+                </product-card-horizontal-grid-view>
+            </ng-container>
+            <ng-container *ngIf="similarForOOSLoaded">
+                <product-card-skeleton *ngFor="let skeleton of similarForOOSContainer"
+                    class="skeleton-pd-card-container skeleton-card-view">
+                </product-card-skeleton>
+            </ng-container>
+        </div>
+    </div>
+</div>

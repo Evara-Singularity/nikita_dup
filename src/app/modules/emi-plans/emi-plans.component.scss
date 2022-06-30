@@ -2,14 +2,14 @@
 @import '../../scss/components/radio';
 .emiTabs {
     display: flex;
-    padding: 10px;
-    margin: 10px;
+    padding: 20px 30px;
     border-radius: 4px;
+    background: var(--ghost-white);
     .emiTab {
         flex: 1;
         box-shadow: 0px 3px 8px #455B6314;
         color: #3C3C3C;
-        padding: 9px 0px;
+        padding: 10px 0px;
         font-size: $large-font;
         text-align: center;
         font-weight: bold;
@@ -222,6 +222,7 @@
 }
 .step-blw-det{
     padding:15px;
+    background: var(--ghost-white);
     p{
         line-height: 18px;
         margin-top: 20px;

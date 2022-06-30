@@ -1,21 +1,33 @@
 @import '../../scss/variables';
 @import '../../scss/components/tabs.scss';
+
 .trending-search {
     padding-bottom: 15px;
+
     h4 {
         color: #303030;
     }
 }
-
 .trending-search-container {
     background: #fff;
-    h3{
+
+    h3 {
         padding: 0px;
     }
 }
-
+.pwa-tabs-container {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1f1f1;
+    .pwa-tab {
+        border-radius: $border-radius-8 !important;
+    }
+}
+.top_categories{
+    padding-top: 10px;
+}
 .search_product_categories {
     display: flex;
+
     // flex-wrap: wrap;
     .search_product_category {
         display: inline-flex;
@@ -28,12 +40,15 @@
         width: fit-content;
         margin-bottom: 10px;
         overflow: hidden;
+
         &:last-child {
             margin-right: 0px;
         }
+
         img {
             width: 36px;
         }
+
         .prodText {
             padding-left: 5px;
             line-height: 13px;
@@ -41,7 +56,8 @@
         }
     }
 }
-.show_more{
+
+.show_more {
     color: #278bed;
     display: inline-block;
     padding: 10px 0;

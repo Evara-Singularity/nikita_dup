@@ -1,20 +1,23 @@
 @import "../../scss/variables";
 @import "../../scss/components/checkbox.scss";
-@import '../../scss/layout/forms.scss';
-@import '../../scss/components/buttons.scss';
-@import '../../modules/bottomMenu/bottom-menu.component.scss';
- 
-.rfqPopup{
-  height:calc(100% - 50px);  
-  overflow-y:scroll;
-  background:var(--white);
-  padding-bottom:10px;
+@import "../../scss/layout/forms.scss";
+@import "../../scss/components/buttons.scss";
+@import "../../modules/bottomMenu/bottom-menu.component.scss";
+
+.rfqPopup {
+    height: calc(100% - 50px);
+    overflow-y: scroll;
+    background: var(--white);
+    padding-bottom: 10px;
+    .rfq-container {
+        padding: 0px !important;
+    }
 }
 .rfqForm {
     .product-rfq {
         .multiple-form-field {
             display: flex;
-            &>div {
+            & > div {
                 width: 60%;
                 &:first-child {
                     width: 40%;
@@ -49,8 +52,7 @@
                 }
                 .txt {
                     font-size: $medium-font;
-                    color: var(--onyx-black);
-                    font-weight: $font-bold;
+                    color: var(--form-label-grey);
                 }
             }
         }
@@ -69,7 +71,7 @@
         label.indusrty {
             position: relative;
             display: block;
-            select+.icon-down {
+            select + .icon-down {
                 position: absolute;
                 right: 10px;
                 top: 15px;
@@ -81,15 +83,10 @@
         }
         input {
             &:read-only {
-                background: #E7E7E7;
+                background: #e7e7e7;
             }
         }
-        padding: 15px;
         p {
-            // color: #f5681e;
-            // font-size: 14px;
-            // font-weight: bold;
-            // line-height: 19px;
             &.error-txt {
                 color: var(--primary);
                 margin-top: 5px;
@@ -107,7 +104,7 @@
             line-height: $small-line-height;
         }
         .req-qty {
-            padding: 20px 0;
+            padding-bottom: 20px;
             display: flex;
             label {
                 width: calc(100% - 160px);
@@ -122,12 +119,15 @@
                 .qty-btn {
                     width: 30px;
                     height: 30px;
-                    text-align: center;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     background: #dbedff;
                     border: 1px solid #8bc5ff;
                     line-height: 30px;
-                    font-size: $large-font;
+                    font-size: $extra-large-font;
                     border-radius: $border-radius-2;
+                    font-weight: bold;
                 }
                 .add-qty {
                     margin-right: 5px;
@@ -146,7 +146,7 @@
                     border-radius: $border-radius-2;
                     border: 1px solid #333;
                     font-size: $large-font;
-                    font-weight: 500;
+                    font-weight: bold;
                 }
             }
         }
@@ -157,8 +157,7 @@
         }
     }
     .in-instock {
-        background: var(--white);
-        padding: 0px 8px;
+        padding-bottom: 20px;
     }
     .stickyRfqButton {
         position: fixed;

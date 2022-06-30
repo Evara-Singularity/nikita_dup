@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <div class="pwa-col-12 pad-lr-15">
+        <div class="pwa-col-12 pad-lr-15 pad-r-0">
             <div observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
                 *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
                 <ng-container #RecentlyViewedCarouselComponent></ng-container>

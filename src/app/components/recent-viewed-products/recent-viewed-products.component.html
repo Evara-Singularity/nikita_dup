@@ -1,7 +1,7 @@
 <section *ngIf="recentProductItems && recentProductItems.length>0" class="pwa-row recent-viewed mt-10">
     <div class="pwa-col-12">
         <div class="view-all-strip">
-            <h3>Recently Viewed</h3>
+            <h3 class="heading-3">Recently Viewed</h3>
         </div>
         <product-card-vertical-container [numberOfItems]="recentProductItems.length">
             <ng-container *ngFor="let product of recentProductItems;let pIndex = index">

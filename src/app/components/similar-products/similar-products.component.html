@@ -1,7 +1,7 @@
 <section class="pwa-row similar-product mt-10" *ngIf="similarProducts && similarProducts.length>0">
     <section class="pwa-col-12">
         <div class="view-all-strip">
-            <h3>Similar Products</h3>
+            <h3 class="heading-3">Similar Products</h3>
     </div>
     <product-card-vertical-container [numberOfItems]="similarProducts.length || 0">
         <ng-container *ngFor="let product of similarProducts;let pIndex=index">

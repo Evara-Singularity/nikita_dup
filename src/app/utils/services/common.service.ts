@@ -1237,6 +1237,7 @@ export class CommonService
 
     toggleFilter(forceFillyRemove?: boolean)
     {
+        console.trace()
         const mob_filter = document.querySelector(".mob_filter");
         if (mob_filter) {
             forceFillyRemove

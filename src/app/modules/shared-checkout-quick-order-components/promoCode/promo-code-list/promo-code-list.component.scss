@@ -4,6 +4,10 @@
 @import '../../../../scss/utils/utilities.scss';
 .select-offers {
     padding-top: 10px;
+    background: var(--white);
+    &.open {
+        background-color: var(--white);
+    }
     .promo-code {
         @extend %clear-fix;
         padding: 0 15px 15px 15px;
@@ -101,59 +105,3 @@
     }
 }
 
-
-/*new css 20-09-2021*/
-.popup {
-    position: fixed;
-    // display: none;
-    z-index: 99;
-    &.screen-view {
-        width: $fullwidth;
-        height: 100%;
-        top: 120%;
-        left: 0;
-        overflow: scroll;
-        background: var(--white) !important;
-        @extend %transition;
-        &.open {
-            top: 0;
-        }
-        .head-sec {
-            padding: 12px 0;
-            margin: 0;
-            z-index: 5;
-            position: relative;
-            &:after {
-                clear: both;
-                content: '';
-                display: block;
-            }
-            i {
-                font-size: $extra-large-2-font;
-                line-height: $large-line-height;
-                float: left;
-            }
-            i+.page-name {
-                font-size: $extra-large-font;
-                margin-left: 10px;
-            }
-            .txt {
-                font-size: $extra-large-font;
-                font-weight: $font-bold;
-                line-height: $medium-line-height;
-                margin-left: 20px;
-                float: left;
-            }
-        }
-    }
-}
-//Promo PopUp
-.select-offers {
-    background: var(--white);
-    &.open {
-        background-color: var(--white);
-        // .container {
-        //     height: initial;
-        // }
-    }
-}

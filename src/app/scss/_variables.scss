@@ -121,7 +121,6 @@ $extra-large-line-height:28px;
 $extra-large-1-line-height:30px;
 
 // payment-radio-card-width
-
 $payment-radio-card-width:160px;
 
 /*gradient*/
@@ -156,7 +155,7 @@ $default-gap: 15px;
 %view-all-strip{
     display:flex;
     align-items:center;
-    padding:10px 0px;
+    padding:5px 0px;
     h4{
        width:75%
     }
@@ -503,11 +502,12 @@ $default-gap: 15px;
     }
 }
 %hide-scrollbar{
-    ::-webkit-scrollbar {
+    &::-webkit-scrollbar {
         display: none;
     } 
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none; 
+   
 }
 
       

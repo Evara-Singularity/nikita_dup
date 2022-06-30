@@ -1,6 +1,5 @@
 <header class="inner-pages inner-pages-for-listing" *ngIf="!extraData.hideHeader">
     <div class="main-header" [ngSwitch]="activeModuleName">
-
         <ng-container *ngSwitchCase="MODULE_NAME.HOME">
             <ng-container *ngIf="!_commonService.isScrolledHeader">
                 <home-expanded-header (loadSideNav$)="loadSideNav()" (navigateToLogin$)="navigateToLogin($event)"
@@ -30,28 +29,26 @@
                 </plp-fixed-header>
             </ng-container>
         </ng-container>
-
         <ng-container *ngSwitchCase="MODULE_NAME.CART">
-            <cart-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
-                (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
-                [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
-            </cart-header>
+            <ng-container *ngTemplateOutlet="cartheader"></ng-container>
         </ng-container>
-
+        <ng-container *ngSwitchCase="MODULE_NAME.QUICKORDER">
+            <ng-container *ngTemplateOutlet="cartheader"></ng-container>
+        </ng-container>
         <ng-container *ngSwitchCase="MODULE_NAME.DASHBOARD">
-            <dashboard-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
-                (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
-                [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
-            </dashboard-header>
+            <ng-container *ngTemplateOutlet="dashboardheader"></ng-container>
         </ng-container>
-
-
+        <ng-container *ngSwitchCase="MODULE_NAME.ORDER_FAILURE">
+            <ng-container *ngTemplateOutlet="logoheader"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="MODULE_NAME.ORDER_CONFIRMATION">
+            <ng-container *ngTemplateOutlet="logoheader"></ng-container>
+        </ng-container>
         <ng-container *ngSwitchDefault>
             <plp-fixed-header [noOfCart]="noOfCart" (goBack$)="goBack()" (loadBottomSheet$)="loadBottomSheet()"
                 (loadSearchNav$)="loadSearchNav()">
             </plp-fixed-header>
         </ng-container>
-
     </div>
 </header>
 
@@ -59,5 +56,23 @@
 <ng-container #sideMenu></ng-container>
 <ng-container #bottomSheet></ng-container>
 <ng-container #searchBar></ng-container>
+
+<ng-template #cartheader>
+    <cart-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']"
+        (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
+        [imgAssetPath]="imgAssetPath">
+    </cart-header>
+</ng-template>
+<ng-template #dashboardheader>
+    <dashboard-header (loadSideNav$)="loadSideNav()" [title]="routerData['title']" (loadBottomSheet$)="loadBottomSheet()"
+        (navigateToLogin$)="navigateToLogin($event)" (loadSearchNav$)="loadSearchNav()" (goBack$)="goBack()"
+        [noOfCart]="noOfCart" [imgAssetPath]="imgAssetPath">
+    </dashboard-header>
+</ng-template>
+<ng-template #logoheader>
+    <logo-header [imgAssetPath]="imgAssetPath"></logo-header>
+</ng-template>
+
+
 
 <!-- When Home page Header is scrolled , header varient 3 -->

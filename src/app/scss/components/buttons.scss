@@ -29,9 +29,7 @@
     }
     &:disabled {
         background: var(--silver);
-    }
-    &.disabled {
-        background: var(--silver);
+        border-radius: 8px !important;
     }
 }
 .continue-btn {
@@ -120,7 +118,9 @@
     font-size: $medium-font;
     padding: 10px 12px;
     border-radius: $border-radius-6;
-
+   &.tertiary-outline-cta-8{
+       padding:8px;
+   } 
 }
 
 //   Quaternary Buttons
@@ -159,6 +159,15 @@
     height: 30px;
     background: var(--white);
     color: var(--primary);
+}
+.quaternary-btn-3{
+    border-radius: $border-radius-6;
+    font-size: $medium-font;
+    padding: 5px 15px;
+    height: 30px;
+    background: var(--primary);
+    color: var(--white);
+    width:100%;
 }
 
 // Quinary Buttons

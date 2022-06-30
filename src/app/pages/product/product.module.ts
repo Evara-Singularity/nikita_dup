@@ -1,3 +1,4 @@
+import { SharedProductCarouselModule } from './../../modules/shared-product-carousel/shared-product-carousel.module';
 import { EmiPlansModule } from './../../modules/emi-plans/emi-plans.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -20,9 +21,6 @@ import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/produc
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 import { PastOrdersModule } from '@app/components/past-orders/past-orders.component';
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
-import ProductAccordiansModule from '@app/components/product-accordians/product-accordians.component';
-import { ProductCardSkeletonModule } from '@app/modules/product-card/product-card-skeleton/product-card-skeleton.module';
-import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
 import ProductDescriptionModule from '@app/components/product-description/product-description.component';
 import {ProductFeatureDetailsModule} from '@app/components/product-feature-details/product-feature-details.component';
 import { ProductRfqThanksPopupModule } from '@app/components/product-rfq-thanks-popup/product-rfq-thanks-popup.component';
@@ -33,7 +31,9 @@ import { ProductQaModule } from '@app/components/product-qa/product-qa.component
 import { FloatingButtonContainerModule } from '@app/modules/ui/floating-button-container/floating-button-container.module';
 import { ProductBenefitsModule } from '@app/components/product-benefits/product-benefits.component';
 import { ProductGetQuoteModule } from '@app/components/product-get-quote/product-get-quote.component';
-import { ProductGroupingAttributesComponent, ProductGroupingAttributesModule } from '@app/components/product-grouping-attributes/product-grouping-attributes.component';
+import { ProductGroupingAttributesModule } from '@app/components/product-grouping-attributes/product-grouping-attributes.component';
+import { OosSimilarSectionModule } from '@app/components/oos-similar-section/oos-similar-section.module';
+import { ProductSkeletonsModule } from '@app/components/product-skeletons/product-skeletons.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -56,8 +56,7 @@ import { ProductGroupingAttributesComponent, ProductGroupingAttributesModule } f
     SliceArrayPipeModule,
     NumberDirectiveModule,
     // Directives
-    ProductCardHorizontalGridViewModule,
-    ProductCardSkeletonModule,
+    //ProductCardHorizontalGridViewModule,
     SwipeDirectiveModule,
     // IdleUserSearchNudgeModule,
     PastOrdersModule,
@@ -73,7 +72,10 @@ import { ProductGroupingAttributesComponent, ProductGroupingAttributesModule } f
     FloatingButtonContainerModule,
     ProductBenefitsModule,
     ProductGetQuoteModule,
-    ProductGroupingAttributesModule
+    ProductGroupingAttributesModule,
+    OosSimilarSectionModule,
+    SharedProductCarouselModule,
+    ProductSkeletonsModule
   ],
   exports: [],
   providers: [NgxSiemaService],

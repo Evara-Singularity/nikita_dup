@@ -116,12 +116,14 @@ export class ProductListService {
   }
 
   getProductTag(product) {
+
     if (product && product["productTags"] && product["productTags"].length > 1) {
-      return product["productTags"][product["productTags"].length - 1]["tagImageLink"];
+      return [product["productTags"][product["productTags"].length - 1]];
     }
-    else if (product["productTags"][0]) {
-      return product["productTags"][0]["tagImageLink"];
+    if (product["productTags"] && product["productTags"].length == 1) {
+      return [product["productTags"][0]];
     }
+    return [];
   }
 
   getFilterBucket(categoryId, pageName, brandName?: string) {

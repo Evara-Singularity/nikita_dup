@@ -7,7 +7,7 @@ const routes: Routes = [
         path: '',
         component: QuickOrderComponent,
         data: {
-            moduleName: CONSTANTS.MODULE_NAME.CART
+            moduleName: CONSTANTS.MODULE_NAME.QUICKORDER
         },
     }
 ];

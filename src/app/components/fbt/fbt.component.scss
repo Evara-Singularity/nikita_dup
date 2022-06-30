@@ -1,76 +1,199 @@
 @import "../../scss/variables";
 @import "../../scss/components/checkbox.scss";
 @import "../../scss/components/static-card-container.scss";
-@import '../../scss/components/static-small-card-container.scss';
+@import "../../scss/components/static-small-card-container.scss";
 
 .fbt-card-container {
-    background: var(--white);
-    .fbt-close-ico {
-        font-size: $extra-large-1-font;
-        float: right;
-        padding-right: 10px;
-        line-height: $extra-large-line-height;
+  background: var(--white);
+  .fbt-close-ico {
+    font-size: $extra-large-1-font;
+    float: right;
+    padding-right: 10px;
+    line-height: $extra-large-line-height;
+  }
+  .static-small-card-container {
+    border-radius: 0;
+    .fbt_tag {
+      background: #dbdbdb;
+      color: #74777a;
+      border-radius: $border-radius-6;
+      padding: 4px 8px;
+      margin-top: 4px;
+      display: inline-block;
+      font-size: $medium-font;
     }
-    .static-small-card-container{
-        border-radius: 0;
-        .fbt_tag {
-            background: #DBDBDB;
-            color: #74777A;
-            border-radius: $border-radius-6;
-            padding: 4px 8px;
-            margin-top: 4px;
-            display: inline-block;
-            font-size: $medium-font;
-        }
-        .fbt_price {
-            font-weight: bold;
-            font-size: 16px;
-            display: block;
-            margin: 5px 0 5px 0;
-        }
+    .fbt_price {
+      font-weight: bold;
+      font-size: 16px;
+      display: block;
+      margin: 5px 0 5px 0;
     }
-    .fbtList {
-        li {
-            margin-bottom: 0px;
-            padding: 0px;
-            font-size: $medium-font;
-            display: flex;
-            border-bottom: 1px solid var(--platinum);
-            .fbtCheckBox {
-                width: 50px;
-                padding: 15px;
-                label {
-                    width: 20px;
-                    @extend %custom-check-box-checkout;
-                    height: 74px;
-                    .custom-box {
-                        font-size: $extra-large-2-font;
-                        &::before {
-                            content: "\e9a5";
-                            font-family: 'icomooon_pwa';
-                            color: var(--spanish-gray);
-                        }
-                    }
-                }
-            }
-            .static-card-container{
-                width:calc(100% - 50px);
-                padding: 10px;
-                border-left: 1px solid $border-color;
-            }
-
-        }
-    }
-    .fbdBottom {
+  }
+  .fbtList {
+    li {
+      margin-bottom: 0px;
+      padding: 0px;
+      font-size: $medium-font;
+      display: flex;
+      border-bottom: 1px solid var(--platinum);
+      .fbtCheckBox {
+        width: 50px;
         padding: 15px;
-        h3 {
-            padding: 5px 0px;
+        label {
+          width: 20px;
+          @extend %custom-check-box-checkout;
+          height: 74px;
+          .custom-box {
+            font-size: $extra-large-2-font;
+            &::before {
+              content: "\e9a5";
+              font-family: "icomooon_pwa";
+              color: var(--spanish-gray);
+            }
+          }
         }
-        .grey-fbt-txt {
-            color: var(--spanish-gray);
-            font-size: $small-font;
-            font-weight: normal;
-            padding-left: 5px;
-        }
+      }
+      .static-card-container {
+        width: calc(100% - 50px);
+        padding: 10px;
+        border-left: 1px solid $border-color;
+      }
     }
+  }
+  .fbdBottom {
+    padding: 15px;
+    h3 {
+      padding: 5px 0px;
+    }
+    .grey-fbt-txt {
+      color: var(--spanish-gray);
+      font-size: $small-font;
+      font-weight: normal;
+      padding-left: 5px;
+    }
+  }
+}
+.fbt-skeleton {
+  padding-top: 10px;
+  .fbt-skeleton-heading {
+    margin: 10px 5px;
+    width: 80%;
+    height: 20px;
+    background: var(--ghost-white);
+    border-radius: $border-radius-4;
+  }
+  .static-small-card-container {
+    .skeleton-product-img {
+      width: 60px;
+      height: 60px;
+      background: var(--ghost-white);
+      border-radius: $border-radius-4;
+    }
+    .product-description {
+      .skeleton-desc-txt {
+        width: 100%;
+        height: 20px;
+        background: var(--ghost-white);
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
+      .skeleton-desc-txt1 {
+        width: 150px;
+        height: 20px;
+        background: var(--ghost-white);
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
+      .skeleton-fbt-price {
+        width: 60px;
+        height: 20px;
+        background: var(--ghost-white);
+        border-radius: $border-radius-4;
+      }
+    }
+  }
+  .fbtList {
+    .skeleton-checkbox {
+      width: 20px;
+      height: 20px;
+      background: var(--ghost-white);
+      border-radius: $border-radius-2;
+    }
+    .static-card-container {
+      .skeleton-img {
+        width: 85px;
+        height: 85px;
+        background: var(--ghost-white);
+        border-radius: $border-radius-4;
+      }
+      .skeleton-section {
+        line-height: 0;
+        .skeleton-desc {
+          width: 97%;
+          height: 20px;
+          background: var(--ghost-white);
+          display: inline-block;
+          border-top-right-radius: 4px;
+          border-top-left-radius: 4px;
+          border-bottom-right-radius: 4px;
+        }
+        .skeleton-desc1 {
+          width: 50%;
+          height: 20px;
+          background: var(--ghost-white);
+          display: inline-block;
+          border-bottom-right-radius: 4px;
+          border-bottom-left-radius: 4px;
+        }
+      }
+      .brand-skeleton {
+        margin-top: 10px;
+        width: 60px;
+        height: 20px;
+        background: var(--ghost-white);
+        border-radius: $border-radius-4;
+      }
+      .skeleton-price {
+        width: 100px;
+        height: 20px;
+        background: var(--ghost-white);
+        border-radius: $border-radius-4;
+      }
+      .skeleton-qty {
+        width: 40px;
+        height: 20px;
+        background: var(--ghost-white);
+        border-radius: $border-radius-4;
+      }
+    }
+  }
+  .fbdBottom{
+    display: flex;
+    justify-content: space-between;
+    .fbt-left{
+      width: 55%;
+      .no-add-ons {
+        width: 90%;
+        height: 20px;
+        background: var(--ghost-white);
+        border-radius: $border-radius-4;
+      }
+      .prices {
+        margin-top: 5px;
+        width: 50%;
+        height: 20px;
+        background: var(--ghost-white);
+        border-radius: $border-radius-4;
+      }
+    }
+    .bought-together {
+      width: 50%;
+      height: 40px;
+      background: var(--ghost-white);
+      border-radius: $border-radius-4;
+    }
+  }
+
+
 }

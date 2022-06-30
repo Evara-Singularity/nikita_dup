@@ -1,9 +1,10 @@
 <div class="product-horizontal-card" observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
     <!-- YOUTUBE FEATURE START -->
     <div class="youtubeThumbnail-listing"
-        *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0">
+        *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0 && this.youtubeThumbnail">
         <div class="thumbnail"
-            [ngStyle]="{'background-image': 'url('+(product['videoInfo'][0]['link'] | ytthumbnail:'hqdefault')+')'}">
+            [lazyLoad]="youtubeThumbnail"
+            [defaultImage]="defaultImage" >
             <input class="youtube_icon" (click)="showYTVideo(product['videoInfo'][0]['link']);$event.stopPropagation();"
                 type="image" src="/assets/img/video_icon.svg" alt="text">
         </div>
@@ -13,8 +14,8 @@
     <div class="card-container">
         <div class="inner-container">
             <div class="left" (click)="navigateToPDP()">
-                <div *ngIf="this.product && this.product['productTags']" class="tags">
-                    <img [src]="this.product['productTags']" />
+                <div *ngIf="this.product && this.product['productTags'][0]" class="tags">
+                    <img [src]="this.product['productTags'][0]['tagImageLink']" />
                 </div>
                 <ng-container *ngIf="isPDPImageLazyLoaded || !cardFeaturesConfig.lazyLoadImage">
                     <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}"
@@ -80,7 +81,7 @@
                             </ng-container>
                         </div>
                         <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
-                            <button class="btn tertiary-outline-cta" (click)="openRfqForm()">
+                            <button class="btn tertiary-outline-cta tertiary-outline-cta-8" (click)="openRfqForm()">
                                 SEND QUERY
                             </button>
                         </ng-container>
@@ -100,6 +101,6 @@
     <ng-container #variantPopup></ng-container>
     <ng-container #addToCartToast></ng-container>
     <ng-container #productRFQ></ng-container>
-    <ng-container #alertBox></ng-container>
+    <ng-container #rfqThankyou></ng-container>
 
 </div>

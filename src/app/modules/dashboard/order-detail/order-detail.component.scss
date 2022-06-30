@@ -504,7 +504,7 @@
   }
   .cncl-item{
     background-color: var(--ghost-white);
-    padding: 8px 25px;
+    padding: 8px 15px;
     border-radius: $border-radius-4;
     display: inline-block;
     &:first-child {
@@ -608,6 +608,49 @@
   margin-left: auto;
   i{
     color: var(--primary) !important; 
+  }
+}
+.cancelOrderBox {
+  @extend %white-card;
+  height: 100%;
+  margin: 0px;
+  border-radius: none;
+  background-color: var(--ghost-white) !important;
+  border-radius: 0px;
+  .returnedOrder {
+    border: none;
+    padding: 10px 0;
+    .orderdtBoxinner {
+      padding: 0;
+      & > p {
+        color: #8c8c8c;
+        font-size: $medium-font;
+        line-height: 18px;
+        margin-bottom: 10px;
+      }
+      .note {
+        color: #424242;
+        font-size: $medium-font;
+        line-height: 18px;
+        strong {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+  .pos-rel {
+    position: relative;
+  }
+  h4 {
+    margin: 15px 0px 10px;
+  }
+  .commentBox {
+    border: 1px solid #888;
+    padding: 10px;
+    font-size: $medium-font;
+    width: 100%;
+    margin-bottom: 10px;
+    height: 100px;
   }
 }
 .cancelorder-details {

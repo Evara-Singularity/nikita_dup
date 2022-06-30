@@ -227,7 +227,7 @@ export class SearchComponent implements OnInit {
     }
 
    
-    digitalData['page']['totalProductCount'] = ((this._productListService?.productListingData?.totalCount) > (this._productListService?.productListingData?.products?.length)) ? (this._productListService.productListingData.totalCount) : (this._productListService.productListingData.products.length);        
+    digitalData['page']['totalProductCount'] = this._productListService?.productListingData?.totalCount;
     digitalData['page']['categoryRecommended'] = relatedSearchResults;
     digitalData['page']['categoryRecSelected'] = this.recommendedCategory;
     digitalData['page']['subSection'] += (this.API_RESULT['searchData'][0].productSearchResult['products'].length === 0 ? " : ZSR" : '');

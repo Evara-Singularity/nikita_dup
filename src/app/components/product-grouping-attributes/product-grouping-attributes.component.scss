@@ -2,6 +2,10 @@
 //grouping-attribute-wrap-section
 .grouping_wrap_pdp {
     background: var(--white);
+    .heading-3{
+        font-size: $extra-large-font;
+        padding: 15px 0 10px;
+    }
     .singlewrap {
         border-bottom: 0.5px solid var(--platinum);
         padding: 0px 15px;

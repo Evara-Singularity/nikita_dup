@@ -40,7 +40,6 @@
                 text-align: left;
                 font-size: $small-font;
                 color: var(--gray-web);
-                font-weight:$font-bold;
             }
             .prod-price-row{
                 margin-bottom:4px;
@@ -56,7 +55,7 @@
                 }
                 .prod-selling-price{
                     margin-top:4px;
-                    font-size: $large-font;
+                    font-size: $extra-large-font;
                     color: var(--onyx-black);
                     font-weight: $font-bold;
                 }

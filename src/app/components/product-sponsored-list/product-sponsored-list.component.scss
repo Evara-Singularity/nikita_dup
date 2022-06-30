@@ -3,6 +3,9 @@
 .view-all-strip{
     position: relative;
     @extend %view-all-strip;
+    .heading-3{
+        font-size: $extra-large-font;
+    }
 }
 
 .sponsered{

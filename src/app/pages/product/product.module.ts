@@ -34,6 +34,7 @@ import { ProductGetQuoteModule } from '@app/components/product-get-quote/product
 import { ProductGroupingAttributesModule } from '@app/components/product-grouping-attributes/product-grouping-attributes.component';
 import { OosSimilarSectionModule } from '@app/components/oos-similar-section/oos-similar-section.module';
 import { ProductSkeletonsModule } from '@app/components/product-skeletons/product-skeletons.component';
+import ProductAccordiansModule from '@app/components/product-accordians/product-accordians.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -75,7 +76,8 @@ import { ProductSkeletonsModule } from '@app/components/product-skeletons/produc
     ProductGroupingAttributesModule,
     OosSimilarSectionModule,
     SharedProductCarouselModule,
-    ProductSkeletonsModule
+    ProductSkeletonsModule,
+    ProductAccordiansModule
   ],
   exports: [],
   providers: [NgxSiemaService],

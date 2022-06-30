@@ -99,7 +99,7 @@ export class RecentlyViewedCarouselComponent {
 	imports: [
 		CommonModule,
 		RouterModule,
-		ProductCardHorizontalGridViewModule,
+		ProductCardVerticalGridViewModule,
 		ProductCardSkeletonModule,
 		ProductCardVerticalContainerModule,
 		ProductCardHorizontalScrollModule

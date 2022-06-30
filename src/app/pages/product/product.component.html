@@ -105,7 +105,7 @@
 
 <section id="popularDeals" observeVisibility [debounceTime]="100" (visible)="onVisiblePopularDeals($event)">
     <ng-container #popularDeals></ng-container>
-    <product-skeletons [type]="'POPULARDEALS'" [templateRefInstance]="popularDealsContainerRef"></product-skeletons>
+    <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="popularDealsContainerRef"></product-skeletons>
 </section>
 
 <!-- TODO: THIS IS ON PAGE LOAD NOT LAZY LOAD -->
@@ -145,8 +145,9 @@
 
 
 <!-- CTA Fixed position -->
-<floating-button-container  [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
-    <floating-button [iconClass]="'icon-cart1'" [label]="'ADD TO CART'" [type]="'WHITE'" (onClick)="showFBT()"></floating-button>
+<floating-button-container [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
+    <floating-button [iconClass]="'icon-cart1'" [label]="'ADD TO CART'" [type]="'WHITE'" (onClick)="showFBT()">
+    </floating-button>
     <floating-button [iconClass]="''" [label]="'BUY NOW'" [type]="'RED'" (onClick)="addToCart(true)"></floating-button>
 </floating-button-container>
 
@@ -166,6 +167,7 @@
 <app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>
 
 <ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
+<ng-container #productRFQUpdate></ng-container>
 <ng-container #rfqForm></ng-container>
 <ng-container #offerPopup></ng-container>
 <ng-container #offerComparePopup></ng-container>

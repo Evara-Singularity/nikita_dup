@@ -39,6 +39,7 @@
         </div>
         
         <product-description 
+            (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)"
             [productName]="similarProductData[index].productName" 
             [productDiscount]="similarProductData[index].productDiscount"
             [bulkPriceWithoutTax]="similarProductData[index].bulkPriceWithoutTax"
@@ -51,6 +52,7 @@
             [starsCount]="similarProductData[index].avgRating" 
             [rawReviewsData]="similarProductData[index].rawReviewsData"
             [rawProductCountMessage]="similarProductData[index].recentBoughtMessage"
+            [qunatityFormControl]="qunatityFormControl"
         ></product-description>
 
         <ng-template #pdpinfo [ngTemplateOutlet]="pdpinfo" let-section="section" let-product="product"

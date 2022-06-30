@@ -1,12 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit, Output, EventEmitter } from '@angular/core';
 import { ProductService } from '../../utils/services/product.service';
-import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
-import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { CommonService } from '../../utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
-import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
 import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 
@@ -78,9 +75,6 @@ export class ProductPopularDealsComponent implements OnInit {
     ],
     imports: [
         CommonModule,
-        MathFloorPipeModule,
-        MathCeilPipeModule,
-        LazyLoadImageModule,
         ProductCardVerticalContainerModule,
         ProductCardVerticalGridViewModule
     ]

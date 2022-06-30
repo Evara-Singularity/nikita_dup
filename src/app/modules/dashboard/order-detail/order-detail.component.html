@@ -21,8 +21,8 @@
             <img alt="" src="{{(detail?.productImg && detail?.productImg.length > 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
         </div>
         <div class="card-desc">
-            <p>
-                <a href="#">{{(detail?.product_name | slice:0:30) + (detail?.product_name > 30 ? "...":"")}} 
+            <p (click)="trackAndNavigateToProductPage(detail?.productUrl, detail?.product_msn, $event)" >
+                <a [routerLink]="detail?.productUrl" (click)="$event.stopPropagation();" >{{(detail?.product_name | slice:0:30) + (detail?.product_name > 30 ? "...":"")}} 
                 </a>
             </p>
             <div class="orderqty clearfix">

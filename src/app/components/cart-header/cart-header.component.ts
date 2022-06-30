@@ -18,7 +18,7 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 	@Output() navigateToLogin$: EventEmitter<boolean> = new EventEmitter<boolean>();
 	@Output() loadSearchNav$: EventEmitter<boolean> = new EventEmitter<boolean>();
 	@Output() goBack$: EventEmitter<boolean> = new EventEmitter<boolean>();
-	@Input() noOfCart: number = 0;
+	@Input() noOfCartItems: number = 0;
 	@Input() title: string = 'Home';
 	@Input() isUserLogin: boolean = false;
 	@Input() enableBackBtn: boolean = false;
@@ -37,20 +37,20 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 
 	ngOnInit(): void
 	{
-		this._loader.setLoaderState(true);
-		if (this.isCheckout || this.isPayment) {
-			this.checkForItems();
-			if (this.isPayment) { this.checkForPaymentPage();}
-		}
-		this._loader.setLoaderState(false);
-		this.cartSession = this._cartService.getCartSession();
-		this.noOfCart = (this.cartSession['itemsList'] as any[]).length || 0;
-		this.calculatePayableAmount(this.cartSession['cart']);
+		if (this.isPayment) { this.checkForPaymentPage();}
 	}
 
-	checkForItems()
+	ngAfterViewInit(): void
 	{
-		if (this.noOfCart === 0) { this._loader.setLoaderState(false); this._router.navigateByUrl("quickorder", this.REPLACE_URL);}
+		this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
+		{
+			this.cartSession = cartSession;
+			if (this.cartSession) {
+				this.noOfCartItems = this._cartService.getCartItemsCount();
+				if (this.noOfCartItems === 0) { this._router.navigateByUrl("quickorder", this.REPLACE_URL); }
+				this.calculatePayableAmount(this.cartSession['cart']);
+			}
+		});
 	}
 
 	checkForPaymentPage()
@@ -63,16 +63,6 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 			this._loader.setLoaderState(false);
 			this._router.navigateByUrl('/checkout/address', this.REPLACE_URL);
 		}
-	}
-
-	ngAfterViewInit(): void
-	{
-		this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
-		{
-			this.cartSession = cartSession;
-			this.noOfCart = (this.cartSession['itemsList'] as any[]).length || 0;
-			this.calculatePayableAmount(this.cartSession['cart']);
-		});
 	}
 
 	calculatePayableAmount(cart)
@@ -138,7 +128,7 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 	
 	get isCheckout() { return this.title === "Checkout" }
 
-	get displayCartInfo() { return this.isQuickorder && this.noOfCart}
+	get displayCartInfo() { return this.isQuickorder && this.noOfCartItems}
 
 	ngOnDestroy(): void
 	{

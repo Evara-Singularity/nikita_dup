@@ -1,10 +1,10 @@
 @import "../../../scss/_variables.scss";
-@import '../../../scss/layout/card-boxed';
+@import "../../../scss/layout/card-boxed";
 
 .my-rfq-list {
-  padding-top: 15px;
+  // padding-top: 15px;
   .my-rfq-list-item {
-    background:var(--white);
+    background: var(--white);
     padding: 1px 0;
     margin-bottom: 15px;
     p{
@@ -13,6 +13,17 @@
     .card-upper {
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
+    }
+  }
+  .status-circle {
+    background: #F5681E;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-top: -10px;
+    .created{
+      color: var(--slimy-green);
     }
   }
 }

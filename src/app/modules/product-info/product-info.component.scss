@@ -24,16 +24,6 @@ ngx-siema-slide{
   background: var(--white);
   height: calc(100% - 80px);
   overflow-y:auto;
-  .pwa-tabs-container{
-    .pwa-tab{
-      border-radius: $border-radius-8;
-      padding: 10px 15px;
-      border:1px solid var(--silver);
-      &.selectedTab{
-        border:1px solid var(--primary);
-      }
-    }
-  }
 }
 .tab-content{
   margin-top: 5px;

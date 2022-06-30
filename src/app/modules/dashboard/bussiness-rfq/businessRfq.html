@@ -74,8 +74,10 @@
         </div>
         <div class="card-bottom">
               <div class="card-bottom-inner">
+                <span class="status-circle created"></span>
                 <span class="orderstatus">
-                  <i class="dot">&#x2022;&nbsp;</i>
+                  <!-- <i class="dot">&#x2022;&nbsp;</i> -->
+                  
                   <span *ngIf="data.customerStatusText=='New'" class="text-green">Created</span>
                   <span *ngIf="data.customerStatusText!=='New'" class="text-green">{{data.customerStatusText}}</span>
                   <ng-container><p>Placed on {{list.createdDate | date }}</p> </ng-container>  

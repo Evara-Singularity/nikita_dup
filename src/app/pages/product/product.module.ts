@@ -34,6 +34,8 @@ import { ProductBenefitsModule } from '@app/components/product-benefits/product-
 import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { ProductGetQuoteModule } from '@app/components/product-get-quote/product-get-quote.component';
 import { ProductGroupingAttributesModule } from '@app/components/product-grouping-attributes/product-grouping-attributes.component';
+import { OosSimilarSectionModule } from '@app/components/oos-similar-section/oos-similar-section.module';
+import { ProductCarouselSectionModule } from '@app/components/product-carousel-section/product-carousel-section.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -57,8 +59,8 @@ import { ProductGroupingAttributesModule } from '@app/components/product-groupin
     SliceArrayPipeModule,
     NumberDirectiveModule,
     // Directives
-    ProductCardHorizontalGridViewModule,
-    ProductCardSkeletonModule,
+    //ProductCardHorizontalGridViewModule,
+    //ProductCardSkeletonModule,
     SwipeDirectiveModule,
     // IdleUserSearchNudgeModule,
     PastOrdersModule,
@@ -74,7 +76,9 @@ import { ProductGroupingAttributesModule } from '@app/components/product-groupin
     FloatingButtonContainerModule,
     ProductBenefitsModule,
     ProductGetQuoteModule,
-    ProductGroupingAttributesModule
+    ProductGroupingAttributesModule,
+    OosSimilarSectionModule,
+    ProductCarouselSectionModule
   ],
   exports: [],
   providers: [NgxSiemaService],

@@ -119,8 +119,10 @@ export class ProductListService {
     if (product && product["productTags"] && product["productTags"].length > 1) {
       return product["productTags"][product["productTags"].length - 1]["tagImageLink"];
     }
-    else if (product["productTags"] && product["productTags"].length > 0) {
+    else if (product["productTags"] && product["productTags"].length == 1) {
       return product["productTags"][0]["tagImageLink"];
+    } else {
+      return null;
     }
   }
 

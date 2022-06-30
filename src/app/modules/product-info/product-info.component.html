@@ -45,7 +45,7 @@
         <section class="pwa-row">
             <ul id="infoTabs" [style.width.px]="250 * tabs.length" class="pwa-tabs-container">
                 <ng-container *ngFor="let tab of tabs;let tabIndex = index">
-                    <li [id]="'tab'+tabIndex" class="pwa-tab" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"
+                    <li [id]="'tab'+tabIndex" class="pwa-tab pwa-tab-variant2" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"
                         (click)="goTo(tabIndex,ngxSiemaOptions.selector,tab)">
                         {{tab | titlecase}}
                     </li>

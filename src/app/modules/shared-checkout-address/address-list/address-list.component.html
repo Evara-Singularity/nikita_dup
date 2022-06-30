@@ -5,11 +5,12 @@
         <i class="icon-circle-delete f-left"></i>
         <p class="txt">headerText ({{addresses.length}})</p>
     </div>
-    <div class="content-popup" content>
+    <div class="content-popup content-popup-with-grey-bg" content>
         <div class="add-address-substrip">
             <!--Todo-->
-            <button class="btn secondry-full-btn" (click)="handleAction($event, ACTION_TYPES.ADD, null)">
-                + ADD NEW ADDRESS
+
+            <button class="btn secondry-full-btn " (click)="handleAction($event, ACTION_TYPES.ADD, null)">
+              + ADD NEW ADDRESS
             </button>
         </div>
         <div class="address-container">

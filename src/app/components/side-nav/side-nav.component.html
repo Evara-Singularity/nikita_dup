@@ -5,7 +5,7 @@
         <div class="menu-header pad-10" (click)="sideMenu();redirectProfile();">
             <i class="icon-profile"></i>
             <p class="customer-detail login-sign-text pad-10" *ngIf="!user || user.authenticated == 'false' || user.status=='User logged out'">
-                Login | Join Free
+                LOGIN / SIGN UP
             </p>
             <p class="customer-detail" *ngIf="user && user.authenticated == 'true' && user.status!=='User logged out'">
                 <span class="user-name">
@@ -17,7 +17,7 @@
         <ul class="menu-list scrolled" (click)="sideMenu()" id="scrolledUl">
             <li>
                 <a (click)="trackAnalyticAndRedirect('/')">
-                    <i class="icon-home"></i>
+                    <i class="icon-home2"></i>
                     <span class="text">Home </span>
                 </a>
             </li>
@@ -50,20 +50,20 @@
             <li>
                 <a (click)="trackAnalyticAndRedirect('/dashboard/rfq', true, 'Continue to view your RFQs')">
                     <i class="icon-my-rfq"></i>
-                    <span class="text">My RFQs</span>
+                    <span class="text">My RFQ's</span>
                 </a>
             </li>
             <li>
                 <a
                     (click)="trackAnalyticAndRedirect('/dashboard/business-detail', true, 'Continue to view your Business Details')">
-                    <i class="icon-business-details"></i>
+                    <i class="icon-faq-side-navigation"></i>
                     <span class="text">My Business Details</span>
                 </a>
             </li>
             <li>
                 <a
                     (click)="trackAnalyticAndRedirect('/dashboard/purchase-list', true, 'Continue to view your wishlist')">
-                    <i class="icon-purchase-list"></i>
+                    <i class="icon-wishlist"></i>
                     <span class="text">My WishList</span>
                 </a>
             </li>
@@ -83,7 +83,7 @@
             </li>
             <li>
                 <a (click)="trackAnalyticAndRedirect('/contact')">
-                    <i class="icon-call"></i>
+                    <i class="icon-contact-us"></i>
                     <span class="text">Contact Us</span>
                 </a>
             </li>

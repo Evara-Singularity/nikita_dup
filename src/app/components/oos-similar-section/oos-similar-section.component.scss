@@ -1,0 +1,16 @@
+@import "../../scss/variables";
+
+// to be moved in crousel css components
+@import "../../scss/components/carousel";
+@import '../../scss/tags'; 
+//prod carsl
+.oosSimilarTopSection{
+    h2{
+        padding:10px 0 15px
+    }
+    .horizontal-scroll-container{
+        display: flex;
+        overflow: auto;
+        scrollbar-width: none;
+    }
+}

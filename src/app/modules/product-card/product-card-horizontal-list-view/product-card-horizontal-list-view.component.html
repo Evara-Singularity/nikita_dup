@@ -1,9 +1,10 @@
 <div class="product-horizontal-card" observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
     <!-- YOUTUBE FEATURE START -->
     <div class="youtubeThumbnail-listing"
-        *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0">
+        *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0 && this.youtubeThumbnail">
         <div class="thumbnail"
-            [ngStyle]="{'background-image': 'url('+(product['videoInfo'][0]['link'] | ytthumbnail:'hqdefault')+')'}">
+            [lazyLoad]="youtubeThumbnail"
+            [defaultImage]="defaultImage" >
             <input class="youtube_icon" (click)="showYTVideo(product['videoInfo'][0]['link']);$event.stopPropagation();"
                 type="image" src="/assets/img/video_icon.svg" alt="text">
         </div>

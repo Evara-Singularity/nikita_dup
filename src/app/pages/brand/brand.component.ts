@@ -416,7 +416,8 @@ export class BrandComponent {
                     'pageName': "moglix:" + this._activatedRoute.snapshot.params.brand + ": listing",
                     'channel': "brand",
                     'subSection': "moglix:" + this._activatedRoute.snapshot.params.brand + ": listing " + this._commonService.getSectionClick().toLowerCase(),
-                    'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+                    'totalProductCount':this._productListService?.productListingData.totalCount,
+                    'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest",
                 }
                 custData = {
                     'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',

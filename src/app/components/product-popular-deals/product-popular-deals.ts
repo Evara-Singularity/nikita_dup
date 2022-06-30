@@ -60,8 +60,8 @@ export class ProductPopularDealsComponent implements OnInit {
         this.productService.getProductPopular(this.categoryCode).subscribe((response: any) => {
             this.resultArray = Object.keys(response['taggedProducts']).map(index => {
                 return response['taggedProducts'][index];
-            });
-            this.setProductList(0,this.resultArray[0]);
+            }).filter((item) => item.productList.length !== 0); // removing Tags with 0 products
+            this.setProductList(0, this.resultArray[0]);        // to set first default value
         })
     }
     

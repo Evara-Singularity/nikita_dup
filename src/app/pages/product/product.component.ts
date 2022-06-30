@@ -237,6 +237,10 @@ export class ProductComponent implements OnInit, AfterViewInit
     productRFQInstance = null;
     @ViewChild("productRFQ", { read: ViewContainerRef })
     productRFQContainerRef: ViewContainerRef;
+    // ondemand loaded components for product RFQ update popup
+    productRFQUpdateInstance = null;
+    @ViewChild("productRFQUpdate", { read: ViewContainerRef })
+    productRFQUpdateContainerRef: ViewContainerRef;
     // ondemand loaded components for app Promo
     appPromoInstance = null;
     @ViewChild("appPromo", { read: ViewContainerRef })
@@ -1041,6 +1045,10 @@ export class ProductComponent implements OnInit, AfterViewInit
         if (this.productRFQInstance) {
             this.productRFQInstance = null;
             this.productRFQContainerRef.remove();
+        }
+        if (this.productRFQUpdateInstance) {
+            this.productRFQUpdateInstance = null;
+            this.productRFQUpdateContainerRef.remove();
         }
         if (this.youtubeModalInstance) {
             this.youtubeModalInstance = null;
@@ -2142,6 +2150,11 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         let data = this.processRFQGetQuoteData(user);
         let params = { customerId: user.userId, invoiceType: "retail" };
+        let product = {
+            url: this.productUrl,
+            productName: this.productName,
+            moq: this.productMinimmumQuantity,
+        };
         this.raiseRFQGetQuoteSubscription = this.commonService.getAddressList(params).subscribe(res =>
         {
             if (res['status'] && res['addressList'].length > 0) {
@@ -2153,6 +2166,8 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.productService.postBulkEnquiry(data).subscribe((response) =>
             {
                 if (response['statusCode'] == 200) {
+                    let rfqId = response['data'] ?? '';
+                    this.intiateRFQQuoteUpdate(product , rfqId);
                     this._tms.show({ type: 'success', text: response['statusDescription'] });
                     this.rfqQuoteRaised = true;
                     this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
@@ -2163,6 +2178,34 @@ export class ProductComponent implements OnInit, AfterViewInit
             {
                 this.rfqQuoteRaised = false;
             });
+        });
+    }
+
+    async intiateRFQQuoteUpdate(product, rfqid: any) {
+        const { ProductRfqUpdatePopupComponent } = await import(
+            "./../../components/product-rfq-update-popup/product-rfq-update-popup.component"
+        );
+
+        const factory = this.cfr.resolveComponentFactory(ProductRfqUpdatePopupComponent);
+        this.productRFQUpdateInstance = this.productRFQUpdateContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.productRFQUpdateInstance.instance["product"] = product;
+        this.productRFQUpdateInstance.instance["productUrl"] = this.productAllImages[0]['large'];
+        this.productRFQUpdateInstance.instance["enquiryId"] = rfqid['enquiryId'];
+        this.productRFQUpdateInstance.instance["rfqId"] = rfqid.enquiryItemList[0]['id'];
+        (
+            this.productRFQUpdateInstance.instance["isLoading"] as EventEmitter<boolean>
+        ).subscribe((loaderStatus) =>
+        {
+            this.toggleLoader(loaderStatus);
+        });
+        (
+            this.productRFQUpdateInstance.instance["onRFQUpdateSuccess"] as EventEmitter<string>
+        ).subscribe((status) => {
+            this.isRFQSuccessfull = true;
         });
     }
 
@@ -2214,11 +2257,11 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.rfqTotalValue = rfqQuantity * Math.floor(this.productPrice);
         });
         (
-            this.productRFQInstance.instance["onRFQSuccess"] as EventEmitter<boolean>
-        ).subscribe((status) =>
+            this.productRFQInstance.instance["rfqId"] as EventEmitter<boolean>
+        ).subscribe((rfqid) =>
         {
             this.analyticRFQ(true);
-            this.isRFQSuccessfull = true;
+            this.intiateRFQQuoteUpdate(product, rfqid);
         });
     }
 
@@ -2653,7 +2696,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                 const a = data.data.time.split(":");
                 this.globalToastInstance.instance["text"] =
                     "The same item has been ordered by you on " +
-                    new Date(data.data.date).toLocaleDateString("en-IN", options) +
+                    new Date(data.data.date).toLocaleDateString("en-IN", options as any) +
                     " at " +
                     (a[0] + ":" + a[1]) +
                     (a[0] < 12 ? " AM" : " PM");

@@ -22,7 +22,7 @@
         </div>
         <div class="card-desc">
             <p (click)="trackAndNavigateToProductPage(detail?.productUrl, detail?.product_msn, $event)" >
-                <a [routerLink]="detail?.productUrl" (click)="$event.stopPropagation();" >{{(detail?.product_name | slice:0:30) + (detail?.product_name > 30 ? "...":"")}} 
+                <a routerLink="{{'/' + detail?.productUrl}}" (click)="$event.stopPropagation();">{{(detail?.product_name | slice:0:30) + (detail?.product_name > 30 ? "...":"")}} 
                 </a>
             </p>
             <div class="orderqty clearfix">

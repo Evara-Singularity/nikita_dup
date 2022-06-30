@@ -1817,7 +1817,7 @@ export class ProductComponent implements OnInit, AfterViewInit
      {
          if (!this.popularDealsInstance && !this.productOutOfStock) {
              const { ProductPopularDealsComponent } = await import(
-                 "./../../components/product-popular-deals/product-popular-deals"
+                 "../../components/product-popular-deals/product-popular-deals.component"
              );
              const factory = this.cfr.resolveComponentFactory(ProductPopularDealsComponent);
              this.popularDealsInstance =

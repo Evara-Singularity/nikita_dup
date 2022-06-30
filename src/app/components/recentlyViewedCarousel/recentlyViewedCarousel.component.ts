@@ -14,7 +14,7 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { ProductsEntity } from '@app/utils/models/product.listing.search';
 import { ProductService } from '@app/utils/services/product.service';
 import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
-import { ProductCardSkeletonModule } from '@app/modules/product-card/product-card-skeleton/product-card-skeleton.module';
+import { ProductCardSkeletonModule } from '@app/modules/ui/skeletons/product-card-skeleton/product-card-skeleton.module';
 import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
 import { ProductCardHorizontalScrollModule } from '@app/modules/ui/product-card-horizontal-scroll/product-card-horizontal-scroll.module';
@@ -99,7 +99,7 @@ export class RecentlyViewedCarouselComponent {
 	imports: [
 		CommonModule,
 		RouterModule,
-		ProductCardHorizontalGridViewModule,
+		ProductCardVerticalGridViewModule,
 		ProductCardSkeletonModule,
 		ProductCardVerticalContainerModule,
 		ProductCardHorizontalScrollModule

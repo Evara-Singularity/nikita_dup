@@ -27,7 +27,6 @@ export class HomeExpandedHeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.isUserLogin)
     this.route.queryParams.subscribe(res => {
       this.searchValue = (res['search_query']) ? res['search_query'] : ''
     })

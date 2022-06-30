@@ -12,6 +12,7 @@ export class DashboardHeaderComponent implements OnInit {
   @Output() navigateToLogin$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() loadSearchNav$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() goBack$: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() loadBottomSheet$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() noOfCart: number = 0;
   @Input() title: string = 'Home';
   @Input() isUserLogin: boolean = false;

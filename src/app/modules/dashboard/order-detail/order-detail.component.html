@@ -14,14 +14,15 @@
         </div>
     </div>
 </div> -->
+
 <div class="card-boxed">
     <div class="card-upper">
         <div class="card-img">
             <img alt="" src="{{(detail?.productImg && detail?.productImg.length > 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
         </div>
         <div class="card-desc">
-            <p>
-                <a href="#">{{(detail?.product_name | slice:0:30) + (detail?.product_name > 30 ? "...":"")}} 
+            <p (click)="trackAndNavigateToProductPage(detail?.productUrl, detail?.product_msn, $event)" >
+                <a [routerLink]="detail?.productUrl" (click)="$event.stopPropagation();" >{{(detail?.product_name | slice:0:30) + (detail?.product_name > 30 ? "...":"")}} 
                 </a>
             </p>
             <div class="orderqty clearfix">
@@ -31,49 +32,97 @@
         </div>
     </div>
     <div class="card-bottom">
-        <div class="card-bottom-inner card-bottom-inner-order-dtl">
+        <div class="card-bottom-inner card-bottom-inner-order-dtl" *ngIf="!['CANCELLED'].includes(detail?.status)">
             <span class="order-track-line line-invisible"></span>
-            <span class="orderstatus"> 
-                <span [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'"> 
-                    <ng-container *ngIf="detail?.status != 'PROCESSING'">
-                        ORDERED & APPROVED : {{ detail?.dates.accepted.date }}
+            <span class="orderstatus">
+                <!-- [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'" -->
+                <span>
+                    <ng-container *ngIf="detail?.status != 'PROCESSING' && !statusListForReturnExchange.includes(detail?.status)">
+                        ORDERED & APPROVED <br />{{ detail?.dates.accepted.date }}
+                     <div class="track-id-info" *ngIf="(detail?.status==='DELIVERED' || detail?.status==='SHIPPED' ) && detail[ 'shipment_detail'] !='null' ">
+                        <span class="track_id ">Tracking ID: &nbsp;{{detail['shipment_detail']['awb']}}</span>
+                        <span class="track_id ">Courier By: &nbsp;{{detail['shipment_detail']['shipper_name']}}</span>
+                     </div>
                     </ng-container>
                     <ng-container *ngIf="detail?.status == 'PROCESSING'">
                         {{detail?.status}}
                     </ng-container>
+                
+                    <ng-container *ngIf="statusListForReturnExchange.includes(detail?.status)">
+                        DELIVERED<br />{{ detail?.dates.delivered.date }}
+                    </ng-container>
                 </span>
             </span>
         </div>
-        <div class="card-bottom-inner card-bottom-inner-order-dtl state-done">
-            <span class="order-track-line"></span>
-            <span class="orderstatus"> <span [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'">
-                <ng-container *ngIf="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING'">
-                    ESTIMATED DELIVERY :
-                    {{ detail?.dates.delivered.date }}
-                </ng-container>
-                <ng-container *ngIf="detail?.status !== 'ACCEPTED' && detail?.status !== 'PROCESSING'">
-                    {{detail?.status}}
-                    <ng-container *ngIf="detail && detail?.dates.delivered.flag">
-                        : {{ detail?.dates.delivered.date }}
+        <div class="card-bottom-inner card-bottom-inner-order-dtl " [ngClass]="{'state-done': detail?.status != 'CANCELLED'}" >
+            <span class="order-track-line gray-bg" [ngClass]="{'gray-bg': (detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING'), 'red-bg': (detail?.status == 'CANCELLED' ||  detail?.status =='PAYMENT FAILED'), 'yellow-bg': statusListForReturnExchange.includes(detail?.status) }" ></span>
+            <span class="orderstatus">
+                <!-- [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'" -->
+                <span>
+                    <ng-container *ngIf="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING'">
+                        ESTIMATED DELIVERY <br />
+                        &nbsp;{{ detail?.dates.delivered.date }}
                     </ng-container>
-                </ng-container>
-            </span></span>
-            <span *ngIf="detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED'" class="orderstatus" (click)="fetchTrackingData(detail)">TRACK ORDER <i class="icon-next"></i></span>
+                    <ng-container *ngIf="!(detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING')" >
+                        {{detail?.status}}
+                        <ng-container *ngIf="detail && detail?.dates.delivered.flag">
+                            <br/>{{ detail?.dates.delivered.date }}
+                        </ng-container>
+                    </ng-container>
+                </span>
+            </span>
+            
+            <span *ngIf="detail?.status !== 'DELIVERED' && detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED'" class="track-order-cta" (click)="fetchTrackingData(detail)">
+                TRACK ORDER 
+                <i class="icon-next"></i>
+            </span>
         </div>
         <!-- Return Policy added Yajya please check css for the same  -->
-        <div style="overflow: hidden; padding: 10px;">
-            <p *ngIf="detail && detail?.dates.delivered.flag && showReturn" class="policyTxt">Return Policy valid till {{returnEndDate}}</p>
-            <p *ngIf="detail?.dates.delivered.flag &&  !showReturn" class="policyTxt">Return Policy ended on {{returnEndDate}}
-            </p>
-        </div>
+
+ 
+
     </div>
 </div>
 
-<div class="need-help-strip pad-10 mar-15" *ngIf="detail?.status !== 'CANCELLED'">
-    <span class="cncl-item" *ngIf="detail && detail?.cancel_active" (click)="openPopup='cancel' ;getDataforCancel(detail?.product_name,detail?.price,detail?.customer_id,detail?.item_id,detail?.status); ">CANCEL ITEM</span>
-    <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span>
+<!-- {{ detail && detail.status==='DELIVERED' | json }}
+{{ detail.requestType !='return' && detail.requestType !='exchange' | json }}
+{{ showReturn | json }}
+{{ detail.show_return_exchange | json }} -->
+
+<div class="need-help-parent" *ngIf="detail && detail.status==='DELIVERED' && detail.requestType !='return' && detail.requestType !='exchange' && showReturn && detail.show_return_exchange " >
+    <div class="need-help-strip">
+        <div>
+            <span class="cncl-item"
+                (click)="openPopup='return' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status); ">RETURN</span>
+            <span class="cncl-item"
+                (click)="openPopup='return' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status); ">EXCHANGE</span>
+        </div>
+        
+        <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span>
+    </div>
+    <div class="need-help-strip-btm" *ngIf="detail && detail.dates.delivered.flag" >
+        <p *ngIf="detail.dates.delivered.flag && showReturn">Return Policy valid till {{returnEndDate}}</p>
+    </div>
 </div>
 
+<div class="need-help-parent" *ngIf="(showReturn || (detail && detail.show_return_exchange)) && detail.dates.delivered.flag && !showReturn" >
+    <div class="need-help-strip">
+        <span class="get-in-touch-txt" *ngIf="detail.dates.delivered.flag &&  !showReturn" >Return Policy ended on {{returnEndDate}}</span>
+        <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span>
+    </div>
+</div>
+
+
+<div class="need-help-parent" *ngIf="detail?.status.toLowerCase() !== 'cancelled' && detail?.status.toLowerCase() != 'payment failed' && detail?.status.toLowerCase() != 'delivered'" >
+    <div class="need-help-strip">
+        <span class="cncl-item" *ngIf="detail && detail?.cancel_active"
+            (click)="openPopup='cancel' ;getDataforCancel(detail?.product_name,detail?.price,detail?.customer_id,detail?.item_id,detail?.status); ">CANCEL
+            ITEM</span>
+        <span class="get-in-touch-txt" *ngIf="detail && !detail?.cancel_active && !statusListForReturnExchange.includes(detail?.status)"  >Item can't be cancelled. You can raise return request after delivery.</span>
+        <span class="get-in-touch-txt" *ngIf="detail && !detail?.cancel_active && statusListForReturnExchange.includes(detail?.status) " >Get in touch with us in case you face any issues.</span>
+        <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span>
+    </div>
+</div>
 
 <!-- <ng-container *ngIf="detail && detail?.requestType !=='cancel' && detail?.status !=='PAYMENT FAILED' && detail?.status !=='
 AWAITING PAYMENT CONFIRMATION' && !customerReturn">
@@ -133,63 +182,44 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
             </div>
         </div>
     </div>
-    <div *ngIf="showBuyAgain_Invoice(detail[ 'status']) " class="invoiceSection ">
-        <a [href]="detail?.customer_invoice " target="_blank ">
-            <span><img src="{{imageAssetURL}}assets/img/file-download-line.svg">DOWNLOAD INVOICE</span></a>
-    </div>
+    
 </ng-container> -->
-
-
+<div *ngIf="detail && showBuyAgain_Invoice(detail[ 'status']) " class="invoiceSection ">
+    <a [href]="detail?.customer_invoice " target="_blank ">
+        <img src="{{imageAssetURL}}assets/img/bill-fill.svg">
+        <span class="pwa-text">DOWNLOAD INVOICE</span>
+    </a>
+</div>
 <!-- order cancellation pop up  -->
-<app-pop-up *ngIf="openPopup && openPopup=='cancel' " (outData$)="outData($event) " class="bs-popup " [headerType]="'pop-up-header'" [data]="{selector: 'openPopup',headerText: ' Cancel Order'} ">
-    <div content>
-        <div class="cancelOrderBox pwa-row material-form" [ngClass]="{ 'show': (cancel_step && cancel_step==1 ), 'hide': cancel_step !==1 } ">
-            <!-- <div class="outline-input-label mb-25 pos-rel ">
-                <label class="indusrty show ">
-                    <select [(ngModel)]="reason_id " class="select-form ">
-                        <option [ngValue]="undefined ">Select cancel reason</option>
-                        <option *ngFor="let item of cancelReasons; let i=i ndex " [ngValue]="item.id ">{{item.text}}
-                        </option>
-                    </select>
-                    <i class="icon-down "></i>
-                </label>
-            </div> -->
-            <div class="outline-input-label mb-25 pos-rel">
-                <label class="indusrty show" [class.is-focus]="reason_id">
-                    <select [(ngModel)]="reason_id " class="select-form">
-                        <option *ngFor="let item of cancelReasons; let i=i ndex " [ngValue]="item.id ">{{item.text}}
-                        </option>
-                    </select>
-                    <span class="label">Reason for Cancellation</span>
-                </label>
+<app-pop-up *ngIf="openPopup && openPopup=='cancel' " (outData$)="outData($event) " class="bs-popup "
+    [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup',headerText: 'Request Cancellation'} ">
+    <div class="content-for-popups" content>
+        <div class="cancelOrderBox pwa-row"
+            [ngClass]="{ 'show': (cancel_step && cancel_step==1 ), 'hide': cancel_step !==1 } ">
+            <h4 class="reason-text mt-15">Reason For Cancellation</h4>
+            <div class="material-form bg-white pad-15 br-8">
+                <div class="outline-input-label mb-25 pos-rel">
+                    <label class="indusrty show" [class.is-focus]="reason_id">
+                        <select [(ngModel)]="reason_id " class="select-form" id="select-with-drop-icon">
+                            <option *ngFor="let item of cancelReasons; let i=i ndex " [ngValue]="item.id ">{{item.text}}
+                            </option>
+                        </select>
+                        <span class="label">Reason for Cancellation</span>
+                        <i class="icon-down"></i>
+                    </label>
+                </div>
+                <div class="outline-input-label pos-rel mb-0">
+                    <label class="indusrty show ">
+                        <textarea class="large-height"></textarea>
+                        <span class="label">Add Comment (Optional)</span>
+                    </label>
+                </div>
+                <div class="fixed-bottom-cta">
+                    <button class="btn primary-full-btn" (click)="reason_id ? openAlert=true : '' ">SUBMIT REQUEST</button>
+                </div> 
             </div>
-
-            <div class="outline-input-label mb-25 pos-rel ">
-                <label class="indusrty show ">
-                    <input id="long-input">
-                    <span class="label">Add a comment</span>
-                </label>
-            </div>
-
-            <!-- <div class="outline-input-label mb-25 w-48">
-                <label >
-                    <select formControlName="idCountry"  disabled>
-                        <option selected="selected"  >
-                           sachin</option>
-                           <option selected="selected"  >
-                            sachin</option>
-                            <option selected="selected" >
-                                sachin</option>
-                    </select>
-                    <i class="icon-down"></i>
-                    <span class="label">Country*</span>
-                </label>
-                <p class="error-txt">
-                    Kindly select your country</p>
-            </div> -->
-            <h4 class="mt-15 mb-10 ">Comments(optional)</h4>
-            <textarea class="commentBox outline-input-label mb-25" maxlength="100"></textarea>
-            <button class="bottomBtn confirmbtn btn " (click)="reason_id ? openAlert=true : '' ">Confirm</button>
+            <h4 class="reason-text mt-15">Refund Status</h4>
+            <p>There will be no refund as the order is purchased using Cash-On-Delivery</p>
             <div class="alert-box " *ngIf="openAlert ">
                 <div class="overlay "></div>
                 <div class="content-area ">
@@ -206,218 +236,243 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
         </div>
 
         <div class="cancelOrderBox pwa-row" [ngClass]="{ 'show': cancel_step==2 , 'hide': cancel_step !==2 } ">
-            <div class="returnedOrder orderdtBox ">
-                <div class="orderdtBoxinner ">
-                    <div class="orderdtDesc clearfix ">
-                        <div class="orderproImg ">
-                            <img src="{{(detail?.productImg && detail?.productImg.length> 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
+            <div class="returnedOrder order-details-for-cancelled orderdtBox">
+                <div class="cancelorder-details">
+                    <div class="cancelorder-upper">
+                        <div class="card-img">
+                            <img
+                                src="{{(detail?.productImg && detail?.productImg.length> 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
                         </div>
-
-                        <div class="orderproDesc">
+                        <div class="card-desc">
                             <p>{{detail?.product_name}}</p>
                             <div class="orderqty clearfix mt-10">
-                                <span class="priceright">Order Cancelled :
-                                    <span>{{currentDate | date: 'd-MMMM-y'}}</span>
-                                </span>
-                                <span class="priceright">Price Inclusive of GST
-                                    <span>&#8377; {{detail?.price}}</span>
+                                <span class="qtyleft"> <span>&#8377; {{detail?.price}}</span> <span class="qtynum">(1
+                                        QTY)</span>
                                 </span>
                             </div>
                         </div>
-
                     </div>
-                    <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'">Your order has been cancelled.
+                    <div class="cancelorder-bottom">
+                        <div class="cancelorder-bottom-inner">
+                            <i class="icon-circle-delete del-ico red-txt"></i>
+                            <div class="cancelorder-bottom-inner-details">
+                                <span class="block-txt red-txt">Cancelled :
+                                    <span class="grey-txt">on {{currentDate | date: 'd-MMMM-y'}}</span>
+                                </span>
+                                <span class="grey-txt">Tracking Details</span>
+                            </div>
+                        </div>
+                        <button class="btn tertiary-btn">BUY AGAIN</button>
+                    </div>
+                    <!-- <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'">Your order has been cancelled.
                     </p>
-                    <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'">Your order has been cancelled the amount will be reflected in your account within 7-10 business days</p>
+                    <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'">Your order has been cancelled the amount will be reflected in your account within 7-10 business days</p> -->
                 </div>
+                
+            </div>
+            <div class="need-help-strip pad-10 mt-15">
+                <span class="get-in-touch-txt">Get in touch with us in case you face any issues</span>
+                <span class="need-help" [routerLink]="[ '/faq'] "
+                    [queryParams]="{redirectUrl:pageUrl}">NEED&nbsp;HELP?</span>
             </div>
         </div>
     </div>
 </app-pop-up>
 
 <!-- final message after confirmation -->
-<app-pop-up *ngIf="openPopup && openPopup=='return'" (outData$)="outData($event)" class="bs-popup returnPopup" [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup', headerText:' Return Order'}">
-    <div class="content-popup" content>
+<app-pop-up *ngIf="openPopup && openPopup=='return'"   (outData$)="outData($event)" [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup', headerText:' Return/Exchange Order'}">
+    <div class="content-popup returnForm" content>
         <form [formGroup]="returnForm" enctype="multipart/form-data" (ngSubmit)="returnProduct(returnForm.value, returnForm.valid)" class="form-horizontal">
-            <div class="cancelOrderBox material-form">
-
-                <div [ngClass]="{'show': step == 1, 'hide': step !== 1}">
-                    <div class="input-field">
-                        <label class="indusrty show pos-rel" [class.is-focus]="actionType.value.length > 0">
-                            <span class="label">Select Action*</span>
-                            <select formControlName="requestType" (change)=changeRequestType($event) #actionType
-                                class="select-form">
-                                <!-- <option value="">Select</option> -->
-                                <option value="return">Return</option>
-                                <option value="exchange">Exchange </option>
-                            </select>
-                            <i class="icon-down"></i>
-                        </label>
-                        <p *ngIf="returnForm.controls['requestType']?.touched && !returnForm.controls['requestType'].valid && returnForm.controls['requestType'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+            <div class="material-form pwa-row">
+                <div class="pwa-col-12">
+                    <!-- return step 1 -->
+                    <div [ngClass]="{'show': step == 1, 'hide': step !== 1}">
+                        <div class="outline-input-label">
+                            <label class="indusrty show" [class.is-focus]="actionType.value.length > 0">
+                                <select formControlName="requestType" (change)=changeRequestType($event) #actionType
+                                    class="select-form">
+                                    <!-- <option value="">Select</option> -->
+                                    <option value="return">Return</option>
+                                    <option value="exchange">Exchange </option>
+                                </select>
+                                <i class="icon-down"></i>
+                                <span class="label">Select Action*</span>
+                            </label>
+                            <p *ngIf="returnForm.controls['requestType']?.touched && !returnForm.controls['requestType'].valid && returnForm.controls['requestType'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                        </div>
+                        <div class="outline-input-label">
+                            <label class="indusrty show" [class.is-focus]="reason.value.length > 0">
+                                <select formControlName="reason" #reason class="select-form">
+                                    <!-- <option value="">Select your reason</option> -->
+                                    <option *ngFor="let returnReason of returnReasons" [value]="returnReason.text">
+                                        {{returnReason.text}}</option>
+                                </select>
+                                <span class="label">Select {{reason_id}} Reason*</span>
+                                <i class="icon-down"></i>
+                            </label>
+                            <p *ngIf="returnForm.controls['reason']?.touched && !returnForm.controls['reason'].valid && returnForm.controls['reason'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                        </div>
+    
+                        <div class="outline-input-label">
+                            <label class="indusrty show pos-rel" [class.is-focus]="quantity.value.length > 0">
+                                <input type="number" formControlName="quantity" min="1" #quantity>
+                                <span class="label">Quantity*</span>
+                                <!-- <i class="icon-down"></i> -->
+                            </label>
+                            <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                            <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.min" class="f-size-10 text-red text-400 absolute top-33 error-txt">Enter valid quantity</p>
+                            <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.max" class="f-size-10 text-red text-400 absolute top-33 error-txt">Maximum quantity exceeded</p>
+    
+                        </div>
+                        <div class="outline-input-label">
+                            <label [class.is-focus]="commentMsg.value.length > 0">
+                                <textarea class="large-height" formControlName="comment" #commentMsg></textarea>
+                                <span class="label">Comment</span>
+                            </label>
+                        </div>
+    
+                        <div class="clearfix">
+                            <!-- <span class="label"></span> -->
+                            <h3 class="heading-4">Upload Photos* </h3>
+                            <p class="photoNotetxt">
+                                <span>Max. 8 images with jpeg, jpg & png formats allowed.
+                                    Please include images of <strong>(1) Exterior Packaging/Box &nbsp;(2) Interior
+                                        Packaging/Box or Bubble Wrap &nbsp;(3) Complete Product &nbsp;(4) Shipping
+                                        label</strong></span></p>
+                            <label class="upload-img" [class.imgDisable]="itemImages.length > 7">
+                                <input formControlName="productImage" type="file" class="hide" accept="image/*"
+                                    (change)="addItemImage($event)">
+                                <i class="icon-expand"></i>
+                            </label>
+                            <label class="upload-img" *ngFor="let itemImage of itemImages; let i = index">
+                                <img src="{{imagePath}}web/dist/assets/img/placeholder.svg" appImageToSrc
+                                    [itemImage]="itemImage['file']">
+                                <i class="icon-circle-delete" (click)="removeItemImage(i)"></i>
+                            </label>
+                            <p *ngIf="showFileError" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory
+                            </p>
+    
+                        </div>
+    
+                        <!-- {{returnForm.controls['quantity'].valid}} -->
+                        <button class="bottomBtn confirmbtn btn" *ngIf="step==1" [disabled]="!returnForm.controls['quantity'].valid || !returnForm.controls['reason'].valid || !returnForm.controls['requestType'].valid || this.itemImages.length == 0" (click)="returnForm.controls['quantity'].valid && returnForm.controls['reason'].valid && returnForm.controls['requestType'].valid && this.itemImages.length>0 ? step = 2 : ''">NEXT</button>
+    
                     </div>
-                    <div class="input-field">
-                        <label class="indusrty show pos-rel" [class.is-focus]="reason.value.length > 0">
-                            <span class="label">Select {{reason_id}} Reason*</span>
+                    <!-- Bank Details for Return -->
+                    <ng-container *ngIf="returnForm['controls']['bankDetail']">
+                        <div formGroupName="bankDetail" class="bankdetail"  *ngIf="step == 2">
+                            <div class="set-two-form">
+                                <div class="outline-input-label">
+                                    <label class="pos-rel" [class.is-focus]="bankName.value.length > 0">
+                                        <input type="text" onPaste="return false" onCopy="return false"
+                                            formControlName="bankName" #bankName>
+                                        <span class="label">Bank Name*</span>
+                                    </label>
+                                    <p *ngIf="returnForm?.get['bankDetail']?.get['bankName']?.touched && !returnForm?.get['bankDetail']?.get['bankName'].valid && returnForm?.get['bankDetail']?.get['bankName']?.errors?.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
 
-                            <select formControlName="reason" #reason class="select-form">
-                                <!-- <option value="">Select your reason</option> -->
-                                <option *ngFor="let returnReason of returnReasons" [value]="returnReason.text">
-                                    {{returnReason.text}}</option>
-                            </select>
-                            <i class="icon-down"></i>
-                        </label>
-                        <p *ngIf="returnForm.controls['reason']?.touched && !returnForm.controls['reason'].valid && returnForm.controls['reason'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
-                    </div>
+                                    <p *ngIf="returnForm['controls']['bankDetail']?.get['bankName']?.touched && !returnForm?.get['bankDetail']?.get['bankName'].valid && returnForm?.get['bankDetail']?.get['bankName'].errors.invalidBankName && returnForm?.get['bankDetail']?.get['bankName'].value.length>0"
+                                        class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Bank name is invalid
+                                    </p>
+                                </div>
 
-                    <div class="input-field">
-                        <label class="indusrty show pos-rel" [class.is-focus]="quantity.value.length > 0">
-                            <span class="label">Select Quantity*</span>
-                            <input type="number" formControlName="quantity" min="1" #quantity>
-                            <!-- <i class="icon-down"></i> -->
-                        </label>
+                                <div class="outline-input-label">
+                                    <label class="pos-rel" [class.is-focus]="IFSCCode.value.length > 0">
+                                        <input type="text" style="text-transform:uppercase" onPaste="return false"
+                                            onCopy="return false" formControlName="ifscCode" #IFSCCode>
+                                        <span class="label">IFSC Code(11-digit)*</span>
+                                    </label>
+                                    <p *ngIf="returnForm?.get['bankDetail']?.get['ifscCode']?.touched && !returnForm?.get['bankDetail']?.get['ifscCode'].valid && returnForm?.get['bankDetail']?.get['ifscCode'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
 
-                        <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
-                        <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.min" class="f-size-10 text-red text-400 absolute top-33 error-txt">Enter valid quantity</p>
-                        <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.max" class="f-size-10 text-red text-400 absolute top-33 error-txt">Maximum quantity exceeded</p>
+                                    <p *ngIf="returnForm['controls']['bankDetail']?.get['ifscCode']?.touched && !returnForm?.get['bankDetail']?.get['ifscCode'].valid && returnForm?.get['bankDetail']?.get['ifscCode'].errors.invalidIfsc && returnForm?.get['bankDetail']?.get['ifscCode'].value.length>0"
+                                        class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Only alpha-numerical values allowed</p>
+                                </div>
 
-                    </div>
-                    <div class="input-field commentFld mb-10">
-                        <label class="pos-rel" [class.is-focus]="commentMsg.value.length > 0">
-                            <textarea formControlName="comment" #commentMsg></textarea>
-                            <span class="label">Comment</span>
-                        </label>
-                    </div>
+                                <div class="outline-input-label">
+                                    <label class="pos-rel" [class.is-focus]="accountName.value.length > 0">
+                                        <input type="text" style="text-transform:uppercase" onPaste="return false"
+                                            onCopy="return false" formControlName="acountName" #accountName>
+                                        <span class="label">Account Holder Name*</span>
+                                    </label>
+                                    <p *ngIf="returnForm?.get['bankDetail']?.get['acountName']?.touched && !returnForm?.get['bankDetail']?.get['acountName'].valid && returnForm?.get['bankDetail']?.get['acountName'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
 
-                    <div class="clearfix">
-                        <span class="label"></span>
-                        <p class="photoNotetxt">Upload Photo* <span>Max. 8 images with jpeg, jpg & png formats allowed.
-                                Please include images of <strong>(1) Exterior Packaging/Box &nbsp;(2) Interior
-                                    Packaging/Box or Bubble Wrap &nbsp;(3) Complete Product &nbsp;(4) Shipping
-                                    label</strong></span></p>
-                        <label class="upload-img" [class.imgDisable]="itemImages.length > 7">
-                            <input formControlName="productImage" type="file" class="hide" accept="image/*"
-                                (change)="addItemImage($event)">
-                            <i class="icon-expand"></i>
-                        </label>
-                        <label class="upload-img" *ngFor="let itemImage of itemImages; let i = index">
-                            <img src="{{imagePath}}web/dist/assets/img/placeholder.svg" appImageToSrc
-                                [itemImage]="itemImage['file']">
-                            <i class="icon-circle-delete" (click)="removeItemImage(i)"></i>
-                        </label>
-                        <p *ngIf="showFileError" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory
-                        </p>
+                                    <p *ngIf="returnForm['controls']['bankDetail']?.get['acountName']?.touched && !returnForm?.get['bankDetail']?.get['acountName'].valid && returnForm?.get['bankDetail'].controls['acountName'].errors.invalidBankName && returnForm?.get['bankDetail']?.get['acountName'].value.length>0"
+                                        class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter a valid name</p>
 
-                    </div>
 
-                    <!-- {{returnForm.controls['quantity'].valid}} -->
-                    <button class="bottomBtn confirmbtn btn" *ngIf="step==1" [disabled]="!returnForm.controls['quantity'].valid || !returnForm.controls['reason'].valid || !returnForm.controls['requestType'].valid || this.itemImages.length == 0" (click)="returnForm.controls['quantity'].valid && returnForm.controls['reason'].valid && returnForm.controls['requestType'].valid && this.itemImages.length>0 ? step = 2 : ''">NEXT</button>
+                                </div>
 
+                                <div class="outline-input-label">
+                                    <label class="pos-rel" [class.is-focus]="accountNum.value.length > 0">
+                                        <input type="text" onPaste="return false" onCopy="return false"
+                                            formControlName="acountNo" #accountNum>
+                                        <span class="label">Account Number*</span>
+                                    </label>
+                                    <p *ngIf="returnForm?.get['bankDetail']?.get['acountNo']?.touched && !returnForm?.get['bankDetail']?.get['acountNo'].valid && returnForm?.get['bankDetail']?.get['acountNo'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+
+                                    <p *ngIf="returnForm['controls']['bankDetail']?.get['acountNo']?.touched && !returnForm?.get['bankDetail']?.get['acountNo'].valid && returnForm?.get['bankDetail']?.get['acountNo'].errors.invalidAccount && returnForm?.get['bankDetail']?.get['acountNo'].value.length>0"
+                                        class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter a valid account number</p>
+                                </div>
+                                <div class="clearfix">
+                                    <p class="photoNotetxt">Upload Cheque (optional) <span class="note-txt">jpeg, jpg & png
+                                            formats allowed</span></p>
+                                    <label class="upload-img">
+                                        <input type="file" class="hide" accept="image/*" formControlName="chequeUrl"
+                                            (change)="addChequeImage($event)">
+                                        <i class="icon-expand"></i>
+                                    </label>
+
+                                    <label class="upload-img" *ngIf="chequeImage">
+                                        <img src="{{imagePath}}web/dist/assets/img/placeholder.svg" appImageToSrc
+                                            [itemImage]="chequeImage['file']">
+                                        <i class="icon-circle-delete" (click)="removeChequeImage()"></i>
+                                    </label>
+                                </div>
+                                <!-- <i class="icon-circle-next prev active" (click)="step = 1"></i> -->
+                            </div>
+                        </div>
+                    </ng-container>
                 </div>
-                <ng-container *ngIf="returnForm['controls']['bankDetail']">
-                    <div formGroupName="bankDetail" class="bankdetail" *ngIf="step == 2">
-                        <div class="set-two-form">
-                            <div class="input-field">
-                                <label class="pos-rel" [class.is-focus]="bankName.value.length > 0">
-                                    <input type="text" onPaste="return false" onCopy="return false"
-                                        formControlName="bankName" #bankName>
-                                    <span class="label">Bank Name*</span>
-                                </label>
-                                <p *ngIf="returnForm?.get['bankDetail']?.get['bankName']?.touched && !returnForm?.get['bankDetail']?.get['bankName'].valid && returnForm?.get['bankDetail']?.get['bankName']?.errors?.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
-
-                                <p *ngIf="returnForm['controls']['bankDetail']?.get['bankName']?.touched && !returnForm?.get['bankDetail']?.get['bankName'].valid && returnForm?.get['bankDetail']?.get['bankName'].errors.invalidBankName && returnForm?.get['bankDetail']?.get['bankName'].value.length>0"
-                                    class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Bank name is invalid
+            </div>
+            <!-- Return Confirmation State -->
+            <div class="confirmStatusBox material-form" [ngClass]="{'show': step == 3, 'hide': step !== 3}">
+                <form [formGroup]="returnForm" class="form-horizontal">
+                    <div class="confirmStatusCard">
+                        <div class="card-image">
+                            <img src="{{(detail?.productImg && detail?.productImg.length > 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}" width="100" height="100" alt="imagename" />
+                        </div>
+                            <div class="card-details">
+                            <div class="prod-name">
+                                <p class="">{{detail?.product_name}}</p>
+                                <p>
+                                    <span class="prod-price">₹{{detail?.price}}</span>&nbsp;({{detail?.Quantity}}&nbsp;Qty)
                                 </p>
                             </div>
-
-                            <div class="input-field">
-                                <label class="pos-rel" [class.is-focus]="IFSCCode.value.length > 0">
-                                    <input type="text" style="text-transform:uppercase" onPaste="return false"
-                                        onCopy="return false" formControlName="ifscCode" #IFSCCode>
-                                    <span class="label">IFSC Code(11-digit)*</span>
-                                </label>
-                                <p *ngIf="returnForm?.get['bankDetail']?.get['ifscCode']?.touched && !returnForm?.get['bankDetail']?.get['ifscCode'].valid && returnForm?.get['bankDetail']?.get['ifscCode'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
-
-                                <p *ngIf="returnForm['controls']['bankDetail']?.get['ifscCode']?.touched && !returnForm?.get['bankDetail']?.get['ifscCode'].valid && returnForm?.get['bankDetail']?.get['ifscCode'].errors.invalidIfsc && returnForm?.get['bankDetail']?.get['ifscCode'].value.length>0"
-                                    class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Only alpha-numerical values allowed</p>
+                            </div>  
+                    </div>
+                    <div class="confirmStatusCard-bottom">
+                        <i class="icon-check-active green-txt"></i>
+                        <div class="card-inner">
+                            <div class="">
+                                <span>
+                                    <span class="status font-bold"> Return Done </span>
+                                    <span class="grey-txt">on {{currentDate | date: 'd-MMMM-y'}}</span>
+                                </span>
                             </div>
-
-                            <div class="input-field">
-                                <label class="pos-rel" [class.is-focus]="accountName.value.length > 0">
-                                    <input type="text" style="text-transform:uppercase" onPaste="return false"
-                                        onCopy="return false" formControlName="acountName" #accountName>
-                                    <span class="label">Account Holder Name*</span>
-                                </label>
-                                <p *ngIf="returnForm?.get['bankDetail']?.get['acountName']?.touched && !returnForm?.get['bankDetail']?.get['acountName'].valid && returnForm?.get['bankDetail']?.get['acountName'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
-
-                                <p *ngIf="returnForm['controls']['bankDetail']?.get['acountName']?.touched && !returnForm?.get['bankDetail']?.get['acountName'].valid && returnForm?.get['bankDetail'].controls['acountName'].errors.invalidBankName && returnForm?.get['bankDetail']?.get['acountName'].value.length>0"
-                                    class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter a valid name</p>
-
-
-                            </div>
-
-                            <div class="input-field">
-                                <label class="pos-rel" [class.is-focus]="accountNum.value.length > 0">
-                                    <input type="text" onPaste="return false" onCopy="return false"
-                                        formControlName="acountNo" #accountNum>
-                                    <span class="label">Account Number*</span>
-                                </label>
-                                <p *ngIf="returnForm?.get['bankDetail']?.get['acountNo']?.touched && !returnForm?.get['bankDetail']?.get['acountNo'].valid && returnForm?.get['bankDetail']?.get['acountNo'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
-
-                                <p *ngIf="returnForm['controls']['bankDetail']?.get['acountNo']?.touched && !returnForm?.get['bankDetail']?.get['acountNo'].valid && returnForm?.get['bankDetail']?.get['acountNo'].errors.invalidAccount && returnForm?.get['bankDetail']?.get['acountNo'].value.length>0"
-                                    class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter a valid account number</p>
-                            </div>
-                            <div class="clearfix">
-                                <p class="photoNotetxt">Upload Cheque (optional) <span class="note-txt">jpeg, jpg & png
-                                        formats allowed</span></p>
-                                <label class="upload-img">
-                                    <input type="file" class="hide" accept="image/*" formControlName="chequeUrl"
-                                        (change)="addChequeImage($event)">
-                                    <i class="icon-expand"></i>
-                                </label>
-
-                                <label class="upload-img" *ngIf="chequeImage">
-                                    <img src="{{imagePath}}web/dist/assets/img/placeholder.svg" appImageToSrc
-                                        [itemImage]="chequeImage['file']">
-                                    <i class="icon-circle-delete" (click)="removeChequeImage()"></i>
-                                </label>
-                            </div>
-                            <!-- <i class="icon-circle-next prev active" (click)="step = 1"></i> -->
                         </div>
+                        <button class="btn tertiary-btn">BUY AGAIN</button>
                     </div>
-                </ng-container>
-                <div>
-                    <div class="cancelOrderBox material-form">
-                        <form [formGroup]="returnForm" class="form-horizontal">
-                            <div class="" class="returnwrap" [ngClass]="{'show': step == 3, 'hide': step !== 3}">
-                                <div class="cancitem clearfix">
-                                    <img src="{{(detail?.productImg && detail?.productImg.length > 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}" width="100" height="100" alt="imagename" />
-                                    <div class="itemname">
-                                        <h3 class="">{{detail?.product_name}}</h3>
-                                        <p class="mb-10">Qty :
-                                            <span class="text-500">{{detail?.Quantity}}</span>
-                                        </p>
-                                        <p>Price :
-                                            <span class="text-500 price">₹ {{detail?.price}}</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="returnMesg clearfix">
-                                    <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'" class="light-txt">Your order has been Returned.</p>
-                                    <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'" class="light-txt">Your order has been Returned the amount will be reflected in your account within 7-10 business days once the product reaches to our fulfillment center</p>
-                                    <span class="f-left note">Note :</span>
-                                    <p class="f-left">Please return the package in the same condition as received</p>
-                                </div>
-                            </div>
-                        </form>
+                    <div class="returnMesg clearfix">
+                        <!-- <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'" class="light-txt">Your order has been Returned.</p> -->
+                        <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'" class="light-txt">Your order has been Returned the amount will be reflected in your account within 7-10 business days once the product reaches to our fulfillment center</p>
+                        <span class="f-left note">Note :</span>
+                        <p class="f-left">Please return the package in the same condition as received</p>
                     </div>
-                </div>
-
-                <button class="continue bottomBtn white-bg" (click)="navigateTo('/')" *ngIf="step == 3">Continue</button>
-                <div class="bottomBar" [ngClass]="{'show': step == 2 || !returnForm['controls']['bankDetail'], 'hide': step !== 2}">
-                    <i class="icon-back" *ngIf="step==2" (click)="step = 1" id="icon-profile"></i>
-                    <button type="submit" [style.width.%]="!returnForm['controls']['bankDetail'] ? 100 : 85" class="confirmbtn btn" type="submit" [disabled]="!returnForm.valid || this.itemImages.length == 0">Confirm</button>
-                </div>
-
+                </form>
+            </div>
+            <button class="primary-full-btn" (click)="navigateTo('/')" *ngIf="step == 3">Continue</button>
+            <div class="fixed-bottom-cta" [ngClass]="{'show': step == 2 || !returnForm['controls']['bankDetail'], 'hide': step !== 2}">
+                <i class="icon-back" *ngIf="step==2" (click)="step = 1" id="icon-profile"></i>
+                <button type="submit" [style.width.%]="!returnForm['controls']['bankDetail'] ? 100 : 85" class="btn primary-full-btn" type="submit" [disabled]="!returnForm.valid || this.itemImages.length == 0">Confirm</button>
             </div>
         </form>
     </div>
@@ -469,7 +524,6 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                 {{detail?.address.shipping_address.state}}</span>
             <span>Mobile: {{detail?.address.shipping_address.phone}}</span>
         </div>
-
     </div>
     <div class="mt-10 orderaddressBox pwa-row" *ngIf="detail && detail?.address.billing_address">
         <h3>Billing address</h3>

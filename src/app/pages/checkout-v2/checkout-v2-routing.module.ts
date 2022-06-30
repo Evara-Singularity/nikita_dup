@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { IsNotAuthenticatedCheckoutLogin } from '@app/utils/guards/checkout-auth.guard';
+import { IsCartWithItemsGuard } from '@app/utils/guards/checkout-items.guard';
 import { IsAuthenticatedCheckoutLogin } from '@app/utils/guards/checkout-login.guard';
 import { CheckoutV2Component } from './checkout-v2.component';
 
@@ -46,7 +47,7 @@ const routes: Routes = [
       {
         path: 'address',
         loadChildren: () => import('./checkout-address/checkout-address.module').then((m) => m.CheckoutAddressModule),
-        canActivate: [IsAuthenticatedCheckoutLogin],
+        canActivate: [IsAuthenticatedCheckoutLogin, IsCartWithItemsGuard],
         data: {
 					footer: false,
 					title: 'Checkout',
@@ -56,7 +57,7 @@ const routes: Routes = [
       {
         path: 'payment',
         loadChildren: () => import('./checkout-payment/checkout-payment.module').then((m) => m.CheckoutPaymentModule),
-        canActivate: [IsAuthenticatedCheckoutLogin],
+        canActivate: [IsAuthenticatedCheckoutLogin, IsCartWithItemsGuard],
         data: {
 					footer: false,
 					title: 'Payment',

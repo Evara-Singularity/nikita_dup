@@ -33,6 +33,11 @@ export class CustomPromoCodeComponent {
         return this._cartService.appliedPromoCode && (this.appliedPromocode === this._cartService.appliedPromoCode)
     }
 
+    get canApplyCode()
+    {
+        return this.appliedPromocode ? true : false;
+    }
+
     ngOnDestroy(): void
     {
         this.appliedPromocodeSubscription.unsubscribe();

@@ -206,7 +206,6 @@ export class PopularProductComponent {
                 this.filterInstance.instance['sortByComponentUpdated'] = new BehaviorSubject<SortByComponent>(this.sortByComponent);
             } else {
                 const mob_filter = document.querySelector('.mob_filter');
-
                 if (mob_filter) {
                     mob_filter.classList.toggle('upTrans');
                 }

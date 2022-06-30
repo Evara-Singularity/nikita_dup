@@ -8,13 +8,14 @@
     .inline-list-icon {
         width: 10%;
         i {
-            font-size: $large-icon-font;
+            font-size:$extra-large-2_5-font;
             color: var(--slimy-green);
         }
     }
     .inline-list-text {
         width: 80%;
         padding-right: 8px;
+        font-size: $large-font;
     }
     .inline-list-link {
         width: 10%;

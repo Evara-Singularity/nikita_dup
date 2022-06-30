@@ -1,33 +1,30 @@
 @import '../../scss/variables';
 @import '../../scss/utils/spacing.scss';
 
-.category-card-container{
-    // padding: var(--base-padding);  
-    background: $body-color; 
     .category-OverBlk{
-        display: flex;
+        margin-bottom: 10px;
         .category-block{
-            display: inline-flex;
-            margin: var(--base-margin);
-            padding: var(--card-padding);
+            display:flex;
             border: 1px solid $border-color;
-            border-radius: $border-radius;
+            border-radius: $border-radius-8;
             background: var(--white);
+            min-height: 80px;
+            padding: 5px;
+            align-items: center;
             .category-Img{
-                display: inline-flex;
-                width: 45px;
-                margin-right: 5px;
+                margin-right: 8px;
+                width:60px;
                 img{
-                    width: $fullwidth;
+                    width:100%;
                 }        
             }
             .category-Name{
-                display: inline-flex;
+                width:calc(100% - 60px);
                 font-size: $medium-font;
                 font-weight: $font-normal;
                 margin-top: 5px;
+                line-height: $small-line-height;
             }    
-            
         }
     }
-}
+

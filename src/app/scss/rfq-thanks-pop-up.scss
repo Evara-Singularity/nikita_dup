@@ -66,3 +66,31 @@
         }
     }
 }
+.icon-btn-row{
+    display:flex;
+    justify-content: space-around;
+    align-items:center;
+    margin:30px 0px;
+    .icon-btn{
+        background: var(--bleu-de-france);
+        color: #fff;
+        width: 45%;
+        border-radius: 4px;
+        font-size:13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding:8px;
+        i{
+            font-size:20px;
+            font-size:14px;
+            padding-right:10px;
+        }
+        &.btn-whatsapp{
+            background:var(--persian-green);
+            i{
+                font-size:16px;
+            }
+        }
+    }
+}

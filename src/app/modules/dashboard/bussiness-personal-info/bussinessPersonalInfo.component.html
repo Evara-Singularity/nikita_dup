@@ -4,7 +4,7 @@
     </div>
     <div class="material-form update-name-form">
       <div class="outline-input-label"><label [class.is-focus]="nameVal.value.length">
-        <input [value]="userInfo?.pname + ' ' +userInfo?.lname" [disabled]="isNameInputDisabled" #nameVal type="text">
+        <input [value]="userName" [disabled]="isNameInputDisabled" #nameVal type="text">
         <span class="label">Update Name</span><span *ngIf="!isNameInputDisabled" (click)="onSubmit(nameVal.value.trim())" class="form-inline-cta">UPDATE</span>
         <span *ngIf="isNameInputDisabled" (click)="activateInput()" class="form-inline-cta">Edit</span></label>
       </div>
@@ -23,7 +23,7 @@
     </label>
     </div>
 </form>
-<div class="profile-card profile-bottom-card">
+<div class="profile-card profile-bottom-card" [routerLink]="['/dashboard/address']">
   <div class="profile-card-inner profile-bottom-card-inner">
       <i class="icon-map-pin-fill"></i>
       <span class="profile-card-inner-2 ">Addresses</span>

@@ -47,7 +47,6 @@ export class ProductPopularDealsComponent implements OnInit {
 
     ngOnInit(): void {
         this.getProductPopularDeals();
-        // REVIEW POINTS:: verify is this working. 
         this.cardMetaInfo = {
             redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
             redirectedSectionName: this.outOfStock ? 'product_popular_deals_oos' : 'product_popular_deals_oos'

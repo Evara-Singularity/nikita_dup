@@ -73,85 +73,103 @@
     <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
 </section>
 
-<product-accordian [categoryBrandDetails]="getCategoryBrandDetails()" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
+<<<<<<< HEAD <product-accordian [categoryBrandDetails]="getCategoryBrandDetails()" [analyticsInfo]="getAnalyticsInfo()">
+    </product-accordian>
 
+    =======
+    <section id="productAccordianSection" observeVisibility [debounceTime]="100" (visible)="onVisibleProductAccordians($event)">
+        <ng-container #pdpAccordian></ng-container>
+    </section>
+    >>>>>>> 5d601c7b... added coupons promo code
 
-<ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
-    <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
-</ng-container>
+    <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
+        <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+    </ng-container>
 
-<section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
-    <ng-container #similarProductOOS></ng-container>
-</section>
+    <section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
+        <ng-container #similarProductOOS></ng-container>
+    </section>
 
-<!-- // TODO: whatsapp-toast should be lazy loaded ngafterviewinit with sketon -->
-<past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
-</past-orders>
+    <!-- // TODO: whatsapp-toast should be lazy loaded ngafterviewinit with sketon -->
+    <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
+    </past-orders>
 
-<div class="app-promo mt-10 promo" observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
-    <ng-container #appPromo></ng-container>
-    <product-skeletons [type]="'APP_PROMO'" [templateRefInstance]="appPromoInstance"></product-skeletons>
-</div>
-
-<section observeVisibility class="pwa-col-12 common-product" [debounceTime]="100" [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
-    <ng-container #recentProducts></ng-container>
-    <product-skeletons [type]="'RECENT'" [templateRefInstance]="recentProductsInstance"></product-skeletons>
-</section>
-
-<div [class.mb-60]="productOutOfStock && productService.oosSimilarProductsData.similarData.length < 3"></div>
-<ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && !productOutOfStock">
-    <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
-</ng-container>
-
-
-<!-- CTA Fixed position -->
-<floating-button-container [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
-    <floating-button [iconClass]="'icon-cart1'" [label]="'ADD TO CART'" [type]="'WHITE'" (onClick)="showFBT()"></floating-button>
-    <floating-button [iconClass]="''" [label]="'BUY NOW'" [type]="'RED'" (onClick)="addToCart(true)"></floating-button>
-</floating-button-container>
-
-<floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2">
-    <floating-button [label]="'VIEW IN-STOCK'" [type]="'WHITE'" (onClick)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"></floating-button>
-    <floating-button [iconClass]="''" [label]="'GET BEST PRICE'" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
-</floating-button-container>
-
-<floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton  && (!productService.oosSimilarProductsData.similarData  || productService.oosSimilarProductsData.similarData.length <= 2 )">
-    <floating-button [iconClass]="''" [label]="'GET BEST PRICE'" [type]="'RED'" [isMultiple]="false" (onClick)="getBestPrice($event)"></floating-button>
-</floating-button-container>
-<!-- CTA Fixed position -->
-
-<app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>
-
-<ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
-<ng-container #rfqForm></ng-container>
-<ng-container #offerPopup></ng-container>
-<ng-container #offerComparePopup></ng-container>
-<ng-container #writeReviewPopup></ng-container>
-<ng-container #alertBox></ng-container>
-<ng-container #globalToast></ng-container>
-<ng-container #emiPlansPopup></ng-container>
-<ng-container #reviewRatingPopup></ng-container>
-<ng-container #questionAnswersPopup></ng-container>
-<ng-container #productInfoPopup></ng-container>
-<ng-container #faqListPopup></ng-container>
-<ng-container #askQuestionPopup></ng-container>
-<ng-container #faqSuccessPopup></ng-container>
-<ng-container #productShare></ng-container>
-<ng-container #addToCartToast></ng-container>
-<ng-container #popupCrousel></ng-container>
-
-
-<!-- // TODO: product-rfq-thanks-popup should be lazy loaded -->
-<product-rfq-thanks-popup (closeRFQAlert$)="closeRFQAlert()" (scrollToId$)="scrollToId($event)" (navigateToCategory$)="navigateToCategory()" [rfqTotalValue]="rfqTotalValue" [hasGstin]="hasGstin" [getWhatsText]="getWhatsText" [similarProducts]="similarProducts"
-    [productOutOfStock]="productOutOfStock" [isRFQSuccessfull]="isRFQSuccessfull" [imagePathAsset]="imagePathAsset">
-</product-rfq-thanks-popup>
-
-<!-- // TODO: whatsapp-toast should be lazy loaded ngafterviewinit -->
-<whatsapp-toast (click)="sendTrackingData()" [customText]="getWhatsText"></whatsapp-toast>
-
-<!-- // TODO: move to top lazy loaded after ngafterviewinit  -->
-<ng-container *ngIf="showScrollToTopButton">
-    <div class="scroll-arrow-pdp" (click)="scrollToTop()">
-        <i class="icon-up"></i>
+    <div class="app-promo mt-10 promo" observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
+        <ng-container #appPromo></ng-container>
+        <product-skeletons [type]="'APP_PROMO'" [templateRefInstance]="appPromoInstance"></product-skeletons>
     </div>
-</ng-container>
+
+    <<<<<<< HEAD <section observeVisibility class="pwa-col-12 common-product" [debounceTime]="100" [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
+        =======
+        <section observeVisibility class="pwa-col-12" [debounceTime]="100" [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
+            >>>>>>> 5d601c7b... added coupons promo code
+            <ng-container #recentProducts></ng-container>
+            <product-skeletons [type]="'RECENT'" [templateRefInstance]="recentProductsInstance"></product-skeletons>
+        </section>
+
+        <div [class.mb-60]="productOutOfStock && productService.oosSimilarProductsData.similarData.length < 3"></div>
+        <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && !productOutOfStock">
+            <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+        </ng-container>
+
+
+        <!-- CTA Fixed position -->
+        <floating-button-container [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
+            <floating-button [iconClass]="'icon-cart1'" [label]="'ADD TO CART'" [type]="'WHITE'" (onClick)="showFBT()"></floating-button>
+            <floating-button [iconClass]="''" [label]="'BUY NOW'" [type]="'RED'" (onClick)="addToCart(true)"></floating-button>
+        </floating-button-container>
+
+        <floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2">
+            <floating-button [label]="'VIEW IN-STOCK'" [type]="'WHITE'" (onClick)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"></floating-button>
+            <<<<<<< HEAD <floating-button [iconClass]="''" [label]="'GET BEST PRICE'" [type]="'RED'" (onClick)="getBestPrice($event)">
+                </floating-button>
+        </floating-button-container>
+
+        <floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton  && (!productService.oosSimilarProductsData.similarData  || productService.oosSimilarProductsData.similarData.length <= 2 )">
+            <floating-button [iconClass]="''" [label]="'GET BEST PRICE'" [type]="'RED'" [isMultiple]="false" (onClick)="getBestPrice($event)"></floating-button>
+            =======
+            <floating-button [label]="'GET BEST PRICE'" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
+        </floating-button-container>
+
+        <floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton  && (!productService.oosSimilarProductsData.similarData  || productService.oosSimilarProductsData.similarData.length <= 2 )">
+            <floating-button [label]="'GET BEST PRICE'" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
+            >>>>>>> 5d601c7b... added coupons promo code
+        </floating-button-container>
+        <!-- CTA Fixed position -->
+
+        <app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>
+
+        <ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
+        <ng-container #rfqForm></ng-container>
+        <ng-container #offerPopup></ng-container>
+        <ng-container #offerComparePopup></ng-container>
+        <ng-container #promoOfferPopup></ng-container>
+        <ng-container #writeReviewPopup></ng-container>
+        <ng-container #alertBox></ng-container>
+        <ng-container #globalToast></ng-container>
+        <ng-container #emiPlansPopup></ng-container>
+        <ng-container #reviewRatingPopup></ng-container>
+        <ng-container #questionAnswersPopup></ng-container>
+        <ng-container #productInfoPopup></ng-container>
+        <ng-container #faqListPopup></ng-container>
+        <ng-container #askQuestionPopup></ng-container>
+        <ng-container #faqSuccessPopup></ng-container>
+        <ng-container #productShare></ng-container>
+        <ng-container #addToCartToast></ng-container>
+        <ng-container #popupCrousel></ng-container>
+
+
+        <!-- // TODO: product-rfq-thanks-popup should be lazy loaded -->
+        <product-rfq-thanks-popup (closeRFQAlert$)="closeRFQAlert()" (scrollToId$)="scrollToId($event)" (navigateToCategory$)="navigateToCategory()" [rfqTotalValue]="rfqTotalValue" [hasGstin]="hasGstin" [getWhatsText]="getWhatsText" [similarProducts]="similarProducts"
+            [productOutOfStock]="productOutOfStock" [isRFQSuccessfull]="isRFQSuccessfull" [imagePathAsset]="imagePathAsset">
+        </product-rfq-thanks-popup>
+
+        <!-- // TODO: whatsapp-toast should be lazy loaded ngafterviewinit -->
+        <whatsapp-toast (click)="sendTrackingData()" [customText]="getWhatsText"></whatsapp-toast>
+
+        <!-- // TODO: move to top lazy loaded after ngafterviewinit  -->
+        <ng-container *ngIf="showScrollToTopButton">
+            <div class="scroll-arrow-pdp" (click)="scrollToTop()">
+                <i class="icon-up"></i>
+            </div>
+        </ng-container>

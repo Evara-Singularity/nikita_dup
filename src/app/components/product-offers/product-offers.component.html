@@ -5,6 +5,23 @@
                 Offers & Coupons
             </h3>
         </div>
+        <div class="pwa-row inline-list-item" style="border-bottom: 0px" *ngIf="promoCodes">
+            <div class="inline-list-icon">
+                <i class="icon-coupon-3-fill-1"></i>
+            </div>
+            <div class="inline-list-text">
+                <span>Use Code : {{promoCodes[0].promoCode}} and Get {{promoCodes[0].promoDescription}}</span>
+                <!-- <span *ngIf="i == 0">Get GST invoice and save up to {{gstPercentage}}% on business purchases.</span>
+                <span *ngIf="i > 0">{{ item?.block_data?.image_block['0']['image_title'] || 'Get GST invoice and save upto '+gstPercentage+'% on business purchases.'}}</span> -->
+            </div>
+        </div>
+        <div class="pwa-row inline-list-item" *ngIf="promoCodes">
+            <div class="inline-list-icon">
+            </div>
+            <div class="inline-list-text">
+                <a class="link-text" *ngIf="promoCodes.length > 1 " (click)="seeMoreOffers()">SEE {{promoCodes.length - 1}} MORE {{(promoCodes.length - 1) == 1 ? 'COUPON' :'COUPONS'}}</a>
+            </div>
+        </div>
         <div class="pwa-row inline-list-item" *ngFor="let item of allofferData; let i=index;">
             <div class="inline-list-icon">
                 <i class="icon-coupon-3-fill-1"></i>

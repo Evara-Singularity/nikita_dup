@@ -1,0 +1,24 @@
+<ng-template #couponTemplate>
+    <div class="pwa-row pwa-row-noPad pad-0 coupon-area">
+        <div class="pwa-col-12">
+            <div class="pdp-section-header">
+                <h3 class="heading-3">
+                    All {{promoCodeOffers.length}} Coupons
+                    <i (click)="outData(null)" class="icon-circle-delete del-ico" style="float: right;"></i>
+                </h3>
+            </div>
+            <div class="pwa-row inline-list-item" style="border-bottom: 0px" *ngFor="let item of promoCodeOffers; let i=index;">
+                <div class="inline-list-icon">
+                    <i class="icon-coupon-3-fill-1"></i>
+                </div>
+                <div class="inline-list-text">
+                    <span>Use Code : {{item.promoCode}} and Get {{item.promoDescription}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<app-bottom-menu [isRFQPopUp]="true" *ngIf="promoCodeOffers" (outData$)="togglePopUp()">
+    <ng-container content *ngTemplateOutlet="couponTemplate"></ng-container>
+</app-bottom-menu>

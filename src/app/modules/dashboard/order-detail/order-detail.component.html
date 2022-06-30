@@ -228,7 +228,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         <p class="info ">Are You sure you want to Cancel?</p>
                     </div>
                     <div class="button-area ">
-                        <button class="cancel " (click)="openAlert=false ">CANCEL</button>
+                        <button class="cancel" (click)="openAlert=false ">CANCEL</button>
                         <button class="continue " (click)="cancelOrder(reason_id,customerId,itemId); ">CONFIRM</button>
                     </div>
                 </div>
@@ -246,7 +246,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         <div class="card-desc">
                             <p>{{detail?.product_name}}</p>
                             <div class="orderqty clearfix mt-10">
-                                <span class="qtyleft"> <span>&#8377; {{detail?.price}}</span> <span class="qtynum">(1
+                                <span class="qtyleft"> <span>&#8377;{{detail?.price}}</span><span class="qtynum">&nbsp;(1
                                         QTY)</span>
                                 </span>
                             </div>
@@ -259,7 +259,6 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                 <span class="block-txt red-txt">Cancelled :
                                     <span class="grey-txt">on {{currentDate | date: 'd-MMMM-y'}}</span>
                                 </span>
-                                <span class="grey-txt">Tracking Details</span>
                             </div>
                         </div>
                         <button class="btn tertiary-btn">BUY AGAIN</button>
@@ -280,7 +279,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 </app-pop-up>
 
 <!-- final message after confirmation -->
-<app-pop-up *ngIf="openPopup && openPopup=='return'"   (outData$)="outData($event)" [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup', headerText:' Return/Exchange Order'}">
+<app-pop-up   *ngIf="openPopup && openPopup=='return'" (outData$)="outData($event)" [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup', headerText:' Return/Exchange Order'}">
     <div class="content-popup returnForm" content>
         <form [formGroup]="returnForm" enctype="multipart/form-data" (ngSubmit)="returnProduct(returnForm.value, returnForm.valid)" class="form-horizontal">
             <div class="material-form pwa-row">
@@ -355,12 +354,14 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         </div>
     
                         <!-- {{returnForm.controls['quantity'].valid}} -->
-                        <button class="bottomBtn confirmbtn btn" *ngIf="step==1" [disabled]="!returnForm.controls['quantity'].valid || !returnForm.controls['reason'].valid || !returnForm.controls['requestType'].valid || this.itemImages.length == 0" (click)="returnForm.controls['quantity'].valid && returnForm.controls['reason'].valid && returnForm.controls['requestType'].valid && this.itemImages.length>0 ? step = 2 : ''">NEXT</button>
+                        <div class="fixed-bottom-cta">
+                            <button class="primary-full-btn confirmbtn btn" *ngIf="step==1" [disabled]="!returnForm.controls['quantity'].valid || !returnForm.controls['reason'].valid || !returnForm.controls['requestType'].valid || this.itemImages.length == 0" (click)="returnForm.controls['quantity'].valid && returnForm.controls['reason'].valid && returnForm.controls['requestType'].valid && this.itemImages.length>0 ? step = 2 : ''">NEXT</button>
+                        </div>
     
                     </div>
                     <!-- Bank Details for Return -->
                     <ng-container *ngIf="returnForm['controls']['bankDetail']">
-                        <div formGroupName="bankDetail" class="bankdetail"  *ngIf="step == 2">
+                        <div formGroupName="bankDetail" class="bankdetail"   *ngIf="step == 2">
                             <div class="set-two-form">
                                 <div class="outline-input-label">
                                     <label class="pos-rel" [class.is-focus]="bankName.value.length > 0">
@@ -413,7 +414,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                         class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter a valid account number</p>
                                 </div>
                                 <div class="clearfix">
-                                    <p class="photoNotetxt">Upload Cheque (optional) <span class="note-txt">jpeg, jpg & png
+                                    <p class="photoNotetxt">Upload Cheque (Optional) <span class="note-txt">jpeg, jpg & png
                                             formats allowed</span></p>
                                     <label class="upload-img">
                                         <input type="file" class="hide" accept="image/*" formControlName="chequeUrl"
@@ -434,7 +435,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                 </div>
             </div>
             <!-- Return Confirmation State -->
-            <div class="confirmStatusBox material-form" [ngClass]="{'show': step == 3, 'hide': step !== 3}">
+            <div class="confirmStatusBox material-form"  [ngClass]="{'show': step == 3, 'hide': step !== 3}">
                 <form [formGroup]="returnForm" class="form-horizontal">
                     <div class="confirmStatusCard">
                         <div class="card-image">
@@ -454,25 +455,28 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         <div class="card-inner">
                             <div class="">
                                 <span>
-                                    <span class="status font-bold"> Return Done </span>
+                                    <span class="status font-bold">Return Done </span>
                                     <span class="grey-txt">on {{currentDate | date: 'd-MMMM-y'}}</span>
                                 </span>
                             </div>
                         </div>
                         <button class="btn tertiary-btn">BUY AGAIN</button>
                     </div>
-                    <div class="returnMesg clearfix">
+                    <div class="return_note_text">
                         <!-- <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'" class="light-txt">Your order has been Returned.</p> -->
-                        <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'" class="light-txt">Your order has been Returned the amount will be reflected in your account within 7-10 business days once the product reaches to our fulfillment center</p>
-                        <span class="f-left note">Note :</span>
-                        <p class="f-left">Please return the package in the same condition as received</p>
+                        <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'">Your order has been Returned the amount will be reflected in your account within 7-10 business days once the product reaches to our fulfillment center</p>
+                        <p>Please return the package in the same condition as received</p>
                     </div>
                 </form>
             </div>
-            <button class="primary-full-btn" (click)="navigateTo('/')" *ngIf="step == 3">Continue</button>
-            <div class="fixed-bottom-cta" [ngClass]="{'show': step == 2 || !returnForm['controls']['bankDetail'], 'hide': step !== 2}">
-                <i class="icon-back" *ngIf="step==2" (click)="step = 1" id="icon-profile"></i>
-                <button type="submit" [style.width.%]="!returnForm['controls']['bankDetail'] ? 100 : 85" class="btn primary-full-btn" type="submit" [disabled]="!returnForm.valid || this.itemImages.length == 0">Confirm</button>
+            <div class="fixed-bottom-cta" *ngIf="step == 3">
+                <button class="primary-full-btn" (click)="navigateTo('/')">CONTINUE</button>
+            </div>
+            <div class="fixed-bottom-cta" [ngClass]="{'show': step == 2 || !returnForm['controls']['bankDetail'], 'hide': step !== 2}" *ngIf="step==2">
+                <div class="fixed-bottom-cta-items">
+                    <i class="icon-back" (click)="step = 1"  id="icon-profile"></i>
+                     <button type="submit" [style.width.%]="!returnForm['controls']['bankDetail'] ? 100 : 85" class="btn primary-full-btn" type="submit" [disabled]="!returnForm.valid || this.itemImages.length == 0">CONFIRM</button>
+                </div>
             </div>
         </form>
     </div>
@@ -495,7 +499,6 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
             </div>
             <div class="trackerWrap">
                 <ul>
-
                     <li class="newTrackerStyle" *ngFor="let obj of detail?.dates | trackOrderStatus: detail?.requestType : detail?.status: true ; let i = index" [ngClass]="obj.cClass">
                         <div class="grLeftTracker">
                             <strong>{{obj.date | date:'EEEE, dd MMM yyyy'}}</strong>
@@ -527,14 +530,15 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
     </div>
     <div class="mt-10 orderaddressBox pwa-row" *ngIf="detail && detail?.address.billing_address">
         <h3>Billing address</h3>
-        <span>{{detail?.address.billing_address.firstname}}</span>
-        <span>{{detail?.address.billing_address.address}}</span>
-        <span>{{detail?.address.billing_address.address2}}</span>
-        <span>{{detail?.address.billing_address.city}}</span>
-        <span>{{detail?.address.billing_address.pincode}}</span>
-        <span>{{detail?.address.billing_address.state}}</span>
-        <span>Contact: {{detail?.address.billing_address.phone}}</span>
-
+        <div class="adressbox-inner">
+        <span class="order-name">{{detail?.address.billing_address.firstname}}</span>
+        <span>{{detail?.address.billing_address.address}}
+        {{detail?.address.billing_address.address2}}
+        {{detail?.address.billing_address.city}}
+        {{detail?.address.billing_address.pincode}}
+        {{detail?.address.billing_address.state}}</span>
+        <span>Mobile: {{detail?.address.billing_address.phone}}</span>
+        </div>
     </div>
     <div class="ordersumBox pwa-row pad-0">
         <h5 class="clearfix pad-15" *ngIf="detail && detail?.dates && detail?.dates.accepted.date">Order Date

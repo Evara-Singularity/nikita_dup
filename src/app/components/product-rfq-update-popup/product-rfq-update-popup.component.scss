@@ -61,6 +61,8 @@
         .qty-area {
             display: flex;
             flex-wrap: wrap;
+            justify-content: space-between;
+            width: 100%;
             .qty-area-l {
                 width: calc(100% - 130px);
             }

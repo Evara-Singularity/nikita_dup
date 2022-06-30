@@ -17,19 +17,31 @@
       color: var(--silver);
     }
   }
-
-  .info-list {
-    padding: 0 15px 10px;
-    border-top: 1px dashed var(--silver);
-
-    .list-information {
-      li {
-        margin: 10px 0 0 10px;
-
-        &:last-child {
-          margin-bottom: 10px;
-        }
-      }
+  .input-field-boxed{
+    textarea{
+      height: 100px !important;
     }
+  }
+  .info-list {
+    padding: 15px 15px 10px;
+    border-top: 1px dashed var(--silver);
+    ul {
+      li {
+          margin-bottom: 10px;
+          &::before {
+              content: "•";
+              font-size: $extra-large-6-font;
+              padding-right: 10px;
+              vertical-align: top;
+              line-height: 22px;
+          }
+          span {
+              display: inline-block;
+              line-height: 18px;
+              vertical-align: top;
+              width: 90%;
+          }
+      }
+  }
   }
 }

@@ -4,12 +4,13 @@
     position: relative;
     @extend %view-all-strip;
     .heading-3{
-        font-size: $extra-large-font;
+        font-size:$extra-large-font;
     }
 }
 
 .sponsered{
     background-color: var(--white);
+    padding: 0 15px 10px;
 }
 
 

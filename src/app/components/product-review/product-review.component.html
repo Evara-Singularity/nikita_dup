@@ -83,7 +83,7 @@
                     <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 3"></i>
                     <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 4"></i>
                 </div>
-                <p>{{review?.user_name}}</p>
+                <p class="customer-name">{{review?.user_name}}</p>
                 <p class="small-txt grey-txt cust-date">
                     {{ review?.date_unix | date: 'longDate' }}
                 </p>
@@ -119,7 +119,7 @@
         </div>
     </div>
     <div class="pwa-row">
-        <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="show-all-strip"
+        <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="pwa-col-12 show-all-strip"
             (click)="$event.stopPropagation(); reviewRatingPopup.emit()">
             <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
         </div>

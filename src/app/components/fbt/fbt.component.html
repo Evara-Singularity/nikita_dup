@@ -1,27 +1,12 @@
 <section *ngIf="mFBTProducts.length>0">
     <div class="fbt-card-container mb-10">
-        <div class="container pad-tb-10">
-            <h3 class="f-left">Frequently Bought Together With
+        <div class="container">
+            <h3 class="f-left heading-3">Frequently Bought Together With
             </h3>
-            <!--TODO:Yogender-->
             <i class="fbt-close-ico icon-circle-delete" (click)="$event.stopPropagation();backToCartFlow()"
                 *ngIf="isModal"></i>
             <!--backToCartFlow('/quickorder', 'ADD TO CART')-->
         </div>
-        <!-- <div class="first_fbt_prod">
-            <div class="fbt_prod_img">
-                <img [src]="rootProduct.productImage">
-            </div>
-            <div class="fbt_prod_desc">
-                <p class="fbt_prod_name">{{rootProduct.productName}}</p>
-                <span class="fbt_tag" *ngIf="rootProductInCart">
-                    Added to Cart
-                </span>
-                <span class="fbt_price" *ngIf="!rootProductInCart">
-                    {{rootProduct.sellingPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
-                </span>
-            </div>
-        </div> -->
         <div class="pwa-row static-small-card-container">
             <div class="product-img">
                 <img [src]="rootProduct.productImage">

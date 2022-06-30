@@ -6,6 +6,7 @@
 }
 .pdp-section-header{
     border-bottom: 1px solid var(--platinum);
+    border-top: 1px solid var(--platinum);
 }
 .prod-detail {
     padding: 5px 15px 15px;
@@ -19,7 +20,7 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
-            height: 6em;
+            height: 5.8em;
         }
         &.static-desc {
             height: 0;
@@ -67,7 +68,7 @@
     border-bottom: 1px solid var(--platinum);
     .feature-list {
         li {
-            padding-bottom: 5px;
+            padding-bottom: 10px;
             p:before {
                 content: "•";
                 font-size: $extra-large-4-font;

@@ -49,7 +49,7 @@
                     </div>
                     <input class="custom-box" type='checkbox' formControlName="businessPurchase">
                 </div>
-                <button class="btn primary-full-btn btn-submit" (click)="$event.stopPropagation();processRFQ(rfqUpdateForm.value)">SUBMIT YOUR REQUIREMENT</button>
+                <button class="btn primary-full-btn btn-submit" (click)="processRFQ(rfqUpdateForm.value);$event.stopPropagation()">SUBMIT YOUR REQUIREMENT</button>
             </div>
         </div>
         </form>

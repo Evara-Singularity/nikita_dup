@@ -1828,32 +1828,15 @@ export class ProductComponent implements OnInit, AfterViewInit
                      null,
                      this.injector
                  );
- 
-             this.popularDealsInstance.instance["partNumber"] = this.rawProductData['partNumber']; //REVIEW POINTS:: no use 
-             this.popularDealsInstance.instance["groupId"] = this.rawProductData['groupId']; //REVIEW POINTS:: no use 
-             this.popularDealsInstance.instance["productName"] = this.productName; //REVIEW POINTS:: no use 
-             this.popularDealsInstance.instance["categoryCode"] =
-                 this.productCategoryDetails["categoryCode"];
- 
-            //REVIEW POINTS:: not implemented properly
-             this.popularDealsInstance.instance["outOfStock"] =
-                 this.productOutOfStock;
-             (
-                 this.popularDealsInstance.instance[
-                 "popularDealsDataLoaded$"
-                 ] as EventEmitter<any>
-             ).subscribe((data) =>
-             {
-                 //REVIEW POINTS:: check how this is used in similar products
-                 // this.commonService.triggerAttachHotKeysScrollEvent('similar-products'); 
-             });
+             this.popularDealsInstance.instance["categoryCode"] = this.productCategoryDetails["categoryCode"];
+
              const custData = this.commonService.custDataTracking;
              const orderData = this.orderTracking;
              const TAXONS = this.taxons;
              const page = {
                  pageName: null,
                  channel: "pdp",
-                 subSection: "Our popular Deals",
+                 subSection: "Our Popular Deals",
                  linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
                  linkName: null,
                  loginStatus: this.commonService.loginStatusTracking,
@@ -1864,7 +1847,6 @@ export class ProductComponent implements OnInit, AfterViewInit
                  order: orderData,
              };
          }
-         this.holdRFQForm = false; //REVIEW POINTS:: no use 
      }
 
     readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {

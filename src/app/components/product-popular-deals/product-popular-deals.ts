@@ -19,15 +19,8 @@ export class ProductPopularDealsComponent implements OnInit {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     polpularDealsProducts: ProductsEntity[] = null;
     @Input('outOfStock') outOfStock = false;
-    
-    @Input('partNumber') partNumber; //REVIEW POINTS:: no use 
-    @Input('groupId') groupId;//REVIEW POINTS:: no use 
-    @Input('productName') productName;//REVIEW POINTS:: no use 
-    @Input('categoryCode') categoryCode;//REVIEW POINTS:: no use 
-
+    @Input('categoryCode') categoryCode;
     @Input('analytics') analytics = null;
-
-    @Output('popularDealsDataLoaded$') popularDealsDataLoaded$ = new EventEmitter(); // no use 
 
     readonly cardFeaturesConfig: ProductCardFeature = {
         // feature config

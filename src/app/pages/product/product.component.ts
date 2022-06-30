@@ -1821,9 +1821,7 @@ export class ProductComponent implements OnInit, AfterViewInit
              const { ProductPopularDealsComponent } = await import(
                  "./../../components/product-popular-deals/product-popular-deals"
              );
-             const factory = this.cfr.resolveComponentFactory(
-              ProductPopularDealsComponent
-             );
+             const factory = this.cfr.resolveComponentFactory(ProductPopularDealsComponent);
              this.popularDealsInstance =
                  this.popularDealsContainerRef.createComponent(
                      factory,
@@ -1831,12 +1829,13 @@ export class ProductComponent implements OnInit, AfterViewInit
                      this.injector
                  );
  
-             this.popularDealsInstance.instance["partNumber"] = this.rawProductData['partNumber'];
-             this.popularDealsInstance.instance["groupId"] = this.rawProductData['groupId'];
-             this.popularDealsInstance.instance["productName"] = this.productName;
+             this.popularDealsInstance.instance["partNumber"] = this.rawProductData['partNumber']; //REVIEW POINTS:: no use 
+             this.popularDealsInstance.instance["groupId"] = this.rawProductData['groupId']; //REVIEW POINTS:: no use 
+             this.popularDealsInstance.instance["productName"] = this.productName; //REVIEW POINTS:: no use 
              this.popularDealsInstance.instance["categoryCode"] =
                  this.productCategoryDetails["categoryCode"];
  
+            //REVIEW POINTS:: not implemented properly
              this.popularDealsInstance.instance["outOfStock"] =
                  this.productOutOfStock;
              (
@@ -1845,7 +1844,8 @@ export class ProductComponent implements OnInit, AfterViewInit
                  ] as EventEmitter<any>
              ).subscribe((data) =>
              {
-                 // this.commonService.triggerAttachHotKeysScrollEvent('similar-products');
+                 //REVIEW POINTS:: check how this is used in similar products
+                 // this.commonService.triggerAttachHotKeysScrollEvent('similar-products'); 
              });
              const custData = this.commonService.custDataTracking;
              const orderData = this.orderTracking;
@@ -1864,7 +1864,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                  order: orderData,
              };
          }
-         this.holdRFQForm = false;
+         this.holdRFQForm = false; //REVIEW POINTS:: no use 
      }
 
     readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {

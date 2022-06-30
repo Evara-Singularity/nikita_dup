@@ -19,12 +19,16 @@ export class ProductPopularDealsComponent implements OnInit {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     polpularDealsProducts: ProductsEntity[] = null;
     @Input('outOfStock') outOfStock = false;
-    @Input('partNumber') partNumber;
-    @Input('groupId') groupId;
-    @Input('productName') productName;
-    @Input('categoryCode') categoryCode;
+    
+    @Input('partNumber') partNumber; //REVIEW POINTS:: no use 
+    @Input('groupId') groupId;//REVIEW POINTS:: no use 
+    @Input('productName') productName;//REVIEW POINTS:: no use 
+    @Input('categoryCode') categoryCode;//REVIEW POINTS:: no use 
+
     @Input('analytics') analytics = null;
-    @Output('popularDealsDataLoaded$') popularDealsDataLoaded$ = new EventEmitter();
+
+    @Output('popularDealsDataLoaded$') popularDealsDataLoaded$ = new EventEmitter(); // no use 
+
     readonly cardFeaturesConfig: ProductCardFeature = {
         // feature config
         enableAddToCart: true,
@@ -50,6 +54,7 @@ export class ProductPopularDealsComponent implements OnInit {
 
     ngOnInit(): void {
         this.getProductPopularDeals();
+        // REVIEW POINTS:: verify is this working. 
         this.cardMetaInfo = {
             redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
             redirectedSectionName: this.outOfStock ? 'product_popular_deals_oos' : 'product_popular_deals_oos'

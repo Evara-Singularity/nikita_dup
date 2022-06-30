@@ -28,7 +28,7 @@
             <div class="container">
                 <div class="search_suggestion">
                     <ng-container *ngIf="suggestionList.length > 0">
-                        <h3 class="search_heading">Popular Suggestions</h3>
+                        <h3 class="search_heading">Suggestions</h3>
                         <ul class="plan-list">
                             <ng-container *ngFor="let prod of suggestionList | slice:0:4; let i = index;">
                                 <li *ngIf="prod.productCount" class="ac_even" type="suggestionList"
@@ -59,10 +59,10 @@
                         </div>
                     </ng-container>
                     <ng-container *ngIf="brandSuggestionList.length > 0">
-                        <h3 class="search_heading">Explore By Brands </h3>
+                        <h3 class="search_heading rel-cat">Explore By Brands </h3>
                         <div class="search_product_categories">
                             <ng-container *ngFor="let prod of brandSuggestionList | slice:0:12; let i = index;">
-                                <div *ngIf="prod.term" class="search_product_category brand"
+                                <div *ngIf="prod.term" class=" brand"
                                     (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)"
                                     [attr.data-index]="i">
                                     <span class="prodText">{{prod.term}}</span>
@@ -75,11 +75,8 @@
                     *ngIf="searchProducts && searchProducts.length>0">
                     <div class="upper-view-all-sec">
                         <div class="upper-view-all-sec-left">
-                            <h3 class="search_heading">Best Sellers</h3>
+                            <h3 class="heading-3">Best Sellers</h3>
                         </div>
-                        <!-- <div class="upper-view-all-sec-right">
-                            <button>VIEW ALL</button>
-                        </div> -->
                     </div>
                     
                     <product-card-vertical-container [numberOfItems]="searchProducts.length">

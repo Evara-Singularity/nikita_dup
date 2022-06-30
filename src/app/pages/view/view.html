@@ -8,7 +8,7 @@
         </category-card>
       </div>
       <div class="clearfix breadcrumbs border-bottom">
-        <h1 (click)="goto(0)" style="font-size:14pt;">All Categories</h1>
+        <h1 (click)="goto(0)" style="font-size:16px;">All Categories</h1>
         <ng-container *ngFor="let cat of clickedCategories; let i=index;">
           <i class="icon-next"></i>
           <span (click)="goto(i+1,cat.index)">{{cat.name}}</span>

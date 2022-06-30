@@ -3,7 +3,13 @@
 
 .product-section-detail {
     background: white;
-    margin: 10px 0px;
+    margin: 0px 0px 10px;
+    border-top: 1px solid var(--platinum);
+    padding-top: 0;
+    .heading-3{
+        font-size: $extra-large-font;
+        padding: 15px 0 10px;
+    }
     .size-block {
         clear: both;
         .prod_size_container {

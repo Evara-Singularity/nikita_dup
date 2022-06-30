@@ -4,6 +4,9 @@
 .rel-cat {
     margin-top: 15px;
 }
+.heading-3{
+    font-size: $extra-large-font;
+}
 .search_heading {
     color: #a8a8a8;
     font-size: $small-font;
@@ -56,7 +59,7 @@
                     .interfaceIcon {
                         float: right;
                         font-size: 22px;
-                        color: #a3a3ab;
+                        color: var(--light-black);
                     }
                 }
 
@@ -361,7 +364,21 @@ section.search-popup {
     display: flex;
     flex-wrap: nowrap;
     overflow: scroll;
-
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1f1f1;
+    .brand{
+        display: inline-flex;
+        line-height: 20px;
+        border: 1px solid #efeff4;
+        border-radius: 8px;
+        padding: 8px 15px;
+        margin-right: 10px;
+        flex: 0 0 auto;
+        margin-bottom: 10px;
+        justify-content: center;
+        min-height: 40px;
+        font-size: $large-font;
+    }
     .search_product_category {
         display: inline-flex;
         align-items: center;
@@ -372,11 +389,6 @@ section.search-popup {
         flex: 0 0 45%;
         margin-bottom: 10px;
         overflow: auto;
-
-        &.brand {
-            justify-content: center;
-        }
-
         img {
             width: 36px;
         }
@@ -384,7 +396,7 @@ section.search-popup {
         .prodText {
             padding-left: 5px;
             line-height: 10px;
-            font-size: 11px;
+            font-size: 12px;
         }
     }
 }

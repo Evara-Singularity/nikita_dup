@@ -5,7 +5,7 @@
   </div>
   <horizontal-scroll-container [numberOfItems]="recentlyViewedProducts.length || 0">
     <ng-container *ngFor="let product of recentlyViewedProducts">
-      <product-card-horizontal-grid-view [product]="product"> </product-card-horizontal-grid-view>
+      <product-card-vertical-grid-view  [product]="product"> </product-card-vertical-grid-view >
     </ng-container>
   </horizontal-scroll-container>
 </section>

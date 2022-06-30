@@ -54,16 +54,22 @@
                                 }}</span>
                         </div>
                     </div>
-                    <div class="card-btn-row">
-                        <ng-container
-                            *ngIf="(cardFeaturesConfig.enableAddToCart || cardFeaturesConfig.enableBuyNow) && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
-                            <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart" (click)="buyNow()">
-                                <i class="icon-cart1"></i>
-                            </span>
-                            <button class="btn tertiary-btn" *ngIf="cardFeaturesConfig.enableBuyNow"
-                                (click)="buyNow(true)">BUY NOW</button>
+                    <div class="right">
+                        <div class="card-btn-row">
+                            <ng-container
+                                *ngIf="(cardFeaturesConfig.enableAddToCart || cardFeaturesConfig.enableBuyNow) && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
+                                <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart" (click)="buyNow()">
+                                    <i class="icon-cart1"></i>
+                                </span>
+                                <button class="btn tertiary-btn" *ngIf="cardFeaturesConfig.enableBuyNow"
+                                    (click)="buyNow(true)">BUY NOW</button>
+                            </ng-container>
+                        </div>
+                        <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
+                            <button class="btn tertiary-outline-cta tertiary-outline-cta-8" (click)="openRfqForm()">
+                                SEND QUERY
+                            </button>
                         </ng-container>
-                      
                     </div>
                 </div>
     <ng-container #variantPopup></ng-container>

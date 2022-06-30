@@ -22,14 +22,14 @@
                 <p class="upper-txt">Please help with the below details to prioritise your query</p>
                 <div class="qty-area">
                     <div class="qty-area-l">
-                        <h4>Enter your required quantity</h4>
+                        <h4>Enter your required <br> quantity</h4>
                     </div>
                     <div class="qty-area-r">
-                        <span class="add-qty qty-block" (click)="$event.stopPropagation();decreaseQuantity()">
+                        <span class="add-qty qty-block" (click)="decreaseQuantity();$event.stopPropagation()">
                             &#8722;
                         </span>
                         <input id="product_quantity" type="text" formControlName="quantity" maxlength=3 numbersOnly >
-                        <span class="remove-qty qty-block" (click)="$event.stopPropagation();increaseQuantity()">
+                        <span class="remove-qty qty-block" (click)="increaseQuantity();$event.stopPropagation()">
                             &#43;
                         </span>
 

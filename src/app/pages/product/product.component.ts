@@ -2162,7 +2162,6 @@ export class ProductComponent implements OnInit, AfterViewInit
         (
             this.productRFQUpdateInstance.instance["onRFQUpdateSuccess"] as EventEmitter<string>
         ).subscribe((status) => {
-            this.analyticRFQ(true);
             this.isRFQSuccessfull = true;
         });
     }
@@ -2218,6 +2217,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.productRFQInstance.instance["rfqId"] as EventEmitter<boolean>
         ).subscribe((rfqid) =>
         {
+            this.analyticRFQ(true);
             this.intiateRFQQuoteUpdate(product, rfqid);
         });
     }

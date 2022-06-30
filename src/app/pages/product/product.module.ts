@@ -20,7 +20,6 @@ import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/produc
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 import { PastOrdersModule } from '@app/components/past-orders/past-orders.component';
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
-import ProductAccordiansModule from '@app/components/product-accordians/product-accordians.component';
 import { ProductCardSkeletonModule } from '@app/modules/product-card/product-card-skeleton/product-card-skeleton.module';
 import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
 import ProductDescriptionModule from '@app/components/product-description/product-description.component';
@@ -34,8 +33,7 @@ import { FloatingButtonContainerModule } from '@app/modules/ui/floating-button-c
 import { ProductBenefitsModule } from '@app/components/product-benefits/product-benefits.component';
 import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { ProductGetQuoteModule } from '@app/components/product-get-quote/product-get-quote.component';
-import { ProductRfqUpdatePopupModule } from '@app/components/product-rfq-update-popup/product-rfq-update-popup.component';
-import { ProductGroupingAttributesComponent, ProductGroupingAttributesModule } from '@app/components/product-grouping-attributes/product-grouping-attributes.component';
+import { ProductGroupingAttributesModule } from '@app/components/product-grouping-attributes/product-grouping-attributes.component';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -76,7 +74,6 @@ import { ProductGroupingAttributesComponent, ProductGroupingAttributesModule } f
     FloatingButtonContainerModule,
     ProductBenefitsModule,
     ProductGetQuoteModule,
-    ProductRfqUpdatePopupModule,
     ProductGroupingAttributesModule
   ],
   exports: [],

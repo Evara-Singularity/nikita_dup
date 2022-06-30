@@ -69,6 +69,7 @@
         </div>
         <div observeVisibility class="pwa-col-12" [debounceTime]="50" (visible)="onVisibleCategories($event)">
             <ng-container #Categories></ng-container>
+            <!-- REVIEW POINTS:: implement ngfor for number of default categories to displayed on homepage -->
             <app-home-page-skeletons [type]="'CATEGORIES'" [templateRefInstance]="categoriesInstance"></app-home-page-skeletons>
         </div>
         <!-- Section for feature Arrival -->

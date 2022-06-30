@@ -1821,57 +1821,39 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.holdRFQForm = false;
     }
 
-    async onVisiblePopularDeals(htmlElement)
-     {
-         if (!this.popularDealsInstance && !this.productOutOfStock) {
-             const { ProductPopularDealsComponent } = await import(
-                 "./../../components/product-popular-deals/product-popular-deals"
-             );
-             const factory = this.cfr.resolveComponentFactory(
-              ProductPopularDealsComponent
-             );
-             this.popularDealsInstance =
-                 this.popularDealsContainerRef.createComponent(
-                     factory,
-                     null,
-                     this.injector
-                 );
- 
-             this.popularDealsInstance.instance["partNumber"] = this.rawProductData['partNumber'];
-             this.popularDealsInstance.instance["groupId"] = this.rawProductData['groupId'];
-             this.popularDealsInstance.instance["productName"] = this.productName;
-             this.popularDealsInstance.instance["categoryCode"] =
-                 this.productCategoryDetails["categoryCode"];
- 
-             this.popularDealsInstance.instance["outOfStock"] =
-                 this.productOutOfStock;
-             (
-                 this.popularDealsInstance.instance[
-                 "popularDealsDataLoaded$"
-                 ] as EventEmitter<any>
-             ).subscribe((data) =>
-             {
-                 // this.commonService.triggerAttachHotKeysScrollEvent('similar-products');
-             });
-             const custData = this.commonService.custDataTracking;
-             const orderData = this.orderTracking;
-             const TAXONS = this.taxons;
-             const page = {
-                 pageName: null,
-                 channel: "pdp",
-                 subSection: "Our popular Deals",
-                 linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-                 linkName: null,
-                 loginStatus: this.commonService.loginStatusTracking,
-             };
-             this.popularDealsInstance.instance["analytics"] = {
-                 page: page,
-                 custData: custData,
-                 order: orderData,
-             };
-         }
-         this.holdRFQForm = false;
-     }
+
+    async onVisiblePopularDeals(htmlElement) {
+        if (!this.popularDealsInstance && !this.productOutOfStock) {
+            const { ProductPopularDealsComponent } = await import(
+                "./../../components/product-popular-deals/product-popular-deals.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(ProductPopularDealsComponent);
+            this.popularDealsInstance =
+                this.popularDealsContainerRef.createComponent(
+                    factory,
+                    null,
+                    this.injector
+                );
+            this.popularDealsInstance.instance["categoryCode"] = this.productCategoryDetails["categoryCode"];
+
+            const custData = this.commonService.custDataTracking;
+            const orderData = this.orderTracking;
+            const TAXONS = this.taxons;
+            const page = {
+                pageName: null,
+                channel: "pdp",
+                subSection: "Our Popular Deals",
+                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+                linkName: null,
+                loginStatus: this.commonService.loginStatusTracking,
+            };
+            this.popularDealsInstance.instance["analytics"] = {
+                page: page,
+                custData: custData,
+                order: orderData,
+            };
+        }
+    }
 
     readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {
         // feature config

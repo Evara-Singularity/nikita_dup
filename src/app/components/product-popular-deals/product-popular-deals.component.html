@@ -1,4 +1,5 @@
-<section class="pwa-row popularDeals mt-10 pad-r-0" *ngIf="resultArray">
+<section class="pwa-row popularDeals mt-10 pad-r-0"
+    *ngIf="resultArray && (resultArray.length > 1 || (resultArray.length == 1 && resultArray[0]['productList'].length > 1)) ">
     <section class="pwa-col-12">
         <div class="view-all-strip">
             <h3>Our Popular Deals</h3>

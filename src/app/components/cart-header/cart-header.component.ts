@@ -45,11 +45,9 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 		this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
 		{
 			this.cartSession = cartSession;
-			if (this.cartSession) {
-				this.noOfCartItems = this._cartService.getCartItemsCount();
-				if (this.noOfCartItems === 0) { this._router.navigateByUrl("quickorder", this.REPLACE_URL); }
-				this.calculatePayableAmount(this.cartSession['cart']);
-			}
+			this.noOfCartItems = this._cartService.getCartItemsCount();
+			if (this.noOfCartItems === 0) { this._router.navigateByUrl("quickorder", this.REPLACE_URL); }
+			this.calculatePayableAmount(this.cartSession['cart']);
 		});
 	}
 

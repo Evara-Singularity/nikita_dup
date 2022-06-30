@@ -165,6 +165,13 @@
         }
     }
 }
+.logo-header{
+    display: flex;
+    justify-content: flex-start;
+    min-height: 50px;
+    align-items: center;
+    padding: 5px 10px;
+}
 //search bar
 .search-bar {
     margin-top: 10px;

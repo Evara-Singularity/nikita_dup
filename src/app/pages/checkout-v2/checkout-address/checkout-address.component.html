@@ -7,7 +7,7 @@
                 <div class="amount-left-section">
                     <span class="payable-amnt">Amount Payable
                         <span (click)="scrollPaymentSummary();">
-                            <img src="{{IMG_PATH}}assets/img/info.png">
+                            <i class="icon-information"></i>
                         </span>
                     </span>
                     ₹ {{ payableAmount | mathCeil | number : '1.2-2'}}
@@ -26,6 +26,7 @@
             (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
         <cart [moduleName]="'CHECKOUT'"></cart>
         <order-summary></order-summary>
+        <generic-offers></generic-offers>
         <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems" [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } "></shared-checkout-unavailable-items>
     </ng-container>
 </div>

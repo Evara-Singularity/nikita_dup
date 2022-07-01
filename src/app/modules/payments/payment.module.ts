@@ -14,6 +14,7 @@ import { UpiModule } from './upi/upi.module';
 import { PaytmUpiModule } from './paytmUpi/paytmUpi.module';
 import { PopUpModule } from '../popUp/pop-up.module';
 import { PaymentComponent } from './payment.component';
+import { GenericOffersModule } from '../ui/generic-offers/generic-offers.component';
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import { PaymentComponent } from './payment.component';
         ReactiveFormsModule,
         CreditDebitCardModule,
         NetBankingModule,
+        GenericOffersModule,
         WalletModule,
         NeftRtgsModule,
         EmiModule,

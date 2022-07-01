@@ -520,3 +520,13 @@
         }
     }
 }
+
+.top-header-bottom-menu{
+    border-bottom: none !important;
+    padding: 0px 15px;
+    .heading-3{
+        width: 100%;
+        font-size: $extra-large-font;
+        padding-bottom: 0px;
+    }
+}

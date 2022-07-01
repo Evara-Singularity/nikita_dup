@@ -3,7 +3,8 @@
 		<p class="total-mount">
 			<span class="payable-amnt">Amount Payable 
 				<span (click)="scrollPaymentSummary();">
-					<img src="{{imgAssetPath}}assets/img/info.png">
+					<!-- <img src="{{imgAssetPath}}assets/img/info.png"> -->
+					<i class="icon-information"></i>
 				</span>
 			</span>
 			₹ {{totalAmount | mathCeil | number : '1.2-2'}}

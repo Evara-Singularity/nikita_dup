@@ -48,10 +48,12 @@
                     margin-top: 4px;
                     text-align: left;
                     font-size: $small-font;
-                    color: var(--gray-web);
+                    color: var(--silver);
                     font-weight:$font-bold;
                   }
-                
+                .name{
+                    font-size: $large-font;
+                }
                 .price-details {
                     display: flex;
                     flex-direction: row;

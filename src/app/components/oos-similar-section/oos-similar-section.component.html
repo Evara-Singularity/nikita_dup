@@ -1,4 +1,4 @@
-<div class="pwa-row" *ngIf="productOutOfStock" >
+<div class="pwa-row pad-r-0 oos-container" *ngIf="productOutOfStock" >
     <div id="oosSimilarTopSection" class="pwa-col-12 oosSimilarTopSection" >
         <h2 *ngIf="productService.oosSimilarProductsData.similarData.length > 1">Consider These Available Items</h2>
         <div class="horizontal-scroll-container consider-these-products" id="horizontal-scroll-container">

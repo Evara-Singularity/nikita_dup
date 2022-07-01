@@ -32,7 +32,7 @@ export class CartComponent
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     cartSubscription: Subscription;
     pageEvent = "genericPageLoad";
-    noOfCart = 0;
+    noOfCartItems = 0;
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -55,7 +55,7 @@ export class CartComponent
         }
         this.loadCartDataFromAPI();
         const cartSession = this._cartService.getCartSession();
-        this.noOfCart = (cartSession['itemsList'] as any[]).length || 0;
+        this.noOfCartItems = (cartSession['itemsList'] as any[]).length || 0;
     }
 
     // Function to get and set the latest cart
@@ -70,12 +70,12 @@ export class CartComponent
                 this.sendCritieoDataonView(cartSession);
                 this.sendAdobeAnalyticsData(this.pageEvent);
                 this.pageEvent = "genericClick";
-                return cartSession
-                    ;
+                return cartSession;
             }),
             concatMap((res) => this._cartService.getShippingAndUpdateCartSession(res))).subscribe(
                 (result) =>
                 {
+                    this.noOfCartItems = this._cartService.getCartItemsCount();
                     this._globalLoaderService.setLoaderState(false);
                 });
     }

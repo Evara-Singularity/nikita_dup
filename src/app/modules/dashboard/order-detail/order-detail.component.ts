@@ -433,6 +433,7 @@ export class OrderDetailComponent implements OnInit {
                   this.step = 3;
                 } else if (rData.requestType == 'exchange') {
                   this._tms.show({ type: 'success', text: 'Exchange Requested' });
+                  this.detail.status = 'EXCHANGE REQUESTED';
                   this.customClose();
                 }
 

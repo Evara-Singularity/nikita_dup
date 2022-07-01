@@ -5,6 +5,7 @@ import { CheckoutPaymentRoutingModule } from './checkout-payment-routing.module'
 import { CheckoutPaymentComponent } from './checkout-payment.component';
 import { PaymentModule } from '@app/modules/payments/payment.module';
 import { SharedCheckoutStepperModule } from '@app/modules/shared-checkout-stepper/shared-checkout-stepper.module';
+import { GenericOffersModule } from '@app/modules/ui/generic-offers/generic-offers.component';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { SharedCheckoutStepperModule } from '@app/modules/shared-checkout-steppe
     CommonModule,
     CheckoutPaymentRoutingModule,
     SharedCheckoutStepperModule,
+    GenericOffersModule,
     PaymentModule,
   ]
 })

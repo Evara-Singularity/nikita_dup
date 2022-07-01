@@ -1917,6 +1917,12 @@ export class CartService
         );
     }
 
+    getCartItemsCount() {
+        let count = 0;
+        if (this.cartSession['itemsList']) { count = (this.cartSession['itemsList'] as any[]).length; }
+        return count;
+    }
+
     //Analytics
     sendAdobeOnCheckoutOnVisit(checkoutPageTye)
     {

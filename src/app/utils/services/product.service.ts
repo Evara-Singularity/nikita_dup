@@ -800,6 +800,7 @@ export class ProductService {
             shortDesc: productBO['shortDesc'],
             brandId: productBrandDetails['idBrand'],
             brandName: productBrandDetails['brandName'],
+            description: productBO['desciption'],
             outOfStock: productBO['outOfStock'],
             quantityAvailable: priceQuantityCountry ? priceQuantityCountry['quantityAvailable'] : 0,
             productMinimmumQuantity: productMinimmumQuantity,

@@ -1,3 +1,4 @@
+import { BottomMenuModule } from './../../bottomMenu/bottom-menu.module';
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
@@ -21,6 +22,7 @@ import { ProductCardHorizontalListViewModule } from "@app/modules/product-card/p
     MathFloorPipeModule,
     MathCeilPipeModule,
     ProductCardHorizontalListViewModule,
+    BottomMenuModule
   ],
   declarations: [BussinessPurchaseListComponent],
   exports: [],

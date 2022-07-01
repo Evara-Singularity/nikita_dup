@@ -43,4 +43,12 @@
         background:var(--Light-grayish-orange);
         padding-bottom:15px
     }
+    .recently-container{
+        margin-bottom:10px;
+        &::ng-deep {
+        .view-all-strip{
+            padding:0px 15px;
+        }
+      }
+    }
   

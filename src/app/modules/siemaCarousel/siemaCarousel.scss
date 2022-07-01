@@ -273,9 +273,13 @@ ul.pager {
 .top-banner,
 .banner-carousel-siema,
 .img-siema {
-    ngx-siema-slide {
+    ngx-siema-slide,siema-slide {
         display: block;
-       
+        .item{
+            img{
+                border-radius:8px;
+            }
+        }
     }
 }
 

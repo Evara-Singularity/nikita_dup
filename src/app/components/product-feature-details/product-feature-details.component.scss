@@ -4,6 +4,9 @@
 :host{
     width: 100%;
 }
+.pwa-row-noPad{
+    padding: 0 !important;
+}
 .pdp-section-header{
     border-bottom: 1px solid var(--platinum);
     border-top: 1px solid var(--platinum);

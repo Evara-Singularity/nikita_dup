@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class FloatingButtonComponent implements OnInit {
 
   @Input() type: 'RED' | 'WHITE' = 'RED';
+  @Input() isMultiple = true;
   @Input() label: string = 'Button';
   @Input() iconClass: string = 'icon-cart1';
   @Output() onClick: EventEmitter<any> = new EventEmitter<any>();

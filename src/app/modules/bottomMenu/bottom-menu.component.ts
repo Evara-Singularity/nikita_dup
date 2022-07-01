@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { delay } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { CommonService } from '@app/utils/services/common.service';
@@ -6,7 +6,8 @@ import { CommonService } from '@app/utils/services/common.service';
 @Component({
     selector: 'app-bottom-menu',
     styleUrls: ['./bottom-menu.component.scss'],
-    templateUrl: './bottom-menu.component.html'
+    templateUrl: './bottom-menu.component.html',
+    encapsulation: ViewEncapsulation.None
 })
 export class BottomMenuComponent implements OnInit {
     @Input() isRFQPopUp;

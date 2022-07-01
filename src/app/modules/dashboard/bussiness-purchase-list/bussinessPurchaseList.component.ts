@@ -13,7 +13,7 @@ import { ProductService } from "@app/utils/services/product.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { OrderSummaryService } from "@app/utils/services/orderSummary.service";
-import { ProductCardFeature} from '@app/utils/models/product.listing.search';
+import { ProductCardFeature } from '@app/utils/models/product.listing.search';
 
 
 
@@ -26,7 +26,10 @@ declare let _satellite;
   templateUrl: "./bussinessPurchaseList.html",
   styleUrls: ["./bussinessPurchaseList.scss"],
 })
-export class BussinessPurchaseListComponent {
+export class BussinessPurchaseListComponent
+{
+  readonly pageName = "Wishlist";
+  readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
   IsHidden: boolean = true;
 
   purchaseLists: Array<any>;
@@ -49,8 +52,10 @@ export class BussinessPurchaseListComponent {
   spli: Array<{}>;
   spp: boolean = false;
   wishlistData;
-  
-  set showLoader(value){
+  removableItem = null;
+
+  set showLoader(value)
+  {
     this.loaderService.setLoaderState(value);
   }
   readonly cardFeaturesConfig: ProductCardFeature = {
@@ -65,7 +70,7 @@ export class BussinessPurchaseListComponent {
     verticalOrientation: false,
     horizontalOrientation: true,
     lazyLoadImage: false
-}
+  }
 
   constructor(
     private meta: Meta,
@@ -80,14 +85,16 @@ export class BussinessPurchaseListComponent {
     private _productService: ProductService,
     private _tms: ToastMessageService,
     private productService: ProductService,
-    private loaderService:GlobalLoaderService) {
-    
+    private loaderService: GlobalLoaderService)
+  {
+
     this.showLoader = false;
     this.spli = [];
     this.getSession();
   }
 
-  ngOnInit() {
+  ngOnInit()
+  {
     this.meta.addTag({ name: "robots", content: CONSTANTS.META.ROBOT2 });
 
     let qp = this._activatedRoute.snapshot.queryParams;
@@ -105,8 +112,8 @@ export class BussinessPurchaseListComponent {
       subSection: "moglix:account dashboard-purchase list",
       loginStatus:
         userSession &&
-        userSession.authenticated &&
-        userSession.authenticated == "true"
+          userSession.authenticated &&
+          userSession.authenticated == "true"
           ? "registered user"
           : "guest",
     };
@@ -124,24 +131,28 @@ export class BussinessPurchaseListComponent {
     digitalData["page"] = pageData;
     digitalData["custData"] = custData;
     digitalData["order"] = order;
-    if(_satellite){
+    if (_satellite) {
       _satellite.track("genericPageLoad");
     }
   }
 
-  getPurcahseList() {
+  getPurcahseList()
+  {
     this.showLoader = true;
     let userSession = this._localAuthService.getUserSession();
     let request = { idUser: userSession.userId, userType: "business" };
     this._businessPurchaseListService
       .getPurchaseList(request)
       .pipe(
-        map((res) => {
+        map((res) =>
+        {
           let index = 0;
-          res = res.sort((a, b) => {
+          res = res.sort((a, b) =>
+          {
             return b.updated_on - a.updated_on;
           });
-          return res.map((item) => {
+          return res.map((item) =>
+          {
             item["matCodeMode"] = false;
             if (item["matCodeFlag"] == undefined || item["matCodeFlag"] == null)
               item["matCodeFlag"] = false;
@@ -154,19 +165,22 @@ export class BussinessPurchaseListComponent {
           });
         })
       )
-      .subscribe((res) => {
+      .subscribe((res) =>
+      {
         this.showLoader = false;
         this.purchaseLists = res;
-        this.getWishlistData(this.purchaseLists);   
+        this.getWishlistData(this.purchaseLists);
         let list: Array<any> = res;
         let itemRows: Array<FormGroup> = [];
-        list.filter((element, index) => {
+        list.filter((element, index) =>
+        {
           //Filtering out values from array in which productBO is null
           if (element.productDetail.productBO == null) {
             list.splice(index, 1);
           }
         });
-        list.forEach((element, index) => {
+        list.forEach((element, index) =>
+        {
           itemRows.push(this.createMatCodeForm(element));
         });
         this.addMatCodeForm = this._formBuilder.group({
@@ -175,7 +189,8 @@ export class BussinessPurchaseListComponent {
       });
   }
 
-  createMatCodeForm(element?) {
+  createMatCodeForm(element?)
+  {
     return this._formBuilder.group({
       matCode: [
         element && element["matCode"] && element["matCodeFlag"]
@@ -185,14 +200,17 @@ export class BussinessPurchaseListComponent {
       ],
     });
   }
-  
-  getWishlistData(products: object[]){
-		return this.wishlistData = products.map(product=>{
-      return this.productService.wishlistToProductEntity(product)
-		});		
-	}
 
-  getdata(productdetail) {
+  getWishlistData(products: object[])
+  {
+    return this.wishlistData = products.map(product =>
+    {
+      return this.productService.wishlistToProductEntity(product)
+    });
+  }
+
+  getdata(productdetail)
+  {
     let index = 0;
     for (let productdata of productdetail) {
       this.getProduct(productdata, null);
@@ -202,160 +220,165 @@ export class BussinessPurchaseListComponent {
     this.updateCartSessions("/quickorder");
   }
 
-  getProduct(productDetail, index) {
+  getProduct(productDetail, index)
+  {
     this.successMessage = -1;
     const productObject = {};
     let priceQuantityCountry, partReference, disc;
 
-      let data = productDetail.productBO;
-      productObject["productBO"] = data;
-      productObject["productName"] = data.productName;
-      productObject["partNumber"] = data.partNumber;
-      productObject["outOfStock"] = data.outOfStock;
-      productObject["brandDetails"] = data.brandDetails;
-      productObject["brand"] = data.brandDetails.brandName;
-      productObject["manuDetails"] = data.manufDetails;
-      productObject["id_brand"] = data.brandDetails.idBrand;
-      productObject["id_category_default"] =
-        data.categoryDetails[0].categoryCode;
-      productObject["description"] = data.desciption;
+    let data = productDetail.productBO;
+    productObject["productBO"] = data;
+    productObject["productName"] = data.productName;
+    productObject["partNumber"] = data.partNumber;
+    productObject["outOfStock"] = data.outOfStock;
+    productObject["brandDetails"] = data.brandDetails;
+    productObject["brand"] = data.brandDetails.brandName;
+    productObject["manuDetails"] = data.manufDetails;
+    productObject["id_brand"] = data.brandDetails.idBrand;
+    productObject["id_category_default"] =
+      data.categoryDetails[0].categoryCode;
+    productObject["description"] = data.desciption;
 
-      productObject["fulldescription"] = data.desciption;
+    productObject["fulldescription"] = data.desciption;
 
-      productObject["description_short"] = data.shortDesc;
-      productObject["product_rating"] = data.productRating;
-      productObject["product_stars"] =
-        (productObject["product_rating"] / 5) * 100;
-      productObject["active"] = "1";
-      productObject["available_for_order"] = "1";
-      productObject["category"] = data.categoryDetails[0].categoryName;
-      productObject["is_grouped"] = data.partNumber;
-      productObject["product_url"] =
-        data.productPartDetails[
-          productDetail.productBO.partNumber
-        ].canonicalUrl;
-      productObject["key_features"] = data.keyFeatures;
+    productObject["description_short"] = data.shortDesc;
+    productObject["product_rating"] = data.productRating;
+    productObject["product_stars"] =
+      (productObject["product_rating"] / 5) * 100;
+    productObject["active"] = "1";
+    productObject["available_for_order"] = "1";
+    productObject["category"] = data.categoryDetails[0].categoryName;
+    productObject["is_grouped"] = data.partNumber;
+    productObject["product_url"] =
+      data.productPartDetails[
+        productDetail.productBO.partNumber
+      ].canonicalUrl;
+    productObject["key_features"] = data.keyFeatures;
 
-      productObject["canonical_url"] =
-        data.productPartDetails[
-          productDetail.productBO.partNumber
-        ].canonicalUrl;
-      productObject["main_category"] = data.partNumber;
+    productObject["canonical_url"] =
+      data.productPartDetails[
+        productDetail.productBO.partNumber
+      ].canonicalUrl;
+    productObject["main_category"] = data.partNumber;
 
-      productObject["InStock"] = 1;
+    productObject["InStock"] = 1;
 
-      productObject["group_elements"] = data.productPartDetails;
+    productObject["group_elements"] = data.productPartDetails;
 
-      partReference = data.partNumber;
-      if (data.productPartDetails[partReference].productPriceQuantity["india"])
-        priceQuantityCountry =
-          data.productPartDetails[partReference].productPriceQuantity["india"];
+    partReference = data.partNumber;
+    if (data.productPartDetails[partReference].productPriceQuantity["india"])
+      priceQuantityCountry =
+        data.productPartDetails[partReference].productPriceQuantity["india"];
 
-      productObject["quantity"] = priceQuantityCountry.quantityAvailable;
-      productObject["packageUnit"] = priceQuantityCountry.packageUnit;
-      productObject["minimal_quantity"] = priceQuantityCountry.moq;
-      productObject["available_now"] = "";
-      productObject["available_later"] = "";
-      productObject["price"] = priceQuantityCountry.sellingPrice;
-      productObject["priceWithoutTax"] = priceQuantityCountry.priceWithoutTax;
-      productObject["quantity_avail"] = priceQuantityCountry.quantityAvailable;
-      productObject["default_attribute_mrp"] = priceQuantityCountry.mrp;
-      productObject["mrp"] = priceQuantityCountry.mrp;
-      productObject["estimatedDelivery"] =
-        priceQuantityCountry.estimatedDelivery;
-      productObject["FreeShippingMinAmount"] =
-        CONSTANTS.CONST_VAR.FreeShippingMinAmount;
-      productObject["productPartDetails"] =
-        data.productPartDetails[partReference];
+    productObject["quantity"] = priceQuantityCountry.quantityAvailable;
+    productObject["packageUnit"] = priceQuantityCountry.packageUnit;
+    productObject["minimal_quantity"] = priceQuantityCountry.moq;
+    productObject["available_now"] = "";
+    productObject["available_later"] = "";
+    productObject["price"] = priceQuantityCountry.sellingPrice;
+    productObject["priceWithoutTax"] = priceQuantityCountry.priceWithoutTax;
+    productObject["quantity_avail"] = priceQuantityCountry.quantityAvailable;
+    productObject["default_attribute_mrp"] = priceQuantityCountry.mrp;
+    productObject["mrp"] = priceQuantityCountry.mrp;
+    productObject["estimatedDelivery"] =
+      priceQuantityCountry.estimatedDelivery;
+    productObject["FreeShippingMinAmount"] =
+      CONSTANTS.CONST_VAR.FreeShippingMinAmount;
+    productObject["productPartDetails"] =
+      data.productPartDetails[partReference];
+    productObject["taxPercentage"] =
+      priceQuantityCountry.taxRule.taxPercentage;
+    if (
+      priceQuantityCountry.mrp > 0 &&
+      productObject["priceWithoutTax"] > 0
+    ) {
+      disc =
+        ((priceQuantityCountry.mrp - productObject["priceWithoutTax"]) /
+          priceQuantityCountry.mrp) *
+        100;
+    }
+    productObject["discount"] = disc;
+    productObject["outOfStock"] = priceQuantityCountry.outOfStockFlag;
+
+    productObject["attributes"] =
+      data.productPartDetails[partReference].attributes;
+    productObject["itemCode"] =
+      data.productPartDetails[partReference].itemCode;
+
+    let productAllImages = [];
+    productObject["productAllImage"] = productAllImages;
+    productObject["productImage"] =
+      CONSTANTS.IMAGE_BASE_URL +
+      data.productPartDetails[partReference].images[0].links.medium;
+    productObject["productSmallImage"] =
+      CONSTANTS.IMAGE_BASE_URL +
+      data.productPartDetails[partReference].images[0].links.small;
+    productObject["productZoomImage"] =
+      CONSTANTS.IMAGE_BASE_URL +
+      data.productPartDetails[partReference].images[0].links.xxlarge;
+    productObject["shortDesc"] = data.shortDesc;
+    productObject["bulkPriceWithSameDiscount"] =
+      priceQuantityCountry.bulkPrices; //no change in discount from api
+    if (
+      priceQuantityCountry.bulkPrices !== null &&
+      priceQuantityCountry.bulkPrices["india"]
+    )
+      productObject["bulkPrice"] = priceQuantityCountry.bulkPrices["india"];
+    else {
+      productObject["bulkPrice"] = null;
+    }
+    if (
+      priceQuantityCountry.taxRule &&
+      priceQuantityCountry.taxRule.taxPercentage
+    ) {
       productObject["taxPercentage"] =
         priceQuantityCountry.taxRule.taxPercentage;
-      if (
-        priceQuantityCountry.mrp > 0 &&
-        productObject["priceWithoutTax"] > 0
-      ) {
-        disc =
-          ((priceQuantityCountry.mrp - productObject["priceWithoutTax"]) /
-            priceQuantityCountry.mrp) *
-          100;
-      }
-      productObject["discount"] = disc;
-      productObject["outOfStock"] = priceQuantityCountry.outOfStockFlag;
+      productObject["sellingPriceWithoutTax"] =
+        productObject["price"] / (1 + productObject["taxPercentage"] / 100);
+      productObject["tax"] =
+        Number(productObject["price"]) -
+        Number(productObject["priceWithoutTax"]);
+    } else {
+      productObject["tax"] = 0;
+    }
+    this.productResult = productObject;
 
-      productObject["attributes"] =
-        data.productPartDetails[partReference].attributes;
-      productObject["itemCode"] =
-        data.productPartDetails[partReference].itemCode;
+    if (productObject["bulkPrice"] !== null) {
+      productObject["bulkPrice"].forEach((element) =>
+      {
+        if (priceQuantityCountry.mrp > 0) {
+          element.discount =
+            ((priceQuantityCountry.mrp - element.bulkSellingPrice) /
+              priceQuantityCountry.mrp) *
+            100;
+        } else {
+          element.discount = element.discount;
+        }
+      });
+      this.changeBulkPriceTable();
+    }
+    this.productResult["categoryCode"] = data.categoryDetails[0].categoryCode;
+    this.productResult["categoryName"] = data.categoryDetails[0].categoryName;
+    this.productResult["url"] =
+      data.productPartDetails[
+        productDetail.productBO.partNumber
+      ].canonicalUrl;
 
-      let productAllImages = [];
-      productObject["productAllImage"] = productAllImages;
-      productObject["productImage"] =
-        CONSTANTS.IMAGE_BASE_URL +
-        data.productPartDetails[partReference].images[0].links.medium;
-      productObject["productSmallImage"] =
-        CONSTANTS.IMAGE_BASE_URL +
-        data.productPartDetails[partReference].images[0].links.small;
-      productObject["productZoomImage"] =
-        CONSTANTS.IMAGE_BASE_URL +
-        data.productPartDetails[partReference].images[0].links.xxlarge;
-      productObject["shortDesc"] = data.shortDesc;
-      productObject["bulkPriceWithSameDiscount"] =
-        priceQuantityCountry.bulkPrices; //no change in discount from api
-      if (
-        priceQuantityCountry.bulkPrices !== null &&
-        priceQuantityCountry.bulkPrices["india"]
-      )
-        productObject["bulkPrice"] = priceQuantityCountry.bulkPrices["india"];
-      else {
-        productObject["bulkPrice"] = null;
-      }
-      if (
-        priceQuantityCountry.taxRule &&
-        priceQuantityCountry.taxRule.taxPercentage
-      ) {
-        productObject["taxPercentage"] =
-          priceQuantityCountry.taxRule.taxPercentage;
-        productObject["sellingPriceWithoutTax"] =
-          productObject["price"] / (1 + productObject["taxPercentage"] / 100);
-        productObject["tax"] =
-          Number(productObject["price"]) -
-          Number(productObject["priceWithoutTax"]);
-      } else {
-        productObject["tax"] = 0;
-      }
-      this.productResult = productObject;
-
-      if (productObject["bulkPrice"] !== null) {
-        productObject["bulkPrice"].forEach((element) => {
-          if (priceQuantityCountry.mrp > 0) {
-            element.discount =
-              ((priceQuantityCountry.mrp - element.bulkSellingPrice) /
-                priceQuantityCountry.mrp) *
-              100;
-          } else {
-            element.discount = element.discount;
-          }
-        });
-        this.changeBulkPriceTable();
-      }
-      this.productResult["categoryCode"] = data.categoryDetails[0].categoryCode;
-      this.productResult["categoryName"] = data.categoryDetails[0].categoryName;
-      this.productResult["url"] =
-        data.productPartDetails[
-          productDetail.productBO.partNumber
-        ].canonicalUrl;
-    
     this.addToCart("/quickorder");
   }
 
-  changeBulkPriceTable() {
-    this.productResult["bulkPrice"].forEach((element, index) => {
+  changeBulkPriceTable()
+  {
+    this.productResult["bulkPrice"].forEach((element, index) =>
+    {
       if (!element.active) {
         this.productResult["bulkPrice"].splice(index, 1);
       }
     });
     let isvalid: boolean = true;
     let minQty = 0;
-    this.productResult["bulkPrice"].forEach((element, index) => {
+    this.productResult["bulkPrice"].forEach((element, index) =>
+    {
       if (!element.active) {
         this.productResult["bulkPrice"].splice(index, 1);
       }
@@ -364,7 +387,8 @@ export class BussinessPurchaseListComponent {
       minQty = this.productResult["bulkPrice"][0].minQty;
     }
 
-    this.productResult["bulkPrice"].forEach((element, index) => {
+    this.productResult["bulkPrice"].forEach((element, index) =>
+    {
       if (this.productResult["minimal_quantity"] == minQty || !isvalid) {
         isvalid = false;
         element.minQty = element.minQty + 1;
@@ -385,7 +409,8 @@ export class BussinessPurchaseListComponent {
     });
   }
 
-  changeBulkPriceQuantity(input) {
+  changeBulkPriceQuantity(input)
+  {
     this.bulkPriceSelctedQuatity = 0;
     if (this.productResult["minimal_quantity"] + input >= 1) {
       if (
@@ -402,7 +427,8 @@ export class BussinessPurchaseListComponent {
         }
 
         let isBulkPriceValid: boolean = false;
-        this.productResult["bulkPrice"].forEach((element, index) => {
+        this.productResult["bulkPrice"].forEach((element, index) =>
+        {
           if (element.minQty <= value && value <= element.maxQty) {
             isBulkPriceValid = true;
             this.bulkPriceSelctedQuatity = element.minQty;
@@ -450,10 +476,12 @@ export class BussinessPurchaseListComponent {
   checkAddToCart(
     itemsList,
     addToCartItem
-  ): { itemlist: any; isvalid: boolean } {
+  ): { itemlist: any; isvalid: boolean }
+  {
     let isOrderValid: boolean = true;
     let addToCartItemIsExist: boolean = false;
-    itemsList.forEach((element) => {
+    itemsList.forEach((element) =>
+    {
       if (addToCartItem.productId === element.productId) {
         addToCartItemIsExist = true;
         let checkProductQuantity =
@@ -494,7 +522,7 @@ export class BussinessPurchaseListComponent {
       } else if (
         !isNaN(this.productResult["minimal_quantity"]) &&
         this.productResult["minimal_quantity"] <
-          this.productResult["minimal_quantity"]
+        this.productResult["minimal_quantity"]
       ) {
         // alert(
         //   "order quantity should be greater than " +
@@ -505,7 +533,7 @@ export class BussinessPurchaseListComponent {
       } else if (
         !isNaN(this.productResult["minimal_quantity"]) &&
         this.productResult["minimal_quantity"] >=
-          this.productResult["minimal_quantity"]
+        this.productResult["minimal_quantity"]
       ) {
         this.changeBulkPriceQuantity(0);
         addToCartItem.bulkPrice = this.bulkSellingPrice;
@@ -527,20 +555,23 @@ export class BussinessPurchaseListComponent {
     return { itemlist: itemsList, isvalid: isOrderValid };
   }
 
-  getSession() {
+  getSession()
+  {
     let userSession = this._localAuthService.getUserSession();
     this.userSession = userSession;
 
     if (userSession) {
       let params = { sessionid: userSession.sessionId };
-      this.cartService.getCartBySession(params).subscribe((res) => {
+      this.cartService.getCartBySession(params).subscribe((res) =>
+      {
         if (res["statusCode"] == 200) {
           this.getPurcahseList();
           this.sessionDetails = res;
         }
       });
     } else {
-      this._productService.getSession().subscribe((session) => {
+      this._productService.getSession().subscribe((session) =>
+      {
         this._localAuthService.setUserSession(session);
         this.getPurcahseList();
         if (
@@ -550,7 +581,8 @@ export class BussinessPurchaseListComponent {
           alert(session);
         } else {
           let params = { sessionid: session["sessionId"] };
-          this.cartService.getCartBySession(params).subscribe((cartRes) => {
+          this.cartService.getCartBySession(params).subscribe((cartRes) =>
+          {
             if (cartRes["statusCode"] == 200) {
               this.sessionDetails = cartRes;
             }
@@ -560,7 +592,8 @@ export class BussinessPurchaseListComponent {
     }
   }
 
-  addToCart(routerlink) {
+  addToCart(routerlink)
+  {
     if (this.uniqueRequestNo == 0) {
       this.uniqueRequestNo = 1;
 
@@ -570,7 +603,8 @@ export class BussinessPurchaseListComponent {
         sessionCartObject = this.sessionDetails.cart;
         this.addProductInCart(routerlink, sessionCartObject, quantity);
       } else {
-        this.commonService.getUserSession().subscribe((res) => {
+        this.commonService.getUserSession().subscribe((res) =>
+        {
           if (res["statusCode"] != undefined && res["statusCode"] == 500) {
           } else {
             this._localAuthService.setUserSession(res);
@@ -578,7 +612,8 @@ export class BussinessPurchaseListComponent {
             let params = { sessionid: userSession.sessionId };
             this.cartService
               .getCartBySession(params)
-              .subscribe((cartSession) => {
+              .subscribe((cartSession) =>
+              {
                 if (
                   cartSession["statusCode"] != undefined &&
                   cartSession["statusCode"] == 200
@@ -586,7 +621,7 @@ export class BussinessPurchaseListComponent {
                   this.cartService.orderSummary.next(cartSession);
                   this.sessionDetails = cartSession;
                   sessionCartObject = this.sessionDetails.cart;
-                  this.cartService.cart.next({count: (cartSession["cart"] != undefined ? cartSession["noOfItems"] : 0)});
+                  this.cartService.cart.next({ count: (cartSession["cart"] != undefined ? cartSession["noOfItems"] : 0) });
                   this.addProductInCart(
                     routerlink,
                     sessionCartObject,
@@ -600,7 +635,8 @@ export class BussinessPurchaseListComponent {
     }
   }
 
-  addProductInCart(routerLink, sessionCartObject, quantity) {
+  addProductInCart(routerLink, sessionCartObject, quantity)
+  {
     let sessionItemList: Array<any> = [];
     let sessionDetails = this.cartService.getGenericCartSession;
     if (sessionDetails["itemsList"] == null) {
@@ -650,7 +686,8 @@ export class BussinessPurchaseListComponent {
     }
   }
 
-  updateCartSessions(routerLink) {
+  updateCartSessions(routerLink)
+  {
     let sessionDetails = this.cartService.getGenericCartSession;
     this.showLoader = true;
     let cartObject = {
@@ -663,20 +700,22 @@ export class BussinessPurchaseListComponent {
     };
 
     this.cartService.updateCartSession(cartObject).subscribe(
-      (data) => {
+      (data) =>
+      {
         this.showLoader = false;
         this._tms.show({ type: "success", text: "Successfully added to cart" });
         if (data.status) {
           this.sessionDetails = data;
           this.uniqueRequestNo = 0;
           this.cartService.setGenericCartSession(data);
-          this.cartService.cart.next({count: data["noOfItems"]});
+          this.cartService.cart.next({ count: data["noOfItems"] });
           this.successMessage = this.selectedIndex;
         } else {
           this.uniqueRequestNo = 0;
         }
       },
-      (err) => {
+      (err) =>
+      {
         this._tms.show({ type: "success", text: "Cannot add to cart." });
         this.uniqueRequestNo = 0;
         this.showLoader = false;
@@ -684,20 +723,23 @@ export class BussinessPurchaseListComponent {
     );
   }
 
-  removePromoCode() {
+  removePromoCode()
+  {
     let cartSession = this.cartService.getGenericCartSession;
     cartSession["offersList"] = [];
     cartSession["extraOffer"] = null;
     cartSession["cart"]["totalOffer"] = 0;
 
     let itemsList = cartSession["itemsList"];
-    itemsList.forEach((element, index) => {
+    itemsList.forEach((element, index) =>
+    {
       cartSession["itemsList"][index]["offer"] = null;
     });
     this.cartService.setGenericCartSession(cartSession);
   }
 
-  applyPromoCode(routerLink) {
+  applyPromoCode(routerLink)
+  {
     this.showLoader = true;
     if (this.localStorageService.retrieve("user")) {
       let userData = this.localStorageService.retrieve("user");
@@ -707,7 +749,8 @@ export class BussinessPurchaseListComponent {
             shoppingCartDto: this.sessionDetails,
           };
 
-          this.orderSummaryService.applyPromoCode(reqobj).subscribe((res) => {
+          this.orderSummaryService.applyPromoCode(reqobj).subscribe((res) =>
+          {
             this.showLoader = false;
             if (res["status"]) {
               if (
@@ -742,56 +785,51 @@ export class BussinessPurchaseListComponent {
     }
   }
 
-  removeItemFromPurchaseList(productObject) {
+  removeFromWishlist(item) {console.log(item); this.removableItem = item }
+
+  cancelRemovableItem() { this.removableItem = null; }
+
+  removeItemFromPurchaseList(productObject)
+  {
+    if (productObject === null) return;
     this.showLoader = true;
     let userSession = this._localAuthService.getUserSession();
-
     let obj = {
       idUser: userSession.userId,
       userType: "business",
-      idProduct: productObject.partNumber,
+      idProduct: productObject.moglixPartNumber,
       productName: productObject.productName,
-      description: productObject.desciption,
-      brand: productObject.brandDetails.brandName,
-      category: productObject.categoryDetails.categoryCode,
+      description: productObject.description,
+      brand: productObject.brandName,
+      category: productObject.categoryCodes,
     };
-
     this._businessPurchaseListService.removePurchaseList(obj).subscribe(
-      (res) => {
+      (res) =>
+      {
         if (res["status"]) {
-          dataLayer.push({
-            event: "removeFromPurchaseList",
-          });
+          dataLayer.push({ event: "removeFromPurchaseList", });
           this.getPurcahseList();
-        } else {
-          this.showLoader = false;
+          this.removableItem = null;
         }
-      },
-      (err) => {
         this.showLoader = false;
-      }
+      },
+      (err) => { this.showLoader = false; }
     );
-    this.spp = false;
   }
-
-  aori(ele, productDetail) {
-    if (ele && ele.checked) {
-      this.spli.push(productDetail);
-    } else {
-      let index = this.spli.indexOf(productDetail);
-      this.spli.splice(index, 1);
-    }
-  }
-  addNow(productDetail) {
+  
+  addNow(productDetail)
+  {
     this.spli = [];
     this.spli.push(productDetail);
     this.getdata(this.spli);
   }
-  showBox(ele) {
+  showBox(ele)
+  {
     this.elementIndex = ele;
     this.spp = true;
   }
-  discountPrice(markedPrice, sellingPrice) {
-    return this.commonService.calculcateDiscount(null,markedPrice, sellingPrice);
+  discountPrice(markedPrice, sellingPrice)
+  {
+    return this.commonService.calculcateDiscount(null, markedPrice, sellingPrice);
   }
 }

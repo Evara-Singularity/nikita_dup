@@ -81,7 +81,10 @@
                             </ng-container>
                         </div>
                         <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
-                            <button class="btn tertiary-outline-cta tertiary-outline-cta-8" (click)="openRfqForm()">
+                            <button class="btn tertiary-outline-cta tertiary-outline-cta-8" (click)="$event.stopPropagation();remove(product)" *ngIf="isWishlist">
+                                REMOVE
+                            </button>
+                            <button class="btn tertiary-outline-cta tertiary-outline-cta-8" (click)="openRfqForm()" *ngIf="!isWishlist">
                                 SEND QUERY
                             </button>
                         </ng-container>

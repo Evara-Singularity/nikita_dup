@@ -305,7 +305,9 @@ i[class^="icon-"],
 .icon-facebook:before {
     content: "\e92e";
 }
-
+.icon-information::before{
+    content: "\ea52";
+}
 .icon-fan:before {
     content: "\e92f";
 }
@@ -750,6 +752,9 @@ i[class^="icon-"],
 
 .icon-customer-service-fill:before {
     content: "\e9d3";
+}
+.icon-secure_payment::before{
+    content: "\ea64";
 }
 
 .icon-restart-line:before {

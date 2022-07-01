@@ -32,8 +32,12 @@ button.btn[disabled] {
         color: #3030308c;
         padding-bottom: 4px;
         span {
-            img {
-                width: auto;
+            // img {
+            //     width: auto;
+            // }
+            i{
+                font-size: 10px;
+                color: red;
             }
         }
         img {

@@ -103,11 +103,8 @@
     <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
 </section>
 
-<!-- TODO: THIS IS ON PAGE LOAD NOT LAZY LOAD -->
-<section id="productAccordianSection" observeVisibility [debounceTime]="100"
-    (visible)="onVisibleProductAccordians($event)">
-    <ng-container #pdpAccordian></ng-container>
-</section>
+<product-accordian [categoryBrandDetails]="getCategoryBrandDetails()" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
+
 
 <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
     <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>

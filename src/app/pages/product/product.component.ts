@@ -273,9 +273,6 @@ export class ProductComponent implements OnInit, AfterViewInit
     faqSuccessPopupInstance = null;
     @ViewChild("faqSuccessPopup", { read: ViewContainerRef })
     faqSuccessPopupContainerRef: ViewContainerRef;
-    pdpAccordianInstance = null;
-    @ViewChild("pdpAccordian", { read: ViewContainerRef })
-    pdpAccordianContainerRef: ViewContainerRef;
 
     iOptions: any = null;
 
@@ -672,40 +669,6 @@ export class ProductComponent implements OnInit, AfterViewInit
         } else {
             this.starsCount = rating;
             //this.productResult['rating'] = rating;
-        }
-    }
-
-    async onVisibleProductAccordians($event) {
-        if (!this.pdpAccordianInstance) {
-            const { ProductAccordiansComponent } = await import(
-                "./../../components/product-accordians/product-accordians.component"
-            );
-            const factory = this.cfr.resolveComponentFactory(
-                ProductAccordiansComponent
-            );
-            this.pdpAccordianInstance = this.pdpAccordianContainerRef.createComponent(
-                factory,
-                null,
-                this.injector
-            );
-            this.pdpAccordianInstance.instance["categoryBrandDetails"] = {
-                category: this.rawProductData.categoryDetails[0],
-                brand: this.rawProductData.brandDetails,
-            };
-            const TAXONS = this.taxons;
-            let page = {
-                pageName: null,
-                channel: "pdp",
-                subSection: null,
-                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-                linkName: null,
-                loginStatus: this.commonService.loginStatusTracking,
-            };
-            this.pdpAccordianInstance.instance["analyticsInfo"] = {
-                page: page,
-                custData: this.commonService.custDataTracking,
-                order: this.orderTracking,
-            };
         }
     }
 

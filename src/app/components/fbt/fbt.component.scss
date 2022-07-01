@@ -5,6 +5,10 @@
 
 .fbt-card-container {
   background: var(--white);
+  .heading-3{
+    font-size: $extra-large-font;
+    padding: 15px 10px;
+  }
   .fbt-close-ico {
     font-size: $extra-large-1-font;
     float: right;

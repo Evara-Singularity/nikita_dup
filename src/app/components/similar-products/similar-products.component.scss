@@ -1,7 +1,7 @@
 @import '../../scss/layout/horizontalProductListing';
 .similar-product{
     background: var(--white);
-    padding-top: 5px;
+    padding: 0 15px 10px;
     .view-all-strip{
         @extend %view-all-strip;
         .heading-3{

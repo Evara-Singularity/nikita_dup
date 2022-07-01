@@ -27,6 +27,7 @@ export class ProductMoreOffersComponent implements OnInit {
   outData(data) {
     this.out.emit(data);
   }
+  togglePopUp(){}
   
 }
 

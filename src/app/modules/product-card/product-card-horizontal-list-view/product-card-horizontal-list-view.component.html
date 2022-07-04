@@ -38,11 +38,20 @@
                         *ngIf="cardFeaturesConfig.enableRating && product.ratingCount">({{productReviewCount}})</span>
                     <!-- <span class="ads" *ngIf="!product.internalProduct && !hideAd">AD</span> -->
                 </div>
-                <div class="name" (click)="trackProductTitle('title');$event.preventDefault()">
+                <div *ngIf="!isWishlist" class="name" (click)="trackProductTitle('title');$event.preventDefault()">
                     <a [href]="prodUrl + '/' + product.productUrl">
                         <span>{{product.productName | slice:0:60}}
                             <span *ngIf="product.productName.length>60">...</span></span></a>
                 </div>
+                <div *ngIf="isWishlist" class="name-with-icon">
+                    <div  class="name" (click)="trackProductTitle('title');$event.preventDefault()">
+                        <a [href]="prodUrl + '/' + product.productUrl">
+                            <span>{{product.productName | slice:0:60}}
+                                <span *ngIf="product.productName.length>60">...</span></span>
+                        </a>
+                    </div>
+                    <i (click)="$event.stopPropagation();remove(product)" *ngIf="isWishlist" class="icon-bin"></i>
+                </div>   
                 <div *ngIf="product.brandName" class="brand" (click)="navigateToPDP()">
                     <span>By: {{product.brandName | brandName}}</span>
                 </div>
@@ -81,7 +90,7 @@
                             </ng-container>
                         </div>
                         <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
-                            <button class="btn tertiary-outline-cta tertiary-outline-cta-8" (click)="openRfqForm()">
+                            <button class="btn tertiary-outline-cta tertiary-outline-cta-8" (click)="openRfqForm()" *ngIf="!isWishlist">
                                 SEND QUERY
                             </button>
                         </ng-container>

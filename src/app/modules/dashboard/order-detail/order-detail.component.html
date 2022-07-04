@@ -279,13 +279,13 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 </app-pop-up>
 
 <!-- final message after confirmation -->
-<app-pop-up   *ngIf="openPopup && openPopup=='return'" (outData$)="outData($event)" [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup', headerText:' Return/Exchange Order'}">
-    <div class="content-popup returnForm" content>
+<app-pop-up  *ngIf="openPopup && openPopup=='return'"  (outData$)="outData($event)" [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup', headerText:' Return/Exchange Order'}">
+    <div class="content-popup returnForm grey-box" [class.grey-box]="step == 3" content>
         <form [formGroup]="returnForm" enctype="multipart/form-data" (ngSubmit)="returnProduct(returnForm.value, returnForm.valid)" class="form-horizontal">
             <div class="material-form pwa-row">
                 <div class="pwa-col-12">
                     <!-- return step 1 -->
-                    <div [ngClass]="{'show': step == 1, 'hide': step !== 1}">
+                    <div  [ngClass]="{'show': step == 1, 'hide': step !== 1}" class="mt-10">
                         <div class="outline-input-label">
                             <label class="indusrty show" [class.is-focus]="actionType.value.length > 0">
                                 <select formControlName="requestType" (change)=changeRequestType($event) #actionType
@@ -361,7 +361,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                     </div>
                     <!-- Bank Details for Return -->
                     <ng-container *ngIf="returnForm['controls']['bankDetail']">
-                        <div formGroupName="bankDetail" class="bankdetail"   *ngIf="step == 2">
+                        <div formGroupName="bankDetail" class="bankdetail mt-10"   *ngIf="step == 2">
                             <div class="set-two-form">
                                 <div class="outline-input-label">
                                     <label class="pos-rel" [class.is-focus]="bankName.value.length > 0">
@@ -370,12 +370,12 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                         <span class="label">Bank Name*</span>
                                     </label>
                                     <p *ngIf="returnForm?.get['bankDetail']?.get['bankName']?.touched && !returnForm?.get['bankDetail']?.get['bankName'].valid && returnForm?.get['bankDetail']?.get['bankName']?.errors?.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
-
+    
                                     <p *ngIf="returnForm['controls']['bankDetail']?.get['bankName']?.touched && !returnForm?.get['bankDetail']?.get['bankName'].valid && returnForm?.get['bankDetail']?.get['bankName'].errors.invalidBankName && returnForm?.get['bankDetail']?.get['bankName'].value.length>0"
                                         class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Bank name is invalid
                                     </p>
                                 </div>
-
+    
                                 <div class="outline-input-label">
                                     <label class="pos-rel" [class.is-focus]="IFSCCode.value.length > 0">
                                         <input type="text" style="text-transform:uppercase" onPaste="return false"
@@ -383,11 +383,11 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                         <span class="label">IFSC Code(11-digit)*</span>
                                     </label>
                                     <p *ngIf="returnForm?.get['bankDetail']?.get['ifscCode']?.touched && !returnForm?.get['bankDetail']?.get['ifscCode'].valid && returnForm?.get['bankDetail']?.get['ifscCode'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
-
+    
                                     <p *ngIf="returnForm['controls']['bankDetail']?.get['ifscCode']?.touched && !returnForm?.get['bankDetail']?.get['ifscCode'].valid && returnForm?.get['bankDetail']?.get['ifscCode'].errors.invalidIfsc && returnForm?.get['bankDetail']?.get['ifscCode'].value.length>0"
                                         class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Only alpha-numerical values allowed</p>
                                 </div>
-
+    
                                 <div class="outline-input-label">
                                     <label class="pos-rel" [class.is-focus]="accountName.value.length > 0">
                                         <input type="text" style="text-transform:uppercase" onPaste="return false"
@@ -395,13 +395,13 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                         <span class="label">Account Holder Name*</span>
                                     </label>
                                     <p *ngIf="returnForm?.get['bankDetail']?.get['acountName']?.touched && !returnForm?.get['bankDetail']?.get['acountName'].valid && returnForm?.get['bankDetail']?.get['acountName'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
-
+    
                                     <p *ngIf="returnForm['controls']['bankDetail']?.get['acountName']?.touched && !returnForm?.get['bankDetail']?.get['acountName'].valid && returnForm?.get['bankDetail'].controls['acountName'].errors.invalidBankName && returnForm?.get['bankDetail']?.get['acountName'].value.length>0"
                                         class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter a valid name</p>
-
-
+    
+    
                                 </div>
-
+    
                                 <div class="outline-input-label">
                                     <label class="pos-rel" [class.is-focus]="accountNum.value.length > 0">
                                         <input type="text" onPaste="return false" onCopy="return false"
@@ -409,7 +409,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                         <span class="label">Account Number*</span>
                                     </label>
                                     <p *ngIf="returnForm?.get['bankDetail']?.get['acountNo']?.touched && !returnForm?.get['bankDetail']?.get['acountNo'].valid && returnForm?.get['bankDetail']?.get['acountNo'].errors.required" class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
-
+    
                                     <p *ngIf="returnForm['controls']['bankDetail']?.get['acountNo']?.touched && !returnForm?.get['bankDetail']?.get['acountNo'].valid && returnForm?.get['bankDetail']?.get['acountNo'].errors.invalidAccount && returnForm?.get['bankDetail']?.get['acountNo'].value.length>0"
                                         class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter a valid account number</p>
                                 </div>
@@ -421,7 +421,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                             (change)="addChequeImage($event)">
                                         <i class="icon-expand"></i>
                                     </label>
-
+    
                                     <label class="upload-img" *ngIf="chequeImage">
                                         <img src="{{imagePath}}web/dist/assets/img/placeholder.svg" appImageToSrc
                                             [itemImage]="chequeImage['file']">
@@ -435,7 +435,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                 </div>
             </div>
             <!-- Return Confirmation State -->
-            <div class="confirmStatusBox material-form"  [ngClass]="{'show': step == 3, 'hide': step !== 3}">
+            <div class="confirmStatusBox material-form" [ngClass]="{'show': step == 3, 'hide': step !== 3}">
                 <form [formGroup]="returnForm" class="form-horizontal">
                     <div class="confirmStatusCard">
                         <div class="card-image">
@@ -455,12 +455,12 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         <div class="card-inner">
                             <div class="">
                                 <span>
-                                    <span class="status font-bold">Return Done </span>
-                                    <span class="grey-txt">on {{currentDate | date: 'd-MMMM-y'}}</span>
+                                    <span class="status font-bold">Return Initiated </span>
+                                    <!-- <span class="grey-txt">on {{currentDate | date: 'd-MMMM-y'}}</span> -->
                                 </span>
                             </div>
                         </div>
-                        <button class="btn tertiary-btn">BUY AGAIN</button>
+                        <!-- <button class="btn tertiary-btn">BUY AGAIN</button> -->
                     </div>
                     <div class="return_note_text">
                         <!-- <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'" class="light-txt">Your order has been Returned.</p> -->
@@ -470,7 +470,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                 </form>
             </div>
             <div class="fixed-bottom-cta" *ngIf="step == 3">
-                <button class="primary-full-btn" (click)="navigateTo('/')">CONTINUE</button>
+                <button class="btn primary-full-btn" (click)="navigateTo('/')">CONTINUE</button>
             </div>
             <div class="fixed-bottom-cta" [ngClass]="{'show': step == 2 || !returnForm['controls']['bankDetail'], 'hide': step !== 2}" *ngIf="step==2">
                 <div class="fixed-bottom-cta-items">

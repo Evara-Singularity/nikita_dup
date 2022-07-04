@@ -27,17 +27,17 @@
         <div class="pwa-row info-list">
             <div class="pwa-col-12">
                 <p class="rate_review-text">What makes a good review</p>
-                <ul class="list-information">
-                    <li>Have you used this product? It’s always better to review a product you have personally experienced.</li>
-                    <li>Educate your readers Provide a relevant, unbiased overview of the product. Readers are interested in the pros and the cons of the product.</li>
-                    <li>Be yourself, be informative Let your personality shine through, but it’s equally important to provide facts to back up your opinion.</li>
-                    <li>Stay concise Be creative but also remember to stay on topic. A catchy title will always get attention!</li>
-                    <li>Easy to read, easy on the eyes A quick edit and spell check will work wonders for your credibility. Also, break reviews into small, digestible paragraphs.</li>
+                <ul>
+                    <li><span>Have you used this product? It’s always better to review a product you have personally experienced.</span></li>
+                    <li><span>Educate your readers Provide a relevant, unbiased overview of the product. Readers are interested in the pros and the cons of the product.</span></li>
+                    <li><span>Be yourself, be informative Let your personality shine through, but it’s equally important to provide facts to back up your opinion.</span></li>
+                    <li><span>Stay concise Be creative but also remember to stay on topic. A catchy title will always get attention!</span></li>
+                    <li><span>Easy to read, easy on the eyes A quick edit and spell check will work wonders for your credibility. Also, break reviews into small, digestible paragraphs.</span></li>
                 </ul>
             </div>
         </div>
         <div class="fixed-bottom-cta">
-            <button class="btn primary-full-btn" [ngClass]="{'active':reviewForm.valid && ratingValue > 0}" (click)="postReview();">SUBMIT</button>
+            <button class="btn primary-full-btn" [ngClass]="{'active':reviewForm.valid && ratingValue > 0}" (click)="postReview();">SUBMIT YOUR REVIEW</button>
         </div>   
     </div>
 </app-pop-up>

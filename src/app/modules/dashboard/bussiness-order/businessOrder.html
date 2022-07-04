@@ -132,7 +132,7 @@
     <div class="noordertext"> No Orders placed yet. Add items to your cart and make a purchase.</div>
 
 </div>
-<div class="fixed-bottom-cta">
+<div class="fixed-bottom-cta" *ngIf="orders && orders.length===0" >
     <button [routerLink]="['/']" class="btn primary-full-btn">START SHOPPING</button>
 </div>
 <!-- <div class="bottom-options hide">

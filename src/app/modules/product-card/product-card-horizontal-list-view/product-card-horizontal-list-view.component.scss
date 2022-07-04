@@ -51,8 +51,19 @@
             }
             .right {
                 width: calc(100% - 110px);
+                .name-with-icon{
+                    display: inline-flex;
+                    align-items: flex-start;
+                    .name{
+                        width:90%;
+                    }
+                    i{
+                        font-size:$extra-large-2-font;
+                    }
+                   }
+
                 .brand {
-                    margin-top: 4px;
+                     margin-top: 4px;
                     text-align: left;
                     font-size: $small-font;
                     color: var(--silver);

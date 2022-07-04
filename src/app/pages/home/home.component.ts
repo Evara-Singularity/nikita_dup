@@ -37,7 +37,6 @@ import { CategoryData } from '@app/utils/models/categoryData';
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	@Input() data;
-	scrolledViewPort = 0;
 	isServer: boolean;
 	encodeURI = encodeURI;
 	bannerDataJson: any = {};

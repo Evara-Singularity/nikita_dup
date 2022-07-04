@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  Renderer2,
   ViewEncapsulation,
 } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";

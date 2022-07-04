@@ -63,6 +63,7 @@ export class CommonService
     abTesting: any;
     updateSortBy: Subject<string> = new Subject();
     bharatcraftUserSessionArrived: Subject<boolean> = new Subject<boolean>();
+    scrolledViewPort: number = 0;
 
     private _networkSpeed: Number = null;
     private _webpSupport: boolean = false;

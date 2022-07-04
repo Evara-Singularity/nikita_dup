@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
@@ -22,6 +22,7 @@ export class AppPromoComponent implements OnInit {
   }
   playStoreLink = "https://play.google.com/store/apps/details?id=com.moglix.online";
   appStoreLink = "https://apps.apple.com/in/app/moglix-best-industrial-app/id1493763517";
+  scrolledViewPort = 0;
 
   @Input() productData: any;
   @Input() isOverlayMode: boolean = true;
@@ -29,7 +30,6 @@ export class AppPromoComponent implements OnInit {
   @Input() showPromoCode: boolean = true;
   @Input() productMsn: string = null;
   @Input() isLazyLoaded: boolean = false;
-  @Input() scrolledViewPort: number = 0;
   @Output() appPromoStatus$: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public appPromoStatus: boolean = true;
@@ -40,6 +40,7 @@ export class AppPromoComponent implements OnInit {
   constructor(
     private _localStorage: LocalStorageService,
     private _localAuthService: LocalAuthService,
+    private renderer2: Renderer2,
     private _analytics: GlobalAnalyticsService,
     private _localStorageService: LocalStorageService,
     public _commonService: CommonService,
@@ -52,10 +53,21 @@ export class AppPromoComponent implements OnInit {
     this.getUserAuthenticationStatusChange();
     this.mobile_os = this.getMobileOperatingSystem();
     this.createPlayStoreLink();
+  }
 
-    setTimeout(() => {
-      this.scrolledViewPort = 250;
-    }, 3000);
+  ngAfterViewInit(){
+    this.attachScrollHandler();
+  }
+
+  listener;
+  attachScrollHandler() {
+    this.listener = this.renderer2.listen('window', 'scroll', (e) => {
+      this.windowScrollHandler();
+    });
+  }
+
+  windowScrollHandler() {
+    this.scrolledViewPort = window.pageYOffset;
   }
 
   createPlayStoreLink() {
@@ -168,6 +180,12 @@ export class AppPromoComponent implements OnInit {
     }
 
     return this.MOBILE_ENVS.OTHERS;
+  }
+
+  ngOnDestroy() {
+    if (this._commonService.isBrowser) {
+      this.listener();
+    }
   }
 
 }

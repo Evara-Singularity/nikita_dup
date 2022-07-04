@@ -4,7 +4,7 @@
         <div class="view-all-strip">
             <h3>Our Popular Deals</h3>
         </div>
-        <div class="pwa-tabs-container">
+        <div class="pwa-tabs-container" id="tabs">
             <ng-container *ngFor="let item of resultArray;let tabIndex = index">
                 <div class="pwa-tab pwa-tab-variant2" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"
                     (click)="setProductList(tabIndex,item)">
@@ -12,7 +12,7 @@
                 </div>
             </ng-container>
         </div>
-        <product-card-vertical-container  [numberOfItems]="selectedProducts?.length || 0">
+        <product-card-vertical-container [containerId]="'topDealsContainer'" [numberOfItems]="selectedProducts?.length || 0">
             <ng-container *ngFor="let product of selectedProducts; let pIndex=index">
                 <product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
                     [cardMetaInfo]='cardMetaInfo' [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex"

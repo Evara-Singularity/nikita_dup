@@ -151,7 +151,7 @@
 
 <floating-button-container
     *ngIf="productOutOfStock && !showScrollToTopButton  && (!productService.oosSimilarProductsData.similarData  || productService.oosSimilarProductsData.similarData.length <= 2 )">
-    <floating-button [label]="'GET BEST PRICE'" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
+    <floating-button [label]="'GET BEST PRICE'" [type]="'RED'" [isMultiple]="false"  (onClick)="getBestPrice($event)"></floating-button>
 </floating-button-container>
 <!-- CTA Fixed position -->
 

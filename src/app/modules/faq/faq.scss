@@ -68,15 +68,18 @@
     }
     .searchresult{
       position: absolute;
-      width: calc(100% - 60px);
+      width: calc(100% - 35px);
       background: var(--white);
       z-index: 1;
       max-height:480px;
       overflow-y: auto;
       box-shadow: 0 3px 7px #999;
-      left: 30px;
-      top: 81px;
+      left: 0px;
+      right:0;
+      margin:0 auto;
+      top: 124px;
       text-align: left;
+      border-radius:$border-radius-8;
       li{
         a{
           display: block;
@@ -205,3 +208,4 @@
     }
   }
 }
+.hidden-sm-down{display: none;}

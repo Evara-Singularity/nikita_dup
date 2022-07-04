@@ -36,7 +36,7 @@
                     <div class="cta-row">
                         <button (click)="$event.stopPropagation();cancelRemovableItem();" cstatic-small-card-container
                             class="btn secondry-btn-1">CANCEL</button>
-                        <button class="btn secondry-btn" (click)="$event.stopPropagation();removeFromWishlist($event)"><i
+                        <button class="btn secondry-btn" (click)="$event.stopPropagation();removeItemFromPurchaseList(removableItem)"><i
                                 class="icon-bin"></i>&nbsp;REMOVE</button>
                     </div>
                 </div>

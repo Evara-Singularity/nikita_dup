@@ -1,17 +1,17 @@
+import { Location } from '@angular/common';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { CommonService } from '@app/utils/services/common.service';
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Subscription } from 'rxjs';
 import { CartService } from './../../utils/services/cart.service';
-import { Component, EventEmitter, Input, OnInit, Output, AfterViewInit, OnDestroy } from '@angular/core';
-import { CommonService } from '@app/utils/services/common.service';
-import { Router } from '@angular/router';
-import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
-import { Location } from '@angular/common';
 
 @Component({
 	selector: 'cart-header',
 	templateUrl: './cart-header.component.html',
 	styleUrls: ['./cart-header.component.scss']
 })
-export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
+export class CartHeaderComponent implements OnInit, OnDestroy
 {
 	readonly REPLACE_URL = { replaceUrl: true };
 	@Output() loadSideNav$: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -37,30 +37,14 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 
 	ngOnInit(): void
 	{
-		if (this.isPayment) { this.checkForPaymentPage();}
-	}
-
-	ngAfterViewInit(): void
-	{
+		this._loader.setLoaderState(true);
 		this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
 		{
 			this.cartSession = cartSession;
 			this.noOfCartItems = this._cartService.getCartItemsCount();
-			if (this.noOfCartItems === 0) { this._router.navigateByUrl("quickorder", this.REPLACE_URL); }
 			this.calculatePayableAmount(this.cartSession['cart']);
-		});
-	}
-
-	checkForPaymentPage()
-	{
-		if (
-			(this._cartService.getGenericCartSession && Object.keys(this._cartService.getGenericCartSession?.cart).length == 0) ||
-			!((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
-				(this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
-		) {
 			this._loader.setLoaderState(false);
-			this._router.navigateByUrl('/checkout/address', this.REPLACE_URL);
-		}
+		});
 	}
 
 	calculatePayableAmount(cart)
@@ -83,10 +67,12 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 				break;
 			}
 			case 'Checkout': {
-				this.handleCheckoutNavigation(url, previousURL); break;
+				this.handleCheckoutNavigation(url, previousURL);
+				break;
 			}
 			case 'Payment': {
-				this.handleCheckoutNavigation(url, previousURL); break;
+				this.handleCheckoutNavigation(url, previousURL);
+				break;
 			}
 		}
 	}
@@ -102,14 +88,13 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 
 	handleCheckoutNavigation(url: string, previousURL: string)
 	{
+		console.log(`CurrentURL:${url}, PreviousURL:${previousURL}`);
 		this._cartService.clearBuyNowFlow();
 		if (previousURL.includes('checkout/login') || previousURL.includes('checkout/sign-up') || previousURL.includes('checkout/otp')) {
-			this._router.navigateByUrl("quickorder", { replaceUrl: true });
-		} else if (url.includes('checkout/payment') || previousURL.includes('checkout/address')) {
-			this._router.navigateByUrl("checkout/address", { replaceUrl: true });
+			this._router.navigateByUrl("quickorder");
 		} else if (previousURL.includes('checkout/address') || previousURL.includes('checkout/payment')) {
-			this._router.navigateByUrl("quickorder", { replaceUrl: true });
-		} else {
+			this._router.navigateByUrl("quickorder");
+		}else {
 			this._location.back();
 		}
 	}
@@ -123,10 +108,10 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 	get isQuickorder() { return this.title === "My Cart" }
 
 	get isPayment() { return this.title === "Payment" }
-	
+
 	get isCheckout() { return this.title === "Checkout" }
 
-	get displayCartInfo() { return this.isQuickorder && this.noOfCartItems}
+	get displayCartInfo() { return this.isQuickorder && this.noOfCartItems }
 
 	ngOnDestroy(): void
 	{

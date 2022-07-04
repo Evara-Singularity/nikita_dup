@@ -36,7 +36,7 @@
 </ul>
 </div>
 
-<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup" [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:'Bestsellers'}">
+<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup " [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup'}">
     <div class="content-popup otherCategoryBlock grey_bg" content>
         <ul class="view-products grid border-top">
             <ng-container *ngFor="let product of data['data']; let i = index">

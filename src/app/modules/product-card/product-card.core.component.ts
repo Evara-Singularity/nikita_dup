@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, EventEmitter, HostBinding, Injector, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, EventEmitter, HostBinding, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
 import CONSTANTS from '@app/config/constants';
@@ -25,6 +25,7 @@ export class ProductCardCoreComponent implements OnInit {
   readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
   readonly defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
   prodUrl=CONSTANTS.PROD;
+  @Input("pageName") pageName = "";
   @Input() product: ProductsEntity;
   @Input() cardFeaturesConfig: ProductCardFeature = {
     // feature config
@@ -56,6 +57,7 @@ export class ProductCardCoreComponent implements OnInit {
   @Input() moduleUsedIn: 'PRODUCT' | 'LISTING_PAGES' | 'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP' | 'PRODUCT_SIMILAR_OUT_OF_STOCK' | 'SEACRH_SUGGESTION' | 'PRODUCT_PAST_ORDER' | 'HOME_RECENT' = 'LISTING_PAGES';
   productGroupData: any = null;
   @Input() @HostBinding("class.blue-color") public isBlue = false;
+  @Output() remove$:EventEmitter<any> = new EventEmitter<any>();
 
   isOutOfStockByQuantity: boolean = false;
   isOutOfStockByPrice: boolean = false;
@@ -353,6 +355,7 @@ export class ProductCardCoreComponent implements OnInit {
     this._commonService.enableNudge = false;
   }
 
+  remove(product) { this.remove$.emit(product)}
 
   getRandomValue(arr, n) {
     var result = new Array(n),
@@ -407,5 +410,7 @@ export class ProductCardCoreComponent implements OnInit {
   }
 
   get getWhatsText() { return `Hi, I want to buy ${this.product['productName']} (${this.product['moglixPartNumber']})`; }
+
+  get isWishlist() { return this.pageName === "Wishlist";}
 
 }

@@ -1,6 +1,6 @@
 <div class="dashboard-header">
     <div class="dashboard-inner">
-        <a [routerLink]="['/']"><i class="icon-back-arrow" id="icon-back"></i></a>
+        <a (click)="goBack()"><i class="icon-back-arrow" id="icon-back"></i></a>
         <a class="moglix-app-logo" [routerLink]="['/']"><i class="icon-moglix_app_logo"></i></a>
         <a> <span class="page-name" *ngIf="title"> {{ title }} </span> </a>
     </div>

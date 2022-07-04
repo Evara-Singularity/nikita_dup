@@ -39,6 +39,7 @@ export class OrderConfirmationComponent implements OnInit {
     userType;
     couponCodeData;
     appPromoVisible = true;
+    processedItems = 0;
     set showLoader(value: boolean) {
         this.globalLoader.setLoaderState(value);
     }
@@ -61,7 +62,8 @@ export class OrderConfirmationComponent implements OnInit {
         private cfr: ComponentFactoryResolver,
         private injector: Injector,
         public _commonService: CommonService,
-        private _globalSessionService:GlobalSessionStorageService
+        private _globalSessionService:GlobalSessionStorageService,
+
         ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -89,6 +91,9 @@ export class OrderConfirmationComponent implements OnInit {
             this.getCartSessionAnalyticsCall(userSession, utm_medium);
             this.footerService.setFooterObj({ footerData: false });
             this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
+            this._orderConfrimationService.getOrderbyUserid(userSession.userId, 0, this.orderId).subscribe((order)=>{
+                this.processedItems = order? order.numberOfItem : 0;
+            });
         }
     }
 

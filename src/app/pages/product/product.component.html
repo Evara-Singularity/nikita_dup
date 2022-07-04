@@ -88,9 +88,9 @@
     [productOutOfStock]="productOutOfStock" [productMrp]="productMrp" [productCategoryDetails]="productCategoryDetails"
     [productName]="productName" [productAllImages]="productAllImages"></product-get-quote>
 
-<section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
-    <ng-container #similarProduct></ng-container>
-    <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="similarProductInstance"></product-skeletons>
+<section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+    <ng-container #sponseredProducts></ng-container>
+    <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
 </section>
 
 <product-more-widget [taxons]="taxons" [baseDomain]="baseDomain" [orderTracking]="orderTracking"
@@ -98,16 +98,13 @@
     [productBrandCategoryUrl]="productBrandCategoryUrl">
 </product-more-widget>
 
-<section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
-    <ng-container #sponseredProducts></ng-container>
-    <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
+<section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
+    <ng-container #similarProduct></ng-container>
+    <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="similarProductInstance"></product-skeletons>
 </section>
 
-<!-- TODO: THIS IS ON PAGE LOAD NOT LAZY LOAD -->
-<section id="productAccordianSection" observeVisibility [debounceTime]="100"
-    (visible)="onVisibleProductAccordians($event)">
-    <ng-container #pdpAccordian></ng-container>
-</section>
+<product-accordian [categoryBrandDetails]="getCategoryBrandDetails()" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
+
 
 <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
     <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
@@ -154,7 +151,7 @@
 
 <floating-button-container
     *ngIf="productOutOfStock && !showScrollToTopButton  && (!productService.oosSimilarProductsData.similarData  || productService.oosSimilarProductsData.similarData.length <= 2 )">
-    <floating-button [label]="'GET BEST PRICE'" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
+    <floating-button [label]="'GET BEST PRICE'" [type]="'RED'" [isMultiple]="false"  (onClick)="getBestPrice($event)"></floating-button>
 </floating-button-container>
 <!-- CTA Fixed position -->
 

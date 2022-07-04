@@ -61,7 +61,7 @@
                 <!--Features-->
                 <div *ngSwitchCase="'features'" class="key-features">
                     <product-feature-details [isFromOosSimilarCard]="true" [productKeyFeatures]="product.productKeyFeatures | sliceArray:3"></product-feature-details>
-                    <div class="show-all-strip">
+                    <div class="show-all-strip spec pwa-col-12">
                         <span
                             (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'key features', type: 'show all specifications'});">View
                             Details

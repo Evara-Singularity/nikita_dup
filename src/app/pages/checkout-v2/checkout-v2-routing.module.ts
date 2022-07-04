@@ -47,7 +47,7 @@ const routes: Routes = [
       {
         path: 'address',
         loadChildren: () => import('./checkout-address/checkout-address.module').then((m) => m.CheckoutAddressModule),
-        canActivate: [IsAuthenticatedCheckoutLogin, IsCartWithItemsGuard],
+        canActivate: [IsAuthenticatedCheckoutLogin],
         data: {
 					footer: false,
 					title: 'Checkout',
@@ -57,7 +57,7 @@ const routes: Routes = [
       {
         path: 'payment',
         loadChildren: () => import('./checkout-payment/checkout-payment.module').then((m) => m.CheckoutPaymentModule),
-        canActivate: [IsAuthenticatedCheckoutLogin, IsCartWithItemsGuard],
+        canActivate: [IsAuthenticatedCheckoutLogin],
         data: {
 					footer: false,
 					title: 'Payment',

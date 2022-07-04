@@ -8,7 +8,7 @@
     </div> -->
     <div class="content-popup reviewSection" content>
         <div class="pwa-row">
-            <p class="f-size-14">
+            <p style="font-size: 14px;">
                 {{ rawReviewsData?.productName}}
             </p>
         </div>
@@ -67,7 +67,7 @@
                 </div>
             </div>
         </div>
-        <div class="pwa-row">
+        <div class="pwa-row review-btn">
             <div class="pwa-col-12">
                 <button class="btn secondry-btn" (click)="emitWriteReview()">WRITE A REVIEW</button>
             </div>
@@ -82,7 +82,7 @@
                         <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 3"></i>
                         <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 4"></i>
                     </div>
-                    <p>{{review?.user_name}}</p>
+                    <p class="customer-name">{{review?.user_name}}</p>
                     <p class="small-txt grey-txt cust-date">
                         {{ review?.date_unix | date: 'longDate' }}
                     </p>

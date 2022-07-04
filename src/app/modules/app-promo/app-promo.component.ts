@@ -29,6 +29,7 @@ export class AppPromoComponent implements OnInit {
   @Input() showPromoCode: boolean = true;
   @Input() productMsn: string = null;
   @Input() isLazyLoaded: boolean = false;
+  @Input() scrolledViewPort: number = 0;
   @Output() appPromoStatus$: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public appPromoStatus: boolean = true;
@@ -51,6 +52,10 @@ export class AppPromoComponent implements OnInit {
     this.getUserAuthenticationStatusChange();
     this.mobile_os = this.getMobileOperatingSystem();
     this.createPlayStoreLink();
+
+    setTimeout(() => {
+      this.scrolledViewPort = 250;
+    }, 3000);
   }
 
   createPlayStoreLink() {

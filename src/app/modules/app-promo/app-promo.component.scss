@@ -132,3 +132,14 @@
             }
         }
     }
+
+
+.app-promo-container{
+    opacity: 1;
+    transition: all 2s ease-in-out;
+}
+
+.hideAppPromo{
+    opacity: 0;
+    transform: translateY(200px);
+}

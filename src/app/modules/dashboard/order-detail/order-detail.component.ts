@@ -389,6 +389,9 @@ export class OrderDetailComponent implements OnInit {
 
   returnProduct(rData, valid) {
 
+    // console.log('returnProduct', rData, valid);
+    // return; 
+
     rData.itemId = this.detail.item_id;
     rData.msn = this.detail.product_msn;
 

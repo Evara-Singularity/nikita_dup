@@ -353,13 +353,19 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
 
     goBack()
     {
-        this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
-        if (this.backRedirectUrl && this.backRedirectUrl !== '/') {
-            this.location.back();
-            return;
-        }
         if (this.staticPages.indexOf(window.location.pathname) !== -1) {
             this.router.navigate(['/']);
+            return;
+        }
+        this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
+        const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
+        if (isCheckout || this._commonService.getPreviousUrl.includes('checkout'))
+        {
+            this.router.navigateByUrl("quickorder", { replaceUrl: true });
+            return;
+        }
+        if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false) {
+            (window.history.length > 2) ? this.location.back() : this.router.navigate(['/']);
             return;
         }
         this.router.navigate(['/']);

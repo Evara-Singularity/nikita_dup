@@ -1,4 +1,4 @@
-// Flat Icons
+    // Flat Icons
 i[class^="icon-"],
 [class^="icon-"]::before,
 [class*=" icon-"]::before {
@@ -142,9 +142,11 @@ i[class^="icon-"],
 .icon-arrow-d:before {
     content: "\e908";
 }
-.icon-google-login:before{
+
+.icon-google-login:before {
     content: "\e938";
 }
+
 .icon-automotive:before,
 .icon-216000000::before {
     content: "\e909";
@@ -174,7 +176,8 @@ i[class^="icon-"],
 .icon-call:before {
     content: "\e90f";
 }
-.icon-contact-us:before{
+
+.icon-contact-us:before {
     content: "\ea24";
 }
 
@@ -305,9 +308,11 @@ i[class^="icon-"],
 .icon-facebook:before {
     content: "\e92e";
 }
-.icon-information::before{
+
+.icon-information::before {
     content: "\ea52";
 }
+
 .icon-fan:before {
     content: "\e92f";
 }
@@ -387,6 +392,7 @@ i[class^="icon-"],
 .icon-home:before {
     content: "\e940";
 }
+
 .icon-home2:before {
     content: "\ea4b";
 }
@@ -460,9 +466,11 @@ i[class^="icon-"],
 .icon-logo:before {
     content: "\e951";
 }
-.icon-back-arrow:before{
+
+.icon-back-arrow:before {
     content: "\ea00";
 }
+
 .icon-logout:before {
     content: "\e952";
 }
@@ -570,9 +578,11 @@ i[class^="icon-"],
 .icon-purchase-list:before {
     content: "\e96b";
 }
-.icon-wishlist:before{
+
+.icon-wishlist:before {
     content: "\e9c8";
 }
+
 .icon-rating-star:before {
     content: "\e96c";
 }
@@ -753,7 +763,8 @@ i[class^="icon-"],
 .icon-customer-service-fill:before {
     content: "\e9d3";
 }
-.icon-secure_payment::before{
+
+.icon-secure_payment::before {
     content: "\ea64";
 }
 
@@ -792,24 +803,36 @@ i[class^="icon-"],
 .icon-dropbox-fill:before {
     content: "\e9e6";
 }
-.icon-bin:before{
+
+.icon-bin:before {
     content: "\e9fe";
 }
-.icon-change_password:before{
+
+.icon-change_password:before {
     content: "\ea19";
 }
-.icon-logout1:before{
+
+.icon-logout1:before {
     content: "\ea56";
 }
-.icon-attribute:before{
+
+.icon-attribute:before {
     content: "\ea01";
 }
-.icon-categories:before{
+
+.icon-categories:before {
     content: "\e9c0";
 }
-.icon-arrow-right-s-line:before{
+
+.icon-arrow-right-s-line:before {
     content: "\e9c9";
 }
-.icon-business_details:before{
+
+.icon-business_details:before {
     content: "\e9bf";
-}
+    .icon-mobikwik:before {
+        content: "\ea80";
+    }
+    .icon-information_about_us:before {
+        content: "\ea52";
+    }

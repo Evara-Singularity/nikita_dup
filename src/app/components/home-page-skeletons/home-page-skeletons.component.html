@@ -1,16 +1,27 @@
-<ng-container *ngIf="templateRefInstance != null">
+<ng-container *ngIf="templateRefInstance == null">
   <ng-container [ngSwitch]="type">
-    <!-- REVIEW POINTS:: formatting missing -->
-    <!-- REVIEW POINTS:: temp structure to be commented -->
-    <!-- REVIEW POINTS:: Incorrect imp of switch case -->
+
     <ng-container *ngSwitchCase="'RECENTLY'">
-      <!-- REVIEW POINTS:: use similar PDP skeleton structure and scss -->
-      <div>
-        <h1>RECENTLY seketon here</h1>
-      </div>
-
-
+   
+            <section class="skeleton-container similar-product mt-10">
+              <p class="heading"></p>
+              <div class="vertical-card-section">
+                  <div class="vertical-card-conatiner"  *ngFor="let i of [1,2,3,4,5]">
+                      <div class="skeleton-img"></div>
+                      <div class="skeleton-prod-name"></div>
+                      <div class="skeleton-prod-name1"></div>
+                      <div class="skeleton-brand-name"></div>
+                      <div class="skeleton-price"></div>
+                      <div class="buy-now-section">
+                          <div class="skeleton-cart"></div>
+                          <div class="skeleton-btn"></div>
+                      </div>
+                  </div>
+              </div>
+            </section>
     </ng-container>
+
+
 
     <ng-container *ngSwitchCase="'FEATURED-ARRIVALS'">
       <div>

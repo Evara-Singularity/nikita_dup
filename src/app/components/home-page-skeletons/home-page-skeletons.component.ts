@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
  // REVIEW POINTS: please change selector to home-page-skeletons and use it accordingly
 @Component({
-  selector: 'app-home-page-skeletons',
+  selector: 'home-page-skeletons',
   templateUrl: './home-page-skeletons.component.html',
   styleUrls: ['./home-page-skeletons.component.scss']
 })

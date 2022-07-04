@@ -253,6 +253,7 @@
   text-align: center;
   line-height: 70px;
   margin-right: 10px;
+  margin-bottom: 8px;
   position: relative;
   display: block;
   float: left;
@@ -310,7 +311,7 @@
   }
 }
 .confirmbtn {
-  background: $btn-color;
+  background: var(--primary);
   text-transform: uppercase;
   box-shadow: none;
   color: var(--white);
@@ -320,7 +321,7 @@
   background: var(--silver);
 }
 .confirmbtn {
-  background: var(--slimy-green);
+  background: var(--primary);
 }
 .returnwrap {
   padding: 8px;

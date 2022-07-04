@@ -22,11 +22,11 @@
         </div>
         <div class="card-desc">
             <p (click)="trackAndNavigateToProductPage(detail?.productUrl, detail?.product_msn, $event)" >
-                <a routerLink="{{'/' + detail?.productUrl}}" (click)="$event.stopPropagation();">{{(detail?.product_name | slice:0:30) + (detail?.product_name > 30 ? "...":"")}} 
+                <a routerLink="{{'/' + detail?.productUrl}}" (click)="$event.stopPropagation();">{{(detail?.product_name) + (detail?.product_name > 30 ? "...":"")}} 
                 </a>
             </p>
             <div class="orderqty clearfix">
-                <span class="qtyleft">₹{{detail?.price}}<span class="qtynum">({{detail?.Quantity}} Qty)</span></span>
+                <span class="qtyleft">₹{{detail?.price}}<span class="qtynum"> ({{detail?.Quantity}} Qty)</span></span>
                 <!-- <span><small class="greytxt">(Price Inclusive of GST)</small></span> -->
             </div>
         </div>
@@ -66,16 +66,22 @@
                     <ng-container *ngIf="!(detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING')" >
                         {{detail?.status}}
                         <ng-container *ngIf="detail && detail?.dates.delivered.flag">
-                            <br/>{{ detail?.dates.delivered.date }}
+                            <br/>{{ detail?.dates[detail?.status.toLowerCase()]?.date }}
                         </ng-container>
                     </ng-container>
                 </span>
             </span>
             
-            <span *ngIf="detail?.status !== 'DELIVERED' && detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED'" class="track-order-cta" (click)="fetchTrackingData(detail)">
-                TRACK ORDER 
+            <span
+                *ngIf="detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED'; else elseBlock"
+                class="track-order-cta" (click)="fetchTrackingData(detail)">
+                TRACK ORDER
                 <i class="icon-next"></i>
             </span>
+            <ng-template #elseBlock>
+                <i class="icon-next"></i>
+            </ng-template>
+            
         </div>
         <!-- Return Policy added Yajya please check css for the same  -->
 
@@ -83,6 +89,7 @@
 
     </div>
 </div>
+<!-- <pre> {{ detail?.dates | json }}</pre> -->
 
 <!-- {{ detail && detail.status==='DELIVERED' | json }}
 {{ detail.requestType !='return' && detail.requestType !='exchange' | json }}
@@ -209,13 +216,13 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                     </label>
                 </div>
                 <div class="outline-input-label pos-rel mb-0">
-                    <label class="indusrty show ">
-                        <textarea class="large-height"></textarea>
+                    <label class="indusrty show" [class.is-focus]="commentsOrderCancelText" >
+                        <textarea class="large-height" [(ngModel)]="commentsOrderCancelText"  ></textarea>
                         <span class="label">Add Comment (Optional)</span>
                     </label>
                 </div>
                 <div class="fixed-bottom-cta">
-                    <button class="btn primary-full-btn" (click)="reason_id ? openAlert=true : '' ">SUBMIT REQUEST</button>
+                    <button class="btn primary-full-btn" [disabled]="!reason_id?true:false" (click)="reason_id ? openAlert=true : '' ">SUBMIT REQUEST</button>
                 </div> 
             </div>
             <h4 class="reason-text mt-15">Refund Status</h4>
@@ -256,12 +263,11 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         <div class="cancelorder-bottom-inner">
                             <i class="icon-circle-delete del-ico red-txt"></i>
                             <div class="cancelorder-bottom-inner-details">
-                                <span class="block-txt red-txt">Cancelled :
-                                    <span class="grey-txt">on {{currentDate | date: 'd-MMMM-y'}}</span>
-                                </span>
+                                <!-- <span class="grey-txt">on {{currentDate | date: 'd-MMMM-y'}}</span> -->
+                                <span class="block-txt red-txt">Cancelled</span>
                             </div>
                         </div>
-                        <button class="btn tertiary-btn">BUY&nbsp;AGAIN</button>
+                        <!-- <button class="btn tertiary-btn">BUY&nbsp;AGAIN</button> -->
                     </div>
                     <!-- <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'">Your order has been cancelled.
                     </p>
@@ -269,11 +275,11 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                 </div>
                 
             </div>
-            <div class="need-help-strip pad-10 mt-15">
+            <!-- <div class="need-help-strip pad-10 mt-15">
                 <span class="get-in-touch-txt">Get in touch with us in case you face any issues</span>
                 <span class="need-help" [routerLink]="[ '/faq'] "
                     [queryParams]="{redirectUrl:pageUrl}">NEED&nbsp;HELP?</span>
-            </div>
+            </div> -->
         </div>
     </div>
 </app-pop-up>
@@ -330,7 +336,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                             </label>
                         </div>
     
-                        <div class="clearfix">
+                        <div class="clearfix" style="margin-bottom: 100px" >
                             <!-- <span class="label"></span> -->
                             <h3 class="heading-4">Upload Photos* </h3>
                             <p class="photoNotetxt">
@@ -413,7 +419,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                     <p *ngIf="returnForm['controls']['bankDetail']?.get['acountNo']?.touched && !returnForm?.get['bankDetail']?.get['acountNo'].valid && returnForm?.get['bankDetail']?.get['acountNo'].errors.invalidAccount && returnForm?.get['bankDetail']?.get['acountNo'].value.length>0"
                                         class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt"> Kindly enter a valid account number</p>
                                 </div>
-                                <div class="clearfix">
+                                <div class="clearfix" style="margin-bottom: 100px" >
                                     <p class="photoNotetxt">Upload Cheque (Optional) <span class="note-txt">jpeg, jpg & png
                                             formats allowed</span></p>
                                     <label class="upload-img">
@@ -518,9 +524,9 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 
 <div class="orderShipDet pwa-container">
     <div class="orderaddressBox pwa-row" *ngIf="detail && detail?.address.shipping_address">
-        <h3>Shipping address</h3>
+        <h3>Shipping Address</h3>
         <div class="adressbox-inner">
-            <span class="address-type">Default</span>
+            <!-- <span class="address-type">Default</span> -->
             <span class="order-name mt-10">{{detail?.address.shipping_address.firstname}}</span>
             <span>{{detail?.address.shipping_address.address}}, {{detail?.address.shipping_address.address2}},
                 {{detail?.address.shipping_address.city}}, {{detail?.address.shipping_address.pincode}},
@@ -529,7 +535,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
         </div>
     </div>
     <div class="mt-10 orderaddressBox pwa-row" *ngIf="detail && detail?.address.billing_address">
-        <h3>Billing address</h3>
+        <h3>Billing Address</h3>
         <div class="adressbox-inner">
         <span class="order-name">{{detail?.address.billing_address.firstname}}</span>
         <span>{{detail?.address.billing_address.address}}

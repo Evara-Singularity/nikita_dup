@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 
@@ -20,10 +21,15 @@ export class DashboardHeaderComponent implements OnInit {
   @Input() imgAssetPath: boolean = false;
 
   constructor(
-    public _commonService: CommonService
+    public _commonService: CommonService,
+    private location: Location,
   ) { }
 
   ngOnInit(): void {
+  }
+
+  goBack(){
+    this.location.back();
   }
 
 }

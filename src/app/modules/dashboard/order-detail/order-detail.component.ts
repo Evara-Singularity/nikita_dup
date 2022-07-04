@@ -28,6 +28,7 @@ export class OrderDetailComponent implements OnInit {
   @ViewChild(PopUpComponent) _popupComponent: PopUpComponent;
   cancelReasons: Array<{}>;
   reason_id: any;
+  commentsOrderCancelText: any
   status: any;
   priceOfProduct: any;
   user: { authenticated: string };
@@ -267,9 +268,10 @@ export class OrderDetailComponent implements OnInit {
   }
 
   getFomrattedDate(yyyy, mm, dd) {
+    mm = +mm + 1
     if (dd < 10) dd = '0' + dd;
     if (mm < 10) mm = '0' + mm;
-    return dd + '-' + mm + '-' + ((yyyy < 0) ? (yyyy * -1) : yyyy);
+    return dd + '-' + (mm) + '-' + ((yyyy < 0) ? (yyyy * -1) : yyyy);
   }
 
   setDataForTracData(detail) {

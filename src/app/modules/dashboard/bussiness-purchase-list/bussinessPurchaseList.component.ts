@@ -785,7 +785,7 @@ export class BussinessPurchaseListComponent
     }
   }
 
-  removeFromWishlist(item) {console.log(item); this.removableItem = item }
+  removeFromWishlist(item) {this.removableItem = item }
 
   cancelRemovableItem() { this.removableItem = null; }
 

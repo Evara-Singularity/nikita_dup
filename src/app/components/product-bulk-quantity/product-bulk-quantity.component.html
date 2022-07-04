@@ -23,7 +23,7 @@
                                         *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span>
                                 </p>
                                 <p class="per-qty">
-                                    {{items.bulkSPWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
+                                    {{items.bulkSellingPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
                                     <span class="small">/pc</span>
                                 </p>
                                 <p *ngIf="items.discount>0" class="green-txt">
@@ -57,7 +57,7 @@
                                 *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span>
                             Qty
                             <span *ngIf="items.discount>0" class="green-txt">(Get {{ items.discount |
-                                number:'1.0-2' }}% OFF)</span> <span class="right-text"> {{items.bulkSPWithoutTax |
+                                number:'1.0-2' }}% OFF)</span> <span class="right-text"> {{items.bulkSellingPrice |
                                 mathFloor |
                                 currency: 'INR' : 'symbol' : '1.0-0'}}<span class="small-txt">&nbsp;/pc</span></span>
                         </h3>

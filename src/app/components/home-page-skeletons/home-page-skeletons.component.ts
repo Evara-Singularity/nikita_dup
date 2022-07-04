@@ -9,21 +9,15 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./home-page-skeletons.component.scss']
 })
 export class HomePageSkeletonsComponent implements OnInit {
+
+  @Input() type: 'RECENTLY' | 'FEATURED-ARRIVALS' | 'CATEGORIES' ;
   @Input() templateRefInstance: any = null;
-  // REVIEW POINTS: string types needs to be added 
-  // REVIEW POINTS: formatting 
-  @Input() type: 'RECENTLY' ;
-
- 
+   
   constructor() { }
-
-  
-
   ngOnInit() {
   }
 
 }
-
 
 @NgModule({
   declarations: [

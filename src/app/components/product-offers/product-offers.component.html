@@ -5,15 +5,29 @@
                 Offers & Coupons
             </h3>
         </div>
-        <div class="pwa-row inline-list-item" style="border-bottom: 0px" *ngIf="promoCodes">
+        <div class="pwa-row inline-list-item more-coupon-offers" *ngIf="promoCodes">
+            <div class="inline-list-icon">
+                <i class="icon-mobikwik"></i>
+            </div>
+            <div class="inline-list-text">
+                <span>Use Code: <span class="blue-promo-code">KWIK15</span> on Mobikwik and get upto 15% cashback.</span>
+            </div>
+            <div class="inline-list-link">
+                <i class="icon-information_about_us"></i>
+            </div>
+        </div>
+        <div class="pwa-row inline-list-item more-coupon-offers" *ngIf="promoCodes">
             <div class="inline-list-icon">
                 <i class="icon-coupon-3-fill-1"></i>
             </div>
             <div class="inline-list-text">
-                <span>Use Code : <b>{{promoCodes[0].promoCode}}</b> and Get {{promoCodes[0].promoDescription}}</span><br/>
+                <span>Use Code : <span class="green-promo-code">{{promoCodes[0].promoCode}}</span> and Get {{promoCodes[0].promoDescription}}</span><br/>
                 <!-- <span style="font-size: x-small;">Min cart value {{ promoCodes[0]..minValue ? promoCodes[0]..minValue : 0 | currency:'INR': 'symbol': '1.0-0'}}</span> -->
                 <!-- <span *ngIf="i == 0">Get GST invoice and save up to {{gstPercentage}}% on business purchases.</span>
                 <span *ngIf="i > 0">{{ item?.block_data?.image_block['0']['image_title'] || 'Get GST invoice and save upto '+gstPercentage+'% on business purchases.'}}</span> -->
+            </div>
+            <div class="inline-list-link">
+                <span class="link-text" *ngIf="!disableEMIView">VIEW</span>
             </div>
         </div>
         <div class="pwa-row inline-list-item" *ngIf="promoCodes">
@@ -21,6 +35,8 @@
             </div>
             <div class="inline-list-text">
                 <a class="link-text" *ngIf="promoCodes.length > 1 " (click)="seeMoreOffers()">SEE {{promoCodes.length - 1}} MORE {{(promoCodes.length - 1) == 1 ? 'COUPON' :'COUPONS'}}</a>
+            </div>
+            <div class="inline-list-link">
             </div>
         </div>
         <div class="pwa-row inline-list-item" *ngFor="let item of allofferData; let i=index;">

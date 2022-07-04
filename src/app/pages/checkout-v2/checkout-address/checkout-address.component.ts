@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
-import { CheckoutHeaderModel, SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
+import { CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { AddressService } from '@services/address.service';

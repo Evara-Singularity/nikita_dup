@@ -19,9 +19,9 @@
                             <p *ngIf="upiError && upicode.value.length > 0 && !validUpi" class="text-red error">
                                 {{upiError.message}}</p>
                         </div>
-                        <p class="info-txt">Ex: mobileNumber@upi</p>
+                        <p class="info-txt ml-10">Ex: mobileNumber@upi</p>
                     </div>
-                <div class="paytm-upi-img">
+                <div class="paytm-upi-img mt-15">
                     <img src="{{imagePath+imageFolder}}/Mobile.png">
                 </div>
                 <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-t-15">Prepaid Discount : ₹

@@ -35,7 +35,7 @@ export class CartService
     public productShippingChargesListObservable: Subject<any> = new Subject();
     private notificationsSubject: Subject<any[]> = new Subject<any[]>();
     public appliedPromocodeSubject: Subject<string> = new Subject<string>();
-    public promocodePopupSubject: Subject<boolean> = new Subject<boolean>();
+    public promocodePopupSubject: Subject<{ isApplied: true, totalOffer: number }> = new Subject<{ isApplied: true, totalOffer: number }>();
     //public slectedAddress: number = -1;
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
@@ -1265,7 +1265,7 @@ export class CartService
             this.setGenericCartSession(_cartSession);
             this.orderSummary.next(_cartSession);
             this._loaderService.setLoaderState(false);
-            if (totalOffer) { this.promocodePopupSubject.next(true); }
+            if (totalOffer) { this.promocodePopupSubject.next({ isApplied: true, totalOffer: totalOffer}); }
         })
     }
 

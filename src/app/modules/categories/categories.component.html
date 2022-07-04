@@ -9,7 +9,8 @@
 
         <div class="view-all-strip">
             <h2>{{ carouselData[category.dataKey]['layout_name'] | uppercase }}</h2>
-            <a *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'" href="" class="btn quinary-btn">VIEW ALL</a>
+            <!--layout_url-->
+            <a *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'" [href]="carouselData[category.dataKey]['layout_url']" class="btn quinary-btn">VIEW ALL</a>
         </div>
         <ul class="circle-brand-container"
         *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'">

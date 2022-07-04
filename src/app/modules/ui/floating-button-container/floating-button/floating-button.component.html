@@ -1,4 +1,4 @@
-<button class="cart-btn" [ngClass]="{'red': type == 'RED', 'white': type == 'WHITE'}"
+<button [class]="isMultiple?'cart-btn':'cart-btn-fullwidth'" [ngClass]="{'red': type == 'RED', 'white': type == 'WHITE'}"
     (click)="onClickButton()">
     <i *ngIf="iconClass" class="{{iconClass}}"></i>
     <span>{{label}}</span>

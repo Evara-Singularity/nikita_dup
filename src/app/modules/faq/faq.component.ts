@@ -332,9 +332,6 @@ export class FaqComponent {
 
 	showQuestion(question: String) {
 		this.filteredArray = this._getQuesPipe.transform(this.faqData, question);
-
-		// console.log("question", this.filteredArray)
-
 		this.showSideMenu = false;
 		this.hideSuggestionInMobile = true;
 		this.overlaysuggestion = false;
@@ -344,8 +341,7 @@ export class FaqComponent {
 		this.filteredArray = [];
 		this.showSideMenu = true;
 		this.setScroll();
-		this.hideSuggestionInMobile = false;
-		// this.showFaqData();
+		this.hideSuggestionInMobile = true;
 		this.overlaysuggestion = false;
 		this.noResults = false;
 	}

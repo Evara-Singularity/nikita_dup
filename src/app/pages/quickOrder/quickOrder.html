@@ -3,6 +3,7 @@
         <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications>
         <cart [moduleName]="'QUICKORDER'"></cart>
         <order-summary></order-summary>
+        <generic-offers></generic-offers>
         <div class="fixed-bottom-cta">
             <button class="btn primary-full-btn" (click)="navigateToCheckout()" >{{ _commonService?.userSession?.authenticated === 'true' ? 'CONTINUE TO CHECKOUT' : 'SIGN IN TO CHECKOUT' }}</button>
         </div>

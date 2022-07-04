@@ -9,13 +9,12 @@
                 </span>
                 <button (click)="searchFaq(searchValue?.value)" type="submit"><i class="icon-search"></i></button>
             </div>
-            <ul [class.hidden-sm-down]="hideSuggestionInMobile" class="searchresult"
-                *ngIf="searchValue?.value?.length > 0">
-                <li *ngFor="let result of suggestionArr">
-                    <a (click)="showQuestion(result?.question);">{{ result?.question }}</a>
+            <ul [class.hidden-sm-down]="hideSuggestionInMobile" class="searchresult">
+                <li *ngFor="let result of suggestionArr" class="active-faq">
+                    <a (click)="$event.stopPropagation();showQuestion(result?.question);">{{ result?.question }}</a>
                 </li>
                 <li *ngIf="noResults">
-                    <a class=""> No Result Found </a>
+                    <a class="" (click)="$event.stopPropagation();cleartext()"> No Result Found </a>
                 </li>
             </ul>
         </div>
@@ -26,7 +25,7 @@
             <ng-template #original>
                 <ng-container *ngFor="let block of faqData; let i = index;">
                     <div [attr.id]="'faq' + i">
-                        <h3 class="fqhead faq-top-border" *ngIf="i ==0" [appKpToggle]="{idName: 'open0' , iconMode : true}">
+                        <h3 class="fqhead faq-top-border active-faq" *ngIf="i ==0" [appKpToggle]="{idName: 'open0' , iconMode : true}">
                             Order Tracking
                             <span>
                                 <i class="icon-expand"></i>

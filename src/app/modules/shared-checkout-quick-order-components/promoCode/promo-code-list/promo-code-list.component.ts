@@ -7,7 +7,8 @@ import { Subject, Subscription, timer } from 'rxjs';
     templateUrl: './promo-code-list.component.html',
     styleUrls: ['./promo-code-list.component.scss']
 })
-export class PromoCodeListComponent implements OnInit, OnDestroy {
+export class PromoCodeListComponent implements OnInit, OnDestroy
+{
 
     public nextPromocode: Subject<string> = new Subject<string>();
     @Output('closePromoOfferPopup') closePromoOfferPopup = new EventEmitter();
@@ -19,25 +20,31 @@ export class PromoCodeListComponent implements OnInit, OnDestroy {
 
     ngOnInit()
     {
-        if (this._cartService.appliedPromoCode) {
-            this.selectedPromocode = this._cartService.appliedPromoCode;
-        }
+        this.selectedPromocode = this._cartService.appliedPromoCode;
         this.appliedPromocodeSubscription = this._cartService.appliedPromocodeSubject.subscribe((promocode: string) =>
         {
-            if (promocode) 
-            { 
+            this.selectedPromocode = promocode;
+            if (promocode) {
                 this.closePromoOfferPopup.emit(false);
             }
         })
     }
 
-    updateCustomPromoCodeInput(e, item)
+    closePromoListPopup(flag) { this.closePromoOfferPopup.emit(false); }
+
+    submitPromocode(promocode)
     {
-        e.preventDefault();
-        e.stopPropagation();
-        this.selectedPromocode = item.promoCode;
-        this.nextPromocode.next(item.promoCode);
+        if (this.selectedPromocode === promocode) { return }
+        this._cartService.genericApplyPromoCode(promocode);
     }
+
+    // updateCustomPromoCodeInput(e, item)
+    // {
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    //     this.selectedPromocode = item.promoCode;
+    //     this.nextPromocode.next(item.promoCode);
+    // }
 
     ngOnDestroy(): void
     {

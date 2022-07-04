@@ -32,7 +32,7 @@
                                 </p>
                                 <div class="orderqty clearfix">
                                     <span class="qtyleft">₹{{detail.price}}<span class="qtynum">&nbsp;({{detail.Quantity}} Qty)</span></span>
-                                    <span><small class="greytxt">(Price Inclusive of GST)</small></span>
+                                    <!-- <span><small class="greytxt">(Price Inclusive of GST)</small></span> -->
                                 </div>
                             </div>
                         </div>
@@ -132,7 +132,7 @@
     <div class="noordertext"> No Orders placed yet. Add items to your cart and make a purchase.</div>
 
 </div>
-<div class="fixed-bottom-cta">
+<div class="fixed-bottom-cta" *ngIf="orders && orders.length===0" >
     <button [routerLink]="['/']" class="btn primary-full-btn">START SHOPPING</button>
 </div>
 <!-- <div class="bottom-options hide">

@@ -17,7 +17,7 @@ export class AppPromoComponent implements OnInit {
   readonly MOBILE_ENVS = {
     IOS: 'iOS',
     WINDOWS: 'Windows Phone',
-    ANDROID: 'mobile_os',
+    ANDROID: 'Android',
     OTHERS: 'unknown',
   }
   playStoreLink = "https://play.google.com/store/apps/details?id=com.moglix.online";

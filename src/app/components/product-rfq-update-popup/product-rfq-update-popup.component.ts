@@ -16,7 +16,6 @@ export class ProductRfqUpdatePopupComponent implements OnInit {
   @Input('product') product;
   @Input('productUrl') productUrl;
   @Input('rfqId') rfqId;
-  @Input('enquiryId') enquiryId;
 
   //outputs
   @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -92,7 +91,7 @@ export class ProductRfqUpdatePopupComponent implements OnInit {
       },
       "rfqEnquiryItemsList": [
         {
-          "enquiryItemId": this.enquiryId,
+          "enquiryItemId": this.rfqId,
           "quantity": this.quantity.value
         }
       ]

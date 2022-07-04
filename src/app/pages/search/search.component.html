@@ -1,5 +1,5 @@
 <div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader && _productListService?.productListingData && _productListService?.productListingData > 0}">
-
+    <app-promo  [page]="'search'" class="fixed-btm-app-prmo" [isOverlayMode]="true"></app-promo>
     <ng-container
         *ngIf="(didYouMean == undefined || didYouMean == '') && API_RESULT['searchData'][0].productSearchResult != undefined">
         <ng-container

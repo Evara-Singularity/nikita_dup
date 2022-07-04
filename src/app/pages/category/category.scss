@@ -423,3 +423,9 @@
 .promo-container{
     margin-top: 10px;
 }
+.fixed-btm-app-prmo {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 9;
+}

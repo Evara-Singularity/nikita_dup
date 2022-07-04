@@ -186,6 +186,15 @@ export class CategoryComponent {
             data: this.API_RESPONSE.category[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
             icon:'icon-attribute'
         });
+        if(!this.API_RESPONSE.category[0].children){
+            this.accordiansDetails.push({
+                name: 'Related Category',
+                data: this.API_RESPONSE.category[0].sibling?.map(x => ({ name: x.categoryDetails.categoryName, link: x.categoryDetails.categoryLink }) as AccordianDataItem),
+                icon:'icon-brand_store'
+            });
+
+        }
+       
     }
 
     private setCanonicalUrls() {

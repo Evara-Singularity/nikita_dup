@@ -13,14 +13,13 @@
       <div class="coupon-card-container" *ngIf="_cartService?.allPromoCodes.length">
         <p class="pwa-text">Available Coupons</p>
         <ng-container *ngFor="let item of _cartService?.allPromoCodes; let i = index;">
-          <!--(click)="updateCustomPromoCodeInput($event,item)"-->
-          <div  class="card" [class.selected]="item.promoCode === selectedPromocode">
+          <div  class="card">
             <div class="apply-coupon">
               <div class="inner-coupon">
                 <h3>{{item.promoCode}}</h3>
                 <p class="promo-description">{{item.promoDescription}}</p>
               </div>
-              <button *ngIf="item.promoCode !== selectedPromocode" class="btn quaternary-btn-1" (click)="$event.stopPropagation();submitPromocode(item.promoCode)">APPLY</button>
+              <button class="btn quaternary-btn-1" [disabled]="item.promoCode === selectedPromocode" (click)="$event.stopPropagation();submitPromocode(item.promoCode)">APPLY</button>
             </div>
           </div>
         </ng-container>

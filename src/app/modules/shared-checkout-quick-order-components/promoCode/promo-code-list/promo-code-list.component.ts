@@ -21,7 +21,7 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
     ngOnInit()
     {
         this.selectedPromocode = this._cartService.appliedPromoCode;
-        this.appliedPromocodeSubscription = this._cartService.appliedPromocodeSubject.subscribe((promocode: string) =>
+        this.appliedPromocodeSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode }) =>
         {
             this.selectedPromocode = promocode;
             if (promocode) {
@@ -37,14 +37,6 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
         if (this.selectedPromocode === promocode) { return }
         this._cartService.genericApplyPromoCode(promocode);
     }
-
-    // updateCustomPromoCodeInput(e, item)
-    // {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     this.selectedPromocode = item.promoCode;
-    //     this.nextPromocode.next(item.promoCode);
-    // }
 
     ngOnDestroy(): void
     {

@@ -36,11 +36,11 @@
                 <div class="qty_section">
                     <span class="qty-txt">Qty</span>
                     <div class="quantity-block">
-                        <span *ngIf="item.productQuantity > 1"
+                        <span *ngIf="item.productQuantity > item.moq"
                             (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'decrement')"
                             class="remove-qty qty-block">&#8722;</span>
                         <i (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'decrement')"
-                            *ngIf="item.productQuantity < 2" class="icon-bin qty-block single-quantity"></i>
+                            *ngIf="item.productQuantity <= item.moq" class="icon-bin qty-block single-quantity"></i>
                         <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
                             (focusout)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'update', $event.target.value)" />
                         <span (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'increment')"
@@ -115,7 +115,6 @@
         <div class="content-area removePopup">
             <div class="top-header-bottom-menu">
                 <h3 class="heading-3">Are you sure to remove this item?</h3>
-                <!-- <i (click)="$event.stopPropagation();resetRemoveItemCart()" class="icon-circle-delete"></i> -->
             </div>
             <div [ngClass]="{'realTimeUpdate':item['text1']}" class="pwa-row pad-tb-15" *ngFor="let item of [_cartService.getGenericCartSession?.itemsList[removeIndex]]; let i = index;">
                 <div class="pwa-col-12">

@@ -238,7 +238,6 @@ export class CartComponent
                 this._cartService.setGenericCartSession(cartSession);
                 this._cartService.publishCartUpdateChange(cartSession);
                 this._cartService.orderSummary.next(cartSession);
-                this._cartService.orderSummary.next(cartSession);
                 this._tms.show({ type: 'success', text: errorMsg || "Cart quantity updated successfully" });
                 this.sendMessageAfterCartAction(cartSession);
                 return;

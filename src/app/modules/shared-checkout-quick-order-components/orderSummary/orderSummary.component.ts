@@ -14,6 +14,7 @@ export class OrderSummaryComponent
     showPromoOfferPopup: boolean = false;
     showPromoSuccessPopup: boolean = false;
     totalOffer = 0;
+    totalPayableAmount = 0;
 
     constructor(
         public router: Router,
@@ -25,17 +26,20 @@ export class OrderSummaryComponent
 
     ngOnInit(): void
     {
-        if (this._commonService.userSession.authenticated == "true" && this._cartService.getCartItemsCount() > 0) {
+        if (this._localAuthService.isUserLoggedIn()) {
             this._cartService.getPromoCodesByUserId(this._commonService.userSession.userId);
         }
-        this._cartService.getCartUpdatesChanges().subscribe(result =>
+        this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
-            this.updateShippingCharges();
+            if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
+                this.updateShippingCharges();
+                this.totalOffer = cartSession['cart']['totalOffer'] || 0;
+                this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
+            }
         });
-        this._cartService.promocodePopupSubject.subscribe(({isApplied, totalOffer}) =>
+        this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode}) =>
         {
-            this.showPromoSuccessPopup = isApplied;
-            this.totalOffer = totalOffer;
+            this.showPromoSuccessPopup = isNewPromocode;
         })
     }
 

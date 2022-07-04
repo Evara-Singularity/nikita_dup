@@ -303,15 +303,9 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 this.backRedirectUrl = this._commonService.currentUrl || '';
             }
         });
-
-        this.cartService.cart.subscribe((data) =>
+        this.cartService.getCartUpdatesChanges().subscribe((data) =>
         {
-
-            if (data && data.hasOwnProperty('count')) {
-                this.noOfCart = data.count;
-            } else {
-                throw new Error('Cart update count should always be present');
-            }
+            this.noOfCart = this.cartService.getCartItemsCount();
         });
 
         this.localAuthService.login$.subscribe((data) =>

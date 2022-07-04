@@ -23,8 +23,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 	@Input() isUserLogin: boolean = false;
 	@Input() enableBackBtn: boolean = false;
 	@Input() imgAssetPath: boolean = false;
-	cartSession = null;
-	payableAmount = 0;
+	totalPayableAmount = 0;
 	cartUpdatesSubscription: Subscription = null;
 
 	constructor(
@@ -40,21 +39,10 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		this._loader.setLoaderState(true);
 		this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
 		{
-			this.cartSession = cartSession;
 			this.noOfCartItems = this._cartService.getCartItemsCount();
-			this.calculatePayableAmount(this.cartSession['cart']);
+			this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
 			this._loader.setLoaderState(false);
 		});
-	}
-
-	calculatePayableAmount(cart)
-	{
-		if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length) {
-			const TOTAL_AMOUNT = cart['totalAmount'] || 0;
-			const SHIPPING_CHARGES = cart['shippingCharges'] || 0;
-			const TOTAL_OFFER = cart['totalOffer'] || 0;
-			this.payableAmount = TOTAL_AMOUNT + SHIPPING_CHARGES + TOTAL_OFFER;
-		}
 	}
 
 	handleNavigation()
@@ -92,7 +80,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		this._cartService.clearBuyNowFlow();
 		if (previousURL.includes('checkout/login') || previousURL.includes('checkout/sign-up') || previousURL.includes('checkout/otp')) {
 			this._router.navigateByUrl("quickorder");
-		} else if (previousURL.includes('checkout/address') || previousURL.includes('checkout/payment')) {
+		} else if (previousURL.includes('checkout/address') || previousURL.includes('checkout/payment') || previousURL === "/") {
 			this._router.navigateByUrl("quickorder");
 		}else {
 			this._location.back();

@@ -1,53 +1,53 @@
-/*Trending Categories*/
 @import '../../scss/variables';
 @import '../../scss/components/category-grid-card';
-
-.view-all-strip{
+.view-all-strip {
     @extend %view-all-strip;
-}
-.trending-container {
+    padding-top: 0px !important;
+  }
+  .trending-container {
     padding: 0 0 0px 0;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     .trending-categories {
-        border-top: 1px solid $border-color;
-        li {
-            border-bottom: 1px solid $border-color;
-            border-right: 1px solid $border-color;
-            padding: 10px;
-            text-align: center;
-            min-height: 140px;
-            p {
-                font-size: 11px;
-                color: #000;
-            }
-            &:nth-child(3n+0) {
-                border-right: none;
-            }
-            a {
-                img {
-                    width: 84px;
-                    height: 84px;
-                }
-            }
-            p {
-                word-break: break-all;
-            }
-            // @include gridForCategory('3', null);
+      border-top: 1px solid $border-color;
+      li {
+        border-bottom: 1px solid $border-color;
+        border-right: 1px solid $border-color;
+        padding: 10px;
+        text-align: center;
+        min-height: 140px;
+        p {
+          font-size: 11px;
+          color: #000;
         }
+  
+        &:nth-child(3n + 0) {
+          border-right: none;
+        }
+        a {
+          img {
+            width: 84px;
+            height: 84px;
+          }
+        }
+        p {
+          word-break: break-all;
+        }
+        // @include gridForCategory('3', null);
+      }
     }
     // @extend %cards;
-}
-.category-grid-container{
-    .category-grid-card{
-        width: calc(33.3% - 6px);
-        background: var(--white);
-       a{
-           padding:5px;
-           display:block;
-       }
-       img {
+  }
+  .category-grid-container {
+    .category-grid-card {
+      width: calc(33.3% - 6px);
+      background: var(--white);
+      a {
+        padding: 5px;
+        display: block;
+      }
+      img {
         width: 50px;
         height: 50px;
-       }
+      }
     }
-}
+  }

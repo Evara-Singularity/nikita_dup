@@ -22,6 +22,9 @@
           }
         }
         .product-card-lower {
+            .product-card-lower-inner{
+                min-height: 125px;
+            }
             .name {
                 -webkit-line-clamp: 2;
                 display: -webkit-box;

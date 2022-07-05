@@ -5,7 +5,7 @@
         </h3>
     </div>
     <div class="panel-body" id="cart-errors">
-        <ul>
+        <ul>    
             <li *ngFor="let ivm of notfications | oosValitionMessage">
                 <ng-container *ngIf="ivm.type == 'oos' || ivm.type == 'unserviceable'">
                     <p class="unservicable">

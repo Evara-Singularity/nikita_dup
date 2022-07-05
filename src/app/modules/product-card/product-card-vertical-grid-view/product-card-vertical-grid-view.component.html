@@ -18,6 +18,7 @@
                 </div>
             </div>
             <div class="product-card-lower">
+               <div class="product-card-lower-inner">
                 <div class="rating">
                     <span class="avgrating" *ngIf="cardFeaturesConfig.enableRating && product.avgRating">
                         {{product.avgRating | rating | number : '1.1-1' }}
@@ -53,6 +54,7 @@
                             <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
                                 }}</span>
                         </div>
+                    </div>
                     </div>
                     <div class="right">
                         <div class="card-btn-row">

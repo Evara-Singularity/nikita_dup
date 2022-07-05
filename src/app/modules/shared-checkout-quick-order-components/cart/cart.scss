@@ -245,8 +245,8 @@
             }
 
             .after-disc {
-                font-weight: bold;
-                font-size: $small-font;
+                font-weight: bold !important;
+                font-size: $small-font !important;
             }
 
             .discount {
@@ -590,6 +590,7 @@
 /*new css 20-05-2021*/
 
 .card {
+    width: 100%;
     .container.pb-15 {
         padding-bottom: 15px;
     }

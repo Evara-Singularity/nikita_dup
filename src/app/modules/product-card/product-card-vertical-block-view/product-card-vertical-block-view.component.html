@@ -37,7 +37,7 @@
                 <span>By: {{product.brandName | brandName}}</span>
             </div>
             <div class="prod-price-row" (click)="navigateToPDP()">
-                    <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
+                    <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.discount > 0">
                         <span class="prod-mrp">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
                             }}</span>
                         <span class="prod-discount">{{product.discount}}% OFF</span>

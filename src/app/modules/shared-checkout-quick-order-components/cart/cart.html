@@ -22,12 +22,11 @@
                                 (item.productName | slice:0:48) + '..' : (item.productName) }}</a>
                         </div>
                         <p *ngIf="!item.oos" class="price clearfix">
-                            <span class="before-discount gray-txt">MRP ₹{{item.amount | mathFloor | number : '1.2-2'}} <span
-                                    class="green-txt">({{item.taxPercentage}}% OFF)</span></span>
-                            <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">
-                                ₹{{item.priceWithoutTax | mathFloor | number : '1.2-2'}}
+                            <span class="before-discount gray-txt"><span class="strike-off-upper"><span class="strike-off"></span>MRP ₹{{item.amount | mathFloor | number : '1.2-2'}}</span> <span
+                                    class="green-txt">&nbsp;({{item.taxPercentage}}% OFF)</span></span>
+                            <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">&nbsp;₹{{item.priceWithoutTax | mathFloor | number : '1.2-2'}}
                             </span>
-                            <span class="after-disc" *ngIf="item.bulkPrice!==null"> ₹{{item.bulkPriceWithoutTax | mathFloor |
+                            <span class="after-disc" *ngIf="item.bulkPrice!==null">&nbsp;₹{{item.bulkPriceWithoutTax | mathFloor |
                                 number : '1.2-2'}}</span>
                         </p>
                     </div>

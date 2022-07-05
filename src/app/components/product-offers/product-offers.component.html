@@ -21,8 +21,8 @@
                 <i class="icon-coupon-3-fill-1"></i>
             </div>
             <div class="inline-list-text">
-                <span>Use Code : <span class="green-promo-code">{{promoCodes[0].promoCode}}</span> and Get {{promoCodes[0].promoDescription}}</span><br/>
-                <!-- <span style="font-size: x-small;">Min cart value {{ promoCodes[0]..minValue ? promoCodes[0]..minValue : 0 | currency:'INR': 'symbol': '1.0-0'}}</span> -->
+                <span>Use Code : <span class="green-promo-code">{{promoCodes[0].promoCode}}</span> and get {{promoCodes[0].promoDescription}}</span><br/>
+                <span class="green-promo-code-min">Min cart value {{ promoCodes[0].minValue ? promoCodes[0].minValue : 0 | currency:'INR': 'symbol': '1.0-0'}}</span>
                 <!-- <span *ngIf="i == 0">Get GST invoice and save up to {{gstPercentage}}% on business purchases.</span>
                 <span *ngIf="i > 0">{{ item?.block_data?.image_block['0']['image_title'] || 'Get GST invoice and save upto '+gstPercentage+'% on business purchases.'}}</span> -->
             </div>

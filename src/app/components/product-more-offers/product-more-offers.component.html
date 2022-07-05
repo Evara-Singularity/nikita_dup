@@ -13,9 +13,13 @@
                 </div>
                 <div class="inline-list-text">
                     <span>Use Code : <span class="green-promo-code">{{item.promoCode}}</span> and get {{item.promoDescription}}</span><br/>
+<<<<<<< HEAD
                     <span class="green-promo-code-min">Min cart value {{ item.minCartValue  | currency:'INR': 'symbol': '1.0-0'}}</span>
                 </div>
                 <div class="inline-list-link">
+=======
+                    <span class="green-promo-code-min">Min cart value {{ item.minValue ? item.minValue : 0 | currency:'INR': 'symbol': '1.0-0'}}</span>
+>>>>>>> c70ba598... min value added grey
                 </div>
             </div>
         </div>

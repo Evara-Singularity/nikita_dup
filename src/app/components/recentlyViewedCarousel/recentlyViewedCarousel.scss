@@ -1,8 +1,14 @@
 // @import '../../../app/scss/layout/grid.scss';
 @import '../../scss/components/home-listing';
-.view-all-strip{
-    @extend %view-all-strip;
-}
+@import '../../scss/variables';
 .custom-cbox {
     padding: 10px;
+}
+.recently-view{
+    padding-left:15px;
+    margin-bottom:10px;
+    .view-all-strip{
+        @extend %view-all-strip;
+        padding:5px 0px;
+    }
 }

@@ -242,6 +242,18 @@
                 font-weight: bold;
                 font-size: $small-font;
                 color: var(--silver);
+                position: relative; 
+                .strike-off-upper{
+                    position: relative;
+                    .strike-off{
+                        height: 1px;
+                        background-color: var(--silver);
+                        top: 5px;
+                        position: absolute;
+                        left: 0;
+                        width: 100%;
+                    }
+                }
             }
 
             .after-disc {

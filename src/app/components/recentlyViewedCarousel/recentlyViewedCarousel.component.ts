@@ -102,7 +102,6 @@ export class RecentlyViewedCarouselComponent {
 		ProductCardVerticalGridViewModule,
 		ProductCardSkeletonModule,
 		ProductCardVerticalContainerModule,
-		ProductCardHorizontalScrollModule
 	],
 	providers: [],
 })

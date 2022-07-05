@@ -47,27 +47,32 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	handleNavigation()
 	{
-		const url = this._router.url;
-		const previousURL = this._commonService.previousUrl;
-		switch (this.title) {
-			case 'My Cart': {
-				this.handleMyCartNavigation(url, previousURL);
-				break;
-			}
-			case 'Checkout': {
-				this.handleCheckoutNavigation(url, previousURL);
-				break;
-			}
-			case 'Payment': {
-				this.handleCheckoutNavigation(url, previousURL);
-				break;
-			}
-		}
+		this.goBack$.emit();
+		// const url = this._router.url;
+		// const previousURL = this._commonService.previousUrl;
+		// switch (this.title) {
+		// 	case 'My Cart': {
+		// 		this.handleMyCartNavigation(url, previousURL);
+		// 		break;
+		// 	}
+		// 	case 'Checkout': {
+		// 		this.handleCheckoutNavigation(url, previousURL);
+		// 		break;
+		// 	}
+		// 	case 'Payment': {
+		// 		this.handlePaymentNavigation(url, previousURL);
+		// 		break;
+		// 	}
+		// }
 	}
 
 	handleMyCartNavigation(url: string, previousURL: string)
 	{
-		if (previousURL.includes("checkout/address") || previousURL.includes("checkout/payment") || previousURL.includes("quickorder")) {
+		const trace = { Page:'Quickorder', 'Buy Now': this._cartService.buyNow, CurrentURL: url, PreviousURL: previousURL };
+		console.table(trace);
+		const isBuyNow = this._cartService.buyNow;
+		if (isBuyNow) { this._cartService.clearBuyNowFlow(); }
+		if (previousURL.includes("checkout") || previousURL.includes("quickorder")) {
 			this._router.navigateByUrl('/', this.REPLACE_URL);
 			return;
 		}
@@ -76,15 +81,30 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	handleCheckoutNavigation(url: string, previousURL: string)
 	{
-		console.log(`CurrentURL:${url}, PreviousURL:${previousURL}`);
-		this._cartService.clearBuyNowFlow();
-		if (previousURL.includes('checkout/login') || previousURL.includes('checkout/sign-up') || previousURL.includes('checkout/otp')) {
-			this._router.navigateByUrl("quickorder");
-		} else if (previousURL.includes('checkout/address') || previousURL.includes('checkout/payment') || previousURL === "/") {
-			this._router.navigateByUrl("quickorder");
-		}else {
-			this._location.back();
+		const isBuyNow = this._cartService.buyNow;
+		const trace = { Page: 'Checkout', 'Buy Now': isBuyNow, CurrentURL: url, PreviousURL: previousURL };
+		console.table(trace);
+		debugger;
+		if (isBuyNow) {
+			if (previousURL.includes('checkout')) {
+				this._router.navigateByUrl('/quickorder', this.REPLACE_URL);
+				return;
+			}
+			if (previousURL.includes('quickorder')) {
+				this._router.navigateByUrl("quickorder");
+				return;
+			}
+			this._router.navigateByUrl(previousURL || "/");
 		}
+		if (previousURL.includes('checkout')) {
+			this._router.navigateByUrl("quickorder", this.REPLACE_URL);
+			return;
+		}
+		if (previousURL !== "/") {
+			this._router.navigateByUrl(previousURL);
+			return
+		}
+		this._location.back();
 	}
 
 	handlePaymentNavigation(url: string, previousURL: string)

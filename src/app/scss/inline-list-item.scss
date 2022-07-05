@@ -1,5 +1,10 @@
 @import '../scss/variables';
 //inline list item
+.pdp-section-header {
+    background: var(--mint-cream) !important;
+    padding-bottom: 0 !important;
+}
+
 .inline-list-item {
     background-color: var(--mint-cream);
     padding: 15px;
@@ -7,6 +12,7 @@
     border-bottom: 1px solid var(--platinum);
     .inline-list-icon {
         width: 10%;
+        padding-right: 5px;
         i {
             font-size: $extra-large-3-font;
             color: var(--slimy-green);
@@ -33,7 +39,7 @@
         }
     }
     .inline-list-link {
-        width: 10%;
+        width: 12%;
         i {
             font-size: $extra-large-2_5-font;
             color: #2172B9;

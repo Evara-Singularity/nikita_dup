@@ -14,6 +14,7 @@ export class BottomMenuComponent implements OnInit {
     @Input() data: {};
     @Input() containerClasses ;
     @Output() outData$: EventEmitter<{}>;
+    @Input() containerClasses: string = "";
     isServer: boolean;
     isBrowser: boolean;
     constructor(public _commonService: CommonService) {

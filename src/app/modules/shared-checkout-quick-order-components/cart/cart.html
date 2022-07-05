@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div *ngIf="item.oos" class="oos-item-block">
-                <div (click)="$event.stopPropagation();removeItemFromCart(itemIndex);deleteProduct($event);">
+                <div (click)="$event.stopPropagation();removeItemFromCart(itemIndex, null);deleteProduct($event);">
                     <span>
                         <i class="icon-bin"></i>
                         REMOVE
@@ -112,26 +112,27 @@
         </div>
     </ng-container>
 </div>
-<app-bottom-menu *ngIf="removePopup">
+<app-bottom-menu *ngIf="removableItem !== null">
     <div content>
         <div class="content-area removePopup">
             <div class="top-header-bottom-menu">
                 <h3 class="heading-3">Are you sure to remove this item?</h3>
             </div>
-            <div [ngClass]="{'realTimeUpdate':item['text1']}" class="pwa-row pad-tb-15" *ngFor="let item of [_cartService.getGenericCartSession?.itemsList[removeIndex]]; let i = index;">
+            <div [ngClass]="{'realTimeUpdate':removableItem['text1']}" class="pwa-row pad-tb-15">
                 <div class="pwa-col-12">
-                    <div *ngIf="item['text1']" class="realTimePrice">
-                        <span>{{item['text1']}}
-                        <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
-                            {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
+                    <div *ngIf="removableItem['text1']" class="realTimePrice">
+                        <span>{{removableItem['text1']}}
+                        <strong>{{removableItem['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
+                            {{removableItem['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
                     </div>
                     <div class="pwa-row static-small-card-container">
                         <div class="product-img">
-                            <img (click)="redirectToProductURL(item.productUrl)" src="{{item.productImg}}">
+                            <img (click)="redirectToProductURL(removableItem.productUrl)" src="{{removableItem.productImg}}">
                         </div>
                         <div class="product-description">
-                            <p class="description-txt">{{ (item.productName.length > 50) ? (item.productName | slice:0:48) + '..' : (item.productName) }}</p>
-                            <p class="product-qty">Qty/Pack : {{item.productQuantity}} Piece</p>
+                            <p class="description-txt">{{ (removableItem.productName.length > 50) ? (removableItem.productName | slice:0:48) + '..' : (removableItem.productName) }}</p>
+                            <p class="product-qty" *ngIf="removableItem.packageUnit">Qty/Pack :{{removableItem.packageUnit}}</p>
+                            <p class="product-qty" *ngIf="!(removableItem.packageUnit)">Qty/Pack :{{removableItem.productQuantity}} Piece</p>
                         </div>
                     </div>
                     <div class="cta-row">

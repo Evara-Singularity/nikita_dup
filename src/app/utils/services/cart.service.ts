@@ -823,7 +823,8 @@ export class CartService
             isProductUpdate: 0,
             sellingPrice: productPrice,
             moq: productMinimmumQuantity,
-            incrementUnit: incrementUnit
+            incrementUnit: incrementUnit,
+            packageUnit: (priceQuantityCountry && priceQuantityCountry['packageUnit']) ? priceQuantityCountry['packageUnit'] : null
         } as AddToCartProductSchema;
         if (args.isFbt) {
             product['isFbt'] = args.isFbt;

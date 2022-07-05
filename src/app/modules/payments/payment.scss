@@ -1,16 +1,16 @@
-@import '../../scss/variables';
-@import './payment-continue-btn.scss';
-@import '../../scss/components/checkbox';
-@import '../../scss/components/radio';
-@import '../../scss/layout/forms';
-@import '../../scss/product-card';
-@import '../../scss/components/payment-accordion';
+@import "../../scss/variables";
+@import "./payment-continue-btn.scss";
+@import "../../scss/components/checkbox";
+@import "../../scss/components/radio";
+@import "../../scss/layout/forms";
+@import "../../scss/product-card";
+@import "../../scss/components/payment-accordion";
 .payment-options {
-    &>div {
+    & > div {
         @extend %cards;
         margin-top: 0;
         padding: 0;
-        &>a {
+        & > a {
             padding: 20px 5px;
         }
     }
@@ -108,7 +108,9 @@
 
 .disableCod {
     pointer-events: none;
-    background: #b1a0a0 !important;
+    & > div {
+        background: #b1a0a0 !important;
+    }
     position: relative;
     a {
         color: #e4d0d0;
@@ -194,12 +196,12 @@ label.payment-radio-btn {
         }
     }
 }
-.cod-Popup{
+.cod-Popup {
     position: relative;
-    &.product-card{
-        margin-top:10px;
+    &.product-card {
+        margin-top: 10px;
     }
 }
-::ng-deep .bottom-important-notifications{
+::ng-deep .bottom-important-notifications {
     padding: 10px 0px !important;
 }

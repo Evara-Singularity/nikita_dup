@@ -77,7 +77,6 @@ export class ProductPopularDealsComponent implements OnInit {
     }
   }
 
-  @HostListener("click", ["$event"])
   onClick(e) {
     let containerId = document.getElementById("topDealsContainer");
     let tabsId = document.getElementById("tabs");
@@ -92,6 +91,7 @@ export class ProductPopularDealsComponent implements OnInit {
       );
     }
   }
+  
 }
 
 @NgModule({

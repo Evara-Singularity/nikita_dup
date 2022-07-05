@@ -7,7 +7,7 @@
         <div class="pwa-tabs-container" id="tabs">
             <ng-container *ngFor="let item of resultArray;let tabIndex = index">
                 <div class="pwa-tab pwa-tab-variant2" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"
-                    (click)="setProductList(tabIndex,item)">
+                    (click)="setProductList(tabIndex,item);onClick($event)">
                     {{item['productTagName']}}
                 </div>
             </ng-container>

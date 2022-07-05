@@ -8,8 +8,7 @@
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
                     {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
         </div>
-        <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative">
-            
+        <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative ">    
             <div class="pwa-row pad-0" [ngClass]="{'oos':item.oos}">
                 <div class="product-left">
                     <div class="product-img product-img-v2">
@@ -27,7 +26,7 @@
                         <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">
                             ₹{{item.priceWithoutTax | mathFloor | number : '1.2-2'}}
                         </span>
-                        <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax | mathFloor |
+                        <span class="after-disc" *ngIf="item.bulkPrice!==null"> ₹{{item.bulkPriceWithoutTax | mathFloor |
                             number : '1.2-2'}}</span>
                     </p>
                 </div>

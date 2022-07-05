@@ -37,8 +37,10 @@
     background:var(--white);
     margin-bottom: 10px;
     padding-left:15px;
+    padding-right:15px;
     &.bestSeller{
         background:none;
+        padding-right:0px;
     }
     .view-all-strip{
         @extend %view-all-strip;

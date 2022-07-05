@@ -39,6 +39,18 @@
                     color: var(--blue);
                 }
             }
+            
+            
+        }
+        &.show-more-row{
+            padding:10px 0px;
+            margin-bottom:10px;
+            background:var(--white);
+            text-align:center;
+            .link-text{
+                font-size:$medium-font;
+                font-weight:bold;
+            }
         }
     }
 }

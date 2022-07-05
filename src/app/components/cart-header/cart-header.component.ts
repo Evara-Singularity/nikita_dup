@@ -77,7 +77,6 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 	handleCheckoutNavigation(url: string, previousURL: string)
 	{
 		console.log(`CurrentURL:${url}, PreviousURL:${previousURL}`);
-		debugger;
 		this._cartService.clearBuyNowFlow();
 		if (previousURL.includes('checkout/login') || previousURL.includes('checkout/sign-up') || previousURL.includes('checkout/otp')) {
 			this._router.navigateByUrl("quickorder");

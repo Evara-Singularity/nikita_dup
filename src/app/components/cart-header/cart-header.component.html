@@ -3,6 +3,6 @@
     <span class="page-name" *ngIf="title">
         {{ title }} 
         <!-- <span *ngIf="displayCartInfo">({{noOfCartItems}})</span> -->
-    </span>
-    <span class="right-content" *ngIf="displayCartInfo">Amount:&nbsp;&#8377;{{payableAmount | mathCeil | number : '1.2-2'}}</span>
+        </span>
+    <span class="right-content" *ngIf="displayCartInfo">Amount:&nbsp;&#8377;{{totalPayableAmount | mathCeil | number : '1.2-2'}}</span>
 </div>

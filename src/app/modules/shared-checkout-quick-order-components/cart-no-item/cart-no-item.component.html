@@ -4,7 +4,7 @@
             <img src="../../../../assets/img/empty_cart.png" width="103px">
             <p class="noitems-txt">No items in your cart</p>
             <ng-container *ngIf="!isLoggedIn">
-                <button class="btn secondry-btn" [routerLink]="['/login']">SIGN IN NOW</button>
+                <button class="btn secondry-btn" (click)="$event.stopPropagation();navigateToLogin()">LOGIN NOW</button>
                 <p class="small-txt">To see the items you added previously</p>
             </ng-container>
             <button class="btn secondry-btn-1" [routerLink]="['/']">CONTINUE SHOPPING</button>

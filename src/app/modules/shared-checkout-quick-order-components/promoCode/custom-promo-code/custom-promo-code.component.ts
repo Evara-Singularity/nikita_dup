@@ -6,19 +6,22 @@ import { Component, Input } from '@angular/core';
     templateUrl: './custom-promo-code.component.html',
     styleUrls: ['./custom-promo-code.component.scss'],
 })
-export class CustomPromoCodeComponent {
+export class CustomPromoCodeComponent
+{
 
     appliedPromocode: string = "";
     @Input("nextPromocode") nextPromocode: Subject<string> = null;
     nextPromocodeSubscription: Subscription = null;
     appliedPromocodeSubscription: Subscription = null;
-    
-    constructor(public _cartService: CartService) {}
+
+    constructor(public _cartService: CartService) { }
 
     ngOnInit(): void
     {
         if (this._cartService.appliedPromoCode) { this.appliedPromocode = this._cartService.appliedPromoCode; }
-        this.appliedPromocodeSubscription = this._cartService.appliedPromocodeSubject.subscribe((promocode: string) => { this.appliedPromocode = promocode; });
+        this.appliedPromocodeSubscription = this._cartService.promoCodeSubject.subscribe(
+            ({ promocode, isNewPromocode }) => { this.appliedPromocode = promocode; }
+        );
         if (this.nextPromocode) { this.nextPromocodeSubscription = this.nextPromocode.subscribe((promocode: string) => { this.appliedPromocode = promocode; }) }
     }
 

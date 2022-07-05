@@ -106,7 +106,7 @@
                     class="payment-accordion_header">
                     <i class="icon-coupon-3-fill ico-accord-left"></i>
                     <span class="accordion-text">Cash on Delivery</span>
-                    <span class="learn-more" *ngIf="disableCod" (click)="learnMore($event)">Learn More</span>
+                    <span class="learn-more" *ngIf="disableCod" (click)="$event.stopPropagation();learnMore($event)">Learn More</span>
                     <small class="error-txt inline-error" *ngIf="messageCod">{{messageCod}} </small>
                     <i class="icon-down"></i>
                 </div>

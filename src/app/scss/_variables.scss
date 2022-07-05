@@ -512,7 +512,11 @@ $default-gap: 15px;
 .f-10{
     font-size: 10px;
 }
-
-      
+.success-text{
+    color: var(--slimy-green);
+}
+.error-txt{
+    color: var(--primary);
+}
          
  

@@ -1,6 +1,6 @@
-<app-pop-up [headerType]="'pop-up-header1'" [data]="{headerText: 'Apply Coupon'}">
+<app-pop-up (outData$)="closePromoListPopup($event)" [headerType]="'pop-up-header1'" [data]="{headerText: 'Apply Coupon'}">
   <div class="content-popup select-offers" content>
-    <section class=" open">
+    <section class="open">
       <custom-promo-code [nextPromocode]="nextPromocode"></custom-promo-code>
       <div class="pwa-row no-coupon-card-container" *ngIf="_cartService?.allPromoCodes.length == 0">
         <div class="pwa-col-12 card">
@@ -13,14 +13,13 @@
       <div class="coupon-card-container" *ngIf="_cartService?.allPromoCodes.length">
         <p class="pwa-text">Available Coupons</p>
         <ng-container *ngFor="let item of _cartService?.allPromoCodes; let i = index;">
-          <div (click)="updateCustomPromoCodeInput($event,item)" class="card"
-            [class.selected]="item.promoCode === selectedPromocode">
+          <div  class="card">
             <div class="apply-coupon">
               <div class="inner-coupon">
                 <h3>{{item.promoCode}}</h3>
                 <p class="promo-description">{{item.promoDescription}}</p>
               </div>
-              <button class="btn quaternary-btn-1" >APPLY</button>
+              <button class="btn quaternary-btn-1" [disabled]="item.promoCode === selectedPromocode" (click)="$event.stopPropagation();submitPromocode(item.promoCode)">APPLY</button>
             </div>
           </div>
         </ng-container>

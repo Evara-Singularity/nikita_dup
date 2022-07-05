@@ -16,11 +16,12 @@
                     [readonly]="isOTPVerified">
             </ng-container>
         </div>
-        <div class="error-field" *ngIf="otpFormArray.dirty && (otpFormArray.invalid) && !(isOTPVerified)"><span
-                class="error-txt">Number not Verified</span> </div>
+        <div class="error-field pt-10" *ngIf="otpFormArray.dirty && (otpFormArray.invalid) && !(isOTPVerified)"><span
+                class="error-txt mt-10">Number not Verified</span> </div>
         <div class="error-field" *ngIf="(otpFormArray.valid) && incorrectOTP"><span
                 class="error-txt">{{incorrectOTP}}</span> </div>
-        <div class="green-txt" *ngIf="isOTPVerified"><span class="success-text">Number Verified</span></div>
+        <div class="success-field pt-10" *ngIf="isOTPVerified"><span class="success-txt">Number Verified</span></div>
+        
     </form>
     <div class="otp-text">
         <div class="otp-text-inner left">

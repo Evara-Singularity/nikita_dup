@@ -1,6 +1,6 @@
 <div *ngIf="_cartService.getGenericCartSession?.itemsList && _cartService.getGenericCartSession?.itemsList.length > 0">
     <div class="pwa-row pt-0 pb-0" *ngIf="isQuickorder">
-        <h3 class="pad-0">{{noOfCartItems}} {{noOfCartItems>1?'items':'item'}} in your cart</h3>
+        <h3 class="pad-0">{{noOfCartItems}} item(s) in your cart</h3>
     </div>
     <ng-container *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let itemIndex = index;">
         <div *ngIf="item['text1']" class="realTimePrice">
@@ -8,7 +8,7 @@
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
                     {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
         </div>
-        <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative">
+        <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative ">    
             <div class="pwa-row pad-0" [ngClass]="{'oos':item.oos}">
                 <div class="col-12">
                     <div class="product-left">
@@ -31,17 +31,26 @@
                                 number : '1.2-2'}}</span>
                         </p>
                     </div>
+                    <p *ngIf="!item.oos" class="price clearfix">
+                        <span class="before-discount gray-txt">MRP ₹{{item.amount | mathFloor | number : '1.2-2'}} <span
+                                class="green-txt">({{item.taxPercentage}}% OFF)</span></span>
+                        <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">
+                            ₹{{item.priceWithoutTax | mathFloor | number : '1.2-2'}}
+                        </span>
+                        <span class="after-disc" *ngIf="item.bulkPrice!==null"> ₹{{item.bulkPriceWithoutTax | mathFloor |
+                            number : '1.2-2'}}</span>
+                    </p>
                 </div>
             </div>
             <div *ngIf="!item.oos" class="cart-item-block pad-15">
                 <div class="qty_section">
                     <span class="qty-txt">Qty</span>
                     <div class="quantity-block">
-                        <span *ngIf="item.productQuantity > 1"
+                        <span *ngIf="item.productQuantity > item.moq"
                             (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'decrement')"
                             class="remove-qty qty-block">&#8722;</span>
                         <i (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'decrement')"
-                            *ngIf="item.productQuantity < 2" class="icon-bin qty-block single-quantity"></i>
+                            *ngIf="item.productQuantity <= item.moq" class="icon-bin qty-block single-quantity"></i>
                         <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
                             (focusout)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'update', $event.target.value)" />
                         <span (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'increment')"
@@ -116,7 +125,6 @@
         <div class="content-area removePopup">
             <div class="top-header-bottom-menu">
                 <h3 class="heading-3">Are you sure to remove this item?</h3>
-                <!-- <i (click)="$event.stopPropagation();resetRemoveItemCart()" class="icon-circle-delete"></i> -->
             </div>
             <div [ngClass]="{'realTimeUpdate':item['text1']}" class="pwa-row pad-tb-15" *ngFor="let item of [_cartService.getGenericCartSession?.itemsList[removeIndex]]; let i = index;">
                 <div class="pwa-col-12">

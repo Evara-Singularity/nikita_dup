@@ -303,15 +303,9 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 this.backRedirectUrl = this._commonService.currentUrl || '';
             }
         });
-
-        this.cartService.cart.subscribe((data) =>
+        this.cartService.getCartUpdatesChanges().subscribe((data) =>
         {
-
-            if (data && data.hasOwnProperty('count')) {
-                this.noOfCart = data.count;
-            } else {
-                throw new Error('Cart update count should always be present');
-            }
+            this.noOfCart = this.cartService.getCartItemsCount();
         });
 
         this.localAuthService.login$.subscribe((data) =>
@@ -353,13 +347,19 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
 
     goBack()
     {
-        this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
-        if (this.backRedirectUrl && this.backRedirectUrl !== '/') {
-            this.location.back();
-            return;
-        }
         if (this.staticPages.indexOf(window.location.pathname) !== -1) {
             this.router.navigate(['/']);
+            return;
+        }
+        this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
+        const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
+        if (isCheckout || this._commonService.getPreviousUrl.includes('checkout'))
+        {
+            this.router.navigateByUrl("quickorder", { replaceUrl: true });
+            return;
+        }
+        if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false) {
+            (window.history.length > 2) ? this.location.back() : this.router.navigate(['/']);
             return;
         }
         this.router.navigate(['/']);

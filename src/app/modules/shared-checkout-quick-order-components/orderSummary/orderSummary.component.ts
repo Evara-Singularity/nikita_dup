@@ -9,42 +9,55 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
     selector: 'order-summary',
     styleUrls: ['./orderSummary.scss'],
 })
-export class OrderSummaryComponent {
+export class OrderSummaryComponent
+{
     showPromoOfferPopup: boolean = false;
     showPromoSuccessPopup: boolean = false;
+    totalOffer = 0;
+    totalPayableAmount = 0;
 
     constructor(
         public router: Router,
         public _cartService: CartService,
         private _commonService: CommonService,
         private _localAuthService: LocalAuthService,
-        private _globalAnalyticeService:GlobalAnalyticsService,
-    ) {}
+        private _globalAnalyticeService: GlobalAnalyticsService,
+    ) { }
 
-    ngOnInit(): void {
-        if (this._commonService.userSession.authenticated == "true" && this._cartService.getCartItemsCount()>0) {
+    ngOnInit(): void
+    {
+        if (this._localAuthService.isUserLoggedIn()) {
             this._cartService.getPromoCodesByUserId(this._commonService.userSession.userId);
         }
-        this._cartService.getCartUpdatesChanges().subscribe(result => {
-            this.updateShippingCharges();
+        this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
+        {
+            if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
+                this.updateShippingCharges();
+                this.totalOffer = cartSession['cart']['totalOffer'] || 0;
+                this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
+            }
         });
-        this._cartService.promocodePopupSubject.subscribe((isApplied)=>{
-            this.showPromoSuccessPopup = isApplied;
+        this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode}) =>
+        {
+            this.showPromoSuccessPopup = isNewPromocode;
         })
     }
-    
-    updateShippingCharges() {
+
+    updateShippingCharges()
+    {
         this._cartService.shippingCharges = 0;
         if (this._cartService.getGenericCartSession && this._cartService.getGenericCartSession.itemsList && this._cartService.getGenericCartSession.itemsList.length > 0) {
             this.getGTMData(this._cartService.getGenericCartSession);
             this.sendTrackData(this._cartService.getGenericCartSession);
-            this._cartService.getGenericCartSession.itemsList.forEach((item) => {
+            this._cartService.getGenericCartSession.itemsList.forEach((item) =>
+            {
                 this._cartService.shippingCharges = this._cartService.shippingCharges + (item.shippingCharges || 0);
             });
         }
     }
 
-    openOfferPopUp() {
+    openOfferPopUp()
+    {
         if (this._commonService.userSession.authenticated == "true") {
             this.showPromoOfferPopup = true;
         } else {
@@ -56,10 +69,9 @@ export class OrderSummaryComponent {
         }
     }
 
-    closePromoSuccessPopUp()
-    {
-        this.showPromoSuccessPopup = false;
-    }
+    closePromoSuccessPopUp() { this.showPromoSuccessPopup = false; }
+
+    closePromoListPopUp(flag) { this.showPromoOfferPopup = flag }
 
     //analytics
     getGTMData(cartSession)
@@ -70,7 +82,7 @@ export class OrderSummaryComponent {
         {
             obj.push({
                 'id': element.productId,
-                'name': element.productName,	
+                'name': element.productName,
                 'price': element.productUnitPrice,
                 //'variant': this.appliedPromoCode.promoCode,TODO
                 'quantity': element.productQuantity

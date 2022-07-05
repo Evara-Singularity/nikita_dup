@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
-import { CheckoutHeaderModel, SelectedAddressModel } from '@app/utils/models/shared-checkout.models';
+import { CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { AddressService } from '@services/address.service';
@@ -169,7 +169,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
     {
         this._cartService.codNotAvailableObj['itemsArray'] = cartItems.filter((item) => nonCashonDeliverableMsns.includes(item.productId));
-        this._cartService.cashOnDeliveryStatus.isEnable = nonCashonDeliverableMsns.length === 0;
+        this._cartService.cashOnDeliveryStatus.isEnable = (nonCashonDeliverableMsns.length === 0);
     }
 
     /**@description scrolls to payment summary section on click of info icon*/
@@ -217,7 +217,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const TOTAL_AMOUNT = cart['totalAmount'] || 0;
         const SHIPPING_CHARGES = cart['shippingCharges'] || 0;
         const TOTAL_OFFER = cart['totalOffer'] || 0;
-        this.payableAmount = TOTAL_AMOUNT + SHIPPING_CHARGES + TOTAL_OFFER;
+        this.payableAmount = (TOTAL_AMOUNT + SHIPPING_CHARGES) - TOTAL_OFFER;
     }
 
     validateCart()

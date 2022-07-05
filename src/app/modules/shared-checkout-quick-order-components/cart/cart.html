@@ -9,27 +9,28 @@
                     {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
         </div>
         <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative">
-            
             <div class="pwa-row pad-0" [ngClass]="{'oos':item.oos}">
-                <div class="product-left">
-                    <div class="product-img product-img-v2">
-                        <img (click)="redirectToProductURL(item.productUrl)" src="{{item.productImg}}">
+                <div class="col-12">
+                    <div class="product-left">
+                        <div class="product-img product-img-v2">
+                            <img (click)="redirectToProductURL(item.productUrl)" src="{{item.productImg}}">
+                        </div>
                     </div>
-                </div>
-                <div class="product-detail">
-                    <div class="p-name">
-                        <a (click)="redirectToProductURL(item.productUrl)"> {{ (item.productName.length > 50) ?
-                            (item.productName | slice:0:48) + '..' : (item.productName) }}</a>
+                    <div class="product-detail">
+                        <div class="p-name">
+                            <a (click)="redirectToProductURL(item.productUrl)"> {{ (item.productName.length > 50) ?
+                                (item.productName | slice:0:48) + '..' : (item.productName) }}</a>
+                        </div>
+                        <p *ngIf="!item.oos" class="price clearfix">
+                            <span class="before-discount gray-txt">MRP ₹{{item.amount | mathFloor | number : '1.2-2'}} <span
+                                    class="green-txt">({{item.taxPercentage}}% OFF)</span></span>
+                            <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">
+                                ₹{{item.priceWithoutTax | mathFloor | number : '1.2-2'}}
+                            </span>
+                            <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax | mathFloor |
+                                number : '1.2-2'}}</span>
+                        </p>
                     </div>
-                    <p *ngIf="!item.oos" class="price clearfix">
-                        <span class="before-discount gray-txt">MRP ₹{{item.amount | mathFloor | number : '1.2-2'}} <span
-                                class="green-txt">({{item.taxPercentage}}% OFF)</span></span>
-                        <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">
-                            ₹{{item.priceWithoutTax | mathFloor | number : '1.2-2'}}
-                        </span>
-                        <span class="after-discount" *ngIf="item.bulkPrice!==null">₹{{item.bulkPriceWithoutTax | mathFloor |
-                            number : '1.2-2'}}</span>
-                    </p>
                 </div>
             </div>
             <div *ngIf="!item.oos" class="cart-item-block pad-15">

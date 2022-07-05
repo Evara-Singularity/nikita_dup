@@ -44,11 +44,12 @@
         padding-bottom:15px
     }
     .recently-container{
+        padding-top: 15px;
         margin-bottom:10px;
         &::ng-deep {
         .view-all-strip{
             padding:0px 15px;
         }
-      }
+     }
     }
   

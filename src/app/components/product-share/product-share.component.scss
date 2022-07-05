@@ -51,6 +51,12 @@
                     font-size: 30px;
                     color: #666;
                 }
+                i{
+                    display: block;
+                    transform: rotate(90deg);
+                    -ms-transform: rotate(90deg);
+                    -webkit-transform: rotate(90deg);
+                }
             }
         }
     }

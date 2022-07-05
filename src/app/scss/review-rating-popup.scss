@@ -117,6 +117,14 @@
                 color: var(--spanish-gray);
                 padding-left: 5px;
             }
+            &.active{
+                .icon-like{
+                    color: var(--slimy-green);
+                }
+                .icon-dislike{
+                    color: var(--primary);
+                }
+            }
         }
     }
     .secondry-btn{

@@ -2,7 +2,7 @@
     <shared-auth-header *ngIf="isWhiteHeader" [isWhiteHeader]="isWhiteHeader"></shared-auth-header>
     
     <div class="fixed-view" [class.mt-20]="isNormalLogin">
-        <button class="btn skip-btn quinary-btn-1" *ngIf="isNormalLogin" (click)="$event.stopPropagation();navigateSkipNow()">SKIP NOW</button>
+        <button class="btn skip-btn quinary-btn quinary-btn-1" *ngIf="isNormalLogin" (click)="$event.stopPropagation();navigateSkipNow()">SKIP NOW</button>
         <img class="bg-moglix-logo" (click)="$event.stopPropagation();navigateHome()"
             src="{{imagePath}}assets/img/moglix_logo_PWA_3x.png" *ngIf="isNormalLogin">
         <h3 class="heading pad-15" [ngClass]="{'heading-padding': isCheckout}" *ngIf="headerTitle">{{headerTitle}}</h3>

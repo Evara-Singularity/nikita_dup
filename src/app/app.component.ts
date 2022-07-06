@@ -29,7 +29,7 @@ export class AppComponent {
       event.stopImmediatePropagation();
       event.stopPropagation();
       event.preventDefault();
-      this._navigationService.goBack();
+      if (this.router.url !== "/") { this._navigationService.goBack();}
     });
   }
 }

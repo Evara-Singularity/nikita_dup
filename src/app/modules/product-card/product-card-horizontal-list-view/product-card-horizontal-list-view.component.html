@@ -63,7 +63,7 @@
                             <span class="prod-discount">{{product.discount}}% OFF</span>
                         </div>
                         <div class="prod-selling-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
-                            <span>{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
+                            <span>{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
                                 }}</span>
                         </div>
                         <div class="out-of-stock-text" *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice">

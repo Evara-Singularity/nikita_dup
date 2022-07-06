@@ -2,7 +2,7 @@
 @import '../../scss/components/category-grid-card';
 .view-all-strip {
     @extend %view-all-strip;
-    padding-top: 0px !important;
+    padding:10px 0px;
   }
   .trending-container {
     padding: 0 0 0px 0;

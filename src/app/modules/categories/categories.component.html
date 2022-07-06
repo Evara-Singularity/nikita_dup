@@ -38,18 +38,18 @@
             </li>
         </ng-template>
     </ul>
-    <product-card-vertical-container *ngIf="carouselData[category.dataKey]['layout_name'] == 'Bestsellers'"
+    <product-card-vertical-container
         [numberOfItems]="carouselData[category.dataKey]['data']['product_data'].length">
         <ng-container *ngFor="let product of carouselData[category.dataKey]['data']['product_data']">
             <product-card-vertical-grid-view [product]="product"></product-card-vertical-grid-view>
         </ng-container>
     </product-card-vertical-container>
-    <product-card-vertical-container *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'"
-        [numberOfItems]="4" [isScroll]="false" >
-        <ng-container *ngFor="let product of carouselData[category.dataKey]['data']['product_data'] | slice : 0:4">
+    <!-- <product-card-vertical-container *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'"
+        [numberOfItems]="carouselData[category.dataKey]['data']['product_data'].length" [isScroll]="false" >
+        <ng-container *ngFor="let product of carouselData[category.dataKey]['data']['product_data']">
             <product-card-vertical-block-view [product]="product"></product-card-vertical-block-view>
         </ng-container>
-    </product-card-vertical-container>
+    </product-card-vertical-container> -->
 
     </section>
 </ng-container>

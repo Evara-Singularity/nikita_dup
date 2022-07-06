@@ -38,18 +38,17 @@ export class ProductOffersComponent implements OnInit
 
     getOfferAllData(user){
          forkJoin([
-            this.productService.getAllOffers(),
-            this.productService.getAllPromoCodeOffers(user, this.productmsn, "web")
+          this.productService.getAllPromoCodeOffers(user, this.productmsn, "app"),
+          this.productService.getAllOffers()
           ]).subscribe(
             (responses) => {
-                console.log("responses --->>>", responses)
               let data1: any = responses[0] || [];
               let data2: any = responses[1] || [];
               if (data1.statusCode == 200) {
-                this.allofferData = (data1.data as any[]).map((item: any, index) => Object.assign({}, item, { index }));
+                this.promoCodes = (data1.data.applicablePromoCodeList as any[]).map((item: any, index) => Object.assign({}, item, { index }));
               }
               if (data2.statusCode == 200) {
-                this.promoCodes = (data2.data.applicablePromoCodeList as any[]).map((item: any, index) => Object.assign({}, item, { index }));
+                this.allofferData = (data2.data as any[]).map((item: any, index) => Object.assign({}, item, { index }));
               }
             },
             (error) => {

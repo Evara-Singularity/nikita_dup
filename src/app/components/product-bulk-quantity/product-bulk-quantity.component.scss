@@ -224,6 +224,11 @@
     }
     .bulk-container-single-grp {
         padding: 5px 8px;
+        .bul-qty-head{
+            p{
+                font-size:$large-font !important;
+            }
+        }
         h3 {
             font-size: 13px;
             .green-txt {

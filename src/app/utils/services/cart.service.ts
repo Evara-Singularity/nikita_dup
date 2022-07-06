@@ -1600,7 +1600,7 @@ export class CartService
             } else if (UPDATES['priceWithoutTax'] && (UPDATES['priceWithoutTax'] != CART_PRODUCT_PRICE)) {
                 if (UPDATES['priceWithoutTax'] < CART_PRODUCT_PRICE) {
                     msg['type'] = "price";
-                    msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' price has been updated from ', text2: 'to', oPrice: CART_PRODUCT_PRICE, nPrice: validateCartData[CART_PRODUCT_MSN]['productDetails']['priceWithoutTax'] };
+                    msg['data'] = { productName: CART_PRODUCT_NAME, text1: '   price has been updated from ', text2: 'to', oPrice: CART_PRODUCT_PRICE, nPrice: validateCartData[CART_PRODUCT_MSN]['productDetails']['priceWithoutTax'] };
                 } else {
                     increasedPriceMSNS.push(CART_PRODUCT_MSN);
                 }

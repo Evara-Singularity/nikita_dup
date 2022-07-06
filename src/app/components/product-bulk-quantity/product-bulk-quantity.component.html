@@ -18,7 +18,7 @@
                                     <span
                                         *ngIf="last!==true && !(rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
                                         {{items.minQty!==items.maxQty ?
-                                        -items.maxQty:'' }}</span>
+                                        - items.maxQty:'' }}</span>
                                     <span
                                         *ngIf="last==true || (rawProductData['quantityAvailable']>=items.minQty && rawProductData['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span>
                                 </p>

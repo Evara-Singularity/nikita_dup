@@ -16,16 +16,16 @@
     .badge {
         position: absolute;
         top: 0px;
-        right: 0px;
+        right: 1px;
         padding: 2px 4px;
         border-radius: $border-radius-6;
         color: var(--white);
         background: var(--primary);
-        font-size: $small-font;
+        font-size: $extra-small-font;
         border: 2px solid var(--white);
         font-family: "Roboto", sans-serif;
-        width: 21px;
-        height: 21px;
+        width: 18px;
+        height: 18px;
         display: flex;
         align-items: center;
         justify-content: center;

@@ -8,7 +8,7 @@
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
                     {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
         </div>
-        <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative ">    
+        <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative ">
             <div class="pwa-row pad-0" [ngClass]="{'oos':item.oos}">
                 <div class="pwa-col-12">
                     <div class="product-left">
@@ -22,15 +22,20 @@
                                 (item.productName | slice:0:48) + '..' : (item.productName) }}</a>
                         </div>
                         <p *ngIf="!item.oos" class="price clearfix">
-                            <span class="price-mrp gray-txt"><span class="strike-off-upper"><span class="strike-off"></span>MRP ₹{{item.amount | mathFloor | number : '1.2-2'}}</span> <span
-                                    class="green-txt">&nbsp;({{item.taxPercentage}}% OFF)</span></span>
-                            <span class="after-disc" *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">&nbsp;₹{{item.priceWithoutTax | mathFloor | number : '1.2-2'}}
+                            <span class="price-mrp gray-txt"><span class="strike-off-upper"><span
+                                        class="strike-off"></span>MRP ₹{{item.amount | mathFloor | number :
+                                    '1.2-2'}}</span> <span class="green-txt">&nbsp;({{item.taxPercentage}}%
+                                    OFF)</span></span>
+                            <span class="after-disc"
+                                *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">&nbsp;₹{{item.priceWithoutTax |
+                                mathFloor | number : '1.2-2'}}
                             </span>
-                            <span class="after-disc" *ngIf="item.bulkPrice!==null">&nbsp;₹{{item.bulkPriceWithoutTax | mathFloor |
+                            <span class="after-disc" *ngIf="item.bulkPrice!==null">&nbsp;₹{{item.bulkPriceWithoutTax |
+                                mathFloor |
                                 number : '1.2-2'}}</span>
                         </p>
                     </div>
-                    
+
                 </div>
             </div>
             <div *ngIf="!item.oos" class="cart-item-block pad-15">
@@ -48,21 +53,22 @@
                             class="add-qty qty-block">&#43;</span>
                     </div>
                 </div>
-                <div class="price-dtl-block" [appKpToggle]="{idName:'showPrice'+(itemIndex+1),iconMode : true}">
-                    <div class="price-block-left">
-                        <h3 *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
-                            item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
-                        <h3 *ngIf="item.bulkPrice !== null && !item.oos" class="price-val">{{item.bulkPriceWithoutTax *
-                            item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
-                        <h3 *ngIf="item.oos" class="price-val">Not Available</h3>
-                        <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
-                        <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
+                <div class="price-dtl-block">
+                        <span class="price-block-left" [appKpToggle]="{idName:'showPrice'+(itemIndex+1),iconMode : true}">
+                            <span>
+                                <strong *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
+                                    item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</strong>
+                                <strong *ngIf="item.bulkPrice !== null && !item.oos"
+                                    class="price-val">{{item.bulkPriceWithoutTax *
+                                    item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</strong><br>
+                                <strong *ngIf="item.oos" class="price-val">Not Available</strong>
+                                <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
+                                <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
+                                </span>
+                                <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
+                            </span>
+                            <i class="icon-down"></i>
                         </span>
-                        <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
-                    </div>
-                    <div class="price-label-dropdown-icon">
-                        <i class="icon-down"></i>
-                    </div>
                 </div>
             </div>
             <div *ngIf="item.oos" class="oos-item-block">
@@ -76,7 +82,8 @@
                     <h3 class="heading-3">Not Available</h3>
                 </div>
             </div>
-            <div [ngClass]="{'oos':item.oos}" class="price-breakup" [id]="'showPrice'+(itemIndex+1)" style="display: none">
+            <div [ngClass]="{'oos':item.oos}" class="price-breakup" [id]="'showPrice'+(itemIndex+1)"
+                style="display: none">
                 <ul class="txt-list">
                     <li>
                         <span class="tag-label">Price</span>
@@ -121,25 +128,29 @@
                 <div class="pwa-col-12">
                     <div *ngIf="removableItem['text1']" class="realTimePrice">
                         <span>{{removableItem['text1']}}
-                        <strong>{{removableItem['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
-                            {{removableItem['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
+                            <strong>{{removableItem['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to
+                            <strong>
+                                {{removableItem['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
                     </div>
                     <div class="pwa-row static-small-card-container">
                         <div class="product-img">
-                            <img (click)="redirectToProductURL(removableItem.productUrl)" src="{{removableItem.productImg}}">
+                            <img (click)="redirectToProductURL(removableItem.productUrl)"
+                                src="{{removableItem.productImg}}">
                         </div>
                         <div class="product-description">
                             <p class="description-txt">{{ (removableItem.productName.length > 50) ? (removableItem.productName | slice:0:48) + '..' : (removableItem.productName) }}</p>
                             <p class="product-qty" *ngIf="removableItem.packageUnit">Qty/Pack :{{removableItem.packageUnit}}</p>
-                            <p class="product-qty" *ngIf="!(removableItem.packageUnit)">Qty/Pack :{{removableItem.productQuantity}} Piece</p>
+                            <!-- <p class="product-qty" *ngIf="!(removableItem.packageUnit)">Qty/Pack :{{removableItem.productQuantity}} Piece</p> -->
                         </div>
                     </div>
                     <div class="cta-row">
-                        <button (click)="$event.stopPropagation();resetRemoveItemCart();" cstatic-small-card-container class="btn secondry-btn-1">CANCEL</button>
-                        <button class="btn secondry-btn" (click)="$event.stopPropagation();deleteProduct($event)"><i class="icon-bin"></i>&nbsp;REMOVE</button>
+                        <button (click)="$event.stopPropagation();resetRemoveItemCart();" cstatic-small-card-container
+                            class="btn secondry-btn-1">CANCEL</button>
+                        <button class="btn secondry-btn" (click)="$event.stopPropagation();deleteProduct($event)"><i
+                                class="icon-bin"></i>&nbsp;REMOVE</button>
                     </div>
-             </div>
+                </div>
+            </div>
         </div>
     </div>
-  </div> 
 </app-bottom-menu>

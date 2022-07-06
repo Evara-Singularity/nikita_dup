@@ -2,7 +2,6 @@
     <i class="icon-back-arrow" id="icon-back" (click)="$event.stopPropagation();handleNavigation()"></i>
     <span class="page-name" *ngIf="title">
         {{ title }} 
-        <!-- <span *ngIf="displayCartInfo">({{noOfCartItems}})</span> -->
         </span>
     <span class="right-content" *ngIf="displayCartInfo">Amount:&nbsp;&#8377;{{totalPayableAmount | mathCeil | number : '1.2-2'}}</span>
 </div>

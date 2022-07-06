@@ -1,144 +1,292 @@
-    /* APP PROMOTION */
-    
-    // .fix-in-bottom{
-    //     position: fixed; bottom: 0; width: 100%; z-index: 9;
-    .app-promotion {
-        background: #F1F1F1;
-        padding: 12px 15px;
-        span {
-            display: inline-block;
-            vertical-align: middle;
-            text-align: left;
-        }
-        p {
-            display: inline-block;
-            vertical-align: middle;
+/* APP PROMOTION */
+
+// .fix-in-bottom{
+//     position: fixed; bottom: 0; width: 100%; z-index: 9;
+.app-promotion {
+    background: #fff;
+    padding: 5px 10px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border: 1px solid #FFCCCF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+        display: inline-block;
+        vertical-align: middle;
+
+        i {
             font-size: 14px;
-            line-height: 22px;
-            padding-left: 10px;
         }
-        strong {
-            display: inline-block;
-            color: #41AE0C;
-            font-size: 14px;
-            border: 1px dashed #41AE0C;
-            background: #fff;
-            padding: 1px 5px;
-            border-radius: 4px;
-            margin-top: 1px;
-            line-height: 16px;
-        }
-        .install-app-text {
-            font-size: 12px;
-            color: #3C3C3C;
-            font-weight: 400;
-            line-height: 22px;
-            padding-left: 0;
-        }
-    }
-    .promotion-nonLogin {
-        padding: 12px 15px;
-        display: flex;
-        align-items: center;
-        background: var(--white);
-        .mobile {
-            padding-left: 0px;
-        }
-        img {
-            width: auto;
-        }
-        .text {
-            width: 50%;
-            padding: 5px 0 0px 12px;
-            strong {
-                font-size: 13px;
-                display: block;
-                font-weight: 700;
-            }
-            p {
-                color: #74777A;
-                font-size: 11px;
-                font-weight: 400;
-                padding-top: 5px;
-            }
-        }
-        .mobile {
-            padding-left: 8px;
-        }
-        .play-store {
-            padding: 5px 0px 0 0;
-            margin-left: auto;
-            display: inline-flex;
-            img {
-                width: 115px;
-            }
-        }
-    }
-    .content-mobile-app {
-        background: #fff;
-        padding: 12px 10px 12px 5px;
-        // margin-top: -1px;
-        display: flex;
-        // align-items: center;
-        
-        img {
-            width: auto;
-        }
-        .text {
-            width: 50%;
-            padding: 5px 0 0px 12px;
-            strong {
-                font-size: 13px;
-                display: block;
-                font-weight: 700;
-            }
-            p {
-                color: #74777A;
-                font-size: 11px;
-                font-weight: 400;
-                padding-top: 5px;
-            }
-        }
-        .mobile {
-            padding-left: 8px;
-        }
-        .play-store {
-            padding: 5px 0px 0 0;
-            margin-left: auto;
-            display: inline-flex;
-            img {
-                width: 115px;
-            }
-        }
-        .install-app {
-            margin-left: auto;
-            button {
-                background: #db232e;
-                font-size: 12px;
-                font-weight: 700;
-                border-radius: 4px;
-                color: #fff;
-                border: none;
-                display: inline-block;
-                padding: 10px 8px;
-            }
-        }
-    }
-    
-    @media screen and (max-width: 320px) {
-        .install-app {
-            button {
-                font-size: 10px !important;
-            }
-        }
+
     }
 
+    p {
+        font-size: 12px;
+        line-height: 18px;
+        color: var(--onyx-black);
+    }
 
-.app-promo-container{
+    // strong {
+    //     display: inline-block;
+    //     color: #41AE0C;
+    //     font-size: 14px;
+    //     border: 1px dashed #41AE0C;
+    //     background: #fff;
+    //     padding: 1px 5px;
+    //     border-radius: 4px;
+    //     margin-top: 1px;
+    //     line-height: 16px;
+    // }
+
+    // .install-app-text {
+    //     font-size: 12px;
+    //     color: #3C3C3C;
+    //     font-weight: 400;
+    //     line-height: 22px;
+    //     padding-left: 0;
+    // }
+}
+
+// .promotion-nonLogin {
+//     align-items: center;
+//     background: #FBE8E9;
+//     padding: 0px 8px 0px 0px;
+//     display: flex;
+//     border: 1px solid #ffc0cb;
+
+//     img {
+//         width: auto;
+//         display: block;
+//     }
+
+//     .text {
+//         width: 58%;
+//         padding: 5px 0 5px 2px;
+//         color: var(--onyx-black);
+
+//         strong {
+//             font-size: 13px;
+//             display: block;
+//             font-weight: 700;
+//         }
+
+//         p {
+//             color: var(--onyx-black);
+//             font-size: 13px;
+//             padding-top: 5px;
+
+//             strong {
+//                 display: inline-block;
+//                 color: var(--primary);
+//                 font-size: 13px;
+//                 border: 1px dashed var(--primary);
+//                 background: #fff;
+//                 padding: 2px 5px;
+//                 border-radius: 4px;
+//                 margin-top: 1px;
+//                 line-height: 16px;
+//             }
+//         }
+//     }
+
+//     .install-app {
+//         margin-left: auto;
+
+//         button {
+//             background: var(--primary);
+//             font-size: 12px;
+//             font-weight: 600;
+//             border-radius: 6px;
+//             color: #fff;
+//             border: none;
+//             display: inline-block;
+//             padding: 10px 7px;
+//         }
+//     }
+// }
+
+// .content-mobile-app {
+//     // background: #fff;
+//     padding: 12px 10px 12px 5px;
+//     // margin-top: -1px;
+//     display: flex;
+//     // align-items: center;
+
+//     img {
+//         width: auto;
+//     }
+
+//     .text {
+//         width: 50%;
+//         padding: 5px 0 0px 12px;
+
+//         strong {
+//             font-size: 13px;
+//             display: block;
+//             font-weight: 700;
+//         }
+
+//         p {
+//             color: #74777A;
+//             font-size: 11px;
+//             font-weight: 400;
+//             padding-top: 5px;
+//         }
+//     }
+
+//     .mobile {
+//         padding-left: 8px;
+//     }
+
+//     .play-store {
+//         padding: 5px 0px 0 0;
+//         margin-left: auto;
+//         display: inline-flex;
+
+//         img {
+//             width: 115px;
+//         }
+//     }
+
+//     .install-app {
+//         margin-left: auto;
+
+//         button {
+//             background: #db232e;
+//             font-size: 12px;
+//             font-weight: 700;
+//             border-radius: 4px;
+//             color: #fff;
+//             border: none;
+//             display: inline-block;
+//             padding: 10px 8px;
+//         }
+//     }
+// }
+
+@media screen and (max-width: 333px) {
+    .install-app {
+        button {
+            font-size: 10px !important;
+            padding: 10px 4px !important;
+
+
+        }
+    }
+}
+
+@media screen and (max-width: 345px) {
+    .install-app {
+        button {
+            padding: 10px 5px !important;
+
+
+        }
+    }
+}
+
+
+.app-promo-container {
     opacity: 1;
     transition: all 1s ease-in;
 }
 
-.hideAppPromo{
+.hideAppPromo {
     transform: translateY(500px);
+}
+
+
+
+
+// 2nd varient
+
+.promo-code-container {
+    align-items: flex-end;
+    background: #FBE8E9;
+    width: 100%;
+    display: flex;
+    border: 1px solid #ffc0cb;
+
+    .mobile {
+        display: inline-flex;
+    }
+
+    .text-container {
+        display: inline-flex;
+        width: calc(100% - 69px);
+        justify-content: space-between;
+        padding: 10px 8px 10px 0;
+        align-items: center;
+
+        .text {
+            width: 72%;
+            line-height: 18px;
+            color: var(--onyx-black);
+
+            strong {
+                font-size: 13px;
+
+                span {
+                    font-size: 10px;
+                    font-weight: 400;
+                }
+            }
+
+            p {
+                color: var(--onyx-black);
+                font-size: 13px;
+                padding-top: 5px;
+
+                strong {
+                    display: inline-block;
+                    color: var(--primary);
+                    font-size: 13px;
+                    border: 1px dashed var(--primary);
+                    padding: 2px 5px;
+                    border-radius: 4px;
+                    margin-top: 1px;
+                    line-height: 16px;
+                }
+            }
+        }
+
+        .install-app {
+            margin-left: auto;
+
+            button {
+                background: var(--primary);
+                font-size: 12px;
+                font-weight: 600;
+                border-radius: 6px;
+                color: #fff;
+                border: none;
+                display: inline-block;
+                padding: 10px 7px;
+            }
+        }
+    }
+}
+
+
+.outer-text-section {
+    padding: 12px 5px 12px 0;
+    width: calc(100% - 65px);
+    strong {
+        font-size: 12px;
+        display: block;
+    }
+    .inner-txt-section {
+        padding: 2px 0 0;
+        display: inline-flex;
+        align-items: center;
+        width: 100%;
+        .use-code-text {
+            width: 66%;
+        }
+        .open-app-promo {
+            padding: 7px 4px !important;
+        }
+    }
 }

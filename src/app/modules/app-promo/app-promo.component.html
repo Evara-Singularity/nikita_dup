@@ -1,7 +1,8 @@
 <ng-container
     *ngIf="page === 'pdp'||(appPromoStatus && ( mobile_os == MOBILE_ENVS.ANDROID || mobile_os == MOBILE_ENVS.IOS ))">
-    <div class="app-promo-container" [ngClass]="{'fixed-app-promo':isOverlayMode, 'hideAppPromo': scrolledViewPort > 200 && isOverlayMode}">
-        <ng-container *ngIf="!isUserAuthenticated">
+    <div class="app-promo-container"
+        [ngClass]="{'fixed-app-promo':isOverlayMode, 'hideAppPromo': scrolledViewPort > 200 && isOverlayMode}">
+        <!-- <ng-container *ngIf="!isUserAuthenticated">
 
             <div class="app-promotion" *ngIf="showPromoCode && page != 'pdp'">
                 <span (click)="removePromo()">
@@ -25,7 +26,7 @@
                 </div>
             </div>
 
-            <!--App store image added-->
+            //App store image added
             <div class="content-mobile-app promotion-nonLogin" (click)="openAppStore()"
                 *ngIf="mobile_os == MOBILE_ENVS.IOS">
                 <div class="mobile">
@@ -40,10 +41,10 @@
                 </div>
             </div>
 
-        </ng-container>
+        </ng-container> -->
 
         <!--for install app code-->
-        <ng-container *ngIf="isUserAuthenticated">
+        <!-- <ng-container *ngIf="isUserAuthenticated">
             <div class="app-promotion" *ngIf="showPromoCode">
                 <p class="install-app-text">Get Personalized Experience & Best Deals on App </p>
             </div>
@@ -70,6 +71,78 @@
                     <button (click)="openDeepLink()">Open Moglix App</button>
                 </div>
             </div>
-        </ng-container>
+        </ng-container> -->
+
+
+
+
+
+        <!-- 1st varient  use homepage and plp-->
+
+
+        <!-- <ng-container>
+            <div class="app-promotion">
+                <p>Download Moglix App</p>
+                <span (click)="removePromo()">
+                    <i class="icon-circle-delete"></i>
+                </span>
+            </div>
+            <div class="promo-code-container" (click)="openPlayStore()" >
+                <div class="mobile">
+                    <img src="../../../assets/img/Screen-2.svg">
+                </div>
+                <div class="text-container">
+                    <div class="text">
+                        <strong>Get ₹100 Off* on your first order</strong>
+                        <p>Use code: <strong>HELLO</strong></p>
+                    </div>
+                    <div class="install-app">
+                        <button>OPEN APP</button>
+                    </div>
+                </div>
+            </div>
+        </ng-container> -->
+
+
+
+
+        <!-- 2nd varient used in pdp-->
+
+
+        <!-- <div class="promo-code-container">
+            <div class="mobile">
+                <img src="../../../assets/img/Screen-5.svg">
+            </div>
+            <div class="text-container">
+                <div class="text">
+                    <strong>Download Moglix App <br>& get ₹100 Off* <span>on your first order.</span></strong>
+                    <p>Use code: <strong>HELLO</strong></p>
+                </div>
+                <div class="install-app">
+                    <button>OPEN APP</button>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- 3rd varient used hamburger menu-->
+
+        <div class="promo-code-container">
+            <div class="mobile ">
+                <img src="../../../assets/img/Screen-7.svg">
+            </div>
+            <div class="outer-text-section">
+                <strong>Download Moglix App <br>& get ₹100 Off* <span>on your first order.</span></strong>
+                <div class="text-container inner-txt-section">
+                    <div class="text use-code-text">
+                        <p>Use code: <strong>HELLO</strong></p>
+                    </div>
+                    <div class="install-app">
+                        <button class="open-app-promo">OPEN APP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </ng-container>

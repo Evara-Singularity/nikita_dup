@@ -2,7 +2,7 @@
 @import "../login-card.scss";
 // New login start
 .login-bg {
-    ::ng-deep shared-auth-header{
+    ::ng-deep shared-auth-header {
         height: 54px !important;
     }
     // background: linear-gradient(#d9232d, #f5555e);
@@ -18,6 +18,10 @@
         top: 0px;
         z-index: 99;
         right: 20px;
+        font-size: 10px;
+        background-color: rgba(60, 60, 60, 0.45098039215686275);
+        padding: 7px 9px;
+        border-radius: 6px;
     }
     .login-bg-img {
         background-image: url("../../../../assets/img/login-bg-img.png");

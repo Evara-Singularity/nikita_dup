@@ -3,6 +3,7 @@ import { Component, NgModule, OnInit, Output, EventEmitter, Input } from '@angul
 import CONSTANTS from '@app/config/constants';
 import { ProductService } from '../../utils/services/product.service';
 import { forkJoin} from 'rxjs';
+import { LocalStorageService } from 'ngx-webstorage';
 @Component({
     selector: 'app-product-offers',
     templateUrl: './product-offers.component.html',
@@ -20,74 +21,25 @@ export class ProductOffersComponent implements OnInit
     @Input() productmsn;
     disableEMIView = false;
     promoCodes: any;
-    promoCodeOffers: any = {
-        "status": true,
-        "statusCode": 200,
-        "statusDescription": "Total availables PromoCode for Product MSNIKIR0Z551 is 1",
-        "validAttributes": null,
-        "data": {
-          "maxDiscountPromoCode": {
-            "promoId": 130,
-            "promoCode": "FLAT5",
-            "discountApplicable": 27,
-            "promoDescription": "Flat 5% Off on Selected Products",
-            "displayMessage": null
-          },
-          "applicablePromoCodeList": [
-            {
-              "promoId": 130,
-              "promoCode": "FLAT5",
-              "promoDescription": "Flat 5% Off on Selected Products",
-              "isVisible": true,
-              "totalCoupons": 100000,
-              "couponsRemaining": 99728,
-              "maxCouponsPerCustomer": 1,
-              "activationTime": 1561980326000,
-              "expiryTime": 1690500334000,
-              "onlyForNewUser": false,
-              "device": "all",
-              "discountApplicable": 27,
-              "displayMessage": null,
-              "exclusive": true,
-              "enabled": true
-            },
-            {
-                "promoId": 140,
-                "promoCode": "FLAT15",
-                "promoDescription": "Flat 15% Off on Selected Products",
-                "isVisible": true,
-                "totalCoupons": 100000,
-                "couponsRemaining": 99728,
-                "maxCouponsPerCustomer": 1,
-                "activationTime": 1561980326000,
-                "expiryTime": 1690500334000,
-                "onlyForNewUser": false,
-                "device": "all",
-                "discountApplicable": 70,
-                "displayMessage": null,
-                "exclusive": true,
-                "enabled": true
-              }
-          ]
-        }
-      }
-     
 
     constructor(
-        private productService: ProductService
+        private productService: ProductService,
+        public localStorageService: LocalStorageService,
     ) { }
 
     ngOnInit(): void
     {
-        console.log("gstPercentage --->>", this.gstPercentage)
+      let user: any = this.localStorageService.retrieve('user');
+      if (user && user.authenticated == "true") {
         if (this.price < 3000) { this.disableEMIView = true; }
-        this.getOfferAllData();
+        this.getOfferAllData(user.userId);
+      }
     }
 
-    getOfferAllData(){
+    getOfferAllData(user){
          forkJoin([
             this.productService.getAllOffers(),
-            this.productService.getAllPromoCodeOffers()
+            this.productService.getAllPromoCodeOffers(user, this.productmsn, "web")
           ]).subscribe(
             (responses) => {
                 console.log("responses --->>>", responses)
@@ -96,7 +48,6 @@ export class ProductOffersComponent implements OnInit
               if (data1.statusCode == 200) {
                 this.allofferData = (data1.data as any[]).map((item: any, index) => Object.assign({}, item, { index }));
               }
-              data2 = this.promoCodeOffers;
               if (data2.statusCode == 200) {
                 this.promoCodes = (data2.data.applicablePromoCodeList as any[]).map((item: any, index) => Object.assign({}, item, { index }));
               }
@@ -119,9 +70,6 @@ export class ProductOffersComponent implements OnInit
     }
 
     seeMoreOffers(){
-        // const promoOffers = [...this.promoCodes];
-        // console.log(promoOffers.splice(1, 1));
-        // const promos= promoOffers.splice(1, 1)
         this.promoCodePopUpHandler.emit(this.promoCodes);
     }
 

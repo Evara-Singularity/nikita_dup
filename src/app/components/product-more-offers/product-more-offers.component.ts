@@ -28,7 +28,6 @@ export class ProductMoreOffersComponent implements OnInit {
     this.out.emit(data);
   }
   
-
   
 }
 

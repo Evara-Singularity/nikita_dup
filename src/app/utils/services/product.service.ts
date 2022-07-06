@@ -144,10 +144,11 @@ export class ProductService {
         );
     }
 
-    getAllPromoCodeOffers() {
+    getAllPromoCodeOffers(userId, msn, web) {
+        //https://nodeapiqa.moglilabs.com/nodeApi/v1/promoCode/productApplicablepromo?userId=1667949&msn=MSNIKIR0Z551&device=web
         return this._dataService.callRestful(
             "GET",
-            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategoryExtras + "mobikwikpdp"
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPON_CODE + "?userId="+ userId + "&msn=" + msn + "&device=" + web
         );
     }
 

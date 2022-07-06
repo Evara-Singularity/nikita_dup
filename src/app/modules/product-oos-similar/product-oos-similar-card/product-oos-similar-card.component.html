@@ -40,6 +40,7 @@
         
         <product-description 
             (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)"
+            [productPrice]="similarProductData[index].productPrice"
             [qunatityFormControl]="qunatityFormControl"
             [productName]="similarProductData[index].productName" 
             [productDiscount]="similarProductData[index].productDiscount"

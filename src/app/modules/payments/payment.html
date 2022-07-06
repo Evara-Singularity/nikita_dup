@@ -100,7 +100,7 @@
                     </div>
                 </div>
             </div>
-            <div id="cashOnDeliverySection" class="disableCod" [class.disableCod]="disableCod">
+            <div id="cashOnDeliverySection" [class.disableCod]="disableCod">
                 <div (click)="updatePaymentBlock(globalConstants['cashOnDelivery'], 'cashOnDelivery', 'cashOnDeliverySection')"
                     class="payment-accordion_header">
                     <i class="icon-coupon-3-fill ico-accord-left"></i>

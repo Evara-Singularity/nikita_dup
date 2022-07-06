@@ -328,8 +328,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			// this.carouselData = (ncd as any[]).map(product => this.productService.searchResponseToProductEntity(product));
 			for (let i = 0; i < this.categories.length; i++) {
 				if (this.categories[i]['dataKey'] && this.carouselData[this.categories[i]['dataKey']]) {
-					for (let j = 0; j < this.carouselData[this.categories[i]['dataKey']]['data']['product_data'].length; j++) {
-						this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j] = this._productService.productLayoutJsonToProductEntity(this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j]);
+					for (let j = 0; j < this.carouselData[this.categories[i]['dataKey']]['data']['product_data'].length; j++) { 
+						let brandId:any , brandName:string;
+						if(this.carouselData[this.categories[i]['dataKey']]['data']['brand_block'].length>0){
+							brandId = this.carouselData[this.categories[i]['dataKey']]['data']['brand_block'][j]['brandId'];
+							brandName = this.carouselData[this.categories[i]['dataKey']]['data']['brand_block'][j]['brandName'];
+						}else{
+							brandId = null;
+							brandName = null;
+						}
+						this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j] = this._productService.productLayoutJsonToProductEntity(this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j] , brandId, brandName);
 					}
 				}
 			}
@@ -566,6 +574,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.categoriesInstance.instance[
 				'middleImageJsonData'
 			] = this.middleImageJsonData;
+			//console.log('this.carouselData-------------------' , this.carouselData[category.dataKey]['data']['product_data'])
 			this.categoriesInstance.instance['categories'] = this.categories;
 			this.categoriesInstance.instance['carouselData'] = this.carouselData;
 			this.categoriesInstance.instance['defaultImage'] = this.defaultImage;

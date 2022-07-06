@@ -131,7 +131,7 @@
                         <div class="product-description">
                             <p class="description-txt">{{ (removableItem.productName.length > 50) ? (removableItem.productName | slice:0:48) + '..' : (removableItem.productName) }}</p>
                             <p class="product-qty" *ngIf="removableItem.packageUnit">Qty/Pack :{{removableItem.packageUnit}}</p>
-                            <p class="product-qty" *ngIf="!(removableItem.packageUnit)">Qty/Pack :{{removableItem.productQuantity}} Piece</p>
+                            <!-- <p class="product-qty" *ngIf="!(removableItem.packageUnit)">Qty/Pack :{{removableItem.productQuantity}} Piece</p> -->
                         </div>
                     </div>
                     <div class="cta-row">

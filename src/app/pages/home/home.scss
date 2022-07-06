@@ -1,9 +1,12 @@
 @import '../../scss/variables';
 @import '../../../app/scss/components/banner';
 @import '../../scss/components/category-grid-card';
+@import '../../scss/components/pager';
+
     
      ::ng-deep {
         .home-parent{
+            background:var(--white);
             h2 {
                 font-size: $large-font;
                 text-transform: capitalize;
@@ -51,4 +54,6 @@
         }
      }
     }
-  
+    .css-banner-component{
+        position: relative;
+    }

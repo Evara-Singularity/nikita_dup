@@ -1,7 +1,8 @@
-import { Component, ComponentFactoryResolver, Injector } from '@angular/core';
+import { Component, ComponentFactoryResolver, Injector, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalService } from '@app/modules/modal/modal.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { ProductCardFeature } from '@app/utils/models/product.listing.search';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
@@ -17,6 +18,21 @@ import { ProductCardCoreComponent } from '../product-card.core.component';
   styleUrls: ['./product-card-vertical-grid-view.component.scss']
 })
 export class ProductCardVerticalGridViewComponent extends ProductCardCoreComponent {
+
+  @Input() cardFeaturesConfig: ProductCardFeature = {
+    // feature config
+    enableAddToCart: true,
+    enableBuyNow: true,
+    enableFeatures: true,
+    enableRating: true,
+    enableVideo: true,
+    // design config
+    enableCard: false,
+    verticalOrientation: false,
+    horizontalOrientation: true,
+    verticalOrientationV2: false,
+    lazyLoadImage: false,
+  }
 
   constructor(
     public _cartService: CartService,

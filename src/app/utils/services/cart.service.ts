@@ -691,7 +691,7 @@ export class CartService
         // we do not want to refresh cart by pages component in case buynow event
         // conditional are hacks used because localtion.goback() refresh page and 
         // call getcartsession API from pages component (root module)
-        console.log('WINDOW Histroy', window.history.length, this.previousUrl, this.currentUrl, this._router.url);
+        //console.log('WINDOW Histroy', window.history.length, this.previousUrl, this.currentUrl, this._router.url);
         if (
             (
                 !this._buyNow &&

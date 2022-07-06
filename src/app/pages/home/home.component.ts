@@ -329,13 +329,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			for (let i = 0; i < this.categories.length; i++) {
 				if (this.categories[i]['dataKey'] && this.carouselData[this.categories[i]['dataKey']]) {
 					for (let j = 0; j < this.carouselData[this.categories[i]['dataKey']]['data']['product_data'].length; j++) { 
-						let brandData:any;
+						let brandId:any , brandName:string;
 						if(this.carouselData[this.categories[i]['dataKey']]['data']['brand_block'].length>0){
-							brandData = this.carouselData[this.categories[i]['dataKey']]['data']['brand_block'][j];
+							brandId = this.carouselData[this.categories[i]['dataKey']]['data']['brand_block'][j]['brandId'];
+							brandName = this.carouselData[this.categories[i]['dataKey']]['data']['brand_block'][j]['brandName'];
 						}else{
-							brandData = null;
+							brandId = null;
+							brandName = null;
 						}
-						this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j] = this._productService.productLayoutJsonToProductEntity(this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j] , brandData);
+						this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j] = this._productService.productLayoutJsonToProductEntity(this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j] , brandId, brandName);
 					}
 				}
 			}

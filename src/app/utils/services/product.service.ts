@@ -734,17 +734,9 @@ export class ProductService {
         } as ProductsEntity;
     }
 
-    productLayoutJsonToProductEntity(product: any, brand:any) {
+    productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
-        let brandId,brandName;
-        if(brand !== null && brand !== undefined){
-            brandId = brand['brandId'];
-            brandName = brand['brandName'];
-        }else{
-            brandId =  null;
-            brandName =  null;
-        }
 
         return {
             moglixPartNumber: product['msn'],

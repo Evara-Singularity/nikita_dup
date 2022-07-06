@@ -1,13 +1,20 @@
-import { SessionStorageService } from 'ngx-webstorage';
+import { SessionStorageService, LocalStorageService } from 'ngx-webstorage';
 import { Injectable } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { filter, map, mergeMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class NavigationService
 {
+  readonly ALL_CATEGORIES = "/all-categories";
   private history: string[] = [];
+  moduleName = null;
 
-  constructor(private router: Router, private _sessionStorage: SessionStorageService) { }
+  constructor(private router: Router, private _sessionStorage: SessionStorageService, private _localStorage:LocalStorageService)
+  {
+    this.saveHistory(this.history);
+  }
 
   public startSaveHistory(): void
   {
@@ -18,7 +25,7 @@ export class NavigationService
         //console.log(event.urlAfterRedirects);
         if (currentUrl === "/") {
           this.history = ['/'];
-          this._sessionStorage.store("history", this.history);
+          this.saveHistory(this.history);
           return;
         }
         const is_not_login_signup = !(currentUrl.includes("login") || currentUrl.includes("otp") || currentUrl.includes("sign-up"));
@@ -30,7 +37,7 @@ export class NavigationService
         }
         if (is_not_login_signup && is_not_last_url) {
           this.history.push(event.urlAfterRedirects);
-          this._sessionStorage.store("history", this.history);
+          this.saveHistory(this.history);
         }
       }
     })
@@ -38,13 +45,22 @@ export class NavigationService
 
   public goBack(): void
   {
+    const currentURL = this.router.url;
     this.history = this.getHistory();
     console.log("Before", this.history);
     this.history.pop();
-    //console.log("After", this.history);
-    this._sessionStorage.store("history", this.history);
+    console.log("After", this.history);
+    this.saveHistory(this.history);
     //debugger;
-    if (this.history.length > 0) {
+    if (this.history.length === 0) {
+      if (this.isPDPUrl(currentURL)) {
+        this.router.navigateByUrl(this.ALL_CATEGORIES);
+      }
+      if (this.isAllCategories(currentURL)) {
+        this.saveHistory([]);
+        this.router.navigateByUrl("/");
+      }
+    } else if (this.history.length > 0) {
       const length = this.history.length;
       this.router.navigateByUrl(this.history[length - 1]);
     } else {
@@ -52,5 +68,11 @@ export class NavigationService
     }
   }
 
-  getHistory() { return this._sessionStorage.retrieve("history")}
+  saveHistory(history) { this._localStorage.store("history", history)  }
+
+  getHistory() { return this._localStorage.retrieve("history") }
+
+  isPDPUrl(url:string) { return url.toLowerCase().includes("/mp/msn") }
+
+  isAllCategories(url: string) { return url == this.ALL_CATEGORIES }
 }

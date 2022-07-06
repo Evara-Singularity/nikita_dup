@@ -1,7 +1,6 @@
 @import "../../scss/variables";
-
 .highIndex {
-    ::ng-deep {
+     ::ng-deep {
         .bottom-bar {
             z-index: 105 !important;
         }
@@ -27,4 +26,23 @@
 ::ng-deep .bread-crumb {
     margin-bottom: 10px;
     background-color: var(--white) !important;
+}
+
+.coupon {
+    min-height: 220px;
+    width: 100%;
+}
+
+.pincode {
+    min-height: 140px;
+}
+
+.common-product {
+    max-height: 390px;
+    width: 100%;
+}
+
+.promo {
+    max-height: 180px;
+    width: 100%;
 }

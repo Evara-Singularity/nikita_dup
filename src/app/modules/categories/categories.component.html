@@ -1,6 +1,6 @@
 <section class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
     <a *ngIf="i==2" href="{{im.image_link}}">
-        <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + im.image_name" alt="banner add">
+        <img [src]="imagePath + im.image_name" alt="banner add">
     </a>
 </section>
 <ng-container *ngFor="let category of categories | slice:0:5;let i = index;">
@@ -19,7 +19,7 @@
                 <a [routerLink]="item['category_url']"
                     (click)="setCategoryorBrandCookie(item['CategoryName'],'tcat')">
 
-                    <img [defaultImage]="defaultImage" [lazyLoad]="imagePath+item.category_image"
+                    <img [src]="imagePath+item.category_image"
                         alt="category image" class="category-img">
                     <p>{{item['CategoryName']}}</p>
                 </a>
@@ -30,7 +30,7 @@
                 <a [routerLink]="items['brand_url']"
                     (click)="setCategoryorBrandCookie(items['brandName'],'tbrand')">
                     <div class="circle-brand-img">
-                        <img [defaultImage]="defaultImage" [lazyLoad]="imagePath+items.brand_image"
+                        <img [src]="imagePath+items.brand_image"
                         alt="category image" class="category-img">
                     </div>
                     <p>{{items['brandName']}}</p>
@@ -56,7 +56,7 @@
 <div class="pwa-col-12 pad-lr-15 mb-10">
     <section class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
         <a class="full-banner" *ngIf="i==1" href="{{im.image_link}}">
-            <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + im.image_name" alt="banner add">
+            <img [src]="imagePath + im.image_name" alt="banner add">
         </a>
     </section>
 </div>

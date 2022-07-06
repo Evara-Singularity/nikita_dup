@@ -141,26 +141,27 @@
 
         .price-dtl-block {
             display: flex;
-            align-items: center;
+            justify-content: flex-end;
             width: calc(100% - 150px);
 
             .price-block-left {
-                width: calc(100% - 25px);
+                // width: calc(100% - 25px);
                 text-align: right;
-
-                h3 {
-                    padding: 0px;
+                display: inline-flex;
+                align-items: center;
+                strong{
+                    font-size: $large-font;
                 }
-
                 .grey-txt {
                     font-size: 10px;
                 }
+                .icon-down{
+                    width: 15px;
+                    margin-left: 10px;
+                }
             }
 
-            .price-label-dropdown-icon {
-                width: 15px;
-                margin-left: 10px;
-            }
+            
         }
     }
 

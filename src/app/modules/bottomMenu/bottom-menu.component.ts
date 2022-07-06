@@ -12,7 +12,6 @@ import { CommonService } from '@app/utils/services/common.service';
 export class BottomMenuComponent implements OnInit {
     @Input() isRFQPopUp;
     @Input() data: {};
-    @Input() containerClasses ;
     @Output() outData$: EventEmitter<{}>;
     @Input() containerClasses: string = "";
     isServer: boolean;

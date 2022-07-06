@@ -560,7 +560,7 @@
 }
 
 .realTimeUpdate {
-    padding: 0px;
+    // padding: 0px;
 
     .realTimePrice {
         margin-bottom: 15px;
@@ -569,10 +569,8 @@
 
 .realTimePrice {
     margin: 15px 15px 0px;
-
     span {
         background: #ffedee;
-        text-transform: capitalize;
         font-size: $medium-font;
         color: $txt-color;
         line-height: 22px;
@@ -580,10 +578,14 @@
         display: block;
         margin-bottom: -30px;
         border-radius: $border-radius-8;
+        font-weight: bold;
 
         &>strong {
             color: #d3182a;
             font-size: 12px;
+        }
+        &::first-letter{
+            text-transform: uppercase;
         }
     }
 }

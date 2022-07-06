@@ -734,9 +734,18 @@ export class ProductService {
         } as ProductsEntity;
     }
 
-    productLayoutJsonToProductEntity(product: any) {
+    productLayoutJsonToProductEntity(product: any, brand:any) {
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
+        let brandId,brandName;
+        if(brand !== null && brand !== undefined){
+            brandId = brand['brandId'];
+            brandName = brand['brandName'];
+        }else{
+            brandId =  null;
+            brandName =  null;
+        }
+
         return {
             moglixPartNumber: product['msn'],
             mrp: productMrp,
@@ -746,8 +755,8 @@ export class ProductService {
             variantName: product["productName"],
             productUrl: product["productlink"],
             shortDesc: null,
-            brandId: null,
-            brandName: null,
+            brandId: brandId,
+            brandName: brandName,
             quantityAvailable: 1,
             discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
             rating: null,

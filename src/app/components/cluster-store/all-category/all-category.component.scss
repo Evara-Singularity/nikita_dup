@@ -16,14 +16,13 @@
         .inner_category {
             width: 33.33%;
             display:inline-flex;
-            align-items:center;
             .inner-category-data{
                 border-radius: $border-radius-8;
                 text-align: center;
                 background: var(--white);
                 padding:10px 5px;
                 margin: 10px 5px 0 5px;
-                min-height: 148px;
+                min-height: 135px;
                 width: 100%;
                 .viewall_category{
                     background: var(--misty-rose);
@@ -35,7 +34,7 @@
                     text-transform: capitalize;
                     font-size: $small-font;
                     margin: 0 5px;
-                    min-height: 130px;
+                    min-height: 135px;
                 }
                 img {
                     width: 90px;

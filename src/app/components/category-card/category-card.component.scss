@@ -1,30 +1,49 @@
-@import '../../scss/variables';
-@import '../../scss/utils/spacing.scss';
+@import "../../scss/variables";
+@import "../../scss/utils/spacing.scss";
 
-    .category-OverBlk{
-        margin-bottom: 10px;
-        .category-block{
-            display:flex;
-            border: 1px solid $border-color;
-            border-radius: $border-radius-8;
-            background: var(--white);
-            min-height: 80px;
-            padding: 5px;
-            align-items: center;
-            .category-Img{
-                margin-right: 8px;
-                width:60px;
-                img{
-                    width:100%;
-                }        
-            }
-            .category-Name{
-                width:calc(100% - 60px);
-                font-size: $medium-font;
-                font-weight: $font-normal;
-                margin-top: 5px;
-                line-height: $small-line-height;
-            }    
-        }
+.category-OverBlk {
+  margin-bottom: 10px;
+  .category-block {
+    display: flex;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-8;
+    background: var(--white);
+    min-height: 80px;
+    padding: 5px;
+    align-items: center;
+    .category-Img {
+      margin-right: 8px;
+      width: 60px;
+      img {
+        width: 100%;
+      }
     }
-
+    .category-Name {
+      width: calc(100% - 60px);
+      font-size: $medium-font;
+      font-weight: $font-normal;
+      margin-top: 5px;
+      line-height: $small-line-height;
+    }
+  }
+}
+.category-card-scroll-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+  box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
+  padding: 10px 10px 0px;
+  background: #f8f8f8;
+  .category-OverBlk {
+    .category-block {
+      min-width: 180px;
+      background-color: #d9232d;
+      margin-right: 8px;
+      padding: 5px 10px !important;
+      &.selected-block {
+        border: 1px solid #d9232d;
+        background: #f4e1e5;
+      }
+    }
+  }
+}

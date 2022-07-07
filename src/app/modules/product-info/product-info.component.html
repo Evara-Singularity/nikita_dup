@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <section class="pwa-row">
+        <section class="pwa-row pad-r-0">
             <ul id="infoTabs" [style.width.px]="250 * tabs.length" class="pwa-tabs-container">
                 <ng-container *ngFor="let tab of tabs;let tabIndex = index">
                     <li [id]="'tab'+tabIndex" class="pwa-tab" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"

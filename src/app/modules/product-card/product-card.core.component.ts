@@ -47,6 +47,7 @@ export class ProductCardCoreComponent implements OnInit {
     redirectedIdentifier: '',
   }
   @Input() isAd: boolean = false;
+  @Input() fullBrandNameMode: boolean = false;
   @Input() hideAd: boolean = false;
   @Input() isPDPImageLazyLoaded: boolean = false;
   @Input() pIndex = 0;

@@ -47,9 +47,9 @@ export class NavigationService
   {
     const currentURL = this.router.url;
     this.history = this.getHistory();
-    console.log("Before", this.history);
+    //console.log("Before", this.history);
     this.history.pop();
-    console.log("After", this.history);
+    //console.log("After", this.history);
     this.saveHistory(this.history);
     //debugger;
     if (this.history.length === 0) {

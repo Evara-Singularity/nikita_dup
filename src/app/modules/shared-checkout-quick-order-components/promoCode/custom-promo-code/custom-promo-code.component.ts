@@ -8,7 +8,6 @@ import { Component, Input } from '@angular/core';
 })
 export class CustomPromoCodeComponent
 {
-
     appliedPromocode: string = "";
     @Input("nextPromocode") nextPromocode: Subject<string> = null;
     nextPromocodeSubscription: Subscription = null;

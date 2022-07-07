@@ -127,7 +127,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	ngOnDestroy(): void
 	{
-		this.cartUpdatesSubscription.unsubscribe();
+		if (this.cartUpdatesSubscription){this.cartUpdatesSubscription.unsubscribe();}
 	}
 
 }

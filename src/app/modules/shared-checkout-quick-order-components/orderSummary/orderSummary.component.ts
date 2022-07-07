@@ -19,7 +19,6 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
     cartSubscription: Subscription = null;
     promoSubscription: Subscription = null;
     isCartFetched = false;
-    promoSuccessTimeoutId = null;
 
     constructor(
         public router: Router,
@@ -49,7 +48,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
         this.promoSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode }) =>
         {
             this.showPromoSuccessPopup = isNewPromocode;
-            this.promoSuccessTimeoutId = setTimeout(() => { this.showPromoSuccessPopup = false; },  800)
+            setTimeout(() => { this.showPromoSuccessPopup = false; },  800)
         })
     }
 
@@ -146,6 +145,5 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
     {
         if (this.cartSubscription) this.cartSubscription.unsubscribe()
         if (this.promoSubscription) this.promoSubscription.unsubscribe()
-        this.promoSuccessTimeoutId.clearTimeout();
     }
 }

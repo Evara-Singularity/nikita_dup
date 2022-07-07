@@ -29,6 +29,7 @@ export class ProductFeatureDetailsComponent implements OnInit {
   @Input() productBrandCategoryUrl: any;
   @Output() handleProductInfoPopup$: EventEmitter<any> = new EventEmitter<any>();
   @Output() showYTVideo$: EventEmitter<any> = new EventEmitter<any>();
+  @Input() applyExtraMargin : boolean = true;
 
   constructor( private router: Router, public commonService: CommonService) { }
 

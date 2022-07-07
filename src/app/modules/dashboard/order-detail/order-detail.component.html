@@ -74,14 +74,14 @@
             </span>
             
             <span
-                *ngIf="detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED'; else elseBlock"
+                *ngIf="detail?.status !== 'CANCELLED' && detail?.status !=='PAYMENT FAILED';"
                 class="track-order-cta" (click)="fetchTrackingData(detail)">
                 TRACK ORDER
                 <i class="icon-next"></i>
             </span>
-            <ng-template #elseBlock>
+            <!-- <ng-template #elseBlock>
                 <i class="icon-next"></i>
-            </ng-template>
+            </ng-template> -->
             
         </div>
         <!-- Return Policy added Yajya please check css for the same  -->

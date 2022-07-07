@@ -735,10 +735,10 @@ export class ProductService {
     }
 
     productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
+        // console.log("blocks", product)
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
-
-        return {
+        const productEntity: ProductsEntity =  {
             moglixPartNumber: product['msn'],
             mrp: productMrp,
             salesPrice: product['sellingPrice'],
@@ -748,7 +748,7 @@ export class ProductService {
             productUrl: product["productlink"],
             shortDesc: null,
             brandId: brandId,
-            brandName: brandName,
+            brandName: brandName || this.getBrandNameDesc(product['short_description']),
             quantityAvailable: 1,
             discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
             rating: null,
@@ -769,8 +769,18 @@ export class ProductService {
             reviewCount: product.reviewCount || 0,
             internalProduct: true,
             outOfStock: product.outOfStock,
-        } as ProductsEntity;
+        };
+        return productEntity;
+    }
 
+    getBrandNameDesc(name){
+        if(name && name.split("||").length > 1 && name.split("||")[0] && name.split("||")[0].split(":") && name.split("||")[0].split(":").length > 1){
+            return name.split("||")[0].split(":")[0];
+        }
+        if(name && name.split(":").length > 0){
+            return name.split(":")[0];
+        }
+        return "";
     }
 
     wishlistToProductEntity(product: any, overrideProductB0 = null) {

@@ -72,6 +72,7 @@ export class ProductCardVerticalGridViewComponent extends ProductCardCoreCompone
     let brand = str.split(" ");
      return brand[1];
   }
-  getProductImage(product) { return product['mainImageThumnailLink'] || product['imageLink_medium']}
+
+  getProductImage(product) { return product['mainImageThumnailLink'] || product['imageLink_medium'] || product['mainImageMediumLink'] || product['mainImageLink'] }
 
 }

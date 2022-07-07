@@ -26,6 +26,7 @@ export class OrderSummaryComponent
 
     ngOnInit(): void
     {
+        this._cartService.appliedPromoCode = "";
         if (this._localAuthService.isUserLoggedIn()) {
             this._cartService.getPromoCodesByUserId(this._commonService.userSession.userId);
         }
@@ -40,6 +41,7 @@ export class OrderSummaryComponent
         this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode}) =>
         {
             this.showPromoSuccessPopup = isNewPromocode;
+            setTimeout(()=> { this.showPromoSuccessPopup =false},800)
         })
     }
 

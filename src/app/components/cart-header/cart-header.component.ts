@@ -47,6 +47,10 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	handleNavigation()
 	{
+		if (this.isCheckout && this._cartService.buyNow) {
+			this._cartService.clearBuyNowFlow();
+			//this._cartService.checkForUserAndCartSessionAndNotify().subscribe((cartsession) => { });
+		}
 		this.goBack$.emit();
 		// const url = this._router.url;
 		// const previousURL = this._commonService.previousUrl;
@@ -68,7 +72,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	handleMyCartNavigation(url: string, previousURL: string)
 	{
-		const trace = { Page:'Quickorder', 'Buy Now': this._cartService.buyNow, CurrentURL: url, PreviousURL: previousURL };
+		const trace = { Page: 'Quickorder', 'Buy Now': this._cartService.buyNow, CurrentURL: url, PreviousURL: previousURL };
 		console.table(trace);
 		const isBuyNow = this._cartService.buyNow;
 		if (isBuyNow) { this._cartService.clearBuyNowFlow(); }

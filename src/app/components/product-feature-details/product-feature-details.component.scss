@@ -62,6 +62,14 @@
             padding-bottom: 10px;
         }
     }
+    &.no-ellipsis{
+        p{
+            &:first-of-type {
+                -webkit-line-clamp:none;
+                height:initial;
+            }
+        }
+    }
 }
 
 .key-features {

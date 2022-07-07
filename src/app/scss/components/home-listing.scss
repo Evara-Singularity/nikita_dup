@@ -70,6 +70,7 @@
       display: inline-flex;
       height: $grid-card-height;
       position: relative;
+      border-bottom: 1px solid var(--platinum);
       .view-products-card {
         flex-direction: column;
       }

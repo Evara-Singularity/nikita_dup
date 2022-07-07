@@ -1,104 +1,74 @@
-
-<app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer"
-    [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
+<app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer" [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
 </app-oos-similar-section>
 
-<shared-product-carousel [productAllImages]="productAllImages" [carouselInitialized]="carouselInitialized"
-    (loadProductShare$)="loadProductShare()" [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName"
-    (addToPurchaseList$)="addToPurchaseList()" [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$"
-    [productOutOfStock]="productOutOfStock" [rawProductData]="rawProductData"
-    (scrollToId)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
-    [imagePathAsset]="imagePathAsset" (openPopUpcrousel)="openPopUpcrousel(0)" (sendProductImageClickTracking)="sendProductImageClickTracking()"
-    [isProductCrouselLoaded]="isProductCrouselLoaded" 
-    [iOptions]="iOptions" [productTags]="productTags"></shared-product-carousel>
+<shared-product-carousel [productAllImages]="productAllImages" [carouselInitialized]="carouselInitialized" (loadProductShare$)="loadProductShare()" [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName" (addToPurchaseList$)="addToPurchaseList()"
+    [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$" [productOutOfStock]="productOutOfStock" [rawProductData]="rawProductData" (scrollToId)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')" [imagePathAsset]="imagePathAsset"
+    (openPopUpcrousel)="openPopUpcrousel(0)" (sendProductImageClickTracking)="sendProductImageClickTracking()" [isProductCrouselLoaded]="isProductCrouselLoaded" [iOptions]="iOptions" [productTags]="productTags"></shared-product-carousel>
 
-<product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)" [isBulkPricesProduct]="isBulkPricesProduct"
-    [productBulkPrices]="productBulkPrices" [selectedProductBulkPrice]="selectedProductBulkPrice"
-    [qunatityFormControl]="qunatityFormControl" [productPrice]="productPrice" [productName]="productName"
-    [productTags]="productTags" [refinedProdTags]="refinedProdTags" [productMrp]="productMrp"
-    [priceWithoutTax]="priceWithoutTax" [productDiscount]="productDiscount" [bulkPriceWithoutTax]="bulkPriceWithoutTax"
-    [bulkDiscount]="bulkDiscount" [taxPercentage]="taxPercentage" [bulkSellingPrice]="bulkSellingPrice"
-    [productOutOfStock]="productOutOfStock" [productMinimmumQuantity]="productMinimmumQuantity"
-    [priceQuantityCountry]="priceQuantityCountry" [starsCount]="starsCount" [rawReviewsData]="rawReviewsData"
-    [rawProductCountMessage]="rawProductCountMessage">
+<product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)" [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPrices" [selectedProductBulkPrice]="selectedProductBulkPrice" [qunatityFormControl]="qunatityFormControl"
+    [productPrice]="productPrice" [productName]="productName" [productTags]="productTags" [refinedProdTags]="refinedProdTags" [productMrp]="productMrp" [priceWithoutTax]="priceWithoutTax" [productDiscount]="productDiscount" [bulkPriceWithoutTax]="bulkPriceWithoutTax"
+    [bulkDiscount]="bulkDiscount" [taxPercentage]="taxPercentage" [bulkSellingPrice]="bulkSellingPrice" [productOutOfStock]="productOutOfStock" [productMinimmumQuantity]="productMinimmumQuantity" [priceQuantityCountry]="priceQuantityCountry" [starsCount]="starsCount"
+    [rawReviewsData]="rawReviewsData" [rawProductCountMessage]="rawProductCountMessage">
 </product-description>
 
-<product-grouping-attributes [isCommonProduct]="isCommonProduct" 
-    [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)"
-    (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
+<product-grouping-attributes [isCommonProduct]="isCommonProduct" [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)" (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
 
-<product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" (selectProductBulkPrice$)="selectProductBulkPrice($event)" [rawProductData]="rawProductData"
-    [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct"
-    [priceQuantityCountry]="priceQuantityCountry" [productBulkPrices]="productBulkPrices"
-    [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl">
+<product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" (selectProductBulkPrice$)="selectProductBulkPrice($event)" [rawProductData]="rawProductData" [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct" [priceQuantityCountry]="priceQuantityCountry"
+    [productBulkPrices]="productBulkPrices" [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl">
 </product-bulk-quantity>
 
 <!-- TODO: skeleton to be implemented -->
-<div *ngIf="!productOutOfStock" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
+<div *ngIf="!productOutOfStock" class="coupon" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
     <ng-container #offerSection></ng-container>
     <product-skeletons [type]="'COUPON'" [templateRefInstance]="offerSectionInstance"></product-skeletons>
 </div>
 
 <!-- TODO: skeleton to be implemented -->
-<div observeVisibility [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
+<div observeVisibility class="pincode" [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
     <ng-container #pincodeForm></ng-container>
     <product-skeletons [type]="'PINCODE'" [templateRefInstance]="pincodeFormInstance"></product-skeletons>
 </div>
 
-<product-benefits [isProductReturnAble]="isProductReturnAble" [productOutOfStock]="productOutOfStock"
-    (navigateToFAQ$)="navigateToFAQ()"></product-benefits>
+<product-benefits [isProductReturnAble]="isProductReturnAble" [productOutOfStock]="productOutOfStock" (navigateToFAQ$)="navigateToFAQ()"></product-benefits>
 
 
-<product-feature-details (showYTVideo$)="showYTVideo1($event)"
-    (handleProductInfoPopup$)="handleProductInfoPopup1($event)" [productKeyFeatures]="productKeyFeatures"
-    [productAttributes]="productAttributes" [productDescripton]="productDescripton"
-    [productCategoryDetails]="productCategoryDetails" [productBrandDetails]="productBrandDetails"
-    [productName]="productName" [productVideos]="productVideos" [productDocumentInfo]="productDocumentInfo"
-    [productBrandCategoryUrl]="productBrandCategoryUrl"></product-feature-details>
+<product-feature-details (showYTVideo$)="showYTVideo1($event)" (handleProductInfoPopup$)="handleProductInfoPopup1($event)" [productKeyFeatures]="productKeyFeatures" [productAttributes]="productAttributes" [productDescripton]="productDescripton" [productCategoryDetails]="productCategoryDetails"
+    [productBrandDetails]="productBrandDetails" [productName]="productName" [productVideos]="productVideos" [productDocumentInfo]="productDocumentInfo" [productBrandCategoryUrl]="productBrandCategoryUrl"></product-feature-details>
 
 
 
 <!-- TODO: skeleton to be implemented -->
 <!-- TODO: Check in case TYPE B & TYPE C products -->
-<section *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" observeVisibility
-    [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
+<section *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" observeVisibility [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
     <ng-container #productRFQ></ng-container>
     <product-skeletons [type]="'RFQ'" [templateRefInstance]="pincodeFormInstance"></product-skeletons>
 </section>
 
 <!-- TODO: skeleton to be implemented -->
 <!-- TODO: Check in case TYPE B & TYPE C products -->
-<section class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" observeVisibility [debounceTime]="100"
-    (visible)="getFbtIntance($event)">
+<section class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" observeVisibility [debounceTime]="100" (visible)="getFbtIntance($event)">
     <ng-container #fbt></ng-container>
     <product-skeletons [type]="'FBT'" [templateRefInstance]="fbtComponentInstance"></product-skeletons>
 </section>
 
-<app-product-review [productName]="productName" [reviewLength]="reviewLength" [overallRating]="overallRating"
-    [rawReviewsData]="rawReviewsData" (writeReview)="writeReview($event)"
-    (reviewRatingPopup)="handleReviewRatingPopup($event)" (postHelpful)="handlePostHelpful($event)">
+<app-product-review [productName]="productName" [reviewLength]="reviewLength" [overallRating]="overallRating" [rawReviewsData]="rawReviewsData" (writeReview)="writeReview($event)" (reviewRatingPopup)="handleReviewRatingPopup($event)" (postHelpful)="handlePostHelpful($event)">
 </app-product-review>
 
 <!-- TODO: skeleton to be implemented -->
-<product-qa [questionAnswerList]="questionAnswerList" (handleFaqListPopup)="handleFaqListPopup()"
-    (askQuestion)="askQuestion()">
+<product-qa [questionAnswerList]="questionAnswerList" (handleFaqListPopup)="handleFaqListPopup()" (askQuestion)="askQuestion()">
 </product-qa>
 
-<product-get-quote (raiseRFQQuote$)="raiseRFQQuote()" [rfqQuoteRaised]="rfqQuoteRaised"
-    [productOutOfStock]="productOutOfStock" [productMrp]="productMrp" [productCategoryDetails]="productCategoryDetails"
-    [productName]="productName" [productAllImages]="productAllImages"></product-get-quote>
+<product-get-quote (raiseRFQQuote$)="raiseRFQQuote()" [rfqQuoteRaised]="rfqQuoteRaised" [productOutOfStock]="productOutOfStock" [productMrp]="productMrp" [productCategoryDetails]="productCategoryDetails" [productName]="productName" [productAllImages]="productAllImages"></product-get-quote>
 
-<section id="similarProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
+<section id="similarProducts" class="common-product" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
     <ng-container #similarProduct></ng-container>
     <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="similarProductInstance"></product-skeletons>
 </section>
 
-<product-more-widget [taxons]="taxons" [baseDomain]="baseDomain" [orderTracking]="orderTracking"
-    [productBrandDetails]="productBrandDetails" [productCategoryDetails]="productCategoryDetails"
-    [productBrandCategoryUrl]="productBrandCategoryUrl">
+<product-more-widget [taxons]="taxons" [baseDomain]="baseDomain" [orderTracking]="orderTracking" [productBrandDetails]="productBrandDetails" [productCategoryDetails]="productCategoryDetails" [productBrandCategoryUrl]="productBrandCategoryUrl">
 </product-more-widget>
 
-<section id="sponseredProducts" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+<section id="sponseredProducts" class="common-product" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
     <ng-container #sponseredProducts></ng-container>
     <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
 </section>
@@ -110,8 +80,7 @@
     <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
 </ng-container>
 
-<section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100"
-    (visible)="onVisibleSimilarOOS($event)">
+<section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
     <ng-container #similarProductOOS></ng-container>
 </section>
 
@@ -119,13 +88,12 @@
 <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
 </past-orders>
 
-<div class="app-promo mt-10" observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
+<div class="app-promo mt-10 promo" observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
     <ng-container #appPromo></ng-container>
     <product-skeletons [type]="'APP_PROMO'" [templateRefInstance]="appPromoInstance"></product-skeletons>
 </div>
 
-<section observeVisibility class="pwa-col-12" [debounceTime]="100"
-    [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
+<section observeVisibility class="pwa-col-12 common-product" [debounceTime]="100" [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
     <ng-container #recentProducts></ng-container>
     <product-skeletons [type]="'RECENT'" [templateRefInstance]="recentProductsInstance"></product-skeletons>
 </section>
@@ -137,21 +105,18 @@
 
 
 <!-- CTA Fixed position -->
-<floating-button-container  [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
+<floating-button-container [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
     <floating-button [iconClass]="'icon-cart1'" [label]="'ADD TO CART'" [type]="'WHITE'" (onClick)="showFBT()"></floating-button>
     <floating-button [iconClass]="''" [label]="'BUY NOW'" [type]="'RED'" (onClick)="addToCart(true)"></floating-button>
 </floating-button-container>
 
-<floating-button-container
-    *ngIf="productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2">
-    <floating-button [label]="'VIEW IN-STOCK'" [type]="'WHITE'"
-        (onClick)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"></floating-button>
-    <floating-button  [iconClass]="''" [label]="'GET BEST PRICE'" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
+<floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2">
+    <floating-button [label]="'VIEW IN-STOCK'" [type]="'WHITE'" (onClick)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"></floating-button>
+    <floating-button [iconClass]="''" [label]="'GET BEST PRICE'" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
 </floating-button-container>
 
-<floating-button-container
-    *ngIf="productOutOfStock && !showScrollToTopButton  && (!productService.oosSimilarProductsData.similarData  || productService.oosSimilarProductsData.similarData.length <= 2 )">
-    <floating-button  [iconClass]="''" [label]="'GET BEST PRICE'" [type]="'RED'" [isMultiple]="false"  (onClick)="getBestPrice($event)"></floating-button>
+<floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton  && (!productService.oosSimilarProductsData.similarData  || productService.oosSimilarProductsData.similarData.length <= 2 )">
+    <floating-button [iconClass]="''" [label]="'GET BEST PRICE'" [type]="'RED'" [isMultiple]="false" (onClick)="getBestPrice($event)"></floating-button>
 </floating-button-container>
 <!-- CTA Fixed position -->
 
@@ -177,10 +142,8 @@
 
 
 <!-- // TODO: product-rfq-thanks-popup should be lazy loaded -->
-<product-rfq-thanks-popup (closeRFQAlert$)="closeRFQAlert()" (scrollToId$)="scrollToId($event)"
-    (navigateToCategory$)="navigateToCategory()" [rfqTotalValue]="rfqTotalValue" [hasGstin]="hasGstin"
-    [getWhatsText]="getWhatsText" [similarProducts]="similarProducts" [productOutOfStock]="productOutOfStock"
-    [isRFQSuccessfull]="isRFQSuccessfull" [imagePathAsset]="imagePathAsset">
+<product-rfq-thanks-popup (closeRFQAlert$)="closeRFQAlert()" (scrollToId$)="scrollToId($event)" (navigateToCategory$)="navigateToCategory()" [rfqTotalValue]="rfqTotalValue" [hasGstin]="hasGstin" [getWhatsText]="getWhatsText" [similarProducts]="similarProducts"
+    [productOutOfStock]="productOutOfStock" [isRFQSuccessfull]="isRFQSuccessfull" [imagePathAsset]="imagePathAsset">
 </product-rfq-thanks-popup>
 
 <!-- // TODO: whatsapp-toast should be lazy loaded ngafterviewinit -->

@@ -2567,7 +2567,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     null,
                     this.injector
                 );
-                const options = { year: "numeric", month: "long", day: "numeric" };
+                const options: any = { year: "numeric", month: "long", day: "numeric" };
                 const a = data.data.time.split(":");
                 this.globalToastInstance.instance["text"] =
                     "The same item has been ordered by you on " +

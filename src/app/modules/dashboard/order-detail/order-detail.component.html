@@ -416,11 +416,11 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         <div class="fixed-bottom-cta">
                             <button class="primary-full-btn confirmbtn btn" *ngIf="step==1 && (!returnForm.controls['requestType'].value || returnForm.controls['requestType'].value == 'return') && (returnForm.controls['quantity'].value != 'exchange')"
                                 [disabled]="!returnForm.controls['quantity'].valid || !returnForm.controls['reason'].valid || !returnForm.controls['requestType'].valid || this.itemImages.length == 0"
-                                (click)="returnForm.controls['quantity'].valid && returnForm.controls['reason'].valid && returnForm.controls['requestType'].valid && this.itemImages.length>0 ? step = 2 : ''">NEXT R</button>
+                                (click)="returnForm.controls['quantity'].valid && returnForm.controls['reason'].valid && returnForm.controls['requestType'].valid && this.itemImages.length>0 ? step = 2 : ''">NEXT</button>
 
                             <button class="primary-full-btn confirmbtn btn" *ngIf="step==1 && (returnForm.controls['requestType'].value == 'exchange')"
                                 [disabled]="!returnForm.controls['quantity'].valid || !returnForm.controls['reason'].valid || !returnForm.controls['requestType'].valid || this.itemImages.length == 0"
-                                (click)="returnProduct(returnForm.value, returnForm.valid)">NEXT E</button>
+                                (click)="returnProduct(returnForm.value, returnForm.valid)">NEXT</button>
                         </div>
     
                     </div>

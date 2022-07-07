@@ -97,28 +97,30 @@
     box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
     padding: 10px;
     background: #f8f8f8;
-    category-card {
-        .category-card-container {
-            background: #f8f8f8;
-            .category-OverBlk {
-                .category-block {
-                    min-width: 180px;
-                    &.selected-block {
-                        border: 1px solid #d9232d;
-                        background: #f4e1e5;
-                    }
-                }
-            }
-        }
-    }
+    background-color: #d9232d;
+    // category-card {
+    //     .category-card-container {
+    //         background: #f8f8f8;
+    //         .category-OverBlk {
+    //             .category-block {
+    //                 min-width: 180px;
+    //                 &.selected-block {
+    //                     border: 1px solid #d9232d;
+    //                     background: #f4e1e5;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
     &::-webkit-scrollbar {
         display: block;
     }
 }
 
-:host category-card {
-    background-color: #d9232d;
+::ng-deep {
+    category-card {
     padding-left: 50px;
+    padding: 20px !important;
     .category-OverBlk {
         .category-block {
             min-width: 180px;
@@ -129,5 +131,6 @@
             }
         }
     }
+}
 }
 

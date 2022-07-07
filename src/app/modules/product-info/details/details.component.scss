@@ -6,12 +6,15 @@
         font-size: $large-font;
         line-height: $medium-line-height;
         &:first-of-type {
-            -webkit-line-clamp: 4;
+            //@Yajya:changed below properties
+            //-webkit-line-clamp: 4;
+            //height: 6em;
+            -webkit-line-clamp: none;
+            height: initial;
             display: -webkit-box;
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
-            height: 6em;
         }
         &.static-desc {
             height: 0;

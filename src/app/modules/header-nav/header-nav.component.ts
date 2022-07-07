@@ -76,7 +76,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         public router: Router,
         private localAuthService: LocalAuthService,
         public cartService: CartService,
-        private location: Location,
         private cfr: ComponentFactoryResolver,
         private injector: Injector,
         public _commonService: CommonService,

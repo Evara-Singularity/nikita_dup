@@ -68,4 +68,9 @@ export class ProductCardVerticalGridViewComponent extends ProductCardCoreCompone
     super.ngOnInit();
   }
 
+  splitBrandName(str){
+    let brand = str.split(" ");
+     return brand[1];
+  }
+
 }

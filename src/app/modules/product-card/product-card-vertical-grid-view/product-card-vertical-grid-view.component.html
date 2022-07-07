@@ -6,13 +6,13 @@
                 </div>
                 <div class="pwa-image">
                     <ng-container *ngIf="isPDPImageLazyLoaded || !cardFeaturesConfig.lazyLoadImage">
-                        <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}"
+                        <img alt="{{product.productName}}" src="{{imageCdnPath + getProductImage(product)}}"
                             height="125" width="125"
                             (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
                     </ng-container>
                     <ng-container *ngIf="!isPDPImageLazyLoaded && cardFeaturesConfig.lazyLoadImage">
                         <img alt="{{product.productName}}" [src]="defaultImage"
-                            [lazyLoad]="imageCdnPath + product.mainImageMediumLink" height="125" width="125"
+                            [lazyLoad]="imageCdnPath + getProductImage(product)" height="125" width="125"
                             (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
                     </ng-container>
                 </div>

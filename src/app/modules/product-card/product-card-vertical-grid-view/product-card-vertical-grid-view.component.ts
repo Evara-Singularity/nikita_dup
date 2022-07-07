@@ -68,4 +68,6 @@ export class ProductCardVerticalGridViewComponent extends ProductCardCoreCompone
     super.ngOnInit();
   }
 
+  getProductImage(product) { return product['mainImageThumnailLink'] || product['imageLink_medium']}
+
 }

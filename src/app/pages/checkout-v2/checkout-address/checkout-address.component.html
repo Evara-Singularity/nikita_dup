@@ -1,6 +1,6 @@
 <div class="main-container" >
     <shared-checkout-stepper [headers]="STEPPER"></shared-checkout-stepper>
-    <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
+    <cart-notifications *ngIf="hasCartItems" (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
     <ng-container *ngIf="hasCartItems">
         <section>
             <div *ngIf="isUserLoggedIn else hideContinue" class="fixed-bottom-cta payment-strip">

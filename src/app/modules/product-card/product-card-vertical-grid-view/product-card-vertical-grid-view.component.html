@@ -30,7 +30,8 @@
                 </a>
             </div>
             <div *ngIf="product.brandName" class="brand" (click)="navigateToPDP()">
-                <span>By: {{product.brandName | brandName}}</span>
+                <span *ngIf="!fullBrandNameMode" >By: {{product.brandName | brandName}}</span>
+                <span *ngIf="fullBrandNameMode" >{{product.brandName | brandName}}</span>
             </div>
             <div *ngIf="product.short_description" class="brand" (click)="navigateToPDP()">
                 <span>By: {{splitBrandName(product.short_description)}}</span>

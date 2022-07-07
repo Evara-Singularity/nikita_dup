@@ -1,4 +1,4 @@
-<section class="pwa-row pwa-row-noPad mt-10">
+<section class="pwa-row pwa-row-noPad" [ngClass]="{'mt-10': applyExtraMargin}" >
     <div class="pwa-col-12">
         <div *ngIf="!isFromOosSimilarCard" class="pdp-section-header">
             <h3 class="heading-3">
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <div class="prod-detail" *ngIf="!isFromOosSimilarCard">
+        <div class="prod-detail no-ellipsis" *ngIf="!isFromOosSimilarCard">
             <h2 class="heading-3">Product Details</h2>
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
                 <p [innerHTML]="this.productDescripton"></p>

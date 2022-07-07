@@ -10,7 +10,7 @@
                             <i class="icon-information"></i>
                         </span>
                     </span>
-                    ₹{{ payableAmount | mathCeil | number : '1.2-2'}}
+                    ₹&nbsp;{{ payableAmount | mathCeil | number : '1.2-2'}}
                 </div>
                 <button [disabled]="!(hasCartItems)" class="btn primary-btn" (click)="$event.stopPropagation();continueToPayment()">
                     CONTINUE

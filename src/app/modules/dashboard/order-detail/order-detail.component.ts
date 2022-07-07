@@ -436,6 +436,7 @@ export class OrderDetailComponent implements OnInit {
 
                 if (rData.requestType == 'return') {
                   this.step = 3;
+                  this.detail.status = 'RETURN INTIATED';
                 } else if (rData.requestType == 'exchange') {
                   this._tms.show({ type: 'success', text: 'Exchange Requested' });
                   this.detail.status = 'EXCHANGE REQUESTED';

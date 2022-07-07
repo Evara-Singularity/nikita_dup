@@ -60,6 +60,16 @@
                 .name {
                     font-size: $large-font;
                 }
+                .name-with-icon{
+                    display: inline-flex;
+                    align-items: flex-start;
+                    .name{
+                        width:90%;
+                    }
+                    i{
+                        font-size:$extra-large-2-font;
+                    }
+                   }
                 .price-details {
                     display: flex;
                     flex-direction: row;

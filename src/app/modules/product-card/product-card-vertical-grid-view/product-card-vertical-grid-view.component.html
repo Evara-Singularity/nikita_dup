@@ -32,9 +32,9 @@
             <div *ngIf="product.brandName" class="brand" (click)="navigateToPDP()">
                 <span>By: {{product.brandName | brandName}}</span>
             </div>
-            <!-- <div *ngIf="product.short_description" class="brand" (click)="navigateToPDP()">
+            <div *ngIf="product.short_description" class="brand" (click)="navigateToPDP()">
                 <span>By: {{splitBrandName(product.short_description)}}</span>
-            </div> -->
+            </div>
             <div class="prod-price-row" (click)="navigateToPDP()">
                 <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.discount > 0">
                     <span class="prod-mrp">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
@@ -9,12 +10,16 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
     selector: 'order-summary',
     styleUrls: ['./orderSummary.scss'],
 })
-export class OrderSummaryComponent
+export class OrderSummaryComponent implements OnInit, OnDestroy
 {
     showPromoOfferPopup: boolean = false;
     showPromoSuccessPopup: boolean = false;
     totalOffer = 0;
     totalPayableAmount = 0;
+    cartSubscription: Subscription = null;
+    promoSubscription: Subscription = null;
+    isCartFetched = false;
+    promoSuccessTimeoutId = null;
 
     constructor(
         public router: Router,
@@ -24,24 +29,27 @@ export class OrderSummaryComponent
         private _globalAnalyticeService: GlobalAnalyticsService,
     ) { }
 
+
     ngOnInit(): void
     {
         this._cartService.appliedPromoCode = "";
-        if (this._localAuthService.isUserLoggedIn()) {
-            this._cartService.getPromoCodesByUserId(this._commonService.userSession.userId);
-        }
-        this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
+        const userSession = this._localAuthService.getUserSession();
+        this.cartSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
                 this.updateShippingCharges();
                 this.totalOffer = cartSession['cart']['totalOffer'] || 0;
                 this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
             }
+            this.isCartFetched = true;
         });
-        this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode}) =>
+        if (userSession['authenticated'] == "true" && userSession['userId']) {
+            this._cartService.getPromoCodesByUserId(userSession['userId']);
+        }
+        this.promoSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode }) =>
         {
             this.showPromoSuccessPopup = isNewPromocode;
-            setTimeout(()=> { this.showPromoSuccessPopup =false},800)
+            this.promoSuccessTimeoutId = setTimeout(() => { this.showPromoSuccessPopup = false; },  800)
         })
     }
 
@@ -132,5 +140,12 @@ export class OrderSummaryComponent
             })
         }
         this._globalAnalyticeService.sendToClicstreamViaSocket(trackData);
+    }
+
+    ngOnDestroy(): void
+    {
+        if (this.cartSubscription) this.cartSubscription.unsubscribe()
+        if (this.promoSubscription) this.promoSubscription.unsubscribe()
+        this.promoSuccessTimeoutId.clearTimeout();
     }
 }

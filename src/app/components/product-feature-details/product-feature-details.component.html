@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <div class="prod-detail no-ellipsis" *ngIf="!isFromOosSimilarCard">
+        <div class="prod-detail" *ngIf="!isFromOosSimilarCard">
             <h2 class="heading-3">Product Details</h2>
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
                 <p [innerHTML]="this.productDescripton"></p>

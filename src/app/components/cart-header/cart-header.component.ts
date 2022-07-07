@@ -47,13 +47,9 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	handleNavigation()
 	{
-		if (this.isCheckout) {
-			const isBuyNow = this._cartService.buyNow;
-			if (isBuyNow) {
-				this._cartService.clearBuyNowFlow();
-				this._cartService.checkForUserAndCartSessionAndNotify().subscribe((cartsession) => { });
-			}
-
+		if (this.isCheckout && this._cartService.buyNow) {
+			this._cartService.clearBuyNowFlow();
+			//this._cartService.checkForUserAndCartSessionAndNotify().subscribe((cartsession) => { });
 		}
 		this.goBack$.emit();
 		// const url = this._router.url;

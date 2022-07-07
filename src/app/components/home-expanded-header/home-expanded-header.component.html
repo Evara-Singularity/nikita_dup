@@ -1,4 +1,4 @@
-<div class="expanded-home-header">
+<div class="expanded-home-header" *ngIf="displayPage">
     <div class="head-d-flex-inner ">
         <a class="icon-menu header-icon" *ngIf="!enableBackBtn" (click)="loadSideNav$.emit()"></a>
         <i class="icon-back-arrow" id="icon-back" *ngIf="enableBackBtn" (click)="goBack$.emit()"></i>

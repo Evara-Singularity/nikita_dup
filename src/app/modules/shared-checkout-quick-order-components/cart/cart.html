@@ -3,7 +3,7 @@
         <h3 class="pad-0">{{noOfCartItems}} item(s) in your cart</h3>
     </div>
     <ng-container *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let itemIndex = index;">
-        <div *ngIf="item['text1']" class="realTimePrice">
+        <div *ngIf="(!item.oos) && item['text1']" class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
                     {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
@@ -31,8 +31,7 @@
                                 mathFloor | number : '1.2-2'}}
                             </span>
                             <span class="after-disc" *ngIf="item.bulkPrice!==null">&nbsp;₹{{item.bulkPriceWithoutTax |
-                                mathFloor |
-                                number : '1.2-2'}}</span>
+                                mathFloor | number : '1.2-2'}}</span>
                         </p>
                     </div>
 
@@ -100,7 +99,7 @@
                     </li>
                     <li>
                         <span class="tag-label">Coupon Discount</span>
-                        <span class="tag-value green-txt">₹{{(item.offer ? item.offer : 0) | mathFloor | number :
+                        <span class="tag-value green-txt">-₹{{(item.offer ? item.offer : 0) | mathFloor | number :
                             '1.2-2'}}</span>
                     </li>
                     <li class="bold-txt">

@@ -60,6 +60,7 @@ export class NavigationService
         this.saveHistory([]);
         this.router.navigateByUrl("/");
       }
+      this.router.navigateByUrl("/");
     } else if (this.history.length > 0) {
       const length = this.history.length;
       this.router.navigateByUrl(this.history[length - 1]);

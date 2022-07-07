@@ -174,7 +174,7 @@ export class AppPromoComponent implements OnInit {
         return this.MOBILE_ENVS.ANDROID;
       }
       // iOS detection from: http://stackoverflow.com/a/9039885/177710
-      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      if (/iPad|iPhone|iPod/.test(userAgent) && !window['MSStream']) {
         return this.MOBILE_ENVS.IOS;
       }
     }

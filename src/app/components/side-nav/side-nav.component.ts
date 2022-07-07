@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { NavigationExtras, Router, RouterModule } from '@angular/router';
-import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-promo/product-listing-app-promo.module';
+import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { LocalAuthService } from '../../utils/services/auth.service';
@@ -104,7 +104,7 @@ export class SideNavComponent implements OnInit {
   imports: [
     CommonModule, 
     RouterModule,
-    ProductListingAppPromoModule
+    AppPromoModule
   ],
   declarations: [SideNavComponent]
 })

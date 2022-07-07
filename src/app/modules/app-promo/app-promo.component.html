@@ -90,10 +90,10 @@
                 <div class="mobile">
                     <div *ngIf="page == 'pdp';then pdpContent else content"></div>
                     <ng-template #pdpContent>
-                        <img src="../../../assets/img/Screen-5.svg">
+                        <img src="{{assetImgPath}}assets/img/Screen-5.svg">
                     </ng-template>
                     <ng-template #content>
-                        <img src="../../../assets/img/Screen-2.svg">
+                        <img src="{{assetImgPath}}assets/img/Screen-2.svg">
                     </ng-template>
                 </div>
                 <div class="text-container">
@@ -110,9 +110,9 @@
 
         <!-- 3rd varient used hamburger menu-->
 
-        <div class="promo-code-container" *ngIf="page == 'sideBar'">
+        <div class="promo-code-container" (click)="openPlayStore()" *ngIf="page == 'sideBar'">
             <div class="mobile ">
-                <img src="../../../assets/img/Screen-7.svg">
+                <img src="{{assetImgPath}}assets/img/Screen-7.svg">
             </div>
             <div class="outer-text-section">
                 <strong>Download Moglix App <br>& get ₹100 Off* <span>on your first order.</span></strong>

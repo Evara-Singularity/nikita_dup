@@ -1,132 +1,67 @@
-<ng-container
-    *ngIf="page === 'pdp'||appPromoStatus">
-    <div class="app-promo-container"
-        [ngClass]="{'fixed-app-promo':isOverlayMode, 'hideAppPromo': scrolledViewPort > 200 && isOverlayMode}">
-        <!-- <ng-container *ngIf="!isUserAuthenticated">
-
-            <div class="app-promotion" *ngIf="showPromoCode && page != 'pdp'">
-                <span (click)="removePromo()">
-                    <img src="{{assetImgPath}}assets/img/App-promotion/close-line.png" alt="close-line">
-                </span>
-                <p>Get Rs 100 Off* on your first order via App<br> Use coupon <strong>HELLO</strong>
-                </p>
-            </div>
-            
-            <div class="content-mobile-app promotion-nonLogin" (click)="openPlayStore()"
-                *ngIf="mobile_os == MOBILE_ENVS.ANDROID">
-                <div class="mobile">
-                    <img src="{{assetImgPath}}assets/img/App-promotion/mobile_icon.png">
-                </div>
-                <div class="text">
-                    <strong>Download Moglix App</strong>
-                    <p>4.1 <img src="{{assetImgPath}}assets/img/App-promotion/rating_star.svg"> | 5 lakh + downloads</p>
-                </div>
-                <div class="play-store">
-                    <img src="{{assetImgPath}}assets/img/App-promotion/play_store.png">
-                </div>
-            </div>
-
-            //App store image added
-            <div class="content-mobile-app promotion-nonLogin" (click)="openAppStore()"
-                *ngIf="mobile_os == MOBILE_ENVS.IOS">
-                <div class="mobile">
-                    <img src="{{assetImgPath}}assets/img/App-promotion/mobile_icon.png">
-                </div>
-                <div class="text">
-                    <strong>Download Moglix App</strong>
-                    <p>4.1 <img src="{{assetImgPath}}assets/img/App-promotion/rating_star.svg"> | 5 lakh + downloads</p>
-                </div>
-                <div class="play-store">
-                    <img src="{{assetImgPath}}assets/img/App-promotion/app_store.png">
-                </div>
-            </div>
-
-        </ng-container> -->
-
-        <!--for install app code-->
-        <!-- <ng-container *ngIf="isUserAuthenticated">
-            <div class="app-promotion" *ngIf="showPromoCode">
-                <p class="install-app-text">Get Personalized Experience & Best Deals on App </p>
-            </div>
-            <div class="content-mobile-app pwa-row">
-                <span class="install-app-cross" *ngIf="page != 'pdp'" (click)="removePromo()">
-                    <img src="{{assetImgPath}}assets/img/App-promotion/close-line.png">
-                </span>
-                <div class="mobile">
-                    <img src="{{assetImgPath}}assets/img/App-promotion/mobile_icon.png">
-                </div>
-                <div class="text">
-                    <strong>Download Moglix App</strong>
-                    <p>4.1 <img src="{{assetImgPath}}assets/img/App-promotion/rating_star.svg"> | 5 lakh + downloads</p>
-                </div>
-                <div class="install-app" *ngIf="!_commonService.isAppInstalled && mobile_os == MOBILE_ENVS.IOS"
-                    (click)="openAppStore()">
-                    <button>INSTALL APP</button>
-                </div>
-                <div class="install-app" *ngIf="!_commonService.isAppInstalled && mobile_os == MOBILE_ENVS.ANDROID"
-                    (click)="openPlayStore()">
-                    <button>INSTALL APP</button>
-                </div>
-                <div class="install-app" *ngIf="_commonService.isAppInstalled">
-                    <button (click)="openDeepLink()">Open Moglix App</button>
-                </div>
-            </div>
-        </ng-container> -->
-
-
-
-
-
-        <!-- 1st varient  use homepage and plp-->
-
-        <ng-container>
-            <div class="app-promotion" *ngIf="showPromoCode && page != 'pdp'">
-                <p>Download Moglix App</p>
-                <span (click)="removePromo()">
-                    <i class="icon-circle-delete"></i>
-                </span>
-            </div>
-            <div class="promo-code-container" (click)="openPlayStore()" *ngIf="page != 'sideBar'">
-                <div class="mobile">
-                    <div *ngIf="page == 'pdp';then pdpContent else content"></div>
-                    <ng-template #pdpContent>
-                        <img src="{{assetImgPath}}assets/img/Screen-5.svg">
-                    </ng-template>
-                    <ng-template #content>
-                        <img src="{{assetImgPath}}assets/img/Screen-2.svg">
-                    </ng-template>
-                </div>
-                <div class="text-container">
-                    <div class="text">
-                        <strong>Get ₹100 Off* on your first order</strong>
-                        <p>Use code: <strong>HELLO</strong></p>
-                    </div>
-                    <div class="install-app">
-                        <button>OPEN APP</button>
-                    </div>
-                </div>
-            </div>
-        </ng-container>
-
-        <!-- 3rd varient used hamburger menu-->
-
-        <div class="promo-code-container" (click)="openPlayStore()" *ngIf="page == 'sideBar'">
-            <div class="mobile ">
-                <img src="{{assetImgPath}}assets/img/Screen-7.svg">
-            </div>
-            <div class="outer-text-section">
-                <strong>Download Moglix App <br>& get ₹100 Off* <span>on your first order.</span></strong>
-                <div class="text-container inner-txt-section">
-                    <div class="text use-code-text">
-                        <p>Use code: <strong>HELLO</strong></p>
-                    </div>
-                    <div class="install-app">
-                        <button class="open-app-promo">OPEN APP</button>
-                    </div>
-                </div>
-            </div>
+<ng-container *ngIf="page === 'pdp' || appPromoStatus">
+  <div
+    class="app-promo-container"
+    [ngClass]="{
+      'fixed-app-promo': isOverlayMode,
+      hideAppPromo: scrolledViewPort > 200 && isOverlayMode
+    }"
+  >
+    <!-- 1st varient  use homepage and plp-->
+    <ng-container>
+      <div class="app-promotion" *ngIf="showPromoCode && page != 'pdp'">
+        <p>Download Moglix App</p>
+        <span (click)="removePromo()">
+          <i class="icon-circle-delete"></i>
+        </span>
+      </div>
+      <div
+        class="promo-code-container"
+        (click)="openPlayStore()"
+        *ngIf="page != 'sideBar'"
+      >
+        <div class="mobile">
+          <div *ngIf="page == 'pdp'; then pdpContent; else content"></div>
+          <ng-template #pdpContent>
+            <img src="{{ assetImgPath }}assets/img/Screen-5.svg" />
+          </ng-template>
+          <ng-template #content>
+            <img src="{{ assetImgPath }}assets/img/Screen-2.svg" />
+          </ng-template>
         </div>
-
-
+        <div class="text-container">
+          <div class="text">
+            <strong>Get ₹100 Off* on your first order</strong>
+            <p>Use code: <strong>HELLO</strong></p>
+          </div>
+          <div class="install-app">
+            <button>OPEN APP</button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <!-- 3rd varient used hamburger menu-->
+    <div
+      class="promo-code-container"
+      (click)="openPlayStore()"
+      *ngIf="page == 'sideBar'"
+    >
+      <div class="mobile">
+        <img src="{{ assetImgPath }}assets/img/Screen-7.svg" />
+      </div>
+      <div class="outer-text-section">
+        <strong
+          >Download Moglix App <br />& get ₹100 Off*
+          <span>on your first order.</span></strong
+        >
+        <div class="text-container inner-txt-section">
+          <div class="text use-code-text">
+            <p>Use code: <strong>HELLO</strong></p>
+          </div>
+          <div class="install-app">
+            <button class="open-app-promo">OPEN APP</button>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </ng-container>

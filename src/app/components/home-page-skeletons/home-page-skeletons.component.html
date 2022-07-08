@@ -19,7 +19,23 @@
       </section>
     </ng-container>
     <ng-container *ngSwitchCase="'FEATURED-ARRIVALS'">
-      
+      <section class="featr_arrival featr_arrival-skeleton">
+        <div class="view-all-strip">
+            <h2></h2>
+        </div>
+        <ul class="view-products grid-variant1">
+            <li *ngFor="let item of [1,2,3,4]">
+                 <div class ="product-card">
+                    <div class="product-img">
+                    </div>
+                    <div class="product-description">
+                        <p class="prod-name">
+                        </p>
+                    </div>
+                 </div>
+            </li>
+        </ul>
+    </section>
     </ng-container>
   </ng-container>
 </ng-container>

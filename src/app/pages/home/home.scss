@@ -40,11 +40,15 @@
         background: #ddd;
         padding-bottom: 10px;
     }
-
-    
     .featr_arrival{
         background:var(--Light-grayish-orange);
-        padding-bottom:15px
+        padding-bottom:15px;
+        &.featr_arrival-skeleton{
+            background:var(--white);
+            .view-all-strip{
+                background:var(--white) !important;
+            }
+        }
     }
     .recently-container{
         padding-top: 15px;

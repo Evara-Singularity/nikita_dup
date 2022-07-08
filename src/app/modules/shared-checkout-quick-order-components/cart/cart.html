@@ -24,8 +24,11 @@
                         <p *ngIf="!item.oos" class="price clearfix">
                             <span class="price-mrp gray-txt"><span class="strike-off-upper"><span
                                         class="strike-off"></span>₹{{item.amount | mathFloor | number :
-                                    '1.2-2'}}</span> <span class="green-txt">&nbsp;({{item.taxPercentage}}%
-                                    OFF)</span></span>
+                                    '1.2-2'}}</span> 
+                                    <!-- // remove this discount taxPercentage as this not yet synced with PDP -->
+                                    <!-- <span class="green-txt">&nbsp;({{item.taxPercentage}}%
+                                    OFF)</span> -->
+                                </span>
                             <span class="after-disc"
                                 *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">&nbsp;₹{{item.priceWithoutTax |
                                 mathFloor | number : '1.2-2'}}

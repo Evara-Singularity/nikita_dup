@@ -1,6 +1,22 @@
 @import '../../scss//variables.scss';
 @import '../../scss/root';
 
+.hide{
+  display: none;
+}
+.show{
+  display: block;
+}
+
+.ico-expand{
+  .icon-expand{
+    &:before{
+      content: "\e919";
+    }
+    
+  }
+}
+
 
 .faqfixedhead{
   padding-top:140px;

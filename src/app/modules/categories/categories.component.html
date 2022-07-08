@@ -41,7 +41,7 @@
     <product-card-vertical-container
         [numberOfItems]="carouselData[category.dataKey]['data']['product_data'].length">
         <ng-container *ngFor="let product of carouselData[category.dataKey]['data']['product_data']">
-            <product-card-vertical-grid-view [product]="product"></product-card-vertical-grid-view>
+            <product-card-vertical-grid-view [fullBrandNameMode]="true" [product]="product"></product-card-vertical-grid-view>
         </ng-container>
     </product-card-vertical-container>
 

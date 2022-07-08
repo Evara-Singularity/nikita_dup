@@ -9,7 +9,7 @@
             </p>
             <p class="customer-detail" *ngIf="user && user.authenticated == 'true' && user.status!=='User logged out'">
                 <span class="user-name">
-                    {{(user.userName.length > 18)? (user.userName | slice:0: 18)+'...': user.userName }}
+                    {{(getFirstNameFormName(user.userName).length > 18)? (getFirstNameFormName(user.userName) | slice:0: 18)+'...': getFirstNameFormName(user.userName) }}
                 </span>
                 <i class="icon-edit-line-icon f-14"></i>
             </p>

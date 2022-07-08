@@ -80,16 +80,17 @@
                     align-items: center;
                     .left {
                         text-align: left;
-                        width: calc(100% - 105px);
+                        width: calc(100% - 110px);
                         .price {
-                            font-size: $small-font;
+                            font-size: $medium-font;
                             margin-bottom: 4px;
                             margin-top: 4px;
                             .prod-mrp {
-                                color: var(--gray-web);
+                                // color: var(--gray-web);
                                 text-decoration: line-through;
                                 opacity: 0.5;
                                 margin-right: 5px;
+                                color: #3c3c3c;
                             }
                             .prod-discount {
                                 font-weight: bold;
@@ -115,7 +116,7 @@
                     }
                     .right {
                         text-align: right;
-                        width: 105px;
+                        width: 110px;
                     }
                 }
             }

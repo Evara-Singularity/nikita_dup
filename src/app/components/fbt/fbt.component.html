@@ -39,7 +39,7 @@
                         <p class="price">
                             <span class="before-discount">{{product.productMRP | mathFloor | currency: 'INR':
                                 'symbol': '1.0-0'}}</span>
-                            <span class="discount">{{product.discount | mathFloor}}% OFF</span>
+                            <span *ngIf="product.discount > 0" class="discount">{{product.discount | mathFloor}}% OFF</span>
                             <span class="after-discount">{{product.sellingPrice | mathFloor | currency:
                                 'INR' : 'symbol' : '1.0-0'}}</span>
                         </p>

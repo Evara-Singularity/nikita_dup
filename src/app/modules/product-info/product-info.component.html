@@ -19,24 +19,24 @@
 
                     <p class="brand"><span>By :</span>  {{brandName}}</p>
 
-                    <p class="price" *ngIf="productMrp > priceWithoutTax">   
+                    <p class="price" *ngIf="productMrp > productPrice">   
                         <span class="before-discount" >{{productMrp | currency: 'INR' : 'symbol' :
                             '1.0-0'}}
                         </span>
                         <ng-container *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0">
-                            <span class="discount"  *ngIf="bulkPriceWithoutTax==null">
-                                {{((productMrp - priceWithoutTax)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
+                            <span class="discount"  *ngIf="bulkSellingPrice==null">
+                                {{((productMrp - productPrice)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
                             </span>
-                            <span class="discount"  *ngIf="bulkPriceWithoutTax!=null">
+                            <span class="discount"  *ngIf="bulkSellingPrice!=null">
                                 {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF
                             </span>
                         </ng-container>
 
-                        <span class="after-discount" *ngIf="priceWithoutTax > 0 && bulkPriceWithoutTax==null">
-                            {{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
+                        <span class="after-discount" *ngIf="productPrice > 0 && bulkSellingPrice==null">
+                            {{productPrice | currency: 'INR' : 'symbol' : '1.0-0'}}
                         </span>
-                        <span class="after-discount" *ngIf="bulkPriceWithoutTax!==null">
-                            {{bulkPriceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
+                        <span class="after-discount" *ngIf="bulkSellingPrice!==null">
+                            {{bulkSellingPrice | currency: 'INR' : 'symbol' : '1.0-0'}}
                         </span>
                     </p>  
                 </div>

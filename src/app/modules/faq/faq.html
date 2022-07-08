@@ -25,30 +25,30 @@
             <ng-template #original>
                 <ng-container *ngFor="let block of faqData; let i = index;">
                     <div [attr.id]="'faq' + i">
-                        <h3 class="fqhead faq-top-border active-faq" *ngIf="i ==0" [appKpToggle]="{idName: 'open0' , iconMode : true}">
+                        <h3 class="fqhead faq-top-border active-faq" *ngIf="i ==0" [class.ico-up]="defaultIndex === i" [class.ico-expand]="defaultIndex === i" [appKpToggle]="{idName: 'open0' , iconMode : true}">
                             Order Tracking
                             <span>
                                 <i class="icon-expand"></i>
                             </span>
                         </h3>
-                        <h3 class="fqhead" *ngIf="i ==1" [appKpToggle]="{idName: 'open1' , iconMode : true}">Customer Return
+                        <h3 class="fqhead" *ngIf="i ==1" [class.ico-up]="defaultIndex === i" [class.ico-expand]="defaultIndex === i" [appKpToggle]="{idName: 'open1' , iconMode : true}">Customer Return
                             Policy
                             <span>
                                 <i class="icon-expand"></i>
                             </span>
                         </h3>
-                        <h3 class="fqhead" *ngIf="i ==2" [appKpToggle]="{idName: 'open2' , iconMode : true}">Refund
+                        <h3 class="fqhead" *ngIf="i ==2" [class.ico-up]="defaultIndex === i" [class.ico-expand]="defaultIndex === i" [appKpToggle]="{idName: 'open2' , iconMode : true}">Refund
                             <span>
                                 <i class="icon-expand"></i>
                             </span>
                         </h3>
-                        <h3 class="fqhead faq-bottom-border" *ngIf="i ==3" [appKpToggle]="{idName: 'open3' , iconMode : true}">Payment Options
+                        <h3 class="fqhead faq-bottom-border" *ngIf="i ==3" [class.ico-up]="defaultIndex === i" [class.ico-expand]="defaultIndex === i" [appKpToggle]="{idName: 'open3' , iconMode : true}">Payment Options
                             <span>
                                 <i class="icon-expand"></i>
                             </span>
                         </h3>
     
-                        <div class="collapsed-content" id="{{'open' + i}}" style="display:none">
+                        <div class="collapsed-content hide" [class.show]="defaultIndex === i" id="{{'open' + i}}">
                             <div class="questwrap" *ngFor="let block of faqData[i];">
                                 <h4>{{block?.question}}</h4>
                                 <p *ngFor="let para of block?.para | splitPipe"> {{para}} </p>

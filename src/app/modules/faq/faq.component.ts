@@ -227,7 +227,6 @@ export class FaqComponent {
 	}
 
 	ngAfterViewInit() {
-		this.setScroll();
 		if (this.defaultIndex == 1 && this.crpElement) {
 			setTimeout(() => {
 				this.crpElement.nativeElement.click();
@@ -253,33 +252,6 @@ export class FaqComponent {
 				600,
 				ClientUtility.offset(document.querySelector(selector)).top - 50
 			);
-		}
-	}
-
-	setScroll() {
-		if (this.isBrowser) {
-			setTimeout(() => {
-				document
-					.querySelector('ul.faqUllist li')
-					.addEventListener('click', function () {
-						Array.prototype.map.call(
-							document.querySelectorAll('ul.faqUllist li'),
-							(li) => {
-								li.classList.remove('active-faq');
-							}
-						);
-						document
-							.querySelector('ul.faqUllist li')
-							.classList.remove('active-faq');
-						this.classList.add('active-faq');
-						ClientUtility.scrollToTop(
-							600,
-							ClientUtility.offset(
-								document.querySelector(this.getAttribute('data-target'))
-							).top - 50
-						);
-					});
-			}, 0);
 		}
 	}
 
@@ -340,7 +312,6 @@ export class FaqComponent {
 	resetArray() {
 		this.filteredArray = [];
 		this.showSideMenu = true;
-		this.setScroll();
 		this.hideSuggestionInMobile = true;
 		this.overlaysuggestion = false;
 		this.noResults = false;

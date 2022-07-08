@@ -98,7 +98,7 @@ export class AppPromoComponent implements OnInit {
     if(this.mobile_os == this.MOBILE_ENVS.ANDROID){
       this.openPlayStore();
     }else if(this.mobile_os == this.MOBILE_ENVS.IOS){
-      this.openPlayStore();
+      this.openAppStore();
     }
   }
 

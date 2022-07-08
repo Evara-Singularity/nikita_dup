@@ -1,4 +1,4 @@
-@import './tags';
+@import "./tags";
 
 //Product description
 .prod-description {
@@ -23,7 +23,7 @@
             padding: 5px;
             border-radius: $border-radius-4;
             color: var(--white);
-            font-weight: $font-normal;
+            font-weight: $font-bold;
 
             i {
                 color: var(--white);
@@ -71,10 +71,10 @@
     }
 
     .price-block {
-        padding: 5px 0px 0px 0px;
+        padding: 10px 0px 0px 0px;
 
         .mrp {
-            font-size:$medium-font;
+            font-size: $medium-font;
             color: var(--spanish-gray);
 
             span {
@@ -92,12 +92,9 @@
         }
 
         .actual-price {
-            padding: 5px 0px 0 0;
+            padding: 0px;
             color: var(--black);
-            font-size: $extra-large-2_5-font;
-            font-weight: $font-bolder;
             letter-spacing: 0.5px;
-
             small {
                 font-size: $medium-font;
                 font-weight: normal !important;
@@ -105,11 +102,15 @@
                 padding-top: 5px;
                 color: var(--spanish-gray);
                 .icon-expand {
-                    font-size:6px;
+                    font-size: 6px;
                     vertical-align: middle;
                     padding-bottom: 2px;
                     margin: 0 4px 0 -3px;
                 }
+            }
+            strong {
+                font-size: $extra-large-3-font;
+                font-weight: $font-bolder;
             }
         }
     }
@@ -120,4 +121,9 @@
     clear: both;
     justify-content: space-between;
     align-items: center;
+}
+.pwa-inline-tooltip{
+    .pwa-tooltip-text{
+        font-size: 12px !important;
+    }
 }

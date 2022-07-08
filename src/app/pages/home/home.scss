@@ -8,10 +8,13 @@
         .home-parent{
             background:var(--white);
             h2 {
-                font-size: $large-font;
+                font-size: $extra-large-font;
                 text-transform: capitalize;
             }
         }
+    }
+    .category-grid-container{
+        padding-top: 15px;
     }
     /*Top Widgets*/
    .fixed-btm-app-prmo {
@@ -43,7 +46,6 @@
     
     .featr_arrival{
         background:var(--Light-grayish-orange);
-        padding-bottom:15px
     }
     .recently-container{
         padding-top: 15px;

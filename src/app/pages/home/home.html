@@ -1,6 +1,6 @@
 <div class="home-parent">
     <app-promo [page]="'home'" class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
-    <div class="pwa-row">
+    <div class="pwa-row pad-b-0">
         <div class="pwa-col-12">
             <div class="css-banner-component">
                 <div class="internalBanner" *ngIf="isBrowser">
@@ -48,9 +48,7 @@
                 </div> -->
 
             <div class="pwa-col-12 category-grid-container">
-                <div class="view-all-strip">
-                    <h2>Category Store Explore</h2>
-                </div>
+                <h2>Category Store Explore</h2>
                 <div class="pwa-row pwa-row-noPad pad-tb-0">
                     <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card"
                         [routerLink]="item.category_url">

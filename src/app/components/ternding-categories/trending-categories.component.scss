@@ -2,11 +2,11 @@
 @import '../../scss/components/category-grid-card';
 .view-all-strip {
     @extend %view-all-strip;
-    padding:10px 0px;
+    padding:5px 0px 10px;
   }
   .trending-container {
     padding: 0 0 0px 0;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     .trending-categories {
       border-top: 1px solid $border-color;
       li {

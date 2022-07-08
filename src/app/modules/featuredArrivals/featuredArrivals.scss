@@ -3,6 +3,7 @@
 .view-all-strip{
     @extend %view-all-strip;
     background: var(--Light-grayish-orange);
+    padding:0 0 10px;
 }
 .featr_arrival{
     background: var(--Light-grayish-orange);
@@ -11,5 +12,11 @@
         li{
             background: none;
         }
-    }  
+    } 
+    .quinary-btn{
+        background: var(--white);
+    } 
+    .prod-name{
+        font-size: $medium-font !important;
+    }
 }

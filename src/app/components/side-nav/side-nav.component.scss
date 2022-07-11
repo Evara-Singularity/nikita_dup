@@ -32,16 +32,29 @@
       display: flex;
       align-items: center;
       border-radius: $border-radius-8;
+      padding: 15px 10px;
       .icon-profile{
         font-size: $extra-large-5-font;
-        margin:7px 0;
+        // margin:7px 0;
       }
       .customer-detail{
         font-size: $large-font;
         margin-left: 10px;
         font-weight: bold;
+        display: flex;
+        align-items: center;
+        width: calc(100% - 48px);
+        justify-content: space-between;
         .user-name{
           margin-right: 10px;
+          .costumer-mobile{
+            font-weight: initial;
+            font-size: $medium-font;
+            line-height: 28px;
+          }
+        }
+        .icon-arrow-right-s-line{
+          font-size: 20px;
         }
       }
       .icon-arrow-right-s-line{

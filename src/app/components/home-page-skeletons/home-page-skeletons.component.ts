@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 })
 export class HomePageSkeletonsComponent implements OnInit {
 
-  @Input() type: 'RECENTLY' | 'FEATURED-ARRIVALS' | 'CATEGORIES' ;
+  @Input() type: 'RECENTLY' | 'FEATURED-ARRIVALS' ;
   @Input() templateRefInstance: any = null;
    
   constructor() { }

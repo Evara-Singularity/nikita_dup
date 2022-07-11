@@ -31,7 +31,7 @@ export class ProductCardVerticalGridViewComponent extends ProductCardCoreCompone
     verticalOrientation: false,
     horizontalOrientation: true,
     verticalOrientationV2: false,
-    lazyLoadImage: false,
+    lazyLoadImage: true,
   }
 
   constructor(

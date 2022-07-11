@@ -1,0 +1,24 @@
+// Tagging
+.prod-tag {
+    padding-top: 5px;
+    .tag_container {
+        float: left;
+        width: 33%;
+        img {
+            max-width: 100%;
+            padding-right: 10px;
+        }
+    }
+}
+.image_tag {
+    position: absolute;
+    left: 0px;
+    top: 15px;
+    width: 30%;
+    .tag_container {
+        padding-left: 15px;
+        img {
+            width: 80px;
+        }
+    }
+}

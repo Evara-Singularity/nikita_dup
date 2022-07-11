@@ -1,4 +1,5 @@
-<div class="saved-details custom-cbox-green" *ngIf="savedCardForm != undefined">
+<h4 class="pb-10 pt-10">Preferred Payment Mode</h4>
+<div class="saved-details mb-15 custom-cbox-green" *ngIf="savedCardForm != undefined">
     <form [formGroup]="savedCardForm" (ngSubmit)="pay(savedCardForm.value, savedCardForm.valid)">
         <!-- <h3>Saved Payment Options</h3> -->
         <div class="card-detail" [class.active]="selectedCardIndex !== undefined && selectedCardIndex===i" formArrayName="cards" *ngFor="let card of savedCardForm.get('cards')['controls']; let i=index">
@@ -11,11 +12,17 @@
                         <span class="chk-txt">
                             <span class="detail-txt">
                                 <span class="card-no"> {{savedCards[i]['card_no']}}</span>
-                                <span class="input-sec is-focus" (click)="stop($event)"
+                                <div class="material-form">
+                                    <span class="input-sec is-focus outline-input-label mb-0" (click)="stop($event)"
                                     *ngIf="selectedCardIndex !== undefined && selectedCardIndex===i">
-                                    <input type="password" maxlength="3" (keyup)="checkpayEnable(cvv.value)"
-                                        placeholder="CVV" formControlName="cvv" #cvv>
+                                    <label class="mt-15">
+                                        <input type="password" maxlength="3" (keyup)="checkpayEnable(cvv.value)"
+                                        formControlName="cvv" #cvv>
+                                        <span class="label">CVV</span>
+                                    </label>
                                 </span>
+                                </div>
+                                
                             </span>
                         </span>
                         <span class="img-logo f-right">
@@ -26,6 +33,15 @@
                                 *ngIf="savedCards[i]['card_brand'] == 'MASTERCARD'">
                         </span>
                     </label>
+                    <!-- <div class="material-form">
+                        <div class="outline-input-label">
+                            <label [class.is-focus]="ccCvc.value.length!=0">
+                                <input type="password" id="cc-cvc" formControlName="ccvv" type="password" #ccCvc
+                                    kpAutocompleteOff maxlength="3">
+                                <span class="label">CVV</span>
+                            </label>
+                        </div>
+                    </div> -->
                 </div>
             </ng-container>
         </div>

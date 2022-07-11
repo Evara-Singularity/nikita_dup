@@ -10,7 +10,7 @@ import { ToastMessageService } from '@app/modules/toastMessage/toast-message.ser
 @Component({
     selector: 'review-rating',
     templateUrl: './review-rating.component.html',
-    styleUrls: ['./../../pages/product/product.component.scss']
+    styleUrls: ['./review-rating.scss']
 })
 export class ReviewRatingComponent {
     displayVariant2Popup = true;

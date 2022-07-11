@@ -1,0 +1,66 @@
+
+@import '../variables';
+@import '../utils/mixins';
+@import '../components/buttons';
+@import '../components/rating';
+
+.product-vertical-card{
+    background:var(--white);
+    border-bottom:1px solid var(--platinum);
+    border-radius:$border-radius-8;
+    padding: 10px;
+    position: relative;
+    .pwa-image{
+        img{
+            width:115px
+        }
+       }
+        .prod-name {
+            text-align: left;
+            font-size: $large-font;
+            color: var(--onyx-black);
+            line-height: 16px;
+        }
+        .prod-brand{
+            margin-top: 4px;
+            margin-bottom: 4px;
+            text-align: left;
+            font-size: $small-font;
+            color: var(--gray-web);
+            font-weight:$font-bold;
+        }
+        .prod-price-row{
+            margin-bottom:4px;
+            .prod-mrp{
+                color: var(--onyx-black);
+                text-decoration: line-through;
+                opacity: .5;
+                margin-right:5px;
+            }
+            .prod-discount{
+                font-weight:$font-bold;
+                color: #3b9e26;
+            }
+            .prod-selling-price{
+                margin-top:4px;
+                font-size: $large-font;
+                color: var(--onyx-black);
+                font-weight: $font-bold;
+            }
+        }
+        .card-btn-row{
+            display:flex;
+            button{
+                flex-basis:calc(100% - 40px);
+            }
+        }
+        .float-card-icon{
+            position:absolute;
+            right:10px;
+            i{
+                font-size:$extra-large-3-font;
+            }
+        }
+    }  
+
+

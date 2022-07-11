@@ -1,48 +1,47 @@
-.allCategoryBlock{
-    background:#F3F7F8;
-    padding: 15px 5px;
-    &.grey_bg{
-        background:#ECECEC
+@import '../../../scss/variables';
+@import '../../../scss/root';
+@import '../../../scss/layout/grid.scss';
+
+.allCategoryBlock {
+    padding: 10px;
+    height: calc(100% - 60px);
+    overflow: auto;
+    .l0_heading{
+        padding: 0 5px;
     }
-    li{
-       width:33.3%;
-       float: left;
-       padding: 5px;
-       .inner_category{
-           background: #fff;
-           text-align: center;
-           padding: 5px;
-           height: 140px;
-           border-radius:4px;
-           .allcategoryImage{
-               height:80px;
-               img{
-                  max-width:100%;
-                  max-height:100%;
-               }
-           }
-           p{
-               font-size: 10px;
-               font-weight: 500;
-               padding-top: 5px;
-               line-height: 16px;
-           }
-       }
-        &.view_all_category{
-           .inner_category{
-               padding:15px;
-               word-break: break-word;
-           }
-           .viewall_category{
-               background: #FDEAEB;
-               height:100%;
-               color:#D9232D;
-               padding: 15px 5px;
-               line-height: 18px;
-               text-transform:capitalize;
-               border-radius:4px;
-               font-size:10px
-           }
-       } 
-    } 
- }
+    .allCategory-setion{
+        display: flex;
+        flex-wrap: wrap;
+        width: $fullwidth;
+        .inner_category {
+            width: 33.33%;
+            display:inline-flex;
+            .inner-category-data{
+                border-radius: $border-radius-8;
+                text-align: center;
+                background: var(--white);
+                padding:10px 5px;
+                margin: 10px 5px 0 5px;
+                min-height: 135px;
+                width: 100%;
+                .viewall_category{
+                    background: var(--misty-rose);
+                    height: 80%;
+                    color: var(--primary);
+                    padding: 34px 10px;
+                    line-height: $medium-line-height;
+                    border-radius: $border-radius-4;
+                    text-transform: capitalize;
+                    font-size: $small-font;
+                    margin: 0 5px;
+                    min-height: 135px;
+                }
+                img {
+                    width: 90px;
+                    margin-bottom: 5px;
+                    border-radius:$border-radius-4;
+                }
+            }
+        }
+    }
+}

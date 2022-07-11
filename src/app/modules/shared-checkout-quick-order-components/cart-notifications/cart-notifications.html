@@ -5,12 +5,12 @@
         </h3>
     </div>
     <div class="panel-body" id="cart-errors">
-        <ul>
+        <ul>    
             <li *ngFor="let ivm of notfications | oosValitionMessage">
                 <ng-container *ngIf="ivm.type == 'oos' || ivm.type == 'unserviceable'">
                     <p class="unservicable">
                         <span class="prod-name">{{ivm.count}} {{ivm['data']['text1']}}</span>
-                        <span class="mar-l-10 view-btn" (click)="viewUnavailableItems()"> VIEW ITEMS </span>
+                        <span class="mar-l-10 btn quaternary-btn-2" (click)="viewUnavailableItems()"> VIEW ITEM(s) </span>
                     </p>
                 </ng-container>
                 <ng-container *ngIf="ivm.type == 'price'">

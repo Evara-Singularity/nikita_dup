@@ -1,0 +1,93 @@
+@import '../scss/variables';
+.check-pincode {
+    .container {
+        width: 88%;
+    }
+    .head-sec {
+        margin: 15px 0 25px;
+        i {
+            font-size: $extra-large-2-font;
+            line-height: $medium-line-height;
+        }
+        .txt {
+            font-size: $large-font;
+            font-weight: 500;
+            line-height: $medium-line-height;
+            margin-left: 15px;
+        }
+    }
+    .input-pincode {
+        overflow: hidden;
+
+        .inp-box {
+            height: 40px;
+            border: 1px solid var(--silver);
+            padding-left: 10px;
+            width: 70%;
+            float: left;
+        }
+        .inp-box::-webkit-input-placeholder {
+            font-size: $medium-font;
+        }
+        .btn-submit {
+            float: left;
+            height: 40px;
+            width: 30%;
+            background: var(--onyx-black);
+            color: var(--white);
+            font-size: $medium-font;
+            font-weight: bold;
+            border: none;
+        }
+    }
+    .current-location {
+        @extend %ico-txt;
+        color: var(--bleu-de-france);
+        margin: 15px 0px 15px;
+        i {
+            font-size: $extra-large-font;
+            line-height: $medium-line-height;
+        }
+        .right-txt {
+            line-height: $medium-line-height;
+            margin-left: 30px;
+            font-size: $large-font;
+            font-weight: 500;
+        }
+    }
+    .validity-pin {
+        margin: 0px 0px 20px 0px;
+    }
+    .pin-validation {
+        font-size: $medium-font;
+        margin-top: 10px;
+        i {
+            font-size: $medium-font;
+            line-height: $medium-line-height;
+            padding-right: 10px;
+        }
+        .right-txt {
+            line-height: $medium-line-height;
+            margin-left: 20px;
+            font-size: $medium-font;
+        }
+    }
+    .valid {
+        color: var(--slimy-green);
+    }
+    .invalid {
+        color: var(--primary);
+        input {
+            pointer-events: none;
+        }
+    }
+    .ship-txt {
+        font-size: $medium-font;
+        color: var(--onyx-black);
+        opacity: 0.5;
+    }
+    .delivery-txt {
+        font-size: $small-font;
+        padding: 5px 0px 0px 0px;
+    }
+}

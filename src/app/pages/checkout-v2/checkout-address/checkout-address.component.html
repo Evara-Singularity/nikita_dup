@@ -1,24 +1,20 @@
-<div class="main-container" *ngIf="displayPage">
+<div class="main-container" >
     <shared-checkout-stepper [headers]="STEPPER"></shared-checkout-stepper>
-    <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
-    <ng-container>
+    <cart-notifications *ngIf="hasCartItems" (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
+    <ng-container *ngIf="hasCartItems">
         <section>
-            <div *ngIf="isUserLoggedIn else hideContinue" class="continue-button">
-                <div class="container payable">
-                    <p class="total-mount">
-                        <span class="payable-amnt">Payable Amount
-                            <span (click)="scrollPaymentSummary();">
-                                <img src="{{IMG_PATH}}assets/img/info.png">
-                            </span>
+            <div *ngIf="isUserLoggedIn else hideContinue" class="fixed-bottom-cta payment-strip">
+                <div class="amount-left-section">
+                    <span class="payable-amnt">Amount Payable
+                        <span (click)="scrollPaymentSummary();">
+                            <i class="icon-information"></i>
                         </span>
-                        ₹{{ ((_cartService.getGenericCartSession.cart.totalAmount + _cartService?.shippingCharges) - (_cartService.getGenericCartSession.cart.totalOffer)) |
-                            mathCeil | mathCeil | number : '1.2-2'}}
-                    </p>
-                    <button [disabled]="!(hasCartItems)" class="btn"
-                        (click)="$event.stopPropagation();continueToPayment()">
-                        CONTINUE
-                    </button>
+                    </span>
+                    ₹{{ payableAmount | mathCeil | number : '1.2-2'}}
                 </div>
+                <button [disabled]="!(hasCartItems)" class="btn primary-btn" (click)="$event.stopPropagation();continueToPayment()">
+                    CONTINUE
+                </button>
             </div>
             <ng-template #hideContinue>
                 <div></div>
@@ -28,7 +24,9 @@
             (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
             (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
             (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-        <cart [moduleName]="'CHECKOUT'"></cart>
+        <cart [moduleName]="'CHECKOUT'"></cart> 
         <order-summary></order-summary>
+        <generic-offers></generic-offers>
+        <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems" [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } "></shared-checkout-unavailable-items>
     </ng-container>
 </div>

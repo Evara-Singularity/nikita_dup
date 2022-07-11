@@ -1,7 +1,7 @@
 <div class="otherCategoryBlock manufacturer" *ngIf="data['data'] && data['data'].length > 0">
     <h3 class="l0_heading">{{data.title}}</h3>
-    <ul class="clearfix">
-        <li *ngFor="let item of data['data'] | slice:0:4;let i=index">
+    <div class="pwa-row trending-category-block">
+        <div *ngFor="let item of data['data'] | slice:0:4;let i=index" class="pwa-col-6 inner-trending-category">
             <div [routerLink]="['/'+item?.image_link]" class="innerCategory">
                 <div class="imgBlock">
                     <img alt="{{item['image_title']}}" src="{{imagePath + item['image_name']}}">
@@ -12,7 +12,6 @@
                         {{item['image_general'][0]['general_text']}}</p>
                 </div>
             </div>
-
-        </li>
-    </ul>
+        </div>
+    </div>
 </div>

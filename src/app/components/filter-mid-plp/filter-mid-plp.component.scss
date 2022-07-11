@@ -1,119 +1,55 @@
-@import '../../scss/variables';
+@import "../../scss/variables";
 .filter-container {
     @extend %cards;
-    background-color: #3C3C3C;
-    .filter-btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background: #da4038;
-        color: white;
-        font-size: 14px;
-        margin: 5px;
-        border-radius: 10px;
-        &.active {
-            background: white;
-            color: #da4038;
-        }
-        &.disabled {
-            opacity: 0.6;
-            pointer-events: none;
-            background: grey;
-        }
-    }
+    background-color: #3c3c3c;
     .filter-heading {
-        font-size: 14px;
+        font-size: $large-font;
         margin-bottom: 5px;
-        // text-transform: capitalize;
         font-weight: bold;
-        color: #fff;
+        color: $white-color;
         padding: 10px 0px 0px 0px;
     }
 }
-
-// .inline-filter-container {
-//     background: #3C3C3C;
-//     .inline-filters {
-//         display: flex;
-//         overflow-x: scroll;
-//         .inline-filter-card {
-//             white-space: nowrap;
-//             a {
-//                 display: inline-block;
-//                 padding: 10px 20px;
-//                 background: #fff;
-//                 color: #3C3C3C;
-//                 font-size: 14px;
-//                 margin: 5px;
-//                 border-radius: 4px;
-//                 box-shadow: 0px 3px 6px #0000001A;
-//             }
-//         }
-//     }
-// }
 .inline-filter-card-list {
     padding: 5px 40px 10px 0px;
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
     display: block;
-    background-color: #3C3C3C;
-    font-size: 14px;
-    .inline-filter-card-one {
+    background-color: #3c3c3c;
+    font-size: $large-font;
+    .inline-filter-card-one, .inline-filter-card-two {
         margin-right: 10px;
         display: inline-block;
         vertical-align: top;
     }
-    .inline-filter-card-two {
-        margin-right: 10px;
-        display: inline-block;
-        vertical-align: bottom;
-    }
     .inline-filter-card-value {
-        label {
-            width: 25px;
-            margin-top: -4px;
-            @extend %custom-check-box-checkout;
-        }
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 10px 15px;
-        font-weight: 500;
-        text-align: center;
-        width: 100%;
-        border-radius: 4px;
-        background-color: #fff;
-        margin-top: 5px;
-        margin-bottom: 5px;
+        border-radius:$border-radius-8;
+        background-color:var(--white);
+        margin: 5px 0px;
         font-weight: bold;
-        font-size: 12px;
-        &.card-value-2 {
-            margin-bottom: 5px;
-        }
+        font-size: $medium-font;
     }
 }
 
-.skeleton-filter-container{
-    background: #F1F1F1;
-    
-    .skeleton-inline-filter-card-list{
+.skeleton-filter-container {
+    background: #f1f1f1;
+    .skeleton-inline-filter-card-list {
         padding: 10px 40px 10px 10px;
         overflow-x: hidden;
         overflow-y: hidden;
         white-space: nowrap;
         display: block;
-        
-        .heading-filter{
+        .heading-filter {
             height: 18px;
-            background: #FFF;
+            background: #fff;
             border-radius: 6px;
             width: 130px;
             margin-bottom: 10px;
             position: relative;
             overflow: hidden;
         }
-
-        .inline-filter-card-one{
+        .inline-filter-card-one {
             margin-right: 10px;
             display: inline-block;
             vertical-align: top;
@@ -124,8 +60,7 @@
             position: relative;
             overflow: hidden;
         }
-
-        .inline-filter-card-two{
+        .inline-filter-card-two {
             margin-right: 10px;
             display: inline-block;
             vertical-align: top;
@@ -136,8 +71,7 @@
             position: relative;
             overflow: hidden;
         }
-
-        .inline-filter-card-three{
+        .inline-filter-card-three {
             margin-right: 10px;
             display: inline-block;
             vertical-align: top;
@@ -148,66 +82,37 @@
             position: relative;
             overflow: hidden;
         }
-
     }
-
-    .heading-filter::before, .inline-filter-card-one::before, .inline-filter-card-two::before, .inline-filter-card-three::before{
+    .heading-filter::before,
+    .inline-filter-card-one::before,
+    .inline-filter-card-two::before,
+    .inline-filter-card-three::before {
         content: "";
         position: absolute;
         width: 100%;
         height: 100%;
-        background-image: linear-gradient(to right, #FFF 0%, rgba(0,0,0,0.03) 40%, #FFF 100%,  #F9FAF9 30%);
+        background-image: linear-gradient(to right, #fff 0%, rgba(0, 0, 0, 0.03) 40%, #fff 100%, #f9faf9 30%);
         background-size: 450px 400px;
         background-repeat: no-repeat;
         animation: shimmer 1s linear infinite;
-        -webkit-animation: shimmer 1s linear infinite;;
-        top:0;
+        -webkit-animation: shimmer 1s linear infinite;
+        top: 0;
         right: 0;
     }
-
-    .heading-filter::before, .inline-filter-card-one::before, .inline-filter-card-two::before, .inline-filter-card-three::before{
+    .heading-filter::before,
+    .inline-filter-card-one::before,
+    .inline-filter-card-two::before,
+    .inline-filter-card-three::before {
         animation-delay: 0.4s;
         -webkit-animation-delay: 0.4s;
     }
-    
 }
-
-@keyframes shimmer{
-    0%{
+@keyframes shimmer {
+    0% {
         background-position: -450px 0;
     }
 
-    100%{
+    100% {
         background-position: 450px 0;
-    }
-    
-}
-
-.sachin{
-    label {
-        width: 20px;
-        @extend %custom-check-box-checkout;
-    }
-}
-
-.custom-box {
-    font-size: 14px !important;
-    @extend %transition;
-    
-}
-
-.apl-btn-filter-area{
-    display: flex;
-    justify-content: flex-end;
-    .apl-btn-filter{
-        color: #D9232D;
-        padding: 10px 15px;
-        text-transform: uppercase;
-        border: none;
-        font-size: 12px;
-        background: #FFFFFF 0% 0% no-repeat padding-box;
-        border-radius: 3px;
-        opacity: 1;
-        font-weight: bold;
     }
 }

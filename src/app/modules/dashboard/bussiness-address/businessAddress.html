@@ -1,3 +1,6 @@
 <div>
-    <router-outlet></router-outlet>
+    <!-- <router-outlet></router-outlet> -->
+    <all-addresses [parentModule]="'Dashboard'" (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
+        (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
+        (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
 </div>

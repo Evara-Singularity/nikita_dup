@@ -1,3 +1,5 @@
-<section class="mainbanner-article" [ngStyle]="customStyle">
-    <img [src]="mainBannerImgLink" [alt]="imageTitle" (click)="$event.stopPropagation();_cmsService.navigateTo(redirectPageLink, {navigation:'brand_store_' + componentName + imageTitle })" />
-</section>
+<div class="pwa-row pwa-row-noPad">
+    <section class="pwa-col-12 mainbanner-article" [ngStyle]="customStyle">
+        <img [src]="mainBannerImgLink" [alt]="imageTitle" (click)="$event.stopPropagation();_cmsService.navigateTo(redirectPageLink, {navigation:'brand_store_' + componentName + imageTitle })" />
+    </section>
+</div>

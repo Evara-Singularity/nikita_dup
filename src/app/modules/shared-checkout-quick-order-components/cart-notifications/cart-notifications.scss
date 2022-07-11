@@ -1,11 +1,12 @@
 @import '../../../scss/variables';
 .cart-errors {
-    border-top: 1px solid #F5681E;
-    border-bottom: 1px solid #F5681E;
+    border: 1px solid #F5681E;
+    // border-bottom: 1px solid #F5681E;
     background: $cart-errors-bg;
-    width: 100%;
-    padding: 0px 5px 10px;
-    margin-top: 10px;
+    // width: 100%;
+    padding: 0px 2px 10px;
+    border-radius: 8px;
+    margin: 0px 15px;
     .panel-head {
         background: none;
         margin: 0px;
@@ -35,22 +36,14 @@
     @extend %clear-fix;
     .prod-name {
         float: left;
-        width: calc(100% - 100px);
+        width: calc(100% - 110px);
         color: $txt-color;
-        font-weight: 400;
+        font-weight: medium; 
         margin-top: 1px;
+        font-size: $small-font;
     }
-    .view-btn {
+    .quaternary-btn-2 {
         float: right;
+        padding: 5px 8px;
     }
-}
-
-.view-btn {
-    background: $white;
-    padding: 5px 8px;
-    display: inline-block;
-    font-size: $medium-font;
-    border-radius: 3px;
-    color: #278BED;
-    font-weight: bold;
 }

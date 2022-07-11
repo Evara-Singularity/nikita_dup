@@ -1,4 +1,4 @@
-import { Component, Output, Input, EventEmitter, OnInit, AfterViewInit, OnDestroy, ChangeDetectionStrategy, ViewChild, } from '@angular/core';
+import { Component, Output, Input, EventEmitter, OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild, } from '@angular/core';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { AddressListService } from './address-list.service';
@@ -16,7 +16,7 @@ import { CommonService } from '@app/utils/services/common.service';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AddressListComponent implements OnInit, OnDestroy {
     @ViewChild(BottomMenuComponent) _bottomMenuComponent: BottomMenuComponent;
     @Output() outData$: EventEmitter<any> = new EventEmitter<any>();
     @Output() closePopUp$: EventEmitter<any> = new EventEmitter<any>();
@@ -42,7 +42,6 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
-        
         this.sai = 0;
         this.cartService.selectedBusinessAddressObservable.subscribe((data) => {
             this.selectedBillingAddress = data.length - 1;
@@ -60,23 +59,15 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     setAddressIndex() {
         const selectedAddress = (this.type == 1) ? this._checkoutService.getCheckoutAddress() : this._checkoutService.getBillingAddress();
-
         if (this.addresses && selectedAddress && this.addresses.length > 0) {
             this.addresses.forEach((address, index) => {
-                console.log(address['idAddress'], selectedAddress['idAddress']);
                 if (address['idAddress'] == selectedAddress['idAddress']) {
                     this.sai = index;
                 }
             });
         }
-
-        // auto selected 
         this._addressListService.setLastSelectedAddress(null);
     }
-
-    // ngOnChanges(changes: SimpleChanges): void {
-
-    // }
 
     ngOnDestroy() {
         of(null)
@@ -89,9 +80,6 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.enableScroll();
                 }
             });
-    }
-
-    ngAfterViewInit() {
     }
 
     preventDefault(e) {
@@ -133,9 +121,6 @@ export class AddressListComponent implements OnInit, AfterViewInit, OnDestroy {
         this._addressListService.setLastSelectedAddress({
             ucai: { address: address, type: addressType }
         });
-        // this.outData$.emit({
-        //     ucai: { address: address, type: addressType }
-        // });
     }
 
     /**

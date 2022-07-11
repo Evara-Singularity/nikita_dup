@@ -1,0 +1,66 @@
+/*Heading Classes*/
+h1,
+h2,
+h3,h4,h5,h6 {
+    color:var(--onyx-black);
+}
+/*Common Heading Classes*/
+.heading {
+    font-size: $extra-large-font;
+}
+h1{
+    font-size:$extra-large-3-font;
+}
+h2,
+.heading-2 {
+    font-size:$extra-large-font;
+}
+h3,
+.heading-3{
+    font-size: $large-font;
+    padding: 10px 0;
+    font-weight:$font-bold;
+    .txt{
+        color: $dark-gray-color;
+        font-size: $medium-font;
+    }
+}
+// custom h3
+.heading-custom-3{
+    font-size: $extra-large-font;
+    line-height: 21px;
+    padding: 0px;
+}
+// custom h3
+.heading-4,h4 {
+    font-size: $medium-font;
+}
+.heading-5,h5 {
+    font-size:$small-font;
+}
+.heading-6,h6 {
+    font-size:$extra-small-font;
+}
+.small-txt {
+    font-size: $medium-font;
+    font-weight:$font-normal;
+}
+.extra-small-txt {
+    font-size: $small-font;
+    font-weight: $font-normal;
+    line-height: 14px;
+}
+.link-text{
+    color:var(--bleu-de-france);
+    font-size:$medium-font;
+}
+.small-heading{
+    font-size:$small-font;
+    color:var(--spanish-gray);
+    display: inline-block;
+    font-weight:$font-bold;
+    margin-bottom:10px;
+}
+.font-bold{
+    font-weight:$font-bold;
+}

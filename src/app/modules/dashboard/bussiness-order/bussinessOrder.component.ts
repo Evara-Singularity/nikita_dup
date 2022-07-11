@@ -207,7 +207,7 @@ export class BussinessOrderComponent {
   }
 
   showOrder(orderId, index) {
-    this.isShowLoader = true;
+    //this.isShowLoader = true;
     this._businessOrderService
       .getOrderDetail(orderId, this.user["userId"])
       .pipe(
@@ -234,7 +234,7 @@ export class BussinessOrderComponent {
         })
       )
       .subscribe((res) => {
-        this.isShowLoader = false;
+        //this.isShowLoader = false;
         this.orders.forEach((element, i) => {
           if (i == index) {
             element["isOrderVisible"] = true;

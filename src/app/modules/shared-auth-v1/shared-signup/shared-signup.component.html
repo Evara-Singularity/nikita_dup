@@ -12,9 +12,9 @@
         <p class="error-field error-txt">{{isSingupUsingPhone?'Just a few more details':'Please provide below
             information'}}</p>
     </div>
-    <div class="login-card">
+    <div class="login-card pad-15 mar-15">
         <form class="material-form" [formGroup]="signupForm">
-            <div class="outline-input-label">
+            <div class="outline-input-label mb-25">
                 <label [class.is-focus]="firstName.value.length!=0">
                     <input type="text" formControlName="firstName" maxlength="20">
                     <span class="label">Enter User Name (Optional)</span>
@@ -26,7 +26,7 @@
                     </ng-container> -->
                 </label>
             </div>
-            <div class="outline-input-label" *ngIf="!(isSingupUsingPhone)">
+            <div class="outline-input-label mb-25" *ngIf="!(isSingupUsingPhone)">
                 <label [class.is-focus]="phone.value.length!=0">
                     <input
                         [ngClass]="{'invalid-input': ( isSubmitted && ((phone.invalid && phone.hasError('startwithzero')) || (phone.invalid && !phone.hasError('startwithzero')) || (signupForm.valid && isUserExists)) )} "
@@ -43,7 +43,7 @@
                         login</p>
                 </label>
             </div>
-            <div class="outline-input-label" *ngIf="isSingupUsingPhone">
+            <div class="outline-input-label mb-25" *ngIf="isSingupUsingPhone">
                 <label [class.is-focus]="email.value.length!=0">
                     <input
                         [ngClass]="{'invalid-input': (isSubmitted && ((email.errors && email.errors.invalidCharT) || (signupForm.valid && isUserExists)) ) }"
@@ -58,7 +58,7 @@
                         Email already exists, try different email or try login</p>
                 </label>
             </div>
-            <div class="outline-input-label">
+            <div class="outline-input-label mb-25">
                 <label [class.is-focus]="password.value.length!=0">
                     <input
                         [ngClass]="{'invalid-input': (isSubmitted && ( (password.hasError('minlength')) || (password.hasError('space')) ))}"
@@ -77,11 +77,11 @@
             </div>
             <!-- TODO: change text below and function is using is signed up using phone -->
             <!-- Signup API needs to called -->
-            <button class="btn btn-variant1" *ngIf="!isSingupUsingPhone" (click)="validateUser($event)">
+            <button class="btn secondry-btn" *ngIf="!isSingupUsingPhone" (click)="validateUser($event)">
                 SIGN-UP NOW
             </button>
             <!-- Update Profile API needs to called -->
-            <button class="btn btn-variant1" *ngIf="isSingupUsingPhone" (click)="validateUserProfileAndUpdate($event)">
+            <button class="btn secondry-btn" *ngIf="isSingupUsingPhone" (click)="validateUserProfileAndUpdate($event)">
                 SUBMIT NOW
             </button>
         </form>

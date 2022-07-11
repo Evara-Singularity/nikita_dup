@@ -1,0 +1,13 @@
+<div class="scrolledHeader pad-10" [ngClass]="{'headerFixed': _commonService.isScrolledHeader}">
+    <a class="icon-menu header-icon mt-5" id="icon-menu" (click)="loadSideNav$.emit()"></a>
+    <a [routerLink]="['/']" class="moglix-app-logo mt-5">
+        <i class="icon-moglix_app_logo"></i>
+    </a>
+    <a class="search-bar">
+        <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav$.emit();"
+            placeholder="Search Product/Category/Brand...">
+    </a>
+    <a (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1 header-icon">
+        <span class="badge onw" *ngIf="noOfCart != 0">{{noOfCart}}</span>
+    </a>
+</div>

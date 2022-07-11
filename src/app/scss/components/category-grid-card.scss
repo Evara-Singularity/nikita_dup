@@ -1,0 +1,31 @@
+.category-grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+  text-align: center;
+  .category-grid-card {
+    width: calc(33.3% - 6px);
+    border-radius: 8px;
+    min-height: 100px;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 10px;
+    img {
+      width: 100px;
+    }
+    .category-text {
+      text-align: center;
+      padding-top: 5px;
+      &.view-all-cate {
+        color: var(--primary);
+        font-weight: 500;
+      }
+    }
+  }
+  .view-all-strip{
+    @extend %view-all-strip;
+    padding-top:15px !important;
+    padding-bottom:0px !important;
+  }
+}

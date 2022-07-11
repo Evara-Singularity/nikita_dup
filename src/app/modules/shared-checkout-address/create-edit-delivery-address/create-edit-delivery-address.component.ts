@@ -1,5 +1,7 @@
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { SharedPhoneVerificationComponent } from './../../shared-phone-verification/shared-phone-verification.component';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Compiler, Component, ComponentRef, EventEmitter, Injector, Input, NgModule, NgModuleRef, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OtpPopupComponent } from '@app/components/otp-popup/otp-popup.component';
 import { ModalService } from '@app/modules/modal/modal.service';
@@ -13,6 +15,7 @@ import { LocalAuthService } from '@services/auth.service';
 import { Subscription } from 'rxjs';
 import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 import { CONSTANTS } from './../../../config/constants';
+import { SharedPhoneVerificationModule } from './../../../modules/shared-phone-verification/shared-phone-verification.module';
 import { PopUpVariant2Module } from './../../pop-up-variant2/pop-up-variant2.module';
 
 @Component({
@@ -46,8 +49,13 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
     phoneSubscription: Subscription = null;
     postCodeSubscription: Subscription = null;
 
+    phoneVerificationInstance: ComponentRef<SharedPhoneVerificationComponent> = null;
+    @ViewChild("phoneVerification", { read: ViewContainerRef })
+    phoneVerificationContainerRef: ViewContainerRef;
+
     constructor(private _addressService: AddressService, private _localAuthService: LocalAuthService, private _formBuilder: FormBuilder,
-        private _commonService: CommonService, private _modalService: ModalService, private _toastMessage: ToastMessageService,)
+        private _commonService: CommonService, private _modalService: ModalService, private _toastMessage: ToastMessageService, private _compiler: Compiler,
+        private _injector: Injector, private _globalLoader:GlobalLoaderService)
     {
         this.userSesssion = this._localAuthService.getUserSession();
     }
@@ -150,21 +158,26 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
         })
     }
 
-    displayOTPPopup(phone)
+    async displayOTPPopup(phone)
     {
-        let modalData = { component: OtpPopupComponent, inputs: { phone: phone, source: 'address' }, outputs: {} };
-        this._modalService.show_v1(modalData).subscribe((cInstance) =>
+        const phoneVerificationModule = await import('./../../../modules/shared-phone-verification/shared-phone-verification.module').then(m => m.SharedPhoneVerificationModule);
+        const moduleFactory = await this._compiler.compileModuleAsync(phoneVerificationModule);
+        const phoneVerificationModuleRef: NgModuleRef<SharedPhoneVerificationModule> = moduleFactory.create(this._injector);
+        const componentFactory = phoneVerificationModuleRef.instance.resolveComponent();
+        this.phoneVerificationInstance = this.phoneVerificationContainerRef.createComponent(componentFactory, null, phoneVerificationModuleRef.injector);
+        this.phoneVerificationInstance.instance.displayPopup = true;
+        this.phoneVerificationInstance.instance.phone = this.phone.value;
+        (this.phoneVerificationInstance.instance["phoneValidation$"] as EventEmitter<boolean>).subscribe((validatedPhone) =>
         {
-            cInstance.instance['phone'] = this.phone.value;
-            (cInstance.instance['phoneValidation$'] as EventEmitter<any>).subscribe((validatedPhone) =>
-            {
-                if (validatedPhone === phone) {
-                    this.phoneVerified.patchValue(true);
-                    this.verifiedPhones.push(phone);
-                    this._toastMessage.show({ type: 'success', text: "Phone number verified successfully." });
-                }
-            });
-        })
+            this.phoneVerificationInstance.instance.displayPopup = false;
+            this.phoneVerificationInstance = null;
+            this.phoneVerificationContainerRef.remove();
+            if (validatedPhone === phone) {
+                this.phoneVerified.patchValue(true);
+                this.verifiedPhones.push(phone);
+                this._toastMessage.show({ type: 'success', text: "Phone number verified successfully." });
+            }
+        });
     }
 
     saveAddress(address)

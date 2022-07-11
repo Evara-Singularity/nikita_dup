@@ -1,6 +1,4 @@
 <div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader}" >
-
-    
     <div
         [class.visibility]="!((layoutType == 1 || layoutType == 2) && (!_commonService.selectedFilterData.page || _commonService.selectedFilterData.page < 2))">
         <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1"
@@ -30,21 +28,23 @@
             [categoryName]="API_RESPONSE['category'][0]['categoryDetails']['categoryName']"
             [categoryTaxonomay]="API_RESPONSE['category'][0]['categoryDetails']['taxonomy']"
             [productsListingData]="_productListService?.productListingData"
-            *ngIf="_productListService &&_productListService.productListingData">
+            *ngIf="API_RESPONSE?.category[0] && _productListService &&_productListService.productListingData">
         </shared-product-listing>
     </div>
     
     <!-- This is sub category section -->
-    <div [class.visibility]="_commonService.selectedFilterData.page > 1"
+    <div class="category-list pwa-row" [class.visibility]="_commonService.selectedFilterData.page > 1"
         [class.sub-cate-container]="API_RESPONSE.category[0]?.children?.length > 0">
-        <div class="container pt-10"  *ngIf="API_RESPONSE.category[0]?.children?.length > 0">
-            <p class="sub_category_heading">
-                {{API_RESPONSE.category[0].categoryDetails?.categoryName}}
-                <span class="light-txt f-16">({{API_RESPONSE.category[0]?.children?.length}}
-                    Categories)</span>
-            </p>
+        <div class="pwa-col-12">
+            <div class=""  *ngIf="API_RESPONSE.category[0]?.children?.length > 0">
+                <p class="sub_category_heading">
+                    {{API_RESPONSE.category[0].categoryDetails?.categoryName}}
+                    <span class="light-txt f-16">({{API_RESPONSE.category[0]?.children?.length}}
+                        Categories)</span>
+                </p>
+            </div>
+            <ng-container #subCategory></ng-container>
         </div>
-        <ng-container #subCategory></ng-container>
     </div>
     
     <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
@@ -53,7 +53,7 @@
         <app-accordian [accordiansDetails]="accordiansDetails"></app-accordian>
 
         <!-- This is recently article section -->
-        <div class="recent-article-container" *ngIf="(API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []).length > 0">
+        <div class="recent-article-container" *ngIf="(API_RESPONSE.category && API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []).length > 0">
             <recent-articles [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []"
                 [title]="API_RESPONSE.category[0]?.categoryDetails?.categoryName"></recent-articles>
         </div>
@@ -73,7 +73,7 @@
     
     <breadcrumb-nav [breadcrumb]="API_RESPONSE.category[3]"></breadcrumb-nav>
     <whatsapp-toast
-        (click)="sendWhatsappTrackingData()" [customText]="'Hi, I want to buy ' + API_RESPONSE.category[0].categoryDetails?.categoryName + ' products.'">
+        (click)="sendWhatsappTrackingData()" [customText]="'Hi, I want to buy ' + API_RESPONSE.category[0]?.categoryDetails?.categoryName + ' products.'">
     </whatsapp-toast>
 
 </div>

@@ -1,0 +1,129 @@
+@import "./tags";
+
+//Product description
+.prod-description {
+    background: var(--white);
+    position: relative;
+
+    .prod-name {
+        font-weight: $font-bolder;
+        line-height: $large-line-height;
+        letter-spacing: 0.5px;
+        font-size: $extra-large-1-font;
+    }
+
+    .prod-inner-desc {
+        padding: 10px 0px 5px;
+        display: block;
+        display: flex;
+        align-items: center;
+
+        .rating-box {
+            background: var(--slimy-green);
+            padding: 5px;
+            border-radius: $border-radius-4;
+            color: var(--white);
+            font-weight: $font-bold;
+
+            i {
+                color: var(--white);
+                padding-left: 5px;
+            }
+        }
+
+        .prod-status {
+            font-size: $medium-font;
+            padding-left: 5px;
+
+            .status {
+                color: var(--slimy-green);
+                font-weight: bold;
+
+                &.s_oos {
+                    color: var(--primary);
+                    font-weight: $font-bolder;
+                }
+            }
+
+            .prod-status-right {
+                display: block;
+                color: var(--black);
+
+                .review {
+                    color: var(--onyx-black);
+                    font-size: $medium-font;
+                }
+
+                .left-pipe {
+                    position: relative;
+                    padding-left: 5px;
+
+                    &::after {
+                        position: absolute;
+                        content: "|";
+                        top: 0px;
+                        left: 0px;
+                        color: var(--black);
+                    }
+                }
+            }
+        }
+    }
+
+    .price-block {
+        padding: 10px 0px 0px 0px;
+
+        .mrp {
+            font-size: $medium-font;
+            color: var(--spanish-gray);
+
+            span {
+                color: var(--slimy-green);
+                text-decoration: initial;
+                font-weight: $font-bold;
+            }
+
+            small {
+                font-size: $medium-font;
+                padding-right: 5px;
+                letter-spacing: 0.5px;
+                text-decoration: line-through;
+            }
+        }
+
+        .actual-price {
+            padding: 0px;
+            color: var(--black);
+            letter-spacing: 0.5px;
+            small {
+                font-size: $medium-font;
+                font-weight: normal !important;
+                // display: block;
+                padding-top: 5px;
+                color: var(--spanish-gray);
+                .icon-expand {
+                    font-size: 6px;
+                    vertical-align: middle;
+                    padding-bottom: 2px;
+                    margin: 0 4px 0 -3px;
+                }
+            }
+            strong {
+                font-size: $extra-large-3-font;
+                font-weight: $font-bolder;
+            }
+        }
+    }
+}
+
+.pdp-price-qty-block {
+    display: flex;
+    clear: both;
+    justify-content: space-between;
+    align-items: center;
+}
+.pwa-inline-tooltip{
+    .pwa-tooltip-text{
+        font-size: 12px !important;
+    }
+}

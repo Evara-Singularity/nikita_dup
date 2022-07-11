@@ -1,601 +1,348 @@
-    .moglixhainacampwrap {
-        margin: 0px;
-    }
-    
-    .banner-slide {
-        width: 100%;
-        position: relative;
-    }
-    
-    .headerStaticContent {
-        background: #D9232D;
-        color: #fff;
+@import '../../scss/variables';
+@import '../../scss/layout/grid.scss';
+@import '../../scss/root';
+
+.moglixhainacampwrap {
+    .moglixHainaBanner {
+        background: var(--orange-red);
         padding: 20px 15px;
-        position: relative;
-        z-index: 1;
-        width: 100%;
-        min-width: 300px;
-        &.headerStaticType2 {
-            background: #FEAE2D;
-            a {
-                margin-top: 10px;
-            }
-            .heading-type-2 {
-                font-weight: 400;
-                color: #fff;
-                line-height: 28px;
-                font-size: 20px;
-                margin: 10px 0px;
-                &>* {
-                    color: #fff;
-                }
-                span {
-                    font-weight: bold;
-                    font-size: 30px;
-                    margin: 20px 0px;
-                    display: inline-block;
-                }
-            }
-            .heading-type-2-txt {
-                font-size: 16px;
-                line-height: 25px;
-                color: #fff;
-                padding: 15px 0px;
-            }
+        h2 {
+            font-size: $extra-large-2-font;
+            color: var(--white);
+            font-weight: $font-normal;
+            line-height: $large-line-height;
+        }
+        h1 {
+            font-size: $extra-large-3-font;
+            color: var(--white);
+            padding: 15px 0 20px;
+            box-sizing: border-box;
+        }
+        p {
+            font-size: $large-font;
+            color: var(--white);
+            line-height: $large-line-height;
+        }
+        .quaternary-btn-2 {
+            color: var(--onyx-black);
+            font-weight: 400;
+            margin: 25px 0;
         }
     }
-    
-    .headerStaticContent .aeroplane_img {
-        position: absolute;
-        top: 60px;
-        width: 375px;
-        left: -18px;
-        height: 275px;
-        z-index: -1;
-    }
-    
-    .headerStaticContent p {
-        font-size: 20px;
-        margin: 10px 0px;
-        color: #fff;
-    }
-    
-    .headerStaticContent p.small-txt {
-        font-size: 10px;
-    }
-    
-    .headerStaticContent h4 {
-        font-size: 30px;
-        font-weight: bold;
-    }
-    
-    .headerStaticContent .yatra_section {
-        display: inline-block;
-        font-size: 11px;
-        vertical-align: middle;
-        background: #ffffff6b;
-        padding: 5px;
-    }
-    
-    .headerStaticContent .yatra_section img {
-        vertical-align: middle;
-        width: 60px;
-    }
-    
-    .headerStaticContent a {
-        border-radius: 5px;
-        color: #2B2B2B;
-        background: #fff;
-        font-size: 12px;
-        font-weight: bold;
-        display: inline-block;
-        padding: 10px 15px;
-        margin-top: 40px;
-    }
-    
-    .contestSection {
-        background: #fff;
-        padding: 20px 40px;
-        text-align: center;
-    }
-    
-    .contestSection h3 {
-        color: #2B2B2B;
-        font-size: 20px;
-        font-weight: 400;
-        padding-bottom: 20px;
-    }
-    
     .celebrates-wrap {
-        width: 100%;
-        background-color: #F8F8F8;
-        padding: 60px 0 70px 0;
-    }
-    
-    .celebrates-wrap .content-box {
-        width: 100%;
-        padding: 10px 15px;
-        position: relative;
-    }
-    
-    .celebrates-wrap .content-box .heading-txt {
-        margin: 0 -15px 20px;
-    }
-    
-    .celebrates-wrap .content-box .heading-txt p {
-        font-size: 18px;
-        line-height: 26px;
-        margin-bottom: 5px;
-        text-align: center;
-    }
-    
-    .celebrates-wrap .content-box .heading-txt p.black {
-        color: #2B2B2B;
-    }
-    
-    .celebrates-wrap .content-box .heading-txt p.red {
-        color: #EA3223;
-        font-weight: 300
-    }
-    
-    .celebrates-wrap .content-box .heading-txt p.red strong {
-        font-weight: 500;
-        color: #EA3223;
-    }
-    
-    .celebrates-wrap .content-box img {
-        width: 100%;
-        margin: 0 0 -50px 20px;
-    }
-    
-    .celebrates-wrap .content-box .txt-content {
-        background-color: #EAEAF4;
-        padding: 75px 20px 50px 20px;
-    }
-    
-    .celebrates-wrap .content-box .txt-content p {
-        font-size: 16px;
-        line-height: 25px
-    }
-    
-    .industryneed-wrap {
-        position: relative;
-        background: #fff;
-        text-align: center;
-        padding: 0 0px 60px;
-    }
-    
-    .giftcard {
-        position: relative;
-        padding: 60px 20px 100px;
-    }
-    
-    .giftcard>img {
-        position: absolute;
-        left: 0;
-        width: 100%;
-        max-width: 23%;
-        top: -60px;
-    }
-    
-    .giftcard .nominate-text {
-        padding-left: 27%;
-        font-size: 25px;
-        width: 100%;
-        text-align: left;
-        color: #fff;
-        line-height: 36px;
-        font-weight: 300;
-        float: left;
-        max-width: 875px
-    }
-    
-    .giftcard .nominate-text strong {
-        font-weight: 500;
-    }
-    
-    .nominate-btn {
-        float: right;
-        height: 50px;
-        background: #D9232D;
-        display: inline-block;
-        border-radius: 5px;
-        color: #fff;
-        padding: 0 25px;
-        font-size: 18px;
-        line-height: 50px
-    }
-    
-    .nominate-btn:hover {
-        text-decoration: none
-    }
-    
-    .offerings {
-        background: #A9F0F6;
-        border-radius: 10px;
-        padding: 50px 0;
-        margin-bottom: -130px
-    }
-    
-    .offerings h2 {
-        font-size: 25px;
-        font-weight: 400;
-        margin-bottom: 40px
-    }
-    
-    .offerings h2 strong {
-        font-weight: 500
-    }
-    
-    .listingview-inner {
-        background: #fff;
-        border-radius: 10px;
-        padding: 30px;
-        text-align: left;
-        min-height: 350px
-    }
-    
-    .listingview-inner img {
-        width: 100px;
-        margin-bottom: 20px
-    }
-    
-    .listingview-inner h3 {
-        font-size: 20px;
-        font-weight: 500;
-        margin-bottom: 20px
-    }
-    
-    .listingview-inner p {
-        font-size: 14px;
-        line-height: 23px
-    }
-    
-    .offeringaction {
-        padding: 40px 20px 20px
-    }
-    
-    .offeringaction h3 {
-        font-size: 19px;
-        font-weight: 400;
-        line-height: 29px;
-        margin-bottom: 20px
-    }
-    
-    .offeringaction a {
-        height: 50px;
-        background: #2b2b2b;
-        display: inline-block;
-        border-radius: 5px;
-        color: #fff;
-        padding: 0 25px;
-        font-size: 20px;
-        line-height: 50px
-    }
-    
-    .offeringaction a:hover {
-        text-decoration: none
-    }
-    
-    .watchaction-wrap {
-        width: 100%;
-        padding: 130px 0 70px 0;
-    }
-    
-    .watchaction-wrap h3 {
-        font-size: 20px;
-        font-weight: 400;
-        margin-bottom: 25px;
-        position: relative
-    }
-    
-    .watchaction-wrap h3>span {
-        font-weight: 600;
-        font-size: 14px;
-        float: right;
-    }
-    
-    .watchaction-wrap h3>span span,
-    .watchaction-wrap h3>span i {
-        display: inline-block;
-        vertical-align: middle
-    }
-    
-    .watchaction-wrap .first-row {
-        margin-bottom: 25px;
-    }
-    
-    .watchaction-wrap .video-block {
-        width: 100%;
-    }
-    
-    .video-block .video-thumb {
-        background-size: 100% !important;
-        position: relative;
-        padding: 120px 20px;
-    }
-    
-    .watchaction-wrap .video-block img {
-        width: 100%;
-    }
-    
-    .playbtnonslider {
-        position: absolute;
-        top: 45%;
-        transform: translatey(-50%);
-        right: 17%;
-        width: 65px;
-        height: 65px;
-        background: url(https://business.moglix.com/wp-content/themes/route-child/img/moglixhaina/video_play.svg) no-repeat top left;
-        background-size: 100%;
-        cursor: pointer;
-        z-index: 10
-    }
-    
-    .playbtn {
-        position: absolute;
-        top: 50%;
-        transform: translatey(-50%);
-        left: 0;
-        right: 0;
-        width: 65px;
-        height: 65px;
-        background: url(https://business.moglix.com/wp-content/themes/route-child/img/moglixhaina/video_play.svg) no-repeat top left;
-        background-size: 100%;
-        margin: auto;
-        cursor: pointer
-    }
-    
-    .videotext {
-        position: absolute;
-        bottom: 20px;
-        color: #fff;
-        font-size: 15px;
-        line-height: 17px;
-        font-weight: 600;
-    }
-    
-    .videotext span {
-        display: block;
-        color: #fff;
-        font-weight: 400;
-        font-size: 13px;
-        padding-top: 6px
-    }
-    
-    .mog_awardssection {
-        padding: 100px 40px 0px;
-        background-size: contain;
-        position: relative;
-        z-index: 1;
-    }
-    
-    // .mog_awardssection h2{font-size:28px;font-weight:400;color:#fff;margin-bottom:40px}
-    .choosemoglix_list {
-        list-style: none;
-        color: #fff;
-        padding-left: 0;
-        margin-bottom: 80px;
-        li {
-            float: left;
-            margin-right: 20px;
-            padding-right: 15px;
-            min-width: 0;
-            text-align: left;
-            ;
-            width: 18%;
-            position: relative;
-            &:before {
-                border-right: 1px solid rgba(255, 255, 255, 0.2);
-                height: 40px;
-                content: '';
-                position: absolute;
-                right: 0;
+        width: $fullwidth;
+        background-color: var(--cultured);
+        padding: 30px 0 40px 0;
+        .content-box{
+            padding: 10px 0;
+            margin: auto;
+            p{
+                color: var(--primary);
+                font-size: $extra-large-1-font;
+                text-align: center;
+                margin-bottom: 20px;
+                span{
+                    text-decoration: line-through;
+                }
             }
             img {
-                width: auto;
-                margin-bottom: 15px;
-            }
-            &:last-child {
-                border: none;
-                margin-right: 0;
-                padding-right: 0;
-                &:before {
-                    border: none;
-                }
-            }
-            div {
-                font-size: 18px;
-                margin-bottom: 15px;
-                color: #fff;
-                font-weight: 700;
-            }
-            span {
-                color: #fff;
+                width: 93%;
+                margin: 0 auto -50px;
                 display: block;
-                line-height: 20px;
+            }
+            .txt-content{
+                background: var(--ghost-white);
+                padding: 75px 20px 26px 20px;
+                p{
+                    color: var(--onyx-black);
+                    text-align: left;
+                    font-size: $large-font;
+                    line-height: $medium-line-height;
+                }
             }
         }
     }
-    
-    .award_row {
-        background: #fff;
-        box-shadow: 0 3px 50px rgba(0, 0, 0, 0.16);
-        border-radius: 10px;
-    }
-    
-    .awards-strip {
-        padding: 50px 0px
-    }
-    
-    .awards-strip h2 {
-        font-size: 28px;
-        font-weight: 400;
-        color: #000;
+    .moglixhaina-head{
         margin-bottom: 20px;
+        h2{
+            font-size:$extra-large-2-font;
+            color: var(--onyx-black);
+            text-align: center;
+            span{
+                color: var(--primary);
+            }
+        }
     }
-    
-    .award-imgs {
-        padding-left: 0;
-        list-style: none;
-        margin: 0 -5px
+    .categories-section{
+        padding: 50px 0 30px;
+        background: var(--white);
+        .inner-block{
+            &:first-child {
+                .category-wrap {
+                    &>div.category-innercontent {
+                        background: var(--cream);
+                    }
+                }
+            }
+            &:last-child {
+                .category-wrap {
+                    &>div.category-innercontent {
+                        background: var(--nyanza);
+                    }
+                }
+            }
+            .category-wrap {
+                img {
+                    width: $fullwidth;
+                    display: block;
+                    max-width: 320px;
+                    margin: 0 auto -100px;
+                }
+                .category-innercontent {
+                    background: var(--champagne-pink);
+                    border-radius: 10px;
+                    padding: 120px 30px 30px;
+                    h3 {
+                        font-size: $extra-large-1-font;
+                        margin-bottom: 10px;
+                    }
+                    p {
+                        font-size: $large-font;
+                        line-height: $medium-line-height;
+                    }
+                    .explore-now {
+                        margin-top: 20px;
+                    }
+                } 
+            }
+        }  
     }
-    
-    .award-imgs li {
-        float: left;
-        width: 14.222%;
-        padding: 10px 5px
+    .popular-categories {
+        background: var(--white);
+        padding: 20px 0 30px;
+        .popular-category-list{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            li {
+                display: inline-block;
+                width: $fullwidth;
+                vertical-align: top;
+                margin-bottom: 30px;
+                .category-wrap-item {
+                    position: relative;
+                    img {
+                        display: block;
+                    }
+                    h3 {
+                        font-size: $large-font;
+                        font-weight: 600;
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        color: var(--onyx-black);
+                        span {
+                            color: var(--spanish-gray);
+                            display: block;
+                            font-weight: $font-normal;
+                            margin-top: 5px;
+                            font-size: $medium-font;
+                        }
+                    }
+                }
+            }
+        }
     }
-    
-    .award-imgs li>div {
+    .industrialneed-wrap{
+        background: var(--paleturquoise);
+        border-radius: 10px;
+        padding: 40px 5px 0;
+        margin-bottom: 40px;
+        .industrial-heading{
+            padding-bottom: 30px;
+            h2{
+                font-size: $extra-large-2-font;
+                font-weight: $font-normal;
+                text-align: center;
+            }
+        }
+        .listingview-inner {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: left;
+            min-height: auto;
+            margin-bottom: 15px;
+            img {
+                width: 60px;
+                margin-bottom: 15px;
+            }
+            h3 {
+                font-size: $extra-large-1-font;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            p {
+                font-size: $large-font;
+                line-height: $large-line-height;
+            }
+        }
+    }
+    .watchaction-wrap {
+        width: $fullwidth;
+        padding: 40px 0 30px ;
+        .watch-action-heading{
+            padding: 0 15px;
+            h3{
+                font-size: $extra-large-2-font;
+                font-weight: $font-normal;
+                color: var(--onyx-black);
+                padding: 10px 0;
+            }
+        }
+        .video-action{
+            width: $fullwidth;
+            .video-block{
+                margin-bottom: 20px;
+                .video-thumb{
+                    padding: 135px 20px;
+                    background-size: cover !important;
+                    position: relative;
+                    .playbtn {
+                        position: absolute;
+                        top: 50%;
+                        transform: translatey(-50%);
+                        left: 0;
+                        right: 0;
+                        width: 65px;
+                        height: 65px;
+                        background: url(https://business.moglix.com/wp-content/themes/route-child/img/moglixhaina/video_play.svg) no-repeat top left;
+                        background-size: 100%;
+                        margin: auto;
+                        cursor: pointer
+                    }
+                    .video-text {
+                        position: absolute;
+                        bottom: 10px;
+                        color: var(--white);
+                        font-size: $large-font;
+                        line-height: $small-line-height;
+                        font-weight: $font-bolder;
+                        span {
+                            display: block;
+                            color: var(--white);
+                            font-weight: $font-normal;
+                            font-size: $medium-font;
+                            padding-top: 6px
+                        }
+                    }
+                }  
+            } 
+        }
+    }
+    .moglix-awardsection{
         position: relative;
-        cursor: pointer;
-        border: 1px solid #ccc;
-        height: 165px;
-        padding: 10px
+        padding: 40px 0 0;
+        background: url(https://business.moglix.com/wp-content/themes/route-child/img/moglixhaina/mobile_background.jpg) no-repeat center top #125e9e;
+        height: 580px;
+        .moglix-list{
+            position: absolute;
+            color: var(--white);
+            width: $fullwidth;
+            .list-container{
+                margin-bottom: 10px;
+                width: $fullwidth;
+                .list-item{
+                    img{
+                        width: 34px;
+                        justify-content: flex-start;
+                        margin-bottom: 15px;
+                    }
+                    &:nth-child(odd){
+                        padding-right: 10px;
+                    }
+                    &:nth-child(even){
+                        padding-left: 10px;
+                    }
+                    .counter-text{
+                        font-size: $medium-font;
+                        line-height: $small-line-height;
+                        margin-bottom: 0;
+                        font-weight: $font-bold;
+                    }
+                    span{
+                        font-size: $small-font;
+                        line-height: $small-line-height;
+                    }
+                    &:before{
+                        border-right: 1px solid hsla(0,0%,100%,.2);
+                        height: 40px;
+                        content: "";
+                        position: absolute;
+                        right: 0;
+                    }
+                }
+            }
+
+        }
     }
-    
-    .award-imgs li>div:before {
-        background: rgba(0, 0, 0, 0.8);
-        z-index: 1;
+    .awards-section{
         position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        content: '';
-        right: 0;
-        opacity: 0;
-        transition: 0.2s all ease-in
+        margin-top: -130px;
+        width: $fullwidth;
+        .award-container{
+            padding: 30px 15px;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 3px 50px rgba(0, 0, 0, 0.16);
+            h2{
+                font-size: $extra-large-2-font;
+                font-weight: 400;
+                margin-bottom: 15px;
+            }
+            .industry-recognition{
+                margin-bottom: 20px;
+                padding: 0;
+                .recognition-column{
+                    &:nth-child(odd){
+                        padding-right: 5px;
+                    }
+                    &:nth-child(even){
+                        padding-left: 5px;
+                    }
+                    .overlay-section{
+                        position: relative;
+                        width: $fullwidth;
+                        border: 1px solid var(--silver);
+                        .overlay-image {
+                            display: block;
+                            max-width: 120px;
+                            margin: 16px auto;  
+                        }
+                        .overlay-text {
+                            position: absolute; 
+                            height:100%;
+                            bottom: 0; 
+                            background: #000000cc;
+                            width: $fullwidth;
+                            transition: .5s ease;
+                            opacity:0;
+                            color: var(--white);
+                            font-size: $medium-font;
+                            padding: 10px;
+                            text-align: center;
+                            align-items: center;
+                            justify-content: center;
+                            display: flex;
+                        }
+                        &:hover .overlay-text {
+                            opacity: 1;
+                        }  
+                    }
+                } 
+            }   
+        }
     }
-    
-    .award-imgs li>div img {
-        position: absolute;
-        left: 0;
-        right: 0;
-        margin: auto;
-        display: inline-block
-    }
-    
-    .award-imgs li>div h4 {
-        font-size: 13px;
-        font-weight: 400;
-        left: 10px;
-        right: 10px;
-        text-align: center;
-        top: 50%;
-        transform: translatey(-50%);
-        transition: 0.2s all ease-in;
-        z-index: 2;
-        line-height: 18px;
-        position: absolute;
-        color: #fff;
-        opacity: 0;
-    }
-    
-    .award-imgs li>div:hover::before,
-    .award-imgs li>div:hover h4 {
-        opacity: 1;
-    }
-    
-    .featured-coverage {
-        background: #F5F5F5;
-        padding-top: 60px;
-        padding-bottom: 60px;
-        position: relative;
-        z-index: 0;
-    }
-    
-    .featured-coverage h2 {
-        font-size: 20px;
-        font-weight: 400;
-        margin-bottom: 25px;
-        position: relative;
-    }
-    
-    .featured-coverage h2>a {
-        font-weight: 600;
-        display: inline-block;
-        font-size: 14px;
-        padding-top: 4px;
-        float: right;
-        color: #222
-    }
-    
-    .featured-coverage h2>a:hover {
-        text-decoration: none
-    }
-    
-    .featured-coverage h2>a span,
-    .featured-coverage h2>a i {
-        display: inline-block;
-        vertical-align: middle
-    }
-    
-    .coveragebox {
-        padding-left: 0;
-        list-style: none;
-        margin: 0 5px
-    }
-    
-    .coveragebox li {
-        float: left;
-        width: 25%;
-        padding: 10px 7px
-    }
-    
-    .coveragebox li>div.cover_boxinner {
-        position: relative;
-        background: #fff;
-        padding-bottom: 10px;
-        cursor: pointer;
-    }
-    
-    .wp-block-columns {
-        margin-bottom: 0
-    }
-    
-    .coveragebox li>div.cover_boxinner h4 {
-        padding: 15px;
-        font-size: 14px;
-        line-height: 20px;
-        font-weight: 400;
-        min-height: 70px
-    }
-    
-    .coveragebox li>div.cover_boxinner a {
-        background: #2B2B2B;
-        color: #fff !important;
-        height: 36px;
-        margin: 10px 15px;
-        display: inline-block;
-        line-height: 36px;
-        position: relative;
-        font-size: 14px;
-        width: 100px;
-        padding: 0 10px;
-        border-radius: 5px;
-        text-align: center;
-    }
-    
-    .coveragebox li>div.cover_boxinner a span {
-        color: #fff;
-    }
-    
-    .coveragebox li>div.cover_boxinner a i {
-        position: absolute;
-        right: 10px;
-        top: 0;
-        font-size: 20px;
-    }
-    
-    .coveragebox li>div.cover_boxinner a:hover {
-        text-decoration: none
-    }
-    
-    .desktophidden {
-        display: none;
-    }
-    
     .formforenterprise {
         display: none;
         position: fixed;
@@ -606,6 +353,7 @@
         background: rgba(0, 0, 0, 0.5);
         z-index: 56789999;
         .inner-formforentprise {
+            width: $fullwidth;
             position: fixed;
             left: 0;
             right: 0;
@@ -614,623 +362,39 @@
             top: 50%;
             width: 60%;
             margin: auto;
-            background: #000;
+            background: var(--black);
             .crossthispop {
                 cursor: pointer;
                 top: 0;
                 right: 0;
                 height: 20px;
                 width: 20px;
-                background: #fff;
+                background: var(--white);
                 z-index: 2;
                 position: absolute;
-                line-height: 20px;
-                color: #D9232D;
-                font-size: 19px;
+                line-height: $medium-line-height;
+                color: var(--primary);
+                font-size: $extra-large-1-font;
                 text-align: center;
             }
-        }
-    }
-    
-    .videoareawrap {
-        position: relative;
-        padding-bottom: 56.25%;
-        padding-top: 25px;
-        height: 0;
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-    }
-    
-    .moglixhaina_head2 {
-        font-size: 28px;
-        color: #2B2B2B;
-        text-align: center;
-        margin-bottom: 30px;
-        span {
-            color: #D9232D;
-        }
-    }
-    
-    .cat_wrap {
-        &>img {
-            width: 100%;
-            display: block;
-            max-width: 320px;
-            margin: 0 auto -100px;
-        }
-        &>div.cat_innercontent {
-            background: #FCF1DF;
-            border-radius: 10px;
-            padding: 120px 30px 30px;
-            h3 {
-                font-size: 18px;
-                font-weight: 600;
-                margin-bottom: 10px;
-            }
-            p {
-                font-size: 15px;
-                line-height: 20px;
-            }
-            a {
-                height: 36px;
-                padding: 0 10px;
-                border-radius: 5px;
-                background: #D9232D;
-                margin-top: 20px;
-                color: #fff !important;
-                font-weight: 500;
-                line-height: 36px;
-                display: inline-block;
-            }
-        }
-    }
-    
-    .categories_sec {
-        padding: 50px 0 60px;
-        background: #fff;
-        .col-md-4 {
-            &:first-child {
-                .cat_wrap {
-                    &>div.cat_innercontent {
-                        background: #FFFBD6;
-                    }
-                }
-            }
-            &:last-child {
-                .cat_wrap {
-                    &>div.cat_innercontent {
-                        background: #EAF8FF;
-                    }
-                }
-            }
-        }
-    }
-    
-    .categories_sec2 {
-        background: #fff;
-        padding: 20px 0 50px;
-    }
-    
-    .popularcat_list {
-        list-style: none;
-        padding: 0;
-        margin: 0 -15px;
-        li {
-            display: inline-block;
-            width: 32%;
-            vertical-align: top;
-            padding: 0 15px;
-            margin-bottom: 30px;
-            .cat_wrap_item {
+            .videoareawrap {
                 position: relative;
-                img {
-                    display: block;
-                }
-                h3 {
-                    font-size: 15px;
-                    font-weight: 600;
+                padding-bottom: 56.25%;
+                padding-top: 25px;
+                height: 0;
+                iframe {
                     position: absolute;
-                    bottom: 0;
+                    top: 0;
                     left: 0;
-                    span {
-                        color: #666;
-                        display: block;
-                        font-weight: 400;
-                        margin-top: 5px;
-                        font-size: 13px;
-                    }
+                    width: $fullwidth;
+                    height: 100%;
                 }
             }
         }
     }
-    /*css moglix haina -manisha*/
-    
-    .moglixHainaBanner {
-        background: #FEAE2D;
-        padding: 20px 15px;
-        h2 {
-            font-size: 20px;
-            color: #fff;
-            font-weight: 400;
-            line-height: 30px;
-        }
-        h1 {
-            font-size: 30px;
-            color: #fff;
-            line-height: 45px;
-            padding: 5px 0 20px;
-            box-sizing: border-box;
-        }
-        p {
-            font-size: 15px;
-            font-weight: 400;
-            color: #fff;
-            line-height: 23px;
-        }
-        .watch-now {
-            background: #fff;
-            border-radius: 5px;
-            color: #2B2B2B;
-            padding: 9px 20px;
-            font-size: 10px;
-            font-weight: 500;
-            display: inline-block;
-            margin: 25px 0;
+    .moglixhainavideopop{
+        .inner-formforentprise {
+            width: $fullwidth;
         }
     }
-    
-    .container {
-        margin-right: auto;
-        margin-left: auto;
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-    
-    @media (min-width: 1200px) {
-        .container {
-            width: 1170px;
-        }
-    }
-    
-    @media (max-width: 992px) {
-        .container {
-            width: 970px;
-        }
-    }
-    
-    @media (max-width: 768px) {
-        .container {
-            width: 100%;
-        }
-        .main-wrapper1 .container,
-        .mdl_content_section .container,
-        .last-section-accordion .container,
-        .footermoglixhaina .container {
-            width: 100%;
-            padding-left: 15px;
-            padding-right: 15px;
-        }
-    }
-    
-    @media (max-width: 767px) {
-        .container {
-            width: 100%;
-            padding-left: 15px;
-            padding-right: 15px;
-        }
-        .rotatebox>.rotateboxcontent {
-            margin-right: 0;
-            top: auto;
-            transform: none;
-        }
-        .rotatebox h2 {
-            font-size: 25px;
-            line-height: 34px;
-        }
-        .celebrates-wrap {
-            padding-left: 0
-        }
-        .rotating {
-            width: 100% !important;
-            transform: none !important;
-            height: 100% !important;
-            left: 0 !important;
-            top: 0 !important;
-            border-radius: 0 !important;
-        }
-        .coveragebox li {
-            width: 100%;
-            float: none;
-        }
-        .coveragebox li>div.cover_boxinner h4 {
-            min-height: 0
-        }
-        .footermoglixhaina .route_widget {
-            margin-bottom: 0
-        }
-        .mog_awardssection {
-            background: #f5f5f5 !important;
-            position: relative;
-            padding: 40px 15px 0
-        }
-        .mog_awardssection:before {
-            background: url(https://business.moglix.com/wp-content/themes/route-child/img/moglixhaina/mobile_background.jpg) no-repeat center top #125e9e;
-            content: '';
-            top: 0;
-            left: 0;
-            right: 0;
-            position: absolute;
-            z-index: 0;
-            height: 580px;
-        }
-        .mog_awardssection h2 {
-            font-size: 21px
-        }
-        .mog_awardssection .container {
-            z-index: 1;
-            position: relative
-        }
-        .choosemoglix_list {
-            margin: 0 -15px 30px;
-            li {
-                min-width: 10px;
-                float: none;
-                display: inline-block;
-                width: 50%;
-                margin: 0 0 20px;
-                padding: 0 10px 0px;
-                vertical-align: top;
-                &>span {
-                    font-size: 10px;
-                    line-height: 16px;
-                }
-                div {
-                    font-size: 13px;
-                    line-height: 17px;
-                    margin-bottom: 0;
-                }
-                &:last-child {
-                    padding-left: 0;
-                    width: 100%;
-                }
-            }
-        }
-        .award-imgs li {
-            width: 50%;
-        }
-        .award-imgs li>div h4 {
-            font-size: 12px;
-        }
-        .award_row {
-            position: relative;
-        }
-        .watchaction-wrap {
-            padding: 130px 0 40px
-        }
-        .watchaction-wrap .video-block {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        .watchaction-wrap .first-row {
-            margin-bottom: 0
-        }
-        .slidewrap {
-            max-height: none !important;
-            height: auto !important;
-            position: relative !important;
-        }
-        .banner-slide .lSSlideOuter:last-child {
-            position: relative;
-            top: auto
-        }
-        .banner-slide .container {
-            height: auto
-        }
-        .topslide {
-            padding-bottom: 0 !important;
-            height: auto !important;
-            position: relative;
-            margin: 0;
-        }
-        #toprotateslide .slidewrap.active {
-            position: relative !important;
-            height: auto !important;
-            float: none;
-            top: auto;
-            left: auto;
-        }
-        .rotatebox {
-            position: relative
-        }
-        .slidewrap::before {
-            left: 0;
-            right: 0;
-            width: 100%;
-        }
-        #bannermoglixhainalightSlider li.active {
-            position: relative !important;
-            height: auto !important;
-            float: none
-        }
-        .rotateboxcontent a {
-            font-size: 15px;
-            height: 35px;
-            line-height: 35px
-        }
-        .desktophidden {
-            display: block
-        }
-        .celebrates-wrap .content-box {
-            padding: 10px 0px
-        }
-        .celebrates-wrap .content-box img {
-            width: 93%;
-            margin: 0 auto -50px;
-            display: block;
-        }
-        .celebrates-wrap .content-box .txt-content {
-            padding: 75px 20px 26px 20px;
-        }
-        .celebrates-wrap .content-box .txt-content p {
-            font-size: 14px;
-            line-height: 23px;
-        }
-        .mobilehidden {
-            display: none
-        }
-        .giftcard>img {
-            width: 100%;
-            position: relative;
-            max-width: 170px;
-            top: auto;
-            margin-top: -50px;
-        }
-        .industryneed-wrap {
-            padding: 0 0px 40px
-        }
-        .giftcard {
-            padding: 0 0 50px
-        }
-        .giftcard .nominate-text {
-            text-align: center;
-            padding: 20px 0 30px;
-            float: none;
-            font-size: 20px;
-            line-height: 30px;
-        }
-        .nominate-btn {
-            float: none;
-            height: 35px;
-            line-height: 35px;
-            font-size: 16px;
-        }
-        .offerings {
-            padding: 40px 10px 0;
-            margin-bottom: 0;
-            z-index: 1;
-            position: relative;
-        }
-        .offerings h2 {
-            font-size: 20px;
-            margin-bottom: 30px;
-        }
-        .offerings>.container {
-            padding: 0 5px 10px
-        }
-        .industryneed-wrap {
-            background: none;
-        }
-        .listingview-inner {
-            min-height: auto;
-            padding: 15px;
-            margin-bottom: 15px
-        }
-        .listingview-inner img {
-            width: 60px;
-            margin-bottom: 15px;
-        }
-        .listingview-inner h3 {
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-        .listingview-inner p {
-            font-size: 14px;
-            line-height: 21px;
-        }
-        .offeringaction {
-            display: none
-        }
-        .video-block .video-thumb {
-            padding: 135px 20px;
-            background-size: cover !important;
-        }
-        .watchaction-wrap {
-            background: #fff;
-            padding: 0px 0 30px;
-        }
-        .videotext {
-            bottom: 10px;
-            font-size: 14px;
-            line-height: 15px;
-            left: 15px;
-        }
-        .formforenterprise.moglixhainavideopop .inner-formforentprise {
-            width: 100%
-        }
-        .awards-strip {
-            padding: 30px 0px;
-        }
-        .awards-strip h2 {
-            font-size: 20px;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-        .award-imgs li>div {
-            height: 150px
-        }
-        .award-imgs li>div img {
-            max-width: 120px
-        }
-        .featured-coverage {
-            padding: 40px 0
-        }
-        .featured-coverage h2 {
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-        .featured-coverage h2>a {
-            margin-top: 4px;
-        }
-        .coveragebox li>div.cover_boxinner h4 {
-            margin-bottom: 0
-        }
-        .coveragebox li>div.cover_boxinner a {
-            margin: 0 15px 10px;
-            font-size: 12px;
-            padding: 0 15px;
-            width: auto;
-        }
-        .coveragebox li>div.cover_boxinner a i {
-            display: none
-        }
-        .header-left h2 {
-            font-size: 21px;
-            line-height: 32px;
-        }
-        .inner-formlayout .mishrajiimg {
-            display: none
-        }
-        .rotateboxcontent a::before {
-            border-top: 6px solid transparent;
-            border-left: 11px solid #2B2B2B;
-            border-bottom: 6px solid transparent;
-            top: 11px;
-        }
-        ul.lightslider-banner {
-            padding: 0;
-            position: relative;
-        }
-        #bannermoglixhainalightSlider {
-            li {
-                margin: 0;
-                height: auto !important;
-                img {
-                    float: none;
-                }
-            }
-        }
-        .celebrates-wrap {
-            padding: 30px 0 40px 0;
-        }
-        .moglixhaina_head2 {
-            font-size: 22px;
-        }
-        .categories_sec {
-            padding: 50px 0 30px;
-        }
-        .popularcat_list {
-            li {
-                width: 100%;
-            }
-        }
-        .categories_sec2 {
-            padding: 20px 0 30px;
-        }
-        .watchaction-wrap {
-            padding: 40px 0 30px;
-        }
-        .popularcat_list {
-            li {
-                padding: 0 15px;
-            }
-        }
-        .celebrates-wrap .content-box .heading-txt {
-            margin: 0 0px 20px;
-        }
-    }
-    
-    .terms-conditions {
-        background: #fff;
-        padding-bottom: 20px;
-        h3 {
-            text-align: center;
-            font-size: 20px;
-            color: #3C3C3C;
-            padding-bottom: 20px;
-            font-weight: 400;
-        }
-        .for-shopping-terms {
-            background: #FCF1DF;
-            padding: 12px;
-            h5 {
-                font-size: 10px;
-                color: #3c3c3c;
-                line-height: 10px;
-            }
-            .border-bottom {
-                display: block;
-                border-bottom: 3px solid #333;
-                width: 30%;
-                padding: 2px;
-            }
-            ol {
-                padding: 15px 15px 0;
-                margin-bottom: 0;
-                li {
-                    font-size: 12px;
-                    font-weight: 400;
-                    line-height: 18px;
-                    padding-bottom: 10px;
-                    &:last-child {
-                        padding-bottom: 0;
-                    }
-                }
-            }
-        }
-        .for-travel-terms {
-            background: #EAF8FF;
-            margin-top: 15px;
-            .yatra-link {
-                color: blue !important;
-                text-decoration: none;
-            }
-        }
-    }
-    
-    .link_section {
-        text-align: right;
-    }
-    
-    .tc_link {
-        display: inline-block;
-        padding: 15px;
-        text-align: right;
-        font-size: 12px;
-        position: relative;
-        &:after {
-            border-bottom: 1px solid #333;
-            width: 110px;
-            content: "";
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-        }
-    }
-    
-    // @media (max-width: 480px) {
-    //     //  background-color: rgb(41, 39, 39),
-    //     .award-imgs li:last-child {
-    //         width: 100%
-    //     }
-    //     .award-imgs li:last-child>div img {
-    //         width: 53%;
-    //         max-width: 100%;
-    //     }
-    // }
-    
+}    

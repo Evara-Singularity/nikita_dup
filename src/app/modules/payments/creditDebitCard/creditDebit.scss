@@ -1,46 +1,22 @@
-@import '../../../scss/payment-common';
 @import '../payment-continue-btn.scss';
-.column-field {
-    .w-45 {
-        width: 45%;
-    }
-    .w-30 {
-        width: 30%;
-    }
-    .w-65 {
-        width: 65%;
+@import '../../../scss/components/checkbox';
+@import '../../../scss/layout/forms';
+.creditDebitSection{
+    .outline-input-label{
+        margin-bottom:20px;
     }
 }
-
-.cvv-info {
-    .icon-cvv {
-        font-size: 22px;
-        float: left;
-        margin-top: 22px;
-    }
-    p {
-        width: calc(100% - 45px);
-        float: right;
-        margin-top: 17px;
-    }
-}
-
 .save_faster_label {
-    @extend %custom-check-box-checkout;
-    input[type='radio'] {
-        display: none;
-        &:checked+.custom-box::before {
-            font-size: 14px;
-        }
-    }
-    .custom-box {
-        &:before {
-            font-size: 14px;
-        }
+    display: flex;
+    align-items: center;
+    label{
+        width: 20px;
+        @extend %custom-check-box-checkout;
     }
     .chk-txt {
-        font-size: 12px;
-        color: #B5B5B5;
+        font-size:$medium-font;
+        color:var(--onyx-black);
+        padding-left:10px;
     }
 }
 
@@ -50,7 +26,7 @@
     label.radio-with-label {
         display: inline-flex;
         @extend %pwa-universal-radio;
-        width: 160px;
+        width: 45%;
         align-items: center;
         .custom-box {
             margin-right: 10px;
@@ -59,4 +35,14 @@
             font-size: $medium-font;
         }
     }
+}
+
+.card-row{
+  display:flex;
+  .date-type-select{
+      width:70%;
+  }
+  .outline-input-label{
+     width:30%;
+  }
 }

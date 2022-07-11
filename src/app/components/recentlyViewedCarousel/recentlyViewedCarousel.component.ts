@@ -2,26 +2,22 @@ import {
 	Component,
 	Input,
 	NgModule,
-	Output,
-	EventEmitter,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
-import {
-	CommonModule,
-} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import CONSTANTS from '../../config/constants';
 import { CommonService } from '../../utils/services/common.service';
 import { RouterModule } from '@angular/router';
-
-import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
-import { PopUpModule } from '../../modules/popUp/pop-up.module';
-import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { SiemaCarouselModule } from '../../modules/siemaCarousel/siemaCarousel.module';
-import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
-import { CharacterremovePipeModule } from '../../utils/pipes/characterRemove.pipe';
 import { DataService } from '@app/utils/services/data.service';
 import { ENDPOINTS } from '@app/config/endpoints';
+import { ProductsEntity } from '@app/utils/models/product.listing.search';
+import { ProductService } from '@app/utils/services/product.service';
+import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
+import { ProductCardSkeletonModule } from '@app/modules/ui/skeletons/product-card-skeleton/product-card-skeleton.module';
+import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
+import { ProductCardHorizontalGridViewModule } from '@app/modules/product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
+import { ProductCardHorizontalScrollModule } from '@app/modules/ui/product-card-horizontal-scroll/product-card-horizontal-scroll.module';
 
 @Component({
 	selector: 'recently-viewed-carousel',
@@ -29,132 +25,50 @@ import { ENDPOINTS } from '@app/config/endpoints';
 	styleUrls: ['./recentlyViewedCarousel.scss'],
 })
 export class RecentlyViewedCarouselComponent {
+
 	@Input() clickFromSection: String;
-	@Output() isDataAvailable: EventEmitter<boolean> = new EventEmitter<
-		boolean
-	>();
-	@Input() prodList: any;
-	@Input() showHeading: boolean = true;
-	options;
-	openPopup: boolean;
 	isBrowser: boolean;
-	categoryNameFromHomePage;
-	isServer: boolean = typeof window !== 'undefined' ? false : true;
-	isMobile: boolean;
-	defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
-	imagePath = CONSTANTS.IMAGE_BASE_URL;
-	shortDescParsed: boolean = false;
-	recentProductList: Array<any> = [];
-	setCId;
+	isServer: boolean;
+
+	recentlyViewedProducts: ProductsEntity[] = [];
+	isRecentDataLoaded: boolean = false;
 
 	constructor(
 		public localStorageService: LocalStorageService,
 		public _commonService: CommonService,
 		public router: Router,
-		private _dataservice: DataService
+		private _dataservice: DataService,
+		private _productService: ProductService,
 	) {
 		this.isServer = _commonService.isServer;
-		this.openPopup = false;
 		this.isBrowser = _commonService.isBrowser;
 	}
 
 	ngOnInit() {
-		if (!this.isServer) {
-			if (window.outerWidth < 768) {
-				this.isMobile = true;
-			} else {
-				this.isMobile = false;
-			}
-		}
-		this.options = {
-			selector: '.recently-viewed-component',
-			duration: 500,
-			easing: 'ease-out',
-			perPage: 7,
-			startIndex: 0,
-			draggable: false,
-			threshold: 20,
-			loop: false,
-			recently: true,
-		};
-		if (this.isMobile) {
-			this.options.perPage = 2;
-		}
 		if (this.isBrowser) {
 			let user_id = this.localStorageService.retrieve('user');
-
-			if (user_id && user_id['userId']) {
-				this.setCId = user_id['userId'];
-			} else {
-				this.setCId = null;
-			}
-
-			this._dataservice
-				.callRestful(
-					'GET',
-					CONSTANTS.NEW_MOGLIX_API +
-						ENDPOINTS.RECENTLY_VIEWED +
-						this.setCId
-				)
-				.subscribe((res) => {
-					if (res['statusCode'] === 200) {
-						this.recentProductList = res['data'];
-						this.prodList = this.recentProductList;
-						if (this.prodList && this.prodList.length > 0) {
-							this.isDataAvailable.emit(true);
-							if (this.prodList.length > this.options.perPage) {
-								this.options.loop = true;
-							}
-							this.prodList.map((product) => {
-								//ODP-1837 (Temporary fix)
-								if (product.productImage.charAt(0) == "/") product.productImage = product.productImage.substr(1);					
-								if (
-									product &&
-									product.shortDesc &&
-									typeof product.shortDesc === 'string'
-								) {
-									let shortDesc = [];
-									let result = product.shortDesc.split('||');
-									result.forEach((element) => {
-										let keyvalue = element.split(':');
-										shortDesc.push({ key: keyvalue[0], value: keyvalue[1] });
-									});
-									product.shortDesc = shortDesc;
-								}
-							});
-							this.shortDescParsed = true;
-						} else {
-							this.isDataAvailable.emit(false);
-						}
-					}
-				});
+			this.getRecentViewed(user_id['userId'] || 'null');
 		}
+	}
+
+	private getRecentViewed(setCId) {
+		this._dataservice
+			.callRestful(
+				'GET',
+				CONSTANTS.NEW_MOGLIX_API +
+				ENDPOINTS.RECENTLY_VIEWED +
+				setCId
+			)
+			.subscribe((res) => {
+				if ((res['statusCode'] === 200) && res['data'] && res['data'].length > 0) {
+					this.recentlyViewedProducts = (res['data'] as any[]).map((item) => this._productService.recentProductResponseToProductEntity(item));
+				}
+				this.isRecentDataLoaded = true;
+			});
 	}
 
 	outData(data) {
 		this[data.selector] = !this[data.selector];
-	}
-
-	viewAllClicked() {
-		setTimeout(() => {
-			document
-				.querySelector(
-					'.screen-view.popup.info-update-popup.payment-popup .container .content-popup'
-				)
-				.addEventListener(
-					'scroll',
-					() => {
-						window.scrollTo(window.scrollX, window.scrollY + 1);
-						window.scrollTo(window.scrollX, window.scrollY - 1);
-					},
-					{ passive: true }
-				);
-		}, 0);
-		setTimeout(() => {
-			window.scrollTo(window.scrollX, window.scrollY + 1);
-			window.scrollTo(window.scrollX, window.scrollY - 1);
-			window.dispatchEvent(new Event('resize'));
-		}, 100);
 	}
 
 	goToProducturl(url) {
@@ -184,15 +98,11 @@ export class RecentlyViewedCarouselComponent {
 	declarations: [RecentlyViewedCarouselComponent],
 	imports: [
 		CommonModule,
-		MathFloorPipeModule,
-		PopUpModule,
 		RouterModule,
-		CharacterremovePipeModule,
-		LazyLoadImageModule,
-		SiemaCarouselModule,
-		MathCeilPipeModule,
-		PopUpModule,
+		ProductCardVerticalGridViewModule,
+		ProductCardSkeletonModule,
+		ProductCardVerticalContainerModule,
 	],
 	providers: [],
 })
-export class RecentlyViewedCarouselModule {}
+export class RecentlyViewedCarouselModule { }

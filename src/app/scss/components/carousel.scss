@@ -1,0 +1,139 @@
+@import '../variables';
+@import './pager';
+.zoomView{
+    ngx-siema-slide {
+        display: block;
+        height: 93vh;
+        .img-block{
+            height: 100%;
+            padding:0px;
+            .inner_block{
+                height: 100%;
+                .element{
+                    height: 100%;
+                    vertical-align: middle;
+                    img {
+                        width: 100%;
+                        display: block;
+                        height:auto;
+                    }
+                }
+            }
+        }
+    }
+    .youtube_icon {
+        width: 50px;
+        height: 50px;
+        transform: translate(-50%,-50%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+    }
+}  
+ngx-siema-slide,siema-slide{
+    ::ng-deep {
+        display:block; 
+        .img-block {
+            width: 100%;
+            height: 330px;
+            background: white;
+            position: relative;
+            padding:30px;
+            .inner_block {
+                height: 100%;
+                .inner_element {
+                    position: relative;
+                }
+                .element {
+                    height: 100%;
+                    .loader-image{
+                        width: 50px;
+                        height: 50px;
+                        position: fixed;
+                        top: 35%;
+                        left: 50%;
+                        bottom: 0;
+                        transform: translate(-50%,-50%);
+                    }
+                }
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+    }
+   
+    &:host{
+        display:block;  
+        .youtube_icon {
+            width: 50px;
+            height: 50px;
+            transform: translate(-50%,-50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+    }
+}
+ProductCrouselSlide{
+    &:host{
+        display:block;  
+        .youtube_icon {
+            width: 50px;
+            height: 50px;
+            transform: translate(-50%,-50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+    }     
+}
+
+.loader-image{
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    top: 35%;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%,-50%);
+}
+
+
+.oos-tag {
+    position: absolute;
+    top: 30px;
+    left: 15px;
+
+    span {
+        padding: 5px 10px;
+        background: #707070;
+        color: #fff;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: bold;
+        z-index: 10; 
+    }
+}
+.pdpCard{
+    margin:10px 0px 0px;
+    padding:0px;
+    &:first-of-type{
+        margin-top:0px !important;
+        // background:red;
+    }
+  }
+.blueTag{
+    background: var(--bleu-de-france);
+    color: var(--white);
+    font-size:$extra-large-font;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    position: absolute;
+    padding: 4px 8px;
+    font-weight: 700;
+    top: 15px;
+  }
+
+  

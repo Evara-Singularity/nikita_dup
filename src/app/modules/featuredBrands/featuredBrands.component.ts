@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import CONSTANTS from '@app/config/constants';
+
 @Component({
 	selector: 'home-feature-brands',
 	templateUrl: './featuredBrands.html',
@@ -10,7 +12,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 export class FeaturedBrands {
 	@Input('featureBrandData') featureBrandData;
 	@Input('defaultImage') defaultImage;
-	@Input('imagePath') imagePath;
+	imageBasePath=CONSTANTS.CDN_IMAGE_PATH;
 
 	setCookieFeatured(imageTitle) {
 		var date = new Date();

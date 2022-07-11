@@ -1,0 +1,27 @@
+@import '../variables';
+.pwa-inline-tooltip {
+    display:flex;
+    background: var(--light-cyan);
+    border-radius:2px;
+    padding:var(--base-inner-padding);
+    margin:var(--large-base-margin) 0px;
+    align-items: center;
+    position: relative;
+    color: var(--persian-green);
+    &:after {
+        content:"";
+        position: absolute;
+        bottom: 99%;
+        left: 8%;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent var(--light-cyan) transparent;
+    }
+    i {
+      font-size:$medium-font;
+    }
+    .pwa-tooltip-text {
+        font-size:$small-font;
+        padding-left:var(--small-gutter-space);
+    }
+}

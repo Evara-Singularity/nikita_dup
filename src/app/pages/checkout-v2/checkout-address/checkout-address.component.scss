@@ -9,47 +9,60 @@ button.btn[disabled] {
     @extend %transition;
 }
 
-.continue-button {
-    padding: 10px 0;
-    background: #fff;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    z-index: 10;
-    width: 100%;
-    text-transform: uppercase;
-    box-shadow: 0 -3px 5px rgba(0, 0, 0, .16);
-    p {
-        font-size: 18px;
-        font-weight: 600;
-        float: left;
-        padding-left: 15px;
-        line-height: 20px;
-    }
-    .payable-amnt {
-        display: block;
-        font-size: $large-font;
-        font-weight: 400;
-        text-transform: capitalize;
-        color: #3030308c;
-        padding-bottom: 4px;
-        span {
-            img {
-                width: auto;
+
+    // padding: 5px 0;
+    // background: var(--ghost-white);
+    // position: fixed;
+    // left: 0;
+    // bottom: 0;
+    // z-index: 10;
+    // width: 100%;
+    // text-transform: uppercase;
+    // box-shadow: 0 -3px 5px rgba(0, 0, 0, .16);
+    // p {
+    //     font-size: 18px;
+    //     font-weight: 600;
+    //     float: left;
+    //     padding-left: 15px;
+    //     line-height: 20px;
+    // }
+    .payment-strip{
+        display:flex;
+        button{
+            margin-left:auto;
+            width:$half-width;
+        }
+        .amount-left-section{
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 20px;
+            padding-right: 10px;
+            padding-left: 10px;
+            .payable-amnt {
+                display: flex;
+                font-size: $medium-font;
+                font-weight: 400;
+                text-transform: capitalize;
+                color: #3030308c;
+                padding-bottom: 4px;
+                align-items: center;
+                span {
+                    i{
+                        margin-left: 5px;
+                        font-size: $large-font;
+                        color: var(--bleu-de-france);
+                    }
+                }
+                img {
+                    vertical-align: middle;
+                }
             }
         }
-        img {
-            vertical-align: middle;
-        }
     }
-    button {
-        width: 175px;
-        background: $btn-color-red;
-        float: right;
-        height: 55px;
-        text-transform: uppercase;
-    }
-}
+  
+   
+   
+
 .main-container{
     margin-bottom:80px;
 }

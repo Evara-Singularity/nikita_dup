@@ -1,42 +1,32 @@
 @import "../../scss/variables";
-@import '../../scss/horizontalProductListing';
-
+@import "../../scss/layout/horizontalProductListing";
 
 .rel-cat {
     margin-top: 15px;
 }
-
+.heading-3{
+    font-size: $extra-large-font;
+}
 .search_heading {
-    color: #A8A8A8;
-    font-size: 12px;
-    font-weight: normal;
-
+    color: #a8a8a8;
+    font-size: $small-font;
     i {
         font-size: 12px;
         margin-right: 5px;
     }
 }
-
-.mar-t--10 {
-    margin-top: -10px;
-}
-
 .search-popup {
     display: none;
-
     .search-result {
-
         // padding: 15px 0;
         .heading-4 {
             color: #969696;
         }
-
         .plan-list {
-
             // padding: 0 0 0 25px;
             li {
                 font-size: 12px;
-                color: #3C3C3C;
+                color: #3c3c3c;
                 text-transform: capitalize;
                 border-bottom: 1px solid #f1f1f1;
                 width: 100%;
@@ -54,7 +44,7 @@
                 .search-count {
                     float: right;
                     padding: 5px 0 2px;
-                    color: #A8A8A8;
+                    color: #a8a8a8;
                     max-width: 65px;
                     vertical-align: top;
                     display: flex;
@@ -69,7 +59,7 @@
                     .interfaceIcon {
                         float: right;
                         font-size: 22px;
-                        color: #a3a3ab;
+                        color: var(--light-black);
                     }
                 }
 
@@ -159,7 +149,7 @@ app-search-bar {
         form {
             @include placeholder {
                 color: $place-holder-color;
-                font-size: 12px;
+                font-size: $large-font;
             }
 
             width: 85%;
@@ -168,26 +158,26 @@ app-search-bar {
         .searchBtn {
             right: 0px;
             position: absolute;
-            background: #ececec;
+            background: transparent;
             border-radius: 4px;
             border: none;
             box-shadow: none;
-            top: 4px;
             width: 33px;
             height: 33px;
-
             i {
                 right: 0px;
-                top: 8px;
+                top: 6px;
                 left: 0;
+                font-size: 24px;
+                color: var(--primary) !important;
             }
         }
 
         .icon-del {
             position: absolute;
             right: 40px;
-            font-size: 14px;
-            color: #C4C4C4;
+            font-size: 18px;
+            color: #c4c4c4;
             z-index: 21;
             right: 60px;
             left: auto;
@@ -201,18 +191,18 @@ app-search-bar {
     @extend %clear-fix;
     background: $logo-color;
     margin-bottom: 0px;
-
     .container {
         position: relative;
     }
-
     i {
         position: absolute;
-        left: 10px;
-        top: 20px;
-        font-size: 18px;
-        color: #303030;
         z-index: 1;
+        &.icon-back-arrow {
+            left: 5px;
+            top: 8px;
+            font-size: 24px;
+            color: #303030;
+        }
 
         &.icon-delete {
             right: 10px;
@@ -233,8 +223,14 @@ app-search-bar {
         width: 100%;
         border: 0;
         padding: 0 36px 0 40px;
-        font-size: 12px !important;
+        font-size: $large-font !important;
         background: #fff;
+        ::placeholder{
+            font-size: 18px !important;
+        }
+        &:focus-visible {
+            outline: none;
+        }
     }
 }
 
@@ -343,7 +339,7 @@ app-search-bar {
     }
 }
 
-//search screen 
+//search screen
 section.search-popup {
     padding: 10px 10px;
 }
@@ -368,30 +364,39 @@ section.search-popup {
     display: flex;
     flex-wrap: nowrap;
     overflow: scroll;
-
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1f1f1;
+    .brand{
+        display: inline-flex;
+        line-height: 20px;
+        border: 1px solid #efeff4;
+        border-radius: 8px;
+        padding: 8px 15px;
+        margin-right: 10px;
+        flex: 0 0 auto;
+        margin-bottom: 10px;
+        justify-content: center;
+        min-height: 40px;
+        font-size: $large-font;
+    }
     .search_product_category {
         display: inline-flex;
         align-items: center;
-        border: 1px solid #EFEFF4;
+        border: 1px solid #efeff4;
         border-radius: 8px;
         padding: 5px;
         margin-right: 10px;
-        flex: 0 0 48%;
+        flex: 0 0 45%;
         margin-bottom: 10px;
         overflow: auto;
-
-        &.brand {
-            justify-content: center;
-        }
-
         img {
             width: 36px;
         }
 
         .prodText {
             padding-left: 5px;
-            line-height: 10px;
-            font-size: 11px;
+            line-height: 13px;
+            font-size: 12px;
         }
     }
 }
@@ -411,7 +416,7 @@ section.search-popup {
 .search_product_category {
     display: inline-flex;
     align-items: center;
-    border: 1px solid #EFEFF4;
+    border: 1px solid #efeff4;
     border-radius: 8px;
     padding: 5px;
     margin-right: 5px;

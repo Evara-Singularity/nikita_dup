@@ -1,25 +1,15 @@
-<section class="Bestseller card card-wrap" *ngIf="recentProductItems && recentProductItems.length>0">
-    <div class="upper-view-all-sec">
-        <div class="upper-view-all-sec-left">
-            <h4>Recently Viewed</h4>
+<section *ngIf="recentProductItems && recentProductItems.length>0" class="pwa-row recent-viewed mt-10 pad-r-0">
+    <div class="pwa-col-12">
+        <div class="view-all-strip">
+            <h3 class="heading-3">Recently Viewed</h3>
         </div>
-        <!-- <div class="upper-view-all-sec-right">
-            <button>VIEW ALL</button>
-        </div> -->
-    </div>
-    <div class="vertical-scroll-container">
-        <div class="inner-scroll-container" [style.width.px]="recentProductItems.length * 165">
-            <ng-container *ngFor="let product of recentProductItems;let pIndex = index" >
-                <product-horizontal-card 
-                    [product]="product"
-                    [cardMetaInfo]='cardMetaInfo'
-                    [section]="'recently'"
-                    [cardFeaturesConfig]='cardFeaturesConfig'
-                    [pIndex]="pIndex"
-                    [enableTracking]="true"
+        <product-card-vertical-container [numberOfItems]="recentProductItems.length">
+            <ng-container *ngFor="let product of recentProductItems;let pIndex = index">
+                <product-card-vertical-grid-view [product]="product" [cardMetaInfo]='cardMetaInfo' [section]="'recently'"
+                    [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
                     [analytics]="analytics">
-                </product-horizontal-card>
+                </product-card-vertical-grid-view>
             </ng-container>
-        </div>
+        </product-card-vertical-container>
     </div>
 </section>

@@ -11,11 +11,12 @@
 
 
 <app-pop-up *ngIf="spcp" (outData$)="outData($event)" [class.open]="spcp"
-  [data]="{class: 'customer-popup', sctd: types[sct]}">
-  <h2 class="head" header>
+[headerType]="'pop-up-header1'"
+  [data]="{class: 'customer-popup', sctd: types[sct], headerText: types[sct]['name']}">
+  <!-- <h2 class="head" header>
     <span class="f-left icon-back" (click)="spcp=false"></span>
     <span class="head-txt" *ngIf="types[sct]">{{types[sct]['name']}}</span>
-  </h2>
+  </h2> -->
 
   <div class="content-popup step-2" content>
     <p class="note-msg">Please Select your preferred category
@@ -36,9 +37,8 @@
         </label>
       </div>
     </div>
-
-
-
-    <button type="button" class="continue-btn bottom-stick" (click)="addDataToStorage();">Done</button>
+    <div class="fixed-bottom-cta">
+      <button type="button" class="btn primary-full-btn" (click)="addDataToStorage();">Done</button>
+    </div>
   </div>
 </app-pop-up>

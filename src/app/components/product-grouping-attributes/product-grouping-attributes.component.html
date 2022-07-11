@@ -1,0 +1,10 @@
+<section class="grouping_wrap_pdp mt-10" *ngIf="!isCommonProduct">
+    <div *ngFor="let list of productFilterAttributesList" class="singlewrap">
+        <p class="heading-3">{{list.name}}</p>
+        <ul>
+            <li *ngFor="let item of list.items;let i = index;" (click)="!item.selected && item.active ? updateAttr.emit(item.msn) : removeOosSimilarSection.emit();">
+                <a [ngClass]="{'selected': item.selected , 'inactive': !item.active}">{{item.value}}</a>
+            </li>
+        </ul>
+    </div>
+</section>

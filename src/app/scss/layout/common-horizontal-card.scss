@@ -1,0 +1,81 @@
+@import '../variables';
+@import '../utils/mixins';
+@import '../components/buttons';
+@import '../components/rating';
+
+.product-horizontal-card{
+    background:var(--white);
+    border-bottom:1px solid var(--platinum);
+    .pwa-row{
+        padding:5px 10px;
+    }
+    .pwa-row-noPad{
+        padding:5px 0px;
+    }
+    .pwa-col-left{
+        text-align: center;
+        position: relative;
+    }
+    .pwa-col-right{
+        .prod-name {
+            text-align: left;
+            font-size: $large-font;
+            color: var(--onyx-black);
+            line-height: 16px;
+        }
+        .prod-brand{
+            margin-top: 4px;
+            margin-bottom: 4px;
+            text-align: left;
+            font-size: $medium-font;
+            color: var(--gray-web);
+        }
+        .prod-price-row{
+            margin-bottom:4px;
+            .prod-mrp{
+                color: var(--onyx-black);
+                text-decoration: line-through;
+                opacity: .5;
+                margin-right:5px;
+            }
+            .prod-discount{
+                font-weight:$font-bold;
+                color: #3b9e26;
+            }
+            .prod-selling-price{
+                margin-top:4px;
+                font-size: $large-font;
+                color: var(--onyx-black);
+                font-weight: $font-bold;
+            }
+        }
+    }  
+}
+.add_cart_btn {
+    border: 1px solid var(--primary);
+    display: inline-block;
+    border-radius: $border-radius;
+    margin-right: 8px;
+    width: 32px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: $extra-large-line-height;
+    i {
+        font-size: $extra-large-2-font;
+        color: $logo-color;
+        vertical-align: middle;
+    }
+}
+
+button{
+    font-size:$small-font;
+}
+.pwa-left-fixed-125{
+    @include pwa-custom-row(125px,$leftFixedWidth:true);
+}
+.pwa-right-fixed-125{
+    @include pwa-custom-row(125px,$leftFixedWidth:false);
+}
+.pwa-left-fixed-100{
+    @include pwa-custom-row(100px,$leftFixedWidth:true);
+}

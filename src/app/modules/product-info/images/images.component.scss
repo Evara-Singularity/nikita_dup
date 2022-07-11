@@ -1,25 +1,23 @@
+@import '../../../scss/variables';
 .mainImageLarge {
     img {
-        width: 100%;
+        width: $fullwidth;
         height:360px;
     }
 }
 .thumbnailImageSlider{
-    width:100%;
+    width: $fullwidth;
     .thumbnailImageSlider-wrap{
        display:flex;
        overflow-x:auto;
-       background:#F2F2F2;
+       background: var(--ghost-white);
        padding:15px;
-       &::-webkit-scrollbar {
-           display: none;
-       } 
-       -ms-overflow-style: none;  /* IE and Edge */
-       scrollbar-width: none; 
+       @extend %hide-scrollbar;
        &>div{
         margin-right:15px;
         .activeImgSlide{
-          border: 1px solid #D9232D;
+          border: 1px solid var(--primary);
+          border-radius:$border-radius-8;
         }
         &:last-child{
             margin-right:0px;
@@ -27,6 +25,8 @@
          img{
              width:100px;
              height:100px;
+             max-width:100px;
+             border-radius:$border-radius-8;
          }
      }
     }

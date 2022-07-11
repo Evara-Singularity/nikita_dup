@@ -1,148 +1,160 @@
 <app-pop-up-variant2 *ngIf="displayCreateEditPopup" (outData$)="handlePopup($event)"
-    [class.open1]="displayCreateEditPopup" [data]="{class: 'payment-popup addAddressPopup addr1',headerCustom:true}">
-    <div class="head-sec header_add_edit" header>
-        <div class="container">
-            <i class="icon-back f-left white_text" (click)="$event.stopPropagation();handlePopup($event)"></i>
-            <p class="txt header_text page-name"> {{modeType }} {{ADDRESS_TYPE}} Address</p>
-        </div>
-    </div>
-    <div class="content-popup card mt-15 pad-15" content>
-        <form [formGroup]="businessForm" (ngSubmit)="$event.stopPropagation();onSubmit()" class="material-form">
-            <div formGroupName="businessDetail">
-                <div class="input-field">
-                    <label [class.is-focus]="isBusinessFieldFocus('gstin')">
-                        <input type="text" formControlName="gstin" maxlength="15">
-                        <span class="label">GSTIN*</span>
-                        <ng-container *ngIf="gstin.valid">
-                            <span class="edit-field verified" *ngIf="isGSTINVerified">VERIFIED
-                                <i class="icon-check-active"></i>
-                            </span>
-                            <span class="edit-field" *ngIf="!(isGSTINVerified)"
-                                (click)="$event.stopPropagation();verifyGSTIN($event);">
-                                VERIFY NOW
-                            </span>
-                        </ng-container>
-                    </label>
-                    <ng-container *ngIf="gstin.touched || gstin.dirty">
-                        <p class="error-txt" *ngIf="gstin.hasError('required')">Kindly enter your GSTIN</p>
-                        <p class="error-txt" *ngIf="gstin.hasError('minlength')">Kindly enter a valid GSTIN of 15-digit
-                        </p>
-                    </ng-container>
-                </div>
-                <div class="input-field">
-                    <label [class.is-focus]="isBusinessFieldFocus('companyName')"
-                        [class.disableInput]="!(isGSTINVerified)">
-                        <input maxlength="75" type="text" formControlName="companyName" [readonly]="!(isGSTINVerified)">
-                        <span class="label">Business Name*</span>
-                    </label>
-                    <p class="error-txt" *ngIf="companyName.dirty && companyName.invalid">
-                        Kindly enter your business entity name
-                    </p>
-                </div>
-                <div class="input-field">
-                    <label [class.is-focus]="isBusinessFieldFocus('email')" [class.disableInput]="!(isGSTINVerified)">
-                        <input formControlName="email" type="text" [readonly]="!(isGSTINVerified)">
-                        <span class="label">Business Email (Optional)</span>
-                    </label>
-                    <ng-container *ngIf="email.touched || email.dirty">
-                        <p class="error-txt" *ngIf="email.hasError('required')">
-                            Kindly enter your business email id</p>
-                        <p class="error-txt" *ngIf="!(email.hasError('required')) && email.hasError('invalidEmail')">
-                            Kindly enter valid email</p>
-                    </ng-container>
-                </div>
-                <div class="input-field">
-                    <label [class.is-focus]="isBusinessFieldFocus('phone')" [class.disableInput]="!(isGSTINVerified)">
-                        <input formControlName="phone" type="tel" [readonly]="!(isGSTINVerified)" maxlength="10">
-                        <span class="label">Business Phone*</span>
-                    </label>
-                    <ng-container *ngIf="phone.touched || phone.dirty">
-                        <p class="error-txt" *ngIf="phone.hasError('required')">
-                            Kindly enter your business phone number</p>
-                        <p class="error-txt" *ngIf="!(phone.hasError('required')) && phone.hasError('invalidPhone')">
-                            Kindly enter valid phone number</p>
-                    </ng-container>
-                </div>
-            </div>
-            <div formGroupName="billingAddress">
-                <div class="input-field">
-                    <label [class.is-focus]="isBillingFieldFocus('addressLine')"
-                        [class.disableInput]="!(isGSTINVerified)">
-                        <input formControlName="addressLine" type="text" placeholder="" [readonly]="!(isGSTINVerified)">
-                        <span class=label>Address*</span>
-                        <ng-container *ngIf="addressLine.touched || addressLine.dirty">
-                            <p *ngIf="addressLine.hasError('required')" class="error-txt">Kindly enter your address</p>
-                            <p *ngIf="addressLine.hasError('pattern')" class="error-txt">
-                                Special characters not allowed in adress</p>
-                        </ng-container>
-                    </label>
-                </div>
-                <div class="column-field clearfix">
-                    <div class="input-field w-65">
-                        <label [class.is-focus]="isBillingFieldFocus('idCountry')">
-                            <select formControlName="idCountry">
-                                <option selected="selected" *ngFor="let country of countryList"
-                                    [value]="country.idCountry">
-                                    {{country.name}}</option>
-                            </select>
-                            <i class="icon-down"></i>
-                            <span class="label">Country*</span>
+[headerType]="'pop-up-header1'"
+[class.open1]="displayCreateEditPopup" [data]="{headerText: modeType + ' ' + ADDRESS_TYPE + ' Address'}">
+    <div class="content-popup scrolled-content-popup" content>
+        <div class="pwa-row mt-10 pb-60">
+            <form class="material-form" [formGroup]="businessForm" (ngSubmit)="$event.stopPropagation();onSubmit()">
+                <div formGroupName="businessDetail">
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="isBusinessFieldFocus('gstin')">
+                            <input type="text" formControlName="gstin" maxlength="15">
+                            <span class="label">GSTIN*</span>
+                            <ng-container *ngIf="gstin.valid">
+                                <span class="form-inline-cta success" *ngIf="isGSTINVerified">VERIFIED</span>
+                                <span class="form-inline-cta danger" *ngIf="!(isGSTINVerified)"
+                                    (click)="$event.stopPropagation();verifyGSTIN($event);">
+                                    VERIFY
+                                </span>
+                            </ng-container>
                         </label>
-                        <p *ngIf="idCountry.invalid" class=" error-txt">Kindly
-                            select your country</p>
-                    </div>
-                    <div class="input-field w-30">
-                        <label [class.is-focus]="isBillingFieldFocus('postCode')"
-                            [class.disableInput]="!(isGSTINVerified)">
-                            <input numbersOnly type="tel" formControlName="postCode" type="tel"
-                                [readonly]="!(isGSTINVerified)">
-                            <span class="label">Pin Code*</span>
-                        </label>
-                        <ng-container *ngIf="postCode.touched || postCode.dirty">
-                            <p *ngIf="postCode.hasError('required')" class="error-txt">Kindly enter your pincode</p>
-                            <p *ngIf="!(postCode.hasError('required')) &&  postCode.hasError('invalidPostCode')"
-                                class="error-txt">
-                                Pincode should contain 6 digits
+                        <ng-container *ngIf="gstin.touched || gstin.dirty">
+                            <p class="error-txt" *ngIf="gstin.hasError('required')">Kindly enter your GSTIN</p>
+                            <p class="error-txt" *ngIf="gstin.hasError('minlength')">Kindly enter a valid GSTIN of
+                                15-digit
                             </p>
                         </ng-container>
-                        <p class="error-txt" *ngIf="isGSTINVerified && postCode.valid && !(isPostcodeValid)">
-                            Invalid Pincode
+                    </div>
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="isBusinessFieldFocus('companyName')"
+                            [class.disableInput]="!(isGSTINVerified)">
+                            <input maxlength="75" type="text" formControlName="companyName"
+                                [readonly]="!(isGSTINVerified)">
+                            <span class="label">Business Name*</span>
+                        </label>
+                        <p class="error-txt" *ngIf="companyName.dirty && companyName.invalid">
+                            Kindly enter your business entity name
                         </p>
                     </div>
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="isBusinessFieldFocus('email')"
+                            [class.disableInput]="!(isGSTINVerified)">
+                            <input formControlName="email" type="text" [readonly]="!(isGSTINVerified)">
+                            <span class="label">Business Email (Optional)</span>
+                        </label>
+                        <ng-container *ngIf="email.touched || email.dirty">
+                            <p class="error-txt" *ngIf="email.hasError('required')">
+                                Kindly enter your business email id</p>
+                            <p class="error-txt"
+                                *ngIf="!(email.hasError('required')) && email.hasError('invalidEmail')">
+                                Kindly enter valid email</p>
+                        </ng-container>
+                    </div>
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="isBusinessFieldFocus('phone')"
+                            [class.disableInput]="!(isGSTINVerified)">
+                            <input formControlName="phone" type="tel" [readonly]="!(isGSTINVerified)" maxlength="10">
+                            <span class="label">Business Phone*</span>
+                        </label>
+                        <ng-container *ngIf="phone.touched || phone.dirty">
+                            <p class="error-txt" *ngIf="phone.hasError('required')">
+                                Kindly enter your business phone number</p>
+                            <p class="error-txt"
+                                *ngIf="!(phone.hasError('required')) && phone.hasError('invalidPhone')">
+                                Kindly enter valid phone number</p>
+                        </ng-container>
+                    </div>
                 </div>
-                <div class="input-field">
-                    <label [class.is-focus]="isBillingFieldFocus('idState')" [class.disableInput]="!(isGSTINVerified)">
-                        <select formControlName="idState">
-                            <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}</option>
-                        </select>
-                        <i class="icon-down"></i>
-                        <span class="label">State*</span>
-                    </label>
-                    <p *ngIf="idState.invalid" class="error-txt">
-                        Kindly select your state</p>
+                <div formGroupName="billingAddress">
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="isBillingFieldFocus('addressLine')"
+                            [class.disableInput]="!(isGSTINVerified)">
+                            <input formControlName="addressLine" type="text" placeholder=""
+                                [readonly]="!(isGSTINVerified)">
+                            <span class=label>Address*</span>
+                            <ng-container *ngIf="addressLine.touched || addressLine.dirty">
+                                <p *ngIf="addressLine.hasError('required')" class="error-txt">Kindly enter your address
+                                </p>
+                                <p *ngIf="addressLine.hasError('pattern')" class="error-txt">
+                                    Special characters not allowed in adress</p>
+                            </ng-container>
+                        </label>
+                    </div>
+                    <div class="multiple-form-field">
+                        <div class="outline-input-label">
+                            <label [class.is-focus]="isBillingFieldFocus('postCode')"
+                                [class.disableInput]="!(isGSTINVerified)">
+                                <input numbersOnly type="tel" formControlName="postCode" type="tel"
+                                    [readonly]="!(isGSTINVerified)">
+                                <span class="label">Pin Code*</span>
+                            </label>
+                            <ng-container *ngIf="postCode.touched || postCode.dirty">
+                                <p *ngIf="postCode.hasError('required')" class="error-txt">Kindly enter your pincode</p>
+                                <p *ngIf="!(postCode.hasError('required')) &&  postCode.hasError('invalidPostCode')"
+                                    class="error-txt">
+                                    Pincode should contain 6 digits
+                                </p>
+                            </ng-container>
+                            <p class="error-txt" *ngIf="isGSTINVerified && postCode.valid && !(isPostcodeValid)">
+                                Invalid Pincode
+                            </p>
+                        </div>
+                        <div class="outline-input-label">
+                            <label [class.is-focus]="isBillingFieldFocus('city')" class="disableInput">
+                                <input formControlName="city" type="text" placeholder="" readonly>
+                                <span class="label">City*</span>
+                            </label>
+                            <ng-container *ngIf="city.dirty">
+                                <p *ngIf="city.hasError('required')" class="error-txt">
+                                    Kindly enter your city/district/town
+                                </p>
+                                <p *ngIf="city.hasError('pattern')" class="error-txt">
+                                    Special characters not allowed city/district/town
+                                </p>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="multiple-form-field">
+                        <div class="outline-input-label">
+                            <label [class.is-focus]="isBillingFieldFocus('idState')"
+                                [class.disableInput]="!(isGSTINVerified)">
+                                <select formControlName="idState">
+                                    <option *ngFor="let state of stateList" [value]="state.idState">{{state.name}}
+                                    </option>
+                                </select>
+                                <i class="icon-down"></i>
+                                <span class="label">State*</span>
+                            </label>
+                            <p *ngIf="idState.invalid" class="error-txt">
+                                Kindly select your state</p>
+                        </div>
+                        <div class="outline-input-label">
+                            <label [class.is-focus]="isBillingFieldFocus('idCountry')">
+                                <select formControlName="idCountry">
+                                    <option selected="selected" *ngFor="let country of countryList"
+                                        [value]="country.idCountry">
+                                        {{country.name}}</option>
+                                </select>
+                                <i class="icon-down"></i>
+                                <span class="label">Country*</span>
+                            </label>
+                            <p *ngIf="idCountry.invalid" class=" error-txt">Kindly
+                                select your country</p>
+                        </div>
+                    </div>
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="isBillingFieldFocus('landmark')"
+                            [class.disableInput]="!(isGSTINVerified)">
+                            <input formControlName="landmark" type="text" placeholder=""
+                                [readonly]="!(isGSTINVerified)">
+                            <span class="label">Landmark (Optional)</span>
+                        </label>
+                    </div>
                 </div>
-                <div class="input-field">
-                    <label [class.is-focus]="isBillingFieldFocus('city')" class="disableInput">
-                        <input formControlName="city" type="text" placeholder="" readonly>
-                        <span class="label">City*</span>
-                    </label>
-                    <ng-container *ngIf="city.dirty">
-                        <p *ngIf="city.hasError('required')" class="error-txt">
-                            Kindly enter your city/district/town
-                        </p>
-                        <p *ngIf="city.hasError('pattern')" class="error-txt">
-                            Special characters not allowed city/district/town
-                        </p>
-                    </ng-container>
+                <div class="fixed-bottom-cta">
+                    <button type="submit" class="btn primary-full-btn" [disabled]="!(canSave)">SAVE
+                        ADDRESS</button>
                 </div>
-                <div class="input-field">
-                    <label [class.is-focus]="isBillingFieldFocus('landmark')" [class.disableInput]="!(isGSTINVerified)">
-                        <input formControlName="landmark" type="text" placeholder="" [readonly]="!(isGSTINVerified)">
-                        <span class="label">Landmark (Optional)</span>
-                    </label>
-                </div>
-            </div>
-            <button type="submit" class="btn continue-btn" [class.disabledButton]="!(canSave)">SAVE ADDRESS</button>
-        </form>
+            </form>
+        </div>
     </div>
 </app-pop-up-variant2>

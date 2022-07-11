@@ -1,85 +1,51 @@
-@import '../../scss/variables';
+@import "../../scss/variables";
 ::ng-deep {
     .category_data {
         padding: 0px 15px;
         background: #f2f2f2;
         h2 {
-            font-size: 14px;
+            font-size: $large-font;
             padding: 10px 0;
             text-transform: none;
         }
         p {
-            font-size: 12px;
-            color: #7B7B7B;
+            font-size: $medium-font;
+            color: #7b7b7b;
             line-height: 18px;
-            strong{
-                color: #3C3C3C;
+            strong {
+                color: #3c3c3c;
                 font-weight: bold;
             }
-            a{
-                color: #278BED;
+            a {
+                color: #278bed;
             }
         }
         a {
-            color: #278BED;
+            color: #278bed;
         }
-        li{
-            color: #7B7B7B;
-            &::before{
+        li {
+            color: #7b7b7b;
+            &::before {
                 content: "> ";
             }
         }
-        hr{
-           display: none !important;
+        hr {
+            display: none !important;
         }
     }
     .body-bg {
         background: #ffffff;
-        #openCat2{
+        #openCat2 {
             padding: 0px 10px 15px 10px;
-            // &.seo-table-container{
-            //     background-color: #ffffff;
-            //     padding: 0px 10px 15px 10px;
-            //     .seo-table-data{
-            //         box-shadow: 0px 3px 6px #0000001A;
-            //         background: #f2f2f2;
-            //         border-radius: 4px;
-            //         margin-bottom: 10px;
-            //         thead{
-            //             tr{
-            //                 border: none;
-            //                 th{
-            //                     border: none;
-            //                     font-size: 12px;
-            //                     text-align: left;
-            //                     padding: 5px;
-            //               }  }
-            //         }
-            //         tbody{
-            //            background-color: #ffffff;
-            //            tr{
-            //             border: none;
-            //             td{
-            //                 border: none;
-            //                 font-size: 12px;
-            //                 font-weight: normal;
-            //                 text-align: left;
-            //                 padding: 5px;
-            //             }
-            //         }           
-            //      }
-            //     }
-            // }
         }
     }
 }
-.seo-data-box{
+.seo-data-box {
     background-color: #fff;
     padding: 10px 3px;
-    h2{
-        font-size: 16px;
+    h2 {
+        font-size: $extra-large-font;
         padding: 5px 0px 10px;
-        
     }
 }
 
@@ -87,10 +53,14 @@
     background: #fff;
     margin-top: 10px;
     h3 {
-        padding: 15px 15px;
         font-weight: bold;
         text-transform: capitalize;
-        .iconaccordian{
+        width: 100%;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        .iconaccordian {
             float: right;
         }
     }
@@ -98,26 +68,25 @@
     //     padding-left: 5px !important;
     // }
     & .ico-up {
-        .iconaccordian{
+        .iconaccordian {
             transform: rotate(180deg) !important;
         }
     }
 }
 
-
 .m_faqHeading {
     padding: 25px 0 10px 10px;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: $large-font;
 }
 
 .m_faqQuestion {
     padding: 10px 15px;
-    font-size: 14px;
+    font-size: $large-font;
     position: relative;
-     :before {
+    :before {
         content: "Q:";
-        font-size: 14px;
+        font-size: $large-font;
         position: absolute;
         left: -8px;
         font-weight: bold;
@@ -125,58 +94,45 @@
 }
 
 .m_faqAnswer {
-    font-size: 12px;
+    font-size: $medium-font;
     line-height: 18px;
     position: relative;
     padding: 0px 15px;
     &:before {
         content: "A:";
-        font-size: 14px;
+        font-size: $large-font;
         position: absolute;
         left: -8px;
         font-weight: bold;
     }
 }
 
-// .category-tbl {
-//     th,
-//     td {
-//         font-size: 12px;
-//         text-align: left;
-//         border-bottom: 1px solid $border-color;
-//         padding: 5px;
-//     }
-// }
-
-
-// .common_table {
-//     th,
-//     td {
-//         font-size: 12px;
-//         text-align: left;
-//         border-bottom: 1px solid $border-color;
-//         padding: 5px;
-//     }
-// }
-
-#openFaq{
-    padding: 5px 0px 15px;
-    .openFaq_div{
-        margin: 0px 10px;
-        box-shadow: 0px 3px 6px #0000001A;
-        border-left: 1px solid #F1F1F1;
-        border-right: 1px solid #F1F1F1;
-        border-bottom: 1px solid #F1F1F1;
+#openFaq {
+    padding: 0px 0px 15px;
+    .openFaq_div {
+        &:first-child {
+            border-top: 1px solid #f1f1f1;
+            box-shadow: 0px -3px 6px #0000001a;
+        }
+        &:last-child {
+            box-shadow: 0px 3px 6px #0000001a;
+        }
+        margin: 0px;
+        box-shadow: -5px 0 5px -5px #0000001a, 5px 0 5px -5px #0000001a;
+        // box-shadow: 0px 0px 3px 3px #0000001A;
+        border-left: 1px solid #f1f1f1;
+        border-right: 1px solid #f1f1f1;
+        border-bottom: 1px solid #f1f1f1;
         padding: 0px 10px 10px 15px;
-        &:first-child{
+        &:first-child {
             border-radius: 4px 4px 0px 0px;
         }
-        &:last-child{
+        &:last-child {
             border-radius: 0px 0px 4px 4px;
         }
     }
 }
-#openCat3{
+#openCat3 {
     background-color: #ffffff;
     padding-bottom: 20px;
     padding-top: 10px;

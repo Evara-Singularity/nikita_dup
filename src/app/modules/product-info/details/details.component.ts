@@ -9,6 +9,7 @@ import { CommonService } from '@app/utils/services/common.service';
 })
 export class DetailsComponent {
     @Input("details") details = null;
+    @Input("removeEllipse") removeEllipse = false;
     prodUrl: string;
 
     constructor(public _commonService: CommonService) { 

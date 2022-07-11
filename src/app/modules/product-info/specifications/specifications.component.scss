@@ -1,38 +1,4 @@
+@import '../../../scss/prod-specifications.scss';
 .product-specification {
-    background: white;
-    margin-top: 10px;
-    .heading-3 {
-        padding-left: 15px;
-    }
-}
-.product-spec {
-    border-top: 1px dashed #c7c7c7;
-    a{
-        color: #006DF0;
-        &.show-more{
-            text-transform:uppercase;
-            font-weight:bold;
-        }
-    }
-    .spec-row{
-        &:nth-child(2n){
-          background:#F1F1F1;
-        }
-        &:nth-last-child(1){
-          background:white;  
-        }
-    }
-    td {
-        &.left {
-            border-right: 1px dashed #c7c7c7;
-            border-bottom: 1px dashed #c7c7c7;
-        }
-        &.right {
-            border-bottom: 1px dashed #c7c7c7;
-        }
-        div {
-            width: 100%;
-            padding: 15px 10px;
-        }
-    }
+    border-bottom: none;
 }

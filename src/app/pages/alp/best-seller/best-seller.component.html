@@ -16,7 +16,8 @@
     </div>
 </ng-container>
 <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
-    [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:'Bestsellers'}">
+[headerType]="'pop-up-header1'"
+    [data]="{headerText:'Bestsellers'}">
     <div class="content-popup" content>
         <ul class="view-products no-border list border-top">
             <li *ngFor="let product of items">

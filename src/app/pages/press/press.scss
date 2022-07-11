@@ -1,74 +1,77 @@
 @import '../../scss/variables';
+@import '../../scss/root';
+@import '../../scss/layout/grid.scss';
 .press-container {
     padding-top: 28px;
+    .press-item {
+        background: var(--white);
+        padding: 75px 15px 15px 15px;
+        margin-bottom: 50px;
+        position: relative;
+        @extend %border-radius;
+        .head-strip {
+            width: 70%;
+            padding: 15px 20px 10px 10px;
+            font-size: $extra-large-2-font;
+            position: absolute;
+            top: -10px;
+            text-align: center;
+            background: var(--cultured);
+            img {
+                position: relative;
+                z-index: 2;
+                width: 170px;
+            }
+            &:after {
+                content: " ";
+                position: absolute;
+                display: block;
+                width: $fullwidth;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                background: var(--cultured);
+            }
+            &.left-arrow {
+                left: 0px;
+                border-radius: 3px 0px 0px 0px;
+                &::after {
+                    transform-origin: bottom left;
+                    -ms-transform: skew(-30deg, 0deg);
+                    -webkit-transform: skew(-30deg, 0deg);
+                    transform: skew(-30deg, 0deg);
+                    -moz-box-shadow: 4px 4px 5px rgba(0, 0, 0, .16);
+                    -webkit-box-shadow: 4px 4px 5px rgba(0, 0, 0, .16);
+                    box-shadow: 4px 4px 5px rgba(0, 0, 0, .16);
+                }
+            }
+            &.right-arrow {
+                right: 0px;
+                border-radius: 0 3px 0px 0px;
+                &::after {
+                    transform-origin: bottom right;
+                    -ms-transform: skew(30deg, 0deg);
+                    -webkit-transform: skew(30deg, 0deg);
+                    transform: skew(30deg, 0deg);
+                    -moz-box-shadow: -4px 4px 5px rgba(0, 0, 0, .16);
+                    -webkit-box-shadow: -4px 4px 5px rgba(0, 0, 0, .16);
+                    box-shadow: -4px 4px 5px rgba(0, 0, 0, .16);
+                }
+            }
+        }
+        .content {
+            text-align: center;
+            line-height: $large-line-height;
+            font-size: $large-font;
+            p:first-of-type {
+                margin: 15px 0;
+            }
+        }
+    }
 }
 
-.press-item {
-    background: $white;
-    padding: 75px 15px 15px 15px;
-    margin-bottom: 50px;
-    position: relative;
-    @extend %border-radius;
-    .head-strip {
-        width: 70%;
-        padding: 15px 20px 10px 10px;
-        font-size: 20px;
-        position: absolute;
-        top: -10px;
-        text-align: center;
-        background: #FAFAFA;
-        img {
-            position: relative;
-            z-index: 2;
-            width: 170px;
-        }
-        &:after {
-            content: " ";
-            position: absolute;
-            display: block;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            background: #FAFAFA;
-        }
-        &.left-arrow {
-            left: 0px;
-            border-radius: 3px 0px 0px 0px;
-            &::after {
-                transform-origin: bottom left;
-                -ms-transform: skew(-30deg, 0deg);
-                -webkit-transform: skew(-30deg, 0deg);
-                transform: skew(-30deg, 0deg);
-                -moz-box-shadow: 4px 4px 5px rgba(0, 0, 0, .16);
-                -webkit-box-shadow: 4px 4px 5px rgba(0, 0, 0, .16);
-                box-shadow: 4px 4px 5px rgba(0, 0, 0, .16);
-            }
-        }
-        &.right-arrow {
-            right: 0px;
-            border-radius: 0 3px 0px 0px;
-            &::after {
-                transform-origin: bottom right;
-                -ms-transform: skew(30deg, 0deg);
-                -webkit-transform: skew(30deg, 0deg);
-                transform: skew(30deg, 0deg);
-                -moz-box-shadow: -4px 4px 5px rgba(0, 0, 0, .16);
-                -webkit-box-shadow: -4px 4px 5px rgba(0, 0, 0, .16);
-                box-shadow: -4px 4px 5px rgba(0, 0, 0, .16);
-            }
-        }
-    }
-    .content {
-        text-align: center;
-        line-height: 25px;
-        font-size: $large-font;
-        p:first-of-type {
-            margin: 15px 0;
-        }
-    }
-}
+
 
 // #press_page *{  color: #343434;
 // }

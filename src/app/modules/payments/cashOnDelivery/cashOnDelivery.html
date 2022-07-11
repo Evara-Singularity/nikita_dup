@@ -6,18 +6,21 @@
             <p *ngIf="!isCODEnable">Good News! We have started taking COD Orders [Upto Rs {{globalConstants['codMax']}}.]</p>
             <div *ngIf="!isCODEnable" class="f-size-12 text-green"> {{message}}</div>
         </div>
-
         <!-- {{isCODEnable}} -->
         <div *ngIf="isCODEnable">
             <div *ngIf="!verifyOtp">
-                <form novalidate class="material-form material-form-boxed mt-15" #sendOtpForm="ngForm">
-                    <div class="input-field-boxed disabled-boxed">
-                        <label>Mobile Number*</label>
-                        <input type="number" name="mobile_num" pattern="^[1-9][0-9]{9}$" required #mobileRef="ngModel" [ngModel]="userNum" readonly>
+                <form novalidate class="material-form" #sendOtpForm="ngForm">
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="true">
+                            <input type="number" name="mobile_num" pattern="^[1-9][0-9]{9}$" required #mobileRef="ngModel" [ngModel]="userNum" readonly>
+                            <span class="label">Mobile Number*</span>
+                        </label>
                     </div>
-                    <div class="input-field-boxed disabled-boxed">
-                        <label>Email</label>
-                        <input name="cust_email" type="text" [ngModel]="userEmail" #emailId readonly>
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="true">
+                            <input name="cust_email" type="text" [ngModel]="userEmail" #emailId readonly>
+                            <span class="label">Email</span>
+                        </label>
                     </div>
                     <!-- <div class="">
                         <p class="">The OTP Phone Number/ Email should be same as in the Shipping Details</p>
@@ -75,7 +78,4 @@
             </div>
         </div>
     </div>
-
-
-
 </section>

@@ -1,7 +1,11 @@
-<div class="commonCategory">
-  <div class="categoryOverBlk">
+<!-- <div class="commonCategory">
+  <div class="categoryOverBlk ">
       <div [style.width.px]="data['data'].length * 198" class="clearfix">
-          <div (click)="link(item.category_url)" class="commonCategorySlide"  [class.selected]="extraData && extraData['currentRoute'] && extraData['currentRoute'] == item['category_url']" *ngFor="let item of  data['data'];let i=index">
+          <div 
+          (click)="link(item.category_url)" 
+          class="commonCategorySlide" 
+          [class.selected]="extraData && extraData['currentRoute'] && extraData['currentRoute'] == item['category_url']" 
+          *ngFor="let item of  data['data'];let i=index">
                   <div class="categoryImg">
                     <img alt={{item.CategoryName}} src="{{imagePath + item.category_image}}">
                   </div>
@@ -11,4 +15,9 @@
           </div>
       </div>
   </div>
-</div>
+</div> -->
+<!-- <category-card 
+*ngFor="let item of  data['data']" [page]="'cluster-store'"
+  [routerLink]="['/'+item.category_url]" [image]="imagePath + item.category_image"
+  [title]="item.CategoryName">
+</category-card> -->

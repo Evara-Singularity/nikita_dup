@@ -1,0 +1,8 @@
+@import "../../../scss/variables";
+@import '../../../scss/components/home-listing';
+
+.view-all-strip {
+  position: relative;
+  padding: 10px 15px;
+  @extend %view-all-strip;
+}

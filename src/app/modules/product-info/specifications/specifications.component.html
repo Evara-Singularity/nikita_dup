@@ -36,13 +36,12 @@
             </tr>
         </ng-container>
 
-        <tr class="spec-row" *ngIf="enableSecondaryAttributes" >
+        <tr class="spec-row show-more-row" *ngIf="enableSecondaryAttributes" >
             <td class="right" [attr.colspan]="2">
                 <div (click)="showMore()">
-                    <a class="show-more">{{ (showSecondaryAttributes)?'SHOW LESS':'SHOW MORE'  }}</a>
+                    <a class="link-text">{{ (showSecondaryAttributes)?'SHOW LESS':'SHOW MORE'  }}</a>
                 </div>
             </td>
         </tr>
-
     </table>
 </div>

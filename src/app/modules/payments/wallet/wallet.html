@@ -4,9 +4,9 @@
         <span>Low success rate currently observed in cases highlighted separately. If possible, use an alternate payment mode.</span>
     </div> -->
     <form [formGroup]="walletForm" (ngSubmit)="pay(walletForm.value, walletForm.valid)" class="form-horizontal">
-        <ul class="bank-list">
-            <label *ngFor="let wallet of walletMapKeys" class="bank-list-item">
-                <label class="payment-radio-btn">
+        <ul class="pwa-radio-list">
+            <label *ngFor="let wallet of walletMapKeys" class="pwa-radio-list-item">
+                <label class="pwa-radio-list-label">
                     <input type="radio" formControlName="wType" [value]="wallet">
                     <span class="custom-box"></span>
                 </label>
@@ -15,7 +15,7 @@
                 <span class="lowsuccessRate  pad-l-8" *ngIf="successPercentageData && successPercentageData[walletMap[wallet]['type']] && successPercentageData[walletMap[wallet]['type']]['up_status'] != 1">Low
                         success rate observed</span>
             </div>
-            </label>
+         </label>
         </ul>
         <div class="continue-button">
             <div class="container">

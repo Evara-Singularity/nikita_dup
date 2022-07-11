@@ -1,445 +1,513 @@
-        @import './config';
-        $font-family: 'Roboto',
-        sans-serif;
-        $cdn_url: "#{$cdn_url}";
-        $resXXL: 1280px;
-        $resXL: 1170px;
-        $resL: 991px;
-        $resM: 768px;
-        $resS: 660px;
-        $resXS: 500px;
-        $resXXS: 435px;
-        $resMin: 320px;
-        $top-height: 66px;
-        $sidebar-width: 180px;
-        $small-card-height: 114px;
-        $xsmall-card-height: 187px;
-        $medium-card-height: 400px;
-        $extra-medium-card-height: 550px;
-        $large-card-height: 974px;
-        $default-animation-duration: 0.2s;
-        $default-animation-style: ease-out;
-        $assets-root: 'assets/';
-        $images-root: $assets-root+'img/';
-        $fonts-root: $assets-root+'fonts/';
-        $font-thin: 100;
-        $font-light: 300;
-        $font-normal: 400;
-        $font-bolder: 600;
-        $font-bold: 700;
-        $font-ultraBold: 900;
-        
-        //colors
-        $facebook-color: #3b5998;
-        $twitter-color: #55acee;
-        $google-color: #dd4b39;
-        $linkedin-color: #0177B5;
-        $github-color: #6b6b6b;
-        $stackoverflow-color: #2F96E8;
-        $dribble-color: #F26798;
-        $behace-color: #0093FA;
-        $cart-errors-bg:#FFEBE0;
-        $body-color:#F2F2F2;
-        $logo-color: #d9232d;
-        $link-color: #303030;
-        $error-color:#D7222C;
-        $txt-color: #303030;
-        $default-text:$txt-color;
-        $border-color: #e6e6e6;
-        $border-sec-color: #2c2323;
-        $border-grey:#D7D7D7;
-        $note-text:#6F6F6F;
-        $gray-color: #F6F6F6;
-        $dark-gray-color:#9e9d9d;
-        $white-color:#fff;
-        $selected-color:#f5f8ff;
-        $blue-link-color: #3875FD;
-        $green-color: #3B9E26;
-        $white:#ffffff;
-        $disabled: #BEBEBE;
-        $btn-color:#F2720F;
-        $btn-color-red: #D9232D;
-        $color-red-light: #FAE0E1;
-        $checkbox-overly:rgba(56, 117, 253, .10);
-        $black: #000;
-        $disable-txt: #B6B6B6;
-        $place-holder-color: $disable-txt;
-        $active-color: $blue-link-color;
-        $active-border-color: $blue-link-color;
-        $trackeryellow:#EDCE09;
-        $yellow-txt:#FDB92C;
-        $dark-green:#309615;
-       
-         
-        //width
-        $fullwidth:100%;
-        
-        /*Font Size*/
-        $small-font: 10px;
-        $medium-font: 12px;
-        $large-font: 14px;
-        $extra-large-font: 16px;
+@import "./config";
+@import "./../../app/scss/utils/mixins.scss";
+$font-family: "Roboto", sans-serif;
+$cdn_url: "#{$cdn_url}";
+$resXXL: 1280px;
+$resXL: 1170px;
+$resL: 991px;
+$resM: 768px;
+$resS: 660px;
+$resXS: 500px;
+$resXXS: 435px;
+$resMin: 320px;
+$top-height: 66px;
+$sidebar-width: 180px;
+$small-card-height: 114px;
+$xsmall-card-height: 187px;
+$medium-card-height: 400px;
+$extra-medium-card-height: 550px;
+$large-card-height: 974px;
+$default-animation-duration: 0.2s;
+$default-animation-style: ease-out;
+$assets-root: "assets/";
+$images-root: $assets-root + "img/";
+$fonts-root: $assets-root + "fonts/";
 
-        //grid variables
-        $colmax:12;
-        $default-gap:15px;
-        /*Extends*/
-        
-        %cards {
-            padding: 10px;
-            color: #333;
-            background: $white;
-            border: 1px solid #ccc;
-        }
-        
-        %border-radius {
-            border-radius: 3px;
-        }
-        
-        %transition {
-            -ms-transition: all ease-in-out 0.25s;
-            -moz-transition: all ease-in-out 0.25s;
-            -webkit-transition: all ease-in-out 0.25s;
-            transition: all ease-in-out 0.25s;
-        }
-        
-        %clear-fix {
-            &::after {
-                content: '';
-                clear: both;
-                width: 100%;
-                float: none;
-                height: 0;
-                margin: 0;
-                padding: 0;
-                display: block;
-            }
-        }
-        
-        %container {
-            width: 96%;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 0;
-            @extend %clear-fix;
-        }
-        
-        %custom-green-radio-checkout {
-            input[type='radio'] {
-                display: none;
-                &:checked+.custom-box::before {
-                    content: "\e912";
-                    color: $green-color;
-                }
-            }
-            .custom-box {
-                width: 18px;
-                height: 18px;
-                display: block;
-                float: left;
-                margin-right: 5px;
-                position: relative;
-                &::before {
-                    font-family: 'icomooon_pwa';
-                    content: "\e912";
-                    font-size: 16px;
-                    color: #B9B9B9;
-                }
-            }
-            .chk-txt {
-                font-size: 15px;
-                float: left;
-                margin-left: 10px;
-                line-height: 20px;
-            }
-        }
-        
-        %custom-radio-checkout {
-            input[type='radio'] {
-                display: none;
-                &:checked+.custom-box::before {
-                    font-family: 'icomooon_pwa';
-                    content: "\e9a6";
-                    color: $logo-color;
-                    font-size: 24px;
-                }
-            }
-            .custom-box {
-                width: 24px;
-                float: left;
-                margin-right: 5px;
-                position: relative;
-                line-height: 20px;
-                &::before {
-                    font-family: 'icomooon_pwa';
-                    content: "\e9a7";
-                    font-size: 24px;
-                    color: #303030;
-                }
-            }
-            .chk-txt {
-                font-size: 15px;
-                float: left;
-                margin-left: 10px;
-                line-height: 20px;
-            }
-        }
-        
-        %pwa-universal-radio {
-            input[type='radio'] {
-                display: none;
-                &:checked+.custom-box::before {
-                    font-family: 'icomooon_pwa';
-                    content: "\e9a6";
-                    color: $logo-color;
-                    font-size: 24px;
-                }
-            }
-            .custom-box {
-                &::before {
-                    font-family: 'icomooon_pwa';
-                    content: "\e9a7";
-                    font-size: 24px;
-                    color: #303030;
-                }
-            }
-        }
-        
-        %custom-check-box-checkout {
-            input[type='checkbox'] {
-                display: none;
-                &:checked+.custom-box::before {
-                    content: "\e914";
-                    color: $active-color;
-                }
-            }
-            .custom-box {
-                width: 18px;
-                height: 18px;
-                display: block;
-                float: left;
-                font-size: 18px;
-                line-height: 20px;
-                margin-right: 5px;
-                @extend %transition;
-                &::before {
-                    font-family: 'icomooon_pwa';
-                    content: "\e915";
-                    color: #000;
-                }
-            }
-            .chk-txt {
-                font-size: 15px;
-                float: left;
-                margin-left: 5px;
-                line-height: 20px;
-                width: calc(100% - 38px);
-            }
-        }
-        
-        %custom-check-box {
-            input[type='checkbox'] {
-                display: none;
-                &:checked+.custom-box::before {
-                    content: "\e912";
-                    color: $active-color;
-                }
-            }
-            input[type='radio'] {
-                display: none;
-                &:checked+.custom-box::before {
-                    content: "\e912";
-                    color: $green-color;
-                }
-            }
-            .custom-box {
-                width: 18px;
-                height: 18px;
-                display: block;
-                float: left;
-                font-size: 18px;
-                line-height: 20px;
-                margin-right: 5px;
-                @extend %transition;
-                &::before {
-                    font-family: 'icomooon_pwa';
-                    content: "\e912";
-                    color: #B9B9B9;
-                }
-            }
-            .chk-txt {
-                font-size: 15px;
-                float: left;
-                margin-left: 10px;
-                line-height: 20px;
-                width: calc(100% - 38px);
-            }
-        }
-        
-        %box-shadow {
-            box-shadow: rgba(0, 0, 0, 0.16) -1px 2px 2px;
-        }
-        
-        %ico-txt {
-            i {
-                float: left;
-                font-size: 17px;
-                line-height: 20px;
-            }
-            .txt {
-                float: left;
-                margin-left: 10px;
-                line-height: 20px;
-            }
-            @extend %clear-fix;
-        }
-        
-        %ico-txt-right {
-            i {
-                float: right;
-                font-size: 17px;
-            }
-            .txt {
-                float: left;
-                line-height: 21px;
-                width: calc(100% - 20px);
-            }
-            @extend %clear-fix;
-        }
-        
-        %container {
-            width: 96%;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 0;
-            @extend %clear-fix;
-        }
-        
-        // for bottom options
-        %content-box {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            padding: 15px 0;
-            background: $white;
-            z-index: 14;
-            width: 100%;
-        }
-        
-        //For Ripple Effect
-        %ripple {
-            position: relative;
-            overflow: hidden;
-            transform: translate3d(0, 0, 0);
-            &:after {
-                content: "";
-                display: block;
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                top: 0;
-                left: 0;
-                pointer-events: none;
-                background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
-                background-repeat: no-repeat;
-                background-position: 50%;
-                transform: scale(10, 10);
-                opacity: 0;
-                transition: transform .3s, opacity .5s;
-            }
-            &:active:after {
-                transform: scale(0, 0);
-                opacity: .3;
-                transition: 0s;
-            }
-        }
-        
-        // Custom Check Box
-        %custom-check-box {
-            input[type='checkbox'] {
-                display: none;
-                &:checked+.custom-box::before {
-                    content: "\e912";
-                    color: $active-color;
-                }
-            }
-            input[type='radio'] {
-                display: none;
-                &:checked+.custom-box::before {
-                    content: "\e912";
-                    color: $green-color;
-                }
-            }
-            .custom-box {
-                width: 18px;
-                height: 18px;
-                display: block;
-                float: left;
-                font-size: 18px;
-                line-height: 20px;
-                margin-right: 5px;
-                @extend %transition;
-                &::before {
-                    font-family: 'icomooon_pwa';
-                    content: "\e912";
-                    color: #B9B9B9;
-                }
-            }
-            .custom-cbox label input[type=radio]:checked+.custom-box:before {
-                content: "";
-                color: #3b9e26;
-            }
-            .chk-txt {
-                font-size: 15px;
-                float: left;
-                margin-left: 10px;
-                line-height: 20px;
-                width: calc(100% - 38px);
-            }
-        }
-        /*Mixins*/
-        
-        @mixin gridForCategory($noOfItems, $space: null) {
-            @if $space {
-                width: calc(100% / #{$noOfItems} - (#{$space}px / #{$noOfItems}));
-            }
-            @else {
-                width: calc(100% / #{$noOfItems});
-            }
-            float:left;
-        }
-        
-        @mixin transform($transforms) {
-            -moz-transform: $transforms;
-            -o-transform: $transforms;
-            -ms-transform: $transforms;
-            -webkit-transform: $transforms;
-            transform: $transforms;
-        }
-        
-        @mixin rotate ($deg) {
-            @include transform(rotate(#{$deg}deg));
-        }
-        
-        @mixin scale($scale) {
-            @include transform(scale($scale));
-        }
-        
-        @mixin translate ($x, $y) {
-            @include transform(translate($x, $y));
-        }
-        
-        @mixin placeholder {
-             ::-webkit-input-placeholder {
-                @content
-            }
-             :-moz-placeholder {
-                @content
-            }
-             ::-moz-placeholder {
-                @content
-            }
-             :-ms-input-placeholder {
-                @content
-            }
-        }
+//font weight
+$font-thin: 100;
+$font-light: 300;
+$font-normal: 400;
+$font-medium: 500;
+$font-bold: 600;
+$font-bolder: 700;
+$font-ultraBold: 900;
+
+//colors
+$facebook-color: #3b5998;
+$twitter-color: #55acee;
+$google-color: #dd4b39;
+$linkedin-color: #0177b5;
+$github-color: #6b6b6b;
+$stackoverflow-color: #2f96e8;
+$dribble-color: #f26798;
+$behace-color: #0093fa;
+$cart-errors-bg: #ffebe0;
+$body-color: #f2f2f2;
+$logo-color: #d9232d;
+$link-color: #303030;
+$error-color: #d7222c;
+$txt-color: #303030;
+$default-text: $txt-color;
+$border-color: #e6e6e6;
+$border-sec-color: #2c2323;
+$border-grey: #d7d7d7;
+$note-text: #6f6f6f;
+$gray-color: #f6f6f6;
+$dark-gray-color: #9e9d9d;
+$white-color: #fff;
+$selected-color: #f5f8ff;
+$blue-link-color: #3875fd;
+$green-color: #3b9e26;
+$white: #ffffff;
+$disabled: #bebebe;
+$btn-color: #f2720f;
+$btn-color-red: #d9232d;
+$color-red-light: #fae0e1;
+$checkbox-overly: rgba(56, 117, 253, 0.1);
+$black: #000;
+$disable-txt: #b6b6b6;
+$place-holder-color: $disable-txt;
+$active-color: $blue-link-color;
+$active-border-color: $blue-link-color;
+$trackeryellow: #edce09;
+$yellow-txt: #fdb92c;
+$dark-green: #309615;
+$border-radius: 4px;
+$background-red: #dc1410;
+
+//width
+$fullwidth: 100%;
+$half-width: 50%;
+$card-width: 100px;
+$filter-fix-width: 135px;
+
+//grid variables
+$colmax: 12;
+$default-gap: 10px;
+$default-gap15: 10px;
+
+//Height
+$grid-image-height: 115px;
+$list-image-width: 84px;
+$grid-card-height: 260px;
+$grid1-card-height: 210px;
+
+/*Font Size*/
+$extra-small-font: 8px;
+$small-font: 10px;
+$medium-font: 12px;
+$large-font: 14px;
+$extra-large-font: 16px;
+$extra-large-1-font: 18px;
+$extra-large-2-font: 20px;
+$extra-large-2_5-font: 22px;
+$extra-large-3-font: 24px;
+$extra-large-4-font: 28px;
+$extra-large-5-font: 36px;
+$extra-large-6-font: 32px;
+
+// icon font
+$small-icon-font: 16px;
+$large-icon-font: 20px;
+
+/*Line Height*/
+$extra-small-line-height: 14px;
+$small-line-height: 16px;
+$medium-line-height: 20px;
+$large-line-height: 24px;
+$extra-large-line-height: 28px;
+$extra-large-1-line-height: 30px;
+
+// payment-radio-card-width
+$payment-radio-card-width: 160px;
+
+/*gradient*/
+$light-gray-gradient: radial-gradient(circle, #ffffff, #fcfcfc, #e2e2e2);
+
+/*Extends*/
+%cards {
+  padding: 10px;
+  color: #333;
+  background: $white;
+  border: 1px solid var(--silver);
+}
+
+//grid variables
+$colmax: 12;
+$default-gap: 15px;
+
+// border-redius
+$login-card-border: 12px;
+$border-radius-2: 2px;
+$border-radius-4: 4px;
+$border-radius-6: 6px;
+$border-radius-8: 8px;
+$border-radius-12: 12px;
+$border-radius-16: 16px;
+
+//grid variables
+$colmax: 12;
+$default-gap: 15px;
+/*Extends*/
+%view-all-strip {
+  display: flex;
+  align-items: center;
+  padding: 5px 0px;
+  h4 {
+    width: 75%;
+  }
+  .quinary-btn {
+    display: inline;
+    margin-left: auto;
+  }
+  span {
+    right: 10px;
+    position: absolute;
+    font-size: 8px;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+    padding: 3px 5px;
+  }
+}
+%cards {
+  padding: 10px;
+  color: #333;
+  background: $white;
+  border: 1px solid var(--silver);
+}
+%white-card {
+  background-color: var(--white);
+  border-radius: $border-radius-8;
+  margin: 15px;
+  padding: 15px;
+  .address-name {
+    font-size: $medium-font;
+    font-weight: bold;
+  }
+}
+
+%border-radius {
+  border-radius: 3px;
+}
+
+%transition {
+  -ms-transition: all ease-in-out 0.25s;
+  -moz-transition: all ease-in-out 0.25s;
+  -webkit-transition: all ease-in-out 0.25s;
+  transition: all ease-in-out 0.25s;
+}
+
+%clear-fix {
+  &::after {
+    content: "";
+    clear: both;
+    width: 100%;
+    float: none;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    display: block;
+  }
+}
+
+%container {
+  width: 96%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  @extend %clear-fix;
+}
+
+%custom-green-radio-checkout {
+  input[type="radio"] {
+    display: none;
+    &:checked + .custom-box::before {
+      content: "\e912";
+      color: $green-color;
+    }
+  }
+  .custom-box {
+    width: 18px;
+    height: 18px;
+    display: block;
+    float: left;
+    margin-right: 5px;
+    position: relative;
+    &::before {
+      font-family: "icomooon_pwa";
+      content: "\e912";
+      font-size: 16px;
+      color: #b9b9b9;
+    }
+  }
+  .chk-txt {
+    font-size: 15px;
+    float: left;
+    margin-left: 10px;
+    line-height: 20px;
+  }
+}
+
+%custom-radio-checkout {
+  input[type="radio"] {
+    display: none;
+    &:checked + .custom-box::before {
+      font-family: "icomooon_pwa";
+      content: "\e9a6";
+      color: $logo-color;
+      font-size: 24px;
+    }
+  }
+  .custom-box {
+    width: 24px;
+    float: left;
+    margin-right: 5px;
+    position: relative;
+    line-height: 20px;
+    &::before {
+      font-family: "icomooon_pwa";
+      content: "\e9a7";
+      font-size: 24px;
+      color: #303030;
+    }
+  }
+  .chk-txt {
+    font-size: 15px;
+    float: left;
+    margin-left: 10px;
+    line-height: 20px;
+  }
+}
+
+%pwa-universal-radio {
+  input[type="radio"] {
+    display: none;
+    &:checked + .custom-box::before {
+      font-family: "icomooon_pwa";
+      content: "\e9a6";
+      color: $logo-color;
+      font-size: 24px;
+    }
+  }
+  .custom-box {
+    &::before {
+      font-family: "icomooon_pwa";
+      content: "\e9a7";
+      font-size: 24px;
+      color: #303030;
+    }
+  }
+}
+
+%custom-check-box-checkout {
+  input[type="checkbox"] {
+    display: none;
+    &:checked + .custom-box::before {
+      content: "\e914";
+      color: $active-color;
+    }
+  }
+  .custom-box {
+    width: 18px;
+    height: 18px;
+    display: block;
+    float: left;
+    font-size: 18px;
+    line-height: 20px;
+    margin-right: 5px;
+    @extend %transition;
+    &::before {
+      font-family: "icomooon_pwa";
+      content: "\e915";
+      color: #000;
+    }
+  }
+  .chk-txt {
+    font-size: 15px;
+    float: left;
+    margin-left: 5px;
+    line-height: 20px;
+    width: calc(100% - 38px);
+  }
+}
+
+%custom-check-box {
+  input[type="checkbox"] {
+    display: none;
+    &:checked + .custom-box::before {
+      content: "\e912";
+      color: $active-color;
+    }
+  }
+  input[type="radio"] {
+    display: none;
+    &:checked + .custom-box::before {
+      content: "\e912";
+      color: $green-color;
+    }
+  }
+  .custom-box {
+    width: 18px;
+    height: 18px;
+    display: block;
+    float: left;
+    font-size: 18px;
+    line-height: 20px;
+    margin-right: 5px;
+    @extend %transition;
+    &::before {
+      font-family: "icomooon_pwa";
+      content: "\e912";
+      color: #b9b9b9;
+    }
+  }
+  .chk-txt {
+    font-size: 15px;
+    float: left;
+    margin-left: 10px;
+    line-height: 20px;
+    width: calc(100% - 38px);
+  }
+}
+
+%box-shadow {
+  box-shadow: rgba(0, 0, 0, 0.16) -1px 2px 2px;
+}
+%horizontal-card-container {
+  padding: 15px 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+%ico-txt {
+  i {
+    float: left;
+    font-size: 17px;
+    line-height: 20px;
+  }
+  .txt {
+    float: left;
+    margin-left: 10px;
+    line-height: 20px;
+  }
+  @extend %clear-fix;
+}
+
+%ico-txt-right {
+  i {
+    float: right;
+    font-size: 17px;
+  }
+  .txt {
+    float: left;
+    line-height: 21px;
+    width: calc(100% - 20px);
+  }
+  @extend %clear-fix;
+}
+
+%container {
+  width: 96%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  @extend %clear-fix;
+}
+
+// for bottom options
+%content-box {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 15px 0;
+  background: $white;
+  z-index: 14;
+  width: 100%;
+}
+
+//For Ripple Effect
+%ripple {
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.5s;
+  }
+  &:active:after {
+    transform: scale(0, 0);
+    opacity: 0.3;
+    transition: 0s;
+  }
+}
+
+// Custom Check Box
+%custom-check-box {
+  input[type="checkbox"] {
+    display: none;
+    &:checked + .custom-box::before {
+      content: "\e912";
+      color: $active-color;
+    }
+  }
+  input[type="radio"] {
+    display: none;
+    &:checked + .custom-box::before {
+      content: "\e912";
+      color: $green-color;
+    }
+  }
+  .custom-box {
+    width: 18px;
+    height: 18px;
+    display: block;
+    float: left;
+    font-size: 18px;
+    line-height: 20px;
+    margin-right: 5px;
+    @extend %transition;
+    &::before {
+      font-family: "icomooon_pwa";
+      content: "\e912";
+      color: #b9b9b9;
+    }
+  }
+  .chk-txt {
+    font-size: 15px;
+    float: left;
+    margin-left: 10px;
+    line-height: 20px;
+    width: calc(100% - 38px);
+  }
+}
+%hide-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+}
+.f-10 {
+  font-size: 10px;
+}
+.success-text {
+  color: var(--slimy-green);
+}
+.error-txt {
+  color: var(--primary);
+}

@@ -1,0 +1,123 @@
+@import './../variables';
+%custom-green-radio-checkout {
+    input[type="radio"] {
+        display: none;
+        &:checked + .custom-box::before {
+            content: "\e912";
+            color: var(--slimy-green);
+        }
+    }
+    .custom-box {
+        width: 18px;
+        height: 18px;
+        display: block;
+        float: left;
+        margin-right: 5px;
+        position: relative;
+        &::before {
+            font-family: "icomooon_pwa";
+            content: "\e912";
+            font-size: $extra-large-font;
+            color: var(--silver);
+        }
+    }
+    .chk-txt {
+        font-size: $large-font;
+        float: left;
+        margin-left: 10px;
+        line-height: $medium-line-height;
+    }
+}
+%custom-radio-checkout {
+    input[type="radio"] {
+        display: none;
+        &:checked + .custom-box::before {
+            font-family: "icomooon_pwa";
+            content: "\e9a6";
+            color: var(--primary);
+            font-size: $extra-large-3-font;
+        }
+    }
+    .custom-box {
+        width: 24px;
+        float: left;
+        margin-right: 5px;
+        position: relative;
+        line-height: $medium-line-height;
+        &::before {
+            font-family: "icomooon_pwa";
+            content: "\e9a7";
+            font-size: $extra-large-3-font;
+            color: var(--onyx-black);
+        }
+    }
+    .chk-txt {
+        font-size: $large-font;
+        float: left;
+        margin-left: 10px;
+        line-height: $medium-line-height;
+    }
+}
+%pwa-universal-radio {
+    input[type="radio"] {
+        display: none;
+        &:checked + .custom-box::before {
+            font-family: "icomooon_pwa";
+            content: "\e9a6";
+            color: var(--primary);
+            font-size: $extra-large-3-font;
+        }
+    }
+    .custom-box {
+        &::before {
+            font-family: "icomooon_pwa";
+            content: "\e9a7";
+            font-size: $large-icon-font;
+            color: var(--onyx-black);
+        }
+    }
+}
+.radio-with-label-container {
+    display: flex;
+    margin: 10px 0px;
+    label.radio-with-label {
+        display: inline-flex;
+        @extend %pwa-universal-radio;
+        width: $payment-radio-card-width;//(payment-radio-card-width)
+        align-items: center;
+        .custom-box {
+            margin-right: 10px;
+        }
+        .radio-text {
+            font-size: $medium-font;
+        }
+    }
+}
+.pwa-radio-list {
+    background-color: var(--white);
+    .pwa-radio-list-item {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid var(--ghost-white);
+        padding: 10px 0px;
+        &:last-child {
+            border-bottom: none;
+        }
+        .payment-radio-btn {
+            margin-right: 10px;
+        }
+        img {
+            width: 35px;
+            margin: 0px 15px;
+
+            &.wallet-img {
+                width: 140px;
+            }
+        }
+        .pwa-radio-list-text {
+            p {
+                margin-bottom: 5px;
+            }
+        }
+    }
+}

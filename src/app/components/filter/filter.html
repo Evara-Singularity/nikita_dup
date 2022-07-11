@@ -1,13 +1,9 @@
 <section class="screen-view popup mob_filter" *ngIf="filterData && filterData.length" id="mob_filter">
-    <div class="popup-head">
-        <i class="icon-back" (click)="toggleFilter.emit()"></i>
+    <div class="filter-header">
+        <i class="icon-back-arrow" (click)="toggleFilter.emit()"></i>
         <span class="txt-name">FILTER</span>
-        <span (click)="_commonService.selectedFilterData.filter = {}; toggleFilter.emit(); _commonService.applyFilter()" class="clear-filter">CLEAR ALL</span>
+        <span class="clear-filter" (click)="_commonService.selectedFilterData.filter = {}; toggleFilter.emit();_commonService.applyFilter()" [class.applied]="isFilterApplied">CLEAR ALL</span>
     </div>
-    <div (click)="toggleFilter.emit(); _commonService.applyFilter()" class="apply-filter">
-        <button class="btn continue-btn">APPLY</button>
-    </div>
-
     <div class="filters-content">
         <ul class="side-filters">
             <li *ngFor="let filter of filterData; let i = index;" (click)="selectedFilterIndex = i" [class.active]="selectedFilterIndex == i">
@@ -17,7 +13,7 @@
                 </div>
                 <div class="filter-options">
                     <ng-container *ngIf="filter.name === 'category'">
-                        <filter-category-list [brandName]='brandName' [brandUrl]='brandUrl' [isBrandPage]="isBrandPage" [categoryFilterData]="filter.terms"></filter-category-list>
+                        <filter-category-list (toggleFilter)="toggleFilter.emit($event);" [brandName]='brandName' [brandUrl]='brandUrl' [isBrandPage]="isBrandPage" [categoryFilterData]="filter.terms"></filter-category-list>
                     </ng-container>
                     <ng-container *ngIf="filter.name != 'category'">
                         <div class="filter-list">
@@ -28,7 +24,7 @@
                             <div class="custom-cbox">
                                 <ng-container *ngFor="let item of filter.terms; let z = index;">
                                     <label [class.selected]="categoryCheckBox.checked" *ngIf="item.count">
-                                        <span class="chk-box">
+                                        <!-- <span class="chk-box"> -->
                                             <input 
                                                 (click)="updateSelectedFilterData($event, filter.name, item)"
                                                 class="hidden" 
@@ -37,7 +33,7 @@
                                                 [checked]="item.selected"
                                                 #categoryCheckBox>
                                             <span class="custom-box icon-box"></span>
-                                        </span>
+                                        <!-- </span> -->
                                         <ng-container *ngIf="filter.name !== 'ratings'">
                                             <div>
                                                 <span class="chk-txt">{{item.term | addFilterSymbol:filter.name}}</span>
@@ -60,5 +56,8 @@
                 </div>
             </li>
         </ul>
+    </div>
+    <div class="fixed-bottom-cta">
+        <button (click)="$event.stopPropagation();applyFilter()" class="btn primary-full-btn">APPLY</button>
     </div>
 </section>

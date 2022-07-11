@@ -158,6 +158,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     // Q&A vars
     questionMessage: string;
     listOfGroupedCategoriesForCanonicalUrl = ["116111700"];
+    alreadyLiked: boolean = true;
 
     productShareInstance = null;
     @ViewChild("productShare", { read: ViewContainerRef })
@@ -260,8 +261,6 @@ export class ProductComponent implements OnInit, AfterViewInit
     productCrouselInstance = null;
     @ViewChild("productCrousel", { read: ViewContainerRef })
     productCrouselContainerRef: ViewContainerRef;
-    @ViewChild("productCrouselPseudo", { read: ElementRef })
-    productCrouselPseudoContainerRef: ElementRef;
     // ondemad loaded components for FAQ listing
     faqListPopupInstance = null;
     @ViewChild("faqListPopup", { read: ViewContainerRef })
@@ -374,7 +373,6 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.productStatusCount();
             this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
-            this.attachSwipeEvents();
             this.attachBackClickHandler();
         }
     }
@@ -777,7 +775,6 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.productPrice = this.priceQuantityCountry && !isNaN(this.priceQuantityCountry["sellingPrice"]) ? Number(this.priceQuantityCountry["sellingPrice"]) : 0;
         if (this.priceQuantityCountry && this.priceQuantityCountry["mrp"] > 0 && this.priceQuantityCountry["sellingPrice"] > 0) {
             this.productDiscount = this.commonService.calculcateDiscount(this.priceQuantityCountry["discount"], this.priceQuantityCountry["mrp"], this.priceQuantityCountry["sellingPrice"]);
-            console.log('this.productDiscount', this.productDiscount);
         }
         this.taxPercentage = this.priceQuantityCountry ? this.priceQuantityCountry["taxRule"]["taxPercentage"] : null;
 
@@ -1196,7 +1193,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.checkCartQuantityAndUpdate(this.qunatityFormControl.value);
     }
 
-    private checkCartQuantityAndUpdate(value): void
+    checkCartQuantityAndUpdate(value): void
     {
         if (!value) {
             this._tms.show({
@@ -1270,7 +1267,9 @@ export class ProductComponent implements OnInit, AfterViewInit
         if (this.isBulkPricesProduct) {
             const selectedProductBulkPrice = this.productBulkPrices.filter(prices => (this.cartQunatityForProduct >= prices.minQty && this.cartQunatityForProduct <= prices.maxQty));
             this.selectedProductBulkPrice = (selectedProductBulkPrice.length > 0) ? selectedProductBulkPrice[0] : null;
-            // this.bulkSellingPrice = this.selectedProductBulkPrice['bulkSellingPrice'];
+            if(this.selectedProductBulkPrice){
+                this.bulkPriceWithoutTax = this.selectedProductBulkPrice['bulkSPWithoutTax'];
+            }
         }
     }
 
@@ -1283,7 +1282,6 @@ export class ProductComponent implements OnInit, AfterViewInit
             })
             return;
         }
-        this.qunatityFormControl.setValue(qunatity);
         this.checkBulkPriceMode();
     }
 
@@ -2457,58 +2455,32 @@ export class ProductComponent implements OnInit, AfterViewInit
         window.history.pushState('', '', this.router.url);
     }
 
-    async openPopUpcrousel(
-        slideNumber: number = 1,
-        oosProductIndex: number = -1
-    )
+    async openPopUpcrousel(slideNumber: number = 1, oosProductIndex: number = -1)
     {
         if (!this.popupCrouselInstance) {
             this.showLoader = true;
             this.displayCardCta = true;
-            const { ProductCrouselPopupComponent } = await import(
-                "../../components/product-crousel-popup/product-crousel-popup.component"
-            ).finally(() =>
+            const { ProductCrouselPopupComponent } = await import("../../components/product-crousel-popup/product-crousel-popup.component").finally(() =>
             {
                 this.showLoader = false;
             });
-            const factory = this.cfr.resolveComponentFactory(
-                ProductCrouselPopupComponent
-            );
-            this.popupCrouselInstance = this.popupCrouselContainerRef.createComponent(
-                factory,
-                null,
-                this.injector
-            );
-
+            const factory = this.cfr.resolveComponentFactory(ProductCrouselPopupComponent);
+            this.popupCrouselInstance = this.popupCrouselContainerRef.createComponent(factory, null, this.injector);
             // sent anaytic call
             this.sendProductImageClickTracking(":oos:similar")
-
             const options = Object.assign({}, this.iOptions);
             options.pager = false;
-
             this.popupCrouselInstance.instance["analyticProduct"] = this._trackingService.basicPDPTracking(this.rawProductData);
             this.popupCrouselInstance.instance["oosProductIndex"] = oosProductIndex;
             this.popupCrouselInstance.instance["options"] = options;
-            this.popupCrouselInstance.instance["productAllImages"] =
-                oosProductIndex < 0
-                    ? this.productAllImages
-                    : this.productService.oosSimilarProductsData.similarData[
-                        oosProductIndex
-                    ].productAllImages;
+            this.popupCrouselInstance.instance["productAllImages"] = oosProductIndex < 0 ? this.productAllImages : this.productService.oosSimilarProductsData.similarData[oosProductIndex].productAllImages;
             this.popupCrouselInstance.instance["slideNumber"] = slideNumber;
-
-            (
-                this.popupCrouselInstance.instance["out"] as EventEmitter<boolean>
-            ).subscribe((status) =>
+            (this.popupCrouselInstance.instance["out"] as EventEmitter<boolean>).subscribe((status) =>
             {
                 this.clearImageCrouselPopup();
                 this.handleRestoreRoutingForPopups();
             });
-            (
-                this.popupCrouselInstance.instance[
-                "currentSlide"
-                ] as EventEmitter<boolean>
-            ).subscribe((slideData) =>
+            (this.popupCrouselInstance.instance["currentSlide"] as EventEmitter<boolean>).subscribe((slideData) =>
             {
                 if (slideData) {
                     this.moveToSlide$.next(slideData.currentSlide);
@@ -2526,59 +2498,58 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.popupCrouselContainerRef.remove();
     }
 
-    async loadProductCrousel(slideIndex)
-    {
-        if (!this.productCrouselInstance) {
-            this.isProductCrouselLoaded = true;
-            const { ProductCrouselComponent } = await import(
-                "../../modules/product-crousel/ProductCrousel.component"
-            ).finally(() =>
-            {
-                this.clearPseudoImageCrousel();
-            });
-            const factory = this.cfr.resolveComponentFactory(ProductCrouselComponent);
-            this.productCrouselInstance =
-                this.productCrouselContainerRef.createComponent(
-                    factory,
-                    null,
-                    this.injector
-                );
-            this.productCrouselInstance.instance["options"] = this.iOptions;
-            this.productCrouselInstance.instance["items"] = this.productAllImages;
-            this.productCrouselInstance.instance["productBo"] = this.rawProductData;
-            this.productCrouselInstance.instance["moveToSlide$"] = this.moveToSlide$;
-            this.productCrouselInstance.instance["refreshSiemaItems$"] =
-                this.refreshSiemaItems$;
-            this.productCrouselInstance.instance["productName"] = this.productName;
-            this.productCrouselInstance.instance["productOutOfStock"] = this.productOutOfStock;
-            setTimeout(() =>
-            {
-                (
-                    this.productCrouselInstance.instance[
-                    "moveToSlide$"
-                    ] as Subject<number>
-                ).next(slideIndex);
-            }, 100);
-        } else {
-            this.productCrouselInstance.instance["productOutOfStock"] = this.productOutOfStock;
-        }
-    }
+    // async loadProductCrousel(slideIndex)
+    // {
+    //     if (!this.productCrouselInstance) {
+    //         this.isProductCrouselLoaded = true;
+    //         const { ProductCrouselComponent } = await import(
+    //             "../../modules/product-crousel/ProductCrousel.component"
+    //         ).finally(() =>
+    //         {
+    //             this.clearPseudoImageCrousel();
+    //         });
+    //         const factory = this.cfr.resolveComponentFactory(ProductCrouselComponent);
+    //         this.productCrouselInstance =
+    //             this.productCrouselContainerRef.createComponent(
+    //                 factory,
+    //                 null,
+    //                 this.injector
+    //             );
+    //         this.productCrouselInstance.instance["options"] = this.iOptions;
+    //         this.productCrouselInstance.instance["items"] = this.productAllImages;
+    //         this.productCrouselInstance.instance["productBo"] = this.rawProductData;
+    //         this.productCrouselInstance.instance["moveToSlide$"] = this.moveToSlide$;
+    //         this.productCrouselInstance.instance["refreshSiemaItems$"] =
+    //             this.refreshSiemaItems$;
+    //         this.productCrouselInstance.instance["productName"] = this.productName;
+    //         this.productCrouselInstance.instance["productOutOfStock"] = this.productOutOfStock;
+    //         setTimeout(() =>
+    //         {
+    //             (
+    //                 this.productCrouselInstance.instance[
+    //                 "moveToSlide$"
+    //                 ] as Subject<number>
+    //             ).next(slideIndex);
+    //         }, 100);
+    //     } else {
+    //         this.productCrouselInstance.instance["productOutOfStock"] = this.productOutOfStock;
+    //     }
+    // }
 
-    clearPseudoImageCrousel()
-    {
-        this.isProductCrouselLoaded = false;
-        this.productCrouselPseudoContainerRef.nativeElement.remove();
-    }
+    // clearPseudoImageCrousel()
+    // {
+    //     this.isProductCrouselLoaded = false;
+    // }
 
-    onRotatePrevious()
-    {
-        this.loadProductCrousel(this.productAllImages.length - 1);
-    }
+    // onRotatePrevious()
+    // {
+    //     this.loadProductCrousel(this.productAllImages.length - 1);
+    // }
 
-    onRotateNext()
-    {
-        this.loadProductCrousel(1);
-    }
+    // onRotateNext()
+    // {
+    //     this.loadProductCrousel(1);
+    // }
 
     async loadGlobalToastMessage(data, rawData)
     {
@@ -2596,7 +2567,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     null,
                     this.injector
                 );
-                const options = { year: "numeric", month: "long", day: "numeric" };
+                const options: any = { year: "numeric", month: "long", day: "numeric" };
                 const a = data.data.time.split(":");
                 this.globalToastInstance.instance["text"] =
                     "The same item has been ordered by you on " +
@@ -2676,9 +2647,8 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
-    alreadyLiked: boolean = true;
-    postHelpful(item, yes, no, i)
-    {
+
+    postHelpful(item, yes, no, i) {
         if (this.localStorageService.retrieve("user")) {
             let user = this.localStorageService.retrieve("user");
             if (user.authenticated == "true") {
@@ -2691,8 +2661,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     is_review_helpful_count_no: no,
                     is_review_helpful_count_yes: yes,
                 };
-                this.productService.postHelpful(obj).subscribe((res) =>
-                {
+                this.productService.postHelpful(obj).subscribe((res) => {
                     if (res["code"] === "200") {
                         this._tms.show({
                             type: "success",
@@ -2722,9 +2691,12 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.goToLoginPage(this.productUrl);
         }
     }
+    
+    handlePostHelpful(args: Array<any>) {
+        this.postHelpful(args[0], args[1], args[2], args[3]);
+    }
 
-    async showYTVideo(link)
-    {
+    async showYTVideo(link) {
         if (!this.youtubeModalInstance) {
             const PRODUCT = this._trackingService.basicPDPTracking(this.rawProductData);
             let analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "pdp");
@@ -2734,6 +2706,10 @@ export class ProductComponent implements OnInit, AfterViewInit
             modalData.inputs = { videoDetails: videoDetails, analyticsDetails: analyticsDetails };
             this.modalService.show(modalData);
         }
+    }
+
+    showYTVideo1(link) {
+        this.showYTVideo(link)
     }
 
     // SEO SECTION STARTS
@@ -3581,16 +3557,14 @@ export class ProductComponent implements OnInit, AfterViewInit
         });
     }
 
-    async handleProductInfoPopup(infoType, cta, oosProductIndex: number = -1)
-    {
+    async handleProductInfoPopup(infoType, cta, oosProductIndex: number = -1) {
         this.holdRFQForm = true;
         this.sendProductInfotracking(cta);
         this.showLoader = true;
         this.displayCardCta = true;
         const { ProductInfoComponent } = await import(
             "./../../modules/product-info/product-info.component"
-        ).finally(() =>
-        {
+        ).finally(() => {
             this.showLoader = false;
         });
         const factory = this.cfr.resolveComponentFactory(ProductInfoComponent);
@@ -3611,13 +3585,16 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.productInfoPopupInstance.instance[
             "closePopup$"
             ] as EventEmitter<boolean>
-        ).subscribe((data) =>
-        {
+        ).subscribe((data) => {
             this.closeProductInfoPopup();
             this.handleRestoreRoutingForPopups();
         });
         this.handleRoutingForPopUps();
         this.backTrackIndex = oosProductIndex;
+    }
+
+    async handleProductInfoPopup1(event) {
+        this.handleProductInfoPopup(event.infoType, event.cta)
     }
 
     private closeProductInfoPopup()
@@ -4044,112 +4021,6 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     get isLoggedIn() { let user = this.localStorageService.retrieve("user"); return user && user.authenticated == "true" }
-
-    initialMouse;
-    slideMovementTotal;
-    mouseIsDown;
-    slider;
-    attachSwipeEvents()
-    {
-        this.initialMouse = 0;
-        this.slideMovementTotal = 0;
-        this.mouseIsDown = false;
-
-        let slider = this.document.getElementById('slider');
-        if (!slider) {
-            return;
-        }
-
-        // Custom events on slider
-        slider.addEventListener('mouseup', (e) => this.mouseUpTouched(e), false);
-        slider.addEventListener('touchend', (e) => this.mouseUpTouched(e), false);
-
-        // Custom events on Body
-        this.document.body.addEventListener('mousemove', (e) => this.mouseMoveTouchMoveEvent(e), false);
-        this.document.body.addEventListener('touchmove', (e) => this.mouseMoveTouchMoveEvent(e), false);
-
-    }
-
-    sliderAnimation()
-    {
-        let id = null;
-        let pos = 0;
-        const elem = document.getElementById("slider");
-        clearInterval(id);
-        id = setInterval(() =>
-        {
-            if (pos == 100) {
-                clearInterval(id);
-            } else {
-                pos++;
-                elem.style.left = 0 + 'px';
-            }
-        }, 5);
-    }
-
-    mouseUpTouched(event)
-    {
-        let sliderId = this.document.getElementById('slider');
-        if (!this.mouseIsDown) {
-            return;
-        }
-        this.mouseIsDown = false;
-        let currentMouse = event.clientX || event.changedTouches[0].pageX;
-        let relativeMouse = currentMouse - this.initialMouse;
-        console.log('currentMouse -> ' + currentMouse);
-        console.log('relativeMouse -> ' + relativeMouse);
-
-        if (relativeMouse < this.slideMovementTotal) {
-            // $('.slide-text').fadeTo(300, 1);
-            this.sliderAnimation();
-            return;
-        }
-        sliderId.classList.add('unlocked');
-        this.raiseRFQQuote();
-    }
-
-    toggleSliderClasses(event)
-    {
-        let sliderId = this.document.getElementById('slider');
-        if (!sliderId.classList.contains('unlocked')) {
-            return;
-        }
-        sliderId.classList.remove('unlocked');
-        sliderId.removeEventListener('click', this.toggleSliderClasses);
-        sliderId.removeEventListener('tap', this.toggleSliderClasses);
-    }
-
-    mouseMoveTouchMoveEvent(event)
-    {
-        let sliderId = this.document.getElementById('slider');
-        if (!this.mouseIsDown) {
-            return;
-        }
-
-        let currentMouse = event.clientX || (event.originalEvent ? event.originalEvent.touches[0].pageX : 0);
-        let relativeMouse = currentMouse - this.initialMouse;
-        let slidePercent = 1 - (relativeMouse / this.slideMovementTotal);
-        // $('.slide-text').fadeTo(0, slidePercent);
-
-        if (relativeMouse <= 0) {
-            sliderId.style.left = '0px';
-            return;
-        }
-        if (relativeMouse >= this.slideMovementTotal + 10) {
-            sliderId.style.left = this.slideMovementTotal + 'px';
-            return;
-        }
-        sliderId.style.left = relativeMouse - 10 + 'px';
-
-    }
-
-    sliderMouseDownEvent(event)
-    {
-        this.mouseIsDown = true;
-        this.slideMovementTotal = this.document.getElementById('button-background').offsetWidth - this.document.getElementById('slider').offsetWidth;
-        this.initialMouse = event.clientX || (event.originalEvent ? (event.originalEvent.touches[0].pageX) : 0);
-    }
-
 
     ngOnDestroy()
     {

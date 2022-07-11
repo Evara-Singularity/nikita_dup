@@ -68,11 +68,7 @@
 <product-more-widget [taxons]="taxons" [baseDomain]="baseDomain" [orderTracking]="orderTracking" [productBrandDetails]="productBrandDetails" [productCategoryDetails]="productCategoryDetails" [productBrandCategoryUrl]="productBrandCategoryUrl">
 </product-more-widget>
 
-<<<<<<< HEAD
-<div id="sponseredProducts" class="common-product" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
-=======
 <div id="sponseredProducts" class="common-product" *ngIf="!sponseredProductsInstance" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
->>>>>>> sprint-20-ui-revamp
     <ng-container #sponseredProducts></ng-container>
     <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
 </div>

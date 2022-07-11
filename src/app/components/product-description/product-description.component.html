@@ -13,7 +13,7 @@
                                 {{productPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp;(Incl. of all taxes)
                             </small>
                         </p>
-                        <p class="actual-price main-price mt-5">
+                        <p class="actual-price main-price mt-5" *ngIf="priceWithoutTax">
                             <strong>{{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}} 
                                 <small class="inline-price" *ngIf="((productPrice-priceWithoutTax) > 0)"><i class="icon-expand"></i>{{ (productPrice-priceWithoutTax) | currency: 'INR' : 'symbol' : '1.0-0'}} GST
                                 </small>

@@ -1,3 +1,4 @@
+import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import {NgModule} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {BankNameChangePipe, EmiComponent} from "./emi.component";
@@ -22,6 +23,7 @@ import { SortByEMIMonthsPipeModule } from '@app/utils/pipes/emiSort.pipe';
         RazorPayFormModule,
         BankNamePipeModule,
         MathCeilPipeModule,
+        MathFloorPipeModule,
         KpAutocompleteOffDirectiveModule,
         SelectPopupModule,
         SortByEMIMonthsPipeModule

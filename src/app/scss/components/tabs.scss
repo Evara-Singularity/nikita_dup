@@ -12,7 +12,7 @@
     margin-right: 10px;
     flex-shrink: 0;
     text-align: center;
-    border: 1px solid var(--blue);;
+    border: 1px solid var(--bleu-de-france);;
     border-radius: 4px;
     padding: 7px 10px;
     font-weight: bold;
@@ -23,7 +23,7 @@
       color: $logo-color;
     }
     a{
-      color: var(--blue);
+      color: var(--bleu-de-france);
     }
   }
   .pwa-inline-tab {
@@ -51,7 +51,13 @@
       }
     }
     .tab-img-txt {
-      color: var(--blue);
+      color: var(--bleu-de-france);
+      font-size: 10px;
+      width: calc(100% - 45px);
+      line-height: 14px;
+    }
+    .tab-img-txt-gray {
+      color: var(--gray-web);
       font-size: 10px;
       width: calc(100% - 45px);
       line-height: 14px;

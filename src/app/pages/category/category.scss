@@ -6,9 +6,8 @@
 
 :host {
     display: block;
-    margin-top: 165px;
+    margin-top: 115px;
     &.translateCategory{
-        // transform: translateY(64px);
         transition-timing-function: ease-in-out;
         transition: 0.5s all;
         margin-top:165px;
@@ -407,17 +406,14 @@
     }
 }
 .recent-article-container {
-    padding: 15px 0px 0px 0px;
+    padding: 0px;
 }
 .sub-cate-container{
     padding-bottom: 20px;
     .sub_category_heading {
-        font-size: $large-font;
-        font-weight: 600;
-        padding: 10px 0px;
-        span {
-            font-weight: 400;
-        }
+    font-size: $extra-large-font;
+    font-weight: 600;
+    padding: 5px 0px 15px;
     }
 }
 .promo-container{

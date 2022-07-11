@@ -1,6 +1,8 @@
 @import "./../../../scss/variables";
 @import "../orders.scss";
 @import "../../../scss/layout/card-boxed.scss";
+@import '../../../components/pagination/pagination';
+
 
 .orderShipDet {
     .businessBox {
@@ -71,24 +73,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            
             .orderdtbottom-inner{
-                .buy-again {
-                    border: none;
-                    
-                    
-                    color: var(--white);
-                    font-size: 12px;
-                    // position: absolute;
-                    right: 0px;
-                    a {
-                        color: var(--white);
-                        display: block;
-                        background: var(--primary);
-                        font-weight: 600;
-                        border-radius: $border-radius-4;
-                        padding: 8px 10px;
-                    }
-                }
+                
             }
             .orderstatus{
                 color: var(--onyx-black) !important;
@@ -133,10 +120,9 @@
     top: 10px;
 }
 
-.status-circle{
-    background:var(--primary);
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    margin-right:10px;
+.status-circle {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 10px;
 }

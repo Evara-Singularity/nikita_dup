@@ -16,13 +16,8 @@
             color: var(--spanish-gray);
         }
     }
-    .search-banner-section{
-        background: var(--ghost-white);
-        padding: 15px;
-        .search-banner-card{
-            img{
-                border-radius: 8px;
-            }
-        }
+    img{
+        border-radius: 8px;
+        margin: 5px 0;
     }
 }

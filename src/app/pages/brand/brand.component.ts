@@ -131,7 +131,7 @@ export class BrandComponent {
         });
         this.accordiansDetails.push({
             name: 'Similar Category',
-            data: this.API_RESPONSE.brand[2]?.mostSoledCategories?.map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
+            data: this.API_RESPONSE.brand[2]?.mostSoledSiblingCategories?.map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
             icon:'icon-categories'
         });
         this.accordiansDetails.push({
@@ -416,7 +416,8 @@ export class BrandComponent {
                     'pageName': "moglix:" + this._activatedRoute.snapshot.params.brand + ": listing",
                     'channel': "brand",
                     'subSection': "moglix:" + this._activatedRoute.snapshot.params.brand + ": listing " + this._commonService.getSectionClick().toLowerCase(),
-                    'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+                    'totalProductCount':this._productListService?.productListingData.totalCount,
+                    'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest",
                 }
                 custData = {
                     'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',

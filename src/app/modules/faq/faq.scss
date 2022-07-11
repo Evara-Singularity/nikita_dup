@@ -1,13 +1,29 @@
 @import '../../scss//variables.scss';
 @import '../../scss/root';
 
+.hide{
+  display: none;
+}
+.show{
+  display: block;
+}
+
+.ico-expand{
+  .icon-expand{
+    &:before{
+      content: "\e919";
+    }
+    
+  }
+}
+
 
 .faqfixedhead{
-  padding-top:95px;
+  padding-top:140px;
   position: relative;
   .faq-search{
     background: var(--primary);
-    padding-top: 25px !important;
+    padding-top: 35px !important;
     text-align: center;
     position: fixed;
     top: 80px;
@@ -21,6 +37,12 @@
     padding:0 15px;
     margin-top: -30px;
     margin-bottom: 30px;
+    .help-txt{
+      font-size: $extra-large-font;
+      color: var(--white);
+      font-weight: $font-bold;
+      padding-bottom: 22px;
+    }
     .searchfield{
       box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
       background: var(--white);
@@ -62,15 +84,18 @@
     }
     .searchresult{
       position: absolute;
-      width: calc(100% - 60px);
+      width: calc(100% - 35px);
       background: var(--white);
       z-index: 1;
       max-height:480px;
       overflow-y: auto;
       box-shadow: 0 3px 7px #999;
-      left: 30px;
-      top: 81px;
+      left: 0px;
+      right:0;
+      margin:0 auto;
+      top: 124px;
       text-align: left;
+      border-radius:$border-radius-8;
       li{
         a{
           display: block;
@@ -111,6 +136,7 @@
             border:none;
           }
           h4{
+            font-size:$large-font;
             margin-bottom:10px;
             line-height: $medium-line-height;
             &:first-child{
@@ -122,11 +148,11 @@
             }
           }
           p{
-            font-size:$small-font;
+            font-size:$medium-font;
             line-height:$medium-line-height;
           }
           .list-information{
-            font-size:$small-font;
+            font-size:$medium-font;
             margin-top: 10px;
             line-height: $medium-line-height;
             padding-left: 8px;
@@ -199,3 +225,4 @@
     }
   }
 }
+.hidden-sm-down{display: none;}

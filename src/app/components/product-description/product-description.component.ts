@@ -34,7 +34,6 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() productBulkPrices;
   @Input() selectedProductBulkPrice;
   @Output() checkCartQuantityAndUpdate$: EventEmitter<any> = new EventEmitter<any>();
-  
 
   constructor(private _tms: ToastMessageService) { }
 

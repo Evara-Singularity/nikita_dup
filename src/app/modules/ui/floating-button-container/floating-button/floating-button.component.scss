@@ -31,3 +31,8 @@
     background: $white;
     color: $btn-color-red;
 }
+
+.cart-btn-fullwidth{
+    @extend .cart-btn;
+    width: 100%;
+}

@@ -3,8 +3,8 @@
             *ngIf="data['category_cluster'] && data['category_cluster']['data'] && data['category_cluster']['data'].length > 0"
             [data]="data['category_cluster']" [extraData]="extraData"></app-cluster-category> -->
     <div class="category-card-scroll-bar"  id="tabs">
-        <category-card *ngFor="let item of  data['category_cluster']['data']" [page]="'cluster-store'" (click)="categoryCardScroll($event)" 
-            [routerLink]="['/'+item.category_url]" [item]="item" [extraData]="extraData" [image]="imagePath + item.category_image"
+        <category-card *ngFor="let item of  data['category_cluster']['data']" [page]="'cluster-store'" (cardClicked$)="categoryCardScroll($event)" 
+            [item]="item" [isSelected]="extraData && extraData['currentRoute'] && extraData['currentRoute'] == item['category_url']" [image]="imagePath + item.category_image"
             [title]="item.CategoryName">
         </category-card>
     </div>

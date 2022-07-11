@@ -407,16 +407,17 @@ export class ClusterStoreComponent implements OnInit {
 			this.clusterVideoContainerRef.remove();
 		}
 	}
+	
 	categoryCardScroll(e) {
-		let tabsId = document.getElementById("tabs");
-		if (this.isBrowser && tabsId) {
-			tabsId.addEventListener(
-				"click",
-				() => {
+		if (this.isBrowser) {
+			let tabsId = document.getElementById("tabs");
+			if (this.isBrowser && tabsId) {
+				tabsId.addEventListener("click", () => {
 					tabsId.scroll({ left: 0, top: 0, behavior: "smooth" });
 				},
-				{ passive: true }
-			);
+					{ passive: true }
+				);
+			}
 		}
 	}
 

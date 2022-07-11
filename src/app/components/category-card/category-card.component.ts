@@ -14,6 +14,9 @@ export class CategoryCardComponent implements OnInit {
   @Input('page') page: string;
   @Input('image') image;
   @Input('title') title;
+  @Input('extraData') extraData?;
+  @Input('item') item?;
+
 
 
   imagePath = CONSTANTS.IMAGE_BASE_URL;

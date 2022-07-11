@@ -126,9 +126,12 @@ function appendImagePreloads(indexHtml) {
   newIndexHtml = newIndexHtml.split("_ngcontent-sc103").join('data-_ngcontent-sc103'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc96").join('data-_ngcontent-sc96'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc20").join('data-_ngcontent-sc20'); 
+  newIndexHtml = newIndexHtml.split("_ngcontent-sc80").join('data-_ngcontent-sc80'); 
+  newIndexHtml = newIndexHtml.split("_ngcontent-sc90").join('data-_ngcontent-sc80'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc83").join('data-_ngcontent-sc85'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc88").join('data-_ngcontent-sc88'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc86").join('data-_ngcontent-sc86'); 
+  newIndexHtml = newIndexHtml.split("_ngcontent-sc81").join('data-_ngcontent-sc81'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc87").join('data-_ngcontent-sc89'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc89").join('data-_ngcontent-sc89'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc92").join('data-_ngcontent-sc89'); 

@@ -9,14 +9,3 @@
     </ng-container>
   </product-card-vertical-container>
 </section>
-
-<section *ngIf="!isRecentDataLoaded && (recentlyViewedProducts && recentlyViewedProducts.length == 0)"
-  class="Recently-view">
-  <div class="view-all-strip">
-    <h2>RECENTLY VIEWED</h2>
-  </div>
-  <product-card-vertical-container [numberOfItems]="2">
-    <product-card-skeleton></product-card-skeleton>
-    <product-card-skeleton></product-card-skeleton>
-  </product-card-vertical-container>
-</section>

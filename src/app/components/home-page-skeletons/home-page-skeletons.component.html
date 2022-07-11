@@ -1,7 +1,6 @@
 <ng-container *ngIf="templateRefInstance == null">
   <ng-container [ngSwitch]="type">
-
-    <ng-container *ngSwitchCase="'RECENTLY'">
+    <ng-container *ngSwitchCase="'SIMILAR'">
       <section class="skeleton-container similar-product mt-10">
         <p class="heading"></p>
         <div class="vertical-card-section">
@@ -19,17 +18,24 @@
         </div>
       </section>
     </ng-container>
-
     <ng-container *ngSwitchCase="'FEATURED-ARRIVALS'">
-      <!-- <div>
-        <h1>FEATURED-ARRIVALS seketon here</h1>
-      </div> -->
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'CATEGORIES'">
-      <!-- <div>
-        <h1>categoriesInstance seketon here</h1>
-      </div> -->
+      <section class="featr_arrival featr_arrival-skeleton">
+        <div class="view-all-strip">
+            <h2></h2>
+        </div>
+        <ul class="view-products grid-variant1">
+            <li *ngFor="let item of [1,2,3,4]">
+                 <div class ="product-card">
+                    <div class="product-img">
+                    </div>
+                    <div class="product-description">
+                        <p class="prod-name">
+                        </p>
+                    </div>
+                 </div>
+            </li>
+        </ul>
+    </section>
     </ng-container>
   </ng-container>
 </ng-container>

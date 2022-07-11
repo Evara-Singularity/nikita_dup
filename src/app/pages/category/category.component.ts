@@ -25,7 +25,7 @@ let digitalData = {
 const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000", "211521500": "211521500", "114132500": "114132500" };
 
 @Component({
-    selector: 'category',
+    selector: 'data-category',
     templateUrl: './category.html',
     styleUrls: ['./category.scss', './../../components/homefooter-accordian/homefooter-accordian.component.scss'],
 })

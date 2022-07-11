@@ -110,6 +110,7 @@ function appendImagePreloads(indexHtml) {
   newIndexHtml = newIndexHtml.split("_ngcontent-sc71").join('data-_ngcontent-sc71'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc72").join('data-_ngcontent-sc72'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc73").join('data-_ngcontent-sc73'); 
+  newIndexHtml = newIndexHtml.split("_ngcontent-sc75").join('data-_ngcontent-sc75'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc76").join('data-_ngcontent-sc76'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc91").join('data-_ngcontent-sc91'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc24").join('data-_ngcontent-sc24'); 

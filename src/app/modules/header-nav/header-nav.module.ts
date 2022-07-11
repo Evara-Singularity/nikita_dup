@@ -9,6 +9,7 @@ import { HomeExpandedHeaderModule } from '@app/components/home-expanded-header/h
 import { PlpFixedHeaderModule } from '@app/components/plp-fixed-header/plp-fixed-header.module';
 import { DashboardHeaderModule } from '@app/components/dashboard-header/dashboard-header.module';
 import { CartHeaderModule } from '@app/components/cart-header/cart-header.module';
+import { LogoHeaderModule } from '@app/components/logo-header/logo-header.component';
 @NgModule({
   declarations: [HeaderNavComponent],
   imports: [
@@ -20,6 +21,7 @@ import { CartHeaderModule } from '@app/components/cart-header/cart-header.module
     PlpFixedHeaderModule,
     DashboardHeaderModule,
     CartHeaderModule,
+    LogoHeaderModule
   ],
   exports: [
     HeaderNavComponent,

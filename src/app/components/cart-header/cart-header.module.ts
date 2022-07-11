@@ -1,3 +1,4 @@
+import { MathCeilPipeModule } from './../../utils/pipes/math-ceil';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartHeaderComponent } from './cart-header.component';
@@ -6,7 +7,8 @@ import { CartHeaderComponent } from './cart-header.component';
 @NgModule({
   declarations: [CartHeaderComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    MathCeilPipeModule
   ],
   exports: [CartHeaderComponent]
 })

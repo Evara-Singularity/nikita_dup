@@ -1,6 +1,7 @@
 <section class="static-container faqfixedhead">
     <div class="pwa-row faq-search faq-search-container">
         <div class="pwa-col-12">
+            <p class="help-txt">How can we help you</p>
             <div class="searchfield">
                 <input id="searchvalue" #searchValue (keyup)="showSearchSuggestion(searchValue?.value,$event)" value=""
                     placeholder="Search for topics or questions">
@@ -8,13 +9,12 @@
                 </span>
                 <button (click)="searchFaq(searchValue?.value)" type="submit"><i class="icon-search"></i></button>
             </div>
-            <ul [class.hidden-sm-down]="hideSuggestionInMobile" class="searchresult"
-                *ngIf="searchValue?.value?.length > 0">
-                <li *ngFor="let result of suggestionArr">
-                    <a (click)="showQuestion(result?.question);">{{ result?.question }}</a>
+            <ul [class.hidden-sm-down]="hideSuggestionInMobile" class="searchresult">
+                <li *ngFor="let result of suggestionArr" class="active-faq">
+                    <a (click)="$event.stopPropagation();showQuestion(result?.question);">{{ result?.question }}</a>
                 </li>
                 <li *ngIf="noResults">
-                    <a class=""> No Result Found </a>
+                    <a class="" (click)="$event.stopPropagation();cleartext()"> No Result Found </a>
                 </li>
             </ul>
         </div>
@@ -25,30 +25,30 @@
             <ng-template #original>
                 <ng-container *ngFor="let block of faqData; let i = index;">
                     <div [attr.id]="'faq' + i">
-                        <h3 class="fqhead faq-top-border" *ngIf="i ==0" [appKpToggle]="{idName: 'open0' , iconMode : true}">
+                        <h3 class="fqhead faq-top-border active-faq" *ngIf="i ==0" [class.ico-up]="defaultIndex === i" [class.ico-expand]="defaultIndex === i" [appKpToggle]="{idName: 'open0' , iconMode : true}">
                             Order Tracking
                             <span>
                                 <i class="icon-expand"></i>
                             </span>
                         </h3>
-                        <h3 class="fqhead" *ngIf="i ==1" [appKpToggle]="{idName: 'open1' , iconMode : true}">Customer Return
+                        <h3 class="fqhead" *ngIf="i ==1" [class.ico-up]="defaultIndex === i" [class.ico-expand]="defaultIndex === i" [appKpToggle]="{idName: 'open1' , iconMode : true}">Customer Return
                             Policy
                             <span>
                                 <i class="icon-expand"></i>
                             </span>
                         </h3>
-                        <h3 class="fqhead" *ngIf="i ==2" [appKpToggle]="{idName: 'open2' , iconMode : true}">Refund
+                        <h3 class="fqhead" *ngIf="i ==2" [class.ico-up]="defaultIndex === i" [class.ico-expand]="defaultIndex === i" [appKpToggle]="{idName: 'open2' , iconMode : true}">Refund
                             <span>
                                 <i class="icon-expand"></i>
                             </span>
                         </h3>
-                        <h3 class="fqhead faq-bottom-border" *ngIf="i ==3" [appKpToggle]="{idName: 'open3' , iconMode : true}">Payment Options
+                        <h3 class="fqhead faq-bottom-border" *ngIf="i ==3" [class.ico-up]="defaultIndex === i" [class.ico-expand]="defaultIndex === i" [appKpToggle]="{idName: 'open3' , iconMode : true}">Payment Options
                             <span>
                                 <i class="icon-expand"></i>
                             </span>
                         </h3>
     
-                        <div class="collapsed-content" id="{{'open' + i}}" style="display:none">
+                        <div class="collapsed-content hide" [class.show]="defaultIndex === i" id="{{'open' + i}}">
                             <div class="questwrap" *ngFor="let block of faqData[i];">
                                 <h4>{{block?.question}}</h4>
                                 <p *ngFor="let para of block?.para | splitPipe"> {{para}} </p>

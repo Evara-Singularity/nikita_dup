@@ -1,9 +1,5 @@
 import { LocalStorageService } from "ngx-webstorage";
 import { DashboardService } from "../dashboard.service";
-import { map } from "rxjs/operators";
-import { delay } from "rxjs/operators";
-import { mergeMap } from "rxjs/operators";
-import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { Component } from "@angular/core";
 import { LocalAuthService } from "@app/utils/services/auth.service";
@@ -12,7 +8,6 @@ import { CommonService } from "@app/utils/services/common.service";
 import { GlobalState } from "@app/utils/global.state";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
-import { FormControl, FormGroup } from "@angular/forms";
 
 @Component({
   selector: "bussiness-info",
@@ -37,8 +32,6 @@ export class BussinessInfoComponent {
   constructor(
     private _state: GlobalState,
     private _router: Router,
-    private _location: Location,
-    private _localStorageService: LocalStorageService,
     private _commonService: CommonService,
     private _cartService: CartService,
     private _localAuthService: LocalAuthService,
@@ -88,20 +81,15 @@ export class BussinessInfoComponent {
     this._cartService.logOutAndClearCart('/');
   }
 
-  onSubmit(data) {
-    if (!data) {
+  onSubmit(firstName:string) {
+    if (!firstName) {
       this._tms.show({type: "success", text: "User name cannot be empty."});
       return;
     }
     let userSession = this._localAuthService.getUserSession();
     this.showLoader = true;
     let user = this.localStorageService.retrieve("user");
-    let obj = {
-      userid: user.userId,
-      pname: data.substring(0, data.indexOf(' ')),
-      lname: data.substring(data.indexOf(' ') + 1),
-    };
-
+    let obj = { userid: user.userId, pname: firstName || " ", lname: " ", };
     this._dashboardService.updatePersonalInfo(obj).subscribe((res) => {
       this.showLoader = false;
       if (res["status"]) {
@@ -112,7 +100,7 @@ export class BussinessInfoComponent {
           text: "Profile updated successfully.",
         });
         this.isNameInputDisabled = true;
-        userSession['userName'] = data;
+        userSession['userName'] = firstName;
         if (this.localStorageService.retrieve("user")) {
           let user = this.localStorageService.retrieve("user");
           if (user.authenticated == "true") {
@@ -133,6 +121,12 @@ export class BussinessInfoComponent {
 
   activateInput(){
     this.isNameInputDisabled = false;
+  }
+
+  get userName() {
+    if (!this.userInfo){return ""};
+    const pname = this.userInfo['pname'] || "";
+    return `${pname}`;
   }
 
 }

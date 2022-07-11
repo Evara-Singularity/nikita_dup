@@ -1,6 +1,4 @@
 <div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader}" >
-
-    
     <div
         [class.visibility]="!((layoutType == 1 || layoutType == 2) && (!_commonService.selectedFilterData.page || _commonService.selectedFilterData.page < 2))">
         <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1"
@@ -38,7 +36,7 @@
     <div class="category-list pwa-row" [class.visibility]="_commonService.selectedFilterData.page > 1"
         [class.sub-cate-container]="API_RESPONSE.category[0]?.children?.length > 0">
         <div class="pwa-col-12">
-            <div class="container pt-10"  *ngIf="API_RESPONSE.category[0]?.children?.length > 0">
+            <div class=""  *ngIf="API_RESPONSE.category[0]?.children?.length > 0">
                 <p class="sub_category_heading">
                     {{API_RESPONSE.category[0].categoryDetails?.categoryName}}
                     <span class="light-txt f-16">({{API_RESPONSE.category[0]?.children?.length}}

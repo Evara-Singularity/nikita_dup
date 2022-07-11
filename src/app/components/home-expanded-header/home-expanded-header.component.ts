@@ -15,9 +15,9 @@ export class HomeExpandedHeaderComponent implements OnInit {
   @Output() loadSearchNav$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() goBack$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() noOfCart: number = 0;
-  @Input() isUserLogin: boolean = false;
+  @Input() isUserLogin: boolean = null;
   @Input() enableBackBtn: boolean = false;
-  @Input() imgAssetPath: boolean = false;
+  @Input() imgAssetPath: string = "";
   searchValue='';
 
 
@@ -27,10 +27,11 @@ export class HomeExpandedHeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.isUserLogin)
     this.route.queryParams.subscribe(res => {
       this.searchValue = (res['search_query']) ? res['search_query'] : ''
     })
   }
+
+  get displayPage() { return this.isUserLogin != null && this.imgAssetPath.length>0}
 
 }

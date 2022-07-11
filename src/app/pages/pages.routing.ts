@@ -150,7 +150,7 @@ const routes: Routes = [
 					footer: false,
 					title: 'My Cart',
 					moreOpt: true,
-					moduleName: CONSTANTS.MODULE_NAME.CART
+					moduleName: CONSTANTS.MODULE_NAME.QUICKORDER
 				},
 			},
 			{
@@ -219,8 +219,10 @@ const routes: Routes = [
 					),
 				data: {
 					footer: false,
+					title: 'Order Failure',
 					logo: true,
 					menuBar: true,
+					moduleName: CONSTANTS.MODULE_NAME.ORDER_FAILURE
 				},
 			},
 			{
@@ -233,6 +235,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					menuBar: true,
+					moduleName: CONSTANTS.MODULE_NAME.ORDER_CONFIRMATION
 				},
 			},
 			{
@@ -535,6 +538,7 @@ const routes: Routes = [
 					footer: true,
 					logo: true,
 					moreOpt: true,
+					title:"FAQ's",
 					moduleName: CONSTANTS.MODULE_NAME.DASHBOARD
 				},
 			},
@@ -609,6 +613,8 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					title: 'Contact Us',
+					moduleName: CONSTANTS.MODULE_NAME.DASHBOARD
 				},
 			},
 			{

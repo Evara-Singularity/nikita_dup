@@ -1,31 +1,83 @@
 @import "./../../scss/variables";
-.order-container {
-  padding-bottom: 33px;
-  .card-30 {
-    p {
-      width: 100%;
+@import '../../scss/layout/cards';
+.order-failure{
+  text-align:center;
+  .card{
+    border:none;
+  }
+  .order-failure-inner{
+    padding:25px;
+  }
+  .heading-2{
+    color:var(--primary);
+  }
+  img{
+    width:180px;
+    margin:10px 0px;
+  }
+  p{
+    line-height: $medium-line-height;
+  }
+  .button-wrapper{
+    border-top:1px solid var(--ghost-white);
+  }
+  .or-seperator-text {
+    margin: 10px auto;
+    position: relative;
+    text-align: center;
+    width:50%;
+    &::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background: var(--silver);
+        left: 0;
+        top: calc(50% - 0.5px);
     }
-    .order-detail {
-      text-align: left;
-      ul {
-        li {
-          padding-left: 14px;
-          position: relative;
-          &::before {
-            content: "-";
-            position: absolute;
-            left: -1px;
-          }
-        }
-      }
-    }
-    .main-img {
-      width: 120px;
-      margin: auto;
+    span {
+        background: var(--white);
+        padding: 0 10px;
+        line-height: 20px;
+        position: relative;
+        color: var(--onyx-black);
+        font-size: $small-font;
     }
   }
-  .continue-button p {
-    line-height: $medium-line-height;
-    margin: 10px 0 0 20px;
+  .note-text{
+    color: $note-text;
+    font-size: $small-font;
+    line-height:$medium-line-height;
   }
 }
+
+// .order-container {
+//   padding-bottom: 33px;
+//   .card-30 {
+//     p {
+//       width: 100%;
+//     }
+//     .order-detail {
+//       text-align: left;
+//       ul {
+//         li {
+//           padding-left: 14px;
+//           position: relative;
+//           &::before {
+//             content: "-";
+//             position: absolute;
+//             left: -1px;
+//           }
+//         }
+//       }
+//     }
+//     .main-img {
+//       width: 120px;
+//       margin: auto;
+//     }
+//   }
+//   .continue-button p {
+//     line-height: $medium-line-height;
+//     margin: 10px 0 0 20px;
+//   }
+// }

@@ -1,29 +1,61 @@
+@import '../../scss/variables';
+@import '../../scss/components/bottom-popup.scss';
+
 .share-container {
-    padding: 0px 4px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     li {
-        float: left;
-        width: 16.6%;
+        flex:1;
+        padding-right:10px;
         text-align: center;
-        padding: 0px;
+        justify-content: center;
+        display: inline-flex;
         a {
             font-size: 24px;
             padding-right: 2px;
             margin-right: 0px;
+            color:var(--primary);
+            .icon-facebook {
+                color: #3B5998;
+            }
+            .icon-instagram {
+                color: #852CAE;
+            }
+            .icon-linkedin {
+                color: #0077B5;
+            }
+            .icon-twitter {
+                color: #1DA1F2;
+            }
+            .icon-google {
+                color: #DD4B39;
+            }
+            .icon-blog {
+                color: #E96E1D;
+            }
+            .icon-mail {
+                color: #1451d8;
+            }
+            .icon-whatsapp {
+                color: #25D366;
+            }
             span {
                 display: block;
                 padding-top: 7px;
                 font-size: 12px;
             }
             &.more {
-                i {
+                a {
+                    font-size: 30px;
+                    color: #666;
+                }
+                i{
                     display: block;
                     transform: rotate(90deg);
                     -ms-transform: rotate(90deg);
                     -webkit-transform: rotate(90deg);
-                }
-                a {
-                    font-size: 30px;
-                    color: #666;
                 }
             }
         }

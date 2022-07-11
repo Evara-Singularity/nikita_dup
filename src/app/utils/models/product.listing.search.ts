@@ -58,6 +58,8 @@ export interface ProductsEntity {
     keyFeatures?: string[];
     internalProduct?: boolean; // used in case of sponsered Ad
     outOfStock?: boolean;
+    description?:string;
+    short_description?: null;
 }
 
 export interface FilterableAttributes {

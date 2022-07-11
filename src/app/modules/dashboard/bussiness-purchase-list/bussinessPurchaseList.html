@@ -2,7 +2,7 @@
     <ng-container *ngFor="let item of wishlistData;let pIndex=index;">
         <div class="pwa-row plp-card-list">
             <div class="pwa-col-12" >
-        <product-card-horizontal-list-view  [product]="item" 
+        <product-card-horizontal-list-view [pageName]="pageName" [product]="item" (remove$)="removeFromWishlist($event)"
             [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" >
         </product-card-horizontal-list-view> 
     </div>
@@ -15,16 +15,37 @@
         </div>
         <button [routerLink]="['/']" class="btn startshop">START SHOPPING</button>
     </div>
-
 </section>
-<div class="bottom-options open" *ngIf="spp">
-    <div class="overlay" (click)="spp =false"></div>
-    <div class="content-box" content>
-        <ul class="container">
-            <li class="remove"
-                (click)="removeItemFromPurchaseList(purchaseLists[elementIndex].productDetail.productBO); this.aori(null, purchaseLists[elementIndex].productDetail)">
-                Remove from WishList</li>
-            <li class="cancel" (click)="spp=false">Cancel </li>
-        </ul>
+<app-bottom-menu *ngIf="removableItem !== null">
+    <div content>
+        <div class="content-area removePopup">
+            <div class="top-header-bottom-menu">
+                <h3 class="heading-3">Are you sure to remove this item?</h3>
+            </div>
+            <div class="pwa-row pad-tb-15 realTimeUpdate">
+                <div class="pwa-col-12">
+                    <div class="pwa-row static-small-card-container">
+                        <div class="product-img">
+                            <img routerLink="{{'/' + removableItem.productUrl}}" src="{{imageCdnPath + removableItem.mainImageThumnailLink}}">
+                        </div>
+                        <div class="product-description">
+                            <p class="description-txt">{{ (removableItem.productName.length > 50) ? (removableItem.productName | slice:0:48) + '..' :
+                                (removableItem.productName) }}</p>
+                        </div>
+                    </div>
+                    <div class="cta-row">
+                        <button (click)="$event.stopPropagation();cancelRemovableItem();" cstatic-small-card-container
+                            class="btn secondry-btn-1">CANCEL</button>
+                        <button class="btn secondry-btn" (click)="$event.stopPropagation();removeItemFromPurchaseList(removableItem)"><i
+                                class="icon-bin"></i>&nbsp;REMOVE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</app-bottom-menu>
+
+
+
+
+

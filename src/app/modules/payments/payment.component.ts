@@ -1,14 +1,14 @@
-import { GlobalSessionStorageService } from './../../utils/services/global-session-storage.service';
+import { Component, ElementRef, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Component, EventEmitter, AfterViewInit, OnInit, ElementRef } from '@angular/core';
-import { PaymentService } from './payment.service';
-import CONSTANTS from '../../config/constants';
-import { CommonService } from '../../utils/services/common.service';
-import { LocalAuthService } from '../../utils/services/auth.service';
-import { DataService } from '../../utils/services/data.service';
-import { CartService } from '../../utils/services/cart.service';
-import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { Router } from '@angular/router';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import CONSTANTS from '../../config/constants';
+import { LocalAuthService } from '../../utils/services/auth.service';
+import { CartService } from '../../utils/services/cart.service';
+import { CommonService } from '../../utils/services/common.service';
+import { DataService } from '../../utils/services/data.service';
+import { GlobalLoaderService } from '../../utils/services/global-loader.service';
+import { PaymentService } from './payment.service';
 
 // TODO: 
 /**
@@ -21,6 +21,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 })
 export class PaymentComponent implements OnInit {
 
+    readonly REPLACE_URL = { replaceUrl: true };
     paymentBlock: number;
     globalConstants: any = CONSTANTS.GLOBAL;
     isSavedCardExist: boolean = false;
@@ -39,8 +40,6 @@ export class PaymentComponent implements OnInit {
     isPaymentSelected: boolean = false;
     canNEFT_RTGS = true;
     successPercentageRawData = null;
-
-
     
     constructor(
         public _dataService: DataService,
@@ -50,12 +49,16 @@ export class PaymentComponent implements OnInit {
         private _localAuthService: LocalAuthService,
         public _commonService: CommonService,
         private _analytics: GlobalAnalyticsService,
+        private _router: Router,
         private _elementRef: ElementRef) {
         this.isShowLoader = true;
     }
 
     ngOnInit() {
-       
+        if (this._commonService.isBrowser && (this._cartService.getGenericCartSession && Object.keys(this._cartService.getGenericCartSession?.cart).length == 0) ||
+            !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
+                (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
+        ) { this._router.navigateByUrl('/checkout/address', this.REPLACE_URL); return }
         this.intialize();
         this._cartService.sendAdobeOnCheckoutOnVisit("payment");
         this.getSavedCardData();
@@ -64,20 +67,15 @@ export class PaymentComponent implements OnInit {
 
     private intialize() {
         if (this._commonService.isBrowser) {
-
             const cartData = this._cartService.getGenericCartSession;
-
             this.canNEFT_RTGS = cartData['cart']['agentId'];
             this.totalAmount = (cartData['cart']['totalAmount']) + (cartData['cart']['shippingCharges']) - (cartData['cart']['totalOffer']); // intialize total amount
-
             const _cartItems = cartData['itemsList'] || [];
             const _cartMSNs = (_cartItems as any[]).map(item => item['productId']);
             this._paymentService.updatePaymentMsns(_cartMSNs);
-
             // TODO  -- change this and use it from cart service 
             let invoiceType = this._cartService.invoiceType 
             this.invoiceType = invoiceType;
-
             if (invoiceType == 'tax') {
                 this.paymentBlock = this.globalConstants["razorPay"];
                 this.isShowLoader = false;
@@ -85,13 +83,10 @@ export class PaymentComponent implements OnInit {
             if (!this._cartService.cashOnDeliveryStatus.isEnable) {
                 this.disableCod = true;
             }
-
             // TODO - this should used in case there are some COD not avalible
             this.unAvailableMsnList = this._cartService.codNotAvailableObj['itemsArray'];
-
             // TODO - check with pritam how this used
             this.getPaymentSuccessAssistData();
-
             this.analyticVisit(cartData);
         }
     }
@@ -217,6 +212,7 @@ export class PaymentComponent implements OnInit {
 
     outData(data) {
         this[data.selector] = !this[data.selector];
+        this.showPopup=false;
     }
 
     removeTab(tabId) {
@@ -247,12 +243,7 @@ export class PaymentComponent implements OnInit {
         return (this.successPercentageRawData && this.successPercentageRawData['UPI']) ? this.successPercentageRawData['UPI'] : null
     }
 
-    learnMore(e) {
-        if (e !== undefined) {
-            e.stopPropagation();
-        }
-        this.showPopup = true;
-    }
+    learnMore(e) {this.showPopup = true;}
     
     set isShowLoader(value) {
         this._loaderService.setLoaderState(value);

@@ -15,7 +15,7 @@ const routes: Routes = [
             {
                 path: 'business-detail',
                 loadChildren: () => import('../../modules/dashboard/bussiness-detail/businessDetail.module').then(m => m.BusinessDeatailDashboardModule),
-                data: { title: 'My Business Details', menuBar: true, moduleName: CONSTANTS.MODULE_NAME.DASHBOARD }
+                data: { title: 'Business Details', menuBar: true, moduleName: CONSTANTS.MODULE_NAME.DASHBOARD }
             },
             {
                 path: 'address',
@@ -40,7 +40,7 @@ const routes: Routes = [
             {
                 path: 'purchase-list',
                 loadChildren: () => import('../../modules/dashboard/bussiness-purchase-list/businessPurchaseList.module').then(m => m.BusinessPurchaseListModule),
-                data: { title: 'My  Wishlist', menuBar: true, moduleName: CONSTANTS.MODULE_NAME.DASHBOARD }
+                data: { title: 'Wishlist', menuBar: true, moduleName: CONSTANTS.MODULE_NAME.DASHBOARD }
             },
             {
                 path: 'rfq',

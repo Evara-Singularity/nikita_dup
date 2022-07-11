@@ -1,12 +1,11 @@
 <section class="orderPopup">
-    <div class="container-head-sec">
-        <p class="txt">Track Your Product
-            <span>
-                {{itemDetails.product_name}}
-            </span>
-        </p>
+    <div class="modal-header">
+        <h3 class="heading-3">Track Your Product</h3>
         <i (click)="closeModal()" class="icon-circle-delete f-right"></i>
     </div>
+    <p class="prod-name">
+        {{itemDetails.product_name}}
+    </p>
     <div class="track-id-info">
         <span *ngIf="displayScans" class="track_id">Track ID : &nbsp;{{shipmentDetail.awb}}</span>
         <span *ngIf="displayScans" class="track_id">Courier By: &nbsp;{{shipmentDetail['shipper_name']}}</span>

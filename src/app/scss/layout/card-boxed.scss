@@ -8,6 +8,7 @@
         background: var(--white);
         padding: 10px;
         display: flex;
+        align-items: center;
         border-radius: 8px 8px 0px 0px !important;
         .card-img {
             width: 27%;
@@ -83,10 +84,19 @@
                 border-radius: 0px 0px 8px 8px;
             }
         }
+        i {
+            margin-left: auto;
+        }
+        button {
+            margin-left: auto;
+            background-color: var(--primary);
+            color: var(--white);
+        }
         .orderstatus {
             color: var(--onyx-black) !important;
             font-size: $small-font;
             font-weight: bold;
+            width:50%;
             .dot {
                 color: var(--primary);
             }

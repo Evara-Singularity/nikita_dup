@@ -19,8 +19,6 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit
     constructor(public _cartService: CartService) { }
 
     ngOnInit() { 
-        console.clear();
-        console.log(this.data);
         this.itemsList = this.data['items']; 
     }
 

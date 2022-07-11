@@ -9,10 +9,13 @@
             background:var(--white);
             padding-top: 10px;
             h2 {
-                font-size: $large-font;
+                font-size: $extra-large-font;
                 text-transform: capitalize;
             }
         }
+    }
+    .category-grid-container{
+        padding-top: 15px;
     }
     /*Top Widgets*/
    .fixed-btm-app-prmo {
@@ -49,6 +52,7 @@
                 background:var(--white) !important;
             }
         }
+
     }
     .recently-container{
         padding-top: 15px;

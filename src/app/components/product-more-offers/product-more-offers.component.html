@@ -12,14 +12,16 @@
                     <i class="icon-coupon-3-fill-1"></i>
                 </div>
                 <div class="inline-list-text">
-                    <span>Use Code : <b>{{item.promoCode}}</b> and Get {{item.promoDescription}}</span><br/>
-                    <span style="font-size: x-small;">Min cart value {{ item.minValue ? item.minValue : 0 | currency:'INR': 'symbol': '1.0-0'}}</span>
+                    <span>Use Code : <span class="green-promo-code">{{item.promoCode}}</span> and get {{item.promoDescription}}</span><br/>
+                    <span class="green-promo-code-min">Min cart value {{ item.minCartValue  | currency:'INR': 'symbol': '1.0-0'}}</span>
+                </div>
+                <div class="inline-list-link">
                 </div>
             </div>
         </div>
     </div>
 </ng-template>
 
-<app-bottom-menu [isRFQPopUp]="true" *ngIf="promoCodeOffers" (outData$)="togglePopUp()">
+<app-bottom-menu [containerClasses]="'mintCreamBg'" [isRFQPopUp]="true" *ngIf="promoCodeOffers" (outData$)="togglePopUp()">
     <ng-container content *ngTemplateOutlet="couponTemplate"></ng-container>
 </app-bottom-menu>

@@ -1,7 +1,12 @@
-<div class="bannerBlock" *ngIf="data['data'] && (data['data'].length > 0) && data['data'][0]">
-  <div class="bannerSlide">
-    <a href="{{data['data'][0]['image_link']}}">
-    <img alt="{{data['data'][0]['image_title']}}" src="{{imagePath + data['data'][0]['image_name']}}">
-    </a>
+<div class="pwa-row">
+  <div class="pwa-col-12">
+    <div class="bannerBlock" *ngIf="data['data'] && (data['data'].length > 0) && data['data'][0]">
+      <div class="bannerSlide">
+        <a href="{{data['data'][0]['image_link']}}">
+        <img alt="{{data['data'][0]['image_title']}}" src="{{imagePath + data['data'][0]['image_name']}}">
+        </a>
+      </div>
+    </div>
   </div>
 </div>
+

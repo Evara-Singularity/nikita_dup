@@ -20,13 +20,14 @@ export class ProductMoreOffersComponent implements OnInit {
 
   ngOnInit(): void {
     const promos = [...this.data];
-    this.promoCodeOffers= promos.splice(1, 1)
+    this.promoCodeOffers= promos.splice(1);
     this.isLoading.emit(false);
   }
 
   outData(data) {
     this.out.emit(data);
   }
+  
   togglePopUp(){}
   
 }

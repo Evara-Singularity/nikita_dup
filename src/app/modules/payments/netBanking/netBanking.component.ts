@@ -249,6 +249,9 @@ export class NetBankingComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        this.prepaidsubscription.unsubscribe();
+        if (this.prepaidsubscription)
+        {
+            this.prepaidsubscription.unsubscribe();
+        }
     }
 }

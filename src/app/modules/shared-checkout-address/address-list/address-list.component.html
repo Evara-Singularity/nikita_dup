@@ -7,10 +7,8 @@
     </div>
     <div class="content-popup content-popup-with-grey-bg" content>
         <div class="add-address-substrip">
-            <!--Todo-->
-
             <button class="btn secondry-full-btn " (click)="handleAction($event, ACTION_TYPES.ADD, null)">
-              + ADD NEW ADDRESS
+              + ADD NEW {{addressType == 'Billing' ? ' GST' : ' ADDRESS'}}
             </button>
         </div>
         <div class="address-container">

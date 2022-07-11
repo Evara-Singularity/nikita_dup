@@ -23,7 +23,7 @@
         "build:ssr:dev": "ng build --configuration=qa --deploy-url=https://cdn.moglix.com/online/dev/pwa/bundles/  && ng run ssr-pwa:server:qa && npm run swupdate:url:qa",
         "build:ssr:qa": "ng build --configuration=qa --deploy-url=https://cdn.moglix.com/online/qa/pwa/bundles/ && npm run postinstall:qa && ng run ssr-pwa:server:qa && npm run swupdate:url:qa",
         "build:ssr:qa:ab": "ng build --configuration=qa --deploy-url=https://cdn.moglix.com/online/qa/pwa-ab/bundles/ && npm run postinstall:qa:ab && ng run ssr-pwa:server:qa && npm run swupdate:url:qa:ab",
-        "build:ssr:vpn": "ng build --configuration=vpn --deploy-url=https://cdn.moglix.com/online/vpn/pwa/bundles/ && npm run postinstall:qa:vpn && ng run ssr-pwa:server:vpn && npm run swupdate:url:vpn && npm run add:webengage:service-worker",
+        "build:ssr:vpn": "ng build --configuration=vpn --deploy-url=https://cdn.moglix.com/online/vpn/pwa/bundles/ && npm run postinstall:vpn && ng run ssr-pwa:server:vpn && npm run swupdate:url:vpn && npm run add:webengage:service-worker",
         "build:ssr:prod": "ng build --prod --deploy-url=https://cdn.moglix.com/online/prod/pwa/bundles/ && npm run postinstall:prod && ng run ssr-pwa:server:production &&  npm run swupdate:url:prod && npm run add:webengage:service-worker",
         "build:ssr:prodab": "ng build --configuration=prodab --deploy-url=https://cdn.moglix.com/online/prod/pwa-ab/bundles/ && npm run postinstall:prodab && ng run ssr-pwa:server:prodab && npm run swupdate:url:prodab && npm run add:webengage:service-worker",
         "prerender": "ng run ssr-pwa:prerender",

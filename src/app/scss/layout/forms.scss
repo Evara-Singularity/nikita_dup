@@ -14,11 +14,17 @@ select {
     background: none;
     line-height: 18px;
     position: relative;
+    outline: none !important;
     
 }
 input[type=number] {
     -moz-appearance: textfield;
   }
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+ }
 .material-form {
  .multiple-form-field{
     display:flex;
@@ -178,9 +184,6 @@ input[type=number] {
                 &.input-password {
                     padding: 14px 140px 0 0;
                 }
-                .long-input{
-                    height: 100px !important;
-                }
             }
             textarea {
                 width: 100%;
@@ -190,6 +193,9 @@ input[type=number] {
                 padding: 14px 25px 0 10px;
                 font-size: $large-font;
                 background-color: var(--white) !important;
+                &.large-height{
+                    height: 100px !important;
+                }
             }
             .label {
                 position: absolute;
@@ -215,18 +221,15 @@ input[type=number] {
 
             &.is-focus .label,
             input:focus + .label,
-            select:focus + .label {
+            select:focus + .label,
+            textarea:focus + .label
+            {
                 font-size: $medium-font;
                 top: -7px;
                 background-color: #ffffff;
                 left: 10px;
                 padding: 0px 5px;
                 z-index: 9;
-            }
-
-            textarea:focus + .label {
-                font-size: $medium-font;
-                top: 3px;
             }
 
             input:focus,

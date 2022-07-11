@@ -3,4 +3,5 @@
 
 .moglix-benefits {
     background: var(--white);
+    @extend %hide-scrollbar;
 }

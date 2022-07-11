@@ -305,7 +305,9 @@ i[class^="icon-"],
 .icon-facebook:before {
     content: "\e92e";
 }
-
+.icon-information::before{
+    content: "\ea52";
+}
 .icon-fan:before {
     content: "\e92f";
 }
@@ -751,6 +753,9 @@ i[class^="icon-"],
 .icon-customer-service-fill:before {
     content: "\e9d3";
 }
+.icon-secure_payment::before{
+    content: "\ea64";
+}
 
 .icon-restart-line:before {
     content: "\e9f8";
@@ -796,9 +801,15 @@ i[class^="icon-"],
 .icon-logout1:before{
     content: "\ea56";
 }
-.icon-mobikwik:before{
-    content: "\ea80";
+.icon-attribute:before{
+    content: "\ea01";
 }
-.icon-information_about_us:before{
-    content: "\ea52";
+.icon-categories:before{
+    content: "\e9c0";
+}
+.icon-arrow-right-s-line:before{
+    content: "\e9c9";
+}
+.icon-business_details:before{
+    content: "\e9bf";
 }

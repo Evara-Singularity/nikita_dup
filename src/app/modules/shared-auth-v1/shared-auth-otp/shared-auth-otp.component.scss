@@ -21,3 +21,9 @@
 .login-card{
     border-radius: $login-card-border !important;
 }
+.success-field{
+    margin-left: 10px;
+    .success-txt{
+        font-size: $small-font;
+    }
+}

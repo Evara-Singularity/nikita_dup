@@ -3,14 +3,22 @@
 
 .reviewSection {
     background: $white;
+    padding-top: 5px;
     .rating-sec {
         padding-bottom: 20px !important;
+    }
+    .reviewrating-heading{
+        padding: 10px 15px 5px;
+        .heading-3{
+            font-size: $extra-large-font;
+            padding: 5px 0;
+        }
     }
     .review_text {
         width: $fullwidth;
         padding-bottom: 20px;
         font-size: $medium-font;
-        margin-top: -20px;
+        margin-top: -15px;
     }
     .rating-scale {
         font-size: $large-font;
@@ -21,14 +29,12 @@
             align-items: center;
             padding-bottom: 4px;
         }
-    
         .rating-bar {
             position: relative;
             height: 10px;
             background: var(--ghost-white);
             border-radius: $border-radius-2;
             width: 90%;
-    
             span.bar {
                 position: absolute;
                 top: 0;
@@ -38,16 +44,13 @@
             }
         }
     }
-    
     .overall-rating {
         text-align: center;
         padding-right: 10px;
-    
         h3 {
             font-size: $extra-large-6-font;
             color: $dark-green;
             padding: 0px 0px 30px;
-    
             i {
                 font-size: $extra-large-3-font;
                 padding-left: 5px;
@@ -62,31 +65,31 @@
     
         .popup-innerRow {
             padding-top: 15px !important;
+
         }
-    }
-    
+    } 
     .reviewRow {
-        padding: 0px 15px;
-    
+        padding: 0px 15px; 
         .heading-3-txt {
             color: $txt-color;
-            font-size: $medium-font;
+            font-size: 13px;
+            padding: 10px 0 5px;
         }
-    
+        .content{
+            font-size: 13px;
+        }
         .innerRow {
             border-top: 1px dashed var(--silver);
             align-items: flex-start;
             padding: 20px 0px;
         }
-    
         .like-unlikeRow {
             padding-bottom: 20px !important;
+            padding-top: 10px !important;
         }
-    
         .pwa-row {
-            padding: 10px 0px;
+            padding: 20px 0px 10px;
         }
-    
         .reviewRow-col {
             & > * {
                 padding-bottom: 5px;
@@ -97,7 +100,9 @@
             font-size: $medium-font;
             padding-right: 5px;
         }
-    
+        .customer-name{
+            font-size: $large-font;
+        }
         .suggstn-btn {
             display: inline-flex;
             align-items: center;
@@ -108,16 +113,32 @@
             border-radius: $border-radius-2;
             margin-right: 10px;
             color: var(--spanish-gray);
-    
             i {
                 font-size: $extra-large-font;
                 color: var(--spanish-gray);
                 padding-left: 5px;
             }
+            &.active{
+                .icon-like{
+                    color: var(--slimy-green);
+                }
+                .icon-dislike{
+                    color: var(--primary);
+                }
+            }
         }
     }
     .secondry-btn{
         width: 100%;
+    }
+    .show-all-strip{
+        border-top: 1px dashed var(--silver);
+        padding: 20px 0 10px;
+        justify-content: space-between;
+        display: flex;
+    }
+    .review-btn{
+        margin-bottom: 20px;
     }
 }
  .pdp-review {

@@ -3,7 +3,13 @@
 
 .product-section-detail {
     background: white;
-    margin: 10px 0px;
+    margin: 0px 0px 10px;
+    border-top: 1px solid var(--platinum);
+    padding-top: 0;
+    .heading-3{
+        font-size: $extra-large-font;
+        padding: 15px 0 10px;
+    }
     .size-block {
         clear: both;
         .prod_size_container {
@@ -119,7 +125,9 @@
             scrollbar-width: none;
             /* Firefox 64 */
             width: auto;
-
+            &::-webkit-scrollbar {
+                display: none; 
+              }
             .inner-blk-contain {
                 //  width: 210%;
             }
@@ -141,8 +149,9 @@
 
             .qty {
                 font-size: $large-font;
-                color: #333;
+                color: var(--onyx-black);
                 padding-bottom: 10px;
+                font-weight: bold;
             }
 
             .per-qty {
@@ -166,6 +175,7 @@
     }
 }
 .bulk-qty {
+    padding-bottom: 5px;
     .blk-contain {
         overflow-y: hidden;
         overflow-x: scroll;
@@ -180,14 +190,22 @@
         -webkit-box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
         .qty {
             font-size: $large-font;
-            color: #333;
-            padding-bottom: 10px;
+                color: var(--onyx-black);
+                padding-bottom: 10px;
+                font-weight: bold;
         }
         .per-qty {
-            font-size: 13px;
+            font-size: $extra-large-font;
             padding-bottom: 8px;
             font-weight: bold;
             letter-spacing: 0.5px;
+            .small{
+                font-size: $medium-font;
+                font-weight: 400;
+            }
+        }
+        .green-txt{
+            font-weight: bold;
         }
         &.selected {
             border: 1px solid $btn-color-red;
@@ -206,6 +224,11 @@
     }
     .bulk-container-single-grp {
         padding: 5px 8px;
+        .bul-qty-head{
+            p{
+                font-size:$large-font !important;
+            }
+        }
         h3 {
             font-size: 13px;
             .green-txt {

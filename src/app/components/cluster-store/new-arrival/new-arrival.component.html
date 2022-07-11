@@ -1,42 +1,85 @@
-<div class="row prod_list newArrivalsSection" *ngIf="data['data'] && data['data'].length > 0">
+<!-- <div class="row prod_list newArrivalsSection" *ngIf="data['data'] && data['data'].length > 0">
     <div class="view-all-strip">
         <h4 class="f-left">{{data.title}}</h4>
         <a *ngIf="data['data'].length > 5" (click)="openPopup = true" class="quinary-btn">View All</a>
     </div>
-<ul class="view-products grid border-top">
-    <ng-container *ngFor="let product of data['data'] | slice:0:4; let i = index">
-        <li>
-            <a [routerLink]="['/'+product?.productlink]" class="clearfix">
-                <div class="product-img">
-                    <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
-                </div>
-                <div class="product-description">
-                    <p class="description-txt">
-                        {{product.productName | slice:0:27 }}
-                        <span *ngIf ="product.productName.length >27">...</span>
-                    </p>
-                    <p class="price">
-                        <span class="before-discount">
-                            {{product.mrp | currency:'INR': 'symbol': '1.0-0'}}
-                        </span>
-                        <span class="discount">
-                            {{product.discount_percentage}} % OFF
-                        </span>
-                        <span class="after-discount">
-                            {{product.sellingPrice | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}
-                        </span>
-                    </p>
-                    <ng-container *ngFor="let item of product.short_description | characterremove;let i=index">
+    <ul class="view-products grid border-top">
+        <ng-container *ngFor="let product of data['data'] | slice:0:4; let i = index">
+            <li>
+                <a [routerLink]="['/'+product?.productlink]" class="clearfix">
+                    <div class="product-img">
+                        <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
+                    </div>
+                    <div class="product-description">
+                        <p class="description-txt">
+                            {{product.productName | slice:0:27 }}
+                            <span *ngIf="product.productName.length >27">...</span>
+                        </p>
+                        <p class="price">
+                            <span class="before-discount">
+                                {{product.mrp | currency:'INR': 'symbol': '1.0-0'}}
+                            </span>
+                            <span class="discount">
+                                {{product.discount_percentage}} % OFF
+                            </span>
+                            <span class="after-discount">
+                                {{product.sellingPrice | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}
+                            </span>
+                        </p>
+                        <ng-container *ngFor="let item of product.short_description | characterremove;let i=index">
                             <p class="seller" *ngIf="i<1"> <span>By :</span> {{ item.value}} </p>
-                    </ng-container>
-                </div>
-            </a>
-        </li>
-    </ng-container>
-</ul>
+                        </ng-container>
+                    </div>
+                </a>
+            </li>
+        </ng-container>
+    </ul>
+</div> -->
+
+<div class="newarrivals-container" *ngIf="data['data'] && data['data'].length > 0">
+    <div class="view-all-strip ">
+        <h4 class="f-left">{{data.title}}</h4>
+        <a *ngIf="data['data'].length > 5" (click)="openPopup = true" class="quinary-btn">View All</a>
+    </div>
+    <div class="pwa-row verticle-view-card">
+        <div class="pwa-col-12 newarrivals-section">
+            <div class="outer-view-section" *ngFor="let product of data['data'] | slice:0:4; let i = index">
+                <a [routerLink]="['/'+product?.productlink]">
+                    <div class="pwa-image">
+                        <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
+                    </div>
+                    <div class="product-card-lower-inner">
+                        <div class="name">
+                            {{product.productName | slice:0:27 }}
+                            <span *ngIf="product.productName.length >27">...</span>
+                        </div>
+                        <div class="brand" *ngFor="let item of product.short_description | characterremove;let i=index">
+                            <span>By: {{ item.value}}</span>
+                        </div>
+                        <div class="prod-price-row">
+                            <div class="price">
+                                <span class="prod-mrp">{{product.mrp | currency:'INR': 'symbol': '1.0-0'}}</span>
+                                <span class="prod-discount">{{product.discount_percentage}} % OFF</span>
+                            </div>
+                            <div class="prod-selling-price">
+                                {{product.sellingPrice | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 
-<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup " [headerType]="'pop-up-header1'" [data]="{selector: 'openPopup'}">
+
+
+
+
+
+
+<!-- <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup " [headerType]="'pop-up-header1'"
+    [data]="{selector: 'openPopup'}">
     <div class="content-popup otherCategoryBlock grey_bg" content>
         <ul class="view-products grid border-top">
             <ng-container *ngFor="let product of data['data']; let i = index">
@@ -48,7 +91,7 @@
                         <div class="product-description">
                             <p class="description-txt">
                                 {{product.productName | slice:0:27 }}
-                                <span *ngIf ="product.productName.length >27">...</span>
+                                <span *ngIf="product.productName.length >27">...</span>
                             </p>
                             <p class="price">
                                 <span class="before-discount">
@@ -56,20 +99,53 @@
                                 </span>
                                 <span class="discount">
                                     {{product.discount_percentage}} % OFF
-                                    <!-- {{((product.mrp -
-                          product.sellingPrice)/product.mrp)*100 | mathFloor | number : '1.0-0'}}% OFF -->
                                 </span>
                                 <span class="after-discount">
                                     {{product.sellingPrice | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}
                                 </span>
                             </p>
                             <ng-container *ngFor="let item of product.short_description | characterremove;let i=index">
-                                    <p class="seller" *ngIf="i<1"> <span>By :</span> {{ item.value}} </p>
+                                <p class="seller" *ngIf="i<1"> <span>By :</span> {{ item.value}} </p>
                             </ng-container>
                         </div>
                     </a>
                 </li>
             </ng-container>
         </ul>
+    </div>
+</app-pop-up> -->
+
+<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup " [headerType]="'pop-up-header1'"
+    [data]="{selector: 'openPopup'}">
+    <div class="content-popup otherCategoryBlock grey_bg" content>
+        <div class="pwa-row verticle-view-card">
+            <div class="pwa-col-12 newarrivals-section">
+                <div class="outer-view-section" *ngFor="let product of data['data']; let i = index">
+                    <a [routerLink]="['/'+product?.productlink]">
+                        <div class="pwa-image">
+                            <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
+                        </div>
+                        <div class="product-card-lower-inner">
+                            <div class="name">
+                                {{product.productName | slice:0:27 }}
+                                <span *ngIf="product.productName.length >27">...</span>
+                            </div>
+                            <div class="brand" *ngFor="let item of product.short_description | characterremove;let i=index">
+                                <span *ngIf="i<1">By: {{ item.value}}</span>
+                            </div>
+                            <div class="prod-price-row">
+                                <div class="price">
+                                    <span class="prod-mrp">{{product.mrp | currency:'INR': 'symbol': '1.0-0'}}</span>
+                                    <span class="prod-discount">{{product.discount_percentage}} % OFF</span>
+                                </div>
+                                <div class="prod-selling-price">
+                                    {{product.sellingPrice | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </app-pop-up>

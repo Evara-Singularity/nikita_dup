@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
@@ -14,7 +14,9 @@ export class CategoryCardComponent implements OnInit {
   @Input('page') page: string;
   @Input('image') image;
   @Input('title') title;
-
+  @Input('item') item?;
+  @Input('isSelected') isSelected: boolean = false;
+  @Output() cardClicked$: EventEmitter<any> = new EventEmitter<any>();
 
   imagePath = CONSTANTS.IMAGE_BASE_URL;
 
@@ -33,5 +35,4 @@ export class CategoryCardComponent implements OnInit {
     CategoryCardComponent
   ]
 })
-
 export default class CategoryCardModule { }

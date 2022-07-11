@@ -1,5 +1,5 @@
-    <div class="category-OverBlk">
-        <div class="category-block">
+    <div class="category-OverBlk" [routerLink]="['/'+item.category_url]" (click)="cardClicked$.emit(true);" >
+        <div class="category-block"  [class.selected]="isSelected" >
             <div class="category-Img">
                 <img [lazyLoad]="image">
             </div>

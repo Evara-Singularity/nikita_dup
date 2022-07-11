@@ -2,9 +2,9 @@
     <!-- <app-cluster-category
             *ngIf="data['category_cluster'] && data['category_cluster']['data'] && data['category_cluster']['data'].length > 0"
             [data]="data['category_cluster']" [extraData]="extraData"></app-cluster-category> -->
-    <div class="category-card-scroll-bar">
-        <category-card *ngFor="let item of  data['category_cluster']['data']" [page]="'cluster-store'"
-            [routerLink]="['/'+item.category_url]" [image]="imagePath + item.category_image"
+    <div class="category-card-scroll-bar"  id="tabs">
+        <category-card *ngFor="let item of  data['category_cluster']['data']" [page]="'cluster-store'" (cardClicked$)="categoryCardScroll($event)" 
+            [item]="item" [isSelected]="extraData && extraData['currentRoute'] && extraData['currentRoute'] == item['category_url']" [image]="imagePath + item.category_image"
             [title]="item.CategoryName">
         </category-card>
     </div>
@@ -14,7 +14,7 @@
         </div>
         <div>
             <ng-container #AllCategoryComponent></ng-container>
-        </div>
+        </div> 
         <div>
             <ng-container #NewArrivalComponent></ng-container>
         </div>

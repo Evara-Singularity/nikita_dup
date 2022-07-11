@@ -9,15 +9,12 @@
             </p>
             <p class="customer-detail" *ngIf="user && user.authenticated == 'true' && user.status!=='User logged out'">
                 <span class="user-name">
-
                     {{(user.userName.length > 18)? (user.userName | slice:0: 18)+'...': user.userName }}
                     <br>
-                </span>
                 <i class="icon-arrow-right-s-line f-14"></i>
 
                     {{(getFirstNameFormName(user.userName).length > 18)? (getFirstNameFormName(user.userName) | slice:0: 18)+'...': getFirstNameFormName(user.userName) }}
                 </span>
-
             </p>
             <i class="icon-arrow-right-s-line"></i>
         </div>

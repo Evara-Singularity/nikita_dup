@@ -127,17 +127,17 @@ function appendImagePreloads(indexHtml) {
   newIndexHtml = newIndexHtml.split("_ngcontent-sc96").join('data-_ngcontent-sc96'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc20").join('data-_ngcontent-sc20'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc80").join('data-_ngcontent-sc80'); 
-  newIndexHtml = newIndexHtml.split("_ngcontent-sc90").join('data-_ngcontent-sc80'); 
-  newIndexHtml = newIndexHtml.split("_ngcontent-sc83").join('data-_ngcontent-sc85'); 
+  newIndexHtml = newIndexHtml.split("_ngcontent-sc90").join('data-_ngcontent-sc90'); 
+  newIndexHtml = newIndexHtml.split("_ngcontent-sc83").join('data-_ngcontent-sc83'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc88").join('data-_ngcontent-sc88'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc86").join('data-_ngcontent-sc86'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc81").join('data-_ngcontent-sc81'); 
-  newIndexHtml = newIndexHtml.split("_ngcontent-sc87").join('data-_ngcontent-sc89'); 
+  newIndexHtml = newIndexHtml.split("_ngcontent-sc87").join('data-_ngcontent-sc87'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc89").join('data-_ngcontent-sc89'); 
-  newIndexHtml = newIndexHtml.split("_ngcontent-sc92").join('data-_ngcontent-sc89'); 
+  newIndexHtml = newIndexHtml.split("_ngcontent-sc92").join('data-_ngcontent-sc92'); 
   newIndexHtml = newIndexHtml.split("_ngcontent-sc96").join('data-_ngcontent-sc96'); 
-  newIndexHtml = newIndexHtml.split("_ngcontent-sc100").join('data-_ngcontent-sc89'); 
-  newIndexHtml = newIndexHtml.split("_ngcontent-sc101").join('data-_ngcontent-sc89'); 
+  newIndexHtml = newIndexHtml.split("_ngcontent-sc100").join('data-_ngcontent-sc100'); 
+  newIndexHtml = newIndexHtml.split("_ngcontent-sc101").join('data-_ngcontent-sc101'); 
   newIndexHtml = newIndexHtml.split("ng-reflect-target").join('data-ng-reflect-target'); 
   newIndexHtml = newIndexHtml.split("ng-reflect-router-link").join('data-reflect-router-link'); 
   

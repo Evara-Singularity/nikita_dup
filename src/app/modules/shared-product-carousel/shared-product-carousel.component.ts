@@ -112,6 +112,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 
   sendProductImageClickTracking()
   {
+    this.openPopUpcrousel$.emit();
     this.sendProductImageClickTracking$.emit();
   }
 }

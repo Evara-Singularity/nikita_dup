@@ -22,6 +22,6 @@
     </div>
 </ng-template>
 
-<app-bottom-menu [containerClasses]="'mintCreamBg'" [isRFQPopUp]="true" *ngIf="promoCodeOffers" (outData$)="togglePopUp()">
+<app-bottom-menu [containerClasses]="'mintCreamBg'" [isRFQPopUp]="true" *ngIf="promoCodeOffers">
     <ng-container content *ngTemplateOutlet="couponTemplate"></ng-container>
 </app-bottom-menu>

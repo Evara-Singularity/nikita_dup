@@ -1,4 +1,4 @@
-<div class="product-horizontal-card" observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
+<div class="product-horizontal-card" data-observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
     <!-- YOUTUBE FEATURE START -->
     <div class="youtubeThumbnail-listing"
         *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0 && this.youtubeThumbnail">

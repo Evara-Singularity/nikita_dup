@@ -11,7 +11,7 @@
         <div class="otp-form-inputs">
             <ng-container *ngFor="let control of otpFormArray['controls'];let cIndex=index">
                 <!--added class='pseudo' for focus purpose-->
-                <input type="tel" autocomplete="on"  placeholder="-" (paste)="onPaste($event, cIndex)" numbersOnly pattern="\d*" [formControl]="control"
+                <input type="tel" autocomplete="on"  placeholder="-" (paste)="onPaste($event, cIndex)" data-numbersOnly pattern="\d*" [formControl]="control"
                     autofocus class="pseudo" maxlength="1" (keyup)="moveFocus($event, control.valid, cIndex)"
                     [readonly]="isOTPVerified">
             </ng-container>

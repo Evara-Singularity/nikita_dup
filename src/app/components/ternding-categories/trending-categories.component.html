@@ -7,7 +7,7 @@
     <ul class="category-grid-container">
         <li class="category-grid-card" *ngFor="let item of flyOutData | slice:0:6;let i=index"> 
             <a [routerLink]="item.link" (click)="setCookieLink('Trending_Categories',item.categoryCode, 'listing')">
-                <img src="{{item.imageUrl}}">
+                <img src="{{item.imageUrl}}"  alt="trending-categories">
                 <p>{{(item.categoryName) + (item.categoryName.length > 15 ? " ":"")}}</p>
             </a>
         </li>

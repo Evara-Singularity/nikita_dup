@@ -19,7 +19,7 @@
     .prod-name {
         font-size: $medium-font !important;
     }
-}
+
 &.featr_arrival-skeleton {
     background: var(--white) !important;
     .view-all-strip {
@@ -29,24 +29,25 @@
             background: var(--ghost-white);
             border-radius: $border-radius-8;
         }
-    }
-    .product-card {
-        border-radius: $border-radius-8;
-        width: 100%;
-        .product-img {
-            width: 100%;
-            height: 120px;
-            background: var(--ghost-white);
+        .product-card {
             border-radius: $border-radius-8;
-        }
-        .product-description {
-            margin-top: 10px;
-            .prod-name {
+            width: 100%;
+            .product-img {
                 width: 100%;
-                height: 50px;
+                height: 120px;
                 background: var(--ghost-white);
                 border-radius: $border-radius-8;
             }
+            .product-description {
+                margin-top: 10px;
+                .prod-name {
+                    width: 100%;
+                    height: 50px;
+                    background: var(--ghost-white);
+                    border-radius: $border-radius-8;
+                }
+            }
         }
     }
+  }
 }

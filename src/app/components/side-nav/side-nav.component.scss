@@ -14,7 +14,6 @@
   .overlay {
     display: none;
   }
-
   &.open {
     left: 0;
 
@@ -23,7 +22,6 @@
       background: rgba(0, 0, 0, 0.8);
     }
   }
-
   .menu-content {
     width: 100%;
     height: 100%;
@@ -31,29 +29,24 @@
     background: var(--cultured);
     overflow: scroll;
   }
-
   .menu-header {
     background: var(--primary);
     color: $white;
     display: flex;
     align-items: center;
     border-radius: $border-radius-8;
-
     .icon-profile {
       font-size: $extra-large-5-font;
       margin: 7px 0;
     }
-
     .customer-detail {
       font-size: $large-font;
       margin-left: 10px;
       font-weight: bold;
-
       .user-name {
         margin-right: 10px;
       }
     }
-
     .login-sign-text {
       background-color: #e72b35;
       ;
@@ -61,59 +54,51 @@
     }
   }
 
-  .menu-list {
-    margin-top: 15px;
-    padding-left: 10px;
-    background-color: var(--white);
-    border: 1px solid var(--ghost-white);
-    border-radius: $border-radius-8;
+  .scrolled {
+    height: calc(100% - 150px);
+    overflow: auto;
+    .menu-list {
+      margin-top: 15px;
+      padding-left: 10px;
+      background-color: var(--white);
+      border: 1px solid var(--ghost-white);
+      border-radius: $border-radius-8;
+      li {
+        border-bottom: 1px solid var(--ghost-white);
 
-    &.scrolled {
-      max-height: 70%;
-      max-height: calc(100% - 170px);
-      overflow: auto;
-    }
-
-    li {
-      border-bottom: 1px solid var(--ghost-white);
-
-      &:last-child {
-        border-bottom: none
+        &:last-child {
+          border-bottom: none
+        }
+        a {
+          display: flex;
+          align-items: center;
+          padding: 15px 10px;
+        }
+        i {
+          font-size: $extra-large-3-font;
+          margin-right: 15px;
+          float: left;
+          line-height: $large-line-height;
+        }
+        .text {
+          font-size: $extra-large-font;
+          float: left;
+          line-height: $medium-line-height;
+        }
+        .sideList {
+          @extend %clear-fix;
+          display: block;
+          padding: 12px 10px;
+        }
       }
-
-      a {
-        display: flex;
-        align-items: center;
-        padding: 15px 10px;
+      .side-menu-foot {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+        padding: 20px;
+        border-top: 1px solid $border-color;
       }
-
-      i {
-        font-size: $extra-large-3-font;
-        margin-right: 15px;
-        float: left;
-        line-height: $large-line-height;
-      }
-
-      .text {
-        font-size: $extra-large-font;
-        float: left;
-        line-height: $medium-line-height;
-      }
-
-      .sideList {
-        @extend %clear-fix;
-        display: block;
-        padding: 12px 10px;
-      }
-    }
-
-    .side-menu-foot {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      left: 0;
-      padding: 20px;
-      border-top: 1px solid $border-color;
     }
   }
 }

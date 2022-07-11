@@ -141,26 +141,27 @@
 
         .price-dtl-block {
             display: flex;
-            align-items: center;
+            justify-content: flex-end;
             width: calc(100% - 150px);
 
             .price-block-left {
-                width: calc(100% - 25px);
+                // width: calc(100% - 25px);
                 text-align: right;
-
-                h3 {
-                    padding: 0px;
+                display: inline-flex;
+                align-items: center;
+                strong{
+                    font-size: $large-font;
                 }
-
                 .grey-txt {
                     font-size: 10px;
                 }
+                .icon-down{
+                    width: 15px;
+                    margin-left: 10px;
+                }
             }
 
-            .price-label-dropdown-icon {
-                width: 15px;
-                margin-left: 10px;
-            }
+            
         }
     }
 
@@ -238,15 +239,27 @@
 
         .price {
             margin-top: 10px;
-            .before-discount {
+            .price-mrp{
                 font-weight: bold;
                 font-size: $small-font;
                 color: var(--silver);
+                position: relative; 
+                .strike-off-upper{
+                    position: relative;
+                    .strike-off{
+                        height: 1px;
+                        background-color: var(--silver);
+                        top: 5px;
+                        position: absolute;
+                        left: 0;
+                        width: 100%;
+                    }
+                }
             }
 
             .after-disc {
-                font-weight: bold;
-                font-size: $small-font;
+                font-weight: bold !important;
+                font-size: $small-font !important;
             }
 
             .discount {
@@ -547,7 +560,7 @@
 }
 
 .realTimeUpdate {
-    padding: 0px;
+    // padding: 0px;
 
     .realTimePrice {
         margin-bottom: 15px;
@@ -556,10 +569,8 @@
 
 .realTimePrice {
     margin: 15px 15px 0px;
-
     span {
         background: #ffedee;
-        text-transform: capitalize;
         font-size: $medium-font;
         color: $txt-color;
         line-height: 22px;
@@ -567,10 +578,14 @@
         display: block;
         margin-bottom: -30px;
         border-radius: $border-radius-8;
+        font-weight: bold;
 
         &>strong {
             color: #d3182a;
             font-size: 12px;
+        }
+        &::first-letter{
+            text-transform: uppercase;
         }
     }
 }

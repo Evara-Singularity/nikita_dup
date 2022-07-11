@@ -9,7 +9,7 @@
         border-radius:$border-radius-8;
         padding: 10px;
         position: relative;
-        width:160px;
+        width:152px;
         margin:10px 0px 0px 15px;
         min-height: 315px;
         .product-card-upper {
@@ -22,6 +22,9 @@
           }
         }
         .product-card-lower {
+            .product-card-lower-inner{
+                min-height: 125px;
+            }
             .name {
                 -webkit-line-clamp: 2;
                 display: -webkit-box;
@@ -30,13 +33,13 @@
                 text-overflow: ellipsis;
                 height: 2.8em;
                 margin-bottom: 5px;
-                line-height: 1.6em;
+                line-height: 1.4em;
                 font-size: $large-font;
                 color: var(--onyx-black);
             }
             .brand {
                 margin-top: 4px;
-                margin-bottom: 4px;
+                margin-bottom: 5px;
                 text-align: left;
                 font-size: $small-font;
                 color: var(--gray-web);

@@ -54,7 +54,7 @@
                                         <span class="custom-box"></span>
                                     </label>
                                     <div class="emi-amount">
-                                        <p>₹{{emi.value.emi_value | mathCeil | number : '1.2-2'}}</p>
+                                        <p>₹{{emi.value.emi_value | mathFloor | number : '1.2-2'}}</p>
                                         <span>for {{getEmiMonths(emi.key) < 10 ? getEmiMonths(emi.key) :
                                                 getEmiMonths(emi.key) }} months <span class="green-txt">@0%
                                                 p.a.</span></span>
@@ -81,7 +81,7 @@
                                         <span class="custom-box"></span>
                                     </label>
                                     <div class="emi-amount">
-                                        <p>₹{{emi.value.emi_value | mathCeil | number : '1.2-2'}}</p>
+                                        <p>₹{{emi.value.emi_value | mathFloor | number : '1.2-2'}}</p>
                                         <span>for {{getEmiMonths(emi.key) < 10 ? getEmiMonths(emi.key) :
                                                 getEmiMonths(emi.key) }} months {{emi.value.emi_interest_paid> 0 ? +
                                                 emi.value.emiBankInterest + '%' :

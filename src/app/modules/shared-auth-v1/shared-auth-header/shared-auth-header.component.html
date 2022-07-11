@@ -4,6 +4,6 @@
         <i class="icon-back-arrow" *ngIf="!overrideBackBtn" (click)="$event.stopPropagation();navigateBack()"></i>
         <i class="icon-logo" *ngIf="overrideBackBtn" (click)="$event.stopPropagation();onHomepageBtnClick();"></i>
         <i class="icon-logo" *ngIf="!overrideBackBtn" (click)="$event.stopPropagation();navigateToHome(HOME_URL)"></i>
-        <button class="btn skip-btn" (click)="onSkipBtnClick$.emit(true)" *ngIf="enableSkipBtn">SKIP NOW</button>
+        <button class="btn skip-btn quinary-btn" (click)="onSkipBtnClick$.emit(true)" *ngIf="enableSkipBtn">SKIP NOW</button>
     </div>
 </ng-container>

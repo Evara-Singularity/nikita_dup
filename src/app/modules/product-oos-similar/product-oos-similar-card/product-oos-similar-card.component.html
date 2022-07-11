@@ -18,31 +18,29 @@
                                 src="{{productService.imagePathAsset}}assets/img/loader_new.gif" class="loader-image" />
                         </div>
                     </div>
-                    <ul class="pager">
-                        <ng-container
-                            *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions.pager && similarProductData[index].productAllImages.length>1">
-                            <ng-container
-                                *ngFor="let item of similarProductData[index].productAllImages;let i=index">
-                                <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot"
-                                    (click)="loadProductCrousel(i)"
+                    <ng-container
+                        *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions.pager && similarProductData[index].productAllImages.length>1">
+                        <ul class="pager">
+                            <ng-container *ngFor="let item of similarProductData[index].productAllImages;let i=index">
+                                <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="loadProductCrousel(i)"
                                     [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
                                 </li>
-                                <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)"
-                                    class="pager_icon_dot">
+                                <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" (click)="loadProductCrousel(i)" class="pager_icon_dot">
                                     <em class="icon-youtube"></em>
                                 </li>
                             </ng-container>
-                        </ng-container>
-                    </ul>
+                        </ul>
+                    </ng-container>
                 </div>
             </div>
         </div>
         
         <product-description 
             (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)"
+            [productPrice]="similarProductData[index].productPrice"
             [qunatityFormControl]="qunatityFormControl"
             [productName]="similarProductData[index].productName" 
-            [productDiscount]="similarProductData[index].productDiscount"
+            [productDiscount]=" similarProductData[index]['discount'] || similarProductData[index].productDiscount"
             [bulkPriceWithoutTax]="similarProductData[index].bulkPriceWithoutTax"
             [priceWithoutTax]="similarProductData[index].priceWithoutTax"
             [productMrp]="similarProductData[index].productMrp"
@@ -60,7 +58,7 @@
             <ng-container [ngSwitch]="section">
                 <!--Features-->
                 <div *ngSwitchCase="'features'" class="key-features">
-                    <product-feature-details [isFromOosSimilarCard]="true" [productKeyFeatures]="product.productKeyFeatures | sliceArray:3"></product-feature-details>
+                    <product-feature-details [applyExtraMargin]="false" [isFromOosSimilarCard]="true" [productKeyFeatures]="product.productKeyFeatures | sliceArray:3"></product-feature-details>
                     <div class="show-all-strip spec pwa-col-12">
                         <span
                             (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'key features', type: 'show all specifications'});">View
@@ -72,7 +70,7 @@
                 <!--Specifications-->
                 <div *ngSwitchCase="'specifications'" class="product-specification pwa-row">
                     <h2 *ngIf="product.productAttributes?.length > 0" class="heading-3 pwa-col-12">Product Specifications</h2>
-                    <product-feature-details [productBrandDetails]="product.productBrandDetails" [productAttributes]="product.productAttributes" [isFromOosSimilarCard]="true"></product-feature-details>
+                    <product-feature-details  [applyExtraMargin]="false" [productBrandDetails]="product.productBrandDetails" [productAttributes]="product.productAttributes" [isFromOosSimilarCard]="true"></product-feature-details>
                     <div (click)="showAllKeyFeatureClickEvent.emit({index: index, section: 'specifications', type: 'show all specifications'});"
                         class="show-all-strip spec pwa-col-12">
                         <span>View Details

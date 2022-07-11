@@ -1,4 +1,4 @@
-<section class="pwa-row pwa-row-noPad mt-10">
+<section class="pwa-row pwa-row-noPad" [ngClass]="{'mt-10': applyExtraMargin}" >
     <div class="pwa-col-12">
         <div *ngIf="!isFromOosSimilarCard" class="pdp-section-header">
             <h3 class="heading-3">
@@ -112,7 +112,7 @@
             <div class=" pwa-row pdf_list">
                 <ng-container *ngFor="let pdf of productDocumentInfo">
                     <a target="_blank" class="pdf_anchr" href="{{DOCUMENT_URL + pdf.path}}">
-                        <div class="pwa-row pad-tb-0 pdf_link">
+                        <div class="pwa-row pdf_link">
                             <span class="pdf-img">
                                 <img src="{{imagePathAsset}}assets/img/download.svg">
                             </span>

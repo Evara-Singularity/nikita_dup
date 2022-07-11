@@ -743,10 +743,11 @@ export class ProductService {
         } as ProductsEntity;
     }
 
-    productLayoutJsonToProductEntity(product: any) {
+    productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
+        // console.log("blocks", product)
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
-        return {
+        const productEntity: ProductsEntity =  {
             moglixPartNumber: product['msn'],
             mrp: productMrp,
             salesPrice: product['sellingPrice'],
@@ -755,8 +756,8 @@ export class ProductService {
             variantName: product["productName"],
             productUrl: product["productlink"],
             shortDesc: null,
-            brandId: null,
-            brandName: null,
+            brandId: brandId,
+            brandName: brandName || product['short_description'],
             quantityAvailable: 1,
             discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
             rating: null,
@@ -777,9 +778,19 @@ export class ProductService {
             reviewCount: product.reviewCount || 0,
             internalProduct: true,
             outOfStock: product.outOfStock,
-        } as ProductsEntity;
-
+        };
+        return productEntity;
     }
+
+    // getBrandNameDesc(name){
+    //     if(name && name.split("||").length > 0 && name.split("||")[0] && name.split("||")[0].split(":") && name.split("||")[0].split(":").length > 0){
+    //         return name.split("||")[1].split(":")[1];
+    //     }
+    //     if(name && name.split(":").length > 0){
+    //         return name.split(":")[1];
+    //     }
+    //     return "";
+    // }
 
     wishlistToProductEntity(product: any, overrideProductB0 = null) {
 

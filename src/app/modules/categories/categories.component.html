@@ -1,6 +1,6 @@
 <section class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
     <a *ngIf="i==2" href="{{im.image_link}}">
-        <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + im.image_name" alt="banner add">
+        <img [src]="imagePath + im.image_name" alt="banner add">
     </a>
 </section>
 <ng-container *ngFor="let category of categories | slice:0:5;let i = index;">
@@ -19,7 +19,7 @@
                 <a [routerLink]="item['category_url']"
                     (click)="setCategoryorBrandCookie(item['CategoryName'],'tcat')">
 
-                    <img [defaultImage]="defaultImage" [lazyLoad]="imagePath+item.category_image"
+                    <img [src]="imagePath+item.category_image"
                         alt="category image" class="category-img">
                     <p>{{item['CategoryName']}}</p>
                 </a>
@@ -30,7 +30,7 @@
                 <a [routerLink]="items['brand_url']"
                     (click)="setCategoryorBrandCookie(items['brandName'],'tbrand')">
                     <div class="circle-brand-img">
-                        <img [defaultImage]="defaultImage" [lazyLoad]="imagePath+items.brand_image"
+                        <img [src]="imagePath+items.brand_image"
                         alt="category image" class="category-img">
                     </div>
                     <p>{{items['brandName']}}</p>
@@ -38,16 +38,10 @@
             </li>
         </ng-template>
     </ul>
-    <product-card-vertical-container *ngIf="carouselData[category.dataKey]['layout_name'] == 'Bestsellers'"
+    <product-card-vertical-container
         [numberOfItems]="carouselData[category.dataKey]['data']['product_data'].length">
         <ng-container *ngFor="let product of carouselData[category.dataKey]['data']['product_data']">
-            <product-card-vertical-grid-view [product]="product"></product-card-vertical-grid-view>
-        </ng-container>
-    </product-card-vertical-container>
-    <product-card-vertical-container *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'"
-        [numberOfItems]="4" [isScroll]="false" >
-        <ng-container *ngFor="let product of carouselData[category.dataKey]['data']['product_data'] | slice : 0:4">
-            <product-card-vertical-block-view [product]="product"></product-card-vertical-block-view>
+            <product-card-vertical-grid-view [fullBrandNameMode]="true" [product]="product"></product-card-vertical-grid-view>
         </ng-container>
     </product-card-vertical-container>
 
@@ -56,7 +50,7 @@
 <div class="pwa-col-12 pad-lr-15 mb-10">
     <section class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
         <a class="full-banner" *ngIf="i==1" href="{{im.image_link}}">
-            <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + im.image_name" alt="banner add">
+            <img [src]="imagePath + im.image_name" alt="banner add">
         </a>
     </section>
 </div>

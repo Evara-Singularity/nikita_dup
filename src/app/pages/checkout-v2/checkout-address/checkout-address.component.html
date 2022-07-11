@@ -1,7 +1,7 @@
 <div class="main-container" >
     <shared-checkout-stepper [headers]="STEPPER"></shared-checkout-stepper>
-    <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
-    <ng-container>
+    <cart-notifications *ngIf="hasCartItems" (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
+    <ng-container *ngIf="hasCartItems">
         <section>
             <div *ngIf="isUserLoggedIn else hideContinue" class="fixed-bottom-cta payment-strip">
                 <div class="amount-left-section">
@@ -10,7 +10,7 @@
                             <i class="icon-information"></i>
                         </span>
                     </span>
-                    ₹ {{ payableAmount | mathCeil | number : '1.2-2'}}
+                    ₹{{ payableAmount | mathCeil | number : '1.2-2'}}
                 </div>
                 <button [disabled]="!(hasCartItems)" class="btn primary-btn" (click)="$event.stopPropagation();continueToPayment()">
                     CONTINUE
@@ -24,7 +24,7 @@
             (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
             (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
             (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-        <cart [moduleName]="'CHECKOUT'"></cart>
+        <cart [moduleName]="'CHECKOUT'"></cart> 
         <order-summary></order-summary>
         <generic-offers></generic-offers>
         <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems" [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } "></shared-checkout-unavailable-items>

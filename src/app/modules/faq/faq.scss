@@ -1,6 +1,22 @@
 @import '../../scss//variables.scss';
 @import '../../scss/root';
 
+.hide{
+  display: none;
+}
+.show{
+  display: block;
+}
+
+.ico-expand{
+  .icon-expand{
+    &:before{
+      content: "\e919";
+    }
+    
+  }
+}
+
 
 .faqfixedhead{
   padding-top:140px;
@@ -120,6 +136,7 @@
             border:none;
           }
           h4{
+            font-size:$large-font;
             margin-bottom:10px;
             line-height: $medium-line-height;
             &:first-child{
@@ -131,11 +148,11 @@
             }
           }
           p{
-            font-size:$small-font;
+            font-size:$medium-font;
             line-height:$medium-line-height;
           }
           .list-information{
-            font-size:$small-font;
+            font-size:$medium-font;
             margin-top: 10px;
             line-height: $medium-line-height;
             padding-left: 8px;

@@ -10,7 +10,7 @@
     min-height: 100px;
     text-align: center;
     align-items: center;
-    margin-top: 10px;
+    margin-bottom: 10px;
     img {
       width: 100px;
     }
@@ -19,7 +19,13 @@
       padding-top: 5px;
       &.view-all-cate {
         color: var(--primary);
+        font-weight: 500;
       }
     }
+  }
+  .view-all-strip{
+    @extend %view-all-strip;
+    padding-top:15px !important;
+    padding-bottom:0px !important;
   }
 }

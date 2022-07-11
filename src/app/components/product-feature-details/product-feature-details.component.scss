@@ -1,13 +1,13 @@
 @import "../../scss/variables";
 @import "../../scss/prod-specifications.scss";
 
-:host{
+:host {
     width: 100%;
 }
-.pwa-row-noPad{
+.pwa-row-noPad {
     padding: 0 !important;
 }
-.pdp-section-header{
+.pdp-section-header {
     border-bottom: 1px solid var(--platinum);
     border-top: 1px solid var(--platinum);
 }
@@ -34,7 +34,10 @@
         color: var(--blue);
         font-size: $medium-font;
     }
-    .prod-desc-video-container{
+    .prod-desc-video-container {
+        .prod-desc-video {
+            position: relative;
+        }
         position: relative;
     }
     .youtube_icon {
@@ -60,6 +63,14 @@
         padding: 5px 15px 15px;
         .heading-3 {
             padding-bottom: 10px;
+        }
+    }
+    &.no-ellipsis{
+        p{
+            &:first-of-type {
+                -webkit-line-clamp:none;
+                height:initial;
+            }
         }
     }
 }
@@ -90,15 +101,18 @@
     }
 }
 .pdf_section {
-    margin-top: 0px;
+    margin-top: 10px;
     padding: 0px;
     background: var(--white);
-    .heading-3{
-        border-top: 1px solid #ccc;
-        padding:10px 15px;
+    .heading-3 {
+        // border-top: 1px solid #ccc;
+        padding: 10px 15px;
     }
     .pdf_list {
-        padding: 10px 0px;
+        padding: 0px;
+        border-top: 1px solid #ccc;
+        display: flex;
+        flex-flow: column wrap;
         .pdf_anchr {
             display: block;
             border-bottom: 1px solid #ccc;
@@ -107,7 +121,11 @@
             }
         }
         .pdf_link {
+            padding: 15px;
+            display: inline-flex;
             justify-content: flex-start;
+            align-items: center;
+            flex-wrap: wrap;
             .pdf-img {
                 img {
                     width: 16px;

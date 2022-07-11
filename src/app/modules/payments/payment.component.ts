@@ -212,6 +212,7 @@ export class PaymentComponent implements OnInit {
 
     outData(data) {
         this[data.selector] = !this[data.selector];
+        this.showPopup=false;
     }
 
     removeTab(tabId) {
@@ -242,12 +243,7 @@ export class PaymentComponent implements OnInit {
         return (this.successPercentageRawData && this.successPercentageRawData['UPI']) ? this.successPercentageRawData['UPI'] : null
     }
 
-    learnMore(e) {
-        if (e !== undefined) {
-            e.stopPropagation();
-        }
-        this.showPopup = true;
-    }
+    learnMore(e) {this.showPopup = true;}
     
     set isShowLoader(value) {
         this._loaderService.setLoaderState(value);

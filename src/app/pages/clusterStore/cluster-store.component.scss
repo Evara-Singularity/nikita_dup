@@ -1,5 +1,5 @@
 @import "../../scss/variables";
-@import "../../scss/components/home-listing";
+@import '../../components/category-card/category-card.component';
 
 .fixedCategory {
     position: relative;
@@ -92,44 +92,7 @@
     }
 }
 
-.category-card-scroll-bar {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow: auto;
-    box-shadow: 0 3px 6px rgb(0 0 0 / 16%);
-    padding: 10px;
-    background: #f8f8f8;
-    category-card {
-        .category-card-container {
-            background: #f8f8f8;
-            .category-OverBlk {
-                .category-block {
-                    min-width: 180px;
-                    &.selected-block {
-                        border: 1px solid #d9232d;
-                        background: #f4e1e5;
-                    }
-                }
-            }
-        }
-    }
-    &::-webkit-scrollbar {
-        display: block;
-    }
-}
 
-:host category-card {
-    background-color: #d9232d;
-    padding-left: 50px;
-    .category-OverBlk {
-        .category-block {
-            min-width: 180px;
-            background-color: #d9232d;
-            &.selected-block {
-                border: 1px solid #d9232d;
-                background: #f4e1e5;
-            }
-        }
-    }
-}
+
+
 

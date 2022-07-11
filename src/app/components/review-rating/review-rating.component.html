@@ -104,12 +104,12 @@
                     <!-- <strong>Report Abuse</strong> -->
                 </div>
                 <div class="pwa-col-6 align-right">
-                    <button class="suggstn-btn" [ngClass]="{'active':review.like=='1'}"
+                    <button class="suggstn-btn" [ngClass]="{'success-txt':review.like=='1'}"
                         (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
                         <span class="small-txt">{{ review?.is_review_helpful_count_yes?.value || 0 }}</span>
                         <i class="icon-like"></i>
                     </button>
-                    <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}"
+                    <button class="suggstn-btn" [ngClass]="{'success-text':review.dislike=='1'}"
                         (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
                         <span class="small-txt">{{review?.is_review_helpful_count_no?.value || 0 }}</span>
                         <i class="icon-dislike"></i>

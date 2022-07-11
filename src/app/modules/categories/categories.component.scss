@@ -1,5 +1,4 @@
 @import '../../scss/variables.scss';
-@import '../../scss/components/home-listing.scss';
 @import '../../scss/components/banner';
 
 .category-wrap{
@@ -35,10 +34,12 @@
 }
 .category-section{
     background:var(--white);
-    margin-bottom: 10px;
-    padding: 0px 15px;
+    margin-bottom: 20px;
+    padding-left:15px;
+    padding-right:15px;
     &.bestSeller{
         background:none;
+        padding-right:0px;
     }
     .view-all-strip{
         @extend %view-all-strip;

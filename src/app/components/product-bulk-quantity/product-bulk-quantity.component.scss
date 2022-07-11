@@ -175,6 +175,7 @@
     }
 }
 .bulk-qty {
+    padding-bottom: 5px;
     .blk-contain {
         overflow-y: hidden;
         overflow-x: scroll;
@@ -223,6 +224,11 @@
     }
     .bulk-container-single-grp {
         padding: 5px 8px;
+        .bul-qty-head{
+            p{
+                font-size:$large-font !important;
+            }
+        }
         h3 {
             font-size: 13px;
             .green-txt {

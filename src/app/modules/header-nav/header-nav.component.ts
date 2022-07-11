@@ -2,18 +2,16 @@ import { Location } from '@angular/common';
 import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
-import { CheckoutService } from '@app/utils/services/checkout.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { NavigationService } from '@app/utils/services/navigation.service';
 import { environment } from 'environments/environment';
 import { LocalStorageService } from 'ngx-webstorage';
 import { of } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
-import { GlobalState } from '../../utils/global.state';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { CartService } from '../../utils/services/cart.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
-import { SharedAuthService } from '../shared-auth-v1/shared-auth.service';
 
 @Component({
     selector: 'header-nav',
@@ -78,17 +76,14 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         public router: Router,
         private localAuthService: LocalAuthService,
         public cartService: CartService,
-        private location: Location,
-        private sharedAuthService: SharedAuthService,
         private cfr: ComponentFactoryResolver,
         private injector: Injector,
         public _commonService: CommonService,
         private globalLoader: GlobalLoaderService,
         private localStorageService: LocalStorageService,
-        private _state: GlobalState,
-        private _checkoutService: CheckoutService,
         private _analytics: GlobalAnalyticsService,
-        private _activatedRoute: ActivatedRoute
+        private _activatedRoute: ActivatedRoute,
+        private _navigationService: NavigationService
     )
     {
         this.isServer = _commonService.isServer;
@@ -100,6 +95,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
     {
         if (this.isBrowser) {
             this.isUserLogin = this.localAuthService.isUserLoggedIn();
+            this._navigationService.startSaveHistory();
         }
         this.createHeaderData(this._activatedRoute);
     }
@@ -118,12 +114,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 }
             });
         }
-    }
-
-    ngOnDestroy()
-    {
-        this.sideNavInstance = null;
-        this.searchBarInstance = null;
     }
 
     async loadSideNav()
@@ -303,15 +293,9 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 this.backRedirectUrl = this._commonService.currentUrl || '';
             }
         });
-
-        this.cartService.cart.subscribe((data) =>
+        this.cartService.getCartUpdatesChanges().subscribe((data) =>
         {
-
-            if (data && data.hasOwnProperty('count')) {
-                this.noOfCart = data.count;
-            } else {
-                throw new Error('Cart update count should always be present');
-            }
+            this.noOfCart = this.cartService.getCartItemsCount();
         });
 
         this.localAuthService.login$.subscribe((data) =>
@@ -353,22 +337,23 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
 
     goBack()
     {
-        if (this.staticPages.indexOf(window.location.pathname) !== -1) {
-            this.router.navigate(['/']);
-            return;
-        }
-        this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
-        const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
-        if (isCheckout || this._commonService.getPreviousUrl.includes('checkout'))
-        {
-            this.router.navigateByUrl("quickorder", { replaceUrl: true });
-            return;
-        }
-        if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false) {
-            (window.history.length > 2) ? this.location.back() : this.router.navigate(['/']);
-            return;
-        }
-        this.router.navigate(['/']);
+        this._navigationService.goBack();
+        // if (this.staticPages.indexOf(window.location.pathname) !== -1) {
+        //     this.router.navigate(['/']);
+        //     return;
+        // }
+        // this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
+        // const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
+        // if (isCheckout || this._commonService.getPreviousUrl.includes('checkout'))
+        // {
+        //     this.router.navigateByUrl("/quickorder", { replaceUrl: true });
+        //     return;
+        // }
+        // if (this.backRedirectUrl && this.backRedirectUrl !== '/') {
+        //     (window.history.length > 2) ? this.location.back() : this.router.navigate(['/']);
+        //     return;
+        // }
+        // this.router.navigate(['/']);
     }
 
     navigateToLogin($event)
@@ -378,5 +363,13 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         this.localAuthService.clearAuthFlow();
         this.localAuthService.clearBackURLTitle();
         this.router.navigate(['/login']);
+    }
+
+    
+
+    ngOnDestroy()
+    {
+        this.sideNavInstance = null;
+        this.searchBarInstance = null;
     }
 }

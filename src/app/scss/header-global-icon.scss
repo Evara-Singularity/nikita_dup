@@ -10,22 +10,23 @@
     color: var(--onyx-black);
 }
 .icon-cart1 {
+    font-size: 26px !important;
     position: relative;
     padding: 5px 5px !important;
     display: block;
     .badge {
         position: absolute;
-        top: 0px;
-        right: 0px;
+        top: -2px;
+        right: 1px;
         padding: 2px 4px;
         border-radius: $border-radius-6;
         color: var(--white);
         background: var(--primary);
-        font-size: $small-font;
+        font-size: 9px;
         border: 2px solid var(--white);
         font-family: "Roboto", sans-serif;
-        width: 21px;
-        height: 21px;
+        width: 20px;
+        height: 20px;
         display: flex;
         align-items: center;
         justify-content: center;

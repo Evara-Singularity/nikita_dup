@@ -2,11 +2,11 @@
 @import '../../scss/components/category-grid-card';
 .view-all-strip {
     @extend %view-all-strip;
-    padding-top: 0px !important;
+    padding:5px 0px 10px;
   }
   .trending-container {
     padding: 0 0 0px 0;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     .trending-categories {
       border-top: 1px solid $border-color;
       li {
@@ -41,6 +41,7 @@
     .category-grid-card {
       width: calc(33.3% - 6px);
       background: var(--white);
+      border:1px solid var(--platinum);
       a {
         padding: 5px;
         display: block;

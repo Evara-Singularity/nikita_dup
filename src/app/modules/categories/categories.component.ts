@@ -5,6 +5,7 @@ import {
 	Output,
 	EventEmitter,
 	NgModule,
+	OnInit,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonService } from '../../utils/services/common.service';
@@ -16,6 +17,7 @@ import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card
 import { ProductCardVerticalGridViewModule } from '../product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
 import { ProductCardHorizontalGridViewModule } from '../product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
 import { ProductCardVerticalBlockViewModule } from '../product-card/product-card-vertical-block-view/product-card-vertical-block-view.module';
+import { ProductService } from '@app/utils/services/product.service';
 
 
 @Component({
@@ -23,7 +25,7 @@ import { ProductCardVerticalBlockViewModule } from '../product-card/product-card
 	templateUrl: './categories.component.html',
 	styleUrls: ['./categories.component.scss'],
 })
-export class Categories {
+export class Categories implements OnInit {
 	@Input('middleImageJsonData') middleImageJsonData;
 	@Input('categories') categories;
 	@Input('carouselData') carouselData;
@@ -63,6 +65,7 @@ export class Categories {
 
 	constructor(
 		private _commonService: CommonService,
+		private _productService: ProductService
 	) {}
 
 	getCategoryLabel(categoryName) {
@@ -71,6 +74,18 @@ export class Categories {
 			window.scrollTo(window.scrollX, window.scrollY + 1);
 			window.scrollTo(window.scrollX, window.scrollY - 1);
 		}, 100);
+	}
+
+	ngOnInit(): void {
+		// this.carouselData = (ncd as any[]).map(product => this.productService.searchResponseToProductEntity(product));
+		for (let i = 0; i < this.categories.length; i++) {
+			if (this.categories[i]['dataKey'] && this.carouselData[this.categories[i]['dataKey']]) {
+				for (let j = 0; j < this.carouselData[this.categories[i]['dataKey']]['data']['product_data'].length; j++) {
+					const producModified = this._productService.productLayoutJsonToProductEntity(this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j], "", "");
+					this.carouselData[this.categories[i]['dataKey']]['data']['product_data'][j] = producModified;
+				}
+			}
+		}
 	}
 
 	setCategoryorBrandCookie(categoryName, type) {

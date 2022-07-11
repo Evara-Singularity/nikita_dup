@@ -1,5 +1,4 @@
-<h4 class="pwa-row">Preferred Payment Mode</h4>
-<section class="payment-container payment-modal-bottom pwa-row mt-0">
+<section class="payment-container payment-modal-bottom pwa-row mt-10">
     <div class="card-30">
         <saved-card *ngIf="isSavedCardExist" [savedCardsData]="savedCardsData" [type]="invoiceType" (removeTab$)="removeTab($event)"></saved-card>
     </div>
@@ -105,8 +104,8 @@
                 <div (click)="updatePaymentBlock(globalConstants['cashOnDelivery'], 'cashOnDelivery', 'cashOnDeliverySection')"
                     class="payment-accordion_header">
                     <i class="icon-coupon-3-fill ico-accord-left"></i>
-                    <span class="accordion-text">Cash on Delivery</span>
-                    <span class="learn-more" *ngIf="disableCod" (click)="learnMore($event)">Learn More</span>
+                    <span class="accordion-text cod-txt">Cash on Delivery</span>
+                    <span class="learn-more" *ngIf="disableCod" (click)="$event.stopPropagation();learnMore($event)">Learn More</span>
                     <small class="error-txt inline-error" *ngIf="messageCod">{{messageCod}} </small>
                     <i class="icon-down"></i>
                 </div>
@@ -122,7 +121,7 @@
                 <div class="continue-button">
                     <div class="container">
                         <p class="total-mount">
-                            <span class="payable-amnt">Payable Amount</span> ₹ {{totalAmount | number : '1.2-2'}}
+                            <span class="payable-amnt">Payable Amount</span> ₹&nbsp;{{totalAmount | number : '1.2-2'}}
                         </p>
                         <button type="submit" [disabled]="true" class="btn">PAY</button>
                     </div>

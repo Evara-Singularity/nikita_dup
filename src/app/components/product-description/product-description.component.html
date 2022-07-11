@@ -13,15 +13,14 @@
                                 {{productPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp;(Incl. of all taxes)
                             </small>
                         </p>
-                        <p class="actual-price main-price">
-                            <strong>{{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}
-                                <small class="inline-price" *ngIf="((productPrice-priceWithoutTax) > 0)" >
-                                    <i class="icon-expand"></i>{{ (productPrice-priceWithoutTax) | currency: 'INR' : 'symbol' : '1.0-0'}} GST
+                        <p class="actual-price main-price mt-5">
+                            <strong>{{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}} 
+                                <small class="inline-price" *ngIf="((productPrice-priceWithoutTax) > 0)"><i class="icon-expand"></i>{{ (productPrice-priceWithoutTax) | currency: 'INR' : 'symbol' : '1.0-0'}} GST
                                 </small>
                             </strong>
                             
                         </p>
-                        <p class="mrp" *ngIf="(productMrp > productPrice) && (productDiscount != undefined && productDiscount>0 && productMrp > 0)">
+                        <p class="mrp mt-5" *ngIf="(productMrp > productPrice) && (productDiscount != undefined && productDiscount>0 && productMrp > 0)">
                             MRP&nbsp;<small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
                             <span >
                              {{ productDiscount | number:'1.0-0'}}% OFF
@@ -40,7 +39,7 @@
                         <p class="actual-price main-price">
                             <strong>{{selectedProductBulkPrice['bulkSPWithoutTax'] | currency: 'INR' : 'symbol' : '1.0-0'}}</strong>
                             <small class="inline-price" *ngIf="(+(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax'])) > 0" >
-                                <i class="icon-expand"></i>{{ +(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax']) | currency: 'INR' : 'symbol' : '1.0-0' }} GST
+                                &nbsp;<i class="icon-expand"></i>{{ +(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax']) | currency: 'INR' : 'symbol' : '1.0-0' }} GST
                             </small>
                         </p>
                         <p class="mrp" *ngIf="(productMrp > selectedProductBulkPrice['bulkSellingPrice'])">
@@ -98,7 +97,7 @@
         <!--recently bought product section -->
         <div class="pwa-inline-tooltip" *ngIf="rawProductCountMessage">
             <i class="icon-trending"></i>
-            <span class="pwa-tooltip-text">>{{rawProductCountMessage}}</span>
+            <span class="pwa-tooltip-text">{{rawProductCountMessage}}</span>
         </div>
     </div>
 </div>

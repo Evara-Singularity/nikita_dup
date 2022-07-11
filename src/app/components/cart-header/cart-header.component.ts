@@ -23,8 +23,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 	@Input() isUserLogin: boolean = false;
 	@Input() enableBackBtn: boolean = false;
 	@Input() imgAssetPath: boolean = false;
-	cartSession = null;
-	payableAmount = 0;
+	totalPayableAmount = 0;
 	cartUpdatesSubscription: Subscription = null;
 
 	constructor(
@@ -40,46 +39,44 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		this._loader.setLoaderState(true);
 		this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
 		{
-			this.cartSession = cartSession;
 			this.noOfCartItems = this._cartService.getCartItemsCount();
-			this.calculatePayableAmount(this.cartSession['cart']);
+			this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
 			this._loader.setLoaderState(false);
 		});
 	}
 
-	calculatePayableAmount(cart)
-	{
-		if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length) {
-			const TOTAL_AMOUNT = cart['totalAmount'] || 0;
-			const SHIPPING_CHARGES = cart['shippingCharges'] || 0;
-			const TOTAL_OFFER = cart['totalOffer'] || 0;
-			this.payableAmount = TOTAL_AMOUNT + SHIPPING_CHARGES + TOTAL_OFFER;
-		}
-	}
-
 	handleNavigation()
 	{
-		const url = this._router.url;
-		const previousURL = this._commonService.previousUrl;
-		switch (this.title) {
-			case 'My Cart': {
-				this.handleMyCartNavigation(url, previousURL);
-				break;
-			}
-			case 'Checkout': {
-				this.handleCheckoutNavigation(url, previousURL);
-				break;
-			}
-			case 'Payment': {
-				this.handleCheckoutNavigation(url, previousURL);
-				break;
-			}
+		if (this.isCheckout && this._cartService.buyNow) {
+			this._cartService.clearBuyNowFlow();
+			//this._cartService.checkForUserAndCartSessionAndNotify().subscribe((cartsession) => { });
 		}
+		this.goBack$.emit();
+		// const url = this._router.url;
+		// const previousURL = this._commonService.previousUrl;
+		// switch (this.title) {
+		// 	case 'My Cart': {
+		// 		this.handleMyCartNavigation(url, previousURL);
+		// 		break;
+		// 	}
+		// 	case 'Checkout': {
+		// 		this.handleCheckoutNavigation(url, previousURL);
+		// 		break;
+		// 	}
+		// 	case 'Payment': {
+		// 		this.handlePaymentNavigation(url, previousURL);
+		// 		break;
+		// 	}
+		// }
 	}
 
 	handleMyCartNavigation(url: string, previousURL: string)
 	{
-		if (previousURL.includes("checkout/address") || previousURL.includes("checkout/payment") || previousURL.includes("quickorder")) {
+		const trace = { Page: 'Quickorder', 'Buy Now': this._cartService.buyNow, CurrentURL: url, PreviousURL: previousURL };
+		console.table(trace);
+		const isBuyNow = this._cartService.buyNow;
+		if (isBuyNow) { this._cartService.clearBuyNowFlow(); }
+		if (previousURL.includes("checkout") || previousURL.includes("quickorder")) {
 			this._router.navigateByUrl('/', this.REPLACE_URL);
 			return;
 		}
@@ -88,15 +85,30 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	handleCheckoutNavigation(url: string, previousURL: string)
 	{
-		console.log(`CurrentURL:${url}, PreviousURL:${previousURL}`);
-		this._cartService.clearBuyNowFlow();
-		if (previousURL.includes('checkout/login') || previousURL.includes('checkout/sign-up') || previousURL.includes('checkout/otp')) {
-			this._router.navigateByUrl("quickorder");
-		} else if (previousURL.includes('checkout/address') || previousURL.includes('checkout/payment')) {
-			this._router.navigateByUrl("quickorder");
-		}else {
-			this._location.back();
+		const isBuyNow = this._cartService.buyNow;
+		const trace = { Page: 'Checkout', 'Buy Now': isBuyNow, CurrentURL: url, PreviousURL: previousURL };
+		console.table(trace);
+		debugger;
+		if (isBuyNow) {
+			if (previousURL.includes('checkout')) {
+				this._router.navigateByUrl('/quickorder', this.REPLACE_URL);
+				return;
+			}
+			if (previousURL.includes('quickorder')) {
+				this._router.navigateByUrl("quickorder");
+				return;
+			}
+			this._router.navigateByUrl(previousURL || "/");
 		}
+		if (previousURL.includes('checkout')) {
+			this._router.navigateByUrl("quickorder", this.REPLACE_URL);
+			return;
+		}
+		if (previousURL !== "/") {
+			this._router.navigateByUrl(previousURL);
+			return
+		}
+		this._location.back();
 	}
 
 	handlePaymentNavigation(url: string, previousURL: string)
@@ -115,7 +127,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	ngOnDestroy(): void
 	{
-		this.cartUpdatesSubscription.unsubscribe();
+		if (this.cartUpdatesSubscription){this.cartUpdatesSubscription.unsubscribe();}
 	}
 
 }

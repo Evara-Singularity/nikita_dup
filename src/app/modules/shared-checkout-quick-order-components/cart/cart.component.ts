@@ -27,8 +27,7 @@ declare let dataLayer;
 
 export class CartComponent
 {
-    removePopup: boolean = false;
-    removeIndex = 0;
+    removableItem = null;
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     cartSubscription: Subscription;
     pageEvent = "genericPageLoad";
@@ -48,8 +47,7 @@ export class CartComponent
     {
         // Get latest cart from API
         this._commonService.updateUserSession();
-        if(this._commonService.isBrowser)
-        {
+        if (this._commonService.isBrowser) {
             this.sendCriteoPageLoad();
             this.sendEmailGTMCall();
         }
@@ -80,17 +78,12 @@ export class CartComponent
                 });
     }
 
-    removeItemFromCart(itemIndex)
-    {
-        this.removePopup = true;
-        this.removeIndex = itemIndex;
+    removeItemFromCart(itemIndex, packageUnit) { 
+        this.removableItem = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession?.itemsList[itemIndex])); 
+        this.removableItem['packageUnit'] = packageUnit;
     }
 
-    resetRemoveItemCart()
-    {
-        this.removePopup = false;
-        this.removeIndex = -1;
-    }
+    resetRemoveItemCart() { this.removableItem = null; }
 
     // make cosmetic changes after deleting an item from cart
     deleteProduct(e)
@@ -98,9 +91,9 @@ export class CartComponent
         e.preventDefault();
         e.stopPropagation();
         this._globalLoaderService.setLoaderState(true);
-        this.pushDataToDatalayerOnRemove(this.removeIndex);
-        this._cartService.removeCartItemsByMsns([this._cartService.getGenericCartSession.itemsList[this.removeIndex]['productId']]);
-        this.removePopup = false;
+        this.pushDataToDatalayerOnRemove(this.removableItem);
+        this._cartService.removeCartItemsByMsns([this.removableItem['productId']]);
+        this.removableItem = null;
     }
 
     // redirect to product page 
@@ -190,7 +183,7 @@ export class CartComponent
         }
         if (removeIndex > -1) {
             this._globalLoaderService.setLoaderState(false);
-            this.removeItemFromCart(itemIndex);
+            this.removeItemFromCart(itemIndex, product['packageUnit']);
             return
         }
         let bulkPriceMap = [];
@@ -237,7 +230,6 @@ export class CartComponent
                 cartSession['extraOffer'] = null;
                 this._cartService.setGenericCartSession(cartSession);
                 this._cartService.publishCartUpdateChange(cartSession);
-                this._cartService.orderSummary.next(cartSession);
                 this._cartService.orderSummary.next(cartSession);
                 this._tms.show({ type: 'success', text: errorMsg || "Cart quantity updated successfully" });
                 this.sendMessageAfterCartAction(cartSession);
@@ -371,18 +363,18 @@ export class CartComponent
         /*End Adobe Analytics Tags */
     }
 
-    pushDataToDatalayerOnRemove(index)
+    pushDataToDatalayerOnRemove(item)
     {
-        if (!this._cartService.getGenericCartSession["itemsList"][index]) return;
-        var taxonomy = this._cartService.getGenericCartSession["itemsList"][index]['taxonomyCode'];
+        if (!item) return;
+        var taxonomy = item['taxonomyCode'];
         var trackingData = {
             event_type: "click",
             label: "remove_from_cart",
-            product_name: this._cartService.getGenericCartSession["itemsList"][index]['productName'],
-            msn: this._cartService.getGenericCartSession["itemsList"][index]['productId'],
-            brand: this._cartService.getGenericCartSession["itemsList"][index]['brandName'],
-            price: this._cartService.getGenericCartSession["itemsList"][index]['totalPayableAmount'],
-            quantity: this._cartService.getGenericCartSession["itemsList"][index]['productQuantity'],
+            product_name: item['productName'],
+            msn: item['productId'],
+            brand: item['brandName'],
+            price: item['totalPayableAmount'],
+            quantity: item['productQuantity'],
             channel: "Cart",
             category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
             category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
@@ -395,12 +387,12 @@ export class CartComponent
             'ecommerce': {
                 'remove': {
                     'products': [{
-                        'name': this._cartService.getGenericCartSession["itemsList"][index]['productName'],
-                        'id': this._cartService.getGenericCartSession["itemsList"][index]['productId'],
-                        'price': this._cartService.getGenericCartSession["itemsList"][index]['totalPayableAmount'],
+                        'name': item['productName'],
+                        'id': item['productId'],
+                        'price': item['totalPayableAmount'],
                         'variant': '',
-                        'quantity': this._cartService.getGenericCartSession["itemsList"][index]['productQuantity'],
-                        'prodImg': this._cartService.getGenericCartSession["itemsList"][index]['productImg']
+                        'quantity': item['productQuantity'],
+                        'prodImg': item['productImg']
                     }]
                 }
             },

@@ -49,7 +49,7 @@ pagination-controls {
 } 
 .ngx-pagination .pagination-previous a::before,
 .ngx-pagination .pagination-previous.disabled::before {
-    content: 'FIRST' !important;
+    content: 'PREV' !important;
     color: var(--blue);
     display: none;
     font-weight: bold;
@@ -59,7 +59,7 @@ pagination-controls {
 }
 .ngx-pagination .pagination-next a::after,
 .ngx-pagination .pagination-next.disabled::after {
-    content: 'LAST' !important;
+    content: 'NEXT' !important;
     color: var(--blue);
     font-weight: bold;
 }

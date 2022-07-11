@@ -1,6 +1,6 @@
 <div class="home-parent">
     <app-promo [page]="'home'" class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
-    <div class="pwa-row">
+    <div class="pwa-row pad-b-0">
         <div class="pwa-col-12">
             <div class="css-banner-component">
                 <div class="internalBanner" *ngIf="isBrowser">
@@ -48,9 +48,7 @@
                 </div> -->
 
             <div class="pwa-col-12 category-grid-container">
-                <div class="view-all-strip">
-                    <h2>Category Store Explore</h2>
-                </div>
+                <h2>Category Store Explore</h2>
                 <div class="pwa-row pwa-row-noPad pad-tb-0">
                     <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card"
                         [routerLink]="item.category_url">
@@ -80,19 +78,29 @@
             <div data-observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
                 *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
                 <ng-container #RecentlyViewedCarouselComponent></ng-container>
-                <home-page-skeletons [type]="'RECENTLY'" [templateRefInstance]="carouselInstance"></home-page-skeletons>
+                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="carouselInstance"></home-page-skeletons>
             </div>
         </div>
-        <div data-observeVisibility class="pwa-col-12" [debounceTime]="50" (visible)="onVisibleCategories($event)">
+        
+        <div data-observeVisibility class="pwa-col-12" [debounceTime]="50" (visible)="onVisibleCategories($event)" >
             <ng-container #Categories></ng-container>
-            <home-page-skeletons *ngFor="let i of [1,2,3,4,5]" [type]="'CATEGORIES'" [templateRefInstance]="categoriesInstance">
-            </home-page-skeletons>
         </div>
+        <ng-container *ngIf="!categoriesInstance" >
+            <div class="pwa-col-12 recently-container" *ngFor="let i of [1,2,3,4,5]">
+                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="categoriesInstance"></home-page-skeletons>
+            </div>
+        </ng-container>
+        
+
         <!-- Section for feature Arrival -->
+<<<<<<< HEAD
         <div data-observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [debounceTime]="50"
+=======
+        <div observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [ngClass]="{'featr_arrival-skeleton':featuredArrivalsInstance == null}" [debounceTime]="50"
+>>>>>>> sprint-20-ui-revamp
             (visible)="onVisibleFeaturedArrivals($event)">
             <ng-container #FeaturedArrivals></ng-container>
-            <home-page-skeletons [type]="'FEATURED-ARRIVALS'" [templateRefInstance]="featuredArrivalsInstance"></home-page-skeletons>
+            <!-- <home-page-skeletons [type]="'FEATURED-ARRIVALS'" [templateRefInstance]="featuredArrivalsInstance"></home-page-skeletons> -->
         </div>
         <ng-container class="bs-popup" #HomePopupComponet></ng-container>
 

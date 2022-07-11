@@ -7,11 +7,15 @@
      ::ng-deep {
         .home-parent{
             background:var(--white);
+            padding-top: 10px;
             h2 {
-                font-size: $large-font;
+                font-size: $extra-large-font;
                 text-transform: capitalize;
             }
         }
+    }
+    .category-grid-container{
+        padding-top: 15px;
     }
     /*Top Widgets*/
    .fixed-btm-app-prmo {
@@ -39,11 +43,16 @@
         background: #ddd;
         padding-bottom: 10px;
     }
-
-    
     .featr_arrival{
         background:var(--Light-grayish-orange);
-        padding-bottom:15px
+        padding-bottom:15px;
+        &.featr_arrival-skeleton{
+            background:var(--white);
+            .view-all-strip{
+                background:var(--white) !important;
+            }
+        }
+
     }
     .recently-container{
         padding-top: 15px;

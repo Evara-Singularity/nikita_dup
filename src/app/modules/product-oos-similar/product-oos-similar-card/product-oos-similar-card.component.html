@@ -40,7 +40,7 @@
             [productPrice]="similarProductData[index].productPrice"
             [qunatityFormControl]="qunatityFormControl"
             [productName]="similarProductData[index].productName" 
-            [productDiscount]="similarProductData[index].productDiscount"
+            [productDiscount]=" similarProductData[index]['discount'] || similarProductData[index].productDiscount"
             [bulkPriceWithoutTax]="similarProductData[index].bulkPriceWithoutTax"
             [priceWithoutTax]="similarProductData[index].priceWithoutTax"
             [productMrp]="similarProductData[index].productMrp"

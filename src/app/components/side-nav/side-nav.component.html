@@ -2,17 +2,18 @@
 <section class="sidemenu" [class.open]="sideMenuOpen">
     <div class="overlay" (click)="sideMenu()"></div>
     <div class="menu-content pad-10">
-        <div class="menu-header pad-10" (click)="sideMenu();redirectProfile();">
+        <div class="menu-header" (click)="sideMenu();redirectProfile();">
             <i class="icon-profile"></i>
             <p class="customer-detail login-sign-text pad-10" *ngIf="!user || user.authenticated == 'false' || user.status=='User logged out'">
                 LOGIN / SIGN UP
             </p>
             <p class="customer-detail" *ngIf="user && user.authenticated == 'true' && user.status!=='User logged out'">
                 <span class="user-name">
-                    {{(user.userName.length > 18)? (user.userName | slice:0: 18)+'...': user.userName }}
+                    {{(getFirstNameFormName(user.userName).length > 18)? (getFirstNameFormName(user.userName) | slice:0: 18)+'...':
+                    getFirstNameFormName(user.userName) }}
                 </span>
-                <i class="icon-edit-line-icon f-14"></i>
             </p>
+            <i class="icon-arrow-right-s-line"></i>
         </div>
         <ul class="menu-list scrolled" (click)="sideMenu()" id="scrolledUl">
             <li>
@@ -56,7 +57,7 @@
             <li>
                 <a
                     (click)="trackAnalyticAndRedirect('/dashboard/business-detail', true, 'Continue to view your Business Details')">
-                    <i class="icon-faq-side-navigation"></i>
+                    <i class="icon-business_details"></i>
                     <span class="text">My Business Details</span>
                 </a>
             </li>

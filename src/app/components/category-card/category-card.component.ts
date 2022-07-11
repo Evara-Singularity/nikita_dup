@@ -15,13 +15,14 @@ export class CategoryCardComponent implements OnInit {
   @Input('image') image;
   @Input('title') title;
   @Input('item') item?;
+  @Input('url') url?;
   @Input('isSelected') isSelected: boolean = false;
   @Output() cardClicked$: EventEmitter<any> = new EventEmitter<any>();
 
   imagePath = CONSTANTS.IMAGE_BASE_URL;
 
   constructor() { }
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }
 
 @NgModule({

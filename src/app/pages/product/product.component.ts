@@ -2132,7 +2132,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.productService.postBulkEnquiry(data).subscribe((response) =>
             {
                 if (response['statusCode'] == 200) {
-                    let rfqId = response['data'] ?? '';
+                    let rfqId = response['data']['enquiryId'] ?? '';
                     this.intiateRFQQuoteUpdate(product , rfqId);
                     this._tms.show({ type: 'success', text: response['statusDescription'] });
                     this.rfqQuoteRaised = true;
@@ -2160,8 +2160,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         );
         this.productRFQUpdateInstance.instance["product"] = product;
         this.productRFQUpdateInstance.instance["productUrl"] = this.productAllImages[0]['large'];
-        this.productRFQUpdateInstance.instance["enquiryId"] = rfqid['enquiryId'];
-        this.productRFQUpdateInstance.instance["rfqId"] = rfqid.enquiryItemList[0]['id'];
+        this.productRFQUpdateInstance.instance["rfqId"] = rfqid;
         (
             this.productRFQUpdateInstance.instance["isLoading"] as EventEmitter<boolean>
         ).subscribe((loaderStatus) =>

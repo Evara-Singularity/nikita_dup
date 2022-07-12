@@ -1,6 +1,6 @@
 <!--Side Menu start-->
 <section class="sidemenu" [class.open]="sideMenuOpen">
-    <div class="overlay" (click)="sideMenu()"></div>
+    <div class="sidemenu-overlay" (click)="sideMenu()"></div>
     <div class="menu-content pad-10">
         <div class="menu-header" (click)="sideMenu();redirectProfile();">
             <i class="icon-profile"></i>
@@ -94,7 +94,7 @@
             </ul>
         </div>
         <ul class="menu-list" *ngIf="reStoreHome">
-            <li class="side-menu-foot" (click)="reStoreCookie()">
+            <li class="side-menu-footer" (click)="reStoreCookie()">
                 <i class="icon-search-history"></i>
                 <span class="text">Restore Home Page</span>
             </li>

@@ -2,7 +2,7 @@
 
 .sidemenu {
   @extend %transition;
-  box-shadow: rgba(0, 0, 0, .16) 2px 1px 70px;
+  box-shadow: var(--boxshadow-2);
   position: fixed;
   top: 0;
   left: -100%;
@@ -10,20 +10,19 @@
   z-index: 11;
   width: 70%;
   min-width: 275px;
-
-  .overlay {
+  .sidemenu-overlay {
     display: none;
   }
   &.open {
     left: 0;
 
-    .overlay {
+    .sidemenu-overlay {
       display: block;
       background: rgba(0, 0, 0, 0.8);
     }
   }
   .menu-content {
-    width: 100%;
+    width: $fullwidth;
     height: 100%;
     position: relative;
     background: var(--cultured);
@@ -31,7 +30,7 @@
   }
   .menu-header {
     background: var(--primary);
-    color: $white;
+    color: var(--white);
     display: flex;
     align-items: center;
     border-radius: $border-radius-8;
@@ -42,14 +41,13 @@
     .customer-detail {
       font-size: $large-font;
       margin-left: 10px;
-      font-weight: bold;
+      font-weight: $font-bold;
       .user-name {
         margin-right: 10px;
       }
     }
     .login-sign-text {
-      background-color: #e72b35;
-      ;
+      background-color: var(--primary);
       border-radius: $border-radius-4;
     }
   }
@@ -91,13 +89,13 @@
           padding: 12px 10px;
         }
       }
-      .side-menu-foot {
+      .side-menu-footer {
         position: absolute;
         bottom: 0;
         width: 100%;
         left: 0;
         padding: 20px;
-        border-top: 1px solid $border-color;
+        border-top: 1px solid var(--ghost-white);
       }
     }
   }

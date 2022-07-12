@@ -1,11 +1,8 @@
 <ng-container *ngIf="page === 'pdp' || appPromoStatus">
-  <div
-    class="app-promo-container"
-    [ngClass]="{
+  <div class="app-promo-container" [ngClass]="{
       'fixed-app-promo': isOverlayMode,
       hideAppPromo: scrolledViewPort > 200 && isOverlayMode
-    }"
-  >
+    }">
     <!-- 1st varient  use homepage and plp-->
     <ng-container>
       <div class="app-promotion" *ngIf="showPromoCode && page != 'pdp'">
@@ -14,11 +11,7 @@
           <i class="icon-circle-delete"></i>
         </span>
       </div>
-      <div
-        class="promo-code-container"
-        (click)="openStore()"
-        *ngIf="page != 'sideBar'"
-      >
+      <div class="promo-code-container" (click)="openStore()" *ngIf="page != 'sideBar'">
         <div class="mobile">
           <div *ngIf="page == 'pdp'; then pdpContent; else content"></div>
           <ng-template #pdpContent>
@@ -40,16 +33,14 @@
       </div>
     </ng-container>
     <!-- 3rd varient used hamburger menu-->
-    
+
     <div class="promo-code-container" (click)="openStore()" *ngIf="page == 'sideBar'">
       <div class="mobile">
         <img src="{{ assetImgPath }}assets/img/Screen-7.svg" />
       </div>
       <div class="outer-text-section">
-        <strong
-          >Download Moglix App <br />& get ₹100 Off*
-          <span>on your first order.</span></strong
-        >
+        <strong>Download Moglix App <br />& get ₹100 Off*
+          <span>on your first order.</span></strong>
         <div class="text-container inner-txt-section">
           <div class="text use-code-text">
             <p>Use code: <strong>HELLO</strong></p>

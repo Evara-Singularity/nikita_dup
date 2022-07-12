@@ -1,31 +1,19 @@
 <div class="home-parent">
-    <app-promo [page]="'home'" class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
-    <div class="pwa-row pad-b-0">
-        <div class="pwa-col-12">
-            <div class="css-banner-component">
-                <div class="internalBanner" *ngIf="isBrowser">
-                    <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
-                        <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
-                            [items]="carouselData.bannerData['data']"
-                            [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
-                        </siema-carousel>
-                    </ng-container>
-                </div>
-                <div class="internalBanner" *ngIf="isServer">
-                    <img *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0"
-                        [src]="carouselData.bannerData.data[0].image_name" alt="banner">
-                    <img *ngIf="!(carouselData.bannerData && carouselData.bannerData['data'].length>0)"
-                        [src]="defaultBannerImage" alt="banner">
-                </div>
-                <!-- <div class="pager-container">
-                    <span class="pager-varaint-1">
-                        <span class="pager_dot active">
-                        </span>
-                        <span *ngFor="let i of [1,2,3,4];" class="pager_dot">
-                        </span>
-                    </span>
-                </div> -->
-            </div>
+    <app-promo  [page]="'home'" class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
+    <div class="css-banner-component">
+        <div class="internalBanner" *ngIf="isBrowser">
+            <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
+                <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
+                    [items]="carouselData.bannerData['data']"
+                    [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
+                </siema-carousel>
+            </ng-container>
+        </div>
+        <div class="internalBanner" *ngIf="isServer">
+            <img *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0"
+                [src]="carouselData.bannerData.data[0].image_name" alt="banner">
+            <img *ngIf="!(carouselData.bannerData && carouselData.bannerData['data'].length>0)"
+                [src]="defaultBannerImage" alt="banner">
         </div>
    </div>
     <div class="pwa-row pwa-row-noPad">

@@ -24,6 +24,7 @@ import { SharedProductListingModule } from '@app/modules/shared-product-listing/
 import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-promo/product-listing-app-promo.module';
 import { NotFoundModule } from '@app/modules/not-found/not-found.module';
 import { SeoTablesModule } from '@app/modules/seo-tables/seo-tables.module';
+import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 
 @NgModule({
     imports: [
@@ -47,7 +48,8 @@ import { SeoTablesModule } from '@app/modules/seo-tables/seo-tables.module';
         SharedProductListingModule,
         ProductListingAppPromoModule,
         NotFoundModule,
-        SeoTablesModule
+        SeoTablesModule,
+        AppPromoModule
     ],
     declarations: [
         AlpComponent,

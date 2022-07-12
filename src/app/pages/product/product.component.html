@@ -2,7 +2,7 @@
 </app-oos-similar-section>
 
 <shared-product-carousel (openPopUpcrousel$)="openPopUpcrousel()" [productAllImages]="productAllImages" [carouselInitialized]="carouselInitialized" (loadProductShare$)="loadProductShare()" [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName" (addToPurchaseList$)="addToPurchaseList()"
-    [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$" [productOutOfStock]="productOutOfStock" [rawProductData]="rawProductData" (scrollToId)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')" [imagePathAsset]="imagePathAsset"
+    [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$" [productOutOfStock]="productOutOfStock" [rawProductData]="rawProductData" (scrollToId$)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')" [imagePathAsset]="imagePathAsset"
     (openPopUpcrousel)="openPopUpcrousel(0)" (sendProductImageClickTracking)="sendProductImageClickTracking()" [isProductCrouselLoaded]="isProductCrouselLoaded" [iOptions]="iOptions" [productTags]="productTags"></shared-product-carousel>
 
 <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)" [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPrices" [selectedProductBulkPrice]="selectedProductBulkPrice" [qunatityFormControl]="qunatityFormControl"

@@ -3860,7 +3860,6 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     get orderTracking()
     {
-        console.log(this.productBrandDetails)
         const TAXNONS = this.taxons;
         const TAGS = [];
 

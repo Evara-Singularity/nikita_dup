@@ -1,24 +1,49 @@
 @import '../scss/variables';
 //inline list item
+.pdp-section-header {
+    background: var(--mint-cream) !important;
+    padding-bottom: 0 !important;
+}
+
 .inline-list-item {
     background-color: var(--mint-cream);
     padding: 15px;
-    align-items:center;
-    border-bottom:1px solid var(--platinum);
+    align-items: center;
+    border-bottom: 1px solid var(--platinum);
     .inline-list-icon {
         width: 10%;
+        padding-right: 5px;
         i {
-            font-size:$extra-large-2_5-font;
+            font-size: $extra-large-3-font;
             color: var(--slimy-green);
+            &.icon-mobikwik {
+                color: #2172B9;
+            }
         }
     }
     .inline-list-text {
         width: 78%;
         padding-right: 8px;
         font-size: $large-font;
+        .blue-promo-code {
+            color: #2172B9;
+            font-weight: $font-bold;
+        }
+        .green-promo-code {
+            color: var(--slimy-green);
+            font-weight: $font-bold;
+        }
+        .green-promo-code-min {
+            font-size: x-small;
+            color: rgb(136, 133, 133);
+        }
     }
     .inline-list-link {
         width: 12%;
+        i {
+            font-size: $extra-large-2_5-font;
+            color: #2172B9;
+        }
     }
     p {
         font-size: $small-font;
@@ -31,6 +56,7 @@
         font-weight: 500;
     }
 }
+
 .inline-list-item-variant1 {
     background-color: var(--white);
     display: flex;
@@ -70,4 +96,9 @@
         font-weight: bold;
         font-size: $large-font;
     }
+}
+
+.more-coupon-offers {
+    border-bottom: 0;
+    padding: 15px 15px 5px;
 }

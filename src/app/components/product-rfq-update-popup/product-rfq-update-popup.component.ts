@@ -96,6 +96,7 @@ export class ProductRfqUpdatePopupComponent implements OnInit {
         }
       ]
     };
+    this.isLoading.emit(true);
     this.productService.postBulkEnquiry(data).subscribe(
       (response) => {
         if (response['statusCode'] == 200) {

@@ -948,7 +948,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         }
         if (this.sponseredProductsInstance) {
             this.sponseredProductsInstance = null;
-            this.sponseredProductsContainerRef.remove();
+            this.sponseredProductsContainerRef && this.sponseredProductsContainerRef.remove();
             this.onVisibleSponsered(null);
         }
 

@@ -1,12 +1,10 @@
-    <div class="category-OverBlk">
-        <div class="category-block">
-            <div class="category-Img">
-                <img [lazyLoad]="image">
-            </div>
-            <div class="category-Name">
-                <span>{{title}}</span>
-            </div>
+<div class="category-OverBlk" [routerLink]="['/'+url]" (click)="cardClicked$.emit(true);">
+    <div class="category-block" [class.selected]="isSelected">
+        <div class="category-Img">
+            <img [lazyLoad]="image">
+        </div>
+        <div class="category-Name">
+            <span>{{title}}</span>
         </div>
     </div>
-
-
+</div>

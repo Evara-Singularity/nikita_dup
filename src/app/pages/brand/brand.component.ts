@@ -20,7 +20,7 @@ let digitalData = {
 };
 
 @Component({
-    selector: 'brand',
+    selector: 'data-brand',
     templateUrl: './brand.html',
     styleUrls: ['./brand.scss', '../category/category.scss', './../../components/homefooter-accordian/homefooter-accordian.component.scss'],
 })

@@ -10,6 +10,7 @@ import { ClientUtility } from "../../utils/client.utility";
 })
 export class SharedFooterComponent {
   footerVisible = false;
+  today: number = Date.now();
 
   constructor() { }
 

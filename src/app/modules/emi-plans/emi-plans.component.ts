@@ -170,7 +170,6 @@ export class EmiPlansComponent implements OnInit
 
     selectedBankChange(data)
     {
-        console.log(data);//BAJFIN
         if (data) {
             this.selectedBank = data.key;
             this.selectedBankName = data.bankname;

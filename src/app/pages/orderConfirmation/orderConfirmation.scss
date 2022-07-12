@@ -45,15 +45,14 @@
         .txt-list {
             li {
                 padding: 5px 0;
-                span {
-                    width: 40%;
-                    float: left !important;
-                }
+                display:flex;
                 .tag-label {
                     font-weight: bold;
+                    width:40%;
                 }
                 .tag-value{
                     margin-left: auto;
+                    text-align:right;
                 }
             }
         }
@@ -61,6 +60,7 @@
             font-size: $medium-font;
             color: var(--onyx-black);
             padding-top: 8px;
+            line-height:$large-line-height;
         }
     }
     .promo-section{

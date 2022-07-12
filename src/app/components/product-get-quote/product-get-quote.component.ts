@@ -49,7 +49,6 @@ export class ProductGetQuoteComponent implements OnInit, AfterViewInit
 
 	attachSwipeEvents()
 	{
-		console.log("Testing")
 		this.initialMouse = 0;
 		this.slideMovementTotal = 0;
 		this.mouseIsDown = false;

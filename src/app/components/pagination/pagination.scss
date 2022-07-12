@@ -5,8 +5,8 @@ pagination-controls {
     ul.ngx-pagination {
         overflow: hidden;
         margin-top: 0px;
-        padding: 15px 0px;
-        background: var(--white);
+        padding: 0px;
+        // background: var(--white);
         li {
             font-size: $medium-font;
             background: transparent;
@@ -18,7 +18,6 @@ pagination-controls {
             width: 30px;
             text-align: center;
             line-height: $large-line-height;
-        
             a {
                 font-size: $medium-font;
                 font-weight: $font-normal;
@@ -32,7 +31,7 @@ pagination-controls {
             &.current {
                 background: var(--onyx-black);
                 padding: 3px 0;
-                font-size: 11px;
+                font-size: $large-font;
                 span {
                     color: var(--white);
                 }
@@ -40,11 +39,9 @@ pagination-controls {
             &.pagination-previous {
                 display: inline-block !important;
                 opacity: 1 !important;
-
-
             }
             &.disabled {
-                opacity: 0.45 !important;
+                // opacity: 0.45 !important;
                 margin-right: 30px;
              }
         }
@@ -55,16 +52,15 @@ pagination-controls {
     content: 'PREV' !important;
     color: var(--blue);
     display: none;
+    font-weight: bold;
+}
+.ngx-pagination .pagination-previous.disabled::before{
+    color: var(--silver);
 }
 .ngx-pagination .pagination-next a::after,
 .ngx-pagination .pagination-next.disabled::after {
     content: 'NEXT' !important;
     color: var(--blue);
-  
+    font-weight: bold;
 }
 
-@media screen and (min-width: 340px) {
-    body {
-      margin: 0 2px !important;
-    }
-  }

@@ -1,12 +1,15 @@
 <div id="quickOrderPage" class="pwa-row pwa-row-noPad">
-    <div *ngIf="_cartService.getGenericCartSession?.itemsList?.length > 0" class="mb-65">
-        <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications>
-        <cart [moduleName]="'QUICKORDER'"></cart>
-        <order-summary></order-summary>
-        <div class="fixed-bottom-cta">
-            <button class="btn primary-full-btn" (click)="navigateToCheckout()" >{{ _commonService?.userSession?.authenticated === 'true' ? 'PROCEED TO CHECKOUT' : 'Sign In to Checkout' }}</button>
+    <div class="pwa-col-12">
+        <div *ngIf="_cartService.getGenericCartSession?.itemsList?.length > 0" class="mb-65">
+            <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications>
+            <cart [moduleName]="'QUICKORDER'"></cart>
+            <order-summary></order-summary>
+            <generic-offers></generic-offers>
+            <div class="fixed-bottom-cta">
+                <button class="btn primary-full-btn" (click)="navigateToCheckout()" >{{ _commonService?.userSession?.authenticated === 'true' ? 'CONTINUE TO CHECKOUT' : 'SIGN IN TO CHECKOUT' }}</button>
+            </div>
         </div>
+        <cart-no-item *ngIf="_cartService.getGenericCartSession?.itemsList?.length === 0" class="pwa-col-12"></cart-no-item>
+        <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems" [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } "></shared-checkout-unavailable-items>
     </div>
-    <cart-no-item *ngIf="_cartService.getGenericCartSession?.itemsList?.length === 0"></cart-no-item>
-    <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems" [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } "></shared-checkout-unavailable-items>
 </div>

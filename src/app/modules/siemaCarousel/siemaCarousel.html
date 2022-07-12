@@ -10,7 +10,7 @@
         <ul class="pager">
             <ng-container *ngFor="let item of items;let i=index">
                 <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot" (click)="goTo(i,ngxSiemaOptions.selector)" class="{{i}} {{currentIndex}}" [ngClass]="{'active':(!currentIndex && i==0) || currentIndex==i}"></li>
-                <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" [ngClass]="{'active':(!currentIndex && i==0) || currentIndex==i}" class="pager_icon_dot">
+                <li bannerCarouselSelector *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'" [ngClass]="{'active':(!currentIndex && i==0) || currentIndex==i}" class="pager_icon_dot">
                     <i class="icon-youtube"></i>
                 </li>
             </ng-container>

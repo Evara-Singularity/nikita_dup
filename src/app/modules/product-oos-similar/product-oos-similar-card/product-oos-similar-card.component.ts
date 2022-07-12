@@ -159,7 +159,7 @@ export class ProductOosSimilarCardComponent {
     this.checkCartQuantityAndUpdate(this.qunatityFormControl.value);
   }
 
-  private checkCartQuantityAndUpdate(value): void {
+  checkCartQuantityAndUpdate(value): void {
     if (!value) {
       this._toastMessageService.show({
         type: 'error',

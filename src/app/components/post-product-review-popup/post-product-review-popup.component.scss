@@ -1,11 +1,13 @@
 @import "../../scss/variables";
 @import '../../scss/layout/forms.scss';
 @import "../../scss/utils/utilities.scss";
-.pop-up-header1{
-    .page-name{
+
+.pop-up-header1 {
+    .page-name {
         font-weight: 600;
     }
 }
+
 .submit-review {
     height: calc(100% - 100px);
     overflow: auto;
@@ -47,7 +49,9 @@
             font-size: $small-font;
             text-align: end;
             color: var(--silver);
+            margin-bottom: 5px;
         }
+
         textarea {
             height: 100px !important;
         }
@@ -55,7 +59,7 @@
     }
 
     .rate_review-text {
-        font-size: $large-font;
+        font-size: $extra-large-font;
         padding-bottom: 10px;
         font-weight: $font-bold;
     }
@@ -63,13 +67,21 @@
     .info-list {
         padding: 15px 15px 10px;
         border-top: 1px dashed var(--silver);
-
-        .list-information {
+        ul {
             li {
-                margin: 10px 0 0 10px;
-
-                &:last-child {
-                    margin-bottom: 10px;
+                margin-bottom: 10px;
+                &::before {
+                    content: "•";
+                    font-size: $extra-large-6-font;
+                    padding-right: 10px;
+                    vertical-align: top;
+                    line-height: 22px;
+                }
+                span {
+                    display: inline-block;
+                    line-height: 18px;
+                    vertical-align: top;
+                    width: 90%;
                 }
             }
         }

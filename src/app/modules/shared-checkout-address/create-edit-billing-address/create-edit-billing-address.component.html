@@ -1,12 +1,6 @@
 <app-pop-up-variant2 *ngIf="displayCreateEditPopup" (outData$)="handlePopup($event)"
 [headerType]="'pop-up-header1'"
 [class.open1]="displayCreateEditPopup" [data]="{headerText: modeType + ' ' + ADDRESS_TYPE + ' Address'}">
-    <!-- <div class="head-sec header_add_edit" header>
-        <div class="container">
-            <i class="icon-back f-left white_text" (click)="$event.stopPropagation();handlePopup($event)"></i>
-            <p class="txt header_text page-name"> {{modeType }} {{ADDRESS_TYPE}} Address</p>
-        </div>
-    </div> -->
     <div class="content-popup scrolled-content-popup" content>
         <div class="pwa-row mt-10 pb-60">
             <form class="material-form" [formGroup]="businessForm" (ngSubmit)="$event.stopPropagation();onSubmit()">
@@ -157,7 +151,7 @@
                     </div>
                 </div>
                 <div class="fixed-bottom-cta">
-                    <button type="submit" class="btn primary-full-btn" [class.disabled]="!(canSave)">SAVE
+                    <button type="submit" class="btn primary-full-btn" [disabled]="!(canSave)">SAVE
                         ADDRESS</button>
                 </div>
             </form>

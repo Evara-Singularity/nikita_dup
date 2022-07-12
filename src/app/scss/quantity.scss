@@ -11,13 +11,15 @@
         .qty-block {
             width: 30px;
             height: 30px;
-            text-align: center;
-            background: #DBEDFF;
-            border: 1px solid #8BC5FF;
+            background: #dbedff;
+            border: 1px solid #8bc5ff;
             line-height: $extra-large-1-line-height;
             font-size: $large-font;
             border-radius: $border-radius-2;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         input {
             font-weight: bold;
@@ -30,7 +32,7 @@
             background: var(--white);
             border: 1px solid var(--onyx-black);
             font-size: $large-font;
-            font-weight: 500;
+            font-weight: bold;
             border-radius: $border-radius-2;
         }
     }

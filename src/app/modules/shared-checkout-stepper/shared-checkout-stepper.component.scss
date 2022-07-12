@@ -1,4 +1,9 @@
+@import '../../scss/variables';
 .trackStatusWrap {
+    position: sticky;
+    top: 50px;
+    z-index: 9;
+    border-top: 1px solid #e2e2e2;
     .trackStatusline {
         position: relative;
         padding-left: 0;
@@ -19,6 +24,7 @@
             }
             .trackerStatusHeading {
                 font-size: 12px;
+                font-weight:$font-bold;
                 &.green,
                 &.green-txt {
                     color: #429611;

@@ -7,3 +7,12 @@
 @import '../../../scss/quantity.scss';
 @import '../../../scss/product-description.scss';
 
+.pdp-container{
+    position: relative;
+}
+.element-pseudo{
+  img{
+      vertical-align:middle;
+  }  
+}
+

@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 
@@ -12,6 +13,7 @@ export class DashboardHeaderComponent implements OnInit {
   @Output() navigateToLogin$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() loadSearchNav$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() goBack$: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() loadBottomSheet$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() noOfCart: number = 0;
   @Input() title: string = 'Home';
   @Input() isUserLogin: boolean = false;
@@ -19,10 +21,15 @@ export class DashboardHeaderComponent implements OnInit {
   @Input() imgAssetPath: boolean = false;
 
   constructor(
-    public _commonService: CommonService
+    public _commonService: CommonService,
+    private location: Location,
   ) { }
 
   ngOnInit(): void {
+  }
+
+  goBack(){
+    this.location.back();
   }
 
 }

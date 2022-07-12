@@ -1,0 +1,29 @@
+@import '../../../scss/variables';
+.bottom-important-notifications {
+    width: 90%;
+    margin: auto;
+    justify-content: space-between;
+    margin-top: 20px;
+    .important-note {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-right: 1px solid var(--spanish-gray);
+        width: 33%;
+        &:last-child {
+            border: none !important;
+        }
+        span {
+            font-size: $extra-small-font;
+            color: var(--spanish-gray);
+        }
+        i {
+            font-size: $medium-font;
+            color: var(--spanish-gray);
+            margin-right: 7px;
+            background-color: var(--gainsboro);
+            padding: 4px;
+            border-radius: $border-radius-4;
+        }
+    }
+}

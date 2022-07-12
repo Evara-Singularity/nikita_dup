@@ -1,10 +1,12 @@
 @import "../../../scss/_variables.scss";
 @import '../../../scss/components/checkbox.scss';
+@import '../../../scss/components/static-small-card-container';
+// @import '../../bottomMenu/bottom-menu.component';
 .purchase-list {
     @extend %cards;
     padding: 15px 0 0;
     background: none;
-    border-bottom: none;
+    border: none;
     label {
         @extend %custom-check-box;
         width: 20px;
@@ -141,5 +143,16 @@
         font-size: $large-font;
         background: #fff;
         color: $blue-link-color;
+    }
+}
+.cta-row{
+    display: flex;
+    margin-top: 10px;
+    justify-content: space-between;
+    button{
+        width: calc(50% - 10px);
+        i{
+            padding-right:2px;
+        }
     }
 }

@@ -161,7 +161,7 @@ export class ProductInfoComponent implements OnInit
     {
         if(this.siemaTab && this.slides)
         {
-            this.siemaTab.style.height = `${this.slides[currentSlide].clientHeight+20}px`;
+            this.siemaTab.style.height = `${this.slides[currentSlide].clientHeight+30}px`;
             
         }
     }

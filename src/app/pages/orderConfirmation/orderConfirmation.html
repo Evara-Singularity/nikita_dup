@@ -8,26 +8,35 @@
     </div>
     <div class="pwa-row order-item-section">
         <div class="pwa-col-12">
-            <div class="item-number">
+            <!-- <div class="item-number">
                 <p><strong>Order ID : <span>{{orderId}}</span></strong></p>
-                <p class="items">2 Items <span>₹ {{amount}}</span></p>
-            </div>
+                <p class="items"><span>₹{{amount}}</span></p>
+            </div> -->
             <ul class="txt-list">
-                <li class="clearfix">
-                    <span class="tag-label"><strong>Payment Mode</strong></span>
-                    <span *ngIf="queryParams['mode'] == 'CC'" class="tag-value">Credit Card</span>
-                    <span *ngIf="queryParams['mode'] == 'DC'" class="tag-value">Debit Card</span>
-                    <span *ngIf="queryParams['mode'] == 'COD'" class="tag-value">Cash On Delivery</span>
-                    <span *ngIf="queryParams['mode'] == 'NEFT'" class="tag-value">NEFT</span>
-                    <span *ngIf="queryParams['mode'] == 'NB'" class="tag-value">Net Banking</span>
-                    <span *ngIf="queryParams['mode'] == 'WALLET'" class="tag-value">Wallet</span>
-                    <span *ngIf="queryParams['mode'] == 'PAYTM'" class="tag-value">Paytm</span>
-                    <span *ngIf="queryParams['mode'] == 'PAYTM-UPI'" class="tag-value">Paytm UPI</span>
-                    <span *ngIf="queryParams['mode'] == 'MOBIKWIK'" class="tag-value">Mobikwik</span>
-                    <span *ngIf="queryParams['mode'] == 'UPI'" class="tag-value">UPI [Tez]</span>
-                    <span *ngIf="queryParams['mode'] == 'CASH'" class="tag-value">PayU Wallet</span>
-                    <span *ngIf="queryParams['mode'] == 'RAZORPAY'" class="tag-value">RazorPay</span>
+                <li>
+                    <span class="tag-label"><strong>Order ID :</strong></span>
+                    <span class="tag-value">{{processedItems}} Items</span>
                 </li>
+                <li>
+                    <span class="tag-label"><strong>{{orderId}}</strong></span>
+                    <span class="tag-value">
+                        <span>Payment:&nbsp;</span>
+                        <span *ngIf="queryParams['mode'] == 'CC'" >Credit Card</span>
+                        <span *ngIf="queryParams['mode'] == 'DC'" >Debit Card</span>
+                        <span *ngIf="queryParams['mode'] == 'COD'" >Cash On Delivery</span>
+                        <span *ngIf="queryParams['mode'] == 'NEFT'" >NEFT</span>
+                        <span *ngIf="queryParams['mode'] == 'NB'" >Net Banking</span>
+                        <span *ngIf="queryParams['mode'] == 'WALLET'" >Wallet</span>
+                        <span *ngIf="queryParams['mode'] == 'PAYTM'" >Paytm</span>
+                        <span *ngIf="queryParams['mode'] == 'PAYTM-UPI'" >Paytm UPI</span>
+                        <span *ngIf="queryParams['mode'] == 'MOBIKWIK'" >Mobikwik</span>
+                        <span *ngIf="queryParams['mode'] == 'UPI'" >UPI [Tez]</span>
+                        <span *ngIf="queryParams['mode'] == 'CASH'" >PayU Wallet</span>
+                        <span *ngIf="queryParams['mode'] == 'RAZORPAY'">RazorPay</span>
+                        <span>&nbsp;.&nbsp;₹{{amount}}</span>
+                    </span>
+                </li>
+               
             </ul>
             <p class="note-info"><b>Note:</b> We do not demand your banking and credit card details verbally or
                 telephnocially. Please do not divulge your details to fraudsters falsely claming to be calling on

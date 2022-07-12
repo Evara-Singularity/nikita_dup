@@ -29,8 +29,8 @@
     display:flex;
     align-items: center;
         i {
-            margin-right:15px;
             font-size: $extra-large-2-font;
+            margin-left:auto;
         }
         .page-name {
             font-size: $large-font;
@@ -63,21 +63,24 @@
     padding: 10px;
     box-shadow: rgba(0, 0, 0, 0.16) -1px 2px 2px;
     position: relative;
-    i{
-        margin-right:15px;
-        font-size: $extra-large-2-font;
-    }
     .page-name {
      font-size: $large-font;
      color:var(--onyx-black);
    }
    .text-section{
        width:calc(100% - 30px);
+       .page-name{
+        font-weight:$font-normal;
+       }
    }
+   i{
+    font-size: $extra-large-2-font;
+    margin-left:auto;
+  }
 }
 .page-name {
     line-height:$extra-large-line-height;
-    font-weight:$font-normal;
+    font-weight:$font-bold;
     text-transform: capitalize;
     color:var(--white);
 }

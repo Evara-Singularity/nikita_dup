@@ -135,7 +135,7 @@ export class ViewComponent {
 		return {
 			item: data[index],
 			page:'all-categories',
-			title: data[index]['CategoryName'],
+			title: data[index]['image_title'],
 			image: this.API['IMAGE_BASE_URL'] + data[index].image_name	
 		} as CategoryCardObject
 	}

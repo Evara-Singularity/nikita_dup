@@ -2,7 +2,7 @@
 <div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader}" >
     <div class="container-fluid" [class.hidden]="_commonService.selectedFilterData.page > 1">
         <div class="row">
-            <cms [background]="'bg-trans'" [cmsData]="API_RESPONSE?.brand[3]?.data?.data"></cms>
+            <data-cms [background]="'bg-trans'" [cmsData]="API_RESPONSE?.brand[3]?.data?.data"></data-cms>
         </div>
     </div>
     

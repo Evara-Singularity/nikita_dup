@@ -13,6 +13,7 @@ import {
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientUtility } from '@app/utils/client.utility';
+import { CategoryCardObject } from '@app/utils/models/categoryCard';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -177,6 +178,16 @@ export class ClusterStoreComponent implements OnInit {
 		if(this.isBrowser){	
 			this.callAllLzayComponents();
 		}
+	}
+
+	productDataToCategoryCardObject(index,data){
+		return {
+			item: data[index],
+			isSelected: this.extraData && this.extraData['currentRoute'] && this.extraData['currentRoute'] == data[index]['category_url'],
+			page:'cluster-store',
+			title: data[index]['CategoryName'],
+			image: this.imagePath + data[index]['category_image']
+		} as CategoryCardObject
 	}
 
 

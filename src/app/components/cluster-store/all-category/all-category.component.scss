@@ -6,13 +6,14 @@
     padding: 10px;
     height: calc(100% - 60px);
     overflow: auto;
-    .l0_heading{
+    .heading-3{
         padding: 0 5px;
     }
     .allCategory-setion{
         display: flex;
         flex-wrap: wrap;
         width: $fullwidth;
+        padding-top: 5px;
         .inner_category {
             width: 33.33%;
             display:inline-flex;
@@ -23,7 +24,8 @@
                 padding:10px 5px;
                 margin: 10px 5px 0 5px;
                 min-height: 135px;
-                width: 100%;
+                width: $fullwidth;
+                border: 1px solid var(--platinum);
                 .viewall_category{
                     background: var(--misty-rose);
                     height: 80%;

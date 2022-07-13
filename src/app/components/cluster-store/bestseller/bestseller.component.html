@@ -39,10 +39,10 @@
 
 <div class="category-page-container" *ngIf="data['data'] && data['data'].length > 0">
     <div class="view-all-strip ">
-        <h4>{{data.title}}</h4>
-        <a *ngIf="data['data'].length > 4" (click)="openPopup = true" class="quinary-btn">View All</a>
+        <h3 class="heading-3">{{data.title}}</h3>
+        <a *ngIf="data['data'].length > 4" (click)="openPopup = true" class="quinary-btn">VIEW ALL</a>
     </div>
-    <div class="pwa-row verticle-view-card">
+    <div class="pwa-row verticle-view-card mb-0">
         <div class="pwa-col-12 newarrivals-section">
             <div class="outer-view-section" *ngFor="let product of data['data'] | slice:0:4; let i = index">
                 <a [routerLink]="['/'+product.productlink]">
@@ -111,8 +111,7 @@
     </div>
 </app-pop-up> -->
 
-<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
-    [headerType]="'pop-up-header1'"
+<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup" [headerType]="'pop-up-header1'"
     [data]="{headerText:'Bestsellers'}">
     <div class="content-popup otherCategoryBlock grey_bg" content>
         <div class="pwa-row verticle-view-card">

@@ -1,9 +1,10 @@
 @import "../../scss/variables";
 // to be moved in crousel css components
 @import "../../scss/components/carousel";
-@import '../../scss/tags'; 
+@import '../../scss/tags';
+@import '../../scss/components/checkbox.scss';
 
-.bottom-rfq-popup{
+.bottom-rfq-popup {
     padding: 15px;
     background-color: var(--ghost-white);
     .top-header-bottom-menu {
@@ -18,7 +19,7 @@
         i {
             position: absolute;
             right: 0px;
-            top: 15px;
+            top: 0px;
             font-size: $extra-large-1-font;
         }
     }
@@ -36,6 +37,7 @@
                 width: 100%;
                 height: auto;
                 max-width: 65px;
+                border-radius: $border-radius-4;
             }
         }
         .right {
@@ -56,7 +58,7 @@
         border-radius: 8px;
         p {
             padding: 10px 0px 20px;
-            color: var(--silver);
+            color: var(--gray-web);
         }
         .qty-area {
             display: flex;
@@ -80,9 +82,11 @@
                     border-radius: 6px;
                     &.remove-qty {
                         float: right;
+                        font-weight: $font-bold;
                     }
                     &.add-qty {
                         float: left;
+                        font-weight: $font-bold;
                     }
                 }
                 input {
@@ -93,11 +97,10 @@
                     border-radius: 6px;
                     border: 1px solid #707070;
                     margin: 0px 5px;
+                    font-weight: $font-bold;
                 }
-                
-                
             }
-            .error{
+            .error {
                 font-size: 10px;
                 color: var(--primary);
                 text-align: right;
@@ -112,25 +115,26 @@
             padding: 15px 0px;
             width: 100%;
             position: relative;
-            .purchase-for-business-txt{
-                width: 90%;
-                h4{
-                    font-size: $large-font;
-                }
-                .ask-txt{
-                    font-size: $small-font;
-                    color: var(--silver);
-                }
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .purchase-for-business-txt {
+            width: 90%;
+            h4 {
+                font-size: $large-font;
             }
+            .ask-txt {
+                font-size: $small-font;
+                color: var(--gray-web);
+            }
+        }
+        label {
+            @extend %custom-check-box-checkout;
             .custom-box {
-                position: absolute;
-                right: 0px;
-                top: 38%;
-                &::before {
-                    content: "";
-                    color: var(--black);
-                    font-size: 15px;
-                }
+                font-size: $large-font;
+                width: 14px;
+                height: 14px;
             }
         }
     }

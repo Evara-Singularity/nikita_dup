@@ -47,7 +47,11 @@
                         <h4>Select if purchasing for business</h4>
                         <span class="ask-txt">We’ll ask for GST details later</span>
                     </div>
-                    <input class="custom-box" type='checkbox' formControlName="businessPurchase">
+                    <label>
+                        <input type="checkbox" formControlName="businessPurchase"
+                        (change)="$event.stopPropagation();">
+                        <span class="custom-box icon-box"></span>
+                    </label>
                 </div>
                 <button class="btn primary-full-btn btn-submit" (click)="processRFQ(rfqUpdateForm.value);$event.stopPropagation()">SUBMIT YOUR REQUIREMENT</button>
             </div>

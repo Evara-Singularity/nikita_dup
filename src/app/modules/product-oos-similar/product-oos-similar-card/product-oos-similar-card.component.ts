@@ -81,7 +81,6 @@ export class ProductOosSimilarCardComponent {
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
   rawProductData: any;
 
-
   constructor(
     public productService: ProductService,
     private cfr: ComponentFactoryResolver,
@@ -101,6 +100,10 @@ export class ProductOosSimilarCardComponent {
       this.createSiemaOption(this.index);
       this.getProductData();
     }
+  }
+
+  get similarProductData() {
+    return this.productService.oosSimilarProductsData.similarData;
   }
 
   navigateTo(link: string) {
@@ -156,7 +159,7 @@ export class ProductOosSimilarCardComponent {
     this.checkCartQuantityAndUpdate(this.qunatityFormControl.value);
   }
 
-  private checkCartQuantityAndUpdate(value): void {
+  checkCartQuantityAndUpdate(value): void {
     if (!value) {
       this._toastMessageService.show({
         type: 'error',
@@ -260,7 +263,7 @@ export class ProductOosSimilarCardComponent {
     if (!this.productCrouselInstance) {
       this.isProductCrouselLoaded = true;
       const { ProductCrouselComponent } = await import(
-        "../../../modules/product-crousel/ProductCrousel.component"
+        "../../product-crousel/ProductCrousel.component"
       ).finally(() => {
         this.clearPseudoImageCrousel();
       });

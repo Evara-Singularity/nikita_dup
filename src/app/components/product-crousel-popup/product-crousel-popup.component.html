@@ -1,5 +1,6 @@
 <app-pop-up (outData$)="outData($event)" class="openMobikwikPopup"
-    [data]="{class: 'mobikwik-wallet', selector:'openMobikwikPopup', headerText:''}">
+    [headerType]="'pop-up-header'"
+    [data]="{headerText:''}">
     <div class="content-popup youtube-container zoomView" content>
         <ngx-siema [options]="ngxSiemaOptions">
             <ngx-siema-slide *ngFor="let item of productAllImages;let itemIndex=index">

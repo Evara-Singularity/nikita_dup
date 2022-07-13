@@ -41,7 +41,7 @@
                 <ng-container *ngIf="emiResponse">
                     <div class="emi-plans"
                         *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['noCost'] > 0">
-                        <h3 class="heading medium-heading">No Cost EMI Plans</h3>
+                        <h3 class="heading-5">No Cost EMI Plans</h3>
                         <div class="emi-plans-list">
                             <ng-container
                                 *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative' | sortByEMIMonths; index as i;">
@@ -54,7 +54,7 @@
                                         <span class="custom-box"></span>
                                     </label>
                                     <div class="emi-amount">
-                                        <p>₹{{emi.value.emi_value | mathCeil | number : '1.2-2'}}</p>
+                                        <p>₹{{emi.value.emi_value | mathFloor | number : '1.2-2'}}</p>
                                         <span>for {{getEmiMonths(emi.key) < 10 ? getEmiMonths(emi.key) :
                                                 getEmiMonths(emi.key) }} months <span class="green-txt">@0%
                                                 p.a.</span></span>
@@ -68,7 +68,7 @@
 
                     <div class="emi-plans"
                         *ngIf="noCostEmiCount[selectedBank] && noCostEmiCount[selectedBank]['withCost'] > 0">
-                        <h3 class="heading medium-heading">Standard EMI Plans </h3>
+                        <h3 class="heading-5">Standard EMI Plans </h3>
                         <div class="emi-plans-list">
                             <ng-container *ngFor="let emi of emiResponse[selectedBank] | objectToArray:'associative'| sortByEMIMonths">
                                 <label *ngIf="emi.value.emi_interest_paid !== 0" class="emi-plans-list-item">
@@ -81,7 +81,7 @@
                                         <span class="custom-box"></span>
                                     </label>
                                     <div class="emi-amount">
-                                        <p>₹{{emi.value.emi_value | mathCeil | number : '1.2-2'}}</p>
+                                        <p>₹{{emi.value.emi_value | mathFloor | number : '1.2-2'}}</p>
                                         <span>for {{getEmiMonths(emi.key) < 10 ? getEmiMonths(emi.key) :
                                                 getEmiMonths(emi.key) }} months {{emi.value.emi_interest_paid> 0 ? +
                                                 emi.value.emiBankInterest + '%' :
@@ -95,65 +95,67 @@
                     </div>
                 </ng-container>
 
-                <section class="creditDebitCardInner noPad">
+                <section class="creditDebitCardInner noPad mt-10 mb-10">
                     <h3 class="heading-3">Please enter your card details</h3>
                     <div class="material-form material-form-boxed">
-                        <div class="input-field-boxed">
-                            <label>Card Number</label>
-                            <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber
-                                kpAutocompleteOff placeholder="Enter Card Details">
-                        </div>
-                        <div class="card-expiryDate" *ngIf="!(bajajFinservField)">
-                            <label>Expiry Date</label>
-                            <div class="multiple-form-field">
-                                <div class="input-field-boxed">
-                                    <input type="hidden" formControlName="ccexpmon" #expireMonth />
-                                    <div class="custom_select_box" (click)="openMonthPopUp()">
-                                        <div class="custom_select_input" [class.selectedInput]="selectedMonth">
-                                            <span>{{selectedMonth || 'MM'}}</span>
-                                        </div>
-                                    </div>
-                                    <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'"
-                                        [headerLabel]="'Select Month'" [isVisible]="monthSelectPopupStatus"
-                                        (selectedValue$)="selectMonth($event)" [type]="'MONTH'"
-                                        [compare]="selectedMonth"></select-popup>
-                                    <!-- <select placeholder="MM" formControlName="ccexpmon" #expireMonth>
-                                        <option *ngFor="let expMon of expMons" [value]="expMon.key">{{expMon.value}}</option>
-                                    </select> -->
-                                </div>
-                                <div class="input-field-boxed">
-                                    <input type="hidden" formControlName="ccexpyr" #expireYear />
-                                    <div class="custom_select_box" (click)="openYearPopUp()">
-                                        <div class="custom_select_input" [class.selectedInput]="selectedYear">
-                                            <span>{{selectedYear || 'YYYY'}}</span>
-                                        </div>
-                                    </div>
-                                    <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'"
-                                        [headerLabel]="'Select Year'" [isVisible]="yearSelectPopupStatus"
-                                        (selectedValue$)="selectYear($event)" [type]="'YEAR'" [compare]="selectedYear">
-                                    </select-popup>
-                                    <!-- <select placeholder="YYYY" formControlName="ccexpyr" #expireYear>
-                                        <option *ngFor="let expYr of expYrs" [value]="expYr">{{expYr}}</option>
-                                    </select> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="cvvField" *ngIf="!(bajajFinservField)">
-                            <label>Enter CVV</label>
-                            <div class="multiple-form-field">
-                                <div class="input-field-boxed">
-                                    <input type="password" id="cc-number" formControlName="ccvv" #ccNumber
-                                        kpAutocompleteOff placeholder="CVV" maxlength="3">
-                                </div>
-                                <i class="icon-cvv"></i>
-                                <span class="cvv-text">
-                                    Last 3 digits printed on <br /> the back of the card.
+                        <div class="outline-input-label">
+                            <label [class.is-focus]="ccNumber.value.length!=0">
+                                <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber
+                                kpAutocompleteOff>
+                                <span class="label">
+                                    Card Number
                                 </span>
+                            </label>
+                            
+                        </div>
+                        <span class="small-heading">
+                            Valid thru
+                        </span>
+                        <div class="card-row">
+                            <div class="date-type-select" *ngIf="!(bajajFinservField)">
+                                <div class="multiple-form-field">
+                                    <div class="input-field-boxed">
+                                        <input type="hidden" formControlName="ccexpmon" #expireMonth />
+                                        <div class="custom_select_box" (click)="openMonthPopUp()">
+                                            <div class="custom_select_input" [class.selectedInput]="selectedMonth">
+                                                <span>{{selectedMonth || 'MM'}}</span>
+                                                <i class="icon-down"></i>
+                                            </div>
+                                        </div>
+                                        <select-popup [itemArray]="expMons" [displayKey]="'value'" [valueKey]="'key'"
+                                            [headerLabel]="'Select Month'" [isVisible]="monthSelectPopupStatus"
+                                            (selectedValue$)="selectMonth($event)" [type]="'MONTH'" [compare]="selectedMonth">
+                                        </select-popup>
+                                    </div>
+                                    <div class="input-field-boxed">
+                                        <input type="hidden" formControlName="ccexpyr" #expireYear />
+                                        <div class="custom_select_box" (click)="openYearPopUp()">
+                                            <div class="custom_select_input" [class.selectedInput]="selectedYear">
+                                                <span>{{selectedYear || 'YYYY'}}</span>
+                                                <i class="icon-down"></i>
+                                            </div>
+                                        </div>
+                                        <select-popup [itemArray]="expYrs" [displayKey]="'value'" [valueKey]="'key'"
+                                            [headerLabel]="'Select Year'" [isVisible]="yearSelectPopupStatus"
+                                            (selectedValue$)="selectYear($event)" [type]="'YEAR'" [compare]="selectedYear">
+                                        </select-popup>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="outline-input-label" *ngIf="!(bajajFinservField)">
+                                <label [class.is-focus]="cvNumber.value.length!=0">
+                                    <input type="password" id="cc-number" formControlName="ccvv" #cvNumber
+                                    kpAutocompleteOff maxlength="3">
+                                    <span class="label">CVV</span>
+                                </label>
                             </div>
                         </div>
-                        <div class="input-field-boxed">
-                            <label>Name On Card</label>
-                            <input type="text" formControlName="ccname" placeholder="Name On Card">
+                        
+                        <div class="outline-input-label">
+                            <label [class.is-focus]="nameOnCardNumber.value.length!=0">
+                                <input type="text" class="name-card" formControlName="ccname" #nameOnCardNumber>
+                                <span class="label">Name On Card</span>
+                            </label> 
                         </div>
                     </div>
                 </section>

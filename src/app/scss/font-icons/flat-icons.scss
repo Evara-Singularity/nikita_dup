@@ -1,0 +1,815 @@
+// Flat Icons
+i[class^="icon-"],
+[class^="icon-"]::before,
+[class*=" icon-"]::before {
+    font-family: 'icomooon_pwa' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// icons
+.icon-instagram:before {
+    content: "\e99a";
+}
+
+.icon-career:before {
+    content: "\e994";
+}
+
+.icon-view-password:before {
+    content: "\e993";
+}
+
+.icon-all-categories-home:before {
+    content: "\e984";
+}
+
+.icon-brand-store-home:before {
+    content: "\e985";
+}
+
+.icon-credit-line-home:before {
+    content: "\e986";
+}
+
+.icon-industry-store-home:before {
+    content: "\e987";
+}
+
+.icon-purchase-list-home:before {
+    content: "\e988";
+}
+
+.icon-purchase-list-pdp:before {
+    content: "\e98f";
+}
+
+.icon-rfq-home:before {
+    content: "\e990";
+}
+
+.icon-cart-header:before {
+    content: "\e991";
+}
+
+.icon-edit-circle:before {
+    content: "\e992";
+}
+
+.icon-all-category:before {
+    content: "\e98e";
+}
+
+.icon-customer-support:before {
+    content: "\e98d";
+}
+
+.icon-cvv:before {
+    content: "\e983";
+}
+
+.icon-rfq-confirmation:before {
+    content: "\e989";
+    color: #366090;
+}
+
+.icon-rfq-delivery:before {
+    content: "\e98a";
+    color: #366090;
+}
+
+.icon-rfq-in-process:before {
+    content: "\e98b";
+    color: #366090;
+}
+
+.icon-rfq-request-raise:before {
+    content: "\e98c";
+    color: #366090;
+}
+
+.icon-home-deal:before {
+    content: "\ea0c";
+}
+
+.icon-email-invoice:before {
+    content: "\e949";
+}
+
+.icon-edit-line-icon:before {
+    content: "\e982";
+}
+
+.icon-dot:before {
+    content: "\e900";
+}
+
+.icon-abrasives:before,
+.icon-122000000::before {
+    content: "\e901";
+}
+
+.icon-add-to-home-screen:before {
+    content: "\e902";
+}
+
+.icon-address:before {
+    content: "\e903";
+}
+
+.icon-adventure:before,
+.icon-219000000::before {
+    content: "\e904";
+}
+
+.icon-all-categories:before {
+    content: "\e9c0";
+}
+
+.icon-angle-grinder:before {
+    content: "\e906";
+}
+
+.icon-appliance:before,
+.icon-230000000::before {
+    content: "\e907";
+}
+
+.icon-arrow-d:before {
+    content: "\e908";
+}
+.icon-google-login:before{
+    content: "\e938";
+}
+.icon-automotive:before,
+.icon-216000000::before {
+    content: "\e909";
+}
+
+.icon-back:before {
+    content: "\e90a";
+}
+
+.icon-ball-bearing:before,
+.icon-123000000::before {
+    content: "\e90b";
+}
+
+.icon-blog:before {
+    content: "\e90c";
+}
+
+.icon-bogo:before {
+    content: "\e90d";
+}
+
+.icon-business-details:before {
+    content: "\e90e";
+}
+
+.icon-call:before {
+    content: "\e90f";
+}
+.icon-contact-us:before{
+    content: "\ea24";
+}
+
+.icon-camera:before {
+    content: "\e910";
+}
+
+.icon-cart:before {
+    content: "\e911";
+}
+
+.icon-check-active:before {
+    content: "\e912";
+}
+
+.icon-check-inactive:before {
+    content: "\e913";
+}
+
+.icon-checkbox-active:before {
+    content: "\e914";
+}
+
+.icon-checkbox-inactive:before {
+    content: "\e915";
+}
+
+.icon-circle-delete:before {
+    content: "\e916";
+}
+
+.icon-circle-next:before {
+    content: "\e917";
+}
+
+.icon-cleaning:before,
+.icon-121000000::before {
+    content: "\e918";
+}
+
+.icon-collaps:before {
+    content: "\e919";
+}
+
+.icon-combo:before {
+    content: "\e91a";
+}
+
+.icon-contact-us-headquarter:before {
+    content: "\e91b";
+}
+
+.icon-contact-us-operation-office:before {
+    content: "\e91c";
+}
+
+.icon-credit-line-1:before {
+    content: "\e91d";
+}
+
+.icon-credit-line-2:before {
+    content: "\e91e";
+}
+
+.icon-credit-line-3:before {
+    content: "\e91f";
+}
+
+.icon-cutting-tools:before,
+.icon-113000000::before {
+    content: "\e920";
+}
+
+.icon-delete:before {
+    content: "\e921";
+}
+
+.icon-prepaid:before {
+    content: "\e922";
+}
+
+.icon-diagnostic-instruments:before {
+    content: "\e923";
+}
+
+.icon-dislike:before {
+    content: "\e924";
+}
+
+.icon-done:before {
+    content: "\e925";
+}
+
+.icon-down:before {
+    content: "\e926";
+}
+
+.icon-dropdown:before {
+    content: "\e927";
+}
+
+.icon-edit:before {
+    content: "\e928";
+}
+
+.icon-electricals:before,
+.icon-211000000::before {
+    content: "\e929";
+}
+
+.icon-electronic-components:before,
+.icon-330000000::before {
+    content: "\e92a";
+}
+
+.icon-emi:before {
+    content: "\e92b";
+}
+
+.icon-expand:before {
+    content: "\e92c";
+}
+
+.icon-facebook-login:before {
+    content: "\e92d";
+}
+
+.icon-facebook:before {
+    content: "\e92e";
+}
+.icon-information::before{
+    content: "\ea52";
+}
+.icon-fan:before {
+    content: "\e92f";
+}
+
+.icon-faq-side-navigation:before {
+    content: "\e930";
+}
+
+.icon-faq:before {
+    content: "\e931";
+}
+
+.icon-fasteners:before,
+.icon-111000000:before {
+    content: "\e932";
+}
+
+.icon-filter:before {
+    content: "\e933";
+}
+
+.icon-flood-light:before {
+    content: "\e934";
+}
+
+.icon-furniture:before,
+.icon-220000000::before {
+    content: "\e935";
+}
+
+.icon-gardening:before,
+.icon-129000000::before {
+    content: "\e936";
+}
+
+.icon-geysers:before {
+    content: "\e937";
+}
+
+.icon-google-login:before {
+    content: "\e938";
+}
+
+.icon-google:before {
+    content: "\e939";
+}
+
+.icon-grid-view:before {
+    content: "\e93a";
+}
+
+.icon-Group-1896:before,
+.icon-motors::before,
+.icon-128000000::before {
+    content: "\e93b";
+}
+
+.icon-Group-1897:before {
+    content: "\e93c";
+}
+
+.icon-hand-tool:before,
+.icon-112000000::before {
+    content: "\e93d";
+}
+
+.icon-hardware:before,
+.icon-218000000::before {
+    content: "\e93e";
+}
+
+.icon-health-nutrition:before,
+.icon-270000000::before {
+    content: "\e93f";
+}
+
+.icon-home:before {
+    content: "\e940";
+}
+.icon-home2:before {
+    content: "\ea4b";
+}
+
+.icon-hydraulics-pneumatics:before,
+.icon-119000000::before {
+    content: "\e941";
+}
+
+.icon-industrial-racks-storage:before,
+.icon-280000000::before {
+    content: "\e942";
+}
+
+.icon-industry-store:before {
+    content: "\e943";
+}
+
+.icon-inverter:before {
+    content: "\e944";
+}
+
+.icon-it-electronics:before,
+.icon-250000000::before {
+    content: "\e945";
+}
+
+.icon-just-added:before {
+    content: "\e946";
+}
+
+.icon-kitchen-pantry-supplies:before,
+.icon-240000000::before {
+    content: "\e947";
+}
+
+.icon-lab-supplies:before,
+.icon-217000000::before {
+    content: "\e948";
+}
+
+.icon-led-batten-light:before {
+    content: "\e94a";
+}
+
+.icon-led-light:before,
+.icon-212000000::before {
+    content: "\e94b";
+}
+
+.icon-like:before {
+    content: "\e94c";
+}
+
+.icon-linkedin:before {
+    content: "\e94d";
+}
+
+.icon-list-view:before {
+    content: "\e94e";
+}
+
+.icon-live-location:before {
+    content: "\e94f";
+}
+
+.icon-location:before {
+    content: "\e950";
+}
+
+.icon-logo:before {
+    content: "\e951";
+}
+.icon-back-arrow:before{
+    content: "\ea00";
+}
+.icon-logout:before {
+    content: "\e952";
+}
+
+.icon-lubricant:before,
+.icon-125000000::before {
+    content: "\e953";
+}
+
+.icon-mail:before {
+    content: "\e954";
+}
+
+.icon-material-handling-packaging:before,
+.icon-124000000::before {
+    content: "\e955";
+}
+
+.icon-measurement:before,
+.icon-115000000::before {
+    content: "\e956";
+}
+
+.icon-medical-supplies:before,
+.icon-215000000::before {
+    content: "\e958";
+}
+
+.icon-menu:before {
+    content: "\ea48";
+}
+
+.icon-my-orders:before {
+    content: "\ea5b";
+}
+
+.icon-my-rfq:before {
+    content: "\e9c6";
+}
+
+.icon-next:before {
+    content: "\e95c";
+}
+
+.icon-offers:before {
+    content: "\e95d";
+}
+
+.icon-paint:before,
+.icon-127000000::before {
+    content: "\e95e";
+}
+
+.icon-Path-579:before {
+    content: "\e95f";
+}
+
+.icon-people:before {
+    content: "\e960";
+}
+
+.icon-place-holder:before {
+    content: "\e961";
+}
+
+.icon-plumbing-bathroom-fitting:before,
+.icon-118000000::before {
+    content: "\e962";
+}
+
+.icon-pneumatics:before,
+.icon-350000000::before {
+    content: "\e963";
+}
+
+.icon-polishers:before {
+    content: "\e964";
+}
+
+.icon-popup-call:before {
+    content: "\e965";
+}
+
+.icon-power-tool:before,
+.icon-114000000::before {
+    content: "\e966";
+}
+
+.icon-profile-login:before {
+    content: "\e967";
+}
+
+.icon-profile:before {
+    content: "\ea5e";
+}
+
+.icon-puchase_active:before {
+    content: "\e969";
+}
+
+.icon-puchase_inactive:before {
+    content: "\e96a";
+}
+
+.icon-purchase-list:before {
+    content: "\e96b";
+}
+.icon-wishlist:before{
+    content: "\e9c8";
+}
+.icon-rating-star:before {
+    content: "\e96c";
+}
+
+.icon-respiratory-mask:before {
+    content: "\e96d";
+}
+
+.icon-safety-helmet:before {
+    content: "\e96e";
+}
+
+.icon-safety-shoes:before {
+    content: "\e96f";
+}
+
+.icon-safety:before,
+.icon-116000000::before {
+    content: "\e970";
+}
+
+.icon-search-history:before {
+    content: "\e971";
+}
+
+.icon-search:before {
+    content: "\ea63";
+}
+
+.icon-security:before,
+.icon-120000000::before {
+    content: "\e973";
+}
+
+.icon-share:before {
+    content: "\e974";
+}
+
+.icon-solar:before,
+.icon-213000000::before {
+    content: "\e975";
+}
+
+.icon-sort-by:before {
+    content: "\e976";
+}
+
+.icon-stabilizers:before {
+    content: "\e977";
+}
+
+.icon-stationery:before,
+.icon-214000000::before {
+    content: "\e978";
+}
+
+.icon-support:before {
+    content: "\e979";
+}
+
+.icon-tapes-adhesives-sealants:before,
+.icon-117000000::before {
+    content: "\e97a";
+}
+
+.icon-trending:before {
+    content: "\e97b";
+}
+
+.icon-twitter:before {
+    content: "\e97c";
+}
+
+.icon-up:before {
+    content: "\e97d";
+}
+
+.icon-welding:before,
+.icon-126000000::before {
+    content: "\e97e";
+}
+
+.icon-whatsapp:before {
+    content: "\e97f";
+}
+
+.icon-wire-cable:before {
+    content: "\e980";
+}
+
+.icon-youtube:before {
+    content: "\e981";
+}
+
+.icon-product_share:before {
+    content: "\e9A4";
+}
+
+.icon-credit-debit-card:before {
+    content: "\e9a9";
+}
+
+.icon-net-banking:before {
+    content: "\e9ab";
+}
+
+.icon-upi:before {
+    content: "\e9b0";
+}
+
+.icon-paytm:before {
+    content: "\e9ac";
+}
+
+.icon-coupon-3-fill:before {
+    content: "\e9a8";
+}
+
+.icon-wallet:before {
+    content: "\e9b2";
+}
+
+.icon-filter-3-fill:before {
+    content: "\e9b4";
+}
+
+.icon-short:before {
+    content: "\e9ba";
+}
+
+.icon-cart1:before {
+    content: "\e9b9";
+}
+
+.icon-welcome-pdp:before {
+    content: "\e999";
+}
+
+.icon-more_options:before {
+    content: "\e9b6";
+}
+
+.icon-brand_store:before {
+    content: "\e9be";
+}
+
+.icon-top_categories:before {
+    content: "\e9bb";
+}
+
+.icon-share-box-line:before {
+    content: "\e9b8";
+}
+
+.icon-wishlist1-inactive:before {
+    content: "\e9c8";
+    color: #30303066;
+}
+
+.icon-wishlist1-black:before {
+    content: "\e9c8";
+    color: #303030;
+}
+
+.icon-wishlist1-active:before {
+    content: "\e9c8";
+    color: #D9232D;
+}
+
+.icon-Group-14030:before {
+    content: "\e9e7";
+}
+
+.icon-secure-payment-fill:before {
+    content: "\e9f9";
+}
+
+.icon-customer-service-fill:before {
+    content: "\e9d3";
+}
+.icon-secure_payment::before{
+    content: "\ea64";
+}
+
+.icon-restart-line:before {
+    content: "\e9f8";
+}
+
+.icon-restart-line-1:before {
+    content: "\e9f5";
+}
+
+.icon-restart-line-2:before {
+    content: "\e9f6";
+}
+
+.icon-restart-line-3:before {
+    content: "\e9f7";
+}
+
+.icon-map-pin-fill:before {
+    content: "\e9e8";
+}
+
+.icon-coupon-3-fill-1:before {
+    content: "\e9d1";
+}
+
+.icon-coupon-3-fill1:before {
+    content: "\e9d2";
+}
+
+.icon-moglix_app_logo:before {
+    content: "\e9b5";
+}
+
+.icon-dropbox-fill:before {
+    content: "\e9e6";
+}
+.icon-bin:before{
+    content: "\e9fe";
+}
+.icon-change_password:before{
+    content: "\ea19";
+}
+.icon-logout1:before{
+    content: "\ea56";
+}
+.icon-attribute:before{
+    content: "\ea01";
+}
+.icon-categories:before{
+    content: "\e9c0";
+}
+.icon-arrow-right-s-line:before{
+    content: "\e9c9";
+}
+.icon-business_details:before{
+    content: "\e9bf";
+}

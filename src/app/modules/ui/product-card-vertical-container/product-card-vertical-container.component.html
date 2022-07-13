@@ -1,0 +1,7 @@
+<ng-container *ngIf="numberOfItems > 0">
+    <div  [ngClass]="{'with-scroll-container': isScroll, 'without-scroll-container': !isScroll}" >
+        <div class="inner-container">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</ng-container>

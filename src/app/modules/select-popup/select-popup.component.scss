@@ -1,5 +1,7 @@
 //common popup
 @import '../../scss/variables';
+@import '../../scss/components/radio';
+
 .payment-dropdown-popup {
     .overlay {
         z-index: 12;

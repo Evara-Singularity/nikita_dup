@@ -1,0 +1,27 @@
+@import "../../../scss/variables";
+.with-scroll-container{
+    @extend %hide-scrollbar; 
+    .inner-container{
+        display:flex;
+        flex-wrap:nowrap;
+        overflow-x: auto;
+        margin:-10px 0px 0px -15px;
+        width:calc(100% + 10px);
+    }
+}
+.without-scroll-container{
+    .inner-container{
+        display:flex;
+        flex-wrap:wrap;
+        flex-direction: row;
+        margin:-10px 0px 0px -10px;
+        width:calc(100% + 10px);
+        padding: 10px 0px;
+    }
+    ::ng-deep{
+        product-card-vertical-block-view{
+            width:50%;
+        }
+      }
+}
+

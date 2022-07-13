@@ -13,12 +13,12 @@ import {
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientUtility } from '@app/utils/client.utility';
+import { CategoryCardObject } from '@app/utils/models/categoryCard';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Subject } from 'rxjs';
 import CONSTANTS from '../../config/constants';
-import * as kfooter from '../../config/k.footer';
 import { ToastMessageService } from '../../modules/toastMessage/toast-message.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
 
@@ -70,7 +70,6 @@ export class ClusterStoreComponent implements OnInit {
 	isServer: boolean;
 	isBrowser: boolean;
 	pageNotFound:boolean=false;
-	kfooter: any = kfooter;
 	footerVisible = false;
 	readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
 	extraData: {};
@@ -179,6 +178,16 @@ export class ClusterStoreComponent implements OnInit {
 		if(this.isBrowser){	
 			this.callAllLzayComponents();
 		}
+	}
+
+	productDataToCategoryCardObject(index,data){
+		return {
+			item: data[index],
+			isSelected: this.extraData && this.extraData['currentRoute'] && this.extraData['currentRoute'] == data[index]['category_url'],
+			page:'cluster-store',
+			title: data[index]['CategoryName'],
+			image: this.imagePath + data[index]['category_image']
+		} as CategoryCardObject
 	}
 
 
@@ -409,14 +418,19 @@ export class ClusterStoreComponent implements OnInit {
 			this.clusterVideoContainerRef.remove();
 		}
 	}
-
-	clickFooter() {
-		this.footerVisible = !this.footerVisible;
-		if (this.footerVisible && document.getElementById('footerContainer')) {
-		  let footerOffset = document.getElementById('footerContainer').offsetTop;
-		  ClientUtility.scrollToTop(1000, footerOffset - 50);
+	
+	categoryCardScroll(e) {
+		if (this.isBrowser) {
+			let tabsId = document.getElementById("tabs");
+			if (this.isBrowser && tabsId) {
+				tabsId.addEventListener("click", () => {
+					tabsId.scroll({ left: 0, top: 0, behavior: "smooth" });
+				},
+					{ passive: true }
+				);
+			}
 		}
-	  }
+	}
 
 	ngOnDestroy() {
 		this.cDistryoyed.next();

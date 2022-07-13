@@ -1,1 +1,92 @@
-@import '../../scss/horizontalProductListing'
+@import "../../scss/variables";
+
+.recent-viewed{
+    background: var(--white);
+    padding: 0 15px 10px;
+}
+.view-all-strip{
+    @extend %view-all-strip;
+    .heading-3{
+        font-size: $extra-large-font;
+    }
+}
+.skeleton-container {
+    padding: 15px 15px 15px 5px;
+    .heading {
+        width: 50%;
+        height: 20px;
+        background: var(--ghost-white);
+        border-radius: $border-radius-4;
+        margin: 0 10px;
+    }
+    .vertical-card-section {
+        display: flex;
+        flex-wrap: nowrap;
+        width: 100%;
+        overflow-x: auto;
+        @extend %hide-scrollbar;
+        .vertical-card-conatiner {
+            background: var(--white);
+            border: 1px solid var(--ghost-white);
+            border-radius: 8px;
+            padding: 10px;
+            min-width: 40%;
+            margin: 20px 0px 0px 10px;
+
+            .skeleton-img {
+                width: 100%;
+                height: 100px;
+                background: var(--ghost-white);
+                border-radius: $border-radius-4;
+            }
+            .skeleton-prod-name {
+                width: 100%;
+                height: 20px;
+                background: var(--ghost-white);
+                margin-top: 20px;
+                border-top-right-radius: 4px;
+                border-top-left-radius: 4px;
+                border-bottom-right-radius: 4px;
+            }
+            .skeleton-prod-name1 {
+                width: 60%;
+                height: 20px;
+                background: var(--ghost-white);
+                border-bottom-right-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
+
+            .skeleton-brand-name {
+                width: 55%;
+                height: 20px;
+                background: var(--ghost-white);
+                border-radius: $border-radius-4;
+                margin-top: 8px;
+            }
+            .skeleton-price {
+                width: 55%;
+                height: 36px;
+                background: var(--ghost-white);
+                border-radius: $border-radius-4;
+                margin-top: 10px;
+            }
+            .buy-now-section {
+                display: flex;
+                margin-top: 10px;
+                .skeleton-cart {
+                    width: 30%;
+                    height: 40px;
+                    background: var(--ghost-white);
+                    border-radius: $border-radius-4;
+                    margin-right: 8px;
+                }
+                .skeleton-btn {
+                    width: 70%;
+                    height: 40px;
+                    background: var(--ghost-white);
+                    border-radius: $border-radius-4;
+                }
+            }
+        }
+    }
+}

@@ -26,6 +26,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ClientUtility } from '@app/utils/client.utility';
 import { CommonService } from '@app/utils/services/common.service';
+import { ProductService } from '@app/utils/services/product.service';
+import { CategoryData } from '@app/utils/models/categoryData';
 @Component({
 	selector: 'home',
 	templateUrl: './home.html',
@@ -76,6 +78,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	categories: Array<{}> = CONSTANTS.siemaCategories;
 	imagePath = CONSTANTS.IMAGE_BASE_URL;
+	clusterimagePath='../../../../../assets/';
 	imagePathBanner = CONSTANTS.IMAGE_BASE_URL;
 	pageImages = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.pwaImages.imgFolder;
 	appendSiemaItemSubjects: {};
@@ -123,6 +126,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		private _router: Router,
 		private _commonService: CommonService,
 		private analytics: GlobalAnalyticsService,
+		private _productService: ProductService,
 	) {
 		this.isServer = _commonService.isServer;
 		this.isBrowser = _commonService.isBrowser;
@@ -132,10 +136,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
+
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['homeData']['error']) {
 				this.fetchHomePageData(rawData.homeData[0]);
-				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'];
+				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'] as CategoryData[];
 			}
 		});
 
@@ -553,6 +558,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.categoriesInstance.instance[
 				'middleImageJsonData'
 			] = this.middleImageJsonData;
+			//console.log('this.carouselData-------------------' , this.carouselData[category.dataKey]['data']['product_data'])
 			this.categoriesInstance.instance['categories'] = this.categories;
 			this.categoriesInstance.instance['carouselData'] = this.carouselData;
 			this.categoriesInstance.instance['defaultImage'] = this.defaultImage;
@@ -645,11 +651,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.carouselInstance.instance['clickFromSection'] = 'recently_viewed_home';
 			this.carouselInstance.instance['showHeading'] = true;
 			this.carouselInstance.instance['prodList'] = this.recentProductList;
-			(
-				this.carouselInstance.instance['isDataAvailable'] as EventEmitter<any>
-			).subscribe((value) => {
-				this.showRecentlyViewedCarousel = value;
-			});
 		}
 	}
 	destroyLazyComponents() {

@@ -5,7 +5,7 @@ import { PopUpVariant2Module } from '@app/modules/pop-up-variant2/pop-up-variant
 @Component({
     selector: 'faq-success-popup',
     templateUrl: './faq-success-popup.component.html',
-    styleUrls: ['./../../pages/product/product.component.scss']
+    styleUrls: ['./faq-success-popup.component.scss']
 })
 export class FaqSuccessPopoupComponent {
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();

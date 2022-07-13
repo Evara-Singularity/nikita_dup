@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CONSTANTS } from '@app/config/constants';
 
 @Component({
@@ -9,6 +9,9 @@ import { CONSTANTS } from '@app/config/constants';
 export class SearchNotFoundComponent implements OnInit {
 
   imagePath = CONSTANTS.IMAGE_BASE_URL;
+  notFoundCategories: any = CONSTANTS.NOT_FOUND_CATEGORY;
+  @Input() helpText: string[] = [];
+  @Input() helpSubText: string[] = [];
 
   constructor() { }
 

@@ -1,0 +1,158 @@
+<div *ngIf="_cartService.getGenericCartSession?.itemsList && _cartService.getGenericCartSession?.itemsList.length > 0">
+    <div class="pwa-row pt-0 pb-0" *ngIf="isQuickorder">
+        <h3 class="pad-0">{{noOfCartItems}} item(s) in your cart</h3>
+    </div>
+    <ng-container *ngFor="let item of _cartService.getGenericCartSession?.itemsList; let itemIndex = index;">
+        <div *ngIf="(!item.oos) && item['text1']" class="realTimePrice">
+            <span>{{item['text1']}}
+                <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
+                    {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
+        </div>
+        <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative ">
+            <div class="pwa-row pad-0" [ngClass]="{'oos':item.oos}">
+                <div class="pwa-col-12">
+                    <div class="product-left">
+                        <div class="product-img product-img-v2">
+                            <img (click)="redirectToProductURL(item.productUrl)" src="{{item.productImg}}">
+                        </div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="p-name">
+                            <a (click)="redirectToProductURL(item.productUrl)"> {{ (item.productName.length > 50) ?
+                                (item.productName | slice:0:59) + '..' : (item.productName) }}</a>
+                        </div>
+                        <p *ngIf="!item.oos" class="price clearfix">
+                            <span class="price-mrp gray-txt"><span class="strike-off-upper"><span
+                                        class="strike-off"></span>₹{{item.amount | mathFloor | number :
+                                    '1.2-2'}}</span> 
+                                    <!-- // remove this discount taxPercentage as this not yet synced with PDP -->
+                                    <!-- <span class="green-txt">&nbsp;({{item.taxPercentage}}%
+                                    OFF)</span> -->
+                                </span>
+                            <span class="after-disc"
+                                *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">&nbsp;₹{{item.priceWithoutTax |
+                                mathFloor | number : '1.2-2'}}
+                            </span>
+                            <span class="after-disc" *ngIf="item.bulkPrice!==null">&nbsp;₹{{item.bulkPriceWithoutTax |
+                                mathFloor | number : '1.2-2'}}</span>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+            <div *ngIf="!item.oos" class="cart-item-block pad-15">
+                <div class="qty_section">
+                    <span class="qty-txt">Qty</span>
+                    <div class="quantity-block">
+                        <span *ngIf="item.productQuantity > item.moq"
+                            (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'decrement')"
+                            class="remove-qty qty-block">&#8722;</span>
+                        <i (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'decrement')"
+                            *ngIf="item.productQuantity <= item.moq" class="icon-bin qty-block single-quantity"></i>
+                        <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
+                            (focusout)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'update', $event.target.value)" />
+                        <span (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'increment')"
+                            class="add-qty qty-block">&#43;</span>
+                    </div>
+                </div>
+                <div class="price-dtl-block">
+                        <span class="price-block-left" [appKpToggle]="{idName:'showPrice'+(itemIndex+1),iconMode : true}">
+                            <span>
+                                <strong *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
+                                    item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</strong>
+                                <strong *ngIf="item.bulkPrice !== null && !item.oos"
+                                    class="price-val">{{item.bulkPriceWithoutTax *
+                                    item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</strong><br>
+                                <strong *ngIf="item.oos" class="price-val">Not Available</strong>
+                                <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
+                                <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
+                                </span>
+                                <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
+                            </span>
+                            <i class="icon-down"></i>
+                        </span>
+                </div>
+            </div>
+            <div *ngIf="item.oos" class="oos-item-block">
+                <div (click)="$event.stopPropagation();removeItemFromCart(itemIndex, null);deleteProduct($event);">
+                    <span>
+                        <i class="icon-bin"></i>
+                        REMOVE
+                    </span>
+                </div>
+                <div class="oos-text">
+                    <h3 class="heading-3">Not Available</h3>
+                </div>
+            </div>
+            <div [ngClass]="{'oos':item.oos}" class="price-breakup" [id]="'showPrice'+(itemIndex+1)"
+                style="display: none">
+                <ul class="txt-list">
+                    <li>
+                        <span class="tag-label">Price</span>
+                        <span class="tag-value">{{item.priceWithoutTax *
+                            item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</span>
+                    </li>
+                    <li>
+                        <span class="tag-label">{{item.taxPercentage}}% GST </span>
+                        <span class="tag-value">₹{{ (item.tax | mathFloor | number : '1.2-2') || 0 }}</span>
+                    </li>
+                    <li>
+                        <span class="tag-label">Shipping</span>
+                        <span class="tag-value">₹{{ (item.shippingCharges | mathFloor | number : '1.2-2') || 0 }}</span>
+                    </li>
+                    <li>
+                        <span class="tag-label">Coupon Discount</span>
+                        <span class="tag-value green-txt">-₹{{(item.offer ? item.offer : 0) | mathFloor | number :
+                            '1.2-2'}}</span>
+                    </li>
+                    <li class="bold-txt">
+                        <span class="tag-label">Total</span>
+                        <span class="tag-value">₹{{ (item.totalPayableAmount + item.shippingCharges - item.offer |
+                            mathFloor |number : '1.2-2') || 0 }}</span>
+                    </li>
+                </ul>
+            </div>
+            <!-- DO NOT REMOVE THIS SECTION IT WAS OF NEW DESIGN TO BE IMPLEMENTED LATER -->
+            <!-- <div  class="coupen-and-discount">
+                    <span>Coupon discount - ₹100</span>
+                    <span>Free Shipping<i class="icon-delivery_y_5"></i></span>
+                </div> -->
+        </div>
+    </ng-container>
+</div>
+<app-bottom-menu *ngIf="removableItem !== null">
+    <div content>
+        <div class="content-area removePopup">
+            <div class="top-header-bottom-menu">
+                <h3 class="heading-3">Are you sure to remove this item?</h3>
+            </div>
+            <div [ngClass]="{'realTimeUpdate':removableItem['text1']}" class="pwa-row pad-tb-15">
+                <div class="pwa-col-12">
+                    <div *ngIf="removableItem['text1']" class="realTimePrice">
+                        <span>{{removableItem['text1']}}
+                            <strong>{{removableItem['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to
+                            <strong>
+                                {{removableItem['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
+                    </div>
+                    <div class="pwa-row static-small-card-container">
+                        <div class="product-img">
+                            <img (click)="redirectToProductURL(removableItem.productUrl)"
+                                src="{{removableItem.productImg}}">
+                        </div>
+                        <div class="product-description">
+                            <p class="description-txt">{{ (removableItem.productName.length > 50) ? (removableItem.productName | slice:0:48) + '..' : (removableItem.productName) }}</p>
+                            <p class="product-qty" *ngIf="removableItem.packageUnit">Qty/Pack :{{removableItem.packageUnit}}</p>
+                            <!-- <p class="product-qty" *ngIf="!(removableItem.packageUnit)">Qty/Pack :{{removableItem.productQuantity}} Piece</p> -->
+                        </div>
+                    </div>
+                    <div class="cta-row">
+                        <button (click)="$event.stopPropagation();resetRemoveItemCart();" cstatic-small-card-container
+                            class="btn secondry-btn-1">CANCEL</button>
+                        <button class="btn secondry-btn" (click)="$event.stopPropagation();deleteProduct($event)"><i
+                                class="icon-bin"></i>&nbsp;REMOVE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-bottom-menu>

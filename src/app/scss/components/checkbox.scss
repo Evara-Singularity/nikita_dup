@@ -1,0 +1,72 @@
+@import './../variables';
+// Custom Check Box
+%custom-check-box{
+    input[type="checkbox"] {
+        display: none;
+        &:checked + .custom-box::before {
+            content: "\e912";
+            color: var(--blue);
+        }
+    }
+    input[type="radio"] {
+        display: none;
+        &:checked + .custom-box::before {
+            content: "\e912";
+            color: var(--slimy-green);
+        }
+    }
+    .custom-box {
+        width: 18px;
+        height: 18px;
+        display: block;
+        float: left;
+        font-size: $extra-large-1-font;
+        line-height: $medium-line-height;
+        margin-right: 5px;
+        @extend %transition;
+        &::before {
+            font-family: "icomooon_pwa";
+            content: "\e912";
+            color: var(--silver);
+        }
+
+    }
+    .chk-txt {
+        font-size: $large-font;
+        float: left;
+        margin-left: 10px;
+        line-height: $medium-line-height;
+        width: calc(100% - 38px);
+    }
+}
+%custom-check-box-checkout {
+    input[type="checkbox"] {
+        display: none;
+        &:checked + .custom-box::before {
+            content: "\e914";
+            color: var(--blue);
+        }
+    }
+    .custom-box {
+        width: 18px;
+        height: 18px;
+        display: block;
+        float: left;
+        font-size: $extra-large-1-font;
+        line-height: $medium-line-height;
+        margin-right: 5px;
+        @extend %transition;
+        &::before {
+            font-family: "icomooon_pwa";
+            content: "\e915";
+            color: var(--black);
+        }
+    }
+    .chk-txt {
+        font-size: $large-font;
+        float: left;
+        margin-left: 5px;
+        line-height: $medium-line-height;
+        width: calc(100% - 38px);
+    }
+}

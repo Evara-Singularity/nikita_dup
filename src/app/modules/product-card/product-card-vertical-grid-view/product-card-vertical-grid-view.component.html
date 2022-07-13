@@ -1,0 +1,78 @@
+<div class="product-vertical-grid-card" observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
+    <!-- <a class="s-h-l" [attr.href]="prodUrl+'/'+this.product.productUrl">{{product.productName}}</a> -->
+    <div class="product-card-upper " (click)="navigateToPDP()">
+        <div class="tags" *ngFor="let tags of product['productTags']">
+            <img [src]="tags['tagImageLink']" />
+        </div>
+        <div class="pwa-image">
+            <ng-container *ngIf="isPDPImageLazyLoaded || !cardFeaturesConfig.lazyLoadImage">
+                <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}" height="125" width="125" (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
+            </ng-container>
+            <ng-container *ngIf="!isPDPImageLazyLoaded && cardFeaturesConfig.lazyLoadImage">
+                <img alt="{{product.productName}}" [src]="defaultImage" [lazyLoad]="imageCdnPath + product.mainImageThumnailLink" height="125" width="125" (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
+            </ng-container>
+        </div>
+    </div>
+    <div class="product-card-lower">
+        <div class="product-card-lower-inner">
+            <div class="rating">
+                <span class="avgrating" *ngIf="cardFeaturesConfig.enableRating && product.avgRating">
+                        {{product.avgRating | rating | number : '1.1-1' }}
+                        <i class="icon-rating-star"></i>
+                    </span>
+                <span class="count" *ngIf="cardFeaturesConfig.enableRating && product.ratingCount">({{productReviewCount}})</span>
+                <!-- <span class="ads" *ngIf="!product.internalProduct && !hideAd">AD</span> -->
+            </div>
+            <div class="name" (click)="trackProductTitle('title');$event.preventDefault()">
+                <a [href]="prodUrl + '/' + product.productUrl">
+                    <span>{{product.productName | slice:0:60}}
+                            <span *ngIf="product.productName.length>60">...</span></span>
+                </a>
+            </div>
+            <div *ngIf="product.brandName" class="brand" (click)="navigateToPDP()">
+                <span *ngIf="!fullBrandNameMode" >By: {{product.brandName | brandName}}</span>
+                <span *ngIf="fullBrandNameMode" >{{product.brandName | brandName}}</span>
+            </div>
+            <div *ngIf="product.short_description" class="brand" (click)="navigateToPDP()">
+                <span>By: {{splitBrandName(product.short_description)}}</span>
+            </div>
+            <div class="prod-price-row" (click)="navigateToPDP()">
+                <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.discount > 0">
+                    <span class="prod-mrp">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
+                                }}</span>
+                    <span class="prod-discount">{{product.discount}}% OFF</span>
+                </div>
+                <div class="prod-selling-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
+                    <span>{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
+                                }}</span>
+                </div>
+                <div class="out-of-stock-text" *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice">
+                    <span>Available on Request</span>
+                </div>
+                <div class="out-of-stock-price" *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice && product.priceWithoutTax!=0">
+                    <span>{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
+                                }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="card-btn-row">
+                <ng-container *ngIf="(cardFeaturesConfig.enableAddToCart || cardFeaturesConfig.enableBuyNow) && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
+                    <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart" (click)="buyNow()">
+                                    <i class="icon-cart1"></i>
+                                </span>
+                    <button class="btn tertiary-btn" *ngIf="cardFeaturesConfig.enableBuyNow" (click)="buyNow(true)">BUY NOW</button>
+                </ng-container>
+            </div>
+            <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
+                <button class="btn tertiary-outline-cta tertiary-outline-cta-8" (click)="openRfqForm()">
+                                SEND QUERY
+                            </button>
+            </ng-container>
+        </div>
+    </div>
+    <ng-container #variantPopup></ng-container>
+    <ng-container #addToCartToast></ng-container>
+    <ng-container #productRFQ></ng-container>
+    <ng-container #alertBox></ng-container>
+</div>

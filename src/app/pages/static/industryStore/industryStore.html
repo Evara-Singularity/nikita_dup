@@ -1,29 +1,28 @@
 <!--NEW INDUSTRY STORE-->
 <section>
-    <div class="container-fluid clearfix">
-        <div *ngIf="bannerData && bannerData.length > 0" class="topIndustryImage">
+    <div class="pwa-row pwa-row-noPad">
+        <div *ngIf="bannerData && bannerData.length > 0" class="pwa-col-12 topIndustryImage">
             <div *ngFor="let item of bannerData">
                 <a (click)="navigateTo(item.image_link)">
                     <img src="{{API[ 'IMAGE_BASE_URL']}}{{item.image_name}}" style="width: 100%;display: block;">
                 </a>
                 <ng-container *ngFor="let val of item[ 'image_general'] ">
-                    <h1>{{val.general_text}}</h1>
+                    <h2>{{val.general_text}}</h2>
                     <p>{{val.general_url}}</p>
                 </ng-container>
             </div>
         </div>
-        <div *ngIf="elementData && elementData.length > 0" class="col-md-12 outerIndustryWrap">
-            <div *ngFor="let element of elementData;let i = index;" class="col-md-6">
+        <div *ngIf="elementData && elementData.length > 0" class="pwa-row pwa-row-noPad outerIndustryWrap">
+            <div *ngFor="let element of elementData;let i = index;" class="pwa-col-6 wrap-section">
                 <ng-container>
                     <div [routerLink]="[ '/'+element.image_title]"
-                        [ngStyle]="{ 'background-color': element.image_link} " class="firstInnerWrap"
-                        style="margin-bottom: 10px;">
+                        [ngStyle]="{ 'background-color': element.image_link} " class="firstInnerWrap">
                         <div [routerLink]="['/'+element.image_title]">
                             <img src="{{API[ 'IMAGE_BASE_URL']}}{{element.image_name}}" class="industryImg">
                         </div>
                         <ng-container *ngFor="let elementText of element[ 'image_general'] ">
                             <h3>{{elementText.general_text}}</h3>
-                            <a class="shopNow ">Shop Now</a>
+                            <button class="btn shopNow ">Shop Now</button>
                         </ng-container>
                     </div>
                 </ng-container>

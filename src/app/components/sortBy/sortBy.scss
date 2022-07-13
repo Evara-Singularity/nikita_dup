@@ -1,4 +1,9 @@
 @import './../../scss/variables';
+@import '../../scss/components/checkbox';
+@import '../../scss/components/radio';
+@import '../../scss/components/bottom-popup';
+@import '../../modules/bottomMenu/bottom-menu.component';
+
 .sort-by {
     text-align: left;
     .container {
@@ -7,60 +12,10 @@
     label {
         display: block;
         padding: 21px 10px;
-        border-top: 1px solid #EFEFF4;
+        border-top: 1px solid var(--ghost-white);
     }
-    .heading-3 {
-        padding: 20px 10px;
-        position: relative;
-        i {
-            position: absolute;
-            right: 15px;
-            font-size: 20px;
-        }
-    }
+    
 }
-
-.overlay {
-    position: fixed;
-    left: 0;
-    background: rgba(0, 0, 0, .2);
-    width: 100%;
-    height: 100%;
-    top: 0;
-}
-
-.bottom-options .overlay {
-    z-index: 13;
-    top: 120%;
-}
-
-.bottom-options.open .overlay {
-    top: 0;
-}
-
-.bottom-options .content-box {
-    position: fixed;
-    bottom: -100%;
-    left: 0;
-    padding: 0px;
-    background: #fff;
-    z-index: 14;
-    width: 100%;
-    max-height: 45%;
-    overflow: auto;
-    &.roundedBox {
-        border-radius: 16px 16px 0px 0px;
-    }
-    &.open {
-        .overlay {
-            top: 120%;
-        }
-        &.content-box {
-            bottom: 0;
-        }
-    }
-}
-
 #emailer,
 .container,
 .other-strip {
@@ -70,15 +25,6 @@
     padding: 0;
 }
 
-.custom-cbox label .chk-txt,
-.selectable-list label .chk-box .chk-txt {
-    float: left;
-    margin-left: 10px;
-    line-height: 20px;
-    width: calc(100% - 38px);
-    font-size: 14px;
-}
-
 .sortByLayout {
     label {
         display: block;
@@ -86,4 +32,12 @@
         @extend %clear-fix;
         @extend %custom-radio-checkout;
     }
+.custom-cbox label .chk-txt,
+.selectable-list label .chk-box .chk-txt {
+    float: left;
+    margin-left: 10px;
+    line-height: 20px;
+    width: calc(100% - 38px);
+    font-size: 14px;
+ }
 }

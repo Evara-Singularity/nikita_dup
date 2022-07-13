@@ -1,0 +1,7 @@
+@import "../../scss/variables";
+@import "../../scss/components/tabs.scss";
+
+.moglix-benefits {
+    background: var(--white);
+    @extend %hide-scrollbar;
+}

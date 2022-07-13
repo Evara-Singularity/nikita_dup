@@ -84,6 +84,13 @@ export class SideNavComponent implements OnInit {
     this.checkIfUserLoggedIn('/dashboard/info')
   }
 
+  getFirstNameFormName(firstName) {
+    if (firstName) {
+      return firstName.split(' ')[0];
+    }
+    return firstName;
+  }
+
   checkIfUserLoggedIn(url, title = "") {
     let user = this.localStorageService.retrieve("user");
     if (user && user.authenticated == "true") {

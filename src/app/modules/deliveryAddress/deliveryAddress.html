@@ -2,56 +2,46 @@
     [taxHeading]="(invoiceTypeSectionHeadingText)?invoiceTypeSectionHeadingText:'Use GSTIN for Business Purchase'"
     [taxSubHeading]="(invoiceTypeSectionSubheadingText)?invoiceTypeSectionSubheadingText:'Claim input tax credit on your purchase.'">
 </invoice-type>
+<div class="sub-strip">
+    <div class="container">
+        <!-- <h4 class="heading" (click)="salpu.shipping = getAddressList(addressList, 1).length > 1 ? true : false">Shipping Address ({{getAddressessCount(addressList, 1)}}) <i class="icon-dropdown" *ngIf="getAddressessCount(addressList, 1) > 1"></i></h4> -->
+        <h4 class="heading">Delivery Address ({{getAddressessCount(addressList, 1)}})</h4>
+        <!-- <span class="add-address" (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1)">ADD</span>  -->
+    </div>
+</div>
 
 <div class="address-container">
-    <div class="shipping-container">
-
-        <div class="sub-strip">
-            <div class="container">
-                <!-- <h4 class="heading" (click)="salpu.shipping = getAddressList(addressList, 1).length > 1 ? true : false">Shipping Address ({{getAddressessCount(addressList, 1)}}) <i class="icon-dropdown" *ngIf="getAddressessCount(addressList, 1) > 1"></i></h4> -->
-                <h4 class="heading">Delivery Address ({{getAddressessCount(addressList, 1)}})</h4>
-                <!-- <span class="add-address" (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1)">ADD</span>  -->
-            </div>
-        </div>
-
+    <div class="shipping-container  billing-adress-container">
         <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)"
             [layoutType]="'SINGLE'" [addresses]="shippingAddressList" [type]="1" [showRadio]="false">
         </app-address-list>
         <div class="addButtonContainer">
-            <div class="container">
-                <button class=" btn blue-border-btn-full" *ngIf="shippingAddressList.length > 0"
-                    style="text-transform: uppercase;" (click)="salpu.shipping = true">Change or Add address</button>
-                <button class="blue-border-btn-full" *ngIf="shippingAddressList.length == 0"
-                    style="text-transform: uppercase;"
-                    (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1, null, true)">Add new
-                    address</button>
-            </div>
+            <button class=" btn quaternary-btn-1" *ngIf="shippingAddressList.length > 0"
+                style="text-transform: uppercase;" (click)="salpu.shipping = true">Change or Add address</button>
+            <button class="btn quaternary-btn-1" *ngIf="shippingAddressList.length == 0"
+                style="text-transform: uppercase;"
+                (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1, null, true)">+ Add new
+                address</button>
         </div>
-
-
-
     </div>
-
-    <div class="shipping-container" *ngIf="invoiceType==='tax'">
-        <div class="sub-strip">
-            <div class="container">
-                <!-- <h4 class="heading" (click)="salpu.billing = getAddressList(addressList, 2).length > 1 ? true : false">Billing Address ({{getAddressessCount(addressList, 2)}}) <i class="icon-dropdown" *ngIf="getAddressessCount(addressList, 2) > 1"></i></h4> -->
-                <h4 class="heading">Billing Address ({{getAddressessCount(addressList, 2)}})</h4>
-                <!-- <span class="add-address" (click)="updateCheckoutAddressIndex(globalConstants['newAddress'],2)">ADD</span> -->
-            </div>
+    <div class="sub-strip" *ngIf="getAddressessCount(addressList, 2) > 0">
+        <div class="container">
+            <!-- <h4 class="heading" (click)="salpu.billing = getAddressList(addressList, 2).length > 1 ? true : false">Billing Address ({{getAddressessCount(addressList, 2)}}) <i class="icon-dropdown" *ngIf="getAddressessCount(addressList, 2) > 1"></i></h4> -->
+            <h4 class="heading">Billing Address ({{getAddressessCount(addressList, 2)}})</h4>
+            <!-- <span class="add-address" (click)="updateCheckoutAddressIndex(globalConstants['newAddress'],2)">ADD</span> -->
         </div>
+    </div>
+    <div class="shipping-container" *ngIf="invoiceType==='tax'">
         <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)"
             [layoutType]="'SINGLE'" [addresses]="billingAddressList" [type]="2" [showRadio]="false">
         </app-address-list>
         <div class="addButtonContainer">
-            <div class="container">
-                <button *ngIf="billingAddressList.length > 0" class=" btn blue-border-btn-full"
-                    style="text-transform: uppercase;" (click)="salpu.billing = true">Change or Add address</button>
-                <button *ngIf="billingAddressList.length == 0" class="blue-border-btn-full"
-                    style="text-transform: uppercase;"
-                    (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 2, null, true)">Add new
-                    address</button>
-            </div>
+            <button *ngIf="billingAddressList.length > 0" class="btn quaternary-btn-1"
+                style="text-transform: uppercase;" (click)="salpu.billing = true">Change or Add address</button>
+            <button *ngIf="billingAddressList.length == 0" class="btn quaternary-btn-1"
+                style="text-transform: uppercase;"
+                (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 2, null, true)">+ Add new
+                address</button>
         </div>
 
 
@@ -60,6 +50,7 @@
 
     <!-- LIST OF ADDRESS POP UP STARTS  -->
     <app-pop-up *ngIf="salpu.shipping" (outData$)="outData($event)" class="bs-popup"
+    [headerType]="'pop-up-header1'"
         [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup addAddressPopup addCustomHeight',selector:'salpu.shipping',headerText:'Delivery Address'}">
         <div class="head-sec" header>
             <i class="icon-circle-delete f-left" (click)="salpu.shipping = false; closePopup(1)"></i>
@@ -68,9 +59,9 @@
         </div>
         <div class="content-popup" content>
             <div class="add-address-substrip">
-                <button class="btn blue-border-btn-full"
+                <button class="btn secondry-full-btn"
                     (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 1, null, true)">
-                    ADD NEW ADDRESS
+                    + ADD NEW ADDRESS
                 </button>
             </div>
             <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)"
@@ -81,6 +72,7 @@
     <!-- LIST OF ADDRESS POP UP ENDS  -->
 
     <app-pop-up *ngIf="salpu.billing" (outData$)="outData($event)" class="bs-popup"
+    [headerType]="'pop-up-header1'"
         [data]="{closeClass:'icon-back f-left', paraClass:'f-left page-name f-16',class: 'payment-popup addAddressPopup addCustomHeight',selector:'salpu.billing',headerText:'Billing Address'}">
         <div class="head-sec" header>
             <i class="icon-circle-delete f-left" (click)="salpu.billing = false; closePopup(2)"></i>
@@ -89,9 +81,9 @@
         </div>
         <div class="content-popup" content>
             <div class="add-address-substrip">
-                <button class="btn blue-border-btn-full"
+                <button class="btn secondry-full-btn"
                     (click)="updateCheckoutAddressIndex(globalConstants['newAddress'], 2, null, true)">
-                    ADD NEW ADDRESS
+                    + ADD NEW ADDRESS
                 </button>
             </div>
             <app-address-list (closePopUp$)="closePopUpBySelect($event)" (outData$)="outData($event)"
@@ -101,7 +93,7 @@
     </app-pop-up>
 
     <app-pop-up-variant2 *ngIf="saf.sa || saf.ba" (outData$)="outData($event)" [class.open1]="saf.sa || saf.ba"
-        [data]="{class: 'payment-popup addAddressPopup',headerCustom:true}">
+        [data]="{headerCustom:true}">
         <div class="head-sec header_add_edit" header>
             <div class="container">
                 <i class="icon-back f-left white_text" (click)="saf.sa = saf.ba = false;"></i>

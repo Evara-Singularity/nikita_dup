@@ -1,9 +1,10 @@
 @import '../../scss/variables';
+@import '../../scss/components/bottom-popup';
+
 .verifyPopup {
     padding: 0px !important;
-    z-index: 108;
+    z-index: 108 !important;
 }
-
 .show {
     .overlay-bg {
         position: fixed;
@@ -14,6 +15,10 @@
         height: 100%;
         z-index: 100;
     }
+    .bottom-options .content-box{
+        bottom:0px;
+        border-radius:0px;
+    }
 }
 
 .modalClass {
@@ -21,6 +26,7 @@
         max-height: 82%;
     }
 }
+
 
 .showVideoOverlay {
     .bottom-options .content-box {

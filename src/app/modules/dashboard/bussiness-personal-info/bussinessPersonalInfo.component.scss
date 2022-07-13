@@ -1,4 +1,5 @@
 @import "./../../../scss/variables";
+@import "./../../../scss/layout/forms.scss";
 .material-form {
     position: relative;
     .card {
@@ -92,21 +93,116 @@
     }
 }
 
-.other-strip {
-    display: block;
-    @extend %container;
-    @extend %clear-fix;
-    h3 {
-        float: left;
-        font-size: $extra-large-font;
-        font-weight: 400;
-        line-height: 30px;
+.profile-card {
+    &:last-child{
+        margin-bottom: 75px
     }
-    i {
-        float: right;
-        font-size: 17px;
-        line-height: 30px;
-        padding: 10px 0;
-        top: 0 !important;
+    @extend %white-card;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .profile-card-inner {
+        display: flex;
+        align-items: center;
+        .profile-card-inner-2 {
+            margin-left: 10px;
+        }
+    }
+    .material-form {
+        .outline-input-label {
+            margin-bottom: 0px !important;
+            label {
+                position: relative;
+                input {
+                    border: 1px solid var(--white);
+                    background-color: var(--primary) !important;
+                    color: var(--white);
+                    padding-right: 82px !important; 
+                }
+                .label {
+                    color:#ffffff85 !important;
+                    font-weight: 400;
+                }
+                .form-inline-cta {
+                    background-color: var(--white);
+                    color: var(--primary);
+                    font-size: $medium-font;
+                    border-radius:$border-radius-4;
+                    min-width: 70px;
+                    text-align: center;
+                }
+                &.is-focus .label,
+                input:focus + .label,
+                select:focus + .label {
+                    background-color: var(--primary) !important;
+                }
+            }
+        }
+    }
+}
+.profile-name {
+    background-color: var(--primary);
+    color: var(--white);
+    margin-top: 65px;
+    padding: 25px 15px;
+    .name {
+        width: 50px;
+        .icon-profile {
+            font-size: 40px;
+        }
+        .name-space {
+            font-size: $medium-font;
+            line-height: $medium-line-height;
+            .name-main {
+                font-size: $large-font;
+                line-height: $large-line-height;
+                font-weight: bold;
+            }
+        }
+    }
+    .update-name-form {
+        width: calc(100% - 50px);
+        background-color: var(--primary);
+        padding: 5px 10px;
+        font-weight: bold;
+        border-radius: $border-radius-4;
+    }
+}
+.material-static-form {
+    @extend %white-card;
+    padding-left: 10px;
+}
+.profile-bottom-card {
+    background-color: var(--white);
+    .profile-bottom-card-inner {
+        i {
+            font-size: $extra-large-3-font;
+        }
+        span {
+            font-size: $large-font;
+            font-weight: bold;
+        }
+    }
+    .icon-next {
+        font-size: $large-font;
+    }
+}
+.profile-form {
+    @extend %white-card;
+    padding: 0px;
+    .custom-profile-input {
+        width: 100% !important;
+        padding: 15px 0px 15px 15px;
+        // border: 1px solid red;
+        label {
+            border-bottom: 1px solid var(--ghost-white);
+            padding: 5px 0px;
+            &:last-child {
+                border-bottom: none;
+            }
+            input {
+                border: none;
+            }
+        }
     }
 }

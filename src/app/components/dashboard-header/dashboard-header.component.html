@@ -1,0 +1,14 @@
+<div class="dashboard-header">
+    <div class="dashboard-inner">
+        <a (click)="goBack()"><i class="icon-back-arrow" id="icon-back"></i></a>
+        <a class="moglix-app-logo" [routerLink]="['/']"><i class="icon-moglix_app_logo"></i></a>
+        <a> <span class="page-name" *ngIf="title"> {{ title }} </span> </a>
+    </div>
+    <div class="dashboard-inner">
+        <a (click)="loadSearchNav$.emit()" class="icon-search "></a>
+        <a (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
+            <span class="badge" *ngIf="noOfCart != 0">{{ noOfCart }}</span>
+        </a>
+        <a class="icon-more_options" (click)="$event.stopPropagation();loadBottomSheet$.emit()"></a>
+    </div>
+</div>

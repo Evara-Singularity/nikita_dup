@@ -1,4 +1,5 @@
 @import '../payment-continue-btn.scss';
+@import '../../../scss/layout/forms';
 .popup_fixed {
     position: fixed;
     width: 100%;
@@ -9,7 +10,7 @@
     z-index: 9;
     .pos_center {
         width: 500px;
-        background: white;
+        background:var(--white);
         height: 250px;
         transform: translate(-50%, -50%);
         position: absolute;
@@ -17,20 +18,14 @@
         top: 50%;
     }
 }
-
 .cash-container {
     padding-bottom: 30px;
     .medium-cod-heading {
-        font-size: 12px;
-        color: #353535;
+        font-size:$medium-font;
+        color: var(--onyx-black);
+        margin-bottom:20px;
     }
 }
-
-input.form-control[readonly] {
-    background-color: #e6e6e6 !important;
-    border-bottom: 2px dotted #c3c3c3 !important;
-}
-
 @media only screen and (max-width: 767px) {
     .static-xs {
         position: static !important;
@@ -54,5 +49,10 @@ input.form-control[readonly] {
         p {
             text-align: center !important;
         }
+    }
+}
+.continue-button{
+    button{
+        border-radius: $border-radius-8;
     }
 }

@@ -2,6 +2,10 @@
 @import '../../../scss/payment-common';
 @import '../payment-continue-btn.scss';
 .saved-details {
+    // @extend %white-card;
+    // margin: 0px 0px 15px;
+    background-color: var(--white);
+    border-radius: $border-radius-8;
     h3 {
         padding-left: 15px;
     }
@@ -25,7 +29,7 @@
                 border: 1px solid #D7D7D7;
                 border-radius: 4px;
                 padding: 5px;
-                margin-top: 10px;
+                // margin-top: 10px;
                 &::placeholder {
                     font-size: 14px;
                 }
@@ -37,13 +41,18 @@
     }
     .card-detail {
         position: relative;
+        padding: 10px 15px 3px;
+        &:last-child{
+            border-bottom: 0px;
+        }
         .delete-ico {
             position: absolute;
             right: 15px;
             top: 20px;
         }
         label {
-            padding: 10px 10px;
+            margin-bottom: 5px;
+            // padding: 10px 10px;
             // border-bottom: 1px solid $border-color;
         }
         &:last-child {
@@ -62,7 +71,7 @@
 
 .radio-with-label-container {
     display: flex;
-    margin: 0px 0px 10px;
+   
     label.radio-with-label {
         display: inline-flex;
         @extend %pwa-universal-radio;

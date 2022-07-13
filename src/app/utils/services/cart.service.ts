@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { ModalService } from '@app/modules/modal/modal.service';
-import { SharedCheckoutUnavailableItemsComponent } from '@app/modules/shared-checkout-unavailable-items/shared-checkout-unavailable-items.component';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -27,6 +26,7 @@ export class CartService
     readonly cashOnDeliveryStatus = { isEnable: true, message: "" };
     public extra: Subject<{ errorMessage: string }> = new Subject();
     public orderSummary: Subject<any> = new Subject();
+    public totalPayableAmount: Subject<number> = new Subject<number>();
     public homePageFlyOut: Subject<any> = new Subject();
     public validateCartSession: Subject<any> = new Subject();
     public validAttributes: Subject<any> = new Subject();
@@ -35,7 +35,7 @@ export class CartService
     public selectedBusinessAddressObservable: Subject<any> = new Subject();
     public productShippingChargesListObservable: Subject<any> = new Subject();
     private notificationsSubject: Subject<any[]> = new Subject<any[]>();
-    public appliedPromocodeSubject: Subject<string> = new Subject<string>();
+    public promoCodeSubject: Subject<{ promocode: string, isNewPromocode: boolean }> = new Subject<{ promocode: string, isNewPromocode: boolean }>();
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public codNotAvailableObj = {}; // cart.component
@@ -141,7 +141,7 @@ export class CartService
             tpt = tpt + item['tax'];
         };
         modifiedCartSessionObject.cart.totalAmount = totalAmount;
-        modifiedCartSessionObject.cart.totalPayableAmount = totalAmount + modifiedCartSessionObject.cart['shippingCharges'] - modifiedCartSessionObject.cart['totalOffer'];
+        modifiedCartSessionObject.cart.totalPayableAmount = (totalAmount + modifiedCartSessionObject.cart['shippingCharges']) - (modifiedCartSessionObject.cart['totalOffer'] || 0);
         modifiedCartSessionObject.cart.tawot = tawot;
         modifiedCartSessionObject.cart.tpt = tpt;
         modifiedCartSessionObject.itemsList = itemsList;
@@ -691,7 +691,7 @@ export class CartService
         // we do not want to refresh cart by pages component in case buynow event
         // conditional are hacks used because localtion.goback() refresh page and 
         // call getcartsession API from pages component (root module)
-        console.log('WINDOW Histroy', window.history.length, this.previousUrl, this.currentUrl, this._router.url);
+        //console.log('WINDOW Histroy', window.history.length, this.previousUrl, this.currentUrl, this._router.url);
         if (
             (
                 !this._buyNow &&
@@ -823,7 +823,8 @@ export class CartService
             isProductUpdate: 0,
             sellingPrice: productPrice,
             moq: productMinimmumQuantity,
-            incrementUnit: incrementUnit
+            incrementUnit: incrementUnit,
+            packageUnit: (priceQuantityCountry && priceQuantityCountry['packageUnit']) ? priceQuantityCountry['packageUnit'] : null
         } as AddToCartProductSchema;
         if (args.isFbt) {
             product['isFbt'] = args.isFbt;
@@ -1183,7 +1184,6 @@ export class CartService
                 const promo = this.allPromoCodes.find(promo => promo.promoId === offerId);
                 if (promo) {
                     this.appliedPromoCode = promo['promoCode'];
-                    this.appliedPromocodeSubject.next(this.appliedPromoCode);
                     //back end code as getCartBysession is not updating with offerdetails of promocde applied
                     this.updatePromoDetail(this.appliedPromoCode);
                 }
@@ -1204,8 +1204,7 @@ export class CartService
                     const data = response['data'];
                     cartSession['cart']['totalOffer'] = data['discount'];
                     cartSession['extraOffer'] = null;
-                    const newCartSession = this.generateGenericCartSession(cartSession);
-                    this.setGenericCartSession(newCartSession);
+                    this.postProcessAfterPromocode(promoCode, cartSession, false);
                 }
             });
         }
@@ -1227,26 +1226,26 @@ export class CartService
                     this.verifyAndApplyPromocode(cartSession, promcode, false).subscribe(({ cartSession, isUpdated }: any) =>
                     {
                         if (isUpdated) {
-                            this.postProcessAfterPromocode(cartSession);
+                            this.postProcessAfterPromocode(promcode, cartSession, true);
                             return;
                         }
                     })
                 } else {
                     this.appliedPromoCode = '';
-                    this.appliedPromocodeSubject.next(this.appliedPromoCode);
+                    this.promoCodeSubject.next({ promocode: this.appliedPromoCode, isNewPromocode: false });
                     this._loaderService.setLoaderState(false);
                     this._toastService.show({ type: 'error', text: message });
                 }
             }, error =>
             {
                 this.appliedPromoCode = '';
-                this.appliedPromocodeSubject.next(this.appliedPromoCode);
+                this.promoCodeSubject.next({ promocode: this.appliedPromoCode, isNewPromocode: false });
                 this._loaderService.setLoaderState(false);
             });
         }
     }
 
-    postProcessAfterPromocode(cartSession)
+    postProcessAfterPromocode(promocode, cartSession, isNewPromocode)
     {
         const totalOffer = cartSession['cart']['totalOffer'] || null;
         let tempCartSession = null;
@@ -1258,16 +1257,15 @@ export class CartService
             }),
         ).subscribe((newCartSession) =>
         {
-            //this.appliedPromocodeSubject.next(this.appliedPromoCode);
+            newCartSession['extraOffer'] = null;
+            newCartSession['cart']['totalOffer'] = totalOffer;
             const _cartSession = this.generateGenericCartSession(newCartSession);
-            _cartSession['cart']['totalOffer'] = totalOffer;
-            _cartSession['extraOffer'] = null;
             this.setGenericCartSession(_cartSession);
+            this._cartUpdatesChanges.next(cartSession);
             this.orderSummary.next(_cartSession);
+            if (totalOffer) { this.promoCodeSubject.next({ promocode: promocode, isNewPromocode: isNewPromocode}); }
             this._loaderService.setLoaderState(false);
-            if (totalOffer) { this._toastService.show({ type: 'success', text: 'Promo Code Applied' }); }
-        }
-        )
+        })
     }
 
     verifyAndApplyPromocode(_cartSession, promcode, isUpdateCart)
@@ -1298,7 +1296,6 @@ export class CartService
                 });
                 returnValue['cartSession'] = cartSession;
                 this.appliedPromoCode = promcode;
-                this.appliedPromocodeSubject.next(this.appliedPromoCode);
                 return returnValue;
             }
             if (status === false || (data && data['discount'] === 0)) {
@@ -1306,7 +1303,6 @@ export class CartService
                 cartSession['offersList'] = [];
                 cartSession['itemsList'].map((item) => item['offer'] = null);
                 this.appliedPromoCode = '';
-                this.appliedPromocodeSubject.next(this.appliedPromoCode);
                 this._loaderService.setLoaderState(false);
                 returnValue['cartSession'] = cartSession;
                 if ((data && data['discount'] > 0) && (data['discount'] >= cartSession['cart']['totalAmount'])) {
@@ -1339,10 +1335,12 @@ export class CartService
             data =>
             {
                 this.appliedPromoCode = '';
-                this.appliedPromocodeSubject.next("");
-                this.setGenericCartSession(data);
-                this.updateCartSession(data).subscribe(res =>
+                this.promoCodeSubject.next({ promocode: this.appliedPromoCode, isNewPromocode: false });
+                this.setGenericCartSession(cartSession);
+                this.updateCartSession(cartSession).subscribe(res =>
                 {
+                    this.publishCartUpdateChange(cartSession);
+                    this.setGenericCartSession(this.generateGenericCartSession(cartSession));
                     this._loaderService.setLoaderState(false);
                     this._toastService.show({ type: 'success', text: "Promo Code Removed" });
                 });
@@ -1396,25 +1394,22 @@ export class CartService
     }
 
     /**@description display unavailable items in pop-up */
+    showUnavailableItems: boolean = false;
+    unavailableItemsList: any[];
     viewUnavailableItems(types: string[])
     {
         const itemsList: any[] = JSON.parse(JSON.stringify(this.getGenericCartSession['itemsList']));
         const unserviceableMsns = JSON.parse(JSON.stringify(this.notifications))
             .filter(item => types.includes(item['type'])).reduce((acc, cv) => { return [...acc, ...[cv['msnid']]] }, []);
-        const LIST: any[] = itemsList.filter(item => item['oos'] || unserviceableMsns.indexOf(item['productId']) != -1);
-        if (LIST.length === 0) return;
-        this._modalService.show({
-            component: SharedCheckoutUnavailableItemsComponent,
-            inputs: { data: { page: 'all', items: LIST, removeUnavailableItems: this.removeUnavailableItems.bind(this) } },
-            outputs: {},
-            mConfig: { className: 'ex' }
-        });
+        this.unavailableItemsList = itemsList.filter(item => item['oos'] || unserviceableMsns.indexOf(item['productId']) != -1);
+        if (this.unavailableItemsList.length === 0) return;
+        this.showUnavailableItems = true;
     }
 
-    removeUnavailableItems(items: any[])
-    {
+    removeUnavailableItems(items: any[]) {
         const MSNS = items.map(item => item['productId']);
-        this.removeCartItemsByMsns(MSNS);
+        this.removeCartItemsByMsns(MSNS)//postprocessing
+        this.showUnavailableItems = false;
     }
 
     //Post processing
@@ -1605,7 +1600,7 @@ export class CartService
             } else if (UPDATES['priceWithoutTax'] && (UPDATES['priceWithoutTax'] != CART_PRODUCT_PRICE)) {
                 if (UPDATES['priceWithoutTax'] < CART_PRODUCT_PRICE) {
                     msg['type'] = "price";
-                    msg['data'] = { productName: CART_PRODUCT_NAME, text1: ' price has been updated from ', text2: 'to', oPrice: CART_PRODUCT_PRICE, nPrice: validateCartData[CART_PRODUCT_MSN]['productDetails']['priceWithoutTax'] };
+                    msg['data'] = { productName: CART_PRODUCT_NAME, text1: '   price has been updated from ', text2: 'to', oPrice: CART_PRODUCT_PRICE, nPrice: validateCartData[CART_PRODUCT_MSN]['productDetails']['priceWithoutTax'] };
                 } else {
                     increasedPriceMSNS.push(CART_PRODUCT_MSN);
                 }
@@ -1915,6 +1910,20 @@ export class CartService
         );
     }
 
+    getCartItemsCount() {
+        let count = 0;
+        if (this.cartSession['itemsList']) { count = (this.cartSession['itemsList'] as any[]).length; }
+        return count;
+    }
+
+    getTotalPayableAmount(cart)
+    {
+        const totalAmount = cart['totalAmount'] || 0;
+        const shippingCharges = cart['shippingCharges'] || 0;
+        const totalOffer = cart['totalOffer'] || 0
+        return (totalAmount + shippingCharges) - (totalOffer);
+    }
+
     //Analytics
     sendAdobeOnCheckoutOnVisit(checkoutPageTye)
     {
@@ -2086,4 +2095,6 @@ export class CartService
         this._globalAnalyticsService.sendAdobeCall(data, trackingname);
         /*End Adobe Analytics Tags */
     }
+
+    
 }

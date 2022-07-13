@@ -1,4 +1,3 @@
-import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -13,7 +12,7 @@ import { CartService } from '@services/cart.service';
 import { environment } from 'environments/environment';
 import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
-declare let dataLayer;
+
 @Component({
     selector: 'checkout-address',
     templateUrl: './checkout-address.component.html',
@@ -28,6 +27,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = new Subject();
 
     invoiceType = this.INVOICE_TYPES.RETAIL;
+    payableAmount = 0;
     isUserLoggedIn = false;
     hasCartItems = true;
     verifyUnserviceableFromCartSubscription = false;//to restrict the verification of unserviceable items on every cart subscription.
@@ -36,21 +36,21 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     billingAddress = null;
     moveSectionTo = null;
     cartSession = null;
-
+    
     orderSummarySubscription; Subscription = null;
     loginSubscription: Subscription = null;
     logoutSubscription: Subscription = null;
     cartUpdatesSubscription: Subscription = null;
 
-    constructor(private _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService,
-        private _globalAnalyticsService:GlobalAnalyticsService, private _commonService:CommonService) { }
-
+    constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
+        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService) { }
+    
 
     ngOnInit(): void
     {
         this._cartService.sendAdobeOnCheckoutOnVisit("address");
         this.updateUserStatus();
+        this._cartService.showUnavailableItems = false;
     }
 
     ngAfterViewInit(): void
@@ -60,9 +60,9 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
                 this.cartSession = cartSession;
                 this.hasCartItems = this.cartSession && this.cartSession['itemsList'] && (this.cartSession['itemsList']).length > 0;
-                // if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length) {
-                //     this._cartService.calculatePayableAmount(this.cartSession['cart']);
-                // }
+                if (this.cartSession['cart'] && Object.keys(this.cartSession['cart']).length) {
+                    this.calculatePayableAmount(this.cartSession['cart']);
+                }
                 //address is getting updated and cart session is getting updated with some delay.
                 //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
                 if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
@@ -129,9 +129,9 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     }
 
     /**
-     * @description to extract non-serviceable and COD msns
-     * @param postCode deliverable post code
-     */
+   * @description to extract non-serviceable and COD msns
+   * @param postCode deliverable post code
+   */
     verifyServiceablityAndCashOnDelivery(postCode)
     {
         const cartItems: any[] = this.cartSession['itemsList'] || [];
@@ -149,10 +149,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     }
 
     /**
-     * @description to update the non serviceable items which are used in cart notfications
-     * @param contains items is cart
-     * @param nonServiceableMsns containes non serviceable msns
-     */
+    * @description to update the non serviceable items which are used in cart notfications
+    * @param contains items is cart
+    * @param nonServiceableMsns containes non serviceable msns
+    */
     updateNonServiceableItems(cartItems: any[], nonServiceableMsns: any[])
     {
         if (nonServiceableMsns.length) {
@@ -169,7 +169,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
     {
         this._cartService.codNotAvailableObj['itemsArray'] = cartItems.filter((item) => nonCashonDeliverableMsns.includes(item.productId));
-        this._cartService.cashOnDeliveryStatus.isEnable = nonCashonDeliverableMsns.length === 0;
+        this._cartService.cashOnDeliveryStatus.isEnable = (nonCashonDeliverableMsns.length === 0);
     }
 
     /**@description scrolls to payment summary section on click of info icon*/
@@ -210,6 +210,14 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             return;
         }
         this.validateCart();
+    }
+
+    /**@description calculates the total payable amount as per cart changes*/
+    calculatePayableAmount(cart) {
+        const TOTAL_AMOUNT = cart['totalAmount'] || 0;
+        const SHIPPING_CHARGES = cart['shippingCharges'] || 0;
+        const TOTAL_OFFER = cart['totalOffer'] || 0;
+        this.payableAmount = (TOTAL_AMOUNT + SHIPPING_CHARGES) - TOTAL_OFFER;
     }
 
     validateCart()
@@ -285,7 +293,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                     eventData['prodURL'] = _cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
                 }
                 /*Start Criteo DataLayer Tags */
-                dataLayer.push({
+                this._analytics.sendGTMCall({
                     'event': 'viewBasket',
                     'email': (userSession && userSession.email) ? userSession.email : '',
                     'currency': 'INR',
@@ -294,7 +302,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 });
                 /*End Criteo DataLayer Tags */
 
-                dataLayer.push({
+                this._analytics.sendGTMCall({
                     'event': 'checkout',
                     'ecommerce': {
                         'checkout': {
@@ -331,7 +339,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             };
             dlp.push(product);
         }
-        dataLayer.push({
+        this._analytics.sendGTMCall({
             'event': 'checkout',
             'ecommerce': {
                 'checkout': {
@@ -343,15 +351,13 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         let userSession = this._localAuthService.getUserSession();
         if (userSession && userSession.authenticated && userSession.authenticated == "true") {
             /*Start Criteo DataLayer Tags */
-            dataLayer.push({
+            this._analytics.sendGTMCall({
                 'event': 'setEmail',
                 'email': (userSession && userSession.email) ? userSession.email : ''
             });
             /*End Criteo DataLayer Tags */
         }
     }
-
-    get displayPage() { return this._cartService.getGenericCartSession?.itemsList && this._cartService.getGenericCartSession?.itemsList.length > 0 }
 
     ngOnDestroy()
     {

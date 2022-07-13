@@ -45,7 +45,6 @@ export class CartUpdatesComponent {
     }
 
     viewUnavailableItems() {
-         ;
         const cartSession = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession));
         let itemsList = cartSession['itemsList']; 
         const unservicableMsns = JSON.parse(JSON.stringify(this._commonService.itemsValidationMessage))
@@ -56,12 +55,13 @@ export class CartUpdatesComponent {
         // const unservicableMsns = this.unServicableItems.map((item) => item['msnid']);
         // const unservicableMsns = this.unServicableItems.map((item) => item['msnid']);
         itemsList = itemsList.filter(item => item['oos'] || unservicableMsns.indexOf(item['productId']) != -1);
-        this._modalService.show({
-            component: UnAvailableItemsComponent,
-            inputs: { data: { page: 'all', items: itemsList, removeUnavailableItems: this.removeUnavailableItems.bind(this) } },
-            outputs: {},
-            mConfig:{className:'ex'}
-        });
+        this._cartService.showUnavailableItems = true;
+        // this._modalService.show({
+        //     component: UnAvailableItemsComponent,
+        //     inputs: { data: { page: 'all', items: itemsList, removeUnavailableItems: this.removeUnavailableItems.bind(this) } },
+        //     outputs: {},
+        //     mConfig:{className:'ex'}
+        // });
     }
 
     removeUnavailableItems(items){

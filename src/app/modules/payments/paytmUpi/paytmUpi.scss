@@ -1,5 +1,16 @@
 @import '../../../scss/variables';
 @import '../payment-continue-btn.scss';
+@import '../../../scss/layout/forms';
+.upiBlockInner{
+    .info-txt{
+        font-size:$small-font;
+        color:var(--spanish-gray);
+        margin-bottom:10px;
+      }
+    .outline-input-label{
+        margin-bottom:5px;
+    }  
+}
 .upi-block {
     .custom-cbox {
         label {
@@ -114,8 +125,7 @@
 }
 
 .paytm-upi-img {
-    margin-top: 20px;
     img {
-        width: 130px;
+        width: 90px;
     }
 }

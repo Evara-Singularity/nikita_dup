@@ -1,34 +1,31 @@
+@import '../../../../scss/variables';
 .brand-container {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    padding: 10px 10px;
+    padding: 10px 10px 0;
     .brand-items{
         width: 48%;
     }
     img {
         max-width: 100%;
     }
-
-    h1 {
-        font-size: 18px;
-        font-weight: 700;
-        color: #2B2B2B;
-        display: block;
-        padding: 0 0 10px;
+    h3{
+        font-size: $large-font;
+        color: var(--onyx-black);
+        padding: 10px 0;
     }
-
     .brand-items-wrap {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-
+        padding: 0;
         .brand-items {
+            margin-bottom: 15px;
             img{
                 box-shadow: 0px 3px 6px #0000001A;
-                border-radius: 4px;
+                border-radius: $border-radius;
             }
-        margin-bottom: 15px;
+            &:nth-child(odd) {
+                padding: 0 6px 0px 0px;
+            }
+            &:nth-child(even) {
+                padding: 0 0px 0px 6px;
+            }
         }
     }
 }

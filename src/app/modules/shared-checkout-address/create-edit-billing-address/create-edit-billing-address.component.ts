@@ -17,7 +17,7 @@ import { SharedCheckoutAddressUtil } from '../shared-checkout-address-util';
 @Component({
     selector: 'create-edit-billing-address',
     templateUrl: './create-edit-billing-address.component.html',
-    styleUrls: ['../common-checkout.scss'],
+    styleUrls: ['./create-edit-billing-address.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy
@@ -58,7 +58,8 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
     {
         this.createBusinessForm(this.address);
         this.fetchStateList(this.countryList[0]['idCountry']);
-        this.fetchBusinessDetails();
+        if (this.isAddMode) { this.fetchBusinessDetails(); return}
+        this.isGSTINVerified = this.address && this.address['gstinVerified'] ? true : false;
     }
 
     ngAfterViewInit()
@@ -86,7 +87,6 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
                 this.email.patchValue(response['email']);
                 this.companyName.markAsDirty();
             }
-            this.isGSTINVerified = this.address && this.address['gstinVerified'] ? true : false;
         });
     }
 

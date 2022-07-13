@@ -4,6 +4,7 @@ import { Routes, RouterModule, UrlSegment } from '@angular/router';
 import { MyAccountGuard } from '@utils/guards/myAccount.guard';
 import { IsNotAuthenticatedGuard } from '@utils/guards/is-not-authenticated.guard';
 import RoutingMatcher from '@utils/routing.matcher';
+import CONSTANTS from '@app/config/constants';
 
 const _routingMatcher = new RoutingMatcher();
 
@@ -20,7 +21,8 @@ const routes: Routes = [
 					footer: true,
 					logo: true,
 					moreOpt: true,
-					pageName: 'home'
+					pageName: 'home',
+					moduleName: CONSTANTS.MODULE_NAME.HOME
 				},
 			},
 			{
@@ -28,7 +30,8 @@ const routes: Routes = [
 				loadChildren: () =>
 					import('./product/product.module').then((m) => m.ProductModule),
 				data: {
-					pageName: 'pdp'
+					pageName: 'pdp',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT
 				},
 			},
 			{
@@ -39,7 +42,8 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
-					pageName: 'listing'
+					pageName: 'listing',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
 				},
 			},
 			// {
@@ -59,7 +63,8 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
-					pageName: 'listing:alp'
+					pageName: 'listing:alp',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
 				}
 			},
 			{
@@ -72,7 +77,8 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
-					pageName: 'listing:popular'
+					pageName: 'listing:popular',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
 				},
 			},
 			{
@@ -96,7 +102,8 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
-					pageName: 'listing:brand'
+					pageName: 'listing:brand',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
 				},
 			},
 			{
@@ -107,7 +114,8 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
-					pageName: 'listing:brandCategory'
+					pageName: 'listing:brandCategory',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
 				},
 			},
 			// {
@@ -128,7 +136,8 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
-					pageName: 'listing:search'
+					pageName: 'listing:search',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
 				},
 			},
 			{
@@ -141,6 +150,7 @@ const routes: Routes = [
 					footer: false,
 					title: 'My Cart',
 					moreOpt: true,
+					moduleName: CONSTANTS.MODULE_NAME.QUICKORDER
 				},
 			},
 			{
@@ -153,6 +163,7 @@ const routes: Routes = [
 					footer: false,
 					title: 'Checkout',
 					moreOpt: true,
+					moduleName: CONSTANTS.MODULE_NAME.CART
 				},
 			},
 			{
@@ -208,8 +219,10 @@ const routes: Routes = [
 					),
 				data: {
 					footer: false,
+					title: 'Order Failure',
 					logo: true,
 					menuBar: true,
+					moduleName: CONSTANTS.MODULE_NAME.ORDER_FAILURE
 				},
 			},
 			{
@@ -222,6 +235,7 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					menuBar: true,
+					moduleName: CONSTANTS.MODULE_NAME.ORDER_CONFIRMATION
 				},
 			},
 			{
@@ -229,6 +243,9 @@ const routes: Routes = [
 				loadChildren: () =>
 					import('./bussiness/bussiness.module').then((m) => m.BusinessModule),
 				canActivate: [MyAccountGuard],
+				data: {
+					moduleName: CONSTANTS.MODULE_NAME.DASHBOARD
+				}
 			},
 			{
 				path: 'brand-store',
@@ -521,6 +538,8 @@ const routes: Routes = [
 					footer: true,
 					logo: true,
 					moreOpt: true,
+					title:"FAQ's",
+					moduleName: CONSTANTS.MODULE_NAME.DASHBOARD
 				},
 			},
 			{
@@ -594,6 +613,8 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					title: 'Contact Us',
+					moduleName: CONSTANTS.MODULE_NAME.DASHBOARD
 				},
 			},
 			{

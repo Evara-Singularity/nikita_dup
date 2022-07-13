@@ -1,0 +1,18 @@
+
+.card {
+    @extend %cards;
+    border-radius:8px;
+    .card-red-text{
+        color: var(--primary);
+        font-size: $large-font;
+        line-height: $small-line-height;
+        font-weight: $font-bolder;
+        padding: 0 0 10px;
+    }
+    .card-gray-text{
+        color: var(--spanish-gray);
+        font-size: $small-font;
+        display: inline-block;
+        padding-bottom:15px ;
+    }
+}

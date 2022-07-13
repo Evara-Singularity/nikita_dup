@@ -32,8 +32,12 @@ button.btn[disabled] {
         color: #3030308c;
         padding-bottom: 4px;
         span {
-            img {
-                width: auto;
+            // img {
+            //     width: auto;
+            // }
+            i{
+                font-size: 10px;
+                color: red;
             }
         }
         img {
@@ -42,9 +46,10 @@ button.btn[disabled] {
     }
     button {
         width: 175px;
-        background: $btn-color-red;
+        background:var(--primary);
         float: right;
         height: 55px;
         text-transform: uppercase;
+        // border-radius: $border-radius-8;
     }
 }

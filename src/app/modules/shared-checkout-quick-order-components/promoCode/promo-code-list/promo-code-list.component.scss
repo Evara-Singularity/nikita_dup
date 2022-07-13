@@ -1,96 +1,107 @@
 @import '../../../../scss/variables';
+@import '../../../../scss/base/typography.scss';
+@import '../../../../scss/layout/cards.scss';
+@import '../../../../scss/utils/utilities.scss';
 .select-offers {
-    .head-sec {}
+    padding-top: 10px;
+    background: var(--white);
+    &.open {
+        background-color: var(--white);
+    }
     .promo-code {
         @extend %clear-fix;
         padding: 0 15px 15px 15px;
         p {
-            font-weight: 600;
+            font-weight: $font-bold;
             font-size: $large-font;
             margin-bottom: 5px;
         }
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid var(--silver);
     }
-    .custom-cbox {
-        height: 79%;
-        height: calc(100vh - 138px);
-        overflow: auto;
-        p {
-            padding: 15px;
-            font-size: $large-font;
-            font-weight: 600;
-            display: block;
-        }
-        label {
-            padding: 15px;
-            border-top: 1px solid $border-color;
-            &.selected {
-                background: $checkbox-overly;
-                .custom-box{
-                    &:before {
-                        color: #3b9e26;
-                    }
+    .no-coupon-card-container{
+        padding-top: 50px;
+        .card{
+            padding:70px 15px;
+            .inner-no-coupon-card{
+                text-align: center;
+                img{
+                    width: 100px;
+                }
+                p{
+                    font-size: $large-font;
+                    line-height: $small-line-height;
+                    padding-top: 10px;
                 }
             }
-            .promo-label {
-                display: inline-block;
-                padding: 5px;
-                font-size: $large-font;
-                font-weight: 600;
-                border: 1px dashed $border-sec-color;
+        }
+    }
+    .coupon-card-container {
+        padding: 20px 15px 15px;
+        .pwa-text{
+            padding-bottom: 10px;
+            font-weight: $font-bold;
+        }
+        .card{
+            padding: 20px 15px;
+            margin-bottom: 10px;
+            .apply-coupon{
+                display: flex;
+                align-items: center;
+                .inner-coupon{
+                    width:65%;
+                }
+                h3{
+                    padding: 0 0 5px;
+                }
+                .promo-description{
+                    font-size: $medium-font;
+                    line-height: $small-line-height;
+                }
+                button{
+                    margin-left:auto;
+                    align-self: self-start;
+                }
             }
-            .promo-description {
-                display: block;
-                font-size: $large-font;
-                margin-top: 5px;
+        }
+    }
+    .alert-box{
+        .overlay{
+            background: rgba(0, 0, 0, 0.7);
+        }
+        .content-area{
+            border-radius: 12px;
+            .info-area{
+                text-align: center;
+                padding: 30px;
+                i{
+                    font-size: 35px;
+                    color: var(--slimy-green);
+                    padding-bottom: 15px;
+                    display: block;
+                }
+                .applied-coupon{
+                    font-weight: 600;
+                    font-size: 14px;
+                    padding-bottom: 20px;
+                }
+                .saving-applid-coupon{
+                    font-size: 10px;
+                    line-height: 16px;
+                    display: grid;
+                    line-height: $large-line-height;
+                    padding-bottom: 15px;
+                    span{
+                        font-size: 28px;
+                        font-weight: 600;
+                    }
+                }
+                .green-text{
+                    font-size: 14px;
+                    color: var(--slimy-green);
+                    font-weight: 600;
+                }
             }
         }
     }
 }
 
-
-/*new css 20-09-2021*/
-
-.popup {
-    position: fixed;
-    // display: none;
-    z-index: 99;
-    &.screen-view {
-        width: 100%;
-        height: 100%;
-        top: 120%;
-        left: 0;
-        background: $white;
-        @extend %transition;
-        &.open {
-            top: 0;
-        }
-        .head-sec {
-            padding: 12px 0;
-            margin: 0;
-            z-index: 5;
-            position: relative;
-            &:after {
-                clear: both;
-                content: '';
-                display: block;
-            }
-            i {
-                font-size: 20px;
-                line-height: 24px;
-                float: left;
-            }
-            i+.page-name {
-                font-size: $extra-large-font;
-                margin-left: 10px;
-            }
-            .txt {
-                font-size: 16px;
-                font-weight: 600;
-                line-height: 21px;
-                margin-left: 20px;
-                float: left;
-            }
-        }
-    }
-}

@@ -32,6 +32,9 @@
     li {
         border: solid $border-color;
         border-width: 0 0 1px 0;
+        &:last-child{
+            border-bottom:none;
+        }
         .second-level {
             @extend %transition;
             max-height: 0;
@@ -64,7 +67,7 @@
             padding: 10px;
             .icon-next {
                 float: left;
-                font-size: 15px;
+                font-size: 12px;
                 line-height: 23px;
             }
             .name {

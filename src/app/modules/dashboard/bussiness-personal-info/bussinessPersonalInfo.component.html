@@ -1,52 +1,57 @@
-<form #personalInfodForm="ngForm" (ngSubmit)="onSubmit(personalInfodForm.value)" class="material-form" novalidate>
 
-  <div class="card">
-    <div class="container input-field">
-      <label [class.is-focus]="(userInfo?.pname+''+ll.value).length!==0">
-        <input type="text" name="fname" [ngModel]="userInfo?.pname" #ll>
-        <span class="label">First Name *</span>
-      </label>
-
-      <label [class.is-focus]="(userInfo?.lname+''+kk.value).length!==0">
-        <input type="text" name="lname" [ngModel]="userInfo?.lname" #kk>
-        <span class="label">Last Name</span>
-      </label>
+  <div class="profile-card profile-name">
+    <div class="profile-card-inner name"><i class="icon-profile"></i>
+    </div>
+    <div class="material-form update-name-form">
+      <div class="outline-input-label"><label [class.is-focus]="nameVal.value.length">
+        <input [value]="userName" [disabled]="isNameInputDisabled" #nameVal type="text">
+        <span class="label">Update Name</span><span *ngIf="!isNameInputDisabled" (click)="onSubmit(nameVal.value.trim())" class="form-inline-cta">UPDATE</span>
+        <span *ngIf="isNameInputDisabled" (click)="activateInput()" class="form-inline-cta">Edit</span></label>
+      </div>
     </div>
   </div>
-  <div>
-    <button class="edit-form">UPDATE</button>
-  </div>
-</form>
-
 <!-- email and phone -->
-<form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value)" class="material-form" novalidate>
-  <div class="card">
-    <div class="container input-field">
-      <label class="is-focus">
-        <input type="text" name="email" [ngModel]="userInfo?.email" readonly>
-        <span class="label">Email *</span>
-      </label>
-      <label class="is-focus">
-        <input type="number" name="phone" [ngModel]="userInfo?.phone" readonly>
-        <span class="label">Phone No. *</span>
-      </label>
+<form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value)" class="material-form profile-form" novalidate>
+    <div class="container input-field custom-profile-input">
+        <label class="is-focus">
+      <input type="text" name="email" [ngModel]="userInfo?.email" readonly>
+      <span class="label">Email *</span>
+    </label>
+        <label class="is-focus">
+      <input type="number" name="phone" [ngModel]="userInfo?.phone" readonly>
+      <span class="label">Phone No. *</span>
+    </label>
     </div>
-  </div>
 </form>
-
-<div class="card" (click)="toPasswordPage()">
-  <a class="other-strip">
-    <h3>Change Password</h3>
-    <i class="icon-next"></i>
-  </a>
+<div class="profile-card profile-bottom-card" [routerLink]="['/dashboard/address']">
+  <div class="profile-card-inner profile-bottom-card-inner">
+      <i class="icon-map-pin-fill"></i>
+      <span class="profile-card-inner-2 ">Addresses</span>
+  </div>
+  <span><i class="icon-next"></i></span>
 </div>
-
+<div class="profile-card profile-bottom-card " (click)="toPasswordPage()">
+    <div class="profile-card-inner profile-bottom-card-inner">
+        <i class="icon-change_password"></i>
+        <span class="profile-card-inner-2 ">Change Password</span>
+    </div>
+    <span><i class="icon-next"></i></span>
+</div>
+<div class="profile-card profile-bottom-card" (click)="logout()">
+    <div class="profile-card-inner profile-bottom-card-inner">
+        <i class="icon-logout1"></i>
+        <span class="profile-card-inner-2 ">Logout</span>
+    </div>
+    <!-- <span><i class="icon-logout"></i></span> -->
+</div>
+<!-- 
 <div class="card logout" (click)="logout()">
+  <i class="icon-map-pin-fill"></i>
   <a class="other-strip">
     <h3>Logout</h3>
     <i class="icon-logout"></i>
   </a>
-</div>
+</div> -->
 
 <!--Search Popup-->
 <!-- <section class="screen-view popup info-update-popup">

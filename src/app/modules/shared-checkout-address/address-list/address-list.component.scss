@@ -1,4 +1,7 @@
 @import "../../../scss/variables";
+@import '../../../scss/components/checkbox';
+@import '../../../scss/components/radio';
+
 .invoice-container {
     background: $white;
     padding: 15px;
@@ -26,16 +29,6 @@
     }
 }
 
-.add-address-substrip {
-    background: #f2f2f2;
-    text-align: center;
-    padding: 15px;
-    .blue-border-btn-full {
-        font-size: $large-font;
-        padding: 10px;
-        border-radius: 0px;
-    }
-}
 
 .address-container {
     margin-top: 10px;
@@ -66,7 +59,6 @@
 
 .address-list {
     @extend %clear-fix;
-    // @extend %container;
     label {
         padding: 10px 0;
         display: block;
@@ -112,21 +104,15 @@
 }
 
 .multiple-address {
+    padding: 15px;
+    background-color: red !important;
     &.withRadioContainer {
-        padding: 10px 15px;
-        border-bottom: 1px solid $border-grey;
+        @extend %white-card;
         &:last-child {
             border-bottom: none;
         }
-        .chk-txt {
-            margin-left: 5px;
-        }
     }
     @extend %clear-fix;
-    label {
-        float: left;
-        width: 93%;
-    }
     .bin-icon {
         float: right;
         text-align: right;

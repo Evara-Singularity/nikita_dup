@@ -1,27 +1,28 @@
-import { CommonService } from '@app/utils/services/common.service';
 import { Location } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { NavigationService } from '@app/utils/services/navigation.service';
+import { environment } from 'environments/environment';
+import { LocalStorageService } from 'ngx-webstorage';
 import { of } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
-import { CartService } from '../../utils/services/cart.service';
 import { LocalAuthService } from '../../utils/services/auth.service';
+import { CartService } from '../../utils/services/cart.service';
 import { GlobalLoaderService } from '../../utils/services/global-loader.service';
-import { GlobalState } from '../../utils/global.state';
-import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
-import { environment } from 'environments/environment';
-import { CheckoutService } from '@app/utils/services/checkout.service';
-import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { LocalStorageService } from 'ngx-webstorage';
-import { SharedAuthService } from '../shared-auth-v1/shared-auth.service';
 
 @Component({
     selector: 'header-nav',
     templateUrl: './header-nav.component.html',
     styleUrls: ['./header-nav.component.scss'],
 })
-export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
+export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
+{
 
+    readonly MODULE_NAME = CONSTANTS.MODULE_NAME;
+    readonly imgAssetPath: string = environment.IMAGE_ASSET_URL
     isHomePage: boolean;
     routerData: any = null;
     user: any = null;
@@ -40,10 +41,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
     bottomSheetInstance = null;
     @ViewChild('bottomSheet', { read: ViewContainerRef })
     bottomSheetContainerRef: ViewContainerRef;
-    hideElLogin: boolean = false;
     searhNav: any;
-    cartHeaderText: string = '';
-    currentUrl: string;
     checkoutTabMap = {
         1: 'Login',
         2: 'Checkout',
@@ -71,55 +69,43 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         '/moglix-originals',
         '/contact',
     ];
-    isLoginPage: boolean = false;
-    displayCart: boolean = false;
-    displayMenu: boolean = false;
-    displaySearch: boolean = false;
-    imgAssetPath: string = environment.IMAGE_ASSET_URL
-    searchValue='';
     @Input('extraData') extraData;
+    activeModuleName = this.MODULE_NAME.HOME;
 
     constructor(
         public router: Router,
-        private route: ActivatedRoute,
         private localAuthService: LocalAuthService,
         public cartService: CartService,
-        private location: Location,
-        private sharedAuthService: SharedAuthService,
         private cfr: ComponentFactoryResolver,
         private injector: Injector,
         public _commonService: CommonService,
-        private changeDetectorRef: ChangeDetectorRef,
         private globalLoader: GlobalLoaderService,
         private localStorageService: LocalStorageService,
-        private _state: GlobalState,
-        private _checkoutService: CheckoutService,
-        private _analytics: GlobalAnalyticsService
-    ) {
+        private _analytics: GlobalAnalyticsService,
+        private _activatedRoute: ActivatedRoute,
+        private _navigationService: NavigationService
+    )
+    {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
-
-        this.commonSubcribers();
     }
 
 
-    ngOnInit() {
+    ngOnInit()
+    {
         if (this.isBrowser) {
-            this.browserCalc();
-            this.refreshIcon();
-            this.route.queryParams.subscribe(res => {
-                this.searchValue = (res['search_query']) ? res['search_query'] : ''
-            })
+            this.isUserLogin = this.localAuthService.isUserLoggedIn();
+            this._navigationService.startSaveHistory();
         }
-        this._checkoutService.checkoutHeader.subscribe((tabIndex) => {
-            this.setHeader();
-        })
+        this.createHeaderData(this._activatedRoute);
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit()
+    {
         if (this.isBrowser) {
             this.addBrowserSubcribers();
-            window.addEventListener('scroll', (event) => {
+            window.addEventListener('scroll', (event) =>
+            {
                 let scrollE = document.scrollingElement || document.documentElement;
                 if (scrollE['scrollTop'] > 120) {
                     this._commonService.isScrolledHeader = true;
@@ -130,17 +116,14 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    ngOnDestroy() {
-        this.sideNavInstance = null;
-        this.searchBarInstance = null;
-    }
-
-    async loadSideNav() {
+    async loadSideNav()
+    {
         if (!this.sideNavInstance) {
             this.globalLoader.setLoaderState(true);
             const { SideNavComponent } = await import(
                 './../../components/side-nav/side-nav.component'
-            ).finally(() => {
+            ).finally(() =>
+            {
                 this.globalLoader.setLoaderState(false);
             });
             const factory = this.cfr.resolveComponentFactory(SideNavComponent);
@@ -162,7 +145,8 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         this.genericButtonClick('/', true);
     }
 
-    genericButtonClick(url, hamBurgerClick?: boolean) {
+    genericButtonClick(url, hamBurgerClick?: boolean)
+    {
         let PAGE = {
             channel: "menu_hamburger",
             pageName: this.router.url,
@@ -177,12 +161,14 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         this._analytics.sendAdobeCall({ page: PAGE }, "genericClick");
     }
 
-    async loadSearchNav(toBeAutoFilledKeyword = '') {
+    async loadSearchNav(toBeAutoFilledKeyword = '')
+    {
         if (!this.searchBarInstance) {
             this.globalLoader.setLoaderState(true);
             const { SearchBarComponent } = await import(
                 './../../components/searchBar/search-bar.component'
-            ).finally(() => {
+            ).finally(() =>
+            {
                 this.globalLoader.setLoaderState(false);
             });
             const factory = this.cfr.resolveComponentFactory(SearchBarComponent);
@@ -199,16 +185,18 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             this.searchBarInstance.instance['analytics'] = this._commonService.createGenricAdobeData('best-seller:search:suggestion', this.routerData['pageName'], 'Product Suggestion');
             (
                 this.searchBarInstance.instance['out'] as EventEmitter<boolean>
-            ).subscribe((status) => {
+            ).subscribe((status) =>
+            {
                 this.searchBarInstance = null;
                 this.sideMenuContainerRef.detach();
             });
-            if (toBeAutoFilledKeyword) { 
-                this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword 
+            if (toBeAutoFilledKeyword) {
+                this.searchBarInstance.instance['autoFillSearchKeyword'] = toBeAutoFilledKeyword
             } else {
-                // console.log('already not loaded', this.route.snapshot.queryParams['search_query'])
-                setTimeout(() => {
-                    this.searchBarInstance.instance.handleSendTextToSearchBar(this.route.snapshot.queryParams['search_query'] || '');
+                // console.log('already not loaded', this._activatedRoute.snapshot.queryParams['search_query'])
+                setTimeout(() =>
+                {
+                    this.searchBarInstance.instance.handleSendTextToSearchBar(this._activatedRoute.snapshot.queryParams['search_query'] || '');
                     document.getElementById('search-input').focus();
                     // document.getElementById('search-input')['value'] = '';
                 }, 500);
@@ -216,14 +204,16 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
 
             if (toBeAutoFilledKeyword) {
-                setTimeout(() => {
-                    
+                setTimeout(() =>
+                {
+
                     this.searchBarInstance.instance.handleSendTextToSearchBar(toBeAutoFilledKeyword);
                 }, 100);
             } else {
-                // console.log('already loaded', this.route.snapshot.queryParams['search_query'])
-                setTimeout(() => {
-                    this.searchBarInstance.instance.handleSendTextToSearchBar(this.route.snapshot.queryParams['search_query'] || '');
+                // console.log('already loaded', this._activatedRoute.snapshot.queryParams['search_query'])
+                setTimeout(() =>
+                {
+                    this.searchBarInstance.instance.handleSendTextToSearchBar(this._activatedRoute.snapshot.queryParams['search_query'] || '');
                     document.getElementById('search-input').focus();
                     // document.getElementById('search-input')['value'] = '';
                 }, 0);
@@ -235,12 +225,11 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
             };
             this.searchBarInstance.instance['showSuggestionBlock'] = false;
             this.searchBarInstance.instance['ssp'] = true;
-
-
         }
     }
 
-    async loadBottomSheet() {
+    async loadBottomSheet()
+    {
         if (!this.bottomSheetInstance) {
             const { NavBottomSheetComponent } = await import(
                 './../../components/nav-bottom-sheet/nav-bottom-sheet.component'
@@ -260,7 +249,8 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         this.checkUserLogin();
         this.loadBottomSheetAnalyticEvent();
     }
-    checkUserLogin() {
+    checkUserLogin()
+    {
         let user = this.localStorageService.retrieve('user');
         if (user && user.authenticated === 'true') {
             this.bottomSheetInstance.instance['userLogin'] = true;
@@ -270,8 +260,8 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    loadBottomSheetAnalyticEvent() {
-
+    loadBottomSheetAnalyticEvent()
+    {
         const user = this.localStorageService.retrieve('user');
         let page = {
             'linkPageName': "moglix:hamburger-menu",
@@ -288,79 +278,48 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         this._analytics.sendAdobeCall({ page, custData, order }, "genericClick");
     }
 
-    commonSubcribers() {
-        this.router.events.subscribe((val) => {
-            this.createHeaderData(this.route);
-            if (val instanceof NavigationEnd) {
-                if (val['url'] === '/' || val['url'] === '/?back=1') {
-                    this._commonService.isHomeHeader = true;
-                    this._commonService.isPLPHeader = false;
-                } else if (this._commonService.isBrowser && (location.pathname.search(/\d{9}$/) > 0 || location.pathname.search('brands') > 0 || location.pathname.search('search') > 0 || location.pathname.search('alp') > 0)) {
-                    this._commonService.isHomeHeader = false;
-                    this._commonService.isPLPHeader = true;
-                }
-                else {
-                    this._commonService.isHomeHeader = false;
-                    this._commonService.isPLPHeader = false;
-                }
-            }
-        });
-    }
-
-    addBrowserSubcribers() {
-        this.router.events
-            .pipe(filter((event) => event instanceof NavigationEnd))
-            .subscribe((evt: any) => {
-                this.currentUrl = evt.url;
-                this.backRedirectUrl = this.currentUrl || '';
+    addBrowserSubcribers()
+    {
+        this._commonService.currentUrl = this.router.url;
+        this.router.events.subscribe((event) =>
+        {
+            if (event instanceof NavigationEnd) {
+                this.createHeaderData(this._activatedRoute);
+                //TODO:set common service previous url and current url
+                //TODO:Remove current URL nad backRedirectURL logic.
                 localStorage.setItem('backRedirectUrl', this.backRedirectUrl);
-                if (evt instanceof NavigationEnd) {
-                    this.refreshIcon();
-                }
-            });
-
-        this.cartService.cart.subscribe((data) => {
-            
-            if (data && data.hasOwnProperty('count')) {
-                this.noOfCart = data.count;
-            } else {
-                throw new Error('Cart update count should always be present');
+                this._commonService.previousUrl = this._commonService.currentUrl;
+                this._commonService.currentUrl = event.url;
+                this.backRedirectUrl = this._commonService.currentUrl || '';
             }
-            this.setHeader();
+        });
+        this.cartService.getCartUpdatesChanges().subscribe((data) =>
+        {
+            this.noOfCart = this.cartService.getCartItemsCount();
         });
 
-        this.localAuthService.login$.subscribe((data) => {
-            this.user = this.localAuthService.getUserSession();
-            this.checkUserLoginState();
+        this.localAuthService.login$.subscribe((data) =>
+        {
+            this.isUserLogin = this.localAuthService.isUserLoggedIn();
         });
 
-        this.localAuthService.logout$.subscribe((data) => {
-            this.user = this.localAuthService.getUserSession();
-            this.checkUserLoginState();
+        this.localAuthService.logout$.subscribe((data) =>
+        {
+            this.isUserLogin = this.localAuthService.isUserLoggedIn();
         });
 
-        this._commonService.getSearchPopupStatus().subscribe((searchKeyword) => {
+        this._commonService.getSearchPopupStatus().subscribe((searchKeyword) =>
+        {
             this.loadSearchNav(searchKeyword)
         })
     }
 
-    browserCalc() {
-        this.checkUserLoginState();
-    }
-
-    checkUserLoginState() {
-        // load user information
-        this.user = this.localAuthService.getUserSession();
-        this.isUserLogin =
-            this.user && this.user.authenticated
-                ? (this.user.authenticated as boolean)
-                : false;
-    }
-
-    createHeaderData(_aRoute) {
+    createHeaderData(_aRoute)
+    {
         of(_aRoute)
             .pipe(
-                map((route) => {
+                map((route) =>
+                {
                     while (route.firstChild) {
                         route = route.firstChild;
                     }
@@ -369,141 +328,32 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
                 filter((route) => route.outlet === 'primary'),
                 mergeMap((route) => route.data)
             )
-            .subscribe((rData) => {
+            .subscribe((rData) =>
+            {
                 this.routerData = rData;
-                this.displayCart = (this.routerData['cart'] != undefined) ? this.routerData['cart'] : true;
-                this.displayMenu = (this.routerData['menuBar'] != undefined) ? this.routerData['menuBar'] : true;
-                this.displaySearch = (this.routerData['searchBar'] != undefined) ? this.routerData['searchBar'] : true;
+                this.activeModuleName = rData['moduleName'];
             });
     }
 
-
-    goBack() {
-        this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
-        const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
-
-        // const currentURL = this.router.url;
-        // const previousURL = (this._commonService.getPreviousUrl);
-        // const backURL = this.backRedirectUrl;
-        // console.log(`CurrentURL:${currentURL}, PreviousURL:${previousURL}, BackURL:${backURL}`);
-
-        if (this.backRedirectUrl && this.backRedirectUrl !== '/' && isCheckout === false) {
-            (window.history.length > 2) ? this.redirectToBackURL() : this.router.navigate(['/']);
-        } else {
-            if (this.staticPages.indexOf(window.location.pathname) !== -1) {
-                this.router.navigate(['/']);
-            } else if (isCheckout) {
-                this.redirectToBackURLFromCheckout();
-            } else {
-                this.router.navigate(['/']);
-            }
-        }
-    }
-
-    redirectToBackURLFromCheckout() {
-
-        if (this._commonService.getPreviousUrl.indexOf('checkout/payment') > -1) {
-            this.router.navigateByUrl("quickorder", { replaceUrl: true });
-            return;
-        }
-
-        // incase redirected back from checkout then we need to call cartsession API
-        if (((this.router.url).indexOf('checkout/address') > -1) || ((this.router.url).indexOf('quickorder') > -1)) {
-            this.cartService.clearBuyNowFlow();
-            if (
-                this._commonService.getPreviousUrl.indexOf('checkout/login') > -1 ||
-                this._commonService.getPreviousUrl.indexOf('checkout/sign-up') > -1 || 
-                this._commonService.getPreviousUrl.indexOf('checkout/otp') > -1
-            ) {
-                this.router.navigateByUrl("quickorder", { replaceUrl: true });
-            } else {
-                this.location.back();
-            }
-        } else {
-            this.location.back();
-        }
-    }
-
-    redirectToBackURL() {
-        
-        if (this._commonService.getPreviousUrl.indexOf('checkout/payment') > -1)
-        {
-            this.router.navigate(["quickorder"]);
-            return;
-        }
-
-        if (((this.router.url).indexOf('quickorder') > -1) && (this._commonService.getPreviousUrl.indexOf('checkout/address') > -1)) {
-            this.router.navigateByUrl("/", { replaceUrl: true });
-            return;
-        }
-
-        // incase redirected back from checkout then we need to call cartsession API
-        if (((this.router.url).indexOf('checkout/address') > -1) || ((this.router.url).indexOf('quickorder') > -1)) {
-            // console.log('bakbtn cart session API called');
-            //this.cartService.resetBuyNow();
-            //this.cartService.refreshCartSesion();
-            this.cartService.clearBuyNowFlow();
-            // console.log('bakbtn cart session API called commonService.getPreviousUrl', this._commonService.getPreviousUrl);
-            if (
-                this._commonService.getPreviousUrl.indexOf('checkout/login') > -1 ||
-                this._commonService.getPreviousUrl.indexOf('checkout/signup') > -1 || 
-                this._commonService.getPreviousUrl.indexOf('checkout/otp') > -1
-            ) {
-                this.router.navigate(['/']);
-            } else {
-                this.location.back();
-            }
-        } else {
-            this.location.back();
-        }
-    }
-
-    refreshIcon() {
-        this.cartHeaderText = '';
-        this.hideElLogin = true;
-        this.setHeader();
-    }
-
-    setHeader() {
-        this.noOfCart = 0;
-        if (this.cartService.getGenericCartSession && this.cartService.getGenericCartSession['itemsList'])
-        {
-            this.noOfCart = (this.cartService.getGenericCartSession['itemsList'] as any[]).length || 0;
-        }
-        this.isLoginPage = false;
-        if (
-            this.router.url.includes('/forgot-password') ||
-            this.router.url.includes('/login') ||
-            this.router.url.includes('/quickorder') ||
-            this.router.url.includes('/checkout') ||
-            this.router.url.includes('/online-assist') ||
-            this.router.url.includes('/forgot-password') ||
-            this.router.url.includes('/sign-up') ||
-            this.router.url.includes('/feedback')
-        ) {
-            this.isLoginPage = true;
-            this.hideElLogin = false;
-            this.changeDetectorRef.detectChanges();
-            // console.log('refreshIcon 3', this.router.url);
-
-            if (this.router.url.includes('/quickorder')) {
-                if (this.noOfCart && this.noOfCart != 0) {
-                    this.cartHeaderText = `(${this.noOfCart})`;
-                } else {
-                    this.cartHeaderText = '';
-                }
-            } else if (this.router.url.includes('/checkout')) {
-                this.cartHeaderText = '';
-                this.routerData['title'] = this.router.url.includes('/payment') ? 'Payment' : 'Checkout';
-            } else {
-                this.cartHeaderText = '';
-                this.hideElLogin = false;
-            }
-        } else {
-            this.hideElLogin = true;
-            this.changeDetectorRef.detectChanges();
-            this.cartHeaderText = '';
-        }
+    goBack()
+    {
+        this._navigationService.goBack();
+        // if (this.staticPages.indexOf(window.location.pathname) !== -1) {
+        //     this.router.navigate(['/']);
+        //     return;
+        // }
+        // this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
+        // const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
+        // if (isCheckout || this._commonService.getPreviousUrl.includes('checkout'))
+        // {
+        //     this.router.navigateByUrl("/quickorder", { replaceUrl: true });
+        //     return;
+        // }
+        // if (this.backRedirectUrl && this.backRedirectUrl !== '/') {
+        //     (window.history.length > 2) ? this.location.back() : this.router.navigate(['/']);
+        //     return;
+        // }
+        // this.router.navigate(['/']);
     }
 
     navigateToLogin($event)
@@ -513,5 +363,13 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit {
         this.localAuthService.clearAuthFlow();
         this.localAuthService.clearBackURLTitle();
         this.router.navigate(['/login']);
+    }
+
+    
+
+    ngOnDestroy()
+    {
+        this.sideNavInstance = null;
+        this.searchBarInstance = null;
     }
 }

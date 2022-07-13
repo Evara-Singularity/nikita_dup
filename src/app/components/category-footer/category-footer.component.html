@@ -34,10 +34,9 @@
         [ngClass]="{'hide': !(categoryFooterData?.faqData && categoryFooterData?.faqData.length>0)}" class="body-bg">
         <div class="panel-head"
             [ngClass]="{'hide': !(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0)}">
-            <div class="container">
+            <div class="pwa-row pad-tb-5">
                 <h3 class="heading-3" (click)="_commonService.scrollTo($event)"
-                    [appKpToggle]="{idName: 'openFaq' , iconMode : true}">Frequently Asked Questions about
-                    {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}
+                    [appKpToggle]="{idName: 'openFaq' , iconMode : true}"><span>Frequently Asked Questions about {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}</span>
                     <span class="iconaccordian">
                         <i class="icon-down"></i>
                     </span>

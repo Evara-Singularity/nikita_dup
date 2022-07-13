@@ -1,47 +1,72 @@
-import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-declare let dataLayer: any;
 @Component({
     templateUrl: 'orderSummary.html',
     selector: 'order-summary',
     styleUrls: ['./orderSummary.scss'],
 })
-export class OrderSummaryComponent {
+export class OrderSummaryComponent implements OnInit, OnDestroy
+{
     showPromoOfferPopup: boolean = false;
+    showPromoSuccessPopup: boolean = false;
+    totalOffer = 0;
+    totalPayableAmount = 0;
+    cartSubscription: Subscription = null;
+    promoSubscription: Subscription = null;
+    isCartFetched = false;
 
     constructor(
         public router: Router,
         public _cartService: CartService,
         private _commonService: CommonService,
         private _localAuthService: LocalAuthService,
-        private _globalAnalyticeService:GlobalAnalyticsService,
-    ) {}
+        private _globalAnalyticeService: GlobalAnalyticsService,
+    ) { }
 
-    ngOnInit(): void {
-        if (this._commonService.userSession.authenticated == "true") {
-            this._cartService.getPromoCodesByUserId(this._commonService.userSession.userId);
-        }
-        this._cartService.getCartUpdatesChanges().subscribe(result => {
-            this.updateShippingCharges();
+
+    ngOnInit(): void
+    {
+        this._cartService.appliedPromoCode = "";
+        const userSession = this._localAuthService.getUserSession();
+        this.cartSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
+        {
+            if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
+                this.updateShippingCharges();
+                this.totalOffer = cartSession['cart']['totalOffer'] || 0;
+                this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
+            }
+            this.isCartFetched = true;
         });
+        if (userSession['authenticated'] == "true" && userSession['userId']) {
+            this._cartService.getPromoCodesByUserId(userSession['userId']);
+        }
+        this.promoSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode }) =>
+        {
+            this.showPromoSuccessPopup = isNewPromocode;
+            setTimeout(() => { this.showPromoSuccessPopup = false; },  800)
+        })
     }
-    
-    updateShippingCharges() {
+
+    updateShippingCharges()
+    {
         this._cartService.shippingCharges = 0;
         if (this._cartService.getGenericCartSession && this._cartService.getGenericCartSession.itemsList && this._cartService.getGenericCartSession.itemsList.length > 0) {
             this.getGTMData(this._cartService.getGenericCartSession);
             this.sendTrackData(this._cartService.getGenericCartSession);
-            this._cartService.getGenericCartSession.itemsList.forEach((item) => {
+            this._cartService.getGenericCartSession.itemsList.forEach((item) =>
+            {
                 this._cartService.shippingCharges = this._cartService.shippingCharges + (item.shippingCharges || 0);
             });
         }
     }
 
-    openOfferPopUp() {
+    openOfferPopUp()
+    {
         if (this._commonService.userSession.authenticated == "true") {
             this.showPromoOfferPopup = true;
         } else {
@@ -53,6 +78,10 @@ export class OrderSummaryComponent {
         }
     }
 
+    closePromoSuccessPopUp() { this.showPromoSuccessPopup = false; }
+
+    closePromoListPopUp(flag) { this.showPromoOfferPopup = flag }
+
     //analytics
     getGTMData(cartSession)
     {
@@ -62,7 +91,7 @@ export class OrderSummaryComponent {
         {
             obj.push({
                 'id': element.productId,
-                'name': element.productName,	
+                'name': element.productName,
                 'price': element.productUnitPrice,
                 //'variant': this.appliedPromoCode.promoCode,TODO
                 'quantity': element.productQuantity
@@ -110,5 +139,11 @@ export class OrderSummaryComponent {
             })
         }
         this._globalAnalyticeService.sendToClicstreamViaSocket(trackData);
+    }
+
+    ngOnDestroy(): void
+    {
+        if (this.cartSubscription) this.cartSubscription.unsubscribe()
+        if (this.promoSubscription) this.promoSubscription.unsubscribe()
     }
 }

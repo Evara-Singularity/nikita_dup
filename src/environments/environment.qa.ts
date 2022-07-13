@@ -10,7 +10,7 @@ export const environment = {
   CDN_IMAGE_URL: 'https://cdn.moglix.com/',
   GTM_ANALYTICS_CODE: 'GTM-WW4R83Z',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js',
-  buildVersion: '11.1',
+  buildVersion: '12.2',
   SOCIAL_LOGIN: {
     "google": {
       "clientId": "122641287206-9abv091pefhcp1dukt0qnjnncsckdt07.apps.googleusercontent.com"
@@ -24,9 +24,48 @@ export const environment = {
     NAME: 'ENV_A',
     STATUS: false,
   },
+  // IDS_MAP: {
+  //   //new ids for mobile
+
+  //   cm136360: "BEST_SELLER",
+  //   cm915657: "BANNER",
+  //   //'CM881267':'FANS_BLOWER',
+  //   cm325516: "SAFETY",
+  //   cm889618: "FLY_OUT",
+  //   cm814985: "CAT_B",
+  //   cm196070: "CAT_C",
+  //   cm454649: "CAT_D",
+  //   cm358138: "CAT_E",
+  //   cm933249: "CAT_F",
+  //   cm416640: "CAT_G",
+  //   cm973381: "MIDDLE_BANNER_ADS",
+  //   cm312585: "FEATURE_BRANDS",
+  //   cm976581: "FEATURE_ARRIVAL",
+  // },
+  // CMS_IDS: {
+  //   // new layout ids for mobile
+  //   BEST_SELLER: "id=cm136360",
+  //   BANNER: "id=cm915657",
+  //   //FANS_BLOWER :'id=cm881267',
+  //   SAFETY: "id=cm325516",
+  //   FLY_OUT: "id=cm889618",
+  //   CAT_A: "id=cm325516",
+  //   CAT_B: "id=cm814985",
+  //   CAT_C: "id=cm196070",
+  //   CAT_D: "id=cm454649",
+  //   CAT_E: "id=cm358138",
+  //   CAT_F: "id=cm933249",
+  //   CAT_G: "id=cm416640",
+  //   CAT_H: "id=cm814985",
+  //   MIDDLE_BANNER_ADS: "cm973381",
+  //   CATEGORY_EXTRAS: "cm867481",
+  //   FEATURE_BRANDS: "cm312585",
+  //   FEATURE_ARRIVAL: "cm976581",
+  //   MANUFACTURER_STORE: "macizo_m",
+  //   MANUFACTURER_STORE_BRAND: "macizo",
+  // },
   IDS_MAP: {
     //new ids for mobile
-
     cm136360: "BEST_SELLER",
     cm915657: "BANNER",
     //'CM881267':'FANS_BLOWER',
@@ -39,6 +78,8 @@ export const environment = {
     cm933249: "CAT_F",
     cm416640: "CAT_G",
     cm973381: "MIDDLE_BANNER_ADS",
+    // cm334468: "FEATURE_BRANDS",
+    // cm977811: "FEATURE_ARRIVAL",
     cm312585: "FEATURE_BRANDS",
     cm976581: "FEATURE_ARRIVAL",
   },
@@ -59,6 +100,8 @@ export const environment = {
     CAT_H: "id=cm814985",
     MIDDLE_BANNER_ADS: "cm973381",
     CATEGORY_EXTRAS: "cm867481",
+    // FEATURE_BRANDS: "cm334468",
+    // FEATURE_ARRIVAL: "cm977811",
     FEATURE_BRANDS: "cm312585",
     FEATURE_ARRIVAL: "cm976581",
     MANUFACTURER_STORE: "macizo_m",

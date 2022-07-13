@@ -1,62 +1,51 @@
 <section class="purchase-list">
-    <ul class="list view-products">
-        <li *ngFor="let item of purchaseLists; let  ele = index;let i = index;">
-
-            <div class="clearfix">
-                <div class="product-img">
-                    <img src="{{imagePath}}{{item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].images[0].links.medium}}"
-                        alt="product Image">
-                </div>
-                <div class="product-description">
-                    <div class="p-name">
-                        <p class="description-txt f-left"
-                            routerLink="/{{item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].canonicalUrl}}">
-                            {{ ((item.productName != null ) && (item.productName.length>50) )? (item.productName | slice:0:50)+'..':(item.productName)}}
-                        </p>
-                        <i class="icon-dot f-right" (click)="showBox(i)"></i>
-
-                    </div>
-                    <p class="price" *ngIf="!item.productDetail.productBO.outOfStock">
-                        <span class="after-discount">
-                            {{item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].sellingPrice | currency: 'INR' : 'symbol' : '1.0-0'}}
-                        </span>
-
-                        <span class="before-discount"
-                            *ngIf="item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].mrp">
-                            {{item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].mrp | currency: 'INR' : 'symbol' : '1.0-0'}}
-                        </span>
-
-                        <span class="discount"
-                            *ngIf="item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].mrp">
-                            {{discountPrice(item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].mrp,item.productDetail.productBO.productPartDetails[item.productDetail.productBO.partNumber].productPriceQuantity['india'].sellingPrice | mathFloor)}}%
-                            Off
-                        </span>
-
-                    </p>
-                    <div class="cart" *ngIf="!item.productDetail.productBO.outOfStock"
-                        (click)="addNow(item.productDetail)"> ADD TO CART</div>
-                    <div class="cart grayLabel" *ngIf="item.productDetail.productBO.outOfStock"> OUT OF STOCK</div>
-                </div>
-            </div>
-        </li>
-    </ul>
-
+    <ng-container *ngFor="let item of wishlistData;let pIndex=index;">
+        <div class="pwa-row plp-card-list">
+            <div class="pwa-col-12" >
+        <product-card-horizontal-list-view [pageName]="pageName" [product]="item" (remove$)="removeFromWishlist($event)"
+            [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" >
+        </product-card-horizontal-list-view> 
+    </div>
+    </div>
+    </ng-container>
+        
     <div class="norder" *ngIf="purchaseLists && purchaseLists.length==0">
         <img src="{{imagePath}}b/I/P/B/d/no-order-image.png" width="200" />
-
         <div class="noordertext">Your WishList list is empty. Save items you like. Review them anytime and add to cart.
         </div>
         <button [routerLink]="['/']" class="btn startshop">START SHOPPING</button>
     </div>
 </section>
-<div class="bottom-options open" *ngIf="spp">
-    <div class="overlay" (click)="spp =false"></div>
-    <div class="content-box" content>
-        <ul class="container">
-            <li class="remove"
-                (click)="removeItemFromPurchaseList(purchaseLists[elementIndex].productDetail.productBO); this.aori(null, purchaseLists[elementIndex].productDetail)">
-                Remove from WishList</li>
-            <li class="cancel" (click)="spp=false">Cancel </li>
-        </ul>
+<app-bottom-menu *ngIf="removableItem !== null">
+    <div content>
+        <div class="content-area removePopup">
+            <div class="top-header-bottom-menu">
+                <h3 class="heading-3">Are you sure to remove this item?</h3>
+            </div>
+            <div class="pwa-row pad-tb-15 realTimeUpdate">
+                <div class="pwa-col-12">
+                    <div class="pwa-row static-small-card-container">
+                        <div class="product-img">
+                            <img routerLink="{{'/' + removableItem.productUrl}}" src="{{imageCdnPath + removableItem.mainImageThumnailLink}}">
+                        </div>
+                        <div class="product-description">
+                            <p class="description-txt">{{ (removableItem.productName.length > 50) ? (removableItem.productName | slice:0:48) + '..' :
+                                (removableItem.productName) }}</p>
+                        </div>
+                    </div>
+                    <div class="cta-row">
+                        <button (click)="$event.stopPropagation();cancelRemovableItem();" cstatic-small-card-container
+                            class="btn secondry-btn-1">CANCEL</button>
+                        <button class="btn secondry-btn" (click)="$event.stopPropagation();removeItemFromPurchaseList(removableItem)"><i
+                                class="icon-bin"></i>&nbsp;REMOVE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</app-bottom-menu>
+
+
+
+
+

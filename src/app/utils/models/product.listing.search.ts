@@ -48,7 +48,7 @@ export interface ProductsEntity {
     mainImageLink: string;
     mainImageThumnailLink?: string;
     mainImageMediumLink?: string;
-    productTags?: (null)[] | null;
+    productTags?: any ;
     filterableAttributes: FilterableAttributes;
     itemInPack: string;
     ratingCount: number;
@@ -58,6 +58,8 @@ export interface ProductsEntity {
     keyFeatures?: string[];
     internalProduct?: boolean; // used in case of sponsered Ad
     outOfStock?: boolean;
+    description?:string;
+    short_description?: null;
 }
 
 export interface FilterableAttributes {
@@ -96,6 +98,7 @@ export interface ProductCardFeature {
     enableVideo: Boolean,
     verticalOrientation: Boolean,
     horizontalOrientation: Boolean,
+    verticalOrientationV2?: Boolean,
     lazyLoadImage: Boolean,
 }
 export interface ProductCardMetaInfo {

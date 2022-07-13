@@ -1,13 +1,15 @@
 <section class="upiBlockInner">
     <div id="upi_block" class="upi-block continer">
-        <div class="">
             <form [formGroup]="upiForm" (ngSubmit)="paytmApicall(upiForm.value)" class="form-horizontal">
-                <div>
-                    <div class="material-form material-form-boxed" *ngIf="upiChecked">
-                        <div class="input-field-boxed">
-                            <label>Please enter your UPI ID.</label>
-                            <input type="text" class="upicode" formControlName="upi" [value]=""
-                                (keyup)="resetLoginError($event)" #upicode placeholder="Ex: mobileNumber@upi">
+                    <div class="material-form" *ngIf="upiChecked">
+                        <div class="outline-input-label">
+                            <label [class.is-focus]="upicode.value.length!=0">
+                                <input placeholder="" type="text" class="upicode" formControlName="upi" [value]=""
+                                    (keyup)="resetLoginError($event)" #upicode placeholder="">
+                                    <span class="label">
+                                        Please enter your UPI ID
+                                    </span>
+                            </label>
                             <span *ngIf="upicode?.value?.length!=''" class="clearupi" (click)="upicode.value=''"><i
                                     class="fa fa-times"></i></span>
                             <p *ngIf="upiForm.controls['upi'].touched && upiForm.controls['upi'].errors?.required"
@@ -16,11 +18,10 @@
                                 class="text-red error">Enter valid upi</p>
                             <p *ngIf="upiError && upicode.value.length > 0 && !validUpi" class="text-red error">
                                 {{upiError.message}}</p>
-
                         </div>
+                        <p class="info-txt ml-10">Ex: mobileNumber@upi</p>
                     </div>
-                </div>
-                <div class="paytm-upi-img">
+                <div class="paytm-upi-img mt-15">
                     <img src="{{imagePath+imageFolder}}/Mobile.png">
                 </div>
                 <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-t-15">Prepaid Discount : ₹
@@ -37,7 +38,5 @@
                 </div>
             </form>
         </div>
-    </div>
 </section>
-
 <paytm-upi-form *ngIf="isValid==true" [data]="upiData"></paytm-upi-form>

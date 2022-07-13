@@ -1,0 +1,51 @@
+.qty_section {
+    width: 130px;
+    .quantity-block {
+        height: 30px;
+        width: 130px;
+        border-right: none;
+        vertical-align: middle;
+        display: flex;
+        justify-content: space-around;
+
+        .qty-block {
+            width: 30px;
+            height: 30px;
+            background: #dbedff;
+            border: 1px solid #8bc5ff;
+            line-height: $extra-large-1-line-height;
+            font-size: $large-font;
+            border-radius: $border-radius-2;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        input {
+            font-weight: bold;
+            width: 60px;
+            padding: 0px;
+            height: 100%;
+            margin: 0px 5px;
+            text-align: center;
+            border: none;
+            background: var(--white);
+            border: 1px solid var(--onyx-black);
+            font-size: $large-font;
+            font-weight: bold;
+            border-radius: $border-radius-2;
+        }
+    }
+
+    .quan-details {
+        padding-top: 5px;
+        text-align: center;
+
+        p {
+            font-size: $small-font;
+            margin: 0px;
+            padding: 0px 5px;
+            color: var(--spanish-gray);
+        }
+    }
+}

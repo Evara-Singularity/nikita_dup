@@ -1,11 +1,10 @@
 @import '../../scss/variables';
 .cart-errors {
-    border-top: 1px solid #F5681E;
-    border-bottom: 1px solid #F5681E;
+    border: 1px solid #F5681E;
     background: $cart-errors-bg;
     width: 100%;
     padding: 0px 5px 10px;
-    margin-top: 10px;
+    margin: 10px 15px;
     // margin:10px auto;
     // box-shadow: 0pt 1pt 1pt #00000026;
     .panel-head {

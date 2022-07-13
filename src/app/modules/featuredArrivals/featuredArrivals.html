@@ -1,30 +1,30 @@
-<section class="featr_arrival">
-    <div class="container">
-        <div class="clearfix pad-tb-10">
-            <h2 class="f-left f-14 pad-tb-10 upper-case">Featured Arrivals</h2>
-
-            <a [routerLink]="['/deals/fresh-arrivals']" routerLinkActive="router-link-active"
-                class="btn-red f-right">VIEW ALL
-            </a>
-        </div>
-        <ul class="view-products grid">
-            <li *ngFor="let item of featureArrivalData | slice:0:4">
-                <a [routerLink]="item.image_link" (click)="setCookieFeatured(item.image_title)">
-
-                    <div class="product-img">
-                        <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item.image_name" alt="product Image">
-                    </div>
-                    <div class="product-description">
-                        <p class="prod-name">
-                            {{item.image_title}}
-                        </p>
-                        <p *ngFor="let imggen of item.image_general" class="product_helpLink">
-                            <a [routerLink]="imggen.general_url"
-                                (click)=setCookieFeatured(item.image_title)>{{imggen.general_text}}</a>
-                        </p>
-                    </div>
+<ng-container *ngIf="featureArrivalData && featureArrivalData.length > 0" >
+    <section class="featr_arrival pad-tb-15">
+            <div class="view-all-strip">
+                <h2>Featured Arrivals</h2>
+                <a [routerLink]="['/deals/fresh-arrivals']" routerLinkActive="router-link-active"
+                    class="btn quinary-btn">VIEW ALL
                 </a>
-            </li>
-        </ul>
-    </div>
-</section>
+            </div>
+            <ul class="view-products grid-variant1">
+                <li *ngFor="let item of featureArrivalData | slice:0:4">
+                    <a [routerLink]="item.image_link" (click)="setCookieFeatured(item.image_title)">
+                     <div class ="product-card">
+                        <div class="product-img">
+                            <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item.image_name" alt="product Image">
+                        </div>
+                        <div class="product-description">
+                            <p class="prod-name">
+                                {{item.image_title}}
+                            </p>
+                            <p *ngFor="let imggen of item.image_general" class="product_helpLink">
+                                <a [routerLink]="imggen.general_url"
+                                    (click)=setCookieFeatured(item.image_title)>{{imggen.general_text}}</a>
+                            </p>
+                        </div>
+                     </div>
+                    </a>
+                </li>
+            </ul>
+    </section>
+</ng-container>

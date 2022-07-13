@@ -1,0 +1,71 @@
+// @import "../../../scss/components/product-cards";
+@import '../../../scss/variables';
+@import '../../../scss/components/rating';
+@import '../../../scss/components/buttons';
+  .product-vertical-card{
+        background:var(--white);
+        border:1px solid var(--ghost-white);
+        border-radius:$border-radius-8;
+        padding: 10px;
+        position: relative;
+        margin:10px 0px 0px 10px;
+        .product-card-upper {
+            text-align: center;
+            position: relative;
+            .pwa-image{
+                img{
+                    width:115px
+                }
+           }
+        }
+        .product-card-lower {
+            .name {
+                -webkit-line-clamp: 2;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                height: 2.8em;
+                margin-bottom: 5px;
+                line-height: 1.6em;
+                font-size: $large-font;
+                color: var(--onyx-black);
+            }
+            .brand {
+                margin-top: 4px;
+                margin-bottom: 4px;
+                text-align: left;
+                font-size: $small-font;
+                color: var(--gray-web);
+                font-weight:$font-bold;
+            }
+            .prod-price-row{
+                margin-bottom:4px;
+                .prod-mrp{
+                    color: var(--onyx-black);
+                    text-decoration: line-through;
+                    opacity: .5;
+                    margin-right:5px;
+                }
+                .prod-discount{
+                    font-weight:$font-bold;
+                    color:var(--slimy-green);
+                }
+                .prod-selling-price{
+                    margin-top:4px;
+                    font-size: $large-font;
+                    color: var(--onyx-black);
+                    font-weight: $font-bold;
+                }
+            }
+        }
+        .card-btn-row{
+            display:flex;
+            margin-top: 10px;
+            button{
+                flex-basis:calc(100% - 40px);
+                padding: 0px;
+            }
+        }
+      }
+       

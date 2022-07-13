@@ -1,17 +1,20 @@
 <div *ngIf="data" class="l0CategoryContainer">
-
-    <app-cluster-category
-        *ngIf="data['category_cluster'] && data['category_cluster']['data'] && data['category_cluster']['data'].length > 0"
-        [data]="data['category_cluster']" [extraData]="extraData"></app-cluster-category>
-
+    <!-- <app-cluster-category
+            *ngIf="data['category_cluster'] && data['category_cluster']['data'] && data['category_cluster']['data'].length > 0"
+            [data]="data['category_cluster']" [extraData]="extraData"></app-cluster-category> -->
+    <div class="category-card-scroll-bar"  id="tabs">
+        <category-card *ngFor="let item of  data['category_cluster']['data'];let i=index" 
+            (cardClicked$)="categoryCardScroll($event)" 
+            [data]="productDataToCategoryCardObject(i,data['category_cluster']['data'])">
+        </category-card>
+    </div>
     <div class="cluster-body">
-
         <div>
             <ng-container #BannerComponent></ng-container>
         </div>
         <div>
             <ng-container #AllCategoryComponent></ng-container>
-        </div>
+        </div> 
         <div>
             <ng-container #NewArrivalComponent></ng-container>
         </div>
@@ -43,15 +46,4 @@
 
 <div *ngIf="pageNotFound">
     <app-page-not-delivered></app-page-not-delivered>
-
-    <section class="test toggle-panel mt-10 about_moglix" id="footerContainer">
-        <div class="toggle-head pad-lr-0">
-            <div class="container" (click)="clickFooter()">
-                <p class="f-left heading">More about Moglix</p>
-            </div>
-        </div>
-        <footer class="card-30 toggle-content footerScroll">
-            <div [innerHTML]="kfooter?.footerData()"></div>
-        </footer>
-    </section>
 </div>

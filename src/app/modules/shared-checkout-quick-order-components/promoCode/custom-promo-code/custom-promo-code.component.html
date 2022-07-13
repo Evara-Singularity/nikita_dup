@@ -1,8 +1,16 @@
-<form class="promo-code container applied-code" (ngSubmit)="$event.stopPropagation();submitPromocode()" autocomplete="off">
-  <input autocomplete="false" name="hidden" type="text" style="display:none;">
-  <div class="pos-rel">
-    <input required name="appliedcart" type="text" placeholder="Enter Promocode here" [(ngModel)]="appliedPromocode" [readonly]="isPromcodeValid"/>
-    <i class="icon-circle-delete" *ngIf="isPromcodeValid" (click)="$event.stopPropagation();_cartService.genericRemovePromoCode()"></i>
-    <button type="submit" [disabled]="isPromcodeValid">APPLY</button>
+<form class="pwa-row applied-code material-form" (ngSubmit)="$event.stopPropagation();submitPromocode()" autocomplete="off">
+  <div class="pwa-col-12 apply-coupon">
+    <div class="outline-input-label">
+      <label [class.is-focus]="couponCode.value.length!=0">
+        <input #couponCode required name="appliedcart" type="text" [(ngModel)]="appliedPromocode" [readonly]="isPromcodeValid"/>
+        <i class="icon-circle-delete" *ngIf="isPromcodeValid" (click)="$event.stopPropagation();_cartService.genericRemovePromoCode()"></i>
+        <span  class="label">Enter Coupon Code</span>
+      </label>
+    </div>
+    <button class="btn" [class]="canApplyCode?'secondry-btn':'disabled'" [disabled]="isPromcodeValid">APPLY</button>
   </div>
 </form>
+
+
+
+

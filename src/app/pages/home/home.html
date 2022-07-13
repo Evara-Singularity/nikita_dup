@@ -1,87 +1,110 @@
 <div class="home-parent">
     <app-promo [page]="'home'" class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
+    <div class="pwa-row pad-b-0">
+        <div class="pwa-col-12">
+            <div class="css-banner-component">
+                <div class="internalBanner" *ngIf="isBrowser">
+                    <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
+                        <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
+                            [items]="carouselData.bannerData['data']"
+                            [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
+                        </siema-carousel>
+                    </ng-container>
+                </div>
+                <div class="internalBanner" *ngIf="isServer">
+                    <img *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0"
+                        [src]="carouselData.bannerData.data[0].image_name" alt="banner">
+                    <img *ngIf="!(carouselData.bannerData && carouselData.bannerData['data'].length>0)"
+                        [src]="defaultBannerImage" alt="banner">
+                </div>
+                <!-- <div class="pager-container">
+                    <span class="pager-varaint-1">
+                        <span class="pager_dot active">
+                        </span>
+                        <span *ngFor="let i of [1,2,3,4];" class="pager_dot">
+                        </span>
+                    </span>
+                </div> -->
+            </div>
+        </div>
+   </div>
+    <div class="pwa-row pwa-row-noPad">
+        <div class="pwa-col-12 pad-lr-15">
+            <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
+            <section class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
+                <a class="full-banner" *ngIf="i==0" href="{{im.image_link}}">
+                    <img [src]="imagePath + im.image_name" alt="banner add">
+                </a>
+            </section>
 
-    <div class="css-banner-component">
-        <div class="internalBanner h-auto-xs o-hidden relative" *ngIf="isBrowser">
-            <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
-                <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options" [items]="carouselData.bannerData['data']" [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
-                </siema-carousel>
-            </ng-container>
-        </div>
-        <div class="internalBanner h-auto-xs o-hidden relative" *ngIf="isServer">
-            <img *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0" [src]="carouselData.bannerData.data[0].image_name" alt="banner">
-            <img *ngIf="!(carouselData.bannerData && carouselData.bannerData['data'].length>0)" [src]="defaultBannerImage" alt="banner">
-        </div>
-    </div>
-     <!-- section for trending categories-->
-    <home-trendingcategories [tocd]="tocd" [flyOutData]="flyOutData"></home-trendingcategories>
-    
-    <section class="banner-ad" *ngFor="let im of middleImageJsonData;let i = index;">
-        <a *ngIf="i==0" href="{{im.image_link}}">
-            <img [src]="imagePath + im.image_name" alt="banner add">
-        </a>
-    </section>
-   
-    <div class="allCategory">
-        <div class="categoryOverBlk">
-            <div class="clearfix">
-                <div class="commonCategorySlide" *ngFor="let item of clustorCategories | slice:0:5">
-                    <div class="innerSlide">
-                        <a [routerLink]="['/'+item.category_url]">
-                            <div class="categoryImg">
-                                <img src="{{imagePath + 'img/cluster/'+item.category_image}}">
-                            </div>
-                            <div class="categoryName">
-                                <span>{{item['CategoryName']}}</span>
-                            </div>
+            <!-- <div class="home-card-container">
+                    <category-card *ngFor="let item of clustorCategories| slice:0:5" [page]="'home'"
+                        [routerLink]="item.category_url" [image]="imagePath + 'img/cluster/'+item.category_image"
+                        [title]="item['CategoryName']">
+                    </category-card>
+                    <category-card [page]="'home'" [routerLink]="['/all-categories']" [image]="imagePath + 'img/cluster/Group 10310.svg'"
+                        [title]="'View All Categories'">
+                    </category-card>
+                </div> -->
+
+            <div class="pwa-col-12 category-grid-container">
+                <h2>Category Store Explore</h2>
+                <div class="pwa-row pwa-row-noPad pad-tb-0">
+                    <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card"
+                        [routerLink]="item.category_url">
+                        <a>
+                            <img alt={{item.CategoryName}} src="{{clusterimagePath + 'img/cluster/'+item.category_image}}">
+                            <p class="category-text">{{item.CategoryName}}</p>
                         </a>
                     </div>
-                </div>
-                <div class="commonCategorySlide">
-                    <div class="innerSlide">
-                        <a [routerLink]="['/all-categories']">
-                            <div class="categoryImg view_all_img">
-                                <img src="{{imagePath + 'img/cluster/Group 10310.svg'}}">
-                            </div>
-                            <div class="categoryName">
-                                <span>View All Categories </span>
-                            </div>
+                    <div class="category-grid-card" [routerLink]="['/all-categories']">
+                        <a>
+                            <img alt="View All Categories" src="{{clusterimagePath + 'img/cluster/all_categories.png'}}">
+                            <p class="category-text view-all-cate">View All Categories</p>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="pwa-col-12 pad-lr-15">
+            <div observeVisibility class="featr_brand clearfix" [debounceTime]="50"
+                (visible)="onVisibleFeaturedBrands($event)">
+                <div>
+                    <ng-container #FeaturedBrands></ng-container>
+                </div>
+            </div>
+        </div>
+        <div class="pwa-col-12 recently-container">
+            <div observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
+                *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
+                <ng-container #RecentlyViewedCarouselComponent></ng-container>
+                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="carouselInstance"></home-page-skeletons>
+            </div>
+        </div>
+        
+        <div observeVisibility class="pwa-col-12" [debounceTime]="50" (visible)="onVisibleCategories($event)" >
+            <ng-container #Categories></ng-container>
+        </div>
+        <ng-container *ngIf="!categoriesInstance" >
+            <div class="pwa-col-12 recently-container" *ngFor="let i of [1,2,3,4,5]">
+                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="categoriesInstance"></home-page-skeletons>
+            </div>
+        </ng-container>
+        
+
+        <!-- Section for feature Arrival -->
+        <div observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [ngClass]="{'featr_arrival-skeleton':featuredArrivalsInstance == null}" [debounceTime]="50"
+            (visible)="onVisibleFeaturedArrivals($event)">
+            <ng-container #FeaturedArrivals></ng-container>
+            <!-- <home-page-skeletons [type]="'FEATURED-ARRIVALS'" [templateRefInstance]="featuredArrivalsInstance"></home-page-skeletons> -->
+        </div>
+        <ng-container class="bs-popup" #HomePopupComponet></ng-container>
+
+        <div class="pwa-col-12">
+            <home-accordians [carouselData]="carouselData"></home-accordians>
+        </div>
+        <whatsapp-toast (click)="sendTrackingData()" [customText]="'Hi, I want to buy from Moglix'"></whatsapp-toast>
     </div>
 
-    <!-- <div observeVisibility class="categories-container" [debounceTime]="50" (visible)="onVisibleTrendingCategories($event)">
-        <div>
-            <ng-container #TrendingCategories></ng-container>
-        </div>
-    </div> -->
-    
-    <!-- Section for feature Brands -->
-    <div observeVisibility class="featr_brand clearfix" [debounceTime]="50" (visible)="onVisibleFeaturedBrands($event)">
-        <div>
-            <ng-container #FeaturedBrands></ng-container>
-        </div>
-    </div>
-    
-    <div observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}" *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
-        <ng-container #RecentlyViewedCarouselComponent></ng-container>
-    </div>
-    
-    <div observeVisibility class="categories-container clearfix" [debounceTime]="50" (visible)="onVisibleCategories($event)">
-        <ng-container #Categories></ng-container>
-    </div>
-    
-    <div observeVisibility class="featr_arrival clearfix" [debounceTime]="50" (visible)="onVisibleFeaturedArrivals($event)">
-        <ng-container #FeaturedArrivals></ng-container>
-    </div>
-    
-    <ng-container class="bs-popup" #HomePopupComponet></ng-container>
-    
-    
-    <home-accordians [carouselData]="carouselData"></home-accordians>
-    
-    <whatsapp-toast (click)="sendTrackingData()" [customText]="'Hi'"></whatsapp-toast>
+    <!-- section for trending categories-->
 </div>

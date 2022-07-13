@@ -1,27 +1,15 @@
 @import '../../scss/variables';
+
 .list-heading {
     width: 100%;
+    // margin-top: 170px;
     padding: 7px 10px;
-    justify-content: space-between;
-    align-items: center;
-    background: #fff;
-    border-bottom: 1px solid #d7d7d7;
-    border-top: 1px solid #d7d7d7;
-    div {
-        width: 50%;
-    }
-    div.left {
-        text-align: left;
-        font-size: 12px;
-        font-weight: 500;
-    }
-    div.right {
+    .list-num {
         font-size: 10px;
-        width: 100% !important;
     }
     .list-name {
         padding: 5px 0px;
-        font-weight: 600 !important;
+        font-weight: 600;
         text-transform: capitalize;
         font-size: 16px;
     }
@@ -30,11 +18,12 @@
 .filter-wrapper {
     position: fixed;
     // bottom: -200px;
-    top: 54px;
-    z-index: 5;
+    top: 52px;
+    z-index: 9;
     left: 0px;
     width: 100%;
     box-shadow: 0px 12px 16px #455B631A;
+    border-top: 1px solid var(--ghost-white);
     background: $white;
     @extend %box-shadow;
     &.translateHeader {
@@ -51,7 +40,7 @@
         border: none;
         background: transparent;
         float: left;
-        font-size: $medium-font;
+        font-size: $large-font;
         text-align: left;
         padding: 0 12px;
         .txt {
@@ -89,14 +78,17 @@
 
 .filter_chips {
     padding: 20px 10px;
-    background: #fff;
+    background: $white-color;
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
     width: auto;
+    &::-webkit-scrollbar {
+        display: none;
+    }
     .filter_chip {
         background: #F1F1F1;
-        border-radius: 4px;
+        border-radius: $border-radius;
         padding: 4px;
         margin-right: 10px;
         line-height: 11px;
@@ -173,4 +165,10 @@
 .titleDescription{
     padding-top: 5px;
     font-size: 12px !important;
+}
+.plp-card-list{
+    &.pwa-row{
+        padding:0px 10px !important;
+        margin-bottom:10px;
+    }
 }

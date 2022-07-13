@@ -1,20 +1,15 @@
-<section class="Bestseller card card-wrap" *ngIf="similarProducts && similarProducts.length>0">
-    <div class="upper-view-all-sec">
-        <div class="upper-view-all-sec-left">
-            <h4>Similar Products</h4>
-        </div>
-        <!-- <div class="upper-view-all-sec-right">
-            <button>VIEW ALL</button>
-        </div> -->
+<section class="pwa-row similar-product mt-10 pad-r-0" *ngIf="similarProducts && similarProducts.length>0">
+    <section class="pwa-col-12">
+        <div class="view-all-strip">
+            <h3 class="heading-3">Similar Products</h3>
     </div>
-    <div class="vertical-scroll-container similar-products">
-        <div class="inner-scroll-container" [style.width.px]="similarProducts.length * 165">
-            <ng-container *ngFor="let product of similarProducts;let pIndex=index">
-                <product-horizontal-card [section]="'similar'" [product]="product" [cardMetaInfo]='cardMetaInfo'
-                    [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
-                    [analytics]="analytics">
-                </product-horizontal-card>
-            </ng-container>
-        </div>
-    </div>
+    <product-card-vertical-container [numberOfItems]="similarProducts.length || 0">
+        <ng-container *ngFor="let product of similarProducts;let pIndex=index">
+            <product-card-vertical-grid-view [section]="'similar'" [product]="product" [cardMetaInfo]='cardMetaInfo'
+                [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
+                [analytics]="analytics">
+            </product-card-vertical-grid-view>
+        </ng-container>
+    </product-card-vertical-container>
+    </section>
 </section>

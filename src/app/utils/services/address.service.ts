@@ -5,8 +5,12 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AddressListModel } from '../models/shared-checkout.models';
+import { CartService } from './cart.service';
 import { DataService } from './data.service';
 import { GlobalLoaderService } from './global-loader.service';
+import { CheckoutUtil } from './../../pages/checkout-v2/checkout-util';
+import { LocalAuthService } from './auth.service';
+declare let dataLayer;
 
 //TODO:Below methods in common service so clean up accordigly.
 @Injectable({
@@ -18,7 +22,7 @@ export class AddressService
     readonly EMPTY_ADDRESS: AddressListModel = { deliveryAddressList: [], billingAddressList: [] };
     handleError = (returnValue) => { this._globaleLoader.setLoaderState(false); return of(returnValue); }
 
-    constructor(private _dataService: DataService, private _globaleLoader: GlobalLoaderService) { }
+    constructor(private _localAuthService: LocalAuthService, private _dataService: DataService, private _globaleLoader: GlobalLoaderService, private _cartService:CartService) { }
 
     //serviceable methods
     getAddressList(params)
@@ -163,5 +167,23 @@ export class AddressService
         if (deliveryAddressList.length === addressList.length) { return { deliveryAddressList: deliveryAddressList, billingAddressList: [] } }
         billingAddressList = addressList.filter((address) => address['addressType']['idAddressType'] === 2);
         return { deliveryAddressList: deliveryAddressList, billingAddressList: billingAddressList }
+    }
+
+    deleteAddress(index?,type?,address?) {
+        if (address)
+        {
+            const addressType = address['addressType']['addressType'];
+            const idAddress = address['idAddress']
+            if (addressType === 'shipping' && this._cartService.shippingAddress){
+                const cidAddress = this._cartService.shippingAddress['idAddress'];
+                if (idAddress === cidAddress) { this._cartService.shippingAddress = null; }
+            } else if (this._cartService.billingAddress) {
+                const cidAddress = this._cartService.billingAddress['idAddress'];
+                if (idAddress === cidAddress) { this._cartService.billingAddress = null; }
+            }
+        }else{
+            this._cartService.shippingAddress = null;
+            this._cartService.billingAddress = null;
+        }
     }
 }

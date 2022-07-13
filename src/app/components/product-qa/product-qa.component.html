@@ -1,0 +1,32 @@
+<section id="ask-question-section" class="pwa-row Qa mt-10">
+    <div class="pwa-col-12">
+        <div class="faq-head">
+            <h3 *ngIf="questionAnswerList?.data.qlist.length <= 1">Have doubts regarding this product?&nbsp;</h3>
+            <h3 *ngIf="questionAnswerList?.data.qlist.length > 1">Frequently Asked Questions</h3>
+            <button (click)="$event.stopPropagation();askQuestion.emit()" class="btn quaternary-btn-1">ASK&nbsp;NOW</button>
+        </div>
+        <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
+
+            <p class="display-qn">
+                Displaying Questions
+                <span>1-2</span> of
+                <span>{{questionAnswerList.data.qlist.length}} </span>
+            </p>
+            <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
+                <div class="qn">
+                    <span class="qn-number heading-3">Q{{i+1}}:</span>
+                    <span class="qn-right heading-3">{{item.questionText}}</span>
+                </div>
+                <div class="answers">
+                    <div class="answer-block">
+                        <p class=" answer">Ans:</p>
+                        <p class="ans-details answer">{{item.answerText}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup.emit()">
+                <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line small-txt"></i></p>
+            </div>
+        </ng-container>
+    </div>
+</section>

@@ -68,7 +68,7 @@
 <product-more-widget [taxons]="taxons" [baseDomain]="baseDomain" [orderTracking]="orderTracking" [productBrandDetails]="productBrandDetails" [productCategoryDetails]="productCategoryDetails" [productBrandCategoryUrl]="productBrandCategoryUrl">
 </product-more-widget>
 
-<section id="sponseredProducts"  observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+<section id="sponseredProducts" [ngClass]="{'common-product': !sponseredProductsInstance}" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
     <ng-container #sponseredProducts></ng-container>
     <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
 </section>

@@ -1,12 +1,13 @@
-
+@import './../../../scss/variables';
 .youtubeWrap{
     box-shadow: 0px 3px 6px #00000029; 
-    padding: 10px 10px;
+    padding: 5px 15px 10px;
     background:#fff;
 
     .yotubeHeading {
-        font-size: 14px;
-        padding: 0 9px 0;
+        font-size: $large-font;
+        padding: 0 9px 5px;
+        text-transform: uppercase;
     }
     .categoryOverBlk{
         overflow-y:hidden;
@@ -19,7 +20,7 @@
     padding: 10px 5px;
     margin-right: 2px;
         &.selected{
-            border: 1px solid #D9232D;
+            border: 1px solid var(--primary);
             background: #F4E1E5;
         }
     }

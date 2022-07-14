@@ -103,7 +103,7 @@ ProductCrouselSlide{
 
 .oos-tag {
     position: absolute;
-    top: 30px;
+    top: 15px;
     left: 15px;
 
     span {
@@ -114,6 +114,7 @@ ProductCrouselSlide{
         font-size: 10px;
         font-weight: bold;
         z-index: 10; 
+        line-height: 18px;
     }
 }
 .pdpCard{

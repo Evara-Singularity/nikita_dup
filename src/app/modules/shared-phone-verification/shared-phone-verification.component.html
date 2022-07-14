@@ -28,7 +28,7 @@
                 <p class="error-text" *ngIf="otp.hasError('pattern')">OTP must contain 6 digits.</p>
             </ng-container>
             <p class="error-text" *ngIf="otp.valid && otpErrorMessage">{{otpErrorMessage}}</p>
-            <button class="btn-cont" (click)="$event.stopPropagation();validateOTP(otp.value)"
+            <button class="btn secondry-btn" (click)="$event.stopPropagation();validateOTP(otp.value)"
                 [disabled]="otp.invalid">CONTINUE</button>
         </div>
     </div>

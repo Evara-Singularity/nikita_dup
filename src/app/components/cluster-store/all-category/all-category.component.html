@@ -1,6 +1,6 @@
 <div class="pwa-row allCategoryBlock" *ngIf="data['data'] && data['data'].length > 0">
   <div class="pwa-col-12">
-    <h3 class="l0_heading">{{data.title}}({{data['data'].length}})</h3>
+    <h3 class="heading-3">{{data.title}}({{data['data'].length}})</h3>
     <div class="allCategory-setion">
       <div  *ngFor="let item of data['data'] | slice:0:5;let i=index" class="inner_category">
         <div class="inner-category-data" [routerLink]="['/'+item?.category_url]">

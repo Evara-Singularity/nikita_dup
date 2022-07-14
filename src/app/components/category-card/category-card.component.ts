@@ -17,7 +17,7 @@ export class CategoryCardComponent implements OnInit {
   imagePath = CONSTANTS.IMAGE_BASE_URL;
 
   constructor() { }
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }
 
 @NgModule({

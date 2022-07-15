@@ -8,7 +8,7 @@ import { Component, Input, NgModule, OnInit } from '@angular/core';
 })
 export class ProductSkeletonsComponent implements OnInit {
 
-  @Input() type: 'COUPON' | 'PINCODE' | 'RFQ' | 'FBT' | 'SIMILAR' | 'SPONSERED' | 'APP_PROMO' | 'RECENT'
+  @Input() type: 'COUPON' | 'PINCODE' | 'RFQ' | 'FBT' | 'SIMILAR' | 'SPONSERED' | 'APP_PROMO' | 'RECENT' | 'POPULARDEALS'
   @Input() templateRefInstance: any = null;
 
   constructor() { }

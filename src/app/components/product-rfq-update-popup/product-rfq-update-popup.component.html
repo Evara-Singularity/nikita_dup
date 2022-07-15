@@ -1,0 +1,61 @@
+<app-bottom-menu *ngIf="isPopup" >
+    <div content>
+        <form [formGroup]="rfqUpdateForm">
+        <div class="bottom-rfq-popup pwa-row">
+            <div class="top-header-bottom-menu">
+                <h3 class="heading-3">Thank you for your request</h3>
+                <i class="icon-circle-delete" (click)="isPopup = false; _commonService.oosSimilarCard$.next(false);"></i>
+            </div>
+            <div class="product-name-n-img">
+                <div class="left">
+                    <img src="{{productUrl}}" [alt]="product.productName">
+                </div>
+                <div class="right">
+                    <div class="name">
+                        <a>
+                            <span>{{product.productName}}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="qty-card pwa-row">
+                <p class="upper-txt">Please help with the below details to prioritise your query</p>
+                <div class="qty-area">
+                    <div class="qty-area-l">
+                        <h4>Enter quantiy</h4>
+                    </div>
+                    <div class="qty-area-r">
+                        <span class="add-qty qty-block" (click)="decreaseQuantity();$event.stopPropagation()">
+                            &#8722;
+                        </span>
+                        <input id="product_quantity" type="text" formControlName="quantity" maxlength=3 numbersOnly >
+                        <span class="remove-qty qty-block" (click)="increaseQuantity();$event.stopPropagation()">
+                            &#43;
+                        </span>
+
+                    </div>
+                        <span class="error" *ngIf="quantity.hasError('required')">Kindly enter valid
+                            quantity.</span>
+                        <span class="error" *ngIf="quantity.hasError('pattern')">
+                            Quantity should contain only digits.
+                        </span>
+                        <span class="error" *ngIf="quantity.hasError('min')">
+                            RFQ Quantity should be greater than {{productMOQ}}.</span>
+                </div>
+                <div class="purchase-for-business">
+                    <div class="purchase-for-business-txt">
+                        <h4>Select if purchasing for business</h4>
+                        <span class="ask-txt">We’ll ask for GST details later</span>
+                    </div>
+                    <label>
+                        <input type="checkbox" formControlName="businessPurchase"
+                        (change)="$event.stopPropagation();">
+                        <span class="custom-box icon-box"></span>
+                    </label>
+                </div>
+                <button class="btn primary-full-btn btn-submit" (click)="processRFQ(rfqUpdateForm.value);$event.stopPropagation()">SUBMIT YOUR REQUIREMENT</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</app-bottom-menu> 

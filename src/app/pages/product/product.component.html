@@ -93,7 +93,7 @@
     <product-skeletons [type]="'APP_PROMO'" [templateRefInstance]="appPromoInstance"></product-skeletons>
 </div>
 
-<div data-observeVisibility class="pwa-col-12 common-product" [debounceTime]="100" [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
+<div data-observeVisibility class="pwa-col-12 common-product" *ngIf="!recentProductsInstance" [debounceTime]="100" [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
     <ng-container #recentProducts></ng-container>
     <product-skeletons [type]="'RECENT'" [templateRefInstance]="recentProductsInstance"></product-skeletons>
 </div>

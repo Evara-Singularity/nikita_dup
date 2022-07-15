@@ -49,7 +49,7 @@
                             class="remove-qty qty-block">&#8722;</span>
                         <i (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'decrement')"
                             *ngIf="item.productQuantity <= item.moq" class="icon-bin qty-block single-quantity"></i>
-                        <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
+                        <input data-numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
                             (focusout)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'update', $event.target.value)" />
                         <span (click)="$event.stopPropagation();handleItemQuantityChanges(itemIndex, 'increment')"
                             class="add-qty qty-block">&#43;</span>

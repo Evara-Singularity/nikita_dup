@@ -3,7 +3,7 @@
         <a class="icon-menu header-icon" *ngIf="!enableBackBtn" (click)="loadSideNav$.emit()"></a>
         <i class="icon-back-arrow" id="icon-back" *ngIf="enableBackBtn" (click)="goBack$.emit()"></i>
         <a class="moglix-app-logo" [routerLink]="['/']">
-            <img class="logo-2x" src="{{imgAssetPath}}assets/img/moglix_logo_red@3x.png">
+            <img class="logo-2x" src="{{imgAssetPath}}assets/img/moglix_logo_red@3x.png" alt="logo-2x">
         </a>
     </div>
     <div class="head-d-flex-inner logo-container">

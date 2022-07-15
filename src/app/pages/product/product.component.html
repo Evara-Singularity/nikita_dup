@@ -18,13 +18,13 @@
 </product-bulk-quantity>
 
 <!-- TODO: skeleton to be implemented -->
-<div *ngIf="!productOutOfStock" class="coupon" observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
+<div *ngIf="!productOutOfStock" class="coupon" data-observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
     <ng-container #offerSection></ng-container>
     <product-skeletons [type]="'COUPON'" [templateRefInstance]="offerSectionInstance"></product-skeletons>
 </div>
 
 <!-- TODO: skeleton to be implemented -->
-<div observeVisibility class="pincode" [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
+<div data-observeVisibility class="pincode" [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
     <ng-container #pincodeForm></ng-container>
     <product-skeletons [type]="'PINCODE'" [templateRefInstance]="pincodeFormInstance"></product-skeletons>
 </div>
@@ -39,17 +39,17 @@
 
 <!-- TODO: skeleton to be implemented -->
 <!-- TODO: Check in case TYPE B & TYPE C products -->
-<section *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" observeVisibility [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
+<div *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" data-observeVisibility [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
     <ng-container #productRFQ></ng-container>
     <product-skeletons [type]="'RFQ'" [templateRefInstance]="pincodeFormInstance"></product-skeletons>
-</section>
+</div>
 
 <!-- TODO: skeleton to be implemented -->
 <!-- TODO: Check in case TYPE B & TYPE C products -->
-<section class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" observeVisibility [debounceTime]="100" (visible)="getFbtIntance($event)">
+<div class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" data-observeVisibility [debounceTime]="100" (visible)="getFbtIntance($event)">
     <ng-container #fbt></ng-container>
     <product-skeletons [type]="'FBT'" [templateRefInstance]="fbtComponentInstance"></product-skeletons>
-</section>
+</div>
 
 <app-product-review [productName]="productName" [reviewLength]="reviewLength" [overallRating]="overallRating" [rawReviewsData]="rawReviewsData" (writeReview)="writeReview($event)" (reviewRatingPopup)="handleReviewRatingPopup($event)" (postHelpful)="handlePostHelpful($event)">
 </app-product-review>
@@ -60,18 +60,18 @@
 
 <product-get-quote (raiseRFQQuote$)="raiseRFQQuote()" [rfqQuoteRaised]="rfqQuoteRaised" [productOutOfStock]="productOutOfStock" [productMrp]="productMrp" [productCategoryDetails]="productCategoryDetails" [productName]="productName" [productAllImages]="productAllImages"></product-get-quote>
 
-<section *ngIf="!productOutOfStock" id="similarProducts" class="common-product" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
+<div *ngIf="!productOutOfStock" id="similarProducts" class="common-product" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
     <ng-container #similarProduct></ng-container>
     <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="similarProductInstance"></product-skeletons>
-</section>
+</div>
 
 <product-more-widget [taxons]="taxons" [baseDomain]="baseDomain" [orderTracking]="orderTracking" [productBrandDetails]="productBrandDetails" [productCategoryDetails]="productCategoryDetails" [productBrandCategoryUrl]="productBrandCategoryUrl">
 </product-more-widget>
 
-<section id="sponseredProducts" class="common-product" *ngIf="!sponseredProductsInstance" observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+<div id="sponseredProducts" class="common-product" *ngIf="!sponseredProductsInstance" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
     <ng-container #sponseredProducts></ng-container>
     <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
-</section>
+</div>
 
 <product-accordian [categoryBrandDetails]="getCategoryBrandDetails()" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
 
@@ -80,23 +80,23 @@
     <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
 </ng-container>
 
-<section *ngIf="productOutOfStock" id="similarProductsOos" observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
+<div *ngIf="productOutOfStock" id="similarProductsOos" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSimilarOOS($event)">
     <ng-container #similarProductOOS></ng-container>
-</section>
+</div>
 
 <!-- // TODO: whatsapp-toast should be lazy loaded ngafterviewinit with sketon -->
 <past-orders *ngIf="isBrowser && isLoggedIn" [outOfStock]="productOutOfStock" [analytics]="pastOrderAnalytics">
 </past-orders>
 
-<div class="app-promo mt-10 promo" observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
+<div class="app-promo mt-10 promo" data-observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)">
     <ng-container #appPromo></ng-container>
     <product-skeletons [type]="'APP_PROMO'" [templateRefInstance]="appPromoInstance"></product-skeletons>
 </div>
 
-<section observeVisibility class="pwa-col-12 common-product" [debounceTime]="100" [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
+<div data-observeVisibility class="pwa-col-12 common-product" *ngIf="!recentProductsInstance" [debounceTime]="100" [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
     <ng-container #recentProducts></ng-container>
     <product-skeletons [type]="'RECENT'" [templateRefInstance]="recentProductsInstance"></product-skeletons>
-</section>
+</div>
 
 <div [class.mb-60]="productOutOfStock && productService.oosSimilarProductsData.similarData.length < 3"></div>
 <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && !productOutOfStock">

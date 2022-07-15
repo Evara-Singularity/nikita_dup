@@ -2134,7 +2134,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                 if (response['statusCode'] == 200) {
                     let rfqId = response['data'] ?? '';
                     this.intiateRFQQuoteUpdate(product , rfqId);
-                    this._tms.show({ type: 'success', text: response['statusDescription'] });
+                   // this._tms.show({ type: 'success', text: response['statusDescription'] });
                     this.rfqQuoteRaised = true;
                     this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
                 } else {

@@ -27,6 +27,7 @@ export class ProductCheckPincodeComponent implements OnInit
     deliveryAnalytics = null;
     itemShippingAmount = 0;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+    isSubmitted: boolean = false;
 
 
     constructor(
@@ -76,6 +77,7 @@ export class ProductCheckPincodeComponent implements OnInit
 
     checkAvailblityOnPinCode()
     {
+        this.isSubmitted = true;
         const PINCODE = "pincode";
         const PARTNUMBER = this.pageData['partNumber'];
         this.isPincodeAvailble = this.FALSE;

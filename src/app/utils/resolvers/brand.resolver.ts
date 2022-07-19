@@ -87,7 +87,10 @@ export class BrandResolver implements Resolve<any> {
 
       const similarCategoryObs = this.http.get(SIMILAR_CATEGORY_URL);
 
-      const similarBrandObs = this.http.get(SIMILAR_BRAND_URL);
+      const similarBrandObs = this.http.get(SIMILAR_BRAND_URL).pipe(catchError((e)=>{
+        console.log("similar brand api error--",SIMILAR_BRAND_URL,e)
+        return of(null) ;
+      }));
 
       const dataList = [isBrandCategoryObs, null, similarCategoryObs, similarBrandObs];
 

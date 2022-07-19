@@ -596,6 +596,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                         },
                         productData
                     );
+                    this.productFbtData();
                     this.showLoader = false;
                 }
             });

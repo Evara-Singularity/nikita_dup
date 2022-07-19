@@ -1,5 +1,5 @@
-<div class="featuredBrands" *ngIf="data['data'] && data['data'].length > 0">
-    <h3 class="l0_heading">{{data.title}}</h3>
+<div class="featuredBrands pwa-row pad-t-0" *ngIf="data['data'] && data['data'].length > 0">
+    <h3 class="heading-3">{{data.title}}</h3>
     <div class="featrOverBlock">
         <div [style.width.px]="data['data'].length * 95" class="clearfix">
             <div [routerLink]="['/'+item?.brand_url]" class="featrSlide" *ngFor="let item of data['data'];let i=index">

@@ -1,5 +1,5 @@
 <div class="youtubeWrap" *ngIf="listOfVideos && listOfVideos.length > 0">
-    <h4 class="yotubeHeading">{{title | titlecase}}</h4>
+    <h3 class="yotubeHeading">{{title | titlecase}}</h3>
     <div class="categoryOverBlk">
         <div [style.width.px]="listOfVideos.length * 252" class="clearfix" #videosDiv>
             <div class="commonCategorySlide" *ngFor="let item of listOfVideos;index as frameIndex;">

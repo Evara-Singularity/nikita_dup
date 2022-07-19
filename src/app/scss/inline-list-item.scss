@@ -37,6 +37,10 @@
             font-size: x-small;
             color: rgb(136, 133, 133);
         }
+        &.coupon-list-text{
+            width: 90%;
+            padding-right: 0;
+        }
     }
     .inline-list-link {
         width: 12%;

@@ -21,7 +21,7 @@
             <img src="{{ assetImgPath }}assets/img/Screen-2.svg" alt=""/>
           </ng-template>
         </div>
-        <div class="text-container">
+        <div class="text-container" *ngIf="page != 'pdp'">
           <div class="text">
             <strong>Get ₹100 Off* on your first order</strong>
             <p>Use code: <strong>HELLO</strong></p>
@@ -30,6 +30,20 @@
             <button>OPEN APP</button>
           </div>
         </div>
+        <!-- start-- for pdp pages -->
+        <div class="outer-text-section" *ngIf="page == 'pdp'">
+          <strong>Download Moglix App <br />& get ₹100 Off*
+            <span id="first-order">on your first order.</span></strong>
+          <div class="text-container inner-txt-section">
+            <div class="text use-code-text">
+              <p>Use code: <strong>HELLO</strong></p>
+            </div>
+            <div class="install-app">
+              <button class="open-app-promo">OPEN APP</button>
+            </div>
+          </div>
+        </div>
+        <!-- End -->
       </div>
     </ng-container>
     <!-- 3rd varient used hamburger menu-->
@@ -39,7 +53,7 @@
         <img src="{{ assetImgPath }}assets/img/Screen-7.svg" />
       </div>
       <div class="outer-text-section">
-        <strong>Download Moglix App <br />& get ₹100 Off*
+        <strong>Download Moglix App <br /> Get ₹100 Off*
           <span>on your first order.</span></strong>
         <div class="text-container inner-txt-section">
           <div class="text use-code-text">

@@ -33,12 +33,18 @@ export class ProductOffersComponent implements OnInit
       if (user && user.authenticated == "true") {
         if (this.price < 3000) { this.disableEMIView = true; }
         this.getOfferAllData(user.userId);
-      }
+      }else { this.getOfferAllData(null);}
     }
 
     getOfferAllData(user){
+          let url : any ;
+          if(user != null && user != undefined){
+            url= "?userId="+ user + "&msn=" + this.productmsn + "&device=app";
+          }else {
+            url= "?msn=" + this.productmsn + "&device=app";
+          }
          forkJoin([
-          this.productService.getAllPromoCodeOffers(user, this.productmsn, "app"),
+          this.productService.getAllPromoCodeOffers(url),
           this.productService.getAllOffers()
           ]).subscribe(
             (responses) => {

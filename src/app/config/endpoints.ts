@@ -101,6 +101,7 @@ export const ENDPOINTS = {
   TRENDING_CATEGORY_CMS: "/category/getparentcategoryjsonbody?requestType=",
   ADD_PURCHASE_LIST: "/purchase/addPurchaseList",
   SIMILAR_PRODUCTS: "/search/similarproducts",
+  TAG_PRODUCTS: "/search/tagProducts",
   SET_REVIEWS: "/reviews/setReviews",
   IS_REVIEW_HELPFUL: "/reviews/isReviewHelpful",
   SET_QUEST: "/quest/setQuest",

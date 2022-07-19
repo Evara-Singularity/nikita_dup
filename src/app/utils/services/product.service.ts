@@ -106,6 +106,15 @@ export class ProductService {
         );
     }
 
+    getProductPopular(categoryId) {
+        let URL = this.basePath + ENDPOINTS.TAG_PRODUCTS + '?category=' + categoryId
+        return this._dataService.callRestful("GET", URL).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ products: [], httpStatus: res.status });
+            })
+        );
+    }
+
     getrecentProduct(user_id) {
         return this._dataService.callRestful(
             "GET",

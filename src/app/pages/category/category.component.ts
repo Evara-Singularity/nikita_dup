@@ -643,85 +643,86 @@ export class CategoryComponent {
         this.layoutType = 0;
         if (params && params.id && slpPagesExtrasIdMap.hasOwnProperty(params.id)) {
             this.isSLPPage = true;
-            this.getExtraCategoryData(params).subscribe((data) => {
-
-                this.layoutType = data['layoutType'];
-                if (this.API_RESPONSE.category[0].children && this.layoutType == 2) {
-                    if (this.slpSubCategoryInstance) {
-                        this.slpSubCategoryInstance.instance['sub_category_Data'] = this.API_RESPONSE.category[0].children;
-                    } else {
-                        this.createDynamicComponent('slpSubCategory');
-                    }
-                } else {
-                    if (this.slpSubCategoryInstance) {
-                        this.slpSubCategoryInstance = null;
-                        this.slpSubCategoryContainerRef.remove();
-                    }
-                }
-
-                this.page_title = data['pageTitle'];
-
-                if (data['data'][0].block_data.brand_block) {
-                    this.shopByBrandData = data['data'][0].block_data.brand_block;
-                    if (this.shopByBrandInstance) {
-                        this.shopByBrandInstance.instance['brand_Data'] = this.shopByBrandData;
-                    } else {
-                        this.createDynamicComponent('shopByBrand');
-                    }
-                } else {
-                    if (this.shopByBrandInstance) {
-                        this.shopByBrandInstance = null;
-                        this.shopByBrandContainerRef.remove();
-                    }
-                }
-
-                if (data['data'][0].block_data.product_data) {
-                    this.catBestsellerData = data['data'][0].block_data.product_data;
-                    if (this.catBestSellerInstance) {
-                        this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestsellerData;
-                    } else {
-                        this.createDynamicComponent('catBestseller');
-                    }
-                } else {
-                    if (this.catBestSellerInstance) {
-                        this.catBestSellerInstance = null;
-                        this.catBestSellerContainerRef.remove();
-                    }
-                }
-
-                if (data['data'][0].block_data.image_block) {
-                    this.shopbyFeatrData = data['data'][0].block_data.image_block;
-                    if (this.shopbyFeatrInstance) {
-                        this.shopbyFeatrInstance.instance['shopBy_Data'] = this.shopbyFeatrData;
-                    } else {
-                        this.createDynamicComponent('shopbyFeatr');
-                    }
-                } else {
-                    if (this.shopbyFeatrInstance) {
-                        this.shopbyFeatrInstance = null;
-                        this.shopbyFeatrContainerRef.remove();
-                    }
-                }
-
-                if (data['data'][0].block_data.general_block) {
-                    this.catStaticData = data['data'][0].block_data.general_block;
-                    if (this.catStaticInstance) {
-                        this.catStaticInstance.instance['page_title'] = this.page_title;
-                        this.catStaticInstance.instance['static_data'] = this.catStaticData;
-                    } else {
-                        this.createDynamicComponent('catStatic');
-                    }
-
-                } else {
-                    if (this.catStaticInstance) {
-                        this.catStaticInstance = null;
-                        this.catStaticContainerRef.remove();
-                    }
-                }
-
-            });
+            const slpdata=this.API_RESPONSE.category[6];
+            this.createSLPdata(slpdata);
         } else {
             this.isSLPPage = false;
+        }
+    }
+
+    private createSLPdata(data: {}) {
+        this.layoutType = data['layoutType'];
+        if (this.API_RESPONSE.category[0].children && this.layoutType == 2) {
+            if (this.slpSubCategoryInstance) {
+                this.slpSubCategoryInstance.instance['sub_category_Data'] = this.API_RESPONSE.category[0].children;
+            } else {
+                this.createDynamicComponent('slpSubCategory');
+            }
+        } else {
+            if (this.slpSubCategoryInstance) {
+                this.slpSubCategoryInstance = null;
+                this.slpSubCategoryContainerRef.remove();
+            }
+        }
+
+        this.page_title = data['pageTitle'];
+
+        if (data['data'][0].block_data.brand_block) {
+            this.shopByBrandData = data['data'][0].block_data.brand_block;
+            if (this.shopByBrandInstance) {
+                this.shopByBrandInstance.instance['brand_Data'] = this.shopByBrandData;
+            } else {
+                this.createDynamicComponent('shopByBrand');
+            }
+        } else {
+            if (this.shopByBrandInstance) {
+                this.shopByBrandInstance = null;
+                this.shopByBrandContainerRef.remove();
+            }
+        }
+
+        if (data['data'][0].block_data.product_data) {
+            this.catBestsellerData = data['data'][0].block_data.product_data;
+            if (this.catBestSellerInstance) {
+                this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestsellerData;
+            } else {
+                this.createDynamicComponent('catBestseller');
+            }
+        } else {
+            if (this.catBestSellerInstance) {
+                this.catBestSellerInstance = null;
+                this.catBestSellerContainerRef.remove();
+            }
+        }
+
+        if (data['data'][0].block_data.image_block) {
+            this.shopbyFeatrData = data['data'][0].block_data.image_block;
+            if (this.shopbyFeatrInstance) {
+                this.shopbyFeatrInstance.instance['shopBy_Data'] = this.shopbyFeatrData;
+            } else {
+                this.createDynamicComponent('shopbyFeatr');
+            }
+        } else {
+            if (this.shopbyFeatrInstance) {
+                this.shopbyFeatrInstance = null;
+                this.shopbyFeatrContainerRef.remove();
+            }
+        }
+
+        if (data['data'][0].block_data.general_block) {
+            this.catStaticData = data['data'][0].block_data.general_block;
+            if (this.catStaticInstance) {
+                this.catStaticInstance.instance['page_title'] = this.page_title;
+                this.catStaticInstance.instance['static_data'] = this.catStaticData;
+            } else {
+                this.createDynamicComponent('catStatic');
+            }
+
+        } else {
+            if (this.catStaticInstance) {
+                this.catStaticInstance = null;
+                this.catStaticContainerRef.remove();
+            }
         }
     }
 
@@ -755,9 +756,6 @@ export class CategoryComponent {
         }
     }
 
-    getExtraCategoryData(data): Observable<{}> {
-        return this._categoryService.getCategoryExtraData(slpPagesExtrasIdMap[data.id]);
-    }
 
     async createDynamicComponent(name) {
         if (this._commonService.isBrowser) {

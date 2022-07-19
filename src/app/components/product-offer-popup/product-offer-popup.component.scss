@@ -8,11 +8,11 @@
     .wallet-block{
         background: var(--ghost-white);
         img {
-            padding-left: 20px;
+            // padding-left: 20px;
             width: 200px;
         }
         .top-txt {
-            padding: 20px 60px 20px 20px;
+            padding: 20px 0px;
             line-height: $large-line-height;
             font-size: $extra-large-font;
             color: var(--onyx-black);

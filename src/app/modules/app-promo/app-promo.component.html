@@ -15,10 +15,10 @@
         <div class="mobile">
           <div *ngIf="page == 'pdp'; then pdpContent; else content"></div>
           <ng-template #pdpContent>
-            <img src="{{ assetImgPath }}assets/img/Screen-5.svg" />
+            <img src="{{ assetImgPath }}assets/img/Screen-5.svg" alt=""/>
           </ng-template>
           <ng-template #content>
-            <img src="{{ assetImgPath }}assets/img/Screen-2.svg" />
+            <img src="{{ assetImgPath }}assets/img/Screen-2.svg" alt=""/>
           </ng-template>
         </div>
         <div class="text-container">

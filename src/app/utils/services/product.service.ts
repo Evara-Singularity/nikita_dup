@@ -649,6 +649,7 @@ export class ProductService {
     }
 
     searchResponseToProductEntity(product: any) {
+        console.log("product --->>>", product)
         const partNumber =
             product["partNumber"] ||
             product["defaultPartNumber"] ||
@@ -759,7 +760,8 @@ export class ProductService {
             brandId: brandId,
             brandName: brandName || product['short_description'],
             quantityAvailable: 1,
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+           // discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            discount: this._commonService.calculcateDiscount(product['discount_percentage'], productMrp,  product['sellingPrice']),
             rating: null,
             categoryCodes: null,
             taxonomy: null,

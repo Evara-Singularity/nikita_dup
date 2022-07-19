@@ -607,6 +607,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                         },
                         productData
                     );
+                    this.productFbtData();
                     this.showLoader = false;
                 }
             });
@@ -2546,7 +2547,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         window.history.pushState('', '', this.router.url);
     }
 
-    async openPopUpcrousel(slideNumber: number = 1, oosProductIndex: number = -1)
+    async openPopUpcrousel(slideNumber: number = 0, oosProductIndex: number = -1)
     {
         if (!this.popupCrouselInstance) {
             this.showLoader = true;

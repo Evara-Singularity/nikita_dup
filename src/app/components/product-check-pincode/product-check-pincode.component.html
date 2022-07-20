@@ -16,16 +16,16 @@
                     <p class="availability-text">
                         Check serviceability at your location
                     </p>
-                    <div *ngIf="pincode.hasError('pattern')" class="invalid-txt pwa-col-12">
+                    <div *ngIf="pincode.hasError('pattern') && isSubmitted" class="invalid-txt pwa-col-12">
                         <p class="right-txt">Invalid pincode provided</p>
                     </div>
                 </div>
 
             </div>
         </div>
-        <div *ngIf="pincode.hasError('pattern') && isSubmitted" class="invalid-txt pwa-col-12" style="padding-top: 5px;">
+        <!-- <div *ngIf="pincode.hasError('pattern') && isSubmitted" class="invalid-txt pwa-col-12" style="padding-top: 5px;">
             <p class="right-txt">Invalid pincode provided</p>
-        </div>
+        </div> -->
         <div class="about-delivery pwa-col-12" *ngIf="!(itemShippingAmount > 0) && isPincodeAvailble">
             <span class="st-icon-shipping">
                 <span class="icon-delivery_1"></span>

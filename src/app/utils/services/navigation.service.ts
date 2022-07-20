@@ -1,17 +1,16 @@
-import { SessionStorageService, LocalStorageService } from 'ngx-webstorage';
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { of } from 'rxjs';
-import { filter, map, mergeMap } from 'rxjs/operators';
+import { NavigationEnd, Router } from '@angular/router';
+import { LocalStorageService } from 'ngx-webstorage';
+import { ProductUtilsService } from './product-utils.service';
 
 @Injectable({ providedIn: 'root' })
 export class NavigationService
 {
-  readonly ALL_CATEGORIES = "/all-categories";
   private history: string[] = [];
   moduleName = null;
+  pdpBreadCrumbData = [];
 
-  constructor(private router: Router, private _sessionStorage: SessionStorageService, private _localStorage:LocalStorageService)
+  constructor(private router: Router, private _localStorage: LocalStorageService)
   {
     this.saveHistory(this.history);
   }
@@ -21,8 +20,8 @@ export class NavigationService
     this.router.events.subscribe((event) =>
     {
       if (event instanceof NavigationEnd) {
-        const currentUrl = event.urlAfterRedirects;
-        //console.log(event.urlAfterRedirects);
+        //const currentUrl = event.urlAfterRedirects;
+        const currentUrl = this.router.url;
         if (currentUrl === "/") {
           this.history = ['/'];
           this.saveHistory(this.history);
@@ -34,46 +33,54 @@ export class NavigationService
           const length = this.history.length;
           const bUrl = this.history[length - 1];
           is_not_last_url = currentUrl !== bUrl;
+          
         }
         if (is_not_login_signup && is_not_last_url) {
-          this.history.push(event.urlAfterRedirects);
+          const index = this.history.indexOf(currentUrl);
+          if (index > -1) {
+            this.history.splice(index, 1)
+          }
+          this.history.push(currentUrl);
           this.saveHistory(this.history);
         }
       }
     })
   }
 
-  public goBack(): void
+  public goBack(isLoginFlow = false)
   {
     const currentURL = this.router.url;
     this.history = this.getHistory();
     //console.log("Before", this.history);
-    this.history.pop();
+    if (!isLoginFlow) { this.history.pop(); }
     //console.log("After", this.history);
     this.saveHistory(this.history);
-    //debugger;
     if (this.history.length === 0) {
+      let defaultUrl = "/";
       if (this.isPDPUrl(currentURL)) {
-        this.router.navigateByUrl(this.ALL_CATEGORIES);
-      }
-      if (this.isAllCategories(currentURL)) {
+        defaultUrl = this.breadcrumbCategoryLink;
         this.saveHistory([]);
-        this.router.navigateByUrl("/");
       }
-      this.router.navigateByUrl("/");
+      this.router.navigate([defaultUrl]);
     } else if (this.history.length > 0) {
       const length = this.history.length;
-      this.router.navigateByUrl(this.history[length - 1]);
+      this.router.navigate([this.history[length - 1]]);
     } else {
-      this.router.navigateByUrl("/");
+      this.router.navigate(["/"]);
     }
   }
 
-  saveHistory(history) { this._localStorage.store("history", history)  }
+  setPDPBreadCrumbData(breadcrumbData) { this.pdpBreadCrumbData = breadcrumbData; }
+
+  get breadcrumbCategoryLink()
+  {
+    if (this.pdpBreadCrumbData.length === 0) return "/";
+    return this.pdpBreadCrumbData[this.pdpBreadCrumbData.length - 2]['categoryLink']
+  }
+
+  saveHistory(history) { this._localStorage.store("history", history) }
 
   getHistory() { return this._localStorage.retrieve("history") }
 
-  isPDPUrl(url:string) { return url.toLowerCase().includes("/mp/msn") }
-
-  isAllCategories(url: string) { return url == this.ALL_CATEGORIES }
+  isPDPUrl(url: string) { return url.toLowerCase().includes("/mp/msn") }
 }

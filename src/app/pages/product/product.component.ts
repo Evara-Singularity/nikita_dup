@@ -1,3 +1,4 @@
+import { NavigationService } from '@app/utils/services/navigation.service';
 import { DOCUMENT } from "@angular/common";
 import
 {
@@ -336,6 +337,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         private analytics: GlobalAnalyticsService,
         private checkoutService: CheckoutService,
         private _trackingService: TrackingService,
+        private _navigationService:NavigationService,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any
     )
@@ -681,6 +683,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         this.breadcrumbData = breadcrumbData;
         if (this.breadcrumbData.length > 0) {
+            this._navigationService.setPDPBreadCrumbData(breadcrumbData);
             // this.commonService.triggerAttachHotKeysScrollEvent('bread-head');
         }
     }

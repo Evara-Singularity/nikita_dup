@@ -160,6 +160,8 @@ export class ProductComponent implements OnInit, AfterViewInit
     questionMessage: string;
     listOfGroupedCategoriesForCanonicalUrl = ["116111700"];
     alreadyLiked: boolean = true;
+    //recently view
+    hasRecentlyView = true;
 
     productShareInstance = null;
     @ViewChild("productShare", { read: ViewContainerRef })
@@ -1911,6 +1913,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     // dynamically recent products section
+    
     async onVisibleRecentProduct(htmlElement)
     {
         // console.log('onVisibleRecentProduct', htmlElement);
@@ -1945,6 +1948,12 @@ export class ProductComponent implements OnInit, AfterViewInit
                 custData: custData,
                 order: orderData,
             };
+            (
+                this.recentProductsInstance.instance["noRecentlyViewed$"] as EventEmitter<any>).subscribe((flag) =>
+                {
+                    this.hasRecentlyView = false;
+                }
+            );
         }
     }
 

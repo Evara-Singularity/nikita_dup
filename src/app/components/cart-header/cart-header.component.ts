@@ -46,7 +46,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 			this._loader.setLoaderState(false);
 			if(this.noOfCartItems === 0 && this.isCheckout)
 			{
-				this._naviagtionService.goBack();
+				this._naviagtionService.handleCartWithZeroItems();
 			}
 		});
 	}

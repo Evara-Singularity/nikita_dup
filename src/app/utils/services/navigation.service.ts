@@ -47,13 +47,12 @@ export class NavigationService
     })
   }
 
-  public goBack(isLoginFlow = false)
+  //in case of login flow no need to pop
+  public goBack(isRemove = false)
   {
     const currentURL = this.router.url;
     this.history = this.getHistory();
-    //console.log("Before", this.history);
-    if (!isLoginFlow) { this.history.pop(); }
-    //console.log("After", this.history);
+    if (!isRemove) { this.history.pop(); }
     this.saveHistory(this.history);
     if (this.history.length === 0) {
       let defaultUrl = "/";
@@ -66,15 +65,32 @@ export class NavigationService
       const length = this.history.length;
       this.router.navigate([this.history[length - 1]]);
     } else {
-      this.router.navigate(["/"]);
+      this.router.navigate(["/?back=1"]);
     }
+  }
+
+  handleCartWithZeroItems()
+  {
+    debugger;
+    const oldArray = this.history.filter((url:string)=>url.toLowerCase() !== "/quickorder");
+    const newArray = [];
+    oldArray.forEach((url)=>{
+      if(url.toLowerCase().includes("/checkout/address"))
+      {
+        newArray.push("/quickorder");
+      }
+      newArray.push(url);
+    })
+    this.history = newArray;
+    this.saveHistory(this.history);
+    this.goBack();
   }
 
   setPDPBreadCrumbData(breadcrumbData) { this.pdpBreadCrumbData = breadcrumbData; }
 
   get breadcrumbCategoryLink()
   {
-    if (this.pdpBreadCrumbData.length === 0) return "/";
+    if (this.pdpBreadCrumbData.length === 0) return "/?back=1";
     return this.pdpBreadCrumbData[this.pdpBreadCrumbData.length - 2]['categoryLink']
   }
 

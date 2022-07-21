@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
-import { ProductUtilsService } from './product-utils.service';
 
 @Injectable({ providedIn: 'root' })
 export class NavigationService
@@ -65,13 +64,12 @@ export class NavigationService
       const length = this.history.length;
       this.router.navigate([this.history[length - 1]]);
     } else {
-      this.router.navigate(["/?back=1"]);
+      this.router.navigate(["/"]);
     }
   }
 
   handleCartWithZeroItems()
   {
-    debugger;
     const oldArray = this.history.filter((url:string)=>url.toLowerCase() !== "/quickorder");
     const newArray = [];
     oldArray.forEach((url)=>{
@@ -90,7 +88,7 @@ export class NavigationService
 
   get breadcrumbCategoryLink()
   {
-    if (this.pdpBreadCrumbData.length === 0) return "/?back=1";
+    if (this.pdpBreadCrumbData.length === 0) return "/";
     return this.pdpBreadCrumbData[this.pdpBreadCrumbData.length - 2]['categoryLink']
   }
 

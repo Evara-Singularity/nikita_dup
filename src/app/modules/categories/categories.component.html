@@ -4,7 +4,7 @@
     </a>
 </section>
 <ng-container *ngFor="let category of categories | slice:0:5;let i = index;">
-    <section *ngIf="carouselData[category.dataKey] && carouselData[category.dataKey]['data']" class="pwa-col-12 category-section"
+    <section *ngIf="carouselData[category.dataKey] && carouselData[category.dataKey]['data']" class="pwa-col-12 category-section pad-r-0"
         [class.bestSeller]="i == 0">
 
         <div class="view-all-strip">

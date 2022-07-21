@@ -4,10 +4,8 @@
       <div class="view-card-category">
           <category-card *ngFor="let item of clusterCategoryData['data'];let i=index" 
           [data]="productDataToCategoryCardObject(i,clusterCategoryData['data'])"
-          [routerLink]="['/'+item.image_general[0].general_url]" 
-          >
+          [routerLink]="['/'+item.image_general[0].general_url]">
         </category-card>
-
       </div>
       <div class="clearfix breadcrumbs border-bottom">
         <h1 (click)="goto(0)" style="font-size:16px;">All Categories</h1>
@@ -28,7 +26,6 @@
               </ng-container>
               <span class="l1Title">{{categoryL1?.categoryDetails?.categoryName}}</span>
             </a>
-
             <ng-container *ngIf="categoryL1.children.length>0 && !categoryL1['showChild']">
               <i class="icon-next" aria-hidden="true" style="font-size:16px;padding:10px;"
                 [ngClass]="{'active':currentL1Index==L1Index}" (click)="getDownArrow(L1Index, categoryL1)"></i>

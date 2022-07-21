@@ -33,7 +33,7 @@
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
             <section class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
                 <a class="full-banner" *ngIf="i==0" href="{{im.image_link}}">
-                    <img [src]="imagePath + im.image_name" alt="banner add">
+                    <img [src]="imagePath + im.image_name" alt="banner add" width="312" height="67">
                 </a>
             </section>
 
@@ -53,13 +53,13 @@
                     <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card"
                         [routerLink]="item.category_url">
                         <a>
-                            <img alt={{item.CategoryName}} src="{{clusterimagePath + 'img/cluster/'+item.category_image}}">
+                            <img alt={{item.CategoryName}} src="{{clusterimagePath + 'img/cluster/'+item.category_image}}" width="97" height="65">
                             <p class="category-text">{{item.CategoryName}}</p>
                         </a>
                     </div>
                     <div class="category-grid-card" [routerLink]="['/all-categories']">
                         <a>
-                            <img alt="View All Categories" src="{{clusterimagePath + 'img/cluster/all_categories.png'}}">
+                            <img alt="View All Categories" src="{{clusterimagePath + 'img/cluster/all_categories.png'}}" width="97" height="65">
                             <p class="category-text view-all-cate">View All Categories</p>
                         </a>
                     </div>

@@ -24,8 +24,8 @@
 <ng-container *ngIf="options?.topCarousel">
     <div class="item pointer wp-100">
         <a [routerLink]="item?.link" (click)="setBannerCookie(item?.caption)">
-            <img *ngIf="itemIndex == 0" src="{{item.image_name}}" class="wp-100" alt="Banner">
-            <img *ngIf="itemIndex > 0" id="{{item.image_name}}" class="wp-100" alt="Banner">
+            <img *ngIf="itemIndex == 0" src="{{item.image_name}}" class="wp-100" alt="Banner" width="312" height="117">
+            <img *ngIf="itemIndex > 0" id="{{item.image_name}}" class="wp-100" alt="Banner" width="312" height="117">
 
         </a>
     </div>

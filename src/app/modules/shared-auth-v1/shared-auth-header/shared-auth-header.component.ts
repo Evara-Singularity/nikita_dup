@@ -1,3 +1,4 @@
+import { NavigationService } from '@app/utils/services/navigation.service';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -25,6 +26,9 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     previousUrl: boolean = false;
 
     constructor(
+        private _router: Router,
+        private _localAuthService: LocalAuthService,
+        private _navigationService:NavigationService,
         private _router: Router, private activatedRoute : ActivatedRoute,
         private _localAuthService: LocalAuthService) { 
             this.activatedRoute.queryParams.subscribe(params => {
@@ -44,20 +48,22 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
         }else{
             console.log('else')
         const URL = (this._router.url as string).toLowerCase();
-        let NAVIGATE_TO = this.HOME_URL;
+        let NAVIGATE_TO = null;
         if (URL.includes("forgot-password")) {
             NAVIGATE_TO = this.OTP_URL;
         } else if (URL.includes("sign-up")) {
             NAVIGATE_TO = this.LOGIN_URL;
         } else if (URL.includes("otp")) {
             NAVIGATE_TO = this.LOGIN_URL;
-        }else {
-            this._localAuthService.handleBackURL(true);
-            return;
+        } 
+        this._localAuthService.handleBackURL(true);
+        if(this.isCheckout && NAVIGATE_TO)
+        {
+            this.navigateTo(`checkout/${NAVIGATE_TO}`)
         }
-       
-        this.navigateTo(this.isCheckout ? `checkout/${NAVIGATE_TO}` : NAVIGATE_TO);
-     }
+        else {
+            this._navigationService.goBack(true);
+        }
     }
 
     navigateToHome(link)
@@ -68,7 +74,7 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     navigateTo(link) { this._router.navigate([link]); }
 
     onBackBtnClick(){
-        this.onBackBtnClick$.emit(true);
+        this._navigationService.goBack(true);
     }
 
     onHomepageBtnClick(){

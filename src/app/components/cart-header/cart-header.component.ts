@@ -1,3 +1,4 @@
+import { NavigationService } from '@app/utils/services/navigation.service';
 import { Location } from '@angular/common';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
@@ -32,6 +33,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		private _router: Router,
 		private _loader: GlobalLoaderService,
 		private _location: Location,
+		private _naviagtionService:NavigationService
 	) { }
 
 	ngOnInit(): void
@@ -42,6 +44,10 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 			this.noOfCartItems = this._cartService.getCartItemsCount();
 			this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
 			this._loader.setLoaderState(false);
+			if(this.noOfCartItems === 0 && this.isCheckout)
+			{
+				this._naviagtionService.handleCartWithZeroItems();
+			}
 		});
 	}
 
@@ -88,7 +94,6 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		const isBuyNow = this._cartService.buyNow;
 		const trace = { Page: 'Checkout', 'Buy Now': isBuyNow, CurrentURL: url, PreviousURL: previousURL };
 		console.table(trace);
-		debugger;
 		if (isBuyNow) {
 			if (previousURL.includes('checkout')) {
 				this._router.navigateByUrl('/quickorder', this.REPLACE_URL);

@@ -1,3 +1,4 @@
+import { NavigationService } from '@app/utils/services/navigation.service';
 import { DOCUMENT } from "@angular/common";
 import
 {
@@ -159,6 +160,8 @@ export class ProductComponent implements OnInit, AfterViewInit
     questionMessage: string;
     listOfGroupedCategoriesForCanonicalUrl = ["116111700"];
     alreadyLiked: boolean = true;
+    //recently view
+    hasRecentlyView = true;
 
     productShareInstance = null;
     @ViewChild("productShare", { read: ViewContainerRef })
@@ -347,6 +350,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         private analytics: GlobalAnalyticsService,
         private checkoutService: CheckoutService,
         private _trackingService: TrackingService,
+        private _navigationService:NavigationService,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any
     )
@@ -693,6 +697,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         this.breadcrumbData = breadcrumbData;
         if (this.breadcrumbData.length > 0) {
+            this._navigationService.setPDPBreadCrumbData(breadcrumbData);
             // this.commonService.triggerAttachHotKeysScrollEvent('bread-head');
         }
     }
@@ -1965,6 +1970,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     // dynamically recent products section
+    
     async onVisibleRecentProduct(htmlElement)
     {
         // console.log('onVisibleRecentProduct', htmlElement);
@@ -1999,6 +2005,12 @@ export class ProductComponent implements OnInit, AfterViewInit
                 custData: custData,
                 order: orderData,
             };
+            (
+                this.recentProductsInstance.instance["noRecentlyViewed$"] as EventEmitter<any>).subscribe((flag) =>
+                {
+                    this.hasRecentlyView = false;
+                }
+            );
         }
     }
 

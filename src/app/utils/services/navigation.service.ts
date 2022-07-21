@@ -54,7 +54,7 @@ export class NavigationService
     if (!isRemove) { this.history.pop(); }
     this.saveHistory(this.history);
     if (this.history.length === 0) {
-      let defaultUrl = "/";
+      let defaultUrl = "/?back=1";
       if (this.isPDPUrl(currentURL)) {
         defaultUrl = this.breadcrumbCategoryLink;
         this.saveHistory([]);
@@ -64,7 +64,7 @@ export class NavigationService
       const length = this.history.length;
       this.router.navigate([this.history[length - 1]]);
     } else {
-      this.router.navigate(["/"]);
+      this.router.navigate(["/?back=1"]);
     }
   }
 

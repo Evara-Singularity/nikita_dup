@@ -1,5 +1,5 @@
 <div *ngIf="orders && orders.length>0">
-    <div class="orderbox pwa-container pb-10" *ngFor="let order of orders;let i=index">
+    <div class="orderbox pwa-container" *ngFor="let order of orders;let i=index">
         <div class="orderIdtab pwa-row pad-0" (click)="showOrder(order.orderId,i)" data-toggle="collapse" href="#" aria-expanded="false" aria-controls="footwear">
             <div class="orderSum">
                 <span class="orderId">Order ID : {{order.orderId}}&nbsp;</span>

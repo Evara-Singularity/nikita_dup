@@ -33,7 +33,7 @@ export class PostProductReviewPopupComponent implements OnInit {
   createForm() {
     this.reviewForm = this.formBuilder.group({
       review_subject: ['', [Validators.required, Validators.maxLength(100)]],
-      review_text: ['', [Validators.required, Validators.maxLength(600)]]
+      review_text: ['', [Validators.maxLength(600)]]
     });
   }
 

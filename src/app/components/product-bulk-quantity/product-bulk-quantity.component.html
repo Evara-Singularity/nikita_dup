@@ -9,7 +9,7 @@
                 <div class="blk-contain">
                     <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)"
                         class="inner-blk-contain clearfix">
-                        <div *ngFor="let items of productBulkPrices; let last=last; let index = index;"
+                        <ng-container *ngFor="let items of productBulkPrices; let last=last; let index = index;"
                             (click)="selectProductBulkPrice(items.minQty)">
                             <div class="bulk-block bulk-block-multi-grp"
                                 *ngIf="rawProductData['quantityAvailable']>=items.minQty"
@@ -29,7 +29,7 @@
                                 <p *ngIf="items.discount>0" class="green-txt">
                                     {{ items.discount | number:'1.0-2' }}% OFF</p>
                             </div>
-                        </div>
+                        </ng-container>
                     </div>
                 </div>
             </div>

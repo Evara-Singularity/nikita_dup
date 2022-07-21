@@ -1,5 +1,5 @@
-<div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader && _productListService?.productListingData && _productListService?.productListingData > 0}">
-
+<!-- [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader && _productListService?.productListingData && _productListService?.productListingData > 0}"  -->
+<div class="plp-container-header-adjust">
     <ng-container
         *ngIf="(didYouMean == undefined || didYouMean == '') && API_RESULT['searchData'][0].productSearchResult != undefined">
         <ng-container

@@ -1,0 +1,10 @@
+@import '../../scss/layout/horizontalProductListing';
+@import '../../scss/components/tabs';
+
+.popularDeals{
+    background:#dbedff;
+    padding-top: 5px;
+    .pwa-tabs-container{
+        padding-bottom:10px;
+    }
+}

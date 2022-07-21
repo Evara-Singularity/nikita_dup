@@ -106,6 +106,15 @@ export class ProductService {
         );
     }
 
+    getProductPopular(categoryId) {
+        let URL = this.basePath + ENDPOINTS.TAG_PRODUCTS + '?category=' + categoryId
+        return this._dataService.callRestful("GET", URL).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ products: [], httpStatus: res.status });
+            })
+        );
+    }
+
     getrecentProduct(user_id) {
         return this._dataService.callRestful(
             "GET",
@@ -640,6 +649,7 @@ export class ProductService {
     }
 
     searchResponseToProductEntity(product: any) {
+        console.log("product --->>>", product)
         const partNumber =
             product["partNumber"] ||
             product["defaultPartNumber"] ||
@@ -750,7 +760,8 @@ export class ProductService {
             brandId: brandId,
             brandName: brandName || product['short_description'],
             quantityAvailable: 1,
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+           // discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            discount: this._commonService.calculcateDiscount(product['discount_percentage'], productMrp,  product['sellingPrice']),
             rating: null,
             categoryCodes: null,
             taxonomy: null,

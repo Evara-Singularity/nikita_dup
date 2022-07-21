@@ -93,12 +93,12 @@
             </ng-container>
         </ng-template>
         <div class="bottom-bar nonFixed" observeVisibility [debounceTime]="100" (visible)="onVisibleInViewPort()">
-            <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="buyNow(false)">
+            <button class="cart-btn ml-5 bold-txt f-left" (click)="buyNow(false)">
                 <i class="icon-cart1"></i>
                 <span>ADD TO CART</span>
             </button>
-            <div class="buy-now f-right f-14">
-                <button class="f-14" (click)="buyNow(true)">BUY NOW</button>
+            <div class="buy-now f-right">
+                <button (click)="buyNow(true)">BUY NOW</button>
             </div>
         </div>
         <ng-container *ngIf="breadcrumData && breadcrumData.length > 0">

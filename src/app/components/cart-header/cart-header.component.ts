@@ -28,7 +28,6 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 	@Input() imgAssetPath: boolean = false;
 	totalPayableAmount = 0;
 	cartUpdatesSubscription: Subscription = null;
-	cartSubscriptionCount = 0;
 
 	constructor(
 		public _commonService: CommonService,
@@ -49,15 +48,14 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 	{
 		this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
 		{
-			this.cartSubscriptionCount++;
+			const isNotProxy = cartSession['proxy']? !(cartSession['proxy']) : true;
 			this.noOfCartItems = this._cartService.getCartItemsCount();
 			this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
-			if (this.cartSubscriptionCount>1 && this.noOfCartItems === 0 && this.isCheckout) {
+			if (isNotProxy && this.noOfCartItems === 0 && this.isCheckout) {
 				this._naviagtionService.handleCartWithZeroItems();
 			}
+			this._loader.setLoaderState(false);
 		});
-		this._loader.setLoaderState(false);
-		return;
 	}
 
 	handleNavigation()

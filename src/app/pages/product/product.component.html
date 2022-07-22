@@ -80,7 +80,7 @@
 
 <product-accordian [categoryBrandDetails]="getCategoryBrandDetails()" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
 
-<ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
+<ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
     <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
 </ng-container>
 

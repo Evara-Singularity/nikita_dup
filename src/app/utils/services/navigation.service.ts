@@ -90,7 +90,7 @@ export class NavigationService
     const oldArray = this.history.filter((url:string)=>url.toLowerCase() !== this.QUICKORDER_URL);
     const newArray = [];
     oldArray.forEach((url)=>{
-      if(url.toLowerCase().includes("this.CHECKOUT_URL"))
+      if(url.toLowerCase().includes(this.CHECKOUT_URL))
       {
         newArray.push(this.QUICKORDER_URL);
       }

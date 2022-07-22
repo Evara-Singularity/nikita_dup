@@ -2,9 +2,9 @@
 .pwa-inline-tooltip {
     display:flex;
     background: var(--light-cyan);
-    border-radius:2px;
+    border-radius:$border-radius-4;
     padding:var(--base-inner-padding);
-    margin:var(--large-base-margin) 0px;
+    margin:0px;
     align-items: center;
     position: relative;
     color: var(--persian-green);

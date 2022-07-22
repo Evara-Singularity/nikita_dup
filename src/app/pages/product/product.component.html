@@ -80,7 +80,7 @@
 
 <product-accordian [categoryBrandDetails]="getCategoryBrandDetails()" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
 
-<ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
+<ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0">
     <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
 </ng-container>
 
@@ -97,7 +97,7 @@
     <product-skeletons [type]="'APP_PROMO'" [templateRefInstance]="appPromoInstance"></product-skeletons>
 </div>
 
-<section observeVisibility [ngClass]="{'common-product': !recentProductsInstance}"  [debounceTime]="100" [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
+<section *ngIf="hasRecentlyView" observeVisibility class="pwa-col-12 common-product" [debounceTime]="100" [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
     <ng-container #recentProducts></ng-container>
     <product-skeletons [type]="'RECENT'" [templateRefInstance]="recentProductsInstance"></product-skeletons>
 </section>

@@ -179,11 +179,17 @@ export class ProductCheckPincodeComponent implements OnInit
 
     checkPinocdeKey(event)
     {
-        this.isPincodeAvailble = (this.pincode.value == this.checkedPincode);
-        if (event.which === 13 || event.key === "Enter") {
-            this.checkAvailblityOnPinCode();
+        if(this.pincode.value != null && this.pincode.value != undefined){
+            this.isPincodeAvailble = (this.pincode.value == this.checkedPincode);
+            if (event.which === 13 || event.key === "Enter") {
+                this.checkAvailblityOnPinCode();
+            }
+            return (event.charCode >= 48 && event.charCode <= 57) || event.which === 8;
+        }else{
+            this.pincode.reset();
+            return 0;
         }
-        return (event.charCode >= 48 && event.charCode <= 57) || event.which === 8;
+       
     }
 
 

@@ -11,11 +11,9 @@
                 <div class="inline-list-icon">
                     <i class="icon-coupon-3-fill-1"></i>
                 </div>
-                <div class="inline-list-text">
+                <div class="inline-list-text coupon-list-text">
                     <span>Use Code : <span class="green-promo-code">{{item.promoCode}}</span> and get {{item.promoDescription}}</span><br/>
-                    <span class="green-promo-code-min">Min cart value {{ item.minCartValue  | currency:'INR': 'symbol': '1.0-0'}}</span>
-                </div>
-                <div class="inline-list-link">
+                    <span class="green-promo-code-min" *ngIf="item.minCartValue > 0">Min cart value {{ item.minCartValue  | currency:'INR': 'symbol': '1.0-0'}}</span>
                 </div>
             </div>
         </div>

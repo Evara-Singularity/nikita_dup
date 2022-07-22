@@ -5,6 +5,10 @@ import { LocalStorageService } from 'ngx-webstorage';
 @Injectable({ providedIn: 'root' })
 export class NavigationService
 {
+  readonly HOME_URL = "/";
+  readonly QUICKORDER_URL = "/quickorder";
+  readonly CHECKOUT_URL = "/checkout/address";
+  readonly PAYMENT_URL = "checkout/payment";
   private history: string[] = [];
   moduleName = null;
   pdpBreadCrumbData = [];
@@ -21,9 +25,8 @@ export class NavigationService
       if (event instanceof NavigationEnd) {
         //const currentUrl = event.urlAfterRedirects;
         const currentUrl = this.router.url;
-        console.log(currentUrl);
-        if (currentUrl === "/") {
-          this.history = ['/'];
+        if (currentUrl === this.HOME_URL) {
+          this.history = [this.HOME_URL];
           this.saveHistory(this.history);
           return;
         }
@@ -56,15 +59,20 @@ export class NavigationService
     if (!isRemove) { this.history.pop(); }
     this.saveHistory(this.history);
     if (this.history.length === 0) {
-      let defaultUrl = "/";
-      //this is to handle google + PDP + back case where we need to redirect to parent category
+      let defaultUrl = this.HOME_URL;
+      //this is to handle (google + PDP + back icon) case where we need to redirect to parent category
       if (this.isPDPUrl(currentURL)) {
         defaultUrl = this.breadcrumbCategoryLink;
         this.saveHistory([]);
       }
-      //this is to handle checkout + page reload + back case where we need to redirect to quickorder
+      //this is to handle (checkout + page reload + back icon) case where we need to redirect to /quickorder
       if (this.isCheckout(currentURL)) {
-        defaultUrl = "/quickorder";
+        defaultUrl = this.QUICKORDER_URL;
+        this.saveHistory([]);
+      }
+      //this is to handle (checkout + page reload + payment + back icon) case where we need to redirect to checkout/address
+      if (this.isPayment(currentURL)) {
+        defaultUrl = this.CHECKOUT_URL;
         this.saveHistory([]);
       }
       this.navigate(defaultUrl);
@@ -72,19 +80,19 @@ export class NavigationService
       const length = this.history.length;
       this.navigate(this.history[length - 1]);
     } else {
-      this.navigate("/");
+      this.navigate(this.HOME_URL);
     }
   }
 
   //this is handle checkout/address with zero items where we will insert quickorder in existing flow;
   handleCartWithZeroItems()
   {
-    const oldArray = this.history.filter((url:string)=>url.toLowerCase() !== "/quickorder");
+    const oldArray = this.history.filter((url:string)=>url.toLowerCase() !== this.QUICKORDER_URL);
     const newArray = [];
     oldArray.forEach((url)=>{
-      if(url.toLowerCase().includes("/checkout/address"))
+      if(url.toLowerCase().includes("this.CHECKOUT_URL"))
       {
-        newArray.push("/quickorder");
+        newArray.push(this.QUICKORDER_URL);
       }
       newArray.push(url);
     })
@@ -95,7 +103,7 @@ export class NavigationService
 
   navigate(url:string)
   {
-    if(url === "/")
+    if(url === this.HOME_URL)
     {
       this.router.navigateByUrl("/?back=1");
       return;
@@ -103,15 +111,15 @@ export class NavigationService
     this.router.navigateByUrl(url);
   }
 
-  //this is to handle google + PDP + back case where we need to redirect to parent category
-  setPDPBreadCrumbData(breadcrumbData) { this.pdpBreadCrumbData = breadcrumbData; }
-
   //this is to return the parent breadcrum
   get breadcrumbCategoryLink()
   {
-    if (this.pdpBreadCrumbData.length === 0) return "/";
+    if (this.pdpBreadCrumbData.length === 0) return this.HOME_URL;
     return this.pdpBreadCrumbData[this.pdpBreadCrumbData.length - 2]['categoryLink']
   }
+
+  //this is to handle google + PDP + back case where we need to redirect to parent category
+  setPDPBreadCrumbData(breadcrumbData) { this.pdpBreadCrumbData = breadcrumbData; }
 
   saveHistory(history) { this._localStorage.store("history", history) }
 
@@ -119,5 +127,7 @@ export class NavigationService
 
   isPDPUrl(url: string) { return url.toLowerCase().includes("/mp/msn") }
 
-  isCheckout(url:string){ return url.toLowerCase().includes("checkout/address")}
+  isCheckout(url: string) { return url.toLowerCase().includes(this.CHECKOUT_URL) }
+  
+  isPayment(url:string){ return url.toLowerCase().includes(this.PAYMENT_URL)}
 }

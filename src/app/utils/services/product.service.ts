@@ -826,7 +826,7 @@ export class ProductService {
             outOfStock: productBO['outOfStock'],
             quantityAvailable: priceQuantityCountry ? priceQuantityCountry['quantityAvailable'] : 0,
             productMinimmumQuantity: productMinimmumQuantity,
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            discount: (priceQuantityCountry && priceQuantityCountry['discount']) ? priceQuantityCountry['discount'] :(((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
             rating: (overrideProductB0 && overrideProductB0.rating) ? overrideProductB0.rating : null,
             categoryCodes: productCategoryDetails['categoryCode'],
             taxonomy: productCategoryDetails['taxonomyCode'],

@@ -1,3 +1,4 @@
+import { NavigationService } from '@app/utils/services/navigation.service';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -8,8 +9,7 @@ import { LocalAuthService } from './../../../utils/services/auth.service';
     templateUrl: './shared-auth-header.component.html',
     styleUrls: ['./shared-auth-header.component.scss']
 })
-export class SharedAuthHeaderComponent implements OnInit, OnDestroy
-{
+export class SharedAuthHeaderComponent implements OnInit, OnDestroy {
     readonly HOME_URL = "/";
     readonly OTP_URL = "/otp";
     readonly LOGIN_URL = "/login";
@@ -25,58 +25,61 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     previousUrl: boolean = false;
 
     constructor(
-        private _router: Router, private activatedRoute : ActivatedRoute,
-        private _localAuthService: LocalAuthService) { 
-            this.activatedRoute.queryParams.subscribe(params => {
-                this.previousUrl = (params.backurl.split('/').includes('dashboard')) ? true : false;
-                console.log( this.previousUrl);
-            });
-        }
+        private _navigationService: NavigationService,
+        private _router: Router, private activatedRoute: ActivatedRoute,
+        private _localAuthService: LocalAuthService) {
+        this.activatedRoute.queryParams.subscribe(params => {
+            this.previousUrl = (params.backurl.split('/').includes('dashboard')) ? true : false;
+            console.log(this.previousUrl);
+        });
+    }
 
     ngOnInit() { }
 
-    navigateBack()
-    {
-        if (this.previousUrl){
+
+
+    navigateBack() {
+        if (this.previousUrl) {
             console.log('in')
             this.navigateTo('/')
             this.onSkipBtnClick$.emit(true)
-        }else{
+        } else {
             console.log('else')
-        const URL = (this._router.url as string).toLowerCase();
-        let NAVIGATE_TO = this.HOME_URL;
-        if (URL.includes("forgot-password")) {
-            NAVIGATE_TO = this.OTP_URL;
-        } else if (URL.includes("sign-up")) {
-            NAVIGATE_TO = this.LOGIN_URL;
-        } else if (URL.includes("otp")) {
-            NAVIGATE_TO = this.LOGIN_URL;
-        }else {
+            const URL = (this._router.url as string).toLowerCase();
+            let NAVIGATE_TO = null;
+            if (URL.includes("forgot-password")) {
+                NAVIGATE_TO = this.OTP_URL;
+            } else if (URL.includes("sign-up")) {
+                NAVIGATE_TO = this.LOGIN_URL;
+            } else if (URL.includes("otp")) {
+                NAVIGATE_TO = this.LOGIN_URL;
+            }
             this._localAuthService.handleBackURL(true);
-            return;
+            if (this.isCheckout && NAVIGATE_TO) {
+                this.navigateTo(`checkout/${NAVIGATE_TO}`)
+            }
+            else {
+                this._navigationService.goBack(true);
+            }
         }
-       
-        this.navigateTo(this.isCheckout ? `checkout/${NAVIGATE_TO}` : NAVIGATE_TO);
-     }
     }
 
-    navigateToHome(link)
-    {
+
+    navigateToHome(link) {
         this.navigateTo(link);
     }
 
-    navigateTo(link) { this._router.navigate([link]); }
+    navigateTo(link) { this._router.navigate([link]) }
 
-    onBackBtnClick(){
-        this.onBackBtnClick$.emit(true);
+    onBackBtnClick() {
+        this._navigationService.goBack(true);
     }
 
-    onHomepageBtnClick(){
+    onHomepageBtnClick() {
         this.onHomepageBtnClick$.emit(true);
     }
 
-    ngOnDestroy(): void
-    {
+    ngOnDestroy() {
         if (this.checkOutTabSubscriber) {
             this.checkOutTabSubscriber.unsubscribe();
         }

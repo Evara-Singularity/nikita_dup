@@ -153,9 +153,10 @@ $default-gap: 15px;
 %view-all-strip {
   display: flex;
   align-items: center;
-  padding: 5px 0px;
-  h4 {
+  padding: 5px 15px 10px 0px;
+  h4,h2 {
     width: 75%;
+    word-break: break-word;
   }
   .quinary-btn {
     display: inline;

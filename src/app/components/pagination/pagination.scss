@@ -60,18 +60,18 @@ pagination-controls {
     font-weight: bold;
 }
 
-.ngx-pagination .pagination-previous.disabled::before {
-    color: var(--silver);
-}
-
+.ngx-pagination .pagination-previous.disabled::before,
 .ngx-pagination .pagination-next.disabled::after {
-    color: var(--silver);
+    color: var(--silver) !important;
 }
 
 .ngx-pagination .pagination-next a::after,
 .ngx-pagination .pagination-next.disabled::after {
     content: 'NEXT' !important;
-    // color: var(--blue);
+    color: var(--blue);
     display: none;
     font-weight: bold;
+    .disabled{
+        color: var(--silver);
+    }
 }

@@ -26,7 +26,7 @@
         <!-- <div *ngIf="pincode.hasError('pattern') && isSubmitted" class="invalid-txt pwa-col-12" style="padding-top: 5px;">
             <p class="right-txt">Invalid pincode provided</p>
         </div> -->
-        <div class="about-delivery pwa-col-12" *ngIf="!(itemShippingAmount > 0) && isPincodeAvailble">
+        <div class="about-delivery pwa-col-12" *ngIf="!(itemShippingAmount > 0) && isPincodeAvailble && this.pincode.value != null">
             <span class="st-icon-shipping">
                 <span class="icon-delivery_1"></span>
             <span class="icon-delivery_2"></span>
@@ -42,7 +42,7 @@
                 <span class="green-txt">No shipping charge on this order</span>
             </div>
         </div>
-        <div class="about-delivery pwa-col-12" *ngIf="isServiceable && isPincodeAvailble && itemShippingAmount > 0">
+        <div class="about-delivery pwa-col-12" *ngIf="isServiceable && isPincodeAvailble && itemShippingAmount > 0 && this.pincode.value != null">
             <span class="st-icon-shipping">
                 <span class="icon-delivery_1"></span>
             <span class="icon-delivery_2"></span>
@@ -58,7 +58,7 @@
                 <span>On this order</span>
             </div>
         </div>
-        <ng-container *ngIf="isPincodeAvailble && !pincode.hasError('pattern')">
+        <ng-container *ngIf="isPincodeAvailble && !pincode.hasError('pattern') && this.pincode.value != null">
             <div class="about-delivery pwa-col-12" *ngIf="isServiceable">
                 <span class="st-icon-delivery_available">
                     <span class="icon-delivery_y_1"></span>

@@ -1,0 +1,24 @@
+<section class="pwa-row popularDeals mt-10 pad-r-0"
+    *ngIf="resultArray && (resultArray.length > 1 || (resultArray.length == 1 && resultArray[0]['productList'].length > 1)) ">
+    <section class="pwa-col-12">
+        <div class="view-all-strip">
+            <h3>Best of Moglix</h3>
+        </div>
+        <div class="pwa-tabs-container" id="tabs">
+            <ng-container *ngFor="let item of resultArray;let tabIndex = index">
+                <div class="pwa-tab pwa-tab-variant2" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"
+                    (click)="setProductList(tabIndex,item);onClick($event)">
+                    {{item['productTagName']}}
+                </div>
+            </ng-container>
+        </div>
+        <product-card-vertical-container [containerId]="'topDealsContainer'" [numberOfItems]="selectedProducts?.length || 0">
+            <ng-container *ngFor="let product of selectedProducts; let pIndex=index">
+                <product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
+                    [cardMetaInfo]='cardMetaInfo' [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex"
+                    [enableTracking]="true" [analytics]="analytics">
+                </product-card-vertical-grid-view>
+            </ng-container>
+        </product-card-vertical-container>
+    </section>
+</section>

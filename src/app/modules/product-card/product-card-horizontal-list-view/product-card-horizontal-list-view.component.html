@@ -36,7 +36,7 @@
                     </span>
                     <span class="count"
                         *ngIf="cardFeaturesConfig.enableRating && product.ratingCount">({{productReviewCount}})</span>
-                    <!-- <span class="ads" *ngIf="!product.internalProduct && !hideAd">AD</span> -->
+                    <span class="ads" *ngIf="!isWishlist && !product.internalProduct && !hideAd">AD</span>
                 </div>
                 <div *ngIf="!isWishlist" class="name" (click)="trackProductTitle('title');$event.preventDefault()">
                     <a [href]="prodUrl + '/' + product.productUrl">

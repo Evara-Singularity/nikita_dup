@@ -22,4 +22,11 @@
     .count {
         color: #c0c0c0;
     }
+    .ads{
+        position: absolute;
+        right: 10px;
+        padding: 1px 3px;
+        border: 1px solid var(--silver);
+        border-radius:$border-radius-4;
+    }
 }

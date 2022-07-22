@@ -745,7 +745,7 @@ export class ProductService {
     }
 
     productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
-        // console.log("blocks", product)
+        console.log("blocks", product)
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
         const productEntity: ProductsEntity =  {
@@ -761,7 +761,8 @@ export class ProductService {
             brandName: brandName || product['short_description'],
             quantityAvailable: 1,
            // discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
-            discount: this._commonService.calculcateDiscount(product['discount_percentage'], productMrp,  product['sellingPrice']),
+            //discount: this._commonService.calculcateDiscount(product['discount_percentage'], productMrp,  product['sellingPrice']),
+            discount: product['discount_percentage'],
             rating: null,
             categoryCodes: null,
             taxonomy: null,

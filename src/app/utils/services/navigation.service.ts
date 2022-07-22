@@ -21,6 +21,7 @@ export class NavigationService
       if (event instanceof NavigationEnd) {
         //const currentUrl = event.urlAfterRedirects;
         const currentUrl = this.router.url;
+        console.log(currentUrl);
         if (currentUrl === "/") {
           this.history = ['/'];
           this.saveHistory(this.history);
@@ -54,17 +55,17 @@ export class NavigationService
     if (!isRemove) { this.history.pop(); }
     this.saveHistory(this.history);
     if (this.history.length === 0) {
-      let defaultUrl = "/?back=1";
+      let defaultUrl = "/";
       if (this.isPDPUrl(currentURL)) {
         defaultUrl = this.breadcrumbCategoryLink;
         this.saveHistory([]);
       }
-      this.router.navigate([defaultUrl]);
+      this.navigate(defaultUrl);
     } else if (this.history.length > 0) {
       const length = this.history.length;
-      this.router.navigate([this.history[length - 1]]);
+      this.navigate(this.history[length - 1]);
     } else {
-      this.router.navigate(["/?back=1"]);
+      this.navigate("/");
     }
   }
 
@@ -82,6 +83,16 @@ export class NavigationService
     this.history = newArray;
     this.saveHistory(this.history);
     this.goBack();
+  }
+
+  navigate(url:string)
+  {
+    if(url === "/")
+    {
+      this.router.navigateByUrl("/?back=1");
+      return;
+    }
+    this.router.navigateByUrl(url);
   }
 
   setPDPBreadCrumbData(breadcrumbData) { this.pdpBreadCrumbData = breadcrumbData; }

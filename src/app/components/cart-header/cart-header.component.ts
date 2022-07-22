@@ -1,18 +1,20 @@
 import { NavigationService } from '@app/utils/services/navigation.service';
 import { Location } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Subscription } from 'rxjs';
 import { CartService } from './../../utils/services/cart.service';
+import { retry } from 'rxjs-compat/operator/retry';
+import { retryWhen } from 'rxjs-compat/operator/retryWhen';
 
 @Component({
 	selector: 'cart-header',
 	templateUrl: './cart-header.component.html',
 	styleUrls: ['./cart-header.component.scss']
 })
-export class CartHeaderComponent implements OnInit, OnDestroy
+export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 {
 	readonly REPLACE_URL = { replaceUrl: true };
 	@Output() loadSideNav$: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -26,6 +28,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 	@Input() imgAssetPath: boolean = false;
 	totalPayableAmount = 0;
 	cartUpdatesSubscription: Subscription = null;
+	cartSubscriptionCount = 0;
 
 	constructor(
 		public _commonService: CommonService,
@@ -33,22 +36,28 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		private _router: Router,
 		private _loader: GlobalLoaderService,
 		private _location: Location,
-		private _naviagtionService:NavigationService
+		private _naviagtionService: NavigationService
 	) { }
+
 
 	ngOnInit(): void
 	{
 		this._loader.setLoaderState(true);
+	}
+
+	ngAfterViewInit(): void
+	{
 		this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
 		{
+			this.cartSubscriptionCount++;
 			this.noOfCartItems = this._cartService.getCartItemsCount();
 			this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
-			this._loader.setLoaderState(false);
-			if(this.noOfCartItems === 0 && this.isCheckout)
-			{
+			if (this.cartSubscriptionCount>1 && this.noOfCartItems === 0 && this.isCheckout) {
 				this._naviagtionService.handleCartWithZeroItems();
 			}
 		});
+		this._loader.setLoaderState(false);
+		return;
 	}
 
 	handleNavigation()
@@ -79,7 +88,6 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 	handleMyCartNavigation(url: string, previousURL: string)
 	{
 		const trace = { Page: 'Quickorder', 'Buy Now': this._cartService.buyNow, CurrentURL: url, PreviousURL: previousURL };
-		console.table(trace);
 		const isBuyNow = this._cartService.buyNow;
 		if (isBuyNow) { this._cartService.clearBuyNowFlow(); }
 		if (previousURL.includes("checkout") || previousURL.includes("quickorder")) {
@@ -132,7 +140,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	ngOnDestroy(): void
 	{
-		if (this.cartUpdatesSubscription){this.cartUpdatesSubscription.unsubscribe();}
+		if (this.cartUpdatesSubscription) { this.cartUpdatesSubscription.unsubscribe(); }
 	}
 
 }

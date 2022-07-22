@@ -19,7 +19,6 @@ export class AppComponent {
       this.pageRefreshed = false;
       this.handleWindowEvents();
     }
-    
   }
 
   handleWindowEvents()
@@ -29,7 +28,9 @@ export class AppComponent {
       event.stopImmediatePropagation();
       event.stopPropagation();
       event.preventDefault();
-      if (this.router.url !== "/") { this._navigationService.goBack();}
+      if (this.router.url !== "/" && !(this.router.url.includes("back=1"))) { 
+        this._navigationService.goBack();
+      }
     });
   }
 }

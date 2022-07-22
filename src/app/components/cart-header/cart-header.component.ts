@@ -48,10 +48,10 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 	{
 		this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
 		{
-			const isNotProxy = cartSession['proxy']? !(cartSession['proxy']) : true;
+			if(cartSession['proxy'])return;//front end created dummy cart session;
 			this.noOfCartItems = this._cartService.getCartItemsCount();
 			this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
-			if (isNotProxy && this.noOfCartItems === 0 && this.isCheckout) {
+			if (this.noOfCartItems === 0 && this.isCheckout) {
 				this._naviagtionService.handleCartWithZeroItems();
 			}
 			this._loader.setLoaderState(false);

@@ -27,13 +27,14 @@ export class NavigationService
           this.saveHistory(this.history);
           return;
         }
-        const is_not_login_signup = !(currentUrl.includes("login") || currentUrl.includes("otp") || currentUrl.includes("sign-up"));
+        //to avoid saving below urls as these are login or signup 
+        const is_not_login_signup = !(currentUrl.includes("login") || currentUrl.includes("otp") || currentUrl.includes("sign-up") || currentUrl.includes("back=1"));
         let is_not_last_url = true;
+        //to avoid saving of duplication of url
         if (this.history.length > 0) {
           const length = this.history.length;
           const bUrl = this.history[length - 1];
           is_not_last_url = currentUrl !== bUrl;
-          
         }
         if (is_not_login_signup && is_not_last_url) {
           const index = this.history.indexOf(currentUrl);
@@ -47,7 +48,7 @@ export class NavigationService
     })
   }
 
-  //in case of login flow no need to pop
+  //in case of login flow no need to pop from history
   public goBack(isRemove = false)
   {
     const currentURL = this.router.url;
@@ -56,8 +57,14 @@ export class NavigationService
     this.saveHistory(this.history);
     if (this.history.length === 0) {
       let defaultUrl = "/";
+      //this is to handle google + PDP + back case where we need to redirect to parent category
       if (this.isPDPUrl(currentURL)) {
         defaultUrl = this.breadcrumbCategoryLink;
+        this.saveHistory([]);
+      }
+      //this is to handle checkout + page reload + back case where we need to redirect to quickorder
+      if (this.isCheckout(currentURL)) {
+        defaultUrl = "/quickorder";
         this.saveHistory([]);
       }
       this.navigate(defaultUrl);
@@ -69,6 +76,7 @@ export class NavigationService
     }
   }
 
+  //this is handle checkout/address with zero items where we will insert quickorder in existing flow;
   handleCartWithZeroItems()
   {
     const oldArray = this.history.filter((url:string)=>url.toLowerCase() !== "/quickorder");
@@ -95,8 +103,10 @@ export class NavigationService
     this.router.navigateByUrl(url);
   }
 
+  //this is to handle google + PDP + back case where we need to redirect to parent category
   setPDPBreadCrumbData(breadcrumbData) { this.pdpBreadCrumbData = breadcrumbData; }
 
+  //this is to return the parent breadcrum
   get breadcrumbCategoryLink()
   {
     if (this.pdpBreadCrumbData.length === 0) return "/";
@@ -108,4 +118,6 @@ export class NavigationService
   getHistory() { return this._localStorage.retrieve("history") }
 
   isPDPUrl(url: string) { return url.toLowerCase().includes("/mp/msn") }
+
+  isCheckout(url:string){ return url.toLowerCase().includes("checkout/address")}
 }

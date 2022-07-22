@@ -58,7 +58,7 @@ export class CartService
         "noOfItems": 0,
         "cart": {},
         "itemsList": [],
-        "proxy": true
+        "proxy": true//front end created dummy cart session
     };
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
     private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);

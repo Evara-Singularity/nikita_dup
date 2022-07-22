@@ -1270,8 +1270,8 @@ export class ProductComponent implements OnInit, AfterViewInit
             if (this.isBulkPricesProduct) {
                 this.productBulkPrices = this.productBulkPrices.map(priceMap =>
                 {
-                    const calculatedDiscount = this.commonService.calculcateDiscount(null, this.productMrp, priceMap.bulkSellingPrice);
-                    return { ...priceMap, calculatedDiscount }
+                    const discount = this.commonService.calculcateDiscount(null, this.productMrp, priceMap.bulkSellingPrice);
+                    return { ...priceMap, discount }
                 })
                 //filtering Data to show the 
                 this.productBulkPrices = this.productBulkPrices.filter((bulkPrice) =>

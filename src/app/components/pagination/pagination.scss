@@ -64,14 +64,13 @@ pagination-controls {
     color: var(--silver);
 }
 
-.ngx-pagination .pagination-next.disabled::after {
-    color: var(--silver);
-}
-
+// .ngx-pagination .pagination-next.disabled::after {
+//     color: var(--silver);
+// }
 .ngx-pagination .pagination-next a::after,
 .ngx-pagination .pagination-next.disabled::after {
     content: 'NEXT' !important;
-    // color: var(--blue);
+    color: var(--blue);
     display: none;
     font-weight: bold;
 }

@@ -1,3 +1,4 @@
+<div *ngIf="!productNotFound">
 <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer" [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
 </app-oos-similar-section>
 
@@ -160,3 +161,7 @@
         <i class="icon-up"></i>
     </div>
 </ng-container>
+</div>
+
+
+<app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>

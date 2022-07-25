@@ -5,11 +5,12 @@
     position: relative;
     .top-header-bottom-menu{
         border-bottom: none;
+        position: relative;
     }
-    i.del-ico {
+    i.icon-circle-delete {
         position: absolute;
-        right: 15px;
-        top: 15px;
+        right: 10px;
+        top: 0;
         font-size: 20px;
     }
 

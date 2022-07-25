@@ -1,7 +1,10 @@
+@import '../../../scss/variables';
 .featuredBrands{
-    background:#fff;
-    padding: 10px 5px;
-    
+    background:var(--white);
+    .heading-3{
+        text-transform: uppercase;
+        padding-top: 5;
+    }
     .featrOverBlock{
         overflow-y:hidden;
         overflow-x:scroll;
@@ -9,15 +12,15 @@
         padding: 10px 5px;
     }
     .featrSlide{
-        box-shadow: 0px 3px 6px #00000029;
+        box-shadow: var(--cluster-store-shadow);
         float: left;
         margin-right:10px;
         width:80px;
         padding:20px 5px;
-        background:#fff;
+        background:var(--white);
         height:75px;
         img{
-            width:100%;
+            width:$fullwidth;
         }
      }
 }

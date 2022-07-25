@@ -25,12 +25,20 @@
     a{
       color: var(--bleu-de-france);
     }
+    &.pwa-tab-variant2{
+        border-radius: $border-radius-8;
+        padding: 10px 15px;
+        border:1px solid var(--silver);
+        background: var(--white);
+        &.selectedTab{
+          border:1px solid var(--primary);
+        }
+      }
   }
   .pwa-inline-tab {
     display: flex;
     flex-wrap: wrap;
   }
-
   .pwa-image-tab {
     display: inline-flex;
     align-items: center;

@@ -138,8 +138,8 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
     updateAddressForm()
     {
         const COUNTRY_ID = SharedCheckoutAddressUtil.getCountry(this.countryList, null);
-        const STATE_ID = SharedCheckoutAddressUtil.getState(this.stateList, null);
         this.idCountry.patchValue(COUNTRY_ID);
+        const STATE_ID = (this.address) ? this.address['state']['idState']: SharedCheckoutAddressUtil.getState(this.stateList, null);
         this.idState.patchValue(STATE_ID);
     }
 

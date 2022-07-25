@@ -1,6 +1,6 @@
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Component, NgModule, OnInit, Input } from '@angular/core';
+import { Component, NgModule, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { ProductService } from '../../utils/services/product.service';
@@ -19,6 +19,7 @@ export class RecentViewedProductsComponent implements OnInit {
 
   recentProductItems: ProductsEntity[] = null;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
+  @Output() noRecentlyViewed$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() outOfStock: boolean = false;
   @Input() analytics = null;
 
@@ -57,6 +58,7 @@ export class RecentViewedProductsComponent implements OnInit {
     this.productService.getrecentProduct(userId).subscribe(result => {
       if (result['statusCode'] === 200) {
         this.recentProductItems = (result['data'] as any[]).map(product => this.productService.recentProductResponseToProductEntity(product));
+        if (this.recentProductItems.length === 0) { this.noRecentlyViewed$.emit(true);}
       }
     })
   }

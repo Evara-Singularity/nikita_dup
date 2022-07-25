@@ -45,7 +45,7 @@
                 <span *ngIf="i == 0">Get GST invoice and save up to {{gstPercentage}}% on business purchases.</span>
                 <span *ngIf="i > 0">{{ item?.block_data?.image_block['0']['image_title'] || 'Get GST invoice and save upto '+gstPercentage+'% on business purchases.'}}</span>
             </div>
-            <div class="nline-list-link">
+            <div class="inline-list-link">
                 <span class="link-text" (click)="sendOfferData(item)">VIEW</span>
             </div>
         </div>

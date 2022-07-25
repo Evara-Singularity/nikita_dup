@@ -8,7 +8,7 @@
                     <!-- NON BULK PRICE BLOCK STARTS -->
                     <ng-container *ngIf="selectedProductBulkPrice==null">
                         <p class="actual-price" *ngIf="productPrice > 0">
-                            <small *ngIf="(+(productPrice-priceWithoutTax) > 0)" >
+                            <small *ngIf="(+(productPrice-priceWithoutTax) > 0)">
                                 <ng-container *ngIf="+productMrp == +productPrice" >MRP&nbsp;</ng-container>
                                 {{productPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp;(Incl. of all taxes)
                             </small>
@@ -18,37 +18,37 @@
                                 <small class="inline-price" *ngIf="((productPrice-priceWithoutTax) > 0)"><i class="icon-expand"></i>{{ (productPrice-priceWithoutTax) | currency: 'INR' : 'symbol' : '1.0-0'}} GST
                                 </small>
                             </strong>
-                            
+
                         </p>
                         <p class="mrp mt-5" *ngIf="(productMrp > productPrice) && (productDiscount != undefined && productDiscount>0 && productMrp > 0)">
                             MRP&nbsp;<small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
-                            <span >
+                            <span>
                              {{ productDiscount | number:'1.0-0'}}% OFF
                             </span>
                         </p>
-                    </ng-container> 
+                    </ng-container>
                     <!-- NON BULK PRICE BLOCK ENDS -->
 
                     <!-- BULK PRICE BLOCK STARTS -->
                     <ng-container *ngIf="selectedProductBulkPrice!=null">
                         <p class="actual-price" *ngIf="selectedProductBulkPrice['bulkSellingPrice'] > 0">
-                            <small *ngIf="(+(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax'])) > 0" >
+                            <small *ngIf="(+(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax'])) > 0">
                                 {{selectedProductBulkPrice['bulkSellingPrice'] | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp;(Incl. of all taxes)
                             </small>
                         </p>
                         <p class="actual-price main-price">
                             <strong>{{selectedProductBulkPrice['bulkSPWithoutTax'] | currency: 'INR' : 'symbol' : '1.0-0'}}</strong>
-                            <small class="inline-price" *ngIf="(+(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax'])) > 0" >
+                            <small class="inline-price" *ngIf="(+(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax'])) > 0">
                                 &nbsp;<i class="icon-expand"></i>{{ +(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax']) | currency: 'INR' : 'symbol' : '1.0-0' }} GST
                             </small>
                         </p>
                         <p class="mrp" *ngIf="(productMrp > selectedProductBulkPrice['bulkSellingPrice'])">
                             MRP&nbsp;<small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
-                            <span >
-                             {{selectedProductBulkPrice['calculatedDiscount'] | mathFloor | number:'1.0-0'}}% OFF
+                            <span>
+                             {{selectedProductBulkPrice['discount'] | mathFloor | number:'1.0-0'}}% OFF
                             </span>
                         </p>
-                    </ng-container> 
+                    </ng-container>
                     <!--BULK PRICE BLOCK ENDS -->
 
                 </ng-container>
@@ -87,8 +87,7 @@
             <div class="prod-status">
                 <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
                 <p class="prod-status-right">
-                    <small class="review" (click)="scrollToResults('reviewSection',-30)"
-                        *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
+                    <small class="review" (click)="scrollToResults('reviewSection',-30)" *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
                         Reviews
                     </small>
                 </p>

@@ -18,13 +18,13 @@
                             <span class="before-discount">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' :
                                 '1.0-0' }}</span>
                             <span class="discount">{{product.discount}}% OFF</span>
-                            <span class="after-discount">{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' :
+                            <span class="after-discount">{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' :
                                 '1.0-0' }}</span>
                         </div>
-                        <div class="oos-listing-section" *ngIf="product.priceWithoutTax == 0">
+                        <div class="oos-listing-section" *ngIf="product.salesPrice == 0">
                             <div class="out-of-stock-text">
                                 <p>Available on Request</p>
-                                <span class="after-discount">{{ product.priceWithoutTax | mathFloor | currency: 'INR' : 'symbol' :
+                                <span class="after-discount">{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' :
                                     '1.0-0' }}</span>
                             </div>
                         </div>

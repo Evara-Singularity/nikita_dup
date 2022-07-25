@@ -2,10 +2,12 @@
   <nav id="sidebar" class="sidebar">
     <div class="sidebar-content">
       <div class="view-card-category">
-          <category-card *ngFor="let item of clusterCategoryData['data']" [page]="'all-categories'"
-          [routerLink]="['/'+item.image_general[0].general_url]" [image]="API['IMAGE_BASE_URL'] + item.image_name"
-          [title]="item['image_title']">
+          <category-card *ngFor="let item of clusterCategoryData['data'];let i=index" 
+          [data]="productDataToCategoryCardObject(i,clusterCategoryData['data'])"
+          [routerLink]="['/'+item.image_general[0].general_url]" 
+          >
         </category-card>
+
       </div>
       <div class="clearfix breadcrumbs border-bottom">
         <h1 (click)="goto(0)" style="font-size:16px;">All Categories</h1>

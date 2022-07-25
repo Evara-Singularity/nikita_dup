@@ -1,3 +1,5 @@
+
+
 @import "../../scss/variables";
 @import "../../scss/utils/spacing.scss";
 
@@ -24,6 +26,10 @@
       font-weight: $font-normal;
       margin-top: 5px;
       line-height: $small-line-height;
+    }
+    &.selected {
+      border: 1px solid #d9232d;
+      background: #f4e1e5;
     }
   }
 }

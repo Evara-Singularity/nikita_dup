@@ -94,11 +94,16 @@ function appendImagePreloads(indexHtml) {
   const headPart = indexHtml.slice(0, headStartingTagIdx + replaceStringInIndex.length);
   const bodyPart = indexHtml.slice(headStartingTagIdx + replaceStringInIndex.length);
 
-  const newIndexHtml = `
+  let newIndexHtml = `
       ${headPart}
       ${allImagePreloadLink}
       ${bodyPart}
   `;
+
+  newIndexHtml = newIndexHtml.split(";column-count:#343434").join(''); 
+  newIndexHtml = newIndexHtml.split("ng-transition").join('data-ng-transition'); 
+  newIndexHtml = newIndexHtml.split("ng-reflect").join('data-ng-reflect'); 
+  newIndexHtml = newIndexHtml.split("_ngcontent").join('data-_ngcontent');
   return newIndexHtml;
 }
 

@@ -6,6 +6,7 @@ import { ViewService } from './view.service';
 import { CommonService } from '@app/utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
 import { allCategoriesData } from '@app/config/all-categories';
+import { CategoryCardObject } from '@app/utils/models/categoryCard';
 @Component({
 	selector: 'view',
 	templateUrl: 'view.html',
@@ -129,4 +130,14 @@ export class ViewComponent {
 			this.childCatIcons = false;
 		}
 	}
+
+	productDataToCategoryCardObject(index,data){
+		return {
+			item: data[index],
+			page:'all-categories',
+			title: data[index]['image_title'],
+			image: this.API['IMAGE_BASE_URL'] + data[index].image_name	
+		} as CategoryCardObject
+	}
+
 }

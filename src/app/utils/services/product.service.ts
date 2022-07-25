@@ -144,6 +144,13 @@ export class ProductService {
         );
     }
 
+    getAllPromoCodeOffers(url) {
+        return this._dataService.callRestful(
+            "GET",
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPON_CODE  + url
+        );
+    }
+
     getEmiPlans(price) {
         let url = this.basePath + ENDPOINTS.GET_EMI_VAL + "?price=" + price;
         return this._dataService.callRestful("GET", url);

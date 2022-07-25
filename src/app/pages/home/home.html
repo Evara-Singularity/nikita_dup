@@ -19,11 +19,11 @@
     <div class="pwa-row pwa-row-noPad">
         <div class="pwa-col-12 pad-lr-15">
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
-            <section class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
+            <div class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
                 <a class="full-banner" *ngIf="i==0" href="{{im.image_link}}">
                     <img [src]="imagePath + im.image_name" alt="banner add">
                 </a>
-            </section>
+            </div>
 
             <!-- <div class="home-card-container">
                     <category-card *ngFor="let item of clustorCategories| slice:0:5" [page]="'home'"
@@ -55,7 +55,7 @@
             </div>
         </div>
         <div class="pwa-col-12 pad-lr-15">
-            <div observeVisibility class="featr_brand clearfix" [debounceTime]="50"
+            <div data-observeVisibility class="featr_brand clearfix" [debounceTime]="50"
                 (visible)="onVisibleFeaturedBrands($event)">
                 <div>
                     <ng-container #FeaturedBrands></ng-container>
@@ -63,14 +63,14 @@
             </div>
         </div>
         <div class="pwa-col-12 recently-container">
-            <div observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
+            <div data-observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
                 *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
                 <ng-container #RecentlyViewedCarouselComponent></ng-container>
                 <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="carouselInstance"></home-page-skeletons>
             </div>
         </div>
         
-        <div observeVisibility class="pwa-col-12" [debounceTime]="50" (visible)="onVisibleCategories($event)" >
+        <div data-observeVisibility class="pwa-col-12" [debounceTime]="50" (visible)="onVisibleCategories($event)" >
             <ng-container #Categories></ng-container>
         </div>
         <ng-container *ngIf="!categoriesInstance" >
@@ -81,7 +81,7 @@
         
 
         <!-- Section for feature Arrival -->
-        <div observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [ngClass]="{'featr_arrival-skeleton':featuredArrivalsInstance == null}" [debounceTime]="50"
+        <div data-observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [ngClass]="{'featr_arrival-skeleton':featuredArrivalsInstance == null}" [debounceTime]="50"
             (visible)="onVisibleFeaturedArrivals($event)">
             <ng-container #FeaturedArrivals></ng-container>
             <!-- <home-page-skeletons [type]="'FEATURED-ARRIVALS'" [templateRefInstance]="featuredArrivalsInstance"></home-page-skeletons> -->

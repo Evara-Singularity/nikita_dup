@@ -1,8 +1,8 @@
-<div class="product-vertical-grid-card" observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
+<div class="product-vertical-grid-card" data-observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
     <!-- <a class="s-h-l" [attr.href]="prodUrl+'/'+this.product.productUrl">{{product.productName}}</a> -->
     <div class="product-card-upper " (click)="navigateToPDP()">
         <div class="tags" *ngFor="let tags of product['productTags']">
-            <img [src]="tags['tagImageLink']" />
+            <img [src]="tags['tagImageLink']" alt=""/>
         </div>
         <div class="pwa-image">
             <ng-container *ngIf="isPDPImageLazyLoaded || !cardFeaturesConfig.lazyLoadImage">

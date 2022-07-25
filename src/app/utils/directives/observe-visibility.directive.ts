@@ -5,7 +5,7 @@ import { delay, filter } from "rxjs/operators";
 import { CommonService } from "../services/common.service";
 
 @Directive({
-  selector: '[observeVisibility]',
+  selector: '[data-observeVisibility]',
 })
 export class ObserveVisibilityDirective
   implements OnDestroy, OnInit, AfterViewInit {

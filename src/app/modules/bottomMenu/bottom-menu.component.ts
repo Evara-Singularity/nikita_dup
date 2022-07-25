@@ -13,6 +13,7 @@ export class BottomMenuComponent implements OnInit {
     @Input() isRFQPopUp;
     @Input() data: {};
     @Output() outData$: EventEmitter<{}>;
+    @Input() containerClasses: string = "";
     isServer: boolean;
     isBrowser: boolean;
     constructor(public _commonService: CommonService) {

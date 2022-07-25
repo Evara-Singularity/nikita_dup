@@ -40,6 +40,18 @@
                     <span class="text">Best Deals</span>
                 </a>
             </li>
+            <li>
+                <a (click)="trackAnalyticAndRedirect('/popular-search')" [routerLink]="['/deals']">
+                    <i class="icon-popular_search"></i>
+                    <span class="text">Popular Searches</span>
+                </a>
+            </li>
+            <li>
+                <a (click)="trackAnalyticAndRedirect('/articles')" [routerLink]="['/deals']">
+                    <i class="icon-articles"></i>
+                    <span class="text">Articles</span>
+                </a>
+            </li>
         </ul>
         <ul class="menu-list scrolled" (click)="sideMenu()" id="scrolledUl">
             <li>

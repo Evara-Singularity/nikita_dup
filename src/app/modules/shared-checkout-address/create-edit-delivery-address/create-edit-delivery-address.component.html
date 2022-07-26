@@ -21,7 +21,7 @@
                 <div class="outline-input-label">
                     <label [class.is-focus]="displayFocus('email')">
                         <input formControlName="email" type="text" placeholder="">
-                        <span class="label">Email (Optional)</span>
+                        <span class="label">Email*</span>
                     </label>
                     <ng-container *ngIf="email.dirty">
                         <p *ngIf="email.hasError('required')" class="error-txt">

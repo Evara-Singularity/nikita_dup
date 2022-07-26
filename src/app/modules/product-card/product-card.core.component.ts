@@ -296,10 +296,10 @@ export class ProductCardCoreComponent implements OnInit {
     (this.productRFQInstance.instance["hasGstin"] as EventEmitter<boolean>).subscribe((value) =>{hasGstin=value});
     //productPrice
     (this.productRFQInstance.instance["rfqQuantity"] as EventEmitter<string>).subscribe((rfqQuantity) => { rfqValue = rfqQuantity * Math.floor(this.product['salesPrice'] || 0);    });
-    // (this.productRFQInstance.instance['onRFQSuccess'] as EventEmitter<boolean>).subscribe((status) => {
-    //   this.loadRFQThankyouPopup(hasGstin, rfqValue);
-    //   this._productListService.analyticRFQ(true, product);
-    // });
+    (this.productRFQInstance.instance['onRFQSuccess'] as EventEmitter<boolean>).subscribe((status) => {
+      this.loadRFQThankyouPopup(hasGstin, rfqValue);
+      this._productListService.analyticRFQ(true, product);
+    });
   }
 
 

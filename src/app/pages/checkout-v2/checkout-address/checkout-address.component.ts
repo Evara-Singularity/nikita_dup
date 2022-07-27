@@ -1,6 +1,6 @@
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { AfterViewInit, Compiler, Component, ComponentRef, EventEmitter, Injector, Input, NgModuleRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -12,6 +12,8 @@ import { CartService } from '@services/cart.service';
 import { environment } from 'environments/environment';
 import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
+import { SharedTransactionDeclinedComponent } from '@app/modules/shared-transaction-declined/shared-transaction-declined.component';
+import { SharedTransactionDeclinedModule } from '@app/modules/shared-transaction-declined/shared-transaction-declined.module';
 
 @Component({
     selector: 'checkout-address',
@@ -23,6 +25,12 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     readonly STEPPER: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }, { label: "PAYMENT", status: false }];
     readonly IMG_PATH: string = environment.IMAGE_ASSET_URL;
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
+    //ODP-1866
+    transactionId = null;
+    orderId = null;
+    txnDeclinedInstance: ComponentRef<SharedTransactionDeclinedComponent> = null;
+    @ViewChild("txnDeclined", { read: ViewContainerRef })
+    txnDeclinedContainerRef: ViewContainerRef;
 
     @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = new Subject();
 
@@ -36,18 +44,28 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     billingAddress = null;
     moveSectionTo = null;
     cartSession = null;
-    
+
     orderSummarySubscription; Subscription = null;
     loginSubscription: Subscription = null;
     logoutSubscription: Subscription = null;
     cartUpdatesSubscription: Subscription = null;
 
-    constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService) { }
-    
+    constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute, private _compiler: Compiler, private _injector: Injector,
+        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService)
+    {
+        //ODP-1866
+        this.transactionId = this._activatedRoute.snapshot.queryParams['transactionId'];
+        this.orderId = this._activatedRoute.snapshot.queryParams['orderId'];
+    }
+
 
     ngOnInit(): void
     {
+        if(this.transactionId || this.orderId)
+        {
+            this.fetchTransactionDetails();
+            return;
+        }
         this._cartService.sendAdobeOnCheckoutOnVisit("address");
         this.updateUserStatus();
         this._cartService.showUnavailableItems = false;
@@ -87,8 +105,36 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (!this.isUserLoggedIn) {
             this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
         }
-
     }
+
+    fetchTransactionDetails()
+    {
+        this._cartService.getPaymentDetails().subscribe((result)=>{
+            //handle status code logic
+            //handle loader logic
+            this.openTxnDeclinedPopup(result);
+        })
+    }
+
+    async openTxnDeclinedPopup(lastPaymentData)
+    {
+        const txnDeclinedModule = await import('./../../../modules/shared-transaction-declined/shared-transaction-declined.module').then(m => m.SharedTransactionDeclinedModule);
+        const moduleFactory = await this._compiler.compileModuleAsync(txnDeclinedModule);
+        const txnDeclinedModuleRef: NgModuleRef<SharedTransactionDeclinedModule> = moduleFactory.create(this._injector);
+        const componentFactory = txnDeclinedModuleRef.instance.resolveComponent();
+        this.txnDeclinedInstance = this.txnDeclinedContainerRef.createComponent(componentFactory, null, txnDeclinedModuleRef.injector);
+        this.txnDeclinedInstance.instance.displayPage = true;
+        this.txnDeclinedInstance.instance.lastPaymentData = lastPaymentData;
+        this.txnDeclinedInstance.instance.userId = this._localAuthService.getUserSession()['userId'];
+        (this.txnDeclinedInstance.instance["emitQuickoutCloseEvent$"] as EventEmitter<boolean>).subscribe((isClosed) =>
+        {
+            this.txnDeclinedInstance.instance.displayPage = false;
+            this.txnDeclinedInstance = null;
+            this.txnDeclinedContainerRef.remove();
+            this._router.navigate(['quickorder']);
+        });
+    }
+
 
     /** @description updates user status and is used to display the continue CTA*/
     updateUserStatus()
@@ -213,7 +259,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     }
 
     /**@description calculates the total payable amount as per cart changes*/
-    calculatePayableAmount(cart) {
+    calculatePayableAmount(cart)
+    {
         const TOTAL_AMOUNT = cart['totalAmount'] || 0;
         const SHIPPING_CHARGES = cart['shippingCharges'] || 0;
         const TOTAL_OFFER = cart['totalOffer'] || 0;

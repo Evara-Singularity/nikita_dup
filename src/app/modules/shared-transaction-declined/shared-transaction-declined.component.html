@@ -1,0 +1,28 @@
+<app-bottom-menu *ngIf="displayPage">
+    <div content>
+        <div class="transection-decline-popup retry-payment pay-cod">
+            <div class="top-header-bottom-menu">
+                <h3 class="heading-3">Transaction Declined</h3>
+                <i class="icon-circle-delete" (click)="$event.stopPropagation();close()"></i>
+            </div>
+            <p class="decline-txt">Transaction was declined due to some technical reason/fault</p>
+            <div class="img-block">
+                <!--Sachin:Move image to cdn-->
+                <img src="assets/img/no_coupon_found.png" alt="">
+            </div>
+            <div class="bottom-txt-block">
+                <p>We're having trouble processing your request.</p>
+                <p>- This may be because our system is down temporarily.</p>
+                <p>- May be there's a problem with the connection.</p>
+            </div>
+            <div class="btn-block btn-block-1st">
+                <button class="red-bg-btn" (click)="$event.stopPropagation();payWithLastDetails()">RETRY PAYMENT</button>
+            </div>
+            <div class="btn-block btn-block-2nd" *ngIf="canCOD">
+                <button class="red-bg-btn" (click)="$event.stopPropagation();payAsCOD()">PAY CASH ON DELIVERY</button>
+                <div class="login-seperator-text "> <span>Or</span></div>
+                <button class="light-red-bg-btn">RETRY PAYMENT</button>
+            </div>
+        </div>
+    </div>
+</app-bottom-menu>

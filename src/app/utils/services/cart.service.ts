@@ -15,6 +15,7 @@ import { AddToCartProductSchema } from "../models/cart.initial";
 import { LocalAuthService } from './auth.service';
 import { DataService } from './data.service';
 import { GlobalLoaderService } from './global-loader.service';
+import {lastPayment} from "./paymentDetails"
 
 @Injectable({ providedIn: 'root' })
 export class CartService
@@ -50,6 +51,7 @@ export class CartService
     private _billingAddress: Address;
     private _shippingAddress: Address;
     private _invoiceType: 'retail' | 'tax' = this.INVOICE_TYPE_RETAIL;
+    private _lastPaymentMode = null;
 
     // vars used in revamped cart login 
     private _buyNow;
@@ -86,6 +88,11 @@ export class CartService
     set invoiceType(type: 'retail' | 'tax') { this._invoiceType = type }
 
     get invoiceType() { return this._invoiceType }
+
+    //ODP-1866
+    set lastPaymentMode(mode: string) { this._lastPaymentMode = mode; }
+
+    get lastPaymentMode() { return this._lastPaymentMode; }
 
     get getPreviousUrl() { return this.previousUrl; }
 
@@ -1923,6 +1930,13 @@ export class CartService
         const shippingCharges = cart['shippingCharges'] || 0;
         const totalOffer = cart['totalOffer'] || 0
         return (totalAmount + shippingCharges) - (totalOffer);
+    }
+
+    //ODP-1866
+    getPaymentDetails()
+    {
+        //delete lastPaymentDetails.js file after integration;
+        return of({lastPayment});
     }
 
     //Analytics

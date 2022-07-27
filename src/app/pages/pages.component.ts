@@ -1,6 +1,10 @@
 import {
   Component,
+  ComponentFactoryResolver,
+  Injector,
   OnInit,
+  ViewChild,
+  ViewContainerRef,
   ViewEncapsulation,
 } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
@@ -30,6 +34,13 @@ export class PagesComponent implements OnInit {
   iData: { footer?: true; logo?: boolean; title?: string, hideHeader?: boolean };
   isFooter: boolean = true;
   isHomePage: boolean;
+  eventNavigationStart: any;
+
+  // ondemad loaded components for FAQ listing
+  authInstance = null;
+  @ViewChild("faqListPopup", { read: ViewContainerRef })
+  authInstanceref: ViewContainerRef;
+
   constructor(
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
@@ -39,11 +50,21 @@ export class PagesComponent implements OnInit {
     public router: Router,
     private _aRoute: ActivatedRoute,
     private dataService: DataService,
+    private cfr: ComponentFactoryResolver,
+    private injector: Injector,
+
   ) {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
     this.isMoglixAppInstalled();
 
+    this.eventNavigationStart = this._router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        if (this._aRoute.snapshot.fragment === "auth") {
+          this.openLoginPopUp();
+        }
+      });
     this.router.events.subscribe((res) => {
       this.createHeaderData(this._aRoute);
 
@@ -56,6 +77,21 @@ export class PagesComponent implements OnInit {
       }
       
     });
+  }
+
+  async openLoginPopUp() {
+    const { AuthPopUpComponent } = await import(
+      "../pages/auth-popup/auth-popup.component"
+    ).finally(() => {
+      alert("In auth component line 93");
+    });
+
+    const factory = this.cfr.resolveComponentFactory(AuthPopUpComponent);
+    this.authInstance = this.authInstanceref.createComponent(
+      factory,
+      null,
+      this.injector
+    );
   }
 
   checkAndRedirect() {
@@ -242,9 +278,9 @@ export class PagesComponent implements OnInit {
   }
 
   setEnvIdentiferCookie() {
-    const abTesting = this.dataService.getCookie('AB_TESTING');
-    const PWA = this.dataService.getCookie('PWA');
-    const buildVersion = this.dataService.getCookie('BUILD_VERSION') || null;
+    const abTesting = this.dataService.getCookie("AB_TESTING");
+    const PWA = this.dataService.getCookie("PWA");
+    const buildVersion = this.dataService.getCookie("BUILD_VERSION") || null;
     const updatedBuildaVersion = environment.buildVersion.toString();
 
     if (!PWA) {
@@ -269,17 +305,18 @@ export class PagesComponent implements OnInit {
     }
 
     if (!buildVersion) {
-      this.dataService.setCookie('BUILD_VERSION', updatedBuildaVersion, 90);
+      this.dataService.setCookie("BUILD_VERSION", updatedBuildaVersion, 90);
     } else {
       if (buildVersion != updatedBuildaVersion) {
-        this.dataService.deleteCookieV2('BUILD_VERSION');
+        this.dataService.deleteCookieV2("BUILD_VERSION");
         setTimeout(() => {
-          this.dataService.setCookie('BUILD_VERSION',updatedBuildaVersion, 90);
+          this.dataService.setCookie("BUILD_VERSION", updatedBuildaVersion, 90);
         }, 100);
       }
     }
-
   }
 
-    get isCheckout() { return this.router.url.includes("checkout") } 
+  get isCheckout() {
+    return this.router.url.includes("checkout");
+  }
 }

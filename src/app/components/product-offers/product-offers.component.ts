@@ -39,9 +39,9 @@ export class ProductOffersComponent implements OnInit
     getOfferAllData(user){
           let url : any ;
           if(user != null && user != undefined){
-            url= "?userId="+ user + "&msn=" + this.productmsn + "&device=app";
+            url= "?userId="+ user + "&msn=" + this.productmsn + "&device=web";
           }else {
-            url= "?msn=" + this.productmsn + "&device=app";
+            url= "?msn=" + this.productmsn + "&device=web";
           }
          forkJoin([
           this.productService.getAllPromoCodeOffers(url),

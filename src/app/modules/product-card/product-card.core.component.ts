@@ -100,7 +100,12 @@ export class ProductCardCoreComponent implements OnInit {
     // randomize product feature
     this.product['keyFeatures'] = this.getRandomValue(this.product['keyFeatures'] || [], 2)
     this.isAd = !this.product.internalProduct
-    this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
+    if(this.product.reviewCount==0){
+      this.productReviewCount=""
+    }
+    else{
+      this.productReviewCount = this.product.reviewCount > 1 ? this.product.reviewCount + ' Reviews' : this.product.reviewCount + ' Review';
+    }
     this.prodUrl = CONSTANTS.PROD;
   }
 

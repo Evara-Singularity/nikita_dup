@@ -8,7 +8,7 @@
   left: -100%;
   height: 100%;
   z-index: 11;
-  width: 70%;
+  width: 80%;
   min-width: 275px;
   .sidemenu-overlay {
     display: none;
@@ -36,7 +36,7 @@
     border-radius: $border-radius-8;
     .icon-profile {
       font-size: $extra-large-5-font;
-      margin: 7px 0;
+      margin: 7px 0 7px 8px;
     }
     .customer-detail {
       font-size: $large-font;
@@ -105,6 +105,7 @@
   margin-top: 10px;
   position: absolute;
   padding: 0;
-  margin-left: -10px;
+  left: 0;
+  right: 0;
   bottom: 0;
 }

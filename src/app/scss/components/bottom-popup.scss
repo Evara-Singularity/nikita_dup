@@ -9,8 +9,8 @@
                 max-height: 80% !important;
                 z-index:107;
                 &.mintCreamBg{
-                    max-height: 60% !important;
-                    scrollbar-width: none;
+                    max-height: 54% !important;
+                    @extend %hide-scrollbar;
                 }
         }
     }

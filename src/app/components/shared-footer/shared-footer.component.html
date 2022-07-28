@@ -4,6 +4,12 @@
             <p class="f-left heading"><strong>More about Moglix</strong></p>
         </div>
     </div>
+    <p class="align-center socsharehead">Download the App</p>
+
+    <ul class="app-promotion-img pb-10 clearfix">
+        <li (click)="openAppStore()"> <img src="../../../assets/img/App-promotion/app_store.png"></li>
+        <li (click)="openPlayStore()"><img src="../../../assets/img/App-promotion/play_store.png"></li>
+    </ul>
     <p class="align-center socsharehead">Stay Connected</p>
 
     <ul class="social-links pb-15 clearfix">
@@ -23,25 +29,25 @@
             <li><a href="/career" title="Careers">Careers</a></li>
             <li><a href="/contact" title="Contact us"> Contact us</a></li>
             <li><a href="https://business.moglix.com/news/" title="_blank">Press</a></li>
-            <li><a href="/testimonials" class="no-border">Testimonials</a></li>
+            <li><a href="/testimonials">Testimonials</a></li>
             <li><a href="https://www.moglix.com/blog/">Blog</a></li>
             <li><a href="/buyer-guide">Buyer Guide</a></li>
             <li><a href="/industrystore">Industry Store</a></li>
-            <li><a href="https://supplier.moglix.com/" class="no-border">Supplier Central</a></li>
+            <li><a href="https://supplier.moglix.com/">Supplier Central</a></li>
             <li><a href="/popular-search">Popular Searches</a></li>
         </ul>
     </div>
 
-        <ul class="other-links links container">
-            <li><a title="Terms Of Use" ng-reflect-target="_blank" ng-reflect-router-link="/terms" target="_blank"
-                    href="/terms">TERMS OF USE</a> </li>
-            <li><a title="Copyright" ng-reflect-target="_blank" ng-reflect-router-link="/copyright" target="_blank"
-                    href="/copyright">COPYRIGHT</a> </li>
-            <li><a title="Privacy Policy" ng-reflect-target="_blank" ng-reflect-router-link="/privacy" target="_blank"
-                    href="/privacy">PRIVACY POLICY</a> </li>
-            <li><a title="Compliance" ng-reflect-target="_blank" ng-reflect-router-link="/compliance" target="_blank"
-                    href="/compliance">COMPLIANCE</a></li>
-        </ul>
+    <ul class="other-links links container">
+        <li><a title="Terms Of Use" ng-reflect-target="_blank" ng-reflect-router-link="/terms" target="_blank"
+                href="/terms">TERMS OF USE</a> </li>
+        <li><a title="Copyright" ng-reflect-target="_blank" ng-reflect-router-link="/copyright" target="_blank"
+                href="/copyright">COPYRIGHT</a> </li>
+        <li><a title="Privacy Policy" ng-reflect-target="_blank" ng-reflect-router-link="/privacy" target="_blank"
+                href="/privacy">PRIVACY POLICY</a> </li>
+        <li><a title="Compliance" ng-reflect-target="_blank" ng-reflect-router-link="/compliance" target="_blank"
+                href="/compliance">COMPLIANCE</a></li>
+    </ul>
     <div class=" pad-tb-10 copyright">
         <p>MOGLI LABS (INDIA) PRIVATE LIMITED</p>
         <p>&copy; {{today | date:'yyyy' }} Moglix.com. All Rights Reserved.</p>

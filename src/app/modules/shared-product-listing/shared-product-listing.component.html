@@ -80,8 +80,8 @@
      *ngIf="productsListingData?.products != undefined && productsListingData?.products?.length==0">
 </app-search-not-found>
 
-<span observeVisibility [debounceTime]="100" (visible)="onVisiblePagination()"></span>
-<span observeVisibility [debounceTime]="100" (visible)="onVisiblesearchBannerCard()"></span>
+<span data-observeVisibility [debounceTime]="100" (visible)="onVisiblePagination()"></span>
+<span data-observeVisibility [debounceTime]="100" (visible)="onVisiblesearchBannerCard()"></span>
 
 <!-- search-card-plp.svg -->
 <ng-template #searchBannerCard></ng-template>

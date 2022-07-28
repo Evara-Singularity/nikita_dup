@@ -1,0 +1,25 @@
+<ng-template #couponTemplate>
+    <div class="pwa-row pwa-row-noPad pad-0 coupon-area">
+        <div class="pwa-col-12">
+            <div class="pdp-section-header">
+                <h3 class="heading-3">
+                    All {{promoCodeOffers.length}} Coupons
+                    <i (click)="outData(null)" class="icon-circle-delete del-ico" style="float: right;"></i>
+                </h3>
+            </div>
+            <div class="pwa-row inline-list-item" *ngFor="let item of promoCodeOffers; let i=index;">
+                <div class="inline-list-icon">
+                    <i class="icon-coupon-3-fill-1"></i>
+                </div>
+                <div class="inline-list-text coupon-list-text">
+                    <span>Use Code : <span class="green-promo-code">{{item.promoCode}}</span> and get {{item.promoDescription}}</span><br/>
+                    <span class="green-promo-code-min" *ngIf="item.minCartValue > 0">Min cart value {{ item.minCartValue  | currency:'INR': 'symbol': '1.0-0'}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<app-bottom-menu [containerClasses]="'mintCreamBg'" [isRFQPopUp]="true" *ngIf="promoCodeOffers">
+    <ng-container content *ngTemplateOutlet="couponTemplate"></ng-container>
+</app-bottom-menu>

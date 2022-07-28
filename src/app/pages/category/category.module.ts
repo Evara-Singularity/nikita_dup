@@ -11,6 +11,7 @@ import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directi
 import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toast.component';
 import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-promo/product-listing-app-promo.module';
 import { AccordianModule } from "@app/modules/accordian/accordian.module";
+import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 @NgModule({
     imports: [
         CommonModule,
@@ -23,7 +24,8 @@ import { AccordianModule } from "@app/modules/accordian/accordian.module";
         KpToggleDirectiveModule,
         SharedProductListingModule,
         ProductListingAppPromoModule,
-        AccordianModule
+        AccordianModule,
+        AppPromoModule
     ],
     declarations: [
         CategoryComponent,

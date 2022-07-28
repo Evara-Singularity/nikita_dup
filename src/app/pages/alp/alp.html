@@ -1,6 +1,6 @@
 
 <div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader}" >
-    
+    <app-promo  [page]="'alp'" class="fixed-btm-app-prmo" [isOverlayMode]="true"></app-promo>
     <div *ngIf="!showPageNotFound">
         <div id="category-cards-section">
             <shared-product-listing [headerName]="titleHeading ? titleHeading : ''" [pageName]="'ATTRIBUTE'"

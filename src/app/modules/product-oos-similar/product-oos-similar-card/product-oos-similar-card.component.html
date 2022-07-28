@@ -1,11 +1,11 @@
 <div class="container-height">
     <div [id]="'oos-card-' + index" class="pdp-container pdpCard" *ngIf="showProduct">
         <span class="blueTag">{{(index - GLOBAL_CONSTANT.oosSimilarCardCountTop) + 1}}</span>
-        <div class="prod-carsl" addClass
+        <div class="prod-carsl" 
             [class.hasOneImage]="similarProductData[index].productAllImages?.length === 1"
             [ngClass]="[carouselInitialized ? '' : 'before-init']">
             <ng-container #productCrousel></ng-container>
-            <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo
+            <div class="prod-carsl-pseudo" data-swipe (next)="onRotateNext()" #productCrouselPseudo
                 (previous)="onRotatePrevious()">
                 <div class="img-block-pseudo">
                     <div class="inner-block-pseudo" (click)="firstImageClicked()">
@@ -92,8 +92,8 @@
                 </div>
             </ng-container>
         </ng-template>
-        <div class="bottom-bar nonFixed" observeVisibility [debounceTime]="100" (visible)="onVisibleInViewPort()">
-            <button class="cart-btn ml-5 bold-txt f-left" (click)="buyNow(false)">
+        <div class="bottom-bar nonFixed" data-observeVisibility [debounceTime]="100" (visible)="onVisibleInViewPort()">
+            <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="buyNow(false)">
                 <i class="icon-cart1"></i>
                 <span>ADD TO CART</span>
             </button>

@@ -28,14 +28,17 @@
                 <span class="link-text" *ngIf="!disableEMIView">VIEW</span>
             </div> -->
         </div>
-        <div class="pwa-row inline-list-item" *ngIf="promoCodes">
-            <div class="inline-list-icon">
-            </div>
-            <div class="inline-list-text">
-                <a class="link-text" *ngIf="promoCodes.length > 1 " (click)="seeMoreOffers()">SEE {{promoCodes.length - 1}} MORE {{(promoCodes.length - 1) == 1 ? 'COUPON' :'COUPONS'}}</a>
-            </div>
-            <div class="inline-list-link">
-            </div>
+        <div class="pwa-row inline-list-item" [ngClass]="{'more-coupon-offers-border': promoCodes && promoCodes.length < 2}">
+            <ng-container *ngIf="promoCodes && promoCodes.length > 1">
+                <div class="inline-list-icon">
+                </div>
+                <div class="inline-list-text">
+                    <a class="link-text" (click)="seeMoreOffers()">SEE {{promoCodes.length - 1}} MORE {{(promoCodes.length - 1)
+                        == 1 ? 'COUPON' :'COUPONS'}}</a>
+                </div>
+                <div class="inline-list-link">
+                </div>
+            </ng-container>
         </div>
         <div class="pwa-row inline-list-item" *ngFor="let item of allofferData; let i=index;">
             <div class="inline-list-icon">

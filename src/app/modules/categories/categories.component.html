@@ -12,19 +12,6 @@
             <!--layout_url-->
             <a *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'" [href]="carouselData[category.dataKey]['layout_url']" class="btn quinary-btn">VIEW ALL</a>
         </div>
-        <ul class="circle-brand-container"
-        *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'">
-        <div *ngIf="carouselData[category.dataKey]['data']['category_block'].length  !== 0 else brandBlock">
-            <li  *ngFor="let item of carouselData[category.dataKey]['data']['category_block'] | slice : 0:4" class="circle-brand-block">
-                <a [routerLink]="item['category_url']"
-                    (click)="setCategoryorBrandCookie(item['CategoryName'],'tcat')">
-
-                    <img [src]="imagePath+item.category_image"
-                        alt="category image" class="category-img">
-                    <p>{{item['CategoryName']}}</p>
-                </a>
-            </li>
-        </div>
         <div class="category-block-container">
             <div class="abcd">
                 <img src="../../../assets/img/pump-img.png" alt="">
@@ -55,6 +42,20 @@
                 </div>
             </div>
         </div>
+        <ul class="circle-brand-container"
+        *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'">
+        <div *ngIf="carouselData[category.dataKey]['data']['category_block'].length  !== 0 else brandBlock">
+            <li  *ngFor="let item of carouselData[category.dataKey]['data']['category_block'] | slice : 0:4" class="circle-brand-block">
+                <a [routerLink]="item['category_url']"
+                    (click)="setCategoryorBrandCookie(item['CategoryName'],'tcat')">
+
+                    <img [src]="imagePath+item.category_image"
+                        alt="category image" class="category-img">
+                    <p>{{item['CategoryName']}}</p>
+                </a>
+            </li>
+        </div>
+
         <ng-template #brandBlock>
             <li class="circle-brand-block" *ngFor="let items of carouselData[category.dataKey]['data']['brand_block'] | slice : 0:4">
                 <a [routerLink]="items['brand_url']"

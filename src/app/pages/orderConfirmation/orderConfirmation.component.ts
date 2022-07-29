@@ -263,6 +263,12 @@ export class OrderConfirmationComponent implements OnInit {
                 shippingCharges: anayticsData.aTotalShipping,
                 couponCodeID: this.couponCodeData,
             };
+        }else{
+            order = {
+                transactionID: this.queryParams["orderId"],
+                platformType: "mobile",
+                paymentMode: this.queryParams["mode"],
+            };
         }
         digitalData["page"] = page;
         digitalData["custData"] = custData;

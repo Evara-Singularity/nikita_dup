@@ -28,8 +28,8 @@
                 <span class="link-text" *ngIf="!disableEMIView">VIEW</span>
             </div> -->
         </div>
-        <div class="pwa-row inline-list-item" [ngClass]="{'more-coupon-offers-border': promoCodes && promoCodes.length < 2}">
-            <ng-container *ngIf="promoCodes && promoCodes.length > 1">
+        <div *ngIf="promoCodes && promoCodes.length > 1" class="pwa-row inline-list-item" [ngClass]="{'more-coupon-offers-border': promoCodes && promoCodes.length < 2}">
+            <ng-container >
                 <div class="inline-list-icon">
                 </div>
                 <div class="inline-list-text">

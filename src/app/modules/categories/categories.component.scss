@@ -54,23 +54,23 @@
     justify-content: space-between;
     padding: 15px 15px 0 0;
     flex-wrap: wrap;
-    .abcd{
-        border: 1px solid #2F90C3;
-        background: #2F90C3;
+    .category-inner-block{
+        border: 1px solid var(--cyan-blue);
+        background: var(--cyan-blue);
         padding: 5px;
         width: 48%;
-        border-radius: 8px;
-        margin-bottom: 13px;
+        border-radius: $border-radius-8;
+        margin-bottom: 14px;
         .block-txt{
             text-align: center;
-            color: #fff;
-            font-weight: 600;
+            color: var(--white);
+            font-weight: $font-bold;
             padding-top: 5px;
-            line-height: 18px;
-            font-size: 14px;
+            line-height: $small-line-height-1;
+            font-size: $large-font;
             span{
-                font-weight: 400;
-                font-size: 12px;
+                font-weight: $font-normal;
+                font-size: $medium-font;
             }
         }
     }

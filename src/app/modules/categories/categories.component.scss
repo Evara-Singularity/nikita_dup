@@ -47,3 +47,32 @@
     }
 }
 
+
+// new category block
+.category-block-container{
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 15px 0 0;
+    flex-wrap: wrap;
+    .category-inner-block{
+        border: 1px solid var(--cyan-blue);
+        background: var(--cyan-blue);
+        padding: 5px;
+        width: 48%;
+        border-radius: $border-radius-8;
+        margin-bottom: 14px;
+        .block-txt{
+            text-align: center;
+            color: var(--white);
+            font-weight: $font-bold;
+            padding-top: 5px;
+            line-height: $small-line-height-1;
+            font-size: $large-font;
+            span{
+                font-weight: $font-normal;
+                font-size: $medium-font;
+            }
+        }
+    }
+}
+

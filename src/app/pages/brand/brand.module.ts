@@ -9,6 +9,7 @@ import { BrandFooterModule } from '@app/components/brand-details-footer/brand-de
 import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directive';
 import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-promo/product-listing-app-promo.module';
 import { AccordianModule } from "@app/modules/accordian/accordian.module";
+import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { AccordianModule } from "@app/modules/accordian/accordian.module";
         KpToggleDirectiveModule,
         SharedProductListingModule,
         ProductListingAppPromoModule,
-        AccordianModule
+        AccordianModule,
+        AppPromoModule
     ],
     declarations: [
         BrandComponent,

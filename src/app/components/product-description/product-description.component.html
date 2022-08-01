@@ -65,7 +65,8 @@
             <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
                 <div class="quantity-block">
                     <span class="add-qty qty-block" (click)="updateProductQunatity('DECREMENT')">&#8722;</span>
-                    <input id="product_quantity" [formControl]="qunatityFormControl" [value]="productMinimmumQuantity" (focusout)="onChangeCartQuanityValue()" type="text" min="1" maxlength="3" numbersOnly />
+                    <input id="product_quantity" [formControl]="qunatityFormControl" [value]="productMinimmumQuantity"
+                        (focusout)="onChangeCartQuanityValue()" type="text" minlength="1" maxlength="3" data-numbersOnly />
                     <span class="remove-qty qty-block" (click)="updateProductQunatity('INCREMENT')">&#43;</span>
                 </div>
                 <div class="quan-details" *ngIf="productMinimmumQuantity>1">
@@ -86,7 +87,7 @@
             <div class="prod-status">
                 <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
                 <p class="prod-status-right">
-                    <small class="review" (click)="scrollToResults('reviewSection',-30)" *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
+                    <small class="review" (click)="scrollToResults('reviewSection',-30)" *ngIf="rawReviewsData?.summaryData?.review_count > 0"> {{rawReviewsData.summaryData.review_count}}
                         Reviews
                     </small>
                 </p>

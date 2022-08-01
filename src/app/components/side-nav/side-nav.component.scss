@@ -1,116 +1,111 @@
 @import "../../scss/variables";
-.sidemenu{
-    @extend %transition;
-    box-shadow: rgba(0,0,0,.16) 2px 1px 70px;
-    position: fixed;
-    top: 0;
-    left: -100%;
+
+.sidemenu {
+  @extend %transition;
+  box-shadow: var(--boxshadow-2);
+  position: fixed;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  z-index: 11;
+  width: 80%;
+  min-width: 275px;
+  .sidemenu-overlay {
+    display: none;
+  }
+  &.open {
+    left: 0;
+
+    .sidemenu-overlay {
+      display: block;
+      background: rgba(0, 0, 0, 0.8);
+    }
+  }
+  .menu-content {
+    width: $fullwidth;
     height: 100%;
-    z-index: 11;
-    width: 70%;
-    min-width: 275px;
-    .overlay{
-      display: none;
+    position: relative;
+    background: var(--cultured);
+    overflow: scroll;
+  }
+  .menu-header {
+    background: var(--primary);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    border-radius: $border-radius-8;
+    .icon-profile {
+      font-size: $extra-large-5-font;
+      margin: 7px 0 7px 8px;
     }
-    &.open{
-      left: 0;
-      .overlay{
-        display: block;
-        background: rgba(0, 0, 0, 0.8);
+    .customer-detail {
+      font-size: $large-font;
+      margin-left: 10px;
+      font-weight: $font-bold;
+      .user-name {
+        margin-right: 10px;
       }
     }
-    .menu-content{
-      width: 100%;
-      height: 100%;
-      position: relative;
-      background: var(--cultured);
-      overflow: scroll;
+    .login-sign-text {
+      background-color: var(--primary);
+      border-radius: $border-radius-4;
     }
-    .menu-header{
-      background: var(--primary);
-      color: $white;
-      display: flex;
-      align-items: center;
-      border-radius: $border-radius-8;
-      padding: 15px 10px;
-      .icon-profile{
-        font-size: $extra-large-5-font;
-        // margin:7px 0;
-      }
-      .customer-detail{
-        font-size: $large-font;
-        margin-left: 10px;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        width: calc(100% - 48px);
-        justify-content: space-between;
-        .user-name{
-          margin-right: 10px;
-          .costumer-mobile{
-            font-weight: initial;
-            font-size: $medium-font;
-            line-height: 28px;
-          }
-        }
-        .icon-arrow-right-s-line{
-          font-size: 20px;
-        }
-      }
-      .icon-arrow-right-s-line{
-        margin-left:auto;
-        font-size:$extra-large-2-font;
-     }
-      .login-sign-text{
-        background-color: #e72b35;;
-        border-radius: $border-radius-4;
-      }
-    }
-    .menu-list{
+  }
+
+  .scrolled {
+    height: calc(100% - 150px);
+    overflow: auto;
+    .menu-list {
       margin-top: 15px;
       padding-left: 10px;
       background-color: var(--white);
       border: 1px solid var(--ghost-white);
       border-radius: $border-radius-8;
-      &.scrolled{
-        max-height: 70%;
-        max-height: calc(100% - 170px);
-        overflow: auto;
-      }
-      li{
+      li {
         border-bottom: 1px solid var(--ghost-white);
-        &:last-child{
+
+        &:last-child {
           border-bottom: none
         }
-        a{
+        a {
           display: flex;
           align-items: center;
           padding: 15px 10px;
         }
-        i{
+        i {
           font-size: $extra-large-3-font;
           margin-right: 15px;
           float: left;
           line-height: $large-line-height;
         }
-        .text{
+        .text {
           font-size: $extra-large-font;
           float: left;
           line-height: $medium-line-height;
         }
-        .sideList{
+        .sideList {
           @extend %clear-fix;
           display: block;
-          padding: 12px 10px;  
+          padding: 12px 10px;
         }
       }
-      .side-menu-foot{
+      .side-menu-footer {
         position: absolute;
         bottom: 0;
         width: 100%;
         left: 0;
         padding: 20px;
-        border-top: 1px solid $border-color;   
+        border-top: 1px solid var(--ghost-white);
       }
     }
   }
+}
+
+.promo-container {
+  margin-top: 10px;
+  position: absolute;
+  padding: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

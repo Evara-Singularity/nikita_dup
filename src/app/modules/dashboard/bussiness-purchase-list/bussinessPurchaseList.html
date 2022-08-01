@@ -2,7 +2,7 @@
     <ng-container *ngFor="let item of wishlistData;let pIndex=index;">
         <div class="pwa-row plp-card-list">
             <div class="pwa-col-12" >
-        <product-card-horizontal-list-view [pageName]="pageName" [product]="item" (remove$)="removeFromWishlist($event)"
+        <product-card-horizontal-list-view [moduleUsedIn]="'WISHLIST'" [pageName]="pageName" [product]="item" (remove$)="removeFromWishlist($event)"
             [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" >
         </product-card-horizontal-list-view> 
     </div>

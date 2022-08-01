@@ -83,7 +83,7 @@
                         <div class="outline-input-label">
                             <label [class.is-focus]="isBillingFieldFocus('postCode')"
                                 [class.disableInput]="!(isGSTINVerified)">
-                                <input numbersOnly type="tel" formControlName="postCode" type="tel"
+                                <input data-numbersOnly type="tel" formControlName="postCode" type="tel"
                                     [readonly]="!(isGSTINVerified)">
                                 <span class="label">Pin Code*</span>
                             </label>

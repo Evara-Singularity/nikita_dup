@@ -153,6 +153,13 @@ export class ProductService {
         );
     }
 
+    getAllPromoCodeOffers(url) {
+        return this._dataService.callRestful(
+            "GET",
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPON_CODE  + url
+        );
+    }
+
     getEmiPlans(price) {
         let url = this.basePath + ENDPOINTS.GET_EMI_VAL + "?price=" + price;
         return this._dataService.callRestful("GET", url);
@@ -744,7 +751,6 @@ export class ProductService {
     }
 
     productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
-        console.log("blocks", product)
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
         const productEntity: ProductsEntity =  {

@@ -202,6 +202,10 @@ export class ProductComponent implements OnInit, AfterViewInit
     offerPopupInstance = null;
     @ViewChild("offerPopup", { read: ViewContainerRef })
     offerPopupContainerRef: ViewContainerRef;
+    // ondemad loaded components promo more offer section popup
+    promoOfferPopupInstance = null;
+    @ViewChild("promoOfferPopup", { read: ViewContainerRef })
+    promoOfferPopupContainerRef: ViewContainerRef;
     // ondemad loaded components offer compare section popup
     offerComparePopupInstance = null;
     @ViewChild("offerComparePopup", { read: ViewContainerRef })
@@ -475,7 +479,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.route.data.subscribe(
             (rawData) =>
             {
-                if (!rawData["product"]["error"]) {
+                if (!rawData["product"]["error"] && rawData["product"][0]["active"]==true) {
                     if (
                         rawData["product"][0]["productBO"] &&
                         Object.values(
@@ -512,7 +516,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     }
                 }
                 this.showLoader = false;
-                this.globalLoader.setLoaderState(false);
+                this.globalLoader.setLoaderState(false); 
                 this.checkForRfqGetQuote();
                 this.checkForAskQuestion();
                 this.updateUserSession();
@@ -595,13 +599,13 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     updateAttr(productId)
     {
-        this.removeRfqForm();
+        this.removeRfqForm(); 
         this.showLoader = true;
         this.productService
             .getGroupProductObj(productId)
             .subscribe((productData) =>
             {
-                if (productData["status"] == true) {
+                if (productData["status"] == true && productData["active"] == true ) {
 
                     this.processProductData(
                         {
@@ -989,6 +993,10 @@ export class ProductComponent implements OnInit, AfterViewInit
         if (this.offerPopupInstance) {
             this.offerPopupInstance = null;
             this.offerPopupContainerRef.remove();
+        }
+        if (this.promoOfferPopupInstance) {
+            this.promoOfferPopupInstance = null;
+            this.promoOfferPopupContainerRef.remove();
         }
         if (this.offerComparePopupInstance) {
             this.offerComparePopupInstance = null;
@@ -2056,7 +2064,6 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     toggleLoader(status)
     {
-        // console.log('toggleLoader called', status);
         this.showLoader = status;
     }
 
@@ -2311,12 +2318,14 @@ export class ProductComponent implements OnInit, AfterViewInit
             }
             this.offerSectionInstance.instance["price"] = price;
             this.offerSectionInstance.instance['gstPercentage'] = gstPercentage;
+            this.offerSectionInstance.instance['productmsn'] = this.productSubPartNumber || this.defaultPartNumber;
             (
                 this.offerSectionInstance.instance[
                 "viewPopUpHandler"
                 ] as EventEmitter<boolean>
             ).subscribe((data) =>
             {
+                console.log("data view --->>>", data)
                 this.viewPopUpOpen(data);
             });
             (
@@ -2326,6 +2335,51 @@ export class ProductComponent implements OnInit, AfterViewInit
             ).subscribe((status) =>
             {
                 this.emiComparePopUpOpen(status);
+            });
+            (
+                this.offerSectionInstance.instance[
+                "promoCodePopUpHandler"
+                ] as EventEmitter<boolean>
+            ).subscribe((data) =>
+            {
+                this.promoCodePopUpOpen(data);
+            });
+        }
+    }
+    async promoCodePopUpOpen(data){
+        if (!this.promoOfferPopupInstance) {
+            this.showLoader = true;
+            const { ProductMoreOffersComponent } = await import(
+                "./../../components/product-more-offers/product-more-offers.component"
+            ).finally(() =>
+            {
+                this.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(
+                ProductMoreOffersComponent
+            );
+            this.promoOfferPopupInstance = this.promoOfferPopupContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.promoOfferPopupInstance.instance["data"] = data;
+            (
+                this.promoOfferPopupInstance.instance["out"] as EventEmitter<boolean>
+            ).subscribe((data) =>
+            {
+                // create a new component after component is closed
+                // this is required, to refresh input data
+                this.promoOfferPopupInstance = null;
+                this.promoOfferPopupContainerRef.remove();
+            });
+            (
+                this.promoOfferPopupInstance.instance[
+                "isLoading"
+                ] as EventEmitter<boolean>
+            ).subscribe((loaderStatus) =>
+            {
+                this.toggleLoader(loaderStatus);
             });
         }
     }

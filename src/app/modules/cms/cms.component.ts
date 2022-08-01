@@ -2,7 +2,7 @@ import { Component, Input } from "@angular/core";
 import CONSTANTS from "../../config/constants";
 
 @Component({
-    selector: 'cms',
+    selector: 'data-cms',
     styleUrls: ['./cms.component.scss'],
     templateUrl: './cms.component.html'
 })

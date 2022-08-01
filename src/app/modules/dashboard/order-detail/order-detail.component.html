@@ -373,7 +373,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
     
                         <div class="outline-input-label">
                             <label class="indusrty show pos-rel" [class.is-focus]="quantity.value.length > 0">
-                                <input type="number" formControlName="quantity" min="1" #quantity>
+                                <input type="number" formControlName="quantity" minlength="1" #quantity>
                                 <span class="label">Quantity*</span>
                                 <!-- <i class="icon-down"></i> -->
                             </label>

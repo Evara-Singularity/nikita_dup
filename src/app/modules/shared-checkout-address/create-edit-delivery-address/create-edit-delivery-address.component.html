@@ -34,7 +34,7 @@
                 </div>
                 <div class="outline-input-label">
                         <label [class.is-focus]="displayFocus('phone')">
-                            <input formControlName="phone" type="tel" numbersOnly placeholder="" maxlength="10">
+                            <input formControlName="phone" type="tel" data-numbersOnly placeholder="" maxlength="10">
                             <span class="label">Phone Number*</span>
                         </label>
                     <span class="form-inline-cta success" *ngIf="phone.valid && phoneVerified.value">VERIFIED</span>
@@ -75,7 +75,7 @@
                     <div class="outline-input-label">
 
                         <label [class.is-focus]="displayFocus('postCode')">
-                            <input numbersOnly formControlName="postCode" type="tel" placeholder="" maxlength="6">
+                            <input data-numbersOnly formControlName="postCode" type="tel" placeholder="" maxlength="6">
                             <span class="label">Pin Code*</span>
                         </label>
                         <ng-container *ngIf="postCode.touched || postCode.dirty">

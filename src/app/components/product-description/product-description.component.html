@@ -65,7 +65,8 @@
             <div class="qty_section" *ngIf="!productOutOfStock && productMrp > 0">
                 <div class="quantity-block">
                     <span class="add-qty qty-block" (click)="updateProductQunatity('DECREMENT')">&#8722;</span>
-                    <input id="product_quantity" [formControl]="qunatityFormControl" [value]="productMinimmumQuantity" (focusout)="onChangeCartQuanityValue()" type="text" min="1" maxlength="3" numbersOnly />
+                    <input id="product_quantity" [formControl]="qunatityFormControl" [value]="productMinimmumQuantity"
+                        (focusout)="onChangeCartQuanityValue()" type="text" minlength="1" maxlength="3" data-numbersOnly />
                     <span class="remove-qty qty-block" (click)="updateProductQunatity('INCREMENT')">&#43;</span>
                 </div>
                 <div class="quan-details" *ngIf="productMinimmumQuantity>1">

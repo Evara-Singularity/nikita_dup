@@ -1,4 +1,4 @@
-<div class="prod-carsl" addClass [class.hasOneImage]="productAllImages?.length === 1"
+<div class="prod-carsl"  [class.hasOneImage]="productAllImages?.length === 1"
     [ngClass]="[carouselInitialized ? '' : 'before-init']">
     <div class="floating-cta-strip">
         <span class="fixed_ico" (click)="loadProductShare()"><i class="icon-product_share"></i></span>
@@ -12,7 +12,7 @@
     </div>
     <ng-container #productCrousel></ng-container>
     <!-- (click)="$event.stopPropagation();openPopUpcrousel(0)"-->
-    <div class="prod-carsl-pseudo" swipe (next)="onRotateNext()" #productCrouselPseudo
+    <div class="prod-carsl-pseudo" data-swipe (next)="onRotateNext()" #productCrouselPseudo
         (previous)="onRotatePrevious()">
         <div class="oos-tag" *ngIf="productOutOfStock">
             <span>

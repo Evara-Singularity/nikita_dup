@@ -55,7 +55,7 @@ export class ProductCardCoreComponent implements OnInit {
   @Input() enableTracking = false;
   @Input() analytics = null;
   @Input() isOosSimilarCard = null;
-  @Input() moduleUsedIn: 'PRODUCT' | 'LISTING_PAGES' | 'PRODUCT_SIMILAR_OUT_OF_STOCK_TOP' | 'PRODUCT_SIMILAR_OUT_OF_STOCK' | 'SEACRH_SUGGESTION' | 'PRODUCT_PAST_ORDER' | 'HOME_RECENT' = 'LISTING_PAGES';
+  @Input() moduleUsedIn = null;
   productGroupData: any = null;
   @Input() @HostBinding("class.blue-color") public isBlue = false;
   @Output() remove$:EventEmitter<any> = new EventEmitter<any>();
@@ -100,7 +100,12 @@ export class ProductCardCoreComponent implements OnInit {
     // randomize product feature
     this.product['keyFeatures'] = this.getRandomValue(this.product['keyFeatures'] || [], 2)
     this.isAd = !this.product.internalProduct
-    this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
+    if(this.product.reviewCount==0){
+      this.productReviewCount=""
+    }
+    else{
+      this.productReviewCount = this.product.reviewCount > 1 ? this.product.reviewCount + ' Reviews' : this.product.reviewCount + ' Review';
+    }
     this.prodUrl = CONSTANTS.PROD;
   }
 

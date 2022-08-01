@@ -3,10 +3,10 @@
     <a class="moglix-app-logo" [routerLink]="['/']">
         <i class="icon-moglix_app_logo"></i>
     </a>
-    <a class="search-bar-mini">
+    <div class="search-bar-mini">
         <i class="icon-search"></i>
         <input type="text" placeholder="Search Product/Category/Brand..."  [value]="searchValue" (click)="loadSearchNav$.emit()">
-    </a>
+    </div>
     <a (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
         <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
     </a>

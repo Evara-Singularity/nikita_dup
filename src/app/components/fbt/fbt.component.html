@@ -3,8 +3,7 @@
         <div class="container">
             <h3 class="f-left heading-3">Frequently Bought Together With
             </h3>
-            <i class="fbt-close-ico icon-circle-delete" (click)="$event.stopPropagation();backToCartFlow()"
-                *ngIf="isModal"></i>
+            <i class="fbt-close-ico icon-circle-delete" (click)="$event.stopPropagation();backToCartFlow()" *ngIf="isModal"></i>
             <!--backToCartFlow('/quickorder', 'ADD TO CART')-->
         </div>
         <div class="pwa-row static-small-card-container">
@@ -37,7 +36,7 @@
                         <p class="description-txt">{{product.productName}}</p>
                         <p class="brand"><span>By :</span> Premier</p>
                         <p class="price">
-                            <span class="before-discount">{{product.productMRP | mathFloor | currency: 'INR':
+                            <span class="before-discount" *ngIf="product.productMRP !== product.sellingPrice">{{product.productMRP | mathFloor | currency: 'INR':
                                 'symbol': '1.0-0'}}</span>
                             <span *ngIf="product.discount > 0" class="discount">{{product.discount | mathFloor}}% OFF</span>
                             <span class="after-discount">{{product.sellingPrice | mathFloor | currency:

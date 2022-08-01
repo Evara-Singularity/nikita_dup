@@ -45,6 +45,9 @@
 .pt-15 {
     padding-top: 15px;
 }
+.pt-50{
+    padding-top: 50px;
+}
 // padding-bottom
 .pad-b-0 {
     padding-bottom: 0px !important;
@@ -118,10 +121,10 @@ padding-bottom: 60px;
     margin-bottom: 0px !important;
 }
 .mb-10{
-    margin-bottom:10px;
+    margin-bottom:10px !important;
 }
 .mb-15 {
-    margin-bottom: 15px;
+    margin-bottom: 15px !important;
 }
 .mb-25 {
     margin-bottom: 25px;
@@ -135,6 +138,7 @@ padding-bottom: 60px;
 .error-field{
     margin-top: 5px;
 }
+
 //margin-top-bottom
 .m-tb-10{
     margin-bottom: 10px;

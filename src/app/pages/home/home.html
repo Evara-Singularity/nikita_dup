@@ -1,41 +1,29 @@
 <div class="home-parent">
-    <app-promo [page]="'home'" class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
-    <div class="pwa-row pad-b-0">
-        <div class="pwa-col-12">
-            <div class="css-banner-component">
-                <div class="internalBanner" *ngIf="isBrowser">
-                    <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
-                        <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
-                            [items]="carouselData.bannerData['data']"
-                            [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
-                        </siema-carousel>
-                    </ng-container>
-                </div>
-                <div class="internalBanner" *ngIf="isServer">
-                    <img *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0"
-                        [src]="carouselData.bannerData.data[0].image_name" alt="banner">
-                    <img *ngIf="!(carouselData.bannerData && carouselData.bannerData['data'].length>0)"
-                        [src]="defaultBannerImage" alt="banner">
-                </div>
-                <!-- <div class="pager-container">
-                    <span class="pager-varaint-1">
-                        <span class="pager_dot active">
-                        </span>
-                        <span *ngFor="let i of [1,2,3,4];" class="pager_dot">
-                        </span>
-                    </span>
-                </div> -->
-            </div>
+    <app-promo  [page]="'home'" class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
+    <div class="css-banner-component">
+        <div class="internalBanner" *ngIf="isBrowser">
+            <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
+                <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
+                    [items]="carouselData.bannerData['data']"
+                    [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
+                </siema-carousel>
+            </ng-container>
+        </div>
+        <div class="internalBanner" *ngIf="isServer">
+            <img *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0"
+                [src]="carouselData.bannerData.data[0].image_name" alt="banner">
+            <img *ngIf="!(carouselData.bannerData && carouselData.bannerData['data'].length>0)"
+                [src]="defaultBannerImage" alt="banner">
         </div>
    </div>
     <div class="pwa-row pwa-row-noPad">
         <div class="pwa-col-12 pad-lr-15">
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
-            <section class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
+            <div class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
                 <a class="full-banner" *ngIf="i==0" href="{{im.image_link}}">
-                    <img [src]="imagePath + im.image_name" alt="banner add">
+                    <img [src]="imagePath + im.image_name" alt="banner add" width="312" height="67">
                 </a>
-            </section>
+            </div>
 
             <!-- <div class="home-card-container">
                     <category-card *ngFor="let item of clustorCategories| slice:0:5" [page]="'home'"
@@ -48,18 +36,18 @@
                 </div> -->
 
             <div class="pwa-col-12 category-grid-container">
-                <h2>Category Store Explore</h2>
+                <h2>Category Store</h2>
                 <div class="pwa-row pwa-row-noPad pad-tb-0">
                     <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card"
                         [routerLink]="item.category_url">
                         <a>
-                            <img alt={{item.CategoryName}} src="{{clusterimagePath + 'img/cluster/'+item.category_image}}">
+                            <img alt={{item.CategoryName}} src="{{clusterimagePath + 'img/cluster/'+item.category_image}}" width="97" height="65">
                             <p class="category-text">{{item.CategoryName}}</p>
                         </a>
                     </div>
                     <div class="category-grid-card" [routerLink]="['/all-categories']">
                         <a>
-                            <img alt="View All Categories" src="{{clusterimagePath + 'img/cluster/all_categories.png'}}">
+                            <img alt="View All Categories" src="{{clusterimagePath + 'img/cluster/all_categories.png'}}" width="97" height="65">
                             <p class="category-text view-all-cate">View All Categories</p>
                         </a>
                     </div>
@@ -67,7 +55,7 @@
             </div>
         </div>
         <div class="pwa-col-12 pad-lr-15">
-            <div observeVisibility class="featr_brand clearfix" [debounceTime]="50"
+            <div data-observeVisibility class="featr_brand clearfix" [debounceTime]="50"
                 (visible)="onVisibleFeaturedBrands($event)">
                 <div>
                     <ng-container #FeaturedBrands></ng-container>
@@ -75,14 +63,14 @@
             </div>
         </div>
         <div class="pwa-col-12 recently-container">
-            <div observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
+            <div data-observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
                 *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
                 <ng-container #RecentlyViewedCarouselComponent></ng-container>
                 <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="carouselInstance"></home-page-skeletons>
             </div>
         </div>
         
-        <div observeVisibility class="pwa-col-12" [debounceTime]="50" (visible)="onVisibleCategories($event)" >
+        <div data-observeVisibility class="pwa-col-12" [debounceTime]="50" (visible)="onVisibleCategories($event)" >
             <ng-container #Categories></ng-container>
         </div>
         <ng-container *ngIf="!categoriesInstance" >
@@ -93,7 +81,7 @@
         
 
         <!-- Section for feature Arrival -->
-        <div observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [ngClass]="{'featr_arrival-skeleton':featuredArrivalsInstance == null}" [debounceTime]="50"
+        <div data-observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [ngClass]="{'featr_arrival-skeleton':featuredArrivalsInstance == null}" [debounceTime]="50"
             (visible)="onVisibleFeaturedArrivals($event)">
             <ng-container #FeaturedArrivals></ng-container>
             <!-- <home-page-skeletons [type]="'FEATURED-ARRIVALS'" [templateRefInstance]="featuredArrivalsInstance"></home-page-skeletons> -->

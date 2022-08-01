@@ -4,7 +4,7 @@
     </a>
 </section>
 <ng-container *ngFor="let category of categories | slice:0:5;let i = index;">
-    <section *ngIf="carouselData[category.dataKey] && carouselData[category.dataKey]['data']" class="pwa-col-12 category-section"
+    <section *ngIf="carouselData[category.dataKey] && carouselData[category.dataKey]['data']" class="pwa-col-12 category-section pad-r-0"
         [class.bestSeller]="i == 0">
 
         <div class="view-all-strip">
@@ -31,7 +31,7 @@
                     (click)="setCategoryorBrandCookie(items['brandName'],'tbrand')">
                     <div class="circle-brand-img">
                         <img [src]="imagePath+items.brand_image"
-                        alt="category image" class="category-img">
+                        alt="category image" class="category-img" width="56" height="56">
                     </div>
                     <p>{{items['brandName']}}</p>
                 </a>
@@ -41,7 +41,7 @@
     <product-card-vertical-container
         [numberOfItems]="carouselData[category.dataKey]['data']['product_data'].length">
         <ng-container *ngFor="let product of carouselData[category.dataKey]['data']['product_data']">
-            <product-card-vertical-grid-view [fullBrandNameMode]="true" [product]="product"></product-card-vertical-grid-view>
+            <product-card-vertical-grid-view [moduleUsedIn]="'HOME_PRODUCT'" [fullBrandNameMode]="true" [product]="product"></product-card-vertical-grid-view>
         </ng-container>
     </product-card-vertical-container>
 
@@ -50,7 +50,7 @@
 <div class="pwa-col-12 pad-lr-15 mb-10">
     <section class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
         <a class="full-banner" *ngIf="i==1" href="{{im.image_link}}">
-            <img [src]="imagePath + im.image_name" alt="banner add">
+            <img [src]="imagePath + im.image_name" alt="banner add" width="312" height="117">
         </a>
     </section>
 </div>

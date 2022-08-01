@@ -106,6 +106,15 @@ export class ProductService {
         );
     }
 
+    getProductPopular(categoryId) {
+        let URL = this.basePath + ENDPOINTS.TAG_PRODUCTS + '?category=' + categoryId
+        return this._dataService.callRestful("GET", URL).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ products: [], httpStatus: res.status });
+            })
+        );
+    }
+
     getrecentProduct(user_id) {
         return this._dataService.callRestful(
             "GET",
@@ -141,6 +150,13 @@ export class ProductService {
         return this._dataService.callRestful(
             "GET",
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategoryExtras + "mobikwikpdp"
+        );
+    }
+
+    getAllPromoCodeOffers(url) {
+        return this._dataService.callRestful(
+            "GET",
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPON_CODE  + url
         );
     }
 
@@ -735,7 +751,6 @@ export class ProductService {
     }
 
     productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
-        // console.log("blocks", product)
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
         const productEntity: ProductsEntity =  {
@@ -750,7 +765,9 @@ export class ProductService {
             brandId: brandId,
             brandName: brandName || product['short_description'],
             quantityAvailable: 1,
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+           // discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            //discount: this._commonService.calculcateDiscount(product['discount_percentage'], productMrp,  product['sellingPrice']),
+            discount: product['discount_percentage'],
             rating: null,
             categoryCodes: null,
             taxonomy: null,
@@ -815,7 +832,7 @@ export class ProductService {
             outOfStock: productBO['outOfStock'],
             quantityAvailable: priceQuantityCountry ? priceQuantityCountry['quantityAvailable'] : 0,
             productMinimmumQuantity: productMinimmumQuantity,
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            discount: (priceQuantityCountry && priceQuantityCountry['discount']) ? priceQuantityCountry['discount'] :(((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
             rating: (overrideProductB0 && overrideProductB0.rating) ? overrideProductB0.rating : null,
             categoryCodes: productCategoryDetails['categoryCode'],
             taxonomy: productCategoryDetails['taxonomyCode'],

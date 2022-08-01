@@ -52,7 +52,7 @@
                             <ng-container *ngFor="let prod of categorySuggestionList | slice:0:12; let i = index">
                                 <div *ngIf="prod.imageLink" class="search_product_category" [attr.data-index]="i"
                                     (click)="navigateTo('SEARCH', prod.term,prod.redirectionLink,null,null)">
-                                    <img src="{{imagePath + prod.imageLink}}">
+                                    <img src="{{imagePath + prod.imageLink}}"  alt="searchProduct">
                                     <span class="prodText">{{prod.term}}</span>
                                 </div>
                             </ng-container>

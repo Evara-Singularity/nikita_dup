@@ -49,7 +49,7 @@
     </div>
 
     <div class="pwa-row promo-section">
-        <div observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)" class="inner-promo">
+        <div data-observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)" class="inner-promo">
             <ng-container #appPromo></ng-container>
         </div>
     </div>

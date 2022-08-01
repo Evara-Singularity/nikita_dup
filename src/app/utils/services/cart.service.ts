@@ -58,6 +58,7 @@ export class CartService
         "noOfItems": 0,
         "cart": {},
         "itemsList": [],
+        "proxy": true//front end created dummy cart session
     };
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
     private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
@@ -1216,6 +1217,7 @@ export class CartService
         const user = this.localAuthService.getUserSession();
         if (user.authenticated !== 'true') {
             this._toastService.show({ type: 'error', text: "To Avail Offer Please Login" });
+            this._loaderService.setLoaderState(false);
         } else {
             this.getPromoCodeDetailByName(promcode).subscribe(({ status, data, statusDescription: message }: any) =>
             {

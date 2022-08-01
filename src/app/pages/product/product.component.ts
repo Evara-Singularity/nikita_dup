@@ -1,3 +1,4 @@
+import { NavigationService } from '@app/utils/services/navigation.service';
 import { DOCUMENT } from "@angular/common";
 import
 {
@@ -159,6 +160,8 @@ export class ProductComponent implements OnInit, AfterViewInit
     questionMessage: string;
     listOfGroupedCategoriesForCanonicalUrl = ["116111700"];
     alreadyLiked: boolean = true;
+    //recently view
+    hasRecentlyView = true;
 
     productShareInstance = null;
     @ViewChild("productShare", { read: ViewContainerRef })
@@ -199,6 +202,10 @@ export class ProductComponent implements OnInit, AfterViewInit
     offerPopupInstance = null;
     @ViewChild("offerPopup", { read: ViewContainerRef })
     offerPopupContainerRef: ViewContainerRef;
+    // ondemad loaded components promo more offer section popup
+    promoOfferPopupInstance = null;
+    @ViewChild("promoOfferPopup", { read: ViewContainerRef })
+    promoOfferPopupContainerRef: ViewContainerRef;
     // ondemad loaded components offer compare section popup
     offerComparePopupInstance = null;
     @ViewChild("offerComparePopup", { read: ViewContainerRef })
@@ -237,6 +244,10 @@ export class ProductComponent implements OnInit, AfterViewInit
     productRFQInstance = null;
     @ViewChild("productRFQ", { read: ViewContainerRef })
     productRFQContainerRef: ViewContainerRef;
+    // ondemand loaded components for product RFQ update popup
+    productRFQUpdateInstance = null;
+    @ViewChild("productRFQUpdate", { read: ViewContainerRef })
+    productRFQUpdateContainerRef: ViewContainerRef;
     // ondemand loaded components for app Promo
     appPromoInstance = null;
     @ViewChild("appPromo", { read: ViewContainerRef })
@@ -273,6 +284,13 @@ export class ProductComponent implements OnInit, AfterViewInit
     faqSuccessPopupInstance = null;
     @ViewChild("faqSuccessPopup", { read: ViewContainerRef })
     faqSuccessPopupContainerRef: ViewContainerRef;
+    pdpAccordianInstance = null;
+    @ViewChild("pdpAccordian", { read: ViewContainerRef })
+    pdpAccordianContainerRef: ViewContainerRef;
+    // ondemad loaded component for product popular deals
+    popularDealsInstance = null;
+    @ViewChild("popularDeals", { read: ViewContainerRef })
+    popularDealsContainerRef: ViewContainerRef;
 
     iOptions: any = null;
 
@@ -336,6 +354,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         private analytics: GlobalAnalyticsService,
         private checkoutService: CheckoutService,
         private _trackingService: TrackingService,
+        private _navigationService:NavigationService,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any
     )
@@ -460,7 +479,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.route.data.subscribe(
             (rawData) =>
             {
-                if (!rawData["product"]["error"]) {
+                if (!rawData["product"]["error"] && rawData["product"][0]["active"]==true) {
                     if (
                         rawData["product"][0]["productBO"] &&
                         Object.values(
@@ -497,7 +516,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     }
                 }
                 this.showLoader = false;
-                this.globalLoader.setLoaderState(false);
+                this.globalLoader.setLoaderState(false); 
                 this.checkForRfqGetQuote();
                 this.checkForAskQuestion();
                 this.updateUserSession();
@@ -580,13 +599,13 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     updateAttr(productId)
     {
-        this.removeRfqForm();
+        this.removeRfqForm(); 
         this.showLoader = true;
         this.productService
             .getGroupProductObj(productId)
             .subscribe((productData) =>
             {
-                if (productData["status"] == true) {
+                if (productData["status"] == true && productData["active"] == true ) {
 
                     this.processProductData(
                         {
@@ -596,6 +615,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                         },
                         productData
                     );
+                    this.productFbtData();
                     this.showLoader = false;
                 }
             });
@@ -681,6 +701,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         this.breadcrumbData = breadcrumbData;
         if (this.breadcrumbData.length > 0) {
+            this._navigationService.setPDPBreadCrumbData(breadcrumbData);
             // this.commonService.triggerAttachHotKeysScrollEvent('bread-head');
         }
     }
@@ -946,6 +967,13 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.recentProductsContainerRef.remove();
             this.onVisibleRecentProduct(null);
         }
+
+        if (this.popularDealsInstance) {
+            this.popularDealsInstance = null;
+            this.popularDealsContainerRef.remove();
+            this.onVisiblePopularDeals(null);
+        }
+  
         if (this.rfqFormInstance) {
             this.rfqFormInstance = null;
             this.rfqFormContainerRef.remove();
@@ -965,6 +993,10 @@ export class ProductComponent implements OnInit, AfterViewInit
         if (this.offerPopupInstance) {
             this.offerPopupInstance = null;
             this.offerPopupContainerRef.remove();
+        }
+        if (this.promoOfferPopupInstance) {
+            this.promoOfferPopupInstance = null;
+            this.promoOfferPopupContainerRef.remove();
         }
         if (this.offerComparePopupInstance) {
             this.offerComparePopupInstance = null;
@@ -993,6 +1025,10 @@ export class ProductComponent implements OnInit, AfterViewInit
         if (this.productRFQInstance) {
             this.productRFQInstance = null;
             this.productRFQContainerRef.remove();
+        }
+        if (this.productRFQUpdateInstance) {
+            this.productRFQUpdateInstance = null;
+            this.productRFQUpdateContainerRef.remove();
         }
         if (this.youtubeModalInstance) {
             this.youtubeModalInstance = null;
@@ -1247,8 +1283,8 @@ export class ProductComponent implements OnInit, AfterViewInit
             if (this.isBulkPricesProduct) {
                 this.productBulkPrices = this.productBulkPrices.map(priceMap =>
                 {
-                    const calculatedDiscount = this.commonService.calculcateDiscount(null, this.productMrp, priceMap.bulkSellingPrice);
-                    return { ...priceMap, calculatedDiscount }
+                    const discount = this.commonService.calculcateDiscount(null, this.productMrp, priceMap.bulkSellingPrice);
+                    return { ...priceMap, discount }
                 })
                 //filtering Data to show the 
                 this.productBulkPrices = this.productBulkPrices.filter((bulkPrice) =>
@@ -1765,6 +1801,40 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.holdRFQForm = false;
     }
 
+
+    async onVisiblePopularDeals(htmlElement) {
+        if (!this.popularDealsInstance && !this.productOutOfStock) {
+            const { ProductPopularDealsComponent } = await import(
+                "./../../components/product-popular-deals/product-popular-deals.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(ProductPopularDealsComponent);
+            this.popularDealsInstance =
+                this.popularDealsContainerRef.createComponent(
+                    factory,
+                    null,
+                    this.injector
+                );
+            this.popularDealsInstance.instance["categoryCode"] = this.productCategoryDetails["categoryCode"];
+
+            const custData = this.commonService.custDataTracking;
+            const orderData = this.orderTracking;
+            const TAXONS = this.taxons;
+            const page = {
+                pageName: null,
+                channel: "pdp",
+                subSection: "Our Popular Deals",
+                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+                linkName: null,
+                loginStatus: this.commonService.loginStatusTracking,
+            };
+            this.popularDealsInstance.instance["analytics"] = {
+                page: page,
+                custData: custData,
+                order: orderData,
+            };
+        }
+    }
+
     readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {
         // feature config
         enableAddToCart: true,
@@ -1908,6 +1978,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     // dynamically recent products section
+    
     async onVisibleRecentProduct(htmlElement)
     {
         // console.log('onVisibleRecentProduct', htmlElement);
@@ -1942,6 +2013,12 @@ export class ProductComponent implements OnInit, AfterViewInit
                 custData: custData,
                 order: orderData,
             };
+            (
+                this.recentProductsInstance.instance["noRecentlyViewed$"] as EventEmitter<any>).subscribe((flag) =>
+                {
+                    this.hasRecentlyView = false;
+                }
+            );
         }
     }
 
@@ -1987,7 +2064,6 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     toggleLoader(status)
     {
-        // console.log('toggleLoader called', status);
         this.showLoader = status;
     }
 
@@ -2060,6 +2136,11 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         let data = this.processRFQGetQuoteData(user);
         let params = { customerId: user.userId, invoiceType: "retail" };
+        let product = {
+            url: this.productUrl,
+            productName: this.productName,
+            moq: this.productMinimmumQuantity,
+        };
         this.raiseRFQGetQuoteSubscription = this.commonService.getAddressList(params).subscribe(res =>
         {
             if (res['status'] && res['addressList'].length > 0) {
@@ -2071,7 +2152,9 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.productService.postBulkEnquiry(data).subscribe((response) =>
             {
                 if (response['statusCode'] == 200) {
-                    this._tms.show({ type: 'success', text: response['statusDescription'] });
+                    let rfqId = response['data'] ?? '';
+                    this.intiateRFQQuoteUpdate(product , rfqId);
+                   // this._tms.show({ type: 'success', text: response['statusDescription'] });
                     this.rfqQuoteRaised = true;
                     this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
                 } else {
@@ -2081,6 +2164,34 @@ export class ProductComponent implements OnInit, AfterViewInit
             {
                 this.rfqQuoteRaised = false;
             });
+        });
+    }
+
+    async intiateRFQQuoteUpdate(product, rfqid: any) {
+        const { ProductRfqUpdatePopupComponent } = await import(
+            "./../../components/product-rfq-update-popup/product-rfq-update-popup.component"
+        );
+
+        const factory = this.cfr.resolveComponentFactory(ProductRfqUpdatePopupComponent);
+        this.productRFQUpdateInstance = this.productRFQUpdateContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.productRFQUpdateInstance.instance["product"] = product;
+        this.productRFQUpdateInstance.instance["productUrl"] = this.productAllImages[0]['large'];
+        this.productRFQUpdateInstance.instance["enquiryId"] = rfqid['enquiryId'];
+        this.productRFQUpdateInstance.instance["rfqId"] = rfqid.enquiryItemList[0]['id'];
+        (
+            this.productRFQUpdateInstance.instance["isLoading"] as EventEmitter<boolean>
+        ).subscribe((loaderStatus) =>
+        {
+            this.toggleLoader(loaderStatus);
+        });
+        (
+            this.productRFQUpdateInstance.instance["onRFQUpdateSuccess"] as EventEmitter<string>
+        ).subscribe((status) => {
+            this.isRFQSuccessfull = true;
         });
     }
 
@@ -2132,11 +2243,11 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.rfqTotalValue = rfqQuantity * Math.floor(this.productPrice);
         });
         (
-            this.productRFQInstance.instance["onRFQSuccess"] as EventEmitter<boolean>
-        ).subscribe((status) =>
+            this.productRFQInstance.instance["rfqId"] as EventEmitter<boolean>
+        ).subscribe((rfqid) =>
         {
             this.analyticRFQ(true);
-            this.isRFQSuccessfull = true;
+            this.intiateRFQQuoteUpdate(product, rfqid);
         });
     }
 
@@ -2207,12 +2318,14 @@ export class ProductComponent implements OnInit, AfterViewInit
             }
             this.offerSectionInstance.instance["price"] = price;
             this.offerSectionInstance.instance['gstPercentage'] = gstPercentage;
+            this.offerSectionInstance.instance['productmsn'] = this.productSubPartNumber || this.defaultPartNumber;
             (
                 this.offerSectionInstance.instance[
                 "viewPopUpHandler"
                 ] as EventEmitter<boolean>
             ).subscribe((data) =>
             {
+                console.log("data view --->>>", data)
                 this.viewPopUpOpen(data);
             });
             (
@@ -2222,6 +2335,51 @@ export class ProductComponent implements OnInit, AfterViewInit
             ).subscribe((status) =>
             {
                 this.emiComparePopUpOpen(status);
+            });
+            (
+                this.offerSectionInstance.instance[
+                "promoCodePopUpHandler"
+                ] as EventEmitter<boolean>
+            ).subscribe((data) =>
+            {
+                this.promoCodePopUpOpen(data);
+            });
+        }
+    }
+    async promoCodePopUpOpen(data){
+        if (!this.promoOfferPopupInstance) {
+            this.showLoader = true;
+            const { ProductMoreOffersComponent } = await import(
+                "./../../components/product-more-offers/product-more-offers.component"
+            ).finally(() =>
+            {
+                this.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(
+                ProductMoreOffersComponent
+            );
+            this.promoOfferPopupInstance = this.promoOfferPopupContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.promoOfferPopupInstance.instance["data"] = data;
+            (
+                this.promoOfferPopupInstance.instance["out"] as EventEmitter<boolean>
+            ).subscribe((data) =>
+            {
+                // create a new component after component is closed
+                // this is required, to refresh input data
+                this.promoOfferPopupInstance = null;
+                this.promoOfferPopupContainerRef.remove();
+            });
+            (
+                this.promoOfferPopupInstance.instance[
+                "isLoading"
+                ] as EventEmitter<boolean>
+            ).subscribe((loaderStatus) =>
+            {
+                this.toggleLoader(loaderStatus);
             });
         }
     }
@@ -2455,7 +2613,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         window.history.pushState('', '', this.router.url);
     }
 
-    async openPopUpcrousel(slideNumber: number = 1, oosProductIndex: number = -1)
+    async openPopUpcrousel(slideNumber: number = 0, oosProductIndex: number = -1)
     {
         if (!this.popupCrouselInstance) {
             this.showLoader = true;
@@ -2571,7 +2729,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                 const a = data.data.time.split(":");
                 this.globalToastInstance.instance["text"] =
                     "The same item has been ordered by you on " +
-                    new Date(data.data.date).toLocaleDateString("en-IN", options) +
+                    new Date(data.data.date).toLocaleDateString("en-IN", options as any) +
                     " at " +
                     (a[0] + ":" + a[1]) +
                     (a[0] < 12 ? " AM" : " PM");

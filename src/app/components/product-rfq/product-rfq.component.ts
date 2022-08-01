@@ -41,9 +41,10 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     @Input('isPopup') isPopup = false;
     //outputs
     @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output('onRFQSuccess') onRFQSuccess = new EventEmitter();
     @Output('hasGstin') hasGstin = new EventEmitter();
     @Output('rfqQuantity') rfqQuantity = new EventEmitter();
+    @Output('rfqId') rfqId = new EventEmitter();
+    @Output() onRFQSuccess: EventEmitter<boolean> = new EventEmitter();
 
     //subscriber
     loginSubscriber: Subscription = null;
@@ -340,6 +341,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
                     this.close();
                     this.rfqForm.markAsUntouched();
                     this.isRFQSubmitted = false;
+                    this.rfqId.emit(response['data']);
                     this.onRFQSuccess.emit(true);
                 } else {
                     this.isLoading.emit(false);

@@ -1,6 +1,6 @@
 import { Directive, EventEmitter, HostListener, NgModule, Output } from '@angular/core';
 
-@Directive({ selector: '[swipe]' })
+@Directive({ selector: '[data-swipe]' })
 export class SwipeDirective {
 
     @Output() next = new EventEmitter<void>();

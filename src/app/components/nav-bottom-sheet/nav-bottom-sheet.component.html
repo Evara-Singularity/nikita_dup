@@ -5,7 +5,8 @@
         <li (click)="resetBottomOptCall('/all-categories')" [routerLink]="['/all-categories']"><i class="icon-all-categories"></i>All Categories</li>
         <li (click)="resetBottomOptCall('/brand-store')" [routerLink]="['/']"><i class="icon-brand_store f-22"></i>Brand Store</li>
         <li (click)="resetBottomOptCall('/popular-search')"><i class="icon-search"></i>Popular Searches</li>
-        <li (click)="resetBottomOptCall('/dashboard/purchase-list')"><i class="icon-wishlist1-black"></i>Wishlist</li>
+        <li (click)="resetBottomOptCallWithLogin('/dashboard/purchase-list','Continue to view your wishlist')"><i class="icon-wishlist1-black"></i>Wishlist</li>
+        <li (click)="resetBottomOptCallWithLogin('/dashboard/order','Continue to track your orders')"><i class="icon-my-orders"></i>My Orders</li>
     </ul>
 </app-bottom-menu>
 

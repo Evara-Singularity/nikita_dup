@@ -29,7 +29,7 @@
 
 .app-promo-container {
     opacity: 1;
-    transition: all 0.5s ease-in;
+    transition: all 2s ease-in;
 }
 
 .hideAppPromo {
@@ -44,6 +44,8 @@
     width: $fullwidth;
     display: flex;
     border: 1px solid var(--we-peep);
+    padding-bottom: 8px;
+    border-bottom: none;
 
     .mobile {
         display: inline-flex;

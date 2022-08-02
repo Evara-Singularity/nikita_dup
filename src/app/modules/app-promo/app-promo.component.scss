@@ -44,7 +44,6 @@
     width: $fullwidth;
     display: flex;
     border: 1px solid var(--we-peep);
-    padding-bottom: 8px;
     border-bottom: none;
 
     .mobile {
@@ -105,7 +104,9 @@
         }
     }
 }
-
+.home-app-promo{
+    padding-bottom: 8px;
+}
 // 2nd varient
 .outer-text-section {
     padding: 12px 5px 12px 0;

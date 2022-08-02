@@ -11,7 +11,7 @@
           <i class="icon-circle-delete"></i>
         </span>
       </div>
-      <div class="promo-code-container home-app-promo" (click)="openStore()" *ngIf="page != 'sideBar'">
+      <div class="promo-code-container" [ngClass]="{'home-app-promo':page=='home'}" (click)="openStore()" *ngIf="page != 'sideBar'">
         <div class="mobile">
           <div *ngIf="page == 'pdp'; then pdpContent; else content"></div>
           <ng-template #pdpContent>

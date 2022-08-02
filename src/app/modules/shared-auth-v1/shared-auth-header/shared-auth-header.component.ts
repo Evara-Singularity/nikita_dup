@@ -20,6 +20,9 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
     @Output() onBackBtnClick$: EventEmitter<any> = new EventEmitter<any>();
     @Output() onSkipBtnClick$: EventEmitter<any> = new EventEmitter<any>();
     @Output() onHomepageBtnClick$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() backButtonClicked$: EventEmitter<any> = new EventEmitter<any>();
+    @Input('isLoginPopup') isLoginPopup;
+
     checkOutTabSubscriber: Subscription = null;
     tab: string = null;
     previousUrl: boolean = false;
@@ -37,6 +40,9 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy
 
     navigateBack()
     {
+        if(this.isLoginPopup){
+         this.backButtonClicked$.emit()
+        }
         if (this.previousUrl){
             console.log('in')
             this.navigateTo('/')

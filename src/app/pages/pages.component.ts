@@ -1,6 +1,7 @@
 import {
   Component,
   ComponentFactoryResolver,
+  EventEmitter,
   Injector,
   OnInit,
   ViewChild,
@@ -8,12 +9,10 @@ import {
   ViewEncapsulation,
 } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
-import { map } from "rxjs/operators";
 import { LocalAuthService } from "../utils/services/auth.service";
 import { CartService } from "../utils/services/cart.service";
 import { CommonService } from "../utils/services/common.service";
-import { filter, mergeMap } from "rxjs/operators";
-import { of } from "rxjs";
+import { filter } from "rxjs/operators";
 import { DataService } from "@app/utils/services/data.service";
 import CONSTANTS from "@app/config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
@@ -31,14 +30,19 @@ declare var dataLayer;
 export class PagesComponent implements OnInit {
   isServer: boolean = false;
   isBrowser: boolean = false;
-  iData: { footer?: true; logo?: boolean; title?: string, hideHeader?: boolean };
+  iData: {
+    footer?: true;
+    logo?: boolean;
+    title?: string;
+    hideHeader?: boolean;
+  };
   isFooter: boolean = true;
   isHomePage: boolean;
   eventNavigationStart: any;
-
+  // @ViewChild('dynamicComponent', {static: true, read: ViewContainerRef}) container: ViewContainerRef;
   // ondemad loaded components for FAQ listing
   authInstance = null;
-  @ViewChild("faqListPopup", { read: ViewContainerRef })
+  @ViewChild("authPopUp", { read: ViewContainerRef })
   authInstanceref: ViewContainerRef;
 
   constructor(
@@ -51,7 +55,7 @@ export class PagesComponent implements OnInit {
     private _aRoute: ActivatedRoute,
     private dataService: DataService,
     private cfr: ComponentFactoryResolver,
-    private injector: Injector,
+    private injector: Injector
 
   ) {
     this.isServer = _commonService.isServer;
@@ -69,13 +73,12 @@ export class PagesComponent implements OnInit {
       this.createHeaderData(this._aRoute);
 
       if (res instanceof NavigationEnd) {
-        if (res['url'] === '/' || res['url'] == "/?back=1") {
+        if (res["url"] === "/" || res["url"] == "/?back=1") {
           this.isHomePage = true;
         } else {
           this.isHomePage = false;
         }
       }
-      
     });
   }
 
@@ -92,6 +95,63 @@ export class PagesComponent implements OnInit {
       null,
       this.injector
     );
+    this.authInstance.instance["flow"] = 'login';
+    (
+      this.authInstance.instance["closePopUp$"] as EventEmitter<boolean>
+    ).subscribe((data) => {
+      this.authInstance = null;
+      this.authInstanceref.remove();
+    });
+    
+    (
+      this.authInstance.instance["nextPopUpName$"] as EventEmitter<boolean>
+    ).subscribe((data) => {
+      if(data==='/otp'){
+        this.authInstance = null;
+      this.authInstanceref.remove();
+        this.openOtpPopUp();
+      }
+     alert("this is next popup name:  "+data)
+    });
+  }
+
+
+  async openOtpPopUp() {
+    const { AuthPopUpComponent } = await import(
+      "../pages/auth-popup/auth-popup.component"
+    ).finally(() => {
+      alert("OTP pOP up Open");
+    });
+    const factory = this.cfr.resolveComponentFactory(AuthPopUpComponent);
+    this.authInstance = this.authInstanceref.createComponent(
+      factory,
+      null,
+      this.injector
+    );
+    this.authInstance.instance["flow"] = 'otp';
+
+    (
+      this.authInstance.instance["otpPopUpSuccess$"] as EventEmitter<boolean>
+    ).subscribe((data) => {
+      this.authInstance = null;
+      this.authInstanceref.remove();
+    });
+
+    (
+      this.authInstance.instance["backButtonClicked$"] as EventEmitter<boolean>
+    ).subscribe((data) => {
+      this.authInstance = null;
+      this.authInstanceref.remove();
+      this.openLoginPopUp();
+    });
+
+  }
+
+  ngOnDestroy() {
+    if (this.authInstance) {
+      this.authInstance = null;
+      this.authInstanceref.remove();
+    }
   }
 
   checkAndRedirect() {
@@ -103,8 +163,7 @@ export class PagesComponent implements OnInit {
       queryParams.hasOwnProperty("token")
     ) {
       this.loginUserIfUserRedirectedFromBharatpay(queryParams);
-    } 
-    else {
+    } else {
       this.checkForUserAndCartSession();
     }
   }
@@ -159,7 +218,7 @@ export class PagesComponent implements OnInit {
   handleRedirectionOfPages(queryParams) {
     if (
       window.location.pathname ===
-      GLOBAL_CONSTANT.pageOnWhichBharatPaySupported[0] &&
+        GLOBAL_CONSTANT.pageOnWhichBharatPaySupported[0] &&
       queryParams.hasOwnProperty("msn")
     ) {
       this.redirectToProductPage(queryParams["msn"]);

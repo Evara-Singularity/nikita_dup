@@ -1,5 +1,5 @@
 <!--OTP:do not remove comments-->
-<shared-auth-header [isCheckout]="isCheckout"></shared-auth-header>
+<shared-auth-header [isLoginPopup]="isLoginPopup"   (backButtonClicked$)="backButtonClicked()"[isCheckout]="isCheckout"></shared-auth-header>
 <ng-container *ngIf="authFlow?.identifier">
     <div *ngIf="isOTPFlow; then otpform else passwordform">
         <!--depending on the condition template will get rendered-->

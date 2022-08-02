@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -32,6 +32,10 @@ export class SharedLoginComponent implements OnInit
     readonly LOGIN_USING_EMAIL = this._sharedAuthService.AUTH_USING_EMAIL;
     readonly SUGGESTION_EMAIL_HOST = ['gmail.com', 'yahoo.com', 'live.com', 'rediffmail.com', 'outlook.com']
     @Input('isCheckout') isCheckout = false;
+    @Input('isLoginPopup') isLoginPopup = false;
+    @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() nextPopUpName$: EventEmitter<any> = new EventEmitter<any>();
+
 
     loginNumberForm = this._fb.group({
         phone: ['', [Validators.required, UsernameValidator.validatePhone]]
@@ -140,12 +144,23 @@ export class SharedLoginComponent implements OnInit
                 //NOTE:using local storage//flowType, identifierType, identifier, data
                 const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
                 this._localAuthService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_PHONE, this.phoneFC.value);
-                this.navigateToNext(isUserExists);
+                if (this.isLoginPopup) { // navigate to next popup screen
+                  this.navigateToNextPopUp(isUserExists);
+                } else if (this.isNormalLogin) {
+                  this.navigateToNext(isUserExists);
+                }
             } else {
                 this._tms.show({ type: 'error', text: response['message'] });
             }
             this._loader.setLoaderState(false);
         })
+    }
+
+    navigateToNextPopUp(isUserExists) {
+        const LINK = (isUserExists) ?
+            ((this.isCheckout) ? "/checkout/otp" : "/otp") :
+            ((this.isCheckout) ? "/checkout/sign-up" : "/sign-up");
+            this.nextPopUpName$.emit(LINK);
     }
 
     validateUserWithEmail()
@@ -160,12 +175,20 @@ export class SharedLoginComponent implements OnInit
                 //CHECK:Email with otp screen with password
                 const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
                 this._localAuthService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_EMAIL, this.emailFC.value);
-                this.navigateToNext(isUserExists);
-            } else {
+                if (this.isLoginPopup) {  // navigate to next popup screen
+                    this.navigateToNextPopUp(isUserExists);
+                } else if (this.isNormalLogin) {
+                  this.navigateToNext(isUserExists);
+                }          
+              } else {
                 this._tms.show({ type: 'error', text: response['message'] });
             }
             this._loader.setLoaderState(false);
         })
+    }
+
+    backButtonClicked(){
+        alert("line 193")
     }
 
     clearSuggestion()
@@ -235,7 +258,16 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateSkipNow() {
+        if(this.isNormalLogin)
         this._localAuthService.handleBackURL(true);
+
+        if(this.isLoginPopup){
+            this.closeVariant2Popup();
+        }
+    }
+
+    closeVariant2Popup() {
+        this.closePopup$.emit();
     }
 
     navigateHome() { this._router.navigate(["."])}

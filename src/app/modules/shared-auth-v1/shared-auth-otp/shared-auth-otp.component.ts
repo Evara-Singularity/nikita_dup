@@ -27,6 +27,9 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     @Input("isForgotPassword") isForgotPassword = false;//Whether forgotpassword screen or not and manages the css accordingly.
     @Input('isCheckout') isCheckout = false;
     @Output("otpEmitter") otpEmitter = new EventEmitter();//Emits otp value accordingly
+    @Input('isLoginPopup') isLoginPopup = false;
+    @Output('otpSuccess$') otpSuccess$= new EventEmitter();;
+
     otpFormSubscriber: Subscription = null;
     timerSubscriber: Subscription = null;
     OTP_INPUTS: HTMLCollectionOf<HTMLInputElement>;
@@ -45,6 +48,9 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this.authFlow = this._localAuthService.getAuthFlow();
         if (this.initiate) {
             this.initiateOTP();
+        }
+        if(this.isOTPVerified){
+            console.log("Heloo from shared auth otp")
         }
     }
 
@@ -115,7 +121,10 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                     this.timer = 0;
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this._globalLoader.setLoaderState(false);
-                    if (!(this.withLabel)) { setTimeout(() => { this.otpEmitter.emit(otpValue); }, 200) };
+                    if (!(this.withLabel)) { setTimeout(() => { 
+                        this.otpEmitter.emit(otpValue); 
+                        this.otpSuccess$.emit();
+                    }, 200) };
                     return;
                 } else if ((response['message'] as string).includes("incorrect")) {
                     this.incorrectOTP = "OTP is not correct";
@@ -169,6 +178,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     {
         if (this.isDisabled) return;
         this.otpEmitter.emit(this.otpValue);
+        this.otpSuccess$.emit();
     }
 
     processOTPError(response)

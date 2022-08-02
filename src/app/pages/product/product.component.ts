@@ -284,10 +284,6 @@ export class ProductComponent implements OnInit, AfterViewInit
     popularDealsInstance = null;
     @ViewChild("popularDeals", { read: ViewContainerRef })
     popularDealsContainerRef: ViewContainerRef;
-     // ondemad loaded components for FAQ listing
-     authInstance = null;
-     @ViewChild("faqListPopup", { read: ViewContainerRef })
-     authInstanceref: ViewContainerRef;
 
     iOptions: any = null;
 
@@ -316,7 +312,7 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     set showLoader(value: boolean)
     {
-        this.globalLoader.setLoaderState(value);
+    this.globalLoader.setLoaderState(value);
     }
 
     get getWhatsText()
@@ -2074,55 +2070,9 @@ export class ProductComponent implements OnInit, AfterViewInit
         if (user && user.authenticated == "true") {
             !user['phone'].length ? this.intiateRFQQuote(true) : this.raiseRFQGetQuote(user);
         } else {
-            // alert(this.router.url)
-            this.router.navigate([this.router.url], { fragment: 'auth' });
-            this.callLoginPopUp();
-            // this.goToLoginPage(this.productUrl, "Continue to raise RFQ", "raiseRFQQuote");
+            this.goToLoginPage(this.productUrl, "Continue to raise RFQ", "raiseRFQQuote");
         }
     }
-    // async callLoginPopUp() {
-    //     throw new Error("Method not implemented.");
-    // }
-
-
-    async  callLoginPopUp()
-    {
-        this.showLoader = true;
-        const { AuthComponent } = await import(
-            "../auth/auth.component"
-        ).finally(() =>
-        {
-            alert("In auth component")
-            this.showLoader = false;
-        });
-
-        const factory = this.cfr.resolveComponentFactory(AuthComponent);
-        this.authInstance =
-            this.authInstanceref.createComponent(
-                factory,
-                null,
-                this.injector
-            );
-        this.authInstance.instance["questionAnswerList"] = this.questionAnswerList;
-        (
-            this.authInstance.instance[
-            "closePopup$"
-            ] as EventEmitter<boolean>
-        ).subscribe(() =>
-        {
-            this.authInstance = null;
-            this.authInstanceref.remove();
-        });
-        (
-            this.authInstance.instance[
-            "emitAskQuestinPopup$"
-            ] as EventEmitter<boolean>
-        ).subscribe(() =>
-        {
-            this.askQuestion();
-        });
-    }
-
 
     closeRFQAlert()
     {

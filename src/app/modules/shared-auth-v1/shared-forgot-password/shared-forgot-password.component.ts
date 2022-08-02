@@ -23,6 +23,8 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
     readonly LOGIN_URL = "/login";
     readonly CHECKOUT_LOGIN_URL = "/checkout/login";
     @Input('isCheckout') isCheckout = false;
+    @Input('isLoginPopup') isLoginPopup;
+
     isPasswordType = true;//to set input[type] = text/password.
     authFlow: AuthFlowType;//gives flowtype & identifier information
     fpForm = new FormGroup({
@@ -44,6 +46,8 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         if (!this.authFlow && this.isCheckout) {  this.navigateTo(this.CHECKOUT_LOGIN_URL); return; }
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
     }
+
+    onOtpSuccess(){}
 
     updatePassword()
     {
@@ -112,5 +116,9 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
     get isDisabled() { return this.fpForm.invalid || this.verifiedOTP === "" }
 
     ngOnDestroy(): void { }
+
+    backButtonClicked(){
+      alert("Line 121"); 
+    }
 
 }

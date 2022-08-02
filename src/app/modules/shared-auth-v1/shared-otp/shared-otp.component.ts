@@ -1,5 +1,5 @@
 import { Validators } from '@angular/forms';
-import { Component, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -37,6 +37,10 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
     readonly CHECKOUT_PASSWORD_URL = "/checkout/forgot-password";
     readonly OTP_FIELDS_LENGTH = 6;
     @Input('isCheckout') isCheckout = false;
+    @Input('isLoginPopup') isLoginPopup;
+    @Output('otpSuccess$') otpSuccess$= new EventEmitter();
+    @Output('backButtonClicked$') backButtonClicked$= new EventEmitter();
+
     authFlow: AuthFlowType;//gives flowtype & identifier information
     //otp
     otpForm: FormArray = new FormArray([]);
@@ -140,6 +144,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
                     this.incorrectPassword = response['message'];
                     //this._cartService.logOutAndClearCart();
+                    this.otpSuccess$.emit();
                 } else {
                     this.incorrectPassword = null;
                     this.processAuthenticaton(response);
@@ -193,6 +198,9 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
             this.isCheckout,
             ((this.isCheckout) ? this.CHECKOUT_ADDRESS : REDIRECT_URL)
         );
+        if (this.isLoginPopup) {
+          this.otpSuccess$.emit();
+        }
     }
 
     navigateToLogin() {
@@ -222,6 +230,12 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
         } else {
             this._router.navigate([this.FORGOT_PASSWORD_URL], navigationExtras)
         }
+    }
+
+    onOtpSuccess(){}
+
+    backButtonClicked(){
+        this.backButtonClicked$.emit();
     }
 
     get isOTPVerified() { return (this.verifiedOTP === this.otpValue) && (this.timer === 0); }

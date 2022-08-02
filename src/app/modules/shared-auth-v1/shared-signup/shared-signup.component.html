@@ -1,8 +1,8 @@
 <!-- sign-up-form -->
-<shared-auth-header [isCheckout]="isCheckout" [enableSkipBtn]="(isSingupUsingPhone && (currentStep === 'DETAILS'))" (onHomepageBtnClick$)="handleSuccessProfileUpdateHomeRedirection()" (onSkipBtnClick$)="handleBackBtnInPhoneSignUp()"
+<shared-auth-header (backButtonClicked$)="backButtonClicked()" [isCheckout]="isCheckout" [enableSkipBtn]="(isSingupUsingPhone && (currentStep === 'DETAILS'))" (onHomepageBtnClick$)="handleSuccessProfileUpdateHomeRedirection()" (onSkipBtnClick$)="handleBackBtnInPhoneSignUp()"
     [overrideBackBtn]="(isSingupUsingPhone && (currentStep === 'DETAILS'))" (onBackBtnClick$)="handleBackBtnInPhoneSignUp()"></shared-auth-header>
 <ng-container *ngIf="currentStep === 'OTP'">
-    <shared-auth-otp [otpFormArray]="otpForm" [isCheckout]="isCheckout" [source]="'signup'" [identifier]="phone.value"
+    <shared-auth-otp (otpSuccess$)="onOtpSuccess()"[otpFormArray]="otpForm" [isCheckout]="isCheckout" [source]="'signup'" [identifier]="phone.value"
         (otpEmitter)="captureOTP($event)" [withLabel]="false"></shared-auth-otp>
 </ng-container>
 

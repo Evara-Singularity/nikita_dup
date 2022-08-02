@@ -1,7 +1,7 @@
-<ng-container *ngIf="page === 'pdp' || appPromoStatus">
+<ng-container *ngIf="page === 'pdp' || page == 'category' || appPromoStatus">
   <div class="app-promo-container" [ngClass]="{
       'fixed-app-promo': isOverlayMode,
-      hideAppPromo:!showPromo
+      'hideAppPromo':(!showPromo && isOverlayMode)
     }">
     <!-- 1st varient  use homepage and plp-->
     <ng-container>

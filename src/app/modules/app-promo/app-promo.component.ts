@@ -25,6 +25,7 @@ export class AppPromoComponent implements OnInit {
   scrolledViewPort = 0;
   windowOldScroll = 0;
   showPromo: boolean = false;
+  listener;
  
 
   @Input() productData: any;
@@ -62,12 +63,13 @@ export class AppPromoComponent implements OnInit {
     this.attachScrollHandler();
   }
 
-  listener;
   attachScrollHandler() {
-    this.windowOldScroll = window.pageYOffset;
-    this.listener = this.renderer2.listen('window', 'scroll', (e) => {
-      this.windowScrollHandler();
-    });
+    if (this._commonService.isBrowser && this.page == 'home') {
+      this.windowOldScroll = window.pageYOffset;
+      this.listener = this.renderer2.listen('window', 'scroll', (e) => {
+        this.windowScrollHandler();
+      });
+    }
   }
 
   windowScrollHandler() {
@@ -202,7 +204,7 @@ export class AppPromoComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this._commonService.isBrowser) {
+    if (this._commonService.isBrowser && this.listener) {
       this.listener();
     }
   }

@@ -1,7 +1,7 @@
 <ng-container *ngIf="page === 'pdp' || appPromoStatus">
   <div class="app-promo-container" [ngClass]="{
       'fixed-app-promo': isOverlayMode,
-      hideAppPromo: scrolledViewPort > 200 && isOverlayMode
+      hideAppPromo:!showPromo
     }">
     <!-- 1st varient  use homepage and plp-->
     <ng-container>

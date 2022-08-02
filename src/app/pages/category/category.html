@@ -6,14 +6,15 @@
         <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1"
             [class.slpLayout2]="layoutType == 2">
             <div class="container-fluid safetyshoebannersrow">
-                <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
+                <cat-static [page_title]="page_title" [static_data]="catStaticData" ></cat-static>
+                <!-- <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
                 <ng-container *ngIf="_commonService?.isBrowser" #slpSubCategoryRef></ng-container>
                 <ng-container *ngIf="_commonService?.isBrowser" #shopByBrand></ng-container>
-                <ng-container *ngIf="_commonService?.isBrowser" #catBestsellers></ng-container>
+                <ng-container *ngIf="_commonService?.isBrowser" #catBestsellers></ng-container> -->
             </div>
-            <div class="container-fluid safetyshshopbytype">
+            <!-- <div class="container-fluid safetyshshopbytype">
                 <ng-container *ngIf="_commonService?.isBrowser" #shopbyFeatr></ng-container>
-            </div>
+            </div> -->
         </div>
     </div>
     

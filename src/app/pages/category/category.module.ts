@@ -12,6 +12,7 @@ import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toa
 import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-promo/product-listing-app-promo.module';
 import { AccordianModule } from "@app/modules/accordian/accordian.module";
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
+import { CatStaticModule } from '@app/components/cat-static/cat-static.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -25,7 +26,8 @@ import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
         SharedProductListingModule,
         ProductListingAppPromoModule,
         AccordianModule,
-        AppPromoModule
+        AppPromoModule,
+        CatStaticModule
     ],
     declarations: [
         CategoryComponent,

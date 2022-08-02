@@ -86,7 +86,6 @@ export class PagesComponent implements OnInit {
     const { AuthPopUpComponent } = await import(
       "../pages/auth-popup/auth-popup.component"
     ).finally(() => {
-      alert("In auth component line 93");
     });
 
     const factory = this.cfr.resolveComponentFactory(AuthPopUpComponent);
@@ -97,54 +96,13 @@ export class PagesComponent implements OnInit {
     );
     this.authInstance.instance["flow"] = 'login';
     (
-      this.authInstance.instance["closePopUp$"] as EventEmitter<boolean>
+      this.authInstance.instance[
+      "removeAuthComponent$"
+      ] as EventEmitter<boolean>
     ).subscribe((data) => {
       this.authInstance = null;
       this.authInstanceref.remove();
     });
-    
-    (
-      this.authInstance.instance["nextPopUpName$"] as EventEmitter<boolean>
-    ).subscribe((data) => {
-      if(data==='/otp'){
-        this.authInstance = null;
-      this.authInstanceref.remove();
-        this.openOtpPopUp();
-      }
-     alert("this is next popup name:  "+data)
-    });
-  }
-
-
-  async openOtpPopUp() {
-    const { AuthPopUpComponent } = await import(
-      "../pages/auth-popup/auth-popup.component"
-    ).finally(() => {
-      alert("OTP pOP up Open");
-    });
-    const factory = this.cfr.resolveComponentFactory(AuthPopUpComponent);
-    this.authInstance = this.authInstanceref.createComponent(
-      factory,
-      null,
-      this.injector
-    );
-    this.authInstance.instance["flow"] = 'otp';
-
-    (
-      this.authInstance.instance["otpPopUpSuccess$"] as EventEmitter<boolean>
-    ).subscribe((data) => {
-      this.authInstance = null;
-      this.authInstanceref.remove();
-    });
-
-    (
-      this.authInstance.instance["backButtonClicked$"] as EventEmitter<boolean>
-    ).subscribe((data) => {
-      this.authInstance = null;
-      this.authInstanceref.remove();
-      this.openLoginPopUp();
-    });
-
   }
 
   ngOnDestroy() {

@@ -1,5 +1,5 @@
 import { CommonService } from '@app/utils/services/common.service';
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -52,6 +52,9 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     currentStep = "";
     identifer = null;
     emailorphonevalueSubscription:Subscription = null;
+    @Output('togglePopUp$') togglePopUp$= new EventEmitter();
+    @Input ('isLoginPopup') isLoginPopup =new EventEmitter();
+
 
     signupForm = new FormGroup({
         firstName: new FormControl(""),
@@ -106,7 +109,9 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
 
     onOtpSuccess(){}
 
-    backButtonClicked(){}
+    backButtonClicked(){
+        this.togglePopUp$.emit('login');
+    }
     
     validateUser($event)
     {

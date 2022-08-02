@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -8,7 +8,6 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { PasswordValidator } from '@app/utils/validators/password.validator';
-import { Subscription } from 'rxjs';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
 
@@ -24,6 +23,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
     readonly CHECKOUT_LOGIN_URL = "/checkout/login";
     @Input('isCheckout') isCheckout = false;
     @Input('isLoginPopup') isLoginPopup;
+    @Output() togglePopUp$: EventEmitter<any> =  new EventEmitter<any>();
 
     isPasswordType = true;//to set input[type] = text/password.
     authFlow: AuthFlowType;//gives flowtype & identifier information
@@ -118,7 +118,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
     ngOnDestroy(): void { }
 
     backButtonClicked(){
-      alert("Line 121"); 
+      this.togglePopUp$.emit('login')
     }
 
 }

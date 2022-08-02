@@ -8,44 +8,28 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ["./auth-popup.component.scss"],
 })
 export class AuthPopUpComponent implements OnInit {
-  @Output() closePopUp$: EventEmitter<any> = new EventEmitter<any>();
-  @Output() nextPopUpName$: EventEmitter<any> = new EventEmitter<any>();
-  @Output() otpPopUpSuccess$: EventEmitter<any> = new EventEmitter<any>();
-  @Output() backButtonClicked$: EventEmitter<any> = new EventEmitter<any>();
   @Input() flow: string;
+  @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
 
-  // flow = "login"
-  isCheckout = false;
-  constructor(
-    private _router: Router,
-    private _sharedAuthService: SharedAuthService
-  ) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    // this.flow = this.removeQueryParams(this._router.url).split("/")[1];
+  ngOnInit(): void {}
+
+
+  togglePopUp(value) {
+    this.flow = value.replace('/','')
   }
 
-  removeQueryParams(url){
-    return url.split("?")[0];
+  otpSuccessPopUp(value) {
+    this.flow = null;
+    this.removeAuthComponent();
   }
 
-  closePopup() {
-    this.closeVariant2Popup();
+  removeAuthComponent(){
+    this.removeAuthComponent$.emit();
   }
 
-  closeVariant2Popup() {
-    this.closePopUp$.emit();
-  }
-
-  navigateToNextPopUp(value) {
-    this.nextPopUpName$.emit(value);
-  }
-
-  otpSuccessPopUp() {
-    this.otpPopUpSuccess$.emit();
-  }
-
-  onBackClick() {
-    this.backButtonClicked$.emit();
+  onBackClick(value) {
+    this.flow = value.replace('/','')
   }
 }

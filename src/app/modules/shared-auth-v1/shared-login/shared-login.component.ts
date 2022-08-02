@@ -33,9 +33,8 @@ export class SharedLoginComponent implements OnInit
     readonly SUGGESTION_EMAIL_HOST = ['gmail.com', 'yahoo.com', 'live.com', 'rediffmail.com', 'outlook.com']
     @Input('isCheckout') isCheckout = false;
     @Input('isLoginPopup') isLoginPopup = false;
-    @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
-    @Output() nextPopUpName$: EventEmitter<any> = new EventEmitter<any>();
-
+    @Output() togglePopUp$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
 
     loginNumberForm = this._fb.group({
         phone: ['', [Validators.required, UsernameValidator.validatePhone]]
@@ -160,7 +159,7 @@ export class SharedLoginComponent implements OnInit
         const LINK = (isUserExists) ?
             ((this.isCheckout) ? "/checkout/otp" : "/otp") :
             ((this.isCheckout) ? "/checkout/sign-up" : "/sign-up");
-            this.nextPopUpName$.emit(LINK);
+            this.togglePopUp$.emit(LINK);
     }
 
     validateUserWithEmail()
@@ -188,7 +187,6 @@ export class SharedLoginComponent implements OnInit
     }
 
     backButtonClicked(){
-        alert("line 193")
     }
 
     clearSuggestion()
@@ -262,12 +260,8 @@ export class SharedLoginComponent implements OnInit
         this._localAuthService.handleBackURL(true);
 
         if(this.isLoginPopup){
-            this.closeVariant2Popup();
+            this.removeAuthComponent$.emit();
         }
-    }
-
-    closeVariant2Popup() {
-        this.closePopup$.emit();
     }
 
     navigateHome() { this._router.navigate(["."])}

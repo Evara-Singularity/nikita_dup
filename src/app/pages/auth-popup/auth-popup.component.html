@@ -1,10 +1,10 @@
 <ng-container [ngSwitch]="flow">
     <app-bottom-menu>
         <div content>
-            <shared-login (nextPopUpName$)="navigateToNextPopUp($event)" (closePopup$)="closePopup()" [isLoginPopup]="true" *ngSwitchCase="'login'"></shared-login>
-            <shared-otp (backButtonClicked$)="onBackClick()"(otpSuccess$)="otpSuccessPopUp()" [isLoginPopup]="true" *ngSwitchCase="'otp'"></shared-otp>
-            <shared-forgot-password [isLoginPopup]="true" *ngSwitchCase="'forgot-password'"></shared-forgot-password>
-            <shared-singup *ngSwitchCase="'sign-up'"></shared-singup>
+            <shared-login (removeAuthComponent$)="removeAuthComponent()" (togglePopUp$)="togglePopUp($event)" [isLoginPopup]="true" *ngSwitchCase="'login'"></shared-login>
+            <shared-otp (togglePopUp$)="togglePopUp($event)" (backButtonClicked$)="togglePopUp($event)" (otpSuccess$)="otpSuccessPopUp($event)" [isLoginPopup]="true" *ngSwitchCase="'otp'"></shared-otp>
+            <shared-forgot-password (togglePopUp$)="togglePopUp($event)" *ngSwitchCase="'forgot-password'" [isLoginPopup]="true" ></shared-forgot-password>
+            <shared-singup (togglePopUp$)="togglePopUp($event)" [isLoginPopup]="true" *ngSwitchCase="'sign-up'"></shared-singup>
         </div>
     </app-bottom-menu>
 </ng-container>

@@ -23,6 +23,9 @@ export class AppPromoComponent implements OnInit {
   playStoreLink = "https://play.google.com/store/apps/details?id=com.moglix.online";
   appStoreLink = "https://apps.apple.com/in/app/moglix-best-industrial-app/id1493763517";
   scrolledViewPort = 0;
+  windowOldScroll = 0;
+  showPromo: boolean = false;
+ 
 
   @Input() productData: any;
   @Input() isOverlayMode: boolean = true;
@@ -61,6 +64,7 @@ export class AppPromoComponent implements OnInit {
 
   listener;
   attachScrollHandler() {
+    this.windowOldScroll = window.pageYOffset;
     this.listener = this.renderer2.listen('window', 'scroll', (e) => {
       this.windowScrollHandler();
     });
@@ -68,6 +72,13 @@ export class AppPromoComponent implements OnInit {
 
   windowScrollHandler() {
     this.scrolledViewPort = window.pageYOffset;
+    if(this.scrolledViewPort > this.windowOldScroll){
+     this.showPromo = false;
+    }
+    else{
+     this.showPromo = true;
+    }
+    this.windowOldScroll = this.scrolledViewPort;
   }
 
   createPlayStoreLink() {

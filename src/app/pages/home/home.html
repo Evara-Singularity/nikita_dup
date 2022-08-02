@@ -1,5 +1,5 @@
 <div class="home-parent">
-    <app-promo  [page]="'home'" class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
+    <app-promo  [page]="'home'" class="fixed-btm-app-prmo home-app-promo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
     <div class="css-banner-component">
         <div class="internalBanner" *ngIf="isBrowser">
             <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
@@ -93,6 +93,7 @@
         </div>
         <whatsapp-toast (click)="sendTrackingData()" [customText]="'Hi, I want to buy from Moglix'"></whatsapp-toast>
     </div>
-    <!-- section for trending categories-->
 
+    <bottom-navigation></bottom-navigation>
+    <!-- section for trending categories-->    
 </div>

@@ -1,0 +1,38 @@
+@import "../../scss/variables";
+.menubar-horizontal-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 12;
+
+    .menubar-horizontal-section {
+        background: var(--white);
+        padding: 10px 15px;
+        border-top-left-radius: $border-radius-16;
+        border-top-right-radius: $border-radius-16;
+        display: flex;
+        justify-content: space-between;
+        box-shadow: 0 5px 15px;
+
+        .menu-icon-txt {
+            padding: 5px;
+            text-align: center;
+            color: var(--silver);
+
+            i {
+                font-size: $extra-large-2_5-font;
+            }
+
+            p {
+                font-size: 9px;
+                padding-top: 4px;
+            }
+
+            &.menu-selected {
+                color: var(--primary);
+            }
+        }
+        
+    }
+}

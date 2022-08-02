@@ -1,0 +1,46 @@
+<!-- homepage menubar -->
+<section class="menubar-horizontal-container">
+    <div class="menubar-horizontal-section">
+        <a (click)="bottomNavRedirection('/')">
+            <div class="menu-icon-txt menu-selected" [ngClass]="{'menu-selected': menuSelected}">
+                <i class="icon-home2"></i>
+                <p>Home</p>
+            </div>
+        </a>
+
+        <a (click)="bottomNavRedirection('/login')" *ngIf="!isUserLogin">
+            <div class="menu-icon-txt">
+                <i class="icon-profile"></i>
+                <p>Log-In</p>
+            </div>
+        </a>
+
+        <a (click)="bottomNavRedirection('/dashboard/info')" *ngIf="isUserLogin">
+            <div class="menu-icon-txt">
+                <i class="icon-profile"></i>
+                <p>Profile</p>
+            </div>
+        </a>
+
+        <a (click)="redirectionToSearchPopUp()">
+            <div class="menu-icon-txt">
+                <i class="icon-search"></i>
+                <p>Search</p>
+            </div>
+        </a>
+
+        <a (click)="bottomNavRedirection('/dashboard/order')">
+            <div class="menu-icon-txt">
+                <i class="icon-my-orders"></i>
+                <p>Orders</p>
+            </div>
+        </a>
+
+        <a (click)="bottomNavRedirection('/quickorder')">
+            <div class="menu-icon-txt">
+                <i class="icon-cart1"></i>
+                <p>My Cart</p>
+            </div>
+        </a>
+    </div>
+</section>

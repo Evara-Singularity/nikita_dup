@@ -12,36 +12,15 @@
             <!--layout_url-->
             <a *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'" [href]="carouselData[category.dataKey]['layout_url']" class="btn quinary-btn">VIEW ALL</a>
         </div>
+        <ng-container *ngIf="carouselData[category.dataKey]['data'] && carouselData[category.dataKey]['data']['image_block'] && carouselData[category.dataKey]['data']['image_block'].length>=4">
         <div class="category-block-container">
-            <div class="category-inner-block">
-                <img src="../../../assets/img/pump-img.png" alt="">
-                <div class="block-txt">
-                    <p>Centrifugal Pumps</p>
-                    <span>Explore Now</span>
-                </div>
-            </div>
-            <div class="category-inner-block">
-                <img src="../../../assets/img/pump-img.png" alt="">
-                <div class="block-txt">
-                    <p>Centrifugal Pumps</p>
-                    <span>Explore Now</span>
-                </div>
-            </div>
-            <div class="category-inner-block">
-                <img src="../../../assets/img/pump-img.png" alt="">
-                <div class="block-txt">
-                    <p>Centrifugal Pumps</p>
-                    <span>Explore Now</span>
-                </div>
-            </div>
-            <div class="category-inner-block">
-                <img src="../../../assets/img/pump-img.png" alt="">
-                <div class="block-txt">
-                    <p>Centrifugal Pumps</p>
-                    <span>Explore Now</span>
-                </div>
+            <div class="category-inner-block" *ngFor="let imageBlockItem of  carouselData[category.dataKey]['data']['image_block']|slice:0:4">
+               <a href="{{imageBlockItem['image_link']}}">
+                <img src="{{imageCdnPath+imageBlockItem['image_name']}}" alt="">
+            </a> 
             </div>
         </div>
+    </ng-container> 
         <ul class="circle-brand-container"
         *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'">
         <div *ngIf="carouselData[category.dataKey]['data']['category_block'].length  !== 0 else brandBlock">

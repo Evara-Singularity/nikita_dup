@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
@@ -14,6 +14,8 @@ export class SharedSocialLoginComponent implements OnInit {
   readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
   readonly CHECKOUT_ADDRESS = "/checkout/address";
   @Input('isCheckout') isCheckout = false;
+  @Input('isLoginPopup') isLoginPopup;
+  @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private _socialAuthService: SocialAuthService,
@@ -56,6 +58,7 @@ export class SharedSocialLoginComponent implements OnInit {
               this.isCheckout,
                 (this.isCheckout) ? this.CHECKOUT_ADDRESS : redirectUrl
             );
+              this.removeAuthComponent$.emit();
           }
         }, (error) => {
           console.log('social sign in error', error);

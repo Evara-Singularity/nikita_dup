@@ -54,6 +54,8 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     emailorphonevalueSubscription:Subscription = null;
     @Output('togglePopUp$') togglePopUp$= new EventEmitter();
     @Input ('isLoginPopup') isLoginPopup =new EventEmitter();
+    @Output('removeAuthComponent$') removeAuthComponent$= new EventEmitter();
+
 
 
     signupForm = new FormGroup({
@@ -188,6 +190,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
                 userSession['email'] = this.email.value || "";
                 this.updateProfileLocalStorage(userSession['userName'], userSession['email']);
                 this.handleSuccessProfileUpdate(obj.pname);
+                this.handleLoginPopuUp();
             } else {
                 this._toastService.show({
                     type: "error",
@@ -195,6 +198,12 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
                 });
             }
         });
+    }
+
+    handleLoginPopuUp() {
+        if (this.isLoginPopup) {
+             this.removeAuthComponent$.emit()
+        }
     }
 
     updateProfileLocalStorage(userName, email){
@@ -292,6 +301,9 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     handleBackBtnInPhoneSignUp(){
+        if(this.isLoginPopup){
+            this.removeAuthComponent$.emit();
+        }
         this.handleSuccessProfileUpdate('');
     }
 

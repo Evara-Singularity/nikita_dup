@@ -156,10 +156,8 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateToNextPopUp(isUserExists) {
-        const LINK = (isUserExists) ?
-            ((this.isCheckout) ? "/checkout/otp" : "/otp") :
-            ((this.isCheckout) ? "/checkout/sign-up" : "/sign-up");
-            this.togglePopUp$.emit(LINK);
+        const LINK = (isUserExists) ? '/otp': '/sign-up';
+        this.togglePopUp$.emit(LINK);
     }
 
     validateUserWithEmail()
@@ -262,6 +260,10 @@ export class SharedLoginComponent implements OnInit
         if(this.isLoginPopup){
             this.removeAuthComponent$.emit();
         }
+    }
+
+    removeComponent(){
+        this.removeAuthComponent$.emit();
     }
 
     navigateHome() { this._router.navigate(["."])}

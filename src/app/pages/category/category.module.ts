@@ -13,6 +13,13 @@ import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-p
 import { AccordianModule } from "@app/modules/accordian/accordian.module";
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 import { CatStaticModule } from '@app/components/cat-static/cat-static.component';
+import { SlpSubCategoryModule } from '@app/components/slp-sub-category/slp-sub-category.component';
+import { ShopbyBrandModule } from '@app/components/shopby-brand/shopby-brand.component';
+import { CategoryBestSellerModule } from '@app/components/cat-bestseller/cat-bestseller.component';
+import { ShopbyFeatrModule } from '@app/components/shopby-featr/shopby-featr.component';
+import { CmsModule } from '@app/modules/cms/cms.module';
+import { SubCategoryModule } from '@app/components/subCategory/subCategory.component';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -27,7 +34,13 @@ import { CatStaticModule } from '@app/components/cat-static/cat-static.component
         ProductListingAppPromoModule,
         AccordianModule,
         AppPromoModule,
-        CatStaticModule
+        CatStaticModule,
+        SlpSubCategoryModule,
+        ShopbyBrandModule,
+        CategoryBestSellerModule,
+        ShopbyFeatrModule,
+        CmsModule,
+        SubCategoryModule
     ],
     declarations: [
         CategoryComponent,

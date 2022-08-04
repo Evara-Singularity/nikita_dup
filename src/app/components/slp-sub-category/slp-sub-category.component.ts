@@ -47,6 +47,9 @@ export class SlpSubCategoryComponent {
     RouterModule,
     PopUpModule,
     LazyLoadImageModule,
+  ],
+  exports:[
+    SlpSubCategoryComponent
   ]
 })
 export class SlpSubCategoryModule { }

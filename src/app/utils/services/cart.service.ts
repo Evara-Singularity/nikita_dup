@@ -3,19 +3,17 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
-import { ModalService } from '@app/modules/modal/modal.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { BehaviorSubject, forkJoin, Observable, of, Subject } from 'rxjs';
-import { catchError, delay, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { catchError, delay, map, mergeMap, shareReplay, switchMap, tap, concatMap } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { Address } from '../models/address.modal';
 import { AddToCartProductSchema } from "../models/cart.initial";
 import { LocalAuthService } from './auth.service';
 import { DataService } from './data.service';
 import { GlobalLoaderService } from './global-loader.service';
-import {lastPayment} from "./paymentDetails"
 
 @Injectable({ providedIn: 'root' })
 export class CartService
@@ -71,7 +69,7 @@ export class CartService
 
     constructor(
         private _dataService: DataService, private _localStorageService: LocalStorageService, private localAuthService: LocalAuthService,
-        private _modalService: ModalService, private _loaderService: GlobalLoaderService, private _toastService: ToastMessageService,
+        private _loaderService: GlobalLoaderService, private _toastService: ToastMessageService,
         private _router: Router, private _globalLoader: GlobalLoaderService, private _location: Location, private _globalAnalyticsService: GlobalAnalyticsService,
     ) { this.setRoutingInfo(); }
 
@@ -1936,20 +1934,6 @@ export class CartService
         const totalOffer = cart['totalOffer'] || 0
         return (totalAmount + shippingCharges) - (totalOffer);
     }
-
-    //ODP-1866
-    getPaymentDetails()
-    {
-        //delete lastPaymentDetails.js file after integration;
-        //https://nodeapiqa.moglilabs.com/nodeApi/v1/payment/getRetryRequest?orderId={{id}}
-        
-        return of({lastPayment});
-    }
-
-    // getPaymentDetails(orderId): Observable<any> {
-    //     let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_PAYMENT_DETAILS + orderId;
-    //     return this._dataService.callRestful("GET", url);
-    // }
 
     //Analytics
     sendAdobeOnCheckoutOnVisit(checkoutPageTye)

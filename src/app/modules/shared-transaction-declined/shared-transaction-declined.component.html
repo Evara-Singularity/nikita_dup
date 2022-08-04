@@ -15,13 +15,14 @@
                 <p>- This may be because our system is down temporarily.</p>
                 <p>- May be there's a problem with the connection.</p>
             </div>
-            <!-- <div class="btn-block btn-block-1st">
-                <button class="red-bg-btn" (click)="$event.stopPropagation();payWithLastDetails()">RETRY PAYMENT</button>
-            </div> -->
-            <div class="btn-block btn-block-2nd" *ngIf="canCOD">
-                <button class="red-bg-btn" (click)="$event.stopPropagation();payAsCOD()">PAY CASH ON DELIVERY</button>
-                <div class="login-seperator-text "> <span>Or</span></div>
-                <button class="light-red-bg-btn" (click)="$event.stopPropagation();payWithLastDetails()">RETRY PAYMENT</button>
+            <div class="btn-block btn-block-2nd">
+                <ng-container *ngIf="canCOD">
+                    <button class="red-bg-btn" (click)="$event.stopPropagation();payAsCOD()">PAY CASH ON
+                        DELIVERY</button>
+                    <div class="login-seperator-text "> <span>Or</span></div>
+                </ng-container>
+                <button class="light-red-bg-btn" (click)="$event.stopPropagation();payWithLastDetails()">RETRY
+                    PAYMENT</button>
             </div>
         </div>
     </div>

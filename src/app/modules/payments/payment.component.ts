@@ -59,8 +59,6 @@ export class PaymentComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(" payment Mode data -->>", this._cartService.lastPaymentMode, this._cartService.lastPaymentId)
-
     if (
       (this._commonService.isBrowser &&
         this._cartService.getGenericCartSession &&
@@ -268,7 +266,6 @@ export class PaymentComponent implements OnInit {
     this._paymentService
       .getPaymentsMethodData(this.invoiceType)
       .subscribe((result) => {
-        console.log("result --->>>", result);
         if (result["status"]) {
           this.successPercentageRawData = result["data"] || null;
         }
@@ -325,7 +322,6 @@ export class PaymentComponent implements OnInit {
 
   getPaymentMode(type, id) {
       let payment = this.paymentMode.filter(item => type === item.mode && id === item.id);
-      console.log("payment --->>>", payment)
       this.paymentBlock = this.globalConstants[payment[0].type];
   }
 }

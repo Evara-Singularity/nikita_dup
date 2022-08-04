@@ -25,9 +25,9 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     readonly STEPPER: CheckoutHeaderModel[] = [{ label: "ADDRESS & SUMMARY", status: true }, { label: "PAYMENT", status: false }];
     readonly IMG_PATH: string = environment.IMAGE_ASSET_URL;
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
-    //ODP-1866
-    transactionId = null;
+
     orderId = null;
+    isRetryPayment = false;//Indicateas retry payment flow.
     txnDeclinedInstance: ComponentRef<SharedTransactionDeclinedComponent> = null;
     @ViewChild("txnDeclined", { read: ViewContainerRef })
     txnDeclinedContainerRef: ViewContainerRef;
@@ -54,30 +54,27 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute, private _compiler: Compiler, private _injector: Injector,
         private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService)
     {
-        //ODP-1866
-        this.transactionId = this._activatedRoute.snapshot.queryParams['transactionId'];
         this.orderId = this._activatedRoute.snapshot.queryParams['orderId'];
     }
 
 
     ngOnInit(): void
     {
-         //ODP-1866  Need to discuss with yogender regarding calling all api's
-        if(this.transactionId || this.orderId)
-        {
-            this.fetchTransactionDetails();
+        this._cartService.sendAdobeOnCheckoutOnVisit("address");
+        if (this.orderId) {
+            this.isRetryPayment = true;
+            this.fetchTransactionDetails(); 
             return;
         }
-        this._cartService.sendAdobeOnCheckoutOnVisit("address");
         this.updateUserStatus();
         this._cartService.showUnavailableItems = false;
     }
 
     ngAfterViewInit(): void
     {
+        if(this.isRetryPayment)return;
         this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
-            console.log("cartSession -->>>", cartSession)
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
                 this.cartSession = cartSession;
                 this.hasCartItems = this.cartSession && this.cartSession['itemsList'] && (this.cartSession['itemsList']).length > 0;
@@ -87,7 +84,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 //address is getting updated and cart session is getting updated with some delay.
                 //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
                 if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
-                    console.log("this.deliveryAddress --->>>", this.deliveryAddress)
                     this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
                     this.verifyUnserviceableFromCartSubscription = !(this.verifyUnserviceableFromCartSubscription)
                 }
@@ -113,18 +109,16 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     fetchTransactionDetails()
     {
+        this.orderId = 3985248;
         this._globalLoader.setLoaderState(true);
-        this._cartService.getPaymentDetails().subscribe((result)=>{
-            console.log("payment result --->>>", result)
-            //handle status code logic
-            //handle loader logic
-            // Normal flow enable karna hai ki nahi patch
+        this._cartService.getPaymentDetailsByOrderId(this.orderId).subscribe((response) =>
+        {
+            if (response.status) { this.openTxnDeclinedPopup(response['data']['shoppingCartDto']); }
             this._globalLoader.setLoaderState(false);
-            this.openTxnDeclinedPopup(result);
         })
     }
 
-    async openTxnDeclinedPopup(lastPaymentData)
+    async openTxnDeclinedPopup(shoppingCartDto)
     {
         const txnDeclinedModule = await import('./../../../modules/shared-transaction-declined/shared-transaction-declined.module').then(m => m.SharedTransactionDeclinedModule);
         const moduleFactory = await this._compiler.compileModuleAsync(txnDeclinedModule);
@@ -132,9 +126,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const componentFactory = txnDeclinedModuleRef.instance.resolveComponent();
         this.txnDeclinedInstance = this.txnDeclinedContainerRef.createComponent(componentFactory, null, txnDeclinedModuleRef.injector);
         this.txnDeclinedInstance.instance.displayPage = true;
-        this.txnDeclinedInstance.instance.lastPaymentData = lastPaymentData;
+        this.txnDeclinedInstance.instance.shoppingCartDto = shoppingCartDto;
         this.txnDeclinedInstance.instance.userId = this._localAuthService.getUserSession()['userId'];
-        this.txnDeclinedInstance.instance.transactionId = this.transactionId;
         this.txnDeclinedInstance.instance.orderId = this.orderId;
         (this.txnDeclinedInstance.instance["emitQuickoutCloseEvent$"] as EventEmitter<boolean>).subscribe((isClosed) =>
         {
@@ -190,7 +183,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
    */
     verifyServiceablityAndCashOnDelivery(postCode)
     {
-        console.log('cod this.cartSession -->>', this.cartSession)
         const cartItems: any[] = this.cartSession['itemsList'] || [];
         if ((!cartItems) || (cartItems.length === 0)) return;
         const MSNS = cartItems.map(item => item.productId);

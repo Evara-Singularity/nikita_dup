@@ -150,7 +150,7 @@ export class CashOnDeliveryComponent {
                 'requestParams': null,
                 'validatorRequest': this._cartService.createValidatorRequest(extra)
             }; 
-        }   
+        } 
         this._commonService.isBrowser && this._analytics.sendAdobeOrderRequestTracking(newdata, "pay-initiated:cash on delivery");
         this._cartService.pay(newdata).subscribe((res): void => {
             if (res.status != true) {

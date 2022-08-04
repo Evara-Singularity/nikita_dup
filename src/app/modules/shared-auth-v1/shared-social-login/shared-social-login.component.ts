@@ -49,6 +49,7 @@ export class SharedSocialLoginComponent implements OnInit {
           if (userResponse["statusCode"] != undefined && userResponse["statusCode"] == 500) {
             this._sharedAuthUtilService.logoutUserOnError();
           } else {
+            this.removeAuthComponent$.emit();
             const backURLTitle = this._localAuthService.getBackURLTitle();
             const redirectUrl  = (backURLTitle && backURLTitle['backurl']) || this._sharedAuthService.redirectUrl;
             this._localAuthService.clearBackURLTitle();
@@ -58,7 +59,6 @@ export class SharedSocialLoginComponent implements OnInit {
               this.isCheckout,
                 (this.isCheckout) ? this.CHECKOUT_ADDRESS : redirectUrl
             );
-              this.removeAuthComponent$.emit();
           }
         }, (error) => {
           console.log('social sign in error', error);

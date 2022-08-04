@@ -26,7 +26,7 @@
                     <button class="btn secondry-full-btn" (click)="toggleLoginType(LOGIN_USING_EMAIL)">CONTINUE
                         WITH EMAIL-ID</button>
                     <div class="clearfix mt-25 mt-1-xs">
-                        <shared-social-login [isCheckout]="this.isCheckout"></shared-social-login>
+                        <shared-social-login (removeAuthComponent$)="removeAuthComponent()"[isCheckout]="this.isCheckout"></shared-social-login>
                     </div>
                 </form>
             </ng-container>
@@ -60,7 +60,7 @@
                     <button class="btn secondry-full-btn" (click)="toggleLoginType(LOGIN_USING_PHONE)">CONTINUE
                         WITH MOBILE NUMBER</button>
                     <div class="clearfix mt-25">
-                        <shared-social-login (removeAuthComponent$)="removeComponent()" [isLoginPopup]="isLoginPopup" [isCheckout]="this.isCheckout"></shared-social-login>
+                        <shared-social-login (removeAuthComponent$)="removeAuthComponent()" [isLoginPopup]="isLoginPopup" [isCheckout]="this.isCheckout"></shared-social-login>
                     </div>
                 </form>
             </ng-container>

@@ -262,7 +262,7 @@ export class SharedLoginComponent implements OnInit
         }
     }
 
-    removeComponent(){
+    removeAuthComponent(){
         this.removeAuthComponent$.emit();
     }
 

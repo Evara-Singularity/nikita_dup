@@ -145,7 +145,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
                 if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
                     this.incorrectPassword = response['message'];
                     //this._cartService.logOutAndClearCart();
-                    this.otpSuccess$.emit('otp');
                 } else {
                     this.incorrectPassword = null;
                     this.processAuthenticaton(response);

@@ -83,16 +83,6 @@ export class QuickCodService
     return of(result);
   }
 
-  getPaymentDetailsByOrderId(orderId)
-  {
-    const result = { status: false, data: null }
-    //const url = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAYMENT_DETAILS}${orderId}`;
-    let url = "https://paymentqa.moglilabs.com/payment/payment/getRetryRequest?orderId=3985248"
-    return this._dataService.callRestful("GET", url).pipe(
-      map((res) => { return { status: res['status'], data: res['data'] } }),
-      catchError((res: HttpErrorResponse) => { return of(result); }));
-  }
-
   verifyServiceabilityAndCOD(items: any[], postCode)
   {
     const result = { isNonServiceable: false, isNonCod: false };

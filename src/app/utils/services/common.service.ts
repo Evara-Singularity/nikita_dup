@@ -72,6 +72,7 @@ export class CommonService
     private _loadSearchPopup: Subject<string> = new Subject<string>();
     public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
+    public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
 
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
@@ -135,6 +136,15 @@ export class CommonService
     getNetworkSpeedState(): Observable<number>
     {
         return this.networkSpeedState.asObservable();
+    }
+
+    setSideNavToggle(enable: boolean){
+        console.log("setSideNavToggle", enable);
+        this._sideNavToggle.next(enable);
+    }
+
+    getSideNavToggleStatus(): Observable<boolean>{
+        return this._sideNavToggle.asObservable();
     }
 
     getNetworkSpeed(): Number

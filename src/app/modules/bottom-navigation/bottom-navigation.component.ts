@@ -37,6 +37,10 @@ export class BottomNavigationComponent implements OnInit {
     this._commonService.updateSearchPopup('');
   }
 
+  loadSideNav(){
+    this._commonService.setSideNavToggle(true);
+  }
+
 
 
 }

@@ -91,11 +91,14 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
 
-    ngOnInit()
-    {
+    ngOnInit() {
         if (this.isBrowser) {
             this.isUserLogin = this.localAuthService.isUserLoggedIn();
             this._navigationService.startSaveHistory();
+            this._commonService.getSideNavToggleStatus().subscribe(status => {
+                console.log(status);
+                this.loadSideNav();
+            })
         }
         this.createHeaderData(this._activatedRoute);
     }

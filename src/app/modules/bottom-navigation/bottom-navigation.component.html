@@ -15,7 +15,7 @@
             </div>
         </a>
 
-        <a (click)="bottomNavRedirection('/dashboard/info')" *ngIf="isUserLogin">
+        <a (click)="loadSideNav()" *ngIf="isUserLogin">
             <div class="menu-icon-txt">
                 <i class="icon-profile"></i>
                 <p>Profile</p>

@@ -49,6 +49,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     loginSubscription: Subscription = null;
     logoutSubscription: Subscription = null;
     cartUpdatesSubscription: Subscription = null;
+    paymentMode: any;
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute, private _compiler: Compiler, private _injector: Injector,
         private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService)
@@ -61,6 +62,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     ngOnInit(): void
     {
+         //ODP-1866  Need to discuss with yogender regarding calling all api's
         if(this.transactionId || this.orderId)
         {
             this.fetchTransactionDetails();
@@ -75,6 +77,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     {
         this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
+            console.log("cartSession -->>>", cartSession)
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
                 this.cartSession = cartSession;
                 this.hasCartItems = this.cartSession && this.cartSession['itemsList'] && (this.cartSession['itemsList']).length > 0;
@@ -84,6 +87,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 //address is getting updated and cart session is getting updated with some delay.
                 //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
                 if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
+                    console.log("this.deliveryAddress --->>>", this.deliveryAddress)
                     this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
                     this.verifyUnserviceableFromCartSubscription = !(this.verifyUnserviceableFromCartSubscription)
                 }
@@ -109,9 +113,13 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     fetchTransactionDetails()
     {
+        this._globalLoader.setLoaderState(true);
         this._cartService.getPaymentDetails().subscribe((result)=>{
+            console.log("payment result --->>>", result)
             //handle status code logic
             //handle loader logic
+            // Normal flow enable karna hai ki nahi patch
+            this._globalLoader.setLoaderState(false);
             this.openTxnDeclinedPopup(result);
         })
     }
@@ -126,6 +134,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this.txnDeclinedInstance.instance.displayPage = true;
         this.txnDeclinedInstance.instance.lastPaymentData = lastPaymentData;
         this.txnDeclinedInstance.instance.userId = this._localAuthService.getUserSession()['userId'];
+        this.txnDeclinedInstance.instance.transactionId = this.transactionId;
+        this.txnDeclinedInstance.instance.orderId = this.orderId;
         (this.txnDeclinedInstance.instance["emitQuickoutCloseEvent$"] as EventEmitter<boolean>).subscribe((isClosed) =>
         {
             this.txnDeclinedInstance.instance.displayPage = false;
@@ -180,6 +190,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
    */
     verifyServiceablityAndCashOnDelivery(postCode)
     {
+        console.log('cod this.cartSession -->>', this.cartSession)
         const cartItems: any[] = this.cartSession['itemsList'] || [];
         if ((!cartItems) || (cartItems.length === 0)) return;
         const MSNS = cartItems.map(item => item.productId);

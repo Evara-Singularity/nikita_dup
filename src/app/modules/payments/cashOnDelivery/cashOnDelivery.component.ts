@@ -228,8 +228,7 @@ export class CashOnDeliveryComponent {
             else{
                 this._tms.show({type: 'error', text: 'Something went wrong, Please try again.'});
             }
-        });
-       
+        });  
     }
 
     checkNum(val){

@@ -52,6 +52,7 @@ export class CartService
     private _shippingAddress: Address;
     private _invoiceType: 'retail' | 'tax' = this.INVOICE_TYPE_RETAIL;
     private _lastPaymentMode = null;
+    private _lastPaymentId = null;
 
     // vars used in revamped cart login 
     private _buyNow;
@@ -93,6 +94,10 @@ export class CartService
     set lastPaymentMode(mode: string) { this._lastPaymentMode = mode; }
 
     get lastPaymentMode() { return this._lastPaymentMode; }
+
+    set lastPaymentId(id: string) { this._lastPaymentId = id; }
+
+    get lastPaymentId() { return this._lastPaymentId; }
 
     get getPreviousUrl() { return this.previousUrl; }
 
@@ -1184,7 +1189,7 @@ export class CartService
         this._loaderService.setLoaderState(true);
         if (!userId) { return }
         const cartSession = this.getCartSession();
-        const offerId = (cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
+        const offerId = (cartSession['offersList'] && cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
         this.getAllPromoCodesByUserId(userId).subscribe(res =>
         {
             if (res['statusCode'] === 200) {
@@ -1936,8 +1941,15 @@ export class CartService
     getPaymentDetails()
     {
         //delete lastPaymentDetails.js file after integration;
+        //https://nodeapiqa.moglilabs.com/nodeApi/v1/payment/getRetryRequest?orderId={{id}}
+        
         return of({lastPayment});
     }
+
+    // getPaymentDetails(orderId): Observable<any> {
+    //     let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_PAYMENT_DETAILS + orderId;
+    //     return this._dataService.callRestful("GET", url);
+    // }
 
     //Analytics
     sendAdobeOnCheckoutOnVisit(checkoutPageTye)

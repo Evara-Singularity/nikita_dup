@@ -66,9 +66,16 @@ export class PagesComponent implements OnInit {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event) => {
         if (this._aRoute.snapshot.fragment === "auth") {
-          this.openLoginPopUp();
+          console.log('function called');
+          this.openLoginPopUp().then(() => {
+            console.log('component created');
+          });
         }
       });
+
+      this._aRoute.snapshot.fragment === "auth" ? this.openLoginPopUp() : null;
+
+
     this.router.events.subscribe((res) => {
       this.createHeaderData(this._aRoute);
 
@@ -83,26 +90,28 @@ export class PagesComponent implements OnInit {
   }
 
   async openLoginPopUp() {
-    const { AuthPopUpComponent } = await import(
-      "../pages/auth-popup/auth-popup.component"
-    ).finally(() => {
-    });
-
-    const factory = this.cfr.resolveComponentFactory(AuthPopUpComponent);
-    this.authInstance = this.authInstanceref.createComponent(
-      factory,
-      null,
-      this.injector
-    );
-    this.authInstance.instance["flow"] = 'login';
-    (
-      this.authInstance.instance[
-      "removeAuthComponent$"
-      ] as EventEmitter<boolean>
-    ).subscribe((data) => {
-      this.authInstance = null;
-      this.authInstanceref.remove();
-    });
+    setTimeout( async () => {
+      const { AuthPopUpComponent } = await import(
+        "../pages/auth-popup/auth-popup.component"
+      ).finally(() => {
+      });
+  
+      const factory = this.cfr.resolveComponentFactory(AuthPopUpComponent);
+      this.authInstance = this.authInstanceref.createComponent(
+        factory,
+        null,
+        this.injector
+      );
+      this.authInstance.instance["flow"] = 'login';
+      (
+        this.authInstance.instance[
+        "removeAuthComponent$"
+        ] as EventEmitter<boolean>
+      ).subscribe((data) => {
+        this.authInstance = null;
+        this.authInstanceref.remove();
+      });
+    }, 3000);
   }
 
   ngOnDestroy() {

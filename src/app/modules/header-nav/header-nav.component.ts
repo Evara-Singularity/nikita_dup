@@ -90,6 +90,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         this.isBrowser = _commonService.isBrowser;
     }
 
+    moveToHome(){
+        this.router.navigate(['/'], {fragment: 'auth'} );
+    }
+
 
     ngOnInit()
     {

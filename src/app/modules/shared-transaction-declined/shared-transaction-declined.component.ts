@@ -77,19 +77,23 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	//ODP-1866:remove if it not required
 	payAsCOD()
 	{
+		//if pincode is not available then abort the flow
 		if (!this.shippingPincode) {
 			this._toastService.show({ type: "error", text: "Pincode is not available" })
 			return;
 		}
+		//if last method is COD and able to perform COD now
 		if (this.isLastPaymentIsCod && this.canCOD) {
 			this._quickCodService.quickCODPayment(this.shoppingCartDto, this.shippingPincode, this.userId);
 			return;
 		}
-		if (!this.canCOD) {
+		//if last payment is NON-COD and able to perform COD now.
+		if (!(this.isLastPaymentIsCod) && this.canCOD) {
 			this.convertToCODAndPay(this.shoppingCartDto);
 		}
 	}
 
+	//converts NON-COD to COD shopping cart and pays
 	convertToCODAndPay(shoppingCartDto)
 	{
 		shoppingCartDto['payment'] = { "paymentMethodId": 13, "type": "COD" };

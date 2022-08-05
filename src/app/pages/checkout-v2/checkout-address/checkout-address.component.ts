@@ -57,7 +57,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this.orderId = this._activatedRoute.snapshot.queryParams['orderId'];
     }
 
-
     ngOnInit(): void
     {
         this._cartService.sendAdobeOnCheckoutOnVisit("address");
@@ -113,8 +112,9 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this._globalLoader.setLoaderState(true);
         this._cartService.getPaymentDetailsByOrderId(this.orderId).subscribe((response) =>
         {
-            if (response.status) { this.openTxnDeclinedPopup(response['data']['shoppingCartDto']); }
             this._globalLoader.setLoaderState(false);
+            if (response.status) { this.openTxnDeclinedPopup(response['data']['shoppingCartDto']); return;}
+            this._router.navigate(['quickorder']);
         })
     }
 

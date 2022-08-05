@@ -1,42 +1,42 @@
 <!-- homepage menubar -->
 <section class="menubar-horizontal-container">
     <div class="menubar-horizontal-section">
-        <a (click)="bottomNavRedirection('/')">
+        <a (click)="bottomNavRedirection('/');setAnalyticTags('home')">
             <div class="menu-icon-txt menu-selected" [ngClass]="{'menu-selected': menuSelected}">
                 <i class="icon-home2"></i>
                 <p>Home</p>
             </div>
         </a>
 
-        <a (click)="bottomNavRedirection('/login')" *ngIf="!isUserLogin">
+        <a (click)="bottomNavRedirection('/login');setAnalyticTags('login')" *ngIf="!isUserLogin">
             <div class="menu-icon-txt">
                 <i class="icon-profile"></i>
                 <p>Log-In</p>
             </div>
         </a>
 
-        <a (click)="loadSideNav()" *ngIf="isUserLogin">
+        <a (click)="loadSideNav();setAnalyticTags('profile')" *ngIf="isUserLogin">
             <div class="menu-icon-txt">
                 <i class="icon-profile"></i>
                 <p>Profile</p>
             </div>
         </a>
 
-        <a (click)="redirectionToSearchPopUp()">
+        <a (click)="redirectionToSearchPopUp();setAnalyticTags('search')">
             <div class="menu-icon-txt">
                 <i class="icon-search"></i>
                 <p>Search</p>
             </div>
         </a>
 
-        <a (click)="bottomNavRedirection('/dashboard/order', 'Continue to track your orders')">
+        <a (click)="bottomNavRedirection('/dashboard/order', 'Continue to track your orders');setAnalyticTags('orders')">
             <div class="menu-icon-txt">
                 <i class="icon-my-orders"></i>
                 <p>Orders</p>
             </div>
         </a>
 
-        <a (click)="bottomNavRedirection('/quickorder')">
+        <a (click)="bottomNavRedirection('/quickorder');setAnalyticTags('cart')">
             <div class="menu-icon-txt">
                 <i class="icon-cart1"></i>
                 <p>My Cart</p>

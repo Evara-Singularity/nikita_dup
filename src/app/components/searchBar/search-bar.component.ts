@@ -359,7 +359,13 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
                 }
                 // if not shift and append
             } else {
-                sh = [cs, ...sh]
+                const e = sh.some(t => t['name'].toLowerCase() === data.toLowerCase());
+                if (!e) {
+                    sh = [cs, ...sh]
+                }else{
+                    sh = sh.filter(t => t['name'].toLowerCase() !== data.toLowerCase()); // remove element from array
+                    sh = [cs, ...sh] // move to first position
+                }
             }
         } else {
             sh = [];

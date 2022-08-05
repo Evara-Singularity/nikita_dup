@@ -3,6 +3,9 @@ import { NavigationExtras, Router, RouterModule } from '@angular/router';
 import { LocalAuthService } from '@utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+
+
 
 
 
@@ -22,6 +25,9 @@ export class BottomNavigationComponent implements OnInit {
     private localAuthService: LocalAuthService,
     public _commonService: CommonService,
     private localStorageService: LocalStorageService,
+    private analytics: GlobalAnalyticsService,
+    
+
     ) { }
 
   ngOnInit() {
@@ -54,7 +60,37 @@ export class BottomNavigationComponent implements OnInit {
   loadSideNav(){
     this._commonService.setSideNavToggle(true);
   }
-
-
-
+  
+  setAnalyticTags(channelName) {
+		const userSession = this.localAuthService.getUserSession();
+		/*Start Adobe Analytics Tags */
+		let page = {
+			pageName: 'bottom-navigation:home',
+			channel: channelName,
+			subSection: 'bottom-navigation:'+channelName,
+			linkName: this.router.url,
+			loginStatus:
+				userSession &&
+					userSession.authenticated &&
+					userSession.authenticated == 'true'
+					? 'registered user'
+					: 'guest',
+		};  
+		let custData = {
+			customerID:
+				userSession && userSession['userId'] ? btoa(userSession['userId']) : '',
+			emailID:
+				userSession && userSession['email'] ? btoa(userSession['email']) : '',
+			mobile:
+				userSession && userSession['phone'] ? btoa(userSession['phone']) : '',
+			customerType:
+				userSession && userSession['userType'] ? userSession['userType'] : '',
+		};
+		let order = {}; 
+		let digitalData = {};
+		digitalData['page'] = page;
+		digitalData['custData'] = custData;
+		digitalData['order'] = order;
+		this.analytics.sendAdobeCall(digitalData);
+	}
 }

@@ -111,7 +111,7 @@ export class PagesComponent implements OnInit {
         this.authInstance = null;
         this.authInstanceref.remove();
       });
-    }, 3000);
+    }, 1000);
   }
 
   ngOnDestroy() {

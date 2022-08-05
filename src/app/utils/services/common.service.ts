@@ -35,6 +35,7 @@ export class CommonService
     };
     limitTrendingCategoryNumber: number = GLOBAL_CONSTANT.trendingCategoryLimit;
     enableNudge: boolean = false;
+    obj: {};
 
     set showLoader(status: boolean)
     {
@@ -417,8 +418,7 @@ export class CommonService
     updateSelectedFilterDataFilterFromFragment(fragment)
     {
         let obj = {};
-
-        if (fragment) {
+        if (fragment && !JSON.stringify(fragment).includes('auth')) {
             let filtersList = fragment.split("/");
             if (filtersList) {
                 for (let i = 0; i < filtersList.length; i++) {

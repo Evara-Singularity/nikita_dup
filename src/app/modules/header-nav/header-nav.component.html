@@ -1,5 +1,4 @@
 <header class="inner-pages inner-pages-for-listing" *ngIf="!extraData.hideHeader">
-    <h1 (click)="moveToHome()" >Link to login popup</h1>
     <div class="main-header" [ngSwitch]="activeModuleName">
         <ng-container *ngSwitchCase="MODULE_NAME.HOME">
             <ng-container *ngIf="!_commonService.isScrolledHeader">

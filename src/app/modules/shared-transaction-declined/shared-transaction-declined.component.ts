@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
-import { AddressService } from '@app/utils/services/address.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { QuickCodService } from '@app/utils/services/quick-cod.service';
+import { RetryPaymentService } from '@app/utils/services/retry-payment.service';
 import { CartService } from '@services/cart.service';
-import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { InitiateQuickCod } from '@app/utils/models/cart.initial';
 
 export const PaymentMode =
 {
@@ -41,40 +42,54 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	@Output("emitQuickoutCloseEvent$") emitQuickoutCloseEvent$: EventEmitter<boolean> = new EventEmitter<boolean>();
 	isLastPaymentIsCod: boolean = false;
 
-	cartUpdatesSubscription: Subscription = null;
 	hasCartItems = true;
 	verifyUnserviceableFromCartSubscription = false;//to restrict the verification of unserviceable items on every cart subscription.
 
 	cartSession = null;
-	deliveryAddress = null;
+	shippingAddress = null;
 	billingAddress = null;
 	moveSectionTo = null;
 	invoiceType: any;
 	shippingPincode = null;
+	isBuyNow = false;
 
 	constructor(private _cartService: CartService, private _loaderService: GlobalLoaderService, private _toastService: ToastMessageService,
-		public _addressService: AddressService, private _quickCodService: QuickCodService) { }
+		public _router: Router, private _quickCodService: QuickCodService, private _retryPaymentService: RetryPaymentService) { }
 
 	ngOnInit()
 	{
-		const params = { customerId: this.userId, invoiceType: "tax" };
-		this._loaderService.setLoaderState(true);
-		this._addressService.getAddressList(params).subscribe((addresses) =>
-		{
-			const shippingAddress = (this.shoppingCartDto['addressList'] as any[]).find((address) => { return address['type'] === "shipping" });
-			if (shippingAddress['invoiceType'] === "tax") { this.shoppingCartDto['paymentGateway'] = "razorpay" }
-			const address = (addresses['deliveryAddressList'] as any[]).find((address) => { return address['idAddress'] === shippingAddress['addressId'] });
-			this.shippingPincode = (address && address['postCode']) ? address['postCode'] : null;
-			this._loaderService.setLoaderState(false);
-		});
+		//to set parentOrderId
+		this.reHydrateAddresses(this.shoppingCartDto);
+		this.reHydrateCartSession(this.shoppingCartDto);
 	}
 
 	ngAfterViewInit()
 	{
 		this.isLastPaymentIsCod = (this.shoppingCartDto['payment']['type'] === "COD");
+		this.isBuyNow = this.shoppingCartDto['cart']['buyNow'] || false;
 	}
 
-	//ODP-1866:remove if it not required
+	//move to shared-transaction
+	reHydrateAddresses(shoppingCartDto)
+	{
+		this._retryPaymentService.reHydrateAddresses(shoppingCartDto).subscribe(({ shippingAddress, billingAddress, invoiceType }) =>
+		{
+			this.shippingAddress = shippingAddress;
+			this.billingAddress = billingAddress;
+			this.invoiceType = invoiceType;
+			this.shippingPincode = (shippingAddress && shippingAddress['postCode']) ? shippingAddress['postCode'] : null;
+		});
+	}
+
+	//parentid=orderid
+	reHydrateCartSession(shoppingCartDto)
+	{
+		this._retryPaymentService.reHydrateCartSession(shoppingCartDto).subscribe((cartSession) =>
+		{
+			this.cartSession = cartSession;
+		})
+	}
+
 	payAsCOD()
 	{
 		//if pincode is not available then abort the flow
@@ -82,31 +97,37 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			this._toastService.show({ type: "error", text: "Pincode is not available" })
 			return;
 		}
-		//if last method is COD and able to perform COD now
-		if (this.isLastPaymentIsCod && this.canCOD) {
-			this._quickCodService.quickCODPayment(this.shoppingCartDto, this.shippingPincode, this.userId);
-			return;
+		if(this.canCOD)
+		{
+			const initiateQuickCod: InitiateQuickCod = {
+				cartSession: this.cartSession,
+				shippingAddress: this.shippingAddress,
+				billingAddress: this.billingAddress,
+				invoiceType: this.invoiceType,
+				isBuyNow: this.isBuyNow,
+				postCode: this.shippingPincode,
+				userId: this.userId
+			}
+			this._quickCodService.initiateQuickCOD(initiateQuickCod);
 		}
-		//if last payment is NON-COD and able to perform COD now.
-		if (!(this.isLastPaymentIsCod) && this.canCOD) {
-			this.convertToCODAndPay(this.shoppingCartDto);
-		}
-	}
-
-	//converts NON-COD to COD shopping cart and pays
-	convertToCODAndPay(shoppingCartDto)
-	{
-		shoppingCartDto['payment'] = { "paymentMethodId": 13, "type": "COD" };
-		shoppingCartDto["deliveryMethod"] = { "deliveryMethodId": 77, "type": "kjhlh" };
-		this._quickCodService.quickCODPayment(this.shoppingCartDto, this.shippingPincode, this.userId);
 	}
 
 	payWithLastDetails()
 	{
 		//canCode & isLastPaymentIsCode.
 		//ODP-1866:set last payment mode to in payment page;
+		this._loaderService.setLoaderState(true);
 		this._cartService.lastPaymentMode = this.shoppingCartDto['payment']['type'];
 		this._cartService.lastPaymentId = this.shoppingCartDto['payment']['paymentMethodId'];
+		this._retryPaymentService.validateCart(this.cartSession, this.shippingAddress, this.billingAddress, this.invoiceType, this.isBuyNow).subscribe((response) =>
+		{
+			this._loaderService.setLoaderState(false);
+			if (response['status']) {
+				this._router.navigate(['/checkout/payment']);
+				return;
+			}
+			this._toastService.show({ type: 'error', text: response.statusDescription });
+		})
 	}
 
 	canCOD()
@@ -117,8 +138,5 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 
 	close() { this.emitQuickoutCloseEvent$.emit(true) }
 
-	ngOnDestroy()
-	{
-		if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
-	}
+	ngOnDestroy() { }
 }

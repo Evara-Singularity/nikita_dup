@@ -1,27 +1,38 @@
-import { CartService } from '@app/utils/services/cart.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { CartService } from '@app/utils/services/cart.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { forkJoin, of } from 'rxjs';
-import { map, catchError, concatMap } from 'rxjs/operators';
+import { catchError, concatMap, map } from 'rxjs/operators';
+import { InitiateQuickCod, ValidateDto } from './../models/cart.initial';
+import { CartUtils } from './cart-utils';
 import { DataService } from './data.service';
-import { GlobalAnalyticsService } from './global-analytics.service';
 import { GlobalLoaderService } from './global-loader.service';
-import { Router } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class QuickCodService
 {
-
   codMessages: string[] = [];
 
-  constructor(private _dataService: DataService, private _localStorageService: LocalStorageService, private _loaderService: GlobalLoaderService, private _toastService: ToastMessageService,
-    private _router: Router, private _globalAnalyticsService: GlobalAnalyticsService, private _cartService: CartService) { }
+  constructor(private _dataService: DataService, private _localStorageService: LocalStorageService, private _loaderService: GlobalLoaderService,
+    private _toastService: ToastMessageService, private _router: Router, private _cartService: CartService) { }
+
+  initiateQuickCOD(initiateQuickCod: InitiateQuickCod)
+  {
+    const validateDtoRequest: ValidateDto = {
+      cartSession: initiateQuickCod.cartSession,
+      shippingAddress: initiateQuickCod.shippingAddress,
+      billingAddress: initiateQuickCod.billingAddress,
+      invoiceType: initiateQuickCod.invoiceType,
+      isBuyNow: initiateQuickCod.isBuyNow
+    }
+    const validateDto = CartUtils.getValidateDto(validateDtoRequest);
+    this.quickCODPayment(validateDto, initiateQuickCod.postCode, initiateQuickCod.userId)
+  }
 
   quickCODPayment(shoppingCartDto, postCode, userId)
   {
@@ -59,7 +70,7 @@ export class QuickCodService
     ).subscribe((result) =>
     {
       this._loaderService.setLoaderState(false);
-      if (this.codMessages.length) { this.displayCODMessage(this.codMessages[0]); return;}
+      if (this.codMessages.length) { this.displayCODMessage(this.codMessages[0]); return; }
       let data = result.data;
       let extras = { queryParams: { mode: 'COD', orderId: data.orderId, transactionAmount: data.orderAmount }, replaceUrl: true };
       this._localStorageService.clear('flashData');

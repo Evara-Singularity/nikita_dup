@@ -1,3 +1,4 @@
+import { CartUtils } from './cart-utils';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -124,39 +125,7 @@ export class CartService
     // get generic cart session object
     generateGenericCartSession(cartSessionFromAPI)
     {
-        const modifiedCartSessionObject = {
-            cart: Object.assign({}, cartSessionFromAPI['cart']),
-            itemsList: (cartSessionFromAPI["itemsList"] ? [...cartSessionFromAPI["itemsList"]] : []),
-            addressList: (cartSessionFromAPI["addressList"] ? [...cartSessionFromAPI["addressList"]] : []),
-            payment: cartSessionFromAPI["payment"],
-            offersList: cartSessionFromAPI["offersList"],
-            extraOffer: cartSessionFromAPI["extraOffer"]
-        }
-        let totalAmount: number = 0;
-        let tawot: number = 0; // totalAmountWithOutTax
-        let tpt: number = 0; //totalPayableTax
-        let itemsList = modifiedCartSessionObject.itemsList ? modifiedCartSessionObject.itemsList : [];
-        for (let item of itemsList) {
-            if (item["bulkPrice"] == null) {
-                item["totalPayableAmount"] = this.getTwoDecimalValue(item["productUnitPrice"] * item["productQuantity"]);
-                item['tpawot'] = this.getTwoDecimalValue(item['priceWithoutTax'] * item['productQuantity']);
-                item['tax'] = this.getTwoDecimalValue(item["totalPayableAmount"] - item["tpawot"]);
-            }
-            else {
-                item["totalPayableAmount"] = (item["bulkPrice"]) ? this.getTwoDecimalValue(item["bulkPrice"] * item["productQuantity"]) : 0;
-                item['tpawot'] = (item['bulkPriceWithoutTax']) ? this.getTwoDecimalValue(item['bulkPriceWithoutTax'] * item['productQuantity']) : 0;
-                item['tax'] = this.getTwoDecimalValue(item["totalPayableAmount"] - item["tpawot"]);
-            }
-            totalAmount = this.getTwoDecimalValue(totalAmount + item.totalPayableAmount);
-            tawot = this.getTwoDecimalValue(tawot + item.tpawot);
-            tpt = tpt + item['tax'];
-        };
-        modifiedCartSessionObject.cart.totalAmount = totalAmount;
-        modifiedCartSessionObject.cart.totalPayableAmount = (totalAmount + modifiedCartSessionObject.cart['shippingCharges']) - (modifiedCartSessionObject.cart['totalOffer'] || 0);
-        modifiedCartSessionObject.cart.tawot = tawot;
-        modifiedCartSessionObject.cart.tpt = tpt;
-        modifiedCartSessionObject.itemsList = itemsList;
-        return modifiedCartSessionObject;
+        return CartUtils.generateGenericCartSession(cartSessionFromAPI);
     }
 
     // Get generic cart session
@@ -193,18 +162,7 @@ export class CartService
      */
     getShippingObj(cartSessions)
     {
-        let sro = { itemsList: [], totalPayableAmount: 0 };
-        if (cartSessions && cartSessions['itemsList'] && cartSessions['itemsList'].length > 0) {
-            let itemsList: Array<{}> = cartSessions['itemsList'];
-            itemsList.map((item) =>
-            {
-                sro.itemsList.push({ "productId": item["productId"], "categoryId": item["categoryCode"], "taxonomy": item["taxonomyCode"] });
-            });
-        }
-        if (cartSessions && cartSessions['cart']) {
-            sro['totalPayableAmount'] = cartSessions['cart']['totalPayableAmount'];
-        }
-        return sro;
+        return CartUtils.getShippingObj(cartSessions);
     }
 
     getCartBySession(params): Observable<any>

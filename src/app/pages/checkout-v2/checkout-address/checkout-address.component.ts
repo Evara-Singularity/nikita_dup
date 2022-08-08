@@ -1,3 +1,5 @@
+import { CartUtils } from './../../../utils/services/cart-utils';
+import { RetryPaymentService } from './../../../utils/services/retry-payment.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { AfterViewInit, Compiler, Component, ComponentRef, EventEmitter, Injector, Input, NgModuleRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -14,6 +16,7 @@ import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
 import { SharedTransactionDeclinedComponent } from '@app/modules/shared-transaction-declined/shared-transaction-declined.component';
 import { SharedTransactionDeclinedModule } from '@app/modules/shared-transaction-declined/shared-transaction-declined.module';
+import { ValidateDto } from '@app/utils/models/cart.initial';
 
 @Component({
     selector: 'checkout-address',
@@ -52,26 +55,27 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     paymentMode: any;
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute, private _compiler: Compiler, private _injector: Injector,
-        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService)
+        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService,
+        private _retryPaymentService: RetryPaymentService)
     {
         this.orderId = this._activatedRoute.snapshot.queryParams['orderId'];
     }
 
     ngOnInit(): void
     {
-        this._cartService.sendAdobeOnCheckoutOnVisit("address");
         if (this.orderId) {
             this.isRetryPayment = true;
-            this.fetchTransactionDetails(); 
+            this.fetchTransactionDetails();
             return;
         }
+        this._cartService.sendAdobeOnCheckoutOnVisit("address");
         this.updateUserStatus();
         this._cartService.showUnavailableItems = false;
     }
 
     ngAfterViewInit(): void
     {
-        if(this.isRetryPayment)return;
+        if (this.isRetryPayment) return;
         this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
@@ -105,39 +109,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
         }
     }
-
-    fetchTransactionDetails()
-    {
-        this.orderId = 3985248;
-        this._globalLoader.setLoaderState(true);
-        this._cartService.getPaymentDetailsByOrderId(this.orderId).subscribe((response) =>
-        {
-            this._globalLoader.setLoaderState(false);
-            if (response.status) { this.openTxnDeclinedPopup(response['data']['shoppingCartDto']); return;}
-            this._router.navigate(['quickorder']);
-        })
-    }
-
-    async openTxnDeclinedPopup(shoppingCartDto)
-    {
-        const txnDeclinedModule = await import('./../../../modules/shared-transaction-declined/shared-transaction-declined.module').then(m => m.SharedTransactionDeclinedModule);
-        const moduleFactory = await this._compiler.compileModuleAsync(txnDeclinedModule);
-        const txnDeclinedModuleRef: NgModuleRef<SharedTransactionDeclinedModule> = moduleFactory.create(this._injector);
-        const componentFactory = txnDeclinedModuleRef.instance.resolveComponent();
-        this.txnDeclinedInstance = this.txnDeclinedContainerRef.createComponent(componentFactory, null, txnDeclinedModuleRef.injector);
-        this.txnDeclinedInstance.instance.displayPage = true;
-        this.txnDeclinedInstance.instance.shoppingCartDto = shoppingCartDto;
-        this.txnDeclinedInstance.instance.userId = this._localAuthService.getUserSession()['userId'];
-        this.txnDeclinedInstance.instance.orderId = this.orderId;
-        (this.txnDeclinedInstance.instance["emitQuickoutCloseEvent$"] as EventEmitter<boolean>).subscribe((isClosed) =>
-        {
-            this.txnDeclinedInstance.instance.displayPage = false;
-            this.txnDeclinedInstance = null;
-            this.txnDeclinedContainerRef.remove();
-            this._router.navigate(['quickorder']);
-        });
-    }
-
 
     /** @description updates user status and is used to display the continue CTA*/
     updateUserStatus()
@@ -274,57 +245,15 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     {
         this._globalLoader.setLoaderState(true);
         const _cartSession = this._cartService.getCartSession();
-        const _shippingAddress = this._cartService.shippingAddress;
-        const _billingAddress = this._cartService.billingAddress;
-        let cart = _cartSession.cart;
-        let obj = {
-            "shoppingCartDto": {
-                "cart":
-                {
-                    "cartId": cart["cartId"],
-                    "sessionId": cart["sessionId"],
-                    "userId": cart["userId"],
-                    "agentId": cart["agentId"] ? cart["agentId"] : null,
-                    "isPersistant": true,
-                    "createdAt": null,
-                    "updatedAt": null,
-                    "closedAt": null,
-                    "orderId": null,
-                    "totalAmount": cart["totalAmount"] == null ? 0 : cart["totalAmount"],
-                    "totalOffer": cart["totalOffer"] == null ? 0 : cart["totalOffer"],
-                    "totalAmountWithOffer": cart["totalAmountWithOffer"] == null ? 0 : cart["totalAmountWithOffer"],
-                    "taxes": cart["taxes"] == null ? 0 : cart["taxes"],
-                    "totalAmountWithTaxes": cart["totalAmountWithTax"],
-                    "shippingCharges": cart["shippingCharges"] == null ? 0 : cart["shippingCharges"],
-                    "currency": cart["currency"] == null ? "INR" : cart["currency"],
-                    "isGift": cart["gift"] == null ? false : cart["gift"],
-                    "giftMessage": cart["giftMessage"],
-                    "giftPackingCharges": cart["giftPackingCharges"] == null ? 0 : cart["giftPackingCharges"],
-                    "totalPayableAmount": cart["totalAmount"] == null ? 0 : cart["totalAmount"]
-                },
-                "itemsList": this._cartService.getItemsList(_cartSession.itemsList),
-                "addressList": [
-                    {
-                        "addressId": _shippingAddress.idAddress,
-                        "type": "shipping",
-                        "invoiceType": this._cartService.invoiceType
-                    }
-                ],
-                "payment": null,
-                "deliveryMethod": { "deliveryMethodId": 77, "type": "kjhlh" },
-                "offersList": (_cartSession.offersList != undefined && _cartSession.offersList.length > 0) ? _cartSession.offersList : null
-            }
-        };
-        if (this._cartService.buyNow) { obj['shoppingCartDto']['cart']['buyNow'] = true; }
-        if (_billingAddress) {
-            obj.shoppingCartDto.addressList.push({
-                "addressId": _billingAddress.idAddress,
-                "type": "billing",
-                "invoiceType": this._cartService.invoiceType
-
-            })
+        const validateDto: ValidateDto = {
+            cartSession: _cartSession,
+            shippingAddress: this._cartService.shippingAddress,
+            billingAddress: this._cartService.billingAddress,
+            invoiceType: this._cartService.invoiceType,
+            isBuyNow: this._cartService.buyNow
         }
-        this._cartService.validateCartBeforePayment(obj).subscribe(res =>
+        const validateDtoRquest = CartUtils.getValidateDto(validateDto);
+        this._cartService.validateCartBeforePayment(validateDtoRquest).subscribe(res =>
         {
             this._globalLoader.setLoaderState(false);
             if (res.status && res.statusCode == 200) {
@@ -367,7 +296,37 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 this._toastService.show({ type: 'error', text: res.statusDescription });
             }
         });
+    }
 
+    fetchTransactionDetails()
+    {
+        this._globalLoader.setLoaderState(true);
+        this._retryPaymentService.getPaymentDetailsByOrderId(this.orderId).subscribe((response) =>
+        {
+            this._globalLoader.setLoaderState(false);
+            if (response.status) { this.openTxnDeclinedPopup(response['data']['shoppingCartDto']); return; }
+            this._router.navigate(['quickorder']);
+        })
+    }
+
+    async openTxnDeclinedPopup(shoppingCartDto)
+    {
+        const txnDeclinedModule = await import('./../../../modules/shared-transaction-declined/shared-transaction-declined.module').then(m => m.SharedTransactionDeclinedModule);
+        const moduleFactory = await this._compiler.compileModuleAsync(txnDeclinedModule);
+        const txnDeclinedModuleRef: NgModuleRef<SharedTransactionDeclinedModule> = moduleFactory.create(this._injector);
+        const componentFactory = txnDeclinedModuleRef.instance.resolveComponent();
+        this.txnDeclinedInstance = this.txnDeclinedContainerRef.createComponent(componentFactory, null, txnDeclinedModuleRef.injector);
+        this.txnDeclinedInstance.instance.displayPage = true;
+        this.txnDeclinedInstance.instance.shoppingCartDto = shoppingCartDto;
+        this.txnDeclinedInstance.instance.userId = this._localAuthService.getUserSession()['userId'];
+        this.txnDeclinedInstance.instance.orderId = this.orderId;
+        (this.txnDeclinedInstance.instance["emitQuickoutCloseEvent$"] as EventEmitter<boolean>).subscribe((isClosed) =>
+        {
+            this.txnDeclinedInstance.instance.displayPage = false;
+            this.txnDeclinedInstance = null;
+            this.txnDeclinedContainerRef.remove();
+            this._router.navigate(['quickorder']);
+        });
     }
 
     /**@description triggers the unavailbel item pop-up from notfications */

@@ -8,7 +8,7 @@
             </div>
         </a>
 
-        <a (click)="bottomNavRedirectionLogin();setAnalyticTags('login')" *ngIf="!isUserLogin">
+        <a (click)="bottomNavRedirection('/login');setAnalyticTags('login')" *ngIf="!isUserLogin">
             <div class="menu-icon-txt">
                 <i class="icon-profile"></i>
                 <p>Log-In</p>

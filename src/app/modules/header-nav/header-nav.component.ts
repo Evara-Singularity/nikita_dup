@@ -96,7 +96,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             this.isUserLogin = this.localAuthService.isUserLoggedIn();
             this._navigationService.startSaveHistory();
             this._commonService.getSideNavToggleStatus().subscribe(status => {
-                console.log(status);
+                // console.log(status);
                 this.loadSideNav();
             })
         }

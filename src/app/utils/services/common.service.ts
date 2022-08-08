@@ -139,7 +139,7 @@ export class CommonService
     }
 
     setSideNavToggle(enable: boolean){
-        console.log("setSideNavToggle", enable);
+        // console.log("setSideNavToggle", enable);
         this._sideNavToggle.next(enable);
     }
 

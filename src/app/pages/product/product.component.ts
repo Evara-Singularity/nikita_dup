@@ -479,7 +479,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.route.data.subscribe(
             (rawData) =>
             {
-                if (!rawData["product"]["error"]) {
+                if (!rawData["product"]["error"] && rawData["product"][0]["active"]==true) {
                     if (
                         rawData["product"][0]["productBO"] &&
                         Object.values(
@@ -516,7 +516,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     }
                 }
                 this.showLoader = false;
-                this.globalLoader.setLoaderState(false);
+                this.globalLoader.setLoaderState(false); 
                 this.checkForRfqGetQuote();
                 this.checkForAskQuestion();
                 this.updateUserSession();
@@ -599,13 +599,13 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     updateAttr(productId)
     {
-        this.removeRfqForm();
+        this.removeRfqForm(); 
         this.showLoader = true;
         this.productService
             .getGroupProductObj(productId)
             .subscribe((productData) =>
             {
-                if (productData["status"] == true) {
+                if (productData["status"] == true && productData["active"] == true ) {
 
                     this.processProductData(
                         {

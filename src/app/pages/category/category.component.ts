@@ -32,24 +32,7 @@ const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000"
 
 export class CategoryComponent {
     encodeURI = encodeURI;
-    subCategoryInstance = null;
-    @ViewChild('subCategory', { read: ViewContainerRef }) subCategoryContainerRef: ViewContainerRef;
-    catBestSellerInstance = null;
-    @ViewChild('catBestsellers', { read: ViewContainerRef }) catBestSellerContainerRef: ViewContainerRef;
-    shopByBrandInstance = null;
-    @ViewChild('shopByBrand', { read: ViewContainerRef }) shopByBrandContainerRef: ViewContainerRef;
-    catStaticInstance = null;
-    @ViewChild('catStatic', { read: ViewContainerRef }) catStaticContainerRef: ViewContainerRef;
-    slpSubCategoryInstance = null;
-    @ViewChild('slpSubCategoryRef', { read: ViewContainerRef }) slpSubCategoryContainerRef: ViewContainerRef;
-    shopbyFeatrInstance = null;
-    @ViewChild('shopbyFeatr', { read: ViewContainerRef }) shopbyFeatrContainerRef: ViewContainerRef;
-    cmsInstance = null;
-    @ViewChild('cms', { read: ViewContainerRef }) cmsContainerRef: ViewContainerRef;
-    cateoryFooterInstance = null;
-    @ViewChild('cateoryFooter', { read: ViewContainerRef }) cateoryFooterContainerRef: ViewContainerRef;
-    recentArticlesInstance = null;
-    @ViewChild('recentArticles', { read: ViewContainerRef }) recentArticlesContainerRef: ViewContainerRef;
+    
     public API_RESPONSE: any;
 
     @ViewChild('sharedProductList') sharedProductList: SharedProductListingComponent;
@@ -116,10 +99,6 @@ export class CategoryComponent {
             this.API_RESPONSE = result;
 
             this._productListService.excludeAttributes = [];
-
-            if (this.cmsInstance) {
-                this.cmsInstance.instance['cmsData'] = this.API_RESPONSE.category[4];
-            }
 
             // Set Title and Meta for category
             this.setTitleAndMetaForCategory();
@@ -641,96 +620,36 @@ export class CategoryComponent {
     private updateComponentsBasedOnrouteChange() {
         const params = this._activatedRoute.snapshot.params;
 
-        if (!this.subCategoryInstance) {
-            this.createDynamicComponent('subCategory');
-        } else {
-            this.subCategoryInstance.instance.relatedCatgoryList = this.API_RESPONSE.category[0].children;
-            this.subCategoryInstance.instance.initializeSubcategoryData(this.API_RESPONSE.category[0].children);
-            this.subCategoryInstance.instance.showList(false);
-        }
-
         this.layoutType = 0;
         if (params && params.id && slpPagesExtrasIdMap.hasOwnProperty(params.id)) {
             this.isSLPPage = true;
-            this.getExtraCategoryData(params).subscribe((data) => {
-
-                this.layoutType = data['layoutType'];
-                if (this.API_RESPONSE.category[0].children && this.layoutType == 2) {
-                    if (this.slpSubCategoryInstance) {
-                        this.slpSubCategoryInstance.instance['sub_category_Data'] = this.API_RESPONSE.category[0].children;
-                    } else {
-                        this.createDynamicComponent('slpSubCategory');
-                    }
-                } else {
-                    if (this.slpSubCategoryInstance) {
-                        this.slpSubCategoryInstance = null;
-                        this.slpSubCategoryContainerRef.remove();
-                    }
-                }
-
-                this.page_title = data['pageTitle'];
-
-                if (data['data'][0].block_data.brand_block) {
-                    this.shopByBrandData = data['data'][0].block_data.brand_block;
-                    if (this.shopByBrandInstance) {
-                        this.shopByBrandInstance.instance['brand_Data'] = this.shopByBrandData;
-                    } else {
-                        this.createDynamicComponent('shopByBrand');
-                    }
-                } else {
-                    if (this.shopByBrandInstance) {
-                        this.shopByBrandInstance = null;
-                        this.shopByBrandContainerRef.remove();
-                    }
-                }
-
-                if (data['data'][0].block_data.product_data) {
-                    this.catBestsellerData = data['data'][0].block_data.product_data;
-                    if (this.catBestSellerInstance) {
-                        this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestsellerData;
-                    } else {
-                        this.createDynamicComponent('catBestseller');
-                    }
-                } else {
-                    if (this.catBestSellerInstance) {
-                        this.catBestSellerInstance = null;
-                        this.catBestSellerContainerRef.remove();
-                    }
-                }
-
-                if (data['data'][0].block_data.image_block) {
-                    this.shopbyFeatrData = data['data'][0].block_data.image_block;
-                    if (this.shopbyFeatrInstance) {
-                        this.shopbyFeatrInstance.instance['shopBy_Data'] = this.shopbyFeatrData;
-                    } else {
-                        this.createDynamicComponent('shopbyFeatr');
-                    }
-                } else {
-                    if (this.shopbyFeatrInstance) {
-                        this.shopbyFeatrInstance = null;
-                        this.shopbyFeatrContainerRef.remove();
-                    }
-                }
-
-                if (data['data'][0].block_data.general_block) {
-                    this.catStaticData = data['data'][0].block_data.general_block;
-                    if (this.catStaticInstance) {
-                        this.catStaticInstance.instance['page_title'] = this.page_title;
-                        this.catStaticInstance.instance['static_data'] = this.catStaticData;
-                    } else {
-                        this.createDynamicComponent('catStatic');
-                    }
-
-                } else {
-                    if (this.catStaticInstance) {
-                        this.catStaticInstance = null;
-                        this.catStaticContainerRef.remove();
-                    }
-                }
-
-            });
+            const slpdata=this.API_RESPONSE.category[6];
+            this.createSLPdata(slpdata);
         } else {
             this.isSLPPage = false;
+        }
+    }
+
+    private createSLPdata(data: {}) {
+        this.layoutType = data['layoutType'];
+        
+
+        this.page_title = data['pageTitle'];
+
+        if (data['data'][0].block_data.brand_block) {
+            this.shopByBrandData = data['data'][0].block_data.brand_block;
+        }
+       
+        if (data['data'][0].block_data.product_data) {
+            this.catBestsellerData = data['data'][0].block_data.product_data;
+        }     
+
+        if (data['data'][0].block_data.image_block) {
+            this.shopbyFeatrData = data['data'][0].block_data.image_block;
+        }
+        
+        if (data['data'][0].block_data.general_block) {
+            this.catStaticData = data['data'][0].block_data.general_block;
         }
     }
 
@@ -764,97 +683,6 @@ export class CategoryComponent {
         }
     }
 
-    getExtraCategoryData(data): Observable<{}> {
-        return this._categoryService.getCategoryExtraData(slpPagesExtrasIdMap[data.id]);
-    }
-
-    async createDynamicComponent(name) {
-        if (this._commonService.isBrowser) {
-            if (name === 'catBestseller' && !this.catBestSellerInstance) {
-                const { CatBestsellerComponent } = await import('@components/cat-bestseller/cat-bestseller.component');
-                const factory = this._componentFactoryResolver.resolveComponentFactory(CatBestsellerComponent);
-                this.catBestSellerInstance = this.catBestSellerContainerRef.createComponent(factory, null, this.injector);
-                this.catBestSellerInstance.instance['bestSeller_Data'] = this.catBestsellerData;
-            } else if (name === 'subCategory' && !this.subCategoryInstance) {
-                const { SubCategoryComponent } = await import('@components/subCategory/subCategory.component');
-                const factory = this._componentFactoryResolver.resolveComponentFactory(SubCategoryComponent);
-                this.subCategoryInstance = this.subCategoryContainerRef.createComponent(factory, null, this.injector);
-                this.subCategoryInstance.instance['relatedCatgoryList'] = this.API_RESPONSE.category[0].children;
-            } else if (name === 'shopByBrand' && !this.shopByBrandInstance) {
-                const { ShopbyBrandComponent } = await import('@components/shopby-brand/shopby-brand.component');
-                const factory = this._componentFactoryResolver.resolveComponentFactory(ShopbyBrandComponent);
-                this.shopByBrandInstance = this.shopByBrandContainerRef.createComponent(factory, null, this.injector);
-                this.shopByBrandInstance.instance['brand_Data'] = this.shopByBrandData;
-            } else if (name === 'catStatic' && !this.catStaticInstance) {
-                const { CatStaticComponent } = await import('@components/cat-static/cat-static.component');
-                const factory = this._componentFactoryResolver.resolveComponentFactory(CatStaticComponent);
-                this.catStaticInstance = this.catStaticContainerRef.createComponent(factory, null, this.injector);
-                this.catStaticInstance.instance['page_title'] = this.page_title;
-                this.catStaticInstance.instance['static_data'] = this.catStaticData;
-            } else if (name === 'slpSubCategory' && !this.slpSubCategoryInstance) {
-                this.slpSubCategoryInstance = null;
-                const { SlpSubCategoryComponent } = await import('@components/slp-sub-category/slp-sub-category.component');
-                const factory = this._componentFactoryResolver.resolveComponentFactory(SlpSubCategoryComponent);
-                this.slpSubCategoryInstance = this.slpSubCategoryContainerRef.createComponent(factory, null, this.injector);
-                this.slpSubCategoryInstance.instance['sub_category_Data'] = this.API_RESPONSE.category[0].children;
-            } else if (name === 'shopbyFeatr' && !this.shopbyFeatrInstance) {
-                this.shopbyFeatrInstance = null;
-                const { ShopbyFeatrComponent } = await import('@components/shopby-featr/shopby-featr.component');
-                const factory = this._componentFactoryResolver.resolveComponentFactory(ShopbyFeatrComponent);
-                this.shopbyFeatrInstance = this.shopbyFeatrContainerRef.createComponent(factory, null, this.injector);
-                this.shopbyFeatrInstance.instance['shopBy_Data'] = this.shopbyFeatrData;
-            } else if (name === 'cms' && !this.cmsInstance) {
-                this.cmsInstance = null;
-                const { CmsWrapperComponent } = await import('@modules/cms/cms.component');
-                const factory = this._componentFactoryResolver.resolveComponentFactory(CmsWrapperComponent);
-                this.cmsInstance = this.cmsContainerRef.createComponent(factory, null, this.injector);
-                this.cmsInstance.instance['cmsData'] = this.API_RESPONSE.category[4];
-                this.cmsInstance.instance['background'] = 'bg-trans';
-            }
-
-        }
-    }
-
-
-    resetLazyComponents() {
-        if (this.subCategoryInstance) {
-            this.subCategoryInstance = null;
-            this.subCategoryContainerRef.remove();
-        }
-        if (this.catBestSellerInstance) {
-            this.catBestSellerInstance = null;
-            this.catBestSellerContainerRef.remove();
-        }
-        if (this.shopByBrandInstance) {
-            this.shopByBrandInstance = null;
-            this.shopByBrandContainerRef.remove();
-        }
-        if (this.catStaticInstance) {
-            this.catStaticInstance = null;
-            this.catStaticContainerRef.remove();
-        }
-        if (this.shopbyFeatrInstance) {
-            this.shopbyFeatrInstance = null;
-            this.shopbyFeatrContainerRef.remove();
-        }
-        if (this.shopbyFeatrInstance) {
-            this.shopbyFeatrInstance = null;
-            this.shopbyFeatrContainerRef.remove();
-        }
-        if (this.slpSubCategoryInstance) {
-            this.slpSubCategoryInstance = null;
-            this.slpSubCategoryContainerRef.remove();
-        }
-        if (this.cmsInstance) {
-            this.cmsInstance = null;
-            this.cmsContainerRef.remove();
-        }
-        if (this.cateoryFooterInstance) {
-            this.cateoryFooterInstance = null;
-            this.cateoryFooterContainerRef.remove();
-        }
-    }
-
     getUrlPathName(url) {
         const originSlash = /^https?:\/\/[^/]+\//i;
         return url.replace(originSlash, '');
@@ -881,10 +709,6 @@ export class CategoryComponent {
             "productCategoryL3": taxo3
         } 
         this._analytics.sendAdobeCall({ page,custData,order }, "genericClick");
-    }
-
-    ngOnDestroy() {
-        this.resetLazyComponents();
     }
 }
 

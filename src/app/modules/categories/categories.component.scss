@@ -47,3 +47,16 @@
     }
 }
 
+
+// new category block
+.category-block-container{
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 15px 0 0;
+    flex-wrap: wrap;
+    .category-inner-block{
+        width: 48%;
+        margin-bottom: 8px;
+    }
+}
+

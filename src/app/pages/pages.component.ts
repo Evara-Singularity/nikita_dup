@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ComponentFactoryResolver,
   EventEmitter,
@@ -27,7 +28,7 @@ declare var dataLayer;
   styleUrls: ["./pages.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
-export class PagesComponent implements OnInit {
+export class PagesComponent implements OnInit,AfterViewInit {
   isServer: boolean = false;
   isBrowser: boolean = false;
   iData: {
@@ -62,20 +63,6 @@ export class PagesComponent implements OnInit {
     this.isBrowser = _commonService.isBrowser;
     this.isMoglixAppInstalled();
 
-    this.eventNavigationStart = this._router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event) => {
-        if (this._aRoute.snapshot.fragment === "auth") {
-          console.log('function called');
-          this.openLoginPopUp().then(() => {
-            console.log('component created');
-          });
-        }
-      });
-
-      this._aRoute.snapshot.fragment === "auth" ? this.openLoginPopUp() : null;
-
-
     this.router.events.subscribe((res) => {
       this.createHeaderData(this._aRoute);
 
@@ -88,6 +75,26 @@ export class PagesComponent implements OnInit {
       }
     });
   }
+
+  ngAfterViewInit() {
+    this.navigationSubscription();
+  }
+
+  navigationSubscription() {
+    this.eventNavigationStart = this._router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        if (this._aRoute.snapshot.fragment === "auth") {
+          console.log('function called');
+          this.openLoginPopUp().then(() => {
+            console.log('component created');
+          });
+        }
+      });
+    this._aRoute.snapshot.fragment === "auth" ? this.openLoginPopUp() : null;
+  }
+
+
 
   async openLoginPopUp() {
     setTimeout( async () => {

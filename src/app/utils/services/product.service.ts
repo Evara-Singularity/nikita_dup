@@ -649,7 +649,6 @@ export class ProductService {
     }
 
     searchResponseToProductEntity(product: any) {
-        console.log("product --->>>", product)
         const partNumber =
             product["partNumber"] ||
             product["defaultPartNumber"] ||

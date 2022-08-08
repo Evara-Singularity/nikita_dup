@@ -254,11 +254,11 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateSkipNow() {
-        if(this.isNormalLogin)
-        this._localAuthService.handleBackURL(true);
-
-        if(this.isLoginPopup){
+        if (this.isLoginPopup) {
             this.removeAuthComponent$.emit();
+        }
+        else if (this.isNormalLogin) {
+            this._localAuthService.handleBackURL(true);
         }
     }
 

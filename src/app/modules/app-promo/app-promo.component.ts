@@ -24,7 +24,7 @@ export class AppPromoComponent implements OnInit {
   appStoreLink = "https://apps.apple.com/in/app/moglix-best-industrial-app/id1493763517";
   scrolledViewPort = 0;
   windowOldScroll = 0;
-  showPromo: boolean = false;
+  showPromo: boolean = true;
   listener;
  
 
@@ -64,7 +64,7 @@ export class AppPromoComponent implements OnInit {
   }
 
   attachScrollHandler() {
-    if (this._commonService.isBrowser && this.page == 'home') {
+    if (this._commonService.isBrowser && (this.page == 'home' || this.page == 'brand' || this.page == 'category' || this.page=='alp' || this.page=='search')) {
       this.windowOldScroll = window.pageYOffset;
       this.listener = this.renderer2.listen('window', 'scroll', (e) => {
         this.windowScrollHandler();

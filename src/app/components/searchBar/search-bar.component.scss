@@ -81,7 +81,7 @@
         }
 
         a {
-            color: $blue-link-color;
+            color: var(--blue);
             font-size: $extra-large-font;
         }
 
@@ -189,7 +189,7 @@ app-search-bar {
 .head-popup {
     padding: 1px 0;
     @extend %clear-fix;
-    background: $logo-color;
+    background: var(--primary);
     margin-bottom: 0px;
     .container {
         position: relative;
@@ -249,7 +249,7 @@ app-search-bar {
 }
 
 .search-strip.all-search {
-    background: $logo-color;
+    background: var(--primary);
 
     ::placeholder {
         color: #707070;
@@ -281,7 +281,7 @@ app-search-bar {
             width: 100%;
             border: 0;
             padding: 0 8px 0 40px;
-            background: $white;
+            background: var(--white);
             font-size: $large-font;
             color: $border-sec-color;
             @extend %border-radius;
@@ -294,7 +294,7 @@ app-search-bar {
             left: 10px;
             top: 20px;
             font-size: 18px;
-            color: $link-color;
+            color: var(--onyx-black);
             z-index: 15;
         }
     }

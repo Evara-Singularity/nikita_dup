@@ -138,7 +138,7 @@
         margin: 0 6px 0 0;
     }
     .discount {
-        color: $green-color;
+        color: var(--slimy-green);
         font-weight: bold;
     }
 }
@@ -185,7 +185,7 @@
     .innerBrandSection {
         box-shadow: 0px 3px 6px #0000001a;
         border-radius: 4px;
-        background: $white;
+        background: var(--white);
         padding: 15px 30px;
         margin: 0px 15px;
     }
@@ -299,7 +299,7 @@
                 }
                 .safetysh_discount {
                     display: block;
-                    color: $green-color;
+                    color: var(--slimy-green);
                     font-size: $medium-font;
                     font-weight: 500;
                     margin-bottom: 1px;
@@ -321,8 +321,8 @@
         }
     }
     .viewallbs {
-        color: $logo-color;
-        border: 1px solid $logo-color;
+        color: var(--primary);
+        border: 1px solid var(--primary);
         border-radius: 2px;
         text-transform: uppercase;
         font-size: 10px;

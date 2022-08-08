@@ -58,7 +58,7 @@
               border: $border-radius-2 solid var(--primary);
               border-top-right-radius: $border-radius-8;
               border-bottom-right-radius: $border-radius-8;
-              color: $white;
+              color: var(--white);
               font-weight: $font-bold;
               display: flex;
               align-items: center;

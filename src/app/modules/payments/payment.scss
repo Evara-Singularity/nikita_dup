@@ -26,7 +26,7 @@
         padding: 15px 0;
         margin: 0;
         @extend %box-shadow;
-        background: $white;
+        background: var(--white);
     }
 }
 

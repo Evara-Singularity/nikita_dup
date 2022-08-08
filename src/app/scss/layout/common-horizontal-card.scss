@@ -62,7 +62,7 @@
     line-height: $extra-large-line-height;
     i {
         font-size: $extra-large-2-font;
-        color: $logo-color;
+        color: var(--primary);
         vertical-align: middle;
     }
 }

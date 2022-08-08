@@ -5,7 +5,7 @@
 
 
 .invoice-container {
-    background: $white;
+    background: var(--white);
     padding: 15px;
     margin-top: 10px;
     @extend %cards;
@@ -104,7 +104,7 @@
     display: block;
     margin-top: 10px;
     .small-btn {
-        color: $btn-color-red;
+        color: var(--primary);
         width: 42%;
         padding: 5px;
         margin-right: 15px;
@@ -114,11 +114,11 @@
         font-weight: bold;
     }
     .edit {
-        background: $color-red-light;
-        color: $btn-color-red;
+        background: var(--misty-rose);
+        color: var(--primary);
     }
     .delete {
-        background: $btn-color-red;
+        background: var(--primary);
         color: #fff;
     }
 }

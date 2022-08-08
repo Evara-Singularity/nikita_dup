@@ -7,7 +7,7 @@
         width: calc($fullwidth - 25px);
 
         a {
-            color: $blue-link-color;
+            color: var(--blue);
         }
     }
 }

@@ -1,6 +1,6 @@
 @import '../../scss/variables';
 .category-container {
-    background: $white;
+    background: var(--white);
     .breadcrumbs {
         padding: 15px;
         display: block;

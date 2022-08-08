@@ -10,7 +10,7 @@
 }
 span.lowsuccessRate {
     font-size: $small-font;
-    color: $logo-color;
+    color: var(--primary);
     display: block;
 }
 .other-banks-strip{

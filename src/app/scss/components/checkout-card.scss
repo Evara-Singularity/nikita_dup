@@ -126,7 +126,7 @@
             }
             i {
                 font-size: 8px;
-                color: $blue-link-color;
+                color: var(--blue);
                 margin-left: 10px;
                 float: left;
                 &::before {
@@ -172,7 +172,7 @@
                     float: right;
                 }
                 &.green-txt {
-                    color: $green-color;
+                    color: var(--slimy-green);
                     font-weight: 600;
                 }
                 &.bold-txt {
@@ -194,7 +194,7 @@
             font-size: $large-font;
             font-weight: 500;
             padding: 15px 0;
-            color: $blue-link-color;
+            color: var(--blue);
             i {
                 margin-left: 10px;
             }
@@ -227,7 +227,7 @@
                         }
                     }
                     .green-txt {
-                        color: $green-color;
+                        color: var(--slimy-green);
                     }
                     &.selected {
                         background: #fff3ed;

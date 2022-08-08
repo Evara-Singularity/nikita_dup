@@ -2,7 +2,7 @@
 @import './utils/colors';
 
 .reviewSection {
-    background: $white;
+    background: var(--white);
     padding-top: 5px;
     .rating-sec {
         padding-bottom: 20px !important;
@@ -71,7 +71,7 @@
     .reviewRow {
         padding: 0px 15px; 
         .heading-3-txt {
-            color: $txt-color;
+            color: var(--onyx-black);
             font-size: 13px;
             padding: 10px 0 5px;
         }

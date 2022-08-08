@@ -11,7 +11,7 @@
         background: none;
         margin: 0px;
         .titleError {
-            color: $txt-color;
+            color: var(--onyx-black);
             padding: 10px 15px 5px 10px;
             font-size: $large-font;
         }
@@ -37,7 +37,7 @@
     .prod-name {
         float: left;
         width: calc(100% - 100px);
-        color: $txt-color;
+        color: var(--onyx-black);
         font-weight: 400;
         margin-top: 1px;
     }
@@ -47,7 +47,7 @@
 }
 
 .view-btn {
-    background: $white;
+    background: var(--white);
     padding: 5px 8px;
     display: inline-block;
     font-size: $medium-font;

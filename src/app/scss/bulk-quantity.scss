@@ -160,9 +160,9 @@
             }
 
             &.selected {
-                border: 0.5px solid $btn-color-red;
-                border: 0.5px solid $btn-color-red;
-                background: $color-red-light;
+                border: 0.5px solid var(--primary);
+                border: 0.5px solid var(--primary);
+                background: var(--misty-rose);
             }
         }
     }
@@ -193,8 +193,8 @@
             letter-spacing: 0.5px;
         }
         &.selected {
-            border: 1px solid $btn-color-red;
-            background: $color-red-light;
+            border: 1px solid var(--primary);
+            background: var(--misty-rose);
         }
     }
     .bulk-block-multi-grp {

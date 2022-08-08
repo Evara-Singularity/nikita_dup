@@ -88,7 +88,7 @@ textarea {
                 left: 0;
                 font-size: $large-font;
                 top: 20px;
-                color: $disabled;
+                color: var(--silver);
                 @extend %transition;
             }
 
@@ -119,7 +119,7 @@ textarea {
                 top: 24px;
                 font-size: $medium-font;
                 font-weight: 500;
-                color: $blue-link-color;
+                color: var(--blue);
                 cursor: pointer;
 
                 &.verified {
@@ -202,7 +202,7 @@ textarea {
                 left: 10px;
                 font-size: $large-font;
                 top: 12px;
-                color: $disabled;
+                color: var(--silver);
                 @extend %transition;
                 .error-txt {
                     margin-left: 10px !important;
@@ -213,7 +213,7 @@ textarea {
                 right: 10px;
                 font-size: $large-font;
                 top: 12px;
-                color: $disabled;
+                color: var(--silver);
             }
             .active-password-icon {
                 color: #303030;
@@ -247,7 +247,7 @@ textarea {
                 top: 24px;
                 font-size: $medium-font;
                 font-weight: 500;
-                color: $blue-link-color;
+                color: var(--blue);
                 cursor: pointer;
 
                 &.verified {
@@ -339,7 +339,7 @@ textarea {
         left: 0;
         font-size: $large-font;
         top: 20px;
-        color: $disabled;
+        color: var(--silver);
         @extend %transition;
     }
 

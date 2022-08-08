@@ -22,7 +22,7 @@
         top: 50%;
         left: 7.5%;
         width: 85%;
-        background: $white;
+        background: var(--white);
         z-index: 12;
         font-size: $large-font;
         @extend %border-radius;

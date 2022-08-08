@@ -31,7 +31,7 @@
         }
     }
     .payment-notification {
-        color: $logo-color;
+        color: var(--primary);
         background: #FFEDEE;
         padding: 6px 10px;
         font-size: $small-font;

@@ -24,7 +24,7 @@
     width: 100%;
     box-shadow: 0px 12px 16px #455B631A;
     border-top: 1px solid var(--ghost-white);
-    background: $white;
+    background: var(--white);
     @extend %box-shadow;
     &.translateHeader {
         transform: translateY(60px);
@@ -78,7 +78,7 @@
 
 .filter_chips {
     padding: 20px 10px;
-    background: $white-color;
+    background: var(--white);
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;

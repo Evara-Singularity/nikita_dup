@@ -452,7 +452,7 @@
                         bottom: 0;
                         left: 0;
                         width: 100%;
-                        border-top: 1px solid $btn-color;
+                        border-top: 1px solid var(--orange-red);
                         background: $white;
 
                         li {
@@ -488,8 +488,8 @@
                     width: 100%;
                     text-align: center;
                     font-size: $large-font;
-                    border: 1px solid $btn-color;
-                    color: $btn-color;
+                    border: 1px solid var(--orange-red);
+                    color: var(--orange-red);
                     display: block;
                     padding: 8px 0;
                     margin-top: 10px;
@@ -497,12 +497,12 @@
 
                 &.selected {
                     .btn-cart {
-                        background: $btn-color;
+                        background: var(--orange-red);
                         color: $white;
                     }
 
                     .product-box {
-                        border-color: $btn-color;
+                        border-color: var(--orange-red);
                     }
                 }
             }

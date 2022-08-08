@@ -1,7 +1,7 @@
 @import './../../scss/variables';
 
 #subcCategoryTop {
-  background: $white;
+  background: var(--white);
   border-radius: $border-radius-8;
 
   li {

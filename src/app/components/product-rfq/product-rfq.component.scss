@@ -167,7 +167,7 @@
         left: 0;
         right: 0;
         &.bg-red {
-            background: $logo-color;
+            background: var(--primary);
         }
     }
 }

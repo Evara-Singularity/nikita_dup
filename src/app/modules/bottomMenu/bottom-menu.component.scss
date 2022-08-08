@@ -40,7 +40,7 @@
     .rfq_header_text {
         margin-left: 15px;
         h3 {
-            color: $btn-color-red;
+            color: var(--primary);
             font-size: $large-font;
             padding: 5px 0px;
         }

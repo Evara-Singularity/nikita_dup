@@ -3,7 +3,7 @@
 
 .payment-notification {
     span {
-        color: $logo-color;
+        color: var(--primary);
         background: #FFEDEE;
         padding: 6px 10px;
         font-size: $small-font;
@@ -40,7 +40,7 @@
         }
         span.lowsuccessRate {
             font-size: $small-font;
-            color: $logo-color;
+            color: var(--primary);
             display: block;
         }
     }

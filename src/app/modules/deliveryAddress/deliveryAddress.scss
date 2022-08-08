@@ -12,7 +12,7 @@
     h4 {
         float: left;
         font-weight: 500;
-        color: $txt-color;
+        color: var(--onyx-black);
         font-size: $medium-font;
         font-weight: bold;
         i {
@@ -66,7 +66,7 @@
     float: right;
     font-size: 16px;
     font-weight: 600;
-    color: $blue-link-color;
+    color: var(--blue);
 }
 
 .add-address-substrip {
@@ -78,9 +78,9 @@
 // .addAddressPopup{
 //     background: #fff !important;;
 //     .head-sec{
-//       background:$logo-color !important;
+//       background:var(--primary) !important;
 //       i{
-//         color:$white
+//         color:var(--white)
 //       }
 //     }
 //   }
@@ -93,7 +93,7 @@
             padding: 12px 0;
             margin: 0;
             @extend %box-shadow;
-            background: $white;
+            background: var(--white);
             i {
                 font-size: 20px;
                 line-height: 24px;

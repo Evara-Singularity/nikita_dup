@@ -17,7 +17,7 @@
     }
     .head {
         padding: 15px;
-        background: $white;
+        background: var(--white);
         box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
         text-align: center;
     }
@@ -75,7 +75,7 @@
         line-height: 40px;
         margin: 20px auto 0 auto;
         &:disabled {
-            color: $disabled;
+            color: var(--silver);
         }
     }
     .skip-btn {

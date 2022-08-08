@@ -41,7 +41,7 @@
                 font-weight: 400;
                 line-height: 16px;
                 padding: 0;
-                color: $blue-link-color;
+                color: var(--blue);
             }
             .prod_block {
                 position: relative;
@@ -61,7 +61,7 @@
                 position: absolute;
                 top: 24px!important;
                 right: 0;
-                color: $green-color;
+                color: var(--slimy-green);
             }
             h5 {
                 font-weight: 600;

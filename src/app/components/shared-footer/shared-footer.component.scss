@@ -22,7 +22,7 @@
             font-size: 32px;
             margin-right: 10px;
             display: block;
-            color: $logo-color !important;
+            color: var(--primary) !important;
         }
         &:last-child {
             a {

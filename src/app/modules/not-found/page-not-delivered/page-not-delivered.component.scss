@@ -1,6 +1,6 @@
 @import '../../../scss/variables';
 .page-not-found {
-    background: $white;
+    background: var(--white);
     img {
         margin: 50px 0 30px 0;
     }

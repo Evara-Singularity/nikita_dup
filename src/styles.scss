@@ -46,7 +46,7 @@ ul {
     margin:0px;
 }
 a {
-    color: $link-color;
+    color: var(--onyx-black);
     text-decoration: none;
 }
 .promo-code {
@@ -64,13 +64,13 @@ a {
 
     button {
         float: left;
-        border: 1px solid $logo-color;
+        border: 1px solid var(--primary);
         height: 40px;
         width: 115px;
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
-        background: $logo-color;
-        color: $white;
+        background: var(--primary);
+        color: var(--white);
         font-size: $large-font;
         font-weight: 600;
     }

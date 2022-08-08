@@ -44,7 +44,7 @@
                 float: right;
                 font-weight: 600;
                 font-size: $medium-font;
-                color: $blue-link-color;
+                color: var(--blue);
                 margin-top: 5px;
                 &.grayLabel {
                     color: #999;
@@ -142,7 +142,7 @@
         right: 0;
         font-size: $large-font;
         background: #fff;
-        color: $blue-link-color;
+        color: var(--blue);
     }
 }
 .cta-row{

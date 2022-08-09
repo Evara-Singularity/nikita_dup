@@ -1,3 +1,4 @@
+import { cartSession } from './../../utils/models/cart.initial';
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -10,17 +11,17 @@ import { InitiateQuickCod } from '@app/utils/models/cart.initial';
 
 export const PaymentMode =
 {
-	"COD": "pay-initiated:cash on delivery",
-	"CC": "pay-initiated:credit card",
-	"DC": "pay-initiated:debit card",
-	"EMI": "pay-initiated:emi",
-	"NEFT": "pay-initiated:neft-rtgs",
-	"NB": "pay-initiated:net banking",
-	"PAYTM": "pay-initiated:paytm-upi",
-	"card_mode": "pay-initiated:saved card",
-	"TEZ": "pay-initiated:upi",
-	"UPT": "pay-initiated:upi",
-	"WALLET": "pay-initiated:wallet"
+	"CC": CONSTANTS.GLOBAL.creditDebitCard,
+	"DC": CONSTANTS.GLOBAL.creditDebitCard,
+	"NB": CONSTANTS.GLOBAL.netBanking,
+	"WALLET": CONSTANTS.GLOBAL.wallet,
+	"EMI": CONSTANTS.GLOBAL.emi,
+	"COD": CONSTANTS.GLOBAL.cashOnDelivery,
+	"NEFT": CONSTANTS.GLOBAL.neftRtgs,
+	"card_mode": CONSTANTS.GLOBAL.savedCard,
+	"TEZ": CONSTANTS.GLOBAL.upi,
+	"UPT": CONSTANTS.GLOBAL.upi,
+	"PAYTM": CONSTANTS.GLOBAL.paytmUpi,
 }
 
 @Component({
@@ -40,7 +41,6 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	@Input("orderId") orderId = null;
 	@Input("shoppingCartDto") shoppingCartDto = {};
 	@Output("emitQuickoutCloseEvent$") emitQuickoutCloseEvent$: EventEmitter<boolean> = new EventEmitter<boolean>();
-	isLastPaymentIsCod: boolean = false;
 
 	hasCartItems = true;
 	verifyUnserviceableFromCartSubscription = false;//to restrict the verification of unserviceable items on every cart subscription.
@@ -65,11 +65,9 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 
 	ngAfterViewInit()
 	{
-		this.isLastPaymentIsCod = (this.shoppingCartDto['payment']['type'] === "COD");
 		this.isBuyNow = this.shoppingCartDto['cart']['buyNow'] || false;
 	}
 
-	//move to shared-transaction
 	reHydrateAddresses(shoppingCartDto)
 	{
 		this._retryPaymentService.reHydrateAddresses(shoppingCartDto).subscribe(({ shippingAddress, billingAddress, invoiceType }) =>
@@ -81,7 +79,6 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 		});
 	}
 
-	//parentid=orderid
 	reHydrateCartSession(shoppingCartDto)
 	{
 		this._retryPaymentService.reHydrateCartSession(shoppingCartDto).subscribe((cartSession) =>
@@ -114,11 +111,15 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 
 	payWithLastDetails()
 	{
-		//canCode & isLastPaymentIsCode.
-		//ODP-1866:set last payment mode to in payment page;
 		this._loaderService.setLoaderState(true);
-		this._cartService.lastPaymentMode = this.shoppingCartDto['payment']['type'];
-		this._cartService.lastPaymentId = this.shoppingCartDto['payment']['paymentMethodId'];
+		const lastPaymentMode = this.shoppingCartDto['payment']['type'];
+		this._cartService.lastPaymentMode = lastPaymentMode;
+		this._cartService.lastPaymentNumber = PaymentMode[lastPaymentMode];
+		this._cartService.lastParentOrderId = this.shoppingCartDto['cart']['parentOrderId'];;
+		this._cartService.invoiceType = this.invoiceType;
+		this._cartService.shippingAddress = this.shippingAddress;
+		this._cartService.billingAddress = this.billingAddress;
+		this._cartService.setGenericCartSession(this.cartSession);
 		this._retryPaymentService.validateCart(this.cartSession, this.shippingAddress, this.billingAddress, this.invoiceType, this.isBuyNow).subscribe((response) =>
 		{
 			this._loaderService.setLoaderState(false);

@@ -1,28 +1,28 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
-import { ENDPOINTS } from '@app/config/endpoints';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { forkJoin, of } from 'rxjs';
-import { catchError, concatMap, map } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 import { InitiateQuickCod, ValidateDto } from './../models/cart.initial';
 import { CartUtils } from './cart-utils';
-import { DataService } from './data.service';
 import { GlobalLoaderService } from './global-loader.service';
+import { UrlsService } from './urls.service';
 
 @Injectable({ providedIn: 'root' })
 export class QuickCodService
 {
   codMessages: string[] = [];
+  initiateQuickCod: InitiateQuickCod = null;
 
-  constructor(private _dataService: DataService, private _localStorageService: LocalStorageService, private _loaderService: GlobalLoaderService,
-    private _toastService: ToastMessageService, private _router: Router, private _cartService: CartService) { }
+  constructor(private _localStorageService: LocalStorageService, private _loaderService: GlobalLoaderService,
+    private _toastService: ToastMessageService, private _router: Router, private _cartService: CartService, private _urlsService: UrlsService) { }
 
   initiateQuickCOD(initiateQuickCod: InitiateQuickCod)
   {
+    this.initiateQuickCod = initiateQuickCod;
     const validateDtoRequest: ValidateDto = {
       cartSession: initiateQuickCod.cartSession,
       shippingAddress: initiateQuickCod.shippingAddress,
@@ -31,7 +31,7 @@ export class QuickCodService
       isBuyNow: initiateQuickCod.isBuyNow
     }
     const validateDto = CartUtils.getValidateDto(validateDtoRequest);
-    this.quickCODPayment(validateDto, initiateQuickCod.postCode, initiateQuickCod.userId)
+    this.quickCODPayment(validateDto['shoppingCartDto'], initiateQuickCod.postCode, initiateQuickCod.userId)
   }
 
   quickCODPayment(shoppingCartDto, postCode, userId)
@@ -65,7 +65,7 @@ export class QuickCodService
       }),
       concatMap((transactionID) =>
       {
-        return this.shoppingCartToPayment(shoppingCartDto, transactionID)
+        return this.payAsCod(transactionID);
       })
     ).subscribe((result) =>
     {
@@ -97,9 +97,8 @@ export class QuickCodService
   verifyServiceabilityAndCOD(items: any[], postCode)
   {
     const result = { isNonServiceable: false, isNonCod: false };
-    const MSNS = items.map(item => item.productId);
-    const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.VALIDATE_PRODUCT_SER}`;
-    return this._dataService.callRestful("POST", URL, { body: { productId: MSNS, toPincode: postCode } }).pipe(
+    const msns = items.map(item => item.productId);
+    return this._urlsService.getServiceability(msns, postCode).pipe(
       map((response) =>
       {
         if (response['status']) {
@@ -110,51 +109,40 @@ export class QuickCodService
           }
         }
         return result
-      }),
-      catchError((error: HttpErrorResponse) => { return of(result); })
+      })
     );
   }
 
   getPaymentId(userId)
   {
-    if (!userId) { return of(null) }
-    const url = `${CONSTANTS.NEW_MOGLIX_API}/payment/getPaymentId`;
-    return this._dataService.callRestful('GET', url, { params: { userId: userId } }).pipe(
+    return this._urlsService.getTransactionId(userId).pipe(
       map((response) =>
       {
         const data = response['data'] || null;
         if (data && data['transactionId']) return data['transactionId'];
         return null;
-      }),
-      catchError((e) => of(null))
+      })
     );
   }
 
-  shoppingCartToPayment(shoppingCartDto, transactionID)
+  payAsCod(transactionId)
   {
-    if (!transactionID) { return of({ status: false }) }
-    shoppingCartDto['deliveryMethod'] = { deliveryMethodId: 77, type: "kjhlh", };
-    delete shoppingCartDto['noOfItems'];
-    delete shoppingCartDto['userInfo'];
-    delete shoppingCartDto['description'];
-    const cart_keys = ["customeruuid", "totalAmountWithTaxes", "noCostEmiDiscount", "countryCode"];
-    const payment_keys = ["id", "cartId", "createdAt", "updatedAt", "emiFlag", "bankName", "bankEmi", "gateway"];
-    cart_keys.forEach((key) => delete shoppingCartDto['cart'][key]);
-    payment_keys.forEach((key) => delete shoppingCartDto['payment'][key]);
-    (shoppingCartDto['addressList'] as any[]).forEach((address) =>
-    {
-      delete address['id'];
-      delete address['cartId'];
-      delete address['createdAt'];
-      delete address['updatedAt'];
-    })
+    const invoiceType = this.initiateQuickCod.invoiceType;
+    const cartSession = this.initiateQuickCod.cartSession;
+    const shippingAddress = this.initiateQuickCod.shippingAddress;
+    const billingAddress = this.initiateQuickCod.billingAddress;
+    const userId = this.initiateQuickCod.userId;
+    let extra = { 'mode': 'COD', 'paymentId': 13, addressList: shippingAddress };
     let request = {
-      "mode": "COD",
-      "paymentId": 13,
-      "platformCode": "online",
-      "requestParams": null,
-      "transactionId": transactionID,
-      "validatorRequest": { shoppingCartDto: shoppingCartDto }
+      'transactionId': transactionId,
+      'platformCode': 'online',
+      'mode': extra.mode,
+      'paymentId': extra.paymentId,
+      'requestParams': null,
+      'validatorRequest': CartUtils.getPayableRequest(cartSession, billingAddress, userId, invoiceType, extra)
+    };
+    if (invoiceType === 'tax') {
+      request['paymentGateway'] = 'razorpay'
     }
     return this._cartService.pay(request)
   }

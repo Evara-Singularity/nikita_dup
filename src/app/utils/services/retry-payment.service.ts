@@ -35,6 +35,8 @@ export class RetryPaymentService
     return this._urlsService.getCartSession(cart['sessionId'], buyNow).pipe(
       concatMap((cartSession) => 
       {
+        //TODO:why items list is not coming from sessionId
+        cartSession['itemsList'] = shoppingCartDto['itemsList'];
         const newCartSession = this.updateCartSessionWithPromo(cartSession, offerId);
         return newCartSession;
       }),
@@ -81,9 +83,10 @@ export class RetryPaymentService
       {
         if (response['status']) {
           cartSession['cart']['shippingCharges'] = response['data']['totalShippingAmount'];
-          if (response['data']['totalShippingAmount']) {
-            for (let item of cartSession['itemsList']) {
-              item['shippingCharges'] = response['data']['itemShippingAmount'][item['productId']];
+          if (response['data']['totalShippingAmount'] !== undefined && response['data']['totalShippingAmount'] !== null) {
+            let itemsList = cartSession['itemsList'];
+            for (let i = 0; i < itemsList.length; i++) {
+              cartSession['itemsList'][i]['shippingCharges'] = response['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
             }
           }
         }
@@ -114,13 +117,13 @@ export class RetryPaymentService
       invoiceType: invoiceType,
       isBuyNow: isBuyNow
     }
-    const shoppingCartDto = CartUtils.getValidateDto(validateDto);
-    return this.validateCartBeforePayment(shoppingCartDto)
+    const validatedDto = CartUtils.getValidateDto(validateDto);
+    return this.validateCartBeforePayment(validatedDto)
   }
 
-  validateCartBeforePayment(validateDto)
+  validateCartBeforePayment(validatedDto)
   {
-    const userId = validateDto['cart']['userId'];
+    const userId = validatedDto["shoppingCartDto"]['cart']['userId'];
     return this._urlsService.getBusinessDetail(userId).pipe(
       map((res: any) => res),
       mergeMap((response) =>
@@ -132,8 +135,8 @@ export class RetryPaymentService
             company: data["companyName"], gstin: data["gstin"], is_gstin: data["isGstInvoice"],
           };
         }
-        validateDto["shoppingCartDto"]["businessDetails"] = bd;
-        return this._urlsService.validateDto(validateDto)
+        validatedDto["shoppingCartDto"]["businessDetails"] = bd;
+        return this._urlsService.validateDto(validatedDto);
       })
     );
   }

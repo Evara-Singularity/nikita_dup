@@ -1,8 +1,10 @@
+import CONSTANTS from "@app/config/constants";
 import { ValidateDto } from "../models/cart.initial";
 
 export class CartUtils
 {
-    //dont ever write constructor in this to inject
+    //dont ever write constructor in this to inject any service.
+    //this should plane function which takes input returns desired formatted value.
     static generateGenericCartSession(cartSessionFromAPI)
     {
         const modifiedCartSessionObject = {
@@ -112,6 +114,118 @@ export class CartUtils
             })
         }
         return returnValue
+    }
+
+    static getPayableRequest(cartSession, billingAddress, userId, invoiceType, extra, parentOrderId?)
+    {
+        const cart = cartSession["cart"];
+        const cartItems = cartSession["itemsList"];
+        const offersList = Object.assign([], cartSession["offersList"]);;
+        if (offersList != undefined && offersList.length > 0) {
+            for (let key in offersList) {
+                delete offersList[key]["createdAt"];
+                delete offersList[key]["updatedAt"];
+            }
+        }
+        let returnValue = {
+            shoppingCartDto: {
+                cart: {
+                    cartId: cart["cartId"],
+                    sessionId: cart["sessionId"],
+                    userId: userId,
+                    agentId: cart["agentId"] ? cart["agentId"] : null,
+                    isPersistant: true,
+                    createdAt: null,
+                    updatedAt: null,
+                    closedAt: null,
+                    orderId: null,
+                    totalAmount: cart["totalAmount"] == null ? 0 : cart["totalAmount"],
+                    totalOffer: cart["totalOffer"] == null ? 0 : cart["totalOffer"],
+                    totalAmountWithOffer: cart["totalAmountWithOffer"] == null ? 0 : cart["totalAmountWithOffer"],
+                    taxes: cart["taxes"] == null ? 0 : cart["taxes"],
+                    totalAmountWithTaxes: cart["totalAmountWithTax"],
+                    shippingCharges: cart["shippingCharges"] == null ? 0 : cart["shippingCharges"],
+                    currency: cart["currency"] == null ? "INR" : cart["currency"],
+                    isGift: cart["gift"] == null ? false : cart["gift"],
+                    giftMessage: cart["giftMessage"],
+                    giftPackingCharges: cart["giftPackingCharges"] == null ? 0 : cart["giftPackingCharges"],
+                    totalPayableAmount: cart["totalAmount"] == null ? 0 : cart["totalAmount"],
+                    noCostEmiDiscount: extra.noCostEmiDiscount == 0 ? 0 : extra.noCostEmiDiscount,
+                },
+                itemsList: CartUtils.getItemsList(cartItems),
+                addressList: [{
+                    addressId: extra.addressList.idAddress,
+                    type: "shipping",
+                    invoiceType: invoiceType,
+                }],
+                payment: {
+                    paymentMethodId: extra.paymentId,
+                    type: extra.mode,
+                    bankName: extra.bankname,
+                    bankEmi: extra.bankcode,
+                    emiFlag: extra.emitenure,
+                    gateway: extra.gateway,
+                },
+                deliveryMethod: {
+                    deliveryMethodId: 77,
+                    type: "kjhlh",
+                },
+                offersList: offersList != undefined && offersList.length > 0 ? offersList : null,
+                extraOffer: cartSession["extraOffer"] ? cartSession["extraOffer"] : null,
+                device: CONSTANTS.DEVICE.device,
+            },
+        };
+        if (cart["buyNow"]) {
+            returnValue["shoppingCartDto"]["cart"]["buyNow"] = cart["buyNow"];
+        }
+        if (billingAddress !== undefined && billingAddress !== null) {
+            returnValue.shoppingCartDto.addressList.push({
+                addressId: billingAddress['idAddress'],
+                type: "billing",
+                invoiceType: invoiceType,
+            });
+        }
+        if (parentOrderId) {
+            cart["parentOrderId"] = parentOrderId;
+        }
+        return returnValue;
+    }
+
+    static getItemsList(cartItems)
+    {
+        let itemsList = [];
+        if (cartItems != undefined && cartItems != null && cartItems.length > 0) {
+            for (let i = 0; i < cartItems.length; i++) {
+                let item = {
+                    productId: cartItems[i]["productId"],
+                    productName: cartItems[i]["productName"],
+                    brandName: cartItems[i]["brandName"],
+                    productImg: cartItems[i]["productImg"],
+                    amount: cartItems[i]["amount"],
+                    offer: cartItems[i]["offer"],
+                    amountWithOffer: cartItems[i]["amountWithOffer"],
+                    taxes: cartItems[i]["taxes"],
+                    amountWithTaxes: cartItems[i]["amountWithTaxes"],
+                    totalPayableAmount: cartItems[i]["totalPayableAmount"],
+                    isPersistant: true,
+                    productQuantity: cartItems[i]["productQuantity"],
+                    productUnitPrice: cartItems[i]["productUnitPrice"],
+                    expireAt: cartItems[i]["expireAt"],
+                    bulkPriceMap: cartItems[i]["bulkPriceMap"],
+                    bulkPrice: cartItems[i]["bulkPrice"],
+                    priceWithoutTax: cartItems[i]["priceWithoutTax"],
+                    bulkPriceWithoutTax: cartItems[i]["bulkPriceWithoutTax"],
+                    taxPercentage: cartItems[i]["taxPercentage"],
+                    categoryCode: cartItems[i]["categoryCode"],
+                    taxonomyCode: cartItems[i]["taxonomyCode"],
+                };
+                if (cartItems[i]["buyNow"]) {
+                    item["buyNow"] = true;
+                }
+                itemsList.push(item);
+            }
+        }
+        return itemsList;
     }
 
     static getTwoDecimalValue(a) { return Math.floor(a * 100) / 100; }

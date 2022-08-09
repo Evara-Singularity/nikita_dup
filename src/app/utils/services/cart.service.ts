@@ -51,7 +51,8 @@ export class CartService
     private _shippingAddress: Address;
     private _invoiceType: 'retail' | 'tax' = this.INVOICE_TYPE_RETAIL;
     private _lastPaymentMode = null;
-    private _lastPaymentId = null;
+    private _lastPaymentNumber = null;
+    private _lastParentOrderId = null;
 
     // vars used in revamped cart login 
     private _buyNow;
@@ -94,9 +95,13 @@ export class CartService
 
     get lastPaymentMode() { return this._lastPaymentMode; }
 
-    set lastPaymentId(id: string) { this._lastPaymentId = id; }
+    set lastPaymentNumber(id: number) { this._lastPaymentNumber = id; }
 
-    get lastPaymentId() { return this._lastPaymentId; }
+    get lastPaymentNumber() { return this._lastPaymentNumber; }
+
+    set lastParentOrderId(id: number) { this._lastParentOrderId = id; }
+
+    get lastParentOrderId() { return this._lastParentOrderId; }
 
     get getPreviousUrl() { return this.previousUrl; }
 
@@ -408,6 +413,10 @@ export class CartService
                 type: "billing",
                 invoiceType: this.invoiceType,
             });
+        }
+        if(this.lastParentOrderId)
+        {
+            cart['lastParentOrderId'] = this.lastParentOrderId
         }
         return obj;
     }

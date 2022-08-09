@@ -20,8 +20,10 @@ export class UrlsService
     readonly VALIDATE_PROMOCODE_URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CART.validatePromoCode}`;
     //address
     readonly ADDRESS_LIST_URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_ADD_LIST}`;
+    readonly SERVICEABILITY_URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_ADD_LIST}`;
     //payment
     readonly RETRY_PAYMENT_URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAYMENT_DETAILS}`;
+    readonly TRANSACTION_URL = `${CONSTANTS.NEW_MOGLIX_API}/payment/getPaymentId`;
 
 
     //dont inject anything apart from DataService
@@ -34,7 +36,7 @@ export class UrlsService
             catchError((error: HttpErrorResponse) => this.errorHandler(error))
         );
     }
-    
+
     //=======================================================END=================================================================//
 
     //promocode
@@ -82,12 +84,26 @@ export class UrlsService
         );
     }
 
+    getServiceability(msns: any[], postCode)
+    {
+        return this._dataService.callRestful("POST", this.SERVICEABILITY_URL, { body: { productId: msns, toPincode: postCode } }).pipe(
+            catchError((error: HttpErrorResponse) => this.errorHandler(error))
+        );
+    }
+
     //=======================================================END=================================================================//
 
     //payment
     getRetryPaymentByOrderId(orderId)
     {
         return this._dataService.callRestful("GET", this.RETRY_PAYMENT_URL, { params: { orderId: orderId } }).pipe(
+            catchError((error: HttpErrorResponse) => this.errorHandler(error))
+        );
+    }
+
+    getTransactionId(userId)
+    {
+        return this._dataService.callRestful('GET', this.TRANSACTION_URL, { params: { userId: userId } }).pipe(
             catchError((error: HttpErrorResponse) => this.errorHandler(error))
         );
     }

@@ -53,9 +53,6 @@ export class PaymentComponent implements OnInit {
     private _elementRef: ElementRef
   ) {
     this.isShowLoader = true;
-    if(this._cartService.lastPaymentMode && this._cartService.lastPaymentId){
-        this.getPaymentMode(this._cartService.lastPaymentMode, parseInt(this._cartService.lastPaymentId));
-    }
   }
 
   ngOnInit() {
@@ -79,7 +76,6 @@ export class PaymentComponent implements OnInit {
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
     this.getSavedCardData();
     this._cartService.clearCartNotfications();
-    //let paymentBlock = parseInt(this._cartService.lastPaymentMode);
   }
 
   private intialize() {
@@ -135,7 +131,7 @@ export class PaymentComponent implements OnInit {
         ) {
           this.savedCardsData = res["data"]["user_cards"];
           this.isSavedCardExist = true;
-          this.paymentBlock = this.globalConstants["savedCard"];
+          this.paymentBlock = this._cartService.lastPaymentNumber || this.globalConstants["savedCard"];
         }
         this.isShowLoader = false;
       });
@@ -320,8 +316,5 @@ export class PaymentComponent implements OnInit {
   //     return null;
   // }
 
-  getPaymentMode(type, id) {
-      let payment = this.paymentMode.filter(item => type === item.mode && id === item.id);
-      this.paymentBlock = this.globalConstants[payment[0].type];
-  }
+  
 }

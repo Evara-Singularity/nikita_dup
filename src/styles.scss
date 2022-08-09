@@ -52,7 +52,7 @@ a {
 .promo-code {
     input {
         float: left;
-        border: solid $border-sec-color;
+        border: solid var(--spanish-gray);
         border-width: 1px 0 1px 1px;
         height: 40px;
         border-top-left-radius: 2px;

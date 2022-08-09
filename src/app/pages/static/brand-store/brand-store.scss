@@ -43,7 +43,7 @@
           a{
             display:block;
             background:var(--primary);
-            border-radius:$border-radius;
+            border-radius:$border-radius-4;
             padding:10px 20px;
             color:var(--white);  
             font-size:$extra-large-font;
@@ -69,7 +69,7 @@
       span{
         &.letter{
           background:var(--primary);
-          border-radius:$border-radius;
+          border-radius:$border-radius-4;
           padding:5px 20px;  
           color:var(--white);
           font-weight:bold;

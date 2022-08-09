@@ -48,7 +48,7 @@
                 padding: 5px;
                 text-align: center;
                 height: 32px;
-                border: 1px solid $border-sec-color;
+                border: 1px solid var(--spanish-gray);
                 float: left;
                 margin: 0px 4px;
                 border-radius: 2px;
@@ -153,7 +153,7 @@
         }
     }
     .price-breakup {
-        background: $gray-color;
+        background: var(--platinum);
         padding: 10px 0;
         border: solid var(--ghost-white);
         border-width: 1px 0 0px 0;

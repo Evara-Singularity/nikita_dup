@@ -45,7 +45,7 @@ textarea {
             input,
             select {
                 width: 100%;
-                border: solid $border-sec-color;
+                border: solid var(--spanish-gray);
                 border-width: 0 0 1px 0;
                 height: 45px;
                 padding: 14px 25px 0 0;
@@ -59,7 +59,7 @@ textarea {
 
             textarea {
                 width: 100%;
-                border: solid $border-sec-color;
+                border: solid var(--spanish-gray);
                 border-width: 0 0 1px 0;
                 height: 65px;
                 padding: 14px 25px 0 0;
@@ -106,10 +106,10 @@ textarea {
 
             input:focus,
             textarea:focus {
-                border-color: $active-border-color;
+                border-color: var(--blue);
 
                 & + .label {
-                    color: $active-border-color;
+                    color: var(--blue);
                 }
             }
 
@@ -327,7 +327,7 @@ textarea {
 
     input {
         width: 100%;
-        border: solid $border-sec-color;
+        border: solid var(--spanish-gray);
         border-width: 0 0 1px 0;
         height: 45px;
         padding: 14px 25px 0 0;
@@ -350,10 +350,10 @@ textarea {
     }
 
     input:focus {
-        border-color: $active-border-color;
+        border-color: var(--blue);
 
         & + .label {
-            color: $active-border-color;
+            color: var(--blue);
         }
     }
 }

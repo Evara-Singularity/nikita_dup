@@ -15,10 +15,10 @@
     }
 
     .toggle-head {
-        border: solid $border-color;
+        border: solid var(--platinum);
         border-width: 1px 0 1px 0;
         padding: 15px 10px;
-        background: $gray-color;
+        background: var(--platinum);
         @extend %clear-fix;
 
         p {

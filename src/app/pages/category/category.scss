@@ -64,7 +64,7 @@
         .request-text {
             font-weight: bold;
             font-size: 16px;
-            color: $black;
+            color: var(--black);
             margin-top: 5px;
         }
     }
@@ -74,7 +74,7 @@
     &.list {
         li {
             width: 100%;
-            border-bottom: 1px solid $border-color;
+            border-bottom: 1px solid var(--platinum);
             a {
                 display: block;
             }
@@ -101,7 +101,7 @@
 //         }
 //     }
 //     .card-head {
-//         border-bottom: 1px solid $border-color;
+//         border-bottom: 1px solid var(--platinum);
 //     }
 // }
 .category-list{
@@ -395,7 +395,7 @@
         font-size: 12px;
         font-weight: normal;
         text-align: left;
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid var(--platinum);
         padding: 5px;
     }
 }

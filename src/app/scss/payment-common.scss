@@ -18,7 +18,7 @@
     .bank-list-item {
         display: flex;
         align-items: center;
-        border-bottom: 1px solid $border-grey;
+        border-bottom: 1px solid var(--platinum);
         padding: 10px 0px;
         &:last-child {
             border-bottom: none;

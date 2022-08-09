@@ -135,7 +135,7 @@ p {
     }
 }
 .emi-note-text {
-    color: $note-text;
+    color: var(--gray-web);
     font-size: $small-font;
     line-height: 18px;
     padding-bottom: 20px;

@@ -226,7 +226,7 @@
 
             i {
                 font-size: 8px;
-                color: $blue-link-color;
+                color: var(--blue);
                 margin-left: 10px;
                 float: left;
 
@@ -273,7 +273,7 @@
     }
 
     .price-breakup {
-        background: $gray-color;
+        background: var(--platinum);
         padding: 10px 0;
         border: solid var(--ghost-white);
         border-width: 1px 0 0px 0;
@@ -297,7 +297,7 @@
                 }
 
                 &.green-txt {
-                    color: $green-color;
+                    color: var(--slimy-green);
                     font-weight: 600;
                 }
 
@@ -323,7 +323,7 @@
             font-size: $large-font;
             font-weight: 500;
             padding: 15px 0;
-            color: $blue-link-color;
+            color: var(--blue);
 
             i {
                 margin-left: 10px;
@@ -365,7 +365,7 @@
                     }
 
                     .green-txt {
-                        color: $green-color;
+                        color: var(--slimy-green);
                     }
 
                     &.selected {
@@ -396,7 +396,7 @@
 .purchase-list {
     h4 {
         padding: 0 15px 15px 15px;
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid var(--platinum);
         font-size: $extra-large-font;
         margin-bottom: 10px;
     }
@@ -427,7 +427,7 @@
                     width: 150px;
                     height: 195px;
                     padding: 15px;
-                    border: 1px solid $border-sec-color;
+                    border: 1px solid var(--spanish-gray);
                     @extend %border-radius;
 
                     .img-box {
@@ -453,10 +453,10 @@
                         left: 0;
                         width: 100%;
                         border-top: 1px solid var(--orange-red);
-                        background: $white;
+                        background: var(--white);
 
                         li {
-                            border: 1px solid $border-sec-color;
+                            border: 1px solid var(--spanish-gray);
                             width: 28px;
                             height: 28px;
                             margin-right: 6.5px;
@@ -468,13 +468,13 @@
                             font-weight: 600;
 
                             &.selected {
-                                background: $txt-color;
-                                color: $white;
+                                background: var(--onyx-black);
+                                color: var(--white);
                             }
 
                             &.disabled {
-                                border-color: $disabled;
-                                color: $disabled;
+                                border-color: var(--silver);
+                                color: var(--silver);
                             }
 
                             &:nth-child(4n) {
@@ -498,7 +498,7 @@
                 &.selected {
                     .btn-cart {
                         background: var(--orange-red);
-                        color: $white;
+                        color: var(--white);
                     }
 
                     .product-box {
@@ -511,7 +511,7 @@
 }
 
 .remove-btn {
-    color: $blue-link-color;
+    color: var(--blue);
     font-weight: bold;
     font-size: 14px;
     padding-top: 10px;
@@ -572,7 +572,7 @@
     span {
         background: #ffedee;
         font-size: $medium-font;
-        color: $txt-color;
+        color: var(--onyx-black);
         line-height: 22px;
         padding: 10px 10px 30px 10px;
         display: block;

@@ -177,7 +177,7 @@
     margin-top: 10px;
     position: relative;
     @include placeholder {
-        color: $place-holder-color;
+        color: var(--silver);
         font-size: $extra-large-font;
     }
     .search-bar-input {

@@ -32,48 +32,6 @@ $font-bold: 600;
 $font-bolder: 700;
 $font-ultraBold: 900;
 
-//colors
-// $facebook-color: #3b5998;
-// $twitter-color: #55acee;
-// $google-color: #dd4b39;
-// $linkedin-color: #0177b5;
-// $github-color: #6b6b6b;
-// $stackoverflow-color: #2f96e8;
-// $dribble-color: #f26798;
-// $behace-color: #0093fa;
-$cart-errors-bg: #ffebe0;
-$body-color: #f2f2f2;
-// $logo-color: #d9232d;
-// $link-color: #303030;
-// $error-color: #d7222c;
-// $txt-color: #303030;
-// $default-text: $txt-color;
-$border-color: #e6e6e6;
-$border-sec-color: #2c2323;
-$border-grey: #d7d7d7;
-$note-text: #6f6f6f;
-$gray-color: #f6f6f6;
-$dark-gray-color: #9e9d9d;
-// var(--white)-color: #fff;
-$selected-color: #f5f8ff;
-$blue-link-color: #3875fd;
-// $green-color: #3b9e26;
-// $white: #ffffff;
-// $disabled: #bebebe;
-// $btn-color: #f2720f;
-// $btn-color-red: #d9232d;
-// $color-red-light: #fae0e1;
-$checkbox-overly: rgba(56, 117, 253, 0.1);
-$black: #000;
-$disable-txt: #b6b6b6;
-$place-holder-color: $disable-txt;
-$active-color: var(--blue);
-$active-border-color: var(--blue);
-$trackeryellow: #edce09;
-$yellow-txt: #fdb92c;
-$dark-green: #309615;
-$border-radius: 4px;
-$background-red: #dc1410;
 
 //width
 $fullwidth: 100%;
@@ -122,8 +80,6 @@ $extra-large-1-line-height: 30px;
 // payment-radio-card-width
 $payment-radio-card-width: 160px;
 
-/*gradient*/
-$light-gray-gradient: radial-gradient(circle, #ffffff, #fcfcfc, #e2e2e2);
 
 /*Extends*/
 %cards {
@@ -146,9 +102,6 @@ $border-radius-8: 8px;
 $border-radius-12: 12px;
 $border-radius-16: 16px;
 
-//grid variables
-$colmax: 12;
-$default-gap: 15px;
 /*Extends*/
 %view-all-strip {
   display: flex;

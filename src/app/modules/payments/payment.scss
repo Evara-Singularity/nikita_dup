@@ -174,7 +174,7 @@ label.payment-radio-btn {
 .note-section {
     padding: 15px 0px;
     p {
-        border-top: 1px solid $border-grey;
+        border-top: 1px solid var(--platinum);
         color: #606060;
         font-size: 13px;
         text-align: center;
@@ -190,7 +190,7 @@ label.payment-radio-btn {
     }
     label {
         padding: 20px 15px;
-        border-bottom: 1px solid $border-sec-color;
+        border-bottom: 1px solid var(--spanish-gray);
         &:last-child {
             border-bottom: 0;
         }

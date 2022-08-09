@@ -60,7 +60,7 @@
       .static-card-container {
         width: calc(100% - 50px);
         padding: 10px;
-        border-left: 1px solid $border-color;
+        border-left: 1px solid var(--platinum);
       }
     }
   }

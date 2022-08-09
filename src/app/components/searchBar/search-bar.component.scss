@@ -148,7 +148,7 @@ app-search-bar {
 
         form {
             @include placeholder {
-                color: $place-holder-color;
+                color: var(--silver);
                 font-size: $large-font;
             }
 
@@ -283,7 +283,7 @@ app-search-bar {
             padding: 0 8px 0 40px;
             background: var(--white);
             font-size: $large-font;
-            color: $border-sec-color;
+            color: var(--spanish-gray);
             @extend %border-radius;
             display: inline-block;
             vertical-align: middle;

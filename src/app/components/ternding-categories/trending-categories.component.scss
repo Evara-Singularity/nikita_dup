@@ -8,10 +8,10 @@
     padding: 0 0 0px 0;
     margin-bottom: 5px;
     .trending-categories {
-      border-top: 1px solid $border-color;
+      border-top: 1px solid var(--platinum);
       li {
-        border-bottom: 1px solid $border-color;
-        border-right: 1px solid $border-color;
+        border-bottom: 1px solid var(--platinum);
+        border-right: 1px solid var(--platinum);
         padding: 10px;
         text-align: center;
         min-height: 140px;

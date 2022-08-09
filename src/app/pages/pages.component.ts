@@ -1,19 +1,14 @@
 import {
-  AfterViewInit,
   Component,
   ComponentFactoryResolver,
-  EventEmitter,
   Injector,
   OnInit,
-  ViewChild,
-  ViewContainerRef,
   ViewEncapsulation,
 } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { LocalAuthService } from "../utils/services/auth.service";
 import { CartService } from "../utils/services/cart.service";
 import { CommonService } from "../utils/services/common.service";
-import { filter } from "rxjs/operators";
 import { DataService } from "@app/utils/services/data.service";
 import CONSTANTS from "@app/config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
@@ -28,7 +23,7 @@ declare var dataLayer;
   styleUrls: ["./pages.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
-export class PagesComponent implements OnInit,AfterViewInit {
+export class PagesComponent implements OnInit {
   isServer: boolean = false;
   isBrowser: boolean = false;
   iData: {
@@ -42,9 +37,6 @@ export class PagesComponent implements OnInit,AfterViewInit {
   eventNavigationStart: any;
   // @ViewChild('dynamicComponent', {static: true, read: ViewContainerRef}) container: ViewContainerRef;
   // ondemad loaded components for FAQ listing
-  authInstance = null;
-  @ViewChild("authPopUp", { read: ViewContainerRef })
-  authInstanceref: ViewContainerRef;
 
   constructor(
     public _commonService: CommonService,
@@ -76,62 +68,6 @@ export class PagesComponent implements OnInit,AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.navigationSubscription();
-    this._commonService.getInitaiteLoginPopUp().subscribe((value) => {
-      if (value) {
-        this.openLoginPopUp();
-      }
-    })
-  }
-
-  navigationSubscription() {
-    this.eventNavigationStart = this._router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event) => {
-        if (this._aRoute.snapshot.fragment === "auth") {
-          console.log('function called');
-          this.openLoginPopUp().then(() => {
-            console.log('component created');
-          });
-        }
-      });
-    this._aRoute.snapshot.fragment === "auth" ? this.openLoginPopUp() : null;
-  }
-
-
-
-  async openLoginPopUp() {
-    setTimeout( async () => {
-      const { AuthPopUpComponent } = await import(
-        "../pages/auth-popup/auth-popup.component"
-      ).finally(() => {
-      });
-  
-      const factory = this.cfr.resolveComponentFactory(AuthPopUpComponent);
-      this.authInstance = this.authInstanceref.createComponent(
-        factory,
-        null,
-        this.injector
-      );
-      this.authInstance.instance["flow"] = 'login';
-      (
-        this.authInstance.instance[
-        "removeAuthComponent$"
-        ] as EventEmitter<boolean>
-      ).subscribe((data) => {
-        this.authInstance = null;
-        this.authInstanceref.remove();
-      });
-    }, 1000);
-  }
-
-  ngOnDestroy() {
-    if (this.authInstance) {
-      this.authInstance = null;
-      this.authInstanceref.remove();
-    }
-  }
 
   checkAndRedirect() {
     const queryParams = this._aRoute.snapshot.queryParams;
@@ -197,7 +133,7 @@ export class PagesComponent implements OnInit,AfterViewInit {
   handleRedirectionOfPages(queryParams) {
     if (
       window.location.pathname ===
-        GLOBAL_CONSTANT.pageOnWhichBharatPaySupported[0] &&
+      GLOBAL_CONSTANT.pageOnWhichBharatPaySupported[0] &&
       queryParams.hasOwnProperty("msn")
     ) {
       this.redirectToProductPage(queryParams["msn"]);
@@ -237,7 +173,7 @@ export class PagesComponent implements OnInit,AfterViewInit {
      * Also, for page refresh
      */
     if (this.isBrowser) {
-      
+
       this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie();

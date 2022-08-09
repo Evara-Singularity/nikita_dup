@@ -8,7 +8,6 @@ import { MyAccountGuard } from '../utils/guards/myAccount.guard'
 import { ModalModule } from '@app/modules/modal/modal.module';
 import { ToastMessageModule } from '@app/modules/toastMessage/toast-message.module';
 import { SharedFooterModule } from '@app/components/shared-footer/shared-footer.component';
-import { AuthPopUpModule } from './auth-popup/auth-popup.module';
 
 
 @NgModule({
@@ -21,8 +20,7 @@ import { AuthPopUpModule } from './auth-popup/auth-popup.module';
     // this modal are used in all major module and hence being added to pages 
     ModalModule, 
     ToastMessageModule,
-    SharedFooterModule,
-    AuthPopUpModule
+    SharedFooterModule
   ],
   providers: [MyAccountGuard]
 })

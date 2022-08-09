@@ -1,3 +1,4 @@
+<login-popup></login-popup>
 <div class="home-parent">
     <app-promo [page]="'home'" class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
     <div class="pwa-row pad-b-0">
@@ -5,8 +6,8 @@
             <div class="css-banner-component">
                 <div class="internalBanner" *ngIf="isBrowser">
                     <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
-                        <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
-                            [items]="carouselData.bannerData['data']"
+                        <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner"
+                            [options]="options" [items]="carouselData.bannerData['data']"
                             [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
                         </siema-carousel>
                     </ng-container>
@@ -27,7 +28,7 @@
                 </div> -->
             </div>
         </div>
-   </div>
+    </div>
     <div class="pwa-row pwa-row-noPad">
         <div class="pwa-col-12 pad-lr-15">
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
@@ -53,13 +54,15 @@
                     <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card"
                         [routerLink]="item.category_url">
                         <a>
-                            <img alt={{item.CategoryName}} src="{{clusterimagePath + 'img/cluster/'+item.category_image}}">
+                            <img alt={{item.CategoryName}}
+                                src="{{clusterimagePath + 'img/cluster/'+item.category_image}}">
                             <p class="category-text">{{item.CategoryName}}</p>
                         </a>
                     </div>
                     <div class="category-grid-card" [routerLink]="['/all-categories']">
                         <a>
-                            <img alt="View All Categories" src="{{clusterimagePath + 'img/cluster/all_categories.png'}}">
+                            <img alt="View All Categories"
+                                src="{{clusterimagePath + 'img/cluster/all_categories.png'}}">
                             <p class="category-text view-all-cate">View All Categories</p>
                         </a>
                     </div>
@@ -81,19 +84,21 @@
                 <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="carouselInstance"></home-page-skeletons>
             </div>
         </div>
-        
-        <div observeVisibility class="pwa-col-12" [debounceTime]="50" (visible)="onVisibleCategories($event)" >
+
+        <div observeVisibility class="pwa-col-12" [debounceTime]="50" (visible)="onVisibleCategories($event)">
             <ng-container #Categories></ng-container>
         </div>
-        <ng-container *ngIf="!categoriesInstance" >
+        <ng-container *ngIf="!categoriesInstance">
             <div class="pwa-col-12 recently-container" *ngFor="let i of [1,2,3,4,5]">
-                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="categoriesInstance"></home-page-skeletons>
+                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="categoriesInstance">
+                </home-page-skeletons>
             </div>
         </ng-container>
-        
+
 
         <!-- Section for feature Arrival -->
-        <div observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [ngClass]="{'featr_arrival-skeleton':featuredArrivalsInstance == null}" [debounceTime]="50"
+        <div observeVisibility class="featr_arrival pwa-col-12 pad-lr-15"
+            [ngClass]="{'featr_arrival-skeleton':featuredArrivalsInstance == null}" [debounceTime]="50"
             (visible)="onVisibleFeaturedArrivals($event)">
             <ng-container #FeaturedArrivals></ng-container>
             <!-- <home-page-skeletons [type]="'FEATURED-ARRIVALS'" [templateRefInstance]="featuredArrivalsInstance"></home-page-skeletons> -->

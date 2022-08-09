@@ -430,11 +430,12 @@ export class CommonService
 
     updateSelectedFilterDataFilterFromFragment(fragment) {
         let obj = {};
+
         if (fragment && JSON.stringify(fragment).includes('/auth')) {
             this.setInitaiteLoginPopUp(true);
             this.showLoader= false;
         }
-
+        
         if (fragment && fragment !== 'auth') {
             let filtersList = fragment.split("/");
             if (filtersList) {

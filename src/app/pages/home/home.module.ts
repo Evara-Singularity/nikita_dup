@@ -12,6 +12,7 @@ import { HomefooterAccordianModule } from '@app/components/homefooter-accordian/
 import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toast.component';
 import CategoryCardModule from '@app/components/category-card/category-card.component';
 import { HomePageSkeletonsModule } from '@app/components/home-page-skeletons/home-page-skeletons.component';
+import { LoginPopupModule } from '@app/modules/login-popup/login-popup.module';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { HomePageSkeletonsModule } from '@app/components/home-page-skeletons/hom
         AppPromoModule,
         HomefooterAccordianModule,
         CategoryCardModule,
-        HomePageSkeletonsModule
+        HomePageSkeletonsModule,
+        LoginPopupModule
     ],
     declarations: [
         HomeComponent,

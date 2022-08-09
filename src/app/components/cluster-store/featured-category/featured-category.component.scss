@@ -15,11 +15,11 @@
 
         .inner-trending-category {
             list-style: none;
-            width: calc(50% - 8px);
-            margin-bottom: 15px;
+            flex-basis: 48%;
             .innerCategory {
                 background: var(--white);
                 box-shadow: var(--cluster-store-shadow);
+                border: 1px solid var(--platinum);
                 min-height: 255px;
                 border-radius: $border-radius-8;
                 img {

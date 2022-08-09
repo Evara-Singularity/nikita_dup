@@ -1,8 +1,8 @@
 <ng-container *ngIf="relatedCatgoryList && relatedCatgoryList?.length > 0">
     <div id="subcCategoryTop" class="">
-        <ul>
+        <ul class="pwa-row pad-0">
             <ng-container class="" *ngFor="let item of relatedCatgoryList; let i=index">
-                <li class="pad-10" *ngIf="i<4 || isAllListShow" >
+                <li class="pad-10 pwa-col-6" *ngIf="i<4 || isAllListShow" >
                     <div class="sub-cat-product">
                         <a  (click)="commonService.setSectionClickInformation('child_categories', 'listing')" [routerLink]="'/'+item?.categoryDetails?.categoryLink">
                             <div class="prod-image pad-10">

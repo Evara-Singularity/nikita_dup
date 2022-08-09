@@ -4,8 +4,8 @@
             <h2>{{tocd}}</h2>
         </ng-container>
     </div>
-    <ul class="category-grid-container">
-        <li class="category-grid-card" *ngFor="let item of flyOutData | slice:0:6;let i=index"> 
+    <ul class="category-grid-container row-gutter-space">
+        <li class="category-grid-card pwa-col-4" *ngFor="let item of flyOutData | slice:0:6;let i=index"> 
             <a [routerLink]="['/' + item.link]" (click)="setCookieLink('Trending_Categories',item.categoryCode, 'listing')">
                 <img src="{{item.imageUrl}}"  alt="trending-categories">
                 <p>{{(item.categoryName) + (item.categoryName.length > 15 ? " ":"")}}</p>

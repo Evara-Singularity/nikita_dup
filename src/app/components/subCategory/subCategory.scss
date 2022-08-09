@@ -5,7 +5,6 @@
   border-radius: $border-radius-8;
 
   li {
-    @include gridForCategory('2');
     min-height: 155px;
     max-height: 155px;
 

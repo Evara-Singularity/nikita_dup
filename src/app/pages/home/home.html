@@ -37,15 +37,15 @@
 
             <div class="pwa-col-12 category-grid-container">
                 <h2>Category Store</h2>
-                <div class="pwa-row pwa-row-noPad pad-tb-0">
-                    <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card"
+                <div class="pwa-row pwa-row-noPad pad-tb-0 row-gutter-space">
+                    <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card pwa-col-4"
                         [routerLink]="item.category_url">
                         <a>
                             <img alt={{item.CategoryName}} src="{{clusterimagePath + 'img/cluster/'+item.category_image}}" width="97" height="65">
                             <p class="category-text">{{item.CategoryName}}</p>
                         </a>
                     </div>
-                    <div class="category-grid-card" [routerLink]="['/all-categories']">
+                    <div class="category-grid-card pwa-col-4" [routerLink]="['/all-categories']">
                         <a>
                             <img alt="View All Categories" src="{{clusterimagePath + 'img/cluster/all_categories.png'}}" width="97" height="65">
                             <p class="category-text view-all-cate">View All Categories</p>

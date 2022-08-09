@@ -7,11 +7,10 @@
     justify-content: space-between;
     flex-wrap: wrap;
     .outer-view-section {
-      width: calc(50% - 8px);
+      flex-basis: 48%;
       border-radius: $border-radius-8;
       min-height: 250px;
       background: var(--white);
-      margin-bottom: 15px;
       padding: 10px;
       border: 1px solid var(--platinum);
       .pwa-image {

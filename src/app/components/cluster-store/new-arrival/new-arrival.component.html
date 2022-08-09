@@ -41,9 +41,9 @@
         <h3>{{data.title}}</h3>
         <a *ngIf="data['data'].length > 5" (click)="openPopup = true" class="quinary-btn">VIEW ALL</a>
     </div>
-    <div class="pwa-row verticle-view-card">
-        <div class="pwa-col-12 newarrivals-section">
-            <div class="outer-view-section" *ngFor="let product of data['data'] | slice:0:4; let i = index">
+    <div class="pwa-row verticle-view-card ">
+        <div class="pwa-col-12 newarrivals-section row-gutter-space">
+            <div class="outer-view-section pwa-col-6" *ngFor="let product of data['data'] | slice:0:4; let i = index">
                 <a [routerLink]="['/'+product?.productlink]">
                     <div class="pwa-image">
                         <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
@@ -118,9 +118,9 @@
 <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup " [headerType]="'pop-up-header1'"
     [data]="{selector: 'openPopup'}">
     <div class="content-popup otherCategoryBlock grey_bg" content>
-        <div class="pwa-row verticle-view-card">
-            <div class="pwa-col-12 newarrivals-section">
-                <div class="outer-view-section" *ngFor="let product of data['data']; let i = index">
+        <div class="pwa-row verticle-view-card mb-15">
+            <div class="pwa-col-12 newarrivals-section row-gutter-space">
+                <div class="outer-view-section pwa-col-6" *ngFor="let product of data['data']; let i = index">
                     <a [routerLink]="['/'+product?.productlink]">
                         <div class="pwa-image">
                             <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">

@@ -11,14 +11,14 @@
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
-        padding-top: 5px;
+        padding: 5px 0 0;
         .inner-trending-category {
             list-style: none;
-            width: calc(50% - 8px);
-            padding-bottom: 15px;
+            flex-basis: 48%;
             .innerCategory {
                 background: var(--white);
                 box-shadow: var(--cluster-store-shadow);
+                border: 1px solid var(--platinum);
                 min-height: 235px;
                 border-radius: $border-radius-8;
                 img {

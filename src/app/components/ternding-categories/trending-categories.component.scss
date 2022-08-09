@@ -39,7 +39,7 @@
   }
   .category-grid-container {
     .category-grid-card {
-      width: calc(33.3% - 6px);
+      max-width: calc(33.3% - 6px);
       background: var(--white);
       border:1px solid var(--platinum);
       a {

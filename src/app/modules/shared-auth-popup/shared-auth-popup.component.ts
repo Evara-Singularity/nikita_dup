@@ -47,9 +47,6 @@ export class SharedAuthPopUpComponent implements OnInit {
   ],
   exports: [
     SharedAuthPopUpComponent
-  ],
-  providers: [
-    SocialAuthService
   ]
 })
 export class AuthPopUpModule { }

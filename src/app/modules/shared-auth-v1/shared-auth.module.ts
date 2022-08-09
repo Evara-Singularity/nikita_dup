@@ -12,7 +12,7 @@ import { SharedLoginComponent } from './shared-login/shared-login.component';
 import { SharedOtpComponent } from './shared-otp/shared-otp.component';
 import { SharedSignupComponent } from './shared-signup/shared-signup.component';
 import CONSTANTS from '@app/config/constants';
-import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { SharedSocialLoginComponent } from './shared-social-login/shared-social-login.component';
 
 @NgModule({
@@ -42,6 +42,7 @@ import { SharedSocialLoginComponent } from './shared-social-login/shared-social-
         SharedForgotPasswordComponent
     ],
     providers: [
+        SocialAuthService,
         {
             provide: 'SocialAuthServiceConfig',
             useValue: {

@@ -78,6 +78,11 @@ export class PagesComponent implements OnInit,AfterViewInit {
 
   ngAfterViewInit() {
     this.navigationSubscription();
+    this._commonService.getInitaiteLoginPopUp().subscribe((value) => {
+      if (value) {
+        this.openLoginPopUp();
+      }
+    })
   }
 
   navigationSubscription() {

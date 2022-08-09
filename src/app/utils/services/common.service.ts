@@ -72,6 +72,8 @@ export class CommonService
     private _loadSearchPopup: Subject<string> = new Subject<string>();
     public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
+    public initiateLoginPopUp: Subject<boolean> = new Subject<boolean>();
+
 
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
@@ -136,6 +138,17 @@ export class CommonService
     {
         return this.networkSpeedState.asObservable();
     }
+
+    setInitaiteLoginPopUp(value)
+    {
+        this.initiateLoginPopUp.next(value);
+    }
+
+    getInitaiteLoginPopUp(): Observable<boolean>
+    {
+        return this.initiateLoginPopUp.asObservable();
+    }
+
 
     getNetworkSpeed(): Number
     {
@@ -415,10 +428,14 @@ export class CommonService
         return queryParams;
     }
 
-    updateSelectedFilterDataFilterFromFragment(fragment)
-    {
+    updateSelectedFilterDataFilterFromFragment(fragment) {
         let obj = {};
-        if (fragment && !JSON.stringify(fragment).includes('auth')) {
+        if (fragment && JSON.stringify(fragment).includes('/auth')) {
+            this.setInitaiteLoginPopUp(true);
+            this.showLoader= false;
+        }
+
+        if (fragment && fragment !== 'auth') {
             let filtersList = fragment.split("/");
             if (filtersList) {
                 for (let i = 0; i < filtersList.length; i++) {
@@ -427,7 +444,6 @@ export class CommonService
                 }
             }
         }
-
         return obj;
     }
 
@@ -1206,6 +1222,7 @@ export class CommonService
             ? this.getCurrentRoute(this._router.url)
             : currentRouteFromCategoryFilter;
 
+        console.log("currentRoute"+currentRoute);
         const extras: NavigationExtras = { queryParams: {} };
 
         const fragmentString = this.generateFragmentString(

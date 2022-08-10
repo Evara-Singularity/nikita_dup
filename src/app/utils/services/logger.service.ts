@@ -1,43 +1,43 @@
 import { CommonService } from '@app/utils/services/common.service';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from 'environments/environment';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
 })
-export class LoggerService
-{
-    constructor(private _commonService: CommonService) { }
+export class LoggerService {
 
-    info(...args)
-    {
-        if (!this.isConsoleEnabled) return;
-        console.info(...args);
+    isServer: boolean = false;
+    isBrowser: boolean = false;
+
+    constructor(
+        @Inject(PLATFORM_ID) platformId,
+    ) {
+        this.isServer = isPlatformServer(platformId);
+        this.isBrowser = isPlatformBrowser(platformId);
     }
 
-    debug(...args)
-    {
-        if (!this.isConsoleEnabled) return;
-        console.debug(...args);
+    info(...args) {
+        this.isLoggingEnabled && console.info(...args);
     }
 
-    log(...args)
-    {
-        if (!this.isConsoleEnabled) return;
-        console.log(...args);
+    debug(...args) {
+        this.isLoggingEnabled && console.debug(...args);
     }
 
-    table(...args)
-    {
-        if (!this.isConsoleEnabled) return;
-        console.table(...args);
+    error(...args) {
+        this.isLoggingEnabled && console.error(...args);
     }
 
-    group(...args)
-    {
-        if (!this.isConsoleEnabled) return;
-        console.group(...args);
+    apiLogs(url: string, data: any, method: string, status: number, response: any) {
+        this.isServer && this.writeLog(`${method} ${url} ${status} ${JSON.stringify(data)} ${JSON.stringify(response)}`);
     }
 
-    private get isConsoleEnabled() { return environment.logger }
+    writeLog(message: string) {
+        
+    }
+
+    private get isLoggingEnabled() { return this.isBrowser && environment.logger }
+
 }

@@ -15,7 +15,7 @@
         width: $fullwidth;
         padding: 5px 5px;
         .inner_category {
-            flex-basis:31.3%;
+            max-width: calc(33.3% - 10px);
             display:inline-flex;
             .inner-category-data{
                 border-radius: $border-radius-8;

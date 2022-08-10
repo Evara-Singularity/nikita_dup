@@ -5,7 +5,7 @@
   justify-content: space-between;
   text-align: center;
   .category-grid-card {
-    flex-basis: 31.3%;
+    max-width: calc(33.3% - 10px);
     border-radius: 8px;
     min-height: 100px;
     text-align: center;

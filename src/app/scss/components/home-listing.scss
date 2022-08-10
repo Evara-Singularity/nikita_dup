@@ -7,7 +7,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     .outer-view-section {
-      flex-basis: 48%;
+      max-width: calc(50% - 8px);
       border-radius: $border-radius-8;
       min-height: 250px;
       background: var(--white);

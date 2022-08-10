@@ -15,7 +15,7 @@
 
         .inner-trending-category {
             list-style: none;
-            flex-basis: 48%;
+            max-width: calc(50% - 8px);
             .innerCategory {
                 background: var(--white);
                 box-shadow: var(--cluster-store-shadow);

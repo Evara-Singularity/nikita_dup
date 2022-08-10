@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ComponentFactoryResolver, Injector, OnInit, ViewChild, ViewContainerRef, EventEmitter } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { filter } from 'rxjs/operators';
@@ -23,6 +24,7 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
     private cfr: ComponentFactoryResolver,
     private injector: Injector,
     private _loader: GlobalLoaderService,
+    private _localAuthService:LocalAuthService
   ) { }
 
   ngOnInit(): void {
@@ -30,13 +32,16 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.navigationSubscription();
-    this._commonService.getInitaiteLoginPopUp().subscribe((value) => {
-      if (value) {
-        console.log('login popup ==> using subscriber');
-        this.openLoginPopUp();
-      }
-    })
+    const user = this._localAuthService.getUserSession();
+    if (user && user['authenticated'] !== 'true') {
+      this.navigationSubscription();
+      this._commonService.getInitaiteLoginPopUp().subscribe((value) => {
+        if (value) {
+          console.log('login popup ==> using subscriber');
+          this.openLoginPopUp();
+        }
+      })
+    }
   }
 
   navigationSubscription() {

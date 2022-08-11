@@ -15,6 +15,8 @@ import CONSTANTS from '../../config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
 import { GlobalLoaderService } from './global-loader.service';
+import { LoggerService } from './logger.service';
+import { ServerLogSchema } from '../models/log.modal';
 
 @Injectable({
     providedIn: 'root'
@@ -33,6 +35,7 @@ export class DataService {
         private _http: HttpClient,
         private _localAuthService: LocalAuthService,
         private _loaderService: GlobalLoaderService,
+        private _loggerService: LoggerService,
         private _localStorageService: LocalStorageService) {
     }
 
@@ -136,7 +139,15 @@ export class DataService {
         }
 
         const start_time = new Date().getTime();
-
+        const logInfo: ServerLogSchema = {
+            apiURL: url,
+            method: type,
+            payload: body,
+            endDateTime: null,
+            responseStatus: null,
+            sessionId: userSession ? userSession.sessionId : null,
+            startDateTime: start_time,
+        }
         switch (type) {
             case 'GET':
                 let getOptions = {};
@@ -147,23 +158,41 @@ export class DataService {
                 }
 
                 return this._http.get(url, getOptions).pipe(map(res => {
-                    const request_time = new Date().getTime() - start_time;
+                    logInfo.endDateTime = new Date().getTime();
+                    logInfo.responseStatus = res['status'];
+                    logInfo.sessionId = userSession ? userSession.sessionId : null;
+                    this._loggerService.apiServerLog(logInfo);
                     return res;
-                }), catchError(err => this.handleError(err)));
+                }), catchError(err => this.handleError(err, logInfo)));
             case 'POST':
                 return this._http.post(url, body, { headers, withCredentials: true }).pipe(map(res => {
-                    const request_time = new Date().getTime() - start_time;
+                    logInfo.endDateTime = new Date().getTime();
+                    logInfo.responseStatus = res['status'];
+                    logInfo.sessionId = userSession ? userSession.sessionId : null;
+                    this._loggerService.apiServerLog(logInfo);
                     return res;
-                }), catchError(err => this.handleError(err)));
+                }), catchError(err => this.handleError(err, logInfo)));
             case 'PUT':
-                return this._http.put(url, body, { headers, withCredentials: true }).pipe(map(res => res), catchError(err => this.handleError(err)));
+                return this._http.put(url, body, { headers, withCredentials: true }).pipe(map(res => {
+                    logInfo.endDateTime = new Date().getTime();
+                    logInfo.responseStatus = res['status'];
+                    logInfo.sessionId = userSession ? userSession.sessionId : null;
+                    this._loggerService.apiServerLog(logInfo);
+                    return res;
+                }), catchError(err => this.handleError(err, logInfo)));
             case 'DELETE':
-                return this._http.delete(url, { headers, withCredentials: true }).pipe(map(res => res), catchError(err => this.handleError(err)));
+                return this._http.delete(url, { headers, withCredentials: true }).pipe(map(res => {
+                    logInfo.endDateTime = new Date().getTime();
+                    logInfo.responseStatus = res['status'];
+                    logInfo.sessionId = userSession ? userSession.sessionId : null;
+                    this._loggerService.apiServerLog(logInfo);
+                    return res;
+                }), catchError(err => this.handleError(err, logInfo)));
             default:
                 return null;
         }
     }
-    private handleError(error: HttpErrorResponse | any) {
+    private handleError(error: HttpErrorResponse | any, logInfo?: ServerLogSchema) {
         if (error.status === 403) {
             this._localStorageService.clear('user');
             this.getSession().subscribe((res) => {
@@ -200,6 +229,9 @@ export class DataService {
         } else {
             this.showMessage('error', 'Something went wrong');
         }
+        logInfo.endDateTime = new Date().getTime();
+        logInfo.responseStatus = error.status;
+        this._loggerService.apiServerLog(logInfo);
         this._loaderService.setLoaderState(false);
         return throwError(error);
     }

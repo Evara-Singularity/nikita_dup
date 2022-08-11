@@ -1,3 +1,4 @@
+import { CartUtils } from './../../utils/services/cart-utils';
 import { Component, ElementRef, EventEmitter, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -121,6 +122,12 @@ export class PaymentComponent implements OnInit {
       data["userId"] = userSession["userId"];
       data["userEmail"] = "";
     }
+    if(this._cartService.lastPaymentMode)
+    {
+      const { paymentBlock, mode, section } = CartUtils.getPaymentInfo(this._cartService.lastPaymentMode);
+      this.updatePaymentBlock(paymentBlock, mode, section);
+      return;
+    }
     this._paymentService
       .getSavedCards(data, this.invoiceType)
       .subscribe((res) => {
@@ -131,7 +138,7 @@ export class PaymentComponent implements OnInit {
         ) {
           this.savedCardsData = res["data"]["user_cards"];
           this.isSavedCardExist = true;
-          this.paymentBlock = this._cartService.lastPaymentNumber || this.globalConstants["savedCard"];
+          this.paymentBlock = this.globalConstants["savedCard"];
         }
         this.isShowLoader = false;
       });

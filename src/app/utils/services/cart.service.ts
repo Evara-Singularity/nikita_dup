@@ -51,7 +51,6 @@ export class CartService
     private _shippingAddress: Address;
     private _invoiceType: 'retail' | 'tax' = this.INVOICE_TYPE_RETAIL;
     private _lastPaymentMode = null;
-    private _lastPaymentNumber = null;
     private _lastParentOrderId = null;
 
     // vars used in revamped cart login 
@@ -94,10 +93,6 @@ export class CartService
     set lastPaymentMode(mode: string) { this._lastPaymentMode = mode; }
 
     get lastPaymentMode() { return this._lastPaymentMode; }
-
-    set lastPaymentNumber(id: number) { this._lastPaymentNumber = id; }
-
-    get lastPaymentNumber() { return this._lastPaymentNumber; }
 
     set lastParentOrderId(id: number) { this._lastParentOrderId = id; }
 

@@ -58,7 +58,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService,
         private _retryPaymentService: RetryPaymentService)
     {
-        this.orderId = this._activatedRoute.snapshot.queryParams['orderId'];
+        const queryParams = this._activatedRoute.snapshot.queryParams;
+        this.orderId = queryParams['orderId'] || queryParams['txnId'];
     }
 
     ngOnInit(): void

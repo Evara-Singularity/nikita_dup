@@ -1,4 +1,4 @@
-import { cartSession } from './../../utils/models/cart.initial';
+import { CartUtils } from './../../utils/services/cart-utils';
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -8,21 +8,6 @@ import { RetryPaymentService } from '@app/utils/services/retry-payment.service';
 import { CartService } from '@services/cart.service';
 import { Router } from '@angular/router';
 import { InitiateQuickCod } from '@app/utils/models/cart.initial';
-
-export const PaymentMode =
-{
-	"CC": CONSTANTS.GLOBAL.creditDebitCard,
-	"DC": CONSTANTS.GLOBAL.creditDebitCard,
-	"NB": CONSTANTS.GLOBAL.netBanking,
-	"WALLET": CONSTANTS.GLOBAL.wallet,
-	"EMI": CONSTANTS.GLOBAL.emi,
-	"COD": CONSTANTS.GLOBAL.cashOnDelivery,
-	"NEFT": CONSTANTS.GLOBAL.neftRtgs,
-	"card_mode": CONSTANTS.GLOBAL.savedCard,
-	"TEZ": CONSTANTS.GLOBAL.upi,
-	"UPT": CONSTANTS.GLOBAL.upi,
-	"PAYTM": CONSTANTS.GLOBAL.paytmUpi,
-}
 
 @Component({
 	selector: 'shared-transaction-declined',
@@ -114,8 +99,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 		this._loaderService.setLoaderState(true);
 		const lastPaymentMode = this.shoppingCartDto['payment']['type'];
 		this._cartService.lastPaymentMode = lastPaymentMode;
-		this._cartService.lastPaymentNumber = PaymentMode[lastPaymentMode];
-		this._cartService.lastParentOrderId = this.shoppingCartDto['cart']['parentOrderId'];;
+		this._cartService.lastParentOrderId = this.shoppingCartDto['cart']['parentOrderId'];
 		this._cartService.invoiceType = this.invoiceType;
 		this._cartService.shippingAddress = this.shippingAddress;
 		this._cartService.billingAddress = this.billingAddress;

@@ -15,7 +15,6 @@ export class RetryPaymentService
 
   getPaymentDetailsByOrderId(orderId)
   {
-    orderId = 3985269
     return this._urlsService.getRetryPaymentByOrderId(orderId).pipe(
       map((response) =>
       {
@@ -145,11 +144,10 @@ export class RetryPaymentService
   {
     let billingAddress = null, shippingAddress = null, invoiceType = "retail";
     if (userAddressList.length === 0) return { shippingAddress, billingAddress, invoiceType };
-    const businessDetails = shoppingCartDto['businessDetails'];
     const addressList: any[] = (shoppingCartDto['addressList'] as any[]);
     const shippingAddressId = (addressList[0]['type'] === "shipping") ? addressList[0]['addressId'] : addressList[1]['addressId'];
     shippingAddress = userAddressList.find((address) => address['idAddress'] === shippingAddressId);
-    if (businessDetails) {
+    if (addressList.length === 2) {
       const billingAddressId = (addressList[0]['type'] === "billing") ? addressList[0]['addressId'] : addressList[1]['addressId'];
       billingAddress = userAddressList.find((address) => address['idAddress'] === billingAddressId);
       invoiceType = "tax";

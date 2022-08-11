@@ -1,10 +1,41 @@
 import CONSTANTS from "@app/config/constants";
 import { ValidateDto } from "../models/cart.initial";
 
+export const PaymentMode =
+{
+    "CC": { paymentBlock: CONSTANTS.GLOBAL.creditDebitCard, mode: "creditDebitCard", section: "creditDebitCardSection" },
+    "DC": { paymentBlock: CONSTANTS.GLOBAL.creditDebitCard, mode: "creditDebitCard", section: "creditDebitCardSection" },
+    "NB": { paymentBlock: CONSTANTS.GLOBAL.netBanking, mode: "netBanking", section: "netBankingSection" },
+    "WALLET": { paymentBlock: CONSTANTS.GLOBAL.wallet, mode: "wallet", section: "walletSection" },
+    "EMI": { paymentBlock: CONSTANTS.GLOBAL.emi, mode: "emi", section: "emiSection" },
+    "COD": { paymentBlock: CONSTANTS.GLOBAL.cashOnDelivery, mode: "cashOnDelivery", section: "cashOnDeliverySection" },
+    "NEFT": { paymentBlock: CONSTANTS.GLOBAL.neftRtgs, mode: "netBanking", section: "netBankingSection" },
+    "card_mode": { paymentBlock: CONSTANTS.GLOBAL.savedCard, mode: "", section: "" },
+    "TEZ": { paymentBlock: CONSTANTS.GLOBAL.upi, mode: "upi", section: "upiSection" },
+    "UPI": { paymentBlock: CONSTANTS.GLOBAL.upi, mode: "upi", section: "upiSection" },
+}
+
 export class CartUtils
 {
     //dont ever write constructor in this to inject any service.
     //this should plane function which takes input returns desired formatted value.
+    static walletTaxRetail = [];
+    static oKeys = Object.keys;
+
+    static verifyMatchingWallet(mode)
+    {
+        if (CartUtils.walletTaxRetail.length) {
+            return CartUtils.walletTaxRetail.includes(mode);
+        }
+        const wTax = CONSTANTS.GLOBAL.walletMap.tax;
+        const wRetail = CONSTANTS.GLOBAL.walletMap.retail;
+        const wTaxKeys = CartUtils.oKeys(wTax);
+        const wRetailKeys = CartUtils.oKeys(wRetail);
+        wTaxKeys.forEach((key) => { CartUtils.walletTaxRetail.push(wTax[key]['type']); });
+        wRetailKeys.forEach((key) => { CartUtils.walletTaxRetail.push(wRetail[key]['type']); });
+        return CartUtils.walletTaxRetail.includes(mode);;
+    }
+
     static generateGenericCartSession(cartSessionFromAPI)
     {
         const modifiedCartSessionObject = {
@@ -226,6 +257,17 @@ export class CartUtils
             }
         }
         return itemsList;
+    }
+
+    static getPaymentInfo(mode)
+    {
+        if (PaymentMode[mode]) {
+            return PaymentMode[mode];
+        }
+        if (CartUtils.verifyMatchingWallet(mode)) {
+            return PaymentMode["WALLET"];
+        }
+        return null;
     }
 
     static getTwoDecimalValue(a) { return Math.floor(a * 100) / 100; }

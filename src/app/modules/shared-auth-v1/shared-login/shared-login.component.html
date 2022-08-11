@@ -1,4 +1,4 @@
-<div class="login-bg" [class.checkout-login-bg]="true">
+<div class="login-bg bottom-login" [class.checkout-login-bg]="true">
     <shared-auth-header  (backButtonClicked$)="backButtonClicked()" *ngIf="isWhiteHeader" [isWhiteHeader]="isWhiteHeader"></shared-auth-header>
     
     <div class="fixed-view" [class.mt-20]="isNormalLogin">
@@ -71,7 +71,7 @@
                     href="privacy">Privacy Policy</a></p>
         </div>
     </div>
-    <div class="login-bg-img" *ngIf="isNormalLogin">
-    </div>
+    <!-- <div class="login-bg-img" *ngIf="isNormalLogin">
+    </div> -->
     
 </div>

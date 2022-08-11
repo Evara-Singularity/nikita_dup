@@ -83,3 +83,9 @@
 .roundedBox {
     border-radius:$border-radius-16;
 }
+
+#login-bottom-popup{
+    background: var(--red-light-and-dark-gradient);
+    max-height: 75% !important;
+    @extend %hide-scrollbar;
+}

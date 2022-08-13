@@ -431,6 +431,17 @@ export const CONSTANTS = {
     ORDER_FAILURE: 'ORDER_FAILURE',
     ORDER_CONFIRMATION: 'ORDER_CONFIRMATION',
     PRODUCT: 'PRODUCT'
+  },
+  PDP_POPUP_FRAGMENT:{
+    PRODUCT_EMIS:'product-emis',
+    PRODUCT_OFFERS:'product-offers',
+    PRODUCT_SPECIFICATION: 'product-specifications',
+    PRODUCT_FEATURES: 'product-features',
+    PRODUCT_DETAILS: 'product-details',
+    PRODUCT_ALL_REVIEWS: 'product-review-all',
+    PRODUCT_ALL_FAQ: 'product-faq-all',
+    PRODUCT_QA_FORM: 'product-ask-now',
+    PRODUCT_REVIEW_FORM: 'product-write-review',
   }
 };
 export default CONSTANTS;

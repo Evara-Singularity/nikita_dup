@@ -60,7 +60,7 @@ interface ProductDataArg
     templateUrl: "./product.component.html",
     styleUrls: ["./product.component.scss"],
 })
-export class ProductComponent implements OnInit, AfterViewInit
+export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 {
     encodeURI = encodeURI;
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -393,9 +393,24 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
+            this.navigationOnFragmentChange();
         }
     }
 
+    navigationOnFragmentChange() {
+        this.route.fragment.subscribe(fragment => {
+            switch (fragment) {
+                case CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_EMIS :
+                    this.emiComparePopUpOpen(true);
+                    break;
+                case CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_OFFERS:
+                    this.viewPopUpOpen(this.productService.productCouponItem);
+                    break;    
+                default:
+                    break;
+            }
+        })
+    }
 
     backUrlNavigationHandler()
     {
@@ -2328,14 +2343,14 @@ export class ProductComponent implements OnInit, AfterViewInit
                 console.log("data view --->>>", data)
                 this.viewPopUpOpen(data);
             });
-            (
-                this.offerSectionInstance.instance[
-                "emaiComparePopUpHandler"
-                ] as EventEmitter<boolean>
-            ).subscribe((status) =>
-            {
-                this.emiComparePopUpOpen(status);
-            });
+            // (
+            //     this.offerSectionInstance.instance[
+            //     "emaiComparePopUpHandler"
+            //     ] as EventEmitter<boolean>
+            // ).subscribe((status) =>
+            // {
+            //     this.emiComparePopUpOpen(status);
+            // });
             (
                 this.offerSectionInstance.instance[
                 "promoCodePopUpHandler"

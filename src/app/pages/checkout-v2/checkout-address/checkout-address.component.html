@@ -29,4 +29,5 @@
         <generic-offers></generic-offers>
         <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems" [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } "></shared-checkout-unavailable-items>
     </ng-container>
+    <ng-container #txnDeclined></ng-container>
 </div>

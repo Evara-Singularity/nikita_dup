@@ -44,6 +44,7 @@ export class NavigationService
           if (index > -1) {
             this.history.splice(index, 1)
           }
+          //ODP-1866:remove query params from "/checkout/address" and push
           this.history.push(currentUrl);
           this.saveHistory(this.history);
         }

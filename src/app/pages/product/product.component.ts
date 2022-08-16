@@ -2343,14 +2343,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 console.log("data view --->>>", data)
                 this.viewPopUpOpen(data);
             });
-            // (
-            //     this.offerSectionInstance.instance[
-            //     "emaiComparePopUpHandler"
-            //     ] as EventEmitter<boolean>
-            // ).subscribe((status) =>
-            // {
-            //     this.emiComparePopUpOpen(status);
-            // });
             (
                 this.offerSectionInstance.instance[
                 "promoCodePopUpHandler"

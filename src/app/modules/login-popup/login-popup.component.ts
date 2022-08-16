@@ -15,7 +15,6 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
   authInstance = null;
   @ViewChild("authPopUp", { read: ViewContainerRef })
   authInstanceref: ViewContainerRef;
-  private;
 
   constructor(
     private _commonService: CommonService,
@@ -24,24 +23,33 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
     private cfr: ComponentFactoryResolver,
     private injector: Injector,
     private _loader: GlobalLoaderService,
-    private _localAuthService:LocalAuthService
+    private _localAuthService: LocalAuthService
   ) { }
 
-  ngOnInit(): void {
-    console.log('login popup ==>');
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     const user = this._localAuthService.getUserSession();
     if (user && user['authenticated'] !== 'true') {
-      this.navigationSubscription();
-      this._commonService.getInitaiteLoginPopUp().subscribe((value) => {
-        if (value) {
-          console.log('login popup ==> using subscriber');
-          this.openLoginPopUp();
+      this._commonService.getIsLoginPopUpRouteBased().subscribe((isRouteBased) => {
+        if (isRouteBased) {
+          this.navigationSubscription();
+          this._commonService.getInitaiteLoginPopUp().subscribe((openPopUp) => {
+            if (openPopUp) {
+             this.initiatePopUp();
+            }
+          })
         }
+        else this.initiatePopUp();
       })
     }
+  }
+
+  initiatePopUp() {
+    this._loader.setLoaderState(true);
+    this.openLoginPopUp().then(() => {
+      this._loader.setLoaderState(false);
+    });
   }
 
   navigationSubscription() {
@@ -49,11 +57,7 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event) => {
         if (this._aRoute.snapshot.fragment === "auth") {
-          this._loader.setLoaderState(true);
-          console.log('function called');
-          this.openLoginPopUp().then(() => {
-            this._loader.setLoaderState(false);
-          });
+          this.initiatePopUp();
         }
       });
     this._aRoute.snapshot.fragment === "auth" ? this.openLoginPopUp().then(() => this._loader.setLoaderState(false)) : null;

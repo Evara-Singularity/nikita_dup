@@ -73,6 +73,7 @@ export class CommonService
     public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
     public initiateLoginPopUp: Subject<boolean> = new Subject<boolean>();
+    public isLoginPopUpRouteBased: Subject<boolean> = new Subject<boolean>();
 
 
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
@@ -148,6 +149,17 @@ export class CommonService
     {
         return this.initiateLoginPopUp.asObservable();
     }
+
+    setIsLoginPopUpRouteBased(value = true)
+    {
+        this.initiateLoginPopUp.next(value);
+    }
+
+   getIsLoginPopUpRouteBased(): Observable<boolean>
+    {
+        return this.initiateLoginPopUp.asObservable();
+    }
+
 
 
     getNetworkSpeed(): Number

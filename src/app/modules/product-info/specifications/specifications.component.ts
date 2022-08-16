@@ -44,6 +44,6 @@ export class SpecificationsComponent implements OnInit
             this.showSecondaryAttributes = !this.showSecondaryAttributes;
             this.callback.emit(this.showSecondaryAttributes);
         }
-        else this.router.navigate([this.router.url],{fragment:'auth'})
+        else this._commonService.setIsLoginPopUpRouteBased(false);
     }
 }

@@ -31,12 +31,12 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     const user = this._localAuthService.getUserSession();
     if (user && user['authenticated'] !== 'true') {
+      this.navigationSubscription();
       this._commonService.getIsLoginPopUpRouteBased().subscribe((isRouteBased) => {
         if (isRouteBased) {
-          this.navigationSubscription();
           this._commonService.getInitaiteLoginPopUp().subscribe((openPopUp) => {
             if (openPopUp) {
-             this.initiatePopUp();
+              this.initiatePopUp();
             }
           })
         }

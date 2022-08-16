@@ -77,7 +77,8 @@ export class SharedLoginComponent implements OnInit
         }
         this.handleBackUrlTitle();
         this.addQueryParamSubscribers();
-        this._sharedAuthUtilService.sendLoginSignupGenericPageLoadTracking(this.headerTitle || "mainpage");
+        // Tracking 
+        this.isLoginPopup ? this._sharedAuthUtilService.sendLoginPopUpTracking() : this._sharedAuthUtilService.sendLoginSignupGenericPageLoadTracking(this.headerTitle || "mainpage")
     }
 
     addQueryParamSubscribers() {

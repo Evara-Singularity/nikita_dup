@@ -6,6 +6,7 @@ import { SearchComponent } from './search.component';
 import { SharedProductListingModule } from '@modules/shared-product-listing/shared-product-listing.module';
 import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-promo/product-listing-app-promo.module';
 import { KpToggleDirectiveModule } from '@utils/directives/kp-toggle.directive';
+import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { KpToggleDirectiveModule } from '@utils/directives/kp-toggle.directive';
     SearchV1RoutingModule,
     KpToggleDirectiveModule,
     SharedProductListingModule,
-    ProductListingAppPromoModule
+    ProductListingAppPromoModule,
+    AppPromoModule
   ]
 })
 export class SearchModule { }

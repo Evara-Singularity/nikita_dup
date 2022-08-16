@@ -23,6 +23,9 @@ export class ShopbyBrandComponent {
     CommonModule,
     RouterModule,
     LazyLoadImageModule,
+  ],
+  exports:[
+    ShopbyBrandComponent
   ]
 })
 export class ShopbyBrandModule { }

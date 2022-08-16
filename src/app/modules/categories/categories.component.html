@@ -12,6 +12,15 @@
             <!--layout_url-->
             <a *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'" [href]="carouselData[category.dataKey]['layout_url']" class="btn quinary-btn">VIEW ALL</a>
         </div>
+        <ng-container *ngIf="carouselData[category.dataKey]['data'] && carouselData[category.dataKey]['data']['image_block'] && carouselData[category.dataKey]['data']['image_block'].length>=4">
+        <div class="category-block-container">
+            <div class="category-inner-block" *ngFor="let imageBlockItem of  carouselData[category.dataKey]['data']['image_block']|slice:0:4">
+               <a href="{{imageBlockItem['image_link']}}">
+                <img src="{{imageCdnPath+imageBlockItem['image_name']}}" alt="">
+            </a> 
+            </div>
+        </div>
+    </ng-container> 
         <ul class="circle-brand-container"
         *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'">
         <div *ngIf="carouselData[category.dataKey]['data']['category_block'].length  !== 0 else brandBlock">
@@ -25,6 +34,7 @@
                 </a>
             </li>
         </div>
+
         <ng-template #brandBlock>
             <li class="circle-brand-block" *ngFor="let items of carouselData[category.dataKey]['data']['brand_block'] | slice : 0:4">
                 <a [routerLink]="items['brand_url']"
@@ -41,7 +51,7 @@
     <product-card-vertical-container
         [numberOfItems]="carouselData[category.dataKey]['data']['product_data'].length">
         <ng-container *ngFor="let product of carouselData[category.dataKey]['data']['product_data']">
-            <product-card-vertical-grid-view [fullBrandNameMode]="true" [product]="product"></product-card-vertical-grid-view>
+            <product-card-vertical-grid-view [moduleUsedIn]="'HOME_PRODUCT'" [fullBrandNameMode]="true" [product]="product"></product-card-vertical-grid-view>
         </ng-container>
     </product-card-vertical-container>
 

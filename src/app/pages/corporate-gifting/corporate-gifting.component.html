@@ -76,7 +76,7 @@
                   *ngIf="isFormSubmited && (requestForm.get('email').hasError('required') ) " >Email is required</div>
                   <div class="error" 
                   *ngIf="isFormSubmited && (requestForm.get('email').hasError('email') ) " >Please enter valid email address</div>
-                <input class="mobile-number" formControlName="phone" maxlength="10" numbersOnly id="mobile-number" placeholder="Mobile No*">
+                <input class="mobile-number" formControlName="phone" maxlength="10" data-numbersOnly id="mobile-number" placeholder="Mobile No*">
                 <div class="error" 
                   *ngIf="isFormSubmited && (requestForm.get('phone').hasError('required') ) " >Mobile No. is required</div>
                   <div class="error" 

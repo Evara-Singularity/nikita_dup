@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Directive, ElementRef, HostListener, NgModule } from '@angular/core';
 
 @Directive({
-    selector: 'input[numbersOnly]'
+    selector: 'input[data-numbersOnly]'
 })
 export class NumberDirective
 {

@@ -312,7 +312,7 @@ export class ProductListService {
       case "PRODUCT":
         str = "pdp";
         break;
-      case "LISTING":
+      case "LISTING_PAGES":
         str = "listing";
         break;
       case "PRODUCT_SIMILAR_OUT_OF_STOCK":
@@ -326,6 +326,30 @@ export class ProductListService {
         break;
       case "PRODUCT_PAST_ORDER":
         str = "pdp:past_order";
+        break;
+      case "POPULAR_DEALS":
+        str = "pdp:popular_deals";
+        break;
+      case "SPONSERED_ADS":
+        str = "pdp:sponsored_ads";
+        break;
+      case "PRODUCT_RECENT_PRODUCT":
+        str = "pdp:product_recent_product";
+        break;
+      case "HOME_RECENT":
+        str = "pdp:home_recent";
+        break;
+      case "SEACRH_SUGGESTION":
+        str = "pdp:search_suggestion";
+        break;
+      case "PRODUCT_SIMILAR":
+        str = "pdp:product_similar";
+        break;
+      case "HOME_PRODUCT":
+        str = "pdp:home_product";
+        break;
+      case "WISHLIST":
+        str = "pdp:widget:wishlist";
         break;
       default:
         str = "pdp-extra";

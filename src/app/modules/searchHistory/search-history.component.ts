@@ -16,7 +16,7 @@ export class SearchHistoryComponent {
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(private _r: Router, private _lss: LocalStorageService) {
-        this.shd = this._lss.retrieve('search-history') ? this._lss.retrieve('search-history') : [];
+        this.shd = this._lss.retrieve('search-history') ? (this._lss.retrieve('search-history')) : [];
     }
 
     removeFromLocalStorage(index) {

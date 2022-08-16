@@ -37,6 +37,16 @@ export class ProductService {
         };
     }
 
+    getCustomerLastOrder(obj):Observable<any> {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_LAST_ORDERS;
+        return this._dataService.callRestful("POST", url, { body: obj }).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ lastOrderDetails: [], httpStatus: res.status });
+            })
+        );
+    }
+  
+
     getSimilarProductInfoByIndex(index) {
         return this.oosSimilarProductsData.similarData[index];
     }

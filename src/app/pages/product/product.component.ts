@@ -32,7 +32,7 @@ import { CheckoutService } from "@app/utils/services/checkout.service";
 import { CommonService } from "@app/utils/services/common.service";
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
-import { BehaviorSubject, Subject, Subscription } from "rxjs";
+import { BehaviorSubject, Observable, of, Subject, Subscription } from "rxjs";
 import { ClientUtility } from "../../utils/client.utility";
 import { ObjectToArray } from "../../utils/pipes/object-to-array.pipe";
 import { LocalAuthService } from "../../utils/services/auth.service";
@@ -45,7 +45,7 @@ import { SiemaCrouselService } from "../../utils/services/siema-crousel.service"
 import { FbtComponent } from "./../../components/fbt/fbt.component";
 
 import * as $ from 'jquery';
-import { filter } from "rxjs/operators";
+import { catchError, filter, map, mergeMap } from "rxjs/operators";
 import { TrackingService } from "@app/utils/services/tracking.service";
 
 interface ProductDataArg
@@ -291,6 +291,10 @@ export class ProductComponent implements OnInit, AfterViewInit
     popularDealsInstance = null;
     @ViewChild("popularDeals", { read: ViewContainerRef })
     popularDealsContainerRef: ViewContainerRef;
+    // ondemad loaded components for quick order popUp
+    quickOrderInstance = null;
+    @ViewChild("quickOrder", { read: ViewContainerRef })
+    quickOrderContainerRef: ViewContainerRef;
 
     iOptions: any = null;
 
@@ -1568,9 +1572,191 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     // cart methods 
-    addToCart(buyNow: boolean)
-    {
-        this.addToCartFromModal(buyNow)
+    addToCart(buyNow: boolean) {
+      this.globalLoader.setLoaderState(true);
+      this.validateQuickCheckout().subscribe((res) => {
+        console.log('validateQuickCheckout res  -->' , res);
+        if (res && res.returnPopUpStatus) {
+          this.globalLoader.setLoaderState(false);
+          this.quickCheckoutPopUp(buyNow ,res.address);
+        } else {
+          this.addToCartFromModal(buyNow);
+          this.globalLoader.setLoaderState(false);
+        }
+      });
+    }
+    
+    async quickCheckoutPopUp(buyNow, address) {
+      if (!this.quickOrderInstance) {
+        this.globalLoader.setLoaderState(true);
+        const { PdpQuickCheckoutComponent } = await import(
+          "../../components/pdp-quick-checkout/pdp-quick-checkout.component"
+        ).finally(() => {
+          this.globalLoader.setLoaderState(false);
+        });
+        const factory = this.cfr.resolveComponentFactory(PdpQuickCheckoutComponent);
+        this.quickOrderInstance = this.quickOrderContainerRef.createComponent(
+          factory,
+          null,
+          this.injector
+        );
+  
+        this.quickOrderInstance.instance["rawProductData"] = this.rawProductData;
+        this.quickOrderInstance.instance["productPrice"] = this.productPrice;
+        this.quickOrderInstance.instance["selectedProductBulkPrice"] = this.selectedProductBulkPrice;
+        this.quickOrderInstance.instance["cartQunatityForProduct"] = this.cartQunatityForProduct;
+        this.quickOrderInstance.instance["address"] = address;
+        (
+          this.quickOrderInstance.instance["isClose"] as EventEmitter<boolean>
+        ).subscribe((status) => {
+          this.router.navigate(["/checkout"]);
+        });
+        this.quickOrderInstance = null;
+      }
+    }
+    
+    validateQuickCheckout(): Observable<any> {
+      if (this.localAuthService.isUserLoggedIn) {
+        const userData = this.localAuthService.getUserSession();
+        const userId = userData ? userData["userId"] : null;
+        return this.productService
+          .getCustomerLastOrder({
+            customerId: userId,
+            limit: 1,
+          })
+          .pipe(
+            map(
+              (res) => {
+                if (!res) {
+                  return null;
+                } else {
+                  return this.getCustomerLastOrderVerification(res);
+                }
+              },
+              catchError((error) => {
+                return of(null);
+              })
+            ),
+            mergeMap((getAddressRequestData) => {
+              if (getAddressRequestData) {
+                return this.commonService
+                  .getAddressList({
+                    customerId: userId,
+                    invoiceType: this.cartService.invoiceType,
+                  })
+                  .pipe(
+                    map(
+                      (result) => {
+                        if (!result) {
+                          return null;
+                        } else {
+                          return this.getAddressVerification(
+                            result,
+                            getAddressRequestData
+                          );
+                        }
+                      },
+                      catchError((error) => {
+                        return of(null);
+                      })
+                    ),
+                    mergeMap((response) => {
+                      if (response) {
+                        const postBody = {
+                          productId: [this.rawProductData["defaultPartNumber"]],
+                          toPincode: response.address[0]["postCode"],
+                          price: this.productPrice,
+                        };
+                        return this.productService
+                          .getLogisticAvailability(postBody)
+                          .pipe(
+                            map(
+                              (ress) => {
+                                if (!ress) {
+                                  return null;
+                                } else {
+                                  return this.getServiceAvailabilityVerification(
+                                    ress , response
+                                  );
+                                }
+                              },
+                              catchError((error) => {
+                                return of(null);
+                              })
+                            )
+                          );
+                      } else {
+                        return of(null);
+                      }
+                    })
+                  );
+              } else {
+                return of(null);
+              }
+            })
+          );
+      } else {
+        return of(null);
+      }
+    }
+  
+    getServiceAvailabilityVerification(ress , address) {
+      if (ress && ress["statusCode"] && ress["statusCode"] == 200) {
+        let data =
+          ress["data"][this.rawProductData["defaultPartNumber"]]["aggregate"];
+          console.log("data--" , data);
+        if (data["serviceable"] == true && data["codAvailable"] == true) {
+          return {
+            returnPopUpStatus: true,
+            address: address
+          };
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
+  
+    getAddressVerification(result, getAddressRequestData) {
+      let finalAddress = null;
+      if (result && result["addressList"] && result["addressList"].length > 0) {
+        finalAddress = result["addressList"].filter(
+          (res) => res.idAddress == getAddressRequestData.customerLastAddressId
+        );
+        if (finalAddress && finalAddress.length > 0) {
+          return {
+            address: finalAddress,
+            bothAddress: getAddressRequestData
+          };
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
+  
+    getCustomerLastOrderVerification(res) {
+      if (res && res["lastOrderDetails"] && res["lastOrderDetails"].length) {
+        let len =
+          res["lastOrderDetails"].length == 0
+            ? res["lastOrderDetails"].length
+            : res["lastOrderDetails"].length - 1;
+        const isValidOrder =
+          res["lastOrderDetails"][len].paymentType == "COD" &&
+          res["lastOrderDetails"][len].orderStatus == "ACCEPTED";
+        if (isValidOrder) {
+          return {
+            addressDetails: res["lastOrderDetails"][len]["addressDetails"],
+            customerLastAddressId: res["lastOrderDetails"][len]["addressId"],
+          };
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
     }
 
     addToCartFromModal(buyNow: boolean)

@@ -1189,6 +1189,7 @@ export class CartService
         const user = this.localAuthService.getUserSession();
         if (user.authenticated !== 'true') {
             this._toastService.show({ type: 'error', text: "To Avail Offer Please Login" });
+            this._loaderService.setLoaderState(false);
         } else {
             this.getPromoCodeDetailByName(promcode).subscribe(({ status, data, statusDescription: message }: any) =>
             {

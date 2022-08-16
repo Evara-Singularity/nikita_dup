@@ -1,4 +1,4 @@
-<section class="pwa-row mt-10 pad-r-0 pastOrders" [debounceTime]="200" observeVisibility (visible)="onVisiblePastOrders($event)" *ngIf="pageDisplay">
+<section class="pwa-row mt-10 pad-r-0 pastOrders" [debounceTime]="200" data-observeVisibility (visible)="onVisiblePastOrders($event)" *ngIf="pageDisplay">
     <div class="pwa-col-12">
         <ng-container id="past-orders" class="Bestseller card similar-prod" >
             <div class="view-all-strip">

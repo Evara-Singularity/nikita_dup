@@ -122,6 +122,7 @@ export class OrderConfirmationComponent implements OnInit {
                 }
             },
                 (reponseError) => {
+                    this.adobeTracking(userSession, null);
                     this.sendClickStreamDataError(
                         "order_completed_api_error",
                         reponseError
@@ -220,7 +221,7 @@ export class OrderConfirmationComponent implements OnInit {
         console.log('order onfirmation logs ==> gtmTracking completed');
     }
 
-    private adobeTracking(userSession: any, anayticsData) {
+    private adobeTracking(userSession: any, anayticsData = null) {
         let page = {
             pageName: "order-Confirmation",
             channel: "purchase",
@@ -241,25 +242,34 @@ export class OrderConfirmationComponent implements OnInit {
                 ? btoa(userSession["agentId"])
                 : '',
         };
-        let order = {
-            transactionID: this.queryParams["orderId"],
-            platformType: "mobile",
-            productCategoryL1: anayticsData.aCat1,
-            productCategoryL2: anayticsData.aCat2,
-            productCategoryL3: anayticsData.aCat3,
-            productID: anayticsData.aprodIds,
-            productPrice: anayticsData.aprodPrices,
-            shipping: anayticsData.aShipping,
-            couponDiscount: anayticsData.aOffer,
-            quantity: anayticsData.aprodQuantities,
-            paymentMode: this.queryParams["mode"],
-            totalDiscount: anayticsData.aTotalDiscount,
-            totalQuantity: anayticsData.aTotalQuantity,
-            totalPrice: anayticsData.totalPriceCalc,
-            couponCode: "",
-            shippingCharges: anayticsData.aTotalShipping,
-            couponCodeID: this.couponCodeData,
-        };
+        let order = {};
+        if(anayticsData){
+            order = {
+                transactionID: this.queryParams["orderId"],
+                platformType: "mobile",
+                productCategoryL1: anayticsData.aCat1,
+                productCategoryL2: anayticsData.aCat2,
+                productCategoryL3: anayticsData.aCat3,
+                productID: anayticsData.aprodIds,
+                productPrice: anayticsData.aprodPrices,
+                shipping: anayticsData.aShipping,
+                couponDiscount: anayticsData.aOffer,
+                quantity: anayticsData.aprodQuantities,
+                paymentMode: this.queryParams["mode"],
+                totalDiscount: anayticsData.aTotalDiscount,
+                totalQuantity: anayticsData.aTotalQuantity,
+                totalPrice: anayticsData.totalPriceCalc,
+                couponCode: "",
+                shippingCharges: anayticsData.aTotalShipping,
+                couponCodeID: this.couponCodeData,
+            };
+        }else{
+            order = {
+                transactionID: this.queryParams["orderId"],
+                platformType: "mobile",
+                paymentMode: this.queryParams["mode"],
+            };
+        }
         digitalData["page"] = page;
         digitalData["custData"] = custData;
         digitalData["order"] = order;

@@ -5,6 +5,41 @@
                 Offers & Coupons
             </h3>
         </div>
+        <!-- <div class="pwa-row inline-list-item more-coupon-offers" *ngIf="promoCodes">
+            <div class="inline-list-icon">
+                <i class="icon-mobikwik"></i>
+            </div>
+            <div class="inline-list-text">
+                <span>Use Code: <span class="blue-promo-code">KWIK15</span> on Mobikwik and get upto 15% cashback.</span>
+            </div>
+            <div class="inline-list-link">
+                <i class="icon-information_about_us"></i>
+            </div>
+        </div> -->
+        <div class="pwa-row inline-list-item more-coupon-offers" *ngIf="promoCodes">
+            <div class="inline-list-icon">
+                <i class="icon-coupon-3-fill-1"></i>
+            </div>
+            <div class="inline-list-text coupon-list-text">
+                <span>Use Code : <span class="green-promo-code">{{promoCodes[0].promoCode}}</span> and get {{promoCodes[0].promoDescription}}</span><br/>
+                <span class="green-promo-code-min" *ngIf="promoCodes[0].minCartValue > 0">Min cart value {{ promoCodes[0].minCartValue | currency:'INR': 'symbol': '1.0-0'}}</span>
+            </div>
+            <!-- <div class="inline-list-link">
+                <span class="link-text" *ngIf="!disableEMIView">VIEW</span>
+            </div> -->
+        </div>
+        <div *ngIf="promoCodes && promoCodes.length > 1" class="pwa-row inline-list-item" [ngClass]="{'more-coupon-offers-border': promoCodes && promoCodes.length < 2}">
+            <ng-container >
+                <div class="inline-list-icon">
+                </div>
+                <div class="inline-list-text">
+                    <a class="link-text" (click)="seeMoreOffers()">SEE {{promoCodes.length - 1}} MORE {{(promoCodes.length - 1)
+                        == 1 ? 'COUPON' :'COUPONS'}}</a>
+                </div>
+                <div class="inline-list-link">
+                </div>
+            </ng-container>
+        </div>
         <div class="pwa-row inline-list-item" *ngFor="let item of allofferData; let i=index;">
             <div class="inline-list-icon">
                 <i class="icon-coupon-3-fill-1"></i>

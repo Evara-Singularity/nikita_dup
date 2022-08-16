@@ -27,7 +27,8 @@ import { CmsCarauselComponent } from "./components/cms-carausel/cms-carausel.com
         MainBannerComponent,
         FullImageComponent,
         ImageTextComponent,
-        CmsWrapperComponent
+        CmsWrapperComponent,
+
     ],
     declarations: [
         TextComponent,

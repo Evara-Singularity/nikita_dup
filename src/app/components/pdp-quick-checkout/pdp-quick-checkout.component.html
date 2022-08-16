@@ -1,0 +1,162 @@
+<app-bottom-menu >
+    <div class="quick-checkout" content *ngIf="isPopup">
+        <div class="bottom-menu-header">
+            <i class="icon-circle-delete delete-icon" (click)="close()"></i>
+        </div>
+        <div class="white-card">
+            <div class="inner-card">
+                <!--Price Details-->
+                <div class="checkout-card">
+                    <div class="pwa-image">
+                     <img src="{{productImg}}"> 
+                    </div>
+                    <div class="price-block">
+                        <p class="prod-mrp">₹{{cartService.getGenericCartSession.cart.tawot | mathFloor | number : '1.2-2'}}</p>
+                        <p class="prod-selling-price">₹{{cartService.getGenericCartSession.cart.tawot | mathFloor | number : '1.2-2'}}
+                             + {{cartService.getGenericCartSession.cart.taxPercentage | mathFloor | number : '1.2-2'}}% GST: ₹
+                             {{cartService.getGenericCartSession.cart.tawot+tax | mathFloor | number : '1.2-2'}}</p>
+                        <span class="green-txt" *ngIf="cartService.getGenericCartSession.cart.shippingCharges == 0 || null">Free Shipping</span>
+                    </div>
+                    <div class="qty_section">
+                        <div class="quantity-block">
+                            <span *ngIf="item.productQuantity > item.moq"
+                                (click)="handleItemQuantityChanges(0, 'decrement')"
+                                class="remove-qty qty-block">&#8722;</span>
+                            <i (click)="handleItemQuantityChanges(0, 'decrement')"
+                                *ngIf="item.productQuantity <= item.moq" class="icon-bin qty-block single-quantity"></i>
+                            <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
+                                (focusout)="handleItemQuantityChanges(0, 'update', $event.target.value)" />
+                            <span (click)="handleItemQuantityChanges(0, 'increment')"
+                                class="add-qty qty-block">&#43;</span>
+                        </div>
+                    </div>
+                </div>
+                <!--Payment Summary-->
+                <div class="small-accordion-panel" id="q_payment_summary">
+                    <div class="panel-head">
+                        <h3 class="heading-3">
+                            Payment Summary
+                        </h3>
+                        <i class="icon-expand"></i>
+                    </div>
+                    <div id="openHomeAccoridan" style="display:block;" class="panel-body">
+                        <div class="">
+                            <ul>
+                                <li class="tag-item">
+                                    <span class="tag-label">Amount</span>
+                                    <span class="tag-value">₹{{cartService.getGenericCartSession.cart.tawot | mathFloor | number : '1.2-2'}}</span>
+                                </li>
+                                <li class="tag-item">
+                                    <span class="tag-label">GST</span>
+                                    <span class="tag-value">₹{{cartService.getGenericCartSession.cart.tpt | mathFloor | number : '1.2-2'}}</span>
+                                </li>
+                                <li class="tag-item">
+                                    <span class="tag-label">Shipping</span>
+                                    <span class="tag-value">₹{{ shippingCharges | mathFloor | number :'1.2-2' }}</span>
+                                </li>
+                                <li class="tag-item">
+                                    <span class="tag-label">Coupon Discount</span>
+                                    <span class="tag-value green-txt" *ngIf="cartService.getGenericCartSession.cart.totalOffer!==0 && cartService.getGenericCartSession.cart.totalOffer!==null">
+                                        -₹{{cartService.getGenericCartSession.cart.totalOffer | mathFloor | number : '1.2-2'}}</span>
+                                    <span class="tag-value green-txt" *ngIf="cartService.getGenericCartSession.cart.totalOffer==0 || cartService.getGenericCartSession.cart.totalOffer==null">-₹0.00</span>
+                                </li>
+                                <li class="tag-item last-tag-item">
+                                    <span class="tag-label">Amount Payable</span>
+                                    <span class="tag-value">₹{{totalPayableAmount | mathCeil | number : '1.2-2'}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Delivery Address Section-->
+            <div class="about-delivery" *ngIf="shippingAddress">
+                <div class="about-delivery-txt">
+                    <h4 class="heading-3">
+                        Delivery Address
+                    </h4>
+                    <!-- <p>Ashish Kumar, Moglix, 5th floor, Tower - B, Prius Universal, sector-125, noida… | Mobile : 8263261175</p> -->
+                    <p> {{shippingAddress.customerName}} , {{shippingAddress.addressLine}}- {{shippingAddress.postCode}}, {{shippingAddress.city}} | Mobile: {{shippingAddress.phone}}</p>
+                </div>
+                <span class="link-text" (click)="close()" >CHANGE</span>
+            </div> 
+            <!--COD available Section-->
+            <div class="about-delivery">
+                <span class="st-icon-cod">
+                    <span class="icon-cod_1"></span>
+                    <span class="icon-cod_2"></span>
+                    <span class="icon-cod_3"></span>
+                    <span class="icon-cod_4"></span>
+                </span>
+                <div class="about-delivery-txt">
+                    <h4 class="green-txt">COD Available</h4>
+                    <span>You can pay at the time of delivery</span>
+                </div>
+                <span class="link-text" (click)="close()">CHANGE</span>
+            </div> 
+            <!--Bussiness Checkbox Section-->
+             <section class="invoice-container">
+                <form>
+                    <div class="invoice-select">
+                        <label>
+                            <input type="checkbox">
+                            <span class="custom-box icon-box"></span>
+                        </label>
+                        <div class="invoice-txt">
+                            <p>Select if purchasing for business</p>
+                            <span class="invoice-subtxt">We’ll ask for GST details</span>
+                        </div>
+                    </div>
+                </form>
+            </section>
+            <!--Billing Address Section-->
+            <div class="about-delivery" *ngIf="billingAddress">
+                <div class="about-delivery-txt">
+                    <h4 class="heading-3">
+                        Billing Address
+                    </h4>
+                    <!-- <p>Ashish Kumar, Moglix, 5th floor, Tower - B, Prius Universal, sector-125, noida… | Mobile : 8263261175</p> -->
+                    <p> {{billingAddress.customerName}} , {{billingAddress.addressLine}}- {{billingAddress.postCode}}, {{billingAddress.city}} | Mobile: {{billingAddress.phone}}</p>
+                </div>
+                <span class="link-text" ></span>
+            </div>
+            
+            <!--Amount Payable-->
+            <div class="continue-button">
+                <div class="container payable">
+                    <p class="total-mount">
+                        <span class="payable-amnt">Amount Payable
+                            <span>
+                            </span>
+                        </span>
+                        ₹   {{totalPayableAmount | mathCeil | number : '1.2-2'}}
+                    </p>
+                    <button class="btn" (click)="placeOrder()" >
+                        PLACE ORDER
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!--Promocode Section-->
+        <div class="promocode white-card">
+            <div class="apply-promo no-border">
+             <custom-promo-code></custom-promo-code>
+                <p class="open-offers" (click)="$event.stopPropagation();openOfferPopUp()">VIEW ALL OFFERS</p>
+            </div>
+            <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" *ngIf="showPromoOfferPopup"></promo-code-list>
+
+            <div class="alert-box" *ngIf="showPromoSuccessPopup">
+                <div class="overlay" (click)="$event.stopPropagation();closePromoSuccessPopUp()"></div>
+                <div class="content-area">
+                    <div class="info-area">
+                        <i class="icon-coupon-3-fill-1"></i>
+                        <p class="applied-coupon">'{{cartService?.appliedPromoCode}}' applied</p>
+                        <p class="saving-applid-coupon"><span>&#8377;{{totalOffer}}</span> saving with this coupon</p>
+                        <p class="green-text">YAY!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-bottom-menu>

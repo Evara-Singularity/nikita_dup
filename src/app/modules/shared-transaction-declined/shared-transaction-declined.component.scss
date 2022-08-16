@@ -1,0 +1,142 @@
+
+
+@import './../../scss/variables';
+
+.continue-button {
+    padding: 10px 0;
+    background: #fff;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+    width: 100%;
+    text-transform: uppercase;
+    box-shadow: 0 -3px 5px rgba(0, 0, 0, .16);
+    p {
+        font-size: 18px;
+        font-weight: 600;
+        float: left;
+        padding-left: 15px;
+        line-height: 20px;
+    }
+    .payable-amnt {
+        display: block;
+        font-size: $large-font;
+        font-weight: 400;
+        text-transform: capitalize;
+        color: #3030308c;
+        padding-bottom: 4px;
+        span {
+            img {
+                width: auto;
+            }
+        }
+        img {
+            vertical-align: middle;
+        }
+    }
+    button {
+        width: 175px;
+        background: $btn-color-red;
+        float: right;
+        height: 55px;
+        text-transform: uppercase;
+    }
+    button:disabled,
+    button[disabled]{
+        background-color: #bdbdbd;;
+        color: $white;
+    }
+}
+
+
+.transection-decline-popup {
+    padding: 15px;
+    p {
+        font-size: 14px;
+        line-height: 20px;
+    }
+    .top-header-bottom-menu {
+        .heading-3 {
+            padding: 0 0 15px;
+            position: relative;
+            color: #d9232d;
+            font-size: 18px;
+            text-align: center;
+        }
+        i {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 16px;
+        }
+    }
+    .decline-txt {
+        width: 90%;
+        margin: auto;
+        text-align: center;
+    }
+    .img-block {
+        img {
+            width: 150px;
+            padding: 15px;
+        }
+        text-align: center;
+    }
+    .bottom-txt-block {
+        p {
+            padding: 8px 0px;
+        }
+    }
+    .btn-block {
+        button {
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 10px 0px;
+        }
+        .red-bg-btn {
+            background-color: #d9232d;
+            color: #fff;
+        }
+        .light-red-bg-btn {
+            background-color: #fae0e1;
+            color: #d9232d;
+        }
+        .login-seperator-text {
+            position: relative;
+            text-align: center;
+            &::before {
+                content: "";
+                position: absolute;
+                width: 60%;
+                margin-left: 20%;
+                height: 1px;
+                background: #e4e4e4;
+                left: 0;
+                top: calc(50% - 0.5px);
+            }
+            span {
+                background: #ffffff;
+                padding: 0 10px;
+                line-height: 20px;
+                position: relative;
+                color: #343434;
+                font-size: $small-font;
+            }
+        }
+    }
+    &.pay-cod {
+        .btn-block-1st {
+            display: none;
+        }
+    }
+    // &.retry-payment{
+    //     .btn-block-2nd{
+    //         display: none;
+    //     }
+    // }
+}

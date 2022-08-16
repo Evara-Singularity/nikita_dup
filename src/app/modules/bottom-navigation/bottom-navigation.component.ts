@@ -42,7 +42,7 @@ export class BottomNavigationComponent implements OnInit {
 
   checkIfUserLoggedIn(url, title = "") {
     let user = this.localStorageService.retrieve("user");
-    if (user && user.authenticated == "true" || url=='/quickorder' || url == '/login' ) {
+    if (user && user.authenticated == "true" || url=='/quickorder' || url == '/login' || url=='/' ) {
       this.router.navigate([url]); 
     } else {
       this.localAuthService.setBackURLTitle(url, title);

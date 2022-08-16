@@ -11,7 +11,7 @@ import { CartUtils } from './cart-utils';
 import { GlobalLoaderService } from './global-loader.service';
 import { UrlsService } from './urls.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: 'any' })
 export class QuickCodService
 {
   codMessages: string[] = [];

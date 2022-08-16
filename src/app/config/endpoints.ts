@@ -114,5 +114,5 @@ export const ENDPOINTS = {
   SAVE_CORPORATE_GIFTING: '/cmsapi/giftingQuery',
   GET_PAST_ORDERS:'/checkout/getPastOrders?userId=',
   GET_PAYMENT_DETAILS: '/payment/getRetryRequest',
-  GET_LAST_ORDERS: "/checkout/order/getLastOrders",
+  GET_LAST_ORDERS: '/checkout/order/getLastOrders',
 };

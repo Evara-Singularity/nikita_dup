@@ -1,73 +1,93 @@
 @import '../../scss/variables';
-.accordian_footer_panel {
-    margin-top: 10px;
-    .panel-head {
-        background: #fff;
-        border-top: 1px solid #d4d4d4;
-        h3 {
-            font-size: $extra-large-font;
-            &.rotate-icon{
-                .icon-down{
-                    transform: rotate(180deg); 
-                }
-            }
-            padding: 15px 5px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            position: relative;
-            .related-icon {
-                font-size: 20px;
-            }
+
+.panel-head {
+    background: #fff;
+    border-top: 1px solid #d4d4d4;
+
+    h3 {
+        font-size: $extra-large-font;
+
+        &.rotate-icon {
             .icon-down {
-                position: absolute;
-                right: 10px;
-                top: 18px;
+                transform: rotate(180deg);
             }
         }
+
+        padding: 15px 5px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        .related-icon {
+            font-size: 20px;
+        }
+
+        .icon-down {
+            position: absolute;
+            right: 10px;
+            top: 18px;
+        }
     }
-    .panel-body {
-        padding: 0px 5px 10px;
-        background-color: red;
-        background: #fff;
-        display: none;
+    & .ico-up {
+        .iconaccordian {
+            transform: rotate(180deg) !important;
+        }
     }
-    .open {
-        display: block !important;
+
+    .iconaccordian {
+        margin-left: auto;
     }
+}
+
+.panel-body {
+    padding: 0px 5px 10px;
+    background-color: red;
+    background: #fff;
+    display: none;
+}
+
+.open {
+    display: block !important;
+}
+
+.icon-accordian {
+    float: right;
+
+    i {
+        font-size: 14px;
+    }
+}
+
+.ico-up {
     .icon-accordian {
-        float: right;
+        transform: rotate(180deg);
+    }
+}
+
+.category_links {
+    &>div {
+        border-bottom: 1px solid #eaeaea;
+        position: relative;
+        margin-left: 30px;
+        padding: 7px 0px;
+
+        &:last-child {
+            border: none;
+        }
+
+        a {
+            padding: 7px 10px;
+            font-size: 14px;
+            display: block;
+            width: 90%;
+        }
 
         i {
-            font-size: 14px;
-        }
-    }
-    .ico-up {
-        .icon-accordian {
-            transform: rotate(180deg);
-        }
-    }
-    .category_links {
-        & > div {
-            border-bottom: 1px solid #eaeaea;
-            position: relative;
-            margin-left: 30px;
-            padding: 7px 0px;
-            &:last-child {
-                border: none;
-            }
-            a {
-                padding: 7px 10px;
-                font-size: 14px;
-                display: block;
-                width: 90%;
-            }
-            i {
-                position: absolute;
-                top: 12px;
-                right: 0px;
-                font-size: 20px;
-            }
+            position: absolute;
+            top: 12px;
+            right: 0px;
+            font-size: 20px;
         }
     }
 }
@@ -82,6 +102,7 @@
     margin: 10%;
     box-shadow: 0 1.5em 85px 0 rgba(0, 0, 0, 0.2);
 }
+
 .accordionItem {
     float: left;
     display: block;
@@ -89,6 +110,7 @@
     box-sizing: border-box;
     font-family: "Open-sans", Arial, sans-serif;
 }
+
 .accordionItemHeading {
     cursor: pointer;
     margin: 0px 0px 10px 0px;
@@ -101,6 +123,7 @@
     border-radius: 3px;
     box-sizing: border-box;
 }
+
 .close .accordionItemContent {
     height: 0px;
     transition: height 1s ease-out;
@@ -111,6 +134,7 @@
     float: left;
     display: block;
 }
+
 .open .accordionItemContent {
     padding: 20px;
     background-color: #fff;

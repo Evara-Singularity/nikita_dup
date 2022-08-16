@@ -1,4 +1,5 @@
 @import '../../../scss/variables';
+@import '../../../scss/components/panel-head.scss';
 :host{
   padding: 5px 0px 0px 0px;
   display: block;
@@ -11,16 +12,8 @@
     margin: 15px auto;
     font-size: $large-font;
   }
-  .panel-head{
-    background:var(--cultured);
-    margin-top: 10px;
-    h3{
-      font-size: $extra-large-font;
-      padding: 15px 15px;
-      .iconaccordian{
-        float: right;
-      }
-    }
+  .brand-head{
+    border-top: none;
   }
 }
 .brandBlock{

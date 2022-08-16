@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SharedAuthModule } from '../shared-auth-v1/shared-auth.module';
 import { BottomMenuModule } from '../bottomMenu/bottom-menu.module';
 import { SocialAuthService } from 'angularx-social-login';
+import { SharedAuthUtilService } from '../shared-auth-v1/shared-auth-util.service';
 
 @Component({
   selector: "auth",
@@ -14,9 +15,11 @@ export class SharedAuthPopUpComponent implements OnInit {
   @Input() flow: string;
   @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(private _sharedAuthUtilService:SharedAuthUtilService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this._sharedAuthUtilService.sendLoginPopUpTracking();
+  }
 
 
   togglePopUp(value) {

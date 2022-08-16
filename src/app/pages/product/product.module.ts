@@ -36,6 +36,7 @@ import { ProductGroupingAttributesModule } from '@app/components/product-groupin
 import { OosSimilarSectionModule } from '@app/components/oos-similar-section/oos-similar-section.module';
 import { ProductSkeletonsModule } from '@app/components/product-skeletons/product-skeletons.component';
 import ProductAccordiansModule from '@app/components/product-accordians/product-accordians.component';
+import { LoginPopupModule } from '@app/modules/login-popup/login-popup.module';
 @NgModule({
   declarations: [ProductComponent],
   imports: [
@@ -79,7 +80,8 @@ import ProductAccordiansModule from '@app/components/product-accordians/product-
     OosSimilarSectionModule,
     SharedProductCarouselModule,
     ProductSkeletonsModule,
-    ProductAccordiansModule
+    ProductAccordiansModule,
+    LoginPopupModule
   ],
   exports: [],
   providers: [NgxSiemaService],

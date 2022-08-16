@@ -197,7 +197,19 @@ export class SharedAuthUtilService implements OnInit
             pageName: "moglix:login/signup post",
             linkName: "post login/signup",
             loginStatus: "guest",
-            error: "Authentication Failure"
+        };
+        let custData = {};
+        let order = {}
+        this._globalAnalyticsService.sendAdobeCall({ page, custData, order }, "genericClick"); 
+    }
+
+    sendLoginPopUpTracking()
+    {
+        let page = {
+            channel: "login/signup",
+            pageName: "moglix:login/signup post",
+            linkName: "post login/signup",
+            loginStatus: "guest",
         };
         let custData = {};
         let order = {}

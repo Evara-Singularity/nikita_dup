@@ -81,6 +81,7 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
       ).subscribe((data) => {
         this.authInstance = null;
         this.authInstanceref.remove();
+        this._router.navigate([]);
       });
     }, 600);
   }

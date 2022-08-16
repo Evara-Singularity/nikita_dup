@@ -1,4 +1,6 @@
 import { Component, Input, OnInit, Output,EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { fade } from '@utils/animations/animation';
 
@@ -17,8 +19,9 @@ export class SpecificationsComponent implements OnInit
     public isAllListShow:boolean;
     enableSecondaryAttributes: boolean = false;
     showSecondaryAttributes: boolean = false;
+    user: any;
     
-    constructor(public _commonService: CommonService) { }
+    constructor(public _commonService: CommonService,private _localAuthService : LocalAuthService,private router : Router) { }
 
     ngOnInit() {
         this.checkSecondaryAttributes();
@@ -36,7 +39,11 @@ export class SpecificationsComponent implements OnInit
         }
     }
     showMore() {
-        this.showSecondaryAttributes = !this.showSecondaryAttributes;
-        this.callback.emit(this.showSecondaryAttributes);
+         this.user = this._localAuthService.getUserSession();
+        if (this.user && this.user['authenticated'] == 'true') {
+            this.showSecondaryAttributes = !this.showSecondaryAttributes;
+            this.callback.emit(this.showSecondaryAttributes);
+        }
+        else this.router.navigate([this.router.url],{fragment:'auth'})
     }
 }

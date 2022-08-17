@@ -4,6 +4,8 @@ import CONSTANTS from '@app/config/constants';
 import { ProductService } from '../../utils/services/product.service';
 import { forkJoin} from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
+import { ActivatedRoute, NavigationEnd, NavigationExtras, NavigationStart, Router } from "@angular/router";
+import { CommonService } from '@app/utils/services/common.service';
 @Component({
     selector: 'app-product-offers',
     templateUrl: './product-offers.component.html',
@@ -13,8 +15,6 @@ export class ProductOffersComponent implements OnInit
 {
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     allofferData: any = null;
-    @Output() viewPopUpHandler: EventEmitter<any> = new EventEmitter<any>();
-    @Output() emaiComparePopUpHandler: EventEmitter<any> = new EventEmitter<any>();
     @Output() promoCodePopUpHandler: EventEmitter<any> = new EventEmitter<any>();
     @Input() price = 0;
     @Input() gstPercentage;
@@ -25,6 +25,9 @@ export class ProductOffersComponent implements OnInit
     constructor(
         private productService: ProductService,
         public localStorageService: LocalStorageService,
+        private common: CommonService,
+        private route: ActivatedRoute,
+        private router: Router,
     ) { }
 
     ngOnInit(): void
@@ -65,13 +68,15 @@ export class ProductOffersComponent implements OnInit
 
     sendOfferData(offerData)
     {
-        this.viewPopUpHandler.emit(offerData);
+        this.productService.productCouponItem=offerData;
+        this.router.navigate([this.common.currentUrl], { fragment: CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_OFFERS });
+
     }
 
     openEmiPopup()
     {
         if (this.disableEMIView) return;
-        this.emaiComparePopUpHandler.emit(true);
+        this.router.navigate([this.common.currentUrl], { fragment: CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_EMIS });
     }
 
     seeMoreOffers(){

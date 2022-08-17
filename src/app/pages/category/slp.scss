@@ -104,6 +104,9 @@
                 }
             }
         }
+        .popup-bestseller{
+            margin: 0 !important;
+        }
         .viewallbs {
             color: $logo-color;
             border: 1px solid $logo-color;
@@ -119,7 +122,7 @@
             padding: 0 10px;
         }
         .bsrow {
-            border-top: 1px solid rgba(162, 162, 162, 0.5);
+            border-top: 1px solid rgba(162, 162, 162, 0.5) !important;
             margin: 0 -15px;
             .bs_item {
                 width: 50%;
@@ -415,30 +418,30 @@
                 background: #fff;
                 padding: 15px;
                 box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-                .outerBlock {
-                    width: 50%;
-                    float: left;
-                    padding: 10px 10px;
+            }
+            .outerBlock {
+                width: 50%;
+                float: left;
+                padding: 10px 10px;
+            }
+            .subCatBlock {
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                background: #fff;
+                min-height: 175px;
+                padding: 5px;
+                margin-bottom: 10px;
+                a {
+                    display: block;
                 }
-                .subCatBlock {
-                    border: 1px solid #ccc;
-                    border-radius: 3px;
-                    background: #fff;
-                    min-height: 175px;
-                    padding: 5px;
-                    margin-bottom: 10px;
-                    a {
-                        display: block;
-                    }
-                    p {
-                        font-size: 12px;
-                        text-align: center;
-                    }
-                    img {
-                        width: 100%;
-                        border-radius: 2px;
-                        padding: 8px 10px;
-                    }
+                p {
+                    font-size: 12px;
+                    text-align: center;
+                }
+                img {
+                    width: 100%;
+                    border-radius: 2px;
+                    padding: 8px 10px;
                 }
             }
             .safetyshopbywrap {

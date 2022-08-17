@@ -60,7 +60,7 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
           this.initiatePopUp();
         }
       });
-    this._aRoute.snapshot.fragment === "auth" ? this.openLoginPopUp().then(() => this._loader.setLoaderState(false)) : null;
+    this._aRoute.snapshot.fragment === "auth" ? this.initiatePopUp() : null;
   }
 
   async openLoginPopUp() {

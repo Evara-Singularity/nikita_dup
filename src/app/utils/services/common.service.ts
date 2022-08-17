@@ -676,6 +676,7 @@ export class CommonService
         if (params.pageName == "CATEGORY") {
             if (params["category"] != undefined)
                 actualParams["category"] = params["category"];
+                actualParams['pageSize'] = CONSTANTS.GLOBAL.default.categoryListingPageSize + '';
             //10766
             if (queryParams["str"] != undefined)
                 actualParams["str"] = queryParams["str"];

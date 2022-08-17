@@ -15,7 +15,7 @@
         <product-card-vertical-container [containerId]="'topDealsContainer'" [numberOfItems]="selectedProducts?.length || 0">
             <ng-container *ngFor="let product of selectedProducts; let pIndex=index">
                 <product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
-                    [cardMetaInfo]='cardMetaInfo' [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex"
+                    [cardMetaInfo]='cardMetaInfo' [moduleUsedIn]="'POPULAR_DEALS'" [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex"
                     [enableTracking]="true" [analytics]="analytics">
                 </product-card-vertical-grid-view>
             </ng-container>

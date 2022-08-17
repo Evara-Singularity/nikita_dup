@@ -18,7 +18,7 @@ const slpPagesExtrasIdMap = { "116111700": "116111700", "114160000": "114160000"
 const EDK: any = makeStateKey<{}>('EDK');  //EDK:Extra Data Key
 
 @Component({
-    selector: 'alp',
+    selector: 'data-alp',
     templateUrl: './alp.html',
     styleUrls: ['./alp.scss'],
 })

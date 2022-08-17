@@ -29,7 +29,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { ProductService } from '@app/utils/services/product.service';
 import { CategoryData } from '@app/utils/models/categoryData';
 @Component({
-	selector: 'home',
+	selector: 'data-home',
 	templateUrl: './home.html',
 	styleUrls: ['./home.scss'],
 	animations: [fade],

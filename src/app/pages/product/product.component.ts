@@ -1,3 +1,4 @@
+import { NavigationService } from '@app/utils/services/navigation.service';
 import { DOCUMENT } from "@angular/common";
 import
 {
@@ -31,7 +32,7 @@ import { CheckoutService } from "@app/utils/services/checkout.service";
 import { CommonService } from "@app/utils/services/common.service";
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
-import { BehaviorSubject, Subject, Subscription } from "rxjs";
+import { BehaviorSubject, Observable, of, Subject, Subscription } from "rxjs";
 import { ClientUtility } from "../../utils/client.utility";
 import { ObjectToArray } from "../../utils/pipes/object-to-array.pipe";
 import { LocalAuthService } from "../../utils/services/auth.service";
@@ -44,7 +45,7 @@ import { SiemaCrouselService } from "../../utils/services/siema-crousel.service"
 import { FbtComponent } from "./../../components/fbt/fbt.component";
 
 import * as $ from 'jquery';
-import { filter } from "rxjs/operators";
+import { catchError, filter, map, mergeMap } from "rxjs/operators";
 import { TrackingService } from "@app/utils/services/tracking.service";
 
 interface ProductDataArg
@@ -59,7 +60,7 @@ interface ProductDataArg
     templateUrl: "./product.component.html",
     styleUrls: ["./product.component.scss"],
 })
-export class ProductComponent implements OnInit, AfterViewInit
+export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 {
     encodeURI = encodeURI;
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -159,6 +160,8 @@ export class ProductComponent implements OnInit, AfterViewInit
     questionMessage: string;
     listOfGroupedCategoriesForCanonicalUrl = ["116111700"];
     alreadyLiked: boolean = true;
+    //recently view
+    hasRecentlyView = true;
 
     productShareInstance = null;
     @ViewChild("productShare", { read: ViewContainerRef })
@@ -199,6 +202,10 @@ export class ProductComponent implements OnInit, AfterViewInit
     offerPopupInstance = null;
     @ViewChild("offerPopup", { read: ViewContainerRef })
     offerPopupContainerRef: ViewContainerRef;
+    // ondemad loaded components promo more offer section popup
+    promoOfferPopupInstance = null;
+    @ViewChild("promoOfferPopup", { read: ViewContainerRef })
+    promoOfferPopupContainerRef: ViewContainerRef;
     // ondemad loaded components offer compare section popup
     offerComparePopupInstance = null;
     @ViewChild("offerComparePopup", { read: ViewContainerRef })
@@ -284,6 +291,10 @@ export class ProductComponent implements OnInit, AfterViewInit
     popularDealsInstance = null;
     @ViewChild("popularDeals", { read: ViewContainerRef })
     popularDealsContainerRef: ViewContainerRef;
+    // ondemad loaded components for quick order popUp
+    quickOrderInstance = null;
+    @ViewChild("quickOrder", { read: ViewContainerRef })
+    quickOrderContainerRef: ViewContainerRef;
 
     iOptions: any = null;
 
@@ -347,6 +358,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         private analytics: GlobalAnalyticsService,
         private checkoutService: CheckoutService,
         private _trackingService: TrackingService,
+        private _navigationService:NavigationService,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any
     )
@@ -385,9 +397,24 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
+            this.navigationOnFragmentChange();
         }
     }
 
+    navigationOnFragmentChange() {
+        this.route.fragment.subscribe(fragment => {
+            switch (fragment) {
+                case CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_EMIS :
+                    this.emiComparePopUpOpen(true);
+                    break;
+                case CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_OFFERS:
+                    this.viewPopUpOpen(this.productService.productCouponItem);
+                    break;    
+                default:
+                    break;
+            }
+        })
+    }
 
     backUrlNavigationHandler()
     {
@@ -471,7 +498,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.route.data.subscribe(
             (rawData) =>
             {
-                if (!rawData["product"]["error"]) {
+                if (!rawData["product"]["error"] && rawData["product"][0]["active"]==true) {
                     if (
                         rawData["product"][0]["productBO"] &&
                         Object.values(
@@ -508,7 +535,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     }
                 }
                 this.showLoader = false;
-                this.globalLoader.setLoaderState(false);
+                this.globalLoader.setLoaderState(false); 
                 this.checkForRfqGetQuote();
                 this.checkForAskQuestion();
                 this.updateUserSession();
@@ -591,13 +618,13 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     updateAttr(productId)
     {
-        this.removeRfqForm();
+        this.removeRfqForm(); 
         this.showLoader = true;
         this.productService
             .getGroupProductObj(productId)
             .subscribe((productData) =>
             {
-                if (productData["status"] == true) {
+                if (productData["status"] == true && productData["active"] == true ) {
 
                     this.processProductData(
                         {
@@ -693,6 +720,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         this.breadcrumbData = breadcrumbData;
         if (this.breadcrumbData.length > 0) {
+            this._navigationService.setPDPBreadCrumbData(breadcrumbData);
             // this.commonService.triggerAttachHotKeysScrollEvent('bread-head');
         }
     }
@@ -985,6 +1013,10 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.offerPopupInstance = null;
             this.offerPopupContainerRef.remove();
         }
+        if (this.promoOfferPopupInstance) {
+            this.promoOfferPopupInstance = null;
+            this.promoOfferPopupContainerRef.remove();
+        }
         if (this.offerComparePopupInstance) {
             this.offerComparePopupInstance = null;
             this.offerComparePopupContainerRef.remove();
@@ -1270,8 +1302,8 @@ export class ProductComponent implements OnInit, AfterViewInit
             if (this.isBulkPricesProduct) {
                 this.productBulkPrices = this.productBulkPrices.map(priceMap =>
                 {
-                    const calculatedDiscount = this.commonService.calculcateDiscount(null, this.productMrp, priceMap.bulkSellingPrice);
-                    return { ...priceMap, calculatedDiscount }
+                    const discount = this.commonService.calculcateDiscount(null, this.productMrp, priceMap.bulkSellingPrice);
+                    return { ...priceMap, discount }
                 })
                 //filtering Data to show the 
                 this.productBulkPrices = this.productBulkPrices.filter((bulkPrice) =>
@@ -1555,9 +1587,191 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     // cart methods 
-    addToCart(buyNow: boolean)
-    {
-        this.addToCartFromModal(buyNow)
+    addToCart(buyNow: boolean) {
+      this.globalLoader.setLoaderState(true);
+      this.validateQuickCheckout().subscribe((res) => {
+        console.log('validateQuickCheckout res  -->' , res);
+        if (res && res.returnPopUpStatus) {
+          this.globalLoader.setLoaderState(false);
+          this.quickCheckoutPopUp(buyNow ,res.address);
+        } else {
+          this.addToCartFromModal(buyNow);
+          this.globalLoader.setLoaderState(false);
+        }
+      });
+    }
+    
+    async quickCheckoutPopUp(buyNow, address) {
+      if (!this.quickOrderInstance) {
+        this.globalLoader.setLoaderState(true);
+        const { PdpQuickCheckoutComponent } = await import(
+          "../../components/pdp-quick-checkout/pdp-quick-checkout.component"
+        ).finally(() => {
+          this.globalLoader.setLoaderState(false);
+        });
+        const factory = this.cfr.resolveComponentFactory(PdpQuickCheckoutComponent);
+        this.quickOrderInstance = this.quickOrderContainerRef.createComponent(
+          factory,
+          null,
+          this.injector
+        );
+  
+        this.quickOrderInstance.instance["rawProductData"] = this.rawProductData;
+        this.quickOrderInstance.instance["productPrice"] = this.productPrice;
+        this.quickOrderInstance.instance["selectedProductBulkPrice"] = this.selectedProductBulkPrice;
+        this.quickOrderInstance.instance["cartQunatityForProduct"] = this.cartQunatityForProduct;
+        this.quickOrderInstance.instance["address"] = address;
+        (
+          this.quickOrderInstance.instance["isClose"] as EventEmitter<boolean>
+        ).subscribe((status) => {
+          this.router.navigate(["/checkout"]);
+        });
+        this.quickOrderInstance = null;
+      }
+    }
+    
+    validateQuickCheckout(): Observable<any> {
+      if (this.localAuthService.isUserLoggedIn) {
+        const userData = this.localAuthService.getUserSession();
+        const userId = userData ? userData["userId"] : null;
+        return this.productService
+          .getCustomerLastOrder({
+            customerId: userId,
+            limit: 1,
+          })
+          .pipe(
+            map(
+              (res) => {
+                if (!res) {
+                  return null;
+                } else {
+                  return this.getCustomerLastOrderVerification(res);
+                }
+              },
+              catchError((error) => {
+                return of(null);
+              })
+            ),
+            mergeMap((getAddressRequestData) => {
+              if (getAddressRequestData) {
+                return this.commonService
+                  .getAddressList({
+                    customerId: userId,
+                    invoiceType: this.cartService.invoiceType,
+                  })
+                  .pipe(
+                    map(
+                      (result) => {
+                        if (!result) {
+                          return null;
+                        } else {
+                          return this.getAddressVerification(
+                            result,
+                            getAddressRequestData
+                          );
+                        }
+                      },
+                      catchError((error) => {
+                        return of(null);
+                      })
+                    ),
+                    mergeMap((response) => {
+                      if (response) {
+                        const postBody = {
+                          productId: [this.rawProductData["defaultPartNumber"]],
+                          toPincode: response.address[0]["postCode"],
+                          price: this.productPrice,
+                        };
+                        return this.productService
+                          .getLogisticAvailability(postBody)
+                          .pipe(
+                            map(
+                              (ress) => {
+                                if (!ress) {
+                                  return null;
+                                } else {
+                                  return this.getServiceAvailabilityVerification(
+                                    ress , response
+                                  );
+                                }
+                              },
+                              catchError((error) => {
+                                return of(null);
+                              })
+                            )
+                          );
+                      } else {
+                        return of(null);
+                      }
+                    })
+                  );
+              } else {
+                return of(null);
+              }
+            })
+          );
+      } else {
+        return of(null);
+      }
+    }
+  
+    getServiceAvailabilityVerification(ress , address) {
+      if (ress && ress["statusCode"] && ress["statusCode"] == 200) {
+        let data =
+          ress["data"][this.rawProductData["defaultPartNumber"]]["aggregate"];
+          console.log("data--" , data);
+        if (data["serviceable"] == true && data["codAvailable"] == true) {
+          return {
+            returnPopUpStatus: true,
+            address: address
+          };
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
+  
+    getAddressVerification(result, getAddressRequestData) {
+      let finalAddress = null;
+      if (result && result["addressList"] && result["addressList"].length > 0) {
+        finalAddress = result["addressList"].filter(
+          (res) => res.idAddress == getAddressRequestData.customerLastAddressId
+        );
+        if (finalAddress && finalAddress.length > 0) {
+          return {
+            address: finalAddress,
+            bothAddress: getAddressRequestData
+          };
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
+  
+    getCustomerLastOrderVerification(res) {
+      if (res && res["lastOrderDetails"] && res["lastOrderDetails"].length) {
+        let len =
+          res["lastOrderDetails"].length == 0
+            ? res["lastOrderDetails"].length
+            : res["lastOrderDetails"].length - 1;
+        const isValidOrder =
+          res["lastOrderDetails"][len].paymentType == "COD" &&
+          res["lastOrderDetails"][len].orderStatus == "ACCEPTED";
+        if (isValidOrder) {
+          return {
+            addressDetails: res["lastOrderDetails"][len]["addressDetails"],
+            customerLastAddressId: res["lastOrderDetails"][len]["addressId"],
+          };
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
     }
 
     addToCartFromModal(buyNow: boolean)
@@ -1965,6 +2179,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     // dynamically recent products section
+    
     async onVisibleRecentProduct(htmlElement)
     {
         // console.log('onVisibleRecentProduct', htmlElement);
@@ -1999,6 +2214,12 @@ export class ProductComponent implements OnInit, AfterViewInit
                 custData: custData,
                 order: orderData,
             };
+            (
+                this.recentProductsInstance.instance["noRecentlyViewed$"] as EventEmitter<any>).subscribe((flag) =>
+                {
+                    this.hasRecentlyView = false;
+                }
+            );
         }
     }
 
@@ -2044,7 +2265,6 @@ export class ProductComponent implements OnInit, AfterViewInit
 
     toggleLoader(status)
     {
-        // console.log('toggleLoader called', status);
         this.showLoader = status;
     }
 
@@ -2299,21 +2519,60 @@ export class ProductComponent implements OnInit, AfterViewInit
             }
             this.offerSectionInstance.instance["price"] = price;
             this.offerSectionInstance.instance['gstPercentage'] = gstPercentage;
+            this.offerSectionInstance.instance['productmsn'] = this.productSubPartNumber || this.defaultPartNumber;
             (
                 this.offerSectionInstance.instance[
                 "viewPopUpHandler"
                 ] as EventEmitter<boolean>
             ).subscribe((data) =>
             {
+                console.log("data view --->>>", data)
                 this.viewPopUpOpen(data);
             });
             (
                 this.offerSectionInstance.instance[
-                "emaiComparePopUpHandler"
+                "promoCodePopUpHandler"
                 ] as EventEmitter<boolean>
-            ).subscribe((status) =>
+            ).subscribe((data) =>
             {
-                this.emiComparePopUpOpen(status);
+                this.promoCodePopUpOpen(data);
+            });
+        }
+    }
+    async promoCodePopUpOpen(data){
+        if (!this.promoOfferPopupInstance) {
+            this.showLoader = true;
+            const { ProductMoreOffersComponent } = await import(
+                "./../../components/product-more-offers/product-more-offers.component"
+            ).finally(() =>
+            {
+                this.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(
+                ProductMoreOffersComponent
+            );
+            this.promoOfferPopupInstance = this.promoOfferPopupContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.promoOfferPopupInstance.instance["data"] = data;
+            (
+                this.promoOfferPopupInstance.instance["out"] as EventEmitter<boolean>
+            ).subscribe((data) =>
+            {
+                // create a new component after component is closed
+                // this is required, to refresh input data
+                this.promoOfferPopupInstance = null;
+                this.promoOfferPopupContainerRef.remove();
+            });
+            (
+                this.promoOfferPopupInstance.instance[
+                "isLoading"
+                ] as EventEmitter<boolean>
+            ).subscribe((loaderStatus) =>
+            {
+                this.toggleLoader(loaderStatus);
             });
         }
     }

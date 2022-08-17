@@ -5,7 +5,7 @@
   </div>
   <product-card-vertical-container [numberOfItems]="recentlyViewedProducts.length || 0">
     <ng-container *ngFor="let product of recentlyViewedProducts">
-      <product-card-vertical-grid-view  [product]="product"> </product-card-vertical-grid-view >
+      <product-card-vertical-grid-view [moduleUsedIn]="'HOME_RECENT'"  [product]="product"> </product-card-vertical-grid-view >
     </ng-container>
   </product-card-vertical-container>
 </section>

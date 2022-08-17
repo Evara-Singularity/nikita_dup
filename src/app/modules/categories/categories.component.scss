@@ -11,6 +11,7 @@
     margin:-10px 0px 0px -10px;
     background:var(--white);
     overflow:auto;
+    padding-bottom: 10px;
     .circle-brand-block{
         font-size: 12px;
         text-align: center;
@@ -43,6 +44,19 @@
     }
     .view-all-strip{
         @extend %view-all-strip;
+    }
+}
+
+
+// new category block
+.category-block-container{
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 15px 0 0;
+    flex-wrap: wrap;
+    .category-inner-block{
+        width: 48%;
+        margin-bottom: 8px;
     }
 }
 

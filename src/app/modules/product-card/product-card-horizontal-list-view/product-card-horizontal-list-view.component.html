@@ -1,4 +1,4 @@
-<div class="product-horizontal-card" observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
+<div class="product-horizontal-card" data-observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
     <!-- YOUTUBE FEATURE START -->
     <div class="youtubeThumbnail-listing"
         *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0 && this.youtubeThumbnail">
@@ -15,7 +15,7 @@
         <div class="inner-container">
             <div class="left" (click)="navigateToPDP()">
                 <div *ngIf="this.product && this.product['productTags'][0]" class="tags">
-                    <img [src]="this.product['productTags'][0]['tagImageLink']" />
+                    <img [src]="this.product['productTags'][0]['tagImageLink']" alt=""/>
                 </div>
                 <ng-container *ngIf="isPDPImageLazyLoaded || !cardFeaturesConfig.lazyLoadImage">
                     <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}"
@@ -36,7 +36,7 @@
                     </span>
                     <span class="count"
                         *ngIf="cardFeaturesConfig.enableRating && product.ratingCount">({{productReviewCount}})</span>
-                    <span class="ads" *ngIf="!product.internalProduct && !hideAd">AD</span>
+                    <span class="ads" *ngIf="!isWishlist && !product.internalProduct && !hideAd">AD</span>
                 </div>
                 <div *ngIf="!isWishlist" class="name" (click)="trackProductTitle('title');$event.preventDefault()">
                     <a [href]="prodUrl + '/' + product.productUrl">

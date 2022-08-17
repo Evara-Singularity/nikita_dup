@@ -20,6 +20,7 @@ export class ProductService {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     private basePath = CONSTANTS.NEW_MOGLIX_API;
+    productCouponItem: any = null;
 
     oosSimilarProductsData = {
         similarData: [],
@@ -36,6 +37,16 @@ export class ProductService {
             similarData: [],
         };
     }
+
+    getCustomerLastOrder(obj):Observable<any> {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_LAST_ORDERS;
+        return this._dataService.callRestful("POST", url, { body: obj }).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ lastOrderDetails: [], httpStatus: res.status });
+            })
+        );
+    }
+  
 
     getSimilarProductInfoByIndex(index) {
         return this.oosSimilarProductsData.similarData[index];
@@ -150,6 +161,13 @@ export class ProductService {
         return this._dataService.callRestful(
             "GET",
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategoryExtras + "mobikwikpdp"
+        );
+    }
+
+    getAllPromoCodeOffers(url) {
+        return this._dataService.callRestful(
+            "GET",
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPON_CODE  + url
         );
     }
 
@@ -744,7 +762,6 @@ export class ProductService {
     }
 
     productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
-        // console.log("blocks", product)
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
         const productEntity: ProductsEntity =  {
@@ -760,7 +777,8 @@ export class ProductService {
             brandName: brandName || product['short_description'],
             quantityAvailable: 1,
            // discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
-            discount: this._commonService.calculcateDiscount(product['discount_percentage'], productMrp,  product['sellingPrice']),
+            //discount: this._commonService.calculcateDiscount(product['discount_percentage'], productMrp,  product['sellingPrice']),
+            discount: product['discount_percentage'],
             rating: null,
             categoryCodes: null,
             taxonomy: null,
@@ -825,7 +843,7 @@ export class ProductService {
             outOfStock: productBO['outOfStock'],
             quantityAvailable: priceQuantityCountry ? priceQuantityCountry['quantityAvailable'] : 0,
             productMinimmumQuantity: productMinimmumQuantity,
-            discount: (((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            discount: (priceQuantityCountry && priceQuantityCountry['discount']) ? priceQuantityCountry['discount'] :(((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
             rating: (overrideProductB0 && overrideProductB0.rating) ? overrideProductB0.rating : null,
             categoryCodes: productCategoryDetails['categoryCode'],
             taxonomy: productCategoryDetails['taxonomyCode'],

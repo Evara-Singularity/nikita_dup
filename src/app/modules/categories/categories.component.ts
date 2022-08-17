@@ -18,6 +18,8 @@ import { ProductCardVerticalGridViewModule } from '../product-card/product-card-
 import { ProductCardHorizontalGridViewModule } from '../product-card/product-card-horizontal-grid-view/product-card-horizontal-grid-view.module';
 import { ProductCardVerticalBlockViewModule } from '../product-card/product-card-vertical-block-view/product-card-vertical-block-view.module';
 import { ProductService } from '@app/utils/services/product.service';
+import { CONSTANTS } from '@app/config/constants';
+
 
 
 @Component({
@@ -62,6 +64,7 @@ export class Categories implements OnInit {
     }
 	openPopup;
 	categoryNameFromHomePage;
+	readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
 
 	constructor(
 		private _commonService: CommonService,

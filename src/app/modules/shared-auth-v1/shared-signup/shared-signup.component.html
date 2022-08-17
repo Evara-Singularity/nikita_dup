@@ -30,7 +30,7 @@
                 <label [class.is-focus]="phone.value.length!=0">
                     <input
                         [ngClass]="{'invalid-input': ( isSubmitted && ((phone.invalid && phone.hasError('startwithzero')) || (phone.invalid && !phone.hasError('startwithzero')) || (signupForm.valid && isUserExists)) )} "
-                        type="tel" numbersOnly formControlName="phone" maxlength="10" autocomplete="off">
+                        type="tel" data-numbersOnly formControlName="phone" maxlength="10" autocomplete="off">
                     <span class="label">Enter Mobile Number*</span>
                     <ng-container *ngIf="isSubmitted && phone.invalid">
                         <p class="error-field error-txt" *ngIf="phone.invalid && phone.hasError('startwithzero')">Mobile

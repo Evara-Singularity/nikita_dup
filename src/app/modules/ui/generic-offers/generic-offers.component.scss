@@ -3,7 +3,7 @@
     width: 90%;
     margin: auto;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top: 10px;
     .important-note {
         display: flex;
         justify-content: center;
@@ -15,7 +15,7 @@
         }
         span {
             font-size: $extra-small-font;
-            color: var(--spanish-gray);
+            color: var(--onyx-black);
         }
         i {
             font-size: $medium-font;

@@ -14,7 +14,7 @@
                         <label [class.is-focus]="phoneFC.value.length!=0">
                             <input type="tel"
                                 [ngClass]="{'invalid-input': isLoginNumberFormSubmitted && phoneFC.invalid}"
-                                pattern="\d{10}" numbersOnly maxlength="10" formControlName="phone">
+                                pattern="\d{10}" data-numbersOnly maxlength="10" formControlName="phone">
                             <span class="label">Enter Mobile Number</span>
                             <ng-container *ngIf="isLoginNumberFormSubmitted && phoneFC.invalid">
                                 <p class="error-field error-txt">Enter 10 digit mobile number</p>

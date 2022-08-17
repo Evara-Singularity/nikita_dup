@@ -96,7 +96,7 @@ export class CreateEditBillingAddressComponent implements OnInit, AfterViewInit,
         {
             this.stateList = stateList;
             const COUNTRY_ID = SharedCheckoutAddressUtil.getCountry(this.countryList, null);
-            const STATE_ID = SharedCheckoutAddressUtil.getState(this.stateList, null);
+            const STATE_ID = (this.address)? this.address['state']['idState'] :SharedCheckoutAddressUtil.getState(this.stateList, null);
             this.idCountry.patchValue(COUNTRY_ID);
             this.idState.patchValue(STATE_ID);
         })

@@ -3,13 +3,16 @@
         <div class="view-all-strip">
             <h3 class="heading-3">Recently Viewed</h3>
         </div>
-        <product-card-vertical-container [numberOfItems]="recentProductItems.length">
-            <ng-container *ngFor="let product of recentProductItems;let pIndex = index">
-                <product-card-vertical-grid-view [product]="product" [cardMetaInfo]='cardMetaInfo' [section]="'recently'"
-                    [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
-                    [analytics]="analytics">
-                </product-card-vertical-grid-view>
-            </ng-container>
-        </product-card-vertical-container>
+        <div class="pb-15">
+            <product-card-vertical-container [numberOfItems]="recentProductItems.length">
+                <ng-container *ngFor="let product of recentProductItems;let pIndex = index">
+                    <product-card-vertical-grid-view [product]="product" [cardMetaInfo]='cardMetaInfo'
+                        [section]="'recently'" [cardFeaturesConfig]='cardFeaturesConfig'
+                        [moduleUsedIn]="'PRODUCT_RECENT_PRODUCT'" [pIndex]="pIndex" [enableTracking]="true"
+                        [analytics]="analytics">
+                    </product-card-vertical-grid-view>
+                </ng-container>
+            </product-card-vertical-container>
+        </div>
     </div>
 </section>

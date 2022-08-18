@@ -3,11 +3,14 @@
 @import '../../scss/components/checkbox';
 @import '../../scss/layout/cards.scss';
 
+
 .e-gifting {
     padding-bottom: 85px;
     .multiple-form-field {
         display: flex;
         width: 100%;
+        justify-content: space-between;
+        margin: 0 !important;
     }
     .gift-card-heading {
         font-size: 14px;
@@ -46,6 +49,9 @@
         border-radius: 8px;
         .pwa-row{
             background-color: #faf7f7;
+            div{
+                width: 100%;
+            }
         }
         .gifting-form-heading{
             text-align: center;
@@ -117,7 +123,6 @@
                 h3{
                     margin-bottom:0px;
                     line-height:22px;
-                    padding-left:15px;
                 }
                 .req-flex {
                     margin: 10px 0px;
@@ -126,9 +131,9 @@
                     flex-wrap: wrap;
                     align-items: center;
                     width: 100%;
-                    padding:10px;
+                    padding: 10px;
                     .req-flex-child {
-                        padding: 7px;
+                        margin-bottom: 30px;
                         position: relative;
                         label {
                             font-weight: bold;
@@ -149,7 +154,7 @@
                         .icon-down {
                             pointer-events: none;
                             position: absolute;
-                            top: 22px;
+                            top: 14px;
                             right: 15px;
                             z-index: 3;
                         }
@@ -175,10 +180,10 @@
                         width: 50%;
                     }
                     .qty {
-                        width: 50%;
+                        width: 48%;
                     }
                     .total-value {
-                        width: 70%;
+                        width: 80%;
                         span {
                             background-color: #faf7f7;
                             border: none;
@@ -193,7 +198,6 @@
                         }
                     }
                     .action {
-                        width: 30%;
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -224,7 +228,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 12px 12px 0px;
+            margin: 12px 0px 0px;
             &.add-another-card-enabled {
                 border: 1px dashed #4490df;
                 input{
@@ -447,7 +451,7 @@ datalist {
 .e-Gift-checkbox{
     font-size: 13px;
     font-weight: bold;
-    padding: 10px 15px;
+    padding: 10px 0px;
     color: #3C3C3C;
     label {
      @extend %custom-check-box-checkout;

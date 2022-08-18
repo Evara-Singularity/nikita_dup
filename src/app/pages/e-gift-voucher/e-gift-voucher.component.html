@@ -15,15 +15,15 @@
                                 <label>Full Name*</label>
                                 <input type="text" (keypress)="checkForspecialChars($event)" formControlName="name"
                                     placeholder="Enter full name">
-                                <p *ngIf="name.touched && (name.hasError('required') || name.hasError('whitespace'))">Kindly enter your name
+                                <p *ngIf="name.touched && (name.hasError('required') || name.hasError('whitespace'))" class="error-txt">Kindly enter your name
                                     <span>(Special characters are not allowed)</span>
                                 </p>
                             </div>
                             <div class="input-field-boxed">
                                 <label>Email ID*</label>
                                 <input type="text" formControlName="email" placeholder="Enter email Id">
-                                <p *ngIf="email.touched && email.hasError('required')" class="">Kindly enter valid email ID</p>
-                                <p *ngIf="!email.hasError('required') && email.hasError('invalidEmail')" class="">Kindly enter
+                                <p *ngIf="email.touched && email.hasError('required')" class="error-txt">Kindly enter valid email ID</p>
+                                <p *ngIf="!email.hasError('required') && email.hasError('invalidEmail')" class="error-txt">Kindly enter
                                     valid email ID. Ex: abc@xxx.com
                                 </p>
                             </div>
@@ -31,9 +31,9 @@
                                 <label>Mobile No*</label>
                                 <input type="text" (keypress)="checkNumberic($event)" maxlength="10" minlength="10"
                                     formControlName="mobile" placeholder="Enter mobile no">
-                                <p *ngIf="mobile.touched && mobile.hasError('required')" class="">Kindly enter your phone no.
+                                <p *ngIf="mobile.touched && mobile.hasError('required')" class="error-txt">Kindly enter your phone no.
                                 </p>
-                                <p *ngIf="!mobile.hasError('required') && mobile.hasError('minlength')" class="">Kindly enter
+                                <p *ngIf="!mobile.hasError('required') && mobile.hasError('minlength')" class="error-txt">Kindly enter
                                     10 digit contact no.</p>
                             </div>
                             <div class="input-field-boxed">

@@ -228,4 +228,8 @@ export class ProductInfoComponent implements OnInit
         this.moveTheSelectedIndex(this.selectedIndex);
     }
     displaySlide(slide: string) { return this.tabs.includes(slide) }
+
+    openLoginPopUp() {
+        this._commonService.setInitaiteLoginPopUp(true);
+    }
 }

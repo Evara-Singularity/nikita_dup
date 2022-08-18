@@ -1,20 +1,31 @@
-import { AfterViewInit, Component, ComponentFactoryResolver, Injector, OnInit, ViewChild, ViewContainerRef, EventEmitter } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { LocalAuthService } from '@app/utils/services/auth.service';
-import { CommonService } from '@app/utils/services/common.service';
-import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
-import { filter } from 'rxjs/operators';
+import {
+  AfterViewInit,
+  Component,
+  ComponentFactoryResolver,
+  Injector,
+  OnInit,
+  ViewChild,
+  ViewContainerRef,
+  EventEmitter,
+  Input,
+} from "@angular/core";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { LocalAuthService } from "@app/utils/services/auth.service";
+import { CommonService } from "@app/utils/services/common.service";
+import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
+import { filter } from "rxjs/operators";
 
 @Component({
-  selector: 'login-popup',
-  templateUrl: './login-popup.component.html',
-  styleUrls: []
+  selector: "login-popup",
+  templateUrl: "./login-popup.component.html",
+  styleUrls: [],
 })
 export class LoginPopupComponent implements OnInit, AfterViewInit {
-
   authInstance = null;
   @ViewChild("authPopUp", { read: ViewContainerRef })
   authInstanceref: ViewContainerRef;
+  isLoginPopUpRouteBased: boolean;
+  @Input("isRouteBased") isRouteBased = true;
 
   constructor(
     private _commonService: CommonService,
@@ -24,24 +35,22 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
     private injector: Injector,
     private _loader: GlobalLoaderService,
     private _localAuthService: LocalAuthService
-  ) { }
+  ) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit() {
     const user = this._localAuthService.getUserSession();
     if (user && user['authenticated'] !== 'true') {
-      this.navigationSubscription();
-      this._commonService.getIsLoginPopUpRouteBased().subscribe((isRouteBased) => {
-        if (isRouteBased) {
-          this._commonService.getInitaiteLoginPopUp().subscribe((openPopUp) => {
-            if (openPopUp) {
-              this.initiatePopUp();
-            }
-          })
-        }
-        else this.initiatePopUp();
-      })
+      if (this.isRouteBased) {
+        this.navigationSubscription(); //for #auth
+      } else {
+        this._commonService.getInitaiteLoginPopUp().subscribe((openPopUp) => {
+          if (openPopUp) {
+            this.initiatePopUp();
+          }
+        });
+      }
     }
   }
 
@@ -68,19 +77,21 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
       const { SharedAuthPopUpComponent } = await import(
         "../../modules/shared-auth-popup/shared-auth-popup.component"
       ).finally(() => {
-        console.log('openLoginPopUp module loaded');
+        console.log("openLoginPopUp module loaded");
       });
 
-      const factory = this.cfr.resolveComponentFactory(SharedAuthPopUpComponent);
+      const factory = this.cfr.resolveComponentFactory(
+        SharedAuthPopUpComponent
+      );
       this.authInstance = this.authInstanceref.createComponent(
         factory,
         null,
         this.injector
       );
-      this.authInstance.instance["flow"] = 'login';
+      this.authInstance.instance["flow"] = "login";
       (
         this.authInstance.instance[
-        "removeAuthComponent$"
+          "removeAuthComponent$"
         ] as EventEmitter<boolean>
       ).subscribe((data) => {
         this.authInstance = null;

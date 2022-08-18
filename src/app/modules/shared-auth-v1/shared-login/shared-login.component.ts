@@ -69,6 +69,7 @@ export class SharedLoginComponent implements OnInit
 
     ngOnInit(): void
     {
+        console.log("In SharedLoginComponent")
         if (this._common.isBrowser) {
             this.authFlow = this._localAuthService.getAuthFlow();
             if (this.authFlow) { 

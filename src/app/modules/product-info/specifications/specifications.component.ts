@@ -16,6 +16,7 @@ export class SpecificationsComponent implements OnInit
 {
     @Output() callback: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Input("specifications") specifications = null;
+    @Output() openLoginPopUp: EventEmitter<boolean> = new EventEmitter<boolean>();
     public isAllListShow:boolean;
     enableSecondaryAttributes: boolean = false;
     showSecondaryAttributes: boolean = false;
@@ -44,6 +45,8 @@ export class SpecificationsComponent implements OnInit
             this.showSecondaryAttributes = !this.showSecondaryAttributes;
             this.callback.emit(this.showSecondaryAttributes);
         }
-        else this._commonService.setIsLoginPopUpRouteBased(false);
+        else {
+            this.openLoginPopUp.emit()
+        }
     }
 }

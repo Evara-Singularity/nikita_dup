@@ -74,7 +74,6 @@ export class CommonService
     public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
     public initiateLoginPopUp: Subject<boolean> = new Subject<boolean>();
-    public isLoginPopUpRouteBased: Subject<boolean> = new Subject<boolean>();
 
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
 
@@ -151,17 +150,6 @@ export class CommonService
     {
         return this.initiateLoginPopUp.asObservable();
     }
-
-    setIsLoginPopUpRouteBased(value = true)
-    {
-        this.initiateLoginPopUp.next(value);
-    }
-
-   getIsLoginPopUpRouteBased(): Observable<boolean>
-    {
-        return this.initiateLoginPopUp.asObservable();
-    }
-
 
 
     setSideNavToggle(enable: boolean){
@@ -456,7 +444,6 @@ export class CommonService
 
         if (fragment && JSON.stringify(fragment).includes('/auth')) {
             this.setInitaiteLoginPopUp(true);
-            this.showLoader= false;
         }
         
         if (fragment && fragment !== 'auth') {

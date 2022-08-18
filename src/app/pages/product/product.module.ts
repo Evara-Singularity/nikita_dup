@@ -81,7 +81,6 @@ import { LoginPopupModule } from '@app/modules/login-popup/login-popup.module';
     SharedProductCarouselModule,
     ProductSkeletonsModule,
     ProductAccordiansModule,
-    LoginPopupModule
   ],
   exports: [],
   providers: [NgxSiemaService],

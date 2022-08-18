@@ -55,6 +55,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     isInvalidPincode = false;
     isUserLoggedIn = false;
     isRFQSubmitted = false;
+    isPincodeBoxChecked=false;
     //others
     rfqGSTSINErrorMessage = null;
     verifiedGSTINValue = '';
@@ -175,6 +176,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     }
 
     handlePincodeCity() {
+        this.isPincodeBoxChecked=!this.isPincodeBoxChecked;
         if (this.isUserLoggedIn) {
             if (this.isPincodeUnKnown.value) {
                 // this.pincode.clearValidators();

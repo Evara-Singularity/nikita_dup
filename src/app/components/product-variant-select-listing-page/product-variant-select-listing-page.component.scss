@@ -48,7 +48,26 @@
     }
 }
 // TODO : static card replacement Done
-
+.reviewRatingWrap {
+    padding-bottom: 8px;
+    .reviewRating {
+        background: #458d00;
+        color: #fff;
+        border-radius: 3px;
+        padding: 4px;
+        font-size: 10px;
+        font-weight: 500;
+        margin-right: 5px;
+        img {
+            width: 10px;
+        }
+    }
+    .ratingCount {
+        color: #c0c0c0;
+        font-size: 10px;
+        font-weight: 500;
+    }
+}
 .static-card-container{
     padding: 15px;
     border-bottom: 1px solid var(--platinum);

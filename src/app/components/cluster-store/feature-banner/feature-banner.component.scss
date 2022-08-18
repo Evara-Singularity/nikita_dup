@@ -3,21 +3,9 @@
 // @import '../../../scss/layout/grid.scss';
 
 .featuredBanner{
-    .featrBannerBlock{
-        overflow-y:hidden;
-        overflow-x:scroll;
-        width:auto;
-        background: var(--white);
-        &::-webkit-scrollbar{
-            display: block;
-        }
-    }
-    .featrBannerSlide{
-        float: left;
-        margin-right:10px;
-        width: 340px;
-            img{
-                width:$fullwidth;
-            }
-    }
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: auto;
+    @extend %hide-scrollbar;
+    padding: 0 15px;
 }

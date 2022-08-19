@@ -1616,7 +1616,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
     
     validateQuickCheckout(): Observable<any> {
-      if (this.localAuthService.isUserLoggedIn) {
+      if (this.localAuthService.isUserLoggedIn()) {
         const userData = this.localAuthService.getUserSession();
         const userId = userData ? userData["userId"] : null;
         return this.productService

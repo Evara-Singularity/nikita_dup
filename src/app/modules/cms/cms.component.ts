@@ -20,4 +20,10 @@ export class CmsWrapperComponent {
 
     ngOnInit() {
     }
+
+    get cmsItems() { 
+        let retValue = [];
+        if (this.cmsData) { retValue = this.cmsData['data'] || retValue; }
+        return retValue;
+    }
 }

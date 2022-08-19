@@ -1481,7 +1481,6 @@ export class CartService
             })).
             subscribe((response) =>
             {
-                this._globalLoader.setLoaderState(false);
                 this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
                 const ITEM_LIST = tempCartSession['itemsList'];
                 if (ITEM_LIST && ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {
@@ -1495,10 +1494,11 @@ export class CartService
                     tempCartSession['extraOffer'] = null;
                     this._notifyCartChanges(tempCartSession, null);
                 }
-                // 100 ms for wait time for cartItems to update after product removed
+                // 50 ms wait time for cartItems to update after product removed
                 setTimeout(() => {
                     this.isProductRemoved.next(true)
-                }, 100);
+                    this._globalLoader.setLoaderState(false);
+                }, 50);
             })
     }
 

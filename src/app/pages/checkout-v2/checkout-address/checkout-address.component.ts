@@ -51,6 +51,19 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this._cartService.sendAdobeOnCheckoutOnVisit("address");
         this.updateUserStatus();
         this._cartService.showUnavailableItems = false;
+        this.updateExistingProductsState();
+    }
+
+    // this will update the products state when any of the products were removed from cart
+    updateExistingProductsState() {
+        this._cartService.productRemovalNofify().subscribe(value => {
+            console.log(value)
+            if (value) {
+                const POST_CODE = this.deliveryAddress && this.deliveryAddress['postCode'];
+                if (!POST_CODE) return;
+                this.verifyServiceablityAndCashOnDelivery(POST_CODE);
+            }
+        })
     }
 
     ngAfterViewInit(): void

@@ -7,7 +7,10 @@
     <div class="gifting-form-container pwa-row">
         <p class="gifting-form-heading">Fill your E-gift card requirements and we will call you with the <span>best discounts</span> within 30 min.
         </p>
-        <h3 class="heading-3" (click)="togglePopUp2()">Check list of 200+ brands e-Gift<br> vouchers & validity</h3>
+        <div class="vouchers-txt">
+            <h3 class="heading-3 " (click)="togglePopUp2()">Check list of 200+ brands e-Gift<br> vouchers & validity</h3>
+        </div>
+
             <form [formGroup]="eGiftForm" class="material-form material-form-boxed">
                 <div class="card pwa-row"> 
                     <div formGroupName="rfqEnquiryCustomer">

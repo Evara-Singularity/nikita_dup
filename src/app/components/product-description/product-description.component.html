@@ -80,16 +80,17 @@
             </div>
 
         </div>
-        <div class="prod-inner-desc" (click)="scrollToResults('reviewSection',-30)">
+        <div class="prod-inner-desc">
             <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
                 <i class="icon-rating-star"></i>
             </span>
             <div class="prod-status">
                 <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
                 <p class="prod-status-right">
-                    <small class="review" (click)="scrollToResults('reviewSection',-30)" *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
+                    <small class="review"  (click)="scrollToResults('reviewSection',-30)" *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
                         Reviews
                     </small>
+                    <!-- (click)="scrollToResults('reviewSection',-30)" -->
                 </p>
             </div>
         </div>

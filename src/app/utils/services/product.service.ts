@@ -413,7 +413,7 @@ export class ProductService {
         }
     }
 
-    processProductData(args: ProductDataArg, index) {
+    processProductData(args: ProductDataArg, index) {     
         this.oosSimilarProductsData.similarData[index].rawProductData =
             args.productBO;
         // required for goruped products
@@ -551,21 +551,11 @@ export class ProductService {
             "mrp"
             ] > 0 &&
             this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-            "priceWithoutTax"
+            "sellingPrice"
             ] > 0
         ) {
-            this.oosSimilarProductsData.similarData[index].productDiscount =
-                ((this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-                    "mrp"
-                ] -
-                    this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-                    "priceWithoutTax"
-                    ]) /
-                    this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-                    "mrp"
-                    ]) *
-                100;
-        }
+            this.oosSimilarProductsData.similarData[index].productDiscount = this.oosSimilarProductsData.similarData[index].priceQuantityCountry['discount'] || this._commonService.calculcateDiscount(null,this.oosSimilarProductsData.similarData[index].priceQuantityCountry["mrp"], this.oosSimilarProductsData.similarData[index].priceQuantityCountry["sellingPrice"] );
+         }
         this.oosSimilarProductsData.similarData[index].taxPercentage = this
             .oosSimilarProductsData.similarData[index].priceQuantityCountry
             ? this.oosSimilarProductsData.similarData[index].priceQuantityCountry[

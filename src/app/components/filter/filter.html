@@ -29,7 +29,8 @@
                                                 (click)="updateSelectedFilterData($event, filter.name, item)"
                                                 class="hidden" 
                                                 type="checkbox"
-                                                [disabled]="!item.enabled " 
+                                                [disabled]="!item.enabled"
+                                                [ngClass] = "{'disabled_field': !item.enabled}"
                                                 [checked]="item.selected"
                                                 #categoryCheckBox>
                                             <span class="custom-box icon-box"></span>

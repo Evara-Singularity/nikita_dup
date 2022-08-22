@@ -40,7 +40,7 @@
     <div class="view-all-strip ">
         <h3>{{data.title}}</h3>
         <a *ngIf="data['data'].length > 5" (click)="openPopup = true" class="quinary-btn">VIEW ALL</a>
-    </div>
+    </div> 
     <div class="pwa-row verticle-view-card">
         <div class="pwa-col-12 newarrivals-section">
             <div class="outer-view-section" *ngFor="let product of data['data'] | slice:0:4; let i = index">
@@ -54,7 +54,7 @@
                             <span *ngIf="product.productName.length >27">...</span>
                         </div>
                         <div class="brand" *ngFor="let item of product.short_description | characterremove;let i=index">
-                            <span>By: {{ item.value}}</span>
+                            <span *ngIf="item.key=='Brand'">By: {{ item.value}}</span>
                         </div>
                         <div class="prod-price-row">
                             <div class="price">

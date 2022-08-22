@@ -35,7 +35,6 @@ export class CommonService
     };
     limitTrendingCategoryNumber: number = GLOBAL_CONSTANT.trendingCategoryLimit;
     enableNudge: boolean = false;
-    obj: {};
 
     set showLoader(status: boolean)
     {
@@ -1233,7 +1232,6 @@ export class CommonService
             ? this.getCurrentRoute(this._router.url)
             : currentRouteFromCategoryFilter;
 
-        console.log("currentRoute"+currentRoute);
         const extras: NavigationExtras = { queryParams: {} };
 
         const fragmentString = this.generateFragmentString(

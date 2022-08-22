@@ -76,10 +76,7 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
     setTimeout(async () => {
       const { SharedAuthPopUpComponent } = await import(
         "../../modules/shared-auth-popup/shared-auth-popup.component"
-      ).finally(() => {
-        console.log("openLoginPopUp module loaded");
-      });
-
+      ).finally(() => { });
       const factory = this.cfr.resolveComponentFactory(
         SharedAuthPopUpComponent
       );

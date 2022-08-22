@@ -69,7 +69,6 @@ export class SharedLoginComponent implements OnInit
 
     ngOnInit(): void
     {
-        console.log("In SharedLoginComponent")
         if (this._common.isBrowser) {
             this.authFlow = this._localAuthService.getAuthFlow();
             if (this.authFlow) { 
@@ -158,7 +157,7 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateToNextPopUp(isUserExists) {
-        const LINK = (isUserExists) ? '/otp': '/sign-up';
+        const LINK = (isUserExists) ? 'otp': 'sign-up';
         this.togglePopUp$.emit(LINK);
     }
 
@@ -185,10 +184,7 @@ export class SharedLoginComponent implements OnInit
             this._loader.setLoaderState(false);
         })
     }
-
-    backButtonClicked(){
-    }
-
+ 
     clearSuggestion()
     {
         this.emailAutoCompleteSuggestion = [];

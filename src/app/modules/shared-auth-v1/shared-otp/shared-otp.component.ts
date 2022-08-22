@@ -235,8 +235,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
-    onOtpSuccess(){}
-
     backButtonClicked(){
         this.backButtonClicked$.emit('login');
     }

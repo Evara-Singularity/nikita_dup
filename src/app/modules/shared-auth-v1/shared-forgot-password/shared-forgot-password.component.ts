@@ -47,8 +47,6 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
     }
 
-    onOtpSuccess(){}
-
     updatePassword()
     {
         if (this.isDisabled) return;

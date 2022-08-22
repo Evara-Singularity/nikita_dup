@@ -36,8 +36,6 @@ export class PagesComponent implements OnInit {
   isFooter: boolean = true;
   isHomePage: boolean;
   eventNavigationStart: any;
-  // @ViewChild('dynamicComponent', {static: true, read: ViewContainerRef}) container: ViewContainerRef;
-  // ondemad loaded components for FAQ listing
 
   constructor(
     public _commonService: CommonService,

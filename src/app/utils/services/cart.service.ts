@@ -748,15 +748,15 @@ export class CartService
                     })
                 );
             }),
-            mergeMap(request =>
-            {
-                return this.getShippingAndUpdateCartSession(request).pipe(
-                    map((res: any) =>
-                    {
-                        return this.generateGenericCartSession(res);
-                    })
-                );
-            }),
+            // mergeMap(request =>
+            // {
+            //     return this.getShippingAndUpdateCartSession(request).pipe(
+            //         map((res: any) =>
+            //         {
+            //             return this.generateGenericCartSession(res);
+            //         })
+            //     );
+            // }),
             map(cartSessionResponse =>
             {
                 if (cartSessionResponse) {

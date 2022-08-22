@@ -34,10 +34,6 @@ export class SharedAuthPopUpComponent implements OnInit {
   removeAuthComponent() {
     this.removeAuthComponent$.emit();
   }
-
-  onBackClick(value) {
-    this.flow = value.replace('/', '')
-  }
 }
 
 @NgModule({

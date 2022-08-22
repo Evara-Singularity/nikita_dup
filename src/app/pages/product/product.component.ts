@@ -1745,7 +1745,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             : res["lastOrderDetails"].length - 1;
         const isValidOrder =
           res["lastOrderDetails"][len].paymentType == "COD" &&
-          res["lastOrderDetails"][len].orderStatus == "ACCEPTED";
+          res["lastOrderDetails"][len].orderStatus == "DELIVERED";
         if (isValidOrder) {
           return {
             addressDetails: res["lastOrderDetails"][len]["addressDetails"],

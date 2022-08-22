@@ -255,8 +255,8 @@ export class SharedLoginComponent implements OnInit
         if (this.isLoginPopup) {
             this.removeAuthComponent$.emit();
         }
-        else if (this.isNormalLogin) {
-            this._localAuthService.handleBackURL(true);
+        else {
+         this._localAuthService.handleBackURL(true);
         }
     }
 

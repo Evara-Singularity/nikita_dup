@@ -764,6 +764,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.productDocumentInfo = this.rawProductData["documentInfo"];
         this.productTags = this.rawProductData["productTags"];
         this.getRefinedProductTags();
+        this.updateProductUrl();
         this.productAttributes =
             this.rawProductData["productPartDetails"][partNumber]["attributes"] || [];
         this.productRating =
@@ -875,6 +876,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             category: this.rawProductData.categoryDetails[0],
             brand: this.rawProductData.brandDetails,
         };
+    }
+
+    updateProductUrl() {
+        if (this.productUrl !== this.mainProductURL) {
+            this.productUrl = this.mainProductURL;
+        }
     }
 
     getAnalyticsInfo(){

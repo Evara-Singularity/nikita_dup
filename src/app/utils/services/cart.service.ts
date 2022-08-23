@@ -62,6 +62,7 @@ export class CartService
     };
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
     private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
+    private _shippingPriceChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
 
     private previousUrl: string = null;
     private currentUrl: string = null;
@@ -142,7 +143,7 @@ export class CartService
             tpt = tpt + item['tax'];
         };
         modifiedCartSessionObject.cart.totalAmount = totalAmount;
-        modifiedCartSessionObject.cart.totalPayableAmount = (totalAmount + modifiedCartSessionObject.cart['shippingCharges']) - (modifiedCartSessionObject.cart['totalOffer'] || 0);
+        modifiedCartSessionObject.cart.totalPayableAmount = (+(+tawot + +tpt) + modifiedCartSessionObject.cart['shippingCharges']) - (modifiedCartSessionObject.cart['totalOffer'] || 0);
         modifiedCartSessionObject.cart.tawot = tawot;
         modifiedCartSessionObject.cart.tpt = tpt;
         modifiedCartSessionObject.itemsList = itemsList;
@@ -323,6 +324,7 @@ export class CartService
     {
         // console.trace();
         let sro = this.getShippingObj(cartSession);
+        // console.trace('_getShipping', Object.assign({}, cartSession))
         return this.getShippingValue(sro)
             .pipe(
                 map((sv: any) =>
@@ -337,7 +339,9 @@ export class CartService
                         }
                     }
                     // console.log('shipping  cart session', this.generateGenericCartSession(cartSession));
-                    return this.generateGenericCartSession(cartSession);
+                    const updatedCartSessionAfterShipping = this.generateGenericCartSession(cartSession);
+                    this.setShippingPriceChanges(updatedCartSessionAfterShipping);
+                    return updatedCartSessionAfterShipping;
                 })
             );
     }
@@ -686,6 +690,16 @@ export class CartService
     public setCartUpdatesChanges(cartsession): void
     {
         this._cartUpdatesChanges.next(cartsession);
+    }
+
+    public getShippingPriceChanges(): Observable<any>
+    {
+        return this._shippingPriceChanges.asObservable()
+    }
+
+    public setShippingPriceChanges(cartsession): void
+    {
+        this._shippingPriceChanges.next(cartsession);
     }
 
     // refresh and chnages to communicated 

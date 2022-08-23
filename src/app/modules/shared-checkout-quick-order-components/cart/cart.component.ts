@@ -71,9 +71,10 @@ export class CartComponent
                 return cartSession;
             }),
             concatMap((res) => this._cartService.getShippingAndUpdateCartSession(res))).subscribe(
-                (result) =>
+                (cartSessionWithShiping) =>
                 {
                     this.noOfCartItems = this._cartService.getCartItemsCount();
+                    // this._cartService.setCartUpdatesChanges(cartSessionWithShiping);
                     this._globalLoaderService.setLoaderState(false);
                 });
     }

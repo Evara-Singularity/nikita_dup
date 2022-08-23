@@ -79,6 +79,7 @@ export class CategoryComponent {
     ngAfterViewInit(): void {
         this.sharedProductList.getSponseredProducts();
         this.backUrlNavigationHandler();
+        this.isFiltersApplied = Object.keys(this._commonService.selectedFilterData.filter).length ? true : false
     }
 
     backUrlNavigationHandler() {
@@ -616,10 +617,13 @@ export class CategoryComponent {
     catBestsellerData: any;
     shopbyFeatrData: any;
     shopByBrandData: any;
+    isFiltersApplied: boolean = false;
 
     private updateComponentsBasedOnrouteChange() {
         const params = this._activatedRoute.snapshot.params;
-
+        this.isFiltersApplied = Object.keys(this._commonService.selectedFilterData.filter).length ? true : false;
+        console.log('////////////////////////////////////////');
+        console.log()
         this.layoutType = 0;
         if (params && params.id && slpPagesExtrasIdMap.hasOwnProperty(params.id)) {
             this.isSLPPage = true;

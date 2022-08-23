@@ -321,6 +321,7 @@ export class CartService
 
     private _getShipping(cartSession): Observable<any>
     {
+        // console.trace();
         let sro = this.getShippingObj(cartSession);
         return this.getShippingValue(sro)
             .pipe(
@@ -335,7 +336,8 @@ export class CartService
                             }
                         }
                     }
-                    return cartSession;
+                    // console.log('shipping  cart session', this.generateGenericCartSession(cartSession));
+                    return this.generateGenericCartSession(cartSession);
                 })
             );
     }

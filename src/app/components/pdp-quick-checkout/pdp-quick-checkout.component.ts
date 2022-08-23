@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   OnInit,
-  AfterViewChecked,
   NgModule,
   Output,
   Input,
@@ -90,6 +89,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     this.setAddress(this.address);
     this.shippmentCharge = this.cartService.shippingCharges;
     this.currUser = this.localAuthService.getUserSession();
+    this.cartService.getPromoCodesByUserId(this.currUser['userId']);
     this.cartService.appliedPromoCode = "";
     this.returnProductDetails().subscribe((result) => {
       this.addTocart(result, true);
@@ -98,6 +98,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
 
     this.promoSubscription = this.cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode }) =>
     {
+      console.log("promoSubscription --- >" , isNewPromocode)
         this.showPromoSuccessPopup = isNewPromocode;
         this.getUpdatedCart();
         setTimeout(() => { this.showPromoSuccessPopup = false; },  800)
@@ -533,7 +534,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
 
   openOfferPopUp()
 {
-  this.cartService.getPromoCodesByUserId(this.currUser['userId']);
+  
   // need to setup this url 
     this.showPromoOfferPopup = true;
     this.localAuthService.setBackURLTitle('/quickorder', null);
@@ -559,7 +560,7 @@ ngOnDestroy(): void
 
 @NgModule({
   declarations: [PdpQuickCheckoutComponent],
-  imports: [CommonModule, BottomMenuModule, PromoCodeModule, MathFloorPipeModule, MathCeilPipeModule, PromoCodeModule, CartModule],
+  imports: [CommonModule, BottomMenuModule, PromoCodeModule, MathFloorPipeModule, MathCeilPipeModule, CartModule],
   exports: [PdpQuickCheckoutComponent],
 })
 export class PdpQuickCheckoutModule {}

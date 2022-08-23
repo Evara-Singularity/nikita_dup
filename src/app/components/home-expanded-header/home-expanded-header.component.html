@@ -14,24 +14,10 @@
             <span class="badge" *ngIf="noOfCart != 0">{{ noOfCart }}</span>
         </a>
     </div>
-    <div class="search-bar">
-        <ng-container *ngIf="!isRoutedBack">
-            <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav$.emit();" [value]="searchValue"
-                placeholder="Search Product/Category/Brand...">
-            <div class="home-search-animation">
-            </div>
-        </ng-container>
-        <div class="search-widget-container" *ngIf="isRoutedBack">
-            <div class="search-widget-section pwa-row">
-                <div class="inner-search-widget">
-                    <p>Search for <span>best power drill</span></p>
-                    <div class="search-bar widget-search-bar">
-                        <input class="search-bar-input widget-search-input" type="text" autocomplete="off"
-                            placeholder="Search Product/Category/Brand..." (click)="loadSearchNav$.emit();" [value]="searchValue">
-                    </div>
-                </div>
-            </div>
-            <div class="search-widget-bg"></div>
+    <div class="search-bar" *ngIf="!_commonService.isRoutedBackTohome">
+        <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav$.emit();" [value]="searchValue"
+            placeholder="Search Product/Category/Brand...">
+        <div class="home-search-animation">
         </div>
     </div>
 </div>

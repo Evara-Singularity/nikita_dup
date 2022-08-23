@@ -55,6 +55,8 @@ export class CommonService
     isHomeHeader = false;
     isPLPHeader = false;
     isScrolledHeader = false;
+    isRoutedBackTohome = false;
+    loadNav: Subject<boolean> = new Subject<false>();
     stopSearchNudge = false;
 
     currentRequest: any;
@@ -1440,6 +1442,10 @@ export class CommonService
         } else {
             return 0;
         }
+    }
+
+    openLoader() {
+        return this.loadNav.asObservable();
     }
 
 }

@@ -431,6 +431,13 @@ export const CONSTANTS = {
     ORDER_FAILURE: 'ORDER_FAILURE',
     ORDER_CONFIRMATION: 'ORDER_CONFIRMATION',
     PRODUCT: 'PRODUCT'
-  }
+  },
+  SEARCH_WIDGET_KEYS: [
+    'Shoes For Men',
+    'Solar Panel',
+    'Welding Machine',
+    'Office Chair',
+    'Fan'
+  ]
 };
 export default CONSTANTS;

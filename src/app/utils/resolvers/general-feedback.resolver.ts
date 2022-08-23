@@ -6,7 +6,11 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import CONSTANTS from '@app/config/constants';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-
+import { map } from 'rxjs/operators';
+import { LoggerService } from '../services/logger.service';
+import { ServerLogSchema } from '../models/log.modal';
+import { LocalAuthService } from '../services/auth.service';
+import { CommonService } from '../services/common.service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,12 +20,15 @@ export class GeneralFeedbackResolver implements Resolve<any> {
     constructor(
         @Inject(PLATFORM_ID) private platformId,
         private transferState: TransferState,
-        private http: HttpClient
+        private http: HttpClient,
+        private _loggerService : LoggerService,
+        private _commonService : CommonService
     )
     { }
 
     resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
     {
+        const startTime = new Date().getTime();
         const ITEM_ID = _activatedRouteSnapshot.params['itemid'];
         const GENERAL_FEEDBACK_KEY = makeStateKey<any>('GFDST');
         if (this.transferState.hasKey(GENERAL_FEEDBACK_KEY)) {
@@ -39,8 +46,14 @@ export class GeneralFeedbackResolver implements Resolve<any> {
                         if (isPlatformServer(this.platformId)) {
                             this.transferState.set(GENERAL_FEEDBACK_KEY, response);
                         }
+                    }), map((res)=>{
+                        const logInfo =  this._commonService.getLoggerObj(url,'GET',startTime)
+                        logInfo.endDateTime = new Date().getTime();
+                        logInfo.responseStatus = res["status"];
+                        this._loggerService.apiServerLog(logInfo);
+                        return res;
                     })
-                );
+                )
         }
     }
 }

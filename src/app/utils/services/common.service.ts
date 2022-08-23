@@ -19,6 +19,7 @@ import { ENDPOINTS } from "@app/config/endpoints";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import IdleTimer from "../idleTimeDetect";
 import { GlobalAnalyticsService } from "./global-analytics.service";
+import { ServerLogSchema } from "../models/log.modal";
 
 @Injectable({
     providedIn: "root",
@@ -1440,6 +1441,21 @@ export class CommonService
         } else {
             return 0;
         }
+    }
+
+    getLoggerObj(url: string, method: string =null, startTime?, endTime?){
+        
+        const logInfo: ServerLogSchema = {
+            apiURL: url,
+            method: method,
+            payload: null,
+            endDateTime: null,
+            responseStatus: null,
+            sessionId: this.userSession ? this.userSession.sessionId : null,
+            startDateTime: startTime,
+          };
+
+          return logInfo;
     }
 
 }

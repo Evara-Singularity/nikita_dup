@@ -6,7 +6,10 @@ import { environment } from 'environments/environment';
 import { forkJoin, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { DataService } from './../services/data.service';
-
+import { map } from 'rxjs/operators';
+import { LoggerService } from '../services/logger.service';
+import { ServerLogSchema } from '../models/log.modal';
+import { LocalAuthService } from '../services/auth.service';
 @Injectable()
 export class MainArticlesResolver implements Resolve<any> {
 

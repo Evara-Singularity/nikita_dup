@@ -11,18 +11,26 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { HttpClient } from '@angular/common/http';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 
+import { LoggerService } from '../services/logger.service';
+import { ServerLogSchema } from '../models/log.modal';
+import { LocalAuthService } from '../services/auth.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AlpResolver implements Resolve<object> {
+    
+    userSession = this._localAuthService.getUserSession();
+
     private pageName = 'ATTRIBUTE';
     constructor(
         @Inject(PLATFORM_ID) private platformId,
         private transferState: TransferState,
         private loaderService: GlobalLoaderService,
         private _commonService: CommonService,
+        private _localAuthService :LocalAuthService,
         private http: HttpClient,
+        private _loggerService : LoggerService,
     ) { }
 
     createDefaultParams(defaultApiParams, currentQueryParams, fragment)
@@ -93,11 +101,13 @@ export class AlpResolver implements Resolve<object> {
 
     resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object>
     {
+        
         this._commonService.showLoader = true;
         const GET_CIMS_ATTRIBUTE_LISTING: any = makeStateKey<{}>('get_cims_attribute-' + _activatedRouteSnapshot.params['attribute'] + Math.random());
         const CATEGORY_CODE: any = makeStateKey<{}>('alp_category_code' + _activatedRouteSnapshot.params['attribute'] + Math.random());
         const BREADCRUMP: any = makeStateKey<{}>('breadcrump-' + _activatedRouteSnapshot.params['attribute']);
         const LISTING: any = makeStateKey<{}>('alp_listing' + _activatedRouteSnapshot.params['attribute']);
+        const startTime =new Date().getTime();
 
         if (this.transferState.hasKey(GET_CIMS_ATTRIBUTE_LISTING)) {// && this.transferState.hasKey(OTHER_DATA)
             const GET_CIMS_ATTRIBUTE_LISTING_OBJ = this.transferState.get<{}>(GET_CIMS_ATTRIBUTE_LISTING, null);
@@ -111,19 +121,44 @@ export class AlpResolver implements Resolve<object> {
             const cims_attribute_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CIMS_ATTRIBUTE + '?friendlyUrl=' + _activatedRouteSnapshot.params['attribute'];
             const get_category_code_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY_BY_ID + '?catId=';
             const breadcrump_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.BREADCRUMB + "?type=category";
+
             const otherDataObj = this.http.get(cims_attribute_url).pipe(share(), mergeMap((_cimsResponse) =>
             {
                 const CIMS_DATA = _cimsResponse['data'];
                 if (CIMS_DATA && CIMS_DATA['defaultParams']['category']) {
                     const CATEGORY = CIMS_DATA['defaultParams']['category'];
                     const request = forkJoin([of(_cimsResponse),
-                    this.http.get(get_category_code_url + CATEGORY).pipe(map(res => res)),
+
+                    this.http.get(get_category_code_url + CATEGORY)
+                    .pipe(map(res => {
+                        const logInfo =  this._commonService.getLoggerObj(get_category_code_url + CATEGORY,'GET',startTime)
+                        logInfo.endDateTime = new Date().getTime();
+                        logInfo.responseStatus = res["status"];
+                        this._loggerService.apiServerLog(logInfo);
+                        return res;
+                    })),
+
                     this.http.get(get_category_code_url + CATEGORY).pipe(mergeMap(catData => this.http.get(breadcrump_url + '&pagetitle=' + CIMS_DATA['attributesListing']['title'] + '&source=' + catData['categoryDetails']['categoryLink']))),
-                    this.refreshProducts(CIMS_DATA['defaultParams'], _activatedRouteSnapshot.queryParams, _activatedRouteSnapshot.fragment).pipe(map(res => res))])
+                    this.refreshProducts(CIMS_DATA['defaultParams'], _activatedRouteSnapshot.queryParams, _activatedRouteSnapshot.fragment)
+                    .pipe(map(res => {
+                        const logInfo =  this._commonService.getLoggerObj(get_category_code_url + CATEGORY,'GET',startTime)
+                        logInfo.endDateTime = new Date().getTime();
+                        logInfo.responseStatus = res["status"];
+                        this._loggerService.apiServerLog(logInfo);
+                        return res;
+                    }))])
                     return request;
                 }
                 return forkJoin([of(_cimsResponse)]);
-            }));
+            }), 
+            map(res => {
+                const logInfo =  this._commonService.getLoggerObj(cims_attribute_url ,'GET',startTime)
+                logInfo.endDateTime = new Date().getTime();
+                logInfo.responseStatus = res["status"];
+                this._loggerService.apiServerLog(logInfo);
+                return res;
+            })
+            );
 
             return forkJoin([otherDataObj]).pipe(catchError((err) =>
             {

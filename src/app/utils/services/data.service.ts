@@ -139,6 +139,7 @@ export class DataService {
         }
 
         const start_time = new Date().getTime();
+        
         const logInfo: ServerLogSchema = {
             apiURL: url,
             method: type,
@@ -148,7 +149,9 @@ export class DataService {
             sessionId: userSession ? userSession.sessionId : null,
             startDateTime: start_time,
         }
+
         switch (type) {
+
             case 'GET':
                 let getOptions = {};
                 if (headers['Content-Type'] && headers['Content-Type'].indexOf('text') > -1) {
@@ -161,9 +164,12 @@ export class DataService {
                     logInfo.endDateTime = new Date().getTime();
                     logInfo.responseStatus = res['status'];
                     logInfo.sessionId = userSession ? userSession.sessionId : null;
+
                     this._loggerService.apiServerLog(logInfo);
+
                     return res;
                 }), catchError(err => this.handleError(err, logInfo)));
+
             case 'POST':
                 return this._http.post(url, body, { headers, withCredentials: true }).pipe(map(res => {
                     logInfo.endDateTime = new Date().getTime();
@@ -172,6 +178,7 @@ export class DataService {
                     this._loggerService.apiServerLog(logInfo);
                     return res;
                 }), catchError(err => this.handleError(err, logInfo)));
+
             case 'PUT':
                 return this._http.put(url, body, { headers, withCredentials: true }).pipe(map(res => {
                     logInfo.endDateTime = new Date().getTime();
@@ -180,6 +187,7 @@ export class DataService {
                     this._loggerService.apiServerLog(logInfo);
                     return res;
                 }), catchError(err => this.handleError(err, logInfo)));
+
             case 'DELETE':
                 return this._http.delete(url, { headers, withCredentials: true }).pipe(map(res => {
                     logInfo.endDateTime = new Date().getTime();
@@ -192,6 +200,7 @@ export class DataService {
                 return null;
         }
     }
+    
     private handleError(error: HttpErrorResponse | any, logInfo?: ServerLogSchema) {
         if (error.status === 403) {
             this._localStorageService.clear('user');

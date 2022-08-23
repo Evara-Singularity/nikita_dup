@@ -745,7 +745,6 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.productDocumentInfo = this.rawProductData["documentInfo"];
         this.productTags = this.rawProductData["productTags"];
         this.getRefinedProductTags();
-        this.updateProductUrl();
         this.productAttributes =
             this.rawProductData["productPartDetails"][partNumber]["attributes"] || [];
         this.productRating =
@@ -857,13 +856,6 @@ export class ProductComponent implements OnInit, AfterViewInit
             category: this.rawProductData.categoryDetails[0],
             brand: this.rawProductData.brandDetails,
         };
-    }
-
-    updateProductUrl() {
-        if (this.productUrl !== this.mainProductURL) {
-            this.productUrl = this.mainProductURL;
-            console.log(this.productUrl);
-        }
     }
 
     getAnalyticsInfo(){
@@ -2166,7 +2158,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     this.intiateRFQQuoteUpdate(product , rfqId);
                    // this._tms.show({ type: 'success', text: response['statusDescription'] });
                     this.rfqQuoteRaised = true;
-                    this.location.replaceState(this.productUrl);
+                    this.location.replaceState(this.mainProductURL);
                 } else {
                     this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
                 }

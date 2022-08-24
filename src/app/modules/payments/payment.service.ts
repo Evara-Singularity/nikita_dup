@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import CONSTANTS from "@app/config/constants";
 import { ENDPOINTS } from '@app/config/endpoints';
@@ -24,16 +25,18 @@ export class PaymentService{
     }
 
     getSavedCards(data, type){
-        if(type && type=='tax'){
-            return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CARD.GET_SAVED_CARD, {params:data});
-        }else
-            return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CARD.GET_SAVED_CARD, {params:data});
+        const url = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CARD.GET_SAVED_CARD}`;
+        return this._dataService.callRestful('GET', url, { params: data }).pipe(map((response)=>{
+            return response['status'] ? response : {status:false}
+        }))
     }
 
     getPaymentsMethodData(type) {
-        let url = CONSTANTS.NEW_MOGLIX_API + "/payment/getPaymentMethodsStatus?gateWay=";
-        url += (type == "retail") ? "payu" : "razorpay";
-        return this._dataService.callRestful('GET', url);
+        const url = `${CONSTANTS.NEW_MOGLIX_API}/payment/getPaymentMethodsStatus?gateWay=${(type == "retail") ? "payu" : "razorpay"}`;
+        return this._dataService.callRestful('GET', url).pipe(map((response) =>
+        {
+            return response['status'] ? response : { status: false }
+        }));
     }
 
     updatePaymentMsns(data)

@@ -64,7 +64,17 @@ export class CartHeaderComponent implements OnInit, AfterViewInit, OnDestroy
 		if (this.isCheckout && this._cartService.buyNow) {
 			this._cartService.clearBuyNowFlow();
 		}
+		this.resetCartChanges();
 		this.goBack$.emit();
+	}
+
+	resetCartChanges()
+	{
+		this._cartService.lastPaymentMode = null;
+		this._cartService.lastParentOrderId = null;
+		this._cartService.invoiceType = null;
+		this._cartService.shippingAddress = null;
+		this._cartService.billingAddress = null;
 	}
 
 	get isQuickorder() { return this.title === "My Cart" }

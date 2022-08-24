@@ -1,3 +1,4 @@
+import { forkJoin } from 'rxjs';
 import { CartUtils } from './../../utils/services/cart-utils';
 import { Component, ElementRef, EventEmitter, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
@@ -75,7 +76,7 @@ export class PaymentComponent implements OnInit {
     }
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
-    this.getSavedCardData();
+    //this.getSavedCardData();
     this._cartService.clearCartNotfications();
   }
 
@@ -104,45 +105,46 @@ export class PaymentComponent implements OnInit {
       this.unAvailableMsnList =
         this._cartService.codNotAvailableObj["itemsArray"];
       // TODO - check with pritam how this used
-      this.getPaymentSuccessAssistData();
+      //this.getPaymentSuccessAssistData();
+      this.callApisAsyncly();
       this.analyticVisit(cartData);
     }
   }
 
-  private getSavedCardData() {
-    const userSession = this._localAuthService.getUserSession();
-    const data = {
-      userEmail:
-        userSession && userSession["email"]
-          ? userSession["email"]
-          : userSession["phone"],
-    };
+  // private getSavedCardData() {
+  //   const userSession = this._localAuthService.getUserSession();
+  //   const data = {
+  //     userEmail:
+  //       userSession && userSession["email"]
+  //         ? userSession["email"]
+  //         : userSession["phone"],
+  //   };
 
-    if (this.invoiceType == "tax") {
-      data["userId"] = userSession["userId"];
-      data["userEmail"] = "";
-    }
-    if(this._cartService.lastPaymentMode)
-    {
-      const { paymentBlock, mode, section } = CartUtils.getPaymentInfo(this._cartService.lastPaymentMode);
-      this.updatePaymentBlock(paymentBlock, mode, section);
-      return;
-    }
-    this._paymentService
-      .getSavedCards(data, this.invoiceType)
-      .subscribe((res) => {
-        if (
-          res["status"] === true &&
-          res["data"]["user_cards"] !== undefined &&
-          res["data"]["user_cards"] != null
-        ) {
-          this.savedCardsData = res["data"]["user_cards"];
-          this.isSavedCardExist = true;
-          this.paymentBlock = this.globalConstants["savedCard"];
-        }
-        this.isShowLoader = false;
-      });
-  }
+  //   if (this.invoiceType == "tax") {
+  //     data["userId"] = userSession["userId"];
+  //     data["userEmail"] = "";
+  //   }
+  //   if(this._cartService.lastPaymentMode)
+  //   {
+  //     const { paymentBlock, mode, section } = CartUtils.getPaymentInfo(this._cartService.lastPaymentMode);
+  //     this.updatePaymentBlock(paymentBlock, mode, section);
+  //     return;
+  //   }
+  //   this._paymentService
+  //     .getSavedCards(data, this.invoiceType)
+  //     .subscribe((res) => {
+  //       if (
+  //         res["status"] === true &&
+  //         res["data"]["user_cards"] !== undefined &&
+  //         res["data"]["user_cards"] != null
+  //       ) {
+  //         this.savedCardsData = res["data"]["user_cards"];
+  //         this.isSavedCardExist = true;
+  //         this.paymentBlock = this.globalConstants["savedCard"];
+  //       }
+  //       this.isShowLoader = false;
+  //     });
+  // }
 
   updatePaymentBlock(block, mode?, elementId?) {
     let cart = this._cartService.getGenericCartSession["cart"];
@@ -265,14 +267,54 @@ export class PaymentComponent implements OnInit {
     this.updateTabIndex.emit(index);
   }
 
-  getPaymentSuccessAssistData() {
-    this._paymentService
-      .getPaymentsMethodData(this.invoiceType)
-      .subscribe((result) => {
-        if (result["status"]) {
-          this.successPercentageRawData = result["data"] || null;
-        }
-      });
+  // getPaymentSuccessAssistData() {
+  //   this._paymentService
+  //     .getPaymentsMethodData(this.invoiceType)
+  //     .subscribe((result) => {
+  //       if (result["status"]) {
+  //         this.successPercentageRawData = result["data"] || null;
+  //       }
+  //     });
+  // }
+
+  callApisAsyncly()
+  {
+    this.isShowLoader = true;
+    const userSession = this._localAuthService.getUserSession();
+    const data = { userEmail: userSession && userSession["email"] ? userSession["email"] : userSession["phone"], };
+    if (this.invoiceType == "tax") {
+      data["userId"] = userSession["userId"];
+      data["userEmail"] = "";
+    }
+    const savedCards = this._paymentService.getSavedCards(data, this.invoiceType)
+    const paymentsMethodData = this._paymentService.getPaymentsMethodData(this.invoiceType);
+
+    forkJoin([paymentsMethodData, savedCards]).subscribe((responses)=>{
+      this.isShowLoader = false;
+      this.handlePaymentsData(responses[0]);
+      this.handleSavedCards(responses[1]);
+      if (this._cartService.lastPaymentMode) {
+        const { paymentBlock, mode, section } = CartUtils.getPaymentInfo(this._cartService.lastPaymentMode);
+        this.updatePaymentBlock(paymentBlock, mode, section);
+        return;
+      }
+    })
+  }
+
+  handleSavedCards(repsonse)
+  {
+    if (repsonse["status"] === true && repsonse["data"]["user_cards"]) {
+      this.savedCardsData = repsonse["data"]["user_cards"];
+      this.isSavedCardExist = true;
+      this.paymentBlock = this.globalConstants["savedCard"];
+    }
+  }
+
+  handlePaymentsData(response)
+  {
+    if (response["status"]) {
+      this.successPercentageRawData = response["data"] || null;
+    }
   }
 
   get neftSuccessPercentageData() {

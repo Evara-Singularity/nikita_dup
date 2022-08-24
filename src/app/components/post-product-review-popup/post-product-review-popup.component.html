@@ -17,10 +17,16 @@
                 <div class="input-field-boxed">
                     <label class="max-char">(Maximum 100 characters)</label>
                     <input type="text" formControlName="review_subject" maxlength="100" #title placeholder="Title">
+                    <ng-container *ngIf="review_title.invalid && review_title.dirty">
+                        <p class="error-field error-txt">Title can't be blank.</p>
+                    </ng-container>
                 </div>
                 <div class="input-field-boxed">
                     <label class="max-char">(Maximum 600 characters)</label>
                     <textarea class="message-field" type="text" formControlName="review_text" maxlength="600" #review placeholder="Your thoughts (Optional)"></textarea>
+                    <ng-container *ngIf="review_text.invalid">
+                        <p class="error-field error-txt">Special Characters are not allowed</p>
+                    </ng-container>
                 </div>
             </div>
         </div>
@@ -37,7 +43,7 @@
             </div>
         </div>
         <div class="fixed-bottom-cta">
-            <button class="btn primary-full-btn" [ngClass]="{'active':reviewForm.valid && ratingValue > 0}" (click)="postReview();">SUBMIT YOUR REVIEW</button>
+            <button class="btn primary-full-btn" [disabled]="!(reviewForm.valid)" [ngClass]="{'active':reviewForm.valid && ratingValue > 0}" (click)="postReview();">SUBMIT YOUR REVIEW</button>
         </div>   
     </div>
 </app-pop-up>

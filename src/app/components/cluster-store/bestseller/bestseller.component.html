@@ -60,10 +60,10 @@
                         <div class="prod-price-row">
                             <div class="price">
                                 <span class="prod-mrp">{{product.mrp | currency:'INR': 'symbol': '1.0-0'}}</span>
-                                <span class="prod-discount">{{product.discount_percentage}} % OFF</span>
+                                <span *ngIf="product.discount_percentage>0" class="prod-discount">{{product.discount_percentage}}% OFF</span>
                             </div>
                             <div class="prod-selling-price">
-                                {{product.sellingPrice | mathFloor | currency: 'INR': 'symbol': '1.0-0'}}
+                                {{product.pricewithouttax | mathFloor | currency: 'INR': 'symbol': '1.0-0'}}
                             </div>
                         </div>
                     </div>

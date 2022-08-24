@@ -102,6 +102,7 @@ export class ClusterStoreComponent implements OnInit {
 	ngOnInit() {
 		this._activatedRoute.data.subscribe((rawData) => {
 			let response = rawData['clusterStoreData'];
+			console.log(rawData,"rawData");
 			if(!response['data'][0]){
 				this.pageNotFound=true;
 			}
@@ -160,10 +161,16 @@ export class ClusterStoreComponent implements OnInit {
 		if(this.isBrowser){	
 			this.reInitializeLazyComponents();
 		}
-		
-		this.getSelectedCategoryTop(
-			response['data'][0]['block_data']['category_cluster']
-		);
+		if(response['data'][0]['block_data']['category_cluster'] == 'undefined'){
+			this.getSelectedCategoryTop(
+				response['data'][1]['block_data']['category_cluster']
+		  );
+		}
+		else{
+			this.getSelectedCategoryTop(
+				response['data'][0]['block_data']['category_cluster']
+		  );
+		}
 		this.data = response['data'][0]['block_data'];
 		if (this.isServer) {
 			this.setMetaInformation(
@@ -182,7 +189,7 @@ export class ClusterStoreComponent implements OnInit {
 
 	productDataToCategoryCardObject(index,data){
 		return {
-			item: data[index],
+			item:data[index],
 			isSelected: this.extraData && this.extraData['currentRoute'] && this.extraData['currentRoute'] == data[index]['category_url'],
 			page:'cluster-store',
 			title: data[index]['CategoryName'],

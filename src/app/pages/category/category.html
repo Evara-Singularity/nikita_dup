@@ -1,6 +1,6 @@
 <div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader}" >
     <app-promo  [page]="'category'" class="fixed-btm-app-prmo" [isOverlayMode]="true"></app-promo>
-    <div
+    <div *ngIf="!isFiltersApplied"
         [class.visibility]="!((layoutType == 1 || layoutType == 2) && (!_commonService.selectedFilterData.page || _commonService.selectedFilterData.page < 2))">
         <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1"
             [class.slpLayout2]="layoutType == 2">
@@ -17,7 +17,7 @@
         </div>
     </div>
     
-    <div class="container-fluid category">
+    <div class="container-fluid category" *ngIf="!isFiltersApplied">
         <div class="row">
             <data-cms *ngIf="this.API_RESPONSE.category[4]" [cmsData] ="API_RESPONSE.category[4]" [background] = "'bg-trans'"></data-cms>
         </div>

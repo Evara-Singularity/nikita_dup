@@ -37,9 +37,9 @@
                         <h3 class="heading-3">
                             Payment Summary
                         </h3>
-                        <i class="icon-expand"></i>
+                        <i class="icon-expand" (click)="expandPaymentSummary()"></i>
                     </div>
-                    <div id="openHomeAccoridan" style="display:block;" class="panel-body hide">
+                    <div id="openHomeAccoridan"  class="panel-body " [class.hide]="isPaymentSummary">
                         <div class="">
                             <ul>
                                 <li class="tag-item">
@@ -99,7 +99,7 @@
                 <form>
                     <div class="invoice-select">
                         <label>
-                            <input type="checkbox">
+                            <input type="checkbox" [checked] = "purchasingForBusiness">
                             <span class="custom-box icon-box"></span>
                         </label>
                         <div class="invoice-txt">

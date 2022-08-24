@@ -1,7 +1,7 @@
-<div class="otherCategoryBlock pwa-row pad-tb-0" *ngIf="data['data'] && data['data'].length > 0">
+<div class="otherCategoryBlock pwa-row pad-tb-0 mb-15" *ngIf="data['data'] && data['data'].length > 0">
     <h3 class="heading-3">{{data?.title}}</h3>
-    <div class="trending-category-block">
-        <div *ngFor="let item of data['data'] | slice:0:4;let i=index" class="inner-trending-category">
+    <div class="trending-category-block pwa-row pad-lr-0 row-gutter-space">
+        <div *ngFor="let item of data['data'] | slice:0:4;let i=index" class="inner-trending-category pwa-col-6">
             <div [routerLink]="['/'+item?.image_link]" class="innerCategory">
                 <div class="imgBlock">
                     <img alt="{{item['image_title']}}" src="{{imagePath + item['image_name']}}">

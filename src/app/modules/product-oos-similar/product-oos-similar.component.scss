@@ -7,7 +7,7 @@
 .pdp-section-header {
     padding: 5px 15px;
     background: #fff;
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid var(--platinum);
     &.blue-header{
         background:#E5F3FF;
     } 
@@ -410,7 +410,7 @@
     }
   }
 .pdp-card-breadcrumb{
-    background:$white;
+    background:var(--white);
     padding: 10px 15px;
     border-bottom:1px solid #E3E3E3;
     li{

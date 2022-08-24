@@ -26,7 +26,7 @@
         <!-- <div *ngIf="pincode.hasError('pattern') && isSubmitted" class="invalid-txt pwa-col-12" style="padding-top: 5px;">
             <p class="right-txt">Invalid pincode provided</p>
         </div> -->
-        <div class="about-delivery pwa-col-12" *ngIf="!(itemShippingAmount > 0) && isPincodeAvailble && this.pincode.value != null">
+        <div class="about-delivery pwa-col-12" *ngIf="!(itemShippingAmount > 0) && isPincodeAvailble && this.pincode.value != null && isServiceable">
             <span class="st-icon-shipping">
                 <span class="icon-delivery_1"></span>
             <span class="icon-delivery_2"></span>

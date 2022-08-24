@@ -122,7 +122,7 @@
         font-size: 12px;
         font-weight: normal;
         text-align: left;
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid var(--platinum);
         padding: 5px;
     }
 }
@@ -137,7 +137,7 @@
 }
 
 .showtsWrap {
-    color: $blue-link-color;
+    color: var(--blue);
     margin: 5px;
     display: inline-block;
 }
@@ -159,16 +159,9 @@
 }
 
 .bg_white {
-    background: $white;
+    background: var(--white);
 }
 
-.panel-head {
-    background: #fff;
-    margin-top: 10px;
-    h3 {
-        padding: 15px 0;
-    }
-}
 
 
 /*new css for safety shoes*/
@@ -285,8 +278,8 @@ h2.slp-heading {
 }
 
 .viewallbs {
-    color: $logo-color;
-    border: 1px solid $logo-color;
+    color: var(--primary);
+    border: 1px solid var(--primary);
     border-radius: 2px;
     text-transform: uppercase;
     font-size: 10px;
@@ -353,7 +346,7 @@ h2.slp-heading {
             }
             .safetysh_discount {
                 display: block;
-                color: $green-color;
+                color: var(--slimy-green);
                 font-size: $medium-font;
                 font-weight: 500;
                 margin-bottom: 1px;

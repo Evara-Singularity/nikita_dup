@@ -31,7 +31,7 @@
         }
     }
     .payment-notification {
-        color: $logo-color;
+        color: var(--primary);
         background: #FFEDEE;
         padding: 6px 10px;
         font-size: $small-font;
@@ -44,7 +44,7 @@
         .custom-cbox {
             label {
                 padding: 10px 15px;
-                border-bottom: 1px solid $border-color;
+                border-bottom: 1px solid var(--platinum);
                 &:last-child {
                     border-bottom: 0;
                 }

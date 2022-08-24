@@ -32,7 +32,7 @@
     <!-- FAQ Data STARTS -->
     <div *ngIf="categoryFooterData?.faqData && categoryFooterData?.faqData.length>0"
         [ngClass]="{'hide': !(categoryFooterData?.faqData && categoryFooterData?.faqData.length>0)}" class="body-bg">
-        <div class="panel-head"
+        <div class="panel-head mt-10"
             [ngClass]="{'hide': !(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0)}">
             <div class="pwa-row pad-tb-5">
                 <h3 class="heading-3" (click)="_commonService.scrollTo($event)"

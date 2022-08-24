@@ -35,7 +35,7 @@
     }
     button {
         width: 175px;
-        background: $btn-color-red;
+        background: var(--primary);
         float: right;
         height: 50px;
         text-transform: uppercase;
@@ -43,6 +43,6 @@
     button:disabled,
     button[disabled]{
         background-color: #bdbdbd;;
-        color: $white;
+        color: var(--white);
     }
 }

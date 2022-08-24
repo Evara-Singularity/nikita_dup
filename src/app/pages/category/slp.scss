@@ -105,8 +105,8 @@
             }
         }
         .viewallbs {
-            color: $logo-color;
-            border: 1px solid $logo-color;
+            color: var(--primary);
+            border: 1px solid var(--primary);
             border-radius: 2px;
             text-transform: uppercase;
             font-size: 10px;
@@ -172,7 +172,7 @@
                     }
                     .safetysh_discount {
                         display: block;
-                        color: $green-color;
+                        color: var(--slimy-green);
                         font-size: $medium-font;
                         font-weight: 500;
                         margin-bottom: 1px;
@@ -367,11 +367,11 @@
                 }
             }
             .safetyshoebannersrow {
-                background: url('/assets/img/bg_mobile.png')no-repeat center top;
+                background: url('/assets/img/bg_mobile.png') no-repeat center top;
                 background-size: 100% auto;
             }
             .safetysh-shopby {
-                background: url('/assets/img/wallpaper_1_ mobile.png')no-repeat center;
+                background: url('/assets/img/wallpaper_1_ mobile.png') no-repeat center;
                 padding: 20px 20px;
                 background-size: cover;
                 .shopbyrow {
@@ -577,7 +577,7 @@
                 }
                 .safetysh_discount {
                     display: block;
-                    color: $green-color;
+                    color: var(--slimy-green);
                     font-size: $medium-font;
                     font-weight: 500;
                     margin-bottom: 1px;

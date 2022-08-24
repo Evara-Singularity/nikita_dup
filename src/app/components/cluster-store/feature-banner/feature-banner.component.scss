@@ -8,9 +8,7 @@
         overflow-x:scroll;
         width:auto;
         background: var(--white);
-        &::-webkit-scrollbar{
-            display: block;
-        }
+        @extend %hide-scrollbar;
     }
     .featrBannerSlide{
         float: left;

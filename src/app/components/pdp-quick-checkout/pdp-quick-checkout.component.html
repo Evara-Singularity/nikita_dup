@@ -15,7 +15,7 @@
                         <p class="prod-selling-price">₹{{cartService.getGenericCartSession.cart.tawot | mathFloor | number : '1.2-2'}}
                              + {{item.taxPercentage}}% GST: ₹
                              {{cartService.getGenericCartSession.cart.tawot+tax | mathFloor | number : '1.2-2'}}</p>
-                        <span class="green-txt" *ngIf="cartService.getGenericCartSession.cart.shippingCharges == 0 || null">Free Shipping</span>
+                        <span class="green-txt" *ngIf="cartService.getGenericCartSession.cart.shippingCharges == 0 || null"><i class="icon-prepaid"></i>Free Shipping</span>
                     </div>
                     <div class="qty_section">
                         <div class="quantity-block">
@@ -33,13 +33,13 @@
                 </div>
                 <!--Payment Summary-->
                 <div class="small-accordion-panel" id="q_payment_summary">
-                    <div class="panel-head">
+                    <div class="panel-head" >
                         <h3 class="heading-3">
                             Payment Summary
                         </h3>
                         <i class="icon-expand"></i>
                     </div>
-                    <div id="openHomeAccoridan" style="display:block;" class="panel-body">
+                    <div id="openHomeAccoridan" style="display:block;" class="panel-body hide">
                         <div class="">
                             <ul>
                                 <li class="tag-item">

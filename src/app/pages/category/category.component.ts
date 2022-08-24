@@ -622,8 +622,6 @@ export class CategoryComponent {
     private updateComponentsBasedOnrouteChange() {
         const params = this._activatedRoute.snapshot.params;
         this.isFiltersApplied = Object.keys(this._commonService.selectedFilterData.filter).length ? true : false;
-        console.log('////////////////////////////////////////');
-        console.log()
         this.layoutType = 0;
         if (params && params.id && slpPagesExtrasIdMap.hasOwnProperty(params.id)) {
             this.isSLPPage = true;

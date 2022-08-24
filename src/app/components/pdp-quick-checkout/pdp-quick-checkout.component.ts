@@ -48,6 +48,8 @@ export class PdpQuickCheckoutComponent implements OnInit {
   billingAddress = null;
   shippingAddress = null
   showPromoOfferPopup = false;
+  isPaymentSummary = true;
+  purchasingForBusiness = false;
   cartSubscription: Subscription = null;
   promoSubscription: Subscription = null;
   showPromoSuccessPopup:boolean = false;
@@ -85,9 +87,14 @@ export class PdpQuickCheckoutComponent implements OnInit {
     this.commonService.oosSimilarCard$.next(false);
   }
 
+  expandPaymentSummary(){
+    this.isPaymentSummary = this.isPaymentSummary ? false : true;
+  }
+
   ngOnInit() {
     this.setAddress(this.address);
     this.shippmentCharge = this.cartService.shippingCharges;
+    this.purchasingForBusiness = this.cartService.invoiceType == 'tax' ? true : false;
     this.currUser = this.localAuthService.getUserSession();
     this.cartService.getPromoCodesByUserId(this.currUser['userId']);
     this.cartService.appliedPromoCode = "";
@@ -98,7 +105,6 @@ export class PdpQuickCheckoutComponent implements OnInit {
 
     this.promoSubscription = this.cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode }) =>
     {
-      console.log("promoSubscription --- >" , isNewPromocode)
         this.showPromoSuccessPopup = isNewPromocode;
         this.getUpdatedCart();
         setTimeout(() => { this.showPromoSuccessPopup = false; },  800)
@@ -340,8 +346,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   validateCart() {
     this.globalLoader.setLoaderState(true);
     const _cartSession = this.cartService.getCartSession();
-    const _shippingAddress = this.cartService.shippingAddress ?? null;
-    //console.log("validate--",this.cartService.shippingAddress);
+    const _shippingAddress = this.cartService.shippingAddress ?? null
     const _billingAddress = this.cartService.billingAddress ?? null;
     let cart = _cartSession.cart;
     let obj = {

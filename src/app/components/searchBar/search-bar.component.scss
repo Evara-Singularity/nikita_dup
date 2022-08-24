@@ -432,11 +432,11 @@ section.search-popup {
 
 .search-popup {
     overflow-y: scroll;
-    height: 90vh;
+    height: calc(100% - 50px);
 }
 
 .similar-prod {
-    padding: 0px !important;
+    padding-bottom: 30px;
 }
 
 .card {

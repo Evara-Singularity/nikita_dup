@@ -17,10 +17,10 @@
   </div>
 </section>
 
-<app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
-  [data]="{closeClass:'icon-back f-left',paraClass:'f-left page-name f-16',class: 'payment-popup',selector:'openPopup',headerText:'Sub-category'}">
+<app-pop-up *ngIf="openPopup" (outData$)="outData($event)"
+  [headerType]="'pop-up-header1'">
   <div class="content-popup" content>
-    <div class="sub-categoryRow popRow">
+    <div class="popRow">
       <div class="outerBlock pad-lr-5" *ngFor="let subCat of sub_category_Data">
         <div class="subCatBlock">
             <a [routerLink]="'/'+subCat?.categoryDetails?.categoryLink">

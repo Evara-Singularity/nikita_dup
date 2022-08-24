@@ -25,6 +25,9 @@ export class ShopbyFeatrComponent {
   imports: [
     CommonModule,
     LazyLoadImageModule,
+  ],
+  exports:[
+    ShopbyFeatrComponent
   ]
 })
 export class ShopbyFeatrModule { }

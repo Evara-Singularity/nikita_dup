@@ -51,6 +51,9 @@ export class CatBestsellerComponent {
     RouterModule,
     LazyLoadImageModule,
     PopUpModule
+  ],
+  exports:[
+    CatBestsellerComponent
   ]
 })
 export class CategoryBestSellerModule { }

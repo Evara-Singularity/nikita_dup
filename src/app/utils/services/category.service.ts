@@ -23,10 +23,6 @@ export class CategoryService {
                 })
             );
     }
-    getCategoryExtraData(categoryId): Observable<any> {
-        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategoryExtras + categoryId;
-        return this._dataService.callRestful("GET", url);
-    }
     getFaqApi(categoryId): Observable<any> {
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategorySchema + categoryId;
         return this._dataService.callRestful("GET", url);

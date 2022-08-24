@@ -1,25 +1,25 @@
 <div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader}" >
     <app-promo  [page]="'category'" class="fixed-btm-app-prmo" [isOverlayMode]="true"></app-promo>
-    
     <div
         [class.visibility]="!((layoutType == 1 || layoutType == 2) && (!_commonService.selectedFilterData.page || _commonService.selectedFilterData.page < 2))">
         <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1"
             [class.slpLayout2]="layoutType == 2">
             <div class="container-fluid safetyshoebannersrow">
-                <ng-container *ngIf="_commonService?.isBrowser" #catStatic></ng-container>
-                <ng-container *ngIf="_commonService?.isBrowser" #slpSubCategoryRef></ng-container>
-                <ng-container *ngIf="_commonService?.isBrowser" #shopByBrand></ng-container>
-                <ng-container *ngIf="_commonService?.isBrowser" #catBestsellers></ng-container>
-            </div>
-            <div class="container-fluid safetyshshopbytype">
-                <ng-container *ngIf="_commonService?.isBrowser" #shopbyFeatr></ng-container>
+                <cat-static [page_title]="page_title" [static_data]="catStaticData"></cat-static>
+                <slp-sub-category *ngIf="API_RESPONSE?.category[0]?.children && layoutType == 2"
+                    [sub_category_Data]=" API_RESPONSE.category[0].children"></slp-sub-category>
+                <shopby-brand [brand_Data]="shopByBrandData"></shopby-brand>
+                <cat-bestseller [bestSeller_Data]="catBestsellerData"></cat-bestseller>
+                <div class="container-fluid safetyshshopbytype">
+                    <shopby-featr [shopBy_Data]="shopbyFeatrData"></shopby-featr>
+                </div>
             </div>
         </div>
     </div>
     
     <div class="container-fluid category">
         <div class="row">
-            <ng-container *ngIf="_commonService?.isBrowser" #cms></ng-container>
+            <data-cms *ngIf="this.API_RESPONSE.category[4]" [cmsData] ="API_RESPONSE.category[4]" [background] = "'bg-trans'"></data-cms>
         </div>
     </div>
     
@@ -45,7 +45,7 @@
                         Categories)</span>
                 </p>
             </div>
-            <ng-container #subCategory></ng-container>
+            <sub-category *ngIf="API_RESPONSE.category[0].children" [relatedCatgoryList]="API_RESPONSE.category[0].children"></sub-category>
         </div>
     </div>
     

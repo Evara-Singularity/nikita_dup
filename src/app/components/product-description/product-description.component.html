@@ -80,8 +80,9 @@
             </div>
 
         </div>
+        <ng-container *ngIf="starsCount > 0">
         <div class="prod-inner-desc" (click)="scrollToResults('reviewSection',-30)">
-            <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
+            <span class="rating-box" >{{starsCount | number : '1.1-1'}}
                 <i class="icon-rating-star"></i>
             </span>
             <div class="prod-status">
@@ -93,6 +94,7 @@
                 </p>
             </div>
         </div>
+    </ng-container>
         <!--recently bought product section -->
         <div class="pwa-inline-tooltip" *ngIf="rawProductCountMessage">
             <i class="icon-trending"></i>

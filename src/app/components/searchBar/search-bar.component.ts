@@ -344,15 +344,33 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
             name: data,
             extras: extras
         };
-        if (sh) {
-            const e = sh.some(t => t['name'].toLowerCase() === data.toLowerCase());
-            if (!e) {
-                // console.log(e);
-                sh.push(cs);
+        if (sh && sh.length > 0) {
+            if (sh.length >= 5) {
+                // check existing
+                const e = sh.some(t => t['name'].toLowerCase() === data.toLowerCase());
+                if (!e) {
+                    // console.log(e);
+                    /// sh.push(cs);
+                    sh.unshift();
+                    sh = [cs, ...sh]
+                } else {
+                    sh = sh.filter(t => t['name'].toLowerCase() !== data.toLowerCase()); // remove element from array
+                    sh = [cs, ...sh] // move to first position
+                }
+                // if not shift and append
+            } else {
+                const e = sh.some(t => t['name'].toLowerCase() === data.toLowerCase());
+                if (!e) {
+                    sh = [cs, ...sh]
+                }else{
+                    sh = sh.filter(t => t['name'].toLowerCase() !== data.toLowerCase()); // remove element from array
+                    sh = [cs, ...sh] // move to first position
+                }
             }
         } else {
             sh = [];
-            sh.push(cs);
+            // sh.push(cs);
+            sh = [cs, ...sh]
         }
         // console.log(sh, data);
         this._lss.store('search-history', sh);

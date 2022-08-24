@@ -1,5 +1,5 @@
 <div class="home-parent">
-    <app-promo  [page]="'home'" class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
+    <app-promo  [page]="'home'" class="fixed-btm-app-prmo home-app-promo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
     <div class="css-banner-component">
         <div class="internalBanner" *ngIf="isBrowser">
             <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
@@ -21,7 +21,7 @@
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
             <div class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
                 <a class="full-banner" *ngIf="i==0" href="{{im.image_link}}">
-                    <img [src]="imagePath + im.image_name" alt="banner add" width="312" height="67">
+                    <img [src]="imagePath + im.image_name" alt="banner add" width="312" height="129">
                 </a>
             </div>
 
@@ -94,5 +94,6 @@
         <whatsapp-toast (click)="sendTrackingData()" [customText]="'Hi'"></whatsapp-toast>
     </div>
 
-    <!-- section for trending categories-->
+    <bottom-navigation></bottom-navigation>
+    <!-- section for trending categories-->    
 </div>

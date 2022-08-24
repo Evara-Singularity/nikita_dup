@@ -7,7 +7,7 @@
         padding: 0;
         background:  var(--white);
         border-radius: 11px;
-        margin: 20px 10px;
+        margin: 20px 15px;
         display: inline-block;
         .banner-content {
             text-align: left;
@@ -48,7 +48,7 @@
         }
     }
     .contact-info {
-        padding: 15px 10px;
+        padding: 15px 15px;
         .faq-wrap {
             border: 1px solid var(--ghost-white);
             background:  var(--white);
@@ -79,7 +79,7 @@
             }
             .contact-content {
                 padding: 0px 6px 0 11px;
-                width: 82%;
+                width: 80%;
             }
             .right-arrow {
                 float: right;
@@ -87,16 +87,30 @@
             }
             .icons {
                 vertical-align: top;
-                img {
-                    width: 28px;
-                    vertical-align: middle;
+                i{
+                    font-size: 30px;
+                    &.icon-whatsapp{
+                        color: var(--slimy-green);
+                    }
+                }
+            }
+        }
+        .get-in-touch{
+            p{
+                font-size: 12px;
+                line-height: 20px;
+                a{
+                    color: var(--bleu-de-france);
+                }
+                span{
+                    color: var(--spanish-gray);
                 }
             }
         }
     }
     .office-address-info,
     .customer-care {
-        padding: 30px 10px;
+        padding: 15px;
         p {
             font-size: $extra-large-font;
             font-weight: $font-normal;
@@ -141,6 +155,6 @@
         }
     }
     .customer-care {
-        padding: 0 10px 30px;
+        padding: 0 15px 30px;
     }
 }

@@ -1,4 +1,4 @@
-<ng-container *ngIf="cmsData">
+<ng-container *ngIf="cmsData && background">
     <ng-container *ngFor="let item of cmsData">
         <div class="row {{ background }} no-margin" [ngSwitch]="item[componentLabel]" *ngIf="item[data]">
             <dynamic-image-component [componentName]="item['componentName']" *ngIf="item[componentLabel] === 'image_component_two' || item[componentLabel] === 'image_component_six' || item[componentLabel] === 'image_component_four' || item[componentLabel] === 'image_component_three' " [titleData]="item[titleData]" [listOfImgs]="item[data]" [imagePath]="imagePath" [customStyle]="item['style']"></dynamic-image-component>

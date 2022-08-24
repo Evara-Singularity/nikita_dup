@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { NavigationExtras, Router, RouterModule } from '@angular/router';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { LocalStorageService } from 'ngx-webstorage';
 import { BottomMenuModule } from '../../modules/bottomMenu/bottom-menu.module';
 
 @Component({
@@ -15,6 +17,8 @@ export class NavBottomSheetComponent implements OnInit {
   
   constructor(
     private router: Router,
+    private localStorageService: LocalStorageService,
+    private _localAuthService: LocalAuthService,
   ) { }
 
   ngOnInit(): void {
@@ -41,6 +45,24 @@ export class NavBottomSheetComponent implements OnInit {
       else{
         this.router.navigate([url]);
       }
+    }
+  }
+
+  resetBottomOptCallWithLogin(url = null, title='') {
+    this.sbm = false;
+    this.checkIfUserLoggedIn(url, title)
+  }
+
+  checkIfUserLoggedIn(url, title = "") {
+    let user = this.localStorageService.retrieve("user");
+    if (user && user.authenticated == "true") {
+      this.router.navigate([url]);
+    } else {
+      this._localAuthService.setBackURLTitle(url, title);
+      let navigationExtras: NavigationExtras = {
+        queryParams: { 'backurl': url },
+      };
+      this.router.navigate(['/login'], navigationExtras);
     }
   }
 }

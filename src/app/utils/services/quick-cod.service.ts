@@ -4,8 +4,9 @@ import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
+import { NonServiceableAndCod } from '../models/address.modal';
 import { InitiateQuickCod, ValidateDto } from './../models/cart.initial';
 import { CartUtils } from './cart-utils';
 import { GlobalLoaderService } from './global-loader.service';
@@ -31,32 +32,20 @@ export class QuickCodService
       isBuyNow: initiateQuickCod.isBuyNow
     }
     const validateDto = CartUtils.getValidateDto(validateDtoRequest);
-    this.quickCODPayment(validateDto['shoppingCartDto'], initiateQuickCod.postCode, initiateQuickCod.userId)
+    this.quickCODPayment(validateDto['shoppingCartDto'], initiateQuickCod.userId)
   }
 
-  quickCODPayment(shoppingCartDto, postCode, userId)
+  quickCODPayment(shoppingCartDto, userId)
   {
     this.codMessages = [];
-    const limitVerification = this.verifyCODLimit(shoppingCartDto['cart']['totalPayableAmount']);
-    const serviceability_cod = this.verifyServiceabilityAndCOD(shoppingCartDto['itemsList'], postCode);
     const validateShoppingCart = this._cartService.validateCartBeforePayment({ shoppingCartDto: shoppingCartDto });
     this._loaderService.setLoaderState(true);
-    forkJoin([limitVerification, serviceability_cod, validateShoppingCart]).pipe(
-      map((results) =>
+    validateShoppingCart.pipe(
+      map((result) =>
       {
-        const result_cod_limit = results[0];
-        const messages = result_cod_limit['messages'];
-        const result_serviceable_cod = results[1];
-        const result_validate_cart = results[2];
-        const isNonServiceable = result_serviceable_cod['isNonServiceable'];
-        const isNonCod = result_serviceable_cod['isNonCod'];
+        const result_validate_cart = result[1];
         const isShpopingCartInValid = !(result_validate_cart.status && result_validate_cart.statusCode == 200);
-        if (isNonServiceable || isNonCod) {
-          this.codMessages.push("Items in cart are either not serviceable or not eligible for COD");
-          this.codMessages = messages;
-        }
-        const canProceed = !(isNonServiceable || isNonCod || isShpopingCartInValid);
-        return { canProceed: canProceed };
+        return { canProceed: !(isShpopingCartInValid) };
       }),
       concatMap((result) =>
       {
@@ -76,41 +65,6 @@ export class QuickCodService
       this._localStorageService.clear('flashData');
       this._router.navigate(['order-confirmation'], extras);
     })
-  }
-
-  verifyCODLimit(totalPayableAmount)
-  {
-    const result = { status: true }
-    const minValue = CONSTANTS.GLOBAL.codMin
-    const maxValue = CONSTANTS.GLOBAL.codMax
-    if (totalPayableAmount < minValue) {
-      result.status = false;
-      this.codMessages.push(`COD not applicable on orders below Rs.${minValue}`)
-    }
-    else if (totalPayableAmount > maxValue) {
-      result.status = false;
-      this.codMessages.push(`COD not applicable on orders above Rs.${maxValue}`)
-    }
-    return of(result);
-  }
-
-  verifyServiceabilityAndCOD(items: any[], postCode)
-  {
-    const result = { isNonServiceable: false, isNonCod: false };
-    const msns = items.map(item => item.productId);
-    return this._urlsService.getServiceability(msns, postCode).pipe(
-      map((response) =>
-      {
-        if (response['status']) {
-          const aggregates = Object.values(response['data']).map((item) => item['aggregate']);
-          for (let aggregate of aggregates) {
-            if (!(aggregate.serviceable)) { result.isNonServiceable; }
-            if (!(aggregate.codAvailable)) { result.isNonCod; }
-          }
-        }
-        return result
-      })
-    );
   }
 
   getPaymentId(userId)
@@ -145,6 +99,57 @@ export class QuickCodService
       request['paymentGateway'] = 'razorpay'
     }
     return this._cartService.pay(request)
+  }
+
+  
+  //New version of implementation
+  checkForCODEligibility(totalPayableAmount, itemsList, postCode): Observable<any>
+  {
+    const limitVerification = this.checkCODLimit(totalPayableAmount);
+    const serviceability_cod = this.verifyServiceabilityAndCOD_v1(itemsList, postCode);
+    return forkJoin([limitVerification, serviceability_cod]).pipe(
+      map((results) =>
+      {
+        const result_cod_limit = results[0];
+        const result_serviceable_cod = results[1];
+        return { ...result_cod_limit, ...result_serviceable_cod };
+      }))
+  }
+
+  verifyServiceabilityAndCOD_v1(items: any[], postCode)
+  {
+    const result: NonServiceableAndCod = { nonServiceables: [], nonCods: [] };
+    const msns = items.map(item => item.productId);
+    return this._urlsService.getServiceability(msns, postCode).pipe(
+      map((response) =>
+      {
+        if (response['status']) {
+          const aggregates = Object.values(response['data']).map((item) => item['aggregate']);
+          for (let aggregate of aggregates) {
+            const productId = aggregate.productId;
+            if (!(aggregate.serviceable)) { result.nonServiceables.push(productId); }
+            if (!(aggregate.codAvailable)) { result.nonCods.push(productId) }
+          }
+        }
+        return result
+      })
+    );
+  }
+
+  checkCODLimit(totalPayableAmount)
+  {
+    const result = { iswithInCODLimit: true, message: null }
+    const minValue = CONSTANTS.GLOBAL.codMin
+    const maxValue = CONSTANTS.GLOBAL.codMax
+    if (totalPayableAmount < minValue) {
+      result.iswithInCODLimit = false;
+      result.message = `COD not applicable on orders below Rs.${minValue}`;
+    }
+    else if (totalPayableAmount > maxValue) {
+      result.iswithInCODLimit = false;
+      result.message = `COD not applicable on orders above Rs.${maxValue}`;
+    }
+    return of(result);
   }
 
   displayCODMessage(message: string)

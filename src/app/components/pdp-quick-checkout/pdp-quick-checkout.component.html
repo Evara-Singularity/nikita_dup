@@ -99,7 +99,8 @@
                 <form>
                     <div class="invoice-select">
                         <label>
-                            <input type="checkbox" [checked] = "purchasingForBusiness">
+                            <input type="checkbox" [checked] = "purchasingForBusiness" *ngIf="purchasingForBusiness">
+                            <input type="checkbox" [checked] = "purchasingForBusiness" (change)="close()" *ngIf="!purchasingForBusiness">
                             <span class="custom-box icon-box"></span>
                         </label>
                         <div class="invoice-txt">
@@ -129,7 +130,7 @@
                             <span>
                             </span>
                         </span>
-                        ₹   {{totalPayableAmount | mathCeil | number : '1.2-2'}}
+                        ₹{{totalPayableAmount | mathCeil | number : '1.2-2'}}
                     </p>
                     <button class="btn" (click)="placeOrder()" >
                         PLACE ORDER

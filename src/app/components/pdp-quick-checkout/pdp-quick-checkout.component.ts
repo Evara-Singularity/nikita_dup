@@ -94,7 +94,6 @@ export class PdpQuickCheckoutComponent implements OnInit {
   ngOnInit() {
     this.setAddress(this.address);
     this.shippmentCharge = this.cartService.shippingCharges;
-    this.purchasingForBusiness = this.cartService.invoiceType == 'tax' ? true : false;
     this.currUser = this.localAuthService.getUserSession();
     this.cartService.getPromoCodesByUserId(this.currUser['userId']);
     this.cartService.appliedPromoCode = "";
@@ -158,7 +157,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     }else{
       this.cartService.shippingAddress = null;
     }
-    // for shippingAddress
+    // for billingAddress
     if(address['billingAddress'] && address['billingAddress'].length){
       let len = (address['billingAddress'].length > 1 ? address['billingAddress'].length-1 : 0)
       this.cartService.billingAddress = address['billingAddress'][len];
@@ -167,6 +166,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
       this.cartService.billingAddress = null;
     }
    }
+   this.purchasingForBusiness = this.cartService.shippingAddress.isGstInvoice == true ? true : false;
   }
 
    //new implmentation

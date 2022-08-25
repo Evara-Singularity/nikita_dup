@@ -31,6 +31,7 @@ export class PagesComponent implements OnInit {
   iData: { footer?: true; logo?: boolean; title?: string, hideHeader?: boolean };
   isFooter: boolean = true;
   isHomePage: boolean;
+  isRoutedBack: boolean;
   constructor(
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
@@ -159,6 +160,8 @@ export class PagesComponent implements OnInit {
   }
 
   ngOnInit() {
+    // separately checking for back param, because on angular router navigation this param is not getting updated
+    this.isRoutedBack = window.location.toString().includes('back=1');
     /**
      * Handles cart and user session globally for application on all pages
      * Also, for page refresh

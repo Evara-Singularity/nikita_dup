@@ -55,7 +55,6 @@ export class CommonService
     isHomeHeader = false;
     isPLPHeader = false;
     isScrolledHeader = false;
-    isRoutedBackTohome = window.location.toString().includes('back=1');
     loadNav: Subject<boolean> = new Subject<false>();
     stopSearchNudge = false;
 
@@ -1450,6 +1449,9 @@ export class CommonService
     }
     isAbsoluteUrl(url: string) {
         return (url.indexOf('://') > 0 || url.indexOf('//') === 0)
+    }
+    isRoutedBack() {
+        return window.location.toString().includes('back=1');
     }
 
 }

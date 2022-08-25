@@ -16,7 +16,7 @@
             </a>
         </div>
     </div>
-    <div class="search-bar" *ngIf="!_commonService.isRoutedBackTohome">
+    <div class="search-bar" *ngIf="!isRoutedBack">
         <input class="search-bar-input" type="text" autocomplete="off" (click)="loadSearchNav$.emit();"
             [value]="searchValue" placeholder="Search Product/Category/Brand...">
         <div class="home-search-animation">

@@ -56,6 +56,8 @@ export class BottomMenuComponent implements OnInit {
         document.body.removeEventListener('touchmove', this.preventDefault);
     }
     updateParent(data) {
+        (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
+        this.enableScroll();
         setTimeout(() => {
             this.outData$.emit(data)
         }, 100);

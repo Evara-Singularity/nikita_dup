@@ -55,6 +55,7 @@ export class CommonService
     isHomeHeader = false;
     isPLPHeader = false;
     isScrolledHeader = false;
+    loadNav: Subject<boolean> = new Subject<false>();
     stopSearchNudge = false;
 
     currentRequest: any;
@@ -1443,8 +1444,18 @@ export class CommonService
         }
     }
 
+    openLoader() {
+        return this.loadNav.asObservable();
+    }
     isAbsoluteUrl(url: string) {
         return (url.indexOf('://') > 0 || url.indexOf('//') === 0)
+    }
+    isRoutedBack() {
+        if(this.isBrowser) {
+            return window.location.toString().includes('back=1');
+        } else {
+            return false;
+        }
     }
 
 }

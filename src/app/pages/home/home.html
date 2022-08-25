@@ -1,4 +1,18 @@
 <div class="home-parent">
+    
+    <div class="search-widget-container" *ngIf="isRoutedBack">
+        <div class="search-widget-section pwa-row">
+            <div class="inner-search-widget">
+                <p>Search for <span>{{ searchTerm }}</span></p>
+                <div class="search-bar widget-search-bar">
+                    <input class="search-bar-input widget-search-input" type="text" autocomplete="off"
+                        placeholder="Search Product/Category/Brand..." (click)="loadSearchNav()">
+                </div>
+            </div>
+            <div class="search-widget-bg"></div>
+        </div>
+    </div>
+
     <app-promo  [page]="'home'" class="fixed-btm-app-prmo home-app-promo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
     <div class="css-banner-component">
         <div class="internalBanner">

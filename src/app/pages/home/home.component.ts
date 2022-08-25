@@ -109,6 +109,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('TrendingCategories', { read: ViewContainerRef })
 	trendingCategoriesContainerRef: ViewContainerRef;
 	oganizationSchema: any;
+	isRoutedBack: boolean;
+	searchTerm = '';
 	bannerDataFinal: any[] = [];
 
 	constructor(
@@ -137,7 +139,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
-
+		this.isRoutedBack = this._commonService.isRoutedBack();
+		this.loadSearchTerms();
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['homeData']['error']) {
 				this.fetchHomePageData(rawData.homeData[0]);
@@ -166,6 +169,20 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 0);
 		}
 		this._commonService.resetSelectedFilterData();
+	}
+
+	loadSearchTerms() {
+		let terms = CONSTANTS.SEARCH_WIDGET_KEYS;
+		this.searchTerm = terms[0];
+		let i = null;
+		setInterval(() => {
+			if((i || i == 0) && i<terms.length - 1 ) {
+				i += 1
+			} else {
+				i = 0
+			}
+		this.searchTerm = terms[i];
+		}, 1000)
 	}
 
 	fetchHomePageData(response) {
@@ -552,6 +569,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.featuredBrandsInstance.instance['defaultImage'] = this.defaultImage;
 			this.featuredBrandsInstance.instance['imagePath'] = this.imagePath;
 		}
+	}
+
+	loadSearchNav() {
+		this._commonService.loadNav.next(true);
 	}
 
 	async onVisibleCategories(htmlElement) {

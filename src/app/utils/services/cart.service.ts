@@ -320,11 +320,12 @@ export class CartService
         return cartSession;
     }
 
-    private _getShipping(cartSession): Observable<any>
+    private _getShipping(cartSession2): Observable<any>
     {
         // console.trace();
+        const cartSession = this.getCartSession();
         let sro = this.getShippingObj(cartSession);
-        // console.trace('_getShipping', Object.assign({}, cartSession))
+        // console.trace('_getShipping', Object.assign({}, cartSession), this.getCartSession())
         return this.getShippingValue(sro)
             .pipe(
                 map((sv: any) =>
@@ -340,7 +341,9 @@ export class CartService
                     }
                     // console.log('shipping  cart session', this.generateGenericCartSession(cartSession));
                     const updatedCartSessionAfterShipping = this.generateGenericCartSession(cartSession);
+                    // console.log('updatedCartSessionAfterShipping', updatedCartSessionAfterShipping);
                     this.setShippingPriceChanges(updatedCartSessionAfterShipping);
+                    this.setGenericCartSession(updatedCartSessionAfterShipping);
                     return updatedCartSessionAfterShipping;
                 })
             );

@@ -17,7 +17,7 @@
     }
     .head {
         padding: 15px;
-        background: $white;
+        background: var(--white);
         box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
         text-align: center;
     }
@@ -37,7 +37,7 @@
         .select-type {
             label {
                 width: 48%;
-                border: 2px solid $border-color;
+                border: 2px solid var(--platinum);
                 height: calc(100% / 2 - 15px);
                 min-height: 156px;
                 text-align: center;
@@ -54,7 +54,7 @@
                 }
                 &:hover,
                 &.selected {
-                    border-color: $active-border-color;
+                    border-color: var(--blue);
                 }
                 img {
                     width: 100px;
@@ -69,13 +69,13 @@
     }
     .next {
         font-size: 40px;
-        color: $active-color;
+        color: var(--blue);
         display: block;
         width: 40px;
         line-height: 40px;
         margin: 20px auto 0 auto;
         &:disabled {
-            color: $disabled;
+            color: var(--silver);
         }
     }
     .skip-btn {
@@ -98,7 +98,7 @@
                 @extend %cards;
                 padding: 0;
                 border-width: 0;
-                border-top: 1px solid $border-color;
+                border-top: 1px solid var(--platinum);
                 label {
                     @include gridForCategory('3', null);
                     text-align: center;
@@ -117,7 +117,7 @@
                         height: 100%;
                         width: 100%;
                         padding: 25px 5px 5px 5px;
-                        border: solid $border-color;
+                        border: solid var(--platinum);
                         border-width: 0 1px 1px 0;
                         &:nth-child(n + 4) {
                             .overlay-container {
@@ -135,7 +135,7 @@
                     }
                     input:checked {
                         &~.overlay-container {
-                            background: $checkbox-overly;
+                            background: var(--blue);
                         }
                         &+.icon-box {
                             opacity: 1;

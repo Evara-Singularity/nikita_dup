@@ -26,9 +26,14 @@ export class ProductVariantSelectListingPageComponent implements OnInit {
   @Output() continueToCart$ = new EventEmitter<{ product: AddToCartProductSchema, buyNow: boolean }>();
   @Output() hide$ = new EventEmitter<boolean>();
   currentlySelectedMSN: string
+  readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+  avgRating: number;
+  reviewCount: number;
 
   ngOnInit(): void {
     this.currentlySelectedMSN = this.product.moglixPartNumber;
+    this.avgRating = this.product.avgRating;
+    this.reviewCount = this.product.reviewCount;
   }
 
   emitVariant(msn: string): void {

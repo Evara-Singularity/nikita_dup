@@ -44,21 +44,20 @@
 .prod-carsl {
     background: #fff;
 
-    .img-siema {
-        .img-block {
-            width: 100%;
-            height: 330px;
-            background: white;
-            position: relative;
-            padding: 30px;
-        }
+    // .img-block {
+    //     width: 100%;
+    //     height: 330px;
+    //     background: white;
+    //     position: relative;
+    //     padding: 30px;
+    // }
 
-        .inner_block {
-            position: relative;
-        }
-    }
+        // .inner_block {
+        //     position: relative;
+        // }
 
-    &.oos {
+
+    .oos {
         .img-block {
             img {
                 opacity: 0.6;
@@ -75,6 +74,13 @@
 
         .inner_block {
             height: 100%;
+            .element{
+                height: 100%;
+            }
+            img{
+                width: 100%;
+                height: 100%;
+            }
         }
     }
 }
@@ -116,10 +122,10 @@
             }
 
             &.active {
-                border: 1px solid $logo-color;
+                border: 1px solid var(--primary);
 
                 i {
-                    color: $btn-color-red;
+                    color: var(--primary);
                 }
             }
         }

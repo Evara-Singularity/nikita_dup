@@ -92,7 +92,7 @@
         padding-left: 5px;
         &:before {
           left: 30%;
-          border-left: 2px solid $trackeryellow;
+          border-left: 2px solid var(--yellow);
         }
         &:first-child {
           &:after {
@@ -107,7 +107,7 @@
             height: 16px;
             border-radius: 50%;
             top: 0;
-            background: $green-color;
+            background: var(--slimy-green);
             content: "";
           }
         }
@@ -145,12 +145,12 @@
       }
       &.grsolid {
         .grtrackerline {
-          background: $green-color;
+          background: var(--slimy-green);
         }
         &:before {
-          border-left: 1px solid $green-color;
-          border-right: 1px solid $green-color;
-          background: $green-color;
+          border-left: 1px solid var(--slimy-green);
+          border-right: 1px solid var(--slimy-green);
+          background: var(--slimy-green);
         }
         .trackerdate {
           color: var(--onyx-black);
@@ -168,11 +168,11 @@
       }
       &.yellsolid {
         .grtrackerline {
-          background: $trackeryellow;
+          background: var(--yellow);
         }
         &:before {
-          border-left: 2px solid $trackeryellow;
-          background: $trackeryellow;
+          border-left: 2px solid var(--yellow);
+          background: var(--yellow);
         }
         .trackerdate {
           color: var(--onyx-black);
@@ -186,7 +186,7 @@
           height: 16px;
           border-radius: 50%;
           top: 0;
-          background: $green-color;
+          background: var(--slimy-green);
           content: "";
         }
         &:before {
@@ -223,7 +223,7 @@
   text-align: center;
   height: 50px;
   background: var(--white);
-  color: $blue-link-color;
+  color: var(--blue);
   right: 0;
   width: 100%;
   box-shadow: 0px -3px 9px var(--ghost-white);
@@ -284,7 +284,7 @@
   }
 }
 .light-txt {
-  color: $disable-txt;
+  color: var(--silver);
   line-height: 18px;
   font-size: $medium-font;
   margin: 10px 0;
@@ -391,7 +391,7 @@
     padding-top: 5px;
   }
   strong {
-    color: $txt-color;
+    color: var(--onyx-black);
     font-weight: 500;
   }
 }
@@ -403,7 +403,7 @@
   }
 }
 .invoiceSection {
-  background: $white;
+  background: var(--white);
   padding: 15px 20px;
   margin:15px;
   border: 1px solid var(--ghost-white);

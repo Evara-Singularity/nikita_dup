@@ -22,7 +22,7 @@
             font-size: 32px;
             margin-right: 10px;
             display: block;
-            color: $logo-color !important;
+            color: var(--primary) !important;
         }
         &:last-child {
             a {
@@ -98,7 +98,6 @@
 
 .footer-note {
     font-size: $small-font;
-    background: $body-color;
     line-height: 18px;
     padding: 10px;
     p {

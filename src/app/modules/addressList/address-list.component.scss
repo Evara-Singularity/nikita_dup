@@ -36,7 +36,7 @@
     display: block;
     margin-top: 10px;
     .small-btn {
-        color: $btn-color-red;
+        color: var(--primary);
         // width: 45%;
         padding: 5px;
         // margin-right: 15px;
@@ -46,11 +46,11 @@
         font-weight: bold;
     }
     .edit {
-        background: $color-red-light;
-        color: $btn-color-red;
+        background: var(--misty-rose);
+        color: var(--primary);
     }
     .delete {
-        background: $btn-color-red;
+        background: var(--primary);
         color: #fff;
         float: right;
 

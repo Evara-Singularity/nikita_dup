@@ -316,6 +316,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     hasGstin: boolean;
     GLOBAL_CONSTANT = GLOBAL_CONSTANT;
     isAskQuestionPopupOpen: boolean;
+    mainProductURL: string;
 
     set showLoader(value: boolean)
     {
@@ -736,6 +737,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.productBrandDetails = this.rawProductData["brandDetails"];
         this.productCategoryDetails = this.rawProductData["categoryDetails"][0];
         this.productUrl = this.rawProductData["defaultCanonicalUrl"];
+        this.mainProductURL = this.rawProductData["productPartDetails"][partNumber]["productLinks"]['default'];
         this.productFilterAttributesList =
             this.rawProductData["filterAttributesList"];
         this.productKeyFeatures = this.rawProductData["keyFeatures"];
@@ -2156,7 +2158,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     this.intiateRFQQuoteUpdate(product , rfqId);
                    // this._tms.show({ type: 'success', text: response['statusDescription'] });
                     this.rfqQuoteRaised = true;
-                    this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
+                    this.location.replaceState(this.mainProductURL);
                 } else {
                     this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
                 }

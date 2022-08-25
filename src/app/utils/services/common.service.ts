@@ -1451,7 +1451,11 @@ export class CommonService
         return (url.indexOf('://') > 0 || url.indexOf('//') === 0)
     }
     isRoutedBack() {
-        return window.location.toString().includes('back=1');
+        if(this.isBrowser) {
+            return window.location.toString().includes('back=1');
+        } else {
+            return false;
+        }
     }
 
 }

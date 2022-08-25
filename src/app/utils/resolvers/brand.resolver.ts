@@ -13,6 +13,8 @@ import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, mergeMap, share, tap } from 'rxjs/operators';
 import { CommonService } from '../services/common.service';
 import { GlobalLoaderService } from '../services/global-loader.service';
+import { map } from 'rxjs/operators';
+import { LoggerService } from '../services/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +26,8 @@ export class BrandResolver implements Resolve<any> {
     private transferState: TransferState,
     private http: HttpClient,
     private _commonService: CommonService,
-    private loaderService: GlobalLoaderService
+    private loaderService: GlobalLoaderService,
+    private _loggerService : LoggerService,
   ) { 
   }
 
@@ -37,6 +40,7 @@ export class BrandResolver implements Resolve<any> {
     const ATTRIBUTE_KEY = makeStateKey<object>('attribute-url-data-pwa');
     const SIMILAR_KEY = makeStateKey<object>('similar-category-pwa');
     const SIMILAR_BRAND_KEY = makeStateKey<object>('similar-brand-pwa');
+    const startTime = new Date().getTime();
 
     if (
       this.transferState.hasKey(BRAND_DESC_KEY) && 
@@ -83,23 +87,62 @@ export class BrandResolver implements Resolve<any> {
 
       this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 
-      const isBrandCategoryObs = this.http.get(GET_BRAND_NAME_API_URL);
+      const isBrandCategoryObs = this.http.get(GET_BRAND_NAME_API_URL).pipe(
+        map((res) => {
+          const logInfo =  this._commonService.getLoggerObj(GET_BRAND_NAME_API_URL,'GET',startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        })
+      );
 
-      const similarCategoryObs = this.http.get(SIMILAR_CATEGORY_URL);
+      const similarCategoryObs = this.http.get(SIMILAR_CATEGORY_URL).pipe(
+        map((res) => {
+          const logInfo =  this._commonService.getLoggerObj(SIMILAR_CATEGORY_URL,'GET',startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        })
+      );
 
       const similarBrandObs = this.http.get(SIMILAR_BRAND_URL).pipe(catchError((e)=>{
         console.log("similar brand api error--",SIMILAR_BRAND_URL,e)
         return of(null) ;
-      }));
+      }), 
+      map((res) => {
+        const logInfo =  this._commonService.getLoggerObj(SIMILAR_BRAND_URL,'GET',startTime)
+        logInfo.endDateTime = new Date().getTime();
+        logInfo.responseStatus = res["status"];
+        this._loggerService.apiServerLog(logInfo);
+        return res;
+      }) );
 
       const dataList = [isBrandCategoryObs, null, similarCategoryObs, similarBrandObs];
 
       if (_activatedRouteSnapshot.params.hasOwnProperty('category')) {
         CMS_DATA_API_URL += '&categoryCode=' + _activatedRouteSnapshot.params.category;
-        const cmsDataObs = this.http.get(CMS_DATA_API_URL);
+        const cmsDataObs = this.http.get(CMS_DATA_API_URL).pipe(
+          map((res) => {
+            const logInfo =  this._commonService.getLoggerObj(CMS_DATA_API_URL,'GET',startTime)
+            logInfo.endDateTime = new Date().getTime();
+            logInfo.responseStatus = res["status"];
+            this._loggerService.apiServerLog(logInfo);
+            return res;
+          })
+        );
         actualParams['category'] = _activatedRouteSnapshot.params.category;
 
-        const alpAttributeDataObs = this.http.get(ATTRIBUTE_URL);
+        const alpAttributeDataObs = this.http.get(ATTRIBUTE_URL).pipe(
+          map((res) => {
+            const logInfo =  this._commonService.getLoggerObj(ATTRIBUTE_URL,'GET',startTime)
+            logInfo.endDateTime = new Date().getTime();
+            logInfo.responseStatus = res["status"];
+            this._loggerService.apiServerLog(logInfo);
+            return res;
+          })
+        );
         dataList.push(cmsDataObs, alpAttributeDataObs);
       }
 
@@ -108,10 +151,25 @@ export class BrandResolver implements Resolve<any> {
         actualParams['brand'] = data['brandName'];
         actualParams['bucketReq'] = 'n';
         return forkJoin([
-          this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams }),
-        ])
-        }
-      ));
+          this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams }).pipe(
+            map((res) => {
+              const logInfo =  this._commonService.getLoggerObj(GET_BRAND_LIST_API_URL,'GET',startTime)
+              logInfo.endDateTime = new Date().getTime();
+              logInfo.responseStatus = res["status"];
+              this._loggerService.apiServerLog(logInfo);
+              return res;
+            })
+          ),
+        ]) 
+        }),
+       map(res => {
+        const logInfo =  this._commonService.getLoggerObj(GET_BRAND_NAME_API_URL,'GET',startTime)
+        logInfo.endDateTime = new Date().getTime();
+        logInfo.responseStatus = res["status"];
+        this._loggerService.apiServerLog(logInfo);
+        return res;
+      })
+      );
 
       dataList[1] = getBrandListObs;
 

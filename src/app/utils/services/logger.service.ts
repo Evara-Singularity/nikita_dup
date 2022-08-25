@@ -34,6 +34,7 @@ export class LoggerService {
   }
 
   apiServerLog(data: ServerLogSchema) {
+
     if (this.isServer) {
       fs.appendFile(this.PATH_TO_LOG_FOLDER, JSON.stringify(data), function (err) {
         if (err) {
@@ -42,6 +43,7 @@ export class LoggerService {
         }
       });
     } else {
+      // console.log("logger service is called")
       this.isLoggingEnabled && console.log(data);
     }
   }

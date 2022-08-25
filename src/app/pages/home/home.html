@@ -15,29 +15,29 @@
 
     <app-promo  [page]="'home'" class="fixed-btm-app-prmo home-app-promo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
     <div class="css-banner-component">
-        <div class="internalBanner" *ngIf="isBrowser">
-            <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
+        <div class="internalBanner">
+            <ng-container *ngIf="bannerDataFinal && bannerDataFinal.length>0">
                 <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
-                    [items]="carouselData.bannerData['data']"
+                    [items]="bannerDataFinal"
                     [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
                 </siema-carousel>
             </ng-container>
         </div>
-        <div class="internalBanner" *ngIf="isServer">
+        <!-- <div class="internalBanner" *ngIf="isServer">
             <img *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0"
                 [src]="carouselData.bannerData.data[0].image_name" alt="banner">
             <img *ngIf="!(carouselData.bannerData && carouselData.bannerData['data'].length>0)"
                 [src]="defaultBannerImage" alt="banner">
-        </div>
+        </div> -->
    </div>
     <div class="pwa-row pwa-row-noPad">
         <div class="pwa-col-12 pad-lr-15">
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
-            <div class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
+            <!-- <div class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
                 <a class="full-banner" *ngIf="i==0" href="{{im.image_link}}">
                     <img [src]="imagePath + im.image_name" alt="banner add" width="312" height="129">
                 </a>
-            </div>
+            </div> -->
 
             <!-- <div class="home-card-container">
                     <category-card *ngFor="let item of clustorCategories| slice:0:5" [page]="'home'"

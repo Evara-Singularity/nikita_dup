@@ -180,7 +180,8 @@ export class ProductListService {
   }
 
   extractFragmentFromUrl(str) {
-    var pieces = str.split("&"),
+    // due to & split filter is not working for L&T, C&S type of brands
+    var pieces = [str],
       data = {},
       i,
       parts;

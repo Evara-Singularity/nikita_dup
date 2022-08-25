@@ -1121,8 +1121,6 @@ export class CommonService
     {
         if (this.isBrowser){
             if (event.target){
-                console.log(event.target,"event.target");
-                event.stopPropagation();
                 ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
             }
              else {

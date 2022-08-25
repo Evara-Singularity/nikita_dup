@@ -161,16 +161,9 @@ export class ClusterStoreComponent implements OnInit {
 		if(this.isBrowser){	
 			this.reInitializeLazyComponents();
 		}
-		if(response['data'][0]['block_data']['category_cluster'] == 'undefined'){
-			this.getSelectedCategoryTop(
-				response['data'][1]['block_data']['category_cluster']
-		  );
-		}
-		else{
 			this.getSelectedCategoryTop(
 				response['data'][0]['block_data']['category_cluster']
 		  );
-		}
 		this.data = response['data'][0]['block_data'];
 		if (this.isServer) {
 			this.setMetaInformation(

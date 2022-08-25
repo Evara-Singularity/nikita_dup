@@ -109,6 +109,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('TrendingCategories', { read: ViewContainerRef })
 	trendingCategoriesContainerRef: ViewContainerRef;
 	oganizationSchema: any;
+	bannerDataFinal: any[] = [];
 
 	constructor(
 		public dataService: DataService,
@@ -203,6 +204,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 							block.layout_code == CONSTANTS.CMS_IDS.MIDDLE_BANNER_ADS
 						) {
 							this.middleImageJsonData = blockData.image_block;
+							this.middleImageJsonData.map(e => {
+								console.log(e);
+								e.link = e["image_link"];
+								e.image_name = this.imagePathBanner + e["image_name"]
+								return e;
+							
+							});
+							this.bannerDataFinal = [...this.bannerDataFinal, ...blockData.image_block]
 						} else if (
 							blockData.image_block &&
 							blockData.image_block.length &&
@@ -216,7 +225,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 						) {
 							this.featureArrivalData = blockData.image_block;
 						}
-					}
+					}				
 
 					switch (CONSTANTS.IDS_MAP[block.layout_code]) {
 						case 'BEST_SELLER':
@@ -295,6 +304,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 					}
 				}
 			});
+			this.bannerDataFinal = [...this.bannerDataFinal, ...data.bannerData['data']]
 			if (
 				this.bannerDataJson &&
 				this.bannerDataJson['data'] &&
@@ -306,7 +316,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 					}
 				});
 				this.bannerImagesScroll = this.bannerDataJson;
-			}
+			} 
 			const carousalDataKeys = Object.keys(data);
 
 			const ncd = JSON.parse(JSON.stringify(data));

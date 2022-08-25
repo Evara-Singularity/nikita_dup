@@ -63,7 +63,6 @@ export class PdpQuickCheckoutComponent implements OnInit {
   totalOffer: number = 0;
   productQuantity: number = 0;
   productImg: string = "";
-  tax: number = 0;
   shippingCharges: number = 0;
   item = null;
   removableItem = null;
@@ -132,7 +131,6 @@ export class PdpQuickCheckoutComponent implements OnInit {
           this.productQuantity =
             cartSession.itemsList[0]["productQuantity"] || 0;
           this.productImg = cartSession.itemsList[0]["productImg"];
-          this.tax = cartSession.itemsList[0]["tax"] || 0;
           this.shippingCharges =
             cartSession.itemsList[0]["shippingCharges"] || 0;
           this.totalOffer = cartSession["cart"]["totalOffer"] || 0;

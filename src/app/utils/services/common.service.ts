@@ -79,7 +79,7 @@ export class CommonService
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
     private routeData: { currentUrl: string; previousUrl: string };
-    userSession = this._localAuthService.getUserSession();
+    userSession ;
     idleNudgeTimer: IdleTimer;
     private _renderer2: Renderer2
     ;

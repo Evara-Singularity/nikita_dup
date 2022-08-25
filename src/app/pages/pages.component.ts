@@ -31,7 +31,6 @@ export class PagesComponent implements OnInit {
   iData: { footer?: true; logo?: boolean; title?: string, hideHeader?: boolean };
   isFooter: boolean = true;
   isHomePage: boolean;
-  isRoutedBack = window.location.toString().includes('back=1') ? true : false;
   constructor(
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,

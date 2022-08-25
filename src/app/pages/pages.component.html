@@ -2,7 +2,7 @@
 <header-nav [extraData]="iData"
     [ngClass]="{'remove_inner_head':iData?.hideHeader || isCheckout, 'inner_head':!iData?.hideHeader}" class="show">
 </header-nav>
-<div [ngClass]="{'ishomepage': (isHomePage && !isRoutedBack)}">
+<div [ngClass]="{'ishomepage': (isHomePage && !_commonService.isRoutedBackTohome)}">
     <router-outlet></router-outlet>
 </div>
 <shared-footer *ngIf="iData && iData.footer" class="card-30 toggle-content footerScroll"></shared-footer>

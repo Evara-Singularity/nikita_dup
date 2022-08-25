@@ -55,7 +55,7 @@ export class CommonService
     isHomeHeader = false;
     isPLPHeader = false;
     isScrolledHeader = false;
-    isRoutedBackTohome = false;
+    isRoutedBackTohome = window.location.toString().includes('back=1');
     loadNav: Subject<boolean> = new Subject<false>();
     stopSearchNudge = false;
 

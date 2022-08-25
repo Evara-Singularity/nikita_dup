@@ -138,7 +138,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		this.isRoutedBack = window.location.toString().includes('back=1') ? true : false;
+		this.isRoutedBack = this._commonService.isRoutedBackTohome;
 		this.loadSearchTerms();
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['homeData']['error']) {

@@ -27,17 +27,8 @@ export class HomeExpandedHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(res => {
-      if(res && Object.keys(res).includes('back')) {
-        this._commonService.isRoutedBackTohome = true;
-        console.log(1);
-      } else {
-        this._commonService.isRoutedBackTohome = false;
-        console.log(2);
-      }
-      console.log(this._commonService.isRoutedBackTohome)
       this.searchValue = (res['search_query']) ? res['search_query'] : ''
       this._commonService.openLoader().subscribe(resp => {
-        console.log('/////////////////////////////inside loader    ' + resp)
         if(resp == true) {
           this.loadSearchNav$.emit();
         }

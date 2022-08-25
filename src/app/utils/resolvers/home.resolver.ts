@@ -14,8 +14,6 @@ import { isPlatformServer } from '@angular/common';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { map } from 'rxjs/operators';
 import { LoggerService } from '../services/logger.service';
-import { ServerLogSchema } from '../models/log.modal';
-import { LocalAuthService } from '../services/auth.service';
 import { CommonService } from '../services/common.service';
 
 @Injectable({
@@ -28,7 +26,6 @@ export class HomeResolver implements Resolve<object> {
     private transferState: TransferState,
     private http: HttpClient,
     private _loggerService: LoggerService,
-    private _localAuthService: LocalAuthService,
     private _commonService: CommonService,
   ) { }
 

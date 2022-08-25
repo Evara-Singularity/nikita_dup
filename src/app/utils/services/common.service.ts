@@ -20,6 +20,7 @@ import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import IdleTimer from "../idleTimeDetect";
 import { GlobalAnalyticsService } from "./global-analytics.service";
 import { ServerLogSchema } from "../models/log.modal";
+import { LocalAuthService } from "./auth.service";
 
 @Injectable({
     providedIn: "root",
@@ -78,7 +79,7 @@ export class CommonService
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
     private routeData: { currentUrl: string; previousUrl: string };
-    userSession;
+    userSession = this._localAuthService.getUserSession();
     idleNudgeTimer: IdleTimer;
     private _renderer2: Renderer2
     ;
@@ -96,6 +97,7 @@ export class CommonService
         private rendererFactory: RendererFactory2,
         private _router: Router,
         private _route: ActivatedRoute,
+        private _localAuthService : LocalAuthService
     )
     {
         this.windowLoaded = false;

@@ -13,7 +13,6 @@ import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, share, tap } from 'rxjs/operators';
 import { CommonService } from '../services/common.service';
 import { GlobalLoaderService } from '../services/global-loader.service';
-
 import { map } from 'rxjs/operators';
 import { LoggerService } from '../services/logger.service';
 

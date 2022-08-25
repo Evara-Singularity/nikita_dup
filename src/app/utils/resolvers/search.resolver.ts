@@ -14,8 +14,6 @@ import { CommonService } from '../services/common.service';
 import { GlobalLoaderService } from '../services/global-loader.service';
 import { map } from 'rxjs/operators';
 import { LoggerService } from '../services/logger.service';
-import { ServerLogSchema } from '../models/log.modal';
-import { LocalAuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root'

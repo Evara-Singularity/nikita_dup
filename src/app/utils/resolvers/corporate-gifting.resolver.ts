@@ -14,14 +14,11 @@ import { GlobalLoaderService } from '../services/global-loader.service';
 import { map } from 'rxjs/operators';
 import { LoggerService } from '../services/logger.service';
 import { CommonService } from '../services/common.service';
-import { ServerLogSchema } from '../models/log.modal';
-import { LocalAuthService } from '../services/auth.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class CorporateGiftingResolver implements Resolve<any> {
-
-  
 
   constructor(
     @Inject(PLATFORM_ID) private platformId,

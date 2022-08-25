@@ -9,26 +9,19 @@ import { CommonService } from '../services/common.service';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { HttpClient } from '@angular/common/http';
-import { RESPONSE } from '@nguniversal/express-engine/tokens';
-
 import { LoggerService } from '../services/logger.service';
-import { ServerLogSchema } from '../models/log.modal';
-import { LocalAuthService } from '../services/auth.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AlpResolver implements Resolve<object> {
     
-    userSession = this._localAuthService.getUserSession();
-
     private pageName = 'ATTRIBUTE';
     constructor(
         @Inject(PLATFORM_ID) private platformId,
         private transferState: TransferState,
         private loaderService: GlobalLoaderService,
         private _commonService: CommonService,
-        private _localAuthService :LocalAuthService,
         private http: HttpClient,
         private _loggerService : LoggerService,
     ) { }

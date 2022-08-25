@@ -76,7 +76,6 @@ export class PaymentComponent implements OnInit {
     }
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
-    //this.getSavedCardData();
     this._cartService.clearCartNotfications();
   }
 
@@ -104,47 +103,10 @@ export class PaymentComponent implements OnInit {
       // TODO - this should used in case there are some COD not avalible
       this.unAvailableMsnList =
         this._cartService.codNotAvailableObj["itemsArray"];
-      // TODO - check with pritam how this used
-      //this.getPaymentSuccessAssistData();
       this.callApisAsyncly();
       this.analyticVisit(cartData);
     }
   }
-
-  // private getSavedCardData() {
-  //   const userSession = this._localAuthService.getUserSession();
-  //   const data = {
-  //     userEmail:
-  //       userSession && userSession["email"]
-  //         ? userSession["email"]
-  //         : userSession["phone"],
-  //   };
-
-  //   if (this.invoiceType == "tax") {
-  //     data["userId"] = userSession["userId"];
-  //     data["userEmail"] = "";
-  //   }
-  //   if(this._cartService.lastPaymentMode)
-  //   {
-  //     const { paymentBlock, mode, section } = CartUtils.getPaymentInfo(this._cartService.lastPaymentMode);
-  //     this.updatePaymentBlock(paymentBlock, mode, section);
-  //     return;
-  //   }
-  //   this._paymentService
-  //     .getSavedCards(data, this.invoiceType)
-  //     .subscribe((res) => {
-  //       if (
-  //         res["status"] === true &&
-  //         res["data"]["user_cards"] !== undefined &&
-  //         res["data"]["user_cards"] != null
-  //       ) {
-  //         this.savedCardsData = res["data"]["user_cards"];
-  //         this.isSavedCardExist = true;
-  //         this.paymentBlock = this.globalConstants["savedCard"];
-  //       }
-  //       this.isShowLoader = false;
-  //     });
-  // }
 
   updatePaymentBlock(block, mode?, elementId?) {
     let cart = this._cartService.getGenericCartSession["cart"];
@@ -267,16 +229,6 @@ export class PaymentComponent implements OnInit {
     this.updateTabIndex.emit(index);
   }
 
-  // getPaymentSuccessAssistData() {
-  //   this._paymentService
-  //     .getPaymentsMethodData(this.invoiceType)
-  //     .subscribe((result) => {
-  //       if (result["status"]) {
-  //         this.successPercentageRawData = result["data"] || null;
-  //       }
-  //     });
-  // }
-
   callApisAsyncly()
   {
     this.isShowLoader = true;
@@ -343,27 +295,4 @@ export class PaymentComponent implements OnInit {
   set isShowLoader(value) {
     this._loaderService.setLoaderState(value);
   }
-
-  // getPopupHeading(): string {
-  //     if (this.paymentBlock === this.globalConstants['creditDebitCard']) {
-  //         return 'Credit/Debit Card';
-  //     } else if (this.paymentBlock === this.globalConstants['netBanking']) {
-  //         return 'Net Banking';
-  //     } else if (this.paymentBlock === this.globalConstants['wallet']) {
-  //         return 'Wallet';
-  //     } else if (this.paymentBlock === this.globalConstants['emi']) {
-  //         return 'EMI';
-  //     } else if (this.paymentBlock === this.globalConstants['cashOnDelivery']) {
-  //         return 'Cash on Delivery';
-  //     } else if (this.paymentBlock === this.globalConstants['neftRtgs']) {
-  //         return 'NEFT/RTGS';
-  //     } else if (this.paymentBlock === this.globalConstants['upi']) {
-  //         return 'UPI';
-  //     } else if (this.paymentBlock === this.globalConstants['paytmUpi']) {
-  //         return 'Paytm UPI';
-  //     }
-  //     return null;
-  // }
-
-  
 }

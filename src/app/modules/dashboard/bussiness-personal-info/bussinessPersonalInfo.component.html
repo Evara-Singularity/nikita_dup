@@ -6,7 +6,7 @@
       <div class="outline-input-label"><label [class.is-focus]="nameVal.value.length">
         <input [value]="userName" [disabled]="isNameInputDisabled" #nameVal type="text">
         <span class="label">Update Name</span><span *ngIf="!isNameInputDisabled" (click)="onSubmit(nameVal.value.trim())" class="form-inline-cta">UPDATE</span>
-        <span *ngIf="isNameInputDisabled" (click)="activateInput()" class="form-inline-cta">Edit</span></label>
+        <span *ngIf="isNameInputDisabled" (click)="activateInput()" class="form-inline-cta">EDIT</span></label>
       </div>
     </div>
   </div>
@@ -15,11 +15,11 @@
     <div class="container input-field custom-profile-input">
         <label class="is-focus">
       <input type="text" name="email" [ngModel]="userInfo?.email" readonly>
-      <span class="label">Email *</span>
+      <span class="label">Email*</span>
     </label>
         <label class="is-focus">
       <input type="number" name="phone" [ngModel]="userInfo?.phone" readonly>
-      <span class="label">Phone No. *</span>
+      <span class="label">Phone No.*</span>
     </label>
     </div>
 </form>

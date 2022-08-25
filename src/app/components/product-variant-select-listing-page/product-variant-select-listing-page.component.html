@@ -11,6 +11,13 @@
                         <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageLink}}" />
                     </div>
                     <div class="product-description">
+                        <div *ngIf="avgRating > 0" class="reviewRatingWrap">
+                            <span class="reviewRating">
+                                {{avgRating | number : '1.1-1'}}
+                                <img style="height: 10px; width: 10px;" src="{{imagePathAsset}}assets/img/star_image.png" />
+                            </span>
+                            <span class="ratingCount" *ngIf="reviewCount">({{reviewCount}} Reviews)</span>
+                        </div>
                         <p class="description-txt">{{product.productName | slice:0:60 }} <span
                             *ngIf="product.productName.length>60">...</span></p>
                         <p class="brand">By : {{product.brandName}}</p>

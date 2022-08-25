@@ -678,6 +678,7 @@ export class CommonService
         if (params.pageName == "CATEGORY") {
             if (params["category"] != undefined)
                 actualParams["category"] = params["category"];
+                actualParams['pageSize'] = CONSTANTS.GLOBAL.default.categoryListingPageSize + '';
             //10766
             if (queryParams["str"] != undefined)
                 actualParams["str"] = queryParams["str"];
@@ -1446,6 +1447,9 @@ export class CommonService
 
     openLoader() {
         return this.loadNav.asObservable();
+    }
+    isAbsoluteUrl(url: string) {
+        return (url.indexOf('://') > 0 || url.indexOf('//') === 0)
     }
 
 }

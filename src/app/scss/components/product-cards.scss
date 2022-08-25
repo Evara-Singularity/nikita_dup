@@ -301,7 +301,7 @@
 }
 
 .add_cart_btn {
-    border: 1px solid $logo-color;
+    border: 1px solid var(--primary);
     display: inline-block;
     border-radius: 4px;
     margin-right: 8px;
@@ -311,7 +311,7 @@
     line-height: 28px;
     i {
         font-size: 20px;
-        color: $logo-color;
+        color: var(--primary);
         vertical-align: middle;
     }
 }

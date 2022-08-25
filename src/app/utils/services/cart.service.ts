@@ -1193,7 +1193,7 @@ export class CartService
         this._loaderService.setLoaderState(true);
         if (!userId) { return }
         const cartSession = this.getCartSession();
-        const offerId = (cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
+        const offerId = (cartSession['offersList'] && cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
         this.getAllPromoCodesByUserId(userId).subscribe(res =>
         {
             if (res['statusCode'] === 200) {

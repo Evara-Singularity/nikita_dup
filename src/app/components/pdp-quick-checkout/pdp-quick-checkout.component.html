@@ -1,4 +1,4 @@
-<app-bottom-menu >
+<app-bottom-menu *ngIf="Isoverlay" (outData$)="onUpdate($event)">
     <div class="quick-checkout" content *ngIf="isPopup">
         <div class="bottom-menu-header">
             <i class="icon-circle-delete delete-icon" (click)="close()"></i>

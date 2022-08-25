@@ -52,6 +52,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   shippingAddress = null;
   showPromoOfferPopup = false;
   isPaymentSummary = true;
+  Isoverlay = true;
   purchasingForBusiness = false;
   cartSubscription: Subscription = null;
   promoSubscription: Subscription = null;
@@ -85,6 +86,12 @@ export class PdpQuickCheckoutComponent implements OnInit {
     this.isPopup = false;
     this.isClose.emit(true);
     this.commonService.oosSimilarCard$.next(false);
+  }
+  onUpdate(data) {
+    if (data.popupClose) {
+      this.Isoverlay = false;
+      this.close();
+    }
   }
 
   expandPaymentSummary() {

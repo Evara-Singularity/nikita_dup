@@ -199,11 +199,19 @@
     background: var(--ghost-white);
     .payable-amnt{
         font-size: $medium-font;
+        .icon-information{
+            margin-left: 5px;
+            font-size: 14px !important;
+            color: var(--bleu-de-france) !important;
+        }
     }
     button{
         width:200px;
         height:50px;
-        font-size:$medium-font;
+        font-size:$large-font;
+        color: #fff;
+        border: none;
+        font-weight: 600;
     }
 }
 

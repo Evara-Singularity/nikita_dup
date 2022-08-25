@@ -127,12 +127,11 @@
                 <div class="container payable">
                     <p class="total-mount">
                         <span class="payable-amnt">Amount Payable
-                            <span>
-                            </span>
+                            <span><i class="icon-information"></i></span>
                         </span>
                         ₹{{totalPayableAmount | mathCeil | number : '1.2-2'}}
                     </p>
-                    <button class="btn" (click)="placeOrder()" >
+                    <button class="primary-full-btn" (click)="placeOrder()" >
                         PLACE ORDER
                     </button>
                 </div>

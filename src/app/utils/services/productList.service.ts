@@ -84,7 +84,7 @@ export class ProductListService {
               "large",
               "medium"
             );
-          product['productTags'] = this.getProductTag(product);
+          product['productTags'] = this.sortProductTagsOnPriority(product['productTags']);
           product["internalProduct"] = true;
           product["discount"] = this._commonService.calculcateDiscount(
             product["discount"],
@@ -113,6 +113,18 @@ export class ProductListService {
         );
       this.initializeSortBy();
     }
+  }
+
+  sortProductTagsOnPriority(productTags) {
+    var res = Math.min.apply(Math, productTags.map((item) => {
+      return item['priority'];
+    }));
+    productTags.forEach(element => {
+      if (element['priority'] === res) {
+        productTags.push(element);
+      }
+    });
+    return productTags
   }
 
   getProductTag(product) {

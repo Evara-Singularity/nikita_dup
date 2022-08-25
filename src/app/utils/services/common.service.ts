@@ -1443,4 +1443,8 @@ export class CommonService
         }
     }
 
+    isAbsoluteUrl(url: string) {
+        return (url.indexOf('://') > 0 || url.indexOf('//') === 0)
+    }
+
 }

@@ -136,6 +136,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     //Address Information
     handleDeliveryAddressEvent(address)
     {
+        if(this.isRetryPayment)return;
         this.deliveryAddress = address;
         this._cartService.shippingAddress = address;
         this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
@@ -317,8 +318,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this._globalLoader.setLoaderState(true);
         this._retryPaymentService.getPaymentDetailsByOrderId(this.orderId).subscribe((response) =>
         {
-            this._globalLoader.setLoaderState(false);
             if (response.status) { this.openTxnDeclinedPopup(response['data']['shoppingCartDto']); return; }
+            this._globalLoader.setLoaderState(false);
             this._router.navigate(['quickorder']);
         })
     }

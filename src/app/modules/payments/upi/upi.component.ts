@@ -183,7 +183,7 @@ export class UpiComponent implements OnInit {
     
     lowSuccessBanks(){
         this.lsrMessage = null;
-        if (this.type == 'retail'){
+        if (this.type == 'retail' && this.successPercentageData){
             const banksArr: [] = this._objectToArray.transform(this.successPercentageData);
             const TOP = banksArr.filter(item => item['is_top'] == 1);
             const OTHERS = banksArr.filter(item => item['is_top'] == 0);

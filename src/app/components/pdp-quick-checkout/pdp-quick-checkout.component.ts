@@ -145,7 +145,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     const address = obj.bothAddress.addressDetails;
     // for shippingAddress
     if(address['shippingAddress'] && address['shippingAddress'].length){
-      let len = (address['shippingAddress'].length > 1 ? address['shippingAddress'].length : 0)
+      let len = (address['shippingAddress'].length > 1 ? address['shippingAddress'].length-1 : 0)
       this.cartService.shippingAddress = address['shippingAddress'][len];
       this.shippingAddress = address['shippingAddress'][len];
     }else{
@@ -153,7 +153,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     }
     // for shippingAddress
     if(address['billingAddress'] && address['billingAddress'].length){
-      let len = (address['billingAddress'].length > 1 ? address['billingAddress'].length : 0)
+      let len = (address['billingAddress'].length > 1 ? address['billingAddress'].length-1 : 0)
       this.cartService.billingAddress = address['billingAddress'][len];
       this.billingAddress = address['billingAddress'][len];
     }else{

@@ -237,8 +237,8 @@
         @include layout2;
     }
     .bsrow {
-        border-top: 1px solid rgba(162, 162, 162, 0.5);
-        margin: 0 -15px;
+        // border-top: 1px solid rgba(162, 162, 162, 0.5);
+        // margin: 0 -15px;
         display: flex;
         flex-wrap: wrap;
         .bs_item {
@@ -361,8 +361,7 @@
         font-size: 20px;
         color: #2A2A2A;
         font-weight: 700;
-        padding-bottom: 5px;
-        margin-bottom: 15px;
+
         &:before {
             position: absolute;
             left: 0;

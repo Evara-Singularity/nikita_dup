@@ -59,7 +59,7 @@
             color: #2A2A2A;
             font-weight: 700;
             padding-bottom: 5px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             &:before {
                 position: absolute;
                 left: 0;
@@ -101,11 +101,6 @@
             background: #fff;
             padding: 15px 15px 1px;
             margin-bottom: 10px;
-            .bscatwrap {
-                .slp-heading {
-                    padding: 5px 10px 5px 0;
-                }
-            }
         }
         .popup-bestseller{
             margin: 0 !important;
@@ -125,8 +120,8 @@
             padding: 0 10px;
         }
         .bsrow {
-            border-top: 1px solid rgba(162, 162, 162, 0.5) !important;
-            margin: 0 -15px;
+            // border-top: 1px solid rgba(162, 162, 162, 0.5) !important;
+            // margin: 0 -15px;
             .bs_item {
                 width: 50%;
                 padding: 10px;
@@ -378,7 +373,7 @@
             }
             .safetysh-shopby {
                 background: url('/assets/img/wallpaper_1_ mobile.png') no-repeat center;
-                padding: 20px 20px;
+                padding: 0px 10px 15px;
                 background-size: cover;
                 .shopbyrow {
                     .shopbycol {
@@ -514,15 +509,32 @@
                 }
             }
         }
+        .slp-heading {
+            position: relative;
+            font-size: 20px;
+            color: #2A2A2A;
+            font-weight: 700;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            &:before {
+                position: absolute;
+                left: 0;
+                width: 80px;
+                background: #2A2A2A;
+                content: '';
+                bottom: 0;
+                height: 3px;
+            }
+        }
+        h2.slp-heading {
+            font-size: $large-font;
+            text-transform: uppercase;
+            padding-top: 15px;
+        }
         .bscategory {
             background: #fff;
             padding: 15px 15px 1px;
             margin-bottom: 10px;
-            .bscatwrap {
-                .slp-heading {
-                    padding: 5px 10px 5px 0;
-                }
-            }
         }
     }
     
@@ -638,20 +650,3 @@
         text-transform: uppercase;
     }
     
-    .slp-heading {
-        position: relative;
-        font-size: 20px;
-        color: #2A2A2A;
-        font-weight: 700;
-        padding-bottom: 5px;
-        margin-bottom: 15px;
-        &:before {
-            position: absolute;
-            left: 0;
-            width: 80px;
-            background: #2A2A2A;
-            content: '';
-            bottom: 0;
-            height: 2px;
-        }
-    }

@@ -35,8 +35,8 @@ export class PagesComponent implements OnInit {
   };
   isFooter: boolean = true;
   isHomePage: boolean;
+  isRoutedBack: boolean = false;
   eventNavigationStart: any;
-
   constructor(
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
@@ -172,7 +172,7 @@ export class PagesComponent implements OnInit {
      * Also, for page refresh
      */
     if (this.isBrowser) {
-
+      this.isRoutedBack = window.location.toString().includes('back=1');
       this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie();

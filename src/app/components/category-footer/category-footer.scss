@@ -49,30 +49,6 @@
     }
 }
 
-.panel-head {
-    background: #fff;
-    margin-top: 10px;
-    h3 {
-        font-weight: bold;
-        text-transform: capitalize;
-        width: 100%;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        position: relative;
-        .iconaccordian {
-            float: right;
-        }
-    }
-    // .panel-heading{
-    //     padding-left: 5px !important;
-    // }
-    & .ico-up {
-        .iconaccordian {
-            transform: rotate(180deg) !important;
-        }
-    }
-}
 
 .m_faqHeading {
     padding: 25px 0 10px 10px;

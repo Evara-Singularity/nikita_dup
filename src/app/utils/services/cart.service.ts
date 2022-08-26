@@ -64,6 +64,7 @@ export class CartService
     };
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
     private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
+    public isProductRemoved: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
     private previousUrl: string = null;
     private currentUrl: string = null;
@@ -656,6 +657,10 @@ export class CartService
     public setCartUpdatesChanges(cartsession): void
     {
         this._cartUpdatesChanges.next(cartsession);
+    }
+
+    public productRemovalNofify(): Observable<any> {
+        return this.isProductRemoved.asObservable();
     }
 
     // refresh and chnages to communicated 
@@ -1448,7 +1453,6 @@ export class CartService
             })).
             subscribe((response) =>
             {
-                this._globalLoader.setLoaderState(false);
                 this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
                 const ITEM_LIST = tempCartSession['itemsList'];
                 if (ITEM_LIST && ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {
@@ -1462,6 +1466,11 @@ export class CartService
                     tempCartSession['extraOffer'] = null;
                     this._notifyCartChanges(tempCartSession, null);
                 }
+                // 50 ms wait time for cartItems to update after product removed
+                setTimeout(() => {
+                    this.isProductRemoved.next(true)
+                    this._globalLoader.setLoaderState(false);
+                }, 50);
             })
     }
 

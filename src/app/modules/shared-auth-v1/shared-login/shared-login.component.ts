@@ -254,12 +254,16 @@ export class SharedLoginComponent implements OnInit
     navigateSkipNow() {
         if (this.isLoginPopup) {
             this.removeAuthComponent$.emit();
-        }
-        else {
-         this._localAuthService.handleBackURL(true);
+        } else {
+            let backRedirectUrl = localStorage.getItem('backRedirectUrl');
+            if(backRedirectUrl != '/'){
+                this._router.navigateByUrl(backRedirectUrl);
+                return;
+            }
+            this._localAuthService.handleBackURL(true);
         }
     }
-
+    
     removeAuthComponent(){
         this.removeAuthComponent$.emit();
     }

@@ -1,4 +1,4 @@
-<ng-container *ngIf="page === 'pdp' || page == 'category' ||page == 'brand' ||page=='alp' || appPromoStatus">
+<ng-container *ngIf="(page === 'pdp' && appPromoStatus) || (page == 'category' && appPromoStatus) || (page == 'brand' && appPromoStatus) || (page=='alp' && appPromoStatus) || (page=='home' && appPromoStatus) || (page=='sideBar' && appPromoStatus)">
   <div class="app-promo-container" [ngClass]="{
       'fixed-app-promo': isOverlayMode,
       'hideAppPromo':(!showPromo && isOverlayMode)
@@ -46,24 +46,26 @@
         <!-- End -->
       </div>
     </ng-container>
-    <!-- 3rd varient used hamburger menu-->
+   
+  </div>
+</ng-container>
 
-    <div class="promo-code-container" (click)="openStore()" *ngIf="page == 'sideBar'">
-      <div class="mobile">
-        <img src="{{ assetImgPath }}assets/img/Screen-7.svg" />
+
+ <!-- 3rd varient used hamburger menu-->
+<div class="promo-code-container" (click)="openStore()" *ngIf="page == 'sideBar'">
+  <div class="mobile">
+    <img src="{{ assetImgPath }}assets/img/Screen-7.svg" />
+  </div>
+  <div class="outer-text-section">
+    <strong>Download Moglix App <br /> Get ₹100 Off*
+      <span>on your first order.</span></strong>
+    <div class="text-container inner-txt-section">
+      <div class="text use-code-text1">
+        <p>Use code: <strong>HELLO</strong></p>
       </div>
-      <div class="outer-text-section">
-        <strong>Download Moglix App <br /> Get ₹100 Off*
-          <span>on your first order.</span></strong>
-        <div class="text-container inner-txt-section">
-          <div class="text use-code-text1">
-            <p>Use code: <strong>HELLO</strong></p>
-          </div>
-          <div class="install-app">
-            <button class="open-app-promo">OPEN APP</button>
-          </div>
-        </div>
+      <div class="install-app">
+        <button class="open-app-promo">OPEN APP</button>
       </div>
     </div>
   </div>
-</ng-container>
+</div>

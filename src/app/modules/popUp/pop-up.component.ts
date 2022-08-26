@@ -28,7 +28,6 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
         this.pClass = 'screen-view popup info-update-popup ';
-        
     }
 
     ngOnInit() {
@@ -41,8 +40,9 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.headerCustom = (this.data && this.data.headerCustom) ? this.data.headerCustom : false;
         if (this.isBrowser) {
             setTimeout(() => {
+                // debugger;
                 document.querySelector('app-pop-up').classList.add('open');
-                if (document.getElementsByClassName('open').length === 1) {
+                if (document.querySelector('app-pop-up').classList.contains('open')) {
                     (<HTMLElement>document.getElementById('body')).classList.add('stop-scroll');
                     this.disableScroll();
                 }
@@ -70,7 +70,6 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
     enableScroll() {
         document.getElementById('body').removeEventListener('touchmove', this.preventDefault);
     }
-
     closePopup() {
         (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
         this.enableScroll();
@@ -86,7 +85,6 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log('curentURL', currentUrl);
         }, 200);
     }
-
     ngOnDestroy() {
         of(null)
             .pipe(

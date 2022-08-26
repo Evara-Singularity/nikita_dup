@@ -14,7 +14,9 @@ import { isPlatformServer } from '@angular/common';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
-
+import { map } from 'rxjs/operators';
+import { LoggerService } from '../services/logger.service';
+import { CommonService } from '../services/common.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -23,7 +25,9 @@ export class BrandStoreResolver implements Resolve<object> {
     @Inject(PLATFORM_ID) private platformId,
     private transferState: TransferState,
     private http: HttpClient,
-    private loaderService: GlobalLoaderService
+    private loaderService: GlobalLoaderService,
+    private _commonService : CommonService,
+    private _loggerService :LoggerService,
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
@@ -32,6 +36,7 @@ export class BrandStoreResolver implements Resolve<object> {
     const logosObj = makeStateKey<object>('logosObj');
     const brandsObj = makeStateKey<object>('brandsObj');
     const cmsObj = makeStateKey<object>('cmsObj');
+    const startTime=new Date().getTime();
 
     if (this.transferState.hasKey(logosObj) && this.transferState.hasKey(brandsObj) && this.transferState.hasKey(cmsObj)) {
       const logosData = this.transferState.get<object>(logosObj, null);
@@ -47,9 +52,33 @@ export class BrandStoreResolver implements Resolve<object> {
       const brandurl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ALL_BRANDS;
       const cmsurl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CMS_LAYOUT + GLOBAL_CONSTANT.brandStoreCmsId;
 
-      const LogosData = this.http.get(logosUrl);
-      const brandsData = this.http.get(brandurl);
-      const cmsData = this.http.get(cmsurl);
+      const LogosData = this.http.get(logosUrl).pipe(
+        map((res) => {
+          const logInfo =  this._commonService.getLoggerObj(logosUrl,'GET',startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        })
+      );
+      const brandsData = this.http.get(brandurl).pipe(
+        map((res) => {
+          const logInfo =  this._commonService.getLoggerObj(brandurl,'GET',startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        })
+      );
+      const cmsData = this.http.get(cmsurl).pipe(
+        map((res) => {
+          const logInfo =  this._commonService.getLoggerObj(cmsurl,'GET',startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        })
+      );
 
       return forkJoin([LogosData, brandsData, cmsData]).pipe(
         catchError((err) => {

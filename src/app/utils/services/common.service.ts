@@ -19,6 +19,7 @@ import { ENDPOINTS } from "@app/config/endpoints";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import IdleTimer from "../idleTimeDetect";
 import { GlobalAnalyticsService } from "./global-analytics.service";
+import { ServerLogSchema } from "../models/log.modal";
 
 @Injectable({
     providedIn: "root",
@@ -78,7 +79,7 @@ export class CommonService
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
     private routeData: { currentUrl: string; previousUrl: string };
-    userSession;
+    userSession ;
     idleNudgeTimer: IdleTimer;
     private _renderer2: Renderer2
     ;
@@ -1447,15 +1448,32 @@ export class CommonService
     openLoader() {
         return this.loadNav.asObservable();
     }
+    
     isAbsoluteUrl(url: string) {
         return (url.indexOf('://') > 0 || url.indexOf('//') === 0)
     }
+
     isRoutedBack() {
         if(this.isBrowser) {
             return window.location.toString().includes('back=1');
         } else {
             return false;
         }
+    }
+
+    getLoggerObj(url: string, method: string =null, startTime?, endTime?){
+        
+        const logInfo: ServerLogSchema = {
+            apiURL: url,
+            method: method,
+            payload: null,
+            endDateTime: null,
+            responseStatus: null,
+            sessionId: this.userSession ? this.userSession.sessionId : null,
+            startDateTime: startTime,
+          };
+
+          return logInfo;
     }
 
     sortProductTagsOnPriority(productTags) {
@@ -1469,5 +1487,5 @@ export class CommonService
         });
         return productTags
     }
-    
+
 }

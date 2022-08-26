@@ -30,10 +30,10 @@ export class PostProductReviewPopupComponent implements OnInit {
     this.createForm();
   }
 
-  createForm() {
+  createForm(){
     this.reviewForm = this.formBuilder.group({
       review_subject: ['', [Validators.required, Validators.maxLength(100)]],
-      review_text: ['', [Validators.maxLength(600)]]
+      review_text: ['', [Validators.maxLength(600),Validators.pattern(/^[A-Za-z0-9 ]+$/)]]
     });
   }
 
@@ -71,6 +71,8 @@ export class PostProductReviewPopupComponent implements OnInit {
     console.log('write review outData data', data)
     this.removed.emit(data);
   }
+  get review_title() { return this.reviewForm.get("review_subject"); }
+  get review_text()  { return this.reviewForm.get("review_text"); }
 
 }
 

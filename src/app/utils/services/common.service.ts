@@ -1121,15 +1121,15 @@ export class CommonService
 
     scrollTo(event)
     {
-        if (this.isBrowser) {
-            if (event.target) {
+        if (this.isBrowser){
+            if (event.target){
                 ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
-            } else {
+            }
+             else {
                 ClientUtility.scrollToTop(500, event.offsetTop - 50);
             }
         }
     }
-
     getBreadcrumpData(link, type, pageTitle?): Observable<any>
     {
         let curl =

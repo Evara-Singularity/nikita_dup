@@ -556,7 +556,7 @@ export class CartService
      * null is returned incase product already in cart AND null is also return incase of buynow without login. 
      * incase of without login buynow, temp session can checked in cartService.buyNowSessionDetails
     */
-    addToCart(args: {
+     addToCart(args: {
         buyNow: boolean,
         productDetails: AddToCartProductSchema
     }): Observable<any>
@@ -636,7 +636,13 @@ export class CartService
             }),
             mergeMap(request =>
             {
-                if (request) { return this.updateCartSession(request); }
+                if (request) { return this.updateCartSession(request).pipe(
+                    map(updatedCartResponse=>{
+                        const updatedCartSession = this.generateGenericCartSession(updatedCartResponse);
+                        this.setGenericCartSession(updatedCartSession);
+                        return updatedCartResponse;
+                    })
+                ); }
                 return of(null)
             }),
             mergeMap((cartSession: any) =>
@@ -645,7 +651,9 @@ export class CartService
                 // shipping API should be called after updatecart API always
                 if (cartSession) {
                     return this._getShipping(cartSession).pipe(
-                        map((cartSession: any) => { return cartSession; }),
+                        map((cartSession: any) => {
+                            return cartSession; 
+                        }),
                         map((cartSession) => { return this._notifyCartChanges(cartSession, null); })
                     );
                 } else {

@@ -1,13 +1,15 @@
-import { CartUtils } from './../../utils/services/cart-utils';
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { CodDetails } from '@app/utils/models/address.modal';
+import { InitiateQuickCod } from '@app/utils/models/cart.initial';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { QuickCodService } from '@app/utils/services/quick-cod.service';
 import { RetryPaymentService } from '@app/utils/services/retry-payment.service';
 import { CartService } from '@services/cart.service';
-import { Router } from '@angular/router';
-import { InitiateQuickCod } from '@app/utils/models/cart.initial';
+import { forkJoin } from 'rxjs';
+import { concatMap, map } from 'rxjs/operators';
 
 @Component({
 	selector: 'shared-transaction-declined',
@@ -28,7 +30,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	@Output("emitQuickoutCloseEvent$") emitQuickoutCloseEvent$: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 	hasCartItems = true;
-	verifyUnserviceableFromCartSubscription = false;//to restrict the verification of unserviceable items on every cart subscription.
+	canCOD = true;
 
 	cartSession = null;
 	shippingAddress = null;
@@ -43,9 +45,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 
 	ngOnInit()
 	{
-		//to set parentOrderId
-		this.reHydrateAddresses(this.shoppingCartDto);
-		this.reHydrateCartSession(this.shoppingCartDto);
+		this.initiateRehydration(this.shoppingCartDto);
 	}
 
 	ngAfterViewInit()
@@ -53,23 +53,33 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 		this.isBuyNow = this.shoppingCartDto['cart']['buyNow'] || false;
 	}
 
-	reHydrateAddresses(shoppingCartDto)
+	initiateRehydration(shoppingCartDto)
 	{
-		this._retryPaymentService.reHydrateAddresses(shoppingCartDto).subscribe(({ shippingAddress, billingAddress, invoiceType }) =>
+		this._loaderService.setLoaderState(true);
+		forkJoin([this.reHydrateAddressesAndCOD(shoppingCartDto), this._retryPaymentService.reHydrateCartSession(shoppingCartDto)]).subscribe((results) =>
 		{
-			this.shippingAddress = shippingAddress;
-			this.billingAddress = billingAddress;
-			this.invoiceType = invoiceType;
-			this.shippingPincode = (shippingAddress && shippingAddress['postCode']) ? shippingAddress['postCode'] : null;
-		});
+			const codInfo: CodDetails = results[0];
+			this.canCOD = (codInfo.iswithInCODLimit && codInfo.nonCods.length === 0 && codInfo.nonServiceables.length === 0);
+			this.cartSession = results[1];
+			this._loaderService.setLoaderState(false);
+		})
 	}
 
-	reHydrateCartSession(shoppingCartDto)
+	reHydrateAddressesAndCOD(shoppingCartDto)
 	{
-		this._retryPaymentService.reHydrateCartSession(shoppingCartDto).subscribe((cartSession) =>
-		{
-			this.cartSession = cartSession;
-		})
+		return this._retryPaymentService.reHydrateAddresses(shoppingCartDto).pipe(
+			map(({ shippingAddress, billingAddress, invoiceType }) =>
+			{
+				this.shippingAddress = shippingAddress;
+				this.billingAddress = billingAddress;
+				this.invoiceType = invoiceType;
+				this.shippingPincode = (shippingAddress && shippingAddress['postCode']) ? shippingAddress['postCode'] : null;
+				return { shoppingCartDto:shoppingCartDto, shippingPincode: this.shippingPincode };
+			}),
+			concatMap(({ shoppingCartDto, shippingPincode }) =>
+			{
+				return this._quickCodService.checkForCODEligibility(shoppingCartDto['cart']['totalPayableAmount'], shoppingCartDto['itemsList'], shippingPincode);
+			}))
 	}
 
 	payAsCOD()
@@ -79,8 +89,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			this._toastService.show({ type: "error", text: "Pincode is not available" })
 			return;
 		}
-		if(this.canCOD)
-		{
+		if (this.canCOD) {
 			const initiateQuickCod: InitiateQuickCod = {
 				cartSession: this.cartSession,
 				shippingAddress: this.shippingAddress,
@@ -113,12 +122,6 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			}
 			this._toastService.show({ type: 'error', text: response.statusDescription });
 		})
-	}
-
-	canCOD()
-	{
-		const totalAmount = Number(this.shoppingCartDto['cart']['totalPayableAmount']);
-		return (totalAmount >= this.MIN_COD_AMOUNT && totalAmount <= this.MAX_COD_AMOUNT);
 	}
 
 	close() { this.emitQuickoutCloseEvent$.emit(true) }

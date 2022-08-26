@@ -20,6 +20,7 @@ export class ProductService {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     private basePath = CONSTANTS.NEW_MOGLIX_API;
+    productCouponItem: any = null;
 
     oosSimilarProductsData = {
         similarData: [],

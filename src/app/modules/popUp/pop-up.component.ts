@@ -2,6 +2,8 @@ import { delay } from 'rxjs/operators';
 import { Component, ViewEncapsulation, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { of } from 'rxjs';
 import { CommonService } from '@app/utils/services/common.service';
+import { ActivatedRoute, Router } from "@angular/router";
+
 
 @Component({
     selector: 'app-pop-up',
@@ -22,10 +24,11 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
     headerText: string = "";
     selector: any;
 
-    constructor(public _commonService: CommonService) {
+    constructor(public _commonService: CommonService,private route: ActivatedRoute, private router: Router ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
         this.pClass = 'screen-view popup info-update-popup ';
+        
     }
 
     ngOnInit() {
@@ -74,7 +77,13 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
         document.querySelector('app-pop-up').classList.remove('open');
         this.enableScroll();
         setTimeout(() => {
-            this.outData$.emit({ hide: true, selector: this.selector });
+            let currentUrl=this._commonService.currentUrl;
+            if(currentUrl.split('#').length > 1){
+                this.router.navigate([currentUrl.split('#')[0]]) // remove fragment
+            }else{
+                this.outData$.emit({ hide: true, selector: this.selector });
+            }
+            console.log('curentURL', currentUrl);
         }, 200);
     }
 

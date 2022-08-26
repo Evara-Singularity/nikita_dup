@@ -13,6 +13,7 @@ export const PaymentMode =
     "card_mode": { paymentBlock: CONSTANTS.GLOBAL.savedCard, mode: "", section: "" },
     "TEZ": { paymentBlock: CONSTANTS.GLOBAL.upi, mode: "upi", section: "upiSection" },
     "UPI": { paymentBlock: CONSTANTS.GLOBAL.upi, mode: "upi", section: "upiSection" },
+    "PAYTM": { paymentBlock: CONSTANTS.GLOBAL.paytmUpi, mode: "paytmUpi", section: "paytmUpiSection" },
 }
 
 export class CartUtils

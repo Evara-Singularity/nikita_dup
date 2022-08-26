@@ -94,7 +94,7 @@ export class CartUtils
     {
         const cartSession = validateDto.cartSession;
         const shippingAddress = validateDto.shippingAddress;
-        const billingAddress = validateDto.billingAddress;
+        const billingAddress = validateDto.billingAddress ?? null;
         const invoiceType = validateDto.invoiceType;
         const isBuyNow = validateDto.isBuyNow;
         let cart = cartSession.cart;
@@ -186,7 +186,7 @@ export class CartUtils
                 },
                 itemsList: CartUtils.getItemsList(cartItems),
                 addressList: [{
-                    addressId: extra.addressList.idAddress,
+                    addressId: extra.addressList.idAddress || extra.addressList.addressId,
                     type: "shipping",
                     invoiceType: invoiceType,
                 }],

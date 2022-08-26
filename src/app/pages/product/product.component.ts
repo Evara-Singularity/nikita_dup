@@ -1588,17 +1588,22 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     // cart methods 
     addToCart(buyNow: boolean) {
-      this.globalLoader.setLoaderState(true);
-      this.validateQuickCheckout().subscribe((res) => {
-        console.log('validateQuickCheckout res  -->' , res);
-        if (res && res.returnPopUpStatus) {
-          this.globalLoader.setLoaderState(false);
-          this.quickCheckoutPopUp(buyNow ,res.address);
-        } else {
-          this.addToCartFromModal(buyNow);
-          this.globalLoader.setLoaderState(false);
+        if(buyNow){
+            this.globalLoader.setLoaderState(true);
+            this.validateQuickCheckout().subscribe((res) => {
+              console.log('validateQuickCheckout res  -->' , res);
+              if (res && res.returnPopUpStatus) {
+                this.globalLoader.setLoaderState(false);
+                this.quickCheckoutPopUp(buyNow ,res.address);
+              } else {
+                this.addToCartFromModal(buyNow);
+                this.globalLoader.setLoaderState(false);
+              }
+            });
+        }else{
+            this.addToCartFromModal(buyNow);
         }
-      });
+    
     }
     
     async quickCheckoutPopUp(buyNow, address) {

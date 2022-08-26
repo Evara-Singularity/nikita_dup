@@ -32,7 +32,7 @@ export class QuickCodService
       isBuyNow: initiateQuickCod.isBuyNow
     }
     const validateDto = CartUtils.getValidateDto(validateDtoRequest);
-    this.quickCODPayment(validateDto['shoppingCartDto'], initiateQuickCod.userId)
+    this.quickCODPayment(validateDto['shoppingCartDto'], this.initiateQuickCod.userId)
   }
 
   quickCODPayment(shoppingCartDto, userId)
@@ -43,9 +43,9 @@ export class QuickCodService
     validateShoppingCart.pipe(
       map((result) =>
       {
-        const result_validate_cart = result[1];
-        const isShpopingCartInValid = !(result_validate_cart.status && result_validate_cart.statusCode == 200);
-        return { canProceed: !(isShpopingCartInValid) };
+        const result_validate_cart = result;
+        const isShpopingCartInValid = !(result_validate_cart.status == true && result_validate_cart.statusCode == 200);
+        return { canProceed: (isShpopingCartInValid) };
       }),
       concatMap((result) =>
       {
@@ -59,8 +59,17 @@ export class QuickCodService
     ).subscribe((result) =>
     {
       this._loaderService.setLoaderState(false);
-      if (this.codMessages.length) { this.displayCODMessage(this.codMessages[0]); return; }
-      let data = result.data;
+      if(!result && !result.status){
+        this.displayCODMessage(this.codMessages[0]); 
+        this._router.navigate(['checkout/address']);
+        return;
+      }
+      if (this.codMessages.length) {
+        this.displayCODMessage(this.codMessages[0]); 
+        this._router.navigate(['checkout/address']);
+        return;
+        }
+      let data = result;
       let extras = { queryParams: { mode: 'COD', orderId: data.orderId, transactionAmount: data.orderAmount }, replaceUrl: true };
       this._localStorageService.clear('flashData');
       this._router.navigate(['order-confirmation'], extras);
@@ -84,7 +93,7 @@ export class QuickCodService
     const invoiceType = this.initiateQuickCod.invoiceType;
     const cartSession = this.initiateQuickCod.cartSession;
     const shippingAddress = this.initiateQuickCod.shippingAddress;
-    const billingAddress = this.initiateQuickCod.billingAddress;
+    const billingAddress = this.initiateQuickCod.billingAddress ?? null;
     const userId = this.initiateQuickCod.userId;
     let extra = { 'mode': 'COD', 'paymentId': 13, addressList: shippingAddress };
     let request = {

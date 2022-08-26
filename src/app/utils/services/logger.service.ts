@@ -1,43 +1,53 @@
 import { CommonService } from '@app/utils/services/common.service';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from 'environments/environment';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { ServerLogSchema } from '../models/log.modal';
+import * as fs from "fs";
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
-export class LoggerService
-{
-    constructor(private _commonService: CommonService) { }
+export class LoggerService {
 
-    info(...args)
-    {
-        if (!this.isConsoleEnabled) return;
-        console.info(...args);
+  isServer: boolean = false;
+  isBrowser: boolean = false;
+  PATH_TO_LOG_FOLDER: string = './logs/log.txt';
+
+  constructor(
+    @Inject(PLATFORM_ID) platformId,
+  ) {
+    this.isServer = isPlatformServer(platformId);
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
+
+  info(...args) {
+    this.isLoggingEnabled && console.info(...args);
+  }
+
+  debug(...args) {
+    this.isLoggingEnabled && console.debug(...args);
+  }
+
+  error(...args) {
+    this.isLoggingEnabled && console.error(...args);
+  }
+
+  apiServerLog(data: ServerLogSchema) {
+
+    if (this.isServer) {
+      fs.appendFile(this.PATH_TO_LOG_FOLDER, JSON.stringify(data), function (err) {
+        if (err) {
+          console.log('apiServerLog', err);
+          // console.log(err);
+        }
+      });
+    } else {
+      // console.log("logger service is called")
+      this.isLoggingEnabled && console.log(data);
     }
+  }
 
-    debug(...args)
-    {
-        if (!this.isConsoleEnabled) return;
-        console.debug(...args);
-    }
+  private get isLoggingEnabled() { return this.isBrowser && environment.logger }
 
-    log(...args)
-    {
-        if (!this.isConsoleEnabled) return;
-        console.log(...args);
-    }
-
-    table(...args)
-    {
-        if (!this.isConsoleEnabled) return;
-        console.table(...args);
-    }
-
-    group(...args)
-    {
-        if (!this.isConsoleEnabled) return;
-        console.group(...args);
-    }
-
-    private get isConsoleEnabled() { return environment.logger }
 }

@@ -77,7 +77,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     public localStorageService: LocalStorageService,
     public productService: ProductService,
     public cartService: CartService,
-    private qcs: QuickCodService,
+    private quickCodService: QuickCodService,
     public checkoutService: CheckoutService,
     private _tms: ToastMessageService,
     private _dataService: DataService,
@@ -421,7 +421,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   placeOrder() {
-    this.qcs.checkCODLimit(this.totalPayableAmount).subscribe((res) => {
+    this.quickCodService.checkCODLimit(this.totalPayableAmount).subscribe((res) => {
       if (res &&  res["iswithInCODLimit"] == true) {
         this.validateCart();
       } else {
@@ -452,7 +452,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
       postCode: _postCode,
       userId: _userId,
     };
-    this.qcs.initiateQuickCOD(validateDtoRequest);
+    this.quickCodService.initiateQuickCOD(validateDtoRequest);
   }
 
 

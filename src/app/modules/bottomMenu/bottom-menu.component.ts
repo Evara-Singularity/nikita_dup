@@ -25,14 +25,14 @@ export class BottomMenuComponent implements OnInit {
     ngOnInit() {
         // Called after the constructor, initializing input properties, and the first call to ngOnChanges.
         // Add 'implements OnInit' to the class.
-        setTimeout(() => {
-            const el = document.querySelector('app-bottom-menu .bottom-options');
-            if(el){
-                el.classList.add('open');
-                (<HTMLElement>document.getElementById('body')).classList.add('stop-scroll');
-                this.disableScroll();
-              }
-        }, 0);
+        // setTimeout(() => {
+        //     const el = document.querySelector('app-bottom-menu .bottom-options');
+        //     if(el){
+        //         el.classList.add('open');
+        //         (<HTMLElement>document.getElementById('body')).classList.add('stop-scroll');
+        //         this.disableScroll();
+        //       }
+        // }, 0);
     }
     ngOnDestroy() {
         of(null)
@@ -56,8 +56,6 @@ export class BottomMenuComponent implements OnInit {
         document.body.removeEventListener('touchmove', this.preventDefault);
     }
     updateParent(data) {
-        (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
-        this.enableScroll();
         setTimeout(() => {
             this.outData$.emit(data)
         }, 100);

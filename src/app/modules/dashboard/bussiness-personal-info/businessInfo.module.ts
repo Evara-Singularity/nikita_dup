@@ -5,8 +5,9 @@ import { BussinessInfoComponent } from "./bussinessPersonalInfo.component";
 import { routing } from "./businessInfo.routing";
 import { DashboardService } from "../dashboard.service";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AlphabetsModule } from "@app/utils/directives/alphanumeric-only.directive";
 @NgModule({
-  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, routing],
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, routing, AlphabetsModule],
   declarations: [BussinessInfoComponent],
   exports: [],
   providers: [DashboardService],

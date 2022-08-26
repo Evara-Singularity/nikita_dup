@@ -292,6 +292,8 @@ export class CartService
                 {
                     // only run shipping API when specified, eg. not required in Auth Module
                     // shipping API should be called after updatecart API always
+                    const updatedCartSession = this.generateGenericCartSession(cartSession);
+                    this.setGenericCartSession(updatedCartSession);
                     if (config.enableShippingCheck) {
                         return this._getShipping(cartSession);
                     } else {

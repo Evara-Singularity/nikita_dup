@@ -104,19 +104,6 @@ export class ProductCardCoreComponent implements OnInit {
     this.prodUrl = CONSTANTS.PROD;
   }
 
-  sortProductTagsOnPriority() {
-    let arr = []
-    var res = Math.min.apply(Math, this.product['productTags'].map((item) => {
-      return item.priority;
-    }));
-    this.product['productTags'].forEach(element => {
-      if (element['priority'] === res) {
-        arr.push(element);
-      }
-    });
-    this.product['productTags'] = arr
-  }
-
   buyNow(buyNow = false) {
     this._loader.setLoaderState(true);
     const productMsnId = this.product['moglixPartNumber'];

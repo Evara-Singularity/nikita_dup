@@ -166,8 +166,6 @@ export class PagesComponent implements OnInit {
      * Also, for page refresh
      */
     if (this.isBrowser) {
-          // separately checking for back param, because on angular router navigation this param is not getting updated
-      // this.isRoutedBack = window.location.toString().includes('back=1');
       this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie();

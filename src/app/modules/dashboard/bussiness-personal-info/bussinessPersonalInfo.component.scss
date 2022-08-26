@@ -64,7 +64,7 @@
 
 .edit-btn,
 .edit-form {
-    color: $blue-link-color;
+    color: var(--blue);
     font-size: $large-font;
     font-weight: 600;
     padding: 10px 0;
@@ -89,7 +89,7 @@
         right: 0;
         top: 24px;
         font-size: 14px;
-        color: $blue-link-color;
+        color: var(--blue);
     }
 }
 

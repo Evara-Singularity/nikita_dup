@@ -62,6 +62,7 @@ export class CartService
     };
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
     private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
+    private _shippingPriceChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
 
     private previousUrl: string = null;
     private currentUrl: string = null;
@@ -142,7 +143,7 @@ export class CartService
             tpt = tpt + item['tax'];
         };
         modifiedCartSessionObject.cart.totalAmount = totalAmount;
-        modifiedCartSessionObject.cart.totalPayableAmount = (totalAmount + modifiedCartSessionObject.cart['shippingCharges']) - (modifiedCartSessionObject.cart['totalOffer'] || 0);
+        modifiedCartSessionObject.cart.totalPayableAmount = (+(+tawot + +tpt) + modifiedCartSessionObject.cart['shippingCharges']) - (modifiedCartSessionObject.cart['totalOffer'] || 0);
         modifiedCartSessionObject.cart.tawot = tawot;
         modifiedCartSessionObject.cart.tpt = tpt;
         modifiedCartSessionObject.itemsList = itemsList;
@@ -291,6 +292,8 @@ export class CartService
                 {
                     // only run shipping API when specified, eg. not required in Auth Module
                     // shipping API should be called after updatecart API always
+                    const updatedCartSession = this.generateGenericCartSession(cartSession);
+                    this.setGenericCartSession(updatedCartSession);
                     if (config.enableShippingCheck) {
                         return this._getShipping(cartSession);
                     } else {
@@ -319,9 +322,12 @@ export class CartService
         return cartSession;
     }
 
-    private _getShipping(cartSession): Observable<any>
+    private _getShipping(cartSession2): Observable<any>
     {
+        // console.trace();
+        const cartSession = this.getCartSession();
         let sro = this.getShippingObj(cartSession);
+        // console.trace('_getShipping', Object.assign({}, cartSession), this.getCartSession())
         return this.getShippingValue(sro)
             .pipe(
                 map((sv: any) =>
@@ -335,7 +341,12 @@ export class CartService
                             }
                         }
                     }
-                    return cartSession;
+                    // console.log('shipping  cart session', this.generateGenericCartSession(cartSession));
+                    const updatedCartSessionAfterShipping = this.generateGenericCartSession(cartSession);
+                    // console.log('updatedCartSessionAfterShipping', updatedCartSessionAfterShipping);
+                    this.setShippingPriceChanges(updatedCartSessionAfterShipping);
+                    this.setGenericCartSession(updatedCartSessionAfterShipping);
+                    return updatedCartSessionAfterShipping;
                 })
             );
     }
@@ -547,7 +558,7 @@ export class CartService
      * null is returned incase product already in cart AND null is also return incase of buynow without login. 
      * incase of without login buynow, temp session can checked in cartService.buyNowSessionDetails
     */
-    addToCart(args: {
+     addToCart(args: {
         buyNow: boolean,
         productDetails: AddToCartProductSchema
     }): Observable<any>
@@ -627,7 +638,13 @@ export class CartService
             }),
             mergeMap(request =>
             {
-                if (request) { return this.updateCartSession(request); }
+                if (request) { return this.updateCartSession(request).pipe(
+                    map(updatedCartResponse=>{
+                        const updatedCartSession = this.generateGenericCartSession(updatedCartResponse);
+                        this.setGenericCartSession(updatedCartSession);
+                        return updatedCartResponse;
+                    })
+                ); }
                 return of(null)
             }),
             mergeMap((cartSession: any) =>
@@ -636,7 +653,9 @@ export class CartService
                 // shipping API should be called after updatecart API always
                 if (cartSession) {
                     return this._getShipping(cartSession).pipe(
-                        map((cartSession: any) => { return cartSession; }),
+                        map((cartSession: any) => {
+                            return cartSession; 
+                        }),
                         map((cartSession) => { return this._notifyCartChanges(cartSession, null); })
                     );
                 } else {
@@ -684,6 +703,16 @@ export class CartService
     public setCartUpdatesChanges(cartsession): void
     {
         this._cartUpdatesChanges.next(cartsession);
+    }
+
+    public getShippingPriceChanges(): Observable<any>
+    {
+        return this._shippingPriceChanges.asObservable()
+    }
+
+    public setShippingPriceChanges(cartsession): void
+    {
+        this._shippingPriceChanges.next(cartsession);
     }
 
     // refresh and chnages to communicated 
@@ -748,15 +777,15 @@ export class CartService
                     })
                 );
             }),
-            mergeMap(request =>
-            {
-                return this.getShippingAndUpdateCartSession(request).pipe(
-                    map((res: any) =>
-                    {
-                        return this.generateGenericCartSession(res);
-                    })
-                );
-            }),
+            // mergeMap(request =>
+            // {
+            //     return this.getShippingAndUpdateCartSession(request).pipe(
+            //         map((res: any) =>
+            //         {
+            //             return this.generateGenericCartSession(res);
+            //         })
+            //     );
+            // }),
             map(cartSessionResponse =>
             {
                 if (cartSessionResponse) {
@@ -1177,7 +1206,7 @@ export class CartService
         this._loaderService.setLoaderState(true);
         if (!userId) { return }
         const cartSession = this.getCartSession();
-        const offerId = (cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
+        const offerId = (cartSession['offersList'] && cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
         this.getAllPromoCodesByUserId(userId).subscribe(res =>
         {
             if (res['statusCode'] === 200) {

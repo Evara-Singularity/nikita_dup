@@ -101,6 +101,7 @@ export class ClusterStoreComponent implements OnInit {
 
 	ngOnInit() {
 		this._activatedRoute.data.subscribe((rawData) => {
+			console.log(rawData,"rawData")
 			let response = rawData['clusterStoreData'];
 			console.log(rawData,"rawData");
 			if(!response['data'][0]){

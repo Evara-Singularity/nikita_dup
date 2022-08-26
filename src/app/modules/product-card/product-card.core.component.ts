@@ -111,7 +111,6 @@ export class ProductCardCoreComponent implements OnInit {
     }));
     this.product['productTags'].forEach(element => {
       if (element['priority'] === res) {
-        console.log("element", element)
         arr.push(element);
       }
     });

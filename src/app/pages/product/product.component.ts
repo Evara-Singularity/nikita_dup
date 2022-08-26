@@ -316,6 +316,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     hasGstin: boolean;
     GLOBAL_CONSTANT = GLOBAL_CONSTANT;
     isAskQuestionPopupOpen: boolean;
+    mainProductURL: string;
 
     set showLoader(value: boolean)
     {
@@ -736,6 +737,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.productBrandDetails = this.rawProductData["brandDetails"];
         this.productCategoryDetails = this.rawProductData["categoryDetails"][0];
         this.productUrl = this.rawProductData["defaultCanonicalUrl"];
+        this.mainProductURL = this.rawProductData["productPartDetails"][partNumber]["productLinks"]['default'];
         this.productFilterAttributesList =
             this.rawProductData["filterAttributesList"];
         this.productKeyFeatures = this.rawProductData["keyFeatures"];
@@ -2087,6 +2089,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         let user = this.localStorageService.retrieve("user");
         if (user && user.authenticated == "true") {
+            this.location.replaceState(this.mainProductURL);
             !user['phone'].length ? this.intiateRFQQuote(true) : this.raiseRFQGetQuote(user);
         } else {
             this.goToLoginPage(this.productUrl, "Continue to raise RFQ", "raiseRFQQuote");
@@ -3803,6 +3806,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         let user = this.localStorageService.retrieve("user");
         if (user && user.authenticated == "true") {
+            this.location.replaceState(this.mainProductURL);
             this.askQuestionPopup();
         } else {
             this.goToLoginPage(this.productUrl, "Continue to ask question", "askQuestion");

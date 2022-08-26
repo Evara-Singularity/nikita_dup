@@ -33,10 +33,6 @@ export class ClusterStoreResolver implements Resolve<any> {
 			return this.clusterStoreService.getData(cType).pipe(
 				first(),
 				tap((response) => {
-					let res = JSON.stringify(response);
-
-					//JSON.parse(response);
-					console.dir(res,"server response");
 					if (isPlatformServer(this.platformId)) {
 						console.log("CLSUTER_STORE_KEY",CLSUTER_STORE_KEY);
 						this.transferState.set(CLSUTER_STORE_KEY, response);

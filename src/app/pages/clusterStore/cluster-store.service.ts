@@ -10,18 +10,12 @@ export class ClusterStoreService {
 		) {}
 
 	getData(cType) {
-		// return this._dataService.callRestful(
-		// 	'GET',
-		// 	CONSTANTS.NEW_MOGLIX_API +
-		// 		CONSTANTS.GET_PARENT_CAT +
-		// 		cType +
-		// 		'_m'
-		// );
-		 const PRODUCT_URL = CONSTANTS.NEW_MOGLIX_API +
-		 		CONSTANTS.GET_PARENT_CAT +
-		 		cType +
-		 		'_m';
-		 console.log(PRODUCT_URL,"PRODUCT_URL");
-		 return this.http.get(PRODUCT_URL);
+		return this._dataService.callRestful(
+			'GET',
+			CONSTANTS.NEW_MOGLIX_API +
+				CONSTANTS.GET_PARENT_CAT +
+				cType +
+				'_m'
+		);
 	}
 }

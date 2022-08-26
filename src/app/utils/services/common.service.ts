@@ -1476,4 +1476,16 @@ export class CommonService
           return logInfo;
     }
 
+    sortProductTagsOnPriority(productTags) {
+        var res = Math.min.apply(Math, productTags.map((item) => {
+          return item['priority'];
+        }));
+        productTags.forEach(element => {
+          if (element['priority'] === res) {
+            productTags.push(element);
+          }
+        });
+        return productTags
+    }
+
 }

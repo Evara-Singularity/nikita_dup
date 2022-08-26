@@ -2089,6 +2089,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         let user = this.localStorageService.retrieve("user");
         if (user && user.authenticated == "true") {
+            this.location.replaceState(this.mainProductURL);
             !user['phone'].length ? this.intiateRFQQuote(true) : this.raiseRFQGetQuote(user);
         } else {
             this.goToLoginPage(this.productUrl, "Continue to raise RFQ", "raiseRFQQuote");
@@ -3805,6 +3806,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         let user = this.localStorageService.retrieve("user");
         if (user && user.authenticated == "true") {
+            this.location.replaceState(this.mainProductURL);
             this.askQuestionPopup();
         } else {
             this.goToLoginPage(this.productUrl, "Continue to ask question", "askQuestion");

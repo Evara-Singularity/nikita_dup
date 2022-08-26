@@ -36,9 +36,10 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 
   constructor(private cfr: ComponentFactoryResolver, private injector: Injector, public productService: ProductService, private commonService: CommonService) { }
 
-  ngOnInit(): void
-  {
-
+  ngOnInit(): void {
+    if (this.productTags) {
+      this.productTags = this.commonService.sortProductTagsOnPriority(this.productTags);
+    }
   }
 
   ngAfterViewInit(): void

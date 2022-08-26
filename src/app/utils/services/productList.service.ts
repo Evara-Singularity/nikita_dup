@@ -84,7 +84,7 @@ export class ProductListService {
               "large",
               "medium"
             );
-          product['productTags'] = this.getProductTag(product);
+          product['productTags'] = this._commonService.sortProductTagsOnPriority(product['productTags']);
           product["internalProduct"] = true;
           product["discount"] = this._commonService.calculcateDiscount(
             product["discount"],

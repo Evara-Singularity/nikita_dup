@@ -13,9 +13,9 @@
     <!-- <a class="s-h-l" [attr.href]="prodUrl+'/'+this.product.productUrl">{{product.productName}}</a> -->
     <div class="card-container">
         <div class="inner-container">
-            <div class="left" (click)="navigateToPDP()">
-                <div *ngIf="this.product && this.product['productTags'][0]" class="tags">
-                    <img [src]="this.product['productTags'][0]['tagImageLink']" alt=""/>
+            <div class="left" (click)="navigateToPDP()" *ngIf="this.product && this.product['productTags']">
+                <div *ngFor="let tag of product['productTags'] | slice:0:1   ;let i = index;" class="tags">
+                    <img [src]="tag['tagImageLink']" alt=""/>
                 </div>
                 <ng-container *ngIf="isPDPImageLazyLoaded || !cardFeaturesConfig.lazyLoadImage">
                     <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}"

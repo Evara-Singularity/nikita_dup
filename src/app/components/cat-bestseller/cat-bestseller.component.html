@@ -28,30 +28,23 @@
     [data]="{headerText:'Bestsellers'}">
     <div class="content-popup" content>
         <!-- <p class="pad-10 f-14 bold-txt upper-case">{{categoryNameFromHomePage}}</p> -->
-        <ul class="view-products no-border list border-top">
-            <li *ngFor="let product of bestSeller_Data">
+        <div class="bsrow popup-bestseller">
+            <div class="bs_item" *ngFor="let product of bestSeller_Data">
                 <!-- <a [routerLink]="product.productlink" class="clearfix"> -->
                 <a [routerLink]="'/'+product.productlink" class="clearfix">
-                    <div class="product-img">
+                    <div class="bs_item_img">
                         <img [src]="defaultImage" lazyLoad="{{imagePath}}{{product.imageLink_medium}}"
                             alt="{{product.productName}}">
                     </div>
-                    <div class="product-description">
-                        <p class="description-txt">{{product.productName | slice:0:60}} <span
-                                *ngIf="product.productName.length>60">...</span></p>
-                        <p class="price">
-                            <span class="before-discount">₹{{product.mrp}}
-                            </span>
-                            <span class="discount">{{product.discount_percentage}}% OFF</span>
-                            <span class="after-discount">{{product.sellingPrice}}</span>
-                        </p>
-                        <p class="seller">
-                            <span>By :</span>{{getBrandBy(product.short_description)}}
-                        </p>
+                    <div class="bs_item_desc">
+                        <h3>{{product.productName | slice:0:60}} <span *ngIf="product.productName.length>60">...</span></h3>
+                        <p class="safetysh_discount"><span>₹{{product.mrp}}</span> {{product.discount_percentage}}% OFF</p>
+                        <p class="safetysh_price">₹{{product.sellingPrice}}</p>
+                        <p class="brandname"><span>By :</span>{{getBrandBy(product.short_description)}}</p>
                     </div>
                 </a>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 </app-pop-up>
 </ng-container>

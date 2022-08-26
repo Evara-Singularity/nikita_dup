@@ -195,6 +195,7 @@ export const CONSTANTS = {
     ],
     default: {
       pageSize: 20,
+      categoryListingPageSize: 25
     },
     codMin: 300,
     codMax: 30000,
@@ -431,6 +432,13 @@ export const CONSTANTS = {
     ORDER_FAILURE: 'ORDER_FAILURE',
     ORDER_CONFIRMATION: 'ORDER_CONFIRMATION',
     PRODUCT: 'PRODUCT'
-  }
+  },
+  SEARCH_WIDGET_KEYS: [
+    'Shoes For Men',
+    'Solar Panel',
+    'Welding Machine',
+    'Office Chair',
+    'Fan'
+  ]
 };
 export default CONSTANTS;

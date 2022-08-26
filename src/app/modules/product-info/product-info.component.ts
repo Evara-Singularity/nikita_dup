@@ -46,7 +46,7 @@ export class ProductInfoComponent implements OnInit
     productPrice = 0;
     productDiscount = 0;
     bulkPriceWithoutTax = 0;
-    bulkSellingPrice = 0;
+    bulkSellingPrice = null;
     bulkDiscount = 0;
     imgURL = null;
     productName = "";
@@ -123,7 +123,7 @@ export class ProductInfoComponent implements OnInit
         this.imgURL = mainInfo["imgURL"];
         this.productName = mainInfo["productName"];
         this.brandName = mainInfo["brandName"];
-        this.productPrice = mainInfo["productPrice"];
+        this.productPrice =this.analyticsInfo?.order?.price;
         this.bulkSellingPrice = mainInfo["bulkSellingPrice"];
     }
 

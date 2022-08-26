@@ -2159,7 +2159,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     this.intiateRFQQuoteUpdate(product , rfqId);
                    // this._tms.show({ type: 'success', text: response['statusDescription'] });
                     this.rfqQuoteRaised = true;
-                    this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
+                    this.location.replaceState(this.mainProductURL);
                 } else {
                     this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
                 }

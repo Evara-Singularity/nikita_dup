@@ -55,6 +55,7 @@ export class CommonService
     isHomeHeader = false;
     isPLPHeader = false;
     isScrolledHeader = false;
+    loadNav: Subject<boolean> = new Subject<false>();
     stopSearchNudge = false;
 
     currentRequest: any;
@@ -676,6 +677,7 @@ export class CommonService
         if (params.pageName == "CATEGORY") {
             if (params["category"] != undefined)
                 actualParams["category"] = params["category"];
+                actualParams['pageSize'] = CONSTANTS.GLOBAL.default.categoryListingPageSize + '';
             //10766
             if (queryParams["str"] != undefined)
                 actualParams["str"] = queryParams["str"];
@@ -1119,15 +1121,15 @@ export class CommonService
 
     scrollTo(event)
     {
-        if (this.isBrowser) {
-            if (event.target) {
+        if (this.isBrowser){
+            if (event.target){
                 ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
-            } else {
+            }
+             else {
                 ClientUtility.scrollToTop(500, event.offsetTop - 50);
             }
         }
     }
-
     getBreadcrumpData(link, type, pageTitle?): Observable<any>
     {
         let curl =
@@ -1439,6 +1441,20 @@ export class CommonService
             return +(Math.floor(+(((mrp - SellingPrice) / mrp) * 100)).toFixed(0))
         } else {
             return 0;
+        }
+    }
+
+    openLoader() {
+        return this.loadNav.asObservable();
+    }
+    isAbsoluteUrl(url: string) {
+        return (url.indexOf('://') > 0 || url.indexOf('//') === 0)
+    }
+    isRoutedBack() {
+        if(this.isBrowser) {
+            return window.location.toString().includes('back=1');
+        } else {
+            return false;
         }
     }
 

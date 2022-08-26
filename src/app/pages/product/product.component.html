@@ -14,8 +14,8 @@
 
 <product-grouping-attributes [isCommonProduct]="isCommonProduct" [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)" (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
 
-<product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" (selectProductBulkPrice$)="selectProductBulkPrice($event)" [rawProductData]="rawProductData" [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct" [priceQuantityCountry]="priceQuantityCountry"
-    [productBulkPrices]="productBulkPrices" [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl">
+<product-bulk-quantity  (checkBulkPriceMode$)="checkBulkPriceMode()" (selectProductBulkPrice$)="selectProductBulkPrice($event)" [rawProductData]="rawProductData" [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct" [priceQuantityCountry]="priceQuantityCountry"
+    [productBulkPrices]="productBulkPrices" [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl" [productMinimmumQuantity]="productMinimmumQuantity">
 </product-bulk-quantity>
 
 <!-- TODO: skeleton to be implemented -->

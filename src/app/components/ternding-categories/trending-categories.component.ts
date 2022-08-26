@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input, NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { CategoryData } from "@app/utils/models/categoryData";
 import { CommonService } from "@app/utils/services/common.service";
 
@@ -13,9 +13,11 @@ export class TrendingCategoriesComponent {
     @Input('flyOutData') flyOutData: CategoryData[];
     @Input('tocd') tocd;
     
-    constructor(private _commonService: CommonService) {}
+    constructor(private _commonService: CommonService, private router: Router) {}
 
-    setCookieLink(catName,categoryCodeorBannerName, type){
+    setCookieLink(catName,categoryCodeorBannerName, type, url){
+        const isAbsoluteUrl = this._commonService.isAbsoluteUrl(url);
+        isAbsoluteUrl ? window.open(url, '_blank') : this.router.navigateByUrl('/'+url);
         this._commonService.setSectionClickInformation('homepage', type);
         this._commonService.resetSelectedFilterData();
         var date = new Date();

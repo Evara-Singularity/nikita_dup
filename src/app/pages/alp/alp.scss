@@ -1,4 +1,5 @@
 @import "../../scss/variables";
+@import '../../scss/components/home-listing.scss';
 :host {
     display: block;
     // margin-top: 108px;
@@ -34,11 +35,11 @@
 
 .layout2 {
     .safetyshoebannersrow {
-        background: url('/assets/img/bg_mobile.png')no-repeat center top;
+        background: url('/assets/img/bg_mobile.png') no-repeat center top;
         background-size: 100% auto;
     }
     .safetysh-shopby {
-        background: url('/assets/img/wallpaper_1_ mobile.png')no-repeat center;
+        background: url('/assets/img/wallpaper_1_ mobile.png') no-repeat center;
         padding: 20px 20px;
         background-size: cover;
     }
@@ -78,9 +79,7 @@
             }
         }
     }
-    .bscategory {
-        margin-bottom: 30px;
-    }
+
     .shopbyrow {
         .shopbycol {
             &:last-child {
@@ -267,15 +266,6 @@ h2.slp-heading {
     }
 }
 
-.bscategory {
-    background: #fff;
-    .bscatwrap {
-        padding: 15px 15px 0;
-        .slp-heading {
-            padding: 5px 10px 5px 0;
-        }
-    }
-}
 
 .viewallbs {
     color: var(--primary);

@@ -44,7 +44,7 @@
     </div>
 
     <div class="pwa-row verticle-view-card">
-        <div class="pwa-col-12 newarrivals-section">
+        <div class="pwa-col-12 newarrivals-section row-gutter-space">
             <div class="outer-view-section" *ngFor="let product of data['data'] | slice:0:4; let i = index">
 
                 <a [routerLink]="['/'+product?.productlink]">

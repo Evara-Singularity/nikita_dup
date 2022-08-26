@@ -1,3 +1,5 @@
+@import '../../scss/components/home-listing.scss';
+
 @mixin layout1 {
         &.splnewpage {
             .safetyshoebannersrow {
@@ -97,8 +99,9 @@
         }
         .bscategory {
             background: #fff;
+            padding: 15px 15px 1px;
+            margin-bottom: 10px;
             .bscatwrap {
-                padding: 15px 15px 0;
                 .slp-heading {
                     padding: 5px 10px 5px 0;
                 }
@@ -474,9 +477,7 @@
                     }
                 }
             }
-            .bscategory {
-                margin-bottom: 30px;
-            }
+
             .shopbyrow {
                 .shopbycol {
                     ul {
@@ -513,18 +514,19 @@
                 }
             }
         }
-    }
-    
-    // Common Scss
-    .bscategory {
-        background: #fff;
-        .bscatwrap {
-            padding: 15px 15px 0;
-            .slp-heading {
-                padding: 5px 10px 5px 0;
+        .bscategory {
+            background: #fff;
+            padding: 15px 15px 1px;
+            margin-bottom: 10px;
+            .bscatwrap {
+                .slp-heading {
+                    padding: 5px 10px 5px 0;
+                }
             }
         }
     }
+    
+    // Common Scss
     
     .bsrow {
         border-top: 1px solid rgba(162, 162, 162, 0.5);

@@ -1,5 +1,7 @@
 @import "../../scss/variables";
 @import "./slp.scss";
+@import '../../scss/components/home-listing.scss';
+
 .displayCategoryName {
     font-size: 16px;
 }
@@ -233,15 +235,6 @@
     }
     .slpLayout2 {
         @include layout2;
-    }
-    .bscategory {
-        background: #fff;
-        .bscatwrap {
-            padding: 15px 15px 0;
-            .slp-heading {
-                padding: 5px 10px 5px 0;
-            }
-        }
     }
     .bsrow {
         border-top: 1px solid rgba(162, 162, 162, 0.5);

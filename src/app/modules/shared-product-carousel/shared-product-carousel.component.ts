@@ -38,19 +38,8 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 
   ngOnInit(): void {
     if (this.productTags) {
-      this.sortProductTagsOnPriority();
+      this.productTags = this.commonService.sortProductTagsOnPriority(this.productTags);
     }
-  }
-
-  sortProductTagsOnPriority() {
-    var res = Math.min.apply(Math, this.productTags.map((item) => {
-      return item['priority'];
-    }));
-    this.productTags.forEach(element => {
-      if (element['priority'] === res) {
-        this.productTags.push(element);
-      }
-    });
   }
 
   ngAfterViewInit(): void

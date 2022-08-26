@@ -29,6 +29,8 @@ import { ToastMessageService } from "@app/modules/toastMessage/toast-message.ser
 import { DataService } from "@app/utils/services/data.service";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 import { Router } from "@angular/router";
+import { QuickCodService } from "@app/utils/services/quick-cod.service";
+import { InitiateQuickCod } from "@app/utils/models/cart.initial";
 
 @Component({
   selector: "pdp-quick-checkout",
@@ -75,6 +77,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     public localStorageService: LocalStorageService,
     public productService: ProductService,
     public cartService: CartService,
+    private qcs: QuickCodService,
     public checkoutService: CheckoutService,
     private _tms: ToastMessageService,
     private _dataService: DataService,
@@ -418,21 +421,17 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   placeOrder() {
-    const minValue = CONSTANTS.GLOBAL.codMin;
-    const maxValue = CONSTANTS.GLOBAL.codMax;
-    if (this.totalPayableAmount < minValue) {
-      this._tms.show({
-        type: "error",
-        text: `COD not applicable on orders below Rs.${minValue}`,
-      });
-    } else if (this.totalPayableAmount > maxValue) {
-      this._tms.show({
-        type: "error",
-        text: `COD not applicable on orders above Rs.${maxValue}`,
-      });
-    } else {
-      this.validateCart();
-    }
+    this.qcs.checkCODLimit(this.totalPayableAmount).subscribe((res) => {
+      if (res &&  res["iswithInCODLimit"] == true) {
+        this.validateCart();
+      } else {
+        this._tms.show({
+          type: "error",
+          text: res.message,
+        });
+        this.close();
+      }
+    });
   }
 
   validateCart() {
@@ -440,195 +439,22 @@ export class PdpQuickCheckoutComponent implements OnInit {
     const _cartSession = this.cartService.getCartSession();
     const _shippingAddress = this.cartService.shippingAddress ?? null;
     const _billingAddress = this.cartService.billingAddress ?? null;
-    let cart = _cartSession.cart;
-    let obj = {
-      shoppingCartDto: {
-        cart: {
-          cartId: cart["cartId"],
-          sessionId: cart["sessionId"],
-          userId: cart["userId"],
-          agentId: cart["agentId"] ? cart["agentId"] : null,
-          isPersistant: true,
-          createdAt: null,
-          updatedAt: null,
-          closedAt: null,
-          orderId: null,
-          totalAmount: cart["totalAmount"] == null ? 0 : cart["totalAmount"],
-          totalOffer: cart["totalOffer"] == null ? 0 : cart["totalOffer"],
-          totalAmountWithOffer:
-            cart["totalAmountWithOffer"] == null
-              ? 0
-              : cart["totalAmountWithOffer"],
-          taxes: cart["taxes"] == null ? 0 : cart["taxes"],
-          totalAmountWithTaxes: cart["totalAmountWithTax"],
-          shippingCharges:
-            cart["shippingCharges"] == null ? 0 : cart["shippingCharges"],
-          currency: cart["currency"] == null ? "INR" : cart["currency"],
-          isGift: cart["gift"] == null ? false : cart["gift"],
-          giftMessage: cart["giftMessage"],
-          giftPackingCharges:
-            cart["giftPackingCharges"] == null ? 0 : cart["giftPackingCharges"],
-          totalPayableAmount:
-            cart["totalAmount"] == null ? 0 : cart["totalAmount"],
-        },
-        itemsList: this.cartService.getItemsList(_cartSession.itemsList),
-        addressList: [
-          {
-            addressId: _shippingAddress["addressId"],
-            type: "shipping",
-            invoiceType: this.cartService.invoiceType,
-          },
-        ],
-        payment: null,
-        deliveryMethod: { deliveryMethodId: 77, type: "kjhlh" },
-        offersList:
-          _cartSession.offersList != undefined &&
-          _cartSession.offersList.length > 0
-            ? _cartSession.offersList
-            : null,
-      },
+    const _invoiceType = this.cartService.invoiceType;
+    const _postCode = this.cartService.shippingAddress["zipCode"];
+    const _userId = this.currUser["userId"];
+
+    const validateDtoRequest: InitiateQuickCod = {
+      cartSession: _cartSession,
+      shippingAddress: _shippingAddress,
+      billingAddress: _billingAddress,
+      invoiceType: _invoiceType,
+      isBuyNow: true,
+      postCode: _postCode,
+      userId: _userId,
     };
-    if (this.cartService.buyNow) {
-      obj["shoppingCartDto"]["cart"]["buyNow"] = true;
-    }
-    if (_billingAddress != null) {
-      obj.shoppingCartDto.addressList.push({
-        addressId: _billingAddress["addressId"],
-        type: "billing",
-        invoiceType: this.cartService.invoiceType,
-      });
-    }
-    this.cartService.validateCartBeforePayment(obj).subscribe((res) => {
-      this.globalLoader.setLoaderState(false);
-      console.log("validateCartBeforePayment validate api---------> ,", res);
-      if (res.status && res.statusCode == 200) {
-        if (res.codAvailable == true) {
-          //paymentId api called here
-          this.confirmOrder();
-        } else {
-          this.close();
-        }
-      } else {
-        this.close();
-      }
-    });
+    this.qcs.initiateQuickCOD(validateDtoRequest);
   }
 
-  confirmOrder() {
-    this.globalLoader.setLoaderState(true);
-    this.getPaymentId({ userId: this.currUser["userId"] }).subscribe((res) => {
-      if (res && res["status"]) {
-        this.transactionId = res["data"]["transactionId"];
-        this.pay();
-      } else {
-        this.globalLoader.setLoaderState(false);
-        this._tms.show({
-          type: "error",
-          text: "Something went wrong, Please try again.",
-        });
-      }
-    });
-  }
-
-  getPaymentId(data) {
-    return this._dataService
-      .callRestful("GET", CONSTANTS.NEW_MOGLIX_API + "/payment/getPaymentId", {
-        params: data,
-      })
-      .pipe(
-        catchError((e) =>
-          of({
-            status: false,
-            data: { transactionId: null },
-            description: null,
-          })
-        )
-      );
-  }
-
-  pay() {
-    let invoiceType = this.cartService.invoiceType;
-    let cartSession = this.cartService.getCartSession();
-    let addressList = this.cartService.shippingAddress;
-    let newdata = {};
-
-    let shippingInformation = {
-      shippingCost: cartSession["cart"]["shippingCharges"],
-      couponUsed: cartSession["cart"]["totalOffer"] || 0,
-      GST: addressList["isGstInvoice"] != null ? "Yes" : "No",
-    };
-
-    this._analytics.sendGTMCall({
-      event: "checkoutStarted",
-      shipping_Information: shippingInformation,
-      city: addressList["city"],
-      paymentMode: "COD",
-    });
-
-    let extra = {
-      mode: "COD",
-      paymentId: 13,
-      addressList: addressList,
-    };
-    if (invoiceType === "retail") {
-      newdata = {
-        transactionId: this.transactionId,
-        platformCode: "online",
-        mode: extra.mode,
-        paymentId: extra.paymentId,
-        requestParams: null,
-        validatorRequest: this.cartService.createValidatorRequest(extra),
-      };
-    } else {
-      newdata = {
-        transactionId: this.transactionId,
-        platformCode: "online",
-        mode: extra.mode,
-        paymentId: extra.paymentId,
-        paymentGateway: "razorpay",
-        requestParams: null,
-        validatorRequest: this.cartService.createValidatorRequest(extra),
-      };
-    }
-    this.commonService.isBrowser &&
-      this._analytics.sendAdobeOrderRequestTracking(
-        newdata,
-        "pay-initiated:cash on delivery"
-      );
-    this.cartService.pay(newdata).subscribe((res): void => {
-      if (res.status != true) {
-        this.globalLoader.setLoaderState(false);
-        return;
-      }
-      let data = res.data;
-      let extras = {
-        queryParams: {
-          mode: "COD",
-          orderId: data.orderId,
-          transactionAmount: data.orderAmount,
-        },
-        replaceUrl: true,
-      };
-      this.globalLoader.setLoaderState(false);
-      this.commonService.isBrowser && this.updateBuyNowToLocalStorage();
-      this._router.navigate(["order-confirmation"], extras);
-      //this.isShowLoader=false;
-    });
-  }
-
-  /**
-   * Set buyNow state to localstorage for removing buyNow
-   * item from cart after successfull/failure of payment.
-   * also remove existing buynow flag, if user tries to place order without buynow.
-   */
-  updateBuyNowToLocalStorage() {
-    const buyNow = this.cartService.buyNow;
-    if (buyNow) {
-      this.localStorageService.store("flashData", { buyNow: true });
-    } else {
-      this.localStorageService.clear("flashData");
-    }
-  }
 
   openOfferPopUp() {
     this.showPromoOfferPopup = true;

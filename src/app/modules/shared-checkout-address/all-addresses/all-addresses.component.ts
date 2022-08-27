@@ -318,7 +318,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     get displayBillingAddresses() { return this.invoiceType.value === this.INVOICE_TYPES.TAX ? 'block' : 'none'; }
-    get isGSTUser() { return this.invoiceType.value === this.INVOICE_TYPES.TAX }
+    get isGSTUser() { return (this.invoiceType.value === this.INVOICE_TYPES.TAX) || (this._cartService.invoiceType === this.INVOICE_TYPES.TAX) }
     get isCheckoutModule() { return this.parentModule === 'Checkout'; }
 
     getLabel(label) { return label == 'Billing' ? ' GST' : ' ADDRESS'}

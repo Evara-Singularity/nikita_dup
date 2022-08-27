@@ -44,7 +44,6 @@ export class NavigationService
           if (index > -1) {
             this.history.splice(index, 1)
           }
-          //ODP-1866:remove query params from "/checkout/address" and push
           this.history.push(currentUrl);
           this.saveHistory(this.history);
         }
@@ -122,7 +121,10 @@ export class NavigationService
   //this is to handle google + PDP + back case where we need to redirect to parent category
   setPDPBreadCrumbData(breadcrumbData) { this.pdpBreadCrumbData = breadcrumbData; }
 
-  saveHistory(history) { this._localStorage.store("history", history) }
+  saveHistory(history) { 
+    this.history = history;
+    this._localStorage.store("history", history) 
+  }
 
   getHistory() { return this._localStorage.retrieve("history") }
 

@@ -1,7 +1,25 @@
-<div class="main-container" >
+<!--Transcation Failure-->
+<div class="main-container" *ngIf="isRetryPayment">
     <shared-checkout-stepper [headers]="STEPPER"></shared-checkout-stepper>
-    <cart-notifications *ngIf="hasCartItems" (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
-    <ng-container *ngIf="hasCartItems">
+    <section class="invoice-container">
+        <div class="invoice-select">
+            <label>
+                <input type="checkbox" [checked]="invoiceType === 'tax'">
+                <span class="custom-box icon-box"></span>
+            </label>
+            <div class="invoice-txt">
+                <p>Get GST Invoice</p>
+                <span class="invoice-subtxt">Claim input tax credit on your purchase.</span>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!--Normal Checkout Flow-->
+<div class="main-container" *ngIf="isNormalCheckout">
+    <shared-checkout-stepper [headers]="STEPPER"></shared-checkout-stepper>
+    <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
+    <ng-container>
         <section>
             <div *ngIf="isUserLoggedIn else hideContinue" class="fixed-bottom-cta payment-strip">
                 <div class="amount-left-section">
@@ -12,7 +30,8 @@
                     </span>
                     ₹{{ payableAmount | mathCeil | number : '1.2-2'}}
                 </div>
-                <button [disabled]="!(hasCartItems)" class="btn primary-btn" (click)="$event.stopPropagation();continueToPayment()">
+                <button [disabled]="!(hasCartItems)" class="btn primary-btn"
+                    (click)="$event.stopPropagation();continueToPayment()">
                     CONTINUE
                 </button>
             </div>
@@ -24,10 +43,12 @@
             (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
             (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
             (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-        <cart [moduleName]="'CHECKOUT'"></cart> 
+        <cart [moduleName]="'CHECKOUT'"></cart>
         <order-summary></order-summary>
         <generic-offers></generic-offers>
-        <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems" [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } "></shared-checkout-unavailable-items>
+        <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems"
+            [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } ">
+        </shared-checkout-unavailable-items>
     </ng-container>
-    <ng-container #txnDeclined></ng-container>
 </div>
+<ng-container #txnDeclined></ng-container>

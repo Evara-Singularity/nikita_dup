@@ -60,8 +60,9 @@ export class QuickCodService
     {
       this._loaderService.setLoaderState(false);
       if ((!result && !result.status) || this.codMessages.length) {
+        let extras = { queryParams: { orderId: result.data.orderId }, replaceUrl: true };
         this.displayCODMessage(this.codMessages[0]);
-        this._router.navigate(['checkout/address']);
+        this._router.navigate(['order-confirmation'], extras);
         return;
       }
       let data = result;

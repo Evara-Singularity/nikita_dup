@@ -3352,6 +3352,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         {
             ele.push(element.name);
         });
+        this.productTags = this.commonService.sortProductTagsOnPriority(this.productTags);
         const tagsForAdobe = ele.join("|");
 
         let page = {

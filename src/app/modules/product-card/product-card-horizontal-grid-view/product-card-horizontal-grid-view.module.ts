@@ -8,8 +8,7 @@ import { ArrayFilterPipeModule } from '@app/utils/pipes/k-array-filter.pipe';
   declarations: [ProductCardHorizontalGridViewComponent],
   imports: [
     CommonModule,
-    ProductCardCoreModule,
-    ArrayFilterPipeModule
+    ProductCardCoreModule
   ],
   exports: [
     ProductCardHorizontalGridViewComponent

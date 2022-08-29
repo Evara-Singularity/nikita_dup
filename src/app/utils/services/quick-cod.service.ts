@@ -65,7 +65,7 @@ export class QuickCodService
         this._router.navigate(['order-confirmation'], extras);
         return;
       }
-      let data = result;
+      let data = result.data;
       let extras = { queryParams: { mode: 'COD', orderId: data.orderId, transactionAmount: data.orderAmount }, replaceUrl: true };
       this._localStorageService.clear('flashData');
       this._router.navigate(['order-confirmation'], extras);

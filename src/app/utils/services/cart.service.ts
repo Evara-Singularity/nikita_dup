@@ -63,7 +63,7 @@ export class CartService
         "proxy": true//front end created dummy cart session
     };
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
-    private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
+    private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(null);
 
     private previousUrl: string = null;
     private currentUrl: string = null;
@@ -310,7 +310,11 @@ export class CartService
 
     public getShippingAndUpdateCartSession(cartSession): Observable<any>
     {
-        return this._getShipping(cartSession);
+        if(cartSession && (cartSession['itemsList'] as any[]).length)
+        {
+            return this._getShipping(cartSession);
+        }
+        return of(cartSession)
     }
 
     /**
@@ -650,7 +654,7 @@ export class CartService
     // latest cartsession
     public getCartUpdatesChanges(): Observable<any>
     {
-        return this._cartUpdatesChanges.asObservable()
+        return this._cartUpdatesChanges.pipe(shareReplay(1));
     }
 
     public setCartUpdatesChanges(cartsession): void

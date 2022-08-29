@@ -40,7 +40,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     invoiceType = this.INVOICE_TYPES.RETAIL;
     payableAmount = 0;
     isUserLoggedIn = false;
-    hasCartItems = true;
+    hasCartItems = false;
     verifyUnserviceableFromCartSubscription = false;//to restrict the verification of unserviceable items on every cart subscription.
 
     deliveryAddress = null;
@@ -77,6 +77,11 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     ngAfterViewInit(): void
     {
         if (this.isRetryPayment) return;
+        this.addSubscriptions();
+    }
+
+    addSubscriptions()
+    {
         this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
@@ -123,7 +128,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     //Address Information
     handleDeliveryAddressEvent(address)
     {
-        if(this.isRetryPayment)return;
+        if (this.isRetryPayment) return;
         this.deliveryAddress = address;
         this._cartService.shippingAddress = address;
         this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
@@ -307,7 +312,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         {
             if (response.status) { this.openTxnDeclinedPopup(response['data']['shoppingCartDto']); return; }
             this._globalLoader.setLoaderState(false);
-            this._router.navigate(['quickorder']);
+            this.handleHardRereshURL();
         })
     }
 
@@ -322,12 +327,21 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this.txnDeclinedInstance.instance.shoppingCartDto = shoppingCartDto;
         this.txnDeclinedInstance.instance.userId = this._localAuthService.getUserSession()['userId'];
         this.txnDeclinedInstance.instance.orderId = this.orderId;
+        (this.txnDeclinedInstance.instance["emitCartInvoiceAddressesEvents$"] as EventEmitter<boolean>).subscribe(({ shippingAddress, billingAddress, invoiceType }) =>
+        {
+            this.deliveryAddress = shippingAddress;
+            this.billingAddress = billingAddress || null;
+            this.invoiceType = invoiceType;
+        });
         (this.txnDeclinedInstance.instance["emitQuickoutCloseEvent$"] as EventEmitter<boolean>).subscribe((isClosed) =>
         {
             this.txnDeclinedInstance.instance.displayPage = false;
             this.txnDeclinedInstance = null;
             this.txnDeclinedContainerRef.remove();
-            this._router.navigate(['quickorder']);
+            this.isRetryPayment = false;
+            this.orderId = false;
+            this.addSubscriptions();
+            this.handleHardRereshURL();
         });
     }
 
@@ -335,6 +349,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     viewUnavailableItemsFromNotifacions(types: string[]) { if (types && types.length) this._cartService.viewUnavailableItems(types); }
 
     handleInvoiceTypeEvent(invoiceType: string) { this.invoiceType = invoiceType; }
+
+    handleHardRereshURL() { this._router.navigate(['/checkout/address']).then(() => { window.location.reload(); }); }
 
     sendServiceableCriteo()
     {
@@ -369,6 +385,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             /*End Criteo DataLayer Tags */
         }
     }
+
+    get isNormalCheckout() { return !this.isRetryPayment && this.cartSession != null }
 
     ngOnDestroy()
     {

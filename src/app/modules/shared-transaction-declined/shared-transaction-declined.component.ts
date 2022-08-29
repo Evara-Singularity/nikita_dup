@@ -28,6 +28,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	@Input("orderId") orderId = null;
 	@Input("shoppingCartDto") shoppingCartDto = {};
 	@Output("emitQuickoutCloseEvent$") emitQuickoutCloseEvent$: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@Output("emitCartInvoiceAddressesEvents$") emitCartInvoiceAddressesEvents$: EventEmitter<any> = new EventEmitter<any>();
 
 	hasCartItems = true;
 	canCOD = true;
@@ -71,9 +72,10 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			map(({ shippingAddress, billingAddress, invoiceType }) =>
 			{
 				this.shippingAddress = shippingAddress;
-				this.billingAddress = billingAddress;
+				this.billingAddress = billingAddress || null;
 				this.invoiceType = invoiceType;
 				this.shippingPincode = (shippingAddress && shippingAddress['postCode']) ? shippingAddress['postCode'] : null;
+				this.emitCartInvoiceAddressesEvents$.emit({ shippingAddress, billingAddress, invoiceType})
 				return { shoppingCartDto:shoppingCartDto, shippingPincode: this.shippingPincode };
 			}),
 			concatMap(({ shoppingCartDto, shippingPincode }) =>
@@ -109,9 +111,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 		const lastPaymentMode = this.shoppingCartDto['payment']['type'];
 		this._cartService.lastPaymentMode = lastPaymentMode;
 		this._cartService.lastParentOrderId = this.shoppingCartDto['cart']['parentOrderId'];
-		this._cartService.invoiceType = this.invoiceType;
-		this._cartService.shippingAddress = this.shippingAddress;
-		this._cartService.billingAddress = this.billingAddress;
+		this.setCartServiceDetails();
 		this._cartService.setGenericCartSession(this.cartSession);
 		this._retryPaymentService.validateCart(this.cartSession, this.shippingAddress, this.billingAddress, this.invoiceType, this.isBuyNow).subscribe((response) =>
 		{
@@ -124,7 +124,16 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 		})
 	}
 
-	close() { this.emitQuickoutCloseEvent$.emit(true) }
+	close() {
+		this.emitQuickoutCloseEvent$.emit(true) 
+	}
+
+	setCartServiceDetails()
+	{
+		this._cartService.invoiceType = this.invoiceType;
+		this._cartService.shippingAddress = this.shippingAddress;
+		this._cartService.billingAddress = this.billingAddress;
+	}
 
 	ngOnDestroy() { }
 }

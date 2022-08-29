@@ -37,7 +37,9 @@
                         <h3 class="heading-3">
                             Payment Summary
                         </h3>
-                        <i class="icon-expand" (click)="expandPaymentSummary()" [class.ico-expand]="!isPaymentSummary"></i>
+                        <i class="icon-expand" (click)="expandPaymentSummary()" *ngIf="!isPaymentSummary"></i>
+                        <i class="icon-collaps" (click)="expandPaymentSummary()" *ngIf="isPaymentSummary"></i>
+
                     </div>
                     <div id="openHomeAccoridan"  class="panel-body " [class.hide]="isPaymentSummary">
                         <div class="">

@@ -12,7 +12,12 @@ export class LoggerService {
 
   isServer: boolean = false;
   isBrowser: boolean = false;
-  PATH_TO_LOG_FOLDER: string = './logs/log.txt';
+  private productionLogURL = "/var/log/moglix/online/pwa/";
+  /**
+   * In QA enviroment container logs file will be created in productionLogURL
+   * & in local SSR build logs will created in dist/ 
+   */
+  PATH_TO_LOG_FOLDER: string = environment.enableServerLogs ? `${this.productionLogURL}apiServerLog.log`: ('./apiServerLog.log');
 
   constructor(
     @Inject(PLATFORM_ID) platformId,

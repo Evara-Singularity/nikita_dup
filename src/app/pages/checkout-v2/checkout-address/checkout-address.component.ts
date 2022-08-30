@@ -29,12 +29,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     readonly IMG_PATH: string = environment.IMAGE_ASSET_URL;
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
 
-    orderId = null;
-    isRetryPayment = false;//Indicateas retry payment flow.
-    txnDeclinedInstance: ComponentRef<SharedTransactionDeclinedComponent> = null;
-    @ViewChild("txnDeclined", { read: ViewContainerRef })
-    txnDeclinedContainerRef: ViewContainerRef;
-
     @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = new Subject();
 
     invoiceType = this.INVOICE_TYPES.RETAIL;
@@ -54,21 +48,15 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     cartUpdatesSubscription: Subscription = null;
     paymentMode: any;
 
-    constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute, private _compiler: Compiler, private _injector: Injector,
+    constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
         private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService,
-        private _retryPaymentService: RetryPaymentService)
+        )
     {
-        const queryParams = this._activatedRoute.snapshot.queryParams;
-        this.orderId = queryParams['orderId'] || queryParams['txnId'];
+        
     }
 
     ngOnInit(): void
     {
-        if (this.orderId) {
-            this.isRetryPayment = true;
-            this.fetchTransactionDetails();
-            return;
-        }
         this._cartService.sendAdobeOnCheckoutOnVisit("address");
         this._cartService.refreshCartSesion();
         this.updateUserStatus();
@@ -78,7 +66,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     ngAfterViewInit(): void
     {
-        if (this.isRetryPayment) return;
         this.addSubscriptions();
     }
 
@@ -131,7 +118,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     //Address Information
     handleDeliveryAddressEvent(address)
     {
-        if (this.isRetryPayment) return;
         this.deliveryAddress = address;
         this._cartService.shippingAddress = address;
         this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
@@ -308,46 +294,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         });
     }
 
-    fetchTransactionDetails()
-    {
-        this._globalLoader.setLoaderState(true);
-        this._retryPaymentService.getPaymentDetailsByOrderId(this.orderId).subscribe((response) =>
-        {
-            if (response.status) { this.openTxnDeclinedPopup(response['data']['shoppingCartDto']); return; }
-            this._globalLoader.setLoaderState(false);
-            this.handleHardRereshURL();
-        })
-    }
-
-    async openTxnDeclinedPopup(shoppingCartDto)
-    {
-        const txnDeclinedModule = await import('./../../../modules/shared-transaction-declined/shared-transaction-declined.module').then(m => m.SharedTransactionDeclinedModule);
-        const moduleFactory = await this._compiler.compileModuleAsync(txnDeclinedModule);
-        const txnDeclinedModuleRef: NgModuleRef<SharedTransactionDeclinedModule> = moduleFactory.create(this._injector);
-        const componentFactory = txnDeclinedModuleRef.instance.resolveComponent();
-        this.txnDeclinedInstance = this.txnDeclinedContainerRef.createComponent(componentFactory, null, txnDeclinedModuleRef.injector);
-        this.txnDeclinedInstance.instance.displayPage = true;
-        this.txnDeclinedInstance.instance.shoppingCartDto = shoppingCartDto;
-        this.txnDeclinedInstance.instance.userId = this._localAuthService.getUserSession()['userId'];
-        this.txnDeclinedInstance.instance.orderId = this.orderId;
-        (this.txnDeclinedInstance.instance["emitCartInvoiceAddressesEvents$"] as EventEmitter<boolean>).subscribe(({ shippingAddress, billingAddress, invoiceType }) =>
-        {
-            this.deliveryAddress = shippingAddress;
-            this.billingAddress = billingAddress || null;
-            this.invoiceType = invoiceType;
-        });
-        (this.txnDeclinedInstance.instance["emitQuickoutCloseEvent$"] as EventEmitter<boolean>).subscribe((isClosed) =>
-        {
-            this.txnDeclinedInstance.instance.displayPage = false;
-            this.txnDeclinedInstance = null;
-            this.txnDeclinedContainerRef.remove();
-            this.isRetryPayment = false;
-            this.orderId = false;
-            this.addSubscriptions();
-            this.handleHardRereshURL();
-        });
-    }
-
     /**@description triggers the unavailbel item pop-up from notfications */
     viewUnavailableItemsFromNotifacions(types: string[]) { if (types && types.length) this._cartService.viewUnavailableItems(types); }
 
@@ -388,8 +334,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             /*End Criteo DataLayer Tags */
         }
     }
-
-    get isNormalCheckout() { return !this.isRetryPayment && this.cartSession != null }
 
     ngOnDestroy()
     {

@@ -95,7 +95,6 @@ export class PdpQuickCheckoutComponent implements OnInit {
       this.commonService.oosSimilarCard$.next(false);
     }
     this.isPopup = false;
-    this.cartService.buyNow = false;
   }
 
   removeCartItem() {

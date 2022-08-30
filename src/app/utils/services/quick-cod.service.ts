@@ -44,7 +44,7 @@ export class QuickCodService
       map((result) =>
       {
         const result_validate_cart = result;
-        const isShpopingCartInValid = !(result_validate_cart.status == true && result_validate_cart.statusCode == 200);
+        const isShpopingCartInValid = (result_validate_cart.status == true && result_validate_cart.statusCode == 200);
         return { canProceed: (isShpopingCartInValid) };
       }),
       concatMap((result) =>

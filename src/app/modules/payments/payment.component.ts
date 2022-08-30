@@ -338,11 +338,11 @@ export class PaymentComponent implements OnInit
 
   fetchTransactionDetails()
   {
-    this.isShowLoader(true);
+    this.isShowLoader = true;
     this._retryPaymentService.getPaymentDetailsByOrderId(this.orderId).subscribe((response) =>
     {
       if (response.status) { this.openTxnDeclinedPopup(response['data']['shoppingCartDto']); return; }
-      this.isShowLoader(false);
+      this.isShowLoader = false;
     })
   }
 

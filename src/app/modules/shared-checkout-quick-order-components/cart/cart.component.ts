@@ -16,7 +16,7 @@ import { GlobalLoaderService } from '@utils/services/global-loader.service';
 import { ProductService } from '@utils/services/product.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { forkJoin, Subscription } from 'rxjs';
-import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
+import { catchError, concatMap, delay, first, map, switchMap } from 'rxjs/operators';
 
 declare let dataLayer;
 @Component({
@@ -61,6 +61,8 @@ export class CartComponent
     {
         this._globalLoaderService.setLoaderState(true);
         this.cartSubscription = this._cartService.getCartUpdatesChanges().pipe(
+            delay(600),
+            first(),
             map((cartSession: any) =>
             {
                 const delay = this._router.url.includes("quickorder") ? 0 : 400;
@@ -71,9 +73,10 @@ export class CartComponent
                 return cartSession;
             }),
             concatMap((res) => this._cartService.getShippingAndUpdateCartSession(res))).subscribe(
-                (result) =>
+                (cartSessionWithShiping) =>
                 {
                     this.noOfCartItems = this._cartService.getCartItemsCount();
+                    // this._cartService.setCartUpdatesChanges(cartSessionWithShiping);
                     this._globalLoaderService.setLoaderState(false);
                 });
     }

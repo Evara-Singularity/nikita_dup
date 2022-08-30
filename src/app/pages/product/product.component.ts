@@ -1109,6 +1109,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                 if (parseInt(this.priceQuantityCountry["quantityAvailable"]) == 0) {
                     this.productOutOfStock = true;
                 }
+                
             } else {
                 this.productOutOfStock = true;
             }

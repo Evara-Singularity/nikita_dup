@@ -49,9 +49,11 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     ngOnInit(): void
     {
         this._cartService.sendAdobeOnCheckoutOnVisit("address");
+        this._cartService.refreshCartSesion();
         this.updateUserStatus();
         this._cartService.showUnavailableItems = false;
         this.updateExistingProductsState();
+        this._globalLoader.setLoaderState(true);
     }
 
     // this will update the products state when any of the products were removed from cart
@@ -68,8 +70,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     ngAfterViewInit(): void
     {
+        
         this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
+            this._globalLoader.setLoaderState(false);
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
                 this.cartSession = cartSession;
                 this.hasCartItems = this.cartSession && this.cartSession['itemsList'] && (this.cartSession['itemsList']).length > 0;

@@ -38,6 +38,7 @@ export class CartService
     public promoCodeSubject: Subject<{ promocode: string, isNewPromocode: boolean }> = new Subject<{ promocode: string, isNewPromocode: boolean }>();
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
+    public cartCountSubject: Subject<any> = new Subject<any>(); // cartCountSubject 
     public codNotAvailableObj = {}; // cart.component
     itemsValidationMessage = [];
     cartNotications = [];
@@ -253,6 +254,11 @@ export class CartService
     set buyNow(buyNow) { this._buyNow = buyNow; }
 
     get buyNow() { return this._buyNow; }
+
+    cartCount(val){
+        this.buyNow = val;
+        this.cartCountSubject.next(val);
+    }
 
     /***
      * COMMON CHECKOUT LOGIC STARTS FOR SHARED CART MODULE

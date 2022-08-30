@@ -83,22 +83,38 @@ export class PdpQuickCheckoutComponent implements OnInit {
     private _dataService: DataService,
     private _analytics: GlobalAnalyticsService,
     private _router: Router
-  ) {}
-
-  close() {
-    this.isPopup = false;
-    this.isClose.emit(true);
-    this.commonService.oosSimilarCard$.next(false);
+  ) {
+    
   }
+
+  close(isClose: boolean) {
+    if (isClose) {
+      this.removeCartItem();
+    } else {
+      this.isClose.emit(true);
+      this.commonService.oosSimilarCard$.next(false);
+    }
+    this.isPopup = false;
+    this.cartService.buyNow = false;
+  }
+
+  removeCartItem() {
+    this.productQuantity == 1
+      ? this.cartService.removeCartItemsByMsns(this.item["productId"])
+      : this.handleItemQuantityChanges(0, "decrement");
+    this.isPopup = false;
+  }
+
   onUpdate(data) {
     if (data.popupClose) {
       this.Isoverlay = false;
-      this.close();
+      this.cartService.cartCount(false);
+      this.removeCartItem();
     }
   }
 
-  expandPaymentSummary() {
-    this.isPaymentSummary = this.isPaymentSummary ? false : true;
+  expandPaymentSummary(val: boolean) {
+    this.isPaymentSummary = val;
   }
 
   ngOnInit() {
@@ -215,7 +231,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
       )
     );
     this.removableItem["packageUnit"] = packageUnit;
-    this.close();
+    this.close(true);
   }
 
   resetRemoveItemCart() {
@@ -421,17 +437,19 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   placeOrder() {
-    this.quickCodService.checkCODLimit(this.totalPayableAmount).subscribe((res) => {
-      if (res &&  res["iswithInCODLimit"] == true) {
-        this.validateCart();
-      } else {
-        this._tms.show({
-          type: "error",
-          text: res.message,
-        });
-        this.close();
-      }
-    });
+    this.quickCodService
+      .checkCODLimit(this.totalPayableAmount)
+      .subscribe((res) => {
+        if (res && res["iswithInCODLimit"] == true) {
+          this.validateCart();
+        } else {
+          this._tms.show({
+            type: "error",
+            text: res.message,
+          });
+          this.close(false);
+        }
+      });
   }
 
   validateCart() {
@@ -454,7 +472,6 @@ export class PdpQuickCheckoutComponent implements OnInit {
     };
     this.quickCodService.initiateQuickCOD(validateDtoRequest);
   }
-
 
   openOfferPopUp() {
     this.showPromoOfferPopup = true;

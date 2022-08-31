@@ -1,8 +1,8 @@
 <div *ngIf="displayPage">
     <div class="pwa-row pt-0 pb-0" *ngIf="isQuickorder">
-        <h3 class="pad-0">{{noOfCartItems}} item(s) in your cart</h3>
+        <h3 class="pad-0">{{_cartService.getGenericCartSession?.itemsList.length}} item(s) in your cart</h3>
     </div>
-    <ng-container *ngFor="let item of cartSession.itemsList; let itemIndex = index;">
+    <ng-container *ngFor="let item of _cartService.getGenericCartSession.itemsList; let itemIndex = index;">
         <div *ngIf="(!item.oos) && item['text1']" class="realTimePrice">
             <span>{{item['text1']}}
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
@@ -89,8 +89,7 @@
                 <ul class="txt-list">
                     <li>
                         <span class="tag-label">Price</span>
-                        <span class="tag-value">{{item.priceWithoutTax *
-                            item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</span>
+                        <span class="tag-value">{{ item.tpawot | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</span>
                     </li>
                     <li>
                         <span class="tag-label">{{item.taxPercentage}}% GST </span>

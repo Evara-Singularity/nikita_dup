@@ -16,6 +16,7 @@ export class ProductOffersComponent implements OnInit
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     allofferData: any = null;
     @Output() promoCodePopUpHandler: EventEmitter<any> = new EventEmitter<any>();
+    @Output() viewPopUpHandler: EventEmitter<any> = new EventEmitter<any>();
     @Input() price = 0;
     @Input() gstPercentage;
     @Input() productmsn;

@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { NavigationService } from '@app/utils/services/navigation.service';
 import { Subscription } from 'rxjs';
@@ -29,21 +28,11 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		public _commonService: CommonService,
 		private _cartService: CartService,
 		private _naviagtionService: NavigationService,
-		private _activatedRoute: ActivatedRoute,
-		private _router: Router,
 	) { }
 
 
 	ngOnInit(): void
 	{
-		//retry payment && Zero Items(checkout+Payment) + Normal Flow
-		const queryParams = this._activatedRoute.snapshot.queryParams;
-		const orderId = queryParams['orderId'] || queryParams['txnId'];
-		if (this.isCheckout && orderId) {
-			const retryUrl = this._router.url;
-			this._naviagtionService.saveHistory([retryUrl]);
-			return;
-		}
 		this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
 		{
 			//front end created dummy cart session;

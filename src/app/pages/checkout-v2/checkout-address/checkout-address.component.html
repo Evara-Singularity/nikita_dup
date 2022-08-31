@@ -1,22 +1,4 @@
-<!--Transcation Failure-->
-<div class="main-container" *ngIf="isRetryPayment">
-    <shared-checkout-stepper [headers]="STEPPER"></shared-checkout-stepper>
-    <section class="invoice-container">
-        <div class="invoice-select">
-            <label>
-                <input type="checkbox" [checked]="invoiceType === 'tax'">
-                <span class="custom-box icon-box"></span>
-            </label>
-            <div class="invoice-txt">
-                <p>Get GST Invoice</p>
-                <span class="invoice-subtxt">Claim input tax credit on your purchase.</span>
-            </div>
-        </div>
-    </section>
-</div>
-
-<!--Normal Checkout Flow-->
-<div class="main-container" *ngIf="isNormalCheckout">
+<div class="main-container" *ngIf="this.cartSession != null">
     <shared-checkout-stepper [headers]="STEPPER"></shared-checkout-stepper>
     <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
     <ng-container>
@@ -28,7 +10,8 @@
                             <i class="icon-information"></i>
                         </span>
                     </span>
-                    ₹{{ payableAmount | mathCeil | number : '1.2-2'}}
+                    <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges) | mathCeil | number : '1.2-2'}}</ng-container>
+                    <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges + _cartService.getGenericCartSession.cart.totalOffer) | mathCeil | number : '1.2-2'}}</ng-container>
                 </div>
                 <button [disabled]="!(hasCartItems)" class="btn primary-btn"
                     (click)="$event.stopPropagation();continueToPayment()">

@@ -169,8 +169,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 		this._commonService.resetSelectedFilterData();
 		setTimeout(() => {
-			this.appendSiemaItemSubjects['bannerData'].next(
-				this.carouselData['bannerData']['data'].filter((item, i) => i >= 1)
+			this.appendSiemaItemSubjects['bannerDataFinal'].next(
+				this.carouselData['bannerDataFinal']['data'].filter((item, i) => i >= 1)
 			);
 		}, 0);
 	}
@@ -426,7 +426,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.topOptions.autoPlay = false;
 		this.openPopup = false;
 		this.appendSiemaItemSubjects = {};
-		this.appendSiemaItemSubjects['bannerData'] = new Subject<Array<{}>>();
+		this.appendSiemaItemSubjects['bannerDataFinal'] = new Subject<Array<{}>>();
 		this.appendSiemaItemSubjects['bestSellerData'] = new Subject<Array<{}>>();
 		if (this.isBrowser) {
 			ClientUtility.scrollToTop(100);

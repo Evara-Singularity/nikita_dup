@@ -139,7 +139,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		this.isRoutedBack = this._commonService.isRoutedBack();
 		this.loadSearchTerms();
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['homeData']['error']) {
@@ -169,7 +168,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 0);
 		}
 		this._commonService.resetSelectedFilterData();
-
 		setTimeout(() => {
 			this.appendSiemaItemSubjects['bannerData'].next(
 				this.carouselData['bannerData']['data'].filter((item, i) => i >= 1)
@@ -178,17 +176,20 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	loadSearchTerms() {
-		let terms = CONSTANTS.SEARCH_WIDGET_KEYS;
-		this.searchTerm = terms[0];
-		let i = null;
-		setInterval(() => {
-			if((i || i == 0) && i<terms.length - 1 ) {
-				i += 1
-			} else {
-				i = 0
-			}
-		this.searchTerm = terms[i];
-		}, 1000)
+		if(this._commonService.isBrowser){
+			this.isRoutedBack = this._commonService.isRoutedBack();
+			let terms = CONSTANTS.SEARCH_WIDGET_KEYS;
+			this.searchTerm = terms[0];
+			let i = null;
+			setInterval(() => {
+				if((i || i == 0) && i<terms.length - 1 ) {
+					i += 1
+				} else {
+					i = 0
+				}
+			this.searchTerm = terms[i];
+			}, 1000)
+		}
 	}
 
 	fetchHomePageData(response) {

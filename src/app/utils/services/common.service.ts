@@ -1469,9 +1469,13 @@ export class CommonService
             payload: null,
             endDateTime: null,
             responseStatus: null,
-            sessionId: this.userSession ? this.userSession.sessionId : null,
             startDateTime: startTime,
+            sessionId: null,
           };
+
+          if(this.isBrowser){
+            logInfo.sessionId = this.userSession ? this.userSession.sessionId : null;
+          }
 
           return logInfo;
     }

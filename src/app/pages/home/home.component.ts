@@ -171,7 +171,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this._commonService.resetSelectedFilterData();
 
 		setTimeout(() => {
-			console.log("log of setTimeout");
 			this.appendSiemaItemSubjects['bannerData'].next(
 				this.carouselData['bannerData']['data'].filter((item, i) => i >= 1)
 			);
@@ -229,7 +228,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 						) {
 							this.middleImageJsonData = blockData.image_block;
 							this.middleImageJsonData.map(e => {
-								console.log(e);
 								e.link = e["image_link"];
 								e.image_name = this.imagePathBanner + e["image_name"]
 								return e;

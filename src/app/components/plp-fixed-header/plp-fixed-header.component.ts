@@ -30,8 +30,8 @@ export class PlpFixedHeaderComponent implements OnInit, OnDestroy {
       this.searchValue = (res['search_query']) ? res['search_query'] : ''
     })
     this.cartService.cartCountSubject.subscribe(res=>{
-      console.log("fixed header --" , this.cartService.buyNow);
-      // window.location.reload(); 
+     // console.log("fixed header --" , this.cartService.buyNow);
+       window.location.reload(); 
     })
   }
 

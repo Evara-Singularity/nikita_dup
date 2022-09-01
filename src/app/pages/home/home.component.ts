@@ -146,6 +146,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'] as CategoryData[];
 			}
 		});
+		this.route.queryParams.subscribe(res => {
+			this.isRoutedBack = res && res.hasOwnProperty('back') ? true : false;
+		})
 
 		this.setMetaData();
 		this.footerService.setFooterObj({ footerData: true });
@@ -177,7 +180,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	loadSearchTerms() {
 		if(this._commonService.isBrowser){
-			this.isRoutedBack = this._commonService.isRoutedBack();
 			let terms = CONSTANTS.SEARCH_WIDGET_KEYS;
 			this.searchTerm = terms[0];
 			let i = null;

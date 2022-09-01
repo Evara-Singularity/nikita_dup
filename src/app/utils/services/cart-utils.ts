@@ -126,7 +126,7 @@ export class CartUtils
                 "itemsList": cartSession.itemsList,
                 "addressList": [
                     {
-                        "addressId": shippingAddress.idAddress,
+                        "addressId": shippingAddress.idAddress || shippingAddress.addressId,
                         "type": "shipping",
                         "invoiceType": invoiceType
                     }
@@ -139,7 +139,7 @@ export class CartUtils
         if (isBuyNow) { returnValue['shoppingCartDto']['cart']['buyNow'] = true; }
         if (billingAddress) {
             returnValue.shoppingCartDto.addressList.push({
-                "addressId": billingAddress.idAddress,
+                "addressId": billingAddress.idAddress || billingAddress.addressId,
                 "type": "billing",
                 "invoiceType": invoiceType
 
@@ -212,7 +212,7 @@ export class CartUtils
         }
         if (billingAddress !== undefined && billingAddress !== null) {
             returnValue.shoppingCartDto.addressList.push({
-                addressId: billingAddress['idAddress'],
+                addressId: billingAddress['idAddress']|| billingAddress['addressId'],
                 type: "billing",
                 invoiceType: invoiceType,
             });

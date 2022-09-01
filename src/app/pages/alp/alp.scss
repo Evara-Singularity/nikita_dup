@@ -1,4 +1,5 @@
 @import "../../scss/variables";
+@import '../../scss/components/home-listing.scss';
 :host {
     display: block;
     // margin-top: 108px;
@@ -34,11 +35,11 @@
 
 .layout2 {
     .safetyshoebannersrow {
-        background: url('/assets/img/bg_mobile.png')no-repeat center top;
+        background: url('/assets/img/bg_mobile.png') no-repeat center top;
         background-size: 100% auto;
     }
     .safetysh-shopby {
-        background: url('/assets/img/wallpaper_1_ mobile.png')no-repeat center;
+        background: url('/assets/img/wallpaper_1_ mobile.png') no-repeat center;
         padding: 20px 20px;
         background-size: cover;
     }
@@ -78,9 +79,7 @@
             }
         }
     }
-    .bscategory {
-        margin-bottom: 30px;
-    }
+
     .shopbyrow {
         .shopbycol {
             &:last-child {
@@ -122,7 +121,7 @@
         font-size: 12px;
         font-weight: normal;
         text-align: left;
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid var(--platinum);
         padding: 5px;
     }
 }
@@ -137,7 +136,7 @@
 }
 
 .showtsWrap {
-    color: $blue-link-color;
+    color: var(--blue);
     margin: 5px;
     display: inline-block;
 }
@@ -159,16 +158,9 @@
 }
 
 .bg_white {
-    background: $white;
+    background: var(--white);
 }
 
-.panel-head {
-    background: #fff;
-    margin-top: 10px;
-    h3 {
-        padding: 15px 0;
-    }
-}
 
 
 /*new css for safety shoes*/
@@ -274,19 +266,10 @@ h2.slp-heading {
     }
 }
 
-.bscategory {
-    background: #fff;
-    .bscatwrap {
-        padding: 15px 15px 0;
-        .slp-heading {
-            padding: 5px 10px 5px 0;
-        }
-    }
-}
 
 .viewallbs {
-    color: $logo-color;
-    border: 1px solid $logo-color;
+    color: var(--primary);
+    border: 1px solid var(--primary);
     border-radius: 2px;
     text-transform: uppercase;
     font-size: 10px;
@@ -300,8 +283,8 @@ h2.slp-heading {
 }
 
 .bsrow {
-    border-top: 1px solid rgba(162, 162, 162, 0.5);
-    margin: 0 -15px;
+    // border-top: 1px solid rgba(162, 162, 162, 0.5);
+    // margin: 0 -15px;
     .bs_item {
         width: 50%;
         padding: 10px;
@@ -353,7 +336,7 @@ h2.slp-heading {
             }
             .safetysh_discount {
                 display: block;
-                color: $green-color;
+                color: var(--slimy-green);
                 font-size: $medium-font;
                 font-weight: 500;
                 margin-bottom: 1px;

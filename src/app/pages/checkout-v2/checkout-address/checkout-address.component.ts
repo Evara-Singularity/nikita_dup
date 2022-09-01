@@ -1,17 +1,20 @@
-import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Compiler, Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
+import { ValidateDto } from '@app/utils/models/cart.initial';
 import { CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { AddressService } from '@services/address.service';
 import { CartService } from '@services/cart.service';
 import { environment } from 'environments/environment';
 import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
+import { CartUtils } from './../../../utils/services/cart-utils';
+import { RetryPaymentService } from './../../../utils/services/retry-payment.service';
 
 @Component({
     selector: 'checkout-address',
@@ -29,34 +32,58 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     invoiceType = this.INVOICE_TYPES.RETAIL;
     payableAmount = 0;
     isUserLoggedIn = false;
-    hasCartItems = true;
+    hasCartItems = false;
     verifyUnserviceableFromCartSubscription = false;//to restrict the verification of unserviceable items on every cart subscription.
 
     deliveryAddress = null;
     billingAddress = null;
     moveSectionTo = null;
     cartSession = null;
-    
+
     orderSummarySubscription; Subscription = null;
     loginSubscription: Subscription = null;
     logoutSubscription: Subscription = null;
     cartUpdatesSubscription: Subscription = null;
+    paymentMode: any;
 
-    constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
-        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService) { }
-    
+    constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _compiler: Compiler, private _injector: Injector,
+        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService,
+        private _retryPaymentService: RetryPaymentService)
+    {
+    }
 
     ngOnInit(): void
     {
         this._cartService.sendAdobeOnCheckoutOnVisit("address");
+        this._cartService.refreshCartSesion();
         this.updateUserStatus();
         this._cartService.showUnavailableItems = false;
+        this.updateExistingProductsState();
+        this._globalLoader.setLoaderState(true);
+    }
+
+    // this will update the products state when any of the products were removed from cart
+    updateExistingProductsState() {
+        this._cartService.productRemovalNofify().subscribe(value => {
+            console.log(value)
+            if (value) {
+                const POST_CODE = this.deliveryAddress && this.deliveryAddress['postCode'];
+                if (!POST_CODE) return;
+                this.verifyServiceablityAndCashOnDelivery(POST_CODE);
+            }
+        })
     }
 
     ngAfterViewInit(): void
     {
+        this.addSubscriptions();
+    }
+
+    addSubscriptions(): void
+    {
         this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
+            this._globalLoader.setLoaderState(false);
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
                 this.cartSession = cartSession;
                 this.hasCartItems = this.cartSession && this.cartSession['itemsList'] && (this.cartSession['itemsList']).length > 0;
@@ -87,7 +114,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (!this.isUserLoggedIn) {
             this.loginSubscription = this._localAuthService.login$.subscribe(() => { this.updateUserStatus(); });
         }
-
     }
 
     /** @description updates user status and is used to display the continue CTA*/
@@ -213,7 +239,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     }
 
     /**@description calculates the total payable amount as per cart changes*/
-    calculatePayableAmount(cart) {
+    calculatePayableAmount(cart)
+    {
         const TOTAL_AMOUNT = cart['totalAmount'] || 0;
         const SHIPPING_CHARGES = cart['shippingCharges'] || 0;
         const TOTAL_OFFER = cart['totalOffer'] || 0;
@@ -224,57 +251,15 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     {
         this._globalLoader.setLoaderState(true);
         const _cartSession = this._cartService.getCartSession();
-        const _shippingAddress = this._cartService.shippingAddress;
-        const _billingAddress = this._cartService.billingAddress;
-        let cart = _cartSession.cart;
-        let obj = {
-            "shoppingCartDto": {
-                "cart":
-                {
-                    "cartId": cart["cartId"],
-                    "sessionId": cart["sessionId"],
-                    "userId": cart["userId"],
-                    "agentId": cart["agentId"] ? cart["agentId"] : null,
-                    "isPersistant": true,
-                    "createdAt": null,
-                    "updatedAt": null,
-                    "closedAt": null,
-                    "orderId": null,
-                    "totalAmount": cart["totalAmount"] == null ? 0 : cart["totalAmount"],
-                    "totalOffer": cart["totalOffer"] == null ? 0 : cart["totalOffer"],
-                    "totalAmountWithOffer": cart["totalAmountWithOffer"] == null ? 0 : cart["totalAmountWithOffer"],
-                    "taxes": cart["taxes"] == null ? 0 : cart["taxes"],
-                    "totalAmountWithTaxes": cart["totalAmountWithTax"],
-                    "shippingCharges": cart["shippingCharges"] == null ? 0 : cart["shippingCharges"],
-                    "currency": cart["currency"] == null ? "INR" : cart["currency"],
-                    "isGift": cart["gift"] == null ? false : cart["gift"],
-                    "giftMessage": cart["giftMessage"],
-                    "giftPackingCharges": cart["giftPackingCharges"] == null ? 0 : cart["giftPackingCharges"],
-                    "totalPayableAmount": cart["totalAmount"] == null ? 0 : cart["totalAmount"]
-                },
-                "itemsList": this._cartService.getItemsList(_cartSession.itemsList),
-                "addressList": [
-                    {
-                        "addressId": _shippingAddress.idAddress,
-                        "type": "shipping",
-                        "invoiceType": this._cartService.invoiceType
-                    }
-                ],
-                "payment": null,
-                "deliveryMethod": { "deliveryMethodId": 77, "type": "kjhlh" },
-                "offersList": (_cartSession.offersList != undefined && _cartSession.offersList.length > 0) ? _cartSession.offersList : null
-            }
-        };
-        if (this._cartService.buyNow) { obj['shoppingCartDto']['cart']['buyNow'] = true; }
-        if (_billingAddress) {
-            obj.shoppingCartDto.addressList.push({
-                "addressId": _billingAddress.idAddress,
-                "type": "billing",
-                "invoiceType": this._cartService.invoiceType
-
-            })
+        const validateDto: ValidateDto = {
+            cartSession: _cartSession,
+            shippingAddress: this._cartService.shippingAddress,
+            billingAddress: this._cartService.billingAddress,
+            invoiceType: this._cartService.invoiceType,
+            isBuyNow: this._cartService.buyNow
         }
-        this._cartService.validateCartBeforePayment(obj).subscribe(res =>
+        const validateDtoRquest = CartUtils.getValidateDto(validateDto);
+        this._cartService.validateCartBeforePayment(validateDtoRquest).subscribe(res =>
         {
             this._globalLoader.setLoaderState(false);
             if (res.status && res.statusCode == 200) {
@@ -317,7 +302,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 this._toastService.show({ type: 'error', text: res.statusDescription });
             }
         });
-
     }
 
     /**@description triggers the unavailbel item pop-up from notfications */

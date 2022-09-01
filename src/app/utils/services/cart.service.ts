@@ -1,14 +1,14 @@
+import { CartUtils } from './cart-utils';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
-import { ModalService } from '@app/modules/modal/modal.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { BehaviorSubject, forkJoin, Observable, of, Subject } from 'rxjs';
-import { catchError, delay, map, mergeMap, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { catchError, delay, map, mergeMap, shareReplay, switchMap, tap, concatMap } from 'rxjs/operators';
 import CONSTANTS from '../../config/constants';
 import { Address } from '../models/address.modal';
 import { AddToCartProductSchema } from "../models/cart.initial";
@@ -38,6 +38,7 @@ export class CartService
     public promoCodeSubject: Subject<{ promocode: string, isNewPromocode: boolean }> = new Subject<{ promocode: string, isNewPromocode: boolean }>();
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
+    public cartCountSubject: Subject<any> = new Subject<any>(); // cartCountSubject 
     public codNotAvailableObj = {}; // cart.component
     itemsValidationMessage = [];
     cartNotications = [];
@@ -51,6 +52,8 @@ export class CartService
     private _billingAddress: Address;
     private _shippingAddress: Address;
     private _invoiceType: 'retail' | 'tax' = this.INVOICE_TYPE_RETAIL;
+    private _lastPaymentMode = null;
+    private _lastParentOrderId = null;
 
     // vars used in revamped cart login 
     private _buyNow;
@@ -62,14 +65,16 @@ export class CartService
         "proxy": true//front end created dummy cart session
     };
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
-    private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
+    private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(null);
+    private _shippingPriceChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
+    public isProductRemoved: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
     private previousUrl: string = null;
     private currentUrl: string = null;
 
     constructor(
         private _dataService: DataService, private _localStorageService: LocalStorageService, private localAuthService: LocalAuthService,
-        private _modalService: ModalService, private _loaderService: GlobalLoaderService, private _toastService: ToastMessageService,
+        private _loaderService: GlobalLoaderService, private _toastService: ToastMessageService,
         private _router: Router, private _globalLoader: GlobalLoaderService, private _location: Location, private _globalAnalyticsService: GlobalAnalyticsService,
     ) { this.setRoutingInfo(); }
 
@@ -87,6 +92,15 @@ export class CartService
     set invoiceType(type: 'retail' | 'tax') { this._invoiceType = type }
 
     get invoiceType() { return this._invoiceType }
+
+    //ODP-1866
+    set lastPaymentMode(mode: string) { this._lastPaymentMode = mode; }
+
+    get lastPaymentMode() { return this._lastPaymentMode; }
+
+    set lastParentOrderId(id: number) { this._lastParentOrderId = id; }
+
+    get lastParentOrderId() { return this._lastParentOrderId; }
 
     get getPreviousUrl() { return this.previousUrl; }
 
@@ -184,18 +198,7 @@ export class CartService
      */
     getShippingObj(cartSessions)
     {
-        let sro = { itemsList: [], totalPayableAmount: 0 };
-        if (cartSessions && cartSessions['itemsList'] && cartSessions['itemsList'].length > 0) {
-            let itemsList: Array<{}> = cartSessions['itemsList'];
-            itemsList.map((item) =>
-            {
-                sro.itemsList.push({ "productId": item["productId"], "categoryId": item["categoryCode"], "taxonomy": item["taxonomyCode"] });
-            });
-        }
-        if (cartSessions && cartSessions['cart']) {
-            sro['totalPayableAmount'] = cartSessions['cart']['totalPayableAmount'];
-        }
-        return sro;
+        return CartUtils.getShippingObj(cartSessions);
     }
 
     getCartBySession(params): Observable<any>
@@ -305,6 +308,8 @@ export class CartService
                 {
                     // only run shipping API when specified, eg. not required in Auth Module
                     // shipping API should be called after updatecart API always
+                    const updatedCartSession = this.generateGenericCartSession(cartSession);
+                    this.setGenericCartSession(updatedCartSession);
                     if (config.enableShippingCheck) {
                         return this._getShipping(cartSession);
                     } else {
@@ -350,9 +355,12 @@ export class CartService
         return cartSession;
     }
 
-    private _getShipping(cartSession): Observable<any>
+    private _getShipping(cartSession2): Observable<any>
     {
+        // console.trace();
+        const cartSession = this.getCartSession();
         let sro = this.getShippingObj(cartSession);
+        // console.trace('_getShipping', Object.assign({}, cartSession), this.getCartSession())
         return this.getShippingValue(sro)
             .pipe(
                 map((sv: any) =>
@@ -366,14 +374,23 @@ export class CartService
                             }
                         }
                     }
-                    return cartSession;
+                    // console.log('shipping  cart session', this.generateGenericCartSession(cartSession));
+                    const updatedCartSessionAfterShipping = this.generateGenericCartSession(cartSession);
+                    // console.log('updatedCartSessionAfterShipping', updatedCartSessionAfterShipping);
+                    this.setShippingPriceChanges(updatedCartSessionAfterShipping);
+                    this.setGenericCartSession(updatedCartSessionAfterShipping);
+                    return updatedCartSessionAfterShipping;
                 })
             );
     }
 
     public getShippingAndUpdateCartSession(cartSession): Observable<any>
     {
-        return this._getShipping(cartSession);
+        if(cartSession && (cartSession['itemsList'] as any[]).length)
+        {
+            return this._getShipping(cartSession);
+        }
+        return of(cartSession)
     }
 
     /**
@@ -471,6 +488,10 @@ export class CartService
                 type: "billing",
                 invoiceType: this.invoiceType,
             });
+        }
+        if(this.lastParentOrderId)
+        {
+            cart['lastParentOrderId'] = this.lastParentOrderId
         }
         return obj;
     }
@@ -578,7 +599,7 @@ export class CartService
      * null is returned incase product already in cart AND null is also return incase of buynow without login. 
      * incase of without login buynow, temp session can checked in cartService.buyNowSessionDetails
     */
-    addToCart(args: {
+     addToCart(args: {
         buyNow: boolean,
         productDetails: AddToCartProductSchema
     }): Observable<any>
@@ -658,7 +679,13 @@ export class CartService
             }),
             mergeMap(request =>
             {
-                if (request) { return this.updateCartSession(request); }
+                if (request) { return this.updateCartSession(request).pipe(
+                    map(updatedCartResponse=>{
+                        const updatedCartSession = this.generateGenericCartSession(updatedCartResponse);
+                        this.setGenericCartSession(updatedCartSession);
+                        return updatedCartResponse;
+                    })
+                ); }
                 return of(null)
             }),
             mergeMap((cartSession: any) =>
@@ -667,7 +694,9 @@ export class CartService
                 // shipping API should be called after updatecart API always
                 if (cartSession) {
                     return this._getShipping(cartSession).pipe(
-                        map((cartSession: any) => { return cartSession; }),
+                        map((cartSession: any) => {
+                            return cartSession; 
+                        }),
                         map((cartSession) => { return this._notifyCartChanges(cartSession, null); })
                     );
                 } else {
@@ -709,12 +738,26 @@ export class CartService
     // latest cartsession
     public getCartUpdatesChanges(): Observable<any>
     {
-        return this._cartUpdatesChanges.asObservable()
+        return this._cartUpdatesChanges.pipe(shareReplay(1));
     }
 
     public setCartUpdatesChanges(cartsession): void
     {
         this._cartUpdatesChanges.next(cartsession);
+    }
+
+    public getShippingPriceChanges(): Observable<any>
+    {
+        return this._shippingPriceChanges.asObservable()
+    }
+
+    public setShippingPriceChanges(cartsession): void
+    {
+        this._shippingPriceChanges.next(cartsession);
+    }
+
+    public productRemovalNofify(): Observable<any> {
+        return this.isProductRemoved.asObservable();
     }
 
     // refresh and chnages to communicated 
@@ -779,15 +822,15 @@ export class CartService
                     })
                 );
             }),
-            mergeMap(request =>
-            {
-                return this.getShippingAndUpdateCartSession(request).pipe(
-                    map((res: any) =>
-                    {
-                        return this.generateGenericCartSession(res);
-                    })
-                );
-            }),
+            // mergeMap(request =>
+            // {
+            //     return this.getShippingAndUpdateCartSession(request).pipe(
+            //         map((res: any) =>
+            //         {
+            //             return this.generateGenericCartSession(res);
+            //         })
+            //     );
+            // }),
             map(cartSessionResponse =>
             {
                 if (cartSessionResponse) {
@@ -1203,7 +1246,7 @@ export class CartService
     }
 
     //promo code section
-    getPromoCodesByUserId(userId)
+    getPromoCodesByUserId(userId = null)
     {
         this._loaderService.setLoaderState(true);
         const cartSession = this.getCartSession();
@@ -1504,7 +1547,6 @@ export class CartService
             })).
             subscribe((response) =>
             {
-                this._globalLoader.setLoaderState(false);
                 this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
                 const ITEM_LIST = tempCartSession['itemsList'];
                 if (ITEM_LIST && ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {
@@ -1518,6 +1560,11 @@ export class CartService
                     tempCartSession['extraOffer'] = null;
                     this._notifyCartChanges(tempCartSession, null);
                 }
+                // 50 ms wait time for cartItems to update after product removed
+                setTimeout(() => {
+                    this.isProductRemoved.next(true)
+                    this._globalLoader.setLoaderState(false);
+                }, 50);
             })
     }
 
@@ -1952,6 +1999,16 @@ export class CartService
         const shippingCharges = cart['shippingCharges'] || 0;
         const totalOffer = cart['totalOffer'] || 0
         return (totalAmount + shippingCharges) - (totalOffer);
+    }
+
+    getPaymentDetailsByOrderId(orderId)
+    {
+        orderId = 3985262;
+        const result = { status: false, data: null }
+        const url = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAYMENT_DETAILS}${orderId}`;
+        return this._dataService.callRestful("GET", url).pipe(
+            map((res) => { return { status: res['status'], data: res['data'] } }),
+            catchError((res: HttpErrorResponse) => { return of(result); }));
     }
 
     //Analytics

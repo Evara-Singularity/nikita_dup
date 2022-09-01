@@ -19,6 +19,7 @@ export class ProductBulkQuantityComponent implements OnInit {
   @Input() qunatityFormControl;
   @Output() checkBulkPriceMode$: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectProductBulkPrice$: EventEmitter<number> = new EventEmitter<number>();
+  @Input() productMinimmumQuantity;
 
   constructor(private _tms: ToastMessageService) { }
 

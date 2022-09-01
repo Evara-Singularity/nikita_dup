@@ -14,8 +14,8 @@
 
 <product-grouping-attributes [isCommonProduct]="isCommonProduct" [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)" (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
 
-<product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()" (selectProductBulkPrice$)="selectProductBulkPrice($event)" [rawProductData]="rawProductData" [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct" [priceQuantityCountry]="priceQuantityCountry"
-    [productBulkPrices]="productBulkPrices" [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl">
+<product-bulk-quantity  (checkBulkPriceMode$)="checkBulkPriceMode()" (selectProductBulkPrice$)="selectProductBulkPrice($event)" [rawProductData]="rawProductData" [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct" [priceQuantityCountry]="priceQuantityCountry"
+    [productBulkPrices]="productBulkPrices" [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl" [productMinimmumQuantity]="productMinimmumQuantity">
 </product-bulk-quantity>
 
 <!-- TODO: skeleton to be implemented -->
@@ -146,6 +146,7 @@
 <ng-container #productShare></ng-container>
 <ng-container #addToCartToast></ng-container>
 <ng-container #popupCrousel></ng-container>
+<ng-container #quickOrder></ng-container>
 
 
 <!-- // TODO: product-rfq-thanks-popup should be lazy loaded -->

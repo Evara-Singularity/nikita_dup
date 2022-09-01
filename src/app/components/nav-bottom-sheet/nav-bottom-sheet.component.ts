@@ -26,6 +26,14 @@ export class NavBottomSheetComponent implements OnInit {
 
   resetBottomOpt() {
     this.sbm = false;
+    (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
+    this.enableScroll();
+  }
+  preventDefault(e) {
+    e.preventDefault();
+  }
+  enableScroll() {
+      document.body.removeEventListener('touchmove', this.preventDefault);
   }
 
   onUpdate(data) {
@@ -36,7 +44,6 @@ export class NavBottomSheetComponent implements OnInit {
   
   resetBottomOptCall(url = null){
     this.sbm = false;
-    
     if(url){
       if(url === '/login'){
         let currentUrl: NavigationExtras = { queryParams: {'backurl': this.router.url} };

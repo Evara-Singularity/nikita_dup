@@ -101,6 +101,15 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             })
         }
         this.createHeaderData(this._activatedRoute);
+
+        this.cartService.cartCountSubject.subscribe(res=>{
+            this.cartService.getCartUpdatesChanges().subscribe((data) =>
+            {
+                const cart = this.cartService.getCartItemsCount;
+                this.noOfCart = this.cartService.getCartItemsCount();
+                console.log("fixed header --" , this.noOfCart , cart);
+            });
+          })
     }
 
     ngAfterViewInit()

@@ -31,7 +31,7 @@ export class PlpFixedHeaderComponent implements OnInit, OnDestroy {
     })
     this.cartService.cartCountSubject.subscribe(res=>{
       console.log("fixed header --" , this.cartService.buyNow);
-      window.location.reload(); 
+      // window.location.reload(); 
     })
   }
 

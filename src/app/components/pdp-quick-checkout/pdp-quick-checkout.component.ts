@@ -182,6 +182,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     const isValid = obj && obj.bothAddress && obj.bothAddress.addressDetails;
     if (isValid) {
       const address = obj.bothAddress.addressDetails;
+      const addressType = obj.addressType;
       // for shippingAddress
       if (address["shippingAddress"] && address["shippingAddress"].length) {
         let len =
@@ -204,9 +205,11 @@ export class PdpQuickCheckoutComponent implements OnInit {
       } else {
         this.cartService.billingAddress = null;
       }
+      (addressType == 'billing' ? 
+      (this.purchasingForBusiness = this.billingAddress.isGstInvoice == true ? true : false)
+      : (this.purchasingForBusiness = this.shippingAddress.isGstInvoice == true ? true : false));
     }
-    this.purchasingForBusiness =
-      this.cartService.shippingAddress.isGstInvoice == true ? true : false;
+ 
   }
 
   //new implmentation

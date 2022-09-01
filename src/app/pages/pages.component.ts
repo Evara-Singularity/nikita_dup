@@ -31,6 +31,7 @@ export class PagesComponent implements OnInit {
   iData: { footer?: true; logo?: boolean; title?: string, hideHeader?: boolean };
   isFooter: boolean = true;
   isHomePage: boolean;
+  isRoutedBack: boolean = false;
   constructor(
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
@@ -54,6 +55,7 @@ export class PagesComponent implements OnInit {
         } else {
           this.isHomePage = false;
         }
+        this.isRoutedBack = (res['url'] == "/?back=1") ? true : false;
       }
       
     });
@@ -164,7 +166,6 @@ export class PagesComponent implements OnInit {
      * Also, for page refresh
      */
     if (this.isBrowser) {
-      
       this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie();

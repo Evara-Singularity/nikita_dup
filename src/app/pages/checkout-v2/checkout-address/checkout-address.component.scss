@@ -1,4 +1,5 @@
 @import "../../../scss/variables";
+@import "../../../scss/components/checkbox.scss";
 
 button.btn[disabled] {
     background: #bdbdbd;
@@ -48,7 +49,7 @@ button.btn[disabled] {
 
 //duplicated
 .invoice-container {
-    background: $white;
+    background: var(--white);
     padding: 15px;
     margin-top: 10px;
     @extend %cards;

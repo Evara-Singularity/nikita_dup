@@ -9,6 +9,7 @@ import { PopUpModule } from "@modules/popUp/pop-up.module";
 @Component({
   selector: 'cat-bestseller',
   templateUrl: './cat-bestseller.component.html',
+  styleUrls: ['./cat-bestseller.component.scss']
 })
 export class CatBestsellerComponent {
   @Input('bestSeller_Data') bestSeller_Data;

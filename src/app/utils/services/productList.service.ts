@@ -84,7 +84,7 @@ export class ProductListService {
               "large",
               "medium"
             );
-          product['productTags'] = this.getProductTag(product);
+          product['productTags'] = this._commonService.sortProductTagsOnPriority(product['productTags']);
           product["internalProduct"] = true;
           product["discount"] = this._commonService.calculcateDiscount(
             product["discount"],
@@ -180,7 +180,8 @@ export class ProductListService {
   }
 
   extractFragmentFromUrl(str) {
-    var pieces = str.split("&"),
+    // due to & split filter is not working for L&T, C&S type of brands
+    var pieces = [str],
       data = {},
       i,
       parts;

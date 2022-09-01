@@ -16,6 +16,10 @@
                 <div class="tags" *ngFor="let tags of product['productTags']">
                     <img [src]="tags['tagImageLink']" alt="" />
                 </div>
+                <div class="tags"
+                *ngFor="let tag of product['productTags'] | slice:0:1   ;let i = index;">
+                <img src="{{tag.imageUrl}}">
+            </div>
                 <ng-container *ngIf="isPDPImageLazyLoaded || !cardFeaturesConfig.lazyLoadImage">
                     <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}"
                         height="125" width="125"

@@ -82,7 +82,7 @@
                             <label [class.is-focus]="pincode.value.length > 0">
                                 <input type="text" name="Pincode*" class="pincode" formControlName="pincode" maxlength="6"
                                     placeholder="" [readonly]="isPincodeUnKnown.value"
-                                    (click)="isOutOfStock?initiateLogin():false" #pincode>
+                                    (click)="isOutOfStock?initiateLogin():false" [attr.disabled]="isPincodeBoxChecked?true:null" #pincode>
                                 <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (pincode.touched || pincode.dirty)">
                                     <!-- <p class="error-txt" *ngIf="pincode.hasError('required')">Kindly enter your pincode.</p> -->
                                     <p class="error-txt" *ngIf="pincode.hasError('pattern')">Pincode should contain only digits.
@@ -102,7 +102,7 @@
                             <label [class.is-focus]="city.value.length > 0">
                                 <input type="text" placeholder="" name="City*" formControlName="city" maxlength="30"
                                     [readonly]="!(isPincodeUnKnown.value)" (click)="isOutOfStock?initiateLogin():false"
-                                    (paste)="$event.preventDefault()" #city>
+                                    (paste)="$event.preventDefault()" [attr.disabled]="!isPincodeBoxChecked?true:null" #city>
                                 <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (pincode.touched ||  city.dirty)">
                                     <p class="error-txt" *ngIf="isPincodeUnKnown.value && city.hasError('required')">
                                         Kindly enter your city name.</p>

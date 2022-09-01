@@ -23,7 +23,7 @@
         right: 0;
         .payment-dropdown-header {
             padding: 5px 0px;
-            border-bottom: 1px solid $border-grey;
+            border-bottom: 1px solid var(--platinum);
             h3 {
                 padding: 10px 15px;
             }
@@ -36,7 +36,7 @@
         }
     }
     .payment-dropdown-listItem {
-        border-bottom: 1px solid $border-grey;
+        border-bottom: 1px solid var(--platinum);
         display: flex;
         padding: 10px 15px;
         align-items: center;

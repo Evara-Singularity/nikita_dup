@@ -70,8 +70,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             return;
         }
         this._cartService.sendAdobeOnCheckoutOnVisit("address");
+        this._cartService.refreshCartSesion();
         this.updateUserStatus();
         this._cartService.showUnavailableItems = false;
+        this._globalLoader.setLoaderState(true);
         this.updateExistingProductsState();
     }
 
@@ -92,6 +94,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (this.isRetryPayment) return;
         this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
+            this._globalLoader.setLoaderState(false);
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
                 this.cartSession = cartSession;
                 this.hasCartItems = this.cartSession && this.cartSession['itemsList'] && (this.cartSession['itemsList']).length > 0;

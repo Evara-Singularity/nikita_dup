@@ -21,6 +21,7 @@ export const ENDPOINTS = {
     getShippingValue: "/shipping/getShippingValue",
     getAllActivePromoCodes: "/promoCode/getAllActivePromoCodes",
     getPromoCodeDetails: "/promoCode/getPromoCodeDetails",
+    validateUserPromoCode: "/promoCode/validatePromoForUser"
   },
   GET_CIMS_ATTRIBUTE: '/cmsApi/getAttributesListingPage',
   GET_LAYOUT: "/homepage/layoutbycode",

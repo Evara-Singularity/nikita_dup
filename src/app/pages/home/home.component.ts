@@ -188,7 +188,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 					i = 0
 				}
 			this.searchTerm = terms[i];
-			}, 1000)
+			}, 2000)
 		}
 	}
 

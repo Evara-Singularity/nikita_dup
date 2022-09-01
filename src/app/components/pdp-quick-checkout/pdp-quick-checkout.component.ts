@@ -95,7 +95,6 @@ export class PdpQuickCheckoutComponent implements OnInit {
       this.commonService.oosSimilarCard$.next(false);
     }
     this.isPopup = false;
-    this.cartService.buyNow = false;
   }
 
   removeCartItem() {
@@ -108,7 +107,8 @@ export class PdpQuickCheckoutComponent implements OnInit {
   onUpdate(data) {
     if (data.popupClose) {
       this.Isoverlay = false;
-      this.cartService.cartCount(false);
+      this.cartService.buyNow = false;
+      this.cartService.cartCountSubject.next(false);
       this.removeCartItem();
     }
   }
@@ -182,6 +182,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     const isValid = obj && obj.bothAddress && obj.bothAddress.addressDetails;
     if (isValid) {
       const address = obj.bothAddress.addressDetails;
+      const addressType = obj.addressType;
       // for shippingAddress
       if (address["shippingAddress"] && address["shippingAddress"].length) {
         let len =
@@ -204,9 +205,11 @@ export class PdpQuickCheckoutComponent implements OnInit {
       } else {
         this.cartService.billingAddress = null;
       }
+      (addressType == 'billing' ? 
+      (this.purchasingForBusiness = this.billingAddress.isGstInvoice == true ? true : false)
+      : (this.purchasingForBusiness = this.shippingAddress.isGstInvoice == true ? true : false));
     }
-    this.purchasingForBusiness =
-      this.cartService.shippingAddress.isGstInvoice == true ? true : false;
+ 
   }
 
   //new implmentation

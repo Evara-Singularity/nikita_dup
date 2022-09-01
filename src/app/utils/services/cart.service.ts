@@ -255,11 +255,6 @@ export class CartService
 
     get buyNow() { return this._buyNow; }
 
-    cartCount(val){
-        this.buyNow = val;
-        this.cartCountSubject.next(val);
-    }
-
     /***
      * COMMON CHECKOUT LOGIC STARTS FOR SHARED CART MODULE
      */

@@ -1663,7 +1663,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 return this.commonService
                   .getAddressList({
                     customerId: userId,
-                    invoiceType: this.cartService.invoiceType,
+                    invoiceType: 'tax',
                   })
                   .pipe(
                     map(
@@ -1748,7 +1748,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if (finalAddress && finalAddress.length > 0) {
           return {
             address: finalAddress,
-            bothAddress: getAddressRequestData
+            bothAddress: getAddressRequestData,
+            addressType:getAddressRequestData.addressType
           };
         } else {
           return null;
@@ -1770,6 +1771,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if (isValidOrder) {
           return {
             addressDetails: res["lastOrderDetails"][len]["addressDetails"],
+            addressType:res["lastOrderDetails"][len]["addressType"],
             customerLastAddressId: res["lastOrderDetails"][len]["addressId"],
           };
         } else {

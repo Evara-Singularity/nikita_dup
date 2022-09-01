@@ -21,7 +21,7 @@ export class PlpFixedHeaderComponent implements OnInit, OnDestroy {
   constructor(
     public _commonService: CommonService,
     public route: ActivatedRoute,
-    public cartService:CartService
+    public cartService:CartService,
   ) { }
 
   ngOnInit(): void {
@@ -30,11 +30,9 @@ export class PlpFixedHeaderComponent implements OnInit, OnDestroy {
       this.searchValue = (res['search_query']) ? res['search_query'] : ''
     })
     this.cartService.cartCountSubject.subscribe(res=>{
-      console.log("called in fixed header -- ," , res);
-      this.buyNow = res;
-      alert(this.buyNow)
+     // console.log("fixed header --" , this.cartService.buyNow);
+       window.location.reload(); 
     })
-    console.log("this.buyNow --,", this.buyNow);
   }
 
   ngOnDestroy(): void {

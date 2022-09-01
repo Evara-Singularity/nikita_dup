@@ -1,19 +1,19 @@
-import { forkJoin } from 'rxjs';
-import { CartUtils } from './../../utils/services/cart-utils';
-import { Compiler, Component, ComponentRef, ElementRef, EventEmitter, Injector, NgModuleRef, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { Compiler, Component, ComponentRef, ElementRef, EventEmitter, HostListener, Injector, NgModuleRef, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
+import { RetryPaymentService } from '@app/utils/services/retry-payment.service';
+import { forkJoin } from 'rxjs';
 import CONSTANTS from "../../config/constants";
 import { LocalAuthService } from "../../utils/services/auth.service";
 import { CartService } from "../../utils/services/cart.service";
 import { CommonService } from "../../utils/services/common.service";
 import { DataService } from "../../utils/services/data.service";
 import { GlobalLoaderService } from "../../utils/services/global-loader.service";
-import { PaymentService } from "./payment.service";
 import { SharedTransactionDeclinedComponent } from '../shared-transaction-declined/shared-transaction-declined.component';
-import { RetryPaymentService } from '@app/utils/services/retry-payment.service';
 import { SharedTransactionDeclinedModule } from '../shared-transaction-declined/shared-transaction-declined.module';
+import { CartUtils } from './../../utils/services/cart-utils';
+import { PaymentService } from "./payment.service";
 
 // TODO:
 /**
@@ -66,13 +66,14 @@ export class PaymentComponent implements OnInit
     private _activatedRoute: ActivatedRoute,
     private _compiler: Compiler,
     private _injector: Injector,
-    private _retryPaymentService: RetryPaymentService
+    private _retryPaymentService: RetryPaymentService,
   )
   {
     this.isShowLoader = true;
     const queryParams = this._activatedRoute.snapshot.queryParams;
     this.orderId = queryParams['orderId'] || queryParams['txnId'];
   }
+  
 
   ngOnInit()
   {
@@ -100,6 +101,12 @@ export class PaymentComponent implements OnInit
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
     this._cartService.clearCartNotfications();
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event)
+  {
+    console.log('Back button pressed');
   }
 
   private intialize()
@@ -280,11 +287,6 @@ export class PaymentComponent implements OnInit
       this.isShowLoader = false;
       this.handlePaymentsData(responses[0]);
       this.handleSavedCards(responses[1]);
-      if (this._cartService.lastPaymentMode) {
-        const { paymentBlock, mode, section } = CartUtils.getPaymentInfo(this._cartService.lastPaymentMode);
-        this.updatePaymentBlock(paymentBlock, mode, section);
-        return;
-      }
     })
   }
 
@@ -357,19 +359,25 @@ export class PaymentComponent implements OnInit
     this.txnDeclinedInstance.instance.shoppingCartDto = shoppingCartDto;
     this.txnDeclinedInstance.instance.userId = this._localAuthService.getUserSession()['userId'];
     this.txnDeclinedInstance.instance.orderId = this.orderId;
-    (this.txnDeclinedInstance.instance["emitCartInvoiceAddressesEvents$"] as EventEmitter<boolean>).subscribe(({ shippingAddress, billingAddress, invoiceType }) =>
-    {
-      this._cartService.shippingAddress = shippingAddress;
-      this._cartService.billingAddress = billingAddress || null;
-      this._cartService.invoiceType = invoiceType;
-    });
-    (this.txnDeclinedInstance.instance["emitQuickoutCloseEvent$"] as EventEmitter<boolean>).subscribe((isClosed) =>
+    (this.txnDeclinedInstance.instance["emitCloseEvent$"] as EventEmitter<boolean>).subscribe((paymentDetails) =>
     {
       this.txnDeclinedInstance.instance.displayPage = false;
       this.txnDeclinedInstance = null;
       this.txnDeclinedContainerRef.remove();
-      this.isRetryPayment = false;
-      this.orderId = null;
+      this.setCartServiceDetails(paymentDetails)
     });
+  }
+
+  setCartServiceDetails(paymentDetails)
+  {
+    this._cartService.invoiceType = paymentDetails.invoiceType;
+    this._cartService.shippingAddress = paymentDetails.shippingAddress;
+    this._cartService.billingAddress = paymentDetails.billingAddress;
+    this._cartService.lastPaymentMode = paymentDetails.lastPaymentMode;
+    this._cartService.lastParentOrderId = paymentDetails.lastParentOrderId;
+    if (this._cartService.lastPaymentMode) {
+      const { paymentBlock, mode, section } = CartUtils.getPaymentInfo(this._cartService.lastPaymentMode);
+      this.updatePaymentBlock(paymentBlock, mode, section);
+    }
   }
 }

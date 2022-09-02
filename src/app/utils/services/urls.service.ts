@@ -68,7 +68,7 @@ export class UrlsService
     validateDto(validateDto)
     {
         return this._dataService.callRestful("POST", this.VALIDATE_DTO_URL, { body: validateDto }).pipe(
-            catchError((error: HttpErrorResponse) => this.errorHandler(error))
+            catchError((error: HttpErrorResponse) => this.errorHandler(error, {status:false, message:"Validation failure."}))
         );
     }
 

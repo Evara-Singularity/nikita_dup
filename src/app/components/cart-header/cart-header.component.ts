@@ -47,6 +47,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	handleNavigation()
 	{
+		debugger;
 		if (this.isCheckout && this._cartService.buyNow) {
 			this._cartService.clearBuyNowFlow();
 		}

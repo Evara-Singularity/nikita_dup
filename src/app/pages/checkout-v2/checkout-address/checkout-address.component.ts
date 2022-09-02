@@ -46,10 +46,11 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     cartUpdatesSubscription: Subscription = null;
     paymentMode: any;
 
-    constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _compiler: Compiler, private _injector: Injector,
+    constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
         private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService,
-        private _retryPaymentService: RetryPaymentService)
+        )
     {
+        
     }
 
     ngOnInit(): void

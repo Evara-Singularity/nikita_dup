@@ -46,9 +46,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
         this.shippingPriceChangesSubscription = this._cartService.getShippingPriceChanges().subscribe(cartSession=>{
             this.updateShippingCharges();
         })
-        if (userSession['authenticated'] == "true" && userSession['userId']) {
-            this._cartService.getPromoCodesByUserId(userSession['userId']);
-        }
+        this._cartService.getPromoCodesByUserId(userSession['userId']);
         this.promoSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode }) =>
         {
             this.showPromoSuccessPopup = isNewPromocode;
@@ -71,15 +69,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
 
     openOfferPopUp()
     {
-        if (this._commonService.userSession.authenticated == "true") {
             this.showPromoOfferPopup = true;
-        } else {
-            this._localAuthService.setBackURLTitle('/quickorder', null);
-            let navigationExtras: NavigationExtras = {
-                queryParams: { 'backurl': '/quickorder' },
-            };
-            this.router.navigate(["/login"], navigationExtras);
-        }
     }
 
     closePromoSuccessPopUp() { this.showPromoSuccessPopup = false; }

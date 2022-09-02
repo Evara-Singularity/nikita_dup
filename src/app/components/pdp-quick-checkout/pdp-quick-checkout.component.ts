@@ -116,9 +116,19 @@ export class PdpQuickCheckoutComponent implements OnInit {
   expandPaymentSummary(val: boolean) {
     this.isPaymentSummary = val;
   }
+  
+  getGstInvoice(event: boolean){
+    if(!event){
+      this.billingAddress = null;
+      this.cartService.billingAddress = null;
+      this.cartService.shippingAddress['isGstInvoice'] = false;
+    }else{
+      this.setAddress(this.address , false);
+    }
+  }
 
   ngOnInit() {
-    this.setAddress(this.address);
+    this.setAddress(this.address ,true);
     this.shippmentCharge = this.cartService.shippingCharges;
     this.currUser = this.localAuthService.getUserSession();
     this.cartService.getPromoCodesByUserId(this.currUser["userId"]);
@@ -178,7 +188,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     );
   }
 
-  setAddress(obj) {
+  setAddress(obj , isPurchaseForBussiness) {
     const isValid = obj && obj.bothAddress && obj.bothAddress.addressDetails;
     if (isValid) {
       const address = obj.bothAddress.addressDetails;
@@ -195,7 +205,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
         this.cartService.shippingAddress = null;
       }
       // for billingAddress
-      if (address["billingAddress"] && address["billingAddress"].length) {
+      if (addressType !='shipping' &&address["billingAddress"] && address["billingAddress"].length) {
         let len =
           address["billingAddress"].length > 1
             ? address["billingAddress"].length - 1
@@ -205,9 +215,11 @@ export class PdpQuickCheckoutComponent implements OnInit {
       } else {
         this.cartService.billingAddress = null;
       }
+      if(isPurchaseForBussiness){
       (addressType == 'billing' ? 
-      (this.purchasingForBusiness = this.billingAddress.isGstInvoice == true ? true : false)
-      : (this.purchasingForBusiness = this.shippingAddress.isGstInvoice == true ? true : false));
+      (this.purchasingForBusiness = this.billingAddress.isGstInvoice)
+      : (this.purchasingForBusiness = this.shippingAddress.isGstInvoice));
+      }
     }
  
   }
@@ -456,6 +468,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   validateCart() {
+    console.log("this.cartService.billingAddress--" , this.cartService.billingAddress);
     this.globalLoader.setLoaderState(true);
     const _cartSession = this.cartService.getCartSession();
     const _shippingAddress = this.cartService.shippingAddress ?? null;

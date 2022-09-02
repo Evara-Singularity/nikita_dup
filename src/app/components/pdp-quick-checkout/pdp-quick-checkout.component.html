@@ -19,13 +19,13 @@
                     <div class="qty_section">
                         <div class="quantity-block">
                             <span *ngIf="item.productQuantity > item.moq"
-                                (click)="handleItemQuantityChanges(0, 'decrement')"
+                                (click)="$event.stopPropagation();handleItemQuantityChanges(0, 'decrement')"
                                 class="remove-qty qty-block">&#8722;</span>
-                            <i (click)="handleItemQuantityChanges(0, 'decrement')"
+                            <i (click)="$event.stopPropagation();handleItemQuantityChanges(0, 'decrement')"
                                 *ngIf="item.productQuantity <= item.moq" class="icon-bin qty-block single-quantity"></i>
                             <input numbersOnly type="text" maxlength="3" [value]="item.productQuantity"
-                                (focusout)="handleItemQuantityChanges(0, 'update', $event.target.value)" />
-                            <span (click)="handleItemQuantityChanges(0, 'increment')"
+                                (focusout)="$event.stopPropagation();handleItemQuantityChanges(0, 'update', $event.target.value)" />
+                            <span (click)="$event.stopPropagation();handleItemQuantityChanges(0, 'increment')"
                                 class="add-qty qty-block">&#43;</span>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                 <form>
                     <div class="invoice-select">
                         <label>
-                            <input type="checkbox" [checked] = "purchasingForBusiness" *ngIf="purchasingForBusiness">
+                            <input #checkBoxVal type="checkbox" [checked] = "purchasingForBusiness" (change)="getGstInvoice(checkBoxVal.checked)" *ngIf="purchasingForBusiness">
                             <input type="checkbox" [checked] = "purchasingForBusiness" (change)="close(false)" *ngIf="!purchasingForBusiness">
                             <span class="custom-box icon-box"></span>
                         </label>

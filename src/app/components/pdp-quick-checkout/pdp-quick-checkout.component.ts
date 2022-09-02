@@ -106,10 +106,10 @@ export class PdpQuickCheckoutComponent implements OnInit {
 
   onUpdate(data) {
     if (data.popupClose) {
+      this.removeCartItem();
       this.Isoverlay = false;
       this.cartService.buyNow = false;
-      this.cartService.cartCountSubject.next(false);
-      this.removeCartItem();
+      //this.cartService.cartCountSubject.next(false);
     }
   }
 
@@ -468,7 +468,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   validateCart() {
-    console.log("this.cartService.billingAddress--" , this.cartService.billingAddress);
+   // console.log("this.cartService.billingAddress--" , this.cartService.billingAddress);
     this.globalLoader.setLoaderState(true);
     const _cartSession = this.cartService.getCartSession();
     const _shippingAddress = this.cartService.shippingAddress ?? null;

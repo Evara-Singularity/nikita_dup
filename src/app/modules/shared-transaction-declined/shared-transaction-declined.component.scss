@@ -1,6 +1,7 @@
 
 
 @import './../../scss/variables';
+@import './../../scss/_root';
 @import '../../scss/components/buttons.scss';
 
 .continue-button {
@@ -38,7 +39,7 @@
     }
     button {
         width: 175px;
-        background: $btn-color-red;
+        background: --primary;
         float: right;
         height: 55px;
         text-transform: uppercase;
@@ -46,7 +47,7 @@
     button:disabled,
     button[disabled]{
         background-color: #bdbdbd;;
-        color: $white;
+        color: --white;
     }
 }
 

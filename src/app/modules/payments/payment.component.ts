@@ -63,6 +63,7 @@ export class PaymentComponent implements OnInit {
         this._cartService.sendAdobeOnCheckoutOnVisit("payment");
         this.getSavedCardData();
         this._cartService.clearCartNotfications();
+        this.updatePaymentBlock(this.globalConstants['upi'],'upi', 'upiSection');
     }
 
     private intialize() {

@@ -81,7 +81,7 @@
         }
 
         a {
-            color: $blue-link-color;
+            color: var(--blue);
             font-size: $extra-large-font;
         }
 
@@ -148,7 +148,7 @@ app-search-bar {
 
         form {
             @include placeholder {
-                color: $place-holder-color;
+                color: var(--silver);
                 font-size: $large-font;
             }
 
@@ -189,7 +189,7 @@ app-search-bar {
 .head-popup {
     padding: 1px 0;
     @extend %clear-fix;
-    background: $logo-color;
+    background: var(--primary);
     margin-bottom: 0px;
     .container {
         position: relative;
@@ -249,7 +249,7 @@ app-search-bar {
 }
 
 .search-strip.all-search {
-    background: $logo-color;
+    background: var(--primary);
 
     ::placeholder {
         color: #707070;
@@ -281,9 +281,9 @@ app-search-bar {
             width: 100%;
             border: 0;
             padding: 0 8px 0 40px;
-            background: $white;
+            background: var(--white);
             font-size: $large-font;
-            color: $border-sec-color;
+            color: var(--spanish-gray);
             @extend %border-radius;
             display: inline-block;
             vertical-align: middle;
@@ -294,7 +294,7 @@ app-search-bar {
             left: 10px;
             top: 20px;
             font-size: 18px;
-            color: $link-color;
+            color: var(--onyx-black);
             z-index: 15;
         }
     }
@@ -432,11 +432,11 @@ section.search-popup {
 
 .search-popup {
     overflow-y: scroll;
-    height: 90vh;
+    height: calc(100% - 50px);
 }
 
 .similar-prod {
-    padding: 0px !important;
+    padding-bottom: 30px;
 }
 
 .card {

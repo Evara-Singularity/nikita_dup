@@ -138,6 +138,7 @@ export class ProductCardCoreComponent implements OnInit {
   }
 
   changeVariant(data) {
+    this._loader.setLoaderState(true);
     this._productService.getProductGroupDetails(data.msn).pipe(
       map(productRawData => {
         if (productRawData['productBO']) {

@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  enableServerLogs: true,
   PROD_NAME: 'https://www.moglix.com',
   BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   //BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
@@ -64,4 +65,5 @@ export const environment = {
     MANUFACTURER_STORE: "macizo_m",
     MANUFACTURER_STORE_BRAND: "macizo",
   },
+  logger:false
 };

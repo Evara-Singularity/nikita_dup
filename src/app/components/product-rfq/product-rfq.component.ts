@@ -16,6 +16,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
 import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
+import { AlphabetsModule } from '@app/utils/directives/alphanumeric-only.directive';
 
 @Component({
     selector: 'product-rfq',
@@ -55,6 +56,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     isInvalidPincode = false;
     isUserLoggedIn = false;
     isRFQSubmitted = false;
+    isPincodeBoxChecked=false;
     //others
     rfqGSTSINErrorMessage = null;
     verifiedGSTINValue = '';
@@ -175,6 +177,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     }
 
     handlePincodeCity() {
+        this.isPincodeBoxChecked=!this.isPincodeBoxChecked;
         if (this.isUserLoggedIn) {
             if (this.isPincodeUnKnown.value) {
                 // this.pincode.clearValidators();
@@ -404,7 +407,8 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         PopUpModule,
         BottomMenuModule,
         RouterModule,
-        NumberDirectiveModule
+        NumberDirectiveModule,
+        AlphabetsModule
     ],
 })
 export class ProductRFQModule { }

@@ -28,11 +28,13 @@ export class ClusterStoreResolver implements Resolve<any> {
 			const response = this.transferState.get<any>(CLSUTER_STORE_KEY, null);
 			this.transferState.remove(CLSUTER_STORE_KEY);
 			return of(response);
-		} else {
+		} 
+		else {
 			return this.clusterStoreService.getData(cType).pipe(
 				first(),
 				tap((response) => {
 					if (isPlatformServer(this.platformId)) {
+						console.log("CLSUTER_STORE_KEY",CLSUTER_STORE_KEY);
 						this.transferState.set(CLSUTER_STORE_KEY, response);
 					}
 				})

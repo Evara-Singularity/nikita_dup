@@ -58,25 +58,15 @@ export class PaymentComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (
-      (this._commonService.isBrowser &&
-        this._cartService.getGenericCartSession &&
-        Object.keys(this._cartService.getGenericCartSession?.cart).length ==
-          0) ||
-      !(
-        (this._cartService.invoiceType == "retail" &&
-          this._cartService.shippingAddress) ||
-        (this._cartService.invoiceType == "tax" &&
-          this._cartService.shippingAddress &&
-          this._cartService.billingAddress)
-      )
-    ) {
-      this._router.navigateByUrl("/checkout/address", this.REPLACE_URL);
-      return;
-    }
+    if (this._commonService.isBrowser && (this._cartService.getGenericCartSession && Object.keys(this._cartService.getGenericCartSession?.cart).length == 0) ||
+      !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
+        (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
+    ) { this._router.navigateByUrl('/checkout/address', this.REPLACE_URL); return }
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
+    this.getSavedCardData();
     this._cartService.clearCartNotfications();
+    this.updatePaymentBlock(this.globalConstants['upi'], 'upi', 'upiSection');
   }
 
   private intialize() {
@@ -106,6 +96,27 @@ export class PaymentComponent implements OnInit {
       this.callApisAsyncly();
       this.analyticVisit(cartData);
     }
+  }
+
+  private getSavedCardData() {
+    const userSession = this._localAuthService.getUserSession();
+    const data = {
+      userEmail: (userSession && userSession['email']) ? userSession['email'] : userSession['phone']
+    };
+
+    if (this.invoiceType == 'tax') {
+      data['userId'] = userSession['userId'];
+      data['userEmail'] = '';
+    }
+    this._paymentService.getSavedCards(data, this.invoiceType)
+      .subscribe((res) => {
+        if (res['status'] === true && res['data']['user_cards'] !== undefined && res['data']['user_cards'] != null) {
+          this.savedCardsData = res['data']['user_cards'];
+          this.isSavedCardExist = true;
+          this.paymentBlock = this.globalConstants['savedCard'];
+        }
+        this.isShowLoader = false;
+      });
   }
 
   updatePaymentBlock(block, mode?, elementId?) {

@@ -439,6 +439,7 @@ export const CONSTANTS = {
     'Welding Machine',
     'Office Chair',
     'Fan'
-  ]
+  ],
+  whatsAppBannerUrl:'https://api.whatsapp.com/send?phone=+919999049135&text=Hi'
 };
 export default CONSTANTS;

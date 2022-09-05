@@ -139,7 +139,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		this.isRoutedBack = this._commonService.isRoutedBack();
 		this.loadSearchTerms();
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['homeData']['error']) {
@@ -169,20 +168,28 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 0);
 		}
 		this._commonService.resetSelectedFilterData();
+		setTimeout(() => {
+			this.appendSiemaItemSubjects['bannerDataFinal'].next(
+				this.carouselData['bannerDataFinal']['data'].filter((item, i) => i >= 1)
+			);
+		}, 0);
 	}
 
 	loadSearchTerms() {
-		let terms = CONSTANTS.SEARCH_WIDGET_KEYS;
-		this.searchTerm = terms[0];
-		let i = null;
-		setInterval(() => {
-			if((i || i == 0) && i<terms.length - 1 ) {
-				i += 1
-			} else {
-				i = 0
-			}
-		this.searchTerm = terms[i];
-		}, 1000)
+		if(this._commonService.isBrowser){
+			this.isRoutedBack = this._commonService.isRoutedBack();
+			let terms = CONSTANTS.SEARCH_WIDGET_KEYS;
+			this.searchTerm = terms[0];
+			let i = null;
+			setInterval(() => {
+				if((i || i == 0) && i<terms.length - 1 ) {
+					i += 1
+				} else {
+					i = 0
+				}
+			this.searchTerm = terms[i];
+			}, 1000)
+		}
 	}
 
 	fetchHomePageData(response) {
@@ -222,7 +229,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 						) {
 							this.middleImageJsonData = blockData.image_block;
 							this.middleImageJsonData.map(e => {
-								console.log(e);
 								e.link = e["image_link"];
 								e.image_name = this.imagePathBanner + e["image_name"]
 								return e;
@@ -358,11 +364,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 					'image_block'
 				];
 			}
-			setTimeout(() => {
-				this.appendSiemaItemSubjects['bannerData'].next(
-					data['bannerData']['data'].filter((item, i) => i >= 1)
-				);
-			}, 0);
 		}
 	}
 
@@ -425,7 +426,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.topOptions.autoPlay = false;
 		this.openPopup = false;
 		this.appendSiemaItemSubjects = {};
-		this.appendSiemaItemSubjects['bannerData'] = new Subject<Array<{}>>();
+		this.appendSiemaItemSubjects['bannerDataFinal'] = new Subject<Array<{}>>();
 		this.appendSiemaItemSubjects['bestSellerData'] = new Subject<Array<{}>>();
 		if (this.isBrowser) {
 			ClientUtility.scrollToTop(100);

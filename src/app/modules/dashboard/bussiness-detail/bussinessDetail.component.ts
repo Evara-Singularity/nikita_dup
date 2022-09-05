@@ -177,7 +177,12 @@ export class BussinessDetailComponent implements OnDestroy {
         );
         this.businessDetailForm.controls["email"].setValue(data["email"]);
         this.businessDetailForm.controls["phone"].setValue(data["phone"]);
-        this.businessDetailForm.controls["gstin"].setValue(data["gstin"]);
+        if (this.isGSTINVerified) {
+          this.businessDetailForm.controls["gstin"].setValue(data["gstin"], { emitEvent: false });
+        }
+        else {
+          this.businessDetailForm.controls["gstin"].setValue(data["gstin"]);
+        }
         this.businessDetailForm.controls["isGstInvoice"].setValue(
           data["isGstInvoice"]
         );
@@ -380,10 +385,27 @@ export class BussinessDetailComponent implements OnDestroy {
     if (!this.gstinSubscriber) {
       this.gstinSubscriber = this.gstin.valueChanges.subscribe(
         (value: string) => {
-          this.isGSTINVerified = false;
+          this.resetBusinessDetailForm()
         }
       );
     }
+  }
+  resetBusinessDetailForm() {
+    this.isGSTINVerified = false;
+    this.postCode.setValue('');
+    this.companyName.setValue('');
+    this.email.setValue('');
+    this.phone.setValue('');
+    this.companyName.setValue('');
+    this.addressLine.setValue('');
+    this.city.setValue('');
+    this.idState.setValue('');
+    this.companyName.clearValidators();
+    this.phone.clearValidators();
+    this.addressLine.clearValidators();
+    this.companyName.updateValueAndValidity();
+    this.addressLine.updateValueAndValidity();
+    this.phone.updateValueAndValidity();
   }
 
   get gstin() {

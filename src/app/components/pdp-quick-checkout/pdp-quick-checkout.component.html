@@ -1,7 +1,7 @@
-<app-bottom-menu >
+<app-bottom-menu *ngIf="Isoverlay" (outData$)="onUpdate($event)">
     <div class="quick-checkout" content *ngIf="isPopup">
         <div class="bottom-menu-header">
-            <i class="icon-circle-delete delete-icon" (click)="close()"></i>
+            <i class="icon-circle-delete delete-icon" (click)="close(false)"></i>
         </div>
         <div class="white-card">
             <div class="inner-card">
@@ -13,9 +13,8 @@
                     <div class="price-block">
                         <p class="prod-mrp">₹{{cartService.getGenericCartSession.cart.tawot | mathFloor | number : '1.2-2'}}</p>
                         <p class="prod-selling-price">₹{{cartService.getGenericCartSession.cart.tawot | mathFloor | number : '1.2-2'}}
-                             + {{cartService.getGenericCartSession.cart.taxPercentage | mathFloor | number : '1.2-2'}}% GST: ₹
-                             {{cartService.getGenericCartSession.cart.tawot+tax | mathFloor | number : '1.2-2'}}</p>
-                        <span class="green-txt" *ngIf="cartService.getGenericCartSession.cart.shippingCharges == 0 || null">Free Shipping</span>
+                             + {{item.taxPercentage}}% GST: ₹{{cartService.getGenericCartSession.cart.tawot+cartService.getGenericCartSession.cart.tpt | mathFloor | number : '1.2-2'}}</p>
+                        <span class="green-txt" *ngIf="cartService.getGenericCartSession.cart.shippingCharges == 0 || null"><i class="icon-prepaid"></i>Free Shipping</span>
                     </div>
                     <div class="qty_section">
                         <div class="quantity-block">
@@ -33,13 +32,15 @@
                 </div>
                 <!--Payment Summary-->
                 <div class="small-accordion-panel" id="q_payment_summary">
-                    <div class="panel-head">
+                    <div class="panel-head" >
                         <h3 class="heading-3">
                             Payment Summary
                         </h3>
-                        <i class="icon-expand"></i>
+                        <i class="icon-expand" (click)="expandPaymentSummary(false)" *ngIf="isPaymentSummary"></i>
+                        <i class="icon-collaps" (click)="expandPaymentSummary(true)" *ngIf="!isPaymentSummary"></i>
+
                     </div>
-                    <div id="openHomeAccoridan" style="display:block;" class="panel-body">
+                    <div id="openHomeAccoridan"  class="panel-body " [class.hide]="isPaymentSummary">
                         <div class="">
                             <ul>
                                 <li class="tag-item">
@@ -78,7 +79,7 @@
                     <!-- <p>Ashish Kumar, Moglix, 5th floor, Tower - B, Prius Universal, sector-125, noida… | Mobile : 8263261175</p> -->
                     <p> {{shippingAddress.customerName}} , {{shippingAddress.addressLine}}- {{shippingAddress.postCode}}, {{shippingAddress.city}} | Mobile: {{shippingAddress.phone}}</p>
                 </div>
-                <span class="link-text" (click)="close()" >CHANGE</span>
+                <span class="link-text" (click)="close(false)" >CHANGE</span>
             </div> 
             <!--COD available Section-->
             <div class="about-delivery">
@@ -92,14 +93,15 @@
                     <h4 class="green-txt">COD Available</h4>
                     <span>You can pay at the time of delivery</span>
                 </div>
-                <span class="link-text" (click)="close()">CHANGE</span>
+                <span class="link-text" (click)="close(false)">CHANGE</span>
             </div> 
             <!--Bussiness Checkbox Section-->
              <section class="invoice-container">
                 <form>
                     <div class="invoice-select">
                         <label>
-                            <input type="checkbox">
+                            <input type="checkbox" [checked] = "purchasingForBusiness" *ngIf="purchasingForBusiness">
+                            <input type="checkbox" [checked] = "purchasingForBusiness" (change)="close(false)" *ngIf="!purchasingForBusiness">
                             <span class="custom-box icon-box"></span>
                         </label>
                         <div class="invoice-txt">
@@ -118,6 +120,7 @@
                     <!-- <p>Ashish Kumar, Moglix, 5th floor, Tower - B, Prius Universal, sector-125, noida… | Mobile : 8263261175</p> -->
                     <p> {{billingAddress.customerName}} , {{billingAddress.addressLine}}- {{billingAddress.postCode}}, {{billingAddress.city}} | Mobile: {{billingAddress.phone}}</p>
                 </div>
+                <span class="link-text" (click)="close(false)" >CHANGE</span>
                 <span class="link-text" ></span>
             </div>
             
@@ -126,12 +129,11 @@
                 <div class="container payable">
                     <p class="total-mount">
                         <span class="payable-amnt">Amount Payable
-                            <span>
-                            </span>
+                            <span><i class="icon-information" (click)="expandPaymentSummary(false)"></i></span>
                         </span>
-                        ₹   {{totalPayableAmount | mathCeil | number : '1.2-2'}}
+                        ₹{{totalPayableAmount | mathCeil | number : '1.2-2'}}
                     </p>
-                    <button class="btn" (click)="placeOrder()" >
+                    <button class="primary-full-btn" (click)="placeOrder()" >
                         PLACE ORDER
                     </button>
                 </div>

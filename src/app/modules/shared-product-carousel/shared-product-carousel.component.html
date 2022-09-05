@@ -21,34 +21,36 @@
         <!-- (click)="$event.stopPropagation();openPopUpcrousel(0)"-->
         <div class="prod-carsl-pseudo" data-swipe (next)="onRotateNext()" #productCrouselPseudo
             (previous)="onRotatePrevious()">
-            <div class="img-block-pseudo">
+            <!-- style="height: 100%;" -->
+            <div class="img-block-pseudo" >
                 <div class="inner-block-pseudo">
                     <div class="pinch-zoom element-pseudo"
                         (click)="$event.stopPropagation();sendProductImageClickTracking()"
                         style="transform-origin: 0% 0%;">
-                        <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['large'] }}" height="330"
+                        <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['large'] }}"
                             width="330" alt="{{productName}}">
                         <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
                             class="loader-image" />
                     </div>
                 </div>
-                <ul class="pager">
-                    <ng-container
-                        *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions?.pager && productAllImages?.length>1">
-                        <ng-container *ngFor="let item of productAllImages;let i=index">
-                            <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot"
-                                (click)="$event.stopPropagation();loadProductCrousel(i)"
-                                [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
-                            </li>
-                            <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'"
-                                (click)="$event.stopPropagation();loadProductCrousel(i)" class="pager_icon_dot">
-                                <em class="icon-youtube"></em>
-                            </li>
-                        </ng-container>
-                    </ng-container>
-                </ul>
+
 
             </div>
+            <ul class="pager">
+                <ng-container
+                    *ngIf="!isProductCrouselLoaded && !productCrouselInstance && iOptions?.pager && productAllImages?.length>1">
+                    <ng-container *ngFor="let item of productAllImages;let i=index">
+                        <li *ngIf="item['contentType'] == 'IMAGE'" class="pager_dot"
+                            (click)="$event.stopPropagation();loadProductCrousel(i)"
+                            [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
+                        </li>
+                        <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'"
+                            (click)="$event.stopPropagation();loadProductCrousel(i)" class="pager_icon_dot">
+                            <em class="icon-youtube"></em>
+                        </li>
+                    </ng-container>
+                </ng-container>
+            </ul>
         </div>
         <!-- TODO: check how this section is used in PQA -->
         <ng-container *ngIf="productTags != undefined && !this.productOutOfStock">

@@ -1,22 +1,34 @@
 <ng-container *ngIf="bestSeller_Data">
 <section class="bscategory">
     <div class="bscatwrap">
-        <h2 class="slp-heading clearfix">BestSellers
-            <a (click)="openPopup=true;" class="viewallbs">VIEW ALL</a>
-        </h2>
-        <div class="bsrow clearfix">
-            <div class="bs_item" *ngFor="let product of bestSeller_Data">
-                <div class="bs_item_img">
+        <div class="view-all-strip">
+            <h2 class="slp-heading">BestSellers</h2>
+                <a (click)="openPopup=true;" class="btn quinary-btn">VIEW ALL</a>
+            
+        </div>
+        <div class="verticle-view-card mb-15">
+            <div class="pwa-col-12 newarrivals-section row-gutter-space">
+                <div class="outer-view-section pwa-col-6" *ngFor="let product of bestSeller_Data">
                     <a [routerLink]="'/'+product.productlink">
-                        <img [src]="defaultImage" lazyLoad="{{imagePath}}{{product.imageLink_medium}}"
-                            alt="{{product.productName}}" />
-                    </a>
-                </div>
-                <div class="bs_item_desc">
-                    <h3>{{product.productName | slice:0:30}} </h3>
-                    <p class="safetysh_discount"><span>₹{{product.mrp}}</span> {{product.discount_percentage}}% OFF</p>
-                    <p class="safetysh_price">₹{{product.sellingPrice}}</p>
-                    <p class="brandname">By: <span>{{getBrandBy(product.short_description)}}</span></p>
+                    <div class="pwa-image">
+                        
+                            <img [src]="defaultImage" lazyLoad="{{imagePath}}{{product.imageLink_medium}}"
+                                alt="{{product.productName}}" />
+
+                    </div>
+                    <div class="product-card-lower-inner">
+                        <div class="name">{{product.productName | slice:0:30}} </div>
+                        <p class="brand">By: <span>{{getBrandBy(product.short_description)}}</span></p>
+                        <div class="prod-price-row">
+                            <div class="price">
+                                <span class="prod-mrp">₹{{product.mrp}}</span> 
+                                <span class="prod-discount">{{product.discount_percentage}}% OFF</span>
+                            </div>
+                            <p class="prod-selling-price">₹{{product.sellingPrice}}</p>
+                        </div>
+
+                    </div>
+                </a>
                 </div>
             </div>
         </div>
@@ -28,21 +40,28 @@
     [data]="{headerText:'Bestsellers'}">
     <div class="content-popup" content>
         <!-- <p class="pad-10 f-14 bold-txt upper-case">{{categoryNameFromHomePage}}</p> -->
-        <div class="bsrow popup-bestseller">
-            <div class="bs_item" *ngFor="let product of bestSeller_Data">
+        <div class="pwa-row verticle-view-card mb-15 pt-15">
+            <div class="pwa-col-12 newarrivals-section row-gutter-space">
+            <div class="outer-view-section pwa-col-6" *ngFor="let product of bestSeller_Data">
                 <!-- <a [routerLink]="product.productlink" class="clearfix"> -->
                 <a [routerLink]="'/'+product.productlink" class="clearfix">
-                    <div class="bs_item_img">
+                    <div class="pwa-image">
                         <img [src]="defaultImage" lazyLoad="{{imagePath}}{{product.imageLink_medium}}"
                             alt="{{product.productName}}">
                     </div>
-                    <div class="bs_item_desc">
-                        <h3>{{product.productName | slice:0:60}} <span *ngIf="product.productName.length>60">...</span></h3>
-                        <p class="safetysh_discount"><span>₹{{product.mrp}}</span> {{product.discount_percentage}}% OFF</p>
-                        <p class="safetysh_price">₹{{product.sellingPrice}}</p>
+                    <div class="product-card-lower-inner">
+                        <div class="name">{{product.productName | slice:0:60}} <span *ngIf="product.productName.length>60">...</span></div>
                         <p class="brandname"><span>By :</span>{{getBrandBy(product.short_description)}}</p>
+                        <div class="prod-price-row">
+                            <div class="price">
+                                <span class="prod-mrp">₹{{product.mrp}}</span> 
+                                <span class="prod-discount">{{product.discount_percentage}}% OFF</span>
+                            </div>
+                            <p class="prod-selling-price">₹{{product.sellingPrice}}</p>
+                        </div>  
                     </div>
                 </a>
+            </div>
             </div>
         </div>
     </div>

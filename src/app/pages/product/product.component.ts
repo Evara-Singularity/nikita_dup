@@ -1591,17 +1591,22 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     // cart methods 
     addToCart(buyNow: boolean) {
-      this.globalLoader.setLoaderState(true);
-      this.validateQuickCheckout().subscribe((res) => {
-        console.log('validateQuickCheckout res  -->' , res);
-        if (res && res.returnPopUpStatus) {
-          this.globalLoader.setLoaderState(false);
-          this.quickCheckoutPopUp(buyNow ,res.address);
-        } else {
-          this.addToCartFromModal(buyNow);
-          this.globalLoader.setLoaderState(false);
+        if(buyNow){
+            this.globalLoader.setLoaderState(true);
+            this.validateQuickCheckout().subscribe((res) => {
+              console.log('validateQuickCheckout res  -->' , res);
+              if (res && res.returnPopUpStatus) {
+                this.globalLoader.setLoaderState(false);
+                this.quickCheckoutPopUp(buyNow ,res.address);
+              } else {
+                this.addToCartFromModal(buyNow);
+                this.globalLoader.setLoaderState(false);
+              }
+            });
+        }else{
+            this.addToCartFromModal(buyNow);
         }
-      });
+    
     }
     
     async quickCheckoutPopUp(buyNow, address) {
@@ -1660,7 +1665,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 return this.commonService
                   .getAddressList({
                     customerId: userId,
-                    invoiceType: this.cartService.invoiceType,
+                    invoiceType: 'tax',
                   })
                   .pipe(
                     map(
@@ -1745,7 +1750,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if (finalAddress && finalAddress.length > 0) {
           return {
             address: finalAddress,
-            bothAddress: getAddressRequestData
+            bothAddress: getAddressRequestData,
+            addressType:getAddressRequestData.addressType
           };
         } else {
           return null;
@@ -1767,6 +1773,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if (isValidOrder) {
           return {
             addressDetails: res["lastOrderDetails"][len]["addressDetails"],
+            addressType:res["lastOrderDetails"][len]["addressType"],
             customerLastAddressId: res["lastOrderDetails"][len]["addressId"],
           };
         } else {
@@ -2291,6 +2298,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         let user = this.localStorageService.retrieve("user");
         if (user && user.authenticated == "true") {
+            this.location.replaceState(this.mainProductURL);
             !user['phone'].length ? this.intiateRFQQuote(true) : this.raiseRFQGetQuote(user);
         } else {
             this.goToLoginPage(this.productUrl, "Continue to raise RFQ", "raiseRFQQuote");
@@ -3545,6 +3553,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         {
             ele.push(element.name);
         });
+        this.productTags = this.commonService.sortProductTagsOnPriority(this.productTags);
         const tagsForAdobe = ele.join("|");
 
         let page = {
@@ -3999,6 +4008,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         let user = this.localStorageService.retrieve("user");
         if (user && user.authenticated == "true") {
+            this.location.replaceState(this.mainProductURL);
             this.askQuestionPopup();
         } else {
             this.goToLoginPage(this.productUrl, "Continue to ask question", "askQuestion");

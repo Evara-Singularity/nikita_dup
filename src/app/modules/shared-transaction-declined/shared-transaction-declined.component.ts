@@ -22,15 +22,17 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	readonly API = CONSTANTS.NEW_MOGLIX_API;
 	readonly MAX_COD_AMOUNT = CONSTANTS.GLOBAL.codMax;
 	readonly MIN_COD_AMOUNT = CONSTANTS.GLOBAL.codMin;
+	readonly withLastDetails = true;
 	@Input("displayPage") displayPage = false;
 	@Input("userId") userId = null;
 	@Input("transactionId") transactionId = null;
 	@Input("orderId") orderId = null;
 	@Input("shoppingCartDto") shoppingCartDto = {};
-	@Output("emitQuickoutCloseEvent$") emitQuickoutCloseEvent$: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@Output("emitCloseEvent$") emitCloseEvent$: EventEmitter<any> = new EventEmitter<any>();
 
 	hasCartItems = true;
 	canCOD = true;
+	isBuyNow = false;
 
 	cartSession = null;
 	shippingAddress = null;
@@ -38,7 +40,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	moveSectionTo = null;
 	invoiceType: any;
 	shippingPincode = null;
-	isBuyNow = false;
+	isValidCartMsg = null;
 
 	constructor(private _cartService: CartService, private _loaderService: GlobalLoaderService, private _toastService: ToastMessageService,
 		public _router: Router, private _quickCodService: QuickCodService, private _retryPaymentService: RetryPaymentService) { }
@@ -61,6 +63,8 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			const codInfo: CodDetails = results[0];
 			this.canCOD = (codInfo.iswithInCODLimit && codInfo.nonCods.length === 0 && codInfo.nonServiceables.length === 0);
 			this.cartSession = results[1];
+			//upfront we are validating for time saving and as this mandatory action
+			this.validateCart();
 			this._loaderService.setLoaderState(false);
 		})
 	}
@@ -71,10 +75,10 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			map(({ shippingAddress, billingAddress, invoiceType }) =>
 			{
 				this.shippingAddress = shippingAddress;
-				this.billingAddress = billingAddress;
+				this.billingAddress = billingAddress || null;
 				this.invoiceType = invoiceType;
 				this.shippingPincode = (shippingAddress && shippingAddress['postCode']) ? shippingAddress['postCode'] : null;
-				return { shoppingCartDto:shoppingCartDto, shippingPincode: this.shippingPincode };
+				return { shoppingCartDto: shoppingCartDto, shippingPincode: this.shippingPincode };
 			}),
 			concatMap(({ shoppingCartDto, shippingPincode }) =>
 			{
@@ -103,28 +107,38 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 		}
 	}
 
-	payWithLastDetails()
+	validateCart()
 	{
-		this._loaderService.setLoaderState(true);
-		const lastPaymentMode = this.shoppingCartDto['payment']['type'];
-		this._cartService.lastPaymentMode = lastPaymentMode;
-		this._cartService.lastParentOrderId = this.shoppingCartDto['cart']['parentOrderId'];
-		this._cartService.invoiceType = this.invoiceType;
-		this._cartService.shippingAddress = this.shippingAddress;
-		this._cartService.billingAddress = this.billingAddress;
-		this._cartService.setGenericCartSession(this.cartSession);
 		this._retryPaymentService.validateCart(this.cartSession, this.shippingAddress, this.billingAddress, this.invoiceType, this.isBuyNow).subscribe((response) =>
 		{
-			this._loaderService.setLoaderState(false);
 			if (response['status']) {
-				this._router.navigate(['/checkout/payment']);
+				this.isValidCartMsg = null;
 				return;
 			}
-			this._toastService.show({ type: 'error', text: response.statusDescription });
+			this.isValidCartMsg = response.message;
 		})
 	}
 
-	close() { this.emitQuickoutCloseEvent$.emit(true) }
+	pay()
+	{
+		if (this.isValidCartMsg) {
+			this._toastService.show({ type: 'error', text: this.isValidCartMsg });
+			return;
+		}
+		this._cartService.setGenericCartSession(this.cartSession);
+		this.emitCloseEvent(this.lastCartDetails);
+	}
+
+	emitCloseEvent(cartInfo) { this.emitCloseEvent$.emit(cartInfo); }
+
+	get lastCartDetails()
+	{
+		const lastCartInfo = {
+			invoiceType: this.invoiceType, shippingAddress: this.shippingAddress, billingAddress: this.billingAddress,
+			lastPaymentMode: this.shoppingCartDto['payment']['type'], lastParentOrderId: this.shoppingCartDto['cart']['parentOrderId']
+		}
+		return lastCartInfo;
+	}
 
 	ngOnDestroy() { }
 }

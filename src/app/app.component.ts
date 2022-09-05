@@ -14,7 +14,9 @@ export class AppComponent {
 
   constructor(private _commonService: CommonService, private router: Router, private _navigationService:NavigationService) {
     if (this._commonService.isBrowser && this.pageRefreshed && window.location.pathname !== '/') {
-      window.history.replaceState('', '', '/?back=1');
+      const isPayment = window.location.pathname.includes("payment");
+      const url = isPayment ? "checkout/address" : '/?back=1';
+      window.history.replaceState('', '', url);
       window.history.pushState('', '', this.router.url);
       this.pageRefreshed = false;
       this.handleWindowEvents();
@@ -28,7 +30,8 @@ export class AppComponent {
       event.stopImmediatePropagation();
       event.stopPropagation();
       event.preventDefault();
-      if (this.router.url !== "/" && !(this.router.url.includes("back=1"))) { 
+      const url = this.router.url;
+      if (url !== "/" && !(url.includes("back=1"))) { 
         this._navigationService.goBack();
       }
     });

@@ -1,7 +1,7 @@
 <login-popup [isRouteBased]="true"></login-popup>
 <div class="home-parent">
     
-    <div class="search-widget-container" *ngIf="isRoutedBack">
+    <div class="search-widget-container" *ngIf="isBrowser && isRoutedBack">
         <div class="search-widget-section pwa-row">
             <div class="inner-search-widget">
                 <p>Search for <span>{{ searchTerm }}</span></p>
@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <app-promo  [page]="'home'" class="fixed-btm-app-prmo home-app-promo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
+    <app-promo  [page]="'home'" class="fixed-btm-app-prmo home-app-promo" [isOverlayMode]="true"></app-promo>
     <div class="css-banner-component">
         <div class="internalBanner">
             <ng-container *ngIf="bannerDataFinal && bannerDataFinal.length>0">
@@ -50,7 +50,7 @@
                     </category-card>
                 </div> -->
 
-            <div class="pwa-col-12 category-grid-container">
+            <div class="pwa-col-12 category-grid-container mb-15">
                 <h2>Category Store</h2>
                 <div class="pwa-row pwa-row-noPad pad-tb-0 row-gutter-space">
                     <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card pwa-col-4"

@@ -31,7 +31,7 @@ export class NavigationService
           return;
         }
         //to avoid saving below urls as these are login or signup 
-        const is_not_login_signup = !(currentUrl.includes("login") || currentUrl.includes("otp") || currentUrl.includes("sign-up") || currentUrl.includes("back=1"));
+        const is_not_login_signup = !(currentUrl.includes("login") || currentUrl.includes("otp") || currentUrl.includes("sign-up") || currentUrl.includes("back"));
         let is_not_last_url = true;
         //to avoid saving of duplication of url
         if (this.history.length > 0) {
@@ -44,7 +44,6 @@ export class NavigationService
           if (index > -1) {
             this.history.splice(index, 1)
           }
-          //ODP-1866:remove query params from "/checkout/address" and push
           this.history.push(currentUrl);
           this.saveHistory(this.history);
         }
@@ -122,7 +121,10 @@ export class NavigationService
   //this is to handle google + PDP + back case where we need to redirect to parent category
   setPDPBreadCrumbData(breadcrumbData) { this.pdpBreadCrumbData = breadcrumbData; }
 
-  saveHistory(history) { this._localStorage.store("history", history) }
+  saveHistory(history) { 
+    this.history = history;
+    this._localStorage.store("history", history) 
+  }
 
   getHistory() { return this._localStorage.retrieve("history") }
 

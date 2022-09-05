@@ -32,7 +32,7 @@ export class QuickCodService
       isBuyNow: initiateQuickCod.isBuyNow
     }
     const validateDto = CartUtils.getValidateDto(validateDtoRequest);
-    this.quickCODPayment(validateDto['shoppingCartDto'], initiateQuickCod.userId)
+    this.quickCODPayment(validateDto['shoppingCartDto'], initiateQuickCod.userId);
   }
 
   quickCODPayment(shoppingCartDto, userId)
@@ -43,13 +43,15 @@ export class QuickCodService
     validateShoppingCart.pipe(
       map((result) =>
       {
-        const result_validate_cart = result[1];
-        const isShpopingCartInValid = !(result_validate_cart.status && result_validate_cart.statusCode == 200);
-        return { canProceed: !(isShpopingCartInValid) };
+        const result_validate_cart = result;
+        const isShpopingCartInValid = (result_validate_cart.status == true && result_validate_cart.statusCode == 200);
+        return { canProceed: (isShpopingCartInValid) };
       }),
       concatMap((result) =>
       {
+        console.log("result" , result)
         const id = (result['canProceed'] && userId) ? userId : null;
+
         return this.getPaymentId(id)
       }),
       concatMap((transactionID) =>
@@ -59,7 +61,12 @@ export class QuickCodService
     ).subscribe((result) =>
     {
       this._loaderService.setLoaderState(false);
-      if (this.codMessages.length) { this.displayCODMessage(this.codMessages[0]); return; }
+      if ((!result && !result.status) || this.codMessages.length) {
+        let extras = { queryParams: { orderId: result.data.orderId }, replaceUrl: true };
+        this.displayCODMessage(this.codMessages[0]);
+        this._router.navigate(['order-confirmation'], extras);
+        return;
+      }
       let data = result.data;
       let extras = { queryParams: { mode: 'COD', orderId: data.orderId, transactionAmount: data.orderAmount }, replaceUrl: true };
       this._localStorageService.clear('flashData');
@@ -84,7 +91,7 @@ export class QuickCodService
     const invoiceType = this.initiateQuickCod.invoiceType;
     const cartSession = this.initiateQuickCod.cartSession;
     const shippingAddress = this.initiateQuickCod.shippingAddress;
-    const billingAddress = this.initiateQuickCod.billingAddress;
+    const billingAddress = this.initiateQuickCod.billingAddress || null;
     const userId = this.initiateQuickCod.userId;
     let extra = { 'mode': 'COD', 'paymentId': 13, addressList: shippingAddress };
     let request = {
@@ -101,12 +108,12 @@ export class QuickCodService
     return this._cartService.pay(request)
   }
 
-  
+
   //New version of implementation
   checkForCODEligibility(totalPayableAmount, itemsList, postCode): Observable<any>
   {
     const limitVerification = this.checkCODLimit(totalPayableAmount);
-    const serviceability_cod = this.verifyServiceabilityAndCOD_v1(itemsList, postCode);
+    const serviceability_cod = this.verifyServiceabilityAndCOD(itemsList, postCode);
     return forkJoin([limitVerification, serviceability_cod]).pipe(
       map((results) =>
       {
@@ -116,7 +123,7 @@ export class QuickCodService
       }))
   }
 
-  verifyServiceabilityAndCOD_v1(items: any[], postCode)
+  verifyServiceabilityAndCOD(items: any[], postCode)
   {
     const result: NonServiceableAndCod = { nonServiceables: [], nonCods: [] };
     const msns = items.map(item => item.productId);

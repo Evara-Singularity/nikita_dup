@@ -80,9 +80,7 @@ export class PaymentComponent implements OnInit {
                 this.paymentBlock = this.globalConstants["razorPay"];
                 this.isShowLoader = false;
             }
-            if (!this._cartService.cashOnDeliveryStatus.isEnable) {
-                this.disableCod = true;
-            }
+            this.disableCod = !(this._cartService.cashOnDeliveryStatus.isEnable);
             // TODO - this should used in case there are some COD not avalible
             this.unAvailableMsnList = this._cartService.codNotAvailableObj['itemsArray'];
             // TODO - check with pritam how this used

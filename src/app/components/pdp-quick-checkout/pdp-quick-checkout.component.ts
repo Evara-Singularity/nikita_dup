@@ -99,9 +99,18 @@ export class PdpQuickCheckoutComponent implements OnInit {
 
   removeCartItem() {
     this.productQuantity == 1
-      ? this.cartService.removeCartItemsByMsns(this.item["productId"])
+      ? this.removeCartFromCartSession()
       : this.handleItemQuantityChanges(0, "decrement");
     this.isPopup = false;
+  }
+
+  removeCartFromCartSession() {
+    const user = this.localStorageService.retrieve('user');
+    const params = { "sessionid": user['sessionId'] }
+    this.cartService.getCartBySession(params).subscribe(cartSession => {
+      this.cartService.setGenericCartSession(this.cartService.generateGenericCartSession(cartSession));
+      this.cartService.removeCartItemsByMsns(this.item["productId"])
+    })
   }
 
   onUpdate(data) {
@@ -344,11 +353,13 @@ export class PdpQuickCheckoutComponent implements OnInit {
         break;
       }
     }
+
     if (removeIndex > -1) {
       this.globalLoader.setLoaderState(false);
       this.removeItemFromCart(itemIndex, product["packageUnit"]);
       return;
     }
+
     let bulkPriceMap = [];
     const newCartSession = JSON.parse(
       JSON.stringify(this.cartService.getGenericCartSession)

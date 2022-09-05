@@ -1,4 +1,5 @@
-export interface Address {
+export interface Address
+{
     idAddress: number;
     addressType: AddressType;
     gstin: null;
@@ -24,13 +25,15 @@ export interface Address {
     coordintes: null;
     gstinVerified: null;
 }
-interface AddressType {
+export interface AddressType
+{
     idAddressType: number;
     addressType: string;
     comment: string;
     active: boolean;
 }
-interface Country {
+export interface Country
+{
     idCountry: number;
     name: string;
     currency: Currency;
@@ -38,7 +41,8 @@ interface Country {
     callPrefix: number;
     active: boolean;
 }
-interface Currency {
+export interface Currency
+{
     idCurrency: number;
     name: string;
     isoCode: string;
@@ -47,10 +51,22 @@ interface Currency {
     decimals: number;
     active: boolean;
 }
-interface State {
+export interface State
+{
     idState: number;
     idCountry: number;
     name: string;
     isoCode: string;
     active: boolean;
+}
+
+export interface NonServiceableAndCod
+{
+    nonServiceables: string[],
+    nonCods: string[]
+}
+export interface CodDetails extends NonServiceableAndCod
+{
+    iswithInCODLimit: boolean,
+    message: string
 }

@@ -61,8 +61,14 @@ export class SiemaSlideComponent {
         this.isBrowser = _commonService.isBrowser;  
     }
 
-    ngOnInit() {
+    ngOnInit() {        
+    }
 
+    slicingHref(image) {
+        if (image.includes('https://cdn.moglix.com/https://cdn.moglix.com')) {
+            return image.replace("https://cdn.moglix.com/https://cdn.moglix.com","https://cdn.moglix.com")
+        }
+        return image;
     }
 
     ngAfterViewInit() {

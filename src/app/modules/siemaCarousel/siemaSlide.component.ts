@@ -65,8 +65,9 @@ export class SiemaSlideComponent {
     }
 
     slicingHref(image) {
-        if (image.includes('https://cdn.moglix.com/https://cdn.moglix.com')) {
-            return image.replace("https://cdn.moglix.com/https://cdn.moglix.com","https://cdn.moglix.com")
+        const invalidURL = `${CONSTANTS.IMAGE_BASE_URL}${CONSTANTS.IMAGE_BASE_URL}`
+        if (image.includes(invalidURL)) {
+            return image.replace(invalidURL,CONSTANTS.IMAGE_BASE_URL);
         }
         return image;
     }

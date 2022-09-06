@@ -69,13 +69,13 @@ export class QuickCodService
       if ((!result && !result.status) || this.codMessages.length) {
         let extras = { queryParams: { orderId: result.data.orderId }, replaceUrl: true };
         this.displayCODMessage(this.codMessages[0]);
-        this.analyticPlaceOrder();
-        this._router.navigate(['order-confirmation'], extras);
+        this._router.navigate(['checkout/address'], extras); 
         return;
       }
       let data = result.data;
       let extras = { queryParams: { mode: 'COD', orderId: data.orderId, transactionAmount: data.orderAmount }, replaceUrl: true };
       this._localStorageService.store('flashData', { buyNow: true });
+      this.analyticPlaceOrder();
       this._router.navigate(['order-confirmation'], extras);
     })
   }

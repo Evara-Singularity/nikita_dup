@@ -4051,6 +4051,15 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         {
             this.handleFaqSuccessPopup();
         });
+        (
+            this.askQuestionPopupInstance.instance[
+            "removed"
+            ] as EventEmitter<boolean>
+        ).subscribe((status) =>
+        {
+            this.askQuestionPopupInstance = null;
+            this.askQuestionPopupContainerRef.detach();
+        });
     }
 
     async handleFaqSuccessPopup()

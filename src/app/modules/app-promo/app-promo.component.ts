@@ -203,6 +203,27 @@ export class AppPromoComponent implements OnInit {
     return this.MOBILE_ENVS.OTHERS;
   }
 
+  get isAppPromoVisible() {
+    switch (this.page) {
+      case 'category':
+        return this.appPromoStatus;
+      case 'brand':
+        return this.appPromoStatus;
+      case 'alp':
+        return this.appPromoStatus;
+      case 'home':
+        return this.appPromoStatus;
+      case 'pdp':
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  get homeTopBannerVisible(){
+    return this.page != 'pdp'
+  }
+
   ngOnDestroy() {
     if (this._commonService.isBrowser && this.listener) {
       this.listener();

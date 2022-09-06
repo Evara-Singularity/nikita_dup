@@ -1594,10 +1594,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if(buyNow){
             this.globalLoader.setLoaderState(true);
             this.validateQuickCheckout().subscribe((res) => {
-              console.log('validateQuickCheckout res  -->' , res);
               if (res && res.returnPopUpStatus) {
                 this.globalLoader.setLoaderState(false);
-                this.quickCheckoutPopUp(buyNow ,res.address);
+                this.quickCheckoutPopUp(res.address);
+                this.analyticAddToCart(buyNow, this.cartQunatityForProduct , true);
               } else {
                 this.addToCartFromModal(buyNow);
                 this.globalLoader.setLoaderState(false);
@@ -1609,7 +1609,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     
     }
     
-    async quickCheckoutPopUp(buyNow, address) {
+    async quickCheckoutPopUp( address) {
       if (!this.quickOrderInstance) {
         this.globalLoader.setLoaderState(true);
         const { PdpQuickCheckoutComponent } = await import(
@@ -1727,7 +1727,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
       if (ress && ress["statusCode"] && ress["statusCode"] == 200) {
         let data =
           ress["data"][this.rawProductData["defaultPartNumber"]]["aggregate"];
-          console.log("data--" , data);
         if (data["serviceable"] == true && data["codAvailable"] == true) {
           return {
             returnPopUpStatus: true,
@@ -1795,7 +1794,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.cartService.addToCart({ buyNow, productDetails: cartAddToCartProductRequest }).subscribe(result =>
         {
             // analytic events needs to called here
-            this.analyticAddToCart(buyNow, this.cartQunatityForProduct);
+            this.analyticAddToCart(buyNow, this.cartQunatityForProduct , false);
             this.intialAddtoCartSocketAnalyticEvent(buyNow);
             this.updateAddtoCartSocketAnalyticEvent(buyNow)
             this.fireViewBasketEvent(result);
@@ -2537,7 +2536,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 ] as EventEmitter<boolean>
             ).subscribe((data) =>
             {
-                console.log("data view --->>>", data)
                 this.viewPopUpOpen(data);
             });
             (
@@ -2772,7 +2770,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     ] as EventEmitter<boolean>
                 ).subscribe((status) =>
                 {
-                    // console.log('writeReview removed', status);
                     this.writeReviewPopupInstance = null;
                     this.writeReviewPopupContainerRef.detach();
                 });
@@ -3590,7 +3587,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData('outOfStockUpBtn'), 'genericPageLoad');
     }
 
-    analyticAddToCart(buyNow, quantity)
+    analyticAddToCart(buyNow, quantity, isCod)
     {
         const user = this.localStorageService.retrieve("user");
         const taxonomy = this.productCategoryDetails["taxonomyCode"];
@@ -3612,18 +3609,19 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
         let page = {
             linkPageName: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
-            linkName: !buyNow ? "Add to cart" : "Buy Now",
+            linkName: (isCod ?"Quick cod  " : (!buyNow ? "Add to cart" : "Buy Now")),
             channel: "pdp",
         };
 
         if (this.displayCardCta) {
             page["linkName"] =
-                !buyNow ? "Add to cart Overlay" : "Buy Now Overlay";
+                (isCod ? "Quick cod": (!buyNow ? "Add to cart Overlay" : "Buy Now Overlay"));
             if (this.popupCrouselInstance) {
                 page["linkName"] =
-                    !buyNow
+                isCod ? "Quick cod  Main Image Overlay " :
+                    (!buyNow
                         ? "Add to cart Main Image Overlay"
-                        : "Buy Now Main Image Overlay";
+                        : "Buy Now Main Image Overlay")
             }
         }
 

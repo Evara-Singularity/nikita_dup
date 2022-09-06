@@ -195,8 +195,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     /**@description updates global object to set in COD is available or not and used in payment section */
     updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
     {
-        this._cartService.codNotAvailableObj['itemsArray'] = cartItems.filter((item) => nonCashonDeliverableMsns.includes(item.productId));
-        this._cartService.cashOnDeliveryStatus.isEnable = (nonCashonDeliverableMsns.length === 0);
+        this._cartService.updateNonDeliverableItems(cartItems, nonCashonDeliverableMsns)
     }
 
     /**@description scrolls to payment summary section on click of info icon*/

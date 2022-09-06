@@ -96,18 +96,21 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 30px 15px 40px;
+        padding: 25px 15px 40px;
         margin-bottom: 20px;
         .inner-search-widget {
             width: $fullwidth;
             z-index: 1;
             p {
-                font-size: $extra-large-2-font;
-                font-weight: $font-bold;
+                font-size: $large-font;
                 color: var(--spanish-gray);
-                padding: 0 15px 20px;
+                padding: 0 0px 10px 20px;
                 span {
+                    font-weight: $font-bold;
+                    font-size: $extra-large-1-font;
                     color: var(--onyx-black);
+                    display: block;
+                    padding-top: 2px;
                 }
             }
             .widget-search-bar {

@@ -179,11 +179,12 @@ textarea {
                 border: 1px solid #c4c4c4;
                 border-radius: 8px !important;
                 padding: 0px 10px !important;
-                background-color: var(--white) !important;
+                background-color: var(--white);
 
                 &.input-password {
                     padding: 14px 140px 0 0;
                 }
+                
             }
             textarea {
                 width: 100%;
@@ -192,7 +193,7 @@ textarea {
                 height: 65px;
                 padding: 14px 25px 0 10px;
                 font-size: $large-font;
-                background-color: var(--white) !important;
+                background-color: var(--white);
                 &.large-height{
                     height: 100px !important;
                 }
@@ -230,18 +231,20 @@ textarea {
                 left: 10px;
                 padding: 0px 5px;
                 z-index: 9;
+                color: var(--silver) !important;
             }
             &.is-focus input{
                 border-color: var(--spanish-gray) !important;
-
+                background-color: var(--white) !important;
             }
 
             input:focus,
             textarea:focus {
-                border-color: #c4c4c4;
-
+                border-color: #c4c4c4 !important;
+                background-color: var(--white) !important;
                 & + .label {
-                    color: #c4c4c4;
+                    color: #c4c4c4 !important;
+                    background-color: var(--white) !important;
                 }
             }
 
@@ -266,6 +269,13 @@ textarea {
             &.disableInput {
                 opacity: 0.4;
                 pointer-events: none;
+            }
+            .disable-input-field{
+                background: var(--silver) !important;
+                & +.label{
+                    color: var(--white);
+                }
+                
             }
         }
     }

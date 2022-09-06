@@ -83,14 +83,13 @@ export class PdpQuickCheckoutComponent implements OnInit {
     private _dataService: DataService,
     private _analytics: GlobalAnalyticsService,
     private _router: Router
-  ) {
-    
-  }
+  ) {}
 
   close(isClose: boolean) {
     if (isClose) {
       this.removeCartItem();
     } else {
+      this.cartService.billingAddress = null;
       this.isClose.emit(true);
       this.commonService.oosSimilarCard$.next(false);
     }
@@ -98,18 +97,36 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   removeCartItem() {
-    this.productQuantity == 1
-      ? this.cartService.removeCartItemsByMsns(this.item["productId"])
-      : this.handleItemQuantityChanges(0, "decrement");
-    this.isPopup = false;
+    this.cartService.buyNow = false;
+    this.removeCartFromCartSession();
+  }
+
+  removeCartFromCartSession() {
+    this.cartService.buyNow = false;
+    const user = this.localStorageService.retrieve("user");
+    const params = { sessionid: user["sessionId"] };
+    this.cartService.getCartBySession(params).subscribe((cartSession) => {
+      this.cartService.setGenericCartSession(
+        this.cartService.generateGenericCartSession(cartSession)
+      );
+      const itemsList = this.cartService.getGenericCartSession.itemsList;
+      let itemIndex = 0;
+      itemsList.forEach((ele, index) => {
+        if (ele["productId"] == this.item["productId"]) {
+          itemIndex = index;
+        }
+      });
+      this.productQuantity == 1
+        ? this.cartService.removeCartItemsByMsns(this.item["productId"])
+        : this.handleItemQuantityChanges(itemIndex, "decrement");
+      this.isPopup = false;
+    });
   }
 
   onUpdate(data) {
     if (data.popupClose) {
-      this.Isoverlay = false;
-      this.cartService.buyNow = false;
-      this.cartService.cartCountSubject.next(false);
       this.removeCartItem();
+      this.Isoverlay = false;
     }
   }
 
@@ -117,8 +134,18 @@ export class PdpQuickCheckoutComponent implements OnInit {
     this.isPaymentSummary = val;
   }
 
+  getGstInvoice(event: boolean) {
+    if (!event) {
+      this.billingAddress = null;
+      this.cartService.billingAddress = null;
+      this.cartService.shippingAddress["isGstInvoice"] = false;
+    } else {
+      this.setAddress(this.address, false);
+    }
+  }
+
   ngOnInit() {
-    this.setAddress(this.address);
+    this.setAddress(this.address, true);
     this.shippmentCharge = this.cartService.shippingCharges;
     this.currUser = this.localAuthService.getUserSession();
     this.cartService.getPromoCodesByUserId(this.currUser["userId"]);
@@ -178,7 +205,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     );
   }
 
-  setAddress(obj) {
+  setAddress(obj, isPurchaseForBussiness) {
     const isValid = obj && obj.bothAddress && obj.bothAddress.addressDetails;
     if (isValid) {
       const address = obj.bothAddress.addressDetails;
@@ -195,7 +222,11 @@ export class PdpQuickCheckoutComponent implements OnInit {
         this.cartService.shippingAddress = null;
       }
       // for billingAddress
-      if (address["billingAddress"] && address["billingAddress"].length) {
+      if (
+        addressType != "shipping" &&
+        address["billingAddress"] &&
+        address["billingAddress"].length
+      ) {
         let len =
           address["billingAddress"].length > 1
             ? address["billingAddress"].length - 1
@@ -205,11 +236,12 @@ export class PdpQuickCheckoutComponent implements OnInit {
       } else {
         this.cartService.billingAddress = null;
       }
-      (addressType == 'billing' ? 
-      (this.purchasingForBusiness = this.billingAddress.isGstInvoice == true ? true : false)
-      : (this.purchasingForBusiness = this.shippingAddress.isGstInvoice == true ? true : false));
+      if (isPurchaseForBussiness) {
+        addressType == "billing"
+          ? (this.purchasingForBusiness = this.billingAddress.isGstInvoice)
+          : (this.purchasingForBusiness = this.shippingAddress.isGstInvoice);
+      }
     }
- 
   }
 
   //new implmentation
@@ -332,11 +364,13 @@ export class PdpQuickCheckoutComponent implements OnInit {
         break;
       }
     }
+
     if (removeIndex > -1) {
       this.globalLoader.setLoaderState(false);
       this.removeItemFromCart(itemIndex, product["packageUnit"]);
       return;
     }
+
     let bulkPriceMap = [];
     const newCartSession = JSON.parse(
       JSON.stringify(this.cartService.getGenericCartSession)
@@ -456,6 +490,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   validateCart() {
+    // console.log("this.cartService.billingAddress--" , this.cartService.billingAddress);
     this.globalLoader.setLoaderState(true);
     const _cartSession = this.cartService.getCartSession();
     const _shippingAddress = this.cartService.shippingAddress ?? null;

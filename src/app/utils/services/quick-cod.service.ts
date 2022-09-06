@@ -8,7 +8,10 @@ import { forkJoin, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { NonServiceableAndCod } from '../models/address.modal';
 import { InitiateQuickCod, ValidateDto } from './../models/cart.initial';
+import { LocalAuthService } from './auth.service';
 import { CartUtils } from './cart-utils';
+import { CommonService } from './common.service';
+import { DataService } from './data.service';
 import { GlobalLoaderService } from './global-loader.service';
 import { UrlsService } from './urls.service';
 
@@ -17,9 +20,12 @@ export class QuickCodService
 {
   codMessages: string[] = [];
   initiateQuickCod: InitiateQuickCod = null;
+  isBrowser:boolean
 
   constructor(private _localStorageService: LocalStorageService, private _loaderService: GlobalLoaderService,
-    private _toastService: ToastMessageService, private _router: Router, private _cartService: CartService, private _urlsService: UrlsService) { }
+    private _toastService: ToastMessageService, private _router: Router, private _cartService: CartService, private _urlsService: UrlsService, public _dataService: DataService, private _commonService:CommonService, private _localAuthService:LocalAuthService) { 
+      this.isBrowser = _commonService.isBrowser;
+    }
 
   initiateQuickCOD(initiateQuickCod: InitiateQuickCod)
   {
@@ -49,7 +55,6 @@ export class QuickCodService
       }),
       concatMap((result) =>
       {
-        console.log("result" , result)
         const id = (result['canProceed'] && userId) ? userId : null;
 
         return this.getPaymentId(id)
@@ -64,12 +69,13 @@ export class QuickCodService
       if ((!result && !result.status) || this.codMessages.length) {
         let extras = { queryParams: { orderId: result.data.orderId }, replaceUrl: true };
         this.displayCODMessage(this.codMessages[0]);
-        this._router.navigate(['order-confirmation'], extras);
+        this._router.navigate(['checkout/address'], extras); 
         return;
       }
       let data = result.data;
       let extras = { queryParams: { mode: 'COD', orderId: data.orderId, transactionAmount: data.orderAmount }, replaceUrl: true };
-      this._localStorageService.clear('flashData');
+      this._localStorageService.store('flashData', { buyNow: true });
+      this.analyticPlaceOrder();
       this._router.navigate(['order-confirmation'], extras);
     })
   }
@@ -164,4 +170,35 @@ export class QuickCodService
     this._loaderService.setLoaderState(false);
     this._toastService.show({ type: "error", text: message })
   }
+
+  analyticPlaceOrder(){
+    const userSession = this.isBrowser ? this._localAuthService.getUserSession() : null;
+    const cartData = this._cartService.getGenericCartSession;
+
+    if (cartData['itemsList'] !== null && cartData['itemsList']) {
+      var totQuantity = 0;
+      var trackData = {
+        event_type: "page_load",
+        page_type: this._router.url == "/quickCod" ? "Pdp" : "Checkout",
+        label: "checkout_started",
+        channel: this._router.url == "/quickCod" ? "pdp" : "Checkout",
+        price: cartData["cart"]["totalPayableAmount"] ? cartData["cart"]["totalPayableAmount"].toString() : '0',
+        quantity: cartData["itemsList"].map(item => {
+          return totQuantity = totQuantity + item.productQuantity;
+        })[cartData["itemsList"].length - 1],
+        shipping: parseFloat(cartData["shippingCharges"]),
+        itemList: cartData.itemsList.map(item => {
+          return {
+            category_l1: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[0] : null,
+            category_l2: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[1] : null,
+            category_l3: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[2] : null,
+            price: item["totalPayableAmount"].toString(),
+            quantity: item["productQuantity"]
+          }
+        })
+      }
+
+      this._dataService.sendMessage(trackData);
+  }
+ }
 }

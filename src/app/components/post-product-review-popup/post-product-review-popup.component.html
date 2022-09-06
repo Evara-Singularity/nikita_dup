@@ -17,7 +17,7 @@
                 <div class="input-field-boxed">
                     <label class="max-char">(Maximum 100 characters)</label>
                     <input type="text" formControlName="review_subject" maxlength="100" #title placeholder="Title">
-                    <ng-container *ngIf="review_title.invalid && review_title.dirty">
+                    <ng-container *ngIf="review_title.invalid && review_title.dirty && !isFormSubmitted">
                         <p class="error-field error-txt">Title can't be blank.</p>
                     </ng-container>
                 </div>

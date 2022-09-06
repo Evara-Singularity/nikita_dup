@@ -112,6 +112,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	isRoutedBack: boolean;
 	searchTerm = '';
 	bannerDataFinal: any[] = [];
+	whatsAppBannerUrl=CONSTANTS.whatsAppBannerUrl;
+	readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
 
 	constructor(
 		public dataService: DataService,
@@ -146,6 +148,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.flyOutData = rawData.homeData[1] && rawData.homeData[1]['data'] as CategoryData[];
 			}
 		});
+		this.route.queryParams.subscribe(res => {
+			this.isRoutedBack = res && res.hasOwnProperty('back') ? true : false;
+		})
 
 		this.setMetaData();
 		this.footerService.setFooterObj({ footerData: true });
@@ -177,7 +182,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	loadSearchTerms() {
 		if(this._commonService.isBrowser){
-			this.isRoutedBack = this._commonService.isRoutedBack();
 			let terms = CONSTANTS.SEARCH_WIDGET_KEYS;
 			this.searchTerm = terms[0];
 			let i = null;
@@ -188,7 +192,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 					i = 0
 				}
 			this.searchTerm = terms[i];
-			}, 1000)
+			}, 2000)
 		}
 	}
 
@@ -229,8 +233,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 						) {
 							this.middleImageJsonData = blockData.image_block;
 							this.middleImageJsonData.map(e => {
+								const imgPath = this.isServer ? '' : this.imagePathBanner;
+								/// console.log('image path ==>', e["image_name"]); 
 								e.link = e["image_link"];
-								e.image_name = this.imagePathBanner + e["image_name"]
+								e.image_name = imgPath + e["image_name"];
 								return e;
 							
 							});
@@ -423,7 +429,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.topOptions.selector = '.top-banner';
 		this.topOptions.topCarousel = true;
 		this.topOptions.navHide = true;
-		this.topOptions.autoPlay = false;
+		this.topOptions.autoPlay = true;
 		this.openPopup = false;
 		this.appendSiemaItemSubjects = {};
 		this.appendSiemaItemSubjects['bannerDataFinal'] = new Subject<Array<{}>>();

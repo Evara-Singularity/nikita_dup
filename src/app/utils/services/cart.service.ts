@@ -1558,6 +1558,7 @@ export class CartService
                     tempCartSession['cart']['totalOffer'] = totalOffer;
                     tempCartSession['extraOffer'] = null;
                     this._notifyCartChanges(tempCartSession, null);
+                    this.updateNonDeliverableItemsAfterRemove(tempCartSession['itemsList']);
                 }
                 // 50 ms wait time for cartItems to update after product removed
                 setTimeout(() => {
@@ -1565,6 +1566,22 @@ export class CartService
                     this._globalLoader.setLoaderState(false);
                 }, 50);
             })
+    }
+
+    updateNonDeliverableItemsAfterRemove(cartItems:any[])
+    {
+        const freshmsns = cartItems.map((item)=>item.productId);
+        console.log(freshmsns);
+        let tempcods:any[] = [];
+        if (this.codNotAvailableObj['itemsArray'])
+        {
+            tempcods = (this.codNotAvailableObj['itemsArray'] as any[]);
+            console.log(tempcods);
+            tempcods = tempcods.filter((item) => freshmsns.includes(item.productId))
+            console.log(tempcods);
+        }
+        this.codNotAvailableObj['itemsArray'] = tempcods;
+        this.cashOnDeliveryStatus.isEnable = (tempcods.length == 0);
     }
 
     clearBuyNowFlow()
@@ -2000,6 +2017,12 @@ export class CartService
         return (totalAmount + shippingCharges) - (totalOffer);
     }
 
+    updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
+    {
+        this.codNotAvailableObj['itemsArray'] = cartItems.filter((item) => nonCashonDeliverableMsns.includes(item.productId));
+        this.cashOnDeliveryStatus.isEnable = (nonCashonDeliverableMsns.length === 0);
+    }
+    
     getPaymentDetailsByOrderId(orderId)
     {
         orderId = 3985262;

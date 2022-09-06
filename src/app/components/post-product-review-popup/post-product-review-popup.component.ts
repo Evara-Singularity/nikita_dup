@@ -15,6 +15,7 @@ export class PostProductReviewPopupComponent implements OnInit {
   @Input() productInfo: any
   @Output() removed: EventEmitter<any> = new EventEmitter<any>();
   @Output() submitted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  isFormSubmitted:boolean = false;
 
   reviewForm: FormGroup;
   ratingValue = 0;
@@ -58,9 +59,11 @@ export class PostProductReviewPopupComponent implements OnInit {
           this.ratingValue = 0;
           if (res['code'] == "200") {
             this.submitted.emit(true);
+            this.isFormSubmitted = true;
           } else {
             this.submitted.emit(false);
             console.log('review not submitted', res);
+            this.isFormSubmitted = true;
           }
         }
       );

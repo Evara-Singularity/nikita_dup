@@ -1468,14 +1468,6 @@ export class CommonService
         return (url.indexOf('://') > 0 || url.indexOf('//') === 0)
     }
 
-    isRoutedBack() {
-        if(this.isBrowser) {
-            return window.location.toString().includes('back=1');
-        } else {
-            return false;
-        }
-    }
-
     getLoggerObj(url: string, method: string =null, startTime?, endTime?){
         
         const logInfo: ServerLogSchema = {

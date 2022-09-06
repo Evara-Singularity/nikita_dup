@@ -76,6 +76,7 @@ export class CartComponent
             concatMap((res) => this._cartService.getShippingAndUpdateCartSession(res))).subscribe(
                 (cartSessionWithShiping) =>
                 {
+                    // console.log(cartSessionWithShiping);
                     this.cartSession = cartSessionWithShiping;
                     this.noOfCartItems = (cartSessionWithShiping['itemsList'] as any[]).length;
                     this._globalLoaderService.setLoaderState(false);

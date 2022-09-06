@@ -7,7 +7,7 @@ export const environment = {
   IMAGE_ASSET_URL: '/',
   SOCKET_URL: "https://socketqa.moglilabs.com",  
   IMAGE_BASE_URL: 'https://cdn.moglix.com/',
-  DOCUMENT_URL: 'https://document.moglix.com/',
+  DOCUMENT_URL: 'https://document.moglix.com/', 
   DEPLOY_URL: 'https://cdn.moglix.com/online/qa/pwa/bundles/',
   CDN_IMAGE_URL: 'https://cdn.moglix.com/',
   GTM_ANALYTICS_CODE: 'GTM-WW4R83Z',

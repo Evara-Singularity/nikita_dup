@@ -90,7 +90,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
       this.isClose.emit(true);
       this.commonService.oosSimilarCard$.next(false);
     }
-    // this.isPopup = false;
+    this.isPopup = false;
     this._bottomMenuComponent.updateParent({ popupClose: true });
   }
 
@@ -117,7 +117,6 @@ export class PdpQuickCheckoutComponent implements OnInit {
       this.currProductQuantity == 1
         ? this.cartService.removeCartItemsByMsns(this.item["productId"])
         : this.handleItemQuantityChanges(itemIndex, "decrement");
-      this.isPopup = false;
     });
   }
 
@@ -258,18 +257,10 @@ export class PdpQuickCheckoutComponent implements OnInit {
     );
   }
 
-  removeItemFromCart(itemIndex, packageUnit) {
-    this.removableItem = JSON.parse(
-      JSON.stringify(
-        this.cartService.getGenericCartSession?.itemsList[itemIndex]
-      )
-    );
-    this.removableItem["packageUnit"] = packageUnit;
-    this.close(true);
-  }
-
-  resetRemoveItemCart() {
-    this.removableItem = null;
+  removeItemFromCart() {
+    this.cartService.removeCartItemsByMsns(this.item['productId'])
+    this.isPopup = false;
+    this._bottomMenuComponent.updateParent({ popupClose: true });
   }
 
   getProductDetails(action, itemIndex, msn, typedValue) {
@@ -348,7 +339,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
 
     if (removeIndex > -1) {
       this.globalLoader.setLoaderState(false);
-      this.removeItemFromCart(itemIndex, product["packageUnit"]);
+      this.removeItemFromCart();
       return;
     }
 

@@ -76,6 +76,11 @@ export class PaymentComponent implements OnInit
   
 
   ngOnInit() {
+    if (this.orderId) {
+      this.isRetryPayment = true;
+      this.fetchTransactionDetails();
+      return;
+    }
     if (this._commonService.isBrowser && (this._cartService.getGenericCartSession && Object.keys(this._cartService.getGenericCartSession?.cart).length == 0) ||
       !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
         (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
@@ -85,12 +90,6 @@ export class PaymentComponent implements OnInit
     this.getSavedCardData();
     this._cartService.clearCartNotfications();
     this.updatePaymentBlock(this.globalConstants['upi'], 'upi', 'upiSection');
-  }
-
-  @HostListener('window:popstate', ['$event'])
-  onPopState(event)
-  {
-    console.log('Back button pressed');
   }
 
   private intialize()

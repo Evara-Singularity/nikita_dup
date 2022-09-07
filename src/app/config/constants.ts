@@ -195,6 +195,7 @@ export const CONSTANTS = {
     ],
     default: {
       pageSize: 20,
+      categoryListingPageSize: 25
     },
     codMin: 300,
     codMax: 30000,
@@ -432,6 +433,14 @@ export const CONSTANTS = {
     ORDER_CONFIRMATION: 'ORDER_CONFIRMATION',
     PRODUCT: 'PRODUCT'
   },
+  SEARCH_WIDGET_KEYS: [
+    'Shoes For Men',
+    'Solar Panel',
+    'Welding Machine',
+    'Office Chair',
+    'Fan'
+  ],
+  whatsAppBannerUrl:'https://api.whatsapp.com/send?phone=+919999049135&text=Hi',
   PAYMENT_MODE: [
     {
       id: 3,
@@ -654,6 +663,6 @@ export const CONSTANTS = {
     PRODUCT_ALL_FAQ: 'product-faq-all',
     PRODUCT_QA_FORM: 'product-ask-now',
     PRODUCT_REVIEW_FORM: 'product-write-review',
-  }
+  },
 };
 export default CONSTANTS;

@@ -45,10 +45,10 @@
             margin: auto;
         }
         .heading {
-            color: $white;
+            color: var(--white);
         }
         .heading-padding {
-            color: $white;
+            color: var(--white);
             padding-top: 45px;
         }
         .login-card {
@@ -68,7 +68,7 @@
                         margin: 0;
                         overflow: scroll;
                         overflow-x: hidden;
-                        background-color: $white;
+                        background-color: var(--white);
                         box-shadow: 0px 3px 16px #b1abab;
                         border-radius: 8px;
                         li {
@@ -93,11 +93,11 @@
             padding: 5px 15px 15px;
             p {
                 font-size: $small-font;
-                color: $white;
+                color: var(--white);
                 text-align: center;
                 a {
                     text-decoration: underline;
-                    color: $white;
+                    color: var(--white);
                 }
             }
         }

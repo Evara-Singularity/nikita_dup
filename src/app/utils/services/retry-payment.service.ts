@@ -128,7 +128,7 @@ export class RetryPaymentService
       mergeMap((response) =>
       {
         let bd: any = null;
-        if (response.status) {
+        if (response.status == true) {
           const data = response['data'];
           bd = {
             company: data["companyName"], gstin: data["gstin"], is_gstin: data["isGstInvoice"],

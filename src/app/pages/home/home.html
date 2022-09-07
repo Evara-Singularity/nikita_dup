@@ -1,12 +1,25 @@
 <login-popup [isRouteBased]="true"></login-popup>
 <div class="home-parent">
-    <app-promo  [page]="'home'" class="fixed-btm-app-prmo home-app-promo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo>
+    <div class="search-widget-container" *ngIf="isBrowser && isRoutedBack">
+        <div class="search-widget-section pwa-row">
+            <div class="inner-search-widget">
+                <p>Search for <span>{{ searchTerm }}</span></p>
+                <div class="search-bar widget-search-bar">
+                    <input class="search-bar-input widget-search-input" type="text" autocomplete="off"
+                        placeholder="Search Product,Category,Brand..." (click)="loadSearchNav()">
+                </div>
+            </div>
+            <div class="search-widget-bg"></div>
+        </div>
+    </div>
+
+    <app-promo  [page]="'home'" class="fixed-btm-app-prmo home-app-promo" [isOverlayMode]="true"></app-promo>
     <div class="css-banner-component">
+        
         <div class="internalBanner" *ngIf="isBrowser">
-            <ng-container *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0">
+            <ng-container *ngIf="bannerDataFinal && bannerDataFinal.length>0">
                 <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
-                    [items]="carouselData.bannerData['data']"
-                    [appendSiemaItems$]="appendSiemaItemSubjects['bannerData']">
+                    [items]="bannerDataFinal">
                 </siema-carousel>
             </ng-container>
         </div>
@@ -17,12 +30,16 @@
                 [src]="defaultBannerImage" alt="banner">
         </div>
    </div>
+   
+
+   
     <div class="pwa-row pwa-row-noPad">
         <div class="pwa-col-12 pad-lr-15">
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
-            <div class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
-                <a class="full-banner" *ngIf="i==0" href="{{im.image_link}}">
-                    <img [src]="imagePath + im.image_name" alt="banner add" width="312" height="129">
+
+            <div class="pwa-banner">
+                <a class="full-banner" href="{{whatsAppBannerUrl}}"> 
+                    <img src="{{imageAssetURL}}assets/img/others/whatsappBanner.png" alt="whatsapp banner" width="312" height="129">
                 </a>
             </div>
 
@@ -36,17 +53,17 @@
                     </category-card>
                 </div> -->
 
-            <div class="pwa-col-12 category-grid-container">
+            <div class="pwa-col-12 category-grid-container mb-15">
                 <h2>Category Store</h2>
-                <div class="pwa-row pwa-row-noPad pad-tb-0">
-                    <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card"
+                <div class="pwa-row pwa-row-noPad pad-tb-0 row-gutter-space">
+                    <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card pwa-col-4"
                         [routerLink]="item.category_url">
                         <a>
                             <img alt={{item.CategoryName}} src="{{clusterimagePath + 'img/cluster/'+item.category_image}}" width="97" height="65">
                             <p class="category-text">{{item.CategoryName}}</p>
                         </a>
                     </div>
-                    <div class="category-grid-card" [routerLink]="['/all-categories']">
+                    <div class="category-grid-card pwa-col-4" [routerLink]="['/all-categories']">
                         <a>
                             <img alt="View All Categories" src="{{clusterimagePath + 'img/cluster/all_categories.png'}}" width="97" height="65">
                             <p class="category-text view-all-cate">View All Categories</p>

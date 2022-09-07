@@ -20,7 +20,7 @@ export class UrlsService
     readonly VALIDATE_PROMOCODE_URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CART.validatePromoCode}`;
     //address
     readonly ADDRESS_LIST_URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_ADD_LIST}`;
-    readonly SERVICEABILITY_URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_ADD_LIST}`;
+    readonly SERVICEABILITY_URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.VALIDATE_PRODUCT_SER}`;
     //payment
     readonly RETRY_PAYMENT_URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAYMENT_DETAILS}`;
     readonly TRANSACTION_URL = `${CONSTANTS.NEW_MOGLIX_API}/payment/getPaymentId`;
@@ -68,7 +68,7 @@ export class UrlsService
     validateDto(validateDto)
     {
         return this._dataService.callRestful("POST", this.VALIDATE_DTO_URL, { body: validateDto }).pipe(
-            catchError((error: HttpErrorResponse) => this.errorHandler(error))
+            catchError((error: HttpErrorResponse) => this.errorHandler(error, {status:false, message:"Validation failure."}))
         );
     }
 

@@ -23,7 +23,7 @@ export class SharedAuthPopUpComponent implements OnInit {
 
 
   togglePopUp(value) {
-    this.flow = value.replace('/', '')
+    this.flow = value;
   }
 
   otpSuccessPopUp(value) {
@@ -33,10 +33,6 @@ export class SharedAuthPopUpComponent implements OnInit {
 
   removeAuthComponent() {
     this.removeAuthComponent$.emit();
-  }
-
-  onBackClick(value) {
-    this.flow = value.replace('/', '')
   }
 }
 

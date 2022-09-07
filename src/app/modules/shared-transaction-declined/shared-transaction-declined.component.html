@@ -3,12 +3,12 @@
         <div class="transection-decline-popup retry-payment pay-cod">
             <div class="top-header-bottom-menu">
                 <h3 class="heading-3">Transaction Declined</h3>
-                <i class="icon-circle-delete" (click)="$event.stopPropagation();close()"></i>
+                <i class="icon-circle-delete" (click)="$event.stopPropagation();pay()"></i>
             </div>
             <p class="decline-txt">Transaction was declined due to some technical reason/fault</p>
             <div class="img-block">
                 <!--Sachin:Move image to cdn-->
-                <img src="assets/img/no_coupon_found.png" alt="">
+                <img src="../../../assets/img/transaction-declined.gif" alt="">
             </div>
             <div class="bottom-txt-block">
                 <p>We're having trouble processing your request.</p>
@@ -17,11 +17,11 @@
             </div>
             <div class="btn-block btn-block-2nd">
                 <ng-container *ngIf="canCOD">
-                    <button class="red-bg-btn" (click)="$event.stopPropagation();payAsCOD()">PAY CASH ON
+                    <button class="secondry-btn" (click)="$event.stopPropagation();payAsCOD()">PAY CASH ON
                         DELIVERY</button>
                     <div class="login-seperator-text "> <span>Or</span></div>
                 </ng-container>
-                <button class="light-red-bg-btn" (click)="$event.stopPropagation();payWithLastDetails()">RETRY
+                <button [class]="canCOD?'secondry-btn-1':'secondry-btn'" (click)="$event.stopPropagation();pay()">RETRY
                     PAYMENT</button>
             </div>
         </div>

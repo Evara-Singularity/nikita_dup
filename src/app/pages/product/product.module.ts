@@ -80,9 +80,9 @@ import { LoginPopupModule } from '@app/modules/login-popup/login-popup.module';
     OosSimilarSectionModule,
     SharedProductCarouselModule,
     ProductSkeletonsModule,
-    ProductAccordiansModule,
+    ProductAccordiansModule
   ],
   exports: [],
-  providers: [NgxSiemaService],
+  providers: [NgxSiemaService]
 })
 export class ProductModule { }

@@ -1,14 +1,18 @@
-import { CartUtils } from './../../utils/services/cart-utils';
-import { Component, ElementRef, EventEmitter, OnInit } from "@angular/core";
+import { Compiler, Component, ComponentRef, ElementRef, EventEmitter, HostListener, Injector, NgModuleRef, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
+import { RetryPaymentService } from '@app/utils/services/retry-payment.service';
+import { forkJoin } from 'rxjs';
 import CONSTANTS from "../../config/constants";
 import { LocalAuthService } from "../../utils/services/auth.service";
 import { CartService } from "../../utils/services/cart.service";
 import { CommonService } from "../../utils/services/common.service";
 import { DataService } from "../../utils/services/data.service";
 import { GlobalLoaderService } from "../../utils/services/global-loader.service";
+import { SharedTransactionDeclinedComponent } from '../shared-transaction-declined/shared-transaction-declined.component';
+import { SharedTransactionDeclinedModule } from '../shared-transaction-declined/shared-transaction-declined.module';
+import { CartUtils } from './../../utils/services/cart-utils';
 import { PaymentService } from "./payment.service";
 
 // TODO:
@@ -20,7 +24,8 @@ import { PaymentService } from "./payment.service";
   templateUrl: "./payment.html",
   styleUrls: ["./payment.scss"],
 })
-export class PaymentComponent implements OnInit {
+export class PaymentComponent implements OnInit
+{
   readonly REPLACE_URL = { replaceUrl: true };
   paymentBlock: number;
   globalConstants: any = CONSTANTS.GLOBAL;
@@ -40,7 +45,13 @@ export class PaymentComponent implements OnInit {
   isPaymentSelected: boolean = false;
   canNEFT_RTGS = true;
   successPercentageRawData = null;
-  paymentMode : any = CONSTANTS.PAYMENT_MODE
+  paymentMode: any = CONSTANTS.PAYMENT_MODE
+
+  orderId = null;
+  isRetryPayment = false;//Indicateas retry payment flow.
+  txnDeclinedInstance: ComponentRef<SharedTransactionDeclinedComponent> = null;
+  @ViewChild("txnDeclined", { read: ViewContainerRef })
+  txnDeclinedContainerRef: ViewContainerRef;
 
   constructor(
     public _dataService: DataService,
@@ -51,35 +62,39 @@ export class PaymentComponent implements OnInit {
     public _commonService: CommonService,
     private _analytics: GlobalAnalyticsService,
     private _router: Router,
-    private _elementRef: ElementRef
-  ) {
+    private _elementRef: ElementRef,
+    private _activatedRoute: ActivatedRoute,
+    private _compiler: Compiler,
+    private _injector: Injector,
+    private _retryPaymentService: RetryPaymentService,
+  )
+  {
     this.isShowLoader = true;
+    const queryParams = this._activatedRoute.snapshot.queryParams;
+    this.orderId = queryParams['orderId'] || queryParams['txnId'];
   }
+  
 
   ngOnInit() {
-    if (
-      (this._commonService.isBrowser &&
-        this._cartService.getGenericCartSession &&
-        Object.keys(this._cartService.getGenericCartSession?.cart).length ==
-          0) ||
-      !(
-        (this._cartService.invoiceType == "retail" &&
-          this._cartService.shippingAddress) ||
-        (this._cartService.invoiceType == "tax" &&
-          this._cartService.shippingAddress &&
-          this._cartService.billingAddress)
-      )
-    ) {
-      this._router.navigateByUrl("/checkout/address", this.REPLACE_URL);
-      return;
-    }
+    if (this._commonService.isBrowser && (this._cartService.getGenericCartSession && Object.keys(this._cartService.getGenericCartSession?.cart).length == 0) ||
+      !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
+        (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
+    ) { this._router.navigateByUrl('/checkout/address', this.REPLACE_URL); return }
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
     this.getSavedCardData();
     this._cartService.clearCartNotfications();
+    this.updatePaymentBlock(this.globalConstants['upi'], 'upi', 'upiSection');
   }
 
-  private intialize() {
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event)
+  {
+    console.log('Back button pressed');
+  }
+
+  private intialize()
+  {
     if (this._commonService.isBrowser) {
       const cartData = this._cartService.getGenericCartSession;
       this.canNEFT_RTGS = cartData["cart"]["agentId"];
@@ -103,8 +118,7 @@ export class PaymentComponent implements OnInit {
       // TODO - this should used in case there are some COD not avalible
       this.unAvailableMsnList =
         this._cartService.codNotAvailableObj["itemsArray"];
-      // TODO - check with pritam how this used
-      this.getPaymentSuccessAssistData();
+      this.callApisAsyncly();
       this.analyticVisit(cartData);
     }
   }
@@ -112,33 +126,19 @@ export class PaymentComponent implements OnInit {
   private getSavedCardData() {
     const userSession = this._localAuthService.getUserSession();
     const data = {
-      userEmail:
-        userSession && userSession["email"]
-          ? userSession["email"]
-          : userSession["phone"],
+      userEmail: (userSession && userSession['email']) ? userSession['email'] : userSession['phone']
     };
 
-    if (this.invoiceType == "tax") {
-      data["userId"] = userSession["userId"];
-      data["userEmail"] = "";
+    if (this.invoiceType == 'tax') {
+      data['userId'] = userSession['userId'];
+      data['userEmail'] = '';
     }
-    if(this._cartService.lastPaymentMode)
-    {
-      const { paymentBlock, mode, section } = CartUtils.getPaymentInfo(this._cartService.lastPaymentMode);
-      this.updatePaymentBlock(paymentBlock, mode, section);
-      return;
-    }
-    this._paymentService
-      .getSavedCards(data, this.invoiceType)
+    this._paymentService.getSavedCards(data, this.invoiceType)
       .subscribe((res) => {
-        if (
-          res["status"] === true &&
-          res["data"]["user_cards"] !== undefined &&
-          res["data"]["user_cards"] != null
-        ) {
-          this.savedCardsData = res["data"]["user_cards"];
+        if (res['status'] === true && res['data']['user_cards'] !== undefined && res['data']['user_cards'] != null) {
+          this.savedCardsData = res['data']['user_cards'];
           this.isSavedCardExist = true;
-          this.paymentBlock = this.globalConstants["savedCard"];
+          this.paymentBlock = this.globalConstants['savedCard'];
         }
         this.isShowLoader = false;
       });
@@ -181,7 +181,8 @@ export class PaymentComponent implements OnInit {
     }
   }
 
-  private changeInPaymentBlockAnalytic(cart: any, mode: any) {
+  private changeInPaymentBlockAnalytic(cart: any, mode: any)
+  {
     if (cart["itemsList"] !== null && cart["itemsList"]) {
       var trackData = {
         event_type: "click",
@@ -193,7 +194,8 @@ export class PaymentComponent implements OnInit {
         shipping: parseFloat(cart["shippingCharges"]),
         invoiceType: this.invoiceType,
         paymentMode: mode,
-        itemList: cart["itemsList"].map((item) => {
+        itemList: cart["itemsList"].map((item) =>
+        {
           return {
             category_l1: item["taxonomyCode"]
               ? item["taxonomyCode"].split("/")[0]
@@ -213,7 +215,8 @@ export class PaymentComponent implements OnInit {
     }
   }
 
-  private analyticVisit(cartData: any) {
+  private analyticVisit(cartData: any)
+  {
     if (cartData["itemsList"] !== null && cartData["itemsList"]) {
       var trackData = {
         event_type: "page_load",
@@ -224,7 +227,8 @@ export class PaymentComponent implements OnInit {
         quantity: cartData["noOfItems"],
         shipping: parseFloat(cartData["shippingCharges"]),
         invoiceType: this.invoiceType,
-        itemList: cartData["itemsList"].map((item) => {
+        itemList: cartData["itemsList"].map((item) =>
+        {
           return {
             category_l1: item["taxonomyCode"]
               ? item["taxonomyCode"].split("/")[0]
@@ -244,84 +248,140 @@ export class PaymentComponent implements OnInit {
     }
   }
 
-  scollToSection(elementId) {
-    setTimeout(() => {
+  scollToSection(elementId)
+  {
+    setTimeout(() =>
+    {
       this._elementRef.nativeElement.ownerDocument
         .getElementById(elementId)
         .scrollIntoView({ behavior: "smooth", block: "center" });
     }, 300);
   }
 
-  outData(data) {
+  outData(data)
+  {
     this[data.selector] = !this[data.selector];
     this.showPopup = false;
   }
 
-  removeTab(tabId) {
+  removeTab(tabId)
+  {
     this.isSavedCardExist = false;
   }
 
-  tabIndexUpdated(index) {
+  tabIndexUpdated(index)
+  {
     this.updateTabIndex.emit(index);
   }
 
-  getPaymentSuccessAssistData() {
-    this._paymentService
-      .getPaymentsMethodData(this.invoiceType)
-      .subscribe((result) => {
-        if (result["status"]) {
-          this.successPercentageRawData = result["data"] || null;
-        }
-      });
+  callApisAsyncly()
+  {
+    this.isShowLoader = true;
+    const userSession = this._localAuthService.getUserSession();
+    const data = { userEmail: userSession && userSession["email"] ? userSession["email"] : userSession["phone"], };
+    if (this.invoiceType == "tax") {
+      data["userId"] = userSession["userId"];
+      data["userEmail"] = "";
+    }
+    const savedCards = this._paymentService.getSavedCards(data, this.invoiceType)
+    const paymentsMethodData = this._paymentService.getPaymentsMethodData(this.invoiceType);
+
+    forkJoin([paymentsMethodData, savedCards]).subscribe((responses) =>
+    {
+      this.isShowLoader = false;
+      this.handlePaymentsData(responses[0]);
+      this.handleSavedCards(responses[1]);
+    })
   }
 
-  get neftSuccessPercentageData() {
+  handleSavedCards(repsonse)
+  {
+    if (repsonse["status"] === true && repsonse["data"]["user_cards"]) {
+      this.savedCardsData = repsonse["data"]["user_cards"];
+      this.isSavedCardExist = true;
+      this.paymentBlock = this.globalConstants["savedCard"];
+    }
+  }
+
+  handlePaymentsData(response)
+  {
+    if (response["status"]) {
+      this.successPercentageRawData = response["data"] || null;
+    }
+  }
+
+  get neftSuccessPercentageData()
+  {
     return this.successPercentageRawData && this.successPercentageRawData["NB"]
       ? this.successPercentageRawData["NB"]
       : null;
   }
 
-  get walletSuccessPercentageData() {
+  get walletSuccessPercentageData()
+  {
     return this.successPercentageRawData &&
       this.successPercentageRawData["WALLET"]
       ? this.successPercentageRawData["WALLET"]
       : null;
   }
 
-  get upiSuccessPercentageData() {
+  get upiSuccessPercentageData()
+  {
     return this.successPercentageRawData && this.successPercentageRawData["UPI"]
       ? this.successPercentageRawData["UPI"]
       : null;
   }
 
-  learnMore(e) {
+  learnMore(e)
+  {
     this.showPopup = true;
   }
 
-  set isShowLoader(value) {
+  set isShowLoader(value)
+  {
     this._loaderService.setLoaderState(value);
   }
 
-  // getPopupHeading(): string {
-  //     if (this.paymentBlock === this.globalConstants['creditDebitCard']) {
-  //         return 'Credit/Debit Card';
-  //     } else if (this.paymentBlock === this.globalConstants['netBanking']) {
-  //         return 'Net Banking';
-  //     } else if (this.paymentBlock === this.globalConstants['wallet']) {
-  //         return 'Wallet';
-  //     } else if (this.paymentBlock === this.globalConstants['emi']) {
-  //         return 'EMI';
-  //     } else if (this.paymentBlock === this.globalConstants['cashOnDelivery']) {
-  //         return 'Cash on Delivery';
-  //     } else if (this.paymentBlock === this.globalConstants['neftRtgs']) {
-  //         return 'NEFT/RTGS';
-  //     } else if (this.paymentBlock === this.globalConstants['upi']) {
-  //         return 'UPI';
-  //     } else if (this.paymentBlock === this.globalConstants['paytmUpi']) {
-  //         return 'Paytm UPI';
-  //     }
-  //     return null;
-  // }
+  fetchTransactionDetails()
+  {
+    this.isShowLoader = true;
+    this._retryPaymentService.getPaymentDetailsByOrderId(this.orderId).subscribe((response) =>
+    {
+      if (response.status) { this.openTxnDeclinedPopup(response['data']['shoppingCartDto']); return; }
+      this.isShowLoader = false;
+    })
+  }
 
-  
+  async openTxnDeclinedPopup(shoppingCartDto)
+  {
+    const txnDeclinedModule = await import('./../../modules/shared-transaction-declined/shared-transaction-declined.module').then(m => m.SharedTransactionDeclinedModule);
+    const moduleFactory = await this._compiler.compileModuleAsync(txnDeclinedModule);
+    const txnDeclinedModuleRef: NgModuleRef<SharedTransactionDeclinedModule> = moduleFactory.create(this._injector);
+    const componentFactory = txnDeclinedModuleRef.instance.resolveComponent();
+    this.txnDeclinedInstance = this.txnDeclinedContainerRef.createComponent(componentFactory, null, txnDeclinedModuleRef.injector);
+    this.txnDeclinedInstance.instance.displayPage = true;
+    this.txnDeclinedInstance.instance.shoppingCartDto = shoppingCartDto;
+    this.txnDeclinedInstance.instance.userId = this._localAuthService.getUserSession()['userId'];
+    this.txnDeclinedInstance.instance.orderId = this.orderId;
+    (this.txnDeclinedInstance.instance["emitCloseEvent$"] as EventEmitter<boolean>).subscribe((paymentDetails) =>
+    {
+      this.txnDeclinedInstance.instance.displayPage = false;
+      this.txnDeclinedInstance = null;
+      this.txnDeclinedContainerRef.remove();
+      this.setCartServiceDetails(paymentDetails)
+    });
+  }
+
+  setCartServiceDetails(paymentDetails)
+  {
+    this._cartService.invoiceType = paymentDetails.invoiceType;
+    this._cartService.shippingAddress = paymentDetails.shippingAddress;
+    this._cartService.billingAddress = paymentDetails.billingAddress;
+    this._cartService.lastPaymentMode = paymentDetails.lastPaymentMode;
+    this._cartService.lastParentOrderId = paymentDetails.lastParentOrderId;
+    if (this._cartService.lastPaymentMode) {
+      const { paymentBlock, mode, section } = CartUtils.getPaymentInfo(this._cartService.lastPaymentMode);
+      this.updatePaymentBlock(paymentBlock, mode, section);
+    }
+  }
 }

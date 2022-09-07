@@ -13,6 +13,7 @@ export const PaymentMode =
     "card_mode": { paymentBlock: CONSTANTS.GLOBAL.savedCard, mode: "", section: "" },
     "TEZ": { paymentBlock: CONSTANTS.GLOBAL.upi, mode: "upi", section: "upiSection" },
     "UPI": { paymentBlock: CONSTANTS.GLOBAL.upi, mode: "upi", section: "upiSection" },
+    "PAYTM": { paymentBlock: CONSTANTS.GLOBAL.paytmUpi, mode: "paytmUpi", section: "paytmUpiSection" },
 }
 
 export class CartUtils
@@ -93,7 +94,7 @@ export class CartUtils
     {
         const cartSession = validateDto.cartSession;
         const shippingAddress = validateDto.shippingAddress;
-        const billingAddress = validateDto.billingAddress;
+        const billingAddress = validateDto.billingAddress ?? null;
         const invoiceType = validateDto.invoiceType;
         const isBuyNow = validateDto.isBuyNow;
         let cart = cartSession.cart;
@@ -125,7 +126,7 @@ export class CartUtils
                 "itemsList": cartSession.itemsList,
                 "addressList": [
                     {
-                        "addressId": shippingAddress.idAddress,
+                        "addressId": shippingAddress.idAddress || shippingAddress.addressId,
                         "type": "shipping",
                         "invoiceType": invoiceType
                     }
@@ -138,7 +139,7 @@ export class CartUtils
         if (isBuyNow) { returnValue['shoppingCartDto']['cart']['buyNow'] = true; }
         if (billingAddress) {
             returnValue.shoppingCartDto.addressList.push({
-                "addressId": billingAddress.idAddress,
+                "addressId": billingAddress.idAddress || billingAddress.addressId,
                 "type": "billing",
                 "invoiceType": invoiceType
 
@@ -185,7 +186,7 @@ export class CartUtils
                 },
                 itemsList: CartUtils.getItemsList(cartItems),
                 addressList: [{
-                    addressId: extra.addressList.idAddress,
+                    addressId: extra.addressList.idAddress || extra.addressList.addressId,
                     type: "shipping",
                     invoiceType: invoiceType,
                 }],
@@ -211,7 +212,7 @@ export class CartUtils
         }
         if (billingAddress !== undefined && billingAddress !== null) {
             returnValue.shoppingCartDto.addressList.push({
-                addressId: billingAddress['idAddress'],
+                addressId: billingAddress['idAddress']|| billingAddress['addressId'],
                 type: "billing",
                 invoiceType: invoiceType,
             });

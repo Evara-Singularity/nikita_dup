@@ -16,7 +16,7 @@ import { GlobalLoaderService } from '@utils/services/global-loader.service';
 import { ProductService } from '@utils/services/product.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { forkJoin, Subscription } from 'rxjs';
-import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
+import { catchError, concatMap, delay, first, map, switchMap } from 'rxjs/operators';
 
 declare let dataLayer;
 @Component({
@@ -31,6 +31,7 @@ export class CartComponent
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     cartSubscription: Subscription;
     pageEvent = "genericPageLoad";
+    cartSession = null;
     noOfCartItems = 0;
 
     constructor(
@@ -47,13 +48,13 @@ export class CartComponent
     {
         // Get latest cart from API
         this._commonService.updateUserSession();
+        this.loadCartDataFromAPI();
         if (this._commonService.isBrowser) {
             this.sendCriteoPageLoad();
             this.sendEmailGTMCall();
         }
-        this.loadCartDataFromAPI();
-        const cartSession = this._cartService.getCartSession();
-        this.noOfCartItems = (cartSession['itemsList'] as any[]).length || 0;
+        // const cartSession = this._cartService.getCartSession();
+        // this.noOfCartItems = (cartSession['itemsList'] as any[]).length || 0;
     }
 
     // Function to get and set the latest cart
@@ -61,6 +62,8 @@ export class CartComponent
     {
         this._globalLoaderService.setLoaderState(true);
         this.cartSubscription = this._cartService.getCartUpdatesChanges().pipe(
+            delay(600),
+            first(),
             map((cartSession: any) =>
             {
                 const delay = this._router.url.includes("quickorder") ? 0 : 400;
@@ -71,9 +74,11 @@ export class CartComponent
                 return cartSession;
             }),
             concatMap((res) => this._cartService.getShippingAndUpdateCartSession(res))).subscribe(
-                (result) =>
+                (cartSessionWithShiping) =>
                 {
-                    this.noOfCartItems = this._cartService.getCartItemsCount();
+                    // console.log(cartSessionWithShiping);
+                    this.cartSession = cartSessionWithShiping;
+                    this.noOfCartItems = (cartSessionWithShiping['itemsList'] as any[]).length;
                     this._globalLoaderService.setLoaderState(false);
                 });
     }
@@ -448,6 +453,8 @@ export class CartComponent
             this._globalAnalyticsService.sendToClicstreamViaSocket(trackData);
         }
     }
+
+    get displayPage() {return this.noOfCartItems > 0}
 
     get isQuickorder() { return this.moduleName === "QUICKORDER" }
 

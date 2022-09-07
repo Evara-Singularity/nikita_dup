@@ -47,8 +47,6 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
     }
 
-    onOtpSuccess(){}
-
     updatePassword()
     {
         if (this.isDisabled) return;
@@ -64,7 +62,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
                 if (response['statusCode'] == 200) {
                     this._toastService.show({ type: 'success', text: 'Password updated successfully. Now try Login' });
                     if(this.isLoginPopup){
-                      this.togglePopUp$.emit('login');
+                        this.togglePopUp('login');
                     }
                     //@checkout flow need to integrated here
                     else if (this.isCheckout) {
@@ -89,7 +87,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
 
     navigateTo(link) {
         if (this.isLoginPopup) {
-            this.togglePopUp$.emit('login');
+            this.togglePopUp('login');
             return;
         }
         let navigationExtras: NavigationExtras = {
@@ -123,8 +121,8 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
 
     ngOnDestroy(): void { }
 
-    backButtonClicked(){
-      this.togglePopUp$.emit('login')
+    togglePopUp(component){
+      this.togglePopUp$.emit(component);
     }
 
 }

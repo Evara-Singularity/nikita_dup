@@ -109,8 +109,6 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         this.updateSignupStep(1);
     }
 
-    onOtpSuccess(){}
-
     backButtonClicked(){
         this.togglePopUp$.emit('login');
     }

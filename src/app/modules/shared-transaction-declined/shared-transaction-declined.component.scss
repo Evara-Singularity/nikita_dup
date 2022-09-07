@@ -1,6 +1,8 @@
 
 
 @import './../../scss/variables';
+@import './../../scss/_root';
+@import '../../scss/components/buttons.scss';
 
 .continue-button {
     padding: 10px 0;
@@ -37,7 +39,7 @@
     }
     button {
         width: 175px;
-        background: $btn-color-red;
+        background: var(--primary);
         float: right;
         height: 55px;
         text-transform: uppercase;
@@ -45,7 +47,7 @@
     button:disabled,
     button[disabled]{
         background-color: #bdbdbd;;
-        color: $white;
+        color: var(--white);
     }
 }
 
@@ -57,6 +59,7 @@
         line-height: 20px;
     }
     .top-header-bottom-menu {
+        border-bottom: none;
         .heading-3 {
             padding: 0 0 15px;
             position: relative;
@@ -78,8 +81,8 @@
     }
     .img-block {
         img {
-            width: 150px;
-            padding: 15px;
+            width: 190px;
+            padding: 5px;
         }
         text-align: center;
     }
@@ -89,23 +92,16 @@
         }
     }
     .btn-block {
+        .secondry-btn{
+            color: var(--white);
+        }
         button {
             width: 100%;
             border: none;
-            border-radius: 8px;
-            padding: 10px;
-            font-size: 14px;
             font-weight: bold;
             margin: 10px 0px;
         }
-        .red-bg-btn {
-            background-color: #d9232d;
-            color: #fff;
-        }
-        .light-red-bg-btn {
-            background-color: #fae0e1;
-            color: #d9232d;
-        }
+        
         .login-seperator-text {
             position: relative;
             text-align: center;

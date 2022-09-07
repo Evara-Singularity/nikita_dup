@@ -69,7 +69,6 @@ export class SharedLoginComponent implements OnInit
 
     ngOnInit(): void
     {
-        console.log("In SharedLoginComponent")
         if (this._common.isBrowser) {
             this.authFlow = this._localAuthService.getAuthFlow();
             if (this.authFlow) { 
@@ -146,9 +145,9 @@ export class SharedLoginComponent implements OnInit
                 const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
                 this._localAuthService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_PHONE, this.phoneFC.value);
                 if (this.isLoginPopup) { // navigate to next popup screen
-                  this.navigateToNextPopUp(isUserExists);
-                } else if (this.isNormalLogin) {
-                  this.navigateToNext(isUserExists);
+                   this.navigateToNextPopUp(isUserExists);
+                } else { 
+                   this.navigateToNext(isUserExists);
                 }
             } else {
                 this._tms.show({ type: 'error', text: response['message'] });
@@ -158,7 +157,7 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateToNextPopUp(isUserExists) {
-        const LINK = (isUserExists) ? '/otp': '/sign-up';
+        const LINK = (isUserExists) ? 'otp': 'sign-up';
         this.togglePopUp$.emit(LINK);
     }
 
@@ -176,8 +175,8 @@ export class SharedLoginComponent implements OnInit
                 this._localAuthService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_EMAIL, this.emailFC.value);
                 if (this.isLoginPopup) {  // navigate to next popup screen
                     this.navigateToNextPopUp(isUserExists);
-                } else if (this.isNormalLogin) {
-                  this.navigateToNext(isUserExists);
+                } else {
+                    this.navigateToNext(isUserExists);
                 }          
               } else {
                 this._tms.show({ type: 'error', text: response['message'] });
@@ -185,10 +184,7 @@ export class SharedLoginComponent implements OnInit
             this._loader.setLoaderState(false);
         })
     }
-
-    backButtonClicked(){
-    }
-
+ 
     clearSuggestion()
     {
         this.emailAutoCompleteSuggestion = [];
@@ -258,12 +254,16 @@ export class SharedLoginComponent implements OnInit
     navigateSkipNow() {
         if (this.isLoginPopup) {
             this.removeAuthComponent$.emit();
-        }
-        else if (this.isNormalLogin) {
+        } else {
+            let backRedirectUrl = localStorage.getItem('backRedirectUrl');
+            if(backRedirectUrl != '/'){
+                this._router.navigateByUrl(backRedirectUrl);
+                return;
+            }
             this._localAuthService.handleBackURL(true);
         }
     }
-
+    
     removeAuthComponent(){
         this.removeAuthComponent$.emit();
     }

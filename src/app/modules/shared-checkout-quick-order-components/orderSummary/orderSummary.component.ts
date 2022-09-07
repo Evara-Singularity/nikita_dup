@@ -17,6 +17,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
     totalOffer = 0;
     totalPayableAmount = 0;
     cartSubscription: Subscription = null;
+    shippingPriceChangesSubscription: Subscription = null;
     promoSubscription: Subscription = null;
     isCartFetched = false;
 
@@ -36,15 +37,16 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
         this.cartSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
-                this.updateShippingCharges();
+                // this.updateShippingCharges();
                 this.totalOffer = cartSession['cart']['totalOffer'] || 0;
                 this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
             }
             this.isCartFetched = true;
         });
-        if (userSession['authenticated'] == "true" && userSession['userId']) {
-            this._cartService.getPromoCodesByUserId(userSession['userId']);
-        }
+        this.shippingPriceChangesSubscription = this._cartService.getShippingPriceChanges().subscribe(cartSession=>{
+            this.updateShippingCharges();
+        })
+        this._cartService.getPromoCodesByUserId(userSession['userId']);
         this.promoSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode }) =>
         {
             this.showPromoSuccessPopup = isNewPromocode;
@@ -67,20 +69,25 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
 
     openOfferPopUp()
     {
-        if (this._commonService.userSession.authenticated == "true") {
             this.showPromoOfferPopup = true;
-        } else {
-            this._localAuthService.setBackURLTitle('/quickorder', null);
-            let navigationExtras: NavigationExtras = {
-                queryParams: { 'backurl': '/quickorder' },
-            };
-            this.router.navigate(["/login"], navigationExtras);
-        }
     }
 
     closePromoSuccessPopUp() { this.showPromoSuccessPopup = false; }
+    //enabling scroll after applying coupon
+    enableScroll() {
+        document.getElementById('body').removeEventListener('touchmove', this.preventDefault);
+    }
 
-    closePromoListPopUp(flag) { this.showPromoOfferPopup = flag }
+    closePromoListPopUp(flag) {
+        (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
+        this.enableScroll();
+        this.showPromoOfferPopup = flag
+    }
+    preventDefault(e) {
+        e.preventDefault();
+    }
+
+
 
     //analytics
     getGTMData(cartSession)
@@ -145,5 +152,6 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
     {
         if (this.cartSubscription) this.cartSubscription.unsubscribe()
         if (this.promoSubscription) this.promoSubscription.unsubscribe()
+        if(this.shippingPriceChangesSubscription) this.shippingPriceChangesSubscription.unsubscribe();
     }
 }

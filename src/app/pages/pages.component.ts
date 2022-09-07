@@ -35,10 +35,8 @@ export class PagesComponent implements OnInit {
   };
   isFooter: boolean = true;
   isHomePage: boolean;
+  isRoutedBack: boolean = false;
   eventNavigationStart: any;
-  // @ViewChild('dynamicComponent', {static: true, read: ViewContainerRef}) container: ViewContainerRef;
-  // ondemad loaded components for FAQ listing
-
   constructor(
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
@@ -65,6 +63,7 @@ export class PagesComponent implements OnInit {
         } else {
           this.isHomePage = false;
         }
+        this.isRoutedBack = (res['url'] == "/?back=1") ? true : false;
       }
     });
   }
@@ -174,7 +173,8 @@ export class PagesComponent implements OnInit {
      * Also, for page refresh
      */
     if (this.isBrowser) {
-
+          // separately checking for back param, because on angular router navigation this param is not getting updated
+      this.isRoutedBack = window.location.toString().includes('back=1');
       this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie();

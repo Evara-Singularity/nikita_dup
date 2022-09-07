@@ -19,6 +19,7 @@ import { ENDPOINTS } from "@app/config/endpoints";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import IdleTimer from "../idleTimeDetect";
 import { GlobalAnalyticsService } from "./global-analytics.service";
+import { ServerLogSchema } from "../models/log.modal";
 
 @Injectable({
     providedIn: "root",
@@ -35,7 +36,6 @@ export class CommonService
     };
     limitTrendingCategoryNumber: number = GLOBAL_CONSTANT.trendingCategoryLimit;
     enableNudge: boolean = false;
-    obj: {};
 
     set showLoader(status: boolean)
     {
@@ -56,6 +56,7 @@ export class CommonService
     isHomeHeader = false;
     isPLPHeader = false;
     isScrolledHeader = false;
+    loadNav: Subject<boolean> = new Subject<false>();
     stopSearchNudge = false;
 
     currentRequest: any;
@@ -80,7 +81,7 @@ export class CommonService
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
     private routeData: { currentUrl: string; previousUrl: string };
-    userSession;
+    userSession ;
     idleNudgeTimer: IdleTimer;
     private _renderer2: Renderer2
     ;
@@ -692,6 +693,7 @@ export class CommonService
         if (params.pageName == "CATEGORY") {
             if (params["category"] != undefined)
                 actualParams["category"] = params["category"];
+                actualParams['pageSize'] = CONSTANTS.GLOBAL.default.categoryListingPageSize + '';
             //10766
             if (queryParams["str"] != undefined)
                 actualParams["str"] = queryParams["str"];
@@ -1135,15 +1137,15 @@ export class CommonService
 
     scrollTo(event)
     {
-        if (this.isBrowser) {
-            if (event.target) {
+        if (this.isBrowser){
+            if (event.target){
                 ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
-            } else {
+            }
+             else {
                 ClientUtility.scrollToTop(500, event.offsetTop - 50);
             }
         }
     }
-
     getBreadcrumpData(link, type, pageTitle?): Observable<any>
     {
         let curl =
@@ -1233,7 +1235,6 @@ export class CommonService
             ? this.getCurrentRoute(this._router.url)
             : currentRouteFromCategoryFilter;
 
-        console.log("currentRoute"+currentRoute);
         const extras: NavigationExtras = { queryParams: {} };
 
         const fragmentString = this.generateFragmentString(
@@ -1457,6 +1458,45 @@ export class CommonService
         } else {
             return 0;
         }
+    }
+
+    openLoader() {
+        return this.loadNav.asObservable();
+    }
+    
+    isAbsoluteUrl(url: string) {
+        return (url.indexOf('://') > 0 || url.indexOf('//') === 0)
+    }
+
+    getLoggerObj(url: string, method: string =null, startTime?, endTime?){
+        
+        const logInfo: ServerLogSchema = {
+            apiURL: url,
+            method: method,
+            payload: null,
+            endDateTime: null,
+            responseStatus: null,
+            startDateTime: startTime,
+            sessionId: null,
+          };
+
+          if(this.isBrowser){
+            logInfo.sessionId = this.userSession ? this.userSession.sessionId : null;
+          }
+
+          return logInfo;
+    }
+
+    sortProductTagsOnPriority(productTags) {
+        var res = Math.min.apply(Math, productTags.map((item) => {
+          return item['priority'];
+        }));
+        productTags.forEach(element => {
+          if (element['priority'] === res) {
+            productTags.push(element);
+          }
+        });
+        return productTags
     }
 
 }

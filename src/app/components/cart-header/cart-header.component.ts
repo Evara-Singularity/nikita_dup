@@ -36,7 +36,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
 		{
 			//front end created dummy cart session;
-			if (!cartSession) return;
+			if (cartSession.proxy) return;
 			this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
 			if ((this.isCheckout || this.isPayment) && (cartSession['itemsList'] as any[]).length === 0) {
 				this._naviagtionService.handleCartWithZeroItems();

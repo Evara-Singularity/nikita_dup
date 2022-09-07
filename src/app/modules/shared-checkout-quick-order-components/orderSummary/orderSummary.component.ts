@@ -73,8 +73,21 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
     }
 
     closePromoSuccessPopUp() { this.showPromoSuccessPopup = false; }
+    //enabling scroll after applying coupon
+    enableScroll() {
+        document.getElementById('body').removeEventListener('touchmove', this.preventDefault);
+    }
 
-    closePromoListPopUp(flag) { this.showPromoOfferPopup = flag }
+    closePromoListPopUp(flag) {
+        (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
+        this.enableScroll();
+        this.showPromoOfferPopup = flag
+    }
+    preventDefault(e) {
+        e.preventDefault();
+    }
+
+
 
     //analytics
     getGTMData(cartSession)

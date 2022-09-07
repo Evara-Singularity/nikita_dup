@@ -255,11 +255,11 @@ export class SharedLoginComponent implements OnInit
         if (this.isLoginPopup) {
             this.removeAuthComponent$.emit();
         } else {
-            let backRedirectUrl = localStorage.getItem('backRedirectUrl');
-            if(backRedirectUrl != '/'){
-                this._router.navigateByUrl(backRedirectUrl);
-                return;
-            }
+            // let backRedirectUrl = localStorage.getItem('backRedirectUrl');
+            // if(backRedirectUrl != '/'){
+            //     this._router.navigateByUrl(backRedirectUrl);
+            //     return;
+            // }
             this._localAuthService.handleBackURL(true);
         }
     }

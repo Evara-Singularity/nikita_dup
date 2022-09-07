@@ -209,7 +209,10 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
                 'state': this._activatedRoute.snapshot.queryParams.state
             },
         };
-        if (this.isCheckout) {
+        if(this.isLoginPopup){
+            this.navigateToPopUp('otp')
+        }
+        else if (this.isCheckout) {
             this._router.navigate([this.CHECKOUT_LOGIN_URL])
         } else {
             this._router.navigate([this.LOGIN_URL], navigationExtras)

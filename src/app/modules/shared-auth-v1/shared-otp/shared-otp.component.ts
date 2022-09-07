@@ -39,7 +39,6 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
     @Input('isCheckout') isCheckout = false;
     @Input('isLoginPopup') isLoginPopup;
     @Output('otpSuccess$') otpSuccess$= new EventEmitter();
-    @Output('backButtonClicked$') backButtonClicked$= new EventEmitter();
     @Output('togglePopUp$') togglePopUp$= new EventEmitter();
 
     authFlow: AuthFlowType;//gives flowtype & identifier information
@@ -210,7 +209,10 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
                 'state': this._activatedRoute.snapshot.queryParams.state
             },
         };
-        if (this.isCheckout) {
+        if(this.isLoginPopup){
+            this.navigateToPopUp('otp')
+        }
+        else if (this.isCheckout) {
             this._router.navigate([this.CHECKOUT_LOGIN_URL])
         } else {
             this._router.navigate([this.LOGIN_URL], navigationExtras)
@@ -226,7 +228,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
             },
         };
         if(this.isLoginPopup){
-            this.togglePopUp$.emit('forgot-password');
+            this.navigateToPopUp('forgot-password')
         }
         else if (this.isCheckout) {
             this._router.navigate([this.CHECKOUT_PASSWORD_URL])
@@ -235,10 +237,8 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
-    onOtpSuccess(){}
-
-    backButtonClicked(){
-        this.backButtonClicked$.emit('login');
+    navigateToPopUp(component){
+        this.togglePopUp$.emit(component);
     }
 
     get isOTPVerified() { return (this.verifiedOTP === this.otpValue) && (this.timer === 0); }

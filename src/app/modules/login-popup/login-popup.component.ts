@@ -41,7 +41,7 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     const user = this._localAuthService.getUserSession();
-    if (user && user['authenticated'] !== 'true') {
+    if (user && user["authenticated"] !== "true") {
       if (this.isRouteBased) {
         this.navigationSubscription(); //for #auth
       } else {
@@ -55,10 +55,13 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
   }
 
   initiatePopUp() {
-    this._loader.setLoaderState(true);
-    this.openLoginPopUp().then(() => {
-      this._loader.setLoaderState(false);
-    });
+    const user = this._localAuthService.getUserSession();
+    if (user && user["authenticated"] !== "true") {
+      this._loader.setLoaderState(true);
+      this.openLoginPopUp().then(() => {
+        this._loader.setLoaderState(false);
+      });
+    }
   }
 
   navigationSubscription() {
@@ -76,10 +79,7 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
     setTimeout(async () => {
       const { SharedAuthPopUpComponent } = await import(
         "../../modules/shared-auth-popup/shared-auth-popup.component"
-      ).finally(() => {
-        console.log("openLoginPopUp module loaded");
-      });
-
+      ).finally(() => {});
       const factory = this.cfr.resolveComponentFactory(
         SharedAuthPopUpComponent
       );
@@ -96,7 +96,7 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
       ).subscribe((data) => {
         this.authInstance = null;
         this.authInstanceref.remove();
-        this._router.navigate([]);
+        // this._router.navigate([]);
       });
     }, 600);
   }

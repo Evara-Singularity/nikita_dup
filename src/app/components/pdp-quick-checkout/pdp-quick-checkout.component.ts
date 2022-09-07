@@ -5,6 +5,7 @@ import {
   NgModule,
   Output,
   Input,
+  ViewChild,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { BottomMenuModule } from "@app/modules/bottomMenu/bottom-menu.module";
@@ -27,6 +28,7 @@ import { MathFloorPipeModule } from "@pipes/math-floor";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { QuickCodService } from "@app/utils/services/quick-cod.service";
 import { InitiateQuickCod } from "@app/utils/models/cart.initial";
+import { BottomMenuComponent } from "@app/modules/bottomMenu/bottom-menu.component";
 
 @Component({
   selector: "pdp-quick-checkout",
@@ -34,13 +36,14 @@ import { InitiateQuickCod } from "@app/utils/models/cart.initial";
   styleUrls: ["./pdp-quick-checkout.component.scss"],
 })
 export class PdpQuickCheckoutComponent implements OnInit {
+
   //inputs
   @Input("rawProductData") rawProductData;
   @Input("productPrice") productPrice;
   @Input("selectedProductBulkPrice") selectedProductBulkPrice;
   @Input("cartQunatityForProduct") cartQunatityForProduct;
   @Input("address") address;
-
+  @ViewChild(BottomMenuComponent) _bottomMenuComponent: BottomMenuComponent;
   //outputs
   @Output() isClose: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -87,7 +90,8 @@ export class PdpQuickCheckoutComponent implements OnInit {
       this.isClose.emit(true);
       this.commonService.oosSimilarCard$.next(false);
     }
-    this.isPopup = false;
+    // this.isPopup = false;
+    this._bottomMenuComponent.updateParent({ popupClose: true });
   }
 
   removeCartItem() {

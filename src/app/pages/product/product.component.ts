@@ -1311,10 +1311,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 //filtering Data to show the 
                 this.productBulkPrices = this.productBulkPrices.filter((bulkPrice) =>
                 {
-                    return this.rawProductData['quantityAvailable'] >= bulkPrice['minQty']
+                    return this.rawProductData['quantityAvailable'] >= bulkPrice['minQty'] && bulkPrice['minQty'] >= this.productMinimmumQuantity;
 
                 });
-
                 this.checkBulkPriceMode();
             }
         }
@@ -2619,7 +2618,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 this.offerPopupContainerRef.remove();
             });
             (
-                this.offerComparePopupInstance.instance[
+                this.offerPopupInstance.instance[
                 "isLoading"
                 ] as EventEmitter<boolean>
             ).subscribe((loaderStatus) =>

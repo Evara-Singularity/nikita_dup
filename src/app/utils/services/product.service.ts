@@ -20,6 +20,7 @@ export class ProductService {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     private basePath = CONSTANTS.NEW_MOGLIX_API;
+    productCouponItem: any = null;
 
     oosSimilarProductsData = {
         similarData: [],
@@ -36,6 +37,16 @@ export class ProductService {
             similarData: [],
         };
     }
+
+    getCustomerLastOrder(obj):Observable<any> {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_LAST_ORDERS;
+        return this._dataService.callRestful("POST", url, { body: obj }).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ lastOrderDetails: [], httpStatus: res.status });
+            })
+        );
+    }
+  
 
     getSimilarProductInfoByIndex(index) {
         return this.oosSimilarProductsData.similarData[index];
@@ -741,7 +752,6 @@ export class ProductService {
     }
 
     productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
-        // console.log("blocks", product)
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
         const productEntity: ProductsEntity =  {

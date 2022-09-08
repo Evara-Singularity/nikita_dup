@@ -112,6 +112,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	isRoutedBack: boolean;
 	searchTerm = '';
 	bannerDataFinal: any[] = [];
+	whatsAppBannerUrl=CONSTANTS.whatsAppBannerUrl;
+	readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
 
 	constructor(
 		public dataService: DataService,

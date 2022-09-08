@@ -255,7 +255,7 @@ export class DataService {
          * that was used to display when API fails, 
          * we are now only toast module to display notification
          */
-        this._tms.show(msg);
+        this._tms.show({ type: 'error', text: msg });
     }
 
     public getCookie(name: string) {

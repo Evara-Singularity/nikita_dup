@@ -1,49 +1,49 @@
-<div class="body-bg">
-    <div >
-        <div class="price-table mt-10">
-            <div class="container">
-                <h3 class="heading titleCategory" (click)="_commonService.scrollTo($event)"
-                    [appKpToggle]="{idName: 'openCat4' , iconMode : true}">
-                    <span>Top Selling {{heading}} Price List in India</span>
-                </h3>
-            </div>
-        </div>
+<div class="panel-bg pwa-row mt-10 pad-tb-5">
 
-        <div id="openCat4" style="display:block" class="seo-table-container panel-body">
-            <div class="seo-table-data">
-                <table style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Latest Models</th>
-                            <th>Price</th>
-                            <th>Discount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ng-container
-                            *ngFor="let product of priceListData | slice:0:10, let i=index">
-                            <!-- <pre>{{ product | json }}</pre> -->
-                            <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
-                                <td><a (click)="goToProducturl(product.productUrl)">{{product.productName}}</a></td>
-                                <td>₹{{product.salesPrice | mathFloor | number : '1.0-0'}}</td>
-                                <td>
-                                    <!-- <pre>
+    <div class="price-table ">
+        <h3 class="heading titleCategory" (click)="_commonService.scrollTo($event)"
+            [appKpToggle]="{idName: 'openCat4' , iconMode : true}">
+            <span>Top Selling {{heading}} Price List in India</span>
+        </h3>
+    </div>
+
+    <div id="openCat4" style="display:block" class="seo-table-container">
+        <div class="seo-table-data">
+            <table style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Latest Models</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let product of priceListData | slice:0:10, let i=index">
+                        <!-- <pre>{{ product | json }}</pre> -->
+                        <tr *ngIf="product.salesPrice > 0 && product.discount != 100">
+                            <td><a (click)="goToProducturl(product.productUrl)">{{product.productName}}</a></td>
+                            <td>₹{{product.salesPrice | mathFloor | number : '1.0-0'}}</td>
+                            <td>
+                                <!-- <pre>
                                         product.mrp : {{product.mrp}} <br/>
                                         product.salesPrice : {{product.salesPrice}} <br/>
                                     </pre> -->
-                                    <ng-container *ngIf=" _commonService.calculcateDiscount(null, product.mrp, product.salesPrice ) == 0">
-                                        -
-                                    </ng-container>
-                                    <ng-container *ngIf=" _commonService.calculcateDiscount(null, product.mrp, product.salesPrice ) > 0">
-                                        {{ _commonService.calculcateDiscount(null, product.mrp, product.salesPrice ) | number : '1.0-0'}}% off
-                                    </ng-container>
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
-            </div>
-            <span class="date-text">This data was last updated on {{ todayDate | date:'shortDate'}}.</span>
+                                <ng-container
+                                    *ngIf=" _commonService.calculcateDiscount(null, product.mrp, product.salesPrice ) == 0">
+                                    -
+                                </ng-container>
+                                <ng-container
+                                    *ngIf=" _commonService.calculcateDiscount(null, product.mrp, product.salesPrice ) > 0">
+                                    {{ _commonService.calculcateDiscount(null, product.mrp, product.salesPrice ) |
+                                    number : '1.0-0'}}% off
+                                </ng-container>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
         </div>
+        <span class="date-text">This data was last updated on {{ todayDate | date:'shortDate'}}.</span>
     </div>
+
 </div>

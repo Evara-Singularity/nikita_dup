@@ -75,7 +75,7 @@
                     <div class="outline-input-label">
 
                         <label [class.is-focus]="displayFocus('postCode')">
-                            <input data-numbersOnly formControlName="postCode" type="tel" placeholder="" maxlength="6" class="disable-input-field">
+                            <input data-numbersOnly formControlName="postCode" type="tel" placeholder="" maxlength="6" >
                             <span class="label">Pin Code*</span>
                         </label>
                         <ng-container *ngIf="postCode.touched || postCode.dirty">
@@ -92,8 +92,8 @@
                     </div>
                     <div class="outline-input-label">
                         <label [class.is-focus]="displayFocus('city')">
-                            <input formControlName="city" type="text" placeholder="" readonly class="disable-input-field">
-                            <span class="label">City*</span>
+                            <input formControlName="city" type="text" class="disable-input-field">
+                            <span class="label">Cityy*</span>
                         </label>
                         <ng-container *ngIf="city.touched || city.dirty">
                             <p *ngIf="city.hasError('required')" class="error-txt">

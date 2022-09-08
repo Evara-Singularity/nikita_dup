@@ -151,18 +151,24 @@
     }
 }
 .invoice-container{
-  border:none;
-  padding:10px 15px;
-  margin-top: 0 !important;
-  .invoice-txt{
-      p{
-        font-size:$medium-font !important;
+    border:none;
+    padding:10px 15px;
+    margin-top: 0 !important;
+    .invoice-select{
+        label{
+            margin-right: 15px !important;
+        }
+      .invoice-txt{
+          padding-left: 0 !important;
+          p{
+            font-size:$medium-font !important;
+          }
       }
+      .invoice-subtxt{
+          font-size:$small-font !important;
+      }
+    }
   }
-  .invoice-subtxt{
-      font-size:$small-font !important;
-  }
-}
 .checkout-card{
     display: flex;
     align-items: center;

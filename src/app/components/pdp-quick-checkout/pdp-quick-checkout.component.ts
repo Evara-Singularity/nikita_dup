@@ -432,10 +432,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
         if (res && res["iswithInCODLimit"] == true) {
           this.validateCart();
         } else {
-          this._tms.show({
-            type: "error",
-            text: res.message,
-          });
+          this.cartService.quickCheckoutCodMaxErrorMessage = res.message;
           this.close(false);
         }
       });

@@ -2421,7 +2421,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                 this.offerPopupContainerRef.remove();
             });
             (
-                this.offerComparePopupInstance.instance[
+                this.offerPopupInstance.instance[
                 "isLoading"
                 ] as EventEmitter<boolean>
             ).subscribe((loaderStatus) =>

@@ -704,7 +704,7 @@ export class ProductService {
             keyFeatures: product.keyFeatures || [],
             internalProduct: !product.hasOwnProperty("internalProduct")
                 ? true
-                : product.internalProduct, // if intenal product prop does not exist then it is internal product
+                : !product.internalProduct, // if intenal product prop does not exist then it is internal product
         } as ProductsEntity;
     }
 

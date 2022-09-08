@@ -69,13 +69,13 @@ export class PaymentComponent implements OnInit {
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
     this.getSavedCardData();
     this._cartService.clearCartNotfications();
-    this._cartService.updateNonDeliverableItemsAfterRemove(gCartSession['itemsList']);
     this.updatePaymentBlock(this.globalConstants['upi'], 'upi', 'upiSection');
   }
 
   private intialize() {
     if (this._commonService.isBrowser) {
       const cartData = this._cartService.getGenericCartSession;
+      this._cartService.updateNonDeliverableItemsAfterRemove(cartData['itemsList']);
       this.canNEFT_RTGS = cartData["cart"]["agentId"];
       this.totalAmount =
         cartData["cart"]["totalAmount"] +

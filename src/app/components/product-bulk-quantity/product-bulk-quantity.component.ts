@@ -24,13 +24,13 @@ export class ProductBulkQuantityComponent implements OnInit {
   constructor(private _tms: ToastMessageService) { }
 
   ngOnInit(): void {
+    // this.getEachItem();
   }
 
   selectProductBulkPrice(qunatity) {
     this.qunatityFormControl.setValue(qunatity);
     this.selectProductBulkPrice$.emit(qunatity);
   }
-
 }
 
 @NgModule({

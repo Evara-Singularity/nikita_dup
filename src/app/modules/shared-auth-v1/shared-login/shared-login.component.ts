@@ -234,11 +234,10 @@ export class SharedLoginComponent implements OnInit
         }
     }
     navigateSkipNow() {
-        debugger;
         let backRedirectUrl = localStorage.getItem('backRedirectUrl');
         if(backRedirectUrl != '/'){
             if(backRedirectUrl === 'null'){
-                this._router.navigateByUrl('/');
+                this._router.navigateByUrl(this._sharedAuthService.redirectUrl);
                 return;
             }
             else{

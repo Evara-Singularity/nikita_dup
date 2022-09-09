@@ -1814,6 +1814,7 @@ export class CartService
                     this.updateCartAfterNotifcations(newCartSession, setValidation$);
                     return;
                 }
+                this.setGenericCartSession(newCartSession);
                 this.modifyCartItemsForPriceNotfication();
                 setValidation$.subscribe((response) => console.log("Cycle completed successfully"));
                 return;
@@ -1900,7 +1901,6 @@ export class CartService
         }
         const saveNotfications = this.notifications.filter((notification) => notification['type'] == "unserviceable");
         return this.setValidateCartMessageApi({ userId: userSession['userId'], data: saveNotfications });
-
     }
 
     getCartNotificationsSubject(): Observable<any> { return this.notificationsSubject.asObservable(); }

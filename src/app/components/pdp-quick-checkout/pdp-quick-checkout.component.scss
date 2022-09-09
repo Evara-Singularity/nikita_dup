@@ -156,10 +156,10 @@
     margin-top: 0 !important;
     .invoice-select{
         label{
-            margin-right: 15px !important;
+            margin-right: 0px !important;
         }
       .invoice-txt{
-          padding-left: 0 !important;
+          padding-left: 15px !important;
           p{
             font-size:$medium-font !important;
           }
@@ -189,9 +189,10 @@
         .green-txt{
           font-size:$small-font;
           font-weight:$font-bold;
+          vertical-align: sub;
           i{
-            font-size: 14px;
-            padding-right: 10px;
+            font-size: 12px;
+            padding-right: 8px;
             vertical-align: bottom;
           }
         }

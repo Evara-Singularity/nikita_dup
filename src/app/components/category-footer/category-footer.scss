@@ -116,6 +116,8 @@
 .faq-accordian{
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
     .iconaccordian{
         padding-left: 5px;
     }

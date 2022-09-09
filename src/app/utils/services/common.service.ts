@@ -1193,6 +1193,18 @@ export class CommonService
         };
     }
 
+    setBodyScroll(e, status: boolean) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (this.isBrowser) {
+            (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
+            document.querySelector('app-pop-up').classList.remove('open');
+            status ?
+                document.getElementById('body').removeEventListener('touchmove', () => { e.preventDefault() }) :
+                document.getElementById('body').addEventListener('touchmove', () => { e.preventDefault() }, { passive: true });
+        }
+    }
+
     genricApplyFilter(key, item)
     {
         if (this.selectedFilterData.filter.hasOwnProperty(key)) {

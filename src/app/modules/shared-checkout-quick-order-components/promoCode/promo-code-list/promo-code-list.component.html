@@ -19,7 +19,7 @@
                 <h3>{{item.promoCode}}</h3>
                 <p class="promo-description">{{item.promoDescription}}</p>
               </div>
-              <button class="btn quaternary-btn-1" [disabled]="item.promoCode.toLowerCase() === selectedPromocode.toLowerCase()" (click)="$event.stopPropagation();submitPromocode(item.promoCode)">APPLY</button>
+              <button class="btn quaternary-btn-1" [disabled]="item.promoCode.toLowerCase() === selectedPromocode.toLowerCase()" (click)="$event.stopPropagation();submitPromocode($event, item.promoCode)">APPLY</button>
             </div>
           </div>
         </ng-container>

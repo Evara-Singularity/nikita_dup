@@ -233,13 +233,21 @@ export class SharedLoginComponent implements OnInit
             this.clearSuggestion();
         }
     }
-
     navigateSkipNow() {
+        let backRedirectUrl = localStorage.getItem('backRedirectUrl');
+        if(backRedirectUrl != '/'){
+            if(backRedirectUrl === 'null'){
+                this._router.navigateByUrl(this._sharedAuthService.redirectUrl);
+                return;
+            }
+            else{
+                this._router.navigateByUrl(backRedirectUrl);
+                return;
+            }
+        }
         this._localAuthService.handleBackURL(true);
     }
-
     navigateHome() { this._router.navigate(["."])}
-
     get isAuthHeader() { return this.isCheckout === false && this.headerTitle !== null }
     get phoneFC() { return this.loginNumberForm.get("phone"); }
     get emailFC() { return this.loginEmailForm.get("email"); }

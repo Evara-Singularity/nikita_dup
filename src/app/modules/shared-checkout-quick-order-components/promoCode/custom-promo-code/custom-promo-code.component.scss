@@ -6,11 +6,11 @@ i.icon-circle-delete {
 .applied-code {
     position: relative;
     input:read-only {
-        color: $green-color;
+        color: var(--slimy-green);
     }
     button:disabled {
-        background: $green-color;
-        border: 1px solid $green-color;
+        background: var(--slimy-green);
+        border: 1px solid var(--slimy-green);
     }
     i {
         position: absolute;

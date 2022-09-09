@@ -1,9 +1,9 @@
-import { forkJoin } from 'rxjs';
-import { CartUtils } from './../../utils/services/cart-utils';
 import { Component, ElementRef, EventEmitter, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
+import { CartUtils } from "@app/utils/services/cart-utils";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
+import { forkJoin } from "rxjs";
 import CONSTANTS from "../../config/constants";
 import { LocalAuthService } from "../../utils/services/auth.service";
 import { CartService } from "../../utils/services/cart.service";
@@ -56,32 +56,27 @@ export class PaymentComponent implements OnInit {
   ) {
     this.isShowLoader = true;
   }
+  
+  
 
   ngOnInit() {
-    if (
-      (this._commonService.isBrowser &&
-        this._cartService.getGenericCartSession &&
-        Object.keys(this._cartService.getGenericCartSession?.cart).length ==
-          0) ||
-      !(
-        (this._cartService.invoiceType == "retail" &&
-          this._cartService.shippingAddress) ||
-        (this._cartService.invoiceType == "tax" &&
-          this._cartService.shippingAddress &&
-          this._cartService.billingAddress)
-      )
-    ) {
-      this._router.navigateByUrl("/checkout/address", this.REPLACE_URL);
-      return;
-    }
+    const gCartSession = this._cartService.getGenericCartSession;
+    if (this._commonService.isBrowser && (gCartSession && Object.keys(gCartSession?.cart).length == 0) ||
+      !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
+        (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
+    ) { this._router.navigateByUrl('/checkout/address', this.REPLACE_URL); return }
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
+    this.getSavedCardData();
     this._cartService.clearCartNotfications();
+    this._cartService.updateNonDeliverableItemsAfterRemove(gCartSession['itemsList']);
+    this.updatePaymentBlock(this.globalConstants['upi'], 'upi', 'upiSection');
   }
 
   private intialize() {
     if (this._commonService.isBrowser) {
       const cartData = this._cartService.getGenericCartSession;
+      this._cartService.updateNonDeliverableItemsAfterRemove(cartData['itemsList']);
       this.canNEFT_RTGS = cartData["cart"]["agentId"];
       this.totalAmount =
         cartData["cart"]["totalAmount"] +
@@ -97,15 +92,34 @@ export class PaymentComponent implements OnInit {
         this.paymentBlock = this.globalConstants["razorPay"];
         this.isShowLoader = false;
       }
-      if (!this._cartService.cashOnDeliveryStatus.isEnable) {
-        this.disableCod = true;
-      }
+      this.disableCod = !(this._cartService.cashOnDeliveryStatus.isEnable);
       // TODO - this should used in case there are some COD not avalible
       this.unAvailableMsnList =
         this._cartService.codNotAvailableObj["itemsArray"];
       this.callApisAsyncly();
       this.analyticVisit(cartData);
     }
+  }
+
+  private getSavedCardData() {
+    const userSession = this._localAuthService.getUserSession();
+    const data = {
+      userEmail: (userSession && userSession['email']) ? userSession['email'] : userSession['phone']
+    };
+
+    if (this.invoiceType == 'tax') {
+      data['userId'] = userSession['userId'];
+      data['userEmail'] = '';
+    }
+    this._paymentService.getSavedCards(data, this.invoiceType)
+      .subscribe((res) => {
+        if (res['status'] === true && res['data']['user_cards'] !== undefined && res['data']['user_cards'] != null) {
+          this.savedCardsData = res['data']['user_cards'];
+          this.isSavedCardExist = true;
+          this.paymentBlock = this.globalConstants['savedCard'];
+        }
+        this.isShowLoader = false;
+      });
   }
 
   updatePaymentBlock(block, mode?, elementId?) {

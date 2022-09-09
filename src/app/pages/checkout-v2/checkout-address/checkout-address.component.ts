@@ -66,7 +66,20 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this._cartService.refreshCartSesion();
         this.updateUserStatus();
         this._cartService.showUnavailableItems = false;
+        this.updateExistingProductsState();
         this._globalLoader.setLoaderState(true);
+    }
+
+    // this will update the products state when any of the products were removed from cart
+    updateExistingProductsState() {
+        this._cartService.productRemovalNofify().subscribe(value => {
+            console.log(value)
+            if (value) {
+                const POST_CODE = this.deliveryAddress && this.deliveryAddress['postCode'];
+                if (!POST_CODE) return;
+                this.verifyServiceablityAndCashOnDelivery(POST_CODE);
+            }
+        })
     }
 
     ngAfterViewInit(): void
@@ -88,6 +101,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 //address is getting updated and cart session is getting updated with some delay.
                 //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
                 if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
+                    this.invoiceType = this._cartService.invoiceType === "tax" ? this.INVOICE_TYPES.TAX : this.INVOICE_TYPES.RETAIL;
                     this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
                     this.verifyUnserviceableFromCartSubscription = !(this.verifyUnserviceableFromCartSubscription)
                 }
@@ -189,8 +203,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     /**@description updates global object to set in COD is available or not and used in payment section */
     updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
     {
-        this._cartService.codNotAvailableObj['itemsArray'] = cartItems.filter((item) => nonCashonDeliverableMsns.includes(item.productId));
-        this._cartService.cashOnDeliveryStatus.isEnable = (nonCashonDeliverableMsns.length === 0);
+        this._cartService.updateNonDeliverableItems(cartItems, nonCashonDeliverableMsns)
     }
 
     /**@description scrolls to payment summary section on click of info icon*/

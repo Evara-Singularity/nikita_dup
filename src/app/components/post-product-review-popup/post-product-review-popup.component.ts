@@ -15,6 +15,7 @@ export class PostProductReviewPopupComponent implements OnInit {
   @Input() productInfo: any
   @Output() removed: EventEmitter<any> = new EventEmitter<any>();
   @Output() submitted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  isFormSubmitted:boolean = false;
 
   reviewForm: FormGroup;
   ratingValue = 0;
@@ -30,10 +31,10 @@ export class PostProductReviewPopupComponent implements OnInit {
     this.createForm();
   }
 
-  createForm() {
+  createForm(){
     this.reviewForm = this.formBuilder.group({
       review_subject: ['', [Validators.required, Validators.maxLength(100)]],
-      review_text: ['', [Validators.maxLength(600)]]
+      review_text: ['', [Validators.maxLength(600),Validators.pattern(/^[A-Za-z0-9 ]+$/)]]
     });
   }
 
@@ -58,9 +59,11 @@ export class PostProductReviewPopupComponent implements OnInit {
           this.ratingValue = 0;
           if (res['code'] == "200") {
             this.submitted.emit(true);
+            this.isFormSubmitted = true;
           } else {
             this.submitted.emit(false);
             console.log('review not submitted', res);
+            this.isFormSubmitted = true;
           }
         }
       );
@@ -71,6 +74,8 @@ export class PostProductReviewPopupComponent implements OnInit {
     console.log('write review outData data', data)
     this.removed.emit(data);
   }
+  get review_title() { return this.reviewForm.get("review_subject"); }
+  get review_text()  { return this.reviewForm.get("review_text"); }
 
 }
 

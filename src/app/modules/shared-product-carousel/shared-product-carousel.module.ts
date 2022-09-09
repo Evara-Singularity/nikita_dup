@@ -8,7 +8,6 @@ import { SwipeDirectiveModule } from '@app/utils/directives/swipe.directive';
   declarations: [SharedProductCarouselComponent],
   imports: [
     CommonModule,
-    ArrayFilterPipeModule,
     SwipeDirectiveModule
   ],
   exports: [SharedProductCarouselComponent]

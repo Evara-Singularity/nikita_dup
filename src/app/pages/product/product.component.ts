@@ -320,6 +320,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     hasGstin: boolean;
     GLOBAL_CONSTANT = GLOBAL_CONSTANT;
     isAskQuestionPopupOpen: boolean;
+    mainProductURL: string;
 
     set showLoader(value: boolean)
     {
@@ -755,6 +756,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.productBrandDetails = this.rawProductData["brandDetails"];
         this.productCategoryDetails = this.rawProductData["categoryDetails"][0];
         this.productUrl = this.rawProductData["defaultCanonicalUrl"];
+        this.mainProductURL = this.rawProductData["productPartDetails"][partNumber]["productLinks"]['default'];
         this.productFilterAttributesList =
             this.rawProductData["filterAttributesList"];
         this.productKeyFeatures = this.rawProductData["keyFeatures"];
@@ -1309,10 +1311,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 //filtering Data to show the 
                 this.productBulkPrices = this.productBulkPrices.filter((bulkPrice) =>
                 {
-                    return this.rawProductData['quantityAvailable'] >= bulkPrice['minQty']
+                    return this.rawProductData['quantityAvailable'] >= bulkPrice['minQty'] && bulkPrice['minQty'] >= this.productMinimmumQuantity;
 
                 });
-
                 this.checkBulkPriceMode();
             }
         }
@@ -2295,6 +2296,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         let user = this.localStorageService.retrieve("user");
         if (user && user.authenticated == "true") {
+            this.location.replaceState(this.mainProductURL);
             !user['phone'].length ? this.intiateRFQQuote(true) : this.raiseRFQGetQuote(user);
         } else {
             this.goToLoginPage(this.productUrl, "Continue to raise RFQ", "raiseRFQQuote");
@@ -2364,7 +2366,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     this.intiateRFQQuoteUpdate(product , rfqId);
                    // this._tms.show({ type: 'success', text: response['statusDescription'] });
                     this.rfqQuoteRaised = true;
-                    this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
+                    this.location.replaceState(this.mainProductURL);
                 } else {
                     this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
                 }
@@ -2616,7 +2618,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 this.offerPopupContainerRef.remove();
             });
             (
-                this.offerComparePopupInstance.instance[
+                this.offerPopupInstance.instance[
                 "isLoading"
                 ] as EventEmitter<boolean>
             ).subscribe((loaderStatus) =>
@@ -3547,6 +3549,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         {
             ele.push(element.name);
         });
+        this.productTags = this.commonService.sortProductTagsOnPriority(this.productTags);
         const tagsForAdobe = ele.join("|");
 
         let page = {
@@ -4002,6 +4005,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         let user = this.localStorageService.retrieve("user");
         if (user && user.authenticated == "true") {
+            this.location.replaceState(this.mainProductURL);
             this.askQuestionPopup();
         } else {
             this.goToLoginPage(this.productUrl, "Continue to ask question", "askQuestion");
@@ -4045,6 +4049,15 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         ).subscribe(() =>
         {
             this.handleFaqSuccessPopup();
+        });
+        (
+            this.askQuestionPopupInstance.instance[
+            "removed"
+            ] as EventEmitter<boolean>
+        ).subscribe((status) =>
+        {
+            this.askQuestionPopupInstance = null;
+            this.askQuestionPopupContainerRef.detach();
         });
     }
 

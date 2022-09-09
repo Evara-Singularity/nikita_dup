@@ -19,7 +19,7 @@ export class HomeExpandedHeaderComponent implements OnInit {
   @Input() enableBackBtn: boolean = false;
   @Input() imgAssetPath: string = "";
   searchValue='';
-
+  isRoutedBack: boolean;
 
   constructor(
     public _commonService: CommonService,
@@ -28,7 +28,13 @@ export class HomeExpandedHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(res => {
+      this.isRoutedBack = res && res.hasOwnProperty('back') ? true : false
       this.searchValue = (res['search_query']) ? res['search_query'] : ''
+      this._commonService.openLoader().subscribe(resp => {
+        if(resp == true) {
+          this.loadSearchNav$.emit();
+        }
+      })
     })
   }
 

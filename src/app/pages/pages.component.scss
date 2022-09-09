@@ -3,7 +3,7 @@
 footer {
     font-size: $large-font;
     &.card-30 {
-        background: $white;
+        background: var(--white);
         padding-bottom: 0;
     }
     b {

@@ -160,12 +160,11 @@ export class ClusterStoreComponent implements OnInit {
 		if(this.isBrowser){	
 			this.reInitializeLazyComponents();
 		}
-		
 		this.getSelectedCategoryTop(
-			response['data'][0]['block_data']['category_cluster']
+				response['data'][0]['block_data']['category_cluster']
 		);
 		this.data = response['data'][0]['block_data'];
-		if (this.isServer) {
+		if (this.isServer){
 			this.setMetaInformation(
 				response['metaTitle'],
 				response['metaDescritpion']
@@ -174,7 +173,6 @@ export class ClusterStoreComponent implements OnInit {
 		} else {
 			this.title.setTitle(response['metaTitle']);
 		}
-
 		if(this.isBrowser){	
 			this.callAllLzayComponents();
 		}
@@ -182,7 +180,7 @@ export class ClusterStoreComponent implements OnInit {
 
 	productDataToCategoryCardObject(index,data){
 		return {
-			item: data[index],
+			item:data[index],
 			isSelected: this.extraData && this.extraData['currentRoute'] && this.extraData['currentRoute'] == data[index]['category_url'],
 			page:'cluster-store',
 			title: data[index]['CategoryName'],
@@ -206,7 +204,7 @@ export class ClusterStoreComponent implements OnInit {
 		this._renderer2.appendChild(this._document.head, ampLink);
 	}
 
-	getSelectedCategoryTop(category_cluster) {
+	getSelectedCategoryTop(category_cluster){
 		let selectedItem;
 		if (category_cluster && category_cluster['data'].length > 0) {
 			category_cluster['data'] = category_cluster['data'].filter((item) => {
@@ -216,9 +214,11 @@ export class ClusterStoreComponent implements OnInit {
 				selectedItem = item;
 				return false;
 			});
-			category_cluster['data'] = [selectedItem].concat(
-				category_cluster['data']
-			);
+			if(selectedItem){
+				category_cluster['data'] = [selectedItem].concat(
+					category_cluster['data']
+				);
+			}
 		}
 	}
 

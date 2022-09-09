@@ -1,5 +1,7 @@
 @import "../../scss/variables";
 @import "./slp.scss";
+@import '../../scss/components/home-listing.scss';
+
 .displayCategoryName {
     font-size: 16px;
 }
@@ -64,7 +66,7 @@
         .request-text {
             font-weight: bold;
             font-size: 16px;
-            color: $black;
+            color: var(--black);
             margin-top: 5px;
         }
     }
@@ -74,7 +76,7 @@
     &.list {
         li {
             width: 100%;
-            border-bottom: 1px solid $border-color;
+            border-bottom: 1px solid var(--platinum);
             a {
                 display: block;
             }
@@ -101,7 +103,7 @@
 //         }
 //     }
 //     .card-head {
-//         border-bottom: 1px solid $border-color;
+//         border-bottom: 1px solid var(--platinum);
 //     }
 // }
 .category-list{
@@ -138,7 +140,7 @@
         margin: 0 6px 0 0;
     }
     .discount {
-        color: $green-color;
+        color: var(--slimy-green);
         font-weight: bold;
     }
 }
@@ -185,7 +187,7 @@
     .innerBrandSection {
         box-shadow: 0px 3px 6px #0000001a;
         border-radius: 4px;
-        background: $white;
+        background: var(--white);
         padding: 15px 30px;
         margin: 0px 15px;
     }
@@ -234,18 +236,9 @@
     .slpLayout2 {
         @include layout2;
     }
-    .bscategory {
-        background: #fff;
-        .bscatwrap {
-            padding: 15px 15px 0;
-            .slp-heading {
-                padding: 5px 10px 5px 0;
-            }
-        }
-    }
     .bsrow {
-        border-top: 1px solid rgba(162, 162, 162, 0.5);
-        margin: 0 -15px;
+        // border-top: 1px solid rgba(162, 162, 162, 0.5);
+        // margin: 0 -15px;
         display: flex;
         flex-wrap: wrap;
         .bs_item {
@@ -299,7 +292,7 @@
                 }
                 .safetysh_discount {
                     display: block;
-                    color: $green-color;
+                    color: var(--slimy-green);
                     font-size: $medium-font;
                     font-weight: 500;
                     margin-bottom: 1px;
@@ -321,8 +314,8 @@
         }
     }
     .viewallbs {
-        color: $logo-color;
-        border: 1px solid $logo-color;
+        color: var(--primary);
+        border: 1px solid var(--primary);
         border-radius: 2px;
         text-transform: uppercase;
         font-size: 10px;
@@ -368,8 +361,7 @@
         font-size: 20px;
         color: #2A2A2A;
         font-weight: 700;
-        padding-bottom: 5px;
-        margin-bottom: 15px;
+
         &:before {
             position: absolute;
             left: 0;
@@ -381,21 +373,14 @@
         }
     }
 }
-// Panel Head Footer
-.panel-head {
-    background: #fff;
-    margin-top: 10px;
-    h3 {
-        padding: 15px 0;
-    }
-}
+
 .common_table {
     th,
     td {
         font-size: 12px;
         font-weight: normal;
         text-align: left;
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid var(--platinum);
         padding: 5px;
     }
 }

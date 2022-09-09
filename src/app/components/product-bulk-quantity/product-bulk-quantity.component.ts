@@ -19,17 +19,18 @@ export class ProductBulkQuantityComponent implements OnInit {
   @Input() qunatityFormControl;
   @Output() checkBulkPriceMode$: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectProductBulkPrice$: EventEmitter<number> = new EventEmitter<number>();
+  @Input() productMinimmumQuantity;
 
   constructor(private _tms: ToastMessageService) { }
 
   ngOnInit(): void {
+    // this.getEachItem();
   }
 
   selectProductBulkPrice(qunatity) {
     this.qunatityFormControl.setValue(qunatity);
     this.selectProductBulkPrice$.emit(qunatity);
   }
-
 }
 
 @NgModule({

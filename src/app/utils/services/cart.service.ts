@@ -67,6 +67,7 @@ export class CartService
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
     private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(null);
     private _shippingPriceChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
+    public isProductRemoved: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
     private previousUrl: string = null;
     private currentUrl: string = null;
@@ -723,6 +724,10 @@ export class CartService
     public setShippingPriceChanges(cartsession): void
     {
         this._shippingPriceChanges.next(cartsession);
+    }
+
+    public productRemovalNofify(): Observable<any> {
+        return this.isProductRemoved.asObservable();
     }
 
     // refresh and chnages to communicated 
@@ -1515,9 +1520,9 @@ export class CartService
             })).
             subscribe((response) =>
             {
-                this._globalLoader.setLoaderState(false);
                 this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
                 const ITEM_LIST = tempCartSession['itemsList'];
+                
                 if (ITEM_LIST && ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {
                     this.clearBuyNowFlow();
                     // clears browser history so they can't navigate with back button
@@ -1529,7 +1534,27 @@ export class CartService
                     tempCartSession['extraOffer'] = null;
                     this._notifyCartChanges(tempCartSession, null);
                 }
+                // 50 ms wait time for cartItems to update after product removed
+                setTimeout(() => {
+                    this.isProductRemoved.next(true)
+                    this._globalLoader.setLoaderState(false);
+                }, 50);
             })
+    }
+
+    updateNonDeliverableItemsAfterRemove(cartItems:any[])
+    {
+        const freshmsns = cartItems.map((item)=>item.productId);
+        let tempcods:any[] = [];
+        if (this.codNotAvailableObj['itemsArray'])
+        {
+            tempcods = (this.codNotAvailableObj['itemsArray'] as any[]);
+            console.log(tempcods);
+            tempcods = tempcods.filter((item) => freshmsns.includes(item.productId))
+            console.log(tempcods);
+        }
+        this.codNotAvailableObj['itemsArray'] = tempcods;
+        this.cashOnDeliveryStatus.isEnable = (tempcods.length == 0);
     }
 
     clearBuyNowFlow()
@@ -1965,6 +1990,12 @@ export class CartService
         return (totalAmount + shippingCharges) - (totalOffer);
     }
 
+    updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
+    {
+        this.codNotAvailableObj['itemsArray'] = cartItems.filter((item) => nonCashonDeliverableMsns.includes(item.productId));
+        this.cashOnDeliveryStatus.isEnable = (nonCashonDeliverableMsns.length === 0);
+    }
+    
     getPaymentDetailsByOrderId(orderId)
     {
         orderId = 3985262;

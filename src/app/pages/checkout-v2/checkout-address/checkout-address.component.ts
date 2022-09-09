@@ -101,6 +101,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 //address is getting updated and cart session is getting updated with some delay.
                 //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
                 if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
+                    this.invoiceType = this._cartService.invoiceType === "tax" ? this.INVOICE_TYPES.TAX : this.INVOICE_TYPES.RETAIL;
                     this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
                     this.verifyUnserviceableFromCartSubscription = !(this.verifyUnserviceableFromCartSubscription)
                 }

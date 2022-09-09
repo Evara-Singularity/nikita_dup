@@ -189,9 +189,10 @@
         .green-txt{
           font-size:$small-font;
           font-weight:$font-bold;
+          vertical-align: sub;
           i{
-            font-size: 14px;
-            padding-right: 10px;
+            font-size: 12px;
+            padding-right: 8px;
             vertical-align: bottom;
           }
         }

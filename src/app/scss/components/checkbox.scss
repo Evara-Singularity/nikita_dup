@@ -16,13 +16,13 @@
         }
     }
     .custom-box {
-        width: 18px;
-        height: 18px;
+        width: 10px;
+        height: 10px;
         display: block;
         float: left;
         font-size: $extra-large-1-font;
         line-height: $medium-line-height;
-        margin-right: 5px;
+        // margin-right: 5px;
         @extend %transition;
         &::before {
             font-family: "icomooon_pwa";
@@ -48,13 +48,14 @@
         }
     }
     .custom-box {
-        width: 18px;
-        height: 18px;
-        display: block;
+        width: 10px;
+        height: 10px;
+        display: flex;
+        align-items: center;
         float: left;
         font-size: $extra-large-1-font;
         line-height: $medium-line-height;
-        margin-right: 5px;
+        // margin-right: 5px;
         @extend %transition;
         &::before {
             font-family: "icomooon_pwa";

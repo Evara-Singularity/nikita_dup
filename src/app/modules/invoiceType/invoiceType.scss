@@ -7,7 +7,7 @@
         display: flex;
         align-items: center;
         label {
-            width: 20px;
+            width: 15px;
             @extend %custom-check-box-checkout;
         }
         .invoice-txt {

@@ -64,14 +64,6 @@ export class SiemaSlideComponent {
     ngOnInit() {        
     }
 
-    slicingHref(image) {
-        const invalidURL = `${CONSTANTS.IMAGE_BASE_URL}${CONSTANTS.IMAGE_BASE_URL}`
-        if (image.includes(invalidURL)) {
-            return image.replace(invalidURL,CONSTANTS.IMAGE_BASE_URL);
-        }
-        return image;
-    }
-
     ngAfterViewInit() {
         if (this.isBrowser) {
 

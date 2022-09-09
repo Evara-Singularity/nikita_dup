@@ -65,7 +65,7 @@ export class CartService
         "proxy": true//front end created dummy cart session
     };
     public cart: Subject<{ count: number, currentlyAdded?: any }> = new Subject();
-    private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(null);
+    private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
     private _shippingPriceChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
     public isProductRemoved: BehaviorSubject<boolean> = new BehaviorSubject(false);
 

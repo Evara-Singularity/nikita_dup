@@ -156,7 +156,7 @@
     margin-top: 0 !important;
     .invoice-select{
         label{
-            margin-right: 0px !important;
+            margin-right: 0 !important;
         }
       .invoice-txt{
           padding-left: 15px !important;
@@ -181,19 +181,22 @@
         .prod-mrp{
             font-size:$extra-large-font;
             font-weight:$font-bold;
+            margin-bottom: 2px;
         }
         .prod-selling-price{
             font-size:$small-font;
             color:var(--spanish-gray);
+            line-height: $small-line-height;
+            margin-bottom: 5px;
         }
         .green-txt{
           font-size:$small-font;
           font-weight:$font-bold;
-          vertical-align: sub;
+          align-items: center;
+          display: flex;
           i{
             font-size: 12px;
             padding-right: 8px;
-            vertical-align: bottom;
           }
         }
     }

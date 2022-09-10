@@ -35,6 +35,7 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
 
     submitPromocode(e, promocode) {
         if (this.selectedPromocode === promocode) { return }
+        this._commonService.setBodyScroll(null, true);
         this._cartService.genericApplyPromoCode(promocode);
         this._commonService.setBodyScroll(e, true);
     }

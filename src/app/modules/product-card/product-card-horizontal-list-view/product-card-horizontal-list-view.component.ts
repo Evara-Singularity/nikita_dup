@@ -54,7 +54,6 @@ export class ProductCardHorizontalListViewComponent extends ProductCardCoreCompo
 
   ngOnInit(): void {
     super.ngOnInit();
-    console.log('is AD', this.isAd);
   }
 
   get youtubeThumbnail(){

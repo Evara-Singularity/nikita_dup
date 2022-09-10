@@ -50,6 +50,7 @@ export class PagesComponent implements OnInit {
       this.createHeaderData(this._aRoute);
 
       if (res instanceof NavigationEnd) {
+        this.enableBodyScoll();
         if (res['url'] === '/' || res['url'] == "/?back=1") {
           this.isHomePage = true;
         } else {
@@ -59,6 +60,14 @@ export class PagesComponent implements OnInit {
       }
       
     });
+  }
+
+  enableBodyScoll() {
+    // incase body scroll is disabled then enable it on page refresh
+    // console.log('page. enableBodyScoll ', this._commonService.bodyScrollStatus);
+    setTimeout(() => {
+      this._commonService.setBodyScroll(null, true);
+    }, 200);
   }
 
   checkAndRedirect() {

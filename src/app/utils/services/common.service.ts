@@ -44,6 +44,7 @@ export class CommonService
     public isBrowser: boolean;
     public isServer: boolean;
     public isAppInstalled: boolean = false;
+    private _bodyScollFlag: boolean = true;
     // public defaultParams = {queryParams: {}, orderBy: "popularity", orderWay: "desc", pageIndex:0, pageSize:32, taxonomy: "", operation:"", filter: {}};
     private defaultParams = { queryParams: {}, filter: {} };
 
@@ -128,6 +129,10 @@ export class CommonService
     get getPreviousUrl(): string {
         return this.previousUrl;
     } 
+
+    get bodyScrollStatus() {
+        return this._bodyScollFlag;
+    }
 
     setNetworkSpeedState(speed)
     {
@@ -1193,15 +1198,30 @@ export class CommonService
         };
     }
 
-    setBodyScroll(e, status: boolean) {
-        e.preventDefault();
-        e.stopPropagation();
+    setBodyScroll(e = null, status: boolean) {
+        if (e != null && e.hasOwnProperty('preventDefault') ){
+            e.preventDefault();
+            e.stopPropagation();
+        }
         if (this.isBrowser) {
-            (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
-            document.querySelector('app-pop-up').classList.remove('open');
-            status ?
-                document.getElementById('body').removeEventListener('touchmove', () => { e.preventDefault() }) :
-                document.getElementById('body').addEventListener('touchmove', () => { e.preventDefault() }, { passive: true });
+            this._bodyScollFlag = status;
+            if (status) {
+                //enable
+                (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
+                document.querySelector('app-pop-up').classList.remove('open');
+                if (e != null && e.hasOwnProperty('preventDefault')) {
+                    document.getElementById('body').removeEventListener('touchmove', () => { e && e.preventDefault() })
+                } else {
+                    document.getElementById('body').removeEventListener('touchmove', () => { })
+                }
+            } else {
+                // disabled
+                if (e != null && e.hasOwnProperty('preventDefault')) {
+                    document.getElementById('body').addEventListener('touchmove', () => { e && e.preventDefault() }, { passive: true });
+                } else {
+                    document.getElementById('body').addEventListener('touchmove', () => { }, { passive: true });
+                }
+            }
         }
     }
 

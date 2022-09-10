@@ -1,4 +1,4 @@
-<app-pop-up (outData$)="closePromoListPopup($event)" [headerType]="'pop-up-header1'" [data]="{headerText: 'Apply Coupon'}">
+<app-pop-up (outData$)="closePromoListPopup($event)" class="open" [headerType]="'pop-up-header1'" [data]="{headerText: 'Apply Coupon'}">
   <div class="content-popup select-offers" content>
     <section class="open">
       <custom-promo-code [nextPromocode]="nextPromocode"></custom-promo-code>

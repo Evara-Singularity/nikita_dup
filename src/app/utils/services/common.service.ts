@@ -1208,7 +1208,9 @@ export class CommonService
             if (status) {
                 //enable
                 (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
-                document.querySelector('app-pop-up').classList.remove('open');
+                if(document.querySelector('app-pop-up')){
+                    document.querySelector('app-pop-up').classList.remove('open');
+                }
                 if (e != null && e.hasOwnProperty('preventDefault')) {
                     document.getElementById('body').removeEventListener('touchmove', () => { e && e.preventDefault() })
                 } else {

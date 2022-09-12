@@ -16,6 +16,7 @@ export class AskQuestionPopoupComponent {
     questionText = '';
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     @Output() showSuccessPopup$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() removed: EventEmitter<any> = new EventEmitter<any>();
 
     @Input('productCategoryDetails') productCategoryDetails = null;
     @Input('productSubPartNumber') productSubPartNumber = null;
@@ -69,6 +70,10 @@ export class AskQuestionPopoupComponent {
         else {
             this.goToLoginPage(this.productUrl);
         }
+    }
+
+    outData(data) {
+        this.removed.emit(data);
     }
 }
 

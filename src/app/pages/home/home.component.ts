@@ -234,7 +234,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 							this.middleImageJsonData = blockData.image_block;
 							this.middleImageJsonData.map(e => {
 								const imgPath = this.isServer ? '' : this.imagePathBanner;
-								/// console.log('image path ==>', e["image_name"]); 
+								/// console.log('image path ==>', e["image_name"]);
+								// e.link = CONSTANTS.PROD+'/'+e["image_link"]; 
 								e.link = e["image_link"];
 								e.image_name = imgPath + e["image_name"];
 								return e;

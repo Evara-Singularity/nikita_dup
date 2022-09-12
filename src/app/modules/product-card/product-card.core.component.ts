@@ -375,7 +375,6 @@ export class ProductCardCoreComponent implements OnInit {
 
   cardVisisble(htmlElement) {
     if (this.isAd && this._commonService.isBrowser) {
-
       this.onlineSalesImpressionTrackUsingGTM();
     }
   }

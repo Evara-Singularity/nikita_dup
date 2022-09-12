@@ -195,7 +195,7 @@ export const CONSTANTS = {
     ],
     default: {
       pageSize: 20,
-      categoryListingPageSize: 25
+      categoryListingPageSize: 20
     },
     codMin: 300,
     codMax: 30000,

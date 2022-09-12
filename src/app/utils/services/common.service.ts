@@ -44,6 +44,7 @@ export class CommonService
     public isBrowser: boolean;
     public isServer: boolean;
     public isAppInstalled: boolean = false;
+    private _bodyScollFlag: boolean = true;
     // public defaultParams = {queryParams: {}, orderBy: "popularity", orderWay: "desc", pageIndex:0, pageSize:32, taxonomy: "", operation:"", filter: {}};
     private defaultParams = { queryParams: {}, filter: {} };
 
@@ -130,6 +131,10 @@ export class CommonService
     get getPreviousUrl(): string {
         return this.previousUrl;
     } 
+
+    get bodyScrollStatus() {
+        return this._bodyScollFlag;
+    }
 
     setNetworkSpeedState(speed)
     {
@@ -1208,6 +1213,35 @@ export class CommonService
         };
     }
 
+    setBodyScroll(e = null, status: boolean) {
+        if (e != null && e.hasOwnProperty('preventDefault') ){
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        if (this.isBrowser) {
+            this._bodyScollFlag = status;
+            if (status) {
+                //enable
+                (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
+                if(document.querySelector('app-pop-up')){
+                    document.querySelector('app-pop-up').classList.remove('open');
+                }
+                if (e != null && e.hasOwnProperty('preventDefault')) {
+                    document.getElementById('body').removeEventListener('touchmove', () => { e && e.preventDefault() })
+                } else {
+                    document.getElementById('body').removeEventListener('touchmove', () => { })
+                }
+            } else {
+                // disabled
+                if (e != null && e.hasOwnProperty('preventDefault')) {
+                    document.getElementById('body').addEventListener('touchmove', () => { e && e.preventDefault() }, { passive: true });
+                } else {
+                    document.getElementById('body').addEventListener('touchmove', () => { }, { passive: true });
+                }
+            }
+        }
+    }
+
     genricApplyFilter(key, item)
     {
         if (this.selectedFilterData.filter.hasOwnProperty(key)) {
@@ -1489,7 +1523,6 @@ export class CommonService
 
     sortProductTagsOnPriority(productTags) {
         if(productTags){
-
             var res = Math.min.apply(Math, productTags.map((item) => {
               return item['priority'];
             }));
@@ -1500,6 +1533,14 @@ export class CommonService
             });
             return productTags
         }
+    }
+
+    slicingHref(image) {
+        const invalidURL = `${CONSTANTS.IMAGE_BASE_URL}${CONSTANTS.IMAGE_BASE_URL}`
+        if (image.includes(invalidURL)) {
+            return image.replace(invalidURL,CONSTANTS.IMAGE_BASE_URL);
+        }
+        return image;
     }
 
 }

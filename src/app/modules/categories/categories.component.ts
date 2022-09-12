@@ -67,7 +67,7 @@ export class Categories implements OnInit {
 	readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
 
 	constructor(
-		private _commonService: CommonService,
+		public _commonService: CommonService,
 		private _productService: ProductService
 	) {}
 

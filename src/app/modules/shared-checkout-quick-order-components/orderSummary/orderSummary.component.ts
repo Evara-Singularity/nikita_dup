@@ -69,7 +69,22 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
 
     openOfferPopUp()
     {
-            this.showPromoOfferPopup = true;
+        if (this._commonService.userSession.authenticated == "true") {
+            this.openPromoCodeList();
+        } else {
+            this._localAuthService.setBackURLTitle('/quickorder', null);
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'backurl': '/quickorder' },
+            };
+            this.router.navigate(["/login"], navigationExtras);
+        }
+    }
+
+    openPromoCodeList() {
+        this.showPromoOfferPopup = true;
+        if (this._commonService.isBrowser && document.querySelector('app-pop-up')) {
+            document.querySelector('app-pop-up').classList.add('open');
+        }
     }
 
     closePromoSuccessPopUp() { this.showPromoSuccessPopup = false; }

@@ -40,6 +40,7 @@ export class CartService
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public cartCountSubject: Subject<any> = new Subject<any>(); // cartCountSubject 
     public codNotAvailableObj = {}; // cart.component
+    public quickCheckoutCodMaxErrorMessage = null;
     itemsValidationMessage = [];
     cartNotications = [];
     notifications = [];
@@ -1550,6 +1551,7 @@ export class CartService
             {
                 this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
                 const ITEM_LIST = tempCartSession['itemsList'];
+                
                 if (ITEM_LIST && ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {
                     this.clearBuyNowFlow();
                     // clears browser history so they can't navigate with back button
@@ -1560,7 +1562,6 @@ export class CartService
                     tempCartSession['cart']['totalOffer'] = totalOffer;
                     tempCartSession['extraOffer'] = null;
                     this._notifyCartChanges(tempCartSession, null);
-                    this.updateNonDeliverableItemsAfterRemove(tempCartSession['itemsList']);
                 }
                 // 50 ms wait time for cartItems to update after product removed
                 setTimeout(() => {
@@ -1573,7 +1574,6 @@ export class CartService
     updateNonDeliverableItemsAfterRemove(cartItems:any[])
     {
         const freshmsns = cartItems.map((item)=>item.productId);
-        console.log(freshmsns);
         let tempcods:any[] = [];
         if (this.codNotAvailableObj['itemsArray'])
         {
@@ -1854,6 +1854,7 @@ export class CartService
                     this.updateCartAfterNotifcations(newCartSession, setValidation$);
                     return;
                 }
+                this.setGenericCartSession(newCartSession);
                 this.modifyCartItemsForPriceNotfication();
                 setValidation$.subscribe((response) => console.log("Cycle completed successfully"));
                 return;
@@ -1940,7 +1941,6 @@ export class CartService
         }
         const saveNotfications = this.notifications.filter((notification) => notification['type'] == "unserviceable");
         return this.setValidateCartMessageApi({ userId: userSession['userId'], data: saveNotfications });
-
     }
 
     getCartNotificationsSubject(): Observable<any> { return this.notificationsSubject.asObservable(); }

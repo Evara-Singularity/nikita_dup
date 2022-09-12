@@ -80,7 +80,7 @@ export class SharedCheckoutAddressUtil
         if (length == 0) { return null; }
         if (length == 1) { return addressList[0]; }
         if (checkoutAddress) {
-            const index = addressList.findIndex((address) => { return address.idAddress === checkoutAddress.idAddress });
+            const index = addressList.findIndex((address) => { return address.idAddress === checkoutAddress.idAddress || checkoutAddress.addressId });
             if (index > -1) { return addressList[index]; }
             return addressList[0];
         }

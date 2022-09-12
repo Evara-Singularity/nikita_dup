@@ -91,6 +91,12 @@
         p {
             padding: 8px 0px;
         }
+        .bottom-list-txt{
+            display: flex;
+            .listInfo{
+                padding-left: 5px;
+            }
+        }
     }
     .btn-block {
         .secondry-btn{

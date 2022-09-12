@@ -79,14 +79,16 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy {
     onBackBtnClick() {
         if (this.isLoginPopup) {
           this.onSkipBtnClick$.emit(true);
-        } else {
-          this._navigationService.goBack(true);
-        }
+          return;
+        } 
+        this._navigationService.goBack(true);
+        
     }
 
     onHomepageBtnClick() {
         if(this.isLoginPopup){
             this.onSkipBtnClick$.emit(true);
+            return;
         }
         this.onHomepageBtnClick$.emit(true);
     }

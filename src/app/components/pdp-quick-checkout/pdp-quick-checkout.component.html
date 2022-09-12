@@ -102,7 +102,7 @@
                     <div class="invoice-select">
                         <label>
                             <input #checkBoxVal type="checkbox" [checked] = "purchasingForBusiness" (change)="getGstInvoice(checkBoxVal.checked)" *ngIf="purchasingForBusiness">
-                            <input type="checkbox" [checked] = "purchasingForBusiness" (change)="close(false)" *ngIf="!purchasingForBusiness">
+                            <input type="checkbox" [checked]="purchasingForBusiness" (change)="close(false)" *ngIf="!purchasingForBusiness">
                             <span class="custom-box icon-box"></span>
                         </label>
                         <div class="invoice-txt">
@@ -148,7 +148,6 @@
                 <p class="open-offers" (click)="$event.stopPropagation();openOfferPopUp()">VIEW ALL OFFERS</p>
             </div>
             <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" *ngIf="showPromoOfferPopup"></promo-code-list>
-
             <div class="alert-box" *ngIf="showPromoSuccessPopup">
                 <div class="overlay" (click)="$event.stopPropagation();closePromoSuccessPopUp()"></div>
                 <div class="content-area">

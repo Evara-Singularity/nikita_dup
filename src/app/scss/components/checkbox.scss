@@ -19,7 +19,6 @@
         width: 18px;
         height: 18px;
         display: block;
-        float: left;
         font-size: $extra-large-1-font;
         line-height: $medium-line-height;
         margin-right: 5px;
@@ -52,10 +51,8 @@
         height: 18px;
         display: flex;
         align-items: center;
-        float: left;
         font-size: $extra-large-1-font;
         line-height: $medium-line-height;
-        margin-right: 5px;
         @extend %transition;
         &::before {
             font-family: "icomooon_pwa";
@@ -65,7 +62,6 @@
     }
     .chk-txt {
         font-size: $large-font;
-        float: left;
         margin-left: 5px;
         line-height: $medium-line-height;
         width: calc(100% - 38px);

@@ -210,7 +210,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
             },
         };
         if(this.isLoginPopup){
-            this.navigateToPopUp('otp')
+            this.navigateToPopUp('login')
         }
         else if (this.isCheckout) {
             this._router.navigate([this.CHECKOUT_LOGIN_URL])

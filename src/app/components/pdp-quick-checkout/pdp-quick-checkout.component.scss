@@ -156,10 +156,12 @@
     margin-top: 0 !important;
     .invoice-select{
         label{
-            margin-right: 0 !important;
+            .custom-box{
+                margin-right: 0 !important;
+                display: inline-block;
+            }
         }
       .invoice-txt{
-          padding-left: 20px !important;
           p{
             font-size:$medium-font !important;
           }

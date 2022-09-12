@@ -533,7 +533,7 @@ export class CartService
         return itemsList;
     }
 
-    private _getPrepaidDiscount(body)
+    public _getPrepaidDiscount(body)
     {
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_PrepaidDiscount, { body: body }).pipe(
             catchError((res: HttpErrorResponse) =>
@@ -543,8 +543,18 @@ export class CartService
         );
     }
 
+    /** Pradeep:As per Yogender, by passing the logic.
+     * if this is enabled then cart totalPayableAmount should be modified
+    */
     validatePaymentsDiscount(paymentMode, paymentId): Observable<any>
     {
+        //Pradeep:by pass code
+        const byPass = true;
+        if (byPass) {
+            console.log(this.cartSession)
+            return of({ prepaidDiscount: 0, totalPayableAmount: this.cartSession['cart']['totalPayableAmount'] });
+        }
+        //Pradeep:this is original code which should be there and remove above by pass code.
         return of({
             "mode": paymentMode,
             "paymentId": paymentId,

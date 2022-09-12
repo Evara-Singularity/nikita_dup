@@ -1,4 +1,4 @@
-import { Compiler, Component, ComponentRef, ElementRef, EventEmitter, HostListener, Injector, NgModuleRef, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { Compiler, Component, ComponentRef, ElementRef, EventEmitter, Injector, NgModuleRef, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
@@ -74,7 +74,6 @@ export class PaymentComponent implements OnInit
     this.orderId = queryParams['orderId'] || queryParams['txnId'];
   }
 
-
   ngOnInit()
   {
     if (this.orderId) {
@@ -88,9 +87,7 @@ export class PaymentComponent implements OnInit
     ) { this._router.navigateByUrl('/checkout/address', this.REPLACE_URL); return }
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
-    this.getSavedCardData();
     this._cartService.clearCartNotfications();
-    this.updatePaymentBlock(this.globalConstants['upi'], 'upi', 'upiSection');
   }
 
   private intialize()
@@ -121,29 +118,6 @@ export class PaymentComponent implements OnInit
       this.callApisAsyncly();
       this.analyticVisit(cartData);
     }
-  }
-
-  private getSavedCardData()
-  {
-    const userSession = this._localAuthService.getUserSession();
-    const data = {
-      userEmail: (userSession && userSession['email']) ? userSession['email'] : userSession['phone']
-    };
-
-    if (this.invoiceType == 'tax') {
-      data['userId'] = userSession['userId'];
-      data['userEmail'] = '';
-    }
-    this._paymentService.getSavedCards(data, this.invoiceType)
-      .subscribe((res) =>
-      {
-        if (res['status'] === true && res['data']['user_cards'] !== undefined && res['data']['user_cards'] != null) {
-          this.savedCardsData = res['data']['user_cards'];
-          this.isSavedCardExist = true;
-          this.paymentBlock = this.globalConstants['savedCard'];
-        }
-        this.isShowLoader = false;
-      });
   }
 
   updatePaymentBlock(block, mode?, elementId?)
@@ -309,6 +283,7 @@ export class PaymentComponent implements OnInit
       this.isSavedCardExist = true;
       this.paymentBlock = this.globalConstants["savedCard"];
     }
+    this.updatePaymentBlock(this.globalConstants['upi'], 'upi', 'upiSection');
   }
 
   handlePaymentsData(response)
@@ -388,6 +363,6 @@ export class PaymentComponent implements OnInit
     this._cartService.billingAddress = paymentDetails.billingAddress;
     this._cartService.lastPaymentMode = paymentDetails.lastPaymentMode;
     this._cartService.lastParentOrderId = paymentDetails.lastParentOrderId;
-    
   }
+
 }

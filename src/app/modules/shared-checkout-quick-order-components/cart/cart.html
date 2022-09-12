@@ -101,7 +101,7 @@
                     </li>
                     <li>
                         <span class="tag-label">Coupon Discount</span>
-                        <span class="tag-value green-txt">-₹{{(item.offer ? item.offer : 0) | mathFloor | number :
+                        <span class="tag-value green-txt">-₹{{(item.offer ? item.offer : 0) | mathRound | number :
                             '1.2-2'}}</span>
                     </li>
                     <li class="bold-txt">

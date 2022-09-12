@@ -158,9 +158,10 @@
         label{
             .custom-box{
                 margin-right: 0 !important;
+                display: inline-block;
             }
         }
-      .invoice-txt{
+      .invoice-txt{ss
           p{
             font-size:$medium-font !important;
           }

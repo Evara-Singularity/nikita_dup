@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -10,6 +10,7 @@ import { RetryPaymentService } from '@app/utils/services/retry-payment.service';
 import { CartService } from '@services/cart.service';
 import { forkJoin } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
+import { BottomMenuComponent } from '../bottomMenu/bottom-menu.component';
 
 @Component({
 	selector: 'shared-transaction-declined',
@@ -29,6 +30,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	@Input("orderId") orderId = null;
 	@Input("shoppingCartDto") shoppingCartDto = {};
 	@Output("emitCloseEvent$") emitCloseEvent$: EventEmitter<any> = new EventEmitter<any>();
+	@ViewChild(BottomMenuComponent) bottomMenuComponent: BottomMenuComponent;
 
 	hasCartItems = true;
 	canCOD = true;

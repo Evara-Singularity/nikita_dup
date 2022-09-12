@@ -73,9 +73,10 @@ export class PaymentComponent implements OnInit
     const queryParams = this._activatedRoute.snapshot.queryParams;
     this.orderId = queryParams['orderId'] || queryParams['txnId'];
   }
-  
 
-  ngOnInit() {
+
+  ngOnInit()
+  {
     if (this.orderId) {
       this.isRetryPayment = true;
       this.fetchTransactionDetails();
@@ -122,7 +123,8 @@ export class PaymentComponent implements OnInit
     }
   }
 
-  private getSavedCardData() {
+  private getSavedCardData()
+  {
     const userSession = this._localAuthService.getUserSession();
     const data = {
       userEmail: (userSession && userSession['email']) ? userSession['email'] : userSession['phone']
@@ -133,7 +135,8 @@ export class PaymentComponent implements OnInit
       data['userEmail'] = '';
     }
     this._paymentService.getSavedCards(data, this.invoiceType)
-      .subscribe((res) => {
+      .subscribe((res) =>
+      {
         if (res['status'] === true && res['data']['user_cards'] !== undefined && res['data']['user_cards'] != null) {
           this.savedCardsData = res['data']['user_cards'];
           this.isSavedCardExist = true;
@@ -143,7 +146,8 @@ export class PaymentComponent implements OnInit
       });
   }
 
-  updatePaymentBlock(block, mode?, elementId?) {
+  updatePaymentBlock(block, mode?, elementId?)
+  {
     let cart = this._cartService.getGenericCartSession["cart"];
     this.totalAmount =
       cart["totalAmount"] + cart["shippingCharges"] - (cart["totalOffer"] || 0);
@@ -295,6 +299,11 @@ export class PaymentComponent implements OnInit
 
   handleSavedCards(repsonse)
   {
+    if (this._cartService.lastPaymentMode) {
+      const { paymentBlock, mode, section } = CartUtils.getPaymentInfo(this._cartService.lastPaymentMode);
+      this.updatePaymentBlock(paymentBlock, mode, section);
+      return;
+    }
     if (repsonse["status"] === true && repsonse["data"]["user_cards"]) {
       this.savedCardsData = repsonse["data"]["user_cards"];
       this.isSavedCardExist = true;
@@ -368,6 +377,7 @@ export class PaymentComponent implements OnInit
       this.txnDeclinedInstance = null;
       this.txnDeclinedContainerRef.remove();
       this.setCartServiceDetails(paymentDetails)
+      this.intialize();
     });
   }
 
@@ -378,9 +388,6 @@ export class PaymentComponent implements OnInit
     this._cartService.billingAddress = paymentDetails.billingAddress;
     this._cartService.lastPaymentMode = paymentDetails.lastPaymentMode;
     this._cartService.lastParentOrderId = paymentDetails.lastParentOrderId;
-    if (this._cartService.lastPaymentMode) {
-      const { paymentBlock, mode, section } = CartUtils.getPaymentInfo(this._cartService.lastPaymentMode);
-      this.updatePaymentBlock(paymentBlock, mode, section);
-    }
+    
   }
 }

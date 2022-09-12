@@ -47,6 +47,7 @@ export class CartService
     allPromoCodes: Array<any> = [];
     shippingCharges: number = 0;
     isPromoCodeValid: boolean = false;
+    showNotification: boolean = false;
 
     // checkout related global vars
     private _billingAddress: Address;
@@ -333,12 +334,13 @@ export class CartService
         return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.validateUserPromoCode + `?promoId=${promoId}&userId=${userSession.userId}`).pipe(
             map(res => {
                 if (!res['status']) {
-                    cartSession['offersList'] = [];
+                    this.genericRemovePromoCode();
+                    this.showNotification = true;
                     this._toastService.show({ type: 'error', text: res['statusDescription'] });
                 } else {
                     this.isPromoCodeValid = true;
+                    this.showNotification = false;
                 }
-                this.updateCartSession(cartSession);
                 return cartSession;
             })
         )
@@ -1617,6 +1619,17 @@ export class CartService
     {
         this.notifications = await this.notifications.filter((notifcation) => notifcation.type == 'unserviceable');
         this.notifications = [...this.notifications, ...cartNotifications];
+        // adding notification in user login flow when invalid coupons available in session
+        if(this.showNotification) {
+            const couponObj = {
+                type: 'coupon',
+                data: {
+                    text1: "Applied coupon is removed as it's not valid"
+                }
+            }
+            this.notifications.push(couponObj);
+        }
+        this.showNotification = false;
         this.notificationsSubject.next(this.notifications);
     }
 

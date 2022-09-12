@@ -86,7 +86,9 @@ export class PdpQuickCheckoutComponent implements OnInit {
     if (isClose) {
       this.removeCartItem();
     } else {
-      this.cartService.billingAddress = null;
+      this.cartService.billingAddress = this.billingAddress as any;
+      this.cartService.shippingAddress = this.shippingAddress as any;
+      this.cartService.invoiceType = (this.purchasingForBusiness ? "tax": "retail");
       this.isClose.emit(true);
       this.commonService.oosSimilarCard$.next(false);
     }

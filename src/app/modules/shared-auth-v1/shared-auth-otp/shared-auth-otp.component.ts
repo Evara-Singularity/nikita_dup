@@ -29,7 +29,6 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     @Input('isLoginPopup') isLoginPopup = false;
 
     @Output("otpEmitter") otpEmitter = new EventEmitter();//Emits otp value accordingly
-    @Output('otpSuccess$') otpSuccess$= new EventEmitter();
     @Output('togglePopUp$') togglePopUp$= new EventEmitter();
 
     otpFormSubscriber: Subscription = null;
@@ -122,7 +121,6 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                     this._globalLoader.setLoaderState(false);
                     if (!(this.withLabel)) { setTimeout(() => { 
                         this.otpEmitter.emit(otpValue); 
-                        this.otpSuccess$.emit();
                     }, 200) };
                     return;
                 } else if ((response['message'] as string).includes("incorrect")) {

@@ -66,6 +66,7 @@
             color: #d9232d;
             font-size: 18px;
             text-align: center;
+            width: 100%;
         }
         i {
             position: absolute;
@@ -75,7 +76,7 @@
         }
     }
     .decline-txt {
-        width: 90%;
+        padding: 0 20px;
         margin: auto;
         text-align: center;
     }

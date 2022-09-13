@@ -17,6 +17,7 @@ export class ProductOffersComponent implements OnInit
     allofferData: any = null;
     @Output() promoCodePopUpHandler: EventEmitter<any> = new EventEmitter<any>();
     @Output() viewPopUpHandler: EventEmitter<any> = new EventEmitter<any>();
+    @Output() emaiComparePopUpHandler: EventEmitter<any> = new EventEmitter<any>();
     @Input() price = 0;
     @Input() gstPercentage;
     @Input() productmsn;
@@ -67,17 +68,16 @@ export class ProductOffersComponent implements OnInit
           );
     }
 
+ 
     sendOfferData(offerData)
     {
-        this.productService.productCouponItem=offerData;
-        this.router.navigate([this.common.currentUrl], { fragment: CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_OFFERS });
-
+        this.viewPopUpHandler.emit(offerData);
     }
 
     openEmiPopup()
     {
         if (this.disableEMIView) return;
-        this.router.navigate([this.common.currentUrl], { fragment: CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_EMIS });
+        this.emaiComparePopUpHandler.emit(true);
     }
 
     seeMoreOffers(){

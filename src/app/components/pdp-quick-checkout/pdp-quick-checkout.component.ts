@@ -5,6 +5,7 @@ import {
   NgModule,
   Output,
   Input,
+  ViewChild,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { BottomMenuModule } from "@app/modules/bottomMenu/bottom-menu.module";
@@ -20,17 +21,14 @@ import {
   map,
   switchMap,
 } from "rxjs/operators";
-import { forkJoin, Observable, of, Subscription, throwError } from "rxjs";
+import { forkJoin, Observable, of, Subscription } from "rxjs";
 import { CheckoutService } from "@app/utils/services/checkout.service";
 import { MathCeilPipeModule } from "@pipes/math-ceil";
 import { MathFloorPipeModule } from "@pipes/math-floor";
-import CONSTANTS from "@app/config/constants";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
-import { DataService } from "@app/utils/services/data.service";
-import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
-import { Router } from "@angular/router";
 import { QuickCodService } from "@app/utils/services/quick-cod.service";
 import { InitiateQuickCod } from "@app/utils/models/cart.initial";
+import { BottomMenuComponent } from "@app/modules/bottomMenu/bottom-menu.component";
 
 @Component({
   selector: "pdp-quick-checkout",
@@ -38,13 +36,14 @@ import { InitiateQuickCod } from "@app/utils/models/cart.initial";
   styleUrls: ["./pdp-quick-checkout.component.scss"],
 })
 export class PdpQuickCheckoutComponent implements OnInit {
+
   //inputs
   @Input("rawProductData") rawProductData;
   @Input("productPrice") productPrice;
   @Input("selectedProductBulkPrice") selectedProductBulkPrice;
   @Input("cartQunatityForProduct") cartQunatityForProduct;
   @Input("address") address;
-
+  @ViewChild(BottomMenuComponent) _bottomMenuComponent: BottomMenuComponent;
   //outputs
   @Output() isClose: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -65,6 +64,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   totalPayableAmount: number = 0;
   totalOffer: number = 0;
   productQuantity: number = 0;
+  currProductQuantity: number = 0;
   productImg: string = "";
   shippingCharges: number = 0;
   item = null;
@@ -80,9 +80,6 @@ export class PdpQuickCheckoutComponent implements OnInit {
     private quickCodService: QuickCodService,
     public checkoutService: CheckoutService,
     private _tms: ToastMessageService,
-    private _dataService: DataService,
-    private _analytics: GlobalAnalyticsService,
-    private _router: Router
   ) {}
 
   close(isClose: boolean) {
@@ -94,6 +91,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
       this.commonService.oosSimilarCard$.next(false);
     }
     this.isPopup = false;
+    this._bottomMenuComponent.updateParent({ popupClose: true });
   }
 
   removeCartItem() {
@@ -116,10 +114,9 @@ export class PdpQuickCheckoutComponent implements OnInit {
           itemIndex = index;
         }
       });
-      this.productQuantity == 1
+      this.currProductQuantity == 1
         ? this.cartService.removeCartItemsByMsns(this.item["productId"])
         : this.handleItemQuantityChanges(itemIndex, "decrement");
-      this.isPopup = false;
     });
   }
 
@@ -171,6 +168,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     this.cartService
       .addToCart({ buyNow, productDetails: productDetails })
       .subscribe((res) => {
+        this.currProductQuantity = this.cartService.getGenericCartSession['itemsList'][0]['productQuantity'];
         this.getUpdatedCart();
       });
   }
@@ -259,18 +257,10 @@ export class PdpQuickCheckoutComponent implements OnInit {
     );
   }
 
-  removeItemFromCart(itemIndex, packageUnit) {
-    this.removableItem = JSON.parse(
-      JSON.stringify(
-        this.cartService.getGenericCartSession?.itemsList[itemIndex]
-      )
-    );
-    this.removableItem["packageUnit"] = packageUnit;
-    this.close(true);
-  }
-
-  resetRemoveItemCart() {
-    this.removableItem = null;
+  removeItemFromCart() {
+    this.cartService.removeCartItemsByMsns(this.item['productId'])
+    this.isPopup = false;
+    this._bottomMenuComponent.updateParent({ popupClose: true });
   }
 
   getProductDetails(action, itemIndex, msn, typedValue) {
@@ -324,22 +314,10 @@ export class PdpQuickCheckoutComponent implements OnInit {
           updateQtyTo = maxQty;
           errorMsg = `Maximum qty can be ordered is: ${maxQty}`;
         }
-        this.sendMessageOnQuantityChanges(
-          this.cartService.getGenericCartSession,
-          updateQtyTo,
-          itemIndex,
-          "increment_quantity"
-        );
         break;
       }
       case "decrement": {
         updateQtyTo = currentQty - incrementUnit;
-        this.sendMessageOnQuantityChanges(
-          this.cartService.getGenericCartSession,
-          updateQtyTo,
-          itemIndex,
-          "decrement_quantity"
-        );
         if (updateQtyTo < minQty) {
           removeIndex = itemIndex;
         }
@@ -355,19 +333,13 @@ export class PdpQuickCheckoutComponent implements OnInit {
           updateQtyTo = minQty;
           errorMsg = `Minimum qty can be ordered is: ${minQty}`;
         }
-        this.sendMessageOnQuantityChanges(
-          this.cartService.getGenericCartSession,
-          updateQtyTo,
-          itemIndex,
-          "quantity_updated"
-        );
         break;
       }
     }
 
     if (removeIndex > -1) {
       this.globalLoader.setLoaderState(false);
-      this.removeItemFromCart(itemIndex, product["packageUnit"]);
+      this.removeItemFromCart();
       return;
     }
 
@@ -440,7 +412,6 @@ export class PdpQuickCheckoutComponent implements OnInit {
             type: "success",
             text: errorMsg || "Cart quantity updated successfully",
           });
-          // this.sendMessageAfterCartAction(cartSession);
           return;
         }
         this._tms.show({
@@ -454,25 +425,6 @@ export class PdpQuickCheckoutComponent implements OnInit {
     );
   }
 
-  sendMessageOnQuantityChanges(cartSession, quantityTarget, index, label) {
-    var taxonomy = cartSession["itemsList"][index]["taxonomyCode"];
-    var trackingData = {
-      event_type: "click",
-      label: "quantity_updated", //quantity_updated, increment_quantity, decrement_quantity
-      product_name: cartSession["itemsList"][index]["productName"],
-      msn: cartSession["itemsList"][index]["productId"],
-      brand: cartSession["itemsList"][index]["brandName"],
-      price: cartSession["itemsList"][index]["totalPayableAmount"],
-      quantity: parseInt(quantityTarget),
-      channel: "Cart",
-      category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
-      category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
-      category_l3: taxonomy.split("/")[2] ? taxonomy.split("/")[2] : null,
-      page_type: "Cart",
-    };
-    // this._globalAnalyticsService.sendToClicstreamViaSocket(trackingData);
-  }
-
   placeOrder() {
     this.quickCodService
       .checkCODLimit(this.totalPayableAmount)
@@ -480,17 +432,13 @@ export class PdpQuickCheckoutComponent implements OnInit {
         if (res && res["iswithInCODLimit"] == true) {
           this.validateCart();
         } else {
-          this._tms.show({
-            type: "error",
-            text: res.message,
-          });
+          this.cartService.quickCheckoutCodMaxErrorMessage = res.message;
           this.close(false);
         }
       });
   }
 
   validateCart() {
-    // console.log("this.cartService.billingAddress--" , this.cartService.billingAddress);
     this.globalLoader.setLoaderState(true);
     const _cartSession = this.cartService.getCartSession();
     const _shippingAddress = this.cartService.shippingAddress ?? null;

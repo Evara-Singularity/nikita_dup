@@ -61,8 +61,7 @@ export class SiemaSlideComponent {
         this.isBrowser = _commonService.isBrowser;  
     }
 
-    ngOnInit() {
-
+    ngOnInit() {        
     }
 
     ngAfterViewInit() {

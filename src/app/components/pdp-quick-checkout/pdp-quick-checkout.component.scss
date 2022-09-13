@@ -151,18 +151,24 @@
     }
 }
 .invoice-container{
-  border:none;
-  padding:10px 15px;
-  margin-top: 0 !important;
-  .invoice-txt{
-      p{
-        font-size:$medium-font !important;
+    border:none;
+    padding:10px 15px;
+    margin-top: 0 !important;
+    .invoice-select{
+        label{
+            margin-right: 0 !important;
+        }
+      .invoice-txt{
+          padding-left: 20px !important;
+          p{
+            font-size:$medium-font !important;
+          }
       }
+      .invoice-subtxt{
+          font-size:$small-font !important;
+      }
+    }
   }
-  .invoice-subtxt{
-      font-size:$small-font !important;
-  }
-}
 .checkout-card{
     display: flex;
     align-items: center;
@@ -175,18 +181,22 @@
         .prod-mrp{
             font-size:$extra-large-font;
             font-weight:$font-bold;
+            margin-bottom: 2px;
         }
         .prod-selling-price{
             font-size:$small-font;
             color:var(--spanish-gray);
+            line-height: $small-line-height;
+            margin-bottom: 5px;
         }
         .green-txt{
           font-size:$small-font;
           font-weight:$font-bold;
+          align-items: center;
+          display: flex;
           i{
-            font-size: 14px;
-            padding-right: 10px;
-            vertical-align: bottom;
+            font-size: 12px;
+            padding-right: 8px;
           }
         }
     }

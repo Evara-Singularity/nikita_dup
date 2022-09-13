@@ -9,7 +9,7 @@
 <!--OTP Template-->
 <ng-template #otpform>
     <div>
-        <shared-auth-otp [otpFormArray]="otpForm" [source]="'login_otp'" [identifier]="authFlow?.identifier"
+        <shared-auth-otp (togglePopUp$)="this.navigateToPopUp($event)" [isLoginPopup]="isLoginPopup" [otpFormArray]="otpForm" [source]="'login_otp'" [identifier]="authFlow?.identifier"
             (otpEmitter)="captureOTP($event)" [withLabel]="false"></shared-auth-otp>
         <!--Note:will be displayed only for registered users-->
         <ng-container>

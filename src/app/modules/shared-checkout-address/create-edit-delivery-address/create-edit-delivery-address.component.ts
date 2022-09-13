@@ -101,6 +101,8 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
         });
         if (this.phone.value) { this.verifyPhone(this.phone.value); }
         if (this.postCode.value) { this.isPostcodeValid = true; }
+        this.city.disable();
+        this.idState.disable();
     }
 
     fetchStateList(countryId)
@@ -125,8 +127,12 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
                     this.isPostcodeValid = true;
                     this.isVerifyingPostcode = false;
                     this.city.patchValue(cityList[0]['city']);
+                    this.city.updateValueAndValidity();
+                    this.city.disable();
                     const ID_STATE = SharedCheckoutAddressUtil.getStateId(this.stateList, cityList[0]['state']);
                     this.idState.patchValue(ID_STATE);
+                    this.idState.updateValueAndValidity();
+                    this.idState.disable();
                 } else {
                     this.isPostcodeValid = false;
                     this.isVerifyingPostcode = false;

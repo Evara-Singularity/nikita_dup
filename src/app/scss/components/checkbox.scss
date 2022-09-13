@@ -50,7 +50,8 @@
     .custom-box {
         width: 18px;
         height: 18px;
-        display: block;
+        display: flex;
+        align-items: center;
         float: left;
         font-size: $extra-large-1-font;
         line-height: $medium-line-height;

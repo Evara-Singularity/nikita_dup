@@ -55,6 +55,14 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     ngOnInit(): void
     {
+        if(this._cartService.quickCheckoutCodMaxErrorMessage !=null){
+            this._toastService.show({
+                type: "error",
+                text: this._cartService.quickCheckoutCodMaxErrorMessage,
+              });
+            this._cartService.quickCheckoutCodMaxErrorMessage = null;
+        }
+        
         this._cartService.sendAdobeOnCheckoutOnVisit("address");
         this._cartService.refreshCartSesion();
         this.updateUserStatus();
@@ -94,6 +102,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 //address is getting updated and cart session is getting updated with some delay.
                 //To verify non-serviceable items after cart session is available for one & only once by using 'verifyUnserviceableFromCartSubscription' flag.
                 if (!(this.verifyUnserviceableFromCartSubscription) && (this.cartSession['itemsList'] as any[]).length) {
+                    this.invoiceType = this._cartService.invoiceType === "tax" ? this.INVOICE_TYPES.TAX : this.INVOICE_TYPES.RETAIL;
                     this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
                     this.verifyUnserviceableFromCartSubscription = !(this.verifyUnserviceableFromCartSubscription)
                 }

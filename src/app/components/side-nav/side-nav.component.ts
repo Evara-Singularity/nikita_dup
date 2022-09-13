@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { NavigationExtras, Router, RouterModule } from '@angular/router';
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
+import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { LocalAuthService } from '../../utils/services/auth.service';
@@ -21,7 +22,8 @@ export class SideNavComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private globalAnalyticService: GlobalAnalyticsService,
     private router: Router,
-    private _localAuthService: LocalAuthService
+    private _localAuthService: LocalAuthService,
+    private _commonService: CommonService,
   ) { }
 
   ngOnInit(): void {
@@ -60,12 +62,11 @@ export class SideNavComponent implements OnInit {
   }
 
   disableScroll() {
-    document.getElementById('body').addEventListener('touchmove', this.preventDefault, { passive: false });
-    document.getElementById('scrolledUl').addEventListener('touchmove', this.propagation, { passive: false });
+    this._commonService.setBodyScroll(null, false)
   }
 
   enableScroll() {
-    document.getElementById('body').removeEventListener('touchmove', this.preventDefault);
+    this._commonService.setBodyScroll(null, true)
   }
 
   preventDefault(e) {

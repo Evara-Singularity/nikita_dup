@@ -1,9 +1,10 @@
 import { Compiler, Component, ComponentRef, ElementRef, EventEmitter, Injector, NgModuleRef, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { CartUtils } from "@app/utils/services/cart-utils";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
-import { RetryPaymentService } from '@app/utils/services/retry-payment.service';
-import { forkJoin } from 'rxjs';
+import { RetryPaymentService } from "@app/utils/services/retry-payment.service";
+import { forkJoin } from "rxjs";
 import CONSTANTS from "../../config/constants";
 import { LocalAuthService } from "../../utils/services/auth.service";
 import { CartService } from "../../utils/services/cart.service";
@@ -12,7 +13,6 @@ import { DataService } from "../../utils/services/data.service";
 import { GlobalLoaderService } from "../../utils/services/global-loader.service";
 import { SharedTransactionDeclinedComponent } from '../shared-transaction-declined/shared-transaction-declined.component';
 import { SharedTransactionDeclinedModule } from '../shared-transaction-declined/shared-transaction-declined.module';
-import { CartUtils } from './../../utils/services/cart-utils';
 import { PaymentService } from "./payment.service";
 
 // TODO:
@@ -81,7 +81,6 @@ export class PaymentComponent implements OnInit
       this.fetchTransactionDetails();
       return;
     }
-    if (this._commonService.isBrowser && (this._cartService.getGenericCartSession && Object.keys(this._cartService.getGenericCartSession?.cart).length == 0) ||
       !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
         (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
     ) { this._router.navigateByUrl('/checkout/address', this.REPLACE_URL); return }
@@ -94,6 +93,7 @@ export class PaymentComponent implements OnInit
   {
     if (this._commonService.isBrowser) {
       const cartData = this._cartService.getGenericCartSession;
+      this._cartService.updateNonDeliverableItemsAfterRemove(cartData['itemsList']);
       this.canNEFT_RTGS = cartData["cart"]["agentId"];
       this.totalAmount =
         cartData["cart"]["totalAmount"] +
@@ -109,9 +109,7 @@ export class PaymentComponent implements OnInit
         this.paymentBlock = this.globalConstants["razorPay"];
         this.isShowLoader = false;
       }
-      if (!this._cartService.cashOnDeliveryStatus.isEnable) {
-        this.disableCod = true;
-      }
+      this.disableCod = !(this._cartService.cashOnDeliveryStatus.isEnable);
       // TODO - this should used in case there are some COD not avalible
       this.unAvailableMsnList =
         this._cartService.codNotAvailableObj["itemsArray"];

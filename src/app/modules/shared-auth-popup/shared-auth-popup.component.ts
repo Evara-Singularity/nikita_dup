@@ -31,6 +31,10 @@ export class SharedAuthPopUpComponent implements OnInit {
     this.removeAuthComponent();
   }
 
+  onUpdate($event) {
+    this.removeAuthComponent$.emit();
+  }
+
   removeAuthComponent() {
     this.removeAuthComponent$.emit();
   }

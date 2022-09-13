@@ -16,6 +16,7 @@ export class ProductOfferPopupComponent implements OnInit {
   @Input() data: any = null;
   @Input() gstPercentage;
   @Output() out: EventEmitter<any> = new EventEmitter<any>();
+  @Output() isLoading: EventEmitter<any> = new EventEmitter<any>();
   IMG_PATH = CONSTANTS.IMAGE_BASE_URL;
 
   ngOnInit(): void {

@@ -1,17 +1,17 @@
-<ng-container *ngIf="(page === 'pdp' && appPromoStatus) || (page == 'category' && appPromoStatus) || (page == 'brand' && appPromoStatus) || (page=='alp' && appPromoStatus) || (page=='home' && appPromoStatus) || (page=='sideBar' && appPromoStatus)">
+<ng-container *ngIf="isAppPromoVisible">
   <div class="app-promo-container" [ngClass]="{
       'fixed-app-promo': isOverlayMode,
       'hideAppPromo':(!showPromo && isOverlayMode)
     }">
     <!-- 1st varient  use homepage and plp-->
     <ng-container>
-      <div class="app-promotion" *ngIf="showPromoCode && page != 'pdp'">
+      <div class="app-promotion" *ngIf="isAppPromoVisible && homeTopBannerVisible">
         <p>Download Moglix App</p>
         <span (click)="removePromo()">
           <i class="icon-circle-delete"></i>
         </span>
       </div>
-      <div class="promo-code-container" [ngClass]="{'home-app-promo':page=='home'}" (click)="openStore()" *ngIf="page != 'sideBar'">
+      <div class="promo-code-container" [ngClass]="{'home-app-promo':page=='home'}" (click)="openStore()" >
         <div class="mobile">
           <div *ngIf="page == 'pdp'; then pdpContent; else content"></div>
           <ng-template #pdpContent>

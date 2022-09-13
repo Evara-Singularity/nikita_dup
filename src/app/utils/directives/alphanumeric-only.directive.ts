@@ -11,7 +11,6 @@ export class AlphabetsDirective
     @HostListener('input', ['$event']) onInputChange(event)
     {
         const initalValue = (this._el.nativeElement.value as string);
-        console.log("asdfghjkl;",initalValue)
         this._el.nativeElement.value = initalValue.replace(/[-0123456789_~*|./\":%,^!+=?#<>[\]{}`\\()';@&$]+$/g, '');
         if (initalValue !== this._el.nativeElement.value) {
             event.stopPropagation();

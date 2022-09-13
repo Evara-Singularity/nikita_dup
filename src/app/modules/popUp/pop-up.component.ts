@@ -65,10 +65,10 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
         e.stopPropagation();
     }
     disableScroll() {
-        document.getElementById('body').addEventListener('touchmove', this.preventDefault, { passive: true });
+        this._commonService.setBodyScroll(null, false);
     }
     enableScroll() {
-        document.getElementById('body').removeEventListener('touchmove', this.preventDefault);
+        this._commonService.setBodyScroll(null, true);
     }
     closePopup() {
         (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');

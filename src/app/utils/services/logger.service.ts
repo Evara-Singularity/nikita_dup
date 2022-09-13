@@ -1,9 +1,7 @@
-import { CommonService } from '@app/utils/services/common.service';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from 'environments/environment';
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { ServerLogSchema } from '../models/log.modal';
-import * as fs from "fs";
 
 @Injectable({
   providedIn: 'root'

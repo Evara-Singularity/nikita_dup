@@ -61,7 +61,7 @@
                                 <strong *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
                                     item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</strong>
                                 <strong *ngIf="item.bulkPrice !== null && !item.oos"
-                                    class="price-val">{{item.priceWithoutTax *
+                                    class="price-val">{{item.bulkPriceWithoutTax *
                                     item.productQuantity | mathFloor | currency:'INR' : 'symbol' : '1.2-2' }}</strong><br>
                                 <strong *ngIf="item.oos" class="price-val">Not Available</strong>
                                 <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
@@ -101,7 +101,7 @@
                     </li>
                     <li>
                         <span class="tag-label">Coupon Discount</span>
-                        <span class="tag-value green-txt">-₹{{(item.offer ? item.offer : 0) | mathFloor | number :
+                        <span class="tag-value green-txt">-₹{{(item.offer ? item.offer : 0) | mathRound | number :
                             '1.2-2'}}</span>
                     </li>
                     <li class="bold-txt">

@@ -14,7 +14,8 @@
                         <p class="prod-mrp">₹{{cartService.getGenericCartSession.cart.tawot | mathFloor | number : '1.2-2'}}</p>
                         <p class="prod-selling-price">₹{{cartService.getGenericCartSession.cart.tawot | mathFloor | number : '1.2-2'}}
                              + {{item.taxPercentage}}% GST: ₹{{cartService.getGenericCartSession.cart.tawot+cartService.getGenericCartSession.cart.tpt | mathFloor | number : '1.2-2'}}</p>
-                        <span class="green-txt" *ngIf="cartService.getGenericCartSession.cart.shippingCharges == 0 || null"><i class="icon-prepaid"></i>Free Shipping</span>
+                        <!-- <span class="green-txt" *ngIf="cartService.getGenericCartSession.cart.shippingCharges == 0 || null"><i class="icon-prepaid"></i>Free Shipping</span> -->
+                        <p class="green-txt" *ngIf="cartService.getGenericCartSession.cart.shippingCharges == 0 || null"><i class="icon-prepaid"></i>Free Shipping</p>
                     </div>
                     <div class="qty_section">
                         <div class="quantity-block">

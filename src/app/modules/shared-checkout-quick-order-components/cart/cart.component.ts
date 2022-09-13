@@ -62,12 +62,9 @@ export class CartComponent
     {
         this._globalLoaderService.setLoaderState(true);
         this.cartSubscription = this._cartService.getCartUpdatesChanges().pipe(
-            delay(600),
-            first(),
             map((cartSession: any) =>
             {
-                const delay = this._router.url.includes("quickorder") ? 0 : 400;
-                this._cartService.verifyAndUpdateNotfications(delay);
+                if (cartSession.proxy) { return cartSession }
                 this.sendCritieoDataonView(cartSession);
                 this.sendAdobeAnalyticsData(this.pageEvent);
                 this.pageEvent = "genericClick";
@@ -78,12 +75,16 @@ export class CartComponent
                 {
                     this.cartSession = cartSessionWithShiping;
                     this.noOfCartItems = (cartSessionWithShiping['itemsList'] as any[]).length;
+                    if (this.noOfCartItems) {
+                        this._cartService.verifyAndUpdateNotfications();
+                    }
                     this._globalLoaderService.setLoaderState(false);
                 });
     }
 
-    removeItemFromCart(itemIndex, packageUnit) { 
-        this.removableItem = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession?.itemsList[itemIndex])); 
+    removeItemFromCart(itemIndex, packageUnit)
+    {
+        this.removableItem = JSON.parse(JSON.stringify(this._cartService.getGenericCartSession?.itemsList[itemIndex]));
         this.removableItem['packageUnit'] = packageUnit;
     }
 
@@ -453,7 +454,7 @@ export class CartComponent
         }
     }
 
-    get displayPage() {return this.noOfCartItems > 0}
+    get displayPage() { return this.noOfCartItems > 0 }
 
     get isQuickorder() { return this.moduleName === "QUICKORDER" }
 

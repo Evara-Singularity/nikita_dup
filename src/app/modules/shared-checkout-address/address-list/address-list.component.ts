@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angul
 import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import { AddressListActionModel } from '@app/utils/models/shared-checkout.models';
 import { CheckoutAddressPipeModule } from '@app/utils/pipes/checkout-address.pipe';
+import { CommonService } from '@app/utils/services/common.service';
 
 //expected actions are Add, Edit, Deliver Here(default/selected)
 @Component({
@@ -21,7 +22,9 @@ export class AddressListComponent implements OnInit
     @Output("emitCloseEvent$") emitCloseEvent$: EventEmitter<AddressListActionModel> = new EventEmitter<AddressListActionModel>();
     @Output("emitActionEvent$") emitActionEvent$: EventEmitter<AddressListActionModel> = new EventEmitter<AddressListActionModel>();
     showRadio: boolean = true;
-    constructor() { }
+    constructor(
+        private _commonService: CommonService,
+    ) { }
 
     ngOnInit() { }
 
@@ -37,9 +40,10 @@ export class AddressListComponent implements OnInit
     }
 
     handleAction($event, action, address)
-    {   
+    {
         $event.stopPropagation();
         this.emitActionEvent$.emit({ action: action, address: address });
+        this._commonService.setBodyScroll($event, true);
     }
 
     get headerText() { return `${this.addressType} Address` }

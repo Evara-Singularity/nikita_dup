@@ -73,21 +73,20 @@ export class PaymentComponent implements OnInit
     const queryParams = this._activatedRoute.snapshot.queryParams;
     this.orderId = queryParams['orderId'] || queryParams['txnId'];
   }
-  
-  
 
-  ngOnInit() {
-    const gCartSession = this._cartService.getGenericCartSession;
-    if (this._commonService.isBrowser && (gCartSession && Object.keys(gCartSession?.cart).length == 0) ||
+  ngOnInit()
+  {
+    if (this.orderId) {
+      this.isRetryPayment = true;
+      this.fetchTransactionDetails();
+      return;
+    }
       !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
         (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
     ) { this._router.navigateByUrl('/checkout/address', this.REPLACE_URL); return }
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
-    this.getSavedCardData();
     this._cartService.clearCartNotfications();
-    this._cartService.updateNonDeliverableItemsAfterRemove(gCartSession['itemsList']);
-    this.updatePaymentBlock(this.globalConstants['upi'], 'upi', 'upiSection');
   }
 
   private intialize()
@@ -119,28 +118,8 @@ export class PaymentComponent implements OnInit
     }
   }
 
-  private getSavedCardData() {
-    const userSession = this._localAuthService.getUserSession();
-    const data = {
-      userEmail: (userSession && userSession['email']) ? userSession['email'] : userSession['phone']
-    };
-
-    if (this.invoiceType == 'tax') {
-      data['userId'] = userSession['userId'];
-      data['userEmail'] = '';
-    }
-    this._paymentService.getSavedCards(data, this.invoiceType)
-      .subscribe((res) => {
-        if (res['status'] === true && res['data']['user_cards'] !== undefined && res['data']['user_cards'] != null) {
-          this.savedCardsData = res['data']['user_cards'];
-          this.isSavedCardExist = true;
-          this.paymentBlock = this.globalConstants['savedCard'];
-        }
-        this.isShowLoader = false;
-      });
-  }
-
-  updatePaymentBlock(block, mode?, elementId?) {
+  updatePaymentBlock(block, mode?, elementId?)
+  {
     let cart = this._cartService.getGenericCartSession["cart"];
     this.totalAmount =
       cart["totalAmount"] + cart["shippingCharges"] - (cart["totalOffer"] || 0);
@@ -292,11 +271,17 @@ export class PaymentComponent implements OnInit
 
   handleSavedCards(repsonse)
   {
+    if (this._cartService.lastPaymentMode) {
+      const { paymentBlock, mode, section } = CartUtils.getPaymentInfo(this._cartService.lastPaymentMode);
+      this.updatePaymentBlock(paymentBlock, mode, section);
+      return;
+    }
     if (repsonse["status"] === true && repsonse["data"]["user_cards"]) {
       this.savedCardsData = repsonse["data"]["user_cards"];
       this.isSavedCardExist = true;
       this.paymentBlock = this.globalConstants["savedCard"];
     }
+    this.updatePaymentBlock(this.globalConstants['upi'], 'upi', 'upiSection');
   }
 
   handlePaymentsData(response)
@@ -365,6 +350,7 @@ export class PaymentComponent implements OnInit
       this.txnDeclinedInstance = null;
       this.txnDeclinedContainerRef.remove();
       this.setCartServiceDetails(paymentDetails)
+      this.intialize();
     });
   }
 
@@ -375,9 +361,6 @@ export class PaymentComponent implements OnInit
     this._cartService.billingAddress = paymentDetails.billingAddress;
     this._cartService.lastPaymentMode = paymentDetails.lastPaymentMode;
     this._cartService.lastParentOrderId = paymentDetails.lastParentOrderId;
-    if (this._cartService.lastPaymentMode) {
-      const { paymentBlock, mode, section } = CartUtils.getPaymentInfo(this._cartService.lastPaymentMode);
-      this.updatePaymentBlock(paymentBlock, mode, section);
-    }
   }
+
 }

@@ -1,4 +1,4 @@
-<app-bottom-menu *ngIf="displayPage">
+<app-bottom-menu *ngIf="displayPage" (outData$)="pay()">
     <div content>
         <div class="transection-decline-popup retry-payment pay-cod">
             <div class="top-header-bottom-menu">
@@ -12,8 +12,14 @@
             </div>
             <div class="bottom-txt-block">
                 <p>We're having trouble processing your request.</p>
-                <p>- This may be because our system is down temporarily.</p>
-                <p>- May be there's a problem with the connection.</p>
+                <div class="bottom-list-txt">
+                    <p>-</p>
+                    <p class="listInfo">This may be because our system is down temporarily.</p>
+                </div>
+                <div class="bottom-list-txt">
+                    <p>-</p>
+                    <p class="listInfo">May be there's a problem with the connection.</p>
+                </div>
             </div>
             <div class="btn-block btn-block-2nd">
                 <ng-container *ngIf="canCOD">

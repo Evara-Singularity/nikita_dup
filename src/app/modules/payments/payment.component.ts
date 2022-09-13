@@ -81,6 +81,7 @@ export class PaymentComponent implements OnInit
       this.fetchTransactionDetails();
       return;
     }
+    if (this._commonService.isBrowser && (this._cartService.getGenericCartSession && Object.keys(this._cartService.getGenericCartSession?.cart).length == 0) ||
       !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
         (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
     ) { this._router.navigateByUrl('/checkout/address', this.REPLACE_URL); return }

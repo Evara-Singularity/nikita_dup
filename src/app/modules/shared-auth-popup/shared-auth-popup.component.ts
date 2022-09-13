@@ -1,21 +1,21 @@
-import { Router, RouterModule } from '@angular/router';
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedAuthModule } from '../shared-auth-v1/shared-auth.module';
 import { BottomMenuModule } from '../bottomMenu/bottom-menu.module';
-import { SocialAuthService } from 'angularx-social-login';
 import { SharedAuthUtilService } from '../shared-auth-v1/shared-auth-util.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 
 @Component({
   selector: "auth",
   templateUrl: "./shared-auth-popup.component.html",
   styleUrls: ["./shared-auth-popup.component.scss"],
 })
-export class SharedAuthPopUpComponent implements OnInit {
+export class SharedAuthPopUpComponent implements OnInit,OnDestroy {
   @Input() flow: string;
   @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private _sharedAuthUtilService:SharedAuthUtilService) { }
+  constructor(private _sharedAuthUtilService: SharedAuthUtilService, private _localAuthService: LocalAuthService) { }
 
   ngOnInit(): void { 
     this._sharedAuthUtilService.sendLoginPopUpTracking();
@@ -37,6 +37,10 @@ export class SharedAuthPopUpComponent implements OnInit {
 
   removeAuthComponent() {
     this.removeAuthComponent$.emit();
+  }
+
+  ngOnDestroy(): void {
+    this._localAuthService.clearBackURLTitle();
   }
 }
 

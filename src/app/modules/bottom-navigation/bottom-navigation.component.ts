@@ -49,7 +49,7 @@ export class BottomNavigationComponent implements OnInit {
       let navigationExtras: NavigationExtras = {
         queryParams: { 'backurl': url },
       };
-      this.router.navigate(['/login'], navigationExtras);
+      this._commonService.setInitaiteLoginPopUp(true);
     }
   }
 

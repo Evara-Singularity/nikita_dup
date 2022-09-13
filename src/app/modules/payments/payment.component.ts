@@ -74,8 +74,7 @@ export class PaymentComponent implements OnInit
     this.orderId = queryParams['orderId'] || queryParams['txnId'];
   }
 
-  ngOnInit()
-  {
+  ngOnInit() {
     if (this.orderId) {
       this.isRetryPayment = true;
       this.fetchTransactionDetails();

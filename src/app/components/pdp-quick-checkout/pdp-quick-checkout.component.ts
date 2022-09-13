@@ -94,6 +94,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     }
     this.isPopup = false;
     this._bottomMenuComponent.updateParent({ popupClose: true });
+    this.commonService.setBodyScroll(null, true);
   }
 
   removeCartItem() {
@@ -440,6 +441,9 @@ export class PdpQuickCheckoutComponent implements OnInit {
 
   openOfferPopUp() {
     this.showPromoOfferPopup = true;
+    if (this.commonService.isBrowser && document.querySelector('app-pop-up')) {
+      document.querySelector('app-pop-up').classList.add('open');
+    }
   }
 
   closePromoSuccessPopUp() {

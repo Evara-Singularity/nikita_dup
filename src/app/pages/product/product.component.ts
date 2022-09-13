@@ -1596,6 +1596,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
               if (res != null) {
                 this.globalLoader.setLoaderState(false);
                 this.quickCheckoutPopUp(res.address);
+                this.commonService.setBodyScroll(null, false); 
                 this.analyticAddToCart(buyNow, this.cartQunatityForProduct , true);
               } else {
                 this.addToCartFromModal(buyNow);

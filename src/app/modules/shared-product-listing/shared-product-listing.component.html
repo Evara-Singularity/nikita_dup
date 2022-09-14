@@ -68,7 +68,7 @@
                     <product-card-skeleton
                     *ngIf="sponseredProductPosition.includes(i)  && isAdsEnable && !sponseredProductLoadStatus">
                 </product-card-skeleton>
-                <product-card-horizontal-list-view [moduleUsedIn]="'LISTING_PAGES'" [isAdEnable]="isAdsEnable && sponseredProductLoadStatus && sponseredProductPosition.includes(i)" [product]="product" [isPDPImageLazyLoaded]="(i < 5)" [isAd]="true"  >
+                <product-card-horizontal-list-view [moduleUsedIn]="'LISTING_PAGES'" [isAdEnable]="appliedFilterCount == 0 && isAdsEnable && sponseredProductLoadStatus && sponseredProductPosition.includes(i)" [product]="product" [isPDPImageLazyLoaded]="(i < 5)" [isAd]="true"  >
                 </product-card-horizontal-list-view>
                 </div>
             </div>

@@ -398,7 +398,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
-            this.navigationOnFragmentChange();
+            // this.navigationOnFragmentChange();
         }
     }
 

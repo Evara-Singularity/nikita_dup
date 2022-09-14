@@ -94,10 +94,12 @@
             [recentProductList]="recentProductList"></home-categories>
 
         <!-- feature arrival banner  -->
-        <div class="featr_arrival pwa-col-12 pad-lr-15">
-            <home-feature-arrivals [defaultImage]="defaultImage" [featureArrivalData]="featureArrivalData"
-                [imagePath]="imagePath"></home-feature-arrivals>
-        </div>
+        <ng-container *ngIf="featureArrivalData && featureArrivalData.length>0">
+            <div class="featr_arrival pwa-col-12 pad-lr-15">
+                <home-feature-arrivals [defaultImage]="defaultImage" [featureArrivalData]="featureArrivalData"
+                    [imagePath]="imagePath"></home-feature-arrivals>
+            </div>
+        </ng-container>
 
         <!-- home accordion  -->
         <div class="pwa-col-12">

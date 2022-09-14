@@ -16,8 +16,6 @@ export const CONSTANTS = {
   SECRET_KEY: 'moglix@4241',
   SOCIAL_LOGIN: environment.SOCIAL_LOGIN,
   AB_TESTING: environment.AB_TESTING,
-  IDS_MAP: environment.IDS_MAP,
-  CMS_IDS: environment.CMS_IDS,
   CDN_IMAGE_PATH: environment.CDN_IMAGE_URL,
   BROWSER_AGENT_TOKEN: new InjectionToken<string>('browserName'),
   SPEED_TEST_IMAGE: 'https://cdn.moglix.com/cms/flyout/Images_2021-09-15_15-45-36_Images_2020-06-03_16-42-50_SafetyImage-min.png', // ~500 KB image

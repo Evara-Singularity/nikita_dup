@@ -43,7 +43,8 @@
             <!-- middle banner -->
             <div class="pwa-banner">
                 <a class="full-banner" href="{{whatsAppBannerUrl}}">
-                    <img src="{{imageAssetURL}}assets/img/others/whatsappBanner.png" alt="whatsapp banner" width="312"
+                    <img  [defaultImage]="defaultImage" [lazyLoad]="imageAssetURL+'assets/img/others/whatsappBanner.png'"  
+                        alt="whatsapp banner" width="312"
                         height="170">
                 </a>
             </div>
@@ -56,7 +57,8 @@
                         [routerLink]="item.category_url">
                         <a>
                             <img alt={{item.CategoryName}}
-                                src="{{clusterimagePath + 'img/cluster/'+item.category_image}}" width="97" height="65">
+                            [defaultImage]="defaultImage" [lazyLoad]="clusterimagePath + 'img/cluster/'+item.category_image"
+                             width="97" height="65">
                             <p class="category-text">{{item.CategoryName}}</p>
                         </a>
                     </div>

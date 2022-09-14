@@ -84,8 +84,10 @@ export class ProductListService {
               "large",
               "medium"
             );
-          product['productTags'] = this.getProductTag(product);
-          product["internalProduct"] = true;
+          product['productTags'] = this._commonService.sortProductTagsOnPriority(product['productTags']);
+          product["internalProduct"] = product.hasOwnProperty("internalProduct")
+            ? false
+            : true, // if intenal product prop does not exist then it is internal product
           product["discount"] = this._commonService.calculcateDiscount(
             product["discount"],
             product["mrp"],
@@ -180,7 +182,8 @@ export class ProductListService {
   }
 
   extractFragmentFromUrl(str) {
-    var pieces = str.split("&"),
+    // due to & split filter is not working for L&T, C&S type of brands
+    var pieces = [str],
       data = {},
       i,
       parts;

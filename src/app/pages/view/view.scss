@@ -1,6 +1,6 @@
 @import '../../scss/variables';
 .category-container {
-    background: $white;
+    background: var(--white);
     .breadcrumbs {
         padding: 15px;
         display: block;
@@ -26,20 +26,19 @@
 
 .category-list {
     border-bottom: 1px solid #e6e6e6;
-    line-height: 50px;
-    li {
-        padding: 10px 0;
-        @extend %clear-fix;
+    height: 58px;
+    padding: 10px 15px;
+    @extend %clear-fix;
+    display: flex;
+    width: 100%;
         a {
-            display: block;
-            float: left;
-            width: 88%;
+            display: flex;
+            min-width: 100%;
         }
         .cat-icon-bg {
-            float: left;
-            font-size: 32px;
-            margin-right: 20px;
-            line-height: 34px;
+            font-size: 22px;
+            width: 10%;
+            align-self: center;
         }
         h5 {
             font-size: 16px;
@@ -48,7 +47,16 @@
             float: left;
             width: calc(100% - 57px);
         }
-    }
+        .icon-next{
+            font-size: 16px !important;
+            align-self: center;
+            margin-left: auto;
+            padding: 0 !important;
+
+        }
+        &:last-child{
+            margin-bottom: 15px;
+        }
 }
 
 .allCategory {
@@ -213,10 +221,10 @@
                         }
                     }
                 }
-                &.active>a:after {
-                    transform: rotate(90deg);
-                    right: 15px;
-                }
+                // &.active>a:after {
+                //     transform: rotate(90deg);
+                //     right: 15px;
+                // }
             }
         }
         .view-card-category{
@@ -275,8 +283,10 @@
 
 .l1Title {
     font-size: 11pt;
-    line-height: 36px;
-    margin-left: 44px;
+    line-height: 22px;
+    width: 75%;
+    padding-left: 8px;
+    align-self: center;
 }
 
 .submenu-li ul li a {

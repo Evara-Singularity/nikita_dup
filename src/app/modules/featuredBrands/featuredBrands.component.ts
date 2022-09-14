@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
 	selector: 'home-feature-brands',
@@ -13,8 +14,11 @@ export class FeaturedBrands {
 	@Input('featureBrandData') featureBrandData;
 	@Input('defaultImage') defaultImage;
 	imageBasePath=CONSTANTS.CDN_IMAGE_PATH;
+	constructor(private _commonService: CommonService, private router:Router){}
 
-	setCookieFeatured(imageTitle) {
+	setCookieFeatured(imageTitle, url) {
+		const isAbsoluteUrl = this._commonService.isAbsoluteUrl(url);
+        isAbsoluteUrl ? window.open(url, '_blank') : this.router.navigateByUrl('/'+url);
 		var date = new Date();
 		date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000);
 		document.cookie =

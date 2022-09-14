@@ -43,22 +43,32 @@
 }
 .prod-carsl {
     background: #fff;
-
-    .img-siema {
-        .img-block {
-            width: 100%;
-            height: 330px;
-            background: white;
-            position: relative;
-            padding: 30px;
-        }
-
-        .inner_block {
-            position: relative;
+    .prod-carsl-pseudo{
+        height: 330px;
+        .img-block-pseudo{
+            .inner-block-pseudo{
+                .element-pseudo{
+                    img{
+                        height: 100%;
+                    }
+                }
+            }
         }
     }
+    // .img-block {
+    //     width: 100%;
+    //     height: 330px;
+    //     background: white;
+    //     position: relative;
+    //     padding: 30px;
+    // }
 
-    &.oos {
+        // .inner_block {
+        //     position: relative;
+        // }
+
+
+    .oos {
         .img-block {
             img {
                 opacity: 0.6;
@@ -75,6 +85,13 @@
 
         .inner_block {
             height: 100%;
+            .element{
+                height: 100%;
+            }
+            img{
+                width: 100%;
+                height: 100%;
+            }
         }
     }
 }
@@ -116,10 +133,10 @@
             }
 
             &.active {
-                border: 1px solid $logo-color;
+                border: 1px solid var(--primary);
 
                 i {
-                    color: $btn-color-red;
+                    color: var(--primary);
                 }
             }
         }

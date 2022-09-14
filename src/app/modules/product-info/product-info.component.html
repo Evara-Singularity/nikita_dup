@@ -5,7 +5,7 @@
             <i class="icon-back f-left white_text" (click)="closeProducInfo($event)"></i>
             <p class="txt header_text page-name">About this Product</p>
         </div>
-    </div> -->
+    </div> -->  
     <div class="content-popup about-this-product" content [class.customPopHeight]="productOutOfStock">
         <div class="pwa-row">
             <div class="static-card-container pwa-col-12">
@@ -25,7 +25,7 @@
                         </span>
                         <ng-container *ngIf="productDiscount != undefined && productDiscount>0 && productMrp > 0">
                             <span class="discount"  *ngIf="bulkSellingPrice==null">
-                                {{((productMrp - productPrice)/productMrp)*100 | mathFloor | number:'1.0-0'}}% OFF
+                                {{productDiscount}}% OFF
                             </span>
                             <span class="discount"  *ngIf="bulkSellingPrice!=null">
                                 {{ bulkDiscount | mathFloor | number:'1.0-0'}}% OFF

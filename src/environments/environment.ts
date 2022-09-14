@@ -70,5 +70,21 @@ export const environment = {
     MANUFACTURER_STORE: "macizo_m",
     MANUFACTURER_STORE_BRAND: "macizo",
   },
+  NEW_CMS_IDS: {
+    // new layout ids for mobile
+    PRIMARY_BANNER: "cm915657",
+    SECONDARY_BANNER_ADS: "cm973381",
+    FEATURE_BRANDS: "cm312585",
+    BEST_SELLER: "cm136360",
+    SAFETY: "cm325516",
+    CAT_B: "cm814985",
+    CAT_C: "cm196070",
+    CAT_D: "cm454649",
+    CAT_E: "cm358138",
+    CAT_F: "cm933249",
+    CAT_G: "cm416640",
+    CAT_H: "cm814985",
+    FEATURE_ARRIVAL: "cm976581",
+  },
   logger:true
 };

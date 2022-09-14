@@ -77,8 +77,8 @@ export class SharedCheckoutAddressUtil
     static verifyCheckoutAddress(addressList: any[], checkoutAddress)
     {
         const length = addressList.length;
-        let addressIdKey 
-        checkoutAddress.idAddress == undefined ? addressIdKey = "addressId" : addressIdKey = "idAddress"
+        let addressIdKey : string = "idAddress"; 
+        (checkoutAddress && checkoutAddress.idAddress == undefined ? addressIdKey = "addressId" : addressIdKey = "idAddress");
         if (length == 0) { return null; }
         if (length == 1) { return addressList[0]; }
         if (checkoutAddress) {

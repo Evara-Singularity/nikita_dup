@@ -11,7 +11,7 @@
                         </span>
                     </span>
                     <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges) | mathCeil | number : '1.2-2'}}</ng-container>
-                    <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges + _cartService.getGenericCartSession.cart.totalOffer) | mathCeil | number : '1.2-2'}}</ng-container>
+                    <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer) | mathCeil | number : '1.2-2'}}</ng-container>
                 </div>
                 <button [disabled]="!(hasCartItems)" class="btn primary-btn"
                     (click)="$event.stopPropagation();continueToPayment()">

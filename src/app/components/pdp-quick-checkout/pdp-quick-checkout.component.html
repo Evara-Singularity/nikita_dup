@@ -147,7 +147,7 @@
              <custom-promo-code></custom-promo-code>
                 <p class="open-offers" (click)="$event.stopPropagation();openOfferPopUp()">VIEW ALL OFFERS</p>
             </div>
-            <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" *ngIf="showPromoOfferPopup"></promo-code-list>
+            <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" [isQuickCheckoutPopup] ="true" *ngIf="showPromoOfferPopup"></promo-code-list>
             <div class="alert-box" *ngIf="showPromoSuccessPopup">
                 <div class="overlay" (click)="$event.stopPropagation();closePromoSuccessPopUp()"></div>
                 <div class="content-area">

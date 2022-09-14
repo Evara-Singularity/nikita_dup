@@ -124,6 +124,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   onUpdate(data) {
+    this.commonService.setBodyScroll(null, true);
     if (data.popupClose) {
       this.removeCartItem();
       this.Isoverlay = false;
@@ -451,6 +452,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   closePromoListPopUp(flag) {
+    this.commonService.setBodyScroll(null, false);
     this.showPromoOfferPopup = flag;
   }
 

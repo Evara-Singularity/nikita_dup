@@ -4015,6 +4015,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             ] as EventEmitter<boolean>
         ).subscribe(() =>
         {
+            this.commonService.setBodyScroll(null, true);
             this.askQuestionPopupInstance = null;
             this.askQuestionPopupContainerRef.remove();
             this.isAskQuestionPopupOpen = false;
@@ -4033,8 +4034,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             ] as EventEmitter<boolean>
         ).subscribe((status) =>
         {
-            this.askQuestionPopupInstance = null;
             this.askQuestionPopupContainerRef.detach();
+            this.askQuestionPopupInstance = null;
         });
     }
 

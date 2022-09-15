@@ -283,7 +283,7 @@ export class SharedLoginComponent implements OnInit
         this.removeAuthComponent()
         return;
        }
-       this._router.navigate([""]);
+       this._router.navigate(["."]);
     }
     get isAuthHeader() { return this.isCheckout === false && this.headerTitle !== null }
     get phoneFC() { return this.loginNumberForm.get("phone"); }

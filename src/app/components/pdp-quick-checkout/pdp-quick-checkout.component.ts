@@ -86,12 +86,15 @@ export class PdpQuickCheckoutComponent implements OnInit {
     if (isClose) {
       this.removeCartItem();
     } else {
-      this.cartService.billingAddress = null;
+      this.cartService.billingAddress = this.billingAddress as any;
+      this.cartService.shippingAddress = this.shippingAddress as any;
+      this.cartService.invoiceType = (this.purchasingForBusiness ? "tax": "retail");
       this.isClose.emit(true);
       this.commonService.oosSimilarCard$.next(false);
     }
     this.isPopup = false;
     this._bottomMenuComponent.updateParent({ popupClose: true });
+    this.commonService.setBodyScroll(null, true);
   }
 
   removeCartItem() {
@@ -121,6 +124,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   onUpdate(data) {
+    this.commonService.setBodyScroll(null, true);
     if (data.popupClose) {
       this.removeCartItem();
       this.Isoverlay = false;
@@ -142,16 +146,12 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setAddress(this.address, true);
-    this.shippmentCharge = this.cartService.shippingCharges;
-    this.currUser = this.localAuthService.getUserSession();
-    this.cartService.getPromoCodesByUserId(this.currUser["userId"]);
-    this.cartService.appliedPromoCode = "";
     this.returnProductDetails().subscribe((result) => {
       this.addTocart(result, true);
       this.item = result;
-    });
-
+    }); 
+    this.setAddress(this.address, true);
+    this.cartService.appliedPromoCode = "";
     this.promoSubscription = this.cartService.promoCodeSubject.subscribe(
       ({ promocode, isNewPromocode }) => {
         this.showPromoSuccessPopup = isNewPromocode;
@@ -161,6 +161,14 @@ export class PdpQuickCheckoutComponent implements OnInit {
         }, 800);
       }
     );
+  }
+
+  ngAfterViewInit() {
+    this.currUser = this.localAuthService.getUserSession();
+    this.cartService.getPromoCodesByUserId(this.currUser["userId"]);
+    this.shippmentCharge = this.cartService.shippingCharges;
+    this.cartService.shippingAddress = this.shippingAddress
+    this.cartService.billingAddress = this.billingAddress
   }
 
   addTocart(productDetails, buyNow) {
@@ -204,42 +212,15 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   setAddress(obj, isPurchaseForBussiness) {
-    const isValid = obj && obj.bothAddress && obj.bothAddress.addressDetails;
-    if (isValid) {
-      const address = obj.bothAddress.addressDetails;
+      const address = obj.addressDetails;
       const addressType = obj.addressType;
-      // for shippingAddress
-      if (address["shippingAddress"] && address["shippingAddress"].length) {
-        let len =
-          address["shippingAddress"].length > 1
-            ? address["shippingAddress"].length - 1
-            : 0;
-        this.cartService.shippingAddress = address["shippingAddress"][len];
-        this.shippingAddress = address["shippingAddress"][len];
-      } else {
-        this.cartService.shippingAddress = null;
-      }
-      // for billingAddress
-      if (
-        addressType != "shipping" &&
-        address["billingAddress"] &&
-        address["billingAddress"].length
-      ) {
-        let len =
-          address["billingAddress"].length > 1
-            ? address["billingAddress"].length - 1
-            : 0;
-        this.cartService.billingAddress = address["billingAddress"][len];
-        this.billingAddress = address["billingAddress"][len];
-      } else {
-        this.cartService.billingAddress = null;
-      }
+      address["shippingAddress"] ? this.shippingAddress = address["shippingAddress"][0] : null
+      address["billingAddress"] ? this.billingAddress = address["billingAddress"][0] : null
       if (isPurchaseForBussiness) {
         addressType == "billing"
           ? (this.purchasingForBusiness = this.billingAddress.isGstInvoice)
           : (this.purchasingForBusiness = this.shippingAddress.isGstInvoice);
-      }
-    }
+      }  
   }
 
   //new implmentation
@@ -461,6 +442,9 @@ export class PdpQuickCheckoutComponent implements OnInit {
 
   openOfferPopUp() {
     this.showPromoOfferPopup = true;
+    if (this.commonService.isBrowser && document.querySelector('app-pop-up')) {
+      document.querySelector('app-pop-up').classList.add('open');
+    }
   }
 
   closePromoSuccessPopUp() {
@@ -468,6 +452,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   closePromoListPopUp(flag) {
+    this.commonService.setBodyScroll(null, false);
     this.showPromoOfferPopup = flag;
   }
 

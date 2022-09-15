@@ -45,7 +45,7 @@ import { SiemaCrouselService } from "../../utils/services/siema-crousel.service"
 import { FbtComponent } from "./../../components/fbt/fbt.component";
 
 import * as $ from 'jquery';
-import { catchError, filter, map, mergeMap } from "rxjs/operators";
+import { catchError, delay, filter, map, mergeMap } from "rxjs/operators";
 import { TrackingService } from "@app/utils/services/tracking.service";
 
 interface ProductDataArg
@@ -403,7 +403,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
     navigationOnFragmentChange() {
-        this.route.fragment.subscribe(fragment => {
+        this.route.fragment.pipe(delay(300)).subscribe(fragment => {
             switch (fragment) {
                 case CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_EMIS :
                     this.emiComparePopUpOpen(true);
@@ -1593,9 +1593,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if(buyNow){
             this.globalLoader.setLoaderState(true);
             this.validateQuickCheckout().subscribe((res) => {
-              if (res && res.returnPopUpStatus) {
+              if (res != null) {
                 this.globalLoader.setLoaderState(false);
                 this.quickCheckoutPopUp(res.address);
+                this.commonService.setBodyScroll(null, false); 
                 this.analyticAddToCart(buyNow, this.cartQunatityForProduct , true);
               } else {
                 this.addToCartFromModal(buyNow);
@@ -1605,7 +1606,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }else{
             this.addToCartFromModal(buyNow);
         }
-    
     }
     
     async quickCheckoutPopUp( address) {
@@ -1659,58 +1659,32 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 return of(null);
               })
             ),
-            mergeMap((getAddressRequestData) => {
-              if (getAddressRequestData) {
-                return this.commonService
-                  .getAddressList({
-                    customerId: userId,
-                    invoiceType: 'tax',
-                  })
+            mergeMap((response) => {
+              if (response) {
+                const postBody = {
+                  productId: [this.rawProductData["defaultPartNumber"]],
+                  toPincode:
+                    response.addressDetails["shippingAddress"][0]["zipCode"],
+                  price: this.productPrice,
+                };
+                return this.productService
+                  .getLogisticAvailability(postBody)
                   .pipe(
                     map(
-                      (result) => {
-                        if (!result) {
+                      (ress) => {
+                        if (!ress) {
                           return null;
                         } else {
-                          return this.getAddressVerification(
-                            result,
-                            getAddressRequestData
+                          return this.getServiceAvailabilityVerification(
+                            ress,
+                            response
                           );
                         }
                       },
                       catchError((error) => {
                         return of(null);
                       })
-                    ),
-                    mergeMap((response) => {
-                      if (response) {
-                        const postBody = {
-                          productId: [this.rawProductData["defaultPartNumber"]],
-                          toPincode: response.address[0]["postCode"],
-                          price: this.productPrice,
-                        };
-                        return this.productService
-                          .getLogisticAvailability(postBody)
-                          .pipe(
-                            map(
-                              (ress) => {
-                                if (!ress) {
-                                  return null;
-                                } else {
-                                  return this.getServiceAvailabilityVerification(
-                                    ress , response
-                                  );
-                                }
-                              },
-                              catchError((error) => {
-                                return of(null);
-                              })
-                            )
-                          );
-                      } else {
-                        return of(null);
-                      }
-                    })
+                    )
                   );
               } else {
                 return of(null);
@@ -1728,28 +1702,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
           ress["data"][this.rawProductData["defaultPartNumber"]]["aggregate"];
         if (data["serviceable"] == true && data["codAvailable"] == true) {
           return {
-            returnPopUpStatus: true,
             address: address
-          };
-        } else {
-          return null;
-        }
-      } else {
-        return null;
-      }
-    }
-  
-    getAddressVerification(result, getAddressRequestData) {
-      let finalAddress = null;
-      if (result && result["addressList"] && result["addressList"].length > 0) {
-        finalAddress = result["addressList"].filter(
-          (res) => res.idAddress == getAddressRequestData.customerLastAddressId
-        );
-        if (finalAddress && finalAddress.length > 0) {
-          return {
-            address: finalAddress,
-            bothAddress: getAddressRequestData,
-            addressType:getAddressRequestData.addressType
           };
         } else {
           return null;
@@ -1761,7 +1714,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
   
     getCustomerLastOrderVerification(res) {
       if (res && res["lastOrderDetails"] && res["lastOrderDetails"].length) {
-        let len =
+        const len =
           res["lastOrderDetails"].length == 0
             ? res["lastOrderDetails"].length
             : res["lastOrderDetails"].length - 1;
@@ -1769,11 +1722,29 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
           res["lastOrderDetails"][len].paymentType == "COD" &&
           res["lastOrderDetails"][len].orderStatus == "DELIVERED";
         if (isValidOrder) {
-          return {
-            addressDetails: res["lastOrderDetails"][len]["addressDetails"],
-            addressType:res["lastOrderDetails"][len]["addressType"],
-            customerLastAddressId: res["lastOrderDetails"][len]["addressId"],
-          };
+            const isValidShippingAddress = (
+                res["lastOrderDetails"][len].addressType == 'shipping'  && 
+                res["lastOrderDetails"][len]["addressDetails"] && 
+                res["lastOrderDetails"][len]["addressDetails"]["shippingAddress"] 
+                && res["lastOrderDetails"][len]["addressDetails"]["shippingAddress"].length == 1
+                );
+            const isValidBillingAddress = (
+                res["lastOrderDetails"][len].addressType == 'billing'  && 
+                res["lastOrderDetails"][len]["addressDetails"] && 
+                res["lastOrderDetails"][len]["addressDetails"]["billingAddress"] &&
+                res["lastOrderDetails"][len]["addressDetails"]["billingAddress"].length == 1 &&
+                res["lastOrderDetails"][len]["addressDetails"]["shippingAddress"] &&
+                res["lastOrderDetails"][len]["addressDetails"]["shippingAddress"].length == 1
+                );    
+            if(isValidShippingAddress || isValidBillingAddress){
+                return {
+                    addressDetails: res["lastOrderDetails"][len]["addressDetails"],
+                    addressType: res["lastOrderDetails"][len]["addressType"],
+                  };
+            }else{
+                return null
+            }
+          
         } else {
           return null;
         }
@@ -2536,6 +2507,14 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             ).subscribe((data) =>
             {
                 this.viewPopUpOpen(data);
+            });
+            (
+                this.offerSectionInstance.instance[
+                "emaiComparePopUpHandler"
+                ] as EventEmitter<boolean>
+            ).subscribe((status) =>
+            {
+                this.emiComparePopUpOpen(status);
             });
             (
                 this.offerSectionInstance.instance[
@@ -3637,8 +3616,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             tags: tagsForAdobe,
         };
 
-        console.log('digitalData', { page, custData, order });
-
         this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
 
         const digitalData = {
@@ -4038,6 +4015,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             ] as EventEmitter<boolean>
         ).subscribe(() =>
         {
+            this.commonService.setBodyScroll(null, true);
             this.askQuestionPopupInstance = null;
             this.askQuestionPopupContainerRef.remove();
             this.isAskQuestionPopupOpen = false;
@@ -4056,8 +4034,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             ] as EventEmitter<boolean>
         ).subscribe((status) =>
         {
-            this.askQuestionPopupInstance = null;
             this.askQuestionPopupContainerRef.detach();
+            this.askQuestionPopupInstance = null;
         });
     }
 

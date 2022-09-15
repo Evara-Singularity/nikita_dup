@@ -7,11 +7,11 @@
         display: flex;
         align-items: center;
         label {
-            width: 20px;
+            width: 16px;
             @extend %custom-check-box-checkout;
         }
         .invoice-txt {
-            padding-left: 10px;
+            padding-left: 15px !important;
             p {
                 font-size: $large-font;
                 font-weight: bold;

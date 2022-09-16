@@ -279,10 +279,12 @@ export class SharedLoginComponent implements OnInit
     removeAuthComponent(){
         this.removeAuthComponent$.emit();
     }
-
     navigateHome() { 
-        console.log('skip now', this._router.url);
-        this._router.navigate(["."])
+       if(this.isLoginPopup){
+        this.removeAuthComponent()
+        return;
+       }
+       this._router.navigate(["."]);
     }
     get isAuthHeader() { return this.isCheckout === false && this.headerTitle !== null }
     get phoneFC() { return this.loginNumberForm.get("phone"); }

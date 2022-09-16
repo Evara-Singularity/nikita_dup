@@ -42,9 +42,9 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy {
     navigateBack()
     {
         if(this.isLoginPopup){
-         this.backButtonClicked$.emit()
+         this.backButtonClicked$.emit();
         }
-        else if (this.previousUrl){
+        if (this.previousUrl){
             console.log('in')
             this.navigateTo('/')
             this.onSkipBtnClick$.emit(true)

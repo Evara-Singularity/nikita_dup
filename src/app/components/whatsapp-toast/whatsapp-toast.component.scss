@@ -1,19 +1,52 @@
-.whatsapp-float-icon {
+.whatsapp-animation {
 	position: fixed;
-	width: 50px;
-	height: 50px;
 	bottom: 190px;
 	right: 0px;
-	padding: 6px;
-	background-color: #d3ffbf;
-	border-radius: 10px 0px 0px 10px;
-	text-align: center;
-	border-top: 2px solid #ffffff;
-	border-bottom: 2px solid #ffffff;
-	border-left: 2px solid #ffffff;
-	box-shadow: 2px 1px 2px 2px #dbdbdb;
-	z-index: 100;
-	span.st-icon-whatsapp{
-      font-size:36px;
+	display: flex;
+	align-items: center;
+	.whatsapp-tolltip{
+		background-color: #d3ffbf;
+		border: 1px solid #ABE292;
+		border-radius: 8px;
+		padding: 8px 7px;
+		color: #3c3c3c;
+		margin-right: 10px;
+		.need-help{
+			font-size: 12px;
+			font-weight: 600;
+			padding-bottom: 3px;
+			color: #3c3c3c;
+		}
+		.whatsapp-contact{
+			font-size: 10px;
+		}
+		&:after{
+			content: "";
+			background-color: #d3ffbf;
+			padding: 5px;
+			position: absolute;
+			border-top: 1px solid #ABE292;
+			border-left: 1px solid #ABE292;
+			transform: rotate(136deg);
+			right: 55px;
+			top: 20px;
+			
+		}
+	}
+	.whatsapp-float-icon {
+		width: 50px;
+		height: 50px;
+		padding: 6px;
+		background-color: #d3ffbf;
+		border-radius: 10px 0px 0px 10px;
+		text-align: center;
+		border-top: 2px solid #ffffff;
+		border-bottom: 2px solid #ffffff;
+		border-left: 2px solid #ffffff;
+		box-shadow: 2px 1px 2px 2px #dbdbdb;
+		z-index: 100;
+		span.st-icon-whatsapp {
+			font-size: 36px;
+		}
 	}
 }

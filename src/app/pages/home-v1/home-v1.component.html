@@ -19,19 +19,13 @@
 
     <!-- home page banner carousel -->
     <div class="css-banner-component">
-        <div class="internalBanner" *ngIf="isBrowser">
+        <div class="internalBanner">
             <ng-container *ngIf="bannerDataFinal && bannerDataFinal.length>0">
                 <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
                     [items]="bannerDataFinal">
                 </siema-carousel>
             </ng-container>
         </div>
-        <!-- <div class="internalBanner" *ngIf="isServer">
-            <img *ngIf="carouselData.bannerData && carouselData.bannerData['data'].length>0"
-                [src]="carouselData.bannerData.data[0].image_name" alt="banner">
-            <img *ngIf="!(carouselData.bannerData && carouselData.bannerData['data'].length>0)" [src]="defaultBannerImage"
-                alt="banner">
-        </div> -->
     </div>
 
     <div class="pwa-row pwa-row-noPad">

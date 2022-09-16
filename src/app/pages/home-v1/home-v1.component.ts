@@ -1,10 +1,14 @@
-import { Component, ComponentFactoryResolver, Injector, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { CategoryData } from '@app/utils/models/categoryData';
 import { CommonService } from '@app/utils/services/common.service';
 import { environment } from 'environments/environment';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { Meta,Title } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
+
 
 
 
@@ -79,6 +83,10 @@ export class HomeV1Component implements OnInit {
   searchTerm = '';
   isRoutedBack: boolean;
 
+  //metadata var
+  oganizationSchema: any;
+
+
 
   constructor(
     private route: ActivatedRoute,
@@ -86,6 +94,13 @@ export class HomeV1Component implements OnInit {
     private cfr: ComponentFactoryResolver,
     private injector: Injector,
     private analytics: GlobalAnalyticsService,
+    private _localAuthService: LocalAuthService,
+    private _router: Router,
+    private meta: Meta,
+    private title: Title,
+    private _renderer2: Renderer2,
+    @Inject(DOCUMENT) private _document,
+
 
   ) {
     this.isServer = _commonService.isServer;
@@ -108,6 +123,10 @@ export class HomeV1Component implements OnInit {
     this.route.queryParams.subscribe(res => {
       this.isRoutedBack = res && res.hasOwnProperty('back') ? true : false;
     })
+    //setting meta data
+    this.setMetaData();
+    //setting analytics
+    this.setAnalyticTags();
   }
 
   homePageData(response: any) {
@@ -264,7 +283,144 @@ export class HomeV1Component implements OnInit {
 		this.analytics.sendAdobeCall({ page,custData,order }, "genericClick");
 	}
 
+  setAnalyticTags() {
+		const userSession = this._localAuthService.getUserSession();
+		if (
+			userSession &&
+			userSession.authenticated &&
+			userSession.authenticated == 'true'
+		) {
+			/*Start Criteo DataLayer Tags */
+			const obj = {
+				event: 'viewHome',
+				email: userSession && userSession.email ? userSession.email : '',
+			};
+			this.analytics.sendGTMCall(obj);
+			/*End Criteo DataLayer Tags */
+		} else {
+			const obj = {
+				event: 'viewHome',
+				email: '',
+			};
+			this.analytics.sendGTMCall(obj);
+		}
+		/*Start Adobe Analytics Tags */
+		let page = {
+			pageName: 'moglix:home',
+			channel: 'home',
+			subSection: 'moglix:home',
+			linkName: this._router.url,
+			loginStatus:
+				userSession &&
+					userSession.authenticated &&
+					userSession.authenticated == 'true'
+					? 'registered user'
+					: 'guest',
+		};
+		let custData = {
+			customerID:
+				userSession && userSession['userId'] ? btoa(userSession['userId']) : '',
+			emailID:
+				userSession && userSession['email'] ? btoa(userSession['email']) : '',
+			mobile:
+				userSession && userSession['phone'] ? btoa(userSession['phone']) : '',
+			customerType:
+				userSession && userSession['userType'] ? userSession['userType'] : '',
+		};
+		let order = {};
+		let digitalData = {};
+		digitalData['page'] = page;
+		digitalData['custData'] = custData;
+		digitalData['order'] = order;
+		this.analytics.sendAdobeCall(digitalData);
+	}
 
+  setMetaData() {
+		const title =
+			'Shop Online for Industrial Tools, Safety Equipment, Power Tools & more - Moglix';
+		const description =
+			"Moglix is India's leading online store for industrial tools and equipment. Shop now for latest range of industrial products including safety shoes, power tools and more. Free shipping & COD available.";
+		this.title.setTitle(
+			'Shop Online for Industrial Tools, Safety Equipment, Power Tools & more - Moglix'
+		);
+		this.meta.addTag({ name: 'description', content: description });
+		this.meta.addTag({ property: 'og:description', content: description });
+		this.meta.addTag({ property: 'og:title', content: title });
+		this.meta.addTag({ property: 'og:site_name', content: 'Moglix.com' });
+		this.meta.addTag({ property: 'og:url', content: CONSTANTS.PROD });
+		this.meta.addTag({ name: 'twitter:card', content: 'Summary' });
+		this.meta.addTag({ name: 'twitter:card', content: 'Summary' });
+		this.meta.addTag({ name: 'twitter:site', content: '@moglix' });
+		this.meta.addTag({ name: 'twitter:title', content: 'Moglix' });
+		this.meta.addTag({
+			name: 'twitter:description',
+			content: 'Global marketplace for Business & Industrial supplies',
+		});
+		this.meta.addTag({ name: 'twitter:creator', content: '@moglix' });
+		this.meta.addTag({
+			name: 'twitter:url',
+			content: CONSTANTS.PROD,
+		});
+		this.meta.addTag({
+			name: 'twitter:image:src',
+			content: CONSTANTS.IMAGE_BASE_URL + 'assets/img/moglix-logo.jpg',
+		});
+		this.meta.addTag({ name: 'robots', content: CONSTANTS.META.ROBOT });
+		this.meta.addTag({
+			name: 'keywords',
+			content:
+				'Moglix, industrial equipment, industrial tools, industrial products, industrial supplies',
+		});
+		if (this.isServer) {
+			const links = this._renderer2.createElement('link');
+			this.webSiteSchema();
+			links.rel = 'canonical';
+			links.href = CONSTANTS.PROD;
+			this._renderer2.appendChild(this._document.head, links);
+			this.orgSchema();
+		}
+	}
+  
+  webSiteSchema() {
+		if (this.isServer) {
+			const s = this._renderer2.createElement('script');
+			s.type = 'application/ld+json';
+			s.text = JSON.stringify({
+				'@context': CONSTANTS.SCHEMA,
+				'@type': 'WebSite',
+				url: CONSTANTS.PROD,
+				potentialAction: {
+					'@type': 'SearchAction',
+					target:
+						CONSTANTS.PROD + '/search?controller=search&search_query={search_term_string}',
+					'query-input': 'required name=search_term_string',
+				},
+			});
+			this._renderer2.appendChild(this._document.head, s);
+		}
+	}
+
+  orgSchema() {
+		this.oganizationSchema = this._renderer2.createElement('script');
+		this.oganizationSchema.type = "application/ld+json";
+		this.oganizationSchema.text = JSON.stringify(
+			{
+				"@context": CONSTANTS.SCHEMA,
+				"@type": "Organization",
+				"name": "Moglix",
+				"url": CONSTANTS.PROD,
+				"logo": `${this.imagePath}assets/img/moglix-logo.jpg`,
+				"contactPoint":
+					[{
+						"@type": "ContactPoint",
+						"telephone": "+91 8448 233 444",
+						"contactType": "customer service"
+					}],
+				"sameAs": ["https://www.facebook.com/moglix.global/", "https://twitter.com/moglix", "https://www.youtube.com/c/MoglixOfficial", "https://www.instagram.com/moglix.official/", "https://www.linkedin.com/company/moglix/"]
+			}
+		)
+		this._renderer2.appendChild(this._document.head, this.oganizationSchema);
+	}
   
 
 }

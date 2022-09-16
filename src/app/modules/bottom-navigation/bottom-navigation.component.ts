@@ -46,9 +46,6 @@ export class BottomNavigationComponent implements OnInit {
       this.router.navigate([url]); 
     } else {
       this.localAuthService.setBackURLTitle(url, title);
-      let navigationExtras: NavigationExtras = {
-        queryParams: { 'backurl': url },
-      };
       this._commonService.setInitaiteLoginPopUp(true);
     }
   }

@@ -35,6 +35,8 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     invoiceType: FormControl = null;
     addressListInstance = null;
     createEditAddressInstance = null;
+    _displayBillingAddresses: string = 'none';
+    _isGSTUser:boolean = false;
 
     deliveryAddressList = [];
     billingAddressList = [];
@@ -98,6 +100,8 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     updateInvoiceType(isGST: boolean)
     {
         this._cartService.billingAddress = null;
+        this.displayBillingAddresses = (isGST ? 'block' : 'none');
+        this.isGSTUser = isGST;
         this.invoiceType.patchValue(isGST ? this.INVOICE_TYPES.TAX : this.INVOICE_TYPES.RETAIL);
         this.emitInvoiceTypeEvent$.emit(this.invoiceType.value);
         this.updateAddressTypes(this.USER_SESSION.userId, this.invoiceType.value);
@@ -110,7 +114,14 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
      */
     updateAddressTypes(userId: number, type: string)
     {
-        const params = { customerId: userId, invoiceType: type };
+            if(this._cartService.billingAddress){
+                this.isGSTUser = true
+                this.displayBillingAddresses = "block";
+                this.invoiceType.patchValue(this.INVOICE_TYPES.TAX);
+                this.emitInvoiceTypeEvent$.emit(this.invoiceType.value);
+            }
+        // invoiceType: "tax"  this will give all addresses 
+        const params = { customerId: userId, invoiceType: "tax" };
         this._addressService.getAddressList(params).subscribe((response: AddressListModel) =>
         {
             this.deliveryAddressList = response.deliveryAddressList;
@@ -316,9 +327,14 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         }
         return this.billingAddressList.length ? this.billingAddressList[0] : null;
     }
+    
+    get displayBillingAddresses() { return this._displayBillingAddresses }
 
-    get displayBillingAddresses() { return this.invoiceType.value === this.INVOICE_TYPES.TAX ? 'block' : 'none'; }
-    get isGSTUser() { return (this.invoiceType.value === this.INVOICE_TYPES.TAX) || (this._cartService.invoiceType === this.INVOICE_TYPES.TAX) }
+    set displayBillingAddresses(type){ this._displayBillingAddresses = type }
+    
+    get isGSTUser() { return this._isGSTUser }
+
+    set isGSTUser(type: boolean){ this._isGSTUser = type }
     get isCheckoutModule() { return this.parentModule === 'Checkout'; }
 
     getLabel(label) { return label == 'Billing' ? ' GST' : ' ADDRESS'}

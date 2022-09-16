@@ -77,10 +77,12 @@ export class SharedCheckoutAddressUtil
     static verifyCheckoutAddress(addressList: any[], checkoutAddress)
     {
         const length = addressList.length;
+        let addressIdKey : string = "idAddress"; 
+        (checkoutAddress && checkoutAddress.idAddress == undefined ? addressIdKey = "addressId" : addressIdKey = "idAddress");
         if (length == 0) { return null; }
         if (length == 1) { return addressList[0]; }
         if (checkoutAddress) {
-            const index = addressList.findIndex((address) => { return address.idAddress === checkoutAddress.idAddress });
+            const index = addressList.findIndex((address) => { return address.idAddress ===  Number(checkoutAddress[addressIdKey]) });
             if (index > -1) { return addressList[index]; }
             return addressList[0];
         }

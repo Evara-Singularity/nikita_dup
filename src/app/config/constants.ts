@@ -440,7 +440,7 @@ export const CONSTANTS = {
     'Office Chair',
     'Fan'
   ],
-  whatsAppBannerUrl:'https://api.whatsapp.com/send?phone=+919999049135&text=Hi',
+  whatsAppBannerUrl:'https://api.whatsapp.com/send?phone=+919999049135&text=Hi&utm_source=moglixhomepage&utm_medium=pwaclicks&utm_campaign=homepagebanner',
   PAYMENT_MODE: [
     {
       id: 3,

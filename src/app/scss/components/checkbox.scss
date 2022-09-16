@@ -18,7 +18,6 @@
     .custom-box {
         width: 18px;
         height: 18px;
-        display: block;
         float: left;
         font-size: $extra-large-1-font;
         line-height: $medium-line-height;
@@ -51,11 +50,11 @@
         width: 18px;
         height: 18px;
         display: flex;
-        align-items: center;
         float: left;
+        align-items: center;
+        margin-right: 5px;
         font-size: $extra-large-1-font;
         line-height: $medium-line-height;
-        margin-right: 5px;
         @extend %transition;
         &::before {
             font-family: "icomooon_pwa";
@@ -69,5 +68,6 @@
         margin-left: 5px;
         line-height: $medium-line-height;
         width: calc(100% - 38px);
+       
     }
 }

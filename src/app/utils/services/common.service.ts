@@ -1233,6 +1233,7 @@ export class CommonService
                 }
             } else {
                 // disabled
+                (<HTMLElement>document.getElementById('body')).classList.add('stop-scroll');
                 if (e != null && e.hasOwnProperty('preventDefault')) {
                     document.getElementById('body').addEventListener('touchmove', () => { e && e.preventDefault() }, { passive: true });
                 } else {

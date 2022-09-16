@@ -45,7 +45,7 @@ import { SiemaCrouselService } from "../../utils/services/siema-crousel.service"
 import { FbtComponent } from "./../../components/fbt/fbt.component";
 
 import * as $ from 'jquery';
-import { catchError, filter, map, mergeMap } from "rxjs/operators";
+import { catchError, delay, filter, map, mergeMap } from "rxjs/operators";
 import { TrackingService } from "@app/utils/services/tracking.service";
 
 interface ProductDataArg
@@ -403,7 +403,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
     navigationOnFragmentChange() {
-        this.route.fragment.subscribe(fragment => {
+        this.route.fragment.pipe(delay(300)).subscribe(fragment => {
             switch (fragment) {
                 case CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_EMIS :
                     this.emiComparePopUpOpen(true);
@@ -2510,6 +2510,14 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             });
             (
                 this.offerSectionInstance.instance[
+                "emaiComparePopUpHandler"
+                ] as EventEmitter<boolean>
+            ).subscribe((status) =>
+            {
+                this.emiComparePopUpOpen(status);
+            });
+            (
+                this.offerSectionInstance.instance[
                 "promoCodePopUpHandler"
                 ] as EventEmitter<boolean>
             ).subscribe((data) =>
@@ -4007,6 +4015,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             ] as EventEmitter<boolean>
         ).subscribe(() =>
         {
+            this.commonService.setBodyScroll(null, true);
             this.askQuestionPopupInstance = null;
             this.askQuestionPopupContainerRef.remove();
             this.isAskQuestionPopupOpen = false;
@@ -4025,8 +4034,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             ] as EventEmitter<boolean>
         ).subscribe((status) =>
         {
-            this.askQuestionPopupInstance = null;
             this.askQuestionPopupContainerRef.detach();
+            this.askQuestionPopupInstance = null;
         });
     }
 

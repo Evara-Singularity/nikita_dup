@@ -4,6 +4,7 @@
 // @import '../../scss/layout/grid.scss';
 
 .contact-container {
+    height: 160vh;
     .contact-text{
         background: var(--white);
         h2{
@@ -135,12 +136,10 @@
             font-size: $large-font;
             font-weight: $font-bold;
             margin-top: 15px;
-            i{
-                color: #ABE292;
-                font-size: $extra-large-2_5-font;
+            .st-icon-whatsapp{
+                font-size: $extra-large-2-font;
+                margin-right: 4px;
                 vertical-align: middle;
-                display: inline-block;
-                padding-right: 5px;
             }
         }
     }

@@ -1,5 +1,5 @@
 <ng-container [ngSwitch]="flow">
-    <app-bottom-menu [containerHeight]="flow==='otp'?'otp-min-height':''" (outData$)="onUpdate($event)">
+    <app-bottom-menu [containerHeight]="flow === 'otp'|| 'sign-up' ? 'otp-min-height' : '' " (outData$)="onUpdate($event)">
         <div content>
             <shared-login (togglePopUp$)="togglePopUp($event)" (removeAuthComponent$)="removeAuthComponent()" [isLoginPopup]="true" *ngSwitchCase="'login'"></shared-login>
             <shared-otp (togglePopUp$)="togglePopUp($event)" (otpSuccess$)="otpSuccessPopUp($event)" [isLoginPopup]="true" *ngSwitchCase="'otp'"></shared-otp>

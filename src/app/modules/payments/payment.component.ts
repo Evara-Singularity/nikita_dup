@@ -328,7 +328,11 @@ export class PaymentComponent implements OnInit
     this.isShowLoader = true;
     this._retryPaymentService.getPaymentDetailsByOrderId(this.orderId).subscribe((response) =>
     {
-      if (response.status) { this.openTxnDeclinedPopup(response['data']['shoppingCartDto']); return; }
+      if (response.status && response['data']['shoppingCartDto']) {
+        this.openTxnDeclinedPopup(response['data']['shoppingCartDto']);
+      }else{
+        this._router.navigateByUrl("/checkout/address");
+      }
       this.isShowLoader = false;
     })
   }

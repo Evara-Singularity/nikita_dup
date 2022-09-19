@@ -23,13 +23,13 @@
 }
 
 .red {
-    background: $btn-color-red;
-    color: $white;
+    background: var(--primary);
+    color: var(--white);
 }
 
 .white {
-    background: $white;
-    color: $btn-color-red;
+    background: var(--white);
+    color: var(--primary);
 }
 
 .cart-btn-fullwidth{

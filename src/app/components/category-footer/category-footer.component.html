@@ -29,24 +29,23 @@
             </div>
         </div>
     </ng-template>
-    <!-- FAQ Data STARTS -->
     <div *ngIf="categoryFooterData?.faqData && categoryFooterData?.faqData.length>0"
-        [ngClass]="{'hide': !(categoryFooterData?.faqData && categoryFooterData?.faqData.length>0)}" class="body-bg">
-        <div class="panel-head"
-            [ngClass]="{'hide': !(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0)}">
+        [ngClass]="{'hide':!(categoryFooterData?.faqData && categoryFooterData?.faqData.length>0)}" class="panel-bg">
+        <div class="mt-10"
+           [ngClass]="{'hide': !(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0)}">
             <div class="pwa-row pad-tb-5">
-                <h3 class="heading-3" (click)="_commonService.scrollTo($event)"
-                    [appKpToggle]="{idName: 'openFaq' , iconMode : true}"><span>Frequently Asked Questions about {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}</span>
-                    <span class="iconaccordian">
-                        <i class="icon-down"></i>
-                    </span>
-                </h3>
+            <h3  class="heading-3 faq-accordian" [appKpToggle]="{idName: 'openFaq', iconMode : true}" (click)="_commonService.scrollTo($event);"> 
+                <span>Frequently Asked Questions about {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}</span>
+                <span class="iconaccordian">
+                    <i class="icon-down"></i>
+                </span>
+            </h3>
             </div>
-            <div id="openFaq" style="display: block;" class="body-bg pad-lr-15">
-                <div *ngFor="let fd of categoryFooterData?.faqData" class="openFaq_div ">
-                    <h3 class="m_faqQuestion heading-3"><strong>{{fd["questionText"]}}</strong></h3>
-                    <p class="m_faqAnswer">{{fd["answerText"]}}</p>
-                </div>
+        </div>
+        <div id="openFaq" class="panel-bg pad-lr-15">
+            <div *ngFor="let fd of categoryFooterData?.faqData" class="openFaq_div">
+                <h3 class="m_faqQuestion heading-3"><strong>{{fd["questionText"]}}</strong></h3>
+                <p class="m_faqAnswer">{{fd["answerText"]}}</p>
             </div>
         </div>
     </div>

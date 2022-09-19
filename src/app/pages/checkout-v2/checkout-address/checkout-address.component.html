@@ -1,7 +1,7 @@
-<div class="main-container" >
+<div class="main-container" *ngIf="this.cartSession != null">
     <shared-checkout-stepper [headers]="STEPPER"></shared-checkout-stepper>
-    <cart-notifications *ngIf="hasCartItems" (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
-    <ng-container *ngIf="hasCartItems">
+    <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
+    <ng-container>
         <section>
             <div *ngIf="isUserLoggedIn else hideContinue" class="fixed-bottom-cta payment-strip">
                 <div class="amount-left-section">
@@ -11,9 +11,10 @@
                         </span>
                     </span>
                     <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges) | mathCeil | number : '1.2-2'}}</ng-container>
-                    <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges + _cartService.getGenericCartSession.cart.totalOffer) | mathCeil | number : '1.2-2'}}</ng-container>
+                    <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer) | mathCeil | number : '1.2-2'}}</ng-container>
                 </div>
-                <button [disabled]="!(hasCartItems)" class="btn primary-btn" (click)="$event.stopPropagation();continueToPayment()">
+                <button [disabled]="!(hasCartItems)" class="btn primary-btn"
+                    (click)="$event.stopPropagation();continueToPayment()">
                     CONTINUE
                 </button>
             </div>
@@ -25,9 +26,12 @@
             (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
             (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
             (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-        <cart [moduleName]="'CHECKOUT'"></cart> 
+        <cart [moduleName]="'CHECKOUT'"></cart>
         <order-summary></order-summary>
         <generic-offers></generic-offers>
-        <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems" [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } "></shared-checkout-unavailable-items>
+        <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems"
+            [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } ">
+        </shared-checkout-unavailable-items>
     </ng-container>
 </div>
+<ng-container #txnDeclined></ng-container>

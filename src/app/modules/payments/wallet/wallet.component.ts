@@ -247,7 +247,7 @@ export class WalletComponent {
 
     lowSuccessBanks() {
         this.lsrMessage = false;
-        if (this.type == 'retail') {
+        if (this.type == 'retail' && this.successPercentageData) {
             const banksArr: [] = this._objectToArray.transform(this.successPercentageData);
             // show global message only for top wallets
             const lowSuccessBanks = banksArr.filter(item => (item['up_status'] == 0) && (item['is_top'] == 1))

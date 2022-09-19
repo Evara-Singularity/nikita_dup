@@ -1,4 +1,4 @@
-<app-pop-up [headerType]="'pop-up-header1'" [data]="{headerText: 'Write Question'}">
+<app-pop-up (outData$)="outData($event)"[headerType]="'pop-up-header1'" [data]="{headerText: 'Write Question'}">
     <!-- <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeVariant2Popup()"></i>
@@ -20,7 +20,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="fixed-bottom-cta">
+            <div class="fixed-bottom-cta-2">
                 <button (click)="postQuestion()" class="btn primary-full-btn">SUBMIT YOUR QUESTION</button>
             </div> 
     </div>

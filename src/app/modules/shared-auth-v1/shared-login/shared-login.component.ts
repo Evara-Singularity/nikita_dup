@@ -7,6 +7,7 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
+import { LocalStorageService } from 'ngx-webstorage';
 import { Subscription } from 'rxjs';
 import CONSTANTS from '../../../../app/config/constants';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
@@ -62,6 +63,7 @@ export class SharedLoginComponent implements OnInit
         private _router: Router,
         private _route: ActivatedRoute,
         private _common: CommonService,
+        public localStorageService: LocalStorageService,
     ) { }
 
     ngOnInit(): void
@@ -235,11 +237,28 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateSkipNow() {
+        let backRedirectUrl = localStorage.getItem('backRedirectUrl');
+        if (backRedirectUrl != '/') {
+            let userSession = this.localStorageService.retrieve('user');
+            if (userSession && userSession.authenticated == "true") {
+                if (backRedirectUrl === 'null') {
+                    this._router.navigateByUrl(this._sharedAuthService.redirectUrl);
+                    return;
+                } else {
+                    this._router.navigateByUrl(backRedirectUrl);
+                    return;
+                }
+            } else {
+                this._router.navigateByUrl('/');
+            }
+        }
         this._localAuthService.handleBackURL(true);
     }
 
-    navigateHome() { this._router.navigate(["."])}
-
+    navigateHome() { 
+        console.log('skip now', this._router.url);
+        this._router.navigate(["."])
+    }
     get isAuthHeader() { return this.isCheckout === false && this.headerTitle !== null }
     get phoneFC() { return this.loginNumberForm.get("phone"); }
     get emailFC() { return this.loginEmailForm.get("email"); }

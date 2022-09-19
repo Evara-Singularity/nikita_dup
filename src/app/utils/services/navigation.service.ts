@@ -121,7 +121,10 @@ export class NavigationService
   //this is to handle google + PDP + back case where we need to redirect to parent category
   setPDPBreadCrumbData(breadcrumbData) { this.pdpBreadCrumbData = breadcrumbData; }
 
-  saveHistory(history) { this._localStorage.store("history", history) }
+  saveHistory(history) { 
+    this.history = history;
+    this._localStorage.store("history", history) 
+  }
 
   getHistory() { return this._localStorage.retrieve("history") }
 

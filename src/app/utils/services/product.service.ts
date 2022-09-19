@@ -20,6 +20,7 @@ export class ProductService {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     private basePath = CONSTANTS.NEW_MOGLIX_API;
+    productCouponItem: any = null;
 
     oosSimilarProductsData = {
         similarData: [],
@@ -36,6 +37,16 @@ export class ProductService {
             similarData: [],
         };
     }
+
+    getCustomerLastOrder(obj):Observable<any> {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_LAST_ORDERS;
+        return this._dataService.callRestful("POST", url, { body: obj }).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ lastOrderDetails: [], httpStatus: res.status });
+            })
+        );
+    }
+  
 
     getSimilarProductInfoByIndex(index) {
         return this.oosSimilarProductsData.similarData[index];
@@ -413,7 +424,7 @@ export class ProductService {
         }
     }
 
-    processProductData(args: ProductDataArg, index) {
+    processProductData(args: ProductDataArg, index) {     
         this.oosSimilarProductsData.similarData[index].rawProductData =
             args.productBO;
         // required for goruped products
@@ -551,21 +562,11 @@ export class ProductService {
             "mrp"
             ] > 0 &&
             this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-            "priceWithoutTax"
+            "sellingPrice"
             ] > 0
         ) {
-            this.oosSimilarProductsData.similarData[index].productDiscount =
-                ((this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-                    "mrp"
-                ] -
-                    this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-                    "priceWithoutTax"
-                    ]) /
-                    this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
-                    "mrp"
-                    ]) *
-                100;
-        }
+            this.oosSimilarProductsData.similarData[index].productDiscount = this.oosSimilarProductsData.similarData[index].priceQuantityCountry['discount'] || this._commonService.calculcateDiscount(null,this.oosSimilarProductsData.similarData[index].priceQuantityCountry["mrp"], this.oosSimilarProductsData.similarData[index].priceQuantityCountry["sellingPrice"] );
+         }
         this.oosSimilarProductsData.similarData[index].taxPercentage = this
             .oosSimilarProductsData.similarData[index].priceQuantityCountry
             ? this.oosSimilarProductsData.similarData[index].priceQuantityCountry[
@@ -701,9 +702,9 @@ export class ProductService {
             reviewCount: product.reviewCount,
             uclid: product.uclid,
             keyFeatures: product.keyFeatures || [],
-            internalProduct: !product.hasOwnProperty("internalProduct")
-                ? true
-                : product.internalProduct, // if intenal product prop does not exist then it is internal product
+            internalProduct: product.hasOwnProperty("internalProduct")
+                ? false
+                : true, // if intenal product prop does not exist then it is internal product
         } as ProductsEntity;
     }
 
@@ -751,7 +752,6 @@ export class ProductService {
     }
 
     productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
-        // console.log("blocks", product)
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
         const productEntity: ProductsEntity =  {
@@ -833,7 +833,7 @@ export class ProductService {
             outOfStock: productBO['outOfStock'],
             quantityAvailable: priceQuantityCountry ? priceQuantityCountry['quantityAvailable'] : 0,
             productMinimmumQuantity: productMinimmumQuantity,
-            discount: (priceQuantityCountry && priceQuantityCountry['discount']) ? priceQuantityCountry['discount'] :(((productMrp - priceWithoutTax) / productMrp) * 100).toFixed(0),
+            discount: (priceQuantityCountry && priceQuantityCountry['discount']) ? priceQuantityCountry['discount'] :null,
             rating: (overrideProductB0 && overrideProductB0.rating) ? overrideProductB0.rating : null,
             categoryCodes: productCategoryDetails['categoryCode'],
             taxonomy: productCategoryDetails['taxonomyCode'],

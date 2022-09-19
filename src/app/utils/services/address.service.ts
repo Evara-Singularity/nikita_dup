@@ -8,9 +8,7 @@ import { AddressListModel } from '../models/shared-checkout.models';
 import { CartService } from './cart.service';
 import { DataService } from './data.service';
 import { GlobalLoaderService } from './global-loader.service';
-import { CheckoutUtil } from './../../pages/checkout-v2/checkout-util';
 import { LocalAuthService } from './auth.service';
-declare let dataLayer;
 
 //TODO:Below methods in common service so clean up accordigly.
 @Injectable({

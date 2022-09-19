@@ -32,7 +32,7 @@ import { CheckoutService } from "@app/utils/services/checkout.service";
 import { CommonService } from "@app/utils/services/common.service";
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
-import { BehaviorSubject, Subject, Subscription } from "rxjs";
+import { BehaviorSubject, Observable, of, Subject, Subscription } from "rxjs";
 import { ClientUtility } from "../../utils/client.utility";
 import { ObjectToArray } from "../../utils/pipes/object-to-array.pipe";
 import { LocalAuthService } from "../../utils/services/auth.service";
@@ -45,7 +45,7 @@ import { SiemaCrouselService } from "../../utils/services/siema-crousel.service"
 import { FbtComponent } from "./../../components/fbt/fbt.component";
 
 import * as $ from 'jquery';
-import { filter } from "rxjs/operators";
+import { catchError, delay, filter, map, mergeMap } from "rxjs/operators";
 import { TrackingService } from "@app/utils/services/tracking.service";
 
 interface ProductDataArg
@@ -60,7 +60,7 @@ interface ProductDataArg
     templateUrl: "./product.component.html",
     styleUrls: ["./product.component.scss"],
 })
-export class ProductComponent implements OnInit, AfterViewInit
+export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 {
     encodeURI = encodeURI;
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -291,6 +291,10 @@ export class ProductComponent implements OnInit, AfterViewInit
     popularDealsInstance = null;
     @ViewChild("popularDeals", { read: ViewContainerRef })
     popularDealsContainerRef: ViewContainerRef;
+    // ondemad loaded components for quick order popUp
+    quickOrderInstance = null;
+    @ViewChild("quickOrder", { read: ViewContainerRef })
+    quickOrderContainerRef: ViewContainerRef;
 
     iOptions: any = null;
 
@@ -316,6 +320,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     hasGstin: boolean;
     GLOBAL_CONSTANT = GLOBAL_CONSTANT;
     isAskQuestionPopupOpen: boolean;
+    mainProductURL: string;
 
     set showLoader(value: boolean)
     {
@@ -393,9 +398,24 @@ export class ProductComponent implements OnInit, AfterViewInit
             this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
+            this.navigationOnFragmentChange();
         }
     }
 
+    navigationOnFragmentChange() {
+        this.route.fragment.pipe(delay(300)).subscribe(fragment => {
+            switch (fragment) {
+                case CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_EMIS :
+                    this.emiComparePopUpOpen(true);
+                    break;
+                case CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_OFFERS:
+                    this.viewPopUpOpen(this.productService.productCouponItem);
+                    break;    
+                default:
+                    break;
+            }
+        })
+    }
 
     backUrlNavigationHandler()
     {
@@ -736,6 +756,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.productBrandDetails = this.rawProductData["brandDetails"];
         this.productCategoryDetails = this.rawProductData["categoryDetails"][0];
         this.productUrl = this.rawProductData["defaultCanonicalUrl"];
+        this.mainProductURL = this.rawProductData["productPartDetails"][partNumber]["productLinks"]['default'];
         this.productFilterAttributesList =
             this.rawProductData["filterAttributesList"];
         this.productKeyFeatures = this.rawProductData["keyFeatures"];
@@ -1290,10 +1311,9 @@ export class ProductComponent implements OnInit, AfterViewInit
                 //filtering Data to show the 
                 this.productBulkPrices = this.productBulkPrices.filter((bulkPrice) =>
                 {
-                    return this.rawProductData['quantityAvailable'] >= bulkPrice['minQty']
+                    return this.rawProductData['quantityAvailable'] >= bulkPrice['minQty'] && bulkPrice['minQty'] >= this.productMinimmumQuantity;
 
                 });
-
                 this.checkBulkPriceMode();
             }
         }
@@ -1569,9 +1589,168 @@ export class ProductComponent implements OnInit, AfterViewInit
     }
 
     // cart methods 
-    addToCart(buyNow: boolean)
-    {
-        this.addToCartFromModal(buyNow)
+    addToCart(buyNow: boolean) {
+        if(buyNow){
+            this.globalLoader.setLoaderState(true);
+            this.validateQuickCheckout().subscribe((res) => {
+              if (res != null) {
+                this.globalLoader.setLoaderState(false);
+                this.quickCheckoutPopUp(res.address);
+                this.commonService.setBodyScroll(null, false); 
+                this.analyticAddToCart(buyNow, this.cartQunatityForProduct , true);
+              } else {
+                this.addToCartFromModal(buyNow);
+                this.globalLoader.setLoaderState(false);
+              }
+            });
+        }else{
+            this.addToCartFromModal(buyNow);
+        }
+    }
+    
+    async quickCheckoutPopUp( address) {
+      if (!this.quickOrderInstance) {
+        this.globalLoader.setLoaderState(true);
+        const { PdpQuickCheckoutComponent } = await import(
+          "../../components/pdp-quick-checkout/pdp-quick-checkout.component"
+        ).finally(() => {
+          this.globalLoader.setLoaderState(false);
+        });
+        const factory = this.cfr.resolveComponentFactory(PdpQuickCheckoutComponent);
+        this.quickOrderInstance = this.quickOrderContainerRef.createComponent(
+          factory,
+          null,
+          this.injector
+        );
+  
+        this.quickOrderInstance.instance["rawProductData"] = this.rawProductData;
+        this.quickOrderInstance.instance["productPrice"] = this.productPrice;
+        this.quickOrderInstance.instance["selectedProductBulkPrice"] = this.selectedProductBulkPrice;
+        this.quickOrderInstance.instance["cartQunatityForProduct"] = this.cartQunatityForProduct;
+        this.quickOrderInstance.instance["address"] = address;
+        (
+          this.quickOrderInstance.instance["isClose"] as EventEmitter<boolean>
+        ).subscribe((status) => {
+          this.router.navigate(["/checkout"]);
+        });
+        this.quickOrderInstance = null;
+      }
+    }
+    
+    validateQuickCheckout(): Observable<any> {
+      if (this.localAuthService.isUserLoggedIn()) {
+        const userData = this.localAuthService.getUserSession();
+        const userId = userData ? userData["userId"] : null;
+        return this.productService
+          .getCustomerLastOrder({
+            customerId: userId,
+            limit: 1,
+          })
+          .pipe(
+            map(
+              (res) => {
+                if (!res) {
+                  return null;
+                } else {
+                  return this.getCustomerLastOrderVerification(res);
+                }
+              },
+              catchError((error) => {
+                return of(null);
+              })
+            ),
+            mergeMap((response) => {
+              if (response) {
+                const postBody = {
+                  productId: [this.rawProductData["defaultPartNumber"]],
+                  toPincode:
+                    response.addressDetails["shippingAddress"][0]["zipCode"],
+                  price: this.productPrice,
+                };
+                return this.productService
+                  .getLogisticAvailability(postBody)
+                  .pipe(
+                    map(
+                      (ress) => {
+                        if (!ress) {
+                          return null;
+                        } else {
+                          return this.getServiceAvailabilityVerification(
+                            ress,
+                            response
+                          );
+                        }
+                      },
+                      catchError((error) => {
+                        return of(null);
+                      })
+                    )
+                  );
+              } else {
+                return of(null);
+              }
+            })
+          );
+      } else {
+        return of(null);
+      }
+    }
+  
+    getServiceAvailabilityVerification(ress , address) {
+      if (ress && ress["statusCode"] && ress["statusCode"] == 200) {
+        let data =
+          ress["data"][this.rawProductData["defaultPartNumber"]]["aggregate"];
+        if (data["serviceable"] == true && data["codAvailable"] == true) {
+          return {
+            address: address
+          };
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
+  
+    getCustomerLastOrderVerification(res) {
+      if (res && res["lastOrderDetails"] && res["lastOrderDetails"].length) {
+        const len =
+          res["lastOrderDetails"].length == 0
+            ? res["lastOrderDetails"].length
+            : res["lastOrderDetails"].length - 1;
+        const isValidOrder =
+          res["lastOrderDetails"][len].paymentType == "COD" &&
+          res["lastOrderDetails"][len].orderStatus == "DELIVERED";
+        if (isValidOrder) {
+            const isValidShippingAddress = (
+                res["lastOrderDetails"][len].addressType == 'shipping'  && 
+                res["lastOrderDetails"][len]["addressDetails"] && 
+                res["lastOrderDetails"][len]["addressDetails"]["shippingAddress"] 
+                && res["lastOrderDetails"][len]["addressDetails"]["shippingAddress"].length == 1
+                );
+            const isValidBillingAddress = (
+                res["lastOrderDetails"][len].addressType == 'billing'  && 
+                res["lastOrderDetails"][len]["addressDetails"] && 
+                res["lastOrderDetails"][len]["addressDetails"]["billingAddress"] &&
+                res["lastOrderDetails"][len]["addressDetails"]["billingAddress"].length == 1 &&
+                res["lastOrderDetails"][len]["addressDetails"]["shippingAddress"] &&
+                res["lastOrderDetails"][len]["addressDetails"]["shippingAddress"].length == 1
+                );    
+            if(isValidShippingAddress || isValidBillingAddress){
+                return {
+                    addressDetails: res["lastOrderDetails"][len]["addressDetails"],
+                    addressType: res["lastOrderDetails"][len]["addressType"],
+                  };
+            }else{
+                return null
+            }
+          
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
     }
 
     addToCartFromModal(buyNow: boolean)
@@ -1585,7 +1764,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.cartService.addToCart({ buyNow, productDetails: cartAddToCartProductRequest }).subscribe(result =>
         {
             // analytic events needs to called here
-            this.analyticAddToCart(buyNow, this.cartQunatityForProduct);
+            this.analyticAddToCart(buyNow, this.cartQunatityForProduct , false);
             this.intialAddtoCartSocketAnalyticEvent(buyNow);
             this.updateAddtoCartSocketAnalyticEvent(buyNow)
             this.fireViewBasketEvent(result);
@@ -2088,6 +2267,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         let user = this.localStorageService.retrieve("user");
         if (user && user.authenticated == "true") {
+            this.location.replaceState(this.mainProductURL);
             !user['phone'].length ? this.intiateRFQQuote(true) : this.raiseRFQGetQuote(user);
         } else {
             this.goToLoginPage(this.productUrl, "Continue to raise RFQ", "raiseRFQQuote");
@@ -2157,7 +2337,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                     this.intiateRFQQuoteUpdate(product , rfqId);
                    // this._tms.show({ type: 'success', text: response['statusDescription'] });
                     this.rfqQuoteRaised = true;
-                    this.location.replaceState(this.rawProductData["defaultCanonicalUrl"]);
+                    this.location.replaceState(this.mainProductURL);
                 } else {
                     this._tms.show({ type: 'error', text: response['message']['statusDescription'] });
                 }
@@ -2326,7 +2506,6 @@ export class ProductComponent implements OnInit, AfterViewInit
                 ] as EventEmitter<boolean>
             ).subscribe((data) =>
             {
-                console.log("data view --->>>", data)
                 this.viewPopUpOpen(data);
             });
             (
@@ -2418,7 +2597,7 @@ export class ProductComponent implements OnInit, AfterViewInit
                 this.offerPopupContainerRef.remove();
             });
             (
-                this.offerComparePopupInstance.instance[
+                this.offerPopupInstance.instance[
                 "isLoading"
                 ] as EventEmitter<boolean>
             ).subscribe((loaderStatus) =>
@@ -2569,7 +2748,6 @@ export class ProductComponent implements OnInit, AfterViewInit
                     ] as EventEmitter<boolean>
                 ).subscribe((status) =>
                 {
-                    // console.log('writeReview removed', status);
                     this.writeReviewPopupInstance = null;
                     this.writeReviewPopupContainerRef.detach();
                 });
@@ -3350,6 +3528,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         {
             ele.push(element.name);
         });
+        this.productTags = this.commonService.sortProductTagsOnPriority(this.productTags);
         const tagsForAdobe = ele.join("|");
 
         let page = {
@@ -3386,7 +3565,7 @@ export class ProductComponent implements OnInit, AfterViewInit
         this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData('outOfStockUpBtn'), 'genericPageLoad');
     }
 
-    analyticAddToCart(buyNow, quantity)
+    analyticAddToCart(buyNow, quantity, isCod)
     {
         const user = this.localStorageService.retrieve("user");
         const taxonomy = this.productCategoryDetails["taxonomyCode"];
@@ -3408,18 +3587,19 @@ export class ProductComponent implements OnInit, AfterViewInit
 
         let page = {
             linkPageName: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
-            linkName: !buyNow ? "Add to cart" : "Buy Now",
+            linkName: (isCod ?"Quick cod  " : (!buyNow ? "Add to cart" : "Buy Now")),
             channel: "pdp",
         };
 
         if (this.displayCardCta) {
             page["linkName"] =
-                !buyNow ? "Add to cart Overlay" : "Buy Now Overlay";
+                (isCod ? "Quick cod": (!buyNow ? "Add to cart Overlay" : "Buy Now Overlay"));
             if (this.popupCrouselInstance) {
                 page["linkName"] =
-                    !buyNow
+                isCod ? "Quick cod  Main Image Overlay " :
+                    (!buyNow
                         ? "Add to cart Main Image Overlay"
-                        : "Buy Now Main Image Overlay";
+                        : "Buy Now Main Image Overlay")
             }
         }
 
@@ -3435,8 +3615,6 @@ export class ProductComponent implements OnInit, AfterViewInit
             brand: this.productBrandDetails["brandName"],
             tags: tagsForAdobe,
         };
-
-        console.log('digitalData', { page, custData, order });
 
         this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
 
@@ -3804,6 +3982,7 @@ export class ProductComponent implements OnInit, AfterViewInit
     {
         let user = this.localStorageService.retrieve("user");
         if (user && user.authenticated == "true") {
+            this.location.replaceState(this.mainProductURL);
             this.askQuestionPopup();
         } else {
             this.goToLoginPage(this.productUrl, "Continue to ask question", "askQuestion");
@@ -3836,6 +4015,7 @@ export class ProductComponent implements OnInit, AfterViewInit
             ] as EventEmitter<boolean>
         ).subscribe(() =>
         {
+            this.commonService.setBodyScroll(null, true);
             this.askQuestionPopupInstance = null;
             this.askQuestionPopupContainerRef.remove();
             this.isAskQuestionPopupOpen = false;
@@ -3847,6 +4027,15 @@ export class ProductComponent implements OnInit, AfterViewInit
         ).subscribe(() =>
         {
             this.handleFaqSuccessPopup();
+        });
+        (
+            this.askQuestionPopupInstance.instance[
+            "removed"
+            ] as EventEmitter<boolean>
+        ).subscribe((status) =>
+        {
+            this.askQuestionPopupContainerRef.detach();
+            this.askQuestionPopupInstance = null;
         });
     }
 

@@ -90,3 +90,18 @@ export interface CartObjectSchema {
     tawot: number;
     tpt: number;
 }
+
+export interface ValidateDto
+{
+    cartSession:any,
+    shippingAddress:any,
+    billingAddress:any,
+    invoiceType:any,
+    isBuyNow:boolean,
+}
+
+export interface InitiateQuickCod extends ValidateDto
+{
+    postCode:any,
+    userId:any
+}

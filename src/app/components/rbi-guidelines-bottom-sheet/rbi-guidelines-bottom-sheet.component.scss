@@ -1,0 +1,38 @@
+.plp-bottom-modal{
+    width: 100%;
+    margin: 0px !important;
+    li{
+        img{
+            width: 20px;
+        }
+        display: flex;
+        font-size: 14px;
+        align-items: center;
+        color: #303030;
+        border-top: 1px solid #EFEFF4;
+        padding: 20px !important;
+        i{
+            font-size:20px;
+            width:30px;
+            &.f-22{
+                font-size: 22px;
+           }
+        }
+        &:nth-child(1){
+            border: none;
+            padding: 0px 0;
+            position: relative;
+            span{
+                font-size: 15px;
+                font-weight: bold;
+            }
+            i.icon-circle-delete{
+                position: absolute;
+                right: 15px;
+                font-size: 20px;
+                color: #444;
+            }
+        }
+            
+    }
+}

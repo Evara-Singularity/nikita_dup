@@ -40,6 +40,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
     @Input('isLoginPopup') isLoginPopup;
     @Output('otpSuccess$') otpSuccess$= new EventEmitter();
     @Output('togglePopUp$') togglePopUp$= new EventEmitter();
+    @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
 
     authFlow: AuthFlowType;//gives flowtype & identifier information
     //otp

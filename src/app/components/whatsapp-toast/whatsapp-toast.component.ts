@@ -13,8 +13,12 @@ export class WhatsAppToastComponent implements OnInit {
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
   @Input('customText') customText = '';
+  showToolTip:boolean=true;
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.showToolTip=false
+    }, 5000);
   }
 
   convertURL(url){

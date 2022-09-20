@@ -98,7 +98,7 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
         this.authInstanceref.remove();
         // this._router.navigate([]);
       });
-    }, 600);
+    }, 100);
   }
 
   ngOnDestroy() {

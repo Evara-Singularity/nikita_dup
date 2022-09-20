@@ -24,6 +24,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
     @Input('isCheckout') isCheckout = false;
     @Input('isLoginPopup') isLoginPopup;
     @Output() togglePopUp$: EventEmitter<any> =  new EventEmitter<any>();
+    @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
 
     isPasswordType = true;//to set input[type] = text/password.
     authFlow: AuthFlowType;//gives flowtype & identifier information

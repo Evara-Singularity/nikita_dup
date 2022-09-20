@@ -71,6 +71,10 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy {
 
 
     navigateToHome(link) {
+        if(this.isLoginPopup){
+            this.onSkipBtnClick$.emit(true);
+            return;
+        }
         this.navigateTo(link);
     }
 

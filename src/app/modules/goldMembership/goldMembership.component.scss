@@ -1,0 +1,44 @@
+@import '../../scss/variables';
+.gold-membership-container{
+    background-color: #fff;
+    .cross-icon{
+        padding: 10px 15px 0;
+        background: #070b2e;
+        i{
+            text-align: right;
+            display: block;
+            font-size: 16px;
+            color: white;
+        }
+    }
+    .gold-membership-img{
+        background: 070b2e;
+        // background-image: url(../../../assets/img/golden-confetti-new.gif);
+    }
+    .gold-membership-txt{
+        padding: 15px;
+        p{
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 18px;
+        }
+        .membership-benifits{
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            .image-section{
+                width: 46px;
+                height: 46px;
+            }
+            .benifit-txt{
+                padding-left: 10px;
+                .sub-txt{
+                    font-size: 10px;
+                    line-height: 14px;
+                    padding-top: 4px;
+                    font-weight: 400;
+                }
+            }
+        }
+    }
+}

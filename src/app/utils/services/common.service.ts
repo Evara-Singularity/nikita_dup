@@ -53,7 +53,7 @@ export class CommonService
     public oosSimilarCard$: Subject<any> = new Subject<any>();
 
     public attachScrollEvent$: Subject<any> = new Subject<any>();
-
+    showWhatsappToolTip=true
     isHomeHeader = false;
     isPLPHeader = false;
     isScrolledHeader = false;

@@ -3,6 +3,7 @@ import { Component, Input, NgModule, OnInit } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { SafeUrlPipeModule } from '@app/utils/pipes/safe-url.pipe';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
   selector: 'whatsapp-toast',
@@ -13,12 +14,13 @@ export class WhatsAppToastComponent implements OnInit {
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
   @Input('customText') customText = '';
-  showToolTip:boolean=true;
+  constructor( public commonService: CommonService){}
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.showToolTip=false
-    }, 5000);
+      this.commonService.showWhatsappToolTip=false;
+    }, 3000);
+
   }
 
   convertURL(url){

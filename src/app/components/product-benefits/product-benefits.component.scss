@@ -5,3 +5,20 @@
     background: var(--white);
     @extend %hide-scrollbar;
 }
+
+.gold-member-benefits {
+    background: #E8DEA1;
+    @extend %hide-scrollbar;
+    .pdp-section-header{
+        background-color: #E8DEA1;
+    }
+    .pwa-tabs-container{
+        .pwa-image-tab{
+            border: 1px solid #D3C780;
+            background-color: var(--white);
+            .tab-img{
+                background: #E8DEA1;
+            }
+        }
+    }
+}

@@ -145,6 +145,8 @@
     color: var(--white);
     margin-top: 65px;
     padding: 25px 15px;
+    margin-bottom: 0;
+    border-radius: 8px 8px 0 0;
     .name {
         width: 50px;
         .icon-profile {
@@ -168,6 +170,23 @@
         border-radius: $border-radius-4;
     }
 }
+.gold-member-strip{
+    display: flex;
+    align-items: center;
+    background: #070b2e;
+    padding: 8px 15px;
+    border-radius: 0 0 8px 8px;
+    margin:0 15px;
+    p{
+      color:#D2C381;
+      font-size: $large-font;
+      font-weight: $font-bold;
+    }
+    img{
+      width: 30px;
+      margin-left: auto;
+    }
+  }
 .material-static-form {
     @extend %white-card;
     padding-left: 10px;

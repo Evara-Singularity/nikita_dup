@@ -2,7 +2,7 @@
 .gold-membership-container{
     background-color: #fff;
     .cross-icon{
-        padding: 10px 15px 0;
+        padding: 15px 15px 0;
         background: #070b2e;
         i{
             text-align: right;
@@ -12,8 +12,14 @@
         }
     }
     .gold-membership-img{
-        background: 070b2e;
-        // background-image: url(../../../assets/img/golden-confetti-new.gif);
+        background: #070b2e;
+        padding: 15px 0;
+        text-align: center;
+        img{
+            max-width: 100%;
+            text-align: center;
+            width: auto;
+        }
     }
     .gold-membership-txt{
         padding: 15px;

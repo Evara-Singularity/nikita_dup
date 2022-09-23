@@ -1,0 +1,19 @@
+<ng-container *ngIf="chartContainer =='priceChartContainer'">
+    <div [debounceTime]="100" style="height:100px" data-observeVisibility (visible)="loadPriceWidget($event)" >
+        <ng-container #priceContainerRef>
+        </ng-container>
+    </div>
+</ng-container>
+<ng-container *ngIf="chartContainer =='brandChartContainer'">
+    <div [debounceTime]="100" style="height:100px" data-observeVisibility (visible)="loadBrandWidget()" >
+        <ng-container #brandContainerRef>
+        </ng-container>
+    </div>
+ </ng-container>
+ <ng-container *ngIf="chartContainer =='attributeChartContainer'">
+    <div [debounceTime]="100" style="height:100px" data-observeVisibility (visible)="loadAttributeWidget()" >
+        <ng-container #attributeContainerRef></ng-container> 
+    </div>
+ </ng-container>
+
+

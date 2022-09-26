@@ -1,0 +1,26 @@
+<div class="multiple-widgets">
+    <div id="price-chart" style="width:100%;height:400px;"></div>
+    <div id="brand-chart" style="width:100%;height:400px;"></div>
+    <div id="attribute-chart" style="width:100%;height:400px;"></div>
+</div>
+<div *ngIf="chartType == 'brand'">
+    <div id="price-chart" style="width:100%;height:400px;"></div>
+    <div class="card">
+        <p>
+            36% of users purchase <b>power tools</b> in range <b>1000-1200</b>
+        </p>
+    </div>
+</div>
+<div *ngIf="chartType =='price'">
+    <div id="brand-chart" style="width:100%;height:400px;"></div>
+    <div (click)="callFilterData()" class="card">
+        <!-- 'power tools','1000 - 1200' -->
+        <p>
+            <b>36% </b>of users purchase power tools in range <b>1000 - 1200</b>
+        </p> 
+    </div>
+</div>
+<div *ngIf="chartType =='attribute'">
+    <div id="attribute-chart" style="width:100%;height:400px;"></div>
+</div>
+

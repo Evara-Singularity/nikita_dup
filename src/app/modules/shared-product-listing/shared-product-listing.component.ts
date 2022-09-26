@@ -7,6 +7,9 @@ import { CartService } from '@app/utils/services/cart.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { ProductService } from '@app/utils/services/product.service';
 import { ActivatedRoute } from '@angular/router';
+import { DataService } from '@app/utils/services/data.service';
+import { PercentPipe } from '@angular/common';
+import { chart } from 'highcharts';
 
 @Component({
   selector: 'shared-product-listing',
@@ -39,6 +42,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   @Input() categoryTaxonomay: string; // only received in case used in category module
   @Input() searchKeyword: string; // only received in case used in search module
   @Input() categoryMidPlpFilterData: any; // only received in case used in search module
+
   @Output('categoryClicked') categoryClicked: EventEmitter<string> = new EventEmitter<string>();
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -50,15 +54,17 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   isHomeHeader: boolean = true;
   public appliedFilterCount: number = 0;
   showSortBy: boolean = true;
-
+  
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
+    private _viewContainerReference:ViewContainerRef,
     private _injector: Injector,
     private _cartService: CartService,
     public _productListService: ProductListService,
     public _productService: ProductService,
     private _localAuthService: LocalAuthService,
     private _activatedRoute: ActivatedRoute,
+    private dataService:DataService,
     public _commonService: CommonService) {
   }
 
@@ -82,7 +88,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
             let products = response['products'] || [];
             if (products && (products as []).length > 0) {
               this.sponseredProductList = (products as any[]).map(product => this._productService.searchResponseToProductEntity(product));
-              console.log('sponseredProductList', Object.assign([],this.sponseredProductList));
               let tempProductList = JSON.parse(JSON.stringify(this.productsListingData.products));
               const reversedSponseredProductList = this.sponseredProductList.reverse();
               this.productsListingData.products.forEach((product, index) => {
@@ -172,7 +177,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   get sponseredProductCount() {
     if (this.isAdsEnable && this.sponseredProductList.length > 0) {
       const productCount = this.productsListingData?.products.length;
-      if (productCount > 0 && productCount < 5) {
+      if(productCount > 0 && productCount < 5) {
         return 1;
       } else if (productCount >= 5 && productCount < 10) {
         return 2;
@@ -312,9 +317,8 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       this.paginationContainerRef.remove();
     }
   }
-
+  
   ngOnDestroy() {
     this.resetLazyComponents();
   }
-
 }

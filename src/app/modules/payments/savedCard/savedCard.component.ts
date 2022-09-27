@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { of, Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -28,6 +28,10 @@ export class SavedCardComponent {
     @Input() savedCardsData: any;
     @Input() type;
     @Output() removeTab$: EventEmitter<any> = new EventEmitter<any>();
+
+    bottomSheetInstance = null;
+    @ViewChild('bottomSheet', { read: ViewContainerRef })
+    bottomSheetContainerRef: ViewContainerRef;
     
     savedCardForm: FormGroup;
     isValid: boolean = false;
@@ -40,6 +44,7 @@ export class SavedCardComponent {
     prepaidsubscription: Subscription;
     payEnable = false;
     selectedBankCode: String = 'AXIB';
+    saveCard: boolean;
 
     set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
@@ -54,7 +59,9 @@ export class SavedCardComponent {
         private _objectToArray: ObjectToArray,
         private _dataService: DataService,
         private _formBuilder: FormBuilder,
-        private _analytics: GlobalAnalyticsService) {
+        private _analytics: GlobalAnalyticsService,
+        private cfr: ComponentFactoryResolver,
+        private injector: Injector) {
     }
 
     ngOnInit() {
@@ -201,7 +208,7 @@ export class SavedCardComponent {
                 "bankcode": this.savedCards[this.selectedCardIndex]['card_brand'],
                 "ccvv": data['cards'][this.selectedCardIndex]['cvv'],
                 "user_id": userSession["userId"],
-                "store_card": "false",
+                "store_card": this.saveCard ? "true" : "false",
                 "card_token": this.savedCards[this.selectedCardIndex]['card_token']
             };
         }
@@ -279,6 +286,9 @@ export class SavedCardComponent {
         }
         this.payEnable = false;
         this.savedCardForm.reset();
+        if(!this.saveCard){
+            this.toggleSaveCard();
+        }
     }
 
     stop(e) {
@@ -313,4 +323,29 @@ export class SavedCardComponent {
             })
         );
     }
+
+    async initiateRbiGuidlinesPopUp()
+    {
+        if (!this.bottomSheetInstance) {
+            const { RbiGuidelinesBottomSheetComponent } = await import(
+                './../../../components/rbi-guidelines-bottom-sheet/rbi-guidelines-bottom-sheet.component'
+            );
+            const factory = this.cfr.resolveComponentFactory(RbiGuidelinesBottomSheetComponent);
+            this.bottomSheetInstance = this.bottomSheetContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.bottomSheetInstance.instance['bm'] = true;
+
+        } else {
+            //toggle
+            this.bottomSheetInstance.instance['bm'] = !(this.bottomSheetInstance.instance['bm']);
+        }
+    }    
+
+    toggleSaveCard(){
+        this.saveCard = !this.saveCard; 
+    }
+
 }

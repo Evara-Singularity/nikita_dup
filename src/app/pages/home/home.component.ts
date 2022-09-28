@@ -129,7 +129,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		private injector: Injector,
 		private route: ActivatedRoute,
 		private _router: Router,
-		private _commonService: CommonService,
+		public _commonService: CommonService,
 		private analytics: GlobalAnalyticsService,
 		private _productService: ProductService,
 	) {

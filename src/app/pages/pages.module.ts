@@ -9,6 +9,7 @@ import { ModalModule } from '@app/modules/modal/modal.module';
 import { ToastMessageModule } from '@app/modules/toastMessage/toast-message.module';
 import { SharedFooterModule } from '@app/components/shared-footer/shared-footer.component';
 import { GoldMembershipModule } from '@app/modules/goldMembership/goldMembership.module';
+import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { GoldMembershipModule } from '@app/modules/goldMembership/goldMembership
     ModalModule, 
     ToastMessageModule,
     SharedFooterModule,
-    GoldMembershipModule
+    GoldMembershipModule, 
+    ObserveVisibilityDirectiveModule
   ],
   providers: [MyAccountGuard]
 })

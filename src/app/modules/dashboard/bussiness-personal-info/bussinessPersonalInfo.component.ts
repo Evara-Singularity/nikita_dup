@@ -32,9 +32,9 @@ export class BussinessInfoComponent {
   constructor(
     private _state: GlobalState,
     private _router: Router,
-    private _commonService: CommonService,
+    public _commonService: CommonService,
     private _cartService: CartService,
-    private _localAuthService: LocalAuthService,
+    public _localAuthService: LocalAuthService,
     public localStorageService: LocalStorageService,
     private _dashboardService: DashboardService,
     private loaderService:GlobalLoaderService,

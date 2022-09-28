@@ -1,8 +1,8 @@
-<!-- <ng-template #goldMembershipTemplate>
+<ng-template #goldMembershipTemplate>
 
   <div class="gold-membership-container">
     <div class="cross-icon">
-      <i class="icon-circle-delete del-ico"></i>
+      <i class="icon-circle-delete del-ico" (click)="closeGoldPopup(true)"></i>
     </div>
     <div class="gold-membership-img">
       <img src="../../../assets/img/gold-membership-img.png">
@@ -38,12 +38,8 @@
       </div>
     </div>
   </div>
-
-
 </ng-template>
 
-<app-bottom-menu>
-  <ng-container content *ngTemplateOutlet="goldMembershipTemplate">
-
-  </ng-container>
-</app-bottom-menu> -->
+<app-bottom-menu (outData$)="popupOnOutsideClick($event)">
+  <ng-container content *ngTemplateOutlet="goldMembershipTemplate"></ng-container>
+</app-bottom-menu>  

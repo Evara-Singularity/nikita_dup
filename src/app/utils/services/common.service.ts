@@ -87,6 +87,8 @@ export class CommonService
     public previousUrl: string = "/";
     public currentUrl: string = null;
 
+    goldMemberPopupOpened = new Subject();
+
     constructor(
         @Inject(PLATFORM_ID) platformId,
         private checkoutService: CheckoutService,
@@ -1527,6 +1529,14 @@ export class CommonService
             return image.replace(invalidURL,CONSTANTS.IMAGE_BASE_URL);
         }
         return image;
+    }
+
+    showgoldMembershipPopup(){
+        this.goldMemberPopupOpened.next();
+    }
+
+    getGoldMembershipPopup(){
+        return this.goldMemberPopupOpened.asObservable();
     }
 
 }

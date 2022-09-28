@@ -32,7 +32,7 @@
     
                 <li>
                     <span class="tag-label">Total Shipping</span>
-                    <span class="tag-value">₹{{ _cartService?.shippingCharges | mathFloor | number :'1.2-2' }}</span>
+                    <span class="tag-value">₹{{ _cartService.getGenericCartSession.cart.shippingCharges | mathFloor | number :'1.2-2' }}</span>
                 </li>
                 <li>
                     <span class="tag-label">Total Coupon Discount</span>
@@ -42,7 +42,8 @@
                 </li>
                 <li class="bold-txt">
                     <span class="tag-label">Amount Payable</span>
-                    <span class="tag-value">₹{{totalPayableAmount | mathCeil | number : '1.2-2'}}</span>
+                    <span class="tag-value" *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges) | mathCeil | number : '1.2-2'}}</span>
+                    <span class="tag-value" *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer) | mathCeil | number : '1.2-2'}}</span>
                 </li>
             </ul>
         </div>

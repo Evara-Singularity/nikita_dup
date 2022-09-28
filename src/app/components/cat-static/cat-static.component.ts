@@ -30,6 +30,9 @@ export class CatStaticComponent {
   imports: [
     CommonModule,
     RouterModule,
+  ],
+  exports: [
+    CatStaticComponent
   ]
 })
 

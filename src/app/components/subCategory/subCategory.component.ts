@@ -1,5 +1,5 @@
 import {
-    Component, ViewEncapsulation, Input, EventEmitter, Output, PLATFORM_ID, Inject, NgModule
+    Component, ViewEncapsulation, Input, EventEmitter, Output, PLATFORM_ID, Inject, NgModule, OnInit
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CategoryService } from '@utils/services/category.service';
@@ -22,7 +22,7 @@ import { environment } from 'environments/environment';
     ]
 })
 
-export class SubCategoryComponent {
+export class SubCategoryComponent implements OnInit{
     @Input() relatedCatgoryList: Array<any> = [];
     @Output() getCategoryById:EventEmitter<any>=new EventEmitter<any>();
     @Output() updateSubCategoryCount$: EventEmitter<any> = new EventEmitter<any>();
@@ -34,6 +34,11 @@ export class SubCategoryComponent {
 
     constructor(@Inject(PLATFORM_ID) platformId, public categoryService: CategoryService, public router: Router, public commonService: CommonService) {
     };
+
+    ngOnInit(): void {
+        this.initializeSubcategoryData(this.relatedCatgoryList);
+        this.showList(false);
+    }
 
     initializeSubcategoryData(data) {
         this.relatedCatgoryList = data;

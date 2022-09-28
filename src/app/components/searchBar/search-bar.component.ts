@@ -209,45 +209,50 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
     }
 
     searchData(dataD, isValid) {
-        this.service.goToDirectBrandCatPage(dataD.searchTerm).subscribe(
-            (data) => {
-                this._cs.resetSelectedFilterData();
-                this.enableScroll();
-                const extras = {
-                    queryParams: {
-                        controller: 'search',
-                        orderby: 'position',
-                        orderway: 'desc',
-                        search_query: dataD.searchTerm,
-                        submit_search: 'Search',
-                        lsource: 'sinput' // lSource: localSource, sinput: searchinput
-                    }
-                };
-                if (dataD.searchTerm !== undefined && dataD.searchTerm != null && dataD.searchTerm.length > 0) {
-                    this.addSearchToLocalStorage(dataD.searchTerm, extras);
-                    this._cs.setGaGtmData({ list: 'Site Search' });
-                }
-
-                if (data['redirectionLink'] != null) {
-                    this.showSuggestionBlock = false;
-                    this._commonService.resetLimitTrendingCategoryNumber();
-                    this.ssp = false;
-                    this._r.navigate([data['redirectionLink']], { queryParams: { sC: 'no', search_query: dataD.searchTerm } });
-                }
-                else {
-                    if (document.getElementById("search-input")) {
-                        document.getElementById("search-input").blur();
-                    }
-                    this.resetSearchBar();
-                    this.ssp = false;
+        if (dataD && dataD.searchTerm && dataD.searchTerm.length) {
+            this.service.goToDirectBrandCatPage(dataD.searchTerm).subscribe(
+                (data) => {
+                    this._cs.resetSelectedFilterData();
+                    this.enableScroll();
+                    const extras = {
+                        queryParams: {
+                            controller: 'search',
+                            orderby: 'position',
+                            orderway: 'desc',
+                            search_query: dataD.searchTerm,
+                            submit_search: 'Search',
+                            lsource: 'sinput' // lSource: localSource, sinput: searchinput
+                        }
+                    };
                     if (dataD.searchTerm !== undefined && dataD.searchTerm != null && dataD.searchTerm.length > 0) {
+                        this.addSearchToLocalStorage(dataD.searchTerm, extras);
+                        this._cs.setGaGtmData({ list: 'Site Search' });
+                    }
+
+                    if (data['redirectionLink'] != null) {
                         this.showSuggestionBlock = false;
                         this._commonService.resetLimitTrendingCategoryNumber();
-                        this._r.navigate(['search'], extras);
+                        this.ssp = false;
+                        this._r.navigate([data['redirectionLink']], { queryParams: { sC: 'no', search_query: dataD.searchTerm } });
+                    }
+                    else {
+                        if (document.getElementById("search-input")) {
+                            document.getElementById("search-input").blur();
+                        }
+                        this.resetSearchBar();
+                        this.ssp = false;
+                        if (dataD.searchTerm !== undefined && dataD.searchTerm != null && dataD.searchTerm.length > 0) {
+                            this.showSuggestionBlock = false;
+                            this._commonService.resetLimitTrendingCategoryNumber();
+                            this._r.navigate(['search'], extras);
+                        }
                     }
                 }
-            }
-        );
+            );
+        } else {
+            this.resetSearchBar();
+            this.ssp = false;
+        }
     }
 
     _parents(selector, context) {
@@ -344,15 +349,33 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
             name: data,
             extras: extras
         };
-        if (sh) {
-            const e = sh.some(t => t['name'].toLowerCase() === data.toLowerCase());
-            if (!e) {
-                // console.log(e);
-                sh.push(cs);
+        if (sh && sh.length > 0) {
+            if (sh.length >= 5) {
+                // check existing
+                const e = sh.some(t => t['name'].toLowerCase() === data.toLowerCase());
+                if (!e) {
+                    // console.log(e);
+                    /// sh.push(cs);
+                    sh.unshift();
+                    sh = [cs, ...sh]
+                } else {
+                    sh = sh.filter(t => t['name'].toLowerCase() !== data.toLowerCase()); // remove element from array
+                    sh = [cs, ...sh] // move to first position
+                }
+                // if not shift and append
+            } else {
+                const e = sh.some(t => t['name'].toLowerCase() === data.toLowerCase());
+                if (!e) {
+                    sh = [cs, ...sh]
+                }else{
+                    sh = sh.filter(t => t['name'].toLowerCase() !== data.toLowerCase()); // remove element from array
+                    sh = [cs, ...sh] // move to first position
+                }
             }
         } else {
             sh = [];
-            sh.push(cs);
+            // sh.push(cs);
+            sh = [cs, ...sh]
         }
         // console.log(sh, data);
         this._lss.store('search-history', sh);

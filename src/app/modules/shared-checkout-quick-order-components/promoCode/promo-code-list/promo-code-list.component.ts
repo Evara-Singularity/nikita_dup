@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { CartService } from '@app/utils/services/cart.service';
+import { CommonService } from '@app/utils/services/common.service';
 import { Subject, Subscription, timer } from 'rxjs';
 @Component({
     selector: 'promo-code-list',
@@ -12,11 +13,12 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
 
     public nextPromocode: Subject<string> = new Subject<string>();
     @Output('closePromoOfferPopup') closePromoOfferPopup = new EventEmitter();
+    @Input("isQuickCheckoutPopup") isQuickCheckoutPopup :boolean = false;
     appliedPromocodeSubscription: Subscription = null;
     selectedPromocode = null;
     readonly assetImgPath: string = CONSTANTS.IMAGE_ASSET_URL;
 
-    constructor(public _cartService: CartService) { }
+    constructor(public _cartService: CartService, private _commonService: CommonService) { }
 
     ngOnInit()
     {
@@ -32,10 +34,11 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
 
     closePromoListPopup(flag) { this.closePromoOfferPopup.emit(false); }
 
-    submitPromocode(promocode)
-    {
+    submitPromocode(e, promocode) {
         if (this.selectedPromocode === promocode) { return }
         this._cartService.genericApplyPromoCode(promocode);
+        this.isQuickCheckoutPopup ? this._commonService.setBodyScroll(e, false) : this._commonService.setBodyScroll(e, true);
+        document.querySelector('app-pop-up').classList.remove('open');
     }
 
     ngOnDestroy(): void

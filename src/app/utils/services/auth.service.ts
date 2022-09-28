@@ -78,16 +78,20 @@ export class LocalAuthService
 
     clearAuthFlow() { this._sessionStorageService.clear("authflow"); }
 
-    handleBackURL(isClear?)
-    {
+    handleBackURL(isClear?) {
         const BACKURLTITLE = this.getBackURLTitle();
+        let userSession = this._localStorageService.retrieve('user');
         let NAVIGATE_TO = (BACKURLTITLE && BACKURLTITLE['backurl']) || "/";
         const URL = (this._router.url as string).toLowerCase();
         if (URL.toLowerCase().includes("login") || isClear) {
             this.clearBackURLTitle();
             this.clearAuthFlow();
         }
-        this._router.navigateByUrl(NAVIGATE_TO);
+        if (userSession && userSession.authenticated == "true") {
+            this._router.navigateByUrl(NAVIGATE_TO);
+        } else {
+            this._router.navigateByUrl('/');
+        }
     }
 
     isUserLoggedIn()

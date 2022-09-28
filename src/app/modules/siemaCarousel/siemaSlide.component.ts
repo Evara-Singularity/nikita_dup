@@ -8,6 +8,7 @@ import { YoutubePlayerComponent } from '../../components/youtube-player/youtube-
 import { SiemaCrouselService } from '../../utils/services/siema-crousel.service';
 import CONSTANTS from '../../config/constants';
 import { CommonService } from '@app/utils/services/common.service';
+import { Router } from '@angular/router';
 
 
 
@@ -54,13 +55,13 @@ export class SiemaSlideComponent {
         private _modalService: ModalService,
         private _siemaCrouselService: SiemaCrouselService,
         private ngxSiemaService: NgxSiemaService,
-        public _commonService: CommonService
+        public _commonService: CommonService,
+        private router: Router
     ) {
         this.isBrowser = _commonService.isBrowser;  
     }
 
-    ngOnInit() {
-
+    ngOnInit() {        
     }
 
     ngAfterViewInit() {
@@ -123,7 +124,9 @@ export class SiemaSlideComponent {
         return this.splitUrlByCommaAlt[2];
     }
 
-    setBannerCookie(caption) {
+    setBannerCookie(caption, url) {
+        const isAbsoluteUrl = this._commonService.isAbsoluteUrl(url);
+        isAbsoluteUrl ? window.open(url, '_blank') : this.router.navigateByUrl(url);
         const date = new Date();
         date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
         if (this.isBrowser) {

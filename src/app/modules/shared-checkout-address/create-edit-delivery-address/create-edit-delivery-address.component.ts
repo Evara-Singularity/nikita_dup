@@ -96,11 +96,13 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             'city': [(address && address.city) ? address.city : null, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\#\-\,\/\.\(\)]*)+')]],
             'idCountry': [{ value: null, disabled: true }, [Validators.required]],
             'idState': [{ value: null, disabled: true }, [Validators.required]],
-            'email': [address ? address.email : this.userSesssion['email'], [Step.validateEmail]],
+            'email': [address ? address.email : this.userSesssion['email'], [Validators.required,Step.validateEmail]],
             'phoneVerified': [(address && address.phoneVerified) ? address.phoneVerified : false]
         });
         if (this.phone.value) { this.verifyPhone(this.phone.value); }
         if (this.postCode.value) { this.isPostcodeValid = true; }
+        this.city.disable();
+        this.idState.disable();
     }
 
     fetchStateList(countryId)
@@ -125,8 +127,12 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
                     this.isPostcodeValid = true;
                     this.isVerifyingPostcode = false;
                     this.city.patchValue(cityList[0]['city']);
+                    this.city.updateValueAndValidity();
+                    this.city.disable();
                     const ID_STATE = SharedCheckoutAddressUtil.getStateId(this.stateList, cityList[0]['state']);
                     this.idState.patchValue(ID_STATE);
+                    this.idState.updateValueAndValidity();
+                    this.idState.disable();
                 } else {
                     this.isPostcodeValid = false;
                     this.isVerifyingPostcode = false;

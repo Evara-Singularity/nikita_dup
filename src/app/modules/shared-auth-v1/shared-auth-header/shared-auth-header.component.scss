@@ -19,17 +19,17 @@
     .icon-logo {
         font-size: 70px;
         margin-left: 15px;
-        color: $logo-color !important;
+        color: var(--primary) !important;
     }
     .icon-back-arrow{
         font-size: 24px;
     }
     &.white-shared-auth-header{
         .icon-logo {
-            color: $white !important;
+            color: var(--white) !important;
         }
         .icon-back-arrow{
-            color: $white !important;
+            color: var(--white) !important;
         } 
     }
 }

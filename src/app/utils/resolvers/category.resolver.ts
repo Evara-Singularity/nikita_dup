@@ -13,6 +13,9 @@ import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, share, tap } from 'rxjs/operators';
 import { CommonService } from '../services/common.service';
 import { GlobalLoaderService } from '../services/global-loader.service';
+import { map } from 'rxjs/operators';
+import { LoggerService } from '../services/logger.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +27,8 @@ export class CategoryResolver implements Resolve<any> {
     private transferState: TransferState,
     private _commonService: CommonService,
     private http: HttpClient,
-    private loaderService: GlobalLoaderService
+    private loaderService: GlobalLoaderService,
+    private _loggerService : LoggerService,
   ) { 
   }
 
@@ -40,6 +44,8 @@ export class CategoryResolver implements Resolve<any> {
     const CMS_KEY: any = makeStateKey<{}>('cms-' + categoryId);
     const RELATED_ARTICLES_KEY = makeStateKey<{}>('related_articles-' + categoryId);
     const ATTRIBUTE_KEY = makeStateKey<{}>('attribute-' + categoryId);
+    const CATEGORY_EXTRA_KEY = makeStateKey<{}>('category_extra-' + categoryId);
+    const startTime = new Date().getTime();
 
     if (
       this.transferState.hasKey(GET_RELATED_CATEGORY_KEY) &&
@@ -48,7 +54,8 @@ export class CategoryResolver implements Resolve<any> {
       this.transferState.hasKey(BREADCRUMP_KEY) &&
       this.transferState.hasKey(CMS_KEY) && 
       this.transferState.hasKey(RELATED_ARTICLES_KEY) &&
-      this.transferState.hasKey(ATTRIBUTE_KEY)
+      this.transferState.hasKey(ATTRIBUTE_KEY)&&
+      this.transferState.hasKey(CATEGORY_EXTRA_KEY)
     ) {
         const GET_RELATED_CATEGORY_KEY_OBJ = this.transferState.get<{}>(GET_RELATED_CATEGORY_KEY, null);
         const REFRESH_KEY_OBJ = this.transferState.get<{}>(REFRESH_KEY, null);
@@ -57,6 +64,7 @@ export class CategoryResolver implements Resolve<any> {
         const CMS_KEY_OBJ = this.transferState.get<{}>(CMS_KEY, null);
         const RELATED_ARTICLES_OBJ = this.transferState.get<{}>(RELATED_ARTICLES_KEY, {});
         const ATTRIBUTE_OBJ = this.transferState.get<{}>(ATTRIBUTE_KEY, {});
+        const CATEGORY_EXTRA_KEY_OBJ = this.transferState.get<{}>(CATEGORY_EXTRA_KEY, {});
         
         this.transferState.remove(GET_RELATED_CATEGORY_KEY);
         this.transferState.remove(REFRESH_KEY);
@@ -65,9 +73,10 @@ export class CategoryResolver implements Resolve<any> {
         this.transferState.remove(CMS_KEY);
         this.transferState.remove(RELATED_ARTICLES_KEY);
         this.transferState.remove(ATTRIBUTE_KEY);
+        this.transferState.remove(CATEGORY_EXTRA_KEY);
 
         this.loaderService.setLoaderState(false);
-        return of([GET_RELATED_CATEGORY_KEY_OBJ, REFRESH_KEY_OBJ, FAQ_KEY_OBJ, BREADCRUMP_KEY_OBJ, CMS_KEY_OBJ, RELATED_ARTICLES_OBJ, ATTRIBUTE_OBJ]);
+        return of([GET_RELATED_CATEGORY_KEY_OBJ, REFRESH_KEY_OBJ, FAQ_KEY_OBJ, BREADCRUMP_KEY_OBJ, CMS_KEY_OBJ, RELATED_ARTICLES_OBJ, ATTRIBUTE_OBJ,CATEGORY_EXTRA_KEY_OBJ]);
     } else {
         const get_rel_cat_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_BY_ID + '?catId=' + categoryId;
         const faq_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_SCHEMA + "?categoryCode=" + categoryId;
@@ -76,6 +85,8 @@ export class CategoryResolver implements Resolve<any> {
         const cms_url = environment.BASE_URL + ENDPOINTS.GET_CMS_CONTROLLED + "?requestParam=article-1&categoryCode=" + categoryId;
         const attribute_url = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryId;
         const related_article_url = environment.BASE_URL + ENDPOINTS.GET_RELATED_ARTICLES + categoryId;
+        const category_extra_url = environment.BASE_URL + ENDPOINTS.GET_CategoryExtras + categoryId;
+
        
         const params = {
           filter: this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),
@@ -86,15 +97,79 @@ export class CategoryResolver implements Resolve<any> {
         const actualParams = this._commonService.formatParams(params);
         this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 
-        const getRelatedCategoriesObs = this.http.get(get_rel_cat_url).pipe(share());
-        const getFAQObs = this.http.get(faq_url).pipe(share());
-        const refreshProductsObs = this.http.get(refresh_product_url, { params: actualParams }).pipe(share());
-        const getBreadCrump = this.http.get(breadcrump_url).pipe(share());
-        const getCmsDynamicDataForCategoryAndBrandObs = this.http.get(cms_url).pipe(share());
-        const getAttributeObs = this.http.get(attribute_url).pipe(share());
-        const getRelatedArticleObs = this.http.get(related_article_url).pipe(share());
+        const getRelatedCategoriesObs = this.http.get(get_rel_cat_url).pipe(share(), 
+        map(res=>{
+          const logInfo =  this._commonService.getLoggerObj(get_rel_cat_url,'GET',startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        }));
 
-        const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs, getBreadCrump, getAttributeObs, getRelatedArticleObs];
+        const getFAQObs = this.http.get(faq_url).pipe(share(), 
+        map(res=>{
+          const logInfo =  this._commonService.getLoggerObj(faq_url,'GET',startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        }));
+
+        const refreshProductsObs = this.http.get(refresh_product_url, { params: actualParams }).pipe(share(), 
+        map(res=>{
+          const logInfo =  this._commonService.getLoggerObj(refresh_product_url,'GET',startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        }));
+
+        const getBreadCrump = this.http.get(breadcrump_url).pipe(share(), 
+        map(res=>{
+          const logInfo =  this._commonService.getLoggerObj(breadcrump_url,'GET',startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        }));
+
+        const getCmsDynamicDataForCategoryAndBrandObs = this.http.get(cms_url).pipe(share(), 
+        map(res=>{
+          const logInfo =  this._commonService.getLoggerObj(cms_url,'GET',startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        }));
+
+        const getAttributeObs = this.http.get(attribute_url).pipe(share(), 
+        map(res=>{
+          const logInfo =  this._commonService.getLoggerObj(attribute_url,'GET',startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        }));
+
+        const getRelatedArticleObs = this.http.get(related_article_url).pipe(share(), 
+        map(res=>{
+          const logInfo =  this._commonService.getLoggerObj(related_article_url,'GET',startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        }));
+
+        const getcategoryextra = this.http.get(category_extra_url).pipe(share(), 
+        map(res=>{
+          const logInfo =  this._commonService.getLoggerObj(category_extra_url,'GET',startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        }));
+
+        const apiList = [getRelatedCategoriesObs, refreshProductsObs, getFAQObs, getBreadCrump, getAttributeObs, getRelatedArticleObs,getcategoryextra];
 
         if (state.url.search('#') < 0) {
             apiList.push(getCmsDynamicDataForCategoryAndBrandObs);
@@ -115,6 +190,7 @@ export class CategoryResolver implements Resolve<any> {
                     this.transferState.set(CMS_KEY, result[4] || []);
                     this.transferState.set(RELATED_ARTICLES_KEY, result[5] || {});
                     this.transferState.set(ATTRIBUTE_KEY, result[6]);
+                    this.transferState.set(CATEGORY_EXTRA_KEY, result[7]);
                   }
                   this.loaderService.setLoaderState(false);
             })

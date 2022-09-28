@@ -1,3 +1,5 @@
+@import '../../scss/components/home-listing.scss';
+
 @mixin layout1 {
         &.splnewpage {
             .safetyshoebannersrow {
@@ -57,7 +59,7 @@
             color: #2A2A2A;
             font-weight: 700;
             padding-bottom: 5px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             &:before {
                 position: absolute;
                 left: 0;
@@ -97,16 +99,15 @@
         }
         .bscategory {
             background: #fff;
-            .bscatwrap {
-                padding: 15px 15px 0;
-                .slp-heading {
-                    padding: 5px 10px 5px 0;
-                }
-            }
+            padding: 15px 15px 1px;
+            margin-bottom: 10px;
+        }
+        .popup-bestseller{
+            margin: 0 !important;
         }
         .viewallbs {
-            color: $logo-color;
-            border: 1px solid $logo-color;
+            color: var(--primary);
+            border: 1px solid var(--primary);
             border-radius: 2px;
             text-transform: uppercase;
             font-size: 10px;
@@ -119,8 +120,8 @@
             padding: 0 10px;
         }
         .bsrow {
-            border-top: 1px solid rgba(162, 162, 162, 0.5);
-            margin: 0 -15px;
+            // border-top: 1px solid rgba(162, 162, 162, 0.5) !important;
+            // margin: 0 -15px;
             .bs_item {
                 width: 50%;
                 padding: 10px;
@@ -172,7 +173,7 @@
                     }
                     .safetysh_discount {
                         display: block;
-                        color: $green-color;
+                        color: var(--slimy-green);
                         font-size: $medium-font;
                         font-weight: 500;
                         margin-bottom: 1px;
@@ -367,12 +368,12 @@
                 }
             }
             .safetyshoebannersrow {
-                background: url('/assets/img/bg_mobile.png')no-repeat center top;
+                background: url('/assets/img/bg_mobile.png') no-repeat center top;
                 background-size: 100% auto;
             }
             .safetysh-shopby {
-                background: url('/assets/img/wallpaper_1_ mobile.png')no-repeat center;
-                padding: 20px 20px;
+                background: url('/assets/img/wallpaper_1_ mobile.png') no-repeat center;
+                padding: 0px 10px 15px;
                 background-size: cover;
                 .shopbyrow {
                     .shopbycol {
@@ -415,30 +416,30 @@
                 background: #fff;
                 padding: 15px;
                 box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-                .outerBlock {
-                    width: 50%;
-                    float: left;
-                    padding: 10px 10px;
+            }
+            .outerBlock {
+                width: 50%;
+                float: left;
+                padding: 10px 10px;
+            }
+            .subCatBlock {
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                background: #fff;
+                min-height: 175px;
+                padding: 5px;
+                margin-bottom: 10px;
+                a {
+                    display: block;
                 }
-                .subCatBlock {
-                    border: 1px solid #ccc;
-                    border-radius: 3px;
-                    background: #fff;
-                    min-height: 175px;
-                    padding: 5px;
-                    margin-bottom: 10px;
-                    a {
-                        display: block;
-                    }
-                    p {
-                        font-size: 12px;
-                        text-align: center;
-                    }
-                    img {
-                        width: 100%;
-                        border-radius: 2px;
-                        padding: 8px 10px;
-                    }
+                p {
+                    font-size: 12px;
+                    text-align: center;
+                }
+                img {
+                    width: 100%;
+                    border-radius: 2px;
+                    padding: 8px 10px;
                 }
             }
             .safetyshopbywrap {
@@ -471,9 +472,7 @@
                     }
                 }
             }
-            .bscategory {
-                margin-bottom: 30px;
-            }
+
             .shopbyrow {
                 .shopbycol {
                     ul {
@@ -510,18 +509,36 @@
                 }
             }
         }
+        .slp-heading {
+            position: relative;
+            font-size: 20px;
+            color: #2A2A2A;
+            font-weight: 700;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            &:before {
+                position: absolute;
+                left: 0;
+                width: 80px;
+                background: #2A2A2A;
+                content: '';
+                bottom: 0;
+                height: 3px;
+            }
+        }
+        h2.slp-heading {
+            font-size: $large-font;
+            text-transform: uppercase;
+            padding-top: 15px;
+        }
+        .bscategory {
+            background: #fff;
+            padding: 15px 15px 1px;
+            margin-bottom: 10px;
+        }
     }
     
     // Common Scss
-    .bscategory {
-        background: #fff;
-        .bscatwrap {
-            padding: 15px 15px 0;
-            .slp-heading {
-                padding: 5px 10px 5px 0;
-            }
-        }
-    }
     
     .bsrow {
         border-top: 1px solid rgba(162, 162, 162, 0.5);
@@ -577,7 +594,7 @@
                 }
                 .safetysh_discount {
                     display: block;
-                    color: $green-color;
+                    color: var(--slimy-green);
                     font-size: $medium-font;
                     font-weight: 500;
                     margin-bottom: 1px;
@@ -633,20 +650,3 @@
         text-transform: uppercase;
     }
     
-    .slp-heading {
-        position: relative;
-        font-size: 20px;
-        color: #2A2A2A;
-        font-weight: 700;
-        padding-bottom: 5px;
-        margin-bottom: 15px;
-        &:before {
-            position: absolute;
-            left: 0;
-            width: 80px;
-            background: #2A2A2A;
-            content: '';
-            bottom: 0;
-            height: 2px;
-        }
-    }

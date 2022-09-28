@@ -64,9 +64,13 @@ export class SharedAuthUtilService implements OnInit
         }).subscribe(cartSession => {
             this._globalLoader.setLoaderState(false);
             if (cartSession) {
-                redirectUrl && this._commonService.redirectPostAuth(redirectUrl)
-                redirectUrl && this._toastService.show({ type: 'success', text: message });
-                !redirectUrl && console.log('express sign up completed');
+                this._globalLoader.setLoaderState(true);
+                setTimeout(() => {
+                    this._globalLoader.setLoaderState(false);
+                    redirectUrl && this._commonService.redirectPostAuth(redirectUrl)
+                    redirectUrl && this._toastService.show({ type: 'success', text: message });
+                    !redirectUrl && console.log('express sign up completed');
+                }, 300);
             } else {
                 this._toastService.show({ type: 'error', text: 'Something went wrong' });
             }

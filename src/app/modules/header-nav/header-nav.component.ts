@@ -91,13 +91,25 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
 
-    ngOnInit()
-    {
+    ngOnInit() {
         if (this.isBrowser) {
             this.isUserLogin = this.localAuthService.isUserLoggedIn();
             this._navigationService.startSaveHistory();
+            this._commonService.getSideNavToggleStatus().subscribe(status => {
+                // console.log(status);
+                this.loadSideNav();
+            })
         }
         this.createHeaderData(this._activatedRoute);
+
+        this.cartService.cartCountSubject.subscribe(res=>{
+            this.cartService.getCartUpdatesChanges().subscribe((data) =>
+            {
+                const cart = this.cartService.getCartItemsCount;
+                this.noOfCart = this.cartService.getCartItemsCount();
+                console.log("fixed header --" , this.noOfCart , cart);
+            });
+          })
     }
 
     ngAfterViewInit()
@@ -338,22 +350,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
     goBack()
     {
         this._navigationService.goBack();
-        // if (this.staticPages.indexOf(window.location.pathname) !== -1) {
-        //     this.router.navigate(['/']);
-        //     return;
-        // }
-        // this.backRedirectUrl = localStorage.getItem('backRedirectUrl');
-        // const isCheckout = this.backRedirectUrl && this.backRedirectUrl.toLowerCase().includes('checkout');
-        // if (isCheckout || this._commonService.getPreviousUrl.includes('checkout'))
-        // {
-        //     this.router.navigateByUrl("/quickorder", { replaceUrl: true });
-        //     return;
-        // }
-        // if (this.backRedirectUrl && this.backRedirectUrl !== '/') {
-        //     (window.history.length > 2) ? this.location.back() : this.router.navigate(['/']);
-        //     return;
-        // }
-        // this.router.navigate(['/']);
     }
 
     navigateToLogin($event)
@@ -364,8 +360,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
         this.localAuthService.clearBackURLTitle();
         this.router.navigate(['/login']);
     }
-
-    
 
     ngOnDestroy()
     {

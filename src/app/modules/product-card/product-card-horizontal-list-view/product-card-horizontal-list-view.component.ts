@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Injector, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, Injector, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalService } from '@app/modules/modal/modal.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -18,6 +18,8 @@ import { ProductCardCoreComponent } from '../product-card.core.component';
   styleUrls: ["./product-card-horizontal-list-view.component.scss"],
 })
 export class ProductCardHorizontalListViewComponent extends ProductCardCoreComponent {
+
+  @Input() isAdEnable: boolean = false;
 
   constructor(
     public _cartService: CartService,

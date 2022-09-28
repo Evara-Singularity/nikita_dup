@@ -23,6 +23,10 @@ export class AppPromoComponent implements OnInit {
   playStoreLink = "https://play.google.com/store/apps/details?id=com.moglix.online";
   appStoreLink = "https://apps.apple.com/in/app/moglix-best-industrial-app/id1493763517";
   scrolledViewPort = 0;
+  windowOldScroll = 0;
+  showPromo: boolean = true;
+  listener;
+ 
 
   @Input() productData: any;
   @Input() isOverlayMode: boolean = true;
@@ -59,15 +63,24 @@ export class AppPromoComponent implements OnInit {
     this.attachScrollHandler();
   }
 
-  listener;
   attachScrollHandler() {
-    this.listener = this.renderer2.listen('window', 'scroll', (e) => {
-      this.windowScrollHandler();
-    });
+    if (this._commonService.isBrowser && (this.page == 'home' || this.page == 'brand' || this.page == 'category' || this.page=='alp' || this.page=='search')) {
+      this.windowOldScroll = window.pageYOffset;
+      this.listener = this.renderer2.listen('window', 'scroll', (e) => {
+        this.windowScrollHandler();
+      });
+    }
   }
 
   windowScrollHandler() {
     this.scrolledViewPort = window.pageYOffset;
+    if(this.scrolledViewPort > this.windowOldScroll){
+     this.showPromo = false;
+    }
+    else{
+     this.showPromo = true;
+    }
+    this.windowOldScroll = this.scrolledViewPort;
   }
 
   createPlayStoreLink() {
@@ -190,8 +203,29 @@ export class AppPromoComponent implements OnInit {
     return this.MOBILE_ENVS.OTHERS;
   }
 
+  get isAppPromoVisible() {
+    switch (this.page) {
+      case 'category':
+        return this.appPromoStatus;
+      case 'brand':
+        return this.appPromoStatus;
+      case 'alp':
+        return this.appPromoStatus;
+      case 'home':
+        return this.appPromoStatus;
+      case 'pdp':
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  get homeTopBannerVisible(){
+    return this.page != 'pdp'
+  }
+
   ngOnDestroy() {
-    if (this._commonService.isBrowser) {
+    if (this._commonService.isBrowser && this.listener) {
       this.listener();
     }
   }

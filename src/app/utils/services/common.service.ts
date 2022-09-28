@@ -19,6 +19,7 @@ import { ENDPOINTS } from "@app/config/endpoints";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import IdleTimer from "../idleTimeDetect";
 import { GlobalAnalyticsService } from "./global-analytics.service";
+import { ServerLogSchema } from "../models/log.modal";
 
 @Injectable({
     providedIn: "root",
@@ -43,6 +44,7 @@ export class CommonService
     public isBrowser: boolean;
     public isServer: boolean;
     public isAppInstalled: boolean = false;
+    private _bodyScollFlag: boolean = true;
     // public defaultParams = {queryParams: {}, orderBy: "popularity", orderWay: "desc", pageIndex:0, pageSize:32, taxonomy: "", operation:"", filter: {}};
     private defaultParams = { queryParams: {}, filter: {} };
 
@@ -55,6 +57,7 @@ export class CommonService
     isHomeHeader = false;
     isPLPHeader = false;
     isScrolledHeader = false;
+    loadNav: Subject<boolean> = new Subject<false>();
     stopSearchNudge = false;
 
     currentRequest: any;
@@ -72,11 +75,12 @@ export class CommonService
     private _loadSearchPopup: Subject<string> = new Subject<string>();
     public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
+    public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
 
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
     private routeData: { currentUrl: string; previousUrl: string };
-    userSession;
+    userSession ;
     idleNudgeTimer: IdleTimer;
     private _renderer2: Renderer2
     ;
@@ -126,6 +130,10 @@ export class CommonService
         return this.previousUrl;
     } 
 
+    get bodyScrollStatus() {
+        return this._bodyScollFlag;
+    }
+
     setNetworkSpeedState(speed)
     {
         this._networkSpeed = speed;
@@ -135,6 +143,15 @@ export class CommonService
     getNetworkSpeedState(): Observable<number>
     {
         return this.networkSpeedState.asObservable();
+    }
+
+    setSideNavToggle(enable: boolean){
+        // console.log("setSideNavToggle", enable);
+        this._sideNavToggle.next(enable);
+    }
+
+    getSideNavToggleStatus(): Observable<boolean>{
+        return this._sideNavToggle.asObservable();
     }
 
     getNetworkSpeed(): Number
@@ -666,6 +683,7 @@ export class CommonService
         if (params.pageName == "CATEGORY") {
             if (params["category"] != undefined)
                 actualParams["category"] = params["category"];
+                actualParams['pageSize'] = CONSTANTS.GLOBAL.default.categoryListingPageSize + '';
             //10766
             if (queryParams["str"] != undefined)
                 actualParams["str"] = queryParams["str"];
@@ -1109,15 +1127,15 @@ export class CommonService
 
     scrollTo(event)
     {
-        if (this.isBrowser) {
-            if (event.target) {
+        if (this.isBrowser){
+            if (event.target){
                 ClientUtility.scrollToTop(500, event.target.offsetTop - 50);
-            } else {
+            }
+             else {
                 ClientUtility.scrollToTop(500, event.offsetTop - 50);
             }
         }
     }
-
     getBreadcrumpData(link, type, pageTitle?): Observable<any>
     {
         let curl =
@@ -1178,6 +1196,36 @@ export class CommonService
             page: 1,
             pageSize: GLOBAL_CONSTANT.default.pageSize,
         };
+    }
+
+    setBodyScroll(e = null, status: boolean) {
+        if (e != null && e.hasOwnProperty('preventDefault') ){
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        if (this.isBrowser) {
+            this._bodyScollFlag = status;
+            if (status) {
+                //enable
+                (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
+                if(document.querySelector('app-pop-up')){
+                    document.querySelector('app-pop-up').classList.remove('open');
+                }
+                if (e != null && e.hasOwnProperty('preventDefault')) {
+                    document.getElementById('body').removeEventListener('touchmove', () => { e && e.preventDefault() })
+                } else {
+                    document.getElementById('body').removeEventListener('touchmove', () => { })
+                }
+            } else {
+                // disabled
+                (<HTMLElement>document.getElementById('body')).classList.add('stop-scroll');
+                if (e != null && e.hasOwnProperty('preventDefault')) {
+                    document.getElementById('body').addEventListener('touchmove', () => { e && e.preventDefault() }, { passive: true });
+                } else {
+                    document.getElementById('body').addEventListener('touchmove', () => { }, { passive: true });
+                }
+            }
+        }
     }
 
     genricApplyFilter(key, item)
@@ -1430,6 +1478,55 @@ export class CommonService
         } else {
             return 0;
         }
+    }
+
+    openLoader() {
+        return this.loadNav.asObservable();
+    }
+    
+    isAbsoluteUrl(url: string) {
+        return (url.indexOf('://') > 0 || url.indexOf('//') === 0)
+    }
+
+    getLoggerObj(url: string, method: string =null, startTime?, endTime?){
+        
+        const logInfo: ServerLogSchema = {
+            apiURL: url,
+            method: method,
+            payload: null,
+            endDateTime: null,
+            responseStatus: null,
+            startDateTime: startTime,
+            sessionId: null,
+          };
+
+          if(this.isBrowser){
+            logInfo.sessionId = this.userSession ? this.userSession.sessionId : null;
+          }
+
+          return logInfo;
+    }
+
+    sortProductTagsOnPriority(productTags) {
+        if(productTags){
+            var res = Math.min.apply(Math, productTags.map((item) => {
+              return item['priority'];
+            }));
+            productTags.forEach(element => {
+              if (element['priority'] === res) {
+                productTags.push(element);
+              }
+            });
+            return productTags
+        }
+    }
+
+    slicingHref(image) {
+        const invalidURL = `${CONSTANTS.IMAGE_BASE_URL}${CONSTANTS.IMAGE_BASE_URL}`
+        if (image.includes(invalidURL)) {
+            return image.replace(invalidURL,CONSTANTS.IMAGE_BASE_URL);
+        }
+        return image;
     }
 
 }

@@ -17,6 +17,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
     totalOffer = 0;
     totalPayableAmount = 0;
     cartSubscription: Subscription = null;
+    shippingPriceChangesSubscription: Subscription = null;
     promoSubscription: Subscription = null;
     isCartFetched = false;
 
@@ -36,12 +37,15 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
         this.cartSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
         {
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
-                this.updateShippingCharges();
+                // this.updateShippingCharges();
                 this.totalOffer = cartSession['cart']['totalOffer'] || 0;
                 this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
             }
             this.isCartFetched = true;
         });
+        this.shippingPriceChangesSubscription = this._cartService.getShippingPriceChanges().subscribe(cartSession=>{
+            this.updateShippingCharges();
+        })
         if (userSession['authenticated'] == "true" && userSession['userId']) {
             this._cartService.getPromoCodesByUserId(userSession['userId']);
         }
@@ -67,14 +71,22 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
 
     openOfferPopUp()
     {
+        console.log('showPromoOfferPopup', this.showPromoOfferPopup);
         if (this._commonService.userSession.authenticated == "true") {
-            this.showPromoOfferPopup = true;
+            this.openPromoCodeList();
         } else {
             this._localAuthService.setBackURLTitle('/quickorder', null);
             let navigationExtras: NavigationExtras = {
                 queryParams: { 'backurl': '/quickorder' },
             };
             this.router.navigate(["/login"], navigationExtras);
+        }
+    }
+
+    openPromoCodeList() {
+        this.showPromoOfferPopup = true;
+        if (this._commonService.isBrowser && document.querySelector('app-pop-up')) {
+            document.querySelector('app-pop-up').classList.add('open');
         }
     }
 
@@ -145,5 +157,6 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
     {
         if (this.cartSubscription) this.cartSubscription.unsubscribe()
         if (this.promoSubscription) this.promoSubscription.unsubscribe()
+        if(this.shippingPriceChangesSubscription) this.shippingPriceChangesSubscription.unsubscribe();
     }
 }

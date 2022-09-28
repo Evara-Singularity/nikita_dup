@@ -31,6 +31,7 @@ export class PagesComponent implements OnInit {
   iData: { footer?: true; logo?: boolean; title?: string, hideHeader?: boolean };
   isFooter: boolean = true;
   isHomePage: boolean;
+  isRoutedBack: boolean = false;
   constructor(
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
@@ -49,14 +50,24 @@ export class PagesComponent implements OnInit {
       this.createHeaderData(this._aRoute);
 
       if (res instanceof NavigationEnd) {
+        this.enableBodyScoll();
         if (res['url'] === '/' || res['url'] == "/?back=1") {
           this.isHomePage = true;
         } else {
           this.isHomePage = false;
         }
+        this.isRoutedBack = (res['url'] == "/?back=1") ? true : false;
       }
       
     });
+  }
+
+  enableBodyScoll() {
+    // incase body scroll is disabled then enable it on page refresh
+    // console.log('page. enableBodyScoll ', this._commonService.bodyScrollStatus);
+    setTimeout(() => {
+      this._commonService.setBodyScroll(null, true);
+    }, 200);
   }
 
   checkAndRedirect() {
@@ -164,7 +175,6 @@ export class PagesComponent implements OnInit {
      * Also, for page refresh
      */
     if (this.isBrowser) {
-      
       this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie();

@@ -11,6 +11,8 @@ button.btn[disabled] {
 
 .payment-strip {
     display: flex;
+    padding: 5px;
+    background: var(--white) !important;
     button {
         margin-left: auto;
         width: $half-width;
@@ -73,4 +75,13 @@ button.btn[disabled] {
             }
         }
     }
+}
+
+.discount-offer{
+    background-color: var(--slimy-green);
+    color: var(--white);
+    font-weight: $font-bold;
+    text-align: center;
+    padding: 10px;
+    font-size: $medium-font;
 }

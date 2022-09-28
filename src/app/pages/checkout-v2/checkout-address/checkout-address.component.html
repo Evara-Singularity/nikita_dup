@@ -3,7 +3,9 @@
     <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
     <ng-container>
         <section>
-            <div *ngIf="isUserLoggedIn else hideContinue" class="fixed-bottom-cta payment-strip">
+            <div class="fixed-bottom-cta pad-0">
+                <p class="discount-offer">You will save ₹1000 with online payment</p>
+            <div *ngIf="isUserLoggedIn else hideContinue" class="payment-strip">
                 <div class="amount-left-section">
                     <span class="payable-amnt">Amount Payable
                         <span (click)="scrollPaymentSummary();">
@@ -18,6 +20,7 @@
                     CONTINUE
                 </button>
             </div>
+        </div>
             <ng-template #hideContinue>
                 <div></div>
             </ng-template>

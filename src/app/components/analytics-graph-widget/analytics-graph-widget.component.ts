@@ -29,6 +29,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   brandName:'';
   bucketData:any;
   singleAttributeData:any;
+  attributeLength:any;
 
   priceDataWithoutProcessing;
   brandDataWithoutProcessing;
@@ -51,15 +52,11 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         this.graphData = res[0]['data']; 
         this.graphData.forEach(element => {
           if(element.block_name == 'attribute_report'){
-            // element.data.forEach(item => {
-            //     this.attributeDataWithoutProcessing = element.data;
-            //      this.attributeDataWithoutProcessing.forEach((attributeChart,i) => {
-            //       //  debugger;
-            //        this.attributeData = attributeChart.attributePercentange;
-            //        this.prepareAttributeChartData(this.attributeData);
-            //        this.createChart('attribute'+i);
-            //      });
-            // });
+            element.data.forEach(item => {
+                this.attributeLength = element.data.length;
+                this.attributeData = item['attributePercentange'];
+                this.prepareAttributeChartData(this.attributeData);
+            });
           }
           else if(element.block_name == 'product_report'){
             this.priceDataWithoutProcessing = element.data;
@@ -90,14 +87,21 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   }
   //create Chart Data
   prepareAttributeChartData(attributeData){
-    // debugger;
-    let itemObj = {};
+    // console.log("attributeData1",attributeData);
+      this.seriesAttributeArray = [];
       for(var attr in attributeData){
+        let itemObj = {};
         itemObj['name'] = attr.toString();
         itemObj['y'] = attributeData[attr];
         itemObj['drilldown'] = null;
-        this.seriesAttributeArray.push(itemObj);  
+        console.log("itemobj",itemObj);
+        this.seriesAttributeArray.push(itemObj); 
+        console.log("this.seriesAttributeArray", this.seriesAttributeArray);
       }
+        this.createChart('attribute0');
+        // this.createChart('attribute1');
+        // this.createChart('attribute2');
+      // console.log("this.seriesAttributeArray", this.seriesAttributeArray) 
       
   }
   prepareBrandChartData(brandData){
@@ -107,6 +111,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       brandObj['y'] = brandData['orderPercentage'];
       brandObj['drilldown'] = null;
       this.seriesBrandArray.push(brandObj);
+      // console.log("this.seriesBrandArray", this.seriesBrandArray) 
     }
   }  
   preparePriceChartData(priceData){
@@ -119,7 +124,6 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     }
   }
   createChartOptionsObject(data,seriesArray){
-    // debugger;
     let chartOptions = {
           chart: {
               type: 'column'
@@ -176,17 +180,18 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     // Load module after Highcharts is loaded
     require('highcharts/modules/exporting')(Highcharts);  
     if(showData == 'attribute0'){
+      console.log("a");
       Highcharts.chart('attribute-chart0',
       this.createChartOptionsObject(this.attributeData,this.seriesAttributeArray));
     }
-    // if(showData == 'attribute1'){
-    //   Highcharts.chart('attribute-chart1',
-    //   this.createChartOptionsObject(this.attributeData,this.seriesAttributeArray));
-    // }
-    // if(showData == 'attribute2'){
-    //   Highcharts.chart('attribute-chart2',
-    //   this.createChartOptionsObject(this.attributeData,this.seriesAttributeArray));
-    // }
+    if(showData == 'attribute1'){
+      Highcharts.chart('attribute-chart1',
+      this.createChartOptionsObject(this.attributeData,this.seriesAttributeArray));
+    }
+    if(showData == 'attribute2'){
+      Highcharts.chart('attribute-chart2',
+      this.createChartOptionsObject(this.attributeData,this.seriesAttributeArray));
+    }
     if(showData == 'price'){
       Highcharts.chart('price-chart', 
       this.createChartOptionsObject(this.priceData,this.seriesPriceArray))

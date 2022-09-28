@@ -5,6 +5,36 @@
 @import '../../../scss/quantity';
 @import '../../../scss/components/static-small-card-container';
 
+.dropped-price-container{
+    border: 1px solid var(--slimy-green);
+    padding: 15px;
+    width: 100%;
+    border-radius: $border-radius-8;
+    display: flex;
+    align-items: center;
+    .drop-icon{
+        img{
+            width: 24px;
+        }
+    }
+    .dropped-price-desc{
+        padding-left: 10px;
+        p{
+            font-size: $medium-font;
+            line-height: $small-line-height;
+        }
+        .g-text{
+            color: var(--slimy-green) ;
+            font-size: $large-font ;
+            font-weight: $font-bold;
+        }
+        .before-discount{
+            text-decoration: line-through;
+        }
+
+    }
+}
+
 .applycoupen-strip {
     padding: 15px 15px 10px;
 

@@ -283,8 +283,9 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       }
       // this.productsListingData.filterData[4].terms = this.productsListingData.filterData[4].terms.reverse();   //ODP-1570, Ratings  asecending to descending 
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
-      console.log(this.productsListingData.filterData);
+     
     }
+    console.log(this.productsListingData.filterData);
   }
 
   async toggleSortBy() {

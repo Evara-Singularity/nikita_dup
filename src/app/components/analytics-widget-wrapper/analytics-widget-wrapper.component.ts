@@ -20,8 +20,9 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   @ViewChild("brandContainerRef", { read: ViewContainerRef })
   brandContainerRef: ViewContainerRef;
   @Input() chartContainer;
+  @Input() categoryId;
   ngOnInit(): void {
-     
+     console.log("categoryId");
   }
  async loadPriceWidget(event){
     const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
@@ -67,12 +68,12 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
       this.attributeContainerInstance.remove();
     }
   }
-  // ngAfterViewInit()
-  // {
-  //     if (this.commonService.isBrowser) {
-  //       this.resetLazyComponents()
-  //     }
-  // }   
+  ngAfterViewInit()
+  {
+      if (this.commonService.isBrowser) {
+        this.resetLazyComponents()
+      }
+  }   
   ngOnDestroy(){
     console.log("destroyed");
     this.resetLazyComponents();

@@ -4,6 +4,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { DataService } from '@app/utils/services/data.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { environment } from 'environments/environment';
+import { filter } from 'rxjs-compat/operator/filter';
 
 @Component({
   selector: 'analytics-graph-widget',
@@ -21,18 +22,27 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   priceData:any;
   chartOptions = {};
   @Input() chartType;
-  categoryId:128110000
+  @Input() filterData: Array<any>;
+  @Input() categoryId:any;
+  fragmentPriceObject:any;
+  
   brandName:'';
   bucketData:any;
+  singleAttributeData:any;
+
+  priceDataWithoutProcessing;
+  brandDataWithoutProcessing;
+  attributeDataWithoutProcessing;
+
   constructor(private dataService:DataService,private commonService:CommonService,private _productListService:ProductListService) { }
 
   ngOnInit(): void {
     this.getData();
   }
-  
       
   callChartApi(){
-    let url = "http://localhost:3000/graphData";
+    // let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +129000000;
+    let url = 'http://localhost:3000/graphData';
     return this.dataService.callRestful("GET", url);
   } 
   getData(){
@@ -41,15 +51,18 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         this.graphData = res[0]['data']; 
         this.graphData.forEach(element => {
           if(element.block_name == 'attribute_report'){
-            element.data.forEach(item => {
-                this.attributeData = item.attributePercentange;
-                this.prepareAttributeChartData(this.attributeData);
-                setTimeout(() => {
-                  this.createChart('attribute');
-                 }, 0);
-            });
+            // element.data.forEach(item => {
+            //     this.attributeDataWithoutProcessing = element.data;
+            //      this.attributeDataWithoutProcessing.forEach((attributeChart,i) => {
+            //       //  debugger;
+            //        this.attributeData = attributeChart.attributePercentange;
+            //        this.prepareAttributeChartData(this.attributeData);
+            //        this.createChart('attribute'+i);
+            //      });
+            // });
           }
           else if(element.block_name == 'product_report'){
+            this.priceDataWithoutProcessing = element.data;
             element.data.forEach(price => {
               this.priceData = price;
               this.preparePriceChartData(this.priceData);
@@ -60,6 +73,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
           }
           else{
             element.data.forEach(brand => {
+              this.brandDataWithoutProcessing = element.data;
               this.brandData = brand;
               this.prepareBrandChartData(this.brandData);
               setTimeout(() => {
@@ -76,13 +90,15 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   }
   //create Chart Data
   prepareAttributeChartData(attributeData){
-      for (var attr in attributeData){
-        let itemObj = {};
+    // debugger;
+    let itemObj = {};
+      for(var attr in attributeData){
         itemObj['name'] = attr.toString();
         itemObj['y'] = attributeData[attr];
         itemObj['drilldown'] = null;
-        this.seriesAttributeArray.push(itemObj);
+        this.seriesAttributeArray.push(itemObj);  
       }
+      
   }
   prepareBrandChartData(brandData){
     for (var brand in brandData){
@@ -93,16 +109,70 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       this.seriesBrandArray.push(brandObj);
     }
   }  
-  preparePriceChartData(discountData){
-    for(var brand in discountData){
-      let discountbj = {};
-      discountbj['name'] = discountData['interval'].toString();
-      discountbj['y'] = discountData['orderPercentage'];
-      discountbj['drilldown'] = null;
-      this.seriesPriceArray.push(discountbj);
+  preparePriceChartData(priceData){
+    for(var price in priceData){
+      let priceObj = {};
+      priceObj['name'] = priceData['interval'].toString();
+      priceObj['y'] = priceData['orderPercentage'];
+      priceObj['drilldown'] = null;
+      this.seriesPriceArray.push(priceObj);
     }
   }
   createChartOptionsObject(data,seriesArray){
+    // debugger;
+    let chartOptions = {
+          chart: {
+              type: 'column'
+          },
+          title: {
+              align: 'left',
+              text: 'Browser market shares. January, 2022'
+          },
+          subtitle: {
+              align: 'left',
+              text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
+          },
+          accessibility: {
+              announceNewData: {
+                  enabled: true
+              }
+          },
+          xAxis: {
+              type: 'category'
+          },
+          yAxis: {
+              title: {
+                  text: data
+              }
+          },
+          legend: {
+              enabled: false
+          },
+          plotOptions: {
+              series: {
+                  borderWidth: 0,
+                  dataLabels: {
+                      enabled: true,
+                      format: '{point.y:.1f}%'
+                  }
+              }
+          },
+          tooltip: {
+              headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+              pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+          },
+          series: [
+              {
+                  name: "Browsers",
+                  colorByPoint: true,
+                  data:seriesArray
+              }
+          ]
+      } 
+      return chartOptions; 
+  }
+  createChartOptionsMultileObject(data,seriesArray){
+    // debugger;
     let chartOptions = {
           chart: {
               type: 'column'
@@ -158,10 +228,18 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     var Highcharts = require('highcharts');  
     // Load module after Highcharts is loaded
     require('highcharts/modules/exporting')(Highcharts);  
-    if(showData == 'attribute'){
-      Highcharts.chart('attribute-chart',
-      this.createChartOptionsObject(this.attributeData,this.seriesAttributeArray));
+    if(showData == 'attribute0'){
+      Highcharts.chart('attribute-chart0',
+      this.createChartOptionsMultileObject(this.attributeData,this.seriesAttributeArray));
     }
+    // if(showData == 'attribute1'){
+    //   Highcharts.chart('attribute-chart1',
+    //   this.createChartOptionsObject(this.attributeData,this.seriesAttributeArray));
+    // }
+    // if(showData == 'attribute2'){
+    //   Highcharts.chart('attribute-chart2',
+    //   this.createChartOptionsObject(this.attributeData,this.seriesAttributeArray));
+    // }
     if(showData == 'price'){
       Highcharts.chart('price-chart', 
       this.createChartOptionsObject(this.priceData,this.seriesPriceArray))
@@ -171,28 +249,32 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       this.createChartOptionsObject(this.brandData,this.seriesBrandArray))
     }
   }
-  getBucketData(categoryId){
-    let filter_url = environment.BASE_URL + '/' + 'CATEGORY' + ENDPOINTS.GET_BUCKET;
-    if (this.categoryId) {
-      filter_url += "?category=" + this.categoryId;
+ 
+  generateFragmentUrl(filterName,filterValue){
+    let fragmentPriceObject = {};
+     if(filterName == 'price'){
+      fragmentPriceObject['price'] = [filterValue.toString()];
+      this.commonService.selectedFilterData.filter = fragmentPriceObject; 
+      this.commonService.applyFilter();
+     }
+     else if(filterName == 'brand'){
+      let fragmentBrandObject = {
+        'brand': [filterValue.toString()]
+      }
+      fragmentPriceObject['brand'] = [filterValue.toString()];
+      this.commonService.selectedFilterData.filter = fragmentPriceObject; 
+      this.commonService.applyFilter();
+     }
+    else{
+      fragmentPriceObject[filterName] = [filterValue.toString()];
+      this.commonService.selectedFilterData.filter = fragmentPriceObject; 
+      this.commonService.applyFilter();
     }
-    const params = { pageName:'CATEGORY'};
-    const actualParams = this.commonService.formatParams(params);
-    console.log("actualParams",actualParams);
-    return this.dataService.callRestful("GET", filter_url, {
-    params: actualParams,
-    });
   }
-  createFragment(categoryId,priceVal,filterVal){
-    // let fragment = "";
-    // fragment = fragment + "/" + priceVal + "-" + filter[keys[i]].join("||");
-  }
-  callFilterData() {
-    this.bucketData = this.getBucketData(this.categoryId);
-    console.log("this.bucketData",this.bucketData);
-  };
-  setDataForAnalyticsCategories(categoryID) {
-    
+
+  formatPrice(value:string){
+    let formatValue = value.split(',');
+    return (formatValue[0]+'-'+formatValue[1]);
   }
 }
 

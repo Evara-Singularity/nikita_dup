@@ -40,12 +40,6 @@
         </ng-container>
     </div>
 </div>
-<!-- class="chart-container" -->
-
-    <!-- <div *ngIf="(i === 5 )"  id="container" style="width:100%;height:400px;"></div>
-    <div *ngIf="(i === 10 )" id="container1" style="width:100%;height:400px;"></div>
-    <div *ngIf="(i === 15 )" id="container2" style="width:100%;height:400px;"></div>     -->
-
 <div class="list-heading" *ngIf="productsListingData?.products?.length>0" [class.list-heading-search]="pageName === 'SEARCH' || 'ALP'">
     <ng-container>
         <h1 class="list-name">
@@ -66,9 +60,11 @@
 
 <ng-container *ngIf="productsListingData?.products?.length > 0">
     <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
-     <analytics-widget-wrapper *ngIf="(i == 5)"  [chartContainer]="'priceChartContainer'"></analytics-widget-wrapper>
-     <analytics-widget-wrapper *ngIf="(i == 10)" [chartContainer]="'brandChartContainer'"></analytics-widget-wrapper>
-     <analytics-widget-wrapper *ngIf="(i == 15)" [chartContainer]="'attributeChartContainer'"></analytics-widget-wrapper>
+   <!-- <ng-container *ngIf="pageName == 'CATEGORY'"> -->
+       <analytics-widget-wrapper *ngIf="(i == 5 && this.productsListingData.filterData.length > 0)"  [chartContainer]="'priceChartContainer'" [categoryId]="categoryId"></analytics-widget-wrapper>
+       <analytics-widget-wrapper *ngIf="(i == 10)" [chartContainer]="'brandChartContainer'" [categoryId]="categoryId"></analytics-widget-wrapper>
+       <analytics-widget-wrapper *ngIf="(i == 15)" [chartContainer]="'attributeChartContainer'" [categoryId]="categoryId"></analytics-widget-wrapper>
+   <!-- </ng-container> -->
     <filter-mid-plp (categoryClicked)="categoryClicked.emit($event)"
         [categoryMidPlpFilterData]="categoryMidPlpFilterData" [pageName]="pageName" [position]="i"
         [filterData]="productsListingData?.filterData" *ngIf="(i === 5 || i === 10 || i === 15 || i === 20)">

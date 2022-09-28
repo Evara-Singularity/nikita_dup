@@ -39,6 +39,9 @@ export class LoggerService {
   apiServerLog(data: ServerLogSchema) {
 
     if (this.isServer) {
+      data.startDateTimeV2 = new Date(data.startDateTime).toLocaleString('en-GB'),
+      data.endDateTimev2 = new Date(data.endDateTime).toLocaleString('en-GB'),
+      data.apiRequestTime = data.endDateTime - data.startDateTime;
       console.log('apiServerLog', data);
       // fs.appendFile(this.PATH_TO_LOG_FOLDER, JSON.stringify(data), function (err) {
       //   if (err) {

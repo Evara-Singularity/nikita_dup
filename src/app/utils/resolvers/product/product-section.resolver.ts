@@ -6,7 +6,7 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators'
+import { catchError, map, share, tap } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http';
 import { ENDPOINTS } from '../../../config/endpoints';
 import { environment } from '../../../../environments/environment';
@@ -15,6 +15,7 @@ import { CommonService } from '../../services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { DataService } from '../../services/data.service';
 import { isPlatformServer } from '@angular/common';
+import { LoggerService } from '@app/utils/services/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,12 +29,14 @@ export class ProductSectionResolver implements Resolve<object> {
     // private localStorageService: LocalStorageService,
     public _commonService: CommonService,
     // private _dataService: DataService,
-    private loaderService: GlobalLoaderService
+    private loaderService: GlobalLoaderService,
+    private _loggerService : LoggerService,
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
 
     this.loaderService.setLoaderState(true);
+    const startTime = new Date().getTime();
 
     let productMsnId = route.params['msnid'];  // get MSN id from URL
     if (productMsnId.indexOf("-g") > -1) {
@@ -86,9 +89,30 @@ export class ProductSectionResolver implements Resolve<object> {
 
       const reviewRequestBody = { review_type: 'PRODUCT_REVIEW', item_type: 'PRODUCT', item_id: productMsnId, user_id: " " };
 
-      const productReviewObs = this.http.post(REVIEW_URL, reviewRequestBody);
-      const productCrumb = this.http.get(CRUM_URL);
-      const product_Q_AND_A = this.http.get(Q_AND_A_URL);
+      const productReviewObs = this.http.post(REVIEW_URL, reviewRequestBody).pipe(share(),
+      map(res => {
+        const logInfo = this._commonService.getLoggerObj(REVIEW_URL, 'GET', startTime)
+        logInfo.endDateTime = new Date().getTime();
+        logInfo.responseStatus = res["status"];
+        this._loggerService.apiServerLog(logInfo);
+        return res;
+      }));;
+      const productCrumb = this.http.get(CRUM_URL).pipe(share(),
+      map(res => {
+        const logInfo = this._commonService.getLoggerObj(CRUM_URL, 'GET', startTime)
+        logInfo.endDateTime = new Date().getTime();
+        logInfo.responseStatus = res["status"];
+        this._loggerService.apiServerLog(logInfo);
+        return res;
+      }));;;
+      const product_Q_AND_A = this.http.get(Q_AND_A_URL).pipe(share(),
+      map(res => {
+        const logInfo = this._commonService.getLoggerObj(Q_AND_A_URL, 'GET', startTime)
+        logInfo.endDateTime = new Date().getTime();
+        logInfo.responseStatus = res["status"];
+        this._loggerService.apiServerLog(logInfo);
+        return res;
+      }));;;
       // const product_fbt = this.http.get(PRODUCT_FBT_URL);
       // const product_status_count = this.http.get(PRODUCT_STATUS_COUNT_URL);
       
@@ -109,6 +133,7 @@ export class ProductSectionResolver implements Resolve<object> {
       return forkJoin(pdpFirstFoldApiList).pipe(
         catchError((err)=>{
           this.loaderService.setLoaderState(false);
+          console.log(ProductSectionResolver.name, err);
           return of(err);
         }),
         tap(result => {

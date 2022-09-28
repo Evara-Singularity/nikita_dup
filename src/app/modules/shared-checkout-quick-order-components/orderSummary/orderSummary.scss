@@ -109,3 +109,13 @@
 
 }
 
+.payment_summary-conatiner{
+  background-color: #F6FFF5;
+  border-radius: 8px;
+  border: 1px solid var(--ghost-white);
+  .save-prise-txt{
+    color: var(--slimy-green);
+    font-size: $medium-font;
+    font-weight: $font-bold;
+  }
+}

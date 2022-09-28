@@ -6,7 +6,7 @@
             </div>
             <div class="dropped-price-desc">
                 <p class="g-text">Woohoo! Cart price dropped by ₹500.</p>
-                <p>Now pay only <span class="before-discount">₹3500 </span> <strong>₹3000</strong> with online payment</p>
+                <p>Now pay only <span class="before-discount">₹3500</span> <strong> ₹3000</strong> with online payment</p>
             </div>
         </div>
     </div>
@@ -47,6 +47,7 @@
                             <span class="after-disc" *ngIf="item.bulkPrice!==null">&nbsp;₹{{item.bulkPriceWithoutTax |
                                 mathFloor | number : '1.2-2'}}</span>
                         </p>
+                        <p class="prepaid-discount-txt">You get ₹250 prepaid discount</p>
                     </div>
 
                 </div>
@@ -82,6 +83,12 @@
                             </span>
                             <i class="icon-down"></i>
                         </span>
+                </div>
+            </div>
+            <div class="pwa-row">
+                <div class="shop-more-container">
+                    <p class="shop-more-text">Shop more for ₹1400 & get <span class="prepaid-discount-txt"><strong>₹500 discount</strong></span> in the same category.</p>
+                    <p class="add-products-btn">ADD PRODUCTS</p>
                 </div>
             </div>
             <div *ngIf="item.oos" class="oos-item-block">

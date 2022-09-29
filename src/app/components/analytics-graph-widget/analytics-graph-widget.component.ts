@@ -131,11 +131,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     let chartOptions = {
       chart: {
         type: 'column',
-        spacingLeft: 10,
-        spacingRight: 10,
-        spacingTop: 10,
         width: 270,
-        height: 280,
       },
       title: {
         align: 'left',
@@ -160,7 +156,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       yAxis: {
         title: {
-          text: data
+          text: data,
         }
       },
       legend: {
@@ -196,11 +192,16 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       title: {
         align: 'left',
-        text: 'Yajya  '
+        text: ''
       },
       subtitle: {
-        align: 'left',
-        text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
+        enabled: false
+      },
+      credits: {
+        enabled: false
+      },
+      exporting: {
+        enabled: false,
       },
       accessibility: {
         announceNewData: {
@@ -208,7 +209,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         }
       },
       xAxis: {
-        type: 'category'
+        type: 'category',
       },
       yAxis: {
         title: {

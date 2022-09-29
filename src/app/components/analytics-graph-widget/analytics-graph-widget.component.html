@@ -1,25 +1,42 @@
 <ng-container *ngIf="priceDataWithoutProcessing && priceDataWithoutProcessing.length > 0">
-    <div *ngIf="chartType == 'price'">
-        <div id="price-chart" style="width:100%;height:400px;"></div>
-        <div style="display:flex;">
-            <div (click)="generateFragmentUrl('price',formatPrice(price.interval))"
-                *ngFor="let price of priceDataWithoutProcessing" class="card">
-                <p>
-                    {{price.orderPercentage}}% of users purchase <b>power tools</b> in range <b>{{price.interval}}</b>
-                </p>
+    <div *ngIf="chartType == 'price'" class="single-widget">
+        <div class="inner-widget-section">
+            <div class="widget-heading">
+                <p><img src="../../../assets/img/insight.svg"> Moglix Insight</p>
+                <p class="heading-txt">Drill purchase as per capacity</p>
+            </div>
+            <div class="single-widget-container pad-lr-0">
+                <div id="price-chart" style="width:100%;"></div>
+                <div class="single-card-container">
+                    <div (click)="generateFragmentUrl('price',formatPrice(price.interval))"
+                        *ngFor="let price of priceDataWithoutProcessing" class="card">
+                        <p>
+                            {{price.orderPercentage}}% of users purchase <b>power tools</b> in range
+                            <b>{{price.interval}}</b>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </ng-container>
 <ng-container *ngIf="brandDataWithoutProcessing && brandDataWithoutProcessing.length > 0">
-    <div *ngIf="chartType =='brand'">
-        <div id="brand-chart" style="width:100%;height:400px;"></div>
-        <div style="display:flex;">
-            <div (click)="generateFragmentUrl('brand',brand.brandName)" *ngFor="let brand of brandDataWithoutProcessing"
-                class="card">
-                <p>
-                    {{brand.orderPercentage}}% of users purchase power tools of {{brand.brandName}}
-                </p>
+    <div *ngIf="chartType =='brand'" class="single-widget">
+        <div class="inner-widget-section">
+            <div class="widget-heading">
+                <p><img src="../../../assets/img/insight.svg"> Moglix Insight</p>
+                <p class="heading-txt">Drill purchase as per capacity</p>
+            </div>
+            <div class="single-widget-container pad-lr-0">
+                <div id="brand-chart" style="width:100%;"></div>
+                <div class="single-card-container">
+                    <div (click)="generateFragmentUrl('brand',brand.brandName)"
+                        *ngFor="let brand of brandDataWithoutProcessing" class="card">
+                        <p>
+                            {{brand.orderPercentage}}% of users purchase power tools of {{brand.brandName}}
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -33,7 +50,7 @@
             </div>
             <div class="multiple-widgets-container">
                 <div class="attribute-chart-container">
-                    <div id="attribute-chart0" style="width:100%;height:280px;"></div>
+                    <div id="attribute-chart0" style="width:100%;"></div>
                     <div class="card">
                         <p class="dots"></p>
                         <p>
@@ -42,7 +59,7 @@
                     </div>
                 </div>
                 <div class="attribute-chart-container">
-                    <div id="attribute-chart1" style="width:100%;height:280px;"></div>
+                    <div id="attribute-chart1" style="width:100%;"></div>
                     <div class="card">
                         <p class="dots"></p>
                         <p>
@@ -51,7 +68,7 @@
                     </div>
                 </div>
                 <div class="attribute-chart-container">
-                    <div id="attribute-chart2" style="width:100%;height:280px;"></div>
+                    <div id="attribute-chart2" style="width:100%;"></div>
                     <div class="card">
                         <p class="dots"></p>
                         <p>

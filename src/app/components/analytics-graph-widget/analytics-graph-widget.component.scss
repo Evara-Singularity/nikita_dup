@@ -32,3 +32,32 @@
         }
     }
 }
+
+.inner-widget-section{
+    background: #fff;
+    border-radius: 8px;
+    .widget-heading{
+        padding: 10px;
+        background: #fff;
+        width: 100%;
+        border-radius: 8px;
+        p{
+            font-size: 10px;
+            line-height: 16px;
+            display: flex;
+            color: #D9232D;
+            font-weight: 600;
+            img{
+                width: 15px !important;
+                margin-right: 5px;
+            }
+        }
+        .heading-txt{
+            font-size: 16px ;
+            font-weight: bold;
+            line-height: 24px;
+            color: #3c3c3c;
+            padding-top: 5px;
+        }
+    }
+}

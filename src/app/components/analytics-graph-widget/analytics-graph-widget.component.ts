@@ -138,6 +138,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       chart: {
         type: 'column',
         width: 270,
+        height:300
       },
       title: {
         align: 'left',
@@ -194,7 +195,8 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   createChartSingleObject(data, seriesArray) {
     let chartOptions = {
       chart: {
-        type: 'column'
+        type: 'column',
+        height:300
       },
       title: {
         align: 'left',
@@ -223,7 +225,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         }
       },
       legend: {
-        enabled: true
+        enabled: true,
       },
       plotOptions: {
         series: {

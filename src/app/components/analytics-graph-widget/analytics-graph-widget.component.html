@@ -10,6 +10,8 @@
                 <div class="single-card-container">
                     <div (click)="generateFragmentUrl('price',formatPrice(price.interval))"
                         *ngFor="let price of priceDataWithoutProcessing" class="card">
+
+                        <p class="dots"></p>
                         <p>
                             {{price.orderPercentage}}% of users purchase <b>power tools</b> in range
                             <b>{{price.interval}}</b>

@@ -1,59 +1,77 @@
-.card{
-    background:var(--white);
-    border-radius:8px;
+.card {
+    background: var(--white);
+    border-radius: 8px;
     box-shadow: rgba(0, 0, 0, 0.16) -1px 2px 5px;
-    padding:15px;
+    padding: 15px;
     margin: 10px 0 0;
     border: 1px solid #E3E3E3;
-    // width: 270px;
-    display: flex;
-    .dots{
-        width: 16px;
-        height: 10px;
-        border-radius: 100%;
-        background-color: #3c3c3c;
-        margin-right: 5px;
+    position: relative;
+    p{
+        font-size: 14px;
+        line-height: 20px;
+        color: #3c3c3c;
+        padding-left: 15px;
+        &:before {
+            content: "";
+            position: absolute;
+            left: 15px;
+            top: 20px;
+            width: 8px;
+            height: 8px;
+            background-color: #434348;
+            border-radius: 50%;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+        }
     }
+
 
 }
 
-.multiple-widgets{
+.multiple-widgets {
     margin: 0 10px;
-    .multiple-widgets-container{
-        display: flex; 
+
+    .multiple-widgets-container {
+        display: flex;
         overflow: auto;
         background: #fff;
         border-radius: 8px;
-        .attribute-chart-container{
+
+        .attribute-chart-container {
             margin: 10px 0px 10px 10px;
-            &:last-child{
+
+            &:last-child {
                 margin-right: 10px;
             }
         }
     }
 }
 
-.inner-widget-section{
+.inner-widget-section {
     background: #fff;
     border-radius: 8px;
-    .widget-heading{
+
+    .widget-heading {
         padding: 10px;
         background: #fff;
         width: 100%;
         border-radius: 8px;
-        p{
+
+        p {
             font-size: 10px;
             line-height: 16px;
             display: flex;
             color: #D9232D;
             font-weight: 600;
-            img{
+
+            img {
                 width: 15px !important;
                 margin-right: 5px;
             }
         }
-        .heading-txt{
-            font-size: 16px ;
+
+        .heading-txt {
+            font-size: 16px;
             font-weight: bold;
             line-height: 24px;
             color: #3c3c3c;
@@ -61,17 +79,23 @@
         }
     }
 }
-.single-widget{
+
+.single-widget {
     margin: 0 10px;
-    .single-widget-container{
+
+    .single-widget-container {
         padding: 10px;
-        .single-card-container{
+
+        .single-card-container {
             display: flex;
             overflow: auto;
-            .card{
+
+            .card {
                 min-width: 270px;
                 margin: 10px 0px 0px 10px;
-                &:last-child{
+                position: relative;
+
+                &:last-child {
                     margin-right: 10px;
                 }
             }

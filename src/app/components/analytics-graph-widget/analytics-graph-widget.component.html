@@ -2,14 +2,16 @@
     <div *ngIf="chartType == 'price'" class="single-widget">
         <div class="inner-widget-section">
             <div class="widget-heading">
-                <p><img src="{{imagePath}}assets/img/insight.svg"> Moglix Insight</p>
-                <p class="heading-txt">Drill purchase as per capacity</p>
+                <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
+                <p class="heading-txt">Top {{priceDataWithoutProcessing.length}} price-range of {{categoryName}}</p>
             </div>
             <div class="single-widget-container pad-lr-0">
                 <div id="price-chart" style="width:100%;"></div>
                 <div class="single-card-container">
                     <div (click)="generateFragmentUrl('price',formatPrice(price.interval))"
                         *ngFor="let price of priceDataWithoutProcessing" class="card">
+
+                        <p class="dots"></p>
                         <p>
                             {{price.orderPercentage}}% of users purchase <b>power tools</b> in range
                             <b>{{price.interval}}</b>
@@ -24,8 +26,8 @@
     <div *ngIf="chartType =='brand'" class="single-widget">
         <div class="inner-widget-section">
             <div class="widget-heading">
-                <p><img src="../../../assets/img/insight.svg"> Moglix Insight</p>
-                <p class="heading-txt">Drill purchase as per capacity</p>
+                <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
+                <p class="heading-txt">Top {{brandDataWithoutProcessing.length}} Brands of {{categoryName}}</p>
             </div>
             <div class="single-widget-container pad-lr-0">
                 <div id="brand-chart" style="width:100%;"></div>
@@ -33,7 +35,7 @@
                     <div (click)="generateFragmentUrl('brand',brand.brandName)"
                         *ngFor="let brand of brandDataWithoutProcessing" class="card">
                         <p>
-                            {{brand.orderPercentage}}% of users purchase power tools of {{brand.brandName}}
+                            {{brand.orderPercentage}}% of users purchase {{categoryName}} of {{brand.brandName}}
                         </p>
                     </div>
                 </div>
@@ -46,37 +48,20 @@
     <div *ngIf="chartType =='attribute'" class="multiple-widgets">
         <div class="inner-widget-section">
             <div class="widget-heading">
-                <p><img src="../../../assets/img/insight.svg"> Moglix Insight</p>
-                <p class="heading-txt">Drill purchase as per capacity</p>
+                <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
+                <p class="heading-txt">{{categoryName}} purchase as per </p>
             </div>
             <div class="multiple-widgets-container">
-                <div class="attribute-chart-container">
-                    <div id="attribute-chart0" style="width:100%;"></div>
-                    <div class="card">
+                <div *ngFor="let attribute of attributeDataWithoutProcessing;let i = index" class="attribute-chart-container">
+                    <div [id]="'attribute-chart'+i" style="width:100%;"></div>
+                    <div  class="card">
                         <p class="dots"></p>
                         <p>
-                            36% of users purchase <b>power tools</b> in range <b>1000-1200</b>
+                           36%  of users purchase <b>{{categoryName}}</b> in capacity <b> 13mm</b>
                         </p>
                     </div>
                 </div>
-                <div class="attribute-chart-container">
-                    <div id="attribute-chart1" style="width:100%;"></div>
-                    <div class="card">
-                        <p class="dots"></p>
-                        <p>
-                            36% of users purchase <b>power tools</b> in range <b>1000-1200</b>
-                        </p>
-                    </div>
-                </div>
-                <div class="attribute-chart-container">
-                    <div id="attribute-chart2" style="width:100%;"></div>
-                    <div class="card">
-                        <p class="dots"></p>
-                        <p>
-                            36% of users purchase <b>power tools</b> in range <b>1000-1200</b>
-                        </p>
-                    </div>
-                </div>
+               
             </div>
         </div>
     </div>

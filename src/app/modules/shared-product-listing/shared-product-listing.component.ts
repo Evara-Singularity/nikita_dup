@@ -10,6 +10,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DataService } from '@app/utils/services/data.service';
 import { PercentPipe } from '@angular/common';
 import { chart } from 'highcharts';
+import { ENDPOINTS } from '@app/config/endpoints';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'shared-product-listing',
@@ -75,18 +77,18 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     this.getChartData();
   }
   callChartApi() {
-    let url = 'http://localhost:3000/graphData';
-    // let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +this.categoryId;
+    // let url = 'http://localhost:3000/graphData';
+    let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +this.categoryId;
     return this.dataService.callRestful("GET", url);
   }
   getChartData(){
     this.callChartApi().subscribe(res => {
-       // if(res['statusCode'] == 200){
-      //  this.graphData = res['data']; 
-      //}
-      if (res[0].statusCode == 200) {
-        this.graphData = res[0]['data'];
+       if(res['statusCode'] == 200){
+       this.graphData = res['data']; 
       }
+      // if (res[0].statusCode == 200) {
+      //   this.graphData = res[0]['data'];
+      // }
       else{
         console.log("error");
       }

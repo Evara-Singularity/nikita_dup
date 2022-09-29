@@ -21,7 +21,7 @@
                                         <span class="label">CVV</span>
                                     </label>
                                 </span>
-                                <div (click)="$event.preventDefault()" *ngIf="!savedCards[i]['PAR']" class="new-guidelines">
+                                <div (click)="$event.preventDefault()" *ngIf="!savedCards[i]['par']" class="new-guidelines">
                                     <div class="new-container">
                                         <div class="checkbox-container">
                                             <input type="checkbox" [checked]="saveCard && csc.checked" >

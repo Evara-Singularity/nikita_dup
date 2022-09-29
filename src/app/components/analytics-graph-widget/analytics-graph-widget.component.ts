@@ -13,13 +13,6 @@ import { filter } from 'rxjs-compat/operator/filter';
 })
 export class AnalyticsGraphWidgetComponent implements OnInit {
   graphData :Array<any>=[];
-  seriesAttributeArray: Array<any>= [];
-  seriesBrandArray: Array<any> = [];
-  seriesPriceArray: Array<any> = [];
- 
-  attributeData:any;
-  brandData:any;
-  priceData:any;
   chartOptions = {};
   @Input() chartType;
   @Input() filterData: Array<any>;
@@ -28,55 +21,65 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   
   brandName:'';
   bucketData:any;
-  singleAttributeData:any;
   attributeLength:any;
 
   priceDataWithoutProcessing;
   brandDataWithoutProcessing;
   attributeDataWithoutProcessing;
+  
 
   constructor(private dataService:DataService,private commonService:CommonService,private _productListService:ProductListService) { }
 
   ngOnInit(): void {
+    console.log("categoryId",this.categoryId);
     this.getData();
   }
       
   callChartApi(){
-    // let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +129000000;
-    let url = 'http://localhost:3000/graphData';
+    let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +this.categoryId;
     return this.dataService.callRestful("GET", url);
   } 
+
   getData(){
     this.callChartApi().subscribe(res => {
-      if(res[0].statusCode == 200){
-        this.graphData = res[0]['data']; 
+      if(res['statusCode'] == 200){
+        this.graphData = res['data']; 
         this.graphData.forEach(element => {
           if(element.block_name == 'attribute_report'){
-            element.data.forEach(item => {
-                this.attributeLength = element.data.length;
-                this.attributeData = item['attributePercentange'];
-                this.prepareAttributeChartData(this.attributeData);
-            });
+            if(element.data && element.data.length >0){
+            this.attributeDataWithoutProcessing = element.data;
+              element.data.forEach((item, index) => {
+                setTimeout(() => {
+                  this.loadChart(`attribute-chart${index}`,item['attributePercentange'], this.prepareAttributeChartData(item['attributePercentange']))
+                },0);
+             });
+            }
           }
           else if(element.block_name == 'product_report'){
+            let priceData = [];
+            if(element.data && element.data.length >0){
             this.priceDataWithoutProcessing = element.data;
-            element.data.forEach(price => {
-              this.priceData = price;
-              this.preparePriceChartData(this.priceData);
-              setTimeout(() => {
-                this.createChart('price');
-               }, 0);
-            });
+              element.data.forEach(price => {
+                priceData = [...priceData, ...this.preparePriceChartData(price)]
+                console.log("priceData",priceData);
+              });
+            
+            setTimeout(() => {
+              this.loadChart('price-chart',priceData,priceData);
+             },10);
+            }
           }
           else{
-            element.data.forEach(brand => {
+            if(element.data && element.data.length >0){
+              let brandData = [];
               this.brandDataWithoutProcessing = element.data;
-              this.brandData = brand;
-              this.prepareBrandChartData(this.brandData);
+              element.data.forEach(brand => {
+               brandData = [...brandData, ...this.prepareBrandChartData(brand)]
+              });
               setTimeout(() => {
-                this.createChart('brand');
-               }, 0);
-            });
+                this.loadChart('brand-chart',brandData,brandData);
+               }, 20);
+              }
           }
         });
        }
@@ -87,41 +90,39 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   }
   //create Chart Data
   prepareAttributeChartData(attributeData){
-    // console.log("attributeData1",attributeData);
-      this.seriesAttributeArray = [];
+    const seriesAttributeArray = [];
       for(var attr in attributeData){
         let itemObj = {};
         itemObj['name'] = attr.toString();
         itemObj['y'] = attributeData[attr];
         itemObj['drilldown'] = null;
-        console.log("itemobj",itemObj);
-        this.seriesAttributeArray.push(itemObj); 
-        console.log("this.seriesAttributeArray", this.seriesAttributeArray);
+        seriesAttributeArray.push(itemObj);
       }
-        this.createChart('attribute0');
-        // this.createChart('attribute1');
-        // this.createChart('attribute2');
-      // console.log("this.seriesAttributeArray", this.seriesAttributeArray) 
-      
+    return seriesAttributeArray;
   }
   prepareBrandChartData(brandData){
-    for (var brand in brandData){
+  //  debugger;
+    const seriesBrandArray = [];
       let brandObj = {};
       brandObj['name'] = brandData['brandName'].toString();
       brandObj['y'] = brandData['orderPercentage'];
       brandObj['drilldown'] = null;
-      this.seriesBrandArray.push(brandObj);
-      // console.log("this.seriesBrandArray", this.seriesBrandArray) 
-    }
+      seriesBrandArray.push(brandObj);
+    
+    return seriesBrandArray; 
   }  
+  
   preparePriceChartData(priceData){
-    for(var price in priceData){
+    console.log("priceData",priceData);
+    const seriesPriceArray = [];
+    // for(var price in priceData){
       let priceObj = {};
       priceObj['name'] = priceData['interval'].toString();
       priceObj['y'] = priceData['orderPercentage'];
       priceObj['drilldown'] = null;
-      this.seriesPriceArray.push(priceObj);
-    }
+      seriesPriceArray.push(priceObj);
+    
+    return seriesPriceArray; 
   }
   createChartOptionsObject(data,seriesArray){
     let chartOptions = {
@@ -175,31 +176,20 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       } 
       return chartOptions; 
   }
-  createChart(showData:string){
+
+  createCHartAttribute(attributeData, graphData){
+    this.createChartOptionsObject(attributeData,graphData);
+  }
+
+  loadChart(htmlId, data, seriesData){
+    console.log('graph info', htmlId , data, seriesData);
     var Highcharts = require('highcharts');  
     // Load module after Highcharts is loaded
-    require('highcharts/modules/exporting')(Highcharts);  
-    if(showData == 'attribute0'){
-      console.log("a");
-      Highcharts.chart('attribute-chart0',
-      this.createChartOptionsObject(this.attributeData,this.seriesAttributeArray));
-    }
-    if(showData == 'attribute1'){
-      Highcharts.chart('attribute-chart1',
-      this.createChartOptionsObject(this.attributeData,this.seriesAttributeArray));
-    }
-    if(showData == 'attribute2'){
-      Highcharts.chart('attribute-chart2',
-      this.createChartOptionsObject(this.attributeData,this.seriesAttributeArray));
-    }
-    if(showData == 'price'){
-      Highcharts.chart('price-chart', 
-      this.createChartOptionsObject(this.priceData,this.seriesPriceArray))
-    }
-    if(showData == 'brand'){
-      Highcharts.chart('brand-chart', 
-      this.createChartOptionsObject(this.brandData,this.seriesBrandArray))
-    }
+    require('highcharts/modules/exporting')(Highcharts); 
+    Highcharts.chart(
+      htmlId,
+      this.createChartOptionsObject(data,seriesData)
+    );
   }
  
   generateFragmentUrl(filterName,filterValue){

@@ -13,6 +13,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   priceContainerInstance = null;
   attributeContainerInstance = null;
   brandContainerInstance = null;
+
   @ViewChild("priceContainerRef", { read: ViewContainerRef })
   priceContainerRef: ViewContainerRef;
   @ViewChild("attributeContainerRef", { read: ViewContainerRef })
@@ -21,8 +22,9 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   brandContainerRef: ViewContainerRef;
   @Input() chartContainer;
   @Input() categoryId;
+
   ngOnInit(): void {
-     console.log("categoryId");
+     console.log("categoryId",this.categoryId);
   }
  async loadPriceWidget(event){
     const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
@@ -33,6 +35,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
       this.injector
      )
      this.priceContainerInstance.instance['chartType'] = 'price';
+     this.priceContainerInstance.instance['categoryId'] = this.categoryId;
   }
   async loadBrandWidget(){
     const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
@@ -43,6 +46,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
       this.injector
      )
      this.brandContainerInstance.instance['chartType'] = 'brand';
+     this.brandContainerInstance.instance['categoryId'] = this.categoryId;
   }
   async loadAttributeWidget(){
     const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
@@ -53,19 +57,21 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
       this.injector
      )
      this.attributeContainerInstance.instance['chartType'] = 'attribute';
+     this.attributeContainerInstance.instance['categoryId'] = this.categoryId;
   }
   resetLazyComponents(){
     if (this.priceContainerInstance) {
+      console.log("hi");
       this.priceContainerInstance = null;
-      this.priceContainerInstance.remove();
+      this.priceContainerRef.remove();
     }
     if (this.brandContainerInstance) {
       this.brandContainerInstance = null;
-      this.brandContainerInstance.remove();
+      this.brandContainerRef.remove();
     }
     if (this.attributeContainerInstance) {
       this.attributeContainerInstance = null;
-      this.attributeContainerInstance.remove();
+      this.attributeContainerRef.remove();
     }
   }
   ngAfterViewInit()

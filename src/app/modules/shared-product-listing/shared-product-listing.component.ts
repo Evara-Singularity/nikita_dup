@@ -83,7 +83,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       if (this.isCallSponseredApi(paramsUsedInModules)) {
         const query = Object.assign({}, this.getSponseredRequest(), this._commonService.formatParams(paramsUsedInModules))
         this._productService.getSponseredProducts(query).subscribe(response => {
-          
           if (response['products']) {
             let products = response['products'] || [];
             if (products && (products as []).length > 0) {

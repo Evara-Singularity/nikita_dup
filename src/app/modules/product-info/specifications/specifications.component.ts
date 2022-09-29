@@ -42,11 +42,18 @@ export class SpecificationsComponent implements OnInit
     showMore() {
          this.user = this._localAuthService.getUserSession();
         if (this.user && this.user['authenticated'] == 'true') {
-            this.showSecondaryAttributes = !this.showSecondaryAttributes;
-            this.callback.emit(this.showSecondaryAttributes);
+            this.toggleShowMore();
         }
         else {
             this.openLoginPopUp.emit()
+            this._localAuthService.login$.subscribe((data) => {
+                this.toggleShowMore();
+            })
         }
+    }
+
+    toggleShowMore(){
+        this.showSecondaryAttributes = !this.showSecondaryAttributes;
+        this.callback.emit(this.showSecondaryAttributes);
     }
 }

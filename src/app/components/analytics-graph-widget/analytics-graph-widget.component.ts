@@ -36,14 +36,17 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   }
       
   callChartApi(){
-    let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +this.categoryId;
+    let url = 'http://localhost:3000/graphData';
+    // let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +this.categoryId;
     return this.dataService.callRestful("GET", url);
   } 
 
   getData(){
     this.callChartApi().subscribe(res => {
-      if(res['statusCode'] == 200){
-        this.graphData = res['data']; 
+      if(res[0].statusCode == 200){
+        this.graphData = res[0]['data']; 
+      // if(res['statusCode'] == 200){
+      //   this.graphData = res['data']; 
         this.graphData.forEach(element => {
           if(element.block_name == 'attribute_report'){
             if(element.data && element.data.length >0){

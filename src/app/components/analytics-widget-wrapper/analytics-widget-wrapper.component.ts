@@ -22,6 +22,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   brandContainerRef: ViewContainerRef;
   @Input() chartContainer;
   @Input() categoryId;
+  @Input() graphData;
 
   ngOnInit(): void {
      console.log("categoryId",this.categoryId);
@@ -36,6 +37,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
      )
      this.priceContainerInstance.instance['chartType'] = 'price';
      this.priceContainerInstance.instance['categoryId'] = this.categoryId;
+     this.priceContainerInstance.instance['graphData'] = this.graphData;
   }
   async loadBrandWidget(){
     const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
@@ -47,6 +49,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
      )
      this.brandContainerInstance.instance['chartType'] = 'brand';
      this.brandContainerInstance.instance['categoryId'] = this.categoryId;
+     this.brandContainerInstance.instance['graphData'] = this.graphData;
   }
   async loadAttributeWidget(){
     const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
@@ -58,6 +61,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
      )
      this.attributeContainerInstance.instance['chartType'] = 'attribute';
      this.attributeContainerInstance.instance['categoryId'] = this.categoryId;
+     this.attributeContainerInstance.instance['graphData'] = this.graphData;
   }
   resetLazyComponents(){
     if (this.priceContainerInstance) {

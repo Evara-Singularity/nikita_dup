@@ -54,6 +54,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   isHomeHeader: boolean = true;
   public appliedFilterCount: number = 0;
   showSortBy: boolean = true;
+  graphData:any;
   
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
@@ -71,7 +72,27 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
+    this.getChartData();
   }
+  callChartApi() {
+    let url = 'http://localhost:3000/graphData';
+    // let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +this.categoryId;
+    return this.dataService.callRestful("GET", url);
+  }
+  getChartData(){
+    this.callChartApi().subscribe(res => {
+       // if(res['statusCode'] == 200){
+      //  this.graphData = res['data']; 
+      //}
+      if (res[0].statusCode == 200) {
+        this.graphData = res[0]['data'];
+      }
+      else{
+        console.log("error");
+      }
+    })
+  }
+ 
 
   get isAdsEnable() {
     return this.pageName == 'CATEGORY' || this.pageName == 'SEARCH'

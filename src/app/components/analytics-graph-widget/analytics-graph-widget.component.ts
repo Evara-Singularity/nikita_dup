@@ -14,11 +14,12 @@ import { filter } from 'rxjs-compat/operator/filter';
   styleUrls: ['./analytics-graph-widget.component.scss']
 })
 export class AnalyticsGraphWidgetComponent implements OnInit {
-  graphData: Array<any> = [];
+  // graphData: Array<any> = [];
   chartOptions = {};
   @Input() chartType;
   @Input() filterData: Array<any>;
   @Input() categoryId: any;
+  @Input() graphData;
   fragmentPriceObject: any;
   imagePath = CONSTANTS.IMAGE_ASSET_URL;
 
@@ -37,20 +38,10 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   ngOnInit(): void {
     console.log("categoryId", this.categoryId);
     this.getData();
-  }
-
-  callChartApi() {
-    let url = 'http://localhost:3000/graphData';
-    // let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +this.categoryId;
-    return this.dataService.callRestful("GET", url);
+    console.log("graphData",this.graphData);
   }
 
   getData() {
-    this.callChartApi().subscribe(res => {
-      if (res[0].statusCode == 200) {
-        this.graphData = res[0]['data'];
-      // if(res['statusCode'] == 200){
-      //   this.graphData = res['data']; 
         this.graphData.forEach(element => {
           if (element.block_name == 'attribute_report'){
             if (element.data && element.data.length > 0) {
@@ -91,11 +82,6 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
             }
           }
         });
-      }
-      else {
-        console.log("error");
-      }
-    });
   }
   //create Chart Data
   prepareAttributeChartData(attributeData) {

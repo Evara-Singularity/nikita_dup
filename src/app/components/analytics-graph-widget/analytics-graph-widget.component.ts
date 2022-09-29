@@ -1,3 +1,4 @@
+import { PercentPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { CommonService } from '@app/utils/services/common.service';
@@ -22,6 +23,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   brandName: '';
   bucketData: any;
   attributeLength: any;
+  attributeName:any;
 
   priceDataWithoutProcessing;
   brandDataWithoutProcessing;
@@ -45,15 +47,17 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     this.callChartApi().subscribe(res => {
       if (res[0].statusCode == 200) {
         this.graphData = res[0]['data'];
-        // if(res['statusCode'] == 200){
-        //   this.graphData = res['data']; 
+      // if(res['statusCode'] == 200){
+      //   this.graphData = res['data']; 
         this.graphData.forEach(element => {
-          if (element.block_name == 'attribute_report') {
+          if (element.block_name == 'attribute_report'){
             if (element.data && element.data.length > 0) {
               this.attributeDataWithoutProcessing = element.data;
               element.data.forEach((item, index) => {
                 setTimeout(() => {
-                  this.loadChart(`attribute-chart${index}`, item['attributePercentange'], this.prepareAttributeChartData(item['attributePercentange']))
+                  let attributeName = item.attributeName;
+                  this.loadChart(`attribute-chart${index}`, item['attributePercentange'], this.prepareAttributeChartData(item['attributePercentange']),attributeName)
+                  return 
                 }, 0);
               });
             }
@@ -111,12 +115,11 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     brandObj['y'] = brandData['orderPercentage'];
     brandObj['drilldown'] = null;
     seriesBrandArray.push(brandObj);
-
     return seriesBrandArray;
   }
 
   preparePriceChartData(priceData) {
-    console.log("priceData", priceData);
+    // console.log("priceData", priceData);
     const seriesPriceArray = [];
     // for(var price in priceData){
     let priceObj = {};
@@ -127,7 +130,8 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
 
     return seriesPriceArray;
   }
-  createChartOptionsObject(data, seriesArray) {
+  createChartOptionsObject(data,seriesArray,attributeName?) {
+    console.log(data,"data");
     let chartOptions = {
       chart: {
         type: 'column',
@@ -160,11 +164,11 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       yAxis: {
         title: {
-          text: data
+          text:'Order Percentage'
         }
       },
       legend: {
-        enabled: false
+        enabled: true
       },
       plotOptions: {
         series: {
@@ -181,7 +185,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       series: [
         {
-          name: "Browsers",
+          name: attributeName,
           colorByPoint: true,
           data: seriesArray
         }
@@ -212,11 +216,11 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       yAxis: {
         title: {
-          text: data
+          text:'Order Percentage'
         }
       },
       legend: {
-        enabled: false
+        enabled: true
       },
       plotOptions: {
         series: {
@@ -233,7 +237,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       series: [
         {
-          name: "Browsers",
+          name: "Price Range",
           colorByPoint: true,
           data: seriesArray
         }
@@ -241,14 +245,10 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     }
     return chartOptions;
   }
+ 
 
-
-  // createCHartAttribute(attributeData, graphData){
-  //   this.createChartOptionsObject(attributeData,graphData);
-  // }
-
-  loadChart(htmlId, data, seriesData) {
-    console.log('graph info', htmlId, data, seriesData);
+  loadChart(htmlId, data, seriesData,attributeName?) {
+    // console.log('graph info', htmlId, data, seriesData);
     var Highcharts = require('highcharts');
     // Load module after Highcharts is loaded
     require('highcharts/modules/exporting')(Highcharts);
@@ -257,10 +257,9 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       this.createChartSingleObject(data, seriesData)
     );
     if (htmlId.startsWith('attribute-chart')) {
-      console.log("true")
       Highcharts.chart(
         htmlId,
-        this.createChartOptionsObject(data, seriesData)
+        this.createChartOptionsObject(data,seriesData,attributeName)
       );
     }
   }

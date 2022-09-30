@@ -5,7 +5,7 @@
         <div class="card-detail" [class.active]="selectedCardIndex !== undefined && selectedCardIndex===i" formArrayName="cards" *ngFor="let card of savedCardForm.get('cards')['controls']; let i=index">
             <ng-container [formGroupName]="i">
                 <div class="radio-with-label-container">
-                    <label class="radio-with-label ">
+                    <label class="radio-with-label">
                         <input type="radio" id="{{'csc_'+i}}" (click)="changeSavedCard(i, csc.checked)"
                             name="saved_card" #csc>
                         <span class="custom-box icon-box"></span>
@@ -21,6 +21,18 @@
                                         <span class="label">CVV</span>
                                     </label>
                                 </span>
+                                <div (click)="$event.preventDefault()" *ngIf="!savedCards[i]['par']" class="new-guidelines">
+                                    <div class="new-container">
+                                        <div class="checkbox-container">
+                                            <input type="checkbox" [checked]="saveCard && csc.checked" >
+                                            <span class="custom-box icon-box"  (click)="$event.preventDefault();$event.stopPropagation();toggleSaveCard()" ></span>
+                                        </div>
+                                        <div class="rbi-guidlines-txt">
+                                            <p>Proceed with the transaction to save this card as per new RBI guidelines</p>
+                                            <p class="know-more-btn" (click)="$event.preventDefault();initiateRbiGuidlinesPopUp()">KNOW MORE</p>
+                                        </div>
+                                    </div>
+                                </div>
                                 </div>
                                 
                             </span>
@@ -58,6 +70,6 @@
         </div>
     </form>
 </div>
-
+<ng-container #bottomSheet></ng-container>
 <payu-form *ngIf="isValid&&type=='retail'" [data]="payuData"></payu-form>
 <razor-pay *ngIf="isValid&&type=='tax'" [data]="payuData"></razor-pay>

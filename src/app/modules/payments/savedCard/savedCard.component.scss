@@ -2,6 +2,10 @@
 @import '../../../scss/payment-common';
 @import '../payment-continue-btn.scss';
 @import '../../../scss/components/radio.scss';
+@import '../../../scss/components/checkbox.scss';
+.radio-with-label{
+    align-items: flex-start !important;
+}
 .saved-details {
     // @extend %white-card;
     // margin: 0px 0px 15px;
@@ -10,16 +14,18 @@
     h3 {
         padding-left: 15px;
     }
+    .chk-txt{
+        width: 100%;
+    }
     .detail-txt {
         //float: left;
-        width: 80%;
         width: calc(100% - 45px);
         .card-no {
             display: block;
             // margin: 6px 0;
         }
         .input-sec {
-            width: 80px;
+            width: 100%;
             padding-right: 0;
             max-height: 0;
             overflow: hidden;
@@ -27,6 +33,7 @@
             input {
                 border-color: var(--blue);
                 height: 30px;
+                width: 80px;
                 border: 1px solid #D7D7D7;
                 border-radius: 4px;
                 padding: 5px;
@@ -36,9 +43,38 @@
                 }
             }
         }
+        .new-guidelines{
+            border-radius: $border-radius-8;
+            background-color: var(--we-peep);
+            margin-top: 8px;
+            .new-container{
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                .checkbox-container{
+                    @extend %custom-check-box-checkout;
+                    .custom-box{
+                        display: block;
+                        margin-right: 0 !important;
+                    }
+                }
+                .rbi-guidlines-txt{
+                    padding-left: 15px;
+                    p{
+                        font-size: $small-font;
+                        line-height: $small-line-height;
+                        padding-bottom: 5px;
+                    }
+                    .know-more-btn{
+                        color: var(--bleu-de-france);
+                        font-weight: $font-bold;
+                    }
+                }
+            }
+        }
     }
     input:checked~.chk-txt .input-sec {
-        max-height: 100px
+        max-height: 126px
     }
     .card-detail {
         position: relative;
@@ -53,6 +89,7 @@
         }
         label {
             margin-bottom: 5px;
+            width: 100%;
             // padding: 10px 10px;
             // border-bottom: 1px solid var(--platinum);
         }

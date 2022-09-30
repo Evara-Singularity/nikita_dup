@@ -104,7 +104,8 @@ export class PaymentComponent implements OnInit {
   private getSavedCardData() {
     const userSession = this._localAuthService.getUserSession();
     const data = {
-      userEmail: (userSession && userSession['email']) ? userSession['email'] : userSession['phone']
+      userEmail: (userSession && userSession['email']) ? userSession['email'] : userSession['phone'],
+      userType: this.invoiceType
     };
 
     if (this.invoiceType == 'tax') {
@@ -247,7 +248,9 @@ export class PaymentComponent implements OnInit {
   {
     this.isShowLoader = true;
     const userSession = this._localAuthService.getUserSession();
-    const data = { userEmail: userSession && userSession["email"] ? userSession["email"] : userSession["phone"], };
+    const data = { userEmail: userSession && userSession["email"] ? userSession["email"] : userSession["phone"], 
+    userType: this.invoiceType
+  };
     if (this.invoiceType == "tax") {
       data["userId"] = userSession["userId"];
       data["userEmail"] = "";

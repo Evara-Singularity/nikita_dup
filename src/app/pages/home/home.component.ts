@@ -241,7 +241,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 								return e;
 							
 							});
-							this.bannerDataFinal = [...this.bannerDataFinal, ...blockData.image_block]
+							this.bannerDataFinal = [...this.bannerDataFinal, (blockData.image_block && blockData.image_block.length > 0)?blockData.image_block[0]:[]]
 						} else if (
 							blockData.image_block &&
 							blockData.image_block.length &&

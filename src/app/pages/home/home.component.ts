@@ -576,6 +576,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			] = this.featureBrandData;
 			this.featuredBrandsInstance.instance['defaultImage'] = this.defaultImage;
 			this.featuredBrandsInstance.instance['imagePath'] = this.imagePath;
+			this._commonService.loadLottieScript();
 		}
 	}
 

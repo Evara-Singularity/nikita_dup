@@ -1520,7 +1520,6 @@ export class CommonService
             return productTags
         }
     }
-
     slicingHref(image) {
         const invalidURL = `${CONSTANTS.IMAGE_BASE_URL}${CONSTANTS.IMAGE_BASE_URL}`
         if (image.includes(invalidURL)) {
@@ -1528,5 +1527,21 @@ export class CommonService
         }
         return image;
     }
-
+    loadLottieScript(){
+        const lottie_script_url = `${CONSTANTS.CDN_LOTTIE_PATH}`
+        const lottie_script_element = document.createElement('script');
+        lottie_script_element.setAttribute( 'src',lottie_script_url );
+        document.body.appendChild(lottie_script_element);
+        if(document.contains(lottie_script_element)){
+            var animation = bodymovin.loadAnimation({
+                // animationData: { /* ... */ },
+                container: document.getElementById('icon-container'), // required
+                path: '../../', // required
+                renderer: 'svg', // required
+                loop: true, // optional
+                autoplay: true, // optional
+                name: "Demo Animation", // optional
+              });
+        }
+    }
 }

@@ -39,6 +39,10 @@ export class CreditDebitCardComponent implements OnInit {
     selectedMonth: string = null;
     yearSelectPopupStatus: boolean = false;
     selectedYear: string = null;
+    
+    bottomSheetInstance = null;
+    @ViewChild('bottomSheet', { read: ViewContainerRef })
+    bottomSheetContainerRef: ViewContainerRef;
 
     constructor(
         private _localStorageService: LocalStorageService,
@@ -291,6 +295,26 @@ export class CreditDebitCardComponent implements OnInit {
 
     payApiCall(data) {
         return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, { body: data });
+    }
+
+    async initiateRbiGuidlinesPopUp()
+    {
+        if (!this.bottomSheetInstance) {
+            const { RbiGuidelinesBottomSheetComponent } = await import(
+                './../../../components/rbi-guidelines-bottom-sheet/rbi-guidelines-bottom-sheet.component'
+            );
+            const factory = this.cfr.resolveComponentFactory(RbiGuidelinesBottomSheetComponent);
+            this.bottomSheetInstance = this.bottomSheetContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.bottomSheetInstance.instance['bm'] = true;
+
+        } else {
+            //toggle
+            this.bottomSheetInstance.instance['bm'] = !(this.bottomSheetInstance.instance['bm']);
+        }
     }
 
 }

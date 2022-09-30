@@ -26,7 +26,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     @Input("withLabel") withLabel = true;//whether to display CTA or not & accordingly emits verified otp(forgot passowrd screen)
     @Input("isForgotPassword") isForgotPassword = false;//Whether forgotpassword screen or not and manages the css accordingly.
     @Input('isCheckout') isCheckout = false;
-    @Input('isLoginPopup') isLoginPopup = false;
+    @Input('isLoginPopup') isLoginPopup;
 
     @Output("otpEmitter") otpEmitter = new EventEmitter();//Emits otp value accordingly
     @Output('otpSuccess$') otpSuccess$= new EventEmitter();
@@ -120,8 +120,11 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                     this.timer = 0;
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this._globalLoader.setLoaderState(false);
-                    if (!(this.withLabel)) { setTimeout(() => { 
-                        this.otpEmitter.emit(otpValue); 
+                    if(this.isLoginPopup){
+                        this.togglePopUp$.emit('sign-up')
+                        this.otpEmitter.emit(otpValue);
+                    }
+                    if (!(this.withLabel)) { setTimeout(() => {  
                         this.otpSuccess$.emit();
                     }, 200) };
                     return;

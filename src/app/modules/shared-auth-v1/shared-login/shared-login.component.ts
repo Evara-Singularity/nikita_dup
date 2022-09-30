@@ -281,8 +281,9 @@ export class SharedLoginComponent implements OnInit
     }
     navigateHome() { 
        if(this.isLoginPopup){
-        this.removeAuthComponent()
-        return;
+          this.removeAuthComponent();
+          this._router.navigate(["."]);
+          return;
        }
        this._router.navigate(["."]);
     }

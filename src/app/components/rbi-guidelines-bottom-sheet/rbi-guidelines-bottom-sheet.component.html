@@ -1,51 +1,73 @@
 <app-bottom-menu *ngIf="bm" (outData$)="onUpdate($event)">
-    <ul class="container plp-bottom-modal" content>
-        <li><span>RBI guidelines details</span> <i (click)="resetBottomOpt()" class="icon-circle-delete"></i> </li>
-        <h3>1. What are the new RBI guidelines? </h3>
-        <p>As per the new RBI guidelines effective from October 1, 2022, merchants can no longer save customer credit or
-            debit card details. Instead, customers must enter their complete card details for every payment done via
-            card. </p>
-        <h3>2. How can I avoid entering my card details every time I pay?</h3>
-        <p>Customers can provide their consent, allowing Amazon Pay to tokenize (encrypt) and save their card as per new
-            RBI guidelines. This means that Amazon Pay asks your card network to encrypt your card details with
-            additional authentication. Amazon Pay receives the encrypted details which will be saved and used for future
-            transactions instead of your actual card details.</p>
-        <h3>3. How do I provide my consent to save the card? </h3>
-        <p>When you add a new card or select a saved card to make a purchase, you will see a checkbox requesting you to
-            provide the consent. Simply select the checkbox and continue with your payment on that card. Your consent
-            will be successfully captured once the payment is complete. </p>
-        <h3>4. How will I know which of my cards are not saved as per new regulations?</h3>
-        <p>When you add a new card or select a saved card to make a purchase, you will see a checkbox requesting you to
-            provide the consent. Simply select the checkbox and continue with your payment on that card. Your consent
-            will be successfully captured once the payment is complete. </p>
-        <h3>5. Do I need to provide consent separately for each card?</h3>
-        <p>Yes, as per the RBI guidelines, you need to provide consent to save each card separately. </p>
-        <h3>6. Which of my cards can be saved as per new RBI guidelines?</h3>
-        <p>You can give consent to secure all credit and debit cards.</p>
-        <h3>7. What will happen to my previously added cards? </h3>
-        <p>Before September 30, 2022 you can give your consent to encrypt all your saved cards. This will ensure that
-            you can continue to place orders and make payments as seamlessly as before. Cards for which we do not have
-            your consent by September 30, 2022 will be removed, and you will need to enter the full card details to
-            complete every payment. However, for your convenience, we also offer you the option to give consent and save
-            your cards in the future as well.</p>
-        <h3>8. My card is also stored in Amazon account of another friend or family member. Do they also need to save
-            the card again as per RBI guidelines?</h3>
-        <p>Yes, the card needs to be saved across every Amazon account by each customer individually. </p>
-        <h3>9. Is there a limit on the number of accounts in which one card can be saved? </h3>
-        <p>Please not that after September 30, 2022 one card can be saved as per new guidelines in a maximum of 10
-            Amazon accounts. If any existing card is saved in more than 10 account onwards will be deleted even if the
-            customer has given consent to save the card. </p>
-        <h3>10. Which cards are impacted by the new RBI guidelines?</h3>
-        <p>The new RBI guidelines are only applicable on debit and credit cards issued in India. There is no impact on
-            cards issued outside of India and Bajaj Finserve EMI card (BFL card), and you can continue to save and use
-            these card as you do today.</p>
-        <h3>11. Will I need to give my consent for offline / in-store / transactions?</h3>
-        <p>No, the new RBI guidelines are only applicable for online/e-commerce transactions.</p>
-        <h3>12. Do I need to pay any charges for saving my card? </h3>
-        <p>No, there is no charge for saving your card. </p>
-        <h3>13. Is it mandatory to save my card(s)? </h3>
-        <p>You can choose whether or not to save your cards. However, we recommend that you do so as it will ensure your
-            purchase and payment experience remains as seamless as before. Cards which are not saved by September 30,
-            2022 will be deleted as per RBI guidelines. Terms and conditions apply.</p>
-    </ul>
+    <div class="rbi-bottom-popup" content>
+        <div class="pdp-section-header">
+            <h3 class="heading-3"> RBI guidelines details
+                <i (click)="resetBottomOpt()" class="icon-circle-delete del-ico" style="float: right;"></i>
+            </h3>
+        </div>
+        <div class="rbi-guidlines-txt">
+            <h4>1. What are the new RBI guidelines? </h4>
+            <p>As per the new RBI guidelines effective from October 1, 2022, merchants can no longer save customer
+                credit or
+                debit card details. Instead, customers must enter their complete card details for every payment done via
+                card. </p>
+            <h4>2. How can I avoid entering my card details every time I pay?</h4>
+            <p>Customers can provide their consent, allowing Amazon Pay to tokenize (encrypt) and save their card as per
+                new
+                RBI guidelines. This means that Amazon Pay asks your card network to encrypt your card details with
+                additional authentication. Amazon Pay receives the encrypted details which will be saved and used for
+                future
+                transactions instead of your actual card details.</p>
+            <h4>3. How do I provide my consent to save the card? </h4>
+            <p>When you add a new card or select a saved card to make a purchase, you will see a checkbox requesting you
+                to
+                provide the consent. Simply select the checkbox and continue with your payment on that card. Your
+                consent
+                will be successfully captured once the payment is complete. </p>
+            <h4>4. How will I know which of my cards are not saved as per new regulations?</h4>
+            <p>When you add a new card or select a saved card to make a purchase, you will see a checkbox requesting you
+                to
+                provide the consent. Simply select the checkbox and continue with your payment on that card. Your
+                consent
+                will be successfully captured once the payment is complete. </p>
+            <h4>5. Do I need to provide consent separately for each card?</h4>
+            <p>Yes, as per the RBI guidelines, you need to provide consent to save each card separately. </p>
+            <h4>6. Which of my cards can be saved as per new RBI guidelines?</h4>
+            <p>You can give consent to secure all credit and debit cards.</p>
+            <h4>7. What will happen to my previously added cards? </h4>
+            <p>Before September 30, 2022 you can give your consent to encrypt all your saved cards. This will ensure
+                that
+                you can continue to place orders and make payments as seamlessly as before. Cards for which we do not
+                have
+                your consent by September 30, 2022 will be removed, and you will need to enter the full card details to
+                complete every payment. However, for your convenience, we also offer you the option to give consent and
+                save
+                your cards in the future as well.</p>
+            <h4>8. My card is also stored in Amazon account of another friend or family member. Do they also need to
+                save
+                the card again as per RBI guidelines?</h4>
+            <p>Yes, the card needs to be saved across every Amazon account by each customer individually. </p>
+            <h4>9. Is there a limit on the number of accounts in which one card can be saved? </h4>
+            <p>Please not that after September 30, 2022 one card can be saved as per new guidelines in a maximum of 10
+                Amazon accounts. If any existing card is saved in more than 10 account onwards will be deleted even if
+                the
+                customer has given consent to save the card. </p>
+            <h4>10. Which cards are impacted by the new RBI guidelines?</h4>
+            <p>The new RBI guidelines are only applicable on debit and credit cards issued in India. There is no impact
+                on
+                cards issued outside of India and Bajaj Finserve EMI card (BFL card), and you can continue to save and
+                use
+                these card as you do today.</p>
+            <h4>11. Will I need to give my consent for offline / in-store / transactions?</h4>
+            <p>No, the new RBI guidelines are only applicable for online/e-commerce transactions.</p>
+            <h4>12. Do I need to pay any charges for saving my card? </h4>
+            <p>No, there is no charge for saving your card. </p>
+            <h4>13. Is it mandatory to save my card(s)? </h4>
+            <p>You can choose whether or not to save your cards. However, we recommend that you do so as it will ensure
+                your
+                purchase and payment experience remains as seamless as before. Cards which are not saved by September
+                30,
+                2022 will be deleted as per RBI guidelines. Terms and conditions apply.</p>
+        </div>
+    </div>
 </app-bottom-menu>

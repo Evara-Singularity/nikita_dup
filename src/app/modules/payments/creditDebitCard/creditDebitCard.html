@@ -80,7 +80,6 @@
                 </label>
                 <span class="chk-txt">Save this card</span>
             </div>
-            <a (click)="initiateRbiGuidlinesPopUp()"class="btn quinary-btn">KNOW MORE</a>
             <div class="continue-button">
                 <div class="container">
                     <p class="total-mount" *ngIf="totalPayableAmount>0">
@@ -93,6 +92,5 @@
         </form>
     </div>
 </section>
-<ng-container #bottomSheet></ng-container>
 <payu-form *ngIf="isValid&&type=='retail'" [data]="payuData"></payu-form>
 <razor-pay *ngIf="isValid&&type=='tax'" [data]="payuData"></razor-pay>

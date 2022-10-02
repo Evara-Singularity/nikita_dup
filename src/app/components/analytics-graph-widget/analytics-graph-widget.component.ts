@@ -14,7 +14,6 @@ import { ProductListService } from '@app/utils/services/productList.service';
   styleUrls: ['./analytics-graph-widget.component.scss']
 })
 export class AnalyticsGraphWidgetComponent implements OnInit {
-  // graphData: Array<any> = [];
   chartOptions = {};
   @Input() chartType;
   @Input() filterData: Array<any>;
@@ -23,6 +22,9 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   @Input() graphData;
   fragmentPriceObject: any;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+  readonly attributeChartId = 'attribute-chart';
+  readonly priceChartId = 'price-chart';
+  readonly brandChartId = 'brand-chart';
 
   brandName: '';
   bucketData: any;
@@ -43,45 +45,56 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     if(this.graphData && this.graphData.length > 0){
     this.graphData.forEach(element => {
       if (element.block_name == 'attribute_report'){
-        if (element.data && element.data.length > 0) {
-          this.attributeDataWithoutProcessing = element.data;
-          element.data.forEach((item, index) => {
-            setTimeout(() => {
-              let attributeName = item.attributeName;
-              this.loadChart(`attribute-chart${index}`, item['attributePercentange'], this.prepareAttributeChartData(item['attributePercentange']),attributeName)
-              return 
-            }, 0);
-          });
-        }
+        this.loadAttributeData(element);
       }
       else if (element.block_name == 'product_report') {
-        let priceData = [];
-        if (element.data && element.data.length > 0) {
-          this.priceDataWithoutProcessing = element.data;
-          element.data.forEach(price => {
-            priceData = [...priceData, ...this.preparePriceChartData(price)]
-          });
-
-          setTimeout(() => {
-            this.loadChart('price-chart', priceData, priceData);
-          }, 10);
-        }
+        this.loadPriceData(element);
       }
       else {
-        if (element.data && element.data.length > 0) {
-          let brandData = [];
-          this.brandDataWithoutProcessing = element.data;
-          element.data.forEach(brand => {
-            brandData = [...brandData, ...this.prepareBrandChartData(brand)]
-          });
-          setTimeout(() => {
-            this.loadChart('brand-chart', brandData, brandData);
-          }, 20);
-        }
+        this.loadBrandData(element);
        }
       });
     }
   }
+  private loadAttributeData(element: any) {
+    if (element.data && element.data.length > 0) {
+      this.attributeDataWithoutProcessing = element.data;
+      element.data.forEach((item, index) => {
+        setTimeout(() => {
+          let attributeName = item.attributeName;
+          this.loadChart(`${this.attributeChartId}${index}`, item['attributePercentange'], this.prepareAttributeChartData(item['attributePercentange']), attributeName);
+          return;
+        }, 0);
+      });
+    }
+  }
+
+  private loadPriceData(element: any) {
+    let priceData = [];
+    if (element.data && element.data.length > 0) {
+      this.priceDataWithoutProcessing = element.data;
+      element.data.forEach(price => {
+        priceData = [...priceData, ...this.preparePriceChartData(price)];
+      });
+      setTimeout(() => {
+        this.loadChart(this.priceChartId, priceData, priceData);
+      }, 10);
+    }
+  }
+
+  private loadBrandData(element: any) {
+    if (element.data && element.data.length > 0) {
+      let brandData = [];
+      this.brandDataWithoutProcessing = element.data;
+      element.data.forEach(brand => {
+        brandData = [...brandData, ...this.prepareBrandChartData(brand)];
+      });
+      setTimeout(() => {
+        this.loadChart(this.brandChartId, brandData, brandData);
+      }, 20);
+    }
+  }
+
   //create Chart Data
   prepareAttributeChartData(attributeData) {
     const seriesAttributeArray = [];
@@ -313,20 +326,20 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       htmlId,
       this.createChartPriceSingleObject(data, seriesData)
     );
-    if (htmlId.startsWith('attribute-chart')) {
+    if (htmlId.startsWith(`${this.attributeChartId}`)) {
       Highcharts.chart(
         htmlId,
         this.createChartOptionsObject(data,seriesData,attributeName)
       );
     }
-    if (htmlId.startsWith('brand')) {
-      Highcharts.chart(
+    if (htmlId.startsWith(`${this.brandChartId}`)) {
+        Highcharts.chart(
         htmlId,
         this.createChartBrandSingleObject(data,seriesData)
       );
     }
   }
-  generateFragmentUrl(filterName, filterValue) {
+  generateFragmentUrl(filterName, filterValue){
     let fragmentPriceObject = {};
     if (filterName == 'price') {
       fragmentPriceObject['price'] = [filterValue.toString()];

@@ -1,5 +1,5 @@
 <ng-container *ngIf="chartContainer =='priceChartContainer'">
-    <div [debounceTime]="100"  data-observeVisibility (visible)="loadPriceWidget($event)" >
+    <div [debounceTime]="100"  data-observeVisibility (visible)="loadPriceWidget()" >
         <ng-container #priceContainerRef>
         </ng-container>
     </div>

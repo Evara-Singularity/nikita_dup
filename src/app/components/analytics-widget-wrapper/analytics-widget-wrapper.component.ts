@@ -28,7 +28,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   ngOnInit(): void {
      console.log("categoryId",this.categoryId);
   }
- async loadPriceWidget(event){
+ async loadPriceWidget(){
     const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
     const factory = this._componentFactoryResolver.resolveComponentFactory(AnalyticsGraphWidgetComponent)
     this.priceContainerInstance = this._viewContainerReference.createComponent(

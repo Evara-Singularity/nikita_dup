@@ -1532,7 +1532,7 @@ export class CommonService
         const lottie_script_element = document.createElement('script');
         lottie_script_element.setAttribute( 'src',lottie_script_url );
         document.body.appendChild(lottie_script_element);
-        if(document.contains(lottie_script_element)){
+         if(document.contains(lottie_script_element)){
             var animation = bodymovin.loadAnimation({
                 // animationData: { /* ... */ },
                 container: document.getElementById('icon-container'), // required
@@ -1542,6 +1542,6 @@ export class CommonService
                 autoplay: true, // optional
                 name: "Demo Animation", // optional
               });
-        }
-    }
+            }
+       }
 }

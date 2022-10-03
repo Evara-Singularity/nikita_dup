@@ -35,7 +35,7 @@
     <div class="pwa-row pwa-row-noPad">
         <div class="pwa-col-12 pad-lr-15">
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
-            <div class="pwa-banner">
+            <div class="pwa-banner" *ngIf="_localAuthService.IsUserGoldMember()">
                 <a class="full-banner" (click)="_commonService.showgoldMembershipPopup()"> 
                     <img src="{{imageAssetURL}}assets/img/others/goldMemberBanner.png" alt="Gold Member Banner" width="312" height="110">
                 </a>

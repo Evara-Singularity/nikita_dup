@@ -1,4 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
+import { BottomMenuModule } from '../bottomMenu/bottom-menu.module';
 
 @Component({
   selector: 'app-goldMembership',
@@ -22,3 +24,16 @@ export class GoldMembershipComponent implements OnInit {
   this.closePopupOnOutsideClick.emit(data)
   }
 }
+
+@NgModule({
+  declarations: [
+    GoldMembershipComponent
+  ],
+  imports: [
+    CommonModule,
+    BottomMenuModule
+  ],
+  exports:[GoldMembershipComponent]
+})
+export class GoldMembershipModule { }
+

@@ -8,7 +8,6 @@ import { MyAccountGuard } from '../utils/guards/myAccount.guard'
 import { ModalModule } from '@app/modules/modal/modal.module';
 import { ToastMessageModule } from '@app/modules/toastMessage/toast-message.module';
 import { SharedFooterModule } from '@app/components/shared-footer/shared-footer.component';
-import { GoldMembershipModule } from '@app/modules/goldMembership/goldMembership.module';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 
 
@@ -23,7 +22,6 @@ import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-
     ModalModule, 
     ToastMessageModule,
     SharedFooterModule,
-    GoldMembershipModule, 
     ObserveVisibilityDirectiveModule
   ],
   providers: [MyAccountGuard]

@@ -102,10 +102,12 @@ export class LocalAuthService
         }
         return false;
     }
+ 
     IsUserGoldMember(){
-        // let isUsergold = this._localStorageService.retrieve('isUserGoldMember') 
-        // console.log("heyyyyyyyyyyyyyyyy",isUsergold);
-        return true;
+        if(this.getUserSession()){
+            return (this.getUserSession()).customerCategory; 
+        }else
+            return false;
          
     }
 }

@@ -124,7 +124,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		public _lss: LocalStorageService,
 		public cartService: CartService,
 		public footerService: FooterService,
-		private _localAuthService: LocalAuthService,
+		public _localAuthService: LocalAuthService,
 		private cfr: ComponentFactoryResolver,
 		private injector: Injector,
 		private route: ActivatedRoute,

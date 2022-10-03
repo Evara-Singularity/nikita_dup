@@ -22,8 +22,8 @@ export class SideNavComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private globalAnalyticService: GlobalAnalyticsService,
     private router: Router,
-    private _localAuthService: LocalAuthService,
-    private _commonService: CommonService,
+    public _localAuthService: LocalAuthService,
+    public  _commonService: CommonService,
   ) { }
 
   ngOnInit(): void {

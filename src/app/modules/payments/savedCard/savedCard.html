@@ -53,14 +53,14 @@
                        </div>
                        <div class="rbi-guidlines-txt">
                            <p>Proceed with the transaction to save this card as per new RBI guidelines</p>
-                           <p class="know-more-btn" (click)="$event.preventDefault();initiateRbiGuidlinesPopUp()">KNOW MORE</p>
+                           <span class="know-more-btn" (click)="$event.preventDefault();initiateRbiGuidlinesPopUp()">KNOW MORE</span>
                        </div>
                    </div> 
                 </div>
             </ng-container>
         </div>
         <div class="text-center" *ngIf="selectedCardIndex !== undefined">
-            <div class="continue-button" style="z-index: 999;">
+            <div class="continue-button" >
                 <div class="container">
                     <p class="total-mount" *ngIf="totalPayableAmount>0">
                         <span class="payable-amnt">Payable Amount</span> ₹{{totalPayableAmount | mathCeil | number : '1.2-2'}}

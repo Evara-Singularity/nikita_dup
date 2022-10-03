@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { of, Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -14,6 +14,7 @@ import { DataService } from '@app/utils/services/data.service';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
+import { PaymentService } from '../payment.service';
 
 @Component({
     selector: 'saved-card',
@@ -28,6 +29,11 @@ export class SavedCardComponent {
     @Input() savedCardsData: any;
     @Input() type;
     @Output() removeTab$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() cartSelected$: EventEmitter<any> = new EventEmitter<any>();
+
+    bottomSheetInstance = null;
+    @ViewChild('bottomSheet', { read: ViewContainerRef })
+    bottomSheetContainerRef: ViewContainerRef;
     
     savedCardForm: FormGroup;
     isValid: boolean = false;
@@ -40,6 +46,8 @@ export class SavedCardComponent {
     prepaidsubscription: Subscription;
     payEnable = false;
     selectedBankCode: String = 'AXIB';
+    saveCard: boolean;
+    savedCardDeselectSubscrption: Subscription = null;
 
     set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
@@ -54,7 +62,10 @@ export class SavedCardComponent {
         private _objectToArray: ObjectToArray,
         private _dataService: DataService,
         private _formBuilder: FormBuilder,
-        private _analytics: GlobalAnalyticsService) {
+        private _analytics: GlobalAnalyticsService,
+        private cfr: ComponentFactoryResolver,
+        private _payment: PaymentService,
+        private injector: Injector) {
     }
 
     ngOnInit() {
@@ -62,6 +73,10 @@ export class SavedCardComponent {
         this.cartSesssion = this._cartService.getGenericCartSession;
         this.initForm();
         this.checkPrepaidDiscount();
+  
+        this.savedCardDeselectSubscrption = this._payment.getSavedCardDeselect().subscribe(res => {
+            this.changeSavedCard(this.selectedCardIndex, res);
+        });
     }
 
     private checkPrepaidDiscount() {
@@ -201,7 +216,7 @@ export class SavedCardComponent {
                 "bankcode": this.savedCards[this.selectedCardIndex]['card_brand'],
                 "ccvv": data['cards'][this.selectedCardIndex]['cvv'],
                 "user_id": userSession["userId"],
-                "store_card": "false",
+                "store_card": this.saveCard ? "true" : "false",
                 "card_token": this.savedCards[this.selectedCardIndex]['card_token']
             };
         }
@@ -277,8 +292,12 @@ export class SavedCardComponent {
             this.selectedCardIndex = undefined;
             this.getPrePaidDiscount(0);
         }
+        this.cartSelected$.emit(<HTMLElement>document.querySelector('#csc_' + i)['checked']);
         this.payEnable = false;
         this.savedCardForm.reset();
+        if(!this.saveCard){
+            this.toggleSaveCard();
+        }
     }
 
     stop(e) {
@@ -296,6 +315,7 @@ export class SavedCardComponent {
         }
         this._cartService.setGenericCartSession(this.cartSesssion);
         this._cartService.orderSummary.next(this.cartSesssion);
+        this.savedCardDeselectSubscrption.unsubscribe();
     }
 
     getSavedCards(data) {
@@ -313,4 +333,29 @@ export class SavedCardComponent {
             })
         );
     }
+
+    async initiateRbiGuidlinesPopUp()
+    {
+        if (!this.bottomSheetInstance) {
+            const { RbiGuidelinesBottomSheetComponent } = await import(
+                './../../../components/rbi-guidelines-bottom-sheet/rbi-guidelines-bottom-sheet.component'
+            );
+            const factory = this.cfr.resolveComponentFactory(RbiGuidelinesBottomSheetComponent);
+            this.bottomSheetInstance = this.bottomSheetContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.bottomSheetInstance.instance['bm'] = true;
+
+        } else {
+            //toggle
+            this.bottomSheetInstance.instance['bm'] = !(this.bottomSheetInstance.instance['bm']);
+        }
+    }    
+
+    toggleSaveCard(){
+        this.saveCard = !this.saveCard; 
+    }
+
 }

@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   enableServerLogs: true,
   PROD_NAME: 'https://www.moglix.com',
-  BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
+  BASE_URL: 'https://apinew-vpn.moglix.com/nodeApi/v1',
   //BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   IMAGE_ASSET_URL: 'https://cdn.moglix.com/online/prod/pwa-ab/bundles/',
   SOCKET_URL: "https://socketqa.moglilabs.com",
@@ -11,7 +11,7 @@ export const environment = {
   CDN_IMAGE_URL: 'https://cdn.moglix.com/',
   GTM_ANALYTICS_CODE: 'GTM-PKRGCH2',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-fd00645b6c3b.min.js',
-  buildVersion: '16.1',
+  buildVersion: '16.2',
   SOCIAL_LOGIN: {
     "google": {
       "clientId": "218214169080-34r0q5pi8gkg1kmgl6ehpkicm7jhihau.apps.googleusercontent.com"

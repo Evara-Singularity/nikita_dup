@@ -108,22 +108,6 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     return seriesAttributeArray;
   }
 
- maxValue(attributeData,percentage?){
-    let maxValue = 0,maxValueAttributeName;
-    for(var attr in attributeData){
-      if(attributeData[attr] > maxValue){
-        maxValue = attributeData[attr];
-        maxValueAttributeName = attr;
-      }
-      if(percentage == 'percent'){
-        return maxValue;
-      }
-      else{
-        return maxValueAttributeName;
-      }
-   }
- }
-
   prepareBrandChartData(brandData) {
     //  debugger;
     const seriesBrandArray = [];
@@ -139,13 +123,28 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     const seriesPriceArray = [];
     
     let priceObj = {};
-    priceObj['name'] = priceData['interval'].toString();
+    priceObj['name'] = this.formatPrice(priceData['interval']);
     priceObj['y'] = priceData['orderPercentage'];
     priceObj['drilldown'] = null;
     seriesPriceArray.push(priceObj);
 
     return seriesPriceArray;
   }
+  maxValue(attributeData,percentage?){
+    let maxValue = 0,maxValueAttributeName;
+    for(var attr in attributeData){
+      if(attributeData[attr] > maxValue){
+        maxValue = attributeData[attr];
+        maxValueAttributeName = attr;
+      }
+      if(percentage == 'percent'){
+        return maxValue;
+      }
+      else{
+        return maxValueAttributeName;
+      }
+   }
+ }
   createChartOptionsObject(data,seriesArray,attributeName?) {
     let chartOptions = {
       chart: {

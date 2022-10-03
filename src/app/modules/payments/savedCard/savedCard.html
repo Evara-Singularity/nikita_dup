@@ -21,18 +21,7 @@
                                         <span class="label">CVV</span>
                                     </label>
                                 </span>
-                                <div (click)="$event.preventDefault()" *ngIf="!savedCards[i]['par']" class="new-guidelines">
-                                    <div class="new-container">
-                                        <div class="checkbox-container">
-                                            <input type="checkbox" [checked]="saveCard && csc.checked" >
-                                            <span class="custom-box icon-box"  (click)="$event.preventDefault();$event.stopPropagation();toggleSaveCard()" ></span>
-                                        </div>
-                                        <div class="rbi-guidlines-txt">
-                                            <p>Proceed with the transaction to save this card as per new RBI guidelines</p>
-                                            <p class="know-more-btn" (click)="$event.preventDefault();initiateRbiGuidlinesPopUp()">KNOW MORE</p>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 </div>
                                 
                             </span>
@@ -45,6 +34,7 @@
                                 *ngIf="savedCards[i]['card_brand'] == 'MASTERCARD'">
                         </span>
                     </label>
+
                     <!-- <div class="material-form">
                         <div class="outline-input-label">
                             <label [class.is-focus]="ccCvc.value.length!=0">
@@ -54,6 +44,18 @@
                             </label>
                         </div>
                     </div> -->
+                </div>
+                <div (click)="$event.preventDefault()" *ngIf="!savedCards[i]['par']" class="new-guidelines">
+                    <div class="new-container">
+                       <div class="checkbox-container">
+                           <input type="checkbox" [checked]="saveCard && csc.checked" >
+                           <span class="custom-box icon-box"  (click)="$event.preventDefault();$event.stopPropagation();toggleSaveCard()" ></span>
+                       </div>
+                       <div class="rbi-guidlines-txt">
+                           <p>Proceed with the transaction to save this card as per new RBI guidelines</p>
+                           <p class="know-more-btn" (click)="$event.preventDefault();initiateRbiGuidlinesPopUp()">KNOW MORE</p>
+                       </div>
+                   </div> 
                 </div>
             </ng-container>
         </div>
@@ -66,10 +68,13 @@
                     <button [disabled]="!payEnable" type="submit" class="btn">PAY</button>
                 </div>
             </div>
-            <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-t-15">Prepaid Discount : ₹ {{prepaidDiscount | number : '1.2-2'}}</div>
+            <div *ngIf="prepaidDiscount>0" class="o-hidden text-black pad-15 pad-t-0">Prepaid Discount : ₹ {{prepaidDiscount | number : '1.2-2'}}</div>
         </div>
     </form>
 </div>
 <ng-container #bottomSheet></ng-container>
 <payu-form *ngIf="isValid&&type=='retail'" [data]="payuData"></payu-form>
 <razor-pay *ngIf="isValid&&type=='tax'" [data]="payuData"></razor-pay>
+
+
+

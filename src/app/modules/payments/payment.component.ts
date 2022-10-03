@@ -42,6 +42,7 @@ export class PaymentComponent implements OnInit {
   canNEFT_RTGS = true;
   successPercentageRawData = null;
   paymentMode : any = CONSTANTS.PAYMENT_MODE
+  isSavedCardChecked: any;
 
   constructor(
     public _dataService: DataService,
@@ -151,6 +152,9 @@ export class PaymentComponent implements OnInit {
       this.spp = true;
     }
 
+    if(this.isSavedCardChecked && block !==null){
+      this._paymentService.setSavedCardDeselect(true);
+    }
     this.isPaymentSelected = true;
 
     this.changeInPaymentBlockAnalytic(cart, mode);
@@ -243,6 +247,13 @@ export class PaymentComponent implements OnInit {
   tabIndexUpdated(index) {
     this.updateTabIndex.emit(index);
   }
+
+  cardSelected(isChecked){
+    if(isChecked){
+      this.isSavedCardChecked = isChecked
+      this.updatePaymentBlock(null);
+    }
+   }
 
   callApisAsyncly()
   {

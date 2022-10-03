@@ -305,6 +305,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                         }
                     },
                 });
+                this._cartService.lastPaymentMode = null;
+                this._cartService.lastParentOrderId = null;
                 this._router.navigate(['/checkout/payment']);
             }
             else {

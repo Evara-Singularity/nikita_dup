@@ -554,8 +554,9 @@ export class CartService
         //Pradeep:by pass code
         const byPass = true;
         if (byPass) {
-            console.log(this.cartSession)
-            return of({ prepaidDiscount: 0, totalPayableAmount: this.cartSession['cart']['totalPayableAmount'] });
+            const cart = this.cartSession['cart'];
+            const totalPayableAmount = cart['totalPayableAmount'] + cart['shippingCharges'] + cart['totalOffer'];
+            return of({ prepaidDiscount: 0, totalPayableAmount: totalPayableAmount });
         }
         //Pradeep:this is original code which should be there and remove above by pass code.
         return of({
@@ -1588,9 +1589,7 @@ export class CartService
         if (this.codNotAvailableObj['itemsArray'])
         {
             tempcods = (this.codNotAvailableObj['itemsArray'] as any[]);
-            console.log(tempcods);
             tempcods = tempcods.filter((item) => freshmsns.includes(item.productId))
-            console.log(tempcods);
         }
         this.codNotAvailableObj['itemsArray'] = tempcods;
         this.cashOnDeliveryStatus.isEnable = (tempcods.length == 0);

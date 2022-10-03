@@ -24,7 +24,6 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	readonly MAX_COD_AMOUNT = CONSTANTS.GLOBAL.codMax;
 	readonly MIN_COD_AMOUNT = CONSTANTS.GLOBAL.codMin;
 	readonly withLastDetails = true;
-	@Input("displayPage") displayPage = false;
 	@Input("userId") userId = null;
 	@Input("transactionId") transactionId = null;
 	@Input("orderId") orderId = null;
@@ -35,6 +34,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	hasCartItems = true;
 	canCOD = true;
 	isBuyNow = false;
+	isRehydrationDone = false;
 
 	cartSession = null;
 	shippingAddress = null;
@@ -43,6 +43,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	invoiceType: any;
 	shippingPincode = null;
 	isValidCartMsg = null;
+	nonCods = [];
 
 	constructor(private _cartService: CartService, private _loaderService: GlobalLoaderService, private _toastService: ToastMessageService,
 		public _router: Router, private _quickCodService: QuickCodService, private _retryPaymentService: RetryPaymentService) { }
@@ -63,12 +64,15 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 		forkJoin([this.reHydrateAddressesAndCOD(shoppingCartDto), this._retryPaymentService.reHydrateCartSession(shoppingCartDto)]).subscribe((results) =>
 		{
 			const codInfo: CodDetails = results[0];
+			this.nonCods = codInfo.nonCods || [];
 			this.canCOD = (codInfo.iswithInCODLimit && codInfo.nonCods.length === 0 && codInfo.nonServiceables.length === 0);
 			this.cartSession = results[1];
 			//upfront we are validating for time saving and as this mandatory action
 			this.validateCart();
+			this.isRehydrationDone = true;
 			this._loaderService.setLoaderState(false);
-		})
+		},
+			(error) => { this.isRehydrationDone = true; })
 	}
 
 	reHydrateAddressesAndCOD(shoppingCartDto)
@@ -127,6 +131,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			this._toastService.show({ type: 'error', text: this.isValidCartMsg });
 			return;
 		}
+		this._cartService.updateNonDeliverableItems(this.cartSession['itemsList'], this.nonCods);
 		this._cartService.setGenericCartSession(this.cartSession);
 		this.emitCloseEvent(this.lastCartDetails);
 	}

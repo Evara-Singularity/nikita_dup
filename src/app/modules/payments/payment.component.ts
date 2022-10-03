@@ -111,8 +111,7 @@ export class PaymentComponent implements OnInit
       }
       this.disableCod = !(this._cartService.cashOnDeliveryStatus.isEnable);
       // TODO - this should used in case there are some COD not avalible
-      this.unAvailableMsnList =
-        this._cartService.codNotAvailableObj["itemsArray"];
+      this.unAvailableMsnList = this._cartService.codNotAvailableObj["itemsArray"];
       this.callApisAsyncly();
       this.analyticVisit(cartData);
     }
@@ -344,13 +343,11 @@ export class PaymentComponent implements OnInit
     const txnDeclinedModuleRef: NgModuleRef<SharedTransactionDeclinedModule> = moduleFactory.create(this._injector);
     const componentFactory = txnDeclinedModuleRef.instance.resolveComponent();
     this.txnDeclinedInstance = this.txnDeclinedContainerRef.createComponent(componentFactory, null, txnDeclinedModuleRef.injector);
-    this.txnDeclinedInstance.instance.displayPage = true;
     this.txnDeclinedInstance.instance.shoppingCartDto = shoppingCartDto;
     this.txnDeclinedInstance.instance.userId = this._localAuthService.getUserSession()['userId'];
     this.txnDeclinedInstance.instance.orderId = this.orderId;
     (this.txnDeclinedInstance.instance["emitCloseEvent$"] as EventEmitter<boolean>).subscribe((paymentDetails) =>
     {
-      this.txnDeclinedInstance.instance.displayPage = false;
       this.txnDeclinedInstance = null;
       this.txnDeclinedContainerRef.remove();
       this.setCartServiceDetails(paymentDetails)

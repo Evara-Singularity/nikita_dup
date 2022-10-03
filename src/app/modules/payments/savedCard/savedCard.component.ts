@@ -14,6 +14,7 @@ import { DataService } from '@app/utils/services/data.service';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
+import { PaymentService } from '../payment.service';
 
 @Component({
     selector: 'saved-card',
@@ -28,6 +29,7 @@ export class SavedCardComponent {
     @Input() savedCardsData: any;
     @Input() type;
     @Output() removeTab$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() cartSelected$: EventEmitter<any> = new EventEmitter<any>();
 
     bottomSheetInstance = null;
     @ViewChild('bottomSheet', { read: ViewContainerRef })
@@ -45,6 +47,7 @@ export class SavedCardComponent {
     payEnable = false;
     selectedBankCode: String = 'AXIB';
     saveCard: boolean;
+    savedCardDeselectSubscrption: Subscription = null;
 
     set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
@@ -61,6 +64,7 @@ export class SavedCardComponent {
         private _formBuilder: FormBuilder,
         private _analytics: GlobalAnalyticsService,
         private cfr: ComponentFactoryResolver,
+        private _payment: PaymentService,
         private injector: Injector) {
     }
 
@@ -69,6 +73,10 @@ export class SavedCardComponent {
         this.cartSesssion = this._cartService.getGenericCartSession;
         this.initForm();
         this.checkPrepaidDiscount();
+  
+        this.savedCardDeselectSubscrption = this._payment.getSavedCardDeselect().subscribe(res => {
+            this.changeSavedCard(this.selectedCardIndex, res);
+        });
     }
 
     private checkPrepaidDiscount() {
@@ -284,6 +292,7 @@ export class SavedCardComponent {
             this.selectedCardIndex = undefined;
             this.getPrePaidDiscount(0);
         }
+        this.cartSelected$.emit(<HTMLElement>document.querySelector('#csc_' + i)['checked']);
         this.payEnable = false;
         this.savedCardForm.reset();
         if(!this.saveCard){
@@ -306,6 +315,7 @@ export class SavedCardComponent {
         }
         this._cartService.setGenericCartSession(this.cartSesssion);
         this._cartService.orderSummary.next(this.cartSesssion);
+        this.savedCardDeselectSubscrption.unsubscribe();
     }
 
     getSavedCards(data) {

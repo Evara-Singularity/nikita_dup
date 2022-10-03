@@ -43,7 +43,35 @@
                 }
             }
         }
-
+        .new-guidelines{
+            border-radius: $border-radius-8;
+            background-color:#FFEBE0;
+            margin-top: 8px;
+            .new-container{
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                .checkbox-container{
+                    @extend %custom-check-box-checkout;
+                    .custom-box{
+                        display: block;
+                        margin-right: 0 !important;
+                    }
+                }
+                .rbi-guidlines-txt{
+                    padding-left: 15px;
+                    p{
+                        font-size: $small-font;
+                        line-height: $small-line-height;
+                        padding-bottom: 5px;
+                    }
+                    .know-more-btn{
+                        color: var(--bleu-de-france);
+                        font-weight: $font-bold;
+                    }
+                }
+            }
+        }
     }
     input:checked~.chk-txt .input-sec {
         max-height: 126px

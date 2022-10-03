@@ -703,6 +703,21 @@ export class CartService
             }),
             mergeMap((cartSession: any) =>
             {
+                // this will be called to update the discount of products when there is an applied promocode
+                if (cartSession && cartSession['offersList'] && cartSession['offersList'].length) {
+                    this.verifyAndApplyPromocode(cartSession, cartSession['offersList'][0]['offerId'][0], false).subscribe(({ cartSession, isUpdated }: any) => {
+                        if (isUpdated) {
+                            this.postProcessAfterPromocode(cartSession['offersList'][0]['offerId'][0], cartSession, true);
+                            return;
+                        }
+                    })
+                    return cartSession;
+                } else {
+                    return of(cartSession);
+                }
+            }),
+            mergeMap((cartSession: any) =>
+            {
                 // only run shipping API when specified, eg. not required in Auth Module
                 // shipping API should be called after updatecart API always
                 if (cartSession) {

@@ -55,8 +55,6 @@
                 <div  *ngFor="let attribute of attributeDataWithoutProcessing;let i = index" class="attribute-chart-container"> 
                     <div  [id]="'attribute-chart'+i" style="width:100%;"></div>
                     <div (click)="generateFragmentUrl(attribute.attributeName,maxValue(attribute.attributePercentange))" class="card">
-                        {{attribute.attributeName}}
-                        <p class="dots"></p>
                         <p>
                              {{maxValue(attribute.attributePercentange,'percent')}}% of users purchase <b>{{categoryName}}</b> in <b>{{maxValue(attribute.attributePercentange)}}</b> 
                         </p>

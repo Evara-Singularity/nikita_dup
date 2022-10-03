@@ -52,16 +52,16 @@
                 <p class="heading-txt">{{categoryName}} purchase as per </p>
             </div>
             <div class="multiple-widgets-container">
-                <div *ngFor="let attribute of attributeDataWithoutProcessing;let i = index" class="attribute-chart-container">
-                    <div [id]="'attribute-chart'+i" style="width:100%;"></div>
-                    <div  class="card">
+                <div  *ngFor="let attribute of attributeDataWithoutProcessing;let i = index" class="attribute-chart-container"> 
+                    <div  [id]="'attribute-chart'+i" style="width:100%;"></div>
+                    <div (click)="generateFragmentUrl(attribute.attributeName,maxValue(attribute.attributePercentange))" class="card">
+                        {{attribute.attributeName}}
                         <p class="dots"></p>
                         <p>
-                           36%  of users purchase <b>{{categoryName}}</b> in capacity <b> 13mm</b>
+                             {{maxValue(attribute.attributePercentange,'percent')}}% of users purchase <b>{{categoryName}}</b> in <b>{{maxValue(attribute.attributePercentange)}}</b> 
                         </p>
                     </div>
                 </div>
-               
             </div>
         </div>
     </div>

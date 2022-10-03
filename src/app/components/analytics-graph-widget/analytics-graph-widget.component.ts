@@ -105,21 +105,24 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       itemObj['drilldown'] = null;
       seriesAttributeArray.push(itemObj);
     }
-    // this.maxValue(seriesAttributeArray);
     return seriesAttributeArray;
   }
 
-  maxValue(seriesAttributeArray){
-    let maxValue = 0;
-    let maxAttributeName;
-    for(var i=0;i<seriesAttributeArray.length;i++){
-        if(seriesAttributeArray[i].y>maxValue){
-          maxValue = seriesAttributeArray[i].y;
-          maxAttributeName = seriesAttributeArray[i].name;
-       }
-    }
-    return maxValue;
-  }
+ maxValue(attributeData,percentage?){
+    let maxValue = 0,maxValueAttributeName;
+    for(var attr in attributeData){
+      if(attributeData[attr] > maxValue){
+        maxValue = attributeData[attr];
+        maxValueAttributeName = attr;
+      }
+      if(percentage == 'percent'){
+        return maxValue;
+      }
+      else{
+        return maxValueAttributeName;
+      }
+   }
+ }
 
   prepareBrandChartData(brandData) {
     //  debugger;
@@ -338,7 +341,8 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         this.createChartBrandSingleObject(data,seriesData)
       );
     }
-  }
+  } 
+
   generateFragmentUrl(filterName, filterValue){
     let fragmentPriceObject = {};
     if (filterName == 'price') {

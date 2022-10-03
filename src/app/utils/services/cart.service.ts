@@ -135,7 +135,9 @@ export class CartService
             addressList: (cartSessionFromAPI["addressList"] ? [...cartSessionFromAPI["addressList"]] : []),
             payment: cartSessionFromAPI["payment"],
             offersList: cartSessionFromAPI["offersList"],
-            extraOffer: cartSessionFromAPI["extraOffer"]
+            extraOffer: cartSessionFromAPI["extraOffer"],
+            prepaidDiscountList:cartSessionFromAPI['cartSessionFromAPI']
+
         }
         let totalAmount: number = 0;
         let tawot: number = 0; // totalAmountWithOutTax
@@ -788,6 +790,7 @@ export class CartService
                 return this.getCartBySession(request).pipe(
                     map((res: any) =>
                     {
+                        console.log("generate generic cart session >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",this.generateGenericCartSession(res))
                         return this.generateGenericCartSession(res);
                     })
                 );

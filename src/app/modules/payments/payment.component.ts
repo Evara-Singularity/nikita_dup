@@ -48,6 +48,7 @@ export class PaymentComponent implements OnInit
   paymentMode: any = CONSTANTS.PAYMENT_MODE
 
   orderId = null;
+  paymentErrorType = null;
   isRetryPayment = false;//Indicateas retry payment flow.
   txnDeclinedInstance: ComponentRef<SharedTransactionDeclinedComponent> = null;
   @ViewChild("txnDeclined", { read: ViewContainerRef })
@@ -70,25 +71,35 @@ export class PaymentComponent implements OnInit
   )
   {
     this.isShowLoader = true;
-    const queryParams = this._activatedRoute.snapshot.queryParams;
-    this.orderId = queryParams['orderId'] || queryParams['txnId'];
+    
   }
 
-  ngOnInit() {
+  ngOnInit()
+  {
+    const queryParams = this._activatedRoute.snapshot.queryParams;
+    this.orderId = queryParams['orderId'] || queryParams['txnId'];
+    //CASE-1: Valid OrderId from backend
     if (this.orderId) {
+      console.log("CASE:Valid order case.");
       this.isRetryPayment = true;
       this.fetchTransactionDetails();
+      return;
+    }
+    //CASE-2:BAD_REQUEST_ERROR or GATE_WAY_ERROR
+    this.paymentErrorType = queryParams['error'] || null;
+    if(this.paymentErrorType)
+    {
+      console.log("CASE:BAD_REQUEST_ERROR or GATE_WAY_ERROR.");
+      this.navigateToQuickorder();
       return;
     }
     if (this._commonService.isBrowser && (this._cartService.getGenericCartSession && Object.keys(this._cartService.getGenericCartSession?.cart).length == 0) ||
       !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
         (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
-    ) { 
-      console.log('REDIRECTING FROM PAYMENT TO CHECKOUT');
-      setTimeout(() => {
-        this._router.navigateByUrl('/checkout/address', this.REPLACE_URL); 
-        return 
-      }, 2000);
+    ) {
+      console.log("CASE:Page refresh.");
+      this._router.navigateByUrl('/checkout/address', this.REPLACE_URL);
+      return;
     }
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
@@ -330,17 +341,17 @@ export class PaymentComponent implements OnInit
 
   fetchTransactionDetails()
   {
-    console.log('fetchTransactionDetails failed');
     this.isShowLoader = true;
     this._retryPaymentService.getPaymentDetailsByOrderId(this.orderId).subscribe((response) =>
     {
       if (response.status && response['data']['shoppingCartDto']) {
         this.openTxnDeclinedPopup(response['data']['shoppingCartDto']);
-      }else{
-        this._router.navigateByUrl("/checkout/address");
+      } else {
+        this.navigateToQuickorder();
       }
       this.isShowLoader = false;
-    })
+    },
+      (error) => { this.navigateToQuickorder(); })
   }
 
   async openTxnDeclinedPopup(shoppingCartDto)
@@ -370,5 +381,7 @@ export class PaymentComponent implements OnInit
     this._cartService.lastPaymentMode = paymentDetails.lastPaymentMode;
     this._cartService.lastParentOrderId = paymentDetails.lastParentOrderId;
   }
+
+  navigateToQuickorder() { this._router.navigateByUrl('/quickorder', this.REPLACE_URL); }
 
 }

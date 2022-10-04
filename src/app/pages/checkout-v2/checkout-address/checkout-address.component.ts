@@ -358,5 +358,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (this.loginSubscription) this.loginSubscription.unsubscribe();
         if (this.logoutSubscription) this.logoutSubscription.unsubscribe();
         if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
+        this._cartService.showNotification = false;
     }
 }

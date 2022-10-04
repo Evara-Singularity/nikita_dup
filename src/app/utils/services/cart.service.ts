@@ -1649,12 +1649,12 @@ export class CartService
             const couponObj = {
                 type: 'coupon',
                 data: {
-                    text1: "Applied coupon is removed as it's not valid"
+                    text1: "Applied coupon has been removed as it is not valid"
                 }
             }
             this.notifications.push(couponObj);
+            this.appliedPromoCode = '';
         }
-        this.showNotification = false;
         this.notificationsSubject.next(this.notifications);
     }
 

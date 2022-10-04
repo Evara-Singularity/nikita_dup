@@ -1378,7 +1378,7 @@ export class CartService
         {
             const status = response['status'];
             const data = response['data'] ? response['data'] : null;
-            const message = response['statusDescription'] || null;
+            const message = response['statusDescription'] || 'Offer is not applied as coupon discount is 0';
             returnValue.isUpdated = true;
             if (status === true && (data && data['discount'] > 0) && (data['discount'] <= cartSession['cart']['totalAmount'])) {
                 cartSession['cart']['totalOffer'] = data['discount'];

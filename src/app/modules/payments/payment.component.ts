@@ -83,7 +83,13 @@ export class PaymentComponent implements OnInit
     if (this._commonService.isBrowser && (this._cartService.getGenericCartSession && Object.keys(this._cartService.getGenericCartSession?.cart).length == 0) ||
       !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
         (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
-    ) { this._router.navigateByUrl('/checkout/address', this.REPLACE_URL); return }
+    ) { 
+      console.log('REDIRECTING FROM PAYMENT TO CHECKOUT');
+      setTimeout(() => {
+        this._router.navigateByUrl('/checkout/address', this.REPLACE_URL); 
+        return 
+      }, 2000);
+    }
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
     this._cartService.clearCartNotfications();
@@ -324,6 +330,7 @@ export class PaymentComponent implements OnInit
 
   fetchTransactionDetails()
   {
+    console.log('fetchTransactionDetails failed');
     this.isShowLoader = true;
     this._retryPaymentService.getPaymentDetailsByOrderId(this.orderId).subscribe((response) =>
     {

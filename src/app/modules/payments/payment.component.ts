@@ -53,6 +53,7 @@ export class PaymentComponent implements OnInit
   txnDeclinedInstance: ComponentRef<SharedTransactionDeclinedComponent> = null;
   @ViewChild("txnDeclined", { read: ViewContainerRef })
   txnDeclinedContainerRef: ViewContainerRef;
+  isSavedCardChecked: any;
 
   constructor(
     public _dataService: DataService,
@@ -135,8 +136,29 @@ export class PaymentComponent implements OnInit
     }
   }
 
-  updatePaymentBlock(block, mode?, elementId?)
-  {
+  private getSavedCardData() {
+    const userSession = this._localAuthService.getUserSession();
+    const data = {
+      userEmail: (userSession && userSession['email']) ? userSession['email'] : userSession['phone'],
+      userType: this.invoiceType
+    };
+
+    if (this.invoiceType == 'tax') {
+      data['userId'] = userSession['userId'];
+      data['userEmail'] = '';
+    }
+    this._paymentService.getSavedCards(data, this.invoiceType)
+      .subscribe((res) => {
+        if (res['status'] === true && res['data']['user_cards'] !== undefined && res['data']['user_cards'] != null) {
+          this.savedCardsData = res['data']['user_cards'];
+          this.isSavedCardExist = true;
+          this.paymentBlock = this.globalConstants['savedCard'];
+        }
+        this.isShowLoader = false;
+      });
+  }
+
+  updatePaymentBlock(block, mode?, elementId?) {
     let cart = this._cartService.getGenericCartSession["cart"];
     this.totalAmount =
       cart["totalAmount"] + cart["shippingCharges"] - (cart["totalOffer"] || 0);
@@ -164,6 +186,9 @@ export class PaymentComponent implements OnInit
       this.spp = true;
     }
 
+    if(this.isSavedCardChecked && block !==null){
+      this._paymentService.setSavedCardDeselect(true);
+    }
     this.isPaymentSelected = true;
 
     this.changeInPaymentBlockAnalytic(cart, mode);
@@ -266,11 +291,20 @@ export class PaymentComponent implements OnInit
     this.updateTabIndex.emit(index);
   }
 
+  cardSelected(isChecked){
+    if(isChecked){
+      this.isSavedCardChecked = isChecked
+      this.updatePaymentBlock(null);
+    }
+   }
+
   callApisAsyncly()
   {
     this.isShowLoader = true;
     const userSession = this._localAuthService.getUserSession();
-    const data = { userEmail: userSession && userSession["email"] ? userSession["email"] : userSession["phone"], };
+    const data = { userEmail: userSession && userSession["email"] ? userSession["email"] : userSession["phone"], 
+    userType: this.invoiceType
+  };
     if (this.invoiceType == "tax") {
       data["userId"] = userSession["userId"];
       data["userEmail"] = "";

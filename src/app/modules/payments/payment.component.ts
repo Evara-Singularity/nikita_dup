@@ -101,6 +101,7 @@ export class PaymentComponent implements OnInit
       this._router.navigateByUrl('/checkout/address', this.REPLACE_URL);
       return;
     }
+    alert("CASE:intialize.");
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
     this._cartService.clearCartNotfications();

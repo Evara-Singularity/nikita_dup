@@ -1,5 +1,5 @@
 import { AfterViewInit, Compiler, Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -46,7 +46,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     cartUpdatesSubscription: Subscription = null;
     paymentMode: any;
 
-    constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService,
+    constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
         private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService,
         )
     {
@@ -55,6 +55,16 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     ngOnInit(): void
     {
+        const queryParams = this._activatedRoute.snapshot.queryParams;
+        console.log(queryParams);
+        const paymentErrorType = queryParams['error'] || null;
+        if (paymentErrorType) {
+            alert("CHECKOUT ADDRESS:BAD_REQUEST_ERROR or GATE_WAY_ERROR.");
+        }
+        else{
+            alert("Normal flow");
+        }
+
         if(this._cartService.quickCheckoutCodMaxErrorMessage !=null){
             this._toastService.show({
                 type: "error",

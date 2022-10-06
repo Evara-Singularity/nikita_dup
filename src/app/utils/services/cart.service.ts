@@ -806,6 +806,9 @@ export class CartService
                 (this._router.url.indexOf('checkout/payment') > 0) && (this.previousUrl.indexOf('checkout/payment') > 0)
             )
         ) {
+            console.clear();
+            console.trace();
+            alert("inside refreshCartSesion");
             this.checkForUserAndCartSessionAndNotify().subscribe(status =>
             {
                 if (status) {

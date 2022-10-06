@@ -704,6 +704,21 @@ export class CartService
             }),
             mergeMap((cartSession: any) =>
             {
+                // this will be called to update the discount of products when there is an applied promocode
+                if (cartSession && cartSession['offersList'] && cartSession['offersList'].length) {
+                    this.verifyAndApplyPromocode(cartSession, cartSession['offersList'][0]['offerId'][0], false).subscribe(({ cartSession, isUpdated }: any) => {
+                        if (isUpdated) {
+                            this.postProcessAfterPromocode(cartSession['offersList'][0]['offerId'][0], cartSession, true);
+                            return;
+                        }
+                    })
+                    return cartSession;
+                } else {
+                    return of(cartSession);
+                }
+            }),
+            mergeMap((cartSession: any) =>
+            {
                 // only run shipping API when specified, eg. not required in Auth Module
                 // shipping API should be called after updatecart API always
                 if (cartSession) {
@@ -1364,7 +1379,7 @@ export class CartService
         {
             const status = response['status'];
             const data = response['data'] ? response['data'] : null;
-            const message = response['statusDescription'] || null;
+            const message = response['statusDescription'] || 'Offer is not applied as coupon discount is 0';
             returnValue.isUpdated = true;
             if (status === true && (data && data['discount'] > 0) && (data['discount'] <= cartSession['cart']['totalAmount'])) {
                 cartSession['cart']['totalOffer'] = data['discount'];
@@ -1633,12 +1648,12 @@ export class CartService
             const couponObj = {
                 type: 'coupon',
                 data: {
-                    text1: "Applied coupon is removed as it's not valid"
+                    text1: "Applied coupon has been removed as it is not valid"
                 }
             }
             this.notifications.push(couponObj);
+            this.appliedPromoCode = '';
         }
-        this.showNotification = false;
         this.notificationsSubject.next(this.notifications);
     }
 

@@ -80,7 +80,7 @@ export class PaymentComponent implements OnInit
     this.orderId = queryParams['orderId'] || queryParams['txnId'];
     //CASE-1: Valid OrderId from backend
     if (this.orderId) {
-      console.log("CASE:Valid order case.");
+      alert("CASE:Valid order case.");
       this.isRetryPayment = true;
       this.fetchTransactionDetails();
       return;
@@ -89,7 +89,7 @@ export class PaymentComponent implements OnInit
     this.paymentErrorType = queryParams['error'] || null;
     if(this.paymentErrorType)
     {
-      console.log("CASE:BAD_REQUEST_ERROR or GATE_WAY_ERROR.");
+      alert("CASE:BAD_REQUEST_ERROR or GATE_WAY_ERROR.");
       this.navigateToQuickorder();
       return;
     }
@@ -97,7 +97,7 @@ export class PaymentComponent implements OnInit
       !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
         (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
     ) {
-      console.log("CASE:Page refresh.");
+      alert("CASE:Page refresh.");
       this._router.navigateByUrl('/checkout/address', this.REPLACE_URL);
       return;
     }

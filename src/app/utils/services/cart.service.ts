@@ -791,7 +791,7 @@ export class CartService
     // refresh and chnages to communicated 
     public refreshCartSesion()
     {
-        alert("refreshCartSesion");
+        // alert("refreshCartSesion");
         // we do not want to refresh cart by pages component in case buynow event
         // conditional are hacks used because localtion.goback() refresh page and 
         // call getcartsession API from pages component (root module)
@@ -808,7 +808,7 @@ export class CartService
         ) {
             console.clear();
             console.trace();
-            alert("inside refreshCartSesion");
+            // alert("inside refreshCartSesion");
             this.checkForUserAndCartSessionAndNotify().subscribe(status =>
             {
                 if (status) {

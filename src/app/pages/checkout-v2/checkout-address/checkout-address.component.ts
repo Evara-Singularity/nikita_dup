@@ -58,12 +58,12 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const queryParams = this._activatedRoute.snapshot.queryParams;
         console.log(queryParams);
         const paymentErrorType = queryParams['error'] || null;
-        if (paymentErrorType) {
-            alert("CHECKOUT ADDRESS:BAD_REQUEST_ERROR or GATE_WAY_ERROR.");
-        }
-        else{
-            alert("Normal flow");
-        }
+        // if (paymentErrorType) {
+        //     // alert("CHECKOUT ADDRESS:BAD_REQUEST_ERROR or GATE_WAY_ERROR.");
+        // }
+        // else{
+        //     // alert("Normal flow");
+        // }
 
         if(this._cartService.quickCheckoutCodMaxErrorMessage !=null){
             this._toastService.show({

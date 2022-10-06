@@ -39,6 +39,21 @@ export function app() {
 
   // All regular routes use the Universal engine
   server.get('*', (req, res) => {
+    const requestLogObj = {
+      baseUrl: req.baseUrl,
+      body: req.body,
+      cookies: req.cookies,
+      method: req.method,
+      originalUrl: req.originalUrl,
+      params: req.params,
+      path: req.path,
+      query: req.query,
+      startTime: new Date().getTime(),
+      startTimeV2: (new Date).toLocaleString('en-GB'),
+      endTime: null,
+      endTimeV2: null,
+      processTime: 0,
+    }; 
     res.render(indexHtml, {
       req,
       providers: [
@@ -47,6 +62,10 @@ export function app() {
       ]
     }, (err: Error, html: string) => {
       // manipulate html string to add preloads for images
+      requestLogObj.endTime = new Date().getTime(),
+      requestLogObj.endTimeV2 = (new Date).toLocaleString('en-GB'),
+      requestLogObj.processTime = requestLogObj.endTime - requestLogObj.startTime;
+      console.log(requestLogObj); 
       if(html){
         res.status(html ? res.statusCode : 500).send(appendImagePreloads(html) || err.message);
       }else{

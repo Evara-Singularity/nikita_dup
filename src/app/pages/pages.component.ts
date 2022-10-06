@@ -1,11 +1,12 @@
-import {
-  Component,
-  ComponentFactoryResolver,
-  Injector,
-  OnInit,
-  Renderer2,
-  ViewEncapsulation,
-} from "@angular/core";
+import
+  {
+    Component,
+    ComponentFactoryResolver,
+    Injector,
+    OnInit,
+    Renderer2,
+    ViewEncapsulation,
+  } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { LocalAuthService } from "../utils/services/auth.service";
 import { CartService } from "../utils/services/cart.service";
@@ -24,7 +25,8 @@ declare var dataLayer;
   styleUrls: ["./pages.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
-export class PagesComponent implements OnInit {
+export class PagesComponent implements OnInit
+{
   isServer: boolean = false;
   isBrowser: boolean = false;
   iData: {
@@ -49,12 +51,14 @@ export class PagesComponent implements OnInit {
     private cfr: ComponentFactoryResolver,
     private injector: Injector
 
-  ) {
+  )
+  {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
     this.isMoglixAppInstalled();
 
-    this.router.events.subscribe((res) => {
+    this.router.events.subscribe((res) =>
+    {
       this.createHeaderData(this._aRoute);
 
       if (res instanceof NavigationEnd) {
@@ -69,29 +73,32 @@ export class PagesComponent implements OnInit {
     });
   }
 
-  enableBodyScoll() {
+  enableBodyScoll()
+  {
     // incase body scroll is disabled then enable it on page refresh
     // console.log('page. enableBodyScoll ', this._commonService.bodyScrollStatus);
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       this._commonService.setBodyScroll(null, true);
     }, 200);
   }
 
-  checkAndRedirect() {
+  checkAndRedirect()
+  {
     const queryParams = this._aRoute.snapshot.queryParams;
-    if (
-      GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(
-        window.location.pathname
-      ) &&
-      queryParams.hasOwnProperty("token")
-    ) {
+    const orderId = queryParams['orderId'] || queryParams['txnId'];
+    const txnError = queryParams['error'] || null;
+    //ODP-1866:This special case to avoid refreshCartSesion
+    if (orderId || txnError) return;
+    if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname) && queryParams.hasOwnProperty("token")) {
       this.loginUserIfUserRedirectedFromBharatpay(queryParams);
-    } else {
-      this.checkForUserAndCartSession();
-    }
+      return;
+    } 
+    this.checkForUserAndCartSession();
   }
 
-  loginUserIfUserRedirectedFromBharatpay(queryParams) {
+  loginUserIfUserRedirectedFromBharatpay(queryParams)
+  {
     const token = queryParams["token"];
 
     const url =
@@ -106,7 +113,8 @@ export class PagesComponent implements OnInit {
             : null,
         },
       })
-      .subscribe((res) => {
+      .subscribe((res) =>
+      {
         if (res["status"]) {
           const obj = {
             authenticated: "true",
@@ -138,7 +146,8 @@ export class PagesComponent implements OnInit {
       });
   }
 
-  handleRedirectionOfPages(queryParams) {
+  handleRedirectionOfPages(queryParams)
+  {
     if (
       window.location.pathname ===
       GLOBAL_CONSTANT.pageOnWhichBharatPaySupported[0] &&
@@ -150,7 +159,8 @@ export class PagesComponent implements OnInit {
     }
   }
 
-  redirectToProductPage(msn) {
+  redirectToProductPage(msn)
+  {
     const params = {
       filter: {},
       queryParams: this._aRoute.snapshot.queryParams,
@@ -163,7 +173,8 @@ export class PagesComponent implements OnInit {
       .callRestful("GET", environment.BASE_URL + ENDPOINTS.SEARCH, {
         params: actualParams,
       })
-      .subscribe((res) => {
+      .subscribe((res) =>
+      {
         if (
           res.hasOwnProperty("productSearchResult") &&
           res["productSearchResult"]["totalCount"] === 1
@@ -175,13 +186,14 @@ export class PagesComponent implements OnInit {
       });
   }
 
-  ngOnInit() {
+  ngOnInit()
+  {
     /**
      * Handles cart and user session globally for application on all pages
      * Also, for page refresh
      */
     if (this.isBrowser) {
-          // separately checking for back param, because on angular router navigation this param is not getting updated
+      // separately checking for back param, because on angular router navigation this param is not getting updated
       this.isRoutedBack = window.location.toString().includes('back=1');
       this.checkAndRedirect();
       // this.dataService.startHistory();
@@ -191,9 +203,11 @@ export class PagesComponent implements OnInit {
     }
   }
 
-  isMoglixAppInstalled() {
+  isMoglixAppInstalled()
+  {
     if (this.isBrowser) {
-      window.addEventListener("load", () => {
+      window.addEventListener("load", () =>
+      {
         // Check to see if the API is supported.
         if ("getInstalledRelatedApps" in navigator) {
           this.updateAppStatus();
@@ -202,7 +216,8 @@ export class PagesComponent implements OnInit {
     }
   }
 
-  checkWebpSupport() {
+  checkWebpSupport()
+  {
     const elem = document.createElement("canvas");
     if (!!(elem.getContext && elem.getContext("2d"))) {
       // was able or not to get WebP representation
@@ -217,7 +232,8 @@ export class PagesComponent implements OnInit {
     }
   }
 
-  setConnectionType() {
+  setConnectionType()
+  {
     let ISCHROME = false;
     if (navigator && navigator["connection"]) {
       const CONNECTION = navigator["connection"];
@@ -242,25 +258,31 @@ export class PagesComponent implements OnInit {
     }
   }
 
-  updateAppStatus() {
-    navigator["getInstalledRelatedApps"]().then((relatedApps) => {
+  updateAppStatus()
+  {
+    navigator["getInstalledRelatedApps"]().then((relatedApps) =>
+    {
       if (relatedApps && relatedApps.length > 0) {
         this._commonService.isAppInstalled = true;
       }
     });
   }
 
-  checkForUserAndCartSession() {
+  checkForUserAndCartSession()
+  {
     this._cartService.refreshCartSesion();
   }
 
-  createHeaderData(_aRoute) {
-    this._commonService.getRoutingData(_aRoute).subscribe((rData) => {
+  createHeaderData(_aRoute)
+  {
+    this._commonService.getRoutingData(_aRoute).subscribe((rData) =>
+    {
       this.iData = rData;
     });
   }
 
-  setEnvIdentiferCookie() {
+  setEnvIdentiferCookie()
+  {
     const abTesting = this.dataService.getCookie("AB_TESTING");
     const PWA = this.dataService.getCookie("PWA");
     const buildVersion = this.dataService.getCookie("BUILD_VERSION") || null;
@@ -292,14 +314,16 @@ export class PagesComponent implements OnInit {
     } else {
       if (buildVersion != updatedBuildaVersion) {
         this.dataService.deleteCookieV2("BUILD_VERSION");
-        setTimeout(() => {
+        setTimeout(() =>
+        {
           this.dataService.setCookie("BUILD_VERSION", updatedBuildaVersion, 90);
         }, 100);
       }
     }
   }
 
-  get isCheckout() {
+  get isCheckout()
+  {
     return this.router.url.includes("checkout");
   }
 }

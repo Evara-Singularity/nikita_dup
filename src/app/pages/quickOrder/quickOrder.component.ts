@@ -1,6 +1,7 @@
-import { Component, ViewEncapsulation, Input } from '@angular/core';
+import { Component, ViewEncapsulation, Input, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { LocalAuthService } from '@services/auth.service';
 import { CartService } from '@services/cart.service';
 import { CommonService } from '@services/common.service';
@@ -12,18 +13,27 @@ import { CommonService } from '@services/common.service';
     encapsulation: ViewEncapsulation.None
 })
 
-export class QuickOrderComponent {
+export class QuickOrderComponent implements AfterViewInit
+{
 
     constructor(
         private _localAuthService: LocalAuthService,
         public _cartService: CartService,
         public _commonService: CommonService,
         private _tms: ToastMessageService,
-        public router: Router) {
-            this._cartService.getGenericCartSession;
-        }
+        private _loaderService: GlobalLoaderService,
+        public router: Router)
+    {
+        this._cartService.getGenericCartSession;
+    }
 
-    navigateToCheckout() {
+    ngAfterViewInit(): void
+    {
+        this._loaderService.setLoaderState(false);
+    }
+
+    navigateToCheckout()
+    {
         const invalidIndex = this._cartService.findInvalidItem();
         if (invalidIndex > -1) return;
         this._localAuthService.setBackURLTitle(this.router.url, 'Continue to checkout');

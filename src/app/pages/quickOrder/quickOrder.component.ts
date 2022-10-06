@@ -20,7 +20,6 @@ export class QuickOrderComponent implements AfterViewInit
         private _localAuthService: LocalAuthService,
         public _cartService: CartService,
         public _commonService: CommonService,
-        private _tms: ToastMessageService,
         private _loaderService: GlobalLoaderService,
         public router: Router)
     {

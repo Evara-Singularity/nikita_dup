@@ -1,12 +1,12 @@
 import
-  {
-    Component,
-    ComponentFactoryResolver,
-    Injector,
-    OnInit,
-    Renderer2,
-    ViewEncapsulation,
-  } from "@angular/core";
+{
+  Component,
+  ComponentFactoryResolver,
+  Injector,
+  OnInit,
+  Renderer2,
+  ViewEncapsulation,
+} from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { LocalAuthService } from "../utils/services/auth.service";
 import { CartService } from "../utils/services/cart.service";
@@ -73,6 +73,33 @@ export class PagesComponent implements OnInit
     });
   }
 
+  ngOnInit()
+  {
+    const queryParams = this._aRoute.snapshot.queryParams;
+    const orderId = queryParams['orderId'] || queryParams['txnId'];
+    const txnError = queryParams['error'] || null;
+    //ODP-1866:This special case to avoid refreshCartSesion
+    if (orderId || txnError) return;
+    this.initialize();
+  }
+
+  initialize()
+  {
+    /**
+     * Handles cart and user session globally for application on all pages
+     * Also, for page refresh
+     */
+    if (this.isBrowser) {
+      // separately checking for back param, because on angular router navigation this param is not getting updated
+      this.isRoutedBack = window.location.toString().includes('back=1');
+      this.checkAndRedirect();
+      // this.dataService.startHistory();
+      this.setEnvIdentiferCookie();
+      this.setConnectionType();
+      this.checkWebpSupport();
+    }
+  }
+
   enableBodyScoll()
   {
     // incase body scroll is disabled then enable it on page refresh
@@ -86,13 +113,10 @@ export class PagesComponent implements OnInit
   checkAndRedirect()
   {
     const queryParams = this._aRoute.snapshot.queryParams;
-    const orderId = queryParams['orderId'] || queryParams['txnId'];
-    //ODP-1866:This special case to avoid refreshCartSesion
-    if (orderId) return;
     if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname) && queryParams.hasOwnProperty("token")) {
       this.loginUserIfUserRedirectedFromBharatpay(queryParams);
       return;
-    } 
+    }
     this.checkForUserAndCartSession();
   }
 
@@ -185,22 +209,7 @@ export class PagesComponent implements OnInit
       });
   }
 
-  ngOnInit()
-  {
-    /**
-     * Handles cart and user session globally for application on all pages
-     * Also, for page refresh
-     */
-    if (this.isBrowser) {
-      // separately checking for back param, because on angular router navigation this param is not getting updated
-      this.isRoutedBack = window.location.toString().includes('back=1');
-      this.checkAndRedirect();
-      // this.dataService.startHistory();
-      this.setEnvIdentiferCookie();
-      this.setConnectionType();
-      this.checkWebpSupport();
-    }
-  }
+  
 
   isMoglixAppInstalled()
   {

@@ -415,6 +415,7 @@ export class PaymentComponent implements OnInit
     this._cartService.billingAddress = paymentDetails.billingAddress;
     this._cartService.lastPaymentMode = paymentDetails.lastPaymentMode;
     this._cartService.lastParentOrderId = paymentDetails.lastParentOrderId;
+    this._cartService.buyNow = paymentDetails.buyNow;
   }
 
   navigateToQuickorder() { this._router.navigateByUrl('/quickorder', this.REPLACE_URL); }

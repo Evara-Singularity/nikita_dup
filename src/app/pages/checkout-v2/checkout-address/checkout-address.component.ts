@@ -1,3 +1,4 @@
+import { LocalStorageService } from 'ngx-webstorage';
 import { AfterViewInit, Compiler, Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -47,8 +48,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     paymentMode: any;
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
-        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService,
-        )
+        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService)
     {
         
     }
@@ -56,15 +56,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     ngOnInit(): void
     {
         const queryParams = this._activatedRoute.snapshot.queryParams;
-        console.log(queryParams);
-        const paymentErrorType = queryParams['error'] || null;
-        // if (paymentErrorType) {
-        //     // alert("CHECKOUT ADDRESS:BAD_REQUEST_ERROR or GATE_WAY_ERROR.");
-        // }
-        // else{
-        //     // alert("Normal flow");
-        // }
-
         if(this._cartService.quickCheckoutCodMaxErrorMessage !=null){
             this._toastService.show({
                 type: "error",
@@ -74,7 +65,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         }
         
         this._cartService.sendAdobeOnCheckoutOnVisit("address");
-        this._cartService.refreshCartSesion();
+        //this._cartService.refreshCartSesion();
         this.updateUserStatus();
         this._cartService.showUnavailableItems = false;
         this._globalLoader.setLoaderState(true);
@@ -120,7 +111,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 // incase user is redirect from payment page or payment gateway this._cartService.getCartUpdatesChanges() 
                 // user will receive empty cartSession.
                 // in this case we need explicitly trigger cartSession update.
-                this._cartService.checkForUserAndCartSessionAndNotify().subscribe(status =>
+                const tempBuyNow = JSON.parse(JSON.stringify({buyNow:this._cartService.buyNow || false})); 
+                this._cartService.checkForUserAndCartSessionAndNotify(tempBuyNow['buyNow']).subscribe(status =>
                 {
                     if (status) {
                         this._cartService.setCartUpdatesChanges(this.cartSession);

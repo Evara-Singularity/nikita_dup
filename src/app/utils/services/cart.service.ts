@@ -791,6 +791,7 @@ export class CartService
     // refresh and chnages to communicated 
     public refreshCartSesion()
     {
+        alert("callling refreshCartSesion");
         // we do not want to refresh cart by pages component in case buynow event
         // conditional are hacks used because localtion.goback() refresh page and 
         // call getcartsession API from pages component (root module)
@@ -807,6 +808,7 @@ export class CartService
         ) {
             this.checkForUserAndCartSessionAndNotify().subscribe(status =>
             {
+                alert("inside refreshCartSesion");
                 if (status) {
                     this._cartUpdatesChanges.next(this.cartSession);
                 } else {
@@ -834,12 +836,18 @@ export class CartService
         });
     }
 
-    checkForUserAndCartSessionAndNotify(): Observable<boolean>
+    checkForUserAndCartSessionAndNotify(buyNow?): Observable<boolean>
     {
+        console.log(buyNow);
+        alert("checkForUserAndCartSessionAndNotify");
         return this._getUserSession().pipe(
             map(userSessionDetails =>
             {
-                return Object.assign({}, { "sessionid": userSessionDetails['sessionId'] })
+                const request = Object.assign({}, { "sessionid": userSessionDetails['sessionId'] });
+                if (buyNow){
+                    request['buyNow'] = buyNow;
+                }
+                return request;
             }),
             mergeMap(request =>
             {
@@ -1612,9 +1620,11 @@ export class CartService
 
     clearBuyNowFlow()
     {
-        if (this._buyNow) {
+        const flashdata = this._localStorageService.retrieve("flashdata");
+        if (this._buyNow || (flashdata && flashdata['buyNow'] == true)) {
             this.buyNow = false;
             this.buyNowSessionDetails = null;
+            this._localStorageService.clear("flashdata");
             this.refreshCartSesion();
         }
     }

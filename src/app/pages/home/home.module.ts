@@ -1,7 +1,7 @@
 import { TrendingCategoriesModule } from './../../components/ternding-categories/trending-categories.component';
 import { KpToggleDirectiveModule } from '@utils/directives/kp-toggle.directive';
 import { NgModule } from '@angular/core';
-import { HomeComponent } from './home.component';
+import { HomeComponent, MockLottiePlayerSettingsComponent } from './home.component';
 import { CommonModule } from '@angular/common';
 import { HomeRoutingModule } from './home.routing';
 import { SiemaCarouselModule } from '@modules/siemaCarousel/siemaCarousel.module';
@@ -34,6 +34,7 @@ import { BottomNavigationModule } from '@app/modules/bottom-navigation/bottom-na
     ],
     declarations: [
         HomeComponent,
+        MockLottiePlayerSettingsComponent
     ],
     providers: []
 })

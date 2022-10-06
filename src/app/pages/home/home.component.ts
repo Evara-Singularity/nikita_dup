@@ -13,6 +13,7 @@ import {
 	ViewContainerRef,
 	ComponentFactoryResolver,
 	Injector,
+	Directive,
 } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Subject } from 'rxjs';
@@ -755,3 +756,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.analytics.sendAdobeCall({ page,custData,order }, "genericClick");
 	}
 }
+
+@Component({
+	selector: 'lottie-player',
+	template: '<p>Mock Product Settings Component</p>'
+  })
+  export class MockLottiePlayerSettingsComponent {
+  }

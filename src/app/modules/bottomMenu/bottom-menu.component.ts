@@ -15,6 +15,7 @@ export class BottomMenuComponent implements OnInit {
     @Output() outData$: EventEmitter<{}>;
     @Input() containerClasses: string = "";
     @Input() containerHeight;
+    @Input('isLoginPopup') isLoginPopup = false;
 
     isServer: boolean;
     isBrowser: boolean;

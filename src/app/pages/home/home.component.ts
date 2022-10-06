@@ -28,6 +28,7 @@ import { ClientUtility } from '@app/utils/client.utility';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductService } from '@app/utils/services/product.service';
 import { CategoryData } from '@app/utils/models/categoryData';
+declare var lottieObject;
 @Component({
 	selector: 'data-home',
 	templateUrl: './home.html',
@@ -36,6 +37,7 @@ import { CategoryData } from '@app/utils/models/categoryData';
 
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+	
 	@Input() data;
 	isServer: boolean;
 	encodeURI = encodeURI;
@@ -115,6 +117,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	whatsAppBannerUrl=CONSTANTS.whatsAppBannerUrl;
 	readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
 
+
 	constructor(
 		public dataService: DataService,
 		private _renderer2: Renderer2,
@@ -132,6 +135,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		private _commonService: CommonService,
 		private analytics: GlobalAnalyticsService,
 		private _productService: ProductService,
+		
 	) {
 		this.isServer = _commonService.isServer;
 		this.isBrowser = _commonService.isBrowser;
@@ -141,6 +145,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		//  this._commonService.loadLottieScript();
 		this.loadSearchTerms();
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['homeData']['error']) {
@@ -545,6 +550,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				);
 			}, 3000);
 		}
+		
 	}
 
 	ngOnDestroy() {
@@ -576,7 +582,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			] = this.featureBrandData;
 			this.featuredBrandsInstance.instance['defaultImage'] = this.defaultImage;
 			this.featuredBrandsInstance.instance['imagePath'] = this.imagePath;
-			this._commonService.loadLottieScript();
+			
 		}
 	}
 

@@ -9,7 +9,7 @@ import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from "@a
 import { ClientUtility } from "@app/utils/client.utility";
 import { DataService } from "./data.service";
 import { CheckoutService } from "./checkout.service";
-import { isPlatformServer, isPlatformBrowser } from "@angular/common";
+import { isPlatformServer, isPlatformBrowser, DOCUMENT } from "@angular/common";
 import { Observable } from "rxjs";
 import { Subject } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
@@ -98,6 +98,7 @@ export class CommonService
         private rendererFactory: RendererFactory2,
         private _router: Router,
         private _route: ActivatedRoute,
+        @Inject(DOCUMENT) private _document: Document
     )
     {
         this.windowLoaded = false;
@@ -1527,21 +1528,27 @@ export class CommonService
         }
         return image;
     }
-    loadLottieScript(){
-        const lottie_script_url = `${CONSTANTS.CDN_LOTTIE_PATH}`
-        const lottie_script_element = document.createElement('script');
-        lottie_script_element.setAttribute( 'src',lottie_script_url );
-        document.body.appendChild(lottie_script_element);
-         if(document.contains(lottie_script_element)){
-            var animation = bodymovin.loadAnimation({
-                // animationData: { /* ... */ },
-                container: document.getElementById('icon-container'), // required
-                path: '../../', // required
-                renderer: 'svg', // required
-                loop: true, // optional
-                autoplay: true, // optional
-                name: "Demo Animation", // optional
-              });
-            }
-       }
+//     loadLottieScript(){
+//         // const lottie_script_url = `${CONSTANTS.CDN_LOTTIE_PATH}`
+//         // const lottie_script_element = document.createElement('script');
+//         // lottie_script_element.setAttribute('src',lottie_script_url );
+//         // let script = this._renderer2.createElement('script');
+//         // script.type = `application/ld+json`;
+//         // script.text = `
+//         // {
+//         //     "@context": "https://schema.org"
+//         //     /* Enter other needed data here */
+//         // }
+//         // `;
+//         // script.src=`${CONSTANTS.CDN_LOTTIE_PATH}`;
+//         // this._renderer2.appendChild(this._document.body, script);
+//         // console.log("script.text", script.text);
+        
+
+//         // document.body.appendChild(lottie_script_element);
+//         //  if(document.contains(lottie_script_element)){
+//         //     this._renderer2.appendChild(this._document.body, lottie_script_element);
+//         // }
+//    }
+  
 }

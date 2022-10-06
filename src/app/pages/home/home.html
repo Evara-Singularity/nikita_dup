@@ -96,8 +96,6 @@
                 <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="categoriesInstance"></home-page-skeletons>
             </div>
         </ng-container>
-        
-
         <!-- Section for feature Arrival -->
         <div data-observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [ngClass]="{'featr_arrival-skeleton':featuredArrivalsInstance == null}" [debounceTime]="50"
             (visible)="onVisibleFeaturedArrivals($event)">
@@ -111,7 +109,7 @@
         </div>
         <whatsapp-toast (click)="sendTrackingData()" [customText]="'Hi'"></whatsapp-toast>
     </div>
-
+    <lottie-player  src="https://assets2.lottiefiles.com/packages/lf20_i9mxcD.json" background="transparent"  speed="1"  style="width: 300px; height: 300px;" loop controls autoplay></lottie-player>
     <bottom-navigation></bottom-navigation>
     <!-- section for trending categories-->    
 </div>

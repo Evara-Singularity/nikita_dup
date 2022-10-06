@@ -87,9 +87,8 @@ export class PagesComponent implements OnInit
   {
     const queryParams = this._aRoute.snapshot.queryParams;
     const orderId = queryParams['orderId'] || queryParams['txnId'];
-    const txnError = queryParams['error'] || null;
     //ODP-1866:This special case to avoid refreshCartSesion
-    if (orderId || txnError) return;
+    if (orderId) return;
     if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname) && queryParams.hasOwnProperty("token")) {
       this.loginUserIfUserRedirectedFromBharatpay(queryParams);
       return;

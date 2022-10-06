@@ -1528,27 +1528,10 @@ export class CommonService
         }
         return image;
     }
-//     loadLottieScript(){
-//         // const lottie_script_url = `${CONSTANTS.CDN_LOTTIE_PATH}`
-//         // const lottie_script_element = document.createElement('script');
-//         // lottie_script_element.setAttribute('src',lottie_script_url );
-//         // let script = this._renderer2.createElement('script');
-//         // script.type = `application/ld+json`;
-//         // script.text = `
-//         // {
-//         //     "@context": "https://schema.org"
-//         //     /* Enter other needed data here */
-//         // }
-//         // `;
-//         // script.src=`${CONSTANTS.CDN_LOTTIE_PATH}`;
-//         // this._renderer2.appendChild(this._document.body, script);
-//         // console.log("script.text", script.text);
-        
-
-//         // document.body.appendChild(lottie_script_element);
-//         //  if(document.contains(lottie_script_element)){
-//         //     this._renderer2.appendChild(this._document.body, lottie_script_element);
-//         // }
-//    }
-  
+    loadLottieScript(){
+        let script = this._renderer2.createElement('script');
+        script.id = 'myScript';
+        script.src = CONSTANTS.CDN_LOTTIE_PATH;
+        this._renderer2.appendChild(this._document.body,script);
+   }
 }

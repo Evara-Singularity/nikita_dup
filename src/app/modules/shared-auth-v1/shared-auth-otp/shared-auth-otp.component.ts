@@ -121,9 +121,9 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this._globalLoader.setLoaderState(false);
                     if(this.isLoginPopup){
-                        this.togglePopUp$.emit('sign-up')
-                        this.otpEmitter.emit(otpValue);
+                        this.togglePopUp$.emit('sign-up')                       
                     }
+                    this.otpEmitter.emit(otpValue);
                     if (!(this.withLabel)) { setTimeout(() => {  
                         this.otpSuccess$.emit();
                     }, 200) };

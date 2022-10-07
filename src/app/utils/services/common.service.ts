@@ -1531,7 +1531,7 @@ export class CommonService
         }
         return image;
     }
-    callLottieScript(hideAnimation?){
+    callLottieScript(){
         let script = this._renderer2.createElement('script');
         script.src = CONSTANTS.CDN_LOTTIE_PATH;
         script.id = 'lottieScript';
@@ -1546,7 +1546,6 @@ export class CommonService
             }
          }
     }   
-  
 
    doneLoading() {
     console.log("loaded");

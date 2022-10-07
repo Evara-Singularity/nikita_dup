@@ -39,6 +39,16 @@ export class HomeExpandedHeaderComponent implements OnInit {
       })
     })
   }
+  addLottieScript(){
+		this._commonService.addLottieScriptSubject.subscribe(lottieInstance => {
+			this._commonService.callLottieScript();
+			lottieInstance.next();
+		});
+	}
+  ngAfterViewInit(){
+    this.addLottieScript();
+    this._commonService.callLottieScript();
+  }
 
   get displayPage() { return this.isUserLogin != null && this.imgAssetPath.length>0}
 

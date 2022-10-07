@@ -17,7 +17,6 @@ export class GoldMembershipComponent implements OnInit {
   constructor(private commonService:CommonService) { }
 
   ngOnInit() {
-    this.addLottieScript();
   }
 
   closeGoldPopup(data) {
@@ -27,6 +26,7 @@ export class GoldMembershipComponent implements OnInit {
   popupOnOutsideClick(data){
   this.closePopupOnOutsideClick.emit(data)
   }
+  
   addLottieScript(){
 		this.commonService.addLottieScriptSubject.subscribe(lottieInstance => {
 			this.commonService.callLottieScript();
@@ -35,6 +35,7 @@ export class GoldMembershipComponent implements OnInit {
 	}
   ngAfterViewInit(){
     this.commonService.callLottieScript();
+    this.addLottieScript();
   }
 }
 

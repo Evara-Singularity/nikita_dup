@@ -6,6 +6,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { LocalAuthService } from '../../utils/services/auth.service';
+import { MockLottiePlayerModule } from '../mock-lottie-player/mock-lottie-player.module';
 
 @Component({
   selector: 'app-side-nav',
@@ -105,14 +106,26 @@ export class SideNavComponent implements OnInit {
       this.router.navigate(['/login'], navigationExtras);
     }
   }
-
+  
+  addLottieScript(){
+		this._commonService.addLottieScriptSubject.subscribe(lottieInstance => {
+			this._commonService.callLottieScript();
+			lottieInstance.next();
+		});
+	}
+  ngAfterViewInit(){
+    this._commonService.callLottieScript();
+    this.addLottieScript();
+  }
 }
+
 
 @NgModule({
   imports: [
     CommonModule, 
     RouterModule,
-    AppPromoModule
+    AppPromoModule,
+    MockLottiePlayerModule
   ],
   declarations: [SideNavComponent]
 })

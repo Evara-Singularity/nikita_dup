@@ -540,7 +540,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngAfterViewInit() {
-		this._commonService.callLottieScript();
 		if (this.isBrowser) {
             this._localAuthService.clearBackURLTitle();
             this._localAuthService.clearAuthFlow();
@@ -641,7 +640,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.featuredArrivalsInstance.instance['defaultImage'] = this.defaultImage;
 			this.featuredArrivalsInstance.instance['imagePath'] = this.imagePath;
 		}
-		this.addLottieScript();
 	}
 
 	// async onVisibleTrendingCategories(htmlElement) {
@@ -758,13 +756,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		const order = {};
 		this.analytics.sendAdobeCall({ page,custData,order }, "genericClick");
 	}
-
-	addLottieScript(){
-		this._commonService.addLottieScriptSubject.subscribe(lottieInstance => {
-			this._commonService.callLottieScript();
-			lottieInstance.next();
-		});
-	}
+	
 }
 
 

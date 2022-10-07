@@ -400,7 +400,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
             this.navigationOnFragmentChange();
-            this.commonService.callLottieScript();
         }
     }
 
@@ -4391,10 +4390,4 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.closeProductInfoPopup();
 
     }
-    addLottieScript(){
-		this.commonService.addLottieScriptSubject.subscribe(lottieInstance => {
-			this.commonService.callLottieScript();
-			lottieInstance.next();
-		});
-	}
 }

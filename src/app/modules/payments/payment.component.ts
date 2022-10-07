@@ -419,7 +419,6 @@ export class PaymentComponent implements OnInit
   }
 
   navigateToQuickorder() { 
-    this._cartService.clearBuyNowFlow();
     this._router.navigateByUrl('/quickorder', this.REPLACE_URL); 
   }
 

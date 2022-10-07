@@ -555,7 +555,7 @@ export class CartService
         const byPass = true;
         if (byPass) {
             const cart = this.cartSession['cart'];
-            const totalPayableAmount = cart['totalPayableAmount'] + cart['shippingCharges'] + cart['totalOffer'];
+            const totalPayableAmount = cart['totalAmount'] + cart['shippingCharges'] + cart['totalOffer'];
             return of({ prepaidDiscount: 0, totalPayableAmount: totalPayableAmount });
         }
         //Pradeep:this is original code which should be there and remove above by pass code.

@@ -129,12 +129,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		public _lss: LocalStorageService,
 		public cartService: CartService,
 		public footerService: FooterService,
-		private _localAuthService: LocalAuthService,
+		public _localAuthService: LocalAuthService,
 		private cfr: ComponentFactoryResolver,
 		private injector: Injector,
 		private route: ActivatedRoute,
 		private _router: Router,
-		private _commonService: CommonService,
+		public _commonService: CommonService,
 		private analytics: GlobalAnalyticsService,
 		private _productService: ProductService,
 		
@@ -248,7 +248,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 								return e;
 							
 							});
-							this.bannerDataFinal = [...this.bannerDataFinal, ...blockData.image_block]
+							this.bannerDataFinal = [...this.bannerDataFinal, (blockData.image_block && blockData.image_block.length > 0)?blockData.image_block[0]:[]]
 						} else if (
 							blockData.image_block &&
 							blockData.image_block.length &&

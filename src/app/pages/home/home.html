@@ -35,7 +35,11 @@
     <div class="pwa-row pwa-row-noPad">
         <div class="pwa-col-12 pad-lr-15">
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
-
+            <div class="pwa-banner" *ngIf="_localAuthService.IsUserGoldMember()">
+                <a class="full-banner" (click)="_commonService.showgoldMembershipPopup()"> 
+                    <img src="{{imageAssetURL}}assets/img/others/goldMemberBanner.png" alt="Gold Member Banner" width="312" height="110">
+                </a>
+            </div>
             <div class="pwa-banner">
                 <a class="full-banner" href="{{whatsAppBannerUrl}}"> 
                     <img src="{{imageAssetURL}}assets/img/others/whatsappBanner.png" alt="whatsapp banner" width="312" height="170">
@@ -108,7 +112,7 @@
         </div>
         <whatsapp-toast (click)="sendTrackingData()" [customText]="'Hi'"></whatsapp-toast>
     </div>
-    <lottie-player src="assets/json/transaction-declined.json" background="transparent"  speed="1"  style="width:200px; height:200px;" loop controls autoplay></lottie-player>
+    <lottie-player src="assets/json/transaction-declined.json" background="transparent" speed="1"  style="width:200px; height:200px;" loop controls autoplay></lottie-player>
     <bottom-navigation></bottom-navigation>
     <!-- section for trending categories-->    
 </div>

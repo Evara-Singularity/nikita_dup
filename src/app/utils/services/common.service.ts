@@ -88,6 +88,8 @@ export class CommonService
     public previousUrl: string = "/";
     public currentUrl: string = null;
 
+    goldMemberPopupOpened = new Subject();
+
     constructor(
         @Inject(PLATFORM_ID) platformId,
         private checkoutService: CheckoutService,
@@ -1529,7 +1531,7 @@ export class CommonService
         }
         return image;
     }
-    callLottieScript(){
+    callLottieScript(hideAnimation?){
         let script = this._renderer2.createElement('script');
         script.src = CONSTANTS.CDN_LOTTIE_PATH;
         script.id = 'lottieScript';
@@ -1543,14 +1545,19 @@ export class CommonService
                 script.onload = this.doneLoading;
             }
          }
-    }
-
-
-
+    }   
   
 
    doneLoading() {
     console.log("loaded");
   }
   
+    showgoldMembershipPopup(){
+        this.goldMemberPopupOpened.next();
+    }
+
+    getGoldMembershipPopup(){
+        return this.goldMemberPopupOpened.asObservable();
+    }
+
 }

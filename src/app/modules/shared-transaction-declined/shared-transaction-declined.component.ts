@@ -8,6 +8,7 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { QuickCodService } from '@app/utils/services/quick-cod.service';
 import { RetryPaymentService } from '@app/utils/services/retry-payment.service';
 import { CartService } from '@services/cart.service';
+import { LocalStorageService } from 'ngx-webstorage';
 import { forkJoin } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { BottomMenuComponent } from '../bottomMenu/bottom-menu.component';
@@ -45,7 +46,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	isValidCartMsg = null;
 	nonCods = [];
 
-	constructor(private _cartService: CartService, private _loaderService: GlobalLoaderService, private _toastService: ToastMessageService,
+	constructor(private _cartService: CartService, private _loaderService: GlobalLoaderService, private _toastService: ToastMessageService, private _localStorageService: LocalStorageService,
 		public _router: Router, private _quickCodService: QuickCodService, private _retryPaymentService: RetryPaymentService) { }
 
 	ngOnInit()
@@ -56,6 +57,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	ngAfterViewInit()
 	{
 		this.isBuyNow = this.shoppingCartDto['cart']['buyNow'] || false;
+		this._localStorageService.store('flashData', { buyNow: this.isBuyNow });
 	}
 
 	initiateRehydration(shoppingCartDto)
@@ -142,7 +144,8 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	{
 		const lastCartInfo = {
 			invoiceType: this.invoiceType, shippingAddress: this.shippingAddress, billingAddress: this.billingAddress,
-			lastPaymentMode: this.shoppingCartDto['payment']['type'], lastParentOrderId: this.shoppingCartDto['cart']['parentOrderId']
+			lastPaymentMode: this.shoppingCartDto['payment']['type'], lastParentOrderId: this.shoppingCartDto['cart']['parentOrderId'],
+			buyNow: this.isBuyNow
 		}
 		return lastCartInfo;
 	}

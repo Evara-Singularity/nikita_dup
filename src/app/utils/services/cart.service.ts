@@ -834,12 +834,16 @@ export class CartService
         });
     }
 
-    checkForUserAndCartSessionAndNotify(): Observable<boolean>
+    checkForUserAndCartSessionAndNotify(buyNow?): Observable<boolean>
     {
         return this._getUserSession().pipe(
             map(userSessionDetails =>
             {
-                return Object.assign({}, { "sessionid": userSessionDetails['sessionId'] })
+                const request = Object.assign({}, { "sessionid": userSessionDetails['sessionId'] });
+                if (buyNow){
+                    request['buyNow'] = buyNow;
+                }
+                return request;
             }),
             mergeMap(request =>
             {
@@ -1612,9 +1616,11 @@ export class CartService
 
     clearBuyNowFlow()
     {
-        if (this._buyNow) {
+        const flashdata = this._localStorageService.retrieve("flashdata");
+        if (this._buyNow || (flashdata && flashdata['buyNow'] == true)) {
             this.buyNow = false;
             this.buyNowSessionDetails = null;
+            this._localStorageService.clear("flashdata");
             this.refreshCartSesion();
         }
     }

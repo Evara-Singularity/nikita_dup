@@ -361,11 +361,15 @@ export class PdpQuickCheckoutComponent implements OnInit {
     let totalOffer = null;
     const updateCart$ = this.cartService.updateCartSession(newCartSession).pipe(
       switchMap((newCartSession) => {
-        return this.cartService.verifyAndApplyPromocode(
-          newCartSession,
-          this.cartService.appliedPromoCode,
-          true
-        );
+        if(this.cartService.appliedPromoCode) {
+          return this.cartService.verifyAndApplyPromocode(
+            newCartSession,
+            this.cartService.appliedPromoCode,
+            true
+          );
+        } else {
+          return of({cartSession: newCartSession});
+        }
       }),
       switchMap((response) => {
         totalOffer = response.cartSession["cart"]["totalOffer"] || null;

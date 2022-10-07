@@ -1535,7 +1535,7 @@ export class CommonService
         let script = this._renderer2.createElement('script');
         script.src = CONSTANTS.CDN_LOTTIE_PATH;
         script.id = 'lottieScript';
-        let scripts = document.getElementsByTagName('script');
+        let scripts = this._document.getElementsByTagName('script');
         for (var i = scripts.length; i--;) {
             if (scripts[i].src == CONSTANTS.CDN_LOTTIE_PATH){
                 return;

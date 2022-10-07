@@ -50,7 +50,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     //subscriber
     loginSubscriber: Subscription = null;
     pincodeSubscriber: Subscription = null;
-    //falgs
+    //flags
     isGSTINVerified = false;
     isBrowser = false;
     isInvalidPincode = false;

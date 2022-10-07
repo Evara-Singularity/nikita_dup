@@ -76,6 +76,7 @@ export class CommonService
     public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
+    public addLottieScriptSubject: Subject<any> = new Subject<any>();
 
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
@@ -1528,10 +1529,28 @@ export class CommonService
         }
         return image;
     }
-    loadLottieScript(){
+    callLottieScript(){
         let script = this._renderer2.createElement('script');
-        script.id = 'myScript';
         script.src = CONSTANTS.CDN_LOTTIE_PATH;
-        this._renderer2.appendChild(this._document.body,script);
-   }
+        script.id = 'lottieScript';
+        let scripts = document.getElementsByTagName('script');
+        for (var i = scripts.length; i--;) {
+            if (scripts[i].src == CONSTANTS.CDN_LOTTIE_PATH){
+                return;
+            }
+            else{
+                this._renderer2.appendChild(this._document.body,script);
+                script.onload = this.doneLoading;
+            }
+         }
+    }
+
+
+
+  
+
+   doneLoading() {
+    console.log("loaded");
+  }
+  
 }

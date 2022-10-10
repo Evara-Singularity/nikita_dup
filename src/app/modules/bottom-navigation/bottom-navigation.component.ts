@@ -46,7 +46,7 @@ export class BottomNavigationComponent implements OnInit {
       this.router.navigate([url]); 
     } else {
       this.localAuthService.setBackURLTitle(url, title);
-      this._commonService.setInitaiteLoginPopUp(true);
+      this._commonService.setInitaiteLoginPopUp('/dashboard/order');
     }
   }
 

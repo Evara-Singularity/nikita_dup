@@ -10,6 +10,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var dataLayer;
 
 @Injectable({ providedIn: 'root' })
@@ -75,6 +76,30 @@ export class SharedAuthUtilService implements OnInit
                 this._toastService.show({ type: 'error', text: 'Something went wrong' });
             }
         });
+    }
+
+    loginPopUpAuthenticationProcess(response): Observable<any> {
+        this._globalLoader.setLoaderState(true);
+        this._localAuthService.setUserSession(response);
+        this._localAuthService.clearAuthFlow();
+        const userName = response['userName'] === 'User' ? "!" : ", " + response['userName'];
+        const welcomeText = `Welcome to Moglix ${userName}`;
+        return this._cartService.performAuthAndCartMerge({
+            enableShippingCheck: true,
+            redirectUrl: null,
+        }).pipe(map(cartsession => {
+            this._globalLoader.setLoaderState(false);
+            this._toastService.show({ type: 'success', text: welcomeText });
+            return cartsession;
+        }));
+    }
+
+    signupPopupAuthenticationProcess(params, response) {
+        this._localStorage.clear('tocd');
+        this._localStorage.store('user', response);
+        const firstName = params['firstName'] || '';
+        const welcomeText = ((firstName.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) || firstName == '') ? `Welcome to Moglix!` : `Welcome to Moglix, ${firstName}`
+        this._toastService.show({ type: 'success', text: welcomeText });
     }
 
     //common section

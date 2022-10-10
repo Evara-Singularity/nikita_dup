@@ -45,20 +45,20 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
       if (this.isRouteBased) {
         this.navigationSubscription(); //for #auth
       } else {
-        this._commonService.getInitaiteLoginPopUp().subscribe((openPopUp) => {
-          if (openPopUp) {
-            this.initiatePopUp();
+        this._commonService.getInitaiteLoginPopUp().subscribe((redirectUrl) => {
+          if (redirectUrl) {
+            this.initiatePopUp(redirectUrl);
           }
         });
       }
     }
   }
 
-  initiatePopUp() {
+  initiatePopUp(redirectUrl=null) {
     const user = this._localAuthService.getUserSession();
     if (user && user["authenticated"] !== "true") {
       this._loader.setLoaderState(true);
-      this.openLoginPopUp().then(() => {
+      this.openLoginPopUp(redirectUrl).then(() => {
         this._loader.setLoaderState(false);
       });
     }
@@ -75,7 +75,7 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
     this._aRoute.snapshot.fragment === "auth" ? this.initiatePopUp() : null;
   }
 
-  async openLoginPopUp() {
+  async openLoginPopUp(redirectUrl=null) {
     setTimeout(async () => {
       const { SharedAuthPopUpComponent } = await import(
         "../../modules/shared-auth-popup/shared-auth-popup.component"
@@ -89,6 +89,7 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
         this.injector
       );
       this.authInstance.instance["flow"] = "login";
+      this.authInstance.instance["redirectUrl"] = redirectUrl;
       (
         this.authInstance.instance[
           "removeAuthComponent$"

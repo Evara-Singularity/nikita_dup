@@ -75,7 +75,7 @@ export class CommonService
     private _loadSearchPopup: Subject<string> = new Subject<string>();
     public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
-    public initiateLoginPopUp: Subject<boolean> = new Subject<boolean>();
+    public initiateLoginPopUp: Subject<string> = new Subject<string>();
 
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
 
@@ -147,12 +147,12 @@ export class CommonService
         return this.networkSpeedState.asObservable();
     }
 
-    setInitaiteLoginPopUp(value)
+    setInitaiteLoginPopUp(redirectUrl = null)
     {
-        this.initiateLoginPopUp.next(value);
+        this.initiateLoginPopUp.next(redirectUrl);
     }
 
-    getInitaiteLoginPopUp(): Observable<boolean>
+    getInitaiteLoginPopUp(): Observable<string>
     {
         return this.initiateLoginPopUp.asObservable();
     }

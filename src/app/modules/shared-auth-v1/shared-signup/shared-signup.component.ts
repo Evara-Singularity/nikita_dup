@@ -52,8 +52,9 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     currentStep = "";
     identifer = null;
     emailorphonevalueSubscription:Subscription = null;
-    @Output('togglePopUp$') togglePopUp$= new EventEmitter();
+
     @Input ('isLoginPopup') isLoginPopup =new EventEmitter();
+    @Output('togglePopUp$') togglePopUp$= new EventEmitter();
     @Output('removeAuthComponent$') removeAuthComponent$= new EventEmitter();
 
 
@@ -188,7 +189,6 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
                 userSession['email'] = this.email.value || "";
                 this.updateProfileLocalStorage(userSession['userName'], userSession['email']);
                 this.handleSuccessProfileUpdate(obj.pname);
-                this.handleLoginPopuUp();
             } else {
                 this._toastService.show({
                     type: "error",
@@ -198,18 +198,13 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         });
     }
 
-    handleLoginPopuUp() {
-        if (this.isLoginPopup) {
-             this.removeAuthComponent$.emit()
-        }
-    }
 
     updateProfileLocalStorage(userName, email){
         let userSession = Object.assign({}, this._localAuthService.getUserSession(), { userName, email });
         this._localAuthService.setUserSession(userSession);
     }
 
-    private handleSuccessProfileUpdate(name = '') {
+    handleSuccessProfileUpdate(name = '') {
         const text = ((name.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) || name == '') ? `Welcome to Moglix!` : `Welcome to Moglix, ${name}`
         // console.log('handleSuccessProfileUpdate name ==>', text);
         setTimeout(() => {
@@ -218,7 +213,11 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
                 text,
             });
         }, 500);
-        this._router.navigateByUrl(this.getRedirectURL() || '/');
+        if (this.isLoginPopup) {
+            this.removeAuthComponent$.emit()
+        } else {
+            this._router.navigateByUrl(this.getRedirectURL() || '/');
+        }
     }
 
     handleSuccessProfileUpdateHomeRedirection() {

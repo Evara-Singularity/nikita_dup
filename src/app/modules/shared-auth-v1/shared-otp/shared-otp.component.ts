@@ -27,7 +27,7 @@ import { SharedAuthService } from './../shared-auth.service';
     templateUrl: './shared-otp.component.html',
     styleUrls: ['./shared-otp.component.scss']
 })
-export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
+export class    SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
 {
     readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
     readonly LOGIN_URL = "/login";
@@ -37,9 +37,9 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
     readonly CHECKOUT_PASSWORD_URL = "/checkout/forgot-password";
     readonly OTP_FIELDS_LENGTH = 6;
     @Input('isCheckout') isCheckout = false;
+
     @Input('isLoginPopup') isLoginPopup;
-    @Output('otpSuccess$') otpSuccess$= new EventEmitter();
-    @Output('togglePopUp$') togglePopUp$= new EventEmitter();
+    @Output() togglePopUp$: EventEmitter<any> = new EventEmitter<any>();
     @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
 
     authFlow: AuthFlowType;//gives flowtype & identifier information
@@ -182,8 +182,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
         )
     }
 
-    processAuthenticaton(response)
-    {
+    processAuthenticaton(response) {
         this._sharedAuthUtilService.sendGenericPageClickTracking(true);
         const BACKURLTITLE = this._localAuthService.getBackURLTitle();
         let REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;
@@ -193,13 +192,16 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
         }
         this._localAuthService.clearAuthFlow();
         this._localAuthService.clearBackURLTitle();
-        this._sharedAuthUtilService.processAuthentication(
-            response,
-            this.isCheckout,
-            ((this.isCheckout) ? this.CHECKOUT_ADDRESS : REDIRECT_URL)
-        );
         if (this.isLoginPopup) {
-          this.otpSuccess$.emit();
+            this._sharedAuthUtilService.loginPopUpAuthenticationProcess(response).subscribe(cartSession => {
+                this.removeAuthComponent$.emit();
+            })
+        } else {
+            this._sharedAuthUtilService.processAuthentication(
+                response,
+                this.isCheckout,
+                ((this.isCheckout) ? this.CHECKOUT_ADDRESS : REDIRECT_URL)
+            );
         }
     }
 

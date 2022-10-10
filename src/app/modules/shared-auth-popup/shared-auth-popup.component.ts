@@ -1,4 +1,4 @@
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedAuthModule } from '../shared-auth-v1/shared-auth.module';
@@ -13,16 +13,22 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 })
 export class SharedAuthPopUpComponent implements OnInit,OnDestroy {
   @Input() flow: string;
+  @Input() redirectUrl: string = null;
   @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private _sharedAuthUtilService: SharedAuthUtilService, private _localAuthService: LocalAuthService) { }
+  constructor(
+    private _sharedAuthUtilService: SharedAuthUtilService, 
+    private _localAuthService: LocalAuthService, 
+    private _router: Router ) { }
 
   ngOnInit(): void { 
+    console.log('change flow ==>', this.redirectUrl);
     this._sharedAuthUtilService.sendLoginPopUpTracking();
   }
 
 
   togglePopUp(value) {
+    
     this.flow = value;
   }
 
@@ -36,6 +42,9 @@ export class SharedAuthPopUpComponent implements OnInit,OnDestroy {
   }
 
   removeAuthComponent() {
+    if(this.redirectUrl){
+      this._router.navigateByUrl(this.redirectUrl);
+    }
     this.removeAuthComponent$.emit();
   }
 

@@ -33,16 +33,16 @@ export class SharedLoginComponent implements OnInit
     readonly LOGIN_USING_EMAIL = this._sharedAuthService.AUTH_USING_EMAIL;
     readonly SUGGESTION_EMAIL_HOST = ['gmail.com', 'yahoo.com', 'live.com', 'rediffmail.com', 'outlook.com']
     @Input('isCheckout') isCheckout = false;
-    @Input('isLoginPopup') isLoginPopup = false;
-    @Output() togglePopUp$: EventEmitter<any> = new EventEmitter<any>();
-    @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
-
     loginNumberForm = this._fb.group({
         phone: ['', [Validators.required, UsernameValidator.validatePhone]]
     })
     loginEmailForm = this._fb.group({
         email: ['', [Validators.required, UsernameValidator.validateAuthEmail]]
-    })
+    });
+    @Input('isLoginPopup') isLoginPopup = false;
+    @Output() togglePopUp$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
+
     loginType = this.LOGIN_USING_PHONE; // default login using phone number
     isLoginNumberFormSuisLoginNumberFormSubmitted: boolean = false; bmitted: boolean = false;
     isLoginNumberFormSubmitted: boolean = false;
@@ -87,6 +87,10 @@ export class SharedLoginComponent implements OnInit
         this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
             this._sharedAuthService.redirectUrl = data['backurl'];
         });
+    }
+
+    intiatePopUpLogin(){
+        this.removeAuthComponent$.emit();
     }
 
 

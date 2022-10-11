@@ -85,6 +85,7 @@ export const ENDPOINTS = {
   GET_PrepaidDiscount: "/payment/getPrepaidDiscount",
   VALIDATE_PRODUCT_SER: "/logistics/validateProductsService",
   GET_CATEGORY: "/category/getcategory",
+  GET_CATEGORY_ANALYTICS: "/category/productsReport",
   GET_BUCKET: "/bucketAggregation",
   GET_BRANDS: "/brand/getbrand",
   GET_CMS_CONTROLLED_PAGES: "/cmsapi/getCmsControlledPage?requestParam=article-1",

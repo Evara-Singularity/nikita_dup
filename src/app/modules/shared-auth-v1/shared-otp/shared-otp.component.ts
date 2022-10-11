@@ -38,7 +38,7 @@ export class    SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
     readonly OTP_FIELDS_LENGTH = 6;
     @Input('isCheckout') isCheckout = false;
 
-    @Input('isLoginPopup') isLoginPopup;
+    @Input('isLoginPopup') isLoginPopup = false;
     @Output() togglePopUp$: EventEmitter<any> = new EventEmitter<any>();
     @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
 
@@ -193,10 +193,13 @@ export class    SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this._localAuthService.clearAuthFlow();
         this._localAuthService.clearBackURLTitle();
         if (this.isLoginPopup) {
-            this._sharedAuthUtilService.loginPopUpAuthenticationProcess(response).subscribe(cartSession => {
-                this.removeAuthComponent$.emit();
-            })
+            setTimeout(() => {
+                this._sharedAuthUtilService.loginPopUpAuthenticationProcess(response).subscribe(cartSession => {
+                    this.removeAuthComponent$.emit();
+                })
+            }, 100);
         } else {
+            console.log('normal login', this.isLoginPopup);
             this._sharedAuthUtilService.processAuthentication(
                 response,
                 this.isCheckout,

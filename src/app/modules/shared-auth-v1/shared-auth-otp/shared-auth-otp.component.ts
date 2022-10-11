@@ -91,6 +91,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this._sharedAuthService.sendOTP(REQUEST).subscribe(
             (response) =>
             {
+                console.trace('initiateOTP', 'called');
                 this._globalLoader.setLoaderState(false);
                 if (response['statusCode'] === 200) {
                     if (isResend) {

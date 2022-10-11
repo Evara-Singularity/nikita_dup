@@ -53,7 +53,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     identifer = null;
     emailorphonevalueSubscription:Subscription = null;
 
-    @Input ('isLoginPopup') isLoginPopup =new EventEmitter();
+    @Input ('isLoginPopup') isLoginPopup = false;
     @Output('togglePopUp$') togglePopUp$= new EventEmitter();
     @Output('removeAuthComponent$') removeAuthComponent$= new EventEmitter();
 
@@ -213,6 +213,7 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
                 text,
             });
         }, 500);
+        
         if (this.isLoginPopup) {
             this.removeAuthComponent$.emit()
         } else {

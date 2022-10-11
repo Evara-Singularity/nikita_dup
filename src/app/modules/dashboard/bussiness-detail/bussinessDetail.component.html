@@ -64,14 +64,14 @@
                         <input formControlName="phone" type="text" [readonly]="!(isGSTINVerified)">
                         <span class="label">Business Phone No.*</span>
                     </label>
-                    <ng-container *ngIf="phone.dirty || phone.touched">
+                    <ng-container *ngIf="(phone.dirty || phone.touched) && phone.errors!=null">
                         <p class="error-txt" *ngIf="phone.hasError('required')">
                             Kindly enter your business phone number
                         </p>
-                        <p class="error-txt" *ngIf="phone.hasError('pattern')">
+                         <p class="error-txt" *ngIf="phone.hasError('invalidPhone')">
                             Only numbers allowed.
                         </p>
-                        <p class="error-txt" *ngIf="!phone.hasError('required') && !phone.hasError('pattern') && (phone.hasError('minlength') ||phone.hasError('maxlength') )">
+                        <p class="error-txt" *ngIf="!phone.hasError('required') && !phone.hasError('invalidPhone') && (phone.hasError('minlength') ||phone.hasError('maxlength') )">
                             Phone number should have 10 digits
                         </p>
                     </ng-container>

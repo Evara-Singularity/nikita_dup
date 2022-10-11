@@ -43,11 +43,11 @@ export class Step {
     }
 
     static validatePhone(c: FormControl) {
-        let phoneRegex = '^[1-9][0-9]{9}$';
+        let phoneRegex = /^[0-9]\d*$/;
 
         let error = null;
 
-        if (c.value === null) {
+        if (c.value === null || c.value=="") {
             error = { 'required': true };
             return error;
         }

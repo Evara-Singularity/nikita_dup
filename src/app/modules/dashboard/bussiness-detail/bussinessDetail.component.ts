@@ -80,15 +80,14 @@ export class BussinessDetailComponent implements OnDestroy {
       pan: "",
       gstin: "",
       isGstInvoice:
-        user.userType == globalConstant.userType.business ? false : true,
+      user.userType == globalConstant.userType.business ? false : true,
     };
-    this.getBusinessDetail();
       this.businessDetailForm = this._formBuilder.group({
-          companyName: ["", [Validators.required]],
+          companyName: ["", Validators.required],
           gstin: ["", [Validators.required, Validators.minLength(15)]],
           isGstInvoice: [this.businessDetail.isGstInvoice, [Validators.required]],
           email: ["", [Step.validateEmail]],
-          phone: [null, [Validators.required, Step.validatePhone]],
+          phone: [null, [Validators.required,Validators.minLength(10),Validators.maxLength(10) ,Validators.pattern(/^[0-9]\d*$/)]],
           postCode: [
               null,
               [

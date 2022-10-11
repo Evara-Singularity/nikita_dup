@@ -190,16 +190,16 @@ export class    SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
         if (queryParams.hasOwnProperty('state') && queryParams.state === 'raiseRFQQuote') {
             REDIRECT_URL += '?state=' + queryParams['state'];
         }
+        this._localAuthService.setUserSession(response);
         this._localAuthService.clearAuthFlow();
         this._localAuthService.clearBackURLTitle();
         if (this.isLoginPopup) {
-            setTimeout(() => {
-                this._sharedAuthUtilService.loginPopUpAuthenticationProcess(response).subscribe(cartSession => {
-                    this.removeAuthComponent$.emit();
-                })
-            }, 100);
+            // console.log('popup login', this.isLoginPopup);
+            this._sharedAuthUtilService.loginPopUpAuthenticationProcess(response).subscribe(cartSession => {
+                this.removeAuthComponent$.emit();
+            })
         } else {
-            console.log('normal login', this.isLoginPopup);
+            // console.log('normal login', this.isLoginPopup);
             this._sharedAuthUtilService.processAuthentication(
                 response,
                 this.isCheckout,

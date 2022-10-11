@@ -81,8 +81,6 @@ export class SharedAuthUtilService implements OnInit
 
     loginPopUpAuthenticationProcess(response): Observable<any> {
         this._globalLoader.setLoaderState(true);
-        this._localAuthService.setUserSession(response);
-        this._localAuthService.clearAuthFlow();
         const userName = response['userName'] === 'User' ? "!" : ", " + response['userName'];
         const welcomeText = `Welcome to Moglix ${userName}`;
         return this._cartService.performAuthAndCartMerge({

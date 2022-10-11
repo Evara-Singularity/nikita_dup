@@ -46,9 +46,8 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
         this.navigationSubscription(); //for #auth
       } else {
         this._commonService.getInitaiteLoginPopUp().subscribe((redirectUrl) => {
-          if (redirectUrl) {
-            this.initiatePopUp(redirectUrl);
-          }
+          // console.log('redirectUrl', redirectUrl);
+          this.initiatePopUp(redirectUrl);
         });
       }
     }

@@ -177,7 +177,7 @@ export class ProductInfoComponent implements OnInit
 
     moveTheSelectedIndex(selectedValue)
     {
-        console.log("this is called");
+        // console.log("this is called");
         if (this._commonService.isBrowser) {
             let tabsId = document.getElementById("infoTabs");
             if (selectedValue > 1) {
@@ -235,6 +235,6 @@ export class ProductInfoComponent implements OnInit
 
     openLoginPopUp() {
         this._localAuthService.setBackURLTitle(this.router.url, '');
-        this._commonService.setInitaiteLoginPopUp(true);
+        this._commonService.setInitaiteLoginPopUp();
     }
 }

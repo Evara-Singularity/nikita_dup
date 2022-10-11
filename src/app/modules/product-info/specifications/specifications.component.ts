@@ -55,7 +55,6 @@ export class SpecificationsComponent implements OnInit
 
     toggleShowMore(){
         this.showSecondaryAttributes = !this.showSecondaryAttributes;
-        console.log('showSecondaryAttributes', this.showSecondaryAttributes);
         this.callback.emit(this.showSecondaryAttributes);
     }
 }

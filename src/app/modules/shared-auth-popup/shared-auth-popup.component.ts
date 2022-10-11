@@ -51,7 +51,7 @@ export class SharedAuthPopUpComponent implements OnInit,OnDestroy, AfterViewInit
     if(this.redirectUrl && userSession && userSession.authenticated == "true" ){
       this._router.navigateByUrl(this.redirectUrl);
     }
-    this._commonService.setBodyScroll(null, true);
+    this._commonService.setBodyScroll(null, true, false);
     this.removeAuthComponent$.emit();
   }
 

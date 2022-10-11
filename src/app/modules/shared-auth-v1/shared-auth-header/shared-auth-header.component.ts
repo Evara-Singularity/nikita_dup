@@ -32,8 +32,8 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy {
         private _router: Router, private activatedRoute: ActivatedRoute,
         private _localAuthService: LocalAuthService) {
         this.activatedRoute.queryParams.subscribe(params => {
-            this.previousUrl = (params.backurl.split('/').includes('dashboard')) ? true : false;
-            console.log(this.previousUrl);
+            this.previousUrl = (params.backurl && params.backurl.split('/').includes('dashboard')) ? true : false;
+            // console.log(this.previousUrl);
         });
     }
 

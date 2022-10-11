@@ -1213,7 +1213,7 @@ export class CommonService
         };
     }
 
-    setBodyScroll(e = null, status: boolean) {
+    setBodyScroll(e = null, status: boolean, appPopUpConfig = true) {
         if (e != null && e.hasOwnProperty('preventDefault') ){
             e.preventDefault();
             e.stopPropagation();
@@ -1223,7 +1223,7 @@ export class CommonService
             if (status) {
                 //enable
                 (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
-                if(document.querySelector('app-pop-up')){
+                if(appPopUpConfig && document.querySelector('app-pop-up')){
                     document.querySelector('app-pop-up').classList.remove('open');
                 }
                 if (e != null && e.hasOwnProperty('preventDefault')) {

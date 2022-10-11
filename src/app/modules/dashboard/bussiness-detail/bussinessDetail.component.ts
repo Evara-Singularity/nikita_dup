@@ -88,7 +88,7 @@ export class BussinessDetailComponent implements OnDestroy {
           isGstInvoice: [this.businessDetail.isGstInvoice, [Validators.required]],
           email: ["", [Step.validateEmail]],
           // phone: [null, [Validators.required,Validators.minLength(10),Validators.maxLength(10) ,Validators.pattern(/^[0-9]\d*$/)]],
-          phone:[null,[Step.validatePhone, Validators.minLength(10),Validators.maxLength(10)]],
+          phone:[null,[Step.validatePhone, Validators.minLength(10)]],
           postCode: [
               null,
               [

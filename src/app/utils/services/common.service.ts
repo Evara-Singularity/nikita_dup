@@ -53,7 +53,7 @@ export class CommonService
     public oosSimilarCard$: Subject<any> = new Subject<any>();
 
     public attachScrollEvent$: Subject<any> = new Subject<any>();
-
+    showWhatsappToolTip=true
     isHomeHeader = false;
     isPLPHeader = false;
     isScrolledHeader = false;
@@ -86,6 +86,8 @@ export class CommonService
     ;
     public previousUrl: string = "/";
     public currentUrl: string = null;
+
+    goldMemberPopupOpened = new Subject();
 
     constructor(
         @Inject(PLATFORM_ID) platformId,
@@ -408,6 +410,7 @@ export class CommonService
 
     generateQueryParams()
     {
+        // debugger;
         const url = location.search.substring(1);
         const queryParams = url
             ? JSON.parse(
@@ -451,7 +454,9 @@ export class CommonService
 
     generateFragmentString(productFilterData)
     {
+        // debugger;
         let fragment = "";
+        console.log("productFilterData",productFilterData)
         if (Object.keys(productFilterData).length > 0) {
             let filter = productFilterData;
             let keys = Object.keys(filter);
@@ -1230,6 +1235,7 @@ export class CommonService
 
     genricApplyFilter(key, item)
     {
+        // debugger;
         if (this.selectedFilterData.filter.hasOwnProperty(key)) {
             const indexInSelectedFilterDataFilterArray =
                 this.selectedFilterData.filter[key].findIndex((x) => x === item.term);
@@ -1245,7 +1251,6 @@ export class CommonService
             this.selectedFilterData.filter[key] = [];
             this.selectedFilterData.filter[key].push(item.term);
         }
-
         this.applyFilter();
     }
 
@@ -1254,13 +1259,14 @@ export class CommonService
         const currentRoute = !currentRouteFromCategoryFilter
             ? this.getCurrentRoute(this._router.url)
             : currentRouteFromCategoryFilter;
+        console.log("currentRoute",currentRoute);
 
         const extras: NavigationExtras = { queryParams: {} };
-
+        console.log("")
         const fragmentString = this.generateFragmentString(
             this.selectedFilterData.filter
         );
-
+        console.log("fragmentString",fragmentString);
         const queryParams = this.generateQueryParams();
 
         extras.queryParams = queryParams;
@@ -1274,14 +1280,13 @@ export class CommonService
             this.selectedFilterData.pageSize = GLOBAL_CONSTANT.default.pageSize;
             delete extras.queryParams["page"];
         }
-
         if (page > 1) {
             this.selectedFilterData.page = page;
             extras.queryParams["page"] = page;
+            console.log("extras", extras);
         }
-
         this.toggleFilter(true);
-        this._router.navigate([currentRoute], extras);
+        this._router.navigate([currentRoute],extras);
     }
 
     toggleFilter(forceFillyRemove?: boolean)
@@ -1527,6 +1532,14 @@ export class CommonService
             return image.replace(invalidURL,CONSTANTS.IMAGE_BASE_URL);
         }
         return image;
+    }
+
+    showgoldMembershipPopup(){
+        this.goldMemberPopupOpened.next();
+    }
+
+    getGoldMembershipPopup(){
+        return this.goldMemberPopupOpened.asObservable();
     }
 
 }

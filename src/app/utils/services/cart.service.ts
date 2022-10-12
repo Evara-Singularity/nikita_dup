@@ -1657,6 +1657,8 @@ export class CartService
                     text1: "Applied coupon has been removed as it is not valid"
                 }
             }
+            // in case of invalid coupon in login, displaying the above custom message
+            this.notifications = [];
             this.notifications.push(couponObj);
             this.appliedPromoCode = '';
         }

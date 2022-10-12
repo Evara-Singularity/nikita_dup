@@ -4,11 +4,23 @@ import CONSTANTS from "@app/config/constants";
 import { ENDPOINTS } from '@app/config/endpoints';
 import { SessionStorageService } from "ngx-webstorage";
 import { DataService } from "../../utils/services/data.service";
+import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class PaymentService{
 
     readonly PAYMENT_MSNS = "paymentMSNS";
+    public savedCardDeselect: Subject<boolean> = new Subject<boolean>();
+
+    setSavedCardDeselect(value)
+    {
+        this.savedCardDeselect.next(value);
+    }
+
+    getSavedCardDeselect(): Observable<boolean>
+    {
+        return this.savedCardDeselect.asObservable();
+    }
 
     constructor(
         private _dataService: DataService,

@@ -6,13 +6,14 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators'
+import { catchError, map, share, tap } from 'rxjs/operators'
 import { HttpClient } from '@angular/common/http';
 import { isPlatformServer } from '@angular/common';
 import { ENDPOINTS } from '../../../config/endpoints';
 import { environment } from '../../../../environments/environment';
 import { GlobalLoaderService } from '../../services/global-loader.service';
 import { CommonService } from '../../services/common.service';
+import { LoggerService } from '@app/utils/services/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +25,12 @@ export class ProductResolver implements Resolve<object> {
     private transferState: TransferState,
     private http: HttpClient,
     public _commonService: CommonService,
-    private loaderService: GlobalLoaderService
+    private loaderService: GlobalLoaderService,
+    private _loggerService : LoggerService,
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
+    const startTime = new Date().getTime();
     // Show loder of the page
     this.loaderService.setLoaderState(true);
 
@@ -58,7 +61,14 @@ export class ProductResolver implements Resolve<object> {
       const PRODUCT_URL = environment.BASE_URL + ENDPOINTS.PRODUCT_INFO + `?productId=${productMsnId}&fetchGroup=true`;
 
       // Store request observable in a validable
-      const productObs = this.http.get(PRODUCT_URL);
+      const productObs = this.http.get(PRODUCT_URL).pipe(share(),
+        map(res => {
+          const logInfo = this._commonService.getLoggerObj(PRODUCT_URL, 'GET', startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        }));;
 
       // List of API's needed for renderig of first fold UI of Product Page 
       const pdpFirstFoldApiList = [productObs];
@@ -66,6 +76,7 @@ export class ProductResolver implements Resolve<object> {
       return forkJoin(pdpFirstFoldApiList).pipe(
         catchError((err) => {
           this.loaderService.setLoaderState(false);
+          console.log(ProductResolver.name, err);
           return of(err);
         }),
         tap(result => {

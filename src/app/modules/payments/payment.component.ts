@@ -42,6 +42,7 @@ export class PaymentComponent implements OnInit {
   canNEFT_RTGS = true;
   successPercentageRawData = null;
   paymentMode : any = CONSTANTS.PAYMENT_MODE
+  isSavedCardChecked: any;
 
   constructor(
     public _dataService: DataService,
@@ -104,7 +105,8 @@ export class PaymentComponent implements OnInit {
   private getSavedCardData() {
     const userSession = this._localAuthService.getUserSession();
     const data = {
-      userEmail: (userSession && userSession['email']) ? userSession['email'] : userSession['phone']
+      userEmail: (userSession && userSession['email']) ? userSession['email'] : userSession['phone'],
+      userType: this.invoiceType
     };
 
     if (this.invoiceType == 'tax') {
@@ -150,6 +152,9 @@ export class PaymentComponent implements OnInit {
       this.spp = true;
     }
 
+    if(this.isSavedCardChecked && block !==null){
+      this._paymentService.setSavedCardDeselect(true);
+    }
     this.isPaymentSelected = true;
 
     this.changeInPaymentBlockAnalytic(cart, mode);
@@ -243,11 +248,20 @@ export class PaymentComponent implements OnInit {
     this.updateTabIndex.emit(index);
   }
 
+  cardSelected(isChecked){
+    if(isChecked){
+      this.isSavedCardChecked = isChecked
+      this.updatePaymentBlock(null);
+    }
+   }
+
   callApisAsyncly()
   {
     this.isShowLoader = true;
     const userSession = this._localAuthService.getUserSession();
-    const data = { userEmail: userSession && userSession["email"] ? userSession["email"] : userSession["phone"], };
+    const data = { userEmail: userSession && userSession["email"] ? userSession["email"] : userSession["phone"], 
+    userType: this.invoiceType
+  };
     if (this.invoiceType == "tax") {
       data["userId"] = userSession["userId"];
       data["userEmail"] = "";

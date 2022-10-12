@@ -22,15 +22,16 @@ export class KpToggleDirective {
     resetClass(id) {
         const panel_body = document.getElementsByClassName('panel-body');
         const panel_head = document.getElementsByClassName('heading-3');
-
-        [].forEach.call(panel_body, (eachHtmlEl) => {
-            eachHtmlEl.style.display = 'none';
-        });
-
-        [].forEach.call(panel_head, (eachHtmlEl) => {
-            eachHtmlEl.classList.remove('ico-up');
-            eachHtmlEl.classList.remove('ico-expand');
-        });
+        if(panel_body && panel_body.length && panel_body[0].id !== 'cart-error') {
+            [].forEach.call(panel_body, (eachHtmlEl) => {
+                eachHtmlEl.style.display = 'none';
+            });
+    
+            [].forEach.call(panel_head, (eachHtmlEl) => {
+                eachHtmlEl.classList.remove('ico-up');
+                eachHtmlEl.classList.remove('ico-expand');
+            });
+        }
 
         if (id) {
             document.getElementById(id).style.display = 'block';   

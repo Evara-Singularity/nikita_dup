@@ -1657,6 +1657,7 @@ export class CartService
                     text1: "Applied coupon has been removed as it is not valid"
                 }
             }
+            this.notifications = [];
             this.notifications.push(couponObj);
             this.appliedPromoCode = '';
         }

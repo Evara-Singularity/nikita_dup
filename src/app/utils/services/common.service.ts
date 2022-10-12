@@ -149,13 +149,11 @@ export class CommonService
 
     setInitaiteLoginPopUp(redirectUrl = null)
     {
-        console.log('setInitaiteLoginPopUp', redirectUrl);
         this.initiateLoginPopUp.next(redirectUrl);
     }
 
     getInitaiteLoginPopUp(): Observable<string>
     {
-        console.log('setInitaiteLoginPopUp', 'subscribed');
         return this.initiateLoginPopUp.asObservable();
     }
 

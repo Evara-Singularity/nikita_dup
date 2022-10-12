@@ -41,10 +41,12 @@ export class BottomNavigationComponent implements OnInit {
   }
 
   checkIfUserLoggedIn(url, title = "") {
+    console.log('checkIfUserLoggedIn', url);
     let user = this.localStorageService.retrieve("user");
     if (user && user.authenticated == "true" || url=='/quickorder' || url == '/login' || url=='/' ) {
       this.router.navigate([url]); 
     } else {
+      console.log('checkIfUserLoggedIn', url);
       this.localAuthService.setBackURLTitle(url, title);
       this._commonService.setInitaiteLoginPopUp('/dashboard/order');
     }

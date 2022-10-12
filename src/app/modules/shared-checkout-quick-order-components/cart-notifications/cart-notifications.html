@@ -1,10 +1,10 @@
 <div class="cart-errors" *ngIf="displayNotifications">
-    <div class="panel-head" [appKpToggle]="{idName: 'cart-error' ,iconMode : true}">
+    <div class="panel-head" [appKpToggle]="{idName: 'cart-errors' ,iconMode : true}">
         <h3 class="heading titleError">
             Updates for your cart items
         </h3>
     </div>
-    <div class="panel-body" id="cart-error">
+    <div class="panel-body" id="cart-errors">
         <ul>    
             <li *ngFor="let ivm of notfications | oosValitionMessage">
                 <ng-container *ngIf="ivm.type == 'oos' || ivm.type == 'unserviceable'">

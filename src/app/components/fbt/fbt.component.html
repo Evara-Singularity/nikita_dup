@@ -42,7 +42,14 @@
                             <span class="after-discount">{{product.sellingPrice | mathFloor | currency:
                                 'INR' : 'symbol' : '1.0-0'}}</span>
                         </p>
-                        <p class="product-qty">Qty/Pack : 10 Piece</p>
+                         <div class="quan-details" *ngIf="product.productQuantity > 1"> 
+                            <p>Qty Per Pack :
+                                <span>{{product.packageUnit}}</span>
+                            </p>
+                            <p>Min Order Qty :
+                                <span>{{product.productQuantity}}/Pack</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </li>

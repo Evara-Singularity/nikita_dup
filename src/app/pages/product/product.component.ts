@@ -2500,6 +2500,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.offerSectionInstance.instance["price"] = price;
             this.offerSectionInstance.instance['gstPercentage'] = gstPercentage;
             this.offerSectionInstance.instance['productmsn'] = this.productSubPartNumber || this.defaultPartNumber;
+            this.offerSectionInstance.instance['brandName'] = this.rawProductData["brandDetails"]['brandName'];
+            this.offerSectionInstance.instance['categoryId'] = this.rawProductData["categoryDetails"][0]["categoryCode"];
             (
                 this.offerSectionInstance.instance[
                 "viewPopUpHandler"

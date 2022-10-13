@@ -78,7 +78,7 @@ export class EmiComponent {
         private _localStorageService: LocalStorageService, 
         private _commonService: CommonService, 
         private _localAuthService: LocalAuthService, 
-        private _cartService: CartService, 
+        public _cartService: CartService, 
         private _formBuilder: FormBuilder, 
         private _objectToArray: ObjectToArray,
         private _sortByEMIMonths: SortByEMIMonthsPipe,

@@ -40,7 +40,7 @@ export class WalletComponent {
     constructor(
         private _localStorageService: LocalStorageService,
         private _localAuthService: LocalAuthService,
-        private _cartService: CartService,
+        public _cartService: CartService,
         private _commonService: CommonService,
         private _objectToArray: ObjectToArray,
         private _loaderService: GlobalLoaderService,

@@ -163,9 +163,10 @@
             </ng-container>
 
             <div class="continue-button">
+                <prepaid-offer-checkout ></prepaid-offer-checkout> 
                 <div class="container">
                     <p class="total-mount" *ngIf="totalPayableAmount>0">
-                        <span class="payable-amnt">Payable Amount</span> ₹{{ (totalPayableAmount - (totalPayableAmount
+                        <span class="payable-amnt">Payable Amount</span> ₹{{ (totalPayableAmount- _cartService.totalPrepaidSaving - (totalPayableAmount
                         % 1)) | number : '1.2-2' }}
                     </p>
                     <button type="submit" [disabled]="!emiForm.valid" (click)="pay(emiForm.value, emiForm.valid)"

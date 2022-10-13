@@ -44,7 +44,7 @@ export class PaytmUpiComponent {
         private loaderService: GlobalLoaderService,
         private _commonService: CommonService,
         private _localAuthService: LocalAuthService,
-        private _cartService: CartService,
+        public _cartService: CartService,
         private _formBuilder: FormBuilder,
         private _dataService: DataService,
         private _analytics: GlobalAnalyticsService) {

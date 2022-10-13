@@ -71,6 +71,12 @@ export class CartService
 
     private previousUrl: string = null;
     private currentUrl: string = null;
+    prepaidDataMapping: any=null;
+    totalPrepaidSaving=0;
+
+    totalPayableAmountAfterPrepaid: number=0;
+    totalPayableAmountWithoutPrepaid:number=0
+
 
     constructor(
         private _dataService: DataService, private _localStorageService: LocalStorageService, private localAuthService: LocalAuthService,
@@ -124,11 +130,25 @@ export class CartService
 
     setPayBusinessDetails(data) { Object.assign(this.payBusinessDetails, data); }
 
-    getPayBusinessDetails() { return this.payBusinessDetails; }
+    getPayBusinessDetails() { return this.payBusinessDetails; }  
+
+    //prepaid object
+    generatePrepaidSession(prepaidDiscount) {
+        this.totalPrepaidSaving = 0;
+        this.prepaidDataMapping = Object.assign({}, ...prepaidDiscount.map(object => {
+            if (object.applicable) {
+                this.totalPrepaidSaving = this.totalPrepaidSaving + object.amount
+            }
+            return ({ [object.msn]: object })
+        }))
+    }
 
     // get generic cart session object
     generateGenericCartSession(cartSessionFromAPI)
     {
+        if (cartSessionFromAPI['prepaidDiscountList']) {
+            this.generatePrepaidSession(cartSessionFromAPI['prepaidDiscountList']);
+        }
         const modifiedCartSessionObject = {
             cart: Object.assign({}, cartSessionFromAPI['cart']),
             itemsList: (cartSessionFromAPI["itemsList"] ? [...cartSessionFromAPI["itemsList"]] : []),
@@ -136,8 +156,7 @@ export class CartService
             payment: cartSessionFromAPI["payment"],
             offersList: cartSessionFromAPI["offersList"],
             extraOffer: cartSessionFromAPI["extraOffer"],
-            prepaidDiscountList:cartSessionFromAPI['cartSessionFromAPI']
-
+            prepaidDiscountList:cartSessionFromAPI['prepaidDiscountList'] || null            
         }
         let totalAmount: number = 0;
         let tawot: number = 0; // totalAmountWithOutTax
@@ -790,7 +809,6 @@ export class CartService
                 return this.getCartBySession(request).pipe(
                     map((res: any) =>
                     {
-                        console.log("generate generic cart session >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",this.generateGenericCartSession(res))
                         return this.generateGenericCartSession(res);
                     })
                 );
@@ -2179,6 +2197,26 @@ export class CartService
         data["order"] = order;
         this._globalAnalyticsService.sendAdobeCall(data, trackingname);
         /*End Adobe Analytics Tags */
+    }
+
+    AddSimilarProductOncartItem(productName,categoryId,BrandName) {
+        // let URL =
+        // CONSTANTS.NEW_MOGLIX_API  + ENDPOINTS.GET_ADD_SIMILAR_PRODUCT_ON_CART +
+        // "?str=" + productName +
+        // "&category=" + categoryId +
+        // "&BrandId=" + BrandName ;
+
+        let URL =
+        'https://searchapidev.moglilabs.com/searchApi'+ ENDPOINTS.GET_ADD_SIMILAR_PRODUCT_ON_CART +
+        "?str=" + productName +
+        "&category=" + categoryId +
+        "&brand=" + BrandName ;
+        
+        return this._dataService.callRestful("GET", URL).pipe(
+            map(res => {
+                return res;
+            })
+        );
     }
 
     

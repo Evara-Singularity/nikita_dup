@@ -12,6 +12,7 @@ import { OrderSummaryModule } from '@app/modules/shared-checkout-quick-order-com
 import { SharedCheckoutUnavailableItemsModule } from '@app/modules/shared-checkout-unavailable-items/shared-checkout-unavailable-items.module';
 import { CartModule } from '@app/modules/shared-checkout-quick-order-components/cart/cart.module';
 import { GenericOffersModule } from '@app/modules/ui/generic-offers/generic-offers.component';
+import { PrepaidOfferModule } from '@app/modules/prepaid-offer/prepaid-offer.component';
 
 @NgModule({
     imports: [
@@ -26,7 +27,8 @@ import { GenericOffersModule } from '@app/modules/ui/generic-offers/generic-offe
         // Custom utils modules added
         ObjectToArrayPipeModule,
         MathFloorPipeModule,
-        SharedCheckoutUnavailableItemsModule
+        SharedCheckoutUnavailableItemsModule,
+        PrepaidOfferModule
     ],
     declarations: [
         QuickOrderComponent,

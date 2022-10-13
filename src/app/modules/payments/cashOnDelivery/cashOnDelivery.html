@@ -1,5 +1,6 @@
 <section class="cash-container container">
     <div id="cash_block" class=" pad-lr-15">
+        <p class="medium-cod-heading" style="background-color: beige;" *ngIf="_cartService.totalPrepaidSaving>0">You are losing out on an extra ₹{{_cartService.totalPrepaidSaving}} prepaid discount by making cash on delivery .</p>
         <p class="green-txt mb-15 f-14" *ngIf="isCODEnable">Great! All products in your cart are eligible for cash on delivery.</p>
         <p class="medium-cod-heading">*Payment through Card on delivery, is subject to availability of the device.</p>
         <div class="wp-100 mar-tb-15 pad-lr-10 o-hidden">

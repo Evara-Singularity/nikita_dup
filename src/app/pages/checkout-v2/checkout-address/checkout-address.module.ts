@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { PrepaidOfferCheckoutModule } from '@app/modules/prepaid-offer-checkout/prepaid-offer-checkout.component';
 import { SharedCheckoutAddressModule } from '@app/modules/shared-checkout-address/shared-checkout-address.module';
 import { CartNoItemModule } from '@app/modules/shared-checkout-quick-order-components/cart-no-item/cart-no-item.module';
 import { CartNotificationsModule } from '@app/modules/shared-checkout-quick-order-components/cart-notifications/cart-notifications.module';
@@ -25,7 +26,8 @@ import { CheckoutAddressComponent } from './checkout-address.component';
     SharedCheckoutAddressModule,
     SharedCheckoutStepperModule,
     SharedCheckoutUnavailableItemsModule,
-    MathCeilPipeModule
+    MathCeilPipeModule,
+    PrepaidOfferCheckoutModule
   ]
 })
 export class CheckoutAddressModule { }

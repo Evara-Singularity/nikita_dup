@@ -316,4 +316,14 @@ export class DataService {
         return this.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_SESSION);
     }
 
+    getCouponOnBrandCategory(brandName, categoryId) {
+        let URL =
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPOUN_ON_BRAND_CATEGORY +
+            "?brandName=" + brandName +
+            "&categoryCode=" + categoryId;
+        // return this.callRestful("GET", 'https://cmsapiqa.moglilabs.com/cmsapi/prepaidDiscount/getByBrandNameAndCategoryCode?brandName=' + brandName+ '&categoryCode='+categoryId);
+        // return this.callRestful("GET", 'http://localhost:3000/category'); 
+        return this.callRestful("GET", URL);
+
+    }
 }

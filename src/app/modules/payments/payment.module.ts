@@ -32,7 +32,7 @@ import { GenericOffersModule } from '../ui/generic-offers/generic-offers.compone
         SavedCardModule,
         UpiModule,
         PaytmUpiModule,
-        PopUpModule
+        PopUpModule,
     ],
     declarations: [
         PaymentComponent

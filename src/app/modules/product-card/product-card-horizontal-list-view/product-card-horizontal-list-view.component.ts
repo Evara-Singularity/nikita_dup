@@ -58,6 +58,7 @@ export class ProductCardHorizontalListViewComponent extends ProductCardCoreCompo
 
   get youtubeThumbnail(){
     return this._ytThumbnail.transform(this.product['videoInfo'][0]['link'],'hqdefault') || null;
+    // return null
   }
 
 

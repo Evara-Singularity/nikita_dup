@@ -46,7 +46,7 @@ export class UpiComponent implements OnInit {
         private _loaderService: GlobalLoaderService,
         private _commonService: CommonService,
         private _localAuthService: LocalAuthService,
-        private _cartService: CartService,
+        public _cartService: CartService,
         private _formBuilder: FormBuilder,
         private _objectToArray: ObjectToArray,
         private lsr: LowSuccessMessagePipe,
@@ -155,7 +155,8 @@ export class UpiComponent implements OnInit {
                 "productinfo": "MSNghihjbc",
                 "bankcode": "TEZ",
             },
-            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
+            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra),
+            
         };
         if(this.type == "tax"){
             upiData["mode"]="UPI";

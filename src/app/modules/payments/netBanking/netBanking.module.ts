@@ -7,6 +7,7 @@ import { RazorPayFormModule } from '../payment-forms/razorPayForm/razorPayForm.m
 import { ObjectToArrayPipeModule } from '../../../utils/pipes/object-to-array.pipe';
 import { MathCeilPipeModule } from '../../../utils/pipes/math-ceil';
 import { SelectPopupModule } from '../../select-popup/select-popup.module';
+import { PrepaidOfferCheckoutModule } from '@app/modules/prepaid-offer-checkout/prepaid-offer-checkout.component';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { SelectPopupModule } from '../../select-popup/select-popup.module';
         PayuFormModule,
         RazorPayFormModule,
         MathCeilPipeModule,
-        SelectPopupModule
+        SelectPopupModule,
+        PrepaidOfferCheckoutModule
     ],
     declarations: [
         NetBankingComponent,

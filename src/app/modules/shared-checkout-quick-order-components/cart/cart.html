@@ -1,15 +1,4 @@
 <div *ngIf="displayPage">
-    <div class="pwa-row">
-        <div class="dropped-price-container">
-            <div class="drop-icon">
-                <img src="../../../../assets/img/drop-price.png">
-            </div>
-            <div class="dropped-price-desc">
-                <p class="g-text">Woohoo! Cart price dropped by ₹500.</p>
-                <p>Now pay only <span class="before-discount">₹3500</span> <strong> ₹3000</strong> with online payment</p>
-            </div>
-        </div>
-    </div>
     <div class="pwa-row pt-0 pb-0" *ngIf="isQuickorder">
         <h3 class="pad-0">{{_cartService.getGenericCartSession?.itemsList.length}} item(s) in your cart</h3>
     </div>
@@ -47,7 +36,7 @@
                             <span class="after-disc" *ngIf="item.bulkPrice!==null">&nbsp;₹{{item.bulkPriceWithoutTax |
                                 mathFloor | number : '1.2-2'}}</span>
                         </p>
-                        <p class="prepaid-discount-txt">You get ₹250 prepaid discount</p>
+                        <p class="prepaid-discount-txt" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId]['applicable']">You get {{_cartService.prepaidDataMapping[item.productId]['amount']}} prepaid discount</p>
                     </div>
 
                 </div>
@@ -85,10 +74,10 @@
                         </span>
                 </div>
             </div>
-            <div class="pwa-row">
-                <div class="shop-more-container">
+            <div class="pwa-row" *ngIf="_cartService.prepaidDataMapping">
+                <div class="shop-more-container" *ngIf="!(_cartService.prepaidDataMapping[item.productId]['applicable']) && (_cartService.prepaidDataMapping[item.productId]['amount'])">
                     <p class="shop-more-text">Shop more for ₹1400 & get <span class="prepaid-discount-txt"><strong>₹500 discount</strong></span> in the same category.</p>
-                    <p class="add-products-btn">ADD PRODUCTS</p>
+                    <p class="add-products-btn" (click)="similarProduct(item.productName,item.categoryCode,item.brandName)">ADD PRODUCTS</p>
                 </div>
             </div>
             <div *ngIf="item.oos" class="oos-item-block">
@@ -173,3 +162,4 @@
         </div>
     </div>
 </app-bottom-menu>
+<ng-container #cartAddProductPopup ></ng-container>

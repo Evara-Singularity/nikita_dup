@@ -19,13 +19,13 @@ export class HomeExpandedHeaderComponent implements OnInit {
   @Input() isUserLogin: boolean = null;
   @Input() enableBackBtn: boolean = false;
   @Input() imgAssetPath: string = "";
-  searchValue='';
+  searchValue = '';
   isRoutedBack: boolean;
 
   constructor(
     public _commonService: CommonService,
     public route: ActivatedRoute,
-    public  _localAuthService: LocalAuthService,
+    public _localAuthService: LocalAuthService,
   ) { }
 
   ngOnInit(): void {
@@ -33,13 +33,23 @@ export class HomeExpandedHeaderComponent implements OnInit {
       this.isRoutedBack = res && res.hasOwnProperty('back') ? true : false
       this.searchValue = (res['search_query']) ? res['search_query'] : ''
       this._commonService.openLoader().subscribe(resp => {
-        if(resp == true) {
+        if (resp == true) {
           this.loadSearchNav$.emit();
         }
       })
     })
   }
+  addLottieScript() {
+    this._commonService.addLottieScriptSubject.subscribe(lottieInstance => {
+      this._commonService.callLottieScript();
+      lottieInstance.next();
+    });
+  }
+  ngAfterViewInit() {
+    this.addLottieScript();
+    this._commonService.callLottieScript();
+  }
 
-  get displayPage() { return this.isUserLogin != null && this.imgAssetPath.length>0}
+  get displayPage() { return this.isUserLogin != null && this.imgAssetPath.length > 0 }
 
 }

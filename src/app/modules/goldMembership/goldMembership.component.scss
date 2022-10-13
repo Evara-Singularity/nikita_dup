@@ -1,6 +1,21 @@
 @import '../../scss/variables';
+.gold-animation{
+    position:absolute;
+    left:0px;
+    right:0px;
+    top:30%;
+    left:50%;
+    z-index: 99;
+    transform:translate(-50%, -50%);
+    margin:0 auto;
+    lottie-player{
+        margin:0 auto;
+        text-align: center;
+    }
+  }
 .gold-membership-container{
     background-color: #fff;
+  
     .cross-icon{
         padding: 15px 15px 0;
         background: #070b2e;
@@ -15,6 +30,7 @@
         background: #070b2e;
         padding: 15px 0;
         text-align: center;
+        position: relative;
         img{
             max-width: 100%;
             text-align: center;

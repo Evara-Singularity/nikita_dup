@@ -21,6 +21,7 @@ export const CONSTANTS = {
   CDN_IMAGE_PATH: environment.CDN_IMAGE_URL,
   BROWSER_AGENT_TOKEN: new InjectionToken<string>('browserName'),
   SPEED_TEST_IMAGE: 'https://cdn.moglix.com/cms/flyout/Images_2021-09-15_15-45-36_Images_2020-06-03_16-42-50_SafetyImage-min.png', // ~500 KB image
+  CDN_LOTTIE_PATH:'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
   pwaImages: {
     imgFolder: 'b/I/P/B/d'
   },

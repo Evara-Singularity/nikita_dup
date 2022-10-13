@@ -17,10 +17,13 @@
             </p>
             <i class="icon-arrow-right-s-line"></i>
         </div>
+        
         <a (click)="_commonService.showgoldMembershipPopup();sideMenu()">
-            <div class="gold-member-strip" *ngIf="_localAuthService.IsUserGoldMember()">
+            <div class="gold-member-strip" *ngIf="_localAuthService.IsUserGoldMember()" >
                 <p>GOLD MEMBER</p>
-                <img src="../../../assets/img/gold-arrow.png">
+                <span class="lottie-span">
+                    <lottie-player src="../../../assets/json/arrow.json" background="transparent"  speed="1"  style="width:40px; height: 40px;" loop  autoplay></lottie-player>
+                </span>
             </div>
         </a>
         <div class="scrolled">

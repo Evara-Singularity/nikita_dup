@@ -9,7 +9,7 @@ import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from "@a
 import { ClientUtility } from "@app/utils/client.utility";
 import { DataService } from "./data.service";
 import { CheckoutService } from "./checkout.service";
-import { isPlatformServer, isPlatformBrowser } from "@angular/common";
+import { isPlatformServer, isPlatformBrowser, DOCUMENT } from "@angular/common";
 import { Observable } from "rxjs";
 import { Subject } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
@@ -76,6 +76,7 @@ export class CommonService
     public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
+    public addLottieScriptSubject: Subject<any> = new Subject<any>();
 
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
@@ -100,6 +101,7 @@ export class CommonService
         private rendererFactory: RendererFactory2,
         private _router: Router,
         private _route: ActivatedRoute,
+        @Inject(DOCUMENT) private _document: Document
     )
     {
         this.windowLoaded = false;
@@ -1525,7 +1527,6 @@ export class CommonService
             return productTags
         }
     }
-
     slicingHref(image) {
         const invalidURL = `${CONSTANTS.IMAGE_BASE_URL}${CONSTANTS.IMAGE_BASE_URL}`
         if (image.includes(invalidURL)) {
@@ -1533,7 +1534,24 @@ export class CommonService
         }
         return image;
     }
-
+    callLottieScript(){
+        let script = this._renderer2.createElement('script');
+        script.src = CONSTANTS.CDN_LOTTIE_PATH;
+        script.id = 'lottieScript';
+        let scripts = this._document.getElementsByTagName('script');
+        for (var i = scripts.length; i--;) {
+            if (scripts[i].src == CONSTANTS.CDN_LOTTIE_PATH){
+                return;
+            }
+            else{
+                this._renderer2.appendChild(this._document.body,script);
+                script.onload = ()=>{
+                    console.log("loaded");
+                };
+            }
+         }
+    }   
+  
     showgoldMembershipPopup(){
         this.goldMemberPopupOpened.next();
     }

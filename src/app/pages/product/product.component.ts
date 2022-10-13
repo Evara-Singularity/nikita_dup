@@ -48,6 +48,7 @@ import * as $ from 'jquery';
 import { catchError, delay, filter, map, mergeMap } from "rxjs/operators";
 import { TrackingService } from "@app/utils/services/tracking.service";
 
+
 interface ProductDataArg
 {
     productBO: string;
@@ -2982,6 +2983,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         {
             this.appPromoVisible = status;
         });
+        
     }
 
 
@@ -4388,5 +4390,4 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.closeProductInfoPopup();
 
     }
-
 }

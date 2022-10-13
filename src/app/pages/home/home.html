@@ -80,6 +80,7 @@
                     <ng-container #FeaturedBrands></ng-container>
                 </div>
             </div>
+            <div id="icon-container"></div>
         </div>
         <div class="pwa-col-12 recently-container">
             <div data-observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
@@ -97,8 +98,6 @@
                 <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="categoriesInstance"></home-page-skeletons>
             </div>
         </ng-container>
-        
-
         <!-- Section for feature Arrival -->
         <div data-observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [ngClass]="{'featr_arrival-skeleton':featuredArrivalsInstance == null}" [debounceTime]="50"
             (visible)="onVisibleFeaturedArrivals($event)">
@@ -106,13 +105,11 @@
             <!-- <home-page-skeletons [type]="'FEATURED-ARRIVALS'" [templateRefInstance]="featuredArrivalsInstance"></home-page-skeletons> -->
         </div>
         <ng-container class="bs-popup" #HomePopupComponet></ng-container>
-
         <div class="pwa-col-12">
             <home-accordians [carouselData]="carouselData"></home-accordians>
         </div>
         <whatsapp-toast (click)="sendTrackingData()" [customText]="'Hi'"></whatsapp-toast>
     </div>
-
     <bottom-navigation></bottom-navigation>
     <!-- section for trending categories-->    
 </div>

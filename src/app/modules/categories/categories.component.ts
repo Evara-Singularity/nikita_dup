@@ -206,5 +206,6 @@ export class Categories implements OnInit {
 		ProductCardVerticalBlockViewModule,
 	],
 	providers: [],
+	exports:[Categories]
 })
-export class FeaturedArrivalModule {}
+export class HomeCategoryProductsModule {}

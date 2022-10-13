@@ -35,5 +35,6 @@ export class FeaturedBrands {
 @NgModule({
 	declarations: [FeaturedBrands],
 	imports: [CommonModule, RouterModule, LazyLoadImageModule],
+	exports: [FeaturedBrands]
 })
 export class FeaturedBrandsModule {}

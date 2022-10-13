@@ -89,9 +89,7 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy {
     }
 
     onHomepageBtnClick() {
-        // console.log('onHomepageBtnClick', 'called');
         if(this.isLoginPopup){
-            // console.log('onHomepageBtnClick', 'called 1');
             this.onSkipBtnClick$.emit(true);
             return;
         }

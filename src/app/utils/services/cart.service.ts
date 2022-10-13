@@ -1657,8 +1657,11 @@ export class CartService
                     text1: "Applied coupon has been removed as it is not valid"
                 }
             }
-            // in case of invalid coupon in login, displaying the above custom message
-            this.notifications = [];
+            // in case of invalid coupon in login, displaying the above custom message by removing generic message
+            const index = this.notifications.findIndex(each => each['data']['text1'] == 'Applied Promo Code has been updated.');
+            if(index != -1) {
+                this.notifications.splice(index, 1);
+            }
             this.notifications.push(couponObj);
             this.appliedPromoCode = '';
         }

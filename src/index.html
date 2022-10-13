@@ -55,7 +55,7 @@
                     j.src =
                         'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
                     j.onload = ()=>{
-                        console.log()
+                        console.log('GTAG Loaded')
                     }
                     setTimeout(() => {
                         f.parentNode.insertBefore(j, f)
@@ -66,26 +66,6 @@
         digitalData = {};
         digitalData.event = [];
     </script>
-    <!-- <script defer="true">
-      let lottie = [];
-         if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
-                // debugger;
-                (function (w, d, s) {
-                    var f = d.getElementsByTagName(s)[0];
-                    var j = d.createElement(s);
-                    j.defer = true;
-                    j.src =
-                        'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js';
-                    j.onload = ()=>{
-                        console.log("hello");
-                    }
-                    setTimeout(() => {  
-                        f.parentNode.insertBefore(j, f)
-                    }, 0);
-                    console.log();
-                })(window, document,'script');
-        }
-    </script> -->
     <script defer src="//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js" ></script>
     <script defer src="https://www.google-analytics.com/analytics.js" ></script>
     

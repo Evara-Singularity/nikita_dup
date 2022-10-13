@@ -1542,14 +1542,12 @@ export class CommonService
             }
             else{
                 this._renderer2.appendChild(this._document.body,script);
-                script.onload = this.doneLoading;
+                script.onload = ()=>{
+                    console.log("loaded");
+                };
             }
          }
     }   
-
-   doneLoading() {
-    console.log("loaded");
-  }
   
     showgoldMembershipPopup(){
         this.goldMemberPopupOpened.next();

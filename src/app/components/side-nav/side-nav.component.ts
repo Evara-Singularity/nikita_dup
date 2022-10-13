@@ -24,7 +24,7 @@ export class SideNavComponent implements OnInit {
     private globalAnalyticService: GlobalAnalyticsService,
     private router: Router,
     public _localAuthService: LocalAuthService,
-    public  _commonService: CommonService,
+    public _commonService: CommonService,
   ) { }
 
   ngOnInit(): void {
@@ -36,7 +36,7 @@ export class SideNavComponent implements OnInit {
     this.localStorageService.observe('tocd').subscribe((value) => this.reStoreHome = true);
   }
 
-  trackAnalyticAndRedirect(url, checkForloggedIn = false, title=null) {
+  trackAnalyticAndRedirect(url, checkForloggedIn = false, title = null) {
     let PAGE = {
       channel: "menu_hamburger",
       pageName: this.router.url,
@@ -106,14 +106,15 @@ export class SideNavComponent implements OnInit {
       this.router.navigate(['/login'], navigationExtras);
     }
   }
-  
-  addLottieScript(){
-		this._commonService.addLottieScriptSubject.subscribe(lottieInstance => {
-			this._commonService.callLottieScript();
-			lottieInstance.next();
-		});
-	}
-  ngAfterViewInit(){
+
+  addLottieScript() {
+    this._commonService.addLottieScriptSubject.subscribe(lottieInstance => {
+      this._commonService.callLottieScript();
+      lottieInstance.next();
+    });
+  }
+
+  ngAfterViewInit() {
     this._commonService.callLottieScript();
     this.addLottieScript();
   }
@@ -122,7 +123,7 @@ export class SideNavComponent implements OnInit {
 
 @NgModule({
   imports: [
-    CommonModule, 
+    CommonModule,
     RouterModule,
     AppPromoModule,
     MockLottiePlayerModule

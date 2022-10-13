@@ -468,6 +468,7 @@ export class CartComponent
     similarProduct(productName, categoryId, BrandName) {
         if (productName && categoryId && BrandName) {
             this._globalLoaderService.setLoaderState(true);
+            // TODO: check this final
             this._cartService.AddSimilarProductOncartItem(productName, categoryId, BrandName).subscribe(response => {
                 console.log("response in cart component%%%%%%%%%%%%%%%%%", response)
                 if (response && response['totalCount'] && response['totalCount'] > 0) {

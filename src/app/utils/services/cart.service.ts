@@ -74,6 +74,7 @@ export class CartService
     prepaidDataMapping: any=null;
     totalPrepaidSaving=0;
 
+    // TODO: move it to component level
     totalPayableAmountAfterPrepaid: number=0;
     totalPayableAmountWithoutPrepaid:number=0
 

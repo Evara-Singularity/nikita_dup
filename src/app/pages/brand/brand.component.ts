@@ -587,11 +587,10 @@ export class BrandComponent {
                 if (response['statusCode'] == 200 && response['data'] != null) {
                     this.couponForbrandCategory = response['data'];
                     this.couponForbrandCategoryDiscount = this.couponForbrandCategory['absoluteDiscount'] ? ('₹' + this.couponForbrandCategory['absoluteDiscount']) : (this.couponForbrandCategory['percentageDiscount'] + '%')
-                    this._globalLoader.setLoaderState(false)
                 } else {
                     this.couponForbrandCategory = null;
-                    this._globalLoader.setLoaderState(false)
                 }
+                this._globalLoader.setLoaderState(false)
             })
 
         }

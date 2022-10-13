@@ -973,6 +973,7 @@ export class ProductService {
     }
 
     addCartSimilarProductToProductEntity(product: any) {
+        // TODO: search response mapping. 
         const productEntity: ProductsEntity = {
             moglixPartNumber: product['moglixPartNumber'],
             moglixProductNo: product['moglixProductNo'],

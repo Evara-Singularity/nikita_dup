@@ -21,6 +21,7 @@ export class PrepaidOfferComponent implements OnInit {
   }
 
   totalPayableAmountCalculation() {
+    // TODO: OPTIMIZE 
     const cartSession = this._cartService.getCartSession();
     const updatedCartSessionAfterShipping = this._cartService.generateGenericCartSession(cartSession);
     this._cartService.setShippingPriceChanges(updatedCartSessionAfterShipping);

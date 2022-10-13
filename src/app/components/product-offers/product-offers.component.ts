@@ -90,11 +90,10 @@ export class ProductOffersComponent implements OnInit
           this.couponForbrandCategory = response['data'];
           this.minimumRequiredPriceforCoupon = response['data']['minimumCartValue']
           this.couponForbrandCategoryDiscount = this.couponForbrandCategory['absoluteDiscount'] ? ('₹' + this.couponForbrandCategory['absoluteDiscount']) : (this.couponForbrandCategory['percentageDiscount'] + '%')
-          this._globalLoader.setLoaderState(false)
         } else {
           this.couponForbrandCategory = null;
-          this._globalLoader.setLoaderState(false)
         }
+        this._globalLoader.setLoaderState(false)
       })
 
     }

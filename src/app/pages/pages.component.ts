@@ -76,8 +76,8 @@ export class PagesComponent implements OnInit
   ngOnInit()
   {
     const queryParams = this._aRoute.snapshot.queryParams;
-    const orderId = queryParams['orderId'] || queryParams['txnId'];
-      if (orderId) return;
+    const orderId = queryParams['orderId'];
+    if (orderId) return;
     this.initialize();
   }
 

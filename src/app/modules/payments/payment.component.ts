@@ -1,4 +1,4 @@
-import { Compiler, Component, ComponentRef, ElementRef, EventEmitter, Injector, NgModuleRef, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { Compiler, Component, ComponentRef, ElementRef, EventEmitter, Injector, NgModuleRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CartUtils } from "@app/utils/services/cart-utils";
@@ -24,7 +24,7 @@ import { PaymentService } from "./payment.service";
   templateUrl: "./payment.html",
   styleUrls: ["./payment.scss"],
 })
-export class PaymentComponent implements OnInit
+export class PaymentComponent implements OnInit, OnDestroy
 {
   readonly REPLACE_URL = { replaceUrl: true };
   paymentBlock: number;
@@ -74,6 +74,7 @@ export class PaymentComponent implements OnInit
     this.isShowLoader = true;
     
   }
+  
 
   ngOnInit()
   {
@@ -81,7 +82,6 @@ export class PaymentComponent implements OnInit
     this.orderId = queryParams['orderId'] || queryParams['txnId'];
     //CASE-1: Valid OrderId from backend
     if (this.orderId) {
-      // alert("CASE:Valid order case.");
       this.isRetryPayment = true;
       this.fetchTransactionDetails();
       return;
@@ -90,7 +90,6 @@ export class PaymentComponent implements OnInit
     this.paymentErrorType = queryParams['error'] || null;
     if(this.paymentErrorType)
     {
-      // alert("CASE:BAD_REQUEST_ERROR or GATE_WAY_ERROR.");
       this.navigateToQuickorder();
       return;
     }
@@ -98,11 +97,9 @@ export class PaymentComponent implements OnInit
       !((this._cartService.invoiceType == 'retail' && this._cartService.shippingAddress) ||
         (this._cartService.invoiceType == 'tax' && this._cartService.shippingAddress && this._cartService.billingAddress))
     ) {
-      // alert("CASE:Page refresh.");
       this._router.navigateByUrl('/checkout/address', this.REPLACE_URL);
       return;
     }
-    // alert("CASE:intialize.");
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
     this._cartService.clearCartNotfications();
@@ -420,6 +417,15 @@ export class PaymentComponent implements OnInit
 
   navigateToQuickorder() { 
     this._router.navigateByUrl('/quickorder', this.REPLACE_URL); 
+  }
+
+  ngOnDestroy(): void
+  {
+    this.orderId = null;
+    this.paymentBlock = null;
+    this.paymentErrorType = null;
+    this._cartService.shippingAddress = null;
+    this._cartService.billingAddress = null;
   }
 
 }

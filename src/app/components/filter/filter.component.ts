@@ -33,13 +33,12 @@ export class FilterComponent{
      */
     updateSelectedFilterData = (event, filterName, filterRow) => {
         filterName = filterName.toLowerCase();
-
         if (this._commonService.selectedFilterData.filter.hasOwnProperty(filterName)) {
             if (event.target.checked === true) {
                 const index = this._commonService.selectedFilterData.filter[filterName].findIndex(f => f === filterRow.term);
-                if (index < 0) {
-                    this._commonService.selectedFilterData.filter[filterName].push(filterRow.term);
-                }
+            if (index < 0) {
+                this._commonService.selectedFilterData.filter[filterName].push(filterRow.term);
+             }
             } else {
                 for (let i = 0; i < this._commonService.selectedFilterData.filter[filterName].length; i++) {
                     if (this._commonService.selectedFilterData.filter[filterName][i] === filterRow.term) {

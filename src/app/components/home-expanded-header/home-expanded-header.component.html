@@ -6,6 +6,9 @@
             <a class="moglix-app-logo" [routerLink]="['/']">
                 <img class="logo-2x" src="{{imgAssetPath}}assets/img/moglix_logo_red@3x.png" alt="logo-2x">
             </a>
+            <div class="logo-animation" *ngIf="_localAuthService.IsUserGoldMember()">
+                <img src="../../../assets/img/logo-animation.gif">
+            </div>
         </div>
         <div class="head-d-flex-inner logo-container">
             <a (click)="navigateToLogin$.emit($event)" *ngIf="!isUserLogin"

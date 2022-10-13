@@ -1,7 +1,13 @@
 import {
+  AfterViewInit,
   Component,
+  ComponentFactoryResolver,
+  EventEmitter,
+  Injector,
   OnInit,
   Renderer2,
+  ViewChild,
+  ViewContainerRef,
   ViewEncapsulation,
 } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
@@ -25,13 +31,19 @@ declare var dataLayer;
   styleUrls: ["./pages.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
-export class PagesComponent implements OnInit {
+export class PagesComponent implements OnInit, AfterViewInit {
   isServer: boolean = false;
   isBrowser: boolean = false;
   iData: { footer?: true; logo?: boolean; title?: string, hideHeader?: boolean };
   isFooter: boolean = true;
   isHomePage: boolean;
   isRoutedBack: boolean = false;
+
+  //var for goldMembership
+  goldMembershipInstance = null;
+	@ViewChild('GoldMembershipComponent', { read: ViewContainerRef })
+	goldMembershipContainerRef: ViewContainerRef;
+
   constructor(
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
@@ -41,6 +53,9 @@ export class PagesComponent implements OnInit {
     public router: Router,
     private _aRoute: ActivatedRoute,
     private dataService: DataService,
+    private cfr: ComponentFactoryResolver,
+    private injector: Injector,
+
   ) {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
@@ -60,6 +75,12 @@ export class PagesComponent implements OnInit {
       }
       
     });
+  }
+
+  ngAfterViewInit(): void {
+    this._commonService.getGoldMembershipPopup().subscribe(res=>{
+      this.showGoldMembershipPopUp();
+   })
   }
 
   enableBodyScoll() {
@@ -293,4 +314,25 @@ export class PagesComponent implements OnInit {
   }
 
     get isCheckout() { return this.router.url.includes("checkout") } 
+
+  async showGoldMembershipPopUp() {
+    const { GoldMembershipComponent } = await import('../modules/goldMembership/goldMembership.component');
+    const factory = this.cfr.resolveComponentFactory(GoldMembershipComponent);
+    this.goldMembershipInstance = this.goldMembershipContainerRef.createComponent(
+      factory,
+      null,
+      this.injector
+    );
+    (
+      this.goldMembershipInstance.instance['closePopup'] as EventEmitter<boolean>
+    ).subscribe(data => {
+      this.goldMembershipContainerRef.remove();
+    });
+    (
+      this.goldMembershipInstance.instance['closePopupOnOutsideClick'] as EventEmitter<{}>
+    ).subscribe(data => {
+      this.goldMembershipContainerRef.remove();
+    });
+  }
+ 
 }

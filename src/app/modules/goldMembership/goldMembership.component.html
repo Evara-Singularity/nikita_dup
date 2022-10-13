@@ -1,0 +1,45 @@
+<ng-template #goldMembershipTemplate>
+
+  <div class="gold-membership-container">
+    <div class="cross-icon">
+      <i class="icon-circle-delete del-ico" (click)="closeGoldPopup(true)"></i>
+    </div>
+    <div class="gold-membership-img">
+      <img src="../../../assets/img/gold-membership-img.png">
+    </div>
+    <div class="gold-membership-txt">
+      <p>Congratulations, now you get these all benefits.</p>
+      <div class="membership-benifits">
+        <div class="image-section">
+          <img src="../../../assets/img/return-img.png">
+        </div>
+        <div class="benifit-txt">
+          <p>Hassle-Free Return</p>
+          <p class="sub-txt">Easy return with minimum steps</p>
+        </div>
+      </div>
+      <div class="membership-benifits">
+        <div class="image-section">
+          <img src="../../../assets/img/dispatch-img.png">
+        </div>
+        <div class="benifit-txt">
+          <p>Priority Dispatch</p>
+          <p class="sub-txt">Get Fast shipment, fast delivery</p>
+        </div>
+      </div>
+      <div class="membership-benifits">
+        <div class="image-section">
+          <img src="../../../assets/img/support-img.png">
+        </div>
+        <div class="benifit-txt">
+          <p>Priority Customer Support</p>
+          <p class="sub-txt">Get quick & 24x7 customer care support</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<app-bottom-menu (outData$)="popupOnOutsideClick($event)">
+  <ng-container content *ngTemplateOutlet="goldMembershipTemplate"></ng-container>
+</app-bottom-menu>  

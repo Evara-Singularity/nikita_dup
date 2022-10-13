@@ -125,6 +125,7 @@
             width: 150px;
             display: flex;
             align-items: center;
+            height:32px;
 
             .qty-txt {
                 width: 30px;
@@ -149,6 +150,9 @@
                 text-align: right;
                 display: inline-flex;
                 align-items: center;
+                &>span{
+                    height:32px;
+                }
                 strong{
                     font-size: $large-font;
                 }

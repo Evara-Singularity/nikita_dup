@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 import { ActivatedRoute } from '@angular/router';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class HomeExpandedHeaderComponent implements OnInit {
   constructor(
     public _commonService: CommonService,
     public route: ActivatedRoute,
+    public  _localAuthService: LocalAuthService,
   ) { }
 
   ngOnInit(): void {

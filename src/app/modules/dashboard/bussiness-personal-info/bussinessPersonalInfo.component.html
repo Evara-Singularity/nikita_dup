@@ -1,5 +1,5 @@
 
-  <div class="profile-card profile-name">
+  <div class="profile-card profile-name"  [ngClass]="{'full-border-radius': !_localAuthService.IsUserGoldMember()}">
     <div class="profile-card-inner name"><i class="icon-profile"></i>
     </div>
     <div class="material-form update-name-form">
@@ -10,6 +10,12 @@
       </div>
     </div>
   </div>
+  <a *ngIf="_localAuthService.IsUserGoldMember()" (click)="_commonService.showgoldMembershipPopup()">
+    <div class="gold-member-strip "> 
+      <p>GOLD MEMBER</p>
+      <img src="../../../assets/img/gold-arrow.png">
+    </div>
+  </a>
 <!-- email and phone -->
 <form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value)" class="material-form profile-form" novalidate>
     <div class="container input-field custom-profile-input">

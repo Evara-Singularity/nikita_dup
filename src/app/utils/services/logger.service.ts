@@ -25,15 +25,15 @@ export class LoggerService {
   }
 
   info(...args) {
-    this.isLoggingEnabled && console.info(...args);
+    // this.isLoggingEnabled && console.info(...args);
   }
 
   debug(...args) {
-    this.isLoggingEnabled && console.debug(...args);
+    // this.isLoggingEnabled && console.debug(...args);
   }
 
   error(...args) {
-    this.isLoggingEnabled && console.error(...args);
+    // this.isLoggingEnabled && console.error(...args);
   }
 
   apiServerLog(data: ServerLogSchema) {
@@ -42,7 +42,7 @@ export class LoggerService {
       data.startDateTimeV2 = new Date(data.startDateTime).toLocaleString('en-GB'),
       data.endDateTimev2 = new Date(data.endDateTime).toLocaleString('en-GB'),
       data.apiRequestTime = data.endDateTime - data.startDateTime;
-      console.log('apiServerLog', data);
+      console.log('apiServerLog', JSON.stringify(data));
       // fs.appendFile(this.PATH_TO_LOG_FOLDER, JSON.stringify(data), function (err) {
       //   if (err) {
       //     console.log('apiServerLog', err);
@@ -51,10 +51,10 @@ export class LoggerService {
       // });
     } else {
       // console.log("logger service is called")
-      this.isLoggingEnabled && console.log(data);
+      // this.isLoggingEnabled && console.log(data);
     }
   }
 
-  private get isLoggingEnabled() { return this.isBrowser && environment.logger }
+  // private get isLoggingEnabled() { return this.isBrowser && environment.logger }
 
 }

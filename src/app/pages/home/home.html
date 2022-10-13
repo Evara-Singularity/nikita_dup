@@ -29,19 +29,21 @@
                 [src]="defaultBannerImage" alt="banner">
         </div>
    </div>
-   
-
-   
     <div class="pwa-row pwa-row-noPad">
         <div class="pwa-col-12 pad-lr-15">
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
-
-            <div class="pwa-banner">
-                <a class="full-banner" href="{{whatsAppBannerUrl}}"> 
-                    <img src="{{imageAssetURL}}assets/img/others/whatsappBanner.png" alt="whatsapp banner" width="312" height="170">
-                </a>
+            <div [class.mutiple-banner-cards]="_localAuthService.IsUserGoldMember()" class="mutiple-banner-cards">
+                <div class="pwa-banner" *ngIf="_localAuthService.IsUserGoldMember()">
+                    <a class="full-banner" (click)="_commonService.showgoldMembershipPopup()"> 
+                        <img src="{{imageAssetURL}}assets/img/others/goldMemberBanner.png" alt="Gold Member Banner" width="312" height="110">
+                    </a>
+                </div>
+                <div class="pwa-banner">
+                    <a class="full-banner" href="{{whatsAppBannerUrl}}"> 
+                        <img src="{{imageAssetURL}}assets/img/others/whatsappBanner.png" alt="whatsapp banner" width="312" height="170">
+                    </a>
+                </div>
             </div>
-
             <!-- <div class="home-card-container">
                     <category-card *ngFor="let item of clustorCategories| slice:0:5" [page]="'home'"
                         [routerLink]="item.category_url" [image]="imagePath + 'img/cluster/'+item.category_image"

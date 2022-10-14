@@ -1126,6 +1126,7 @@ export class CartService
     getSessionByUserId(cart)
     {
         // used in Shared Auth modules components
+        cart['device']="web";
         return this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CartByUser, { body: cart });
     }
 

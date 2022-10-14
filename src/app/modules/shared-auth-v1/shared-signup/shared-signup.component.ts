@@ -199,20 +199,23 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
 
-    updateProfileLocalStorage(userName, email){
+    updateProfileLocalStorage(userName, email) {
         let userSession = Object.assign({}, this._localAuthService.getUserSession(), { userName, email });
         this._localAuthService.setUserSession(userSession);
     }
 
     handleSuccessProfileUpdate(name = '') {
-        const text = ((name.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) || name == '') ? `Welcome to Moglix!` : `Welcome to Moglix, ${name}`
-        // console.log('handleSuccessProfileUpdate name ==>', text);
-        setTimeout(() => {
-            this._toastService.show({
-                type: "success",
-                text,
-            });
-        }, 500);
+
+        let userSession = this._localAuthService.getUserSession();
+        if (userSession && userSession.authenticated == "true") {
+            const text = ((name.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) || name == '') ? `Welcome to Moglix!` : `Welcome to Moglix, ${name}`
+            setTimeout(() => {
+                this._toastService.show({
+                    type: "success",
+                    text,
+                });
+            }, 500);
+        }
         
         if (this.isLoginPopup) {
             this.removeAuthComponent$.emit()

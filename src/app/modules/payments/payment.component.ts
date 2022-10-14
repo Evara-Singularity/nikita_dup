@@ -24,7 +24,7 @@ import { PaymentService } from "./payment.service";
   templateUrl: "./payment.html",
   styleUrls: ["./payment.scss"],
 })
-export class PaymentComponent implements OnInit, OnDestroy
+export class PaymentComponent implements OnInit
 {
   readonly REPLACE_URL = { replaceUrl: true };
   paymentBlock: number;
@@ -418,14 +418,4 @@ export class PaymentComponent implements OnInit, OnDestroy
   navigateToQuickorder() { 
     this._router.navigateByUrl('/quickorder', this.REPLACE_URL); 
   }
-
-  ngOnDestroy(): void
-  {
-    this.orderId = null;
-    this.paymentBlock = null;
-    this.paymentErrorType = null;
-    this._cartService.shippingAddress = null;
-    this._cartService.billingAddress = null;
-  }
-
 }

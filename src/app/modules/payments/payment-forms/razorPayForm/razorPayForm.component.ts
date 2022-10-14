@@ -64,7 +64,7 @@ export class RazorPayFormComponent {
           key: that.data['razorpay_key'],
           // logo, we'll display it in payment processing popup
           image: CONSTANTS.RAZORPAY.IMAGE,
-          callback_url: CONSTANTS.NEW_MOGLIX_API + CONSTANTS.RAZORPAY.SUCCESS,
+          callback_url: CONSTANTS.APP_BASE_URL + CONSTANTS.RAZORPAY.SUCCESS,
           redirect: true
         });
         that.razorpay.once('ready', function (response) {

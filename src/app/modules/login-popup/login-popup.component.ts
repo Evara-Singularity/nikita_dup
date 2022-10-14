@@ -40,16 +40,34 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit() {
+    if(this._commonService.isBrowser){
+      this.attachSubcriber();
+    }
+  }
+
+  attachSubcriber() {
     const user = this._localAuthService.getUserSession();
-      if (this.isRouteBased) {
-        this.navigationSubscription(); //for #auth
-      } else {
-        this._commonService.getInitaiteLoginPopUp().subscribe((openPopUp) => {
-          if (openPopUp) {
-            this.initiatePopUp();
-          }
-        });
+    //console.log('recursion condition', user);
+    if (user) {
+      if (user && user["authenticated"] !== "true") {
+        //console.log('ngAfterViewInit inside 1');
+        if (this.isRouteBased) {
+          //console.log('ngAfterViewInit inside 3');
+          this.navigationSubscription(); //for #auth
+        } else {
+          //console.log('ngAfterViewInit inside 2');
+          this._commonService.getInitaiteLoginPopUp().subscribe((redirectUrl) => {
+            //console.log('redirectUrl', redirectUrl);
+            this.initiatePopUp(redirectUrl);
+          });
+        }
       }
+    } else {
+      //console.log('recursion called');
+      setTimeout(() => {
+        this.attachSubcriber();
+      }, 300);
+    }
   }
 
   initiatePopUp(redirectUrl=null) {

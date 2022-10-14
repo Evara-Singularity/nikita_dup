@@ -103,7 +103,7 @@ export class UpiComponent implements OnInit {
             this.upiData["vpa"] = this.upi;             
 
             this.isValid = true;
-            console.log('PAY ==> pay API upiData', upiData);
+            console.log('PAY ==> pay API upiData', this.upiData);
             setTimeout(() => {
                 this.isShowLoader = false;
             }, 1000)

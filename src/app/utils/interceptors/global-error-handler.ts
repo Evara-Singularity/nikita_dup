@@ -6,10 +6,10 @@ export class GlobalErrorHandler implements ErrorHandler {
 
   handleError(error: Error) {
     this.zone.run(() => {
-        console.log('inside zone run ===>');
+        // console.log('inside zone run ===>');
         console.log(JSON.stringify(error.stack));
-        console.log(error.message);
-        console.log('=====> end of run zone');
+        // console.log(error.message);
+        /// console.log('=====> end of run zone');
     });
   }
 }

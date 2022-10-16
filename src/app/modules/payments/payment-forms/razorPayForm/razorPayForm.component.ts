@@ -66,7 +66,7 @@ export class RazorPayFormComponent {
         callback_url: CONSTANTS.APP_BASE_URL + CONSTANTS.RAZORPAY.SUCCESS,
         redirect: true
       };
-      console.log('bodyRazr ==>', bodyRazr);
+      // console.log('bodyRazr ==>', bodyRazr);
       script.onload = function () {
         that.razorpay = new Razorpay(bodyRazr);
         that.razorpay.once('ready', function (response) {

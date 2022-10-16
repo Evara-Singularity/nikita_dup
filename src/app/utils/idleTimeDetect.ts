@@ -58,9 +58,9 @@ class IdleTimer {
 
     addIdleEventToClass(className) {
         const elements = window.document.getElementsByClassName(className)
-        console.log('idle timer', className);
+        // console.log('idle timer', className);
         this.listener = this.renderer2.listen(elements[0], 'scroll', () => {
-            console.log('idle timer', 'scrolled========>');
+            // console.log('idle timer', 'scrolled========>');
             this.that.enableNudge = false;
             clearTimeout(this.timeoutTracker);
             this.timeoutTracker = setTimeout(() => {

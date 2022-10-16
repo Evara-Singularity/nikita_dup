@@ -81,8 +81,8 @@ export class UpiComponent implements OnInit {
 
         this._commonService.isBrowser && this._analytics.sendAdobeOrderRequestTracking(newdata,`pay-initiated:upi`);
         this._cartService.pay(newdata).subscribe((res): void => {
-            console.log('PAY ==> pay API customer type', this.type);
-            console.log('PAY ==> pay API response', newdata);
+            // console.log('PAY ==> pay API customer type', this.type);
+            // console.log('PAY ==> pay API response', newdata);
             if (res.status != true) {
                 this.isValid = false;
                 this.isShowLoader = false;
@@ -103,7 +103,7 @@ export class UpiComponent implements OnInit {
             this.upiData["vpa"] = this.upi;             
 
             this.isValid = true;
-            console.log('PAY ==> pay API upiData', this.upiData);
+            // console.log('PAY ==> pay API upiData', this.upiData);
             setTimeout(() => {
                 this.isShowLoader = false;
             }, 1000)

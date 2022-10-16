@@ -44,8 +44,8 @@ export class QuickCodService
 
   quickCODPayment(shoppingCartDto, userId)
   {
-    console.log("check here");
-    console.log(shoppingCartDto);
+    // console.log("check here");
+    // console.log(shoppingCartDto);
     this.codMessages = [];
     const validateShoppingCart = this._cartService.validateCartBeforePayment({ shoppingCartDto: shoppingCartDto });
     this._loaderService.setLoaderState(true);

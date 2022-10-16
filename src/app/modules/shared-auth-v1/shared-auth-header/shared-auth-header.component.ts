@@ -45,11 +45,11 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy {
          this.backButtonClicked$.emit();
         }
         if (this.previousUrl){
-            console.log('in')
+            // console.log('in')
             this.navigateTo('/')
             this.onSkipBtnClick$.emit(true)
         } else {
-            console.log('else')
+            // console.log('else')
             const URL = (this._router.url as string).toLowerCase();
             let NAVIGATE_TO = null;
             if (URL.includes("forgot-password")) {

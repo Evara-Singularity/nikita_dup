@@ -66,7 +66,7 @@ export class SharedAuthUtilService implements OnInit
             this._globalLoader.setLoaderState(false);
             if (cartSession) {
                 this._globalLoader.setLoaderState(true);
-                console.log('redirectUrl', redirectUrl);
+                // console.log('redirectUrl', redirectUrl);
                 setTimeout(() => {
                     this._globalLoader.setLoaderState(false);
                     redirectUrl && this._commonService.redirectPostAuth(redirectUrl)

@@ -75,7 +75,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     // this will update the products state when any of the products were removed from cart
     updateExistingProductsState() {
         this._cartService.productRemovalNofify().subscribe(value => {
-            console.log(value)
+            // console.log(value)
             if (value) {
                 const POST_CODE = this.deliveryAddress && this.deliveryAddress['postCode'];
                 if (!POST_CODE) return;

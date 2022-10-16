@@ -108,7 +108,7 @@ export class BrandResolver implements Resolve<any> {
       );
 
       const similarBrandObs = this.http.get(SIMILAR_BRAND_URL).pipe(catchError((e)=>{
-        console.log("similar brand api error--",SIMILAR_BRAND_URL,e)
+        // console.log("similar brand api error--",SIMILAR_BRAND_URL,e)
         return of(null) ;
       }), 
       map((res) => {

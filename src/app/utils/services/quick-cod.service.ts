@@ -20,12 +20,13 @@ export class QuickCodService
 {
   codMessages: string[] = [];
   initiateQuickCod: InitiateQuickCod = null;
-  isBrowser:boolean
+  isBrowser: boolean
 
   constructor(private _localStorageService: LocalStorageService, private _loaderService: GlobalLoaderService,
-    private _toastService: ToastMessageService, private _router: Router, private _cartService: CartService, private _urlsService: UrlsService, public _dataService: DataService, private _commonService:CommonService, private _localAuthService:LocalAuthService) { 
-      this.isBrowser = _commonService.isBrowser;
-    }
+    private _toastService: ToastMessageService, private _router: Router, private _cartService: CartService, private _urlsService: UrlsService, public _dataService: DataService, private _commonService: CommonService, private _localAuthService: LocalAuthService)
+  {
+    this.isBrowser = _commonService.isBrowser;
+  }
 
   initiateQuickCOD(initiateQuickCod: InitiateQuickCod)
   {
@@ -43,6 +44,8 @@ export class QuickCodService
 
   quickCODPayment(shoppingCartDto, userId)
   {
+    // console.log("check here");
+    // console.log(shoppingCartDto);
     this.codMessages = [];
     const validateShoppingCart = this._cartService.validateCartBeforePayment({ shoppingCartDto: shoppingCartDto });
     this._loaderService.setLoaderState(true);
@@ -69,12 +72,17 @@ export class QuickCodService
       if ((!result && !result.status) || this.codMessages.length) {
         let extras = { queryParams: { orderId: result.data.orderId }, replaceUrl: true };
         this.displayCODMessage(this.codMessages[0]);
-        this._router.navigate(['checkout/address'], extras); 
+        this._router.navigate(['checkout/address'], extras);
         return;
       }
       let data = result.data;
       let extras = { queryParams: { mode: 'COD', orderId: data.orderId, transactionAmount: data.orderAmount }, replaceUrl: true };
-      this._localStorageService.store('flashData', { buyNow: true });
+      const buyNow = shoppingCartDto['cart']['buyNow'] || false;
+      if (buyNow) {
+        this._localStorageService.store('flashData', { buyNow: true });
+      } else {
+        this._localStorageService.clear('flashData');
+      }
       this.analyticPlaceOrder();
       this._router.navigate(['order-confirmation'], extras);
     })
@@ -171,7 +179,8 @@ export class QuickCodService
     this._toastService.show({ type: "error", text: message })
   }
 
-  analyticPlaceOrder(){
+  analyticPlaceOrder()
+  {
     const userSession = this.isBrowser ? this._localAuthService.getUserSession() : null;
     const cartData = this._cartService.getGenericCartSession;
 
@@ -183,11 +192,13 @@ export class QuickCodService
         label: "checkout_started",
         channel: this._router.url == "/quickCod" ? "pdp" : "Checkout",
         price: cartData["cart"]["totalPayableAmount"] ? cartData["cart"]["totalPayableAmount"].toString() : '0',
-        quantity: cartData["itemsList"].map(item => {
+        quantity: cartData["itemsList"].map(item =>
+        {
           return totQuantity = totQuantity + item.productQuantity;
         })[cartData["itemsList"].length - 1],
         shipping: parseFloat(cartData["shippingCharges"]),
-        itemList: cartData.itemsList.map(item => {
+        itemList: cartData.itemsList.map(item =>
+        {
           return {
             category_l1: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[0] : null,
             category_l2: item["taxonomyCode"] ? item["taxonomyCode"].split("/")[1] : null,
@@ -199,6 +210,6 @@ export class QuickCodService
       }
 
       this._dataService.sendMessage(trackData);
+    }
   }
- }
 }

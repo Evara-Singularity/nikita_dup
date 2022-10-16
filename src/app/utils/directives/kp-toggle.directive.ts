@@ -51,7 +51,7 @@ export class KpToggleDirective {
                 this._el.nativeElement.classList.remove('ico-up');
             }
         }
-        this.resetClass(document.getElementById(Id).style.display == 'block' ? Id : null);
+        // this.resetClass(document.getElementById(Id).style.display == 'block' ? Id : null);
     }
 }
 

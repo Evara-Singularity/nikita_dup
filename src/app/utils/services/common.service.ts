@@ -75,6 +75,8 @@ export class CommonService
     private _loadSearchPopup: Subject<string> = new Subject<string>();
     public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
+    public initiateLoginPopUp: Subject<string> = new Subject<string>();
+
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
 
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
@@ -144,6 +146,17 @@ export class CommonService
     {
         return this.networkSpeedState.asObservable();
     }
+
+    setInitaiteLoginPopUp(redirectUrl = null)
+    {
+        this.initiateLoginPopUp.next(redirectUrl);
+    }
+
+    getInitaiteLoginPopUp(): Observable<string>
+    {
+        return this.initiateLoginPopUp.asObservable();
+    }
+
 
     setSideNavToggle(enable: boolean){
         // console.log("setSideNavToggle", enable);
@@ -432,11 +445,14 @@ export class CommonService
         return queryParams;
     }
 
-    updateSelectedFilterDataFilterFromFragment(fragment)
-    {
+    updateSelectedFilterDataFilterFromFragment(fragment) {
         let obj = {};
 
-        if (fragment) {
+        if (fragment && JSON.stringify(fragment).includes('/auth')) {
+            this.setInitaiteLoginPopUp(true);
+        }
+        
+        if (fragment && fragment !== 'auth') {
             let filtersList = fragment.split("/");
             if (filtersList) {
                 for (let i = 0; i < filtersList.length; i++) {
@@ -445,7 +461,6 @@ export class CommonService
                 }
             }
         }
-
         return obj;
     }
 
@@ -1198,7 +1213,7 @@ export class CommonService
         };
     }
 
-    setBodyScroll(e = null, status: boolean) {
+    setBodyScroll(e = null, status: boolean, appPopUpConfig = true) {
         if (e != null && e.hasOwnProperty('preventDefault') ){
             e.preventDefault();
             e.stopPropagation();
@@ -1208,7 +1223,7 @@ export class CommonService
             if (status) {
                 //enable
                 (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
-                if(document.querySelector('app-pop-up')){
+                if(appPopUpConfig && document.querySelector('app-pop-up')){
                     document.querySelector('app-pop-up').classList.remove('open');
                 }
                 if (e != null && e.hasOwnProperty('preventDefault')) {

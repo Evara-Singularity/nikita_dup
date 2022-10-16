@@ -12,6 +12,7 @@ import { PopUpModule } from '../popUp/pop-up.module';
 import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
 import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
 import { NgxSiemaModule } from 'ngx-siema';
+import { LoginPopupModule } from '../login-popup/login-popup.module';
 
 
 
@@ -25,6 +26,7 @@ import { NgxSiemaModule } from 'ngx-siema';
         ObjectToArrayPipeModule,
         MathFloorPipeModule,
         NgxSiemaModule,
+        LoginPopupModule
     ],
     exports: [ProductInfoComponent, KeyFeaturesComponent, SpecificationsComponent, VideosComponent, DetailsComponent, ImagesComponent]
 })

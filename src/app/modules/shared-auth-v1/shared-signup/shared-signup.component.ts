@@ -1,5 +1,5 @@
 import { CommonService } from '@app/utils/services/common.service';
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -53,6 +53,12 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     identifer = null;
     emailorphonevalueSubscription:Subscription = null;
 
+    @Input ('isLoginPopup') isLoginPopup = false;
+    @Output('togglePopUp$') togglePopUp$= new EventEmitter();
+    @Output('removeAuthComponent$') removeAuthComponent$= new EventEmitter();
+
+
+
     signupForm = new FormGroup({
         firstName: new FormControl(""),
         email: new FormControl("", [UsernameValidator.validateEmail]),
@@ -104,6 +110,10 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         this.updateSignupStep(1);
     }
 
+    backButtonClicked(){
+        this.togglePopUp$.emit('login');
+    }
+    
     validateUser($event)
     {
         this.isSubmitted = true;
@@ -188,21 +198,30 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         });
     }
 
-    updateProfileLocalStorage(userName, email){
+
+    updateProfileLocalStorage(userName, email) {
         let userSession = Object.assign({}, this._localAuthService.getUserSession(), { userName, email });
         this._localAuthService.setUserSession(userSession);
     }
 
-    private handleSuccessProfileUpdate(name = '') {
-        const text = ((name.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) || name == '') ? `Welcome to Moglix!` : `Welcome to Moglix, ${name}`
-        // console.log('handleSuccessProfileUpdate name ==>', text);
-        setTimeout(() => {
-            this._toastService.show({
-                type: "success",
-                text,
-            });
-        }, 500);
-        this._router.navigateByUrl(this.getRedirectURL() || '/');
+    handleSuccessProfileUpdate(name = '') {
+
+        let userSession = this._localAuthService.getUserSession();
+        if (userSession && userSession.authenticated == "true") {
+            const text = ((name.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) || name == '') ? `Welcome to Moglix!` : `Welcome to Moglix, ${name}`
+            setTimeout(() => {
+                this._toastService.show({
+                    type: "success",
+                    text,
+                });
+            }, 500);
+        }
+        
+        if (this.isLoginPopup) {
+            this.removeAuthComponent$.emit()
+        } else {
+            this._router.navigateByUrl(this.getRedirectURL() || '/');
+        }
     }
 
     handleSuccessProfileUpdateHomeRedirection() {
@@ -283,6 +302,9 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     handleBackBtnInPhoneSignUp(){
+        if(this.isLoginPopup){
+            this.removeAuthComponent$.emit();
+        }
         this.handleSuccessProfileUpdate('');
     }
 

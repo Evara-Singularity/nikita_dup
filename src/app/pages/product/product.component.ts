@@ -324,7 +324,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     set showLoader(value: boolean)
     {
-        this.globalLoader.setLoaderState(value);
+    this.globalLoader.setLoaderState(value);
     }
 
     get getWhatsText()

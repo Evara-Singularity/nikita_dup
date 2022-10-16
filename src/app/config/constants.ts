@@ -9,6 +9,7 @@ let siemaOptionsObject: {
 export const CONSTANTS = {
   PROD: environment.PROD_NAME,
   NEW_MOGLIX_API: environment.BASE_URL,
+  APP_BASE_URL: environment.APP_BASE_URL,
   IMAGE_ASSET_URL: environment.IMAGE_ASSET_URL,
   SOCKET_URL: environment.SOCKET_URL,
   IMAGE_BASE_URL: environment.IMAGE_BASE_URL,

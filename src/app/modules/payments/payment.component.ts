@@ -299,7 +299,7 @@ export class PaymentComponent implements OnInit
     this.isShowLoader = true;
     const userSession = this._localAuthService.getUserSession();
     const data = {
-      userEmail: userSession && userSession["email"] ? userSession["email"] : userSession["phone"],
+      userEmail: userSession && userSession["email"] ? userSession["email"] : "",
       userType: this.invoiceType,
       userId: userSession["userId"]
     };

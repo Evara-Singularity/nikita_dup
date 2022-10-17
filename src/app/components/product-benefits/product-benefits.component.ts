@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 
 @Component({
   selector: 'product-benefits',
@@ -12,7 +13,9 @@ export class ProductBenefitsComponent implements OnInit {
   @Input() productOutOfStock: boolean;
   @Output() navigateToFAQ$: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(
+    public _localAuthService: LocalAuthService,
+  ) { }
 
   ngOnInit(): void {
   }

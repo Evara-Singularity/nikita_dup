@@ -1,3 +1,4 @@
+<login-popup [isRouteBased]="true"></login-popup>
 <div class="home-parent">
     <div class="search-widget-container" *ngIf="isBrowser && isRoutedBack">
         <div class="search-widget-section pwa-row">
@@ -93,9 +94,10 @@
         <div data-observeVisibility class="pwa-col-12" [debounceTime]="50" (visible)="onVisibleCategories($event)" >
             <ng-container #Categories></ng-container>
         </div>
-        <ng-container *ngIf="!categoriesInstance" >
+        <ng-container *ngIf="!categoriesInstance">
             <div class="pwa-col-12 recently-container" *ngFor="let i of [1,2,3,4,5]">
-                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="categoriesInstance"></home-page-skeletons>
+                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="categoriesInstance">
+                </home-page-skeletons>
             </div>
         </ng-container>
         <!-- Section for feature Arrival -->

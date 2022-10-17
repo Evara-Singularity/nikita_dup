@@ -83,6 +83,6 @@ import ProductAccordiansModule from '@app/components/product-accordians/product-
     ProductAccordiansModule,
   ],
   exports: [],
-  providers: [NgxSiemaService],
+  providers: [NgxSiemaService]
 })
 export class ProductModule { }

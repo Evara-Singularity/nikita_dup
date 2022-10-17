@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
@@ -14,6 +14,8 @@ export class SharedSocialLoginComponent implements OnInit {
   readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
   readonly CHECKOUT_ADDRESS = "/checkout/address";
   @Input('isCheckout') isCheckout = false;
+  @Input('isLoginPopup') isLoginPopup;
+  @Output() intiatePopUpLogin$: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private _socialAuthService: SocialAuthService,
@@ -26,7 +28,7 @@ export class SharedSocialLoginComponent implements OnInit {
   }
 
   signInWithGoogle(): void {
-    console.log('Google Login');
+    // console.log('Google Login');
 
     this._socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID).then(
       (data) => {
@@ -47,15 +49,22 @@ export class SharedSocialLoginComponent implements OnInit {
           if (userResponse["statusCode"] != undefined && userResponse["statusCode"] == 500) {
             this._sharedAuthUtilService.logoutUserOnError();
           } else {
+            // this.removeAuthComponent$.emit();
             const backURLTitle = this._localAuthService.getBackURLTitle();
             const redirectUrl  = (backURLTitle && backURLTitle['backurl']) || this._sharedAuthService.redirectUrl;
             this._localAuthService.clearBackURLTitle();
             this._localAuthService.setUserSession(userResponse);
-            this._sharedAuthUtilService.processAuthentication(
-              userResponse,
-              this.isCheckout,
+            if (this.isLoginPopup) {
+              this._sharedAuthUtilService.loginPopUpAuthenticationProcess(userResponse).subscribe(res => {
+                this.intiatePopUpLogin$.emit();
+              });
+            } else {
+              this._sharedAuthUtilService.processAuthentication(
+                userResponse,
+                this.isCheckout,
                 (this.isCheckout) ? this.CHECKOUT_ADDRESS : redirectUrl
-            );
+              );
+            }
           }
         }, (error) => {
           console.log('social sign in error', error);

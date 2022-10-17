@@ -47,7 +47,7 @@ export class ViewComponent {
 		}
 
 		this.getClustorCategoryApi().subscribe((res) => {
-			console.log(res);
+			// console.log(res);
 			if (res['status'] && res['data']) {
 				this.clusterCategoryData =
 					res['data'][0]['block_data']['all-categories'];

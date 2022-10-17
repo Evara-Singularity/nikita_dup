@@ -110,6 +110,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
             let products = response['products'] || [];
             if (products && (products as []).length > 0) {
               this.sponseredProductList = (products as any[]).map(product => this._productService.searchResponseToProductEntity(product));
+              // console.log('sponseredProductList', Object.assign([],this.sponseredProductList));
               let tempProductList = JSON.parse(JSON.stringify(this.productsListingData.products));
               const reversedSponseredProductList = this.sponseredProductList.reverse();
               this.productsListingData.products.forEach((product, index) => {
@@ -305,7 +306,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       }
       // this.productsListingData.filterData[4].terms = this.productsListingData.filterData[4].terms.reverse();   //ODP-1570, Ratings  asecending to descending 
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
-     
+      // console.log(this.productsListingData.filterData);
     }
     console.log(this.productsListingData.filterData);
   }

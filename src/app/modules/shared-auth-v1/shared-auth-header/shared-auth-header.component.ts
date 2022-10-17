@@ -20,6 +20,9 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy {
     @Output() onBackBtnClick$: EventEmitter<any> = new EventEmitter<any>();
     @Output() onSkipBtnClick$: EventEmitter<any> = new EventEmitter<any>();
     @Output() onHomepageBtnClick$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() backButtonClicked$: EventEmitter<any> = new EventEmitter<any>();
+    @Input('isLoginPopup') isLoginPopup;
+
     checkOutTabSubscriber: Subscription = null;
     tab: string = null;
     previousUrl: boolean = false;
@@ -29,22 +32,24 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy {
         private _router: Router, private activatedRoute: ActivatedRoute,
         private _localAuthService: LocalAuthService) {
         this.activatedRoute.queryParams.subscribe(params => {
-            this.previousUrl = (params.backurl.split('/').includes('dashboard')) ? true : false;
-            console.log(this.previousUrl);
+            this.previousUrl = (params.backurl && params.backurl.split('/').includes('dashboard')) ? true : false;
+            // console.log(this.previousUrl);
         });
     }
 
     ngOnInit() { }
 
-
-
-    navigateBack() {
-        if (this.previousUrl) {
-            console.log('in')
+    navigateBack()
+    {
+        if(this.isLoginPopup){
+         this.backButtonClicked$.emit();
+        }
+        if (this.previousUrl){
+            // console.log('in')
             this.navigateTo('/')
             this.onSkipBtnClick$.emit(true)
         } else {
-            console.log('else')
+            // console.log('else')
             const URL = (this._router.url as string).toLowerCase();
             let NAVIGATE_TO = null;
             if (URL.includes("forgot-password")) {
@@ -66,16 +71,28 @@ export class SharedAuthHeaderComponent implements OnInit, OnDestroy {
 
 
     navigateToHome(link) {
+        if(this.isLoginPopup){
+            this.onSkipBtnClick$.emit(true);
+        }
         this.navigateTo(link);
     }
 
     navigateTo(link) { this._router.navigate([link]) }
 
     onBackBtnClick() {
+        if (this.isLoginPopup) {
+          this.onSkipBtnClick$.emit(true);
+          return;
+        } 
         this._navigationService.goBack(true);
+        
     }
 
     onHomepageBtnClick() {
+        if(this.isLoginPopup){
+            this.onSkipBtnClick$.emit(true);
+            return;
+        }
         this.onHomepageBtnClick$.emit(true);
     }
 

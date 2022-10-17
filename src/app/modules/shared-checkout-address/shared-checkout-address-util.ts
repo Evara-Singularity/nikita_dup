@@ -23,7 +23,7 @@ export class SharedCheckoutAddressUtil
     {
         const FILTERED = responses.filter((response) =>
         {
-            console.log(response)
+            // console.log(response)
             return response['status'] || response['statusCode'] === 200
         });
         return FILTERED.length

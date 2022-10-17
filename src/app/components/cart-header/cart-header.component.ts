@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { NavigationService } from '@app/utils/services/navigation.service';
 import { Subscription } from 'rxjs';
@@ -28,6 +29,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		public _commonService: CommonService,
 		private _cartService: CartService,
 		private _naviagtionService: NavigationService,
+		private _router:Router
 	) { }
 
 
@@ -69,7 +71,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	get isPayment() { return this.title === "Payment" }
 
-	get isCheckout() { return this.title === "Checkout" }
+	get isCheckout() { return this._router.url.includes("checkout/address"); }
 
 	get displayCartInfo() { return this.isQuickorder && this.noOfCartItems }
 

@@ -1,5 +1,6 @@
+import { LocalStorageService } from 'ngx-webstorage';
 import { AfterViewInit, Compiler, Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -46,14 +47,15 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     cartUpdatesSubscription: Subscription = null;
     paymentMode: any;
 
-    constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _compiler: Compiler, private _injector: Injector,
-        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService,
-        private _retryPaymentService: RetryPaymentService)
+    constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
+        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService)
     {
+        
     }
 
     ngOnInit(): void
     {
+        const queryParams = this._activatedRoute.snapshot.queryParams;
         if(this._cartService.quickCheckoutCodMaxErrorMessage !=null){
             this._toastService.show({
                 type: "error",
@@ -63,17 +65,17 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         }
         
         this._cartService.sendAdobeOnCheckoutOnVisit("address");
-        this._cartService.refreshCartSesion();
+        //this._cartService.refreshCartSesion();
         this.updateUserStatus();
         this._cartService.showUnavailableItems = false;
-        this.updateExistingProductsState();
         this._globalLoader.setLoaderState(true);
+        this.updateExistingProductsState();
     }
 
     // this will update the products state when any of the products were removed from cart
     updateExistingProductsState() {
         this._cartService.productRemovalNofify().subscribe(value => {
-            console.log(value)
+            // console.log(value)
             if (value) {
                 const POST_CODE = this.deliveryAddress && this.deliveryAddress['postCode'];
                 if (!POST_CODE) return;
@@ -109,7 +111,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 // incase user is redirect from payment page or payment gateway this._cartService.getCartUpdatesChanges() 
                 // user will receive empty cartSession.
                 // in this case we need explicitly trigger cartSession update.
-                this._cartService.checkForUserAndCartSessionAndNotify().subscribe(status =>
+                const tempBuyNow = JSON.parse(JSON.stringify({buyNow:this._cartService.buyNow || false})); 
+                this._cartService.checkForUserAndCartSessionAndNotify(tempBuyNow['buyNow']).subscribe(status =>
                 {
                     if (status) {
                         this._cartService.setCartUpdatesChanges(this.cartSession);
@@ -203,7 +206,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     /**@description updates global object to set in COD is available or not and used in payment section */
     updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
     {
-        this._cartService.updateNonDeliverableItems(cartItems, nonCashonDeliverableMsns)
+        this._cartService.updateNonDeliverableItems(cartItems, nonCashonDeliverableMsns);
     }
 
     /**@description scrolls to payment summary section on click of info icon*/
@@ -304,6 +307,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                         }
                     },
                 });
+                this._cartService.lastPaymentMode = null;
+                this._cartService.lastParentOrderId = null;
                 this._router.navigate(['/checkout/payment']);
             }
             else {
@@ -357,5 +362,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (this.loginSubscription) this.loginSubscription.unsubscribe();
         if (this.logoutSubscription) this.logoutSubscription.unsubscribe();
         if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
+        this._cartService.showNotification = false;
     }
 }

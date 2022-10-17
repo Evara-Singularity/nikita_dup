@@ -16,6 +16,8 @@ import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.ser
 import { ProductService } from "@app/utils/services/product.service";
 import { NgxSiemaOptions, NgxSiemaService } from "ngx-siema";
 import { LocalStorageService } from "ngx-webstorage";
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: "product-info",
@@ -83,6 +85,8 @@ export class ProductInfoComponent implements OnInit
         private _productService: ProductService,
         private ngxSiemaService: NgxSiemaService,
         @Inject(DOCUMENT) private _document,
+        private _localAuthService: LocalAuthService,
+        private router: Router 
     ) { }
 
     ngOnInit()
@@ -173,7 +177,7 @@ export class ProductInfoComponent implements OnInit
 
     moveTheSelectedIndex(selectedValue)
     {
-        console.log("this is called");
+        // console.log("this is called");
         if (this._commonService.isBrowser) {
             let tabsId = document.getElementById("infoTabs");
             if (selectedValue > 1) {
@@ -228,4 +232,9 @@ export class ProductInfoComponent implements OnInit
         this.moveTheSelectedIndex(this.selectedIndex);
     }
     displaySlide(slide: string) { return this.tabs.includes(slide) }
+
+    openLoginPopUp() {
+        this._localAuthService.setBackURLTitle(this.router.url, '');
+        this._commonService.setInitaiteLoginPopUp();
+    }
 }

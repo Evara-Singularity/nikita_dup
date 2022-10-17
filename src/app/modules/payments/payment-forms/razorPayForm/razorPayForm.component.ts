@@ -59,14 +59,16 @@ export class RazorPayFormComponent {
       script.src = CONSTANTS.RAZORPAY.CHECKOUT;
       script.type = "text/javascript";
       const that = this;
+      const bodyRazr = {
+        key: that.data['razorpay_key'],
+        // logo, we'll display it in payment processing popup
+        image: CONSTANTS.RAZORPAY.IMAGE,
+        callback_url: CONSTANTS.APP_BASE_URL + CONSTANTS.RAZORPAY.SUCCESS,
+        redirect: true
+      };
+      // console.log('bodyRazr ==>', bodyRazr);
       script.onload = function () {
-        that.razorpay = new Razorpay({
-          key: that.data['razorpay_key'],
-          // logo, we'll display it in payment processing popup
-          image: CONSTANTS.RAZORPAY.IMAGE,
-          callback_url: CONSTANTS.NEW_MOGLIX_API + CONSTANTS.RAZORPAY.SUCCESS,
-          redirect: true
-        });
+        that.razorpay = new Razorpay(bodyRazr);
         that.razorpay.once('ready', function (response) {
           //    console.log(response);
           setTimeout(function () {

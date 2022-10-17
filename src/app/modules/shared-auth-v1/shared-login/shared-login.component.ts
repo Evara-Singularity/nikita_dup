@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -33,13 +33,16 @@ export class SharedLoginComponent implements OnInit
     readonly LOGIN_USING_EMAIL = this._sharedAuthService.AUTH_USING_EMAIL;
     readonly SUGGESTION_EMAIL_HOST = ['gmail.com', 'yahoo.com', 'live.com', 'rediffmail.com', 'outlook.com']
     @Input('isCheckout') isCheckout = false;
-
     loginNumberForm = this._fb.group({
         phone: ['', [Validators.required, UsernameValidator.validatePhone]]
     })
     loginEmailForm = this._fb.group({
         email: ['', [Validators.required, UsernameValidator.validateAuthEmail]]
-    })
+    });
+    @Input('isLoginPopup') isLoginPopup = false;
+    @Output() togglePopUp$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
+
     loginType = this.LOGIN_USING_PHONE; // default login using phone number
     isLoginNumberFormSuisLoginNumberFormSubmitted: boolean = false; bmitted: boolean = false;
     isLoginNumberFormSubmitted: boolean = false;
@@ -76,13 +79,18 @@ export class SharedLoginComponent implements OnInit
         }
         this.handleBackUrlTitle();
         this.addQueryParamSubscribers();
-        this._sharedAuthUtilService.sendLoginSignupGenericPageLoadTracking(this.headerTitle || "mainpage");
+        // Tracking 
+        this.isLoginPopup ? this._sharedAuthUtilService.sendLoginPopUpTracking() : this._sharedAuthUtilService.sendLoginSignupGenericPageLoadTracking(this.headerTitle || "mainpage")
     }
 
     addQueryParamSubscribers() {
         this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
             this._sharedAuthService.redirectUrl = data['backurl'];
         });
+    }
+
+    intiatePopUpLogin(){
+        this.removeAuthComponent$.emit();
     }
 
 
@@ -142,12 +150,21 @@ export class SharedLoginComponent implements OnInit
                 //NOTE:using local storage//flowType, identifierType, identifier, data
                 const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
                 this._localAuthService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_PHONE, this.phoneFC.value);
-                this.navigateToNext(isUserExists);
+                if (this.isLoginPopup) { // navigate to next popup screen
+                   this.navigateToNextPopUp(isUserExists);
+                } else { 
+                   this.navigateToNext(isUserExists);
+                }
             } else {
                 this._tms.show({ type: 'error', text: response['message'] });
             }
             this._loader.setLoaderState(false);
         })
+    }
+
+    navigateToNextPopUp(isUserExists) {
+        const LINK = (isUserExists) ? 'otp': 'sign-up';
+        this.togglePopUp$.emit(LINK);
     }
 
     validateUserWithEmail()
@@ -162,14 +179,18 @@ export class SharedLoginComponent implements OnInit
                 //CHECK:Email with otp screen with password
                 const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
                 this._localAuthService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_EMAIL, this.emailFC.value);
-                this.navigateToNext(isUserExists);
-            } else {
+                if (this.isLoginPopup) {  // navigate to next popup screen
+                    this.navigateToNextPopUp(isUserExists);
+                } else {
+                    this.navigateToNext(isUserExists);
+                }          
+              } else {
                 this._tms.show({ type: 'error', text: response['message'] });
             }
             this._loader.setLoaderState(false);
         })
     }
-
+ 
     clearSuggestion()
     {
         this.emailAutoCompleteSuggestion = [];
@@ -237,27 +258,38 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateSkipNow() {
-        let backRedirectUrl = localStorage.getItem('backRedirectUrl');
-        if (backRedirectUrl != '/') {
-            let userSession = this.localStorageService.retrieve('user');
-            if (userSession && userSession.authenticated == "true") {
-                if (backRedirectUrl === 'null') {
-                    this._router.navigateByUrl(this._sharedAuthService.redirectUrl);
-                    return;
+        if (this.isLoginPopup) {
+            this.removeAuthComponent$.emit();
+        } else {
+            this._localAuthService.handleBackURL(true);
+            let backRedirectUrl = localStorage.getItem('backRedirectUrl');
+            if (backRedirectUrl != '/') {
+                let userSession = this.localStorageService.retrieve('user');
+                if (userSession && userSession.authenticated == "true") {
+                    if (backRedirectUrl === 'null') {
+                        this._router.navigateByUrl(this._sharedAuthService.redirectUrl);
+                        return;
+                    } else {
+                        this._router.navigateByUrl(backRedirectUrl);
+                        return;
+                    }
                 } else {
-                    this._router.navigateByUrl(backRedirectUrl);
-                    return;
+                    this._router.navigateByUrl('/');
                 }
-            } else {
-                this._router.navigateByUrl('/');
             }
         }
-        this._localAuthService.handleBackURL(true);
     }
-
+    
+    removeAuthComponent(){
+        this.removeAuthComponent$.emit();
+    }
     navigateHome() { 
-        console.log('skip now', this._router.url);
-        this._router.navigate(["."])
+       if(this.isLoginPopup){
+          this.removeAuthComponent();
+          this._router.navigate(["."]);
+          return;
+       }
+       this._router.navigate(["."]);
     }
     get isAuthHeader() { return this.isCheckout === false && this.headerTitle !== null }
     get phoneFC() { return this.loginNumberForm.get("phone"); }

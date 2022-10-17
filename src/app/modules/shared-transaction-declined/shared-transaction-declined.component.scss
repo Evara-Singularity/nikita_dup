@@ -1,6 +1,7 @@
 
 
 @import './../../scss/variables';
+@import './../../scss/_root';
 @import '../../scss/components/buttons.scss';
 
 .continue-button {
@@ -38,7 +39,7 @@
     }
     button {
         width: 175px;
-        background: $btn-color-red;
+        background: var(--primary);
         float: right;
         height: 55px;
         text-transform: uppercase;
@@ -46,7 +47,7 @@
     button:disabled,
     button[disabled]{
         background-color: #bdbdbd;;
-        color: $white;
+        color: var(--white);
     }
 }
 
@@ -65,6 +66,7 @@
             color: #d9232d;
             font-size: 18px;
             text-align: center;
+            width: 100%;
         }
         i {
             position: absolute;
@@ -74,7 +76,7 @@
         }
     }
     .decline-txt {
-        width: 90%;
+        padding: 0 20px;
         margin: auto;
         text-align: center;
     }
@@ -88,6 +90,12 @@
     .bottom-txt-block {
         p {
             padding: 8px 0px;
+        }
+        .bottom-list-txt{
+            display: flex;
+            .listInfo{
+                padding-left: 5px;
+            }
         }
     }
     .btn-block {

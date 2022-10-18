@@ -39,8 +39,9 @@ export class CartService
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public cartCountSubject: Subject<any> = new Subject<any>(); // cartCountSubject 
+    public autoLoginSubject: Subject<any> = new Subject<any>(); // autoLoginSubject 
     public codNotAvailableObj = {}; // cart.component
-    public quickCheckoutCodMaxErrorMessage = null;
+    public quickCheckoutCodMaxErrorMessage = null; 
     itemsValidationMessage = [];
     cartNotications = [];
     notifications = [];
@@ -1011,6 +1012,8 @@ export class CartService
      */
     private _getUserSession(): Observable<any>
     {
+        console.log('here-----------------------------------')
+        console.trace();
         let user = this._localStorageService.retrieve('user');
         if (user) {
             return of(user);
@@ -1019,6 +1022,7 @@ export class CartService
             map(res =>
             {
                 this.localAuthService.setUserSession(res);
+                this.autoLoginSubject.next(res);
                 return res;
             })
         );

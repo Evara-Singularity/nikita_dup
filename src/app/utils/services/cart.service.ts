@@ -2201,14 +2201,9 @@ export class CartService
     }
 
     AddSimilarProductOncartItem(productName,categoryId,BrandName) {
-        // let URL =
-        // CONSTANTS.NEW_MOGLIX_API  + ENDPOINTS.GET_ADD_SIMILAR_PRODUCT_ON_CART +
-        // "?str=" + productName +
-        // "&category=" + categoryId +
-        // "&BrandId=" + BrandName ;
 
         let URL =
-        'https://searchapidev.moglilabs.com/searchApi'+ ENDPOINTS.GET_ADD_SIMILAR_PRODUCT_ON_CART +
+        CONSTANTS.NEW_MOGLIX_API+ ENDPOINTS.GET_ADD_SIMILAR_PRODUCT_ON_CART +
         "?str=" + productName +
         "&category=" + categoryId +
         "&brand=" + BrandName ;

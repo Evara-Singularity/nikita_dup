@@ -321,8 +321,6 @@ export class DataService {
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPOUN_ON_BRAND_CATEGORY +
             "?brandName=" + brandName +
             "&categoryCode=" + categoryId;
-        // return this.callRestful("GET", 'https://cmsapiqa.moglilabs.com/cmsapi/prepaidDiscount/getByBrandNameAndCategoryCode?brandName=' + brandName+ '&categoryCode='+categoryId);
-        // return this.callRestful("GET", 'http://localhost:3000/category'); 
         return this.callRestful("GET", URL);
 
     }

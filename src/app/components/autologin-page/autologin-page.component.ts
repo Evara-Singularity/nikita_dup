@@ -41,23 +41,13 @@ export class AutologinPageComponent implements OnInit {
   }
 
   private getTokenVerification(postBody) {
-   // this.axios.post('http://localhost:3000/nodeApi/v2/createProductUrl/tokenAuthentication' , postBody).then(result=>{
-
-   // })
-   console.log("posBody -" , postBody);
     this.autoLoginService.getTokenAuthentication( postBody
-      // {"metaInfo":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyNTYyMjYsIm1zbiI6MTIsImlhdCI6MTY2NjA3OTE4MiwiZXhwIjoxNjY2MDc5NTQyfQ.e6yvura7rx2T-tKSISNnINRrba0aQThiDq87SZ1Iom0",
-      // "sessionId":"F4QdD9y6nN6dUHbwlJuiJUUuf2wqTJuw"
-      // }
     ).subscribe(res=>{
       if(res && res['status'] ){
         this.localStorageService.clear('user');
-
         this.localAuthService.setUserSession(res['data']);
         console.log("getTokenAuthentication api call response -->" , res);
         this.sharedAuthUtilService.processAuthentication(res['data'], false, '');
-        //this.localStorageService.store('user' , res['data']);
-       // this.router.navigate(['/login']);
       }else{
         this.router.navigate(['']); 
       }

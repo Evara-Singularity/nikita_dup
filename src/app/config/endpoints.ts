@@ -115,6 +115,6 @@ export const ENDPOINTS = {
   GET_PAST_ORDERS:'/checkout/getPastOrders?userId=',
   GET_PAYMENT_DETAILS: '/payment/getRetryRequest',
   GET_LAST_ORDERS: '/checkout/order/getLastOrders',
-  GET_ADD_SIMILAR_PRODUCT_ON_CART:'/searchApi/similarProducts/search',
+  GET_ADD_SIMILAR_PRODUCT_ON_CART:'/search/similarProducts/search',
   GET_COUPOUN_ON_BRAND_CATEGORY:'/cmsapi/prepaidDiscount/getByBrandNameAndCategoryCode'
 };

@@ -139,7 +139,8 @@ export class HomeV1Component implements OnInit {
           break;
 
         case environment.NEW_CMS_IDS.SECONDARY_BANNER_ADS:
-          this.fetchingMainCarouselData(block.block_data.image_block);
+          const gettingOneMiddleImageJsonData=block.block_data.image_block.slice(0,1);
+          this.fetchingMainCarouselData(gettingOneMiddleImageJsonData);
           this.middleImageJsonData = block.block_data.image_block;
           break;
 

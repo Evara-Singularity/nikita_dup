@@ -1,13 +1,13 @@
 <ng-template #cartAddProductTemplate>
-  <ng-container *ngFor="let item of cartAddProductSimilarData;let pIndex=index;">
-    <div class="pwa-row plp-card-list">
-      <div class="pwa-col-12">
+  <div class="pwa-row plp-card-list">
+    <div class="pwa-col-12">
+      <ng-container *ngFor="let item of cartAddProductSimilarData;let pIndex=index;">
         <product-card-horizontal-list-view [moduleUsedIn]="'CART-ADD-SIMILAR-PRODUCT'" [pageName]="pageName"
           [product]="item" [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex">
         </product-card-horizontal-list-view>
-      </div>
+      </ng-container>
     </div>
-  </ng-container>
+  </div>
 </ng-template>
 
 <app-bottom-menu>

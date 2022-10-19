@@ -13,6 +13,7 @@ import { SharedCheckoutUnavailableItemsModule } from '@app/modules/shared-checko
 import { CartModule } from '@app/modules/shared-checkout-quick-order-components/cart/cart.module';
 import { GenericOffersModule } from '@app/modules/ui/generic-offers/generic-offers.component';
 import { PrepaidOfferModule } from '@app/modules/prepaid-offer/prepaid-offer.component';
+import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import { PrepaidOfferModule } from '@app/modules/prepaid-offer/prepaid-offer.com
         ObjectToArrayPipeModule,
         MathFloorPipeModule,
         SharedCheckoutUnavailableItemsModule,
-        PrepaidOfferModule
+        PrepaidOfferModule,
+        YTThumnailPipeModule
     ],
     declarations: [
         QuickOrderComponent,

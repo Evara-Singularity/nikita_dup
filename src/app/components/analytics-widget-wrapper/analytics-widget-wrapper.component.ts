@@ -55,7 +55,6 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
      this.brandContainerInstance.instance['categoryName'] = this.categoryName;
   }
   async loadAttributeWidget(){
-    debugger; 
     const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
     const factory = this._componentFactoryResolver.resolveComponentFactory(AnalyticsGraphWidgetComponent)
     this.attributeContainerInstance = this.attributeContainerRef.createComponent(

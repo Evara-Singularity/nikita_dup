@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { fade } from '@utils/animations/animation';
+import { BrandLinkMapping } from '@app/utils/brandLinkMapping';
+
 
 @Component({
     selector: 'specifications',
@@ -21,12 +23,16 @@ export class SpecificationsComponent implements OnInit
     enableSecondaryAttributes: boolean = false;
     showSecondaryAttributes: boolean = false;
     user: any;
+    showNavToStorePage:boolean=false;
     
     constructor(public _commonService: CommonService,private _localAuthService : LocalAuthService,private router : Router) { }
 
     ngOnInit() {
         this.checkSecondaryAttributes();
-        console.log('enableSecondaryAttributes', this.enableSecondaryAttributes);
+        if (BrandLinkMapping.hasOwnProperty(this.specifications["brand"]["brandId"])) {
+            this.showNavToStorePage=true;
+            this.specifications["brand"]['storeLink']=BrandLinkMapping[this.specifications["brand"]["brandId"]];
+          }
     }
 
     checkSecondaryAttributes() {

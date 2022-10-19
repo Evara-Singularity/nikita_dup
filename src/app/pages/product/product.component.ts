@@ -4099,6 +4099,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             const brand = {
                 name: this.productBrandDetails["brandName"],
                 link: this.getBrandLink(this.productBrandDetails),
+                brandId:this.productBrandDetails["idBrand"]                
             };
             contentInfo["specifications"] = {
                 attributes: this.productAttributes,

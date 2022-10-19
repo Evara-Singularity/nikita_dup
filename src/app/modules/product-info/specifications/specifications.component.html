@@ -11,6 +11,18 @@
                 </div>
             </td>
         </tr>
+        <tr *ngIf="showNavToStorePage">
+            <td class="left">
+              <div>Brand Store </div>
+
+            </td>
+            <td class="right">
+                <div *ngIf="specifications['brand']">
+                    <a class="brandName"
+                        (click)="_commonService.navigateTo([specifications['brand']['storeLink']])">{{specifications['brand']['name']}} Store </a>
+                </div>
+            </td>
+        </tr>
         <tr class="spec-row" *ngFor="let attr of specifications.attributes | objectToArray:'associative'">
             <td class="left">
                 <div>{{attr.key}}</div>

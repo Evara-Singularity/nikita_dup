@@ -4,6 +4,7 @@ import { SharedAuthUtilService } from '@app/modules/shared-auth-v1/shared-auth-u
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { DataService } from '@app/utils/services/data.service';
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { AutoLoginService } from './autoLogin.service';
 
@@ -27,9 +28,11 @@ export class AutologinPageComponent implements OnInit {
     private localAuthService:LocalAuthService,
     private cartService:CartService,
     private sharedAuthUtilService: SharedAuthUtilService,
+    private globalLoaderService: GlobalLoaderService
     ) { }
 
   ngOnInit(): void {
+    this.globalLoaderService.setLoaderState(true);
     this.userData = this.localStorageService.retrieve('user');
     const snap = this.activatedRoute.snapshot.queryParams;
     if(snap && snap.token){
@@ -48,35 +51,24 @@ export class AutologinPageComponent implements OnInit {
         this.localAuthService.setUserSession(res['data']);
         console.log("getTokenAuthentication api call response -->" , res);
         this.sharedAuthUtilService.processAuthentication(res['data'], false, '');
+        this.globalLoaderService.setLoaderState(false);
       }else{
+        this.globalLoaderService.setLoaderState(false);
         this.router.navigate(['']); 
       }
     })
   } 
 
   private checkUserSession(session){
-    console.log("Session --" , session);
     if(session && typeof session.sessionId == 'string' && session.sessionId !=""){
-      console.log("Local mai session mil gya");
       let postBody = { metaInfo : this.token, sessionId : session['sessionId'] };
      this.getTokenVerification(postBody); 
     }else{
       this.cartService.autoLoginSubject.subscribe(res =>{ 
         console.log('cartService.autoLoginSubject--' , res);
       let postBody = { metaInfo : this.token, sessionId : res['sessionId'] };
-      //this.localStorageService.store('user' , res);
       this.getTokenVerification(postBody);
       })
-    //   console.log("Local mai session nhi  mila");
-    //   const user = this.localStorageService.retrieve('user');
-    //   console.log("user ---" , user);
-    //  this.localStorageService.clear('user');
-    //  //this._dataService.getSession().subscribe(res=>{
-    //   console.log("getSession api called --");
-    //   let postBody = { metaInfo : this.token, sessionId : user['sessionId'] };
-    //   //this.localStorageService.store('user' , res);
-    //   this.getTokenVerification(postBody);
-    //  //})
     }
   }
 

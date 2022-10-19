@@ -50,7 +50,7 @@ export class AutologinPageComponent implements OnInit {
         this.localStorageService.clear('user');
         this.localAuthService.setUserSession(res['data']);
         console.log("getTokenAuthentication api call response -->" , res);
-        this.sharedAuthUtilService.processAuthentication(res['data'], false, '');
+        this.sharedAuthUtilService.processAuthentication(res['data'], false, 'login');
         this.globalLoaderService.setLoaderState(false);
       }else{
         this.globalLoaderService.setLoaderState(false);

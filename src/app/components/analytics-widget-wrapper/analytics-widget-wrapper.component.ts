@@ -31,7 +31,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
  async loadPriceWidget(){
     const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
     const factory = this._componentFactoryResolver.resolveComponentFactory(AnalyticsGraphWidgetComponent)
-    this.priceContainerInstance = this._viewContainerReference.createComponent(
+    this.priceContainerInstance = this.priceContainerRef.createComponent(
       factory,
       null,
       this.injector
@@ -44,7 +44,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   async loadBrandWidget(){
     const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
     const factory = this._componentFactoryResolver.resolveComponentFactory(AnalyticsGraphWidgetComponent)
-    this.brandContainerInstance = this._viewContainerReference.createComponent(
+    this.brandContainerInstance = this.brandContainerRef.createComponent(
       factory,
       null,
       this.injector
@@ -55,9 +55,10 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
      this.brandContainerInstance.instance['categoryName'] = this.categoryName;
   }
   async loadAttributeWidget(){
+    debugger; 
     const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
     const factory = this._componentFactoryResolver.resolveComponentFactory(AnalyticsGraphWidgetComponent)
-    this.attributeContainerInstance = this._viewContainerReference.createComponent(
+    this.attributeContainerInstance = this.attributeContainerRef.createComponent(
       factory,
       null,
       this.injector
@@ -69,7 +70,6 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   }
   resetLazyComponents(){
     if (this.priceContainerInstance) {
-      console.log("hi");
       this.priceContainerInstance = null;
       this.priceContainerRef.remove();
     }

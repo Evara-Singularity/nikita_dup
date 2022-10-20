@@ -5,6 +5,7 @@ import { MyAccountGuard } from '@utils/guards/myAccount.guard';
 import { IsNotAuthenticatedGuard } from '@utils/guards/is-not-authenticated.guard';
 import RoutingMatcher from '@utils/routing.matcher';
 import CONSTANTS from '@app/config/constants';
+import { AutologinPageComponent } from '@app/components/autologin-page/autologin-page.component';
 
 const _routingMatcher = new RoutingMatcher();
 
@@ -825,6 +826,10 @@ const routes: Routes = [
 					searchBar: false,
 					pageName: 'Payment Confirmation'
 				},
+			},
+			{
+				path: 'auto-login',
+				component: AutologinPageComponent
 			},
 			{
 				path: '**',

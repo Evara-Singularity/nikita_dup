@@ -144,6 +144,33 @@ export class CartService
         }))
     }
 
+    get totalDisplayPayableAmountWithPrepaid() {
+        let totalBasicAmount = this.getGenericCartSession.cart.tawot + this.getGenericCartSession.cart.tpt;
+        // shipping
+        totalBasicAmount = totalBasicAmount + (this.getGenericCartSession.cart.shippingCharges || 0)
+        // offer 
+        if (this.getGenericCartSession.cart.totalOffer !== 0 && this.getGenericCartSession.cart.totalOffer !== null) {
+            totalBasicAmount = totalBasicAmount -  this.getGenericCartSession.cart.totalOffer
+        }
+        // prepaid saving
+        totalBasicAmount = totalBasicAmount - (this.totalPrepaidSaving || 0)
+        return totalBasicAmount;
+    }
+
+    get totalDisplayPayableAmountWithOutPrepaid() {
+        let totalBasicAmount = this.getGenericCartSession.cart.tawot + this.getGenericCartSession.cart.tpt;
+        // shipping
+        totalBasicAmount = totalBasicAmount + (this.getGenericCartSession.cart.shippingCharges || 0)
+        // offer 
+        if (this.getGenericCartSession.cart.totalOffer !== 0 && this.getGenericCartSession.cart.totalOffer !== null) {
+            totalBasicAmount = totalBasicAmount -  this.getGenericCartSession.cart.totalOffer
+        }
+        // prepaid saving
+        return totalBasicAmount;
+    }
+
+
+
     // get generic cart session object
     generateGenericCartSession(cartSessionFromAPI)
     {

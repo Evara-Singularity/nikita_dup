@@ -55,10 +55,14 @@ export class PaytmUpiComponent {
         this.upiForm = this._formBuilder.group({
             "upi": ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9_.]+@[0-9a-zA-Z]+$')]] //(?!\.)(?!.*\.$)(?!.*?\.\.)
         });
-        this.getPrePaidDiscount();
-        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+        if(CONSTANTS.enableGenericPrepaid){
             this.getPrePaidDiscount();
-        })
+            this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+                this.getPrePaidDiscount();
+            })
+        }else{
+            this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
+        }
     }
 
     pay(data, valid) {

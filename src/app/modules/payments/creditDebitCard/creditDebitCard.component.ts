@@ -83,11 +83,14 @@ export class CreditDebitCardComponent implements OnInit {
 
     ngOnInit() {
         this.cartSession = this._cartService.getGenericCartSession;
-        this.getPrePaidDiscount('CC'); // Credit card as default options
-
-        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
-            this.getPrePaidDiscount(this.creditDebitCardForm.controls['mode'].value);
-        })
+        if(CONSTANTS.enableGenericPrepaid){
+            this.getPrePaidDiscount('CC'); // Credit card as default options
+            this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+                this.getPrePaidDiscount(this.creditDebitCardForm.controls['mode'].value);
+            })
+        }else{
+            this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
+        }
     }
 
 

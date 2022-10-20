@@ -90,10 +90,6 @@ export class NetBankingComponent implements OnInit {
             this.othersBanks = bankData.otherBanks;
             this.lowSuccessBanks = bankData.lowSuccessBanks;
         }
-        this.getPrePaidDiscount();
-        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
-            this.getPrePaidDiscount();
-        })
         this.setFirstBankDefaults();
     }
 
@@ -102,6 +98,15 @@ export class NetBankingComponent implements OnInit {
         const firstTopBank = this.topBanks[0]
         this.selectedBankCode = firstTopBank['code'];
         this.netBankingForm.get('requestParams').get("bankname").setValue(firstTopBank.code);
+        
+        if (CONSTANTS.enableGenericPrepaid) {
+            this.getPrePaidDiscount();
+            this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+                this.getPrePaidDiscount();
+            })
+        } else {
+            this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
+        }
     }
 
     createNetBankingData(successPercentageData) {

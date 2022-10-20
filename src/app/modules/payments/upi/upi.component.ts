@@ -63,6 +63,8 @@ export class UpiComponent implements OnInit {
             this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
                 this.getPrePaidDiscount();
             })
+        }else{
+            this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
         }
         this.lowSuccessBanks();
     }

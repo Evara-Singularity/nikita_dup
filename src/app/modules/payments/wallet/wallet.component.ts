@@ -60,10 +60,14 @@ export class WalletComponent {
             "wType": [this.wType, [Validators.required]],
         });
         this.cartSesssion = Object.assign({}, this._cartService.getCartSession());
-        this.getPrePaidDiscount();
-        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+        if(CONSTANTS.enableGenericPrepaid){
             this.getPrePaidDiscount();
-        })
+            this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+                this.getPrePaidDiscount();
+            })
+        }else{
+            this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
+        }
 
         this.lowSuccessBanks();
 

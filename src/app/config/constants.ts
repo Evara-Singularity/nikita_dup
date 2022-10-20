@@ -664,5 +664,6 @@ export const CONSTANTS = {
     PRODUCT_QA_FORM: 'product-ask-now',
     PRODUCT_REVIEW_FORM: 'product-write-review',
   },
+  enableGenericPrepaid: false,
 };
 export default CONSTANTS;

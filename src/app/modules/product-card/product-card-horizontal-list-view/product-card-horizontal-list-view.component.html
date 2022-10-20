@@ -29,8 +29,8 @@
                 </ng-container>
             </div>
             <div class="right">
-                <div class="rating">
-                    <span class="avgrating" *ngIf="cardFeaturesConfig.enableRating && product.avgRating">
+                <div class="rating" *ngIf="cardFeaturesConfig.enableRating && product.avgRating" >
+                    <span class="avgrating" >
                         {{product.avgRating | rating | number : '1.1-1' }}
                         <i class="icon-rating-star"></i>
                     </span>
@@ -77,7 +77,7 @@
                     </div>
                     <div class="right">
                         <div class="card-btn-row">
-                            <ng-container
+                            <!-- <ng-container
                                 *ngIf="(cardFeaturesConfig.enableAddToCart || cardFeaturesConfig.enableBuyNow) && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
                                 <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart"
                                     (click)="buyNow()">
@@ -87,7 +87,12 @@
                                     (click)="buyNow(true)">
                                     BUY NOW
                                 </button>
-                            </ng-container>
+                            </ng-container> -->
+                            <span class="add_cart_btn prepaid-btn" *ngIf="cardFeaturesConfig.enableAddToCart"
+                            (click)="buyNow()">
+                            <i class="icon-cart1"></i>
+                            ADD TO CART
+                        </span>
                         </div>
                         <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
                             <button class="btn tertiary-outline-cta tertiary-outline-cta-8" (click)="openRfqForm()" *ngIf="!isWishlist">

@@ -1,10 +1,16 @@
 <ng-template #cartAddProductTemplate>
-  <div class="pwa-row plp-card-list">
+  <div class="pwa-row plp-card-list prepaid-bg">
+    <div class="prepaid-heading">
+      <h2>Power Tools</h2>
+      <i class="icon-circle-delete"></i>
+    </div>
     <div class="pwa-col-12">
       <ng-container *ngFor="let item of cartAddProductSimilarData;let pIndex=index;">
-        <product-card-horizontal-list-view [moduleUsedIn]="'CART-ADD-SIMILAR-PRODUCT'" [pageName]="pageName"
-          [product]="item" [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex">
-        </product-card-horizontal-list-view>
+        <div class="mt-15">
+          <product-card-horizontal-list-view [moduleUsedIn]="'CART-ADD-SIMILAR-PRODUCT'" [pageName]="pageName"
+            [product]="item" [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex">
+          </product-card-horizontal-list-view>
+        </div>
       </ng-container>
     </div>
   </div>

@@ -1,3 +1,4 @@
+<login-popup [isRouteBased]="true"></login-popup>
 <div class="home-parent">
     <div class="search-widget-container" *ngIf="isBrowser && isRoutedBack">
         <div class="search-widget-section pwa-row">
@@ -29,19 +30,21 @@
                 [src]="defaultBannerImage" alt="banner">
         </div>
    </div>
-   
-
-   
     <div class="pwa-row pwa-row-noPad">
         <div class="pwa-col-12 pad-lr-15">
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
-
-            <div class="pwa-banner">
-                <a class="full-banner" href="{{whatsAppBannerUrl}}"> 
-                    <img src="{{imageAssetURL}}assets/img/others/whatsappBanner.png" alt="whatsapp banner" width="312" height="170">
-                </a>
+            <div [class.mutiple-banner-cards]="_localAuthService.IsUserGoldMember()" class="mutiple-banner-cards">
+                <div class="pwa-banner" *ngIf="_localAuthService.IsUserGoldMember()">
+                    <a class="full-banner" (click)="_commonService.showgoldMembershipPopup()"> 
+                        <img src="{{imageAssetURL}}assets/img/others/goldMemberBanner.png" alt="Gold Member Banner" width="312" height="110">
+                    </a>
+                </div>
+                <div class="pwa-banner">
+                    <a class="full-banner" href="{{whatsAppBannerUrl}}"> 
+                        <img src="{{imageAssetURL}}assets/img/others/whatsappBanner.png" alt="whatsapp banner" width="312" height="170">
+                    </a>
+                </div>
             </div>
-
             <!-- <div class="home-card-container">
                     <category-card *ngFor="let item of clustorCategories| slice:0:5" [page]="'home'"
                         [routerLink]="item.category_url" [image]="imagePath + 'img/cluster/'+item.category_image"
@@ -78,6 +81,7 @@
                     <ng-container #FeaturedBrands></ng-container>
                 </div>
             </div>
+            <div id="icon-container"></div>
         </div>
         <div class="pwa-col-12 recently-container">
             <div data-observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
@@ -90,13 +94,12 @@
         <div data-observeVisibility class="pwa-col-12" [debounceTime]="50" (visible)="onVisibleCategories($event)" >
             <ng-container #Categories></ng-container>
         </div>
-        <ng-container *ngIf="!categoriesInstance" >
+        <ng-container *ngIf="!categoriesInstance">
             <div class="pwa-col-12 recently-container" *ngFor="let i of [1,2,3,4,5]">
-                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="categoriesInstance"></home-page-skeletons>
+                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="categoriesInstance">
+                </home-page-skeletons>
             </div>
         </ng-container>
-        
-
         <!-- Section for feature Arrival -->
         <div data-observeVisibility class="featr_arrival pwa-col-12 pad-lr-15" [ngClass]="{'featr_arrival-skeleton':featuredArrivalsInstance == null}" [debounceTime]="50"
             (visible)="onVisibleFeaturedArrivals($event)">
@@ -104,13 +107,11 @@
             <!-- <home-page-skeletons [type]="'FEATURED-ARRIVALS'" [templateRefInstance]="featuredArrivalsInstance"></home-page-skeletons> -->
         </div>
         <ng-container class="bs-popup" #HomePopupComponet></ng-container>
-
         <div class="pwa-col-12">
             <home-accordians [carouselData]="carouselData"></home-accordians>
         </div>
         <whatsapp-toast (click)="sendTrackingData()" [customText]="'Hi'"></whatsapp-toast>
     </div>
-
     <bottom-navigation></bottom-navigation>
     <!-- section for trending categories-->    
 </div>

@@ -37,6 +37,7 @@ export class FilterMidPlpComponent implements OnInit {
   }
 
   genrateInlineFilterData() {
+    // debugger;
     this._productListService.inlineFilterData = [];
 
     if (this.pageName === 'BRAND' && !this._activatedRoute.snapshot.params.category) {
@@ -69,8 +70,9 @@ export class FilterMidPlpComponent implements OnInit {
       if (discount) {
         this._productListService.inlineFilterData.push(discount);
       }
-
+      
       this.inlineFilterData = this._productListService?.inlineFilterData[this.position / 5 - 1];
+      
     }
 
   }

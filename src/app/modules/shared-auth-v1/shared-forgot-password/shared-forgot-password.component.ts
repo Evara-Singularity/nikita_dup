@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -8,7 +8,6 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CheckoutLoginService } from '@app/utils/services/checkout-login.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { PasswordValidator } from '@app/utils/validators/password.validator';
-import { Subscription } from 'rxjs';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
 
@@ -23,6 +22,10 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
     readonly LOGIN_URL = "/login";
     readonly CHECKOUT_LOGIN_URL = "/checkout/login";
     @Input('isCheckout') isCheckout = false;
+    @Input('isLoginPopup') isLoginPopup;
+    @Output() togglePopUp$: EventEmitter<any> =  new EventEmitter<any>();
+    @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
+
     isPasswordType = true;//to set input[type] = text/password.
     authFlow: AuthFlowType;//gives flowtype & identifier information
     fpForm = new FormGroup({
@@ -59,8 +62,11 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
                 this._globalLoader.setLoaderState(false)
                 if (response['statusCode'] == 200) {
                     this._toastService.show({ type: 'success', text: 'Password updated successfully. Now try Login' });
+                    if(this.isLoginPopup){
+                        this.togglePopUp('login');
+                    }
                     //@checkout flow need to integrated here
-                    if (this.isCheckout) {
+                    else if (this.isCheckout) {
                         this._checkoutLoginService.setPasswordResetStatus({
                             status: true, message: 'Password updated successfully. Now try Login',
                         })
@@ -80,8 +86,11 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         this.verifiedOTP = verifiedOTP;
     }
 
-    navigateTo(link)
-    {
+    navigateTo(link) {
+        if (this.isLoginPopup) {
+            this.togglePopUp('login');
+            return;
+        }
         let navigationExtras: NavigationExtras = {
             queryParams: {
                 'backurl': this._sharedAuthService.redirectUrl,
@@ -112,5 +121,9 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
     get isDisabled() { return this.fpForm.invalid || this.verifiedOTP === "" }
 
     ngOnDestroy(): void { }
+
+    togglePopUp(component){
+      this.togglePopUp$.emit(component);
+    }
 
 }

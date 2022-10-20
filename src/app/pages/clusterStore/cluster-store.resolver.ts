@@ -34,7 +34,7 @@ export class ClusterStoreResolver implements Resolve<any> {
 				first(),
 				tap((response) => {
 					if (isPlatformServer(this.platformId)) {
-						console.log("CLSUTER_STORE_KEY",CLSUTER_STORE_KEY);
+						// console.log("CLSUTER_STORE_KEY",CLSUTER_STORE_KEY);
 						this.transferState.set(CLSUTER_STORE_KEY, response);
 					}
 				})

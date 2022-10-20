@@ -2,6 +2,7 @@
 <ng-template #rfqFormTemplate>
     <form class="rfqForm" [formGroup]="rfqForm">
         <div class="product-rfq material-form" [class.in-instock]="!isOutOfStock">
+
             <div *ngIf="isOutOfStock" class="rfq_header">
                 <i class="icon-dropbox-fill"></i>
                 <div class="rfq_header_text">
@@ -41,9 +42,9 @@
                             <input type="text"  class="user-name" formControlName="firstName"
                                 maxlength="30"  (click)="isOutOfStock?initiateLogin():false"
                                 name="firstName" #firstName>
-                            <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (firstName.touched || firstName.dirty)">
-                                <p class="error-txt" *ngIf="firstName.hasError('required')">Kindly enter your full name.</p>
-                                <p class="error-txt" *ngIf="firstName.hasError('pattern')">Special characters are not allowed.
+                            <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (this.rfqForm.controls.firstName.touched || this.rfqForm.controls.firstName.dirty)">
+                                <p class="error-txt" *ngIf="this.rfqForm.controls.firstName.hasError('required')">Kindly enter your full name.</p>
+                                <p class="error-txt" *ngIf="this.rfqForm.controls.firstName.hasError('pattern')">Special characters are not allowed.
                                 </p>
                             </ng-container>
                             <span class="label">Full Name*</span>
@@ -54,11 +55,11 @@
                             <label [class.is-focus]="mobile.value.length > 0">
                                 <input type="text" name="phone-no"  type="text" formControlName="mobile"
                                     maxlength="10" (click)="isOutOfStock?initiateLogin():false" #mobile>
-                                <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (mobile.touched || mobile.dirty)">
-                                    <p class="error-txt" *ngIf="mobile.hasError('required')">Kindly enter your mobile no.</p>
-                                    <p class="error-txt" *ngIf="mobile.hasError('pattern')">Mobile should contain only digits.
+                                <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (this.rfqForm.controls.mobile.touched || this.rfqForm.controls.mobile.dirty)">
+                                    <p class="error-txt" *ngIf="this.rfqForm.controls.mobile.hasError('required')">Kindly enter your mobile no.</p>
+                                    <p class="error-txt" *ngIf="this.rfqForm.controls.mobile.hasError('pattern')">Mobile should contain only digits.
                                     </p>
-                                    <p class="error-txt" *ngIf="!mobile.hasError('pattern') && mobile.hasError('minlength')">
+                                    <p class="error-txt" *ngIf="!this.rfqForm.controls.mobile.hasError('pattern') && this.rfqForm.controls.mobile.hasError('minlength')">
                                         Mobile should contain 10 digits.</p>
                                 </ng-container>
                                 <span class="label">Mobile*</span>
@@ -68,9 +69,9 @@
                             <label [class.is-focus]="email.value.length > 0">
                                 <input type="email" name="email" formControlName="email"  maxlength="150"
                                     (click)="isOutOfStock?initiateLogin():false" #email>
-                                <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (email.touched || email.dirty)">
-                                    <p class="error-txt" *ngIf="email.hasError('required')">Kindly enter your email id.</p>
-                                    <p class="error-txt" *ngIf="email.hasError('invalidEmail')">Kindly enter valid email id.
+                                <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (this.rfqForm.controls.email.touched || this.rfqForm.controls.email.dirty)">
+                                    <p class="error-txt" *ngIf="this.rfqForm.controls.email.hasError('required')">Kindly enter your email id.</p>
+                                    <p class="error-txt" *ngIf="this.rfqForm.controls.email.hasError('invalidEmail')">Kindly enter valid email id.
                                     </p>
                                 </ng-container>
                                 <span class="label">Email</span>
@@ -79,20 +80,20 @@
                     </div>
                     <div class="multiple-form-field">
                         <div class="outline-input-label">
-                            <label [class.is-focus]="pincode.value.length > 0">
+                            <label [class.is-focus]="this.rfqForm.controls.pincode.value.length > 0">
                                 <input type="text" name="Pincode*" class="pincode" [ngClass]="{'disable-input-field':(isPincodeBoxChecked)}" formControlName="pincode" maxlength="6"
                                     placeholder="" [readonly]="isPincodeUnKnown.value"
                                     (click)="isOutOfStock?initiateLogin():false" [attr.disabled]="isPincodeBoxChecked?true:null" data-numbersOnly #pincode>
-                                <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (pincode.touched || pincode.dirty)">
+                                <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (this.rfqForm.controls.pincode.touched || this.rfqForm.controls.pincode.dirty)">
                                     <!-- <p class="error-txt" *ngIf="pincode.hasError('required')">Kindly enter your pincode.</p> -->
-                                    <p class="error-txt" *ngIf="pincode.hasError('pattern')">Pincode should contain only digits.
+                                    <p class="error-txt" *ngIf="this.rfqForm.controls.pincode.hasError('pattern')">Pincode should contain only digits.
                                     </p>
                                     <p class="error-txt"
-                                        *ngIf="pincode.hasError('minlength') && !(pincode.hasError('pattern'))">
+                                        *ngIf="this.rfqForm.controls.pincode.hasError('minlength') && !(this.rfqForm.controls.pincode.hasError('pattern'))">
                                         Pincode should contain 6 digits.
                                     </p>
                                 </ng-container>
-                                <p class="error-txt" *ngIf="isRFQSubmitted && pincode.valid && isInvalidPincode">
+                                <p class="error-txt" *ngIf="isRFQSubmitted && this.rfqForm.controls.pincode.valid && isInvalidPincode && this.rfqForm.controls.pincode.value.length != 0 ">
                                     Invalid pincode
                                 </p>
                                 <span class="label">Pincode</span>
@@ -104,12 +105,12 @@
                                     [readonly]="!(isPincodeUnKnown.value)" (click)="isOutOfStock?initiateLogin():false"
                                     (paste)="$event.preventDefault()" [ngClass]="{'disable-input-field':!(isPincodeBoxChecked)}" [attr.disabled]="!isPincodeBoxChecked?true:null" data-alphabetsOnly #city>
                                 <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (pincode.touched ||  city.dirty)">
-                                    <p class="error-txt" *ngIf="isPincodeUnKnown.value && city.hasError('required')">
+                                    <p class="error-txt" *ngIf="isPincodeUnKnown.value && this.rfqForm.controls.city.hasError('required')">
                                         Kindly enter your city name.</p>
-                                    <p class="error-txt" *ngIf="isPincodeUnKnown.value && city.hasError('pattern')">
+                                    <p class="error-txt" *ngIf="isPincodeUnKnown.value && this.rfqForm.controls.city.hasError('pattern')">
                                         Kindly enter your valid city name.</p>
                                     <p class="error-txt"
-                                        *ngIf="isPincodeUnKnown.value && city.hasError('maxlength') && !(city.hasError('pattern'))">
+                                        *ngIf="isPincodeUnKnown.value && this.rfqForm.controls.city.hasError('maxlength') && !(this.rfqForm.controls.city.hasError('pattern'))">
                                         City should contain 30 characters.
                                     </p>
                                 </ng-container>

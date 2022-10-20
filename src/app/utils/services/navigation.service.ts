@@ -31,7 +31,7 @@ export class NavigationService
           return;
         }
         //to avoid saving below urls as these are login or signup 
-        const is_not_login_signup = !(currentUrl.includes("login") || currentUrl.includes("otp") || currentUrl.includes("sign-up") || currentUrl.includes("back=1"));
+        const is_not_login_signup = !(currentUrl.includes("login") || currentUrl.includes("otp") || currentUrl.includes("sign-up") || currentUrl.includes("back"));
         let is_not_last_url = true;
         //to avoid saving of duplication of url
         if (this.history.length > 0) {

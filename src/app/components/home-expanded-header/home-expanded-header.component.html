@@ -6,6 +6,9 @@
             <a class="moglix-app-logo" [routerLink]="['/']">
                 <img class="logo-2x" src="{{imgAssetPath}}assets/img/moglix_logo_red@3x.png" alt="logo-2x">
             </a>
+            <div *ngIf="_localAuthService.IsUserGoldMember()" class="logo-animation" >
+               <lottie-player src="../../../assets/json/goldText.json" background="transparent"  speed="1"  style="width:40px; height: 40px;" loop  autoplay></lottie-player>
+            </div>
         </div>
         <div class="head-d-flex-inner logo-container">
             <a (click)="navigateToLogin$.emit($event)" *ngIf="!isUserLogin"

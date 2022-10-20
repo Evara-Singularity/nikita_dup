@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, Injector, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -39,6 +39,10 @@ export class CreditDebitCardComponent implements OnInit {
     selectedMonth: string = null;
     yearSelectPopupStatus: boolean = false;
     selectedYear: string = null;
+    
+    bottomSheetInstance = null;
+    @ViewChild('bottomSheet', { read: ViewContainerRef })
+    bottomSheetContainerRef: ViewContainerRef;
 
     constructor(
         private _localStorageService: LocalStorageService,
@@ -48,7 +52,9 @@ export class CreditDebitCardComponent implements OnInit {
         private _analytics: GlobalAnalyticsService,
         private _commonService: CommonService,
         private _dataService: DataService,
-        private _formBuilder: FormBuilder) {
+        private _formBuilder: FormBuilder,
+        private cfr: ComponentFactoryResolver,
+        private injector: Injector) {
         this.createYears();
         this.intializeForm();
 
@@ -292,6 +298,26 @@ export class CreditDebitCardComponent implements OnInit {
 
     payApiCall(data) {
         return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, { body: data });
+    }
+
+    async initiateRbiGuidlinesPopUp()
+    {
+        if (!this.bottomSheetInstance) {
+            const { RbiGuidelinesBottomSheetComponent } = await import(
+                './../../../components/rbi-guidelines-bottom-sheet/rbi-guidelines-bottom-sheet.component'
+            );
+            const factory = this.cfr.resolveComponentFactory(RbiGuidelinesBottomSheetComponent);
+            this.bottomSheetInstance = this.bottomSheetContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.bottomSheetInstance.instance['bm'] = true;
+
+        } else {
+            //toggle
+            this.bottomSheetInstance.instance['bm'] = !(this.bottomSheetInstance.instance['bm']);
+        }
     }
 
 }

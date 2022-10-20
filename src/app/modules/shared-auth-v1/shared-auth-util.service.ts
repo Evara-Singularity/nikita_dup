@@ -10,6 +10,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var dataLayer;
 
 @Injectable({ providedIn: 'root' })
@@ -19,6 +20,7 @@ export class SharedAuthUtilService implements OnInit
     readonly SINGUP_REQUEST = { source: 'signup', userType: 'online', phoneVerified: true, emailVerified: false };
     redirectUrl = this.HOME_URL;
     private _checkoutLoginHandler: Subject<number> = new Subject<number>();
+    private _autoLogin: Subject<number> = new Subject<number>();
 
     constructor(private _localStorage: LocalStorageService,
         private _globalLoader: GlobalLoaderService, private _cartService: CartService, private _localAuthService: LocalAuthService,
@@ -42,6 +44,7 @@ export class SharedAuthUtilService implements OnInit
 
     processAuthentication(response, isCheckout, redirectUrl)
     {
+        console.log("After api send")
         this._localAuthService.setUserSession(response);
         this._localAuthService.clearAuthFlow();
         const queryParams = this._commonService.extractQueryParamsManually(location.search.substring(1))
@@ -53,6 +56,7 @@ export class SharedAuthUtilService implements OnInit
         let cartSession = Object.assign(this._cartService.getGenericCartSession);
         cartSession['cart']['userId'] = response['userId'];
         const userName = response['userName'] === 'User' ? "!" : ", " + response['userName'];
+        this._autoLogin.subscribe()
         this.updateCartSession(`Welcome to Moglix ${userName}`, isCheckout, redirectUrl || '/');
     }
 
@@ -65,6 +69,7 @@ export class SharedAuthUtilService implements OnInit
             this._globalLoader.setLoaderState(false);
             if (cartSession) {
                 this._globalLoader.setLoaderState(true);
+                // console.log('redirectUrl', redirectUrl);
                 setTimeout(() => {
                     this._globalLoader.setLoaderState(false);
                     redirectUrl && this._commonService.redirectPostAuth(redirectUrl)
@@ -75,6 +80,28 @@ export class SharedAuthUtilService implements OnInit
                 this._toastService.show({ type: 'error', text: 'Something went wrong' });
             }
         });
+    }
+
+    loginPopUpAuthenticationProcess(response): Observable<any> {
+        this._globalLoader.setLoaderState(true);
+        const userName = response['userName'] === 'User' ? "!" : ", " + response['userName'];
+        const welcomeText = `Welcome to Moglix ${userName}`;
+        return this._cartService.performAuthAndCartMerge({
+            enableShippingCheck: true,
+            redirectUrl: null,
+        }).pipe(map(cartsession => {
+            this._globalLoader.setLoaderState(false);
+            this._toastService.show({ type: 'success', text: welcomeText });
+            return cartsession;
+        }));
+    }
+
+    signupPopupAuthenticationProcess(params, response) {
+        this._localStorage.clear('tocd');
+        this._localStorage.store('user', response);
+        const firstName = params['firstName'] || '';
+        const welcomeText = ((firstName.toLocaleLowerCase() == CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER.toLocaleLowerCase()) || firstName == '') ? `Welcome to Moglix!` : `Welcome to Moglix, ${firstName}`
+        this._toastService.show({ type: 'success', text: welcomeText });
     }
 
     //common section
@@ -201,7 +228,19 @@ export class SharedAuthUtilService implements OnInit
             pageName: "moglix:login/signup post",
             linkName: "post login/signup",
             loginStatus: "guest",
-            error: "Authentication Failure"
+        };
+        let custData = {};
+        let order = {}
+        this._globalAnalyticsService.sendAdobeCall({ page, custData, order }, "genericClick"); 
+    }
+
+    sendLoginPopUpTracking()
+    {
+        let page = {
+            channel: "login/signup",
+            pageName: "moglix:login/signup post",
+            linkName: "post login/signup",
+            loginStatus: "guest",
         };
         let custData = {};
         let order = {}

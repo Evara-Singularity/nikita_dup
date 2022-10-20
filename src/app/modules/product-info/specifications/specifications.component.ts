@@ -1,6 +1,10 @@
 import { Component, Input, OnInit, Output,EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { fade } from '@utils/animations/animation';
+import { BrandLinkMapping } from '@app/utils/brandLinkMapping';
+
 
 @Component({
     selector: 'specifications',
@@ -14,14 +18,21 @@ export class SpecificationsComponent implements OnInit
 {
     @Output() callback: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Input("specifications") specifications = null;
+    @Output() openLoginPopUp: EventEmitter<boolean> = new EventEmitter<boolean>();
     public isAllListShow:boolean;
     enableSecondaryAttributes: boolean = false;
     showSecondaryAttributes: boolean = false;
+    user: any;
+    showNavToStorePage:boolean=false;
     
-    constructor(public _commonService: CommonService) { }
+    constructor(public _commonService: CommonService,private _localAuthService : LocalAuthService,private router : Router) { }
 
     ngOnInit() {
         this.checkSecondaryAttributes();
+        if (BrandLinkMapping.hasOwnProperty(this.specifications["brand"]["brandId"])) {
+            this.showNavToStorePage=true;
+            this.specifications["brand"]['storeLink']=BrandLinkMapping[this.specifications["brand"]["brandId"]];
+          }
     }
 
     checkSecondaryAttributes() {
@@ -36,6 +47,19 @@ export class SpecificationsComponent implements OnInit
         }
     }
     showMore() {
+         this.user = this._localAuthService.getUserSession();
+        if (this.user && this.user['authenticated'] == 'true') {
+            this.toggleShowMore();
+        }
+        else {
+            this.openLoginPopUp.emit()
+            this._localAuthService.login$.subscribe((data) => {
+                this.toggleShowMore();
+            })
+        }
+    }
+
+    toggleShowMore(){
         this.showSecondaryAttributes = !this.showSecondaryAttributes;
         this.callback.emit(this.showSecondaryAttributes);
     }

@@ -33,7 +33,7 @@
         </div>
     </div>
     <div class="card-bottom">
-        <div class="card-bottom-inner card-bottom-inner-order-dtl" *ngIf="!['CANCELLED'].includes(detail?.status)">
+        <div class="card-bottom-inner card-bottom-inner-order-dtl" *ngIf="!['CANCELLED','PAYMENT FAILED'].includes(detail?.status)">
             <span class="order-track-line line-invisible"></span>
             <span class="orderstatus">
                 <!-- [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'" -->
@@ -55,7 +55,7 @@
                 </span>
             </span>
         </div>
-        <div class="card-bottom-inner card-bottom-inner-order-dtl " [ngClass]="{'state-done': detail?.status != 'CANCELLED'}" >
+        <div class="card-bottom-inner card-bottom-inner-order-dtl" [ngClass]="{'state-done': !(['CANCELLED','PAYMENT FAILED'].includes(detail?.status))}" >
             <span class="order-track-line gray-bg" [ngClass]="{'gray-bg': (detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING'), 'red-bg': (detail?.status == 'CANCELLED' ||  detail?.status =='PAYMENT FAILED'), 'yellow-bg': statusListForReturnExchange.includes(detail?.status) }" ></span>
             <span class="orderstatus">
                 <!-- [ngClass]="detail?.status == 'ACCEPTED' || detail?.status == 'PROCESSING' || detail?.status == 'PACKED' || detail?.status == 'SHIPPED'" -->

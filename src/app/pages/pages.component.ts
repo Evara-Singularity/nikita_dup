@@ -1,16 +1,19 @@
 import {
+  AfterViewInit,
   Component,
+  ComponentFactoryResolver,
+  EventEmitter,
+  Injector,
   OnInit,
   Renderer2,
+  ViewChild,
+  ViewContainerRef,
   ViewEncapsulation,
 } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
-import { map } from "rxjs/operators";
 import { LocalAuthService } from "../utils/services/auth.service";
 import { CartService } from "../utils/services/cart.service";
 import { CommonService } from "../utils/services/common.service";
-import { filter, mergeMap } from "rxjs/operators";
-import { of } from "rxjs";
 import { DataService } from "@app/utils/services/data.service";
 import CONSTANTS from "@app/config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
@@ -25,13 +28,24 @@ declare var dataLayer;
   styleUrls: ["./pages.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
-export class PagesComponent implements OnInit {
+export class PagesComponent implements OnInit, AfterViewInit {
   isServer: boolean = false;
   isBrowser: boolean = false;
-  iData: { footer?: true; logo?: boolean; title?: string, hideHeader?: boolean };
+  iData: {
+    footer?: true;
+    logo?: boolean;
+    title?: string;
+    hideHeader?: boolean;
+  };
   isFooter: boolean = true;
   isHomePage: boolean;
   isRoutedBack: boolean = false;
+
+  //var for goldMembership
+  goldMembershipInstance = null;
+	@ViewChild('GoldMembershipComponent', { read: ViewContainerRef })
+	goldMembershipContainerRef: ViewContainerRef;
+
   constructor(
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
@@ -41,12 +55,16 @@ export class PagesComponent implements OnInit {
     public router: Router,
     private _aRoute: ActivatedRoute,
     private dataService: DataService,
+    private cfr: ComponentFactoryResolver,
+    private injector: Injector,
+
   ) {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
     this.isMoglixAppInstalled();
 
-    this.router.events.subscribe((res) => {
+    this.router.events.subscribe((res) =>
+    {
       this.createHeaderData(this._aRoute);
 
       if (res instanceof NavigationEnd) {
@@ -58,34 +76,62 @@ export class PagesComponent implements OnInit {
         }
         this.isRoutedBack = (res['url'] == "/?back=1") ? true : false;
       }
-      
     });
   }
 
-  enableBodyScoll() {
+  ngAfterViewInit(): void {
+    this._commonService.getGoldMembershipPopup().subscribe(res=>{
+      this.showGoldMembershipPopUp();
+   })
+  }
+
+  ngOnInit()
+  {
+    const queryParams = this._aRoute.snapshot.queryParams;
+    const orderId = queryParams['orderId'];
+    if (orderId) return;
+    this.initialize();
+  }
+
+  initialize()
+  {
+    /**
+     * Handles cart and user session globally for application on all pages
+     * Also, for page refresh
+     */
+    if (this.isBrowser) {
+      // separately checking for back param, because on angular router navigation this param is not getting updated
+      this.isRoutedBack = window.location.toString().includes('back=1');
+      this.checkAndRedirect();
+      // this.dataService.startHistory();
+      this.setEnvIdentiferCookie();
+      this.setConnectionType();
+      this.checkWebpSupport();
+    }
+  }
+
+  enableBodyScoll()
+  {
     // incase body scroll is disabled then enable it on page refresh
     // console.log('page. enableBodyScoll ', this._commonService.bodyScrollStatus);
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       this._commonService.setBodyScroll(null, true);
     }, 200);
   }
 
-  checkAndRedirect() {
+  checkAndRedirect()
+  {
     const queryParams = this._aRoute.snapshot.queryParams;
-    if (
-      GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(
-        window.location.pathname
-      ) &&
-      queryParams.hasOwnProperty("token")
-    ) {
+    if (GLOBAL_CONSTANT.pageOnWhichBharatPaySupported.includes(window.location.pathname) && queryParams.hasOwnProperty("token")) {
       this.loginUserIfUserRedirectedFromBharatpay(queryParams);
-    } 
-    else {
-      this.checkForUserAndCartSession();
+      return;
     }
+    this.checkForUserAndCartSession();
   }
 
-  loginUserIfUserRedirectedFromBharatpay(queryParams) {
+  loginUserIfUserRedirectedFromBharatpay(queryParams)
+  {
     const token = queryParams["token"];
 
     const url =
@@ -100,7 +146,8 @@ export class PagesComponent implements OnInit {
             : null,
         },
       })
-      .subscribe((res) => {
+      .subscribe((res) =>
+      {
         if (res["status"]) {
           const obj = {
             authenticated: "true",
@@ -132,7 +179,8 @@ export class PagesComponent implements OnInit {
       });
   }
 
-  handleRedirectionOfPages(queryParams) {
+  handleRedirectionOfPages(queryParams)
+  {
     if (
       window.location.pathname ===
       GLOBAL_CONSTANT.pageOnWhichBharatPaySupported[0] &&
@@ -144,20 +192,21 @@ export class PagesComponent implements OnInit {
     }
   }
 
-  redirectToProductPage(msn) {
+  redirectToProductPage(msn)
+  {
     const params = {
       filter: {},
       queryParams: this._aRoute.snapshot.queryParams,
       pageName: "SEARCH",
     };
-
     const actualParams = this._commonService.formatParams(params);
     actualParams["str"] = msn;
     this.dataService
       .callRestful("GET", environment.BASE_URL + ENDPOINTS.SEARCH, {
         params: actualParams,
       })
-      .subscribe((res) => {
+      .subscribe((res) =>
+      {
         if (
           res.hasOwnProperty("productSearchResult") &&
           res["productSearchResult"]["totalCount"] === 1
@@ -169,23 +218,13 @@ export class PagesComponent implements OnInit {
       });
   }
 
-  ngOnInit() {
-    /**
-     * Handles cart and user session globally for application on all pages
-     * Also, for page refresh
-     */
-    if (this.isBrowser) {
-      this.checkAndRedirect();
-      // this.dataService.startHistory();
-      this.setEnvIdentiferCookie();
-      this.setConnectionType();
-      this.checkWebpSupport();
-    }
-  }
+  
 
-  isMoglixAppInstalled() {
+  isMoglixAppInstalled()
+  {
     if (this.isBrowser) {
-      window.addEventListener("load", () => {
+      window.addEventListener("load", () =>
+      {
         // Check to see if the API is supported.
         if ("getInstalledRelatedApps" in navigator) {
           this.updateAppStatus();
@@ -194,7 +233,8 @@ export class PagesComponent implements OnInit {
     }
   }
 
-  checkWebpSupport() {
+  checkWebpSupport()
+  {
     const elem = document.createElement("canvas");
     if (!!(elem.getContext && elem.getContext("2d"))) {
       // was able or not to get WebP representation
@@ -209,7 +249,8 @@ export class PagesComponent implements OnInit {
     }
   }
 
-  setConnectionType() {
+  setConnectionType()
+  {
     let ISCHROME = false;
     if (navigator && navigator["connection"]) {
       const CONNECTION = navigator["connection"];
@@ -234,28 +275,34 @@ export class PagesComponent implements OnInit {
     }
   }
 
-  updateAppStatus() {
-    navigator["getInstalledRelatedApps"]().then((relatedApps) => {
+  updateAppStatus()
+  {
+    navigator["getInstalledRelatedApps"]().then((relatedApps) =>
+    {
       if (relatedApps && relatedApps.length > 0) {
         this._commonService.isAppInstalled = true;
       }
     });
   }
 
-  checkForUserAndCartSession() {
+  checkForUserAndCartSession()
+  {
     this._cartService.refreshCartSesion();
   }
 
-  createHeaderData(_aRoute) {
-    this._commonService.getRoutingData(_aRoute).subscribe((rData) => {
+  createHeaderData(_aRoute)
+  {
+    this._commonService.getRoutingData(_aRoute).subscribe((rData) =>
+    {
       this.iData = rData;
     });
   }
 
-  setEnvIdentiferCookie() {
-    const abTesting = this.dataService.getCookie('AB_TESTING');
-    const PWA = this.dataService.getCookie('PWA');
-    const buildVersion = this.dataService.getCookie('BUILD_VERSION') || null;
+  setEnvIdentiferCookie()
+  {
+    const abTesting = this.dataService.getCookie("AB_TESTING");
+    const PWA = this.dataService.getCookie("PWA");
+    const buildVersion = this.dataService.getCookie("BUILD_VERSION") || null;
     const updatedBuildaVersion = environment.buildVersion.toString();
 
     if (!PWA) {
@@ -280,17 +327,40 @@ export class PagesComponent implements OnInit {
     }
 
     if (!buildVersion) {
-      this.dataService.setCookie('BUILD_VERSION', updatedBuildaVersion, 90);
+      this.dataService.setCookie("BUILD_VERSION", updatedBuildaVersion, 90);
     } else {
       if (buildVersion != updatedBuildaVersion) {
-        this.dataService.deleteCookieV2('BUILD_VERSION');
-        setTimeout(() => {
-          this.dataService.setCookie('BUILD_VERSION',updatedBuildaVersion, 90);
+        this.dataService.deleteCookieV2("BUILD_VERSION");
+        setTimeout(() =>
+        {
+          this.dataService.setCookie("BUILD_VERSION", updatedBuildaVersion, 90);
         }, 100);
       }
     }
-
   }
 
-    get isCheckout() { return this.router.url.includes("checkout") } 
+  async showGoldMembershipPopUp() {
+    const { GoldMembershipComponent } = await import('../modules/goldMembership/goldMembership.component');
+    const factory = this.cfr.resolveComponentFactory(GoldMembershipComponent);
+    this.goldMembershipInstance = this.goldMembershipContainerRef.createComponent(
+      factory,
+      null,
+      this.injector
+    );
+    (
+      this.goldMembershipInstance.instance['closePopup'] as EventEmitter<boolean>
+    ).subscribe(data => {
+      this.goldMembershipContainerRef.remove();
+    });
+    (
+      this.goldMembershipInstance.instance['closePopupOnOutsideClick'] as EventEmitter<{}>
+    ).subscribe(data => {
+      this.goldMembershipContainerRef.remove();
+    });
+  }
+ 
+  get isCheckout()
+  {
+    return this.router.url.includes("checkout");
+  }
 }

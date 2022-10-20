@@ -1,6 +1,6 @@
 <section class="payment-container payment-modal-bottom pwa-row mt-10">
     <div class="card-30">
-        <saved-card *ngIf="isSavedCardExist" [savedCardsData]="savedCardsData" [type]="invoiceType" (removeTab$)="removeTab($event)"></saved-card>
+        <saved-card *ngIf="isSavedCardExist" [savedCardsData]="savedCardsData" [type]="invoiceType" (cartSelected$)="cardSelected($event)" (removeTab$)="removeTab($event)"></saved-card>
     </div>
     <div class="pwa-col-12">
         <section class="payment_accordion">
@@ -167,3 +167,5 @@
         </div>
     </div>
 </app-pop-up>
+
+<ng-container #txnDeclined></ng-container>

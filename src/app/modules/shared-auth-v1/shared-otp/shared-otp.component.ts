@@ -1,5 +1,5 @@
 import { Validators } from '@angular/forms';
-import { Component, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -27,7 +27,7 @@ import { SharedAuthService } from './../shared-auth.service';
     templateUrl: './shared-otp.component.html',
     styleUrls: ['./shared-otp.component.scss']
 })
-export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
+export class    SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
 {
     readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
     readonly LOGIN_URL = "/login";
@@ -37,6 +37,11 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
     readonly CHECKOUT_PASSWORD_URL = "/checkout/forgot-password";
     readonly OTP_FIELDS_LENGTH = 6;
     @Input('isCheckout') isCheckout = false;
+
+    @Input('isLoginPopup') isLoginPopup = false;
+    @Output() togglePopUp$: EventEmitter<any> = new EventEmitter<any>();
+    @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
+
     authFlow: AuthFlowType;//gives flowtype & identifier information
     //otp
     otpForm: FormArray = new FormArray([]);
@@ -177,8 +182,7 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
         )
     }
 
-    processAuthenticaton(response)
-    {
+    processAuthenticaton(response) {
         this._sharedAuthUtilService.sendGenericPageClickTracking(true);
         const BACKURLTITLE = this._localAuthService.getBackURLTitle();
         let REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;
@@ -186,13 +190,22 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
         if (queryParams.hasOwnProperty('state') && queryParams.state === 'raiseRFQQuote') {
             REDIRECT_URL += '?state=' + queryParams['state'];
         }
+        this._localAuthService.setUserSession(response);
         this._localAuthService.clearAuthFlow();
         this._localAuthService.clearBackURLTitle();
-        this._sharedAuthUtilService.processAuthentication(
-            response,
-            this.isCheckout,
-            ((this.isCheckout) ? this.CHECKOUT_ADDRESS : REDIRECT_URL)
-        );
+        if (this.isLoginPopup) {
+            // console.log('popup login', this.isLoginPopup);
+            this._sharedAuthUtilService.loginPopUpAuthenticationProcess(response).subscribe(cartSession => {
+                this.removeAuthComponent$.emit();
+            })
+        } else {
+            // console.log('normal login', this.isLoginPopup);
+            this._sharedAuthUtilService.processAuthentication(
+                response,
+                this.isCheckout,
+                ((this.isCheckout) ? this.CHECKOUT_ADDRESS : REDIRECT_URL)
+            );
+        }
     }
 
     navigateToLogin() {
@@ -202,7 +215,10 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
                 'state': this._activatedRoute.snapshot.queryParams.state
             },
         };
-        if (this.isCheckout) {
+        if(this.isLoginPopup){
+            this.navigateToPopUp('login')
+        }
+        else if (this.isCheckout) {
             this._router.navigate([this.CHECKOUT_LOGIN_URL])
         } else {
             this._router.navigate([this.LOGIN_URL], navigationExtras)
@@ -217,11 +233,18 @@ export class SharedOtpComponent implements OnInit, AfterViewInit, OnDestroy
                 'state': this._activatedRoute.snapshot.queryParams.state
             },
         };
-        if (this.isCheckout) {
+        if(this.isLoginPopup){
+            this.navigateToPopUp('forgot-password')
+        }
+        else if (this.isCheckout) {
             this._router.navigate([this.CHECKOUT_PASSWORD_URL])
         } else {
             this._router.navigate([this.FORGOT_PASSWORD_URL], navigationExtras)
         }
+    }
+
+    navigateToPopUp(component){
+        this.togglePopUp$.emit(component);
     }
 
     get isOTPVerified() { return (this.verifiedOTP === this.otpValue) && (this.timer === 0); }

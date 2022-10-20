@@ -35,6 +35,9 @@
         @extend %transition;
         z-index:108;
         border-radius: 20px 20px 0px 0px;
+        &.otp-popup-height{
+            min-height: 55% !important;
+        }
         li {
             padding: 10px 0;
             font-size: $extra-large-font;

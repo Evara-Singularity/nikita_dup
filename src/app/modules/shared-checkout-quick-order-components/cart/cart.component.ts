@@ -15,7 +15,7 @@ import { FooterService } from '@utils/services/footer.service';
 import { GlobalLoaderService } from '@utils/services/global-loader.service';
 import { ProductService } from '@utils/services/product.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { forkJoin, Subscription } from 'rxjs';
+import { forkJoin, of, Subscription } from 'rxjs';
 import { catchError, concatMap, delay, first, map, switchMap } from 'rxjs/operators';
 
 declare let dataLayer;
@@ -83,7 +83,6 @@ export class CartComponent
             concatMap((res) => this._cartService.getShippingAndUpdateCartSession(res))).subscribe(
                 (cartSessionWithShiping) =>
                 {
-                    // console.log(cartSessionWithShiping);
                     this.cartSession = cartSessionWithShiping;
                     this.noOfCartItems = (cartSessionWithShiping['itemsList'] as any[]).length;
                     if (this.noOfCartItems) {
@@ -228,7 +227,11 @@ export class CartComponent
         const updateCart$ = this._cartService.updateCartSession(newCartSession).pipe(
             switchMap((newCartSession) =>
             {
-                return this._cartService.verifyAndApplyPromocode(newCartSession, this._cartService.appliedPromoCode, true)
+                if(this._cartService.appliedPromoCode) {
+                    return this._cartService.verifyAndApplyPromocode(newCartSession, this._cartService.appliedPromoCode, true)
+                } else {
+                    return of({cartSession: newCartSession});
+                }
             }),
             switchMap((response) =>
             {

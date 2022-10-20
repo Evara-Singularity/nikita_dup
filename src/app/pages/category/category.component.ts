@@ -130,7 +130,6 @@ export class CategoryComponent {
                 if (res.hasOwnProperty('priceRangeBuckets')) {
                     this.API_RESPONSE.category[1].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
                 }
-
                 // update footer data
                 this.genrateAndUpdateCategoryFooterData();
 

@@ -222,7 +222,7 @@ export class DataService {
                 this.getSessionApi
                     .pipe(take(1))
                     .subscribe((res) => {
-                        console.log("Error-401: getsession called");
+                        // console.log("Error-401: getsession called");
                         if (res['statusCode'] != undefined && res['statusCode'] == 500) {
                             // alert("something went wrong, please try to refresh the page");
                         } else {

@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SharedAuthUtilService } from '@app/modules/shared-auth-v1/shared-auth-util.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
-import { DataService } from '@app/utils/services/data.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { AutoLoginService } from './autoLogin.service';

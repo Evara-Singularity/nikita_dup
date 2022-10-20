@@ -15,13 +15,5 @@ export class AutoLoginService {
    return this._dataService.callRestful("POST", 'https://nodeapiqa.moglilabs.com/nodeApi/v2/createProductUrl/tokenAuthentication' ,  { body: postBody });
   }
 
-  getBrand() {
-    return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ALL_BRANDS);
-  }
-
-  getBrandLogo() {
-    return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + CONSTANTS.GET_PARENT_CAT+'brand-store');
-  }
-
   
 }

@@ -40,6 +40,7 @@ export class ProductCardCoreComponent implements OnInit {
     horizontalOrientation: true,
     verticalOrientationV2: false,
     lazyLoadImage: true,
+    // TODO: add config for CTA control
   }
   // currently being used in PDP similar product
   @Input() cardMetaInfo: ProductCardMetaInfo = {

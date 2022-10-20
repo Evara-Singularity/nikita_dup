@@ -4,49 +4,78 @@
             <custom-promo-code></custom-promo-code>
             <p class="open-offers" (click)="$event.stopPropagation();openPromoCodeList()">VIEW ALL OFFERS</p>
         </div>
-        <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" *ngIf="showPromoOfferPopup"></promo-code-list>
-        <div class="order-summary pwa-row no-border" id="payment_summary">
-            <!--Move promocode popup-->
-            <div class="alert-box" *ngIf="showPromoSuccessPopup">
-                <div class="overlay" (click)="$event.stopPropagation();closePromoSuccessPopUp()"></div>
-                <div class="content-area">
-                    <div class="info-area">
-                        <i class="icon-coupon-3-fill-1"></i>
-                        <p class="applied-coupon">'{{_cartService?.appliedPromoCode}}' applied</p>
-                        <p class="saving-applid-coupon"><span>&#8377;{{totalOffer}}</span> saving with this coupon</p>
-                        <p class="green-text">YAY!</p>
+        <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" *ngIf="showPromoOfferPopup">
+        </promo-code-list>
+        <div class="payment_summary-conatiner">
+            <div class="order-summary pwa-row no-border" id="payment_summary">
+                <!--Move promocode popup-->
+                <div class="alert-box" *ngIf="showPromoSuccessPopup">
+                    <div class="overlay" (click)="$event.stopPropagation();closePromoSuccessPopUp()"></div>
+                    <div class="content-area">
+                        <div class="info-area">
+                            <i class="icon-coupon-3-fill-1"></i>
+                            <p class="applied-coupon">'{{_cartService?.appliedPromoCode}}' applied</p>
+                            <p class="saving-applid-coupon"><span>&#8377;{{totalOffer}}</span> saving with this coupon
+                            </p>
+                            <p class="green-text">YAY!</p>
+                        </div>
                     </div>
                 </div>
+                <!--Move promocode popup-->
+                <h3>Payment Summary</h3>
+                <ul class="txt-list">
+                    <li class="border">
+                        <span class="tag-label">Total Amount</span>
+                        <span class="tag-value">₹{{_cartService.getGenericCartSession.cart.tawot | mathFloor | number :
+                            '1.2-2'}}</span>
+                    </li>
+                    <li>
+                        <span class="tag-label">Total GST</span>
+                        <span class="tag-value">₹{{_cartService.getGenericCartSession.cart.tpt | mathFloor | number :
+                            '1.2-2'}}</span>
+                    </li>
+
+                    <li>
+                        <span class="tag-label">Total Shipping</span>
+                        <span class="tag-value">₹{{ _cartService.getGenericCartSession.cart.shippingCharges | mathFloor
+                            | number :'1.2-2' }}</span>
+                    </li>
+                    <li>
+                        <span class="tag-label">Total Coupon Discount</span>
+                        <span class="tag-value green-txt"
+                            *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null">
+                            -₹{{_cartService.getGenericCartSession.cart.totalOffer | mathFloor | number :
+                            '1.2-2'}}</span>
+                        <span class="tag-value green-txt"
+                            *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">-₹0.00</span>
+                    </li>
+
+                    <li class="bold-txt" *ngIf="_cartService.totalPrepaidSaving==0">
+                        <span class="tag-label">Amount Payable</span>
+                        <span class="tag-value">₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathCeil | number :
+                            '1.2-2'}}</span>
+                    </li>
+
+                                       
+                    <li class="bold-txt" *ngIf="_cartService.totalPrepaidSaving > 0">
+                        <span class="tag-label">Total Cart Value </span>
+                        <span class="tag-value">₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathCeil | number :
+                            '1.2-2'}}</span> 
+                    </li>
+                    <li  *ngIf="_cartService.totalPrepaidSaving > 0">
+                        <span class="tag-label">Total Prepaid Discount</span>
+                        <span class="tag-value green-txt">-₹{{_cartService.totalPrepaidSaving}}</span>
+                    </li>
+                    <li class="bold-txt" *ngIf="_cartService.totalPrepaidSaving > 0">
+                        <span class="tag-label">Amount Payable</span>
+                        <span class="tag-value">₹{{ (_cartService.totalDisplayPayableAmountWithPrepaid) | mathCeil | number :
+                            '1.2-2'}}</span>
+                    </li>
+                </ul>
             </div>
-            <!--Move promocode popup-->
-            <h3>Payment Summary</h3>
-            <ul class="txt-list">
-                <li class="border">
-                    <span class="tag-label">Total Amount</span>
-                    <span class="tag-value">₹{{_cartService.getGenericCartSession.cart.tawot | mathFloor | number : '1.2-2'}}</span>
-                </li>
-                <li>
-                    <span class="tag-label">Total GST</span>
-                    <span class="tag-value">₹{{_cartService.getGenericCartSession.cart.tpt | mathFloor | number : '1.2-2'}}</span>
-                </li>
-    
-                <li>
-                    <span class="tag-label">Total Shipping</span>
-                    <span class="tag-value">₹{{ _cartService.getGenericCartSession.cart.shippingCharges | mathFloor | number :'1.2-2' }}</span>
-                </li>
-                <li>
-                    <span class="tag-label">Total Coupon Discount</span>
-                    <span class="tag-value green-txt" *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null">
-                        -₹{{_cartService.getGenericCartSession.cart.totalOffer | mathFloor | number : '1.2-2'}}</span>
-                    <span class="tag-value green-txt" *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">-₹0.00</span>
-                </li>
-                <li class="bold-txt">
-                    <span class="tag-label">Amount Payable</span>
-                    <span class="tag-value" *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges) | mathCeil | number : '1.2-2'}}</span>
-                    <span class="tag-value" *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer) | mathCeil | number : '1.2-2'}}</span>
-                </li>
-            </ul>
+            <div class="pwa-row" *ngIf="_cartService.totalPrepaidSaving>0">
+                <p class="save-prise-txt">You save {{_cartService.totalPrepaidSaving}} on this order</p>
+            </div>
         </div>
     </div>
 </div>
-

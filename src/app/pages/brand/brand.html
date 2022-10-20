@@ -8,6 +8,18 @@
     </div>
     
     <!-- Brand Product List Data -->
+    <ng-container
+        *ngIf="API_RESPONSE['brand'][1][0].categoryName && _commonService.selectedFilterData.page < 2 && couponForbrandCategory">
+        <div class="instant-discount-container">
+            <div class="discount-icon">
+                <img src="../../../assets/img/best_deals.png">
+            </div>
+            <div class="discount-text" *ngIf="couponForbrandCategory">
+                <p class="green-txt">Get instant {{couponForbrandCategoryDiscount}} discount with online payment</p>
+                <p>on min. value of {{couponForbrandCategory['minimumCartValue']}} in printers</p>
+            </div>
+        </div>
+    </ng-container>
     <div class="pwa-row cate-container"
         *ngIf="API_RESPONSE['brand'][1][0].categoryName && _commonService.selectedFilterData.page < 2">
         <div class="pwa-col-12">

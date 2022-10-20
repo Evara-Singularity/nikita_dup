@@ -173,3 +173,28 @@
     }
 }
 
+
+.instant-discount-container{
+    background-color: #E9FDE8;
+    padding: 15px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    .discount-icon{
+        img{
+            width: 24px;
+        }
+    }
+    .discount-text{
+        padding-left: 10px;
+        p{
+            font-size: $medium-font;
+            line-height: $medium-line-height;
+        }
+        .green-txt{
+            color: var(--slimy-green);
+            font-size: $large-font;
+            font-weight: $font-bold;
+        }
+    }
+}

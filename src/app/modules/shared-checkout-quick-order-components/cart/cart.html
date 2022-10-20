@@ -36,6 +36,7 @@
                             <span class="after-disc" *ngIf="item.bulkPrice!==null">&nbsp;₹{{item.bulkPriceWithoutTax |
                                 mathRound | number : '1.2-2'}}</span>
                         </p>
+                        <p class="prepaid-discount-txt" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId]['applicable']">You get {{_cartService.prepaidDataMapping[item.productId]['amount']}} prepaid discount</p>
                     </div>
 
                 </div>
@@ -71,6 +72,13 @@
                             </span>
                             <i class="icon-down"></i>
                         </span>
+                </div>
+            </div>
+            <div class="pwa-row" *ngIf="_cartService.prepaidDataMapping">
+                <!-- // TODO: cart items changes for prepaid discount -->
+                <div class="shop-more-container" *ngIf="!(_cartService.prepaidDataMapping[item.productId]['applicable']) && (_cartService.prepaidDataMapping[item.productId]['amount'])">
+                    <p class="shop-more-text">Shop more for {{_cartService.prepaidDataMapping[item.productId]['amount']}} & get <span class="prepaid-discount-txt"><strong>₹500 discount</strong></span> in the same category.</p>
+                    <p class="add-products-btn" (click)="similarProduct(item.productName,item.categoryCode,item.brandName)">ADD PRODUCTS</p>
                 </div>
             </div>
             <div *ngIf="item.oos" class="oos-item-block">
@@ -155,3 +163,4 @@
         </div>
     </div>
 </app-bottom-menu>
+<ng-container #cartAddProductPopup ></ng-container>

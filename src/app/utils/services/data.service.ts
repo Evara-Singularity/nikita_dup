@@ -316,4 +316,12 @@ export class DataService {
         return this.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_SESSION);
     }
 
+    getCouponOnBrandCategory(brandName, categoryId) {
+        let URL =
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPOUN_ON_BRAND_CATEGORY +
+            "?brandName=" + brandName +
+            "&categoryCode=" + categoryId;
+        return this.callRestful("GET", URL);
+
+    }
 }

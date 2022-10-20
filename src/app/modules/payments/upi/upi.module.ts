@@ -8,6 +8,7 @@ import {TezUpiFormModule} from "../payment-forms/tezUpiForm/tezUpiForm.module";
 import { RazorPayFormModule } from '../payment-forms/razorPayForm/razorPayForm.module';
 import { MathCeilPipeModule } from '@pipes/math-ceil';
 import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
+import { PrepaidOfferCheckoutModule } from '@app/modules/prepaid-offer-checkout/prepaid-offer-checkout.component';
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
         MathCeilPipeModule,
         RazorPayFormModule,
         ObjectToArrayPipeModule,
-        LowSuccessMessagePipeModule
+        LowSuccessMessagePipeModule,
+        PrepaidOfferCheckoutModule
     ],
     declarations: [
         UpiComponent

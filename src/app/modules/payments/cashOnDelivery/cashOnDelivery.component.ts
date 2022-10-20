@@ -46,7 +46,7 @@ export class CashOnDeliveryComponent {
         private _commonService: CommonService,
         private _router: Router,
         private _localAuthService: LocalAuthService,
-        private _cartService: CartService,
+        public _cartService: CartService,
         private _loaderService: GlobalLoaderService,
         private _dataService: DataService,
         private _analytics: GlobalAnalyticsService) {

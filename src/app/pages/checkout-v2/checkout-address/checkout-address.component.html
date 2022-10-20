@@ -3,21 +3,39 @@
     <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
     <ng-container>
         <section>
-            <div *ngIf="isUserLoggedIn else hideContinue" class="fixed-bottom-cta payment-strip">
+            <div class="fixed-bottom-cta pad-0">
+                <prepaid-offer-checkout></prepaid-offer-checkout>
+            <div *ngIf="isUserLoggedIn else hideContinue" class="payment-strip">
                 <div class="amount-left-section">
                     <span class="payable-amnt">Amount Payable
                         <span (click)="scrollPaymentSummary();">
                             <i class="icon-information"></i>
                         </span>
                     </span>
+                    <ng-container *ngIf="_cartService.totalPrepaidSaving==0">
                     <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges) | mathCeil | number : '1.2-2'}}</ng-container>
                     <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer) | mathCeil | number : '1.2-2'}}</ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="_cartService.totalPrepaidSaving>0">
+                        <ng-container
+                            *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">
+                            ₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt +
+                            _cartService.getGenericCartSession.cart.shippingCharges -_cartService.totalPrepaidSaving) | mathCeil | number :
+                            '1.2-2'}}</ng-container>
+                        <ng-container
+                            *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null">
+                            ₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt +
+                            _cartService.getGenericCartSession.cart.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer
+                            -_cartService.totalPrepaidSaving) | mathCeil | number : '1.2-2'}}</ng-container>
+                    
+                    </ng-container>
                 </div>
                 <button [disabled]="!(hasCartItems)" class="btn primary-btn"
                     (click)="$event.stopPropagation();continueToPayment()">
                     CONTINUE
                 </button>
             </div>
+        </div>
             <ng-template #hideContinue>
                 <div></div>
             </ng-template>

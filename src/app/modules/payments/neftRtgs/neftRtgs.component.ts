@@ -33,7 +33,7 @@ export class NeftRtgsComponent {
         private _commonService: CommonService,
         private _router: Router,
         private _localAuthService: LocalAuthService,
-        private _cartService: CartService,
+        public _cartService: CartService,
         private loaderService: GlobalLoaderService,
         private _analytics: GlobalAnalyticsService
     ) {

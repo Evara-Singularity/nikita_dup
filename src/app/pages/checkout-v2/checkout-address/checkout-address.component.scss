@@ -11,6 +11,8 @@ button.btn[disabled] {
 
 .payment-strip {
     display: flex;
+    padding: 5px;
+    background: var(--white) !important;
     button {
         margin-left: auto;
         width: $half-width;
@@ -74,3 +76,4 @@ button.btn[disabled] {
         }
     }
 }
+

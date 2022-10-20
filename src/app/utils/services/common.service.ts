@@ -975,6 +975,7 @@ export class CommonService
                     deliveryMethodId: 77,
                     type: "kjhlh",
                 },
+                prepaidDiscounts: cartSession.prepaidDiscountList || null,
                 offersList:
                     offersList != undefined && offersList.length > 0 ? offersList : null,
                 extraOffer: cartSession["extraOffer"]

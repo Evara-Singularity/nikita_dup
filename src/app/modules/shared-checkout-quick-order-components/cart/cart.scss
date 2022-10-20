@@ -5,6 +5,33 @@
 @import '../../../scss/quantity';
 @import '../../../scss/components/static-small-card-container';
 
+
+.prepaid-discount-txt{
+    padding-top: 5px;
+    font-size: $small-font;
+    color: var(--slimy-green);
+}
+.shop-more-container{
+    padding: 8px;
+    background-color: #E9FDE8; 
+    width: 100%;
+    border-radius: $border-radius-4;
+    display: flex;
+    align-items: center;
+    .shop-more-text{
+        font-size: $small-font;
+        line-height: $small-line-height;
+        width: 60%;
+        padding-right:5px ;
+    }
+    .add-products-btn{
+        font-weight: $font-bold;
+        font-size: $medium-font;
+        color: var(--bleu-de-france);
+        margin-left: auto;
+    }
+}
+
 .applycoupen-strip {
     padding: 15px 15px 10px;
 

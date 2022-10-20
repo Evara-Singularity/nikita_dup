@@ -77,8 +77,8 @@
                     </div>
                     <div class="right">
                         <div class="card-btn-row">
-                            <!-- <ng-container
-                                *ngIf="(cardFeaturesConfig.enableAddToCart || cardFeaturesConfig.enableBuyNow) && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
+                            <ng-container
+                                *ngIf="(cardFeaturesConfig.enableAddToCart || cardFeaturesConfig.enableBuyNow) && (!isOutOfStockByQuantity && !isOutOfStockByPrice)  && pageName !='CartAddSimilarproduct'">
                                 <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart"
                                     (click)="buyNow()">
                                     <i class="icon-cart1"></i>
@@ -87,8 +87,8 @@
                                     (click)="buyNow(true)">
                                     BUY NOW
                                 </button>
-                            </ng-container> -->
-                            <span class="add_cart_btn prepaid-btn" *ngIf="cardFeaturesConfig.enableAddToCart"
+                            </ng-container>
+                            <span class="add_cart_btn prepaid-btn" *ngIf="cardFeaturesConfig.enableAddToCart && pageName=='CartAddSimilarproduct'"
                             (click)="buyNow()">
                             <i class="icon-cart1"></i>
                             ADD TO CART

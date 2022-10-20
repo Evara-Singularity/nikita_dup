@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Injector, Input, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, ViewChild, ViewContainerRef } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -491,7 +491,22 @@ export class CartComponent
         );
         (
             this.cartAddProductPopupInstance.instance['similarProductData'] = data
-        )
+        );
+        (
+            this.cartAddProductPopupInstance.instance['closePopup'] as EventEmitter<boolean>
+          ).subscribe(data => {
+            this.cartAddProductPopupContainerRef.remove();
+            this._commonService.setBodyScroll(null, true);
+          });
+
+          (
+            this.cartAddProductPopupInstance.instance['closePopupOnOutsideClick'] as EventEmitter<boolean>
+          ).subscribe(data => {
+            this.cartAddProductPopupContainerRef.remove();
+            this._commonService.setBodyScroll(null, true);
+          });
+      
+      
     }      
 
     get displayPage() { return this.noOfCartItems > 0 }

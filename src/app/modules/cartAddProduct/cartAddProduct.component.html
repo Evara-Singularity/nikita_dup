@@ -2,7 +2,7 @@
   <div class="pwa-row plp-card-list prepaid-bg">
     <div class="prepaid-heading">
       <h2>Power Tools</h2>
-      <i class="icon-circle-delete"></i>
+      <i class="icon-circle-delete" (click)="close(false)"></i>
     </div>
     <div class="pwa-col-12">
       <ng-container *ngFor="let item of cartAddProductSimilarData;let pIndex=index;">
@@ -16,6 +16,6 @@
   </div>
 </ng-template>
 
-<app-bottom-menu>
+<app-bottom-menu (outData$)="popupOnOutsideClick($event)">
   <ng-container content *ngTemplateOutlet="cartAddProductTemplate"></ng-container>
 </app-bottom-menu>

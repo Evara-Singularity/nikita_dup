@@ -1,3 +1,4 @@
+<login-popup [isRouteBased]="false" ></login-popup>
 <app-pop-up  *ngIf="openProductInfo" (outData$)="closeProducInfo($event)" [headerType]="'pop-up-header1'" [class.open1]="openProductInfo"
     [data]="{class: 'payment-popup addAddressPopup', headerText: 'About this Product', selector:'openProductInfo'}">
     <!-- <div class="head-sec header_add_edit" header>
@@ -59,7 +60,7 @@
                     <key-features [features]="contentInfo['key features']"> </key-features>
                 </ngx-siema-slide>
                 <ngx-siema-slide *ngIf="displaySlide('specifications')">
-                    <specifications (callback)="callSpecification($event);" [specifications]="contentInfo['specifications']"></specifications>
+                    <specifications (openLoginPopUp)="openLoginPopUp()" (callback)="callSpecification($event);" [specifications]="contentInfo['specifications']"></specifications>
                 </ngx-siema-slide>
                 <ngx-siema-slide *ngIf="contentInfo['videos'] && contentInfo['videos'].length > 0">
                     <videos [videos]="contentInfo['videos']" [analyticProduct]="analyticProduct" [name]="productName">

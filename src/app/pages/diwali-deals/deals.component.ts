@@ -61,11 +61,11 @@ export class DealsComponent {
           }, 1000);
         }
       } else {
-        console.log('Covid19Component API data error', rawData);
+        // console.log('Covid19Component API data error', rawData);
         this.router.navigateByUrl('/');
       }
     }, error => {
-      console.log('Covid19Component API data catch error', error);
+      // console.log('Covid19Component API data catch error', error);
     });
   }
 }

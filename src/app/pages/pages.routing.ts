@@ -14,15 +14,27 @@ const routes: Routes = [
 		path: '',
 		component: PagesComponent,
 		children: [
+			// {
+			// 	path: '',
+			// 	loadChildren: () =>
+			// 		import('./home/home.module').then((m) => m.HomeModule),
+			// 	data: {
+			// 		footer: true,
+			// 		logo: true,
+			// 		moreOpt: true,
+			// 		pageName: 'home',
+			// 		moduleName: CONSTANTS.MODULE_NAME.HOME
+			// 	},
+			// },
 			{
 				path: '',
 				loadChildren: () =>
-					import('./home/home.module').then((m) => m.HomeModule),
+					import('./home-v1/home-v1.module').then(m => m.HomeV1Module),
 				data: {
 					footer: true,
 					logo: true,
 					moreOpt: true,
-					pageName: 'home',
+					pageName: 'home-v1',
 					moduleName: CONSTANTS.MODULE_NAME.HOME
 				},
 			},

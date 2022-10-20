@@ -21,6 +21,7 @@ export const ENDPOINTS = {
     getShippingValue: "/shipping/getShippingValue",
     getAllActivePromoCodes: "/promoCode/getAllActivePromoCodes",
     getPromoCodeDetails: "/promoCode/getPromoCodeDetails",
+    validateUserPromoCode: "/promoCode/validatePromoForUser"
   },
   GET_CIMS_ATTRIBUTE: '/cmsApi/getAttributesListingPage',
   GET_LAYOUT: "/homepage/layoutbycode",
@@ -85,6 +86,7 @@ export const ENDPOINTS = {
   GET_PrepaidDiscount: "/payment/getPrepaidDiscount",
   VALIDATE_PRODUCT_SER: "/logistics/validateProductsService",
   GET_CATEGORY: "/category/getcategory",
+  GET_CATEGORY_ANALYTICS: "/category/productsReport",
   GET_BUCKET: "/bucketAggregation",
   GET_BRANDS: "/brand/getbrand",
   GET_CMS_CONTROLLED_PAGES: "/cmsapi/getCmsControlledPage?requestParam=article-1",

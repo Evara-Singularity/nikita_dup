@@ -1,5 +1,5 @@
 import { Title, Meta } from '@angular/platform-browser';
-import { DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import {
 	Component,
 	OnInit,
@@ -13,6 +13,8 @@ import {
 	ViewContainerRef,
 	ComponentFactoryResolver,
 	Injector,
+	Directive,
+	NgModule,
 } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { Subject } from 'rxjs';
@@ -28,6 +30,7 @@ import { ClientUtility } from '@app/utils/client.utility';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductService } from '@app/utils/services/product.service';
 import { CategoryData } from '@app/utils/models/categoryData';
+declare var lottieObject;
 @Component({
 	selector: 'data-home',
 	templateUrl: './home.html',
@@ -36,6 +39,7 @@ import { CategoryData } from '@app/utils/models/categoryData';
 
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+	
 	@Input() data;
 	isServer: boolean;
 	encodeURI = encodeURI;
@@ -115,6 +119,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	whatsAppBannerUrl=CONSTANTS.whatsAppBannerUrl;
 	readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
 
+
 	constructor(
 		public dataService: DataService,
 		private _renderer2: Renderer2,
@@ -124,14 +129,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		public _lss: LocalStorageService,
 		public cartService: CartService,
 		public footerService: FooterService,
-		private _localAuthService: LocalAuthService,
+		public _localAuthService: LocalAuthService,
 		private cfr: ComponentFactoryResolver,
 		private injector: Injector,
 		private route: ActivatedRoute,
 		private _router: Router,
-		private _commonService: CommonService,
+		public _commonService: CommonService,
 		private analytics: GlobalAnalyticsService,
 		private _productService: ProductService,
+		
 	) {
 		this.isServer = _commonService.isServer;
 		this.isBrowser = _commonService.isBrowser;
@@ -141,6 +147,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		
 		this.loadSearchTerms();
 		this.route.data.subscribe((rawData) => {
 			if (!rawData['homeData']['error']) {
@@ -241,7 +248,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 								return e;
 							
 							});
-							this.bannerDataFinal = [...this.bannerDataFinal, ...blockData.image_block]
+							this.bannerDataFinal = [...this.bannerDataFinal, (blockData.image_block && blockData.image_block.length > 0)?blockData.image_block[0]:[]]
 						} else if (
 							blockData.image_block &&
 							blockData.image_block.length &&
@@ -545,6 +552,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				);
 			}, 3000);
 		}
+		
 	}
 
 	ngOnDestroy() {
@@ -576,6 +584,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 			] = this.featureBrandData;
 			this.featuredBrandsInstance.instance['defaultImage'] = this.defaultImage;
 			this.featuredBrandsInstance.instance['imagePath'] = this.imagePath;
+			
 		}
 	}
 
@@ -747,4 +756,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		const order = {};
 		this.analytics.sendAdobeCall({ page,custData,order }, "genericClick");
 	}
+	
 }
+
+

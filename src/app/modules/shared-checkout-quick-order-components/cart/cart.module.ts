@@ -9,6 +9,7 @@ import { KpToggleDirectiveModule } from '@utils/directives/kp-toggle.directive';
 import { MathFloorPipeModule } from '@pipes/math-floor';
 import { MathCeilPipeModule } from '@pipes/math-ceil';
 import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
+import { MathRoundPipeModule } from '@app/utils/pipes/math-round';
 // import { PopUpModule } from '../popUp/pop-up.module';
 // import { CartUpdatesModule } from '../cartUpdates/cartUpdates.module';
 
@@ -17,6 +18,7 @@ import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
     imports: [
         CommonModule,
         MathFloorPipeModule,
+        MathRoundPipeModule,
         RouterModule,
         MathCeilPipeModule,
         ObjectToArrayPipeModule,

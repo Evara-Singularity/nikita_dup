@@ -45,7 +45,7 @@
                     </ng-container>
                 </div>
                 <!--Business  Phone No.-->
-                <div class="outline-input-label">
+                <!-- <div class="outline-input-label">
                     <label [class.is-focus]="phone.value != null && phone.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
                         <input formControlName="phone" type="text" [readonly]="!(isGSTINVerified)">
                         <span class="label">Business Phone No.*</span>
@@ -56,6 +56,23 @@
                         </p>
                         <p class="error-txt" *ngIf="phone.hasError('invalidPhone')">
                             Kindly enter valid phone number
+                        </p>
+                    </ng-container>
+                </div> -->
+                <div class="outline-input-label">
+                    <label [class.is-focus]="phone.value != null && phone.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
+                        <input formControlName="phone" type="text" [readonly]="!(isGSTINVerified)" maxlength="10">
+                        <span class="label">Business Phone No.*</span>
+                    </label>
+                    <ng-container *ngIf="(phone.dirty || phone.touched) && phone.errors!=null">
+                        <p class="error-txt" *ngIf="phone.hasError('required')">
+                            Kindly enter your business phone number
+                        </p>
+                         <p class="error-txt" *ngIf="phone.hasError('invalidPhone')">
+                            Only numbers allowed.
+                        </p>
+                        <p class="error-txt" *ngIf="!phone.hasError('required') && !phone.hasError('invalidPhone') && (phone.hasError('minlength'))">
+                            Phone number should have 10 digits
                         </p>
                     </ng-container>
                 </div>

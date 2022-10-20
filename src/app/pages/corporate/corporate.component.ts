@@ -69,12 +69,12 @@ export class CorporateComponent {
       if (rawData && !rawData['data']['error']) {
         this.corporateData = rawData['data'][0];
       } else {
-        console.log('CorporateComponent API data error', rawData);
+        // console.log('CorporateComponent API data error', rawData);
         this.router.navigateByUrl('/');
       }
     }, error => {
       this.globalLoader.setLoaderState(false);
-      console.log('CorporateComponent API data catch error', error);
+      // console.log('CorporateComponent API data catch error', error);
     });
   }
 

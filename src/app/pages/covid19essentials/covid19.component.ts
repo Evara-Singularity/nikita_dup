@@ -71,12 +71,12 @@ export class Covid19Component {
           this.reinsertLinks();
         }, 0);
       } else {
-        console.log('Covid19Component API data error', rawData);
+        // console.log('Covid19Component API data error', rawData);
         this.router.navigateByUrl('/');
       }
     }, error => {
       this.globalLoader.setLoaderState(false);
-      console.log('Covid19Component API data catch error', error);
+      // console.log('Covid19Component API data catch error', error);
     });
   }
 

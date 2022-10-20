@@ -142,7 +142,7 @@ export class BrandComponent {
         this.accordiansDetails.push({
             name: 'Related Brands',
             isNotVisible:!!this._activatedRoute.snapshot.params.category,
-            data: this.API_RESPONSE.brand[3]?.searchBrandInfoList.map(e => ({ name: e.brandName, link: e.brandLink }) as AccordianDataItem),
+            data: this.API_RESPONSE.brand[3]?.searchBrandInfoList?.map(e => ({ name: e.brandName, link: e.brandLink }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
     }

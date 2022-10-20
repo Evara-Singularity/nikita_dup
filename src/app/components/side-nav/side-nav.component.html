@@ -2,7 +2,7 @@
 <section class="sidemenu" [class.open]="sideMenuOpen">
     <div class="sidemenu-overlay" (click)="sideMenu()"></div>
     <div class="menu-content pad-10">
-        <div class="menu-header" (click)="sideMenu();redirectProfile();">
+        <div class="menu-header" [ngClass]="{'full-border-radius': !_localAuthService.IsUserGoldMember()}" (click)="sideMenu();redirectProfile();">
             <i class="icon-profile"></i>
             <p class="customer-detail login-sign-text pad-10"
                 *ngIf="!user || user.authenticated == 'false' || user.status=='User logged out'">
@@ -17,6 +17,15 @@
             </p>
             <i class="icon-arrow-right-s-line"></i>
         </div>
+        
+        <a (click)="_commonService.showgoldMembershipPopup();sideMenu()">
+            <div class="gold-member-strip" *ngIf="_localAuthService.IsUserGoldMember()" >
+                <p>GOLD MEMBER</p>
+                <span class="lottie-span">
+                    <lottie-player src="../../../assets/json/arrow.json" background="transparent"  speed="1"  style="width:40px; height: 40px;" loop  autoplay></lottie-player>
+                </span>
+            </div>
+        </a>
         <div class="scrolled">
             <ul class="menu-list" (click)="sideMenu()" id="scrolledUl">
                 <li>

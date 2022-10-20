@@ -156,7 +156,7 @@ export class ClusterStoreComponent implements OnInit {
 	}
 
 	initialize(response) {
-		console.log('initialize ==>', 'callled');
+		// console.log('initialize ==>', 'callled');
 		if(this.isBrowser){	
 			this.reInitializeLazyComponents();
 		}

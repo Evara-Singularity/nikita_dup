@@ -1012,8 +1012,6 @@ export class CartService
      */
     private _getUserSession(): Observable<any>
     {
-        console.log('here-----------------------------------')
-        console.trace();
         let user = this._localStorageService.retrieve('user');
         if (user) {
             return of(user);

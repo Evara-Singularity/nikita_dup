@@ -16,15 +16,12 @@ import { AutoLoginService } from './autoLogin.service';
 })
 export class AutologinPageComponent implements OnInit {
   token : string
-  userData:any;
-  cartAuto:any = null;
 
   constructor(
     private router : Router, 
     private activatedRoute : ActivatedRoute,
     private localStorageService: LocalStorageService,
     private autoLoginService:AutoLoginService,
-    private _dataService: DataService,
     private localAuthService:LocalAuthService,
     private cartService:CartService,
     private sharedAuthUtilService: SharedAuthUtilService,
@@ -33,11 +30,11 @@ export class AutologinPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.globalLoaderService.setLoaderState(true);
-    this.userData = this.localStorageService.retrieve('user');
+    const userData = this.localStorageService.retrieve('user');
     const snap = this.activatedRoute.snapshot.queryParams;
     if(snap && snap.token){
       this.token = snap.token;
-      this.checkUserSession(this.userData);
+      this.checkUserSession(userData);
     }else{
       this.router.navigate(['/login']);
     }
@@ -51,7 +48,6 @@ export class AutologinPageComponent implements OnInit {
         this.localAuthService.setUserSession(res['data']);
         console.log("getTokenAuthentication api call response -->" , res);
         this.sharedAuthUtilService.processAuthentication(res['data'], false, 'checkout');
-        //this.globalLoaderService.setLoaderState(false);
       }else{
         this.globalLoaderService.setLoaderState(false);
         this.router.navigate(['']); 
@@ -65,7 +61,6 @@ export class AutologinPageComponent implements OnInit {
      this.getTokenVerification(postBody); 
     }else{
       this.cartService.autoLoginSubject.subscribe(res =>{ 
-        console.log('cartService.autoLoginSubject--' , res);
       let postBody = { metaInfo : this.token, sessionId : res['sessionId'] };
       this.getTokenVerification(postBody);
       })

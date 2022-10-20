@@ -1,5 +1,5 @@
 <!-- gold member benifits -->
-<div class="pwa-row pwa-row-noPad gold-member-benefits mt-10 pad-t-0" *ngIf=" _localAuthService.IsUserGoldMember()">
+<div class="pwa-row pwa-row-noPad gold-member-benefits mt-10 pad-t-0" *ngIf=" _localAuthService.IsUserGoldMember() && !productOutOfStock">
     <div class="pdp-section-header">
         <h3 class="heading-3">
             Gold Member Benefits

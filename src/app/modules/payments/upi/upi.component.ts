@@ -57,11 +57,13 @@ export class UpiComponent implements OnInit {
         this.upiForm = this._formBuilder.group({
             "upi": ["", [Validators.required]]
         });
-        this.getPrePaidDiscount();
         this.cartSesssion = Object.assign({}, this._cartService.getGenericCartSession);
-        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+        if(CONSTANTS.enableGenericPrepaid){
             this.getPrePaidDiscount();
-        })
+            this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+                this.getPrePaidDiscount();
+            })
+        }
         this.lowSuccessBanks();
     }
 

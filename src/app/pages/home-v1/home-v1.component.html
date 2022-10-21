@@ -20,7 +20,7 @@
     <!-- home page banner carousel -->
     <div class="css-banner-component">
         <div class="internalBanner">
-            <ng-container *ngIf="bannerDataFinal && bannerDataFinal.length>0">
+            <ng-container *ngIf="this._commonService.isBrowser && this.bannerDataFinal && bannerDataFinal.length>0">
                 <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
                     [items]="bannerDataFinal">
                 </siema-carousel>

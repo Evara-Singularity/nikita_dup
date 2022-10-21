@@ -108,6 +108,8 @@ export class HomeV1Component implements OnInit {
   }
 
   ngOnInit() {
+    this._commonService.isHomeHeader = true;
+		this._commonService.isPLPHeader = false;
     this.loadSearchTerms();
     this.route.data.subscribe((rawData) => {
       if (!rawData['homeData']['error']) {

@@ -4,6 +4,7 @@ import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { CodDetails } from '@app/utils/models/address.modal';
 import { InitiateQuickCod } from '@app/utils/models/cart.initial';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { QuickCodService } from '@app/utils/services/quick-cod.service';
 import { RetryPaymentService } from '@app/utils/services/retry-payment.service';
@@ -46,8 +47,16 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	isValidCartMsg = null;
 	nonCods = [];
 
-	constructor(private _cartService: CartService, private _loaderService: GlobalLoaderService, private _toastService: ToastMessageService, private _localStorageService: LocalStorageService,
-		public _router: Router, private _quickCodService: QuickCodService, private _retryPaymentService: RetryPaymentService) { }
+	constructor(
+		private _cartService: CartService, 
+		private _loaderService: GlobalLoaderService, 
+		private _toastService: ToastMessageService, 
+		private _localStorageService: LocalStorageService,
+		public _router: Router, 
+		private _quickCodService: QuickCodService, 
+		public localStorageService: LocalStorageService,
+    	private globalAnalyticService: GlobalAnalyticsService,
+		private _retryPaymentService: RetryPaymentService) { }
 
 	ngOnInit()
 	{
@@ -58,6 +67,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	{
 		this.isBuyNow = this.shoppingCartDto['cart']['buyNow'] || false;
 		this._localStorageService.store('flashData', { buyNow: this.isBuyNow });
+		this.adobeAnayticInitCall("moglix:payment:transaction:failed", "transaction:failed", "transaction:failed:popup");
 	}
 
 	initiateRehydration(shoppingCartDto)
@@ -102,6 +112,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			return;
 		}
 		if (this.canCOD) {
+			this.adobeAnayticInitCall("moglix:payment:transaction:failed:cod", "transaction:failed:cod", "transaction:failed:popup:cod");
 			const initiateQuickCod: InitiateQuickCod = {
 				cartSession: this.cartSession,
 				shippingAddress: this.shippingAddress,
@@ -133,6 +144,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			this._toastService.show({ type: 'error', text: this.isValidCartMsg });
 			return;
 		}
+		this.adobeAnayticInitCall("moglix:payment:transaction:failed:repay", "transaction:failed:repay", "transaction:failed:popup:repay");
 		this._cartService.updateNonDeliverableItems(this.cartSession['itemsList'], this.nonCods);
 		this._cartService.setGenericCartSession(this.cartSession);
 		this.emitCloseEvent(this.lastCartDetails);
@@ -148,6 +160,28 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			buyNow: this.isBuyNow
 		}
 		return lastCartInfo;
+	}
+
+	private adobeAnayticInitCall(pageName, channel, subSection) {
+		const user = this.localStorageService.retrieve('user');
+		let page = {
+			'pageName': pageName,
+			'channel': channel,
+			'subSection': subSection,
+			'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+		};
+		let custData = {
+			'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+			'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+			'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+			'customerType': (user && user["userType"]) ? user["userType"] : '',
+		};
+		let order = {};
+		let adobeObj = {};
+		adobeObj["page"] = page;
+		adobeObj["custData"] = custData;
+		adobeObj["order"] = order;
+		this.globalAnalyticService.sendAdobeCall(adobeObj);
 	}
 
 	ngOnDestroy() { }

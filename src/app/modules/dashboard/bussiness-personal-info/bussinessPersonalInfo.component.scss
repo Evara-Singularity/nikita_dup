@@ -174,7 +174,7 @@
     display: flex;
     align-items: center;
     background: #070b2e;
-    padding: 8px 15px;
+    padding: 5px 15px;
     border-radius: 0 0 8px 8px;
     margin:0 15px;
     p{
@@ -182,9 +182,9 @@
       font-size: $large-font;
       font-weight: $font-bold;
     }
-    img{
-      width: 30px;
-      margin-left: auto;
+    .lottie-span{
+        width: 30px;
+        margin-left: auto;
     }
   }
 .material-static-form {

@@ -287,55 +287,57 @@ export class HomeV1Component implements OnInit {
 	}
 
   setAnalyticTags() {
-		const userSession = this._localAuthService.getUserSession();
-		if (
-			userSession &&
-			userSession.authenticated &&
-			userSession.authenticated == 'true'
-		) {
-			/*Start Criteo DataLayer Tags */
-			const obj = {
-				event: 'viewHome',
-				email: userSession && userSession.email ? userSession.email : '',
-			};
-			this.analytics.sendGTMCall(obj);
-			/*End Criteo DataLayer Tags */
-		} else {
-			const obj = {
-				event: 'viewHome',
-				email: '',
-			};
-			this.analytics.sendGTMCall(obj);
-		}
-		/*Start Adobe Analytics Tags */
-		let page = {
-			pageName: 'moglix:home',
-			channel: 'home',
-			subSection: 'moglix:home',
-			linkName: this._router.url,
-			loginStatus:
-				userSession &&
-					userSession.authenticated &&
-					userSession.authenticated == 'true'
-					? 'registered user'
-					: 'guest',
-		};
-		let custData = {
-			customerID:
-				userSession && userSession['userId'] ? btoa(userSession['userId']) : '',
-			emailID:
-				userSession && userSession['email'] ? btoa(userSession['email']) : '',
-			mobile:
-				userSession && userSession['phone'] ? btoa(userSession['phone']) : '',
-			customerType:
-				userSession && userSession['userType'] ? userSession['userType'] : '',
-		};
-		let order = {};
-		let digitalData = {};
-		digitalData['page'] = page;
-		digitalData['custData'] = custData;
-		digitalData['order'] = order;
-		this.analytics.sendAdobeCall(digitalData);
+    if(this._commonService.isBrowser){
+      const userSession = this._localAuthService.getUserSession();
+      if (
+        userSession &&
+        userSession.authenticated &&
+        userSession.authenticated == 'true'
+      ) {
+        /*Start Criteo DataLayer Tags */
+        const obj = {
+          event: 'viewHome',
+          email: userSession && userSession.email ? userSession.email : '',
+        };
+        this.analytics.sendGTMCall(obj);
+        /*End Criteo DataLayer Tags */
+      } else {
+        const obj = {
+          event: 'viewHome',
+          email: '',
+        };
+        this.analytics.sendGTMCall(obj);
+      }
+      /*Start Adobe Analytics Tags */
+      let page = {
+        pageName: 'moglix:home',
+        channel: 'home',
+        subSection: 'moglix:home',
+        linkName: this._router.url,
+        loginStatus:
+          userSession &&
+            userSession.authenticated &&
+            userSession.authenticated == 'true'
+            ? 'registered user'
+            : 'guest',
+      };
+      let custData = {
+        customerID:
+          userSession && userSession['userId'] ? btoa(userSession['userId']) : '',
+        emailID:
+          userSession && userSession['email'] ? btoa(userSession['email']) : '',
+        mobile:
+          userSession && userSession['phone'] ? btoa(userSession['phone']) : '',
+        customerType:
+          userSession && userSession['userType'] ? userSession['userType'] : '',
+      };
+      let order = {};
+      let digitalData = {};
+      digitalData['page'] = page;
+      digitalData['custData'] = custData;
+      digitalData['order'] = order;
+      this.analytics.sendAdobeCall(digitalData);
+    }
 	}
 
   setMetaData() {

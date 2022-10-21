@@ -13,7 +13,9 @@
   <a *ngIf="_localAuthService.IsUserGoldMember()" (click)="_commonService.showgoldMembershipPopup()">
     <div class="gold-member-strip "> 
       <p>GOLD MEMBER</p>
-      <img src="../../../assets/img/gold-arrow.png">
+      <span class="lottie-span">
+        <lottie-player src="../../../../assets/json/arrow.json" background="transparent"  speed="1"  style="width:40px; height: 40px;" loop  autoplay></lottie-player>
+    </span>
     </div>
   </a>
 <!-- email and phone -->

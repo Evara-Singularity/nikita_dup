@@ -74,6 +74,10 @@ export class BussinessInfoComponent {
       this.showLoader = false;
     });
   }
+  ngAfterViewInit(){
+    this._commonService.callLottieScript();
+    this.addLottieScript();
+  }
 
   logout() {
     this._localAuthService.clearAuthFlow();
@@ -121,6 +125,12 @@ export class BussinessInfoComponent {
 
   activateInput(){
     this.isNameInputDisabled = false;
+  }
+  addLottieScript() {
+    this._commonService.addLottieScriptSubject.subscribe(lottieInstance => {
+      this._commonService.callLottieScript();
+      lottieInstance.next();
+    });
   }
 
   get userName() {

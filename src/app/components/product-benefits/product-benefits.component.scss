@@ -7,17 +7,19 @@
 }
 
 .gold-member-benefits {
-    background: #E8DEA1;
+    background: #F0E3B6;
     @extend %hide-scrollbar;
+    opacity: .9;
     .pdp-section-header{
-        background-color: #E8DEA1;
+        background-color: #F0E3B6;
     }
     .pwa-tabs-container{
         .pwa-image-tab{
             border: 1px solid #D3C780;
             background-color: var(--white);
+            align-items: center;
             .tab-img{
-                background: #E8DEA1;
+                background-color: #F0E3B6;
             }
         }
     }

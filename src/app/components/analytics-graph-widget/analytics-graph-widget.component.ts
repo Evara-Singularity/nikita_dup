@@ -62,7 +62,8 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       element.data.forEach((item, index) => {
         setTimeout(() => {
           let attributeName = item.attributeName;
-          this.loadChart(`${this.attributeChartId}${index}`, item['attributePercentange'], this.prepareAttributeChartData(item['attributePercentange']), attributeName);
+          this.getMaxValue(item['attributePercentange']);
+          this.loadChart(`${this.attributeChartId}${index}`,item['attributePercentange'], this.prepareAttributeChartData(item['attributePercentange']), attributeName);
           return;
         }, 0);
       });
@@ -98,7 +99,6 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   //create Chart Data
   prepareAttributeChartData(attributeData) {
     const seriesAttributeArray = [];
-    let max = this.getMaxValue(attributeData)
     for(var attr in attributeData) {
       let itemObj = {};
       itemObj['name'] = attr.toString();
@@ -132,32 +132,23 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     return seriesPriceArray;
   }
   //function to get Max Value in data
-  getMaxValue(element){
-    let maxValue = 0;
-    let attrName = element.attributePercentange; 
+  getMaxValue(element,percent?){
+    let maxValue = 0,maxValueAttributeName;
+    let attrName = element; 
     for(var attr in attrName){
         if(attrName[attr] > maxValue){
             maxValue = attrName[attr];
+            maxValueAttributeName = attr;
         }
     }
-    console.log("maxValue",maxValue); 
+    if(percent=='percent'){
+      return maxValueAttributeName;
+    }
+    else{
+      return maxValue;
+    }
   }
-// });
-  maxValue(attributeData,percentage?){
-    let maxValue = 0,maxValueAttributeName;
-    for(var attr in attributeData){
-      if(attributeData[attr] > maxValue){
-        maxValue = attributeData[attr];
-        maxValueAttributeName = attr;
-      }
-      if(percentage == 'percent'){
-        return maxValue;
-      }
-      else{
-        return maxValueAttributeName;
-      }
-   }
- }
+
   createChartOptionsObject(data,seriesArray,attributeName?) {
     let chartOptions = {
       chart: {
@@ -351,6 +342,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     }
     return chartOptions;
   }
+
   loadChart(htmlId, data, seriesData,attributeName?) {
     var Highcharts = require('highcharts');
     // Load module after Highcharts is loaded

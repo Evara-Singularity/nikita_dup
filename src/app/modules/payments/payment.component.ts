@@ -295,22 +295,18 @@ export class PaymentComponent implements OnInit
     }
    }
 
-  callApisAsyncly()
-  {
+  callApisAsyncly() {
     this.isShowLoader = true;
     const userSession = this._localAuthService.getUserSession();
-    const data = { userEmail: userSession && userSession["email"] ? userSession["email"] : userSession["phone"], 
-    userType: this.invoiceType
-  };
-    if (this.invoiceType == "tax") {
-      data["userId"] = userSession["userId"];
-      data["userEmail"] = "";
-    }
+    const data = {
+      userEmail: userSession && userSession["email"] ? userSession["email"] : "",
+      userType: this.invoiceType,
+      userId: userSession["userId"]
+    };
     const savedCards = this._paymentService.getSavedCards(data, this.invoiceType)
     const paymentsMethodData = this._paymentService.getPaymentsMethodData(this.invoiceType);
 
-    forkJoin([paymentsMethodData, savedCards]).subscribe((responses) =>
-    {
+    forkJoin([paymentsMethodData, savedCards]).subscribe((responses) => {
       this.isShowLoader = false;
       this.handlePaymentsData(responses[0]);
       this.handleSavedCards(responses[1]);

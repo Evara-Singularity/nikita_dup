@@ -6,7 +6,7 @@
     margin: 10px 0 0;
     border: 1px solid #E3E3E3;
     position: relative;
-    min-height:92px;
+    min-height:40px;
     p{
         font-size: 14px;
         line-height: 20px;
@@ -19,19 +19,16 @@
             top: 20px;
             width: 8px;
             height: 8px;
-            background-color: #434348;
+            background-color: var(--primary);
             border-radius: 50%;
             -moz-border-radius: 50%;
             -webkit-border-radius: 50%;
         }
     }
-
-
 }
 
 .multiple-widgets {
     margin: 0 10px;
-
     .multiple-widgets-container {
         display: flex;
         overflow: auto;
@@ -77,6 +74,7 @@
             line-height: 24px;
             color: #3c3c3c;
             padding-top: 5px;
+            min-height:80px;
         }
     }
 }
@@ -157,3 +155,6 @@
         width:80%;
     }
 }
+
+
+

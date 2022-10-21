@@ -81,6 +81,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
       this.attributeContainerRef.remove();
     }
   }
+  
   ngAfterViewInit()
   {
       if (this.commonService.isBrowser) {

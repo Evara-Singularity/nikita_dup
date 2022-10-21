@@ -57,6 +57,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   public appliedFilterCount: number = 0;
   showSortBy: boolean = true;
   graphData:any;
+  taxonomyCodesArray: Array<any> = [];
   
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
@@ -75,9 +76,11 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
     this.getChartData();
+    if(this.categoryTaxonomay){
+      this.taxonomyCodesArray = (this.categoryTaxonomay as string).split("/");
+    }
   }
   callChartApi() {
-    // let url = 'http://localhost:3000/graphData';
     let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +this.categoryId;
     return this.dataService.callRestful("GET", url);
   }
@@ -86,9 +89,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
        if(res['statusCode'] == 200){
        this.graphData = res['data']; 
       }
-      // if (res[0].statusCode == 200) {
-      //   this.graphData = res[0]['data'];
-      // }
       else{
         console.log("error");
       }
@@ -341,7 +341,8 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       this.paginationContainerRef.remove();
     }
   }
-  
+ 
+ 
   ngOnDestroy() {
     this.resetLazyComponents();
   }

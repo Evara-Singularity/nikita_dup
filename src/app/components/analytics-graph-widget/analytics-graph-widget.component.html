@@ -13,8 +13,8 @@
 
                         <p class="dots"></p>
                         <p>
-                            {{price.orderPercentage}}% of users purchase <b>power tools</b> in range
-                            <b>{{formatPrice(price.interval)}}</b>
+                            {{price.orderPercentage}}% of users prefer power tools in range
+                            {{formatPrice(price.interval)}}
                         </p>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                     <div (click)="generateFragmentUrl('brand',brand.brandName)"
                         *ngFor="let brand of brandDataWithoutProcessing" class="card">
                         <p>
-                            {{brand.orderPercentage}}% of users purchase {{categoryName}} of {{brand.brandName}}
+                            {{brand.orderPercentage}}% of users prefer {{categoryName}} of {{brand.brandName}}
                         </p>
                     </div>
                 </div>
@@ -47,16 +47,16 @@
 <ng-container *ngIf="attributeDataWithoutProcessing && attributeDataWithoutProcessing.length > 0">
     <div *ngIf="chartType =='attribute'" class="multiple-widgets">
         <div class="inner-widget-section">
-            <div class="widget-heading">
-                <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
-                <p class="heading-txt">{{categoryName}} purchase as per </p>
-            </div>
             <div class="multiple-widgets-container">
-                <div  *ngFor="let attribute of attributeDataWithoutProcessing;let i = index" class="attribute-chart-container"> 
+                <div *ngFor="let attribute of attributeDataWithoutProcessing;let i = index" class="attribute-chart-container"> 
+                    <div class="widget-heading">
+                        <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
+                        <p class="heading-txt">{{categoryName}} purchase as per {{attribute.attributeName}}</p>
+                    </div>
                     <div  [id]="'attribute-chart'+i" style="width:100%;"></div>
                     <div (click)="generateFragmentUrl(attribute.attributeName,maxValue(attribute.attributePercentange))" class="card">
                         <p>
-                             {{maxValue(attribute.attributePercentange,'percent')}}% of users purchase <b>{{categoryName}}</b> in <b>{{maxValue(attribute.attributePercentange)}}</b> 
+                             {{maxValue(attribute.attributePercentange,'percent')}}% of users buy {{categoryName}} in {{maxValue(attribute.attributePercentange)}}
                         </p>
                     </div>
                 </div>

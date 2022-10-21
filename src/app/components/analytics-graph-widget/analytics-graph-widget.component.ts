@@ -98,6 +98,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   //create Chart Data
   prepareAttributeChartData(attributeData) {
     const seriesAttributeArray = [];
+    let max = this.getMaxValue(attributeData)
     for(var attr in attributeData) {
       let itemObj = {};
       itemObj['name'] = attr.toString();
@@ -130,6 +131,18 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
 
     return seriesPriceArray;
   }
+  //function to get Max Value in data
+  getMaxValue(element){
+    let maxValue = 0;
+    let attrName = element.attributePercentange; 
+    for(var attr in attrName){
+        if(attrName[attr] > maxValue){
+            maxValue = attrName[attr];
+        }
+    }
+    console.log("maxValue",maxValue); 
+  }
+// });
   maxValue(attributeData,percentage?){
     let maxValue = 0,maxValueAttributeName;
     for(var attr in attributeData){
@@ -179,7 +192,8 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         }
       },
       legend: {
-        enabled: true
+        enabled: true,
+        className:'hideBubble'
       },
       plotOptions: {
         series: {
@@ -187,6 +201,11 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
           dataLabels: {
             enabled: true,
             format: '{point.y:.1f}%'
+          },
+          events: {
+            legendItemClick: function() {
+              return false;
+            }
           }
         }
       },
@@ -238,6 +257,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       legend: {
         enabled: true,
+        className:'hideBubble'
       },
       plotOptions: {
         series: {
@@ -245,6 +265,11 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
           dataLabels: {
             enabled: true,
             format: '{point.y:.1f}%'
+          },
+          events: {
+            legendItemClick: function() {
+              return false;
+            }
           }
         }
       },
@@ -296,6 +321,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       legend: {
         enabled: true,
+        className:'hideBubble'
       },
       plotOptions: {
         series: {
@@ -303,6 +329,11 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
           dataLabels: {
             enabled: true,
             format: '{point.y:.1f}%'
+          },
+          events: {
+            legendItemClick: function() {
+              return false;
+            }
           }
         }
       },
@@ -326,7 +357,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     require('highcharts/modules/exporting')(Highcharts);
     Highcharts.chart(
       htmlId,
-      this.createChartPriceSingleObject(data, seriesData)
+      this.createChartPriceSingleObject(data,seriesData)
     );
     if (htmlId.startsWith(`${this.attributeChartId}`)) {
       Highcharts.chart(
@@ -343,6 +374,10 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   } 
 
   generateFragmentUrl(filterName, filterValue){
+    debugger;
+    if(filterValue.toLowerCase() == 'others'){
+      return;
+    }
     let fragmentPriceObject = {};
     if (filterName == 'price') {
       fragmentPriceObject['price'] = [filterValue.toString()];
@@ -365,8 +400,14 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   }
 
   formatPrice(value: string) {
+    const RUPEE = "₹";
     let formatValue = value.split(',');
-    return (formatValue[0] + '-' + formatValue[1]);
+    if(formatValue[1]){
+      return (RUPEE + formatValue[0] + '-' + formatValue[1]);
+    }
+    else{
+      return (formatValue[0]);
+    }
   }
 }
 

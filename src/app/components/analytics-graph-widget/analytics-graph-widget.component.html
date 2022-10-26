@@ -13,7 +13,7 @@
 
                         <p class="dots"></p>
                         <p>
-                            {{price.orderPercentage}}% of users prefer power tools in range
+                            {{price.orderPercentage}}% of users prefer {{categoryName}} in price range of
                             {{formatPrice(price.interval)}}
                         </p>
                     </div>
@@ -34,8 +34,11 @@
                 <div class="single-card-container">
                     <div (click)="generateFragmentUrl('brand',brand.brandName)"
                         *ngFor="let brand of brandDataWithoutProcessing" class="card">
-                        <p>
+                        <p *ngIf="brand.brandName !== 'others'">
                             {{brand.orderPercentage}}% of users prefer {{categoryName}} of {{brand.brandName}}
+                        </p>
+                        <p *ngIf="brand.brandName.toLowerCase() === 'others'">
+                            {{brand.orderPercentage}}% of users prefer {{categoryName}} of other brands
                         </p>
                     </div>
                 </div>

@@ -376,7 +376,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   } 
 
   generateFragmentUrl(filterName, filterValue){
-    if(filterValue.toLowerCase() == 'others'){
+    if(filterValue == 'others'){
       return;
     }
     let fragmentPriceObject = {};

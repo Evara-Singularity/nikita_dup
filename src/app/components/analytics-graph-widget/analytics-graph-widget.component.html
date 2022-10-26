@@ -54,9 +54,9 @@
                         <p class="heading-txt">{{categoryName}} purchase as per {{attribute.attributeName}}</p>
                     </div>
                     <div  [id]="'attribute-chart'+i" style="width:100%;"></div>
-                    <div (click)="generateFragmentUrl(attribute.attributeName,maxValue(attribute.attributePercentange))" class="card">
+                    <div (click)="generateFragmentUrl(attribute.attributeName,getMaxValue(attribute.attributePercentange))" class="card">
                         <p>
-                             {{maxValue(attribute.attributePercentange,'percent')}}% of users buy {{categoryName}} in {{maxValue(attribute.attributePercentange)}}
+                             {{getMaxValue(attribute.attributePercentange)}}% of users buy {{categoryName}} in {{getMaxValue(attribute.attributePercentange,'percent')}}
                         </p>
                     </div>
                 </div>

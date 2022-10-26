@@ -14,7 +14,7 @@
                         <p class="dots"></p>
                         <p *ngIf="price.interval.toLowerCase() !== 'others'">
                             {{price.orderPercentage}}% of users prefer {{categoryName}} in price range of
-                            {{formatPrice(price.interval,true)}}
+                            {{formatPrice(price.interval,false)}}
                         </p>
                         <p *ngIf="price.interval.toLowerCase() === 'others'">
                             {{price.orderPercentage}}% of users prefer {{categoryName}} in other price range.

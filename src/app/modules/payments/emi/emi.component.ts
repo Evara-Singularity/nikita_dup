@@ -544,10 +544,11 @@ export class EmiComponent {
     }
 
     getEmiDiscount(month, rate, amount) {
+        // console.log('getEmiDiscount ==>', month, rate, amount);
         this.isShowLoader = true;
         let cartSession = this._cartService.getGenericCartSession;
         let cart = cartSession["cart"];
-        const payableAmount = (cart['totalAmount'] + cart['shippingCharges']) - cart['totalOffer'];
+        const payableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
         this.nocostEmiDiscount = 0;
         if (month == 3 || month == 6) {
             // ODP-359

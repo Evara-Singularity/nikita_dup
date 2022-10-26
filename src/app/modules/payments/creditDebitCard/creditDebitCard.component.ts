@@ -237,17 +237,21 @@ export class CreditDebitCardComponent implements OnInit {
     }
 
     getPrePaidDiscount(mode) {
-        this.isShowLoader = true;
         (this.creditDebitCardForm.get('requestParams') as FormControl).reset();
         this.selectedMonth = null;
         this.selectedYear = null;
-        this._cartService.validatePaymentsDiscount(mode, (mode == 'CC' ? 9 : 2)).subscribe(response => {
-            this.isShowLoader = false;
-            if (response) {
-                this.prepaidDiscount = response['prepaidDiscount'];
-                this.totalPayableAmount = response['totalPayableAmount']
-            }
-        })
+        if(CONSTANTS.enableGenericPrepaid){
+            this.isShowLoader = true;
+            this._cartService.validatePaymentsDiscount(mode, (mode == 'CC' ? 9 : 2)).subscribe(response => {
+                this.isShowLoader = false;
+                if (response) {
+                    this.prepaidDiscount = response['prepaidDiscount'];
+                    this.totalPayableAmount = response['totalPayableAmount']
+                }
+            })
+        }else{
+            this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
+        }
     }
 
     getBankCode(ccnum) {

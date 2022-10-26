@@ -74,7 +74,7 @@
                         </span>
                 </div>
             </div>
-            <div class="pwa-row" *ngIf="_cartService.prepaidDataMapping">
+            <div class="pwa-row" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId]">
                 <!-- // TODO: cart items changes for prepaid discount -->
                 <div class="shop-more-container" *ngIf="!(_cartService.prepaidDataMapping[item.productId]['applicable']) && (_cartService.prepaidDataMapping[item.productId]['amount'])">
                     <p class="shop-more-text">Shop more for {{_cartService.prepaidDataMapping[item.productId]['amount']}} & get <span class="prepaid-discount-txt"><strong>₹500 discount</strong></span> in the same category.</p>

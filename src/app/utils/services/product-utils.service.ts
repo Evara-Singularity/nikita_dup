@@ -5,6 +5,7 @@ import { DataService } from './data.service';
 import { CartService } from './cart.service';
 import { LocalAuthService } from './auth.service';
 import { CommonService } from './common.service';
+import { GlobalAnalyticsService } from './global-analytics.service';
 declare var digitalData: {};
 declare let _satellite;
 
@@ -47,7 +48,9 @@ export class ProductUtilsService{
         private cartService: CartService, 
         public localAuthService: LocalAuthService, 
         public commonService: CommonService, 
-        public localStorageService: LocalStorageService){
+        public localStorageService: LocalStorageService,
+        private globalAnalyticsService: GlobalAnalyticsService
+        ){
     }
 
     changeFBTSource(rootProduct, fbtProducts)
@@ -195,7 +198,7 @@ export class ProductUtilsService{
                     }
                 })
             }
-            this.dataService.sendMessage(trackData);
+            this.globalAnalyticsService.sendMessage(trackData);
         }
     }
 

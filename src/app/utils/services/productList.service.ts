@@ -29,7 +29,8 @@ export class ProductListService {
     private _dataService: DataService,
     private _activatedRoute: ActivatedRoute,
     private _cartService: CartService,
-    public _localStorageService: LocalStorageService
+    public _localStorageService: LocalStorageService,
+    private globalAnalyticsService: GlobalAnalyticsService
   ) {}
 
   showMidPlpFilterLoader: boolean = true;
@@ -458,7 +459,7 @@ export class ProductListService {
       page_type: pageName + "_page",
     };
 
-    this._dataService.sendMessage(trackingData);
+    this.globalAnalyticsService.sendMessage(trackingData);
     this.fireViewBasketEvent();
   }
 
@@ -523,6 +524,6 @@ export class ProductListService {
       eventData: eventData,
     };
     this._analytics.sendGTMCall(dataLayerObj);
-    this._dataService.sendMessage(dataLayerObj);
+    this.globalAnalyticsService.sendMessage(dataLayerObj);
   }
 }

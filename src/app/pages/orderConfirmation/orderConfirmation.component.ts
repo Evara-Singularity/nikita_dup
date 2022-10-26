@@ -10,6 +10,7 @@ import { FooterService } from '@app/utils/services/footer.service';
 import CONSTANTS from '@app/config/constants';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 declare let dataLayer;
 declare var ADMITAD;
@@ -63,7 +64,7 @@ export class OrderConfirmationComponent implements OnInit {
         private injector: Injector,
         public _commonService: CommonService,
         private _globalSessionService:GlobalSessionStorageService,
-
+        private globalAnalyticsService: GlobalAnalyticsService
         ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -487,7 +488,7 @@ export class OrderConfirmationComponent implements OnInit {
             message: reponseError,
         };
         try {
-            this._dataService.sendMessage(trackData);
+            this.globalAnalyticsService.sendMessage(trackData);
         } catch (error) {
             // console.log("sendClickStreamData error", error);
         }
@@ -525,7 +526,7 @@ export class OrderConfirmationComponent implements OnInit {
                         };
                     }),
                 };
-                this._dataService.sendMessage(trackData);
+                this.globalAnalyticsService.sendMessage(trackData);
                 // console.log('order onfirmation logs ==> completed sendClickStreamData ');
             }
         } catch (error) {

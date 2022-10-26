@@ -12,6 +12,7 @@ import { LocalAuthService } from './auth.service';
 import { CartUtils } from './cart-utils';
 import { CommonService } from './common.service';
 import { DataService } from './data.service';
+import { GlobalAnalyticsService } from './global-analytics.service';
 import { GlobalLoaderService } from './global-loader.service';
 import { UrlsService } from './urls.service';
 
@@ -23,7 +24,8 @@ export class QuickCodService
   isBrowser: boolean
 
   constructor(private _localStorageService: LocalStorageService, private _loaderService: GlobalLoaderService,
-    private _toastService: ToastMessageService, private _router: Router, private _cartService: CartService, private _urlsService: UrlsService, public _dataService: DataService, private _commonService: CommonService, private _localAuthService: LocalAuthService)
+    private _toastService: ToastMessageService, private _router: Router, private _cartService: CartService, private _urlsService: UrlsService, public _dataService: DataService, private _commonService: CommonService, private _localAuthService: LocalAuthService, private globalAnalyticsService: GlobalAnalyticsService
+    )
   {
     this.isBrowser = _commonService.isBrowser;
   }
@@ -209,7 +211,7 @@ export class QuickCodService
         })
       }
 
-      this._dataService.sendMessage(trackData);
+      this.globalAnalyticsService.sendMessage(trackData);
     }
   }
 }

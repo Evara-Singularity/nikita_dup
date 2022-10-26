@@ -2,6 +2,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { trackData } from '../clickStream';
+import { LocalAuthService } from './auth.service';
 
 declare var dataLayer;
 declare var digitalData;
@@ -16,7 +17,9 @@ export class GlobalAnalyticsService {
   isServer: boolean = typeof window !== "undefined" ? false : true;
 
   constructor(
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private _localAuthService: LocalAuthService,
+
   ) {
   }
 
@@ -165,4 +168,29 @@ export class GlobalAnalyticsService {
     };
   }
 
+  sendMessage(msg: any) {
+    if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
+        var userSession = this._localAuthService.getUserSession();
+        const previousUrl = localStorage.getItem("previousUrl");
+        let prevUrl;
+        if (previousUrl) {
+            prevUrl = previousUrl.split("$$$").length >= 2 ? localStorage.getItem("previousUrl").split("$$$")[1] : "";
+        }
+        var trackingData = {
+            message: (msg.message) ? msg.message : "tracking",
+            session_id: userSession ? userSession.sessionId : null,
+            cookie: "",
+            user_id: userSession ? userSession.userId : null,
+            url: document.location.href,
+            device: "Mobile",
+            ip_address: null,
+            user_agent: navigator.userAgent,
+            timestamp: new Date().getTime(),
+            referrer: document.referrer,
+            previous_url: prevUrl
+        }
+        // to be replaced by API solution
+        // this.socket.emit("track", { ...trackingData, ...msg });
+    }
+}
 }

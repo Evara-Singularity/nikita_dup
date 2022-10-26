@@ -376,7 +376,6 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   } 
 
   generateFragmentUrl(filterName, filterValue){
-    debugger;
     if(filterValue.toLowerCase() == 'others'){
       return;
     }

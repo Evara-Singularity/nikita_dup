@@ -36,7 +36,7 @@
                             <span class="after-disc" *ngIf="item.bulkPrice!==null">&nbsp;₹{{item.bulkPriceWithoutTax |
                                 mathRound | number : '1.2-2'}}</span>
                         </p>
-                        <p class="prepaid-discount-txt" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId]['applicable']">You get {{_cartService.prepaidDataMapping[item.productId]['amount']}} prepaid discount</p>
+                        <p class="prepaid-discount-txt" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && _cartService.prepaidDataMapping[item.productId]['applicable']">You get {{_cartService.prepaidDataMapping[item.productId]['amount']}} prepaid discount</p>
                     </div>
 
                 </div>

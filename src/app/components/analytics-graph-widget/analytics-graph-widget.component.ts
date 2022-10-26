@@ -208,7 +208,11 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         {
           name: attributeName,
           colorByPoint: true,
-          data: seriesArray
+        //   dataSorting: {
+        //     enabled: true
+        //  },
+          data: seriesArray,
+          
         }
       ]
     }
@@ -272,6 +276,9 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         {
           name: "Brands",
           colorByPoint: true,
+          // dataSorting: {
+          //   enabled: true
+          // },
           data: seriesArray
         }
       ]
@@ -336,6 +343,9 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         {
           name: "Price Range",
           colorByPoint: true,
+          // dataSorting: {
+          //   enabled: true
+          // },
           data: seriesArray
         }
       ]
@@ -366,8 +376,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   } 
 
   generateFragmentUrl(filterName, filterValue){
-    debugger;
-    if(filterValue.toLowerCase() == 'others'){
+    if(filterValue == 'others'){
       return;
     }
     let fragmentPriceObject = {};

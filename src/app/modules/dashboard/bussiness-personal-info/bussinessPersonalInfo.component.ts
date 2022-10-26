@@ -8,6 +8,7 @@ import { CommonService } from "@app/utils/services/common.service";
 import { GlobalState } from "@app/utils/global.state";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { environment } from "environments/environment";
 
 @Component({
   selector: "bussiness-info",
@@ -28,6 +29,7 @@ export class BussinessInfoComponent {
   set showLoader(value){
     this.loaderService.setLoaderState(value);
   }
+  imgAssetPath: string = environment.IMAGE_ASSET_URL
 
   constructor(
     private _state: GlobalState,

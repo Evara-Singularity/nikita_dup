@@ -4,6 +4,7 @@ import { NavigationExtras, Router, RouterModule } from '@angular/router';
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { environment } from 'environments/environment';
 import { LocalStorageService } from 'ngx-webstorage';
 import { LocalAuthService } from '../../utils/services/auth.service';
 import { MockLottiePlayerModule } from '../mock-lottie-player/mock-lottie-player.module';
@@ -17,7 +18,8 @@ export class SideNavComponent implements OnInit {
 
   @Input() sideMenuOpen: boolean = true;
   reStoreHome: boolean = false;
-  @Input('user') user: any = null
+  @Input('user') user: any = null;
+  imgAssetPath: string = environment.IMAGE_ASSET_URL
 
   constructor(
     private localStorageService: LocalStorageService,

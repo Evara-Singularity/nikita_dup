@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
 import { MockLottiePlayerModule } from '@app/components/mock-lottie-player/mock-lottie-player.module';
 import { CommonService } from '@app/utils/services/common.service';
+import { environment } from 'environments/environment';
 import { BottomMenuModule } from '../bottomMenu/bottom-menu.module';
 
 @Component({
@@ -13,7 +14,8 @@ export class GoldMembershipComponent implements OnInit {
 
   @Output() closePopup: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closePopupOnOutsideClick: EventEmitter<{}> = new EventEmitter<{}>();
-
+  imgAssetPath: string = environment.IMAGE_ASSET_URL;
+  
   constructor(private commonService:CommonService) { }
 
   ngOnInit() {

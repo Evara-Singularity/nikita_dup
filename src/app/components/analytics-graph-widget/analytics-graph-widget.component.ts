@@ -124,7 +124,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     const seriesPriceArray = [];
     
     let priceObj = {};
-    priceObj['name'] = this.formatPrice(priceData['interval']);
+    priceObj['name'] = this.formatPrice(priceData['interval'],true);
     priceObj['y'] = priceData['orderPercentage'];
     priceObj['drilldown'] = null;
     seriesPriceArray.push(priceObj);
@@ -191,7 +191,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
           borderWidth: 0,
           dataLabels: {
             enabled: true,
-            format: '{point.y:.1f}%'
+            format: '{point.y}%'
           },
           events: {
             legendItemClick: function() {
@@ -212,7 +212,6 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         //     enabled: true
         //  },
           data: seriesArray,
-          
         }
       ]
     }
@@ -259,7 +258,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
           borderWidth: 0,
           dataLabels: {
             enabled: true,
-            format: '{point.y:.1f}%'
+            format: '{point.y}%'
           },
           events: {
             legendItemClick: function() {
@@ -326,7 +325,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
           borderWidth: 0,
           dataLabels: {
             enabled: true,
-            format: '{point.y:.1f}%'
+            format: '{point.y}%'
           },
           events: {
             legendItemClick: function() {
@@ -376,7 +375,8 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   } 
 
   generateFragmentUrl(filterName, filterValue){
-    if(filterValue == 'others'){
+    console.log("filterName",filterName,"filterValue",filterValue)
+    if(filterValue && filterValue.toString().toLowerCase() === 'others'){
       return;
     }
     let fragmentPriceObject = {};
@@ -400,16 +400,16 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     }
   }
 
-  formatPrice(value: string) {
+  formatPrice(value:string,addSymbol?:boolean) {
     const RUPEE = "₹";
     let formatValue = value.split(',');
     if(formatValue[1]){
-      return (RUPEE + formatValue[0] + '-' + formatValue[1]);
+        return (addSymbol ? (RUPEE + formatValue[0] + '-' + RUPEE+formatValue[1]) : (formatValue[0] + '-' +formatValue[1]));
     }
-    else{
-      return (formatValue[0]);
-    }
-  }
+     else{
+      return (value.match("^[a-zA-Z]*$") ? formatValue[0] : (RUPEE + formatValue[0]));
+     }
+   }
 }
 
 

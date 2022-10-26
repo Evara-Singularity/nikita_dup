@@ -114,7 +114,13 @@ header-nav {
     background-color: var(--ghost-white);
 }
 .hideBubble{
-.highcharts-point{
+ .highcharts-point{
     display:none;
+  }
+  .highcharts-legend-item{
+      text-transform:capitalize;
+  }
+  &+.highcharts-xaxis-labels{
+    text-transform:capitalize;
   }
 }

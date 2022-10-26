@@ -8,6 +8,8 @@ import { ActivatedRoute, NavigationEnd, NavigationExtras, NavigationStart, Route
 import { CommonService } from '@app/utils/services/common.service';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { MathCeilPipeModule } from '@pipes/math-ceil';
+
 @Component({
     selector: 'app-product-offers',
     templateUrl: './product-offers.component.html',
@@ -25,6 +27,7 @@ export class ProductOffersComponent implements OnInit
     @Input() productmsn;
     @Input() brandName;
     @Input() categoryId;
+    @Input() categoryName;
     disableEMIView = false;
     promoCodes: any;
     couponForbrandCategory:any=null;
@@ -119,7 +122,8 @@ export class ProductOffersComponent implements OnInit
 @NgModule({
     declarations: [ProductOffersComponent],
     imports: [
-        CommonModule
+        CommonModule,
+        MathCeilPipeModule
     ]
 })
 export class ProductOffersModule

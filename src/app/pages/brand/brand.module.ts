@@ -10,6 +10,8 @@ import { KpToggleDirectiveModule } from '@app/utils/directives/kp-toggle.directi
 import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-promo/product-listing-app-promo.module';
 import { AccordianModule } from "@app/modules/accordian/accordian.module";
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
+import { MathCeilPipeModule } from '@pipes/math-ceil';
+
 
 @NgModule({
     imports: [
@@ -22,7 +24,8 @@ import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
         SharedProductListingModule,
         ProductListingAppPromoModule,
         AccordianModule,
-        AppPromoModule
+        AppPromoModule,
+        MathCeilPipeModule
     ],
     declarations: [
         BrandComponent,

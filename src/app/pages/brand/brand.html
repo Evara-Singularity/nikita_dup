@@ -9,14 +9,14 @@
     
     <!-- Brand Product List Data -->
     <ng-container
-        *ngIf="API_RESPONSE['brand'][1][0].categoryName && _commonService.selectedFilterData.page < 2 && couponForbrandCategory">
+        *ngIf="API_RESPONSE['brand'][1][0].categoryName && couponForbrandCategory && API_RESPONSE['brand'][0].brandName">
         <div class="instant-discount-container">
             <div class="discount-icon">
                 <img src="../../../assets/img/best_deals.png">
             </div>
             <div class="discount-text" *ngIf="couponForbrandCategory">
                 <p class="green-txt">Get instant {{couponForbrandCategoryDiscount}} discount with online payment</p>
-                <p>on min. value of {{couponForbrandCategory['minimumCartValue']}} in printers</p>
+                <p>on min. value of {{couponForbrandCategory['minimumCartValue'] | mathCeil  | currency: 'INR' : 'symbol' :'1.0-0'}} in {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}}</p>
             </div>
         </div>
     </ng-container>

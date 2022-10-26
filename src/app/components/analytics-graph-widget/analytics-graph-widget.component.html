@@ -3,18 +3,18 @@
         <div class="inner-widget-section">
             <div class="widget-heading">
                 <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
-                <p class="heading-txt">Top {{priceDataWithoutProcessing.length}} price-range of {{categoryName}}</p>
+                <p class="heading-txt">Top {{priceDataWithoutProcessing.length}} price range of {{categoryName}}</p>
             </div>
             <div class="single-widget-container pad-lr-0">
                 <div id="price-chart" style="width:100%;"></div>
                 <div class="single-card-container">
-                    <div (click)="generateFragmentUrl('price',formatPrice(price.interval))"
+                   
+                    <div (click)="generateFragmentUrl('price',formatPrice(price.interval,false))"
                         *ngFor="let price of priceDataWithoutProcessing" class="card">
-
                         <p class="dots"></p>
                         <p *ngIf="price.interval.toLowerCase() !== 'others'">
                             {{price.orderPercentage}}% of users prefer {{categoryName}} in price range of
-                            {{formatPrice(price.interval)}}
+                            {{formatPrice(price.interval,true)}}
                         </p>
                         <p *ngIf="price.interval.toLowerCase() === 'others'">
                             {{price.orderPercentage}}% of users prefer {{categoryName}} in other price range.
@@ -30,7 +30,7 @@
         <div class="inner-widget-section">
             <div class="widget-heading">
                 <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
-                <p class="heading-txt">Top {{brandDataWithoutProcessing.length}} Brands of {{categoryName}}</p>
+                <p class="heading-txt">Top {{brandDataWithoutProcessing.length}} brands of {{categoryName}}</p>
             </div>
             <div class="single-widget-container pad-lr-0">
                 <div id="brand-chart" style="width:100%;"></div>
@@ -57,12 +57,12 @@
                 <div *ngFor="let attribute of attributeDataWithoutProcessing;let i = index" class="attribute-chart-container"> 
                     <div class="widget-heading">
                         <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
-                        <p class="heading-txt">{{categoryName}} purchase as per {{attribute.attributeName}}</p>
+                        <p class="heading-txt">{{categoryName}} purchase as per {{attribute.attributeName |  titlecase}}</p>
                     </div>
                     <div  [id]="'attribute-chart'+i" style="width:100%;"></div>
                     <div (click)="generateFragmentUrl(attribute.attributeName,getMaxValue(attribute.attributePercentange,'percent'))" class="card">
                         <p>
-                            {{getMaxValue(attribute.attributePercentange)}}% of users buy {{categoryName}} in {{getMaxValue(attribute.attributePercentange,'percent')}} {{attribute.attributeName}}
+                            {{getMaxValue(attribute.attributePercentange)}}% of users buy {{categoryName}} in {{getMaxValue(attribute.attributePercentange,'percent')}} {{attribute.attributeName | titlecase}}
                         </p>
                     </div>
                 </div>

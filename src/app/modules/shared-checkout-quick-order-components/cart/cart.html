@@ -36,9 +36,7 @@
                             <span class="after-disc" *ngIf="item.bulkPrice!==null">&nbsp;₹{{item.bulkPriceWithoutTax |
                                 mathRound | number : '1.2-2'}}</span>
                         </p>
-                        <p class="prepaid-discount-txt" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId]['applicable']">
-                            You get {{_cartService.prepaidDataMapping[item.productId]['amount'] | currency:'INR' : 'symbol' : '1.0-0'}} prepaid discount</p>
-                    </div>
+                        <p class="prepaid-discount-txt" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && _cartService.prepaidDataMapping[item.productId]['applicable']">You get {{_cartService.prepaidDataMapping[item.productId]['amount'] | currency:'INR' : 'symbol' : '1.0-0'}} prepaid discount</p> </div>
 
                 </div>
             </div>
@@ -75,7 +73,7 @@
                         </span>
                 </div>
             </div>
-            <div class="pwa-row" *ngIf="_cartService.prepaidDataMapping">
+            <div class="pwa-row" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId]">
                 <!-- // TODO: cart items changes for prepaid discount -->
                 <div class="shop-more-container" *ngIf="!(_cartService.prepaidDataMapping[item.productId]['applicable']) && (_cartService.prepaidDataMapping[item.productId]['amount'])">
                     <p class="shop-more-text">Shop more for {{_cartService.prepaidDataMapping[item.productId]['amount']| currency:'INR' : 'symbol' : '1.0-0'}} & get <span class="prepaid-discount-txt"><strong>₹500 discount</strong></span> in the same category.</p>

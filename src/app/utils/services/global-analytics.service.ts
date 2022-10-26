@@ -53,6 +53,7 @@ export class GlobalAnalyticsService {
       }
       // Comment as we are rmeoving socket and will implement API in future releases
       // this.socket.emit("track", { ...trackingData, ...data });
+      
     }
   }
 

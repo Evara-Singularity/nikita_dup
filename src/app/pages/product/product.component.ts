@@ -2503,6 +2503,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.offerSectionInstance.instance['productmsn'] = this.productSubPartNumber || this.defaultPartNumber;
             this.offerSectionInstance.instance['brandName'] = this.rawProductData["brandDetails"]['brandName'];
             this.offerSectionInstance.instance['categoryId'] = this.rawProductData["categoryDetails"][0]["categoryCode"];
+            this.offerSectionInstance.instance['categoryName'] = this.rawProductData["categoryDetails"][0]["categoryName"];
             (
                 this.offerSectionInstance.instance[
                 "viewPopUpHandler"

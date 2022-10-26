@@ -64,7 +64,7 @@
                     </li>
                     <li  *ngIf="_cartService.totalPrepaidSaving > 0">
                         <span class="tag-label">Total Prepaid Discount</span>
-                        <span class="tag-value green-txt">-₹{{_cartService.totalPrepaidSaving}}</span>
+                        <span class="tag-value green-txt">-{{_cartService.totalPrepaidSaving| currency:'INR' : 'symbol' : '1.2-2'}}</span>
                     </li>
                     <li class="bold-txt" *ngIf="_cartService.totalPrepaidSaving > 0">
                         <span class="tag-label">Amount Payable</span>
@@ -74,7 +74,7 @@
                 </ul>
             </div>
             <div class="pwa-row" *ngIf="_cartService.totalPrepaidSaving>0">
-                <p class="save-prise-txt">You save {{_cartService.totalPrepaidSaving}} on this order</p>
+                <p class="save-prise-txt">You save {{_cartService.totalPrepaidSaving| currency:'INR' : 'symbol' : '1.0-0'}} on this order</p>
             </div>
         </div>
     </div>

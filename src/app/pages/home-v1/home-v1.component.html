@@ -35,12 +35,17 @@
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
 
             <!-- middle banner -->
-            <div class="pwa-banner">
-                <a class="full-banner" href="{{whatsAppBannerUrl}}">
-                    <img  [defaultImage]="defaultImage" [lazyLoad]="imageAssetURL+'assets/img/others/whatsappBanner.png'"  
-                        alt="whatsapp banner" width="312"
-                        height="170">
-                </a>
+            <div [class.mutiple-banner-cards]="_localAuthService.IsUserGoldMember()" class="mutiple-banner-cards">
+                <div class="pwa-banner" *ngIf="_localAuthService.IsUserGoldMember()">
+                    <a class="full-banner" (click)="_commonService.showgoldMembershipPopup()"> 
+                        <img src="{{imageAssetURL}}assets/img/others/goldMemberBanner.png" alt="Gold Member Banner" width="312" height="110">
+                    </a>
+                </div>
+                <div class="pwa-banner">
+                    <a class="full-banner" href="{{whatsAppBannerUrl}}"> 
+                        <img src="{{imageAssetURL}}assets/img/others/whatsappBanner.png" alt="whatsapp banner" width="312" height="110">
+                    </a>
+                </div>
             </div>
 
             <!-- category stores -->

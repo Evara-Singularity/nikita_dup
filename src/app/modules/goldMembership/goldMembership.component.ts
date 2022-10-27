@@ -38,6 +38,7 @@ export class GoldMembershipComponent implements OnInit {
   ngAfterViewInit(){
     this.commonService.callLottieScript();
     this.addLottieScript();
+    this.commonService.setBodyScroll(null, false);
   }
 }
 

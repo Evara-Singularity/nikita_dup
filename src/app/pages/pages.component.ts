@@ -351,11 +351,13 @@ export class PagesComponent implements OnInit, AfterViewInit {
       this.goldMembershipInstance.instance['closePopup'] as EventEmitter<boolean>
     ).subscribe(data => {
       this.goldMembershipContainerRef.remove();
+      this._commonService.setBodyScroll(null, true);
     });
     (
       this.goldMembershipInstance.instance['closePopupOnOutsideClick'] as EventEmitter<{}>
     ).subscribe(data => {
       this.goldMembershipContainerRef.remove();
+      this._commonService.setBodyScroll(null, true);
     });
   }
  

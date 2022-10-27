@@ -35,7 +35,7 @@
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
 
             <!-- middle banner -->
-            <div [class.mutiple-banner-cards]="_localAuthService.IsUserGoldMember()" class="mutiple-banner-cards">
+            <div [class.mutiple-banner-cards]="_localAuthService.IsUserGoldMember()" >
                 <div class="pwa-banner" *ngIf="_localAuthService.IsUserGoldMember()">
                     <a class="full-banner" (click)="_commonService.showgoldMembershipPopup()"> 
                         <img src="{{imageAssetURL}}assets/img/others/goldMemberBanner.png" alt="Gold Member Banner" width="312" height="110">
@@ -47,6 +47,7 @@
                     </a>
                 </div>
             </div>
+            
 
             <!-- category stores -->
             <div class="pwa-col-12 category-grid-container mb-15">

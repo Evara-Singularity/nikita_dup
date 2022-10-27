@@ -46,22 +46,22 @@ export class Categories implements OnInit {
 		enableCard: false,
 		verticalOrientation: true,
 		horizontalOrientation: false,
-		lazyLoadImage: true
-	  }
-	  readonly cardFeaturesConfig: ProductCardFeature = {
-        // feature config
-        enableAddToCart: true,
-        enableBuyNow: true,
-        enableFeatures: false,
-        enableRating: true,
-        enableVideo: false,
-        // design config
-        enableCard: true,
-        verticalOrientation: true,
-        horizontalOrientation: false,
-		verticalOrientationV2:true,
-        lazyLoadImage: false
-    }
+		lazyLoadImage: false
+	}
+	readonly cardFeaturesConfig: ProductCardFeature = {
+		// feature config
+		enableAddToCart: true,
+		enableBuyNow: true,
+		enableFeatures: false,
+		enableRating: true,
+		enableVideo: false,
+		// design config
+		enableCard: true,
+		verticalOrientation: true,
+		horizontalOrientation: false,
+		verticalOrientationV2: true,
+		lazyLoadImage: false
+	}
 	openPopup;
 	categoryNameFromHomePage;
 	readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
@@ -80,6 +80,7 @@ export class Categories implements OnInit {
 	}
 
 	ngOnInit(): void {
+		// console.log('carouselData before =====>', this.carouselData);
 		// this.carouselData = (ncd as any[]).map(product => this.productService.searchResponseToProductEntity(product));
 		for (let i = 0; i < this.categories.length; i++) {
 			if (this.categories[i]['dataKey'] && this.carouselData[this.categories[i]['dataKey']]) {
@@ -89,6 +90,7 @@ export class Categories implements OnInit {
 				}
 			}
 		}
+		// console.log('carouselData after =====>', this.carouselData);
 	}
 
 	setCategoryorBrandCookie(categoryName, type) {

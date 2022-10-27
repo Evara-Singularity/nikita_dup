@@ -709,6 +709,7 @@ export class ProductService {
     }
 
     recentProductResponseToProductEntity(product: any) {
+        // console.log('product ==>', product);
         const partNumber =
             product["partNumber"] ||
             product["defaultPartNumber"] ||
@@ -716,7 +717,7 @@ export class ProductService {
         const productMrp = product["priceMrp"];
         const productPrice = product["priceWithTax"];
         const priceWithoutTax = product["priceWithoutTax"];
-        return {
+        const productReturn = {
             moglixPartNumber: partNumber,
             moglixProductNo: product["moglixProductNo"] || null,
             mrp: productMrp,
@@ -749,9 +750,12 @@ export class ProductService {
             internalProduct: true,
             outOfStock: product.outOfStock,
         } as ProductsEntity;
+        // console.log('product ==>', productReturn);
+        return productReturn;
     }
 
     productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
+        // console.log('product ==>', product);
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
         const productEntity: ProductsEntity =  {
@@ -788,6 +792,7 @@ export class ProductService {
             internalProduct: true,
             outOfStock: product.outOfStock,
         };
+        // console.log('productEntity ==>', productEntity);
         return productEntity;
     }
 

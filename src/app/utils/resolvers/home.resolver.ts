@@ -37,9 +37,11 @@ resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<o
     if (this.transferState.hasKey(STATE_KEY) && this.transferState.hasKey(FDK)) {
       const stateObj = this.transferState.get<object>(STATE_KEY, null);
       const FDKobj = this.transferState.get<object>(FDK, null);
+      // console.log('stateObj ===>', stateObj);
+      // console.log('FDKobj ===>', stateObj);
       this.transferState.remove(STATE_KEY);
       this.transferState.remove(FDK);
-      return of([stateObj, FDKobj]);
+      return of([JSON.parse(stateObj[0]), FDKobj]);
     } else {
       const LAYOUT_URL = environment.BASE_URL + ENDPOINTS.GET_LAYOUT_HOME;
 
@@ -49,6 +51,7 @@ resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<o
           logInfo.endDateTime = new Date().getTime();
           logInfo.responseStatus = res["status"];
           this._loggerService.apiServerLog(logInfo);
+          // console.log('stateObs res ===>', res);
           return res;
         })
       );
@@ -60,6 +63,7 @@ resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<o
           logInfo.endDateTime = new Date().getTime();
           logInfo.responseStatus = res["status"];
           this._loggerService.apiServerLog(logInfo);
+          // console.log('fdkObj res ===>', res);
           return res;
         })
       );
@@ -73,7 +77,7 @@ resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<o
         tap(result => {
           if (isPlatformServer(this.platformId)) {
             //this.loaderService.setLoaderState(false);
-            this.transferState.set(STATE_KEY, result[0]);
+            this.transferState.set(STATE_KEY, [JSON.stringify(result[0])]);
             this.transferState.set(FDK, result[1]);
           }
         })

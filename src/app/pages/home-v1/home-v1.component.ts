@@ -94,7 +94,7 @@ export class HomeV1Component implements OnInit {
     private cfr: ComponentFactoryResolver,
     private injector: Injector,
     private analytics: GlobalAnalyticsService,
-    private _localAuthService: LocalAuthService,
+    public _localAuthService: LocalAuthService,
     private _router: Router,
     private meta: Meta,
     private title: Title,

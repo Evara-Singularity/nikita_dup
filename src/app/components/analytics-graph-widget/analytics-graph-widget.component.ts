@@ -5,7 +5,9 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { CommonService } from '@app/utils/services/common.service';
 import { DataService } from '@app/utils/services/data.service';
 import { ProductListService } from '@app/utils/services/productList.service';
-
+import Chart from 'highcharts/es-modules/Core/Chart/Chart.js';
+import ColumnSeries from 'highcharts/es-modules/Series/Column/ColumnSeries.js';
+import ColumnDataLabel from 'highcharts/es-modules/Series/Column/ColumnDataLabel.js';
 
 
 @Component({
@@ -40,6 +42,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
 
   ngOnInit(): void {
     this.getData();
+    ColumnDataLabel.compose(ColumnSeries);
   }
   getData(){
     if(this.graphData && this.graphData.length > 0){
@@ -149,7 +152,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     }
   }
 
-  createChartOptionsObject(data,seriesArray,attributeName?) {
+  createAttributeChartOptionsObject(data,seriesArray,attributeName?) {
     let chartOptions = {
       chart: {
         type: 'column',
@@ -351,28 +354,18 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     }
     return chartOptions;
   }
-
-  loadChart(htmlId, data, seriesData,attributeName?) {
-    var Highcharts = require('highcharts');
-    // Load module after Highcharts is loaded
-    require('highcharts/modules/exporting')(Highcharts);
-    Highcharts.chart(
-      htmlId,
-      this.createChartPriceSingleObject(data,seriesData)
-    );
+   
+  loadChart(htmlId, data, seriesData,attributeName?){
+    if (htmlId.startsWith(`${this.priceChartId}`)) {
+      const myChart1 = new Chart(htmlId ,this.createChartPriceSingleObject(data,seriesData));
+    }
     if (htmlId.startsWith(`${this.attributeChartId}`)) {
-      Highcharts.chart(
-        htmlId,
-        this.createChartOptionsObject(data,seriesData,attributeName)
-      );
+      const myChart2 = new Chart(htmlId ,this.createAttributeChartOptionsObject(data,seriesData));
     }
     if (htmlId.startsWith(`${this.brandChartId}`)) {
-        Highcharts.chart(
-        htmlId,
-        this.createChartBrandSingleObject(data,seriesData)
-      );
+      const myChart3 = new Chart(htmlId ,this.createChartBrandSingleObject(data,seriesData));
     }
-  } 
+  }
 
   generateFragmentUrl(filterName, filterValue){
     console.log("filterName",filterName,"filterValue",filterValue)

@@ -84,7 +84,7 @@
                 && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue']==null)
                 && (_cartService.prepaidDataMapping[item.productId]['amount'])
                 && (_cartService.prepaidDataMapping[item.productId]['discountIn'])">
-                    <p class="shop-more-text" class="prepaid-discount-txt"><strong>Extra {{_cartService.prepaidDataMapping[item.productId]['discountIn']}} OFF</strong> while you make online payment.</p>
+                    <p><span class="prepaid-discount-txt"><strong>Extra {{_cartService.prepaidDataMapping[item.productId]['discountIn']}} OFF</strong></span> while you make online payment.</p>
                 </div>
             </div>
             <div *ngIf="item.oos" class="oos-item-block">

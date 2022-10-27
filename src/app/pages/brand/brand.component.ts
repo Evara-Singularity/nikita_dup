@@ -37,7 +37,6 @@ export class BrandComponent {
     accordiansDetails: AccordiansDetails[] = [];
     popularCategories = [];
     couponForbrandCategory: Object= null;
-    couponForbrandCategoryDiscount: any;
 
     constructor(
         public _activatedRoute: ActivatedRoute,
@@ -586,7 +585,6 @@ export class BrandComponent {
             this._dataService.getCouponOnBrandCategory(this._activatedRoute.snapshot.params.brand, this._activatedRoute.snapshot.params.category).subscribe(response => {
                 if (response['statusCode'] == 200 && response['data'] != null) {
                     this.couponForbrandCategory = response['data'];
-                    this.couponForbrandCategoryDiscount = this.couponForbrandCategory['absoluteDiscount'] ? ('₹' + this.couponForbrandCategory['absoluteDiscount']) : (this.couponForbrandCategory['percentageDiscount'] + '%')
                 } else {
                     this.couponForbrandCategory = null;
                 }

@@ -80,7 +80,7 @@
                 </div>
             </div>
             <div class="pwa-row" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId]">
-                <div class="shop-more-container" *ngIf="(_cartService.prepaidDataMapping[item.productId]['applicable']) 
+                <div class="shop-more-container sigle-line-txt" *ngIf="(_cartService.prepaidDataMapping[item.productId]['applicable']) 
                 && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue']==null)
                 && (_cartService.prepaidDataMapping[item.productId]['amount'])
                 && (_cartService.prepaidDataMapping[item.productId]['discountIn'])">

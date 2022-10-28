@@ -558,9 +558,11 @@ export class EmiComponent {
                 this.nocostEmiDiscount = 0;
             }
             //cartSession["nocostEmi"] = 0;
+            // console.log('totalPayableAmount 1', this.totalPayableAmount);
             cartSession['nocostEmi'] = this.nocostEmiDiscount;
             this.totalPayableAmount = payableAmount - this.nocostEmiDiscount;
         } else {
+            // console.log('totalPayableAmount 2', this.totalPayableAmount);
             cartSession["nocostEmi"] = 0;
             this.totalPayableAmount = payableAmount;
         }
@@ -622,9 +624,15 @@ export class EmiComponent {
             this.onBankChange(this.selectedBank, this._objectToArray.transform(data.value, "associative"));
             this.selectedMonth = null;
             this.selectedYear = null;
-            const emiResponseData = this._objectToArray.transform(this.emiResponse[this.selectedBank]);
-            const tenure = parseInt(emiResponseData[0].tenure.replace('months', ''));
-            this.selectEmI(tenure, emiResponseData[0].emiBankInterest, emiResponseData[0].transactionAmount)
+            let emiResponseData = this._objectToArray.transform(this.emiResponse[this.selectedBank]);
+            emiResponseData = (emiResponseData as Array<any>).map(emidata=>{
+                emidata.tenure = parseInt(emidata.tenure.replace('months', '')) || 0;
+                return emidata
+            }); 
+            emiResponseData.sort((a,b)=> a.tenure - b.tenure);
+            // console.log('emiResponseData', emiResponseData);
+            // const tenure = parseInt(emiResponseData[0].tenure.replace('months', ''));
+            this.selectEmI(emiResponseData[0].tenure, emiResponseData[0].emiBankInterest, emiResponseData[0].transactionAmount)
         }
         this.bankSelectPopUp = false;
     }

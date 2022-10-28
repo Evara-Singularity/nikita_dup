@@ -79,6 +79,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			this.nonCods = codInfo.nonCods || [];
 			this.canCOD = (codInfo.iswithInCODLimit && codInfo.nonCods.length === 0 && codInfo.nonServiceables.length === 0);
 			this.cartSession = results[1];
+			console.log('cartSession initiateRehydration', results[1]);
 			//upfront we are validating for time saving and as this mandatory action
 			this.validateCart();
 			this.isRehydrationDone = true;
@@ -146,6 +147,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 		}
 		this.adobeAnayticInitCall("moglix:payment:transaction:failed:repay", "transaction:failed:repay", "transaction:failed:popup:repay");
 		this._cartService.updateNonDeliverableItems(this.cartSession['itemsList'], this.nonCods);
+		this.cartSession = this._cartService.generateGenericCartSession(this.cartSession);
 		this._cartService.setGenericCartSession(this.cartSession);
 		this.emitCloseEvent(this.lastCartDetails);
 	}
@@ -155,8 +157,11 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	get lastCartDetails()
 	{
 		const lastCartInfo = {
-			invoiceType: this.invoiceType, shippingAddress: this.shippingAddress, billingAddress: this.billingAddress,
-			lastPaymentMode: this.shoppingCartDto['payment']['type'], lastParentOrderId: this.shoppingCartDto['cart']['parentOrderId'],
+			invoiceType: this.invoiceType, 
+			shippingAddress: this.shippingAddress, 
+			billingAddress: this.billingAddress,
+			lastPaymentMode: this.shoppingCartDto['payment']['type'], 
+			lastParentOrderId: this.shoppingCartDto['cart']['parentOrderId'],
 			buyNow: this.isBuyNow
 		}
 		return lastCartInfo;

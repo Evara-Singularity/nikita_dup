@@ -39,7 +39,9 @@ export class RetryPaymentService
         const newCartSession = this.updateCartSessionWithPromo(cartSession, offerId);
         return newCartSession;
       }),
-      concatMap((newCartSession) => { return this.updateCartSessionWithShipping(newCartSession) })
+      concatMap((newCartSession) => { 
+        return this.updateCartSessionWithShipping(newCartSession) 
+      })
     )
   }
 

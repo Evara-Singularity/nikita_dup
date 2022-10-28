@@ -360,7 +360,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       const myChart1 = new Chart(htmlId ,this.createChartPriceSingleObject(data,seriesData));
     }
     if (htmlId.startsWith(`${this.attributeChartId}`)) {
-      const myChart2 = new Chart(htmlId ,this.createAttributeChartOptionsObject(data,seriesData));
+      const myChart2 = new Chart(htmlId ,this.createAttributeChartOptionsObject(data,seriesData,attributeName));
     }
     if (htmlId.startsWith(`${this.brandChartId}`)) {
       const myChart3 = new Chart(htmlId ,this.createChartBrandSingleObject(data,seriesData));

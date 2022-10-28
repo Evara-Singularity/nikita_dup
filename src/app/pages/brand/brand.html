@@ -19,7 +19,7 @@
                 <p>on min. value of {{couponForbrandCategory['minimumCartValue'] | mathCeil  | currency: 'INR' : 'symbol' :'1.0-0'}} in {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}}</p>
             </div>
             <div class="discount-text" *ngIf="couponForbrandCategory && couponForbrandCategory['percentageDiscount']">
-                <p class="green-txt">Flat {{couponForbrandCategory['percentageDiscount']}} % OFF on {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}} with online payment</p>
+                <p class="green-txt">Flat {{couponForbrandCategory['percentageDiscount']}}% OFF on {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}} with online payment.</p>
             </div>
         </div>
     </ng-container>

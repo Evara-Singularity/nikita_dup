@@ -62,7 +62,7 @@
                         <span class="tag-value">₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathCeil | number :
                             '1.2-2'}}</span> 
                     </li>
-                    <li  *ngIf="_cartService.totalPrepaidSaving > 0">
+                    <li  *ngIf="_cartService.totalPrepaidSaving > 0" class="prepaid-section">
                         <span class="tag-label">Total Prepaid Discount</span>
                         <span class="tag-value green-txt">-{{_cartService.totalPrepaidSaving| currency:'INR' : 'symbol' : '1.2-2'}}</span>
                     </li>

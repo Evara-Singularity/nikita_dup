@@ -73,17 +73,17 @@
                         </span>
                 </div>
             </div>
-            <div class="pwa-row" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId]">
-                <div class="shop-more-container" *ngIf="!(_cartService.prepaidDataMapping[item.productId]['applicable']) && (_cartService.prepaidDataMapping[item.productId]['amount']) && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue'])">
+            <div class="pwa-row pad-t-0" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && !(_cartService.prepaidDataMapping[item.productId]['applicable']) && (_cartService.prepaidDataMapping[item.productId]['amount']) && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue'])">
+                <div class="shop-more-container" >
                     <p class="shop-more-text">Shop more for {{_cartService.prepaidDataMapping[item.productId]['amount']| currency:'INR' : 'symbol' : '1.0-0'}} & get <span class="prepaid-discount-txt"><strong>{{_cartService.prepaidDataMapping[item.productId]['discountIn']| currency:'INR' : 'symbol' : '1.0-0'}} prepaid discount</strong></span> in the same category.</p>
                     <p class="add-products-btn" (click)="similarProduct(item.productName,item.categoryCode,item.brandName)">ADD PRODUCTS</p>
                 </div>
             </div>
-            <div class="pwa-row" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId]">
-                <div class="shop-more-container sigle-line-txt" *ngIf="(_cartService.prepaidDataMapping[item.productId]['applicable']) 
-                && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue']==null)
-                && (_cartService.prepaidDataMapping[item.productId]['amount'])
-                && (_cartService.prepaidDataMapping[item.productId]['discountIn'])">
+            <div class="pwa-row pad-t-0" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && (_cartService.prepaidDataMapping[item.productId]['applicable']) 
+            && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue']==null)
+            && (_cartService.prepaidDataMapping[item.productId]['amount'])
+            && (_cartService.prepaidDataMapping[item.productId]['discountIn'])">
+                <div class="shop-more-container sigle-line-txt">
                     <p><span class="prepaid-discount-txt"><strong>Extra {{_cartService.prepaidDataMapping[item.productId]['discountIn']}} OFF</strong></span> while you make online payment.</p>
                 </div>
             </div>

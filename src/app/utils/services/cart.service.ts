@@ -1418,6 +1418,7 @@ export class CartService
                 if (!isUpdateCart) {
                     this._toastService.show({ type: 'error', text: message });
                 }
+                this.promoCodeSubject.next({ promocode: this.appliedPromoCode , isNewPromocode: false });
                 return returnValue;
             }
             return returnValue;

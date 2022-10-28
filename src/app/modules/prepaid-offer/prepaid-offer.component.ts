@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, NgModule, OnInit } from '@angular/core';
 import { CartService } from '@app/utils/services/cart.service';
+import { MathCeilPipeModule } from './../../utils/pipes/math-ceil';
 
 @Component({
   selector: 'prepaid-offer',
@@ -19,7 +20,8 @@ export class PrepaidOfferComponent implements OnInit {
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    MathCeilPipeModule
   ],
   declarations: [PrepaidOfferComponent],
   exports: [PrepaidOfferComponent]

@@ -44,7 +44,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   @Input() categoryTaxonomay: string; // only received in case used in category module
   @Input() searchKeyword: string; // only received in case used in search module
   @Input() categoryMidPlpFilterData: any; // only received in case used in search module
-
+  @Input() graphData:any = null;
   @Output('categoryClicked') categoryClicked: EventEmitter<string> = new EventEmitter<string>();
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -56,7 +56,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   isHomeHeader: boolean = true;
   public appliedFilterCount: number = 0;
   showSortBy: boolean = true;
-  graphData:any;
+
   taxonomyCodesArray: Array<any> = [];
   
   constructor(
@@ -75,25 +75,8 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
-    this.getChartData();
-    if(this.categoryTaxonomay){
-      this.taxonomyCodesArray = (this.categoryTaxonomay as string).split("/");
-    }
   }
-  callChartApi() {
-    let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +this.categoryId;
-    return this.dataService.callRestful("GET", url);
-  }
-  getChartData(){
-    this.callChartApi().subscribe(res => {
-       if(res['statusCode'] == 200){
-       this.graphData = res['data']; 
-      }
-      else{
-        console.log("error");
-      }
-    })
-  }
+  
  
 
   get isAdsEnable() {
@@ -341,8 +324,13 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       this.paginationContainerRef.remove();
     }
   }
- 
- 
+  get getTaxonomyArray(){
+    this.taxonomyCodesArray = (this.categoryTaxonomay as string).split("/");
+    return this.categoryTaxonomay && this.categoryTaxonomay.length > 0 
+    ? this.taxonomyCodesArray 
+    :''
+  }
+  
   ngOnDestroy() {
     this.resetLazyComponents();
   }

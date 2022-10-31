@@ -1,3 +1,4 @@
+{{graphData | json}}
 <ng-container *ngIf="chartContainer =='priceChartContainer'">
     <div class="chart-wrapper" [debounceTime]="100"  data-observeVisibility (visible)="loadPriceWidget()" >
         <ng-container #priceContainerRef>

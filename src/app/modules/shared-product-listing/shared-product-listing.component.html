@@ -57,11 +57,9 @@
         </div>
     </ng-container>
 </div>
-
-
 <ng-container *ngIf="productsListingData?.products?.length > 0">
    <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
-   <ng-container *ngIf="pageName == 'CATEGORY' && taxonomyCodesArray.length > 1 && appliedFilterCount == 0">
+   <ng-container *ngIf="pageName == 'CATEGORY' && getTaxonomyArray.length >1  && appliedFilterCount == 0">
        <div *ngFor="let block of this.graphData;">
           <ng-container *ngIf="block.block_name == 'product_report' && block.data && block.data.length > 0">
             <analytics-widget-wrapper *ngIf="(i == 5)"  [chartContainer]="'priceChartContainer'" [categoryId]="categoryId" [categoryName]="categoryName" [graphData]="graphData"></analytics-widget-wrapper>

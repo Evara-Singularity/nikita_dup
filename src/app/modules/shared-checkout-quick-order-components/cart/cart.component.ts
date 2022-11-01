@@ -471,19 +471,14 @@ export class CartComponent
     similarProduct(productName, categoryId, BrandName, msn?) {
         if (productName && categoryId && BrandName) {
             this._globalLoaderService.setLoaderState(true);
-            // TODO: check this final
+            // TODO: check this final   
             this._cartService.AddSimilarProductOncartItem(productName, categoryId, BrandName,msn).subscribe(response => {
-                if (response && response['totalCount'] && response['totalCount'] > 0) {
+                this._globalLoaderService.setLoaderState(false)
+                if (response && response['products'] && response['products'].length > 0) {
                     this.cartAddProductPopUp(response);
-                    this._globalLoaderService.setLoaderState(false)
-                }
-                else if(response && response['totalCount'] && response['totalCount'] == 0){
-                    this._globalLoaderService.setLoaderState(false)
+                }else{
                     const msg = "No similar product found for this brand Category";
                     this._tms.show({ type: 'error', text: msg });
-                }
-                else {
-                    this._globalLoaderService.setLoaderState(false)
                 }
             })
 

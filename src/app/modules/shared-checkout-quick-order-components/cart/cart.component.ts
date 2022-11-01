@@ -476,7 +476,13 @@ export class CartComponent
                 if (response && response['totalCount'] && response['totalCount'] > 0) {
                     this.cartAddProductPopUp(response);
                     this._globalLoaderService.setLoaderState(false)
-                } else {
+                }
+                else if(response && response['totalCount'] && response['totalCount'] == 0){
+                    this._globalLoaderService.setLoaderState(false)
+                    const msg = "No similar product found for this brand Category";
+                    this._tms.show({ type: 'error', text: msg });
+                }
+                else {
                     this._globalLoaderService.setLoaderState(false)
                 }
             })

@@ -115,4 +115,5 @@ export const ENDPOINTS = {
   GET_PAST_ORDERS:'/checkout/getPastOrders?userId=',
   GET_PAYMENT_DETAILS: '/payment/getRetryRequest',
   GET_LAST_ORDERS: '/checkout/order/getLastOrders',
+  TOKEN_AUTHENTICATION:'/createProductUrl/tokenAuthentication',
 };

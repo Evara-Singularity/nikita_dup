@@ -46,7 +46,8 @@ export class AutologinPageComponent implements OnInit {
         this.localStorageService.clear('user');
         this.localAuthService.setUserSession(res['data']);
         console.log("getTokenAuthentication api call response -->" , res);
-        this.sharedAuthUtilService.processAuthentication(res['data'], false, 'checkout');
+        let redirectedTo = (res['data']['redirectedTo'] ? res['data']['redirectedTo'] : '');
+        this.sharedAuthUtilService.processAuthentication(res['data'], false, redirectedTo);
       }else{
         this.globalLoaderService.setLoaderState(false);
         this.router.navigate(['']); 

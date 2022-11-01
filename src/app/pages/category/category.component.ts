@@ -15,6 +15,8 @@ import { DataService } from '@app/utils/services/data.service';
 import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
+import { ENDPOINTS } from '@app/config/endpoints';
+import { environment } from 'environments/environment';
 
 let digitalData = {
     page: {},
@@ -44,6 +46,7 @@ export class CategoryComponent {
     productRangeTableArray: any[] = [];
     accordiansDetails:AccordiansDetails[]=[];
     prodUrl=CONSTANTS.PROD;
+    graphData;
 
     constructor(
         public _router: Router,
@@ -70,7 +73,6 @@ export class CategoryComponent {
 
     ngOnInit(): void {
         this.setDataFromResolver();
-
         if (this._commonService.isBrowser) {
             this._footerService.setMobileFoooters();
         }
@@ -95,6 +97,7 @@ export class CategoryComponent {
 
     setDataFromResolver() {
         this._activatedRoute.data.subscribe(result => {
+           
 
             // set API result data
             this.API_RESPONSE = result;
@@ -130,7 +133,6 @@ export class CategoryComponent {
                 if (res.hasOwnProperty('priceRangeBuckets')) {
                     this.API_RESPONSE.category[1].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
                 }
-
                 // update footer data
                 this.genrateAndUpdateCategoryFooterData();
 
@@ -146,13 +148,31 @@ export class CategoryComponent {
             if (this.sharedProductList) {
                 this.sharedProductList.getSponseredProducts();
             }
-
+            this.getChartData();
             this.setCanonicalUrls();
 
             // send tracking data 
             this.sendTrackingData();
+           
         });
     }
+
+     callChartApi() {
+         let categoryId =  this.API_RESPONSE['category'][0]['categoryDetails']['categoryId']
+        let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
+        return this._dataService.callRestful("GET", url);
+      }
+      getChartData(){
+        this.callChartApi().subscribe(res => {
+           if(res['statusCode'] == 200){
+           this.graphData = res['data']; 
+           console.log("hello");
+          }
+          else{
+            console.log("error");
+          }
+        })
+      }
 
     private createFooterAccordianData() {
         this.accordiansDetails = [];

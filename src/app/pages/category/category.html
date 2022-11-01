@@ -30,7 +30,7 @@
             [categoryName]="API_RESPONSE['category'][0]['categoryDetails']['categoryName']"
             [categoryTaxonomay]="API_RESPONSE['category'][0]['categoryDetails']['taxonomy']"
             [productsListingData]="_productListService?.productListingData"
-            *ngIf="API_RESPONSE?.category[0] && _productListService &&_productListService.productListingData">
+            *ngIf="API_RESPONSE?.category[0] && _productListService &&_productListService.productListingData" [graphData]="graphData">
         </shared-product-listing>
     </div>
     

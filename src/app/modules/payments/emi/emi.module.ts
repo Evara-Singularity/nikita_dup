@@ -11,6 +11,7 @@ import { MathCeilPipeModule } from '../../../utils/pipes/math-ceil';
 import { KpAutocompleteOffDirectiveModule } from '../../../utils/directives/kpAutocompleteOff.directive';
 import { SelectPopupModule } from '../../select-popup/select-popup.module';
 import { SortByEMIMonthsPipeModule } from '@app/utils/pipes/emiSort.pipe';
+import { PrepaidOfferCheckoutModule } from '@app/modules/prepaid-offer-checkout/prepaid-offer-checkout.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { SortByEMIMonthsPipeModule } from '@app/utils/pipes/emiSort.pipe';
         MathFloorPipeModule,
         KpAutocompleteOffDirectiveModule,
         SelectPopupModule,
-        SortByEMIMonthsPipeModule
+        SortByEMIMonthsPipeModule,
+        PrepaidOfferCheckoutModule
     ],
     declarations: [
         EmiComponent,

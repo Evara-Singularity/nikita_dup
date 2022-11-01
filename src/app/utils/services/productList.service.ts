@@ -354,6 +354,9 @@ export class ProductListService {
       case "WISHLIST":
         str = "pdp:widget:wishlist";
         break;
+      case "CART-ADD-SIMILAR-PRODUCT":
+        str = "pdp:widget:cart:similar";
+        break;
       default:
         str = "pdp-extra";
         break;

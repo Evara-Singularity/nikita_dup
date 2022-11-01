@@ -86,6 +86,7 @@
             </div>
 
             <div class="continue-button">
+                <prepaid-offer-checkout ></prepaid-offer-checkout>
                 <div class="container">
                     <p class="total-mount" *ngIf="totalPayableAmount>0">
                         <span class="payable-amnt">Payable Amount</span> ₹{{totalPayableAmount | mathCeil | number :

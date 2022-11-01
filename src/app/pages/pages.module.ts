@@ -9,6 +9,7 @@ import { ModalModule } from '@app/modules/modal/modal.module';
 import { ToastMessageModule } from '@app/modules/toastMessage/toast-message.module';
 import { SharedFooterModule } from '@app/components/shared-footer/shared-footer.component';
 import { AutologinPageModule } from '@app/components/autologin-page/autologin-page.module';
+import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { AutologinPageModule } from '@app/components/autologin-page/autologin-pa
     ModalModule, 
     ToastMessageModule,
     SharedFooterModule,
-    AutologinPageModule
+    AutologinPageModule,
+    ObserveVisibilityDirectiveModule
   ],
   providers: [MyAccountGuard]
 })

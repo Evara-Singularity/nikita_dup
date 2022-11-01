@@ -4,8 +4,10 @@ import { NavigationExtras, Router, RouterModule } from '@angular/router';
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { environment } from 'environments/environment';
 import { LocalStorageService } from 'ngx-webstorage';
 import { LocalAuthService } from '../../utils/services/auth.service';
+import { MockLottiePlayerModule } from '../mock-lottie-player/mock-lottie-player.module';
 
 @Component({
   selector: 'app-side-nav',
@@ -16,14 +18,15 @@ export class SideNavComponent implements OnInit {
 
   @Input() sideMenuOpen: boolean = true;
   reStoreHome: boolean = false;
-  @Input('user') user: any = null
+  @Input('user') user: any = null;
+  imgAssetPath: string = environment.IMAGE_ASSET_URL
 
   constructor(
     private localStorageService: LocalStorageService,
     private globalAnalyticService: GlobalAnalyticsService,
     private router: Router,
-    private _localAuthService: LocalAuthService,
-    private _commonService: CommonService,
+    public _localAuthService: LocalAuthService,
+    public _commonService: CommonService,
   ) { }
 
   ngOnInit(): void {
@@ -35,7 +38,7 @@ export class SideNavComponent implements OnInit {
     this.localStorageService.observe('tocd').subscribe((value) => this.reStoreHome = true);
   }
 
-  trackAnalyticAndRedirect(url, checkForloggedIn = false, title=null) {
+  trackAnalyticAndRedirect(url, checkForloggedIn = false, title = null) {
     let PAGE = {
       channel: "menu_hamburger",
       pageName: this.router.url,
@@ -106,13 +109,26 @@ export class SideNavComponent implements OnInit {
     }
   }
 
+  addLottieScript() {
+    this._commonService.addLottieScriptSubject.subscribe(lottieInstance => {
+      this._commonService.callLottieScript();
+      lottieInstance.next();
+    });
+  }
+
+  ngAfterViewInit() {
+    this._commonService.callLottieScript();
+    this.addLottieScript();
+  }
 }
+
 
 @NgModule({
   imports: [
-    CommonModule, 
+    CommonModule,
     RouterModule,
-    AppPromoModule
+    AppPromoModule,
+    MockLottiePlayerModule
   ],
   declarations: [SideNavComponent]
 })

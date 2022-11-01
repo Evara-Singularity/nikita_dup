@@ -57,23 +57,36 @@
         </div>
     </ng-container>
 </div>
-    <ng-container *ngIf="productsListingData?.products?.length > 0">
-        <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
-            <filter-mid-plp (categoryClicked)="categoryClicked.emit($event)"
-                [categoryMidPlpFilterData]="categoryMidPlpFilterData" [pageName]="pageName" [position]="i"
-                [filterData]="productsListingData?.filterData" *ngIf="(i === 5 || i === 10 || i === 15 || i === 20)">
-            </filter-mid-plp>
-            <div class="pwa-row plp-card-list">
-                <div class="pwa-col-12">
-                    <product-card-skeleton
-                    *ngIf="sponseredProductPosition.includes(i)  && isAdsEnable && !sponseredProductLoadStatus">
-                </product-card-skeleton>
-                <product-card-horizontal-list-view [moduleUsedIn]="'LISTING_PAGES'" [isAdEnable]="_commonService.selectedFilterData['sortBy'] == 'popularity' && appliedFilterCount == 0 && isAdsEnable && sponseredProductLoadStatus && sponseredProductPosition.includes(i)" [product]="product" [isPDPImageLazyLoaded]="(i < 5)" [isAd]="true"  >
-                </product-card-horizontal-list-view>
-                </div>
-            </div>
-        </ng-container>
+<ng-container *ngIf="productsListingData?.products?.length > 0">
+   <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
+   <ng-container *ngIf="pageName == 'CATEGORY' && getTaxonomyArray.length >1  && appliedFilterCount == 0">
+       <div *ngFor="let block of this.graphData;">
+          <ng-container *ngIf="block.block_name == 'product_report' && block.data && block.data.length > 0">
+            <analytics-widget-wrapper *ngIf="(i == 5)"  [chartContainer]="'priceChartContainer'" [categoryId]="categoryId" [categoryName]="categoryName" [graphData]="graphData"></analytics-widget-wrapper>
+          </ng-container>
+          <ng-container *ngIf="block.block_name == 'brand_report' &&  block.data && block.data.length > 0">
+            <analytics-widget-wrapper *ngIf="(i == 10)" [chartContainer]="'brandChartContainer'" [categoryId]="categoryId" [graphData]="graphData" [categoryName]="categoryName"></analytics-widget-wrapper>
+          </ng-container>
+          <ng-container *ngIf="block.block_name == 'attribute_report' && block.data && block.data.length > 0">
+            <analytics-widget-wrapper *ngIf="(i == 15)" [chartContainer]="'attributeChartContainer'" [categoryId]="categoryId" [graphData]="graphData" [categoryName]="categoryName"></analytics-widget-wrapper>
+          </ng-container>
+       </div>
+   </ng-container>
+    <filter-mid-plp (categoryClicked)="categoryClicked.emit($event)"
+        [categoryMidPlpFilterData]="categoryMidPlpFilterData" [pageName]="pageName" [position]="i"
+        [filterData]="productsListingData?.filterData" *ngIf="(i === 5 || i === 10 || i === 15 || i === 20)">
+    </filter-mid-plp>
+    <div class="pwa-row plp-card-list">
+        <div class="pwa-col-12">
+            <product-card-skeleton
+                *ngIf="sponseredProductPosition.includes(i)  && isAdsEnable && !sponseredProductLoadStatus">
+            </product-card-skeleton>
+            <product-card-horizontal-list-view [moduleUsedIn]="'LISTING_PAGES'" [isAdEnable]="_commonService.selectedFilterData['sortBy'] == 'popularity' && appliedFilterCount == 0 && isAdsEnable && sponseredProductLoadStatus && sponseredProductPosition.includes(i)" [product]="product" [isPDPImageLazyLoaded]="(i < 5)" [isAd]="true"  >
+            </product-card-horizontal-list-view>
+        </div>
+    </div>
     </ng-container>
+</ng-container>
 <app-search-not-found 
     [helpText]="['No result found ', 'for your search.']"
     [helpSubText]="['Please check the spelling or try searching for something else']" 

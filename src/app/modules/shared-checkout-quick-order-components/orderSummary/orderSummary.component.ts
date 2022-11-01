@@ -46,9 +46,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
         this.shippingPriceChangesSubscription = this._cartService.getShippingPriceChanges().subscribe(cartSession=>{
             this.updateShippingCharges();
         })
-        if (userSession['authenticated'] == "true" && userSession['userId']) {
-            this._cartService.getPromoCodesByUserId(userSession['userId']);
-        }
+        this._cartService.getPromoCodesByUserId(userSession['userId']);
         this.promoSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode }) =>
         {
             this.showPromoSuccessPopup = isNewPromocode;
@@ -69,20 +67,6 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
         }
     }
 
-    openOfferPopUp()
-    {
-        console.log('showPromoOfferPopup', this.showPromoOfferPopup);
-        if (this._commonService.userSession.authenticated == "true") {
-            this.openPromoCodeList();
-        } else {
-            this._localAuthService.setBackURLTitle('/quickorder', null);
-            let navigationExtras: NavigationExtras = {
-                queryParams: { 'backurl': '/quickorder' },
-            };
-            this.router.navigate(["/login"], navigationExtras);
-        }
-    }
-
     openPromoCodeList() {
         this.showPromoOfferPopup = true;
         if (this._commonService.isBrowser && document.querySelector('app-pop-up')) {
@@ -91,8 +75,21 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
     }
 
     closePromoSuccessPopUp() { this.showPromoSuccessPopup = false; }
+    //enabling scroll after applying coupon
+    enableScroll() {
+        document.getElementById('body').removeEventListener('touchmove', this.preventDefault);
+    }
 
-    closePromoListPopUp(flag) { this.showPromoOfferPopup = flag }
+    closePromoListPopUp(flag) {
+        (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
+        this.enableScroll();
+        this.showPromoOfferPopup = flag
+    }
+    preventDefault(e) {
+        e.preventDefault();
+    }
+
+
 
     //analytics
     getGTMData(cartSession)

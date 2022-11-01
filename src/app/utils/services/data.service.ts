@@ -222,7 +222,7 @@ export class DataService {
                 this.getSessionApi
                     .pipe(take(1))
                     .subscribe((res) => {
-                        console.log("Error-401: getsession called");
+                        // console.log("Error-401: getsession called");
                         if (res['statusCode'] != undefined && res['statusCode'] == 500) {
                             // alert("something went wrong, please try to refresh the page");
                         } else {
@@ -316,4 +316,12 @@ export class DataService {
         return this.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_SESSION);
     }
 
+    getCouponOnBrandCategory(brandName, categoryId) {
+        let URL =
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPOUN_ON_BRAND_CATEGORY +
+            "?brandName=" + brandName +
+            "&categoryCode=" + categoryId;
+        return this.callRestful("GET", URL);
+
+    }
 }

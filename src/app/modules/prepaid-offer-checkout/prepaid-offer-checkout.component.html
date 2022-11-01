@@ -1,0 +1,3 @@
+<p *ngIf="_cartService.totalPrepaidSaving>0" class="discount-offer">
+    You will save {{_cartService.totalPrepaidSaving  | currency:'INR' : 'symbol' : '1.0-0'}} with online payment
+</p>

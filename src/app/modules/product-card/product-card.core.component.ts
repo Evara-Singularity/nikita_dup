@@ -40,6 +40,7 @@ export class ProductCardCoreComponent implements OnInit {
     horizontalOrientation: true,
     verticalOrientationV2: false,
     lazyLoadImage: true,
+    // TODO: add config for CTA control
   }
   // currently being used in PDP similar product
   @Input() cardMetaInfo: ProductCardMetaInfo = {
@@ -102,6 +103,7 @@ export class ProductCardCoreComponent implements OnInit {
     this.isAd = !this.product.internalProduct
     this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
     this.prodUrl = CONSTANTS.PROD;
+    // console.log('product 22==>', this.product);
   }
 
   buyNow(buyNow = false) {

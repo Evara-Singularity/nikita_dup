@@ -46,7 +46,7 @@ export class UpiComponent implements OnInit {
         private _loaderService: GlobalLoaderService,
         private _commonService: CommonService,
         private _localAuthService: LocalAuthService,
-        private _cartService: CartService,
+        public _cartService: CartService,
         private _formBuilder: FormBuilder,
         private _objectToArray: ObjectToArray,
         private lsr: LowSuccessMessagePipe,
@@ -57,11 +57,15 @@ export class UpiComponent implements OnInit {
         this.upiForm = this._formBuilder.group({
             "upi": ["", [Validators.required]]
         });
-        this.getPrePaidDiscount();
         this.cartSesssion = Object.assign({}, this._cartService.getGenericCartSession);
-        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+        if(CONSTANTS.enableGenericPrepaid){
             this.getPrePaidDiscount();
-        })
+            this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+                this.getPrePaidDiscount();
+            })
+        }else{
+            this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
+        }
         this.lowSuccessBanks();
     }
 
@@ -81,6 +85,8 @@ export class UpiComponent implements OnInit {
 
         this._commonService.isBrowser && this._analytics.sendAdobeOrderRequestTracking(newdata,`pay-initiated:upi`);
         this._cartService.pay(newdata).subscribe((res): void => {
+            // console.log('PAY ==> pay API customer type', this.type);
+            // console.log('PAY ==> pay API response', newdata);
             if (res.status != true) {
                 this.isValid = false;
                 this.isShowLoader = false;
@@ -101,6 +107,7 @@ export class UpiComponent implements OnInit {
             this.upiData["vpa"] = this.upi;             
 
             this.isValid = true;
+            // console.log('PAY ==> pay API upiData', this.upiData);
             setTimeout(() => {
                 this.isShowLoader = false;
             }, 1000)
@@ -155,7 +162,8 @@ export class UpiComponent implements OnInit {
                 "productinfo": "MSNghihjbc",
                 "bankcode": "TEZ",
             },
-            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
+            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra),
+            
         };
         if(this.type == "tax"){
             upiData["mode"]="UPI";

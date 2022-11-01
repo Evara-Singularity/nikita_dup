@@ -6,6 +6,7 @@ import { SliceArrayPipeModule } from '@app/utils/pipes/slice-array.pipe';
 import { CommonService } from '@app/utils/services/common.service';
 import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ObjectToArrayPipeModule } from '../../utils/pipes/object-to-array.pipe';
+import { BrandLinkMapping } from '@app/utils/brandLinkMapping';
 
 @Component({
   selector: 'product-feature-details',
@@ -18,6 +19,7 @@ export class ProductFeatureDetailsComponent implements OnInit {
   readonly baseDomain = CONSTANTS.PROD;
   readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;  @Input() productKeyFeatures: any;
+  showNavToStorePage=false;
   @Input() isFromOosSimilarCard: boolean = false;
   @Input() productAttributes : any;
   @Input() productDescripton : any;
@@ -34,6 +36,10 @@ export class ProductFeatureDetailsComponent implements OnInit {
   constructor( private router: Router, public commonService: CommonService) { }
 
   ngOnInit(): void {
+    if (BrandLinkMapping.hasOwnProperty(this.productBrandDetails["idBrand"])) {
+      this.showNavToStorePage=true;
+      this.productBrandDetails['storeLink']=BrandLinkMapping[this.productBrandDetails["idBrand"]];
+    }
   }
 
   handleProductInfoPopup(infoType, cta) {

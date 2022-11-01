@@ -11,7 +11,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { GlobalLoaderService } from '@services/global-loader.service';
 import { environment } from 'environments/environment';
 import { LocalStorageService } from 'ngx-webstorage';
-
+import { ProductService } from '@app/utils/services/product.service';
 
 @Component({
     selector: 'articles',
@@ -37,7 +37,7 @@ export class ArticlesComponent implements OnInit
 
 
     constructor(private route: ActivatedRoute, private router: Router, private footerService: FooterService, private _commonService: CommonService, private toastMessageService: ToastMessageService, private _analytics: GlobalAnalyticsService,
-        private _localStorageService: LocalStorageService, private _dataService: DataService, private _loaderService: GlobalLoaderService, private _title: Title, private _renderer2: Renderer2, private _meta: Meta, @Inject(DOCUMENT) private _document)
+        private _productService:ProductService, private _localStorageService: LocalStorageService, private _dataService: DataService, private _loaderService: GlobalLoaderService, private _title: Title, private _renderer2: Renderer2, private _meta: Meta, @Inject(DOCUMENT) private _document)
     {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -79,6 +79,9 @@ export class ArticlesComponent implements OnInit
             if ((response[this.data] as any[]).length) {
                 const LIST = (response[this.data] as any[]);
                 this.articleList = [...this.articleList, ...LIST];
+                for(let i=0;i<this.articleList.length;i++){
+                    this.articleList[i]['thumbnailImage']=this._productService.getForLeadingSlash(this.articleList[i]['thumbnailImage']);
+                }
             } else {
                 this.hasNoRecords = true;
                 this.toastMessageService.show({ type: 'error', text: "No more records to display" });

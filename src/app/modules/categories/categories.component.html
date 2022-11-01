@@ -12,11 +12,12 @@
             <!--layout_url-->
             <a *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'" [href]="carouselData[category.dataKey]['layout_url']" class="btn quinary-btn">VIEW ALL</a>
         </div>
+
         <ng-container *ngIf="carouselData[category.dataKey]['data'] && carouselData[category.dataKey]['data']['image_block'] && carouselData[category.dataKey]['data']['image_block'].length>=4">
         <div class="category-block-container">
             <div class="category-inner-block" *ngFor="let imageBlockItem of  carouselData[category.dataKey]['data']['image_block']|slice:0:4">
                <a href="{{imageBlockItem['image_link']}}">
-                <img src="{{imageCdnPath+imageBlockItem['image_name']}}" alt="">
+                <img [defaultImage]="defaultImage" [lazyLoad]="imageCdnPath + imageBlockItem['image_name']" alt="">
             </a> 
             </div>
         </div>
@@ -27,8 +28,7 @@
             <li  *ngFor="let item of carouselData[category.dataKey]['data']['category_block'] | slice : 0:4" class="circle-brand-block">
                 <a [routerLink]="item['category_url']"
                     (click)="setCategoryorBrandCookie(item['CategoryName'],'tcat')">
-
-                    <img [src]="imagePath+item.category_image"
+                    <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item.category_image"
                         alt="category image" class="category-img">
                     <p>{{item['CategoryName']}}</p>
                 </a>
@@ -40,7 +40,7 @@
                 <a [routerLink]="items['brand_url']"
                     (click)="setCategoryorBrandCookie(items['brandName'],'tbrand')">
                     <div class="circle-brand-img">
-                        <img [src]="imagePath+items.brand_image"
+                        <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + items.brand_image"
                         alt="category image" class="category-img" width="56" height="56">
                     </div>
                     <p>{{items['brandName']}}</p>
@@ -51,7 +51,7 @@
     <product-card-vertical-container
         [numberOfItems]="carouselData[category.dataKey]['data']['product_data'].length">
         <ng-container *ngFor="let product of carouselData[category.dataKey]['data']['product_data']">
-            <product-card-vertical-grid-view [moduleUsedIn]="'HOME_PRODUCT'" [fullBrandNameMode]="true" [product]="product"></product-card-vertical-grid-view>
+            <product-card-vertical-grid-view [cardFeaturesConfig]="cardFeaturesConfig" [isPDPImageLazyLoaded]="false" [moduleUsedIn]="'HOME_PRODUCT'" [fullBrandNameMode]="true" [product]="product"></product-card-vertical-grid-view>
         </ng-container>
     </product-card-vertical-container>
 
@@ -60,7 +60,7 @@
 <div class="pwa-col-12 pad-lr-15 mb-10">
     <section class="pwa-banner" *ngFor="let im of middleImageJsonData;let i = index;">
         <a class="full-banner" *ngIf="i==1" href="{{im.image_link}}">
-            <img [src]="_commonService.slicingHref(im.image_name)" alt="banner add" width="312" height="117">
+            <img [defaultImage]="defaultImage" [lazyLoad]="_commonService.slicingHref(im.image_name)" alt="banner add" width="312" height="117">
         </a>
     </section>
 </div>

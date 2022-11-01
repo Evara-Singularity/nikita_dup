@@ -1,0 +1,12 @@
+<div class="pwa-row" *ngIf="_cartService.totalPrepaidSaving>0">
+    <div class="dropped-price-container">
+        <div class="drop-icon">
+            <img src="../../../../assets/img/drop-price.png">
+        </div>
+        <div class="dropped-price-desc">
+            <p class="g-text">Woohoo! Cart price dropped by ₹{{_cartService.totalPrepaidSaving}}.</p>
+            <p>Now pay only <span class="before-discount">₹{{_cartService.totalDisplayPayableAmountWithOutPrepaid | mathCeil | number :'1.2-2'}}</span>
+                <strong> ₹{{_cartService.totalDisplayPayableAmountWithPrepaid | mathCeil | number :'1.2-2'}}</strong> with online payment</p>
+        </div>
+    </div>
+</div>

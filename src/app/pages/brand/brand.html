@@ -8,6 +8,21 @@
     </div>
     
     <!-- Brand Product List Data -->
+    <ng-container
+        *ngIf="API_RESPONSE['brand'][1][0].categoryName && couponForbrandCategory && API_RESPONSE['brand'][0].brandName">
+        <div class="instant-discount-container">
+            <div class="discount-icon">
+                <img src="../../../assets/img/best_deals.png">
+            </div>
+            <div class="discount-text" *ngIf="couponForbrandCategory && couponForbrandCategory['absoluteDiscount']">
+                <p class="green-txt">Get instant {{couponForbrandCategory['absoluteDiscount'] | currency:'INR' : 'symbol' : '1.0-0'}} discount with online payment</p>
+                <p>on min. value of {{couponForbrandCategory['minimumCartValue'] | mathCeil  | currency: 'INR' : 'symbol' :'1.0-0'}} in {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}}</p>
+            </div>
+            <div class="discount-text" *ngIf="couponForbrandCategory && couponForbrandCategory['percentageDiscount']">
+                <p class="green-txt">Flat {{couponForbrandCategory['percentageDiscount']}}% OFF on {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}} with online payment.</p>
+            </div>
+        </div>
+    </ng-container>
     <div class="pwa-row cate-container"
         *ngIf="API_RESPONSE['brand'][1][0].categoryName && _commonService.selectedFilterData.page < 2">
         <div class="pwa-col-12">

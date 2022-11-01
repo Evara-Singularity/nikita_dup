@@ -8,6 +8,7 @@ import { AddFilterSymbolPipeModule } from '@app/utils/pipes/addSymbol.pipe';
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
 import { ProductCardHorizontalListViewModule } from '../product-card/product-card-horizontal-list-view/product-card-horizontal-list-view.module';
 import { ProductCardSkeletonModule } from '../ui/skeletons/product-card-skeleton/product-card-skeleton.module';
+import { AnalyticsWidgetWrapperModule } from '@app/components/analytics-widget-wrapper/analytics-widget-wrapper.module';
 
 @NgModule({
   declarations: [SharedProductListingComponent],
@@ -19,7 +20,8 @@ import { ProductCardSkeletonModule } from '../ui/skeletons/product-card-skeleton
     AddFilterSymbolPipeModule,
     NgxPaginationModule,
     ObserveVisibilityDirectiveModule,
-    NotFoundModule
+    NotFoundModule,
+    AnalyticsWidgetWrapperModule
   ],
   exports: [
     SharedProductListingComponent

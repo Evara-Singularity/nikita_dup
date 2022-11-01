@@ -141,7 +141,7 @@ export class PaytmUpiComponent {
                 "email": addressList["email"] != null ? addressList["email"] : userSession["email"],
                 "paymentChannel": "WEB",
             },
-            "validatorRequest": this._cartService.createValidatorRequest(extra)
+            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra),
         };
         return upiData;
     }

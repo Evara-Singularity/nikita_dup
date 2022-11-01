@@ -4,7 +4,7 @@
             <img src="../../../../assets/img/drop-price.png">
         </div>
         <div class="dropped-price-desc">
-            <p class="g-text">Woohoo! Cart price dropped by ₹{{_cartService.totalPrepaidSaving}}.</p>
+            <p class="g-text">Woohoo! Cart price dropped by ₹{{_cartService.totalPrepaidSaving | mathRound | number :'1.2-2' }}.</p>
             <p>Now pay only <span class="before-discount">₹{{_cartService.totalDisplayPayableAmountWithOutPrepaid | mathRound | number :'1.2-2'}}</span>
                 <strong> ₹{{_cartService.totalDisplayPayableAmountWithPrepaid | mathRound | number :'1.2-2'}}</strong> with online payment</p>
         </div>

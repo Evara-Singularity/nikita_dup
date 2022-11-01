@@ -13,20 +13,20 @@
                         </span>
                     </span>
                     <ng-container *ngIf="_cartService.totalPrepaidSaving==0">
-                    <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges) | mathCeil | number : '1.2-2'}}</ng-container>
-                    <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer) | mathCeil | number : '1.2-2'}}</ng-container>
+                    <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges) | mathRound | number : '1.2-2'}}</ng-container>
+                    <ng-container *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null" >₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt + _cartService.getGenericCartSession.cart.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer) | mathRound | number : '1.2-2'}}</ng-container>
                     </ng-container>
                     <ng-container *ngIf="_cartService.totalPrepaidSaving>0">
                         <ng-container
                             *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">
                             ₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt +
-                            _cartService.getGenericCartSession.cart.shippingCharges -_cartService.totalPrepaidSaving) | mathCeil | number :
+                            _cartService.getGenericCartSession.cart.shippingCharges -_cartService.totalPrepaidSaving) | mathRound | number :
                             '1.2-2'}}</ng-container>
                         <ng-container
                             *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null">
                             ₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt +
                             _cartService.getGenericCartSession.cart.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer
-                            -_cartService.totalPrepaidSaving) | mathCeil | number : '1.2-2'}}</ng-container>
+                            -_cartService.totalPrepaidSaving) | mathRound | number : '1.2-2'}}</ng-container>
                     
                     </ng-container>
                 </div>

@@ -26,25 +26,25 @@
                 <ul class="txt-list">
                     <li class="border">
                         <span class="tag-label">Total Amount</span>
-                        <span class="tag-value">₹{{_cartService.getGenericCartSession.cart.tawot | mathFloor | number :
+                        <span class="tag-value">₹{{_cartService.getGenericCartSession.cart.tawot | mathRound | number :
                             '1.2-2'}}</span>
                     </li>
                     <li>
                         <span class="tag-label">Total GST</span>
-                        <span class="tag-value">₹{{_cartService.getGenericCartSession.cart.tpt | mathFloor | number :
+                        <span class="tag-value">₹{{_cartService.getGenericCartSession.cart.tpt | mathRound | number :
                             '1.2-2'}}</span>
                     </li>
 
                     <li>
                         <span class="tag-label">Total Shipping</span>
-                        <span class="tag-value">₹{{ _cartService.getGenericCartSession.cart.shippingCharges | mathFloor
+                        <span class="tag-value">₹{{ _cartService.getGenericCartSession.cart.shippingCharges | mathRound
                             | number :'1.2-2' }}</span>
                     </li>
                     <li>
                         <span class="tag-label">Total Coupon Discount</span>
                         <span class="tag-value green-txt"
                             *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null">
-                            -₹{{_cartService.getGenericCartSession.cart.totalOffer | mathFloor | number :
+                            -₹{{_cartService.getGenericCartSession.cart.totalOffer | mathRound | number :
                             '1.2-2'}}</span>
                         <span class="tag-value green-txt"
                             *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">-₹0.00</span>
@@ -52,14 +52,14 @@
 
                     <li class="bold-txt" *ngIf="_cartService.totalPrepaidSaving==0">
                         <span class="tag-label">Amount Payable</span>
-                        <span class="tag-value">₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathCeil | number :
+                        <span class="tag-value">₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathRound | number :
                             '1.2-2'}}</span>
                     </li>
 
                                        
                     <li class="bold-txt" *ngIf="_cartService.totalPrepaidSaving > 0">
                         <span class="tag-label">Total Cart Value </span>
-                        <span class="tag-value">₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathCeil | number :
+                        <span class="tag-value">₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathRound | number :
                             '1.2-2'}}</span> 
                     </li>
                     <li  *ngIf="_cartService.totalPrepaidSaving > 0" class="prepaid-section">
@@ -68,7 +68,7 @@
                     </li>
                     <li class="bold-txt" *ngIf="_cartService.totalPrepaidSaving > 0">
                         <span class="tag-label">Amount Payable</span>
-                        <span class="tag-value">₹{{ (_cartService.totalDisplayPayableAmountWithPrepaid) | mathCeil | number :
+                        <span class="tag-value">₹{{ (_cartService.totalDisplayPayableAmountWithPrepaid) | mathRound | number :
                             '1.2-2'}}</span>
                     </li>
                 </ul>

@@ -582,7 +582,7 @@ export class BrandComponent {
     couponOnBrandCategory() {
         if (this._activatedRoute.snapshot.params.brand && this._activatedRoute.snapshot.params.category) {
             this._globalLoader.setLoaderState(true);
-            this._dataService.getCouponOnBrandCategory(this._activatedRoute.snapshot.params.brand, this._activatedRoute.snapshot.params.category).subscribe(response => {
+            this._dataService.getCouponOnBrandCategory(this.API_RESPONSE['brand'][0].brandName, this._activatedRoute.snapshot.params.category).subscribe(response => {
                 if (response['statusCode'] == 200 && response['data'] != null) {
                     this.couponForbrandCategory = response['data'];
                 } else {
@@ -590,7 +590,6 @@ export class BrandComponent {
                 }
                 this._globalLoader.setLoaderState(false)
             })
-
         }
     }
 }

@@ -468,11 +468,11 @@ export class CartComponent
         }
     }
 
-    similarProduct(productName, categoryId, BrandName) {
+    similarProduct(productName, categoryId, BrandName, msn?) {
         if (productName && categoryId && BrandName) {
             this._globalLoaderService.setLoaderState(true);
             // TODO: check this final
-            this._cartService.AddSimilarProductOncartItem(productName, categoryId, BrandName).subscribe(response => {
+            this._cartService.AddSimilarProductOncartItem(productName, categoryId, BrandName,msn).subscribe(response => {
                 if (response && response['totalCount'] && response['totalCount'] > 0) {
                     this.cartAddProductPopUp(response);
                     this._globalLoaderService.setLoaderState(false)

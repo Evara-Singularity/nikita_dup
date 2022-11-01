@@ -10,6 +10,7 @@ import { MathCeilPipeModule } from '../../../utils/pipes/math-ceil';
 import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
 import { LowSuccessMessagePipeModule } from '@app/utils/pipes/low-success-rate.pipe';
 import { PrepaidOfferCheckoutModule } from '@app/modules/prepaid-offer-checkout/prepaid-offer-checkout.component';
+import { MathRoundPipeModule } from '@app/utils/pipes/math-round';
 
 
 @NgModule({
@@ -20,7 +21,7 @@ import { PrepaidOfferCheckoutModule } from '@app/modules/prepaid-offer-checkout/
         PaytmWalletFormModule,
         PayuWalletFormModule,
         RazorPayFormModule,
-        MathCeilPipeModule,
+        MathRoundPipeModule,
         MobikwikWalletFormModule,
         ObjectToArrayPipeModule,
         LowSuccessMessagePipeModule,

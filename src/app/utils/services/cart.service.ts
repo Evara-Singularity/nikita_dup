@@ -2305,12 +2305,13 @@ export class CartService
         /*End Adobe Analytics Tags */
     }
 
-    AddSimilarProductOncartItem(productName,categoryId,BrandName) {
+    AddSimilarProductOncartItem(productName,categoryId,BrandName,productId) {
 
         let URL =
         CONSTANTS.NEW_MOGLIX_API+ ENDPOINTS.GET_ADD_SIMILAR_PRODUCT_ON_CART +
         "?str=" + productName +
         "&category=" + categoryId +
+        "&productId=" + productId +
         "&brand=" + BrandName ;
         
         return this._dataService.callRestful("GET", URL).pipe(

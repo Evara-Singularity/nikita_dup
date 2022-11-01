@@ -7,11 +7,11 @@ import {PayuFormModule} from "../payment-forms/payuForm/payuForm.module";
 import {RazorPayFormModule} from "../payment-forms/razorPayForm/razorPayForm.module";
 import { ObjectToArrayPipeModule } from '../../../utils/pipes/object-to-array.pipe';
 import { BankNamePipeModule } from '../../../utils/pipes/bank.pipe';
-import { MathCeilPipeModule } from '../../../utils/pipes/math-ceil';
 import { KpAutocompleteOffDirectiveModule } from '../../../utils/directives/kpAutocompleteOff.directive';
 import { SelectPopupModule } from '../../select-popup/select-popup.module';
 import { SortByEMIMonthsPipeModule } from '@app/utils/pipes/emiSort.pipe';
 import { PrepaidOfferCheckoutModule } from '@app/modules/prepaid-offer-checkout/prepaid-offer-checkout.component';
+import { MathRoundPipeModule } from '@app/utils/pipes/math-round';
 
 
 @NgModule({
@@ -23,8 +23,7 @@ import { PrepaidOfferCheckoutModule } from '@app/modules/prepaid-offer-checkout/
         PayuFormModule,
         RazorPayFormModule,
         BankNamePipeModule,
-        MathCeilPipeModule,
-        MathFloorPipeModule,
+        MathRoundPipeModule,
         KpAutocompleteOffDirectiveModule,
         SelectPopupModule,
         SortByEMIMonthsPipeModule,

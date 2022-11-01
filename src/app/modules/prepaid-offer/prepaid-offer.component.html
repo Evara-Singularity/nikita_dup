@@ -5,8 +5,8 @@
         </div>
         <div class="dropped-price-desc">
             <p class="g-text">Woohoo! Cart price dropped by ₹{{_cartService.totalPrepaidSaving}}.</p>
-            <p>Now pay only <span class="before-discount">₹{{_cartService.totalDisplayPayableAmountWithOutPrepaid | mathCeil | number :'1.2-2'}}</span>
-                <strong> ₹{{_cartService.totalDisplayPayableAmountWithPrepaid | mathCeil | number :'1.2-2'}}</strong> with online payment</p>
+            <p>Now pay only <span class="before-discount">₹{{_cartService.totalDisplayPayableAmountWithOutPrepaid | mathRound | number :'1.2-2'}}</span>
+                <strong> ₹{{_cartService.totalDisplayPayableAmountWithPrepaid | mathRound | number :'1.2-2'}}</strong> with online payment</p>
         </div>
     </div>
 </div>

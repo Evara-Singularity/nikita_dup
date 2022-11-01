@@ -89,7 +89,7 @@
                 <prepaid-offer-checkout ></prepaid-offer-checkout>
                 <div class="container">
                     <p class="total-mount" *ngIf="totalPayableAmount>0">
-                        <span class="payable-amnt">Payable Amount</span> ₹{{totalPayableAmount | mathCeil | number :
+                        <span class="payable-amnt">Payable Amount</span> ₹{{totalPayableAmount | mathRound | number :
                         '1.2-2'}}
                     </p>
                     <button type="submit" [disabled]="!creditDebitCardForm.valid" class="btn">PAY</button>

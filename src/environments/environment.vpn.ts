@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   enableServerLogs: true,
   PROD_NAME: 'https://www.moglix.com',
-  BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
+  BASE_URL: 'https://apinew-kube.moglix.com/nodeApi/v1',
   //BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   APP_BASE_URL: 'https://api.moglix.com',
   IMAGE_ASSET_URL: 'https://cdn.moglix.com/online/vpn/pwa/bundles/',

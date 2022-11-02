@@ -287,12 +287,6 @@ export class AlpComponent implements OnInit {
                 'subSection': "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing",
                 'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
             }
-            let custData = {
-                'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-                'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-                'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-                'customerType': (user && user["userType"]) ? user["userType"] : '',
-            }
             let order = {
                 'productCategoryL1': this.taxo1,
                 'productCategoryL2': this.taxo2,
@@ -301,7 +295,7 @@ export class AlpComponent implements OnInit {
 
             let digitalData = {};
             digitalData["page"] = page;
-            digitalData["custData"] = custData;
+            digitalData["custData"] = this._commonService.custDataTracking;
             digitalData["order"] = order;
 
             if (this.trendingSearchData['tS'] && this.trendingSearchData['tS'] === 'no') {

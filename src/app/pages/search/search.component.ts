@@ -243,16 +243,10 @@ export class SearchComponent implements OnInit {
       'subSection': "moglix:search " + this._commonService.getSectionClick().toLowerCase(),
       'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
     }
-    let custData = {
-      'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-      'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-      'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-      'customerType': (user && user["userType"]) ? user["userType"] : '',
-    }
     let order = {}
 
     digitalData["page"] = page;
-    digitalData["custData"] = custData;
+    digitalData["custData"] = this._commonService.custDataTracking;
     digitalData["order"] = order;
   }
 

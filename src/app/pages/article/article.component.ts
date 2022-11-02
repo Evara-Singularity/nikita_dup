@@ -64,15 +64,9 @@ export class ArticleComponent implements OnInit
             'subSection': "moglix:" + response.data[0].componentName + ":" + this._commonService.getSectionClick().toLowerCase(),
             'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
         };
-        let custData = {
-            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-            'customerType': (user && user["userType"]) ? user["userType"] : '',
-        };
         const digitalData = {};
         digitalData['page'] = page;
-        digitalData['custData'] = custData;
+        digitalData['custData'] = this._commonService.custDataTracking;
         setTimeout(() => this._analytics.sendAdobeCall(digitalData), 0);
         /*End Adobe Analytics Tags */
     }

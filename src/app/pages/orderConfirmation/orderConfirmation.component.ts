@@ -227,21 +227,6 @@ export class OrderConfirmationComponent implements OnInit {
             channel: "purchase",
             subSection: "Payment Success" + ((userSession && userSession["agentId"]) ? " | Inside Sales" : ''),
         };
-        let custData = {
-            customerID: userSession && userSession["userId"]
-                ? btoa(userSession["userId"])
-                : "",
-            emailID: userSession && userSession["email"]
-                ? btoa(userSession["email"])
-                : "",
-            mobile: userSession && userSession["phone"]
-                ? btoa(userSession["phone"])
-                : "",
-            customerType: this.userType,
-            agentId: userSession && userSession["agentId"]
-                ? btoa(userSession["agentId"])
-                : '',
-        };
         let order = {};
         if(anayticsData){
             order = {
@@ -271,7 +256,7 @@ export class OrderConfirmationComponent implements OnInit {
             };
         }
         digitalData["page"] = page;
-        digitalData["custData"] = custData;
+        digitalData["custData"] = this._commonService.custDataTracking;
         digitalData["order"] = order;
         // console.log(digitalData);
         _satellite.track("genericPageLoad");

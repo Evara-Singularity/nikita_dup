@@ -2175,6 +2175,7 @@ export class CartService
             'emailID': (user && user['email']) ? btoa(user['email']) : '',
             'mobile': (user && user['phone']) ? btoa(user['phone']) : '',
             'type': (user && user['userType']) ? user['userType'] : '',
+            'customerCategory': user && user["customerCategory"]
         }
         let order = {
             'productCategoryL1': taxo1,
@@ -2282,6 +2283,7 @@ export class CartService
             'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
             'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
             'customerType': (user && user["userType"]) ? user["userType"] : '',
+            'customerCategory': user && user["customerCategory"]
         }
         let order = {
             'productCategoryL1': taxo1,

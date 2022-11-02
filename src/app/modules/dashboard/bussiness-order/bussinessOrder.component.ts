@@ -132,19 +132,9 @@ export class BussinessOrderComponent {
           ? "registered user"
           : "guest",
     };
-    let custData = {
-      customerID:
-        userSession && userSession["userId"] ? btoa(userSession["userId"]) : "",
-      emailID:
-        userSession && userSession["email"] ? btoa(userSession["email"]) : "",
-      mobile:
-        userSession && userSession["phone"] ? btoa(userSession["phone"]) : "",
-      customerType:
-        userSession && userSession["userType"] ? userSession["userType"] : "",
-    };
     let order = {};
     digitalData["page"] = pageData;
-    digitalData["custData"] = custData;
+    digitalData["custData"] = this._commonService.custDataTracking;
     digitalData["order"] = order;
     if (_satellite) {
       _satellite.track("genericPageLoad");
@@ -347,18 +337,12 @@ export class BussinessOrderComponent {
       channel: "moglix:my account",
       loginStatus: user.userId ? "registered" : "guest",
     };
-    let custData = {
-      customerID: user && user["userId"] ? btoa(user["userId"]) : "",
-      emailID: user && user["email"] ? btoa(user["email"]) : "",
-      mobile: user && user["phone"] ? btoa(user["phone"]) : "",
-      customerType: user && user["userType"] ? user["userType"] : "",
-    };
     let order = {
       productID: productID,
     };
 
     digitalData["page"] = page;
-    digitalData["custData"] = custData;
+    digitalData["custData"] = this._commonService.custDataTracking;
     digitalData["order"] = order;
     if (_satellite) {
       _satellite.track("genericClick");

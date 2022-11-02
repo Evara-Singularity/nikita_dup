@@ -175,7 +175,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		this._commonService.resetSelectedFilterData();
 		setTimeout(() => {
 			this.appendSiemaItemSubjects['bannerDataFinal'].next(
-				this.carouselData['bannerDataFinal']['data'].filter((item, i) => i >= 1)
+				this.carouselData['bannerData']['data'].filter((item, i) => i >= 1)
 			);
 		}, 0);
 	}

@@ -21,6 +21,7 @@ import { GlobalLoaderService } from '../../utils/services/global-loader.service'
 export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
 {
 
+    historyLength = 0;
     readonly MODULE_NAME = CONSTANTS.MODULE_NAME;
     readonly imgAssetPath: string = environment.IMAGE_ASSET_URL
     isHomePage: boolean;
@@ -299,9 +300,11 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
                 this.createHeaderData(this._activatedRoute);
                 //TODO:set common service previous url and current url
                 //TODO:Remove current URL nad backRedirectURL logic.
-                localStorage.setItem('backRedirectUrl', this.backRedirectUrl);
                 this._commonService.previousUrl = this._commonService.currentUrl;
                 this._commonService.currentUrl = event.url;
+                this.historyLength=this._navigationService.getHistory().length-1
+                if(this.historyLength >= 0)
+                localStorage.setItem('backRedirectUrl', this._navigationService.getHistory()[this.historyLength]);
                 this.backRedirectUrl = this._commonService.currentUrl || '';
             }
         });

@@ -4,7 +4,7 @@ import { ClientUtility } from "../../utils/client.utility";
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
-
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'shared-footer',
@@ -67,6 +67,7 @@ export class SharedFooterComponent {
 @NgModule({
   imports: [
     CommonModule,
+    RouterModule
   ],
   declarations: [
     SharedFooterComponent

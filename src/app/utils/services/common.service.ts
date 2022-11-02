@@ -1136,6 +1136,7 @@ export class CommonService
             emailID: user && user["email"] ? btoa(user["email"]) : "",
             mobile: user && user["phone"] ? btoa(user["phone"]) : "",
             customerType: user && user["userType"] ? user["userType"] : "",
+            customerCategory: user && user["customerCategory"]
         };
     }
 

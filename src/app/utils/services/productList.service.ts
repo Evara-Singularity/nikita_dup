@@ -289,12 +289,7 @@ export class ProductListService {
       };
     }
 
-    let custData = {
-      customerID: user && user["userId"] ? btoa(user["userId"]) : "",
-      emailID: user && user["email"] ? btoa(user["email"]) : "",
-      mobile: user && user["phone"] ? btoa(user["phone"]) : "",
-      customerType: user && user["userType"] ? user["userType"] : "",
-    };
+    let custData =this._commonService.custDataTracking
     let order = {
       productID: product.msn,
       productCategoryL1: taxo1,
@@ -393,12 +388,7 @@ export class ProductListService {
       channel: pageName !== "category" ? pageName : "listing",
       // 'pageName': pageName + "_page" // removing as we need same as visiting
     };
-    let custData = {
-      customerID: user && user["userId"] ? btoa(user["userId"]) : "",
-      emailID: user && user["email"] ? btoa(user["email"]) : "",
-      mobile: user && user["phone"] ? btoa(user["phone"]) : "",
-      customerType: user && user["userType"] ? user["userType"] : "",
-    };
+    let custData = this._commonService.custDataTracking
     let order = {
       productID: productDetails.productId,
       parentID: null,

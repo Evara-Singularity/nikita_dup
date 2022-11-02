@@ -122,12 +122,7 @@ export class AppPromoComponent implements OnInit {
       page: {
         linkName: 'Install App'
       },
-      custData: {
-        'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-        'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-        'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-        'customerType': (user && user["userType"]) ? user["userType"] : '',
-      }
+      custData:this._commonService.custDataTracking
     };
 
     if (this.page === 'pdp') {

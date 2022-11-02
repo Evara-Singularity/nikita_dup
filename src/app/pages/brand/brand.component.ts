@@ -404,12 +404,7 @@ export class BrandComponent {
                     'subSection': "moglix:" + this._activatedRoute.snapshot.params.brand + ":" + sParams['category'] + ": listing " + this._commonService.getSectionClick().toLowerCase(),
                     'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
                 }
-                custData = {
-                    'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-                    'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-                    'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-                    'customerType': (user && user["userType"]) ? user["userType"] : '',
-                }
+                custData = this._commonService.custDataTracking
                 order = {
                     'brand': this._activatedRoute.snapshot.params.brand,
                     'productCategory': sParams['category']
@@ -422,12 +417,7 @@ export class BrandComponent {
                     'totalProductCount':this._productListService?.productListingData.totalCount,
                     'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest",
                 }
-                custData = {
-                    'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-                    'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-                    'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-                    'customerType': (user && user["userType"]) ? user["userType"] : '',
-                }
+                custData = this._commonService.custDataTracking
                 order = {
                     'brand': this._activatedRoute.snapshot.params.brand
                 }

@@ -354,12 +354,6 @@ export class CartComponent
             'linkPageName': "moglix:cart summary",
             'linkName': "Remove from cart",
         }
-        let custData = {
-            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-            'customerType': (user && user["userType"]) ? user["userType"] : '',
-        }
         let order = {
             'productCategoryL1': taxo1,
             'productCategoryL2': taxo2,
@@ -376,7 +370,7 @@ export class CartComponent
             'shippingCharges': totalShipping
         }
         data["page"] = page;
-        data["custData"] = custData;
+        data["custData"] = this._commonService.custDataTracking;
         data["order"] = order;
         this._globalAnalyticsService.sendAdobeCall(data, trackingname);
         /*End Adobe Analytics Tags */

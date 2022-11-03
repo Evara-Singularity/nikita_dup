@@ -78,7 +78,7 @@ export class EmiComponent {
         private _localStorageService: LocalStorageService, 
         private _commonService: CommonService, 
         private _localAuthService: LocalAuthService, 
-        private _cartService: CartService, 
+        public _cartService: CartService, 
         private _formBuilder: FormBuilder, 
         private _objectToArray: ObjectToArray,
         private _sortByEMIMonths: SortByEMIMonthsPipe,
@@ -107,7 +107,7 @@ export class EmiComponent {
         const cart = cartSession["cart"];
         cartSession['nocostEmi'] = 0;
         this.type = this._cartService.invoiceType;
-        const payableAmount = (cart['totalAmount'] + cart['shippingCharges']) - (cart['totalOffer'] || 0);
+        const payableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
         if (payableAmount < CONSTANTS.EMI_MINIMUM_AMOUNT) {
             this.message = `EMI not available below Rs. ${CONSTANTS.EMI_MINIMUM_AMOUNT}`;
             this.isEmiEnable = false;
@@ -179,7 +179,7 @@ export class EmiComponent {
         const cardTypeResponse = data;
         this.emiResponse = cardTypeResponse;
         this.dataEmi = this._objectToArray.transform(cardTypeResponse, "associative");
-        const payableAmount = (cart['totalAmount'] + cart['shippingCharges']) - (cart['totalOffer'] || 0);
+        const payableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
 
         this.dataEmi.forEach((element, index) => {
             if (this.bankMap.hasOwnProperty(element.key)) {
@@ -436,7 +436,7 @@ export class EmiComponent {
                 "user_id": userSession["userId"],
                 "store_card": data.store_card == true ? "true" : "false"
             },
-            "validatorRequest": this._cartService.createValidatorRequest(extra)
+            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra),
         };
 
         if (this.type == "tax") {
@@ -544,10 +544,11 @@ export class EmiComponent {
     }
 
     getEmiDiscount(month, rate, amount) {
+        // console.log('getEmiDiscount ==>', month, rate, amount);
         this.isShowLoader = true;
         let cartSession = this._cartService.getGenericCartSession;
         let cart = cartSession["cart"];
-        const payableAmount = (cart['totalAmount'] + cart['shippingCharges']) - cart['totalOffer'];
+        const payableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
         this.nocostEmiDiscount = 0;
         if (month == 3 || month == 6) {
             // ODP-359
@@ -557,9 +558,11 @@ export class EmiComponent {
                 this.nocostEmiDiscount = 0;
             }
             //cartSession["nocostEmi"] = 0;
+            // console.log('totalPayableAmount 1', this.totalPayableAmount);
             cartSession['nocostEmi'] = this.nocostEmiDiscount;
             this.totalPayableAmount = payableAmount - this.nocostEmiDiscount;
         } else {
+            // console.log('totalPayableAmount 2', this.totalPayableAmount);
             cartSession["nocostEmi"] = 0;
             this.totalPayableAmount = payableAmount;
         }
@@ -621,9 +624,15 @@ export class EmiComponent {
             this.onBankChange(this.selectedBank, this._objectToArray.transform(data.value, "associative"));
             this.selectedMonth = null;
             this.selectedYear = null;
-            const emiResponseData = this._objectToArray.transform(this.emiResponse[this.selectedBank]);
-            const tenure = parseInt(emiResponseData[0].tenure.replace('months', ''));
-            this.selectEmI(tenure, emiResponseData[0].emiBankInterest, emiResponseData[0].transactionAmount)
+            let emiResponseData = this._objectToArray.transform(this.emiResponse[this.selectedBank]);
+            emiResponseData = (emiResponseData as Array<any>).map(emidata=>{
+                emidata.tenure = parseInt(emidata.tenure.replace('months', '')) || 0;
+                return emidata
+            }); 
+            emiResponseData.sort((a,b)=> a.tenure - b.tenure);
+            // console.log('emiResponseData', emiResponseData);
+            // const tenure = parseInt(emiResponseData[0].tenure.replace('months', ''));
+            this.selectEmI(emiResponseData[0].tenure, emiResponseData[0].emiBankInterest, emiResponseData[0].transactionAmount)
         }
         this.bankSelectPopUp = false;
     }

@@ -1,0 +1,18 @@
+
+.prepaid-bg{
+    padding: 15px;
+    background: var(--ghost-white);
+    .prepaid-heading{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        // padding-bottom: 15px;
+        i{
+            font-size: 16px;
+        }
+    }
+}
+.product-horizontal-card{
+    margin-top: 15px;
+}

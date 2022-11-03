@@ -1,10 +1,13 @@
-import
-{
+import {
+  AfterViewInit,
   Component,
   ComponentFactoryResolver,
+  EventEmitter,
   Injector,
   OnInit,
   Renderer2,
+  ViewChild,
+  ViewContainerRef,
   ViewEncapsulation,
 } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
@@ -25,8 +28,7 @@ declare var dataLayer;
   styleUrls: ["./pages.component.scss"],
   encapsulation: ViewEncapsulation.None,
 })
-export class PagesComponent implements OnInit
-{
+export class PagesComponent implements OnInit, AfterViewInit {
   isServer: boolean = false;
   isBrowser: boolean = false;
   iData: {
@@ -38,7 +40,12 @@ export class PagesComponent implements OnInit
   isFooter: boolean = true;
   isHomePage: boolean;
   isRoutedBack: boolean = false;
-  eventNavigationStart: any;
+
+  //var for goldMembership
+  goldMembershipInstance = null;
+	@ViewChild('GoldMembershipComponent', { read: ViewContainerRef })
+	goldMembershipContainerRef: ViewContainerRef;
+
   constructor(
     public _commonService: CommonService,
     private _localAuthService: LocalAuthService,
@@ -49,10 +56,9 @@ export class PagesComponent implements OnInit
     private _aRoute: ActivatedRoute,
     private dataService: DataService,
     private cfr: ComponentFactoryResolver,
-    private injector: Injector
+    private injector: Injector,
 
-  )
-  {
+  ) {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
     this.isMoglixAppInstalled();
@@ -71,6 +77,12 @@ export class PagesComponent implements OnInit
         this.isRoutedBack = (res['url'] == "/?back=1") ? true : false;
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    this._commonService.getGoldMembershipPopup().subscribe(res=>{
+      this.showGoldMembershipPopUp();
+   })
   }
 
   ngOnInit()
@@ -187,7 +199,6 @@ export class PagesComponent implements OnInit
       queryParams: this._aRoute.snapshot.queryParams,
       pageName: "SEARCH",
     };
-
     const actualParams = this._commonService.formatParams(params);
     actualParams["str"] = msn;
     this.dataService
@@ -328,6 +339,28 @@ export class PagesComponent implements OnInit
     }
   }
 
+  async showGoldMembershipPopUp() {
+    const { GoldMembershipComponent } = await import('../modules/goldMembership/goldMembership.component');
+    const factory = this.cfr.resolveComponentFactory(GoldMembershipComponent);
+    this.goldMembershipInstance = this.goldMembershipContainerRef.createComponent(
+      factory,
+      null,
+      this.injector
+    );
+    (
+      this.goldMembershipInstance.instance['closePopup'] as EventEmitter<boolean>
+    ).subscribe(data => {
+      this.goldMembershipContainerRef.remove();
+      this._commonService.setBodyScroll(null, true);
+    });
+    (
+      this.goldMembershipInstance.instance['closePopupOnOutsideClick'] as EventEmitter<{}>
+    ).subscribe(data => {
+      this.goldMembershipContainerRef.remove();
+      this._commonService.setBodyScroll(null, true);
+    });
+  }
+ 
   get isCheckout()
   {
     return this.router.url.includes("checkout");

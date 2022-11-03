@@ -396,7 +396,7 @@ export class PaymentComponent implements OnInit
     {
       this.txnDeclinedInstance = null;
       this.txnDeclinedContainerRef.remove();
-      this.setCartServiceDetails(paymentDetails)
+      this.setCartServiceDetails(paymentDetails);
       this.intialize();
     });
   }

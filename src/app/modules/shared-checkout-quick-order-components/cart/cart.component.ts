@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, ViewChild, ViewContainerRef } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -34,6 +34,13 @@ export class CartComponent
     cartSession = null;
     noOfCartItems = 0;
 
+    //cartAddproduct var
+    cartAddProductPopupInstance = null;
+    @ViewChild('cartAddProductPopup', { read: ViewContainerRef }) cartAddProductPopupContainerRef: ViewContainerRef;
+
+    totalPayableAmountAfterPrepaid: number=0;
+    totalPayableAmountWithoutPrepaid:number=0
+
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
         public objectToArray: ObjectToArray, public footerService: FooterService, public activatedRoute: ActivatedRoute,
@@ -41,7 +48,10 @@ export class CartComponent
         public localStorageService: LocalStorageService, public _router: Router, public _cartService: CartService,
         private _tms: ToastMessageService, private _productService: ProductService, private _globalLoaderService: GlobalLoaderService,
         private _globalAnalyticsService: GlobalAnalyticsService,
-        public _localAuthService: LocalAuthService
+        public _localAuthService: LocalAuthService,
+        private cfr: ComponentFactoryResolver,
+        private injector: Injector,
+
     ) { }
 
     ngOnInit()
@@ -344,12 +354,6 @@ export class CartComponent
             'linkPageName': "moglix:cart summary",
             'linkName': "Remove from cart",
         }
-        let custData = {
-            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-            'customerType': (user && user["userType"]) ? user["userType"] : '',
-        }
         let order = {
             'productCategoryL1': taxo1,
             'productCategoryL2': taxo2,
@@ -366,7 +370,7 @@ export class CartComponent
             'shippingCharges': totalShipping
         }
         data["page"] = page;
-        data["custData"] = custData;
+        data["custData"] = this._commonService.custDataTracking;
         data["order"] = order;
         this._globalAnalyticsService.sendAdobeCall(data, trackingname);
         /*End Adobe Analytics Tags */
@@ -457,6 +461,51 @@ export class CartComponent
             this._globalAnalyticsService.sendToClicstreamViaSocket(trackData);
         }
     }
+
+    similarProduct(productName, categoryId, BrandName, msn?) {
+        if (productName && categoryId && BrandName) {
+            this._globalLoaderService.setLoaderState(true);
+            // TODO: check this final   
+            this._cartService.AddSimilarProductOncartItem(productName, categoryId, BrandName,msn).subscribe(response => {
+                this._globalLoaderService.setLoaderState(false)
+                if (response && response['products'] && response['products'].length > 0) {
+                    this.cartAddProductPopUp(response);
+                }else{
+                    const msg = "No similar product found for this brand Category";
+                    this._tms.show({ type: 'error', text: msg });
+                }
+            })
+
+        }
+    }
+
+    async cartAddProductPopUp(data) {
+        const { CartAddProductComponent } = await import('../../../modules/cartAddProduct/cartAddProduct.component');
+        const factory = this.cfr.resolveComponentFactory(CartAddProductComponent);
+        this.cartAddProductPopupInstance = this.cartAddProductPopupContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        (
+            this.cartAddProductPopupInstance.instance['similarProductData'] = data
+        );
+        (
+            this.cartAddProductPopupInstance.instance['closePopup'] as EventEmitter<boolean>
+          ).subscribe(data => {
+            this.cartAddProductPopupContainerRef.remove();
+            this._commonService.setBodyScroll(null, true);
+          });
+
+          (
+            this.cartAddProductPopupInstance.instance['closePopupOnOutsideClick'] as EventEmitter<boolean>
+          ).subscribe(data => {
+            this.cartAddProductPopupContainerRef.remove();
+            this._commonService.setBodyScroll(null, true);
+          });
+      
+      
+    }      
 
     get displayPage() { return this.noOfCartItems > 0 }
 

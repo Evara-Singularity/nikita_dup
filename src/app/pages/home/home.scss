@@ -3,6 +3,7 @@
 @import '../../scss/components/category-grid-card';
 @import '../../scss/components/pager';
 @import '.././../scss/common-header.scss';
+@import '../../scss/components/banner';
 
 
 ::ng-deep {
@@ -140,4 +141,16 @@
         border-bottom-left-radius: $border-radius-16;
         border-bottom-right-radius: $border-radius-16;
     }
+}
+.mutiple-banner-cards{
+    display: flex;
+    overflow-y:auto;
+    @extend %hide-scrollbar;
+   .pwa-banner{
+       flex:0 0 90%;
+       margin-right:10px;
+       &:last-of-type{
+           margin-right:0px;
+       }
+   } 
 }

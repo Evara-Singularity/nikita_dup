@@ -25,15 +25,15 @@ export class LoggerService {
   }
 
   info(...args) {
-    this.isLoggingEnabled && console.info(...args);
+    // this.isLoggingEnabled && console.info(...args);
   }
 
   debug(...args) {
-    this.isLoggingEnabled && console.debug(...args);
+    // this.isLoggingEnabled && console.debug(...args);
   }
 
   error(...args) {
-    this.isLoggingEnabled && console.error(...args);
+    // this.isLoggingEnabled && console.error(...args);
   }
 
   apiServerLog(data: ServerLogSchema) {
@@ -51,10 +51,10 @@ export class LoggerService {
       // });
     } else {
       // console.log("logger service is called")
-      this.isLoggingEnabled && console.log(data);
+      // this.isLoggingEnabled && console.log(data);
     }
   }
 
-  private get isLoggingEnabled() { return this.isBrowser && environment.logger }
+  // private get isLoggingEnabled() { return this.isBrowser && environment.logger }
 
 }

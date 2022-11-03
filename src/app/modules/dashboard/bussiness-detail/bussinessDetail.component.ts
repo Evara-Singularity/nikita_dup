@@ -80,15 +80,15 @@ export class BussinessDetailComponent implements OnDestroy {
       pan: "",
       gstin: "",
       isGstInvoice:
-        user.userType == globalConstant.userType.business ? false : true,
+      user.userType == globalConstant.userType.business ? false : true,
     };
-    this.getBusinessDetail();
       this.businessDetailForm = this._formBuilder.group({
-          companyName: ["", [Validators.required]],
+          companyName: ["", Validators.required],
           gstin: ["", [Validators.required, Validators.minLength(15)]],
           isGstInvoice: [this.businessDetail.isGstInvoice, [Validators.required]],
           email: ["", [Step.validateEmail]],
-          phone: [null, [Validators.required, Step.validatePhone]],
+          // phone: [null, [Validators.required,Validators.minLength(10),Validators.maxLength(10) ,Validators.pattern(/^[0-9]\d*$/)]],
+          phone:[null,[Step.validatePhone, Validators.minLength(10)]],
           postCode: [
               null,
               [
@@ -136,19 +136,10 @@ export class BussinessDetailComponent implements OnDestroy {
           ? "registered user"
           : "guest",
     };
-    let custData = {
-      customerID:
-        userSession && userSession["userId"] ? btoa(userSession["userId"]) : "",
-      emailID:
-        userSession && userSession["email"] ? btoa(userSession["email"]) : "",
-      mobile:
-        userSession && userSession["phone"] ? btoa(userSession["phone"]) : "",
-      customerType:
-        userSession && userSession["userType"] ? userSession["userType"] : "",
-    };
+   
     let order = {};
     digitalData["page"] = pageData;
-    digitalData["custData"] = custData;
+    digitalData["custData"] = this._commonService.custDataTracking;
     digitalData["order"] = order;
     if(_satellite){
       _satellite.track("genericPageLoad");

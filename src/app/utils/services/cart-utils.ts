@@ -45,7 +45,8 @@ export class CartUtils
             addressList: (cartSessionFromAPI["addressList"] ? [...cartSessionFromAPI["addressList"]] : []),
             payment: cartSessionFromAPI["payment"],
             offersList: cartSessionFromAPI["offersList"],
-            extraOffer: cartSessionFromAPI["extraOffer"]
+            extraOffer: cartSessionFromAPI["extraOffer"],
+            prepaidDiscountList: cartSessionFromAPI["prepaidDiscountList"]
         }
         let totalAmount: number = 0;
         let tawot: number = 0; // totalAmountWithOutTax
@@ -133,7 +134,8 @@ export class CartUtils
                 ],
                 "payment": null,
                 "deliveryMethod": { "deliveryMethodId": 77, "type": "kjhlh" },
-                "offersList": (cartSession.offersList != undefined && cartSession.offersList.length > 0) ? cartSession.offersList : null
+                "offersList": (cartSession.offersList != undefined && cartSession.offersList.length > 0) ? cartSession.offersList : null,
+                "prepaidDiscounts": cartSession.prepaidDiscounts || null
             }
         };
         if (isBuyNow) { returnValue['shoppingCartDto']['cart']['buyNow'] = true; }

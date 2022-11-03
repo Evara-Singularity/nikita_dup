@@ -1,6 +1,6 @@
 import { Component, Inject, Optional, Renderer2 } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { ProductListingDataEntity } from '@app/utils/models/product.listing.search';
 import { CommonService } from '@app/utils/services/common.service';
@@ -12,6 +12,7 @@ import { DOCUMENT } from '@angular/common';
 import { LocalStorageService } from 'ngx-webstorage';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 
 let digitalData = {
     page: {},
@@ -35,6 +36,7 @@ export class BrandComponent {
     baseDomain=CONSTANTS.PROD;
     accordiansDetails: AccordiansDetails[] = [];
     popularCategories = [];
+    couponForbrandCategory: Object= null;
 
     constructor(
         public _activatedRoute: ActivatedRoute,
@@ -49,6 +51,7 @@ export class BrandComponent {
         private _dataService: DataService,
         private _localStorageService: LocalStorageService,
         public _productListService: ProductListService,
+        private _globalLoader: GlobalLoaderService,
         @Optional() @Inject(RESPONSE) private _response,
     ) {
         this._commonService.isHomeHeader = false;
@@ -401,12 +404,7 @@ export class BrandComponent {
                     'subSection': "moglix:" + this._activatedRoute.snapshot.params.brand + ":" + sParams['category'] + ": listing " + this._commonService.getSectionClick().toLowerCase(),
                     'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
                 }
-                custData = {
-                    'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-                    'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-                    'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-                    'customerType': (user && user["userType"]) ? user["userType"] : '',
-                }
+                custData = this._commonService.custDataTracking
                 order = {
                     'brand': this._activatedRoute.snapshot.params.brand,
                     'productCategory': sParams['category']
@@ -419,12 +417,7 @@ export class BrandComponent {
                     'totalProductCount':this._productListService?.productListingData.totalCount,
                     'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest",
                 }
-                custData = {
-                    'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-                    'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-                    'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-                    'customerType': (user && user["userType"]) ? user["userType"] : '',
-                }
+                custData = this._commonService.custDataTracking
                 order = {
                     'brand': this._activatedRoute.snapshot.params.brand
                 }
@@ -570,5 +563,23 @@ export class BrandComponent {
             todayDate: Date.now(),
             showDesc: !!(this.API_RESPONSE.brand[0].brandDesc)
         };
+    }
+
+    ngAfterViewInit() {
+        this.couponOnBrandCategory();
+    }
+
+    couponOnBrandCategory() {
+        if (this._activatedRoute.snapshot.params.brand && this._activatedRoute.snapshot.params.category) {
+            this._globalLoader.setLoaderState(true);
+            this._dataService.getCouponOnBrandCategory(this.API_RESPONSE['brand'][0].brandName, this._activatedRoute.snapshot.params.category).subscribe(response => {
+                if (response['statusCode'] == 200 && response['data'] != null) {
+                    this.couponForbrandCategory = response['data'];
+                } else {
+                    this.couponForbrandCategory = null;
+                }
+                this._globalLoader.setLoaderState(false)
+            })
+        }
     }
 }

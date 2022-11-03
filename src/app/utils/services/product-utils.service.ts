@@ -117,12 +117,6 @@ export class ProductUtilsService{
             'linkPageName': 'moglix:' + taxo1 + ':' + taxo2 + ':' + taxo3 + ':pdp',
             'linkName': cta.toUpperCase().replace(/ /g, '_') + '_FBT',
         }
-        let custData = {
-            'customerID': (user && user['userId']) ? btoa(user['userId']) : '',
-            'emailID': (user && user['email']) ? btoa(user['email']) : '',
-            'mobile': (user && user['phone']) ? btoa(user['phone']) : '',
-            'customerType': (user && user['userType']) ? user['userType'] : '',
-        }
         let order = {
             'productID': product['partNumber'],
             'parentID': product['defaultPartNumber'] ? product['defaultPartNumber'] : '',
@@ -135,7 +129,7 @@ export class ProductUtilsService{
             'tags': tagsForAdobe
         }
         digitalData['page'] = page;
-        digitalData['custData'] = custData;
+        digitalData['custData'] = this.commonService.custDataTracking;
         digitalData['order'] = order;
         if(_satellite){
             _satellite.track('genericClick');

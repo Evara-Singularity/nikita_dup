@@ -220,7 +220,10 @@ export class SharedSignupComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.isLoginPopup) {
             this.removeAuthComponent$.emit()
         } else {
-            this._router.navigateByUrl(this.getRedirectURL() || '/');
+            // console.log('redirection URL', this.getRedirectURL() || '/')
+            if(!this.isCheckout){
+                this._router.navigateByUrl(this.getRedirectURL() || '/');
+            }
         }
     }
 

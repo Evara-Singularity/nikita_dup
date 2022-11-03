@@ -205,7 +205,10 @@ export class GlobalAnalyticsService {
 
   postClickStreamData(data){
     if(this.isBrowser){
-      this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CLICK_STREAM,{ body: data });
+      // console.log('clickstream in', data);
+      this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CLICK_STREAM,{ body: data }).subscribe(res=>{
+        console.log('clickstream captured');
+      });
     }
   }
 }

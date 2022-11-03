@@ -506,6 +506,7 @@ export class BrandComponent {
     // }
 
     setAdobeTrackingData() {
+        // console.log('setAdobeTrackingData', 'nrand called');
         if (this._commonService.isBrowser) {
             var trackingData = {
                 event_type: "page_load",

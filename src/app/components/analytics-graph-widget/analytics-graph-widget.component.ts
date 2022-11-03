@@ -65,7 +65,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       element.data.forEach((item, index) => {
         setTimeout(() => {
           let attributeName = item.attributeName;
-          this.getMaxValue(item['attributePercentange']);
+          // this.getMaxValue(item['attributePercentange']);
           this.loadChart(`${this.attributeChartId}${index}`,item['attributePercentange'], this.prepareAttributeChartData(item['attributePercentange']), attributeName);
           return;
         }, 0);
@@ -134,7 +134,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
 
     return seriesPriceArray;
   }
-  //function to get Max Value in data
+  // function to get Max Value in data
   getMaxValue(element,percent?){
     let maxValue = 0,maxValueAttributeName;
     let attrName = element; 

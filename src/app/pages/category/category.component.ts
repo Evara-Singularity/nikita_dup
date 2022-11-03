@@ -101,6 +101,7 @@ export class CategoryComponent {
 
             // set API result data
             this.API_RESPONSE = result;
+            console.log("this.API_RESPONSE", this.API_RESPONSE)
 
             this._productListService.excludeAttributes = [];
 
@@ -148,7 +149,11 @@ export class CategoryComponent {
             if (this.sharedProductList) {
                 this.sharedProductList.getSponseredProducts();
             }
-            this.getChartData();
+            if( this.API_RESPONSE.category[7]){
+                this.graphData = this.API_RESPONSE.category[7].data;
+                console.log(" this.graphData", this.graphData)
+            }
+            
             this.setCanonicalUrls();
 
             // send tracking data 
@@ -157,22 +162,22 @@ export class CategoryComponent {
         });
     }
 
-     callChartApi() {
-         let categoryId =  this.API_RESPONSE['category'][0]['categoryDetails']['categoryId']
-        let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
-        return this._dataService.callRestful("GET", url);
-      }
-      getChartData(){
-        this.callChartApi().subscribe(res => {
-           if(res['statusCode'] == 200){
-           this.graphData = res['data']; 
-           console.log("hello");
-          }
-          else{
-            console.log("error");
-          }
-        })
-      }
+    //  callChartApi() {
+    //      let categoryId =  this.API_RESPONSE['category'][0]['categoryDetails']['categoryId']
+    //     let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
+    //     return this._dataService.callRestful("GET", url);
+    //   }
+    //   getChartData(){
+    //     this.callChartApi().subscribe(res => {
+    //        if(res['statusCode'] == 200){
+    //        this.graphData = res['data']; 
+    //        console.log("hello");
+    //       }
+    //       else{
+    //         console.log("error");
+    //       }
+    //     })
+    //   }
 
     private createFooterAccordianData() {
         this.accordiansDetails = [];

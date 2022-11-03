@@ -1,6 +1,7 @@
 <ng-container *ngIf="priceDataWithoutProcessing && priceDataWithoutProcessing.length > 0">
     <div *ngIf="chartType == 'price'" class="single-widget">
-        <div class="inner-widget-section">
+        <div id="price-chart" style="width:100%;"></div>
+        <!-- <div class="inner-widget-section">
             <div class="widget-heading">
                 <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
                 <p class="heading-txt">Top {{priceDataWithoutProcessing.length}} price range of {{categoryName}}</p>
@@ -22,31 +23,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </ng-container>
 <ng-container *ngIf="brandDataWithoutProcessing && brandDataWithoutProcessing.length > 0">
     <div *ngIf="chartType =='brand'" class="single-widget">
-        <div class="inner-widget-section">
-            <div class="widget-heading">
-                <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
-                <p class="heading-txt">Top {{brandDataWithoutProcessing.length}} brands of {{categoryName}}</p>
-            </div>
-            <div class="single-widget-container pad-lr-0">
-                <div id="brand-chart" style="width:100%;"></div>
-                <div class="single-card-container">
-                    <div (click)="generateFragmentUrl('brand',brand.brandName)"
-                        *ngFor="let brand of brandDataWithoutProcessing" class="card">
-                        <p *ngIf="brand.brandName !== 'others'">
-                            {{brand.orderPercentage}}% of users prefer {{categoryName}} of {{brand.brandName}}
-                        </p>
-                        <p *ngIf="brand.brandName.toLowerCase() === 'others'">
-                            {{brand.orderPercentage}}% of users prefer {{categoryName}} of other brands
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="brand-chart" style="width:100%;"></div>
     </div>
 </ng-container>
 <ng-container *ngIf="attributeDataWithoutProcessing && attributeDataWithoutProcessing.length > 0">
@@ -58,8 +40,8 @@
                         <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
                         <p class="heading-txt">{{categoryName}} purchase as per {{attribute.attributeName |  titlecase}}</p>
                     </div>
-                    <div  [id]="'attribute-chart'+i" style="width:100%;"></div>
-                    <div (click)="generateFragmentUrl(attribute.attributeName,getMaxValue(attribute.attributePercentange,'percent'))" class="card">
+                    <div [id]="'attribute-chart'+i" style="width:100%;"></div>
+                    <div  (click)="generateFragmentUrl(attribute.attributeName,getMaxValue(attribute.attributePercentange,'percent'))" class="card">
                         <p>
                             {{getMaxValue(attribute.attributePercentange)}}% of users buy {{categoryName}} in {{getMaxValue(attribute.attributePercentange,'percent')}} {{attribute.attributeName | titlecase}}
                         </p>

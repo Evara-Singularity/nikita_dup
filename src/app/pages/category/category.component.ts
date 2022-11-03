@@ -57,7 +57,6 @@ export class CategoryComponent {
         private _analytics: GlobalAnalyticsService,
         private _localStorageService: LocalStorageService,
         private _sessionStorageService: SessionStorageService,
-        private _dataService: DataService,
         private _title: Title,
         @Optional() @Inject(RESPONSE) private _response,
         public _commonService: CommonService,
@@ -66,6 +65,7 @@ export class CategoryComponent {
         private _categoryService: CategoryService,
         public _productListService: ProductListService,
         private _componentFactoryResolver: ComponentFactoryResolver,
+        private globalAnalyticsService: GlobalAnalyticsService
     ) {
         this._commonService.isHomeHeader = false;
         this._commonService.isPLPHeader = true;
@@ -261,7 +261,7 @@ export class CategoryComponent {
                 url_complete_load_time: null,
                 page_type: "Category"
             }
-            this._dataService.sendMessage(trackData);
+            this.globalAnalyticsService.sendMessage(trackData);
         }
     }
 

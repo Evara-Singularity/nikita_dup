@@ -65,7 +65,8 @@ export class CategoryComponent {
         private _categoryService: CategoryService,
         public _productListService: ProductListService,
         private _componentFactoryResolver: ComponentFactoryResolver,
-        private globalAnalyticsService: GlobalAnalyticsService
+        private globalAnalyticsService: GlobalAnalyticsService,
+        private _dataService: DataService
     ) {
         this._commonService.isHomeHeader = false;
         this._commonService.isPLPHeader = true;

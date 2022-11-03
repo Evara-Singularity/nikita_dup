@@ -71,4 +71,8 @@
         .sec13 > ol > li::before  { content: "13." counter(item) ".";font-weight: $font-bolder; }
         .sec14 > ol > li::before  { content: "14." counter(item) ".";font-weight: $font-bolder;}
     }
+
+    a:link {
+        color:var(--bleu-de-france);
+      }
 }

@@ -1,4 +1,4 @@
-import { PercentPipe } from '@angular/common';
+import { PercentPipe, isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
@@ -16,6 +16,7 @@ import ColumnDataLabel from 'highcharts/es-modules/Series/Column/ColumnDataLabel
   styleUrls: ['./analytics-graph-widget.component.scss']
 })
 export class AnalyticsGraphWidgetComponent implements OnInit {
+  
   chartOptions = {};
   @Input() chartType;
   @Input() filterData: Array<any>;
@@ -38,7 +39,8 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   attributeDataWithoutProcessing;
 
 
-  constructor(private dataService: DataService, private commonService: CommonService, private _productListService: ProductListService) { }
+  constructor(private dataService: DataService, private commonService: CommonService, private _productListService: ProductListService) {
+   }
 
   ngOnInit(): void {
     this.getData();

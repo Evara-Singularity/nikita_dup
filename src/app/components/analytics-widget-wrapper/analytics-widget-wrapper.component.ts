@@ -2,6 +2,8 @@ import { Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewCont
   Injector, } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 import CONSTANTS from '../../config/constants';
+import { isPlatformServer, isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'analytics-widget-wrapper',
@@ -9,12 +11,14 @@ import CONSTANTS from '../../config/constants';
   styleUrls: ['./analytics-widget-wrapper.component.scss']
 })
 export class AnalyticsWidgetWrapperComponent implements OnInit {
-
-  constructor(private _componentFactoryResolver:ComponentFactoryResolver,private _viewContainerReference:ViewContainerRef, private injector: Injector,private commonService:CommonService) { }
+  isServer: boolean;
+  constructor(private _componentFactoryResolver:ComponentFactoryResolver,private _viewContainerReference:ViewContainerRef, private injector: Injector,private commonService:CommonService,@Inject(PLATFORM_ID) private platformId) {
+    this.isServer = isPlatformServer(platformId);
+   }
   priceContainerInstance = null;
   attributeContainerInstance = null;
   brandContainerInstance = null;
-
+  
   @ViewChild("priceContainerRef", { read: ViewContainerRef })
   priceContainerRef: ViewContainerRef;
   @ViewChild("attributeContainerRef", { read: ViewContainerRef })

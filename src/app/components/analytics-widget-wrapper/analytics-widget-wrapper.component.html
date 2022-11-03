@@ -67,11 +67,13 @@
                 <div [debounceTime]="100" data-observeVisibility (visible)="loadAttributeWidget()" >
                     <ng-container #attributeContainerRef></ng-container> 
                 </div>
-                <div *ngFor="let attribute of attributeDataWithoutProcessing;let i = index" (click)="generateFragmentUrl(attribute.attributeName,getMaxValue(attribute.attributePercentange,'percent'))" class="card">
-                    <p>
-                        {{getMaxValue(attribute.attributePercentange)}}% of users buy {{categoryName}} in {{getMaxValue(attribute.attributePercentange,'percent')}} {{attribute.attributeName | titlecase}}
-                    </p>
-                </div>
+                <ng-container *ngIf="isServer">
+                    <div *ngFor="let attribute of attributeDataWithoutProcessing;let i = index" (click)="generateFragmentUrl(attribute.attributeName,getMaxValue(attribute.attributePercentange,'percent'))" class="card">
+                        <p>
+                            {{getMaxValue(attribute.attributePercentange)}}% of users buy {{categoryName}} in {{getMaxValue(attribute.attributePercentange,'percent')}} {{attribute.attributeName | titlecase}}
+                        </p>
+                    </div>
+                </ng-container>
             </div>
         </div>
     </div>

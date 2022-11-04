@@ -13,6 +13,8 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { forkJoin } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { BottomMenuComponent } from '../bottomMenu/bottom-menu.component';
+import { CommonService } from '@utils/services/common.service';
+
 
 @Component({
 	selector: 'shared-transaction-declined',
@@ -56,6 +58,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 		private _quickCodService: QuickCodService, 
 		public localStorageService: LocalStorageService,
     	private globalAnalyticService: GlobalAnalyticsService,
+		public _commonService: CommonService,
 		private _retryPaymentService: RetryPaymentService) { }
 
 	ngOnInit()
@@ -175,16 +178,10 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			'subSection': subSection,
 			'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
 		};
-		let custData = {
-			'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-			'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-			'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-			'customerType': (user && user["userType"]) ? user["userType"] : '',
-		};
 		let order = {};
 		let adobeObj = {};
 		adobeObj["page"] = page;
-		adobeObj["custData"] = custData;
+		adobeObj["custData"] = this._commonService.custDataTracking;
 		adobeObj["order"] = order;
 		this.globalAnalyticService.sendAdobeCall(adobeObj);
 	}

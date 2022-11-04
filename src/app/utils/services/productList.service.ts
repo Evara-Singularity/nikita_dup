@@ -29,7 +29,8 @@ export class ProductListService {
     private _dataService: DataService,
     private _activatedRoute: ActivatedRoute,
     private _cartService: CartService,
-    public _localStorageService: LocalStorageService
+    public _localStorageService: LocalStorageService,
+    private globalAnalyticsService: GlobalAnalyticsService
   ) {}
 
   showMidPlpFilterLoader: boolean = true;
@@ -289,12 +290,7 @@ export class ProductListService {
       };
     }
 
-    let custData = {
-      customerID: user && user["userId"] ? btoa(user["userId"]) : "",
-      emailID: user && user["email"] ? btoa(user["email"]) : "",
-      mobile: user && user["phone"] ? btoa(user["phone"]) : "",
-      customerType: user && user["userType"] ? user["userType"] : "",
-    };
+    let custData =this._commonService.custDataTracking
     let order = {
       productID: product.msn,
       productCategoryL1: taxo1,
@@ -393,12 +389,7 @@ export class ProductListService {
       channel: pageName !== "category" ? pageName : "listing",
       // 'pageName': pageName + "_page" // removing as we need same as visiting
     };
-    let custData = {
-      customerID: user && user["userId"] ? btoa(user["userId"]) : "",
-      emailID: user && user["email"] ? btoa(user["email"]) : "",
-      mobile: user && user["phone"] ? btoa(user["phone"]) : "",
-      customerType: user && user["userType"] ? user["userType"] : "",
-    };
+    let custData = this._commonService.custDataTracking
     let order = {
       productID: productDetails.productId,
       parentID: null,
@@ -458,7 +449,7 @@ export class ProductListService {
       page_type: pageName + "_page",
     };
 
-    this._dataService.sendMessage(trackingData);
+    this.globalAnalyticsService.sendMessage(trackingData);
     this.fireViewBasketEvent();
   }
 
@@ -523,6 +514,6 @@ export class ProductListService {
       eventData: eventData,
     };
     this._analytics.sendGTMCall(dataLayerObj);
-    this._dataService.sendMessage(dataLayerObj);
+    this.globalAnalyticsService.sendMessage(dataLayerObj);
   }
 }

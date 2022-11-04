@@ -142,15 +142,10 @@ export class ClusterStoreComponent implements OnInit {
                 'subSection': "moglix:store:" + this._router.url.split('/').pop(),
                 'loginStatus': this._commonService.loginStatusTracking
             }
-            let custData = {
-                'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-                'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-                'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-                'customerType': (user && user["userType"]) ? user["userType"] : '',
-            }
+           
             let digitalData = {};
 		    digitalData['page'] = page;
-			digitalData['custData'] = custData;
+			digitalData['custData'] = this._commonService.custDataTracking;
             setTimeout(() => this._analytics.sendAdobeCall(digitalData), 0 );
             /*End Adobe Analytics Tags */
 	}

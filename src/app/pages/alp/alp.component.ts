@@ -10,7 +10,6 @@ import { CONSTANTS } from '@config/constants';
 import { ClientUtility } from '@utils/client.utility';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
-import { DataService } from '@services/data.service';
 import { GlobalAnalyticsService } from '@services/global-analytics.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 
@@ -62,13 +61,13 @@ export class AlpComponent implements OnInit {
         private _tState: TransferState, private _renderer2: Renderer2,
         private analytics: GlobalAnalyticsService,
         @Inject(DOCUMENT) private _document,
-        public dataService: DataService,
         public pageTitle: Title, private meta: Meta, public footerService: FooterService,
         public _router: Router, public _activatedRoute: ActivatedRoute,
         private localStorageService: LocalStorageService,
         public _commonService: CommonService,
         private _categoryService: AlpService,
-        public _productListService: ProductListService
+        public _productListService: ProductListService,
+        private globalAnalyticsService: GlobalAnalyticsService
     ) {
         this.pageName = 'ATTRIBUTE';
         this._commonService.isHomeHeader = false;
@@ -205,7 +204,7 @@ export class AlpComponent implements OnInit {
             url_complete_load_time: null,
             page_type: "Category"
         }
-        this.dataService.sendMessage(trackData);
+        this.globalAnalyticsService.sendMessage(trackData);
     }
 
     fireTags(response) {
@@ -287,12 +286,6 @@ export class AlpComponent implements OnInit {
                 'subSection': "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing",
                 'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
             }
-            let custData = {
-                'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-                'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-                'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-                'customerType': (user && user["userType"]) ? user["userType"] : '',
-            }
             let order = {
                 'productCategoryL1': this.taxo1,
                 'productCategoryL2': this.taxo2,
@@ -301,7 +294,7 @@ export class AlpComponent implements OnInit {
 
             let digitalData = {};
             digitalData["page"] = page;
-            digitalData["custData"] = custData;
+            digitalData["custData"] = this._commonService.custDataTracking;
             digitalData["order"] = order;
 
             if (this.trendingSearchData['tS'] && this.trendingSearchData['tS'] === 'no') {

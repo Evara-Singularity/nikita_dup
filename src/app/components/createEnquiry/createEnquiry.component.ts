@@ -170,16 +170,10 @@ export class CreateEnquiryComponent {
       'subSection': "moglix:bulk query form",
       'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
     };
-    let custData = {
-      'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-      'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-      'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-      'customerType': (user && user["userType"]) ? user["userType"] : '',
-    };
     let order = {};
     let adobeObj = {};
     adobeObj["page"] = page;
-    adobeObj["custData"] = custData;
+    adobeObj["custData"] = this._commonService.custDataTracking;
     adobeObj["order"] = order;
     this.globalAnalyticService.sendAdobeCall(adobeObj);
   }

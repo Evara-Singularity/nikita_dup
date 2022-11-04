@@ -155,7 +155,6 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   }
   sendAnalyticsFilterTracking()
   {
-    const user = this._localStoragService.retrieve('user');
       let page = {
           channel: "category",
           pageName: "moglix:category page",

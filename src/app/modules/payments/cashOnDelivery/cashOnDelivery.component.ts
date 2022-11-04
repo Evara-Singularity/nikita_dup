@@ -35,6 +35,7 @@ export class CashOnDeliveryComponent {
     otpError: String = '';
     otpErrorFlag: Boolean = true;
     localVal;
+    isConfirmOrderDisabled: Boolean = true;
 
     set isShowLoader(status: boolean) {
         this._loaderService.setLoaderState(status)
@@ -219,6 +220,7 @@ export class CashOnDeliveryComponent {
 
     confirmOrder(){
         this.isShowLoader = true;
+        this.isConfirmOrderDisabled = false;
         this.showPopup = false;
           this.getPaymentId({userId: this.currUser['userId']}).subscribe(res => {
             if(res && res['status']) {
@@ -226,6 +228,7 @@ export class CashOnDeliveryComponent {
                 this.doPay();
             }
             else{
+                this.isConfirmOrderDisabled = false;
                 this._tms.show({type: 'error', text: 'Something went wrong, Please try again.'});
             }
         });  

@@ -280,12 +280,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             'linkName': "header",
             'channel': this.routerData['pageName'] || this.router.url
         }
-        let custData = {
-            'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-            'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-            'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-            'customerType': (user && user["userType"]) ? user["userType"] : '',
-        }
+        let custData = this._commonService.custDataTracking
         let order = {}
         this._analytics.sendAdobeCall({ page, custData, order }, "genericClick");
     }

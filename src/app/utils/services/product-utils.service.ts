@@ -5,6 +5,7 @@ import { DataService } from './data.service';
 import { CartService } from './cart.service';
 import { LocalAuthService } from './auth.service';
 import { CommonService } from './common.service';
+import { GlobalAnalyticsService } from './global-analytics.service';
 declare var digitalData: {};
 declare let _satellite;
 
@@ -47,7 +48,9 @@ export class ProductUtilsService{
         private cartService: CartService, 
         public localAuthService: LocalAuthService, 
         public commonService: CommonService, 
-        public localStorageService: LocalStorageService){
+        public localStorageService: LocalStorageService,
+        private globalAnalyticsService: GlobalAnalyticsService
+        ){
     }
 
     changeFBTSource(rootProduct, fbtProducts)
@@ -117,12 +120,6 @@ export class ProductUtilsService{
             'linkPageName': 'moglix:' + taxo1 + ':' + taxo2 + ':' + taxo3 + ':pdp',
             'linkName': cta.toUpperCase().replace(/ /g, '_') + '_FBT',
         }
-        let custData = {
-            'customerID': (user && user['userId']) ? btoa(user['userId']) : '',
-            'emailID': (user && user['email']) ? btoa(user['email']) : '',
-            'mobile': (user && user['phone']) ? btoa(user['phone']) : '',
-            'customerType': (user && user['userType']) ? user['userType'] : '',
-        }
         let order = {
             'productID': product['partNumber'],
             'parentID': product['defaultPartNumber'] ? product['defaultPartNumber'] : '',
@@ -135,7 +132,7 @@ export class ProductUtilsService{
             'tags': tagsForAdobe
         }
         digitalData['page'] = page;
-        digitalData['custData'] = custData;
+        digitalData['custData'] = this.commonService.custDataTracking;
         digitalData['order'] = order;
         if(_satellite){
             _satellite.track('genericClick');
@@ -195,7 +192,7 @@ export class ProductUtilsService{
                     }
                 })
             }
-            this.dataService.sendMessage(trackData);
+            this.globalAnalyticsService.sendMessage(trackData);
         }
     }
 

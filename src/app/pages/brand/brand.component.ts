@@ -53,6 +53,7 @@ export class BrandComponent {
         public _productListService: ProductListService,
         private _globalLoader: GlobalLoaderService,
         @Optional() @Inject(RESPONSE) private _response,
+        private globalAnalyticsService: GlobalAnalyticsService
     ) {
         this._commonService.isHomeHeader = false;
         this._commonService.isPLPHeader = true;
@@ -404,12 +405,7 @@ export class BrandComponent {
                     'subSection': "moglix:" + this._activatedRoute.snapshot.params.brand + ":" + sParams['category'] + ": listing " + this._commonService.getSectionClick().toLowerCase(),
                     'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
                 }
-                custData = {
-                    'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-                    'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-                    'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-                    'customerType': (user && user["userType"]) ? user["userType"] : '',
-                }
+                custData = this._commonService.custDataTracking
                 order = {
                     'brand': this._activatedRoute.snapshot.params.brand,
                     'productCategory': sParams['category']
@@ -422,12 +418,7 @@ export class BrandComponent {
                     'totalProductCount':this._productListService?.productListingData.totalCount,
                     'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest",
                 }
-                custData = {
-                    'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-                    'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-                    'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-                    'customerType': (user && user["userType"]) ? user["userType"] : '',
-                }
+                custData = this._commonService.custDataTracking
                 order = {
                     'brand': this._activatedRoute.snapshot.params.brand
                 }
@@ -515,6 +506,7 @@ export class BrandComponent {
     // }
 
     setAdobeTrackingData() {
+        // console.log('setAdobeTrackingData', 'nrand called');
         if (this._commonService.isBrowser) {
             var trackingData = {
                 event_type: "page_load",
@@ -525,7 +517,7 @@ export class BrandComponent {
                 filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
                 product_count: this.API_RESPONSE['brand'][1][0].productSearchResult.totalCount
             }
-            this._dataService.sendMessage(trackingData);
+            this.globalAnalyticsService.sendMessage(trackingData);
         }
     }
 

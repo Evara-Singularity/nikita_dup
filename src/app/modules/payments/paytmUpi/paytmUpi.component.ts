@@ -174,7 +174,9 @@ export class PaytmUpiComponent {
     }
 
     ngOnDestroy() {
-        this.prepaidsubscription.unsubscribe();
+        if(this.prepaidsubscription){
+            this.prepaidsubscription.unsubscribe();
+        }
         this._cartService.setGenericCartSession(this.cartSesssion);
         this._cartService.orderSummary.next(this.cartSesssion);
     }

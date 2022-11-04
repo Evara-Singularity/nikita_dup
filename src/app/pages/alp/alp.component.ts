@@ -133,7 +133,7 @@ export class AlpComponent implements OnInit {
         }
         this.initiallizeRelatedCategories(this.alpCategoryCodeData, true);
         this.initiallizeData(this.alpProductListingData, true);
-        if (this.isBrowser) {
+        if (this._commonService.isBrowser) {
             this.showLoader = false;
             this.setTrackingData();
             if ((ict && PRODUCT_COUNT > 0)) {
@@ -235,7 +235,7 @@ export class AlpComponent implements OnInit {
             criteoItem.push(psrp[p].moglixPartNumber);
         }
 
-        if (this.isBrowser) {
+        if (this._commonService.isBrowser) {
             let user;
             if (this.localStorageService.retrieve('user')) {
                 user = this.localStorageService.retrieve('user');

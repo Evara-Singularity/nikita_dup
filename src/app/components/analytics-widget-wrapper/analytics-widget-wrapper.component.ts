@@ -4,6 +4,8 @@ import { CommonService } from '@app/utils/services/common.service';
 import CONSTANTS from '../../config/constants';
 import { isPlatformServer, isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
+import { GlobalAnalyticsService } from '../../utils/services/global-analytics.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: 'analytics-widget-wrapper',
@@ -12,7 +14,7 @@ import { PLATFORM_ID } from '@angular/core';
 })
 export class AnalyticsWidgetWrapperComponent implements OnInit {
   isServer: boolean;
-  constructor(private _componentFactoryResolver:ComponentFactoryResolver,private _viewContainerReference:ViewContainerRef, private injector: Injector,private commonService:CommonService,@Inject(PLATFORM_ID) private platformId) {
+  constructor(private _componentFactoryResolver:ComponentFactoryResolver,private _viewContainerReference:ViewContainerRef, private injector: Injector,private commonService:CommonService,@Inject(PLATFORM_ID) private platformId,private _globalAnalyticsService:GlobalAnalyticsService,private _localStoragService:LocalStorageService) {
     this.isServer = isPlatformServer(platformId);
    }
   priceContainerInstance = null;
@@ -127,7 +129,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
     }
   }
   generateFragmentUrl(filterName, filterValue){
-    console.log("filterName",filterName,"filterValue",filterValue)
+    this.sendAnalyticsFilterTracking;
     if(filterValue && filterValue.toString().toLowerCase() === 'others'){
       return;
     }
@@ -150,6 +152,25 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
       this.commonService.selectedFilterData.filter = fragmentPriceObject;
       this.commonService.applyFilter();
     }
+  }
+  sendAnalyticsFilterTracking()
+  {
+    const user = this._localStoragService.retrieve('user');
+      let page = {
+          channel: "category",
+          pageName: "moglix:category page",
+          linkName: "post analytics click",
+          loginStatus: "guest",
+      };
+      // let custData = {};
+      let custData = {
+        'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
+        'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
+        'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
+        'customerType': (user && user["userType"]) ? user["userType"] : '',
+      };
+      let order = {}
+      this._globalAnalyticsService.sendAdobeCall({ page, custData, order }, "genericClick"); 
   }
   formatPrice(value:string,addSymbol?:boolean) {
     const RUPEE = "₹";

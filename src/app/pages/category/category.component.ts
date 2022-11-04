@@ -47,6 +47,7 @@ export class CategoryComponent {
     accordiansDetails:AccordiansDetails[]=[];
     prodUrl=CONSTANTS.PROD;
     graphData;
+    lastLevelCategory:Boolean = false;
 
     constructor(
         public _router: Router,
@@ -152,7 +153,10 @@ export class CategoryComponent {
             }
             if( this.API_RESPONSE.category[7]){
                 this.graphData = this.API_RESPONSE.category[7].data;
-                console.log(" this.graphData", this.graphData)
+            }
+            if(this.API_RESPONSE.category[0].categoryDetails.childList.length == 0){
+                this.lastLevelCategory = true;
+                console.log("this.lastLevelCategory",this.lastLevelCategory)
             }
             
             this.setCanonicalUrls();

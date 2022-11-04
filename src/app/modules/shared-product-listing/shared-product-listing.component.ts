@@ -45,6 +45,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   @Input() searchKeyword: string; // only received in case used in search module
   @Input() categoryMidPlpFilterData: any; // only received in case used in search module
   @Input() graphData:any = null;
+  @Input() lastLevelCategory;
   @Output('categoryClicked') categoryClicked: EventEmitter<string> = new EventEmitter<string>();
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -75,6 +76,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
+    this.lastLevelCategory; 
   }
   
  

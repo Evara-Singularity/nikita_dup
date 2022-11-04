@@ -1,18 +1,81 @@
 <ng-container *ngIf="chartContainer =='priceChartContainer'">
-    <div class="chart-wrapper" [debounceTime]="100"  data-observeVisibility (visible)="loadPriceWidget()" >
-        <ng-container #priceContainerRef>
-        </ng-container>
+    <div class="chart-wrapper">
+        <div class="single-widget">
+            <ng-container *ngIf="priceDataWithoutProcessing && priceDataWithoutProcessing.length > 0">
+                <div class="inner-widget-section">
+                    <div class="widget-heading">
+                        <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
+                        <p class="heading-txt">Top {{priceDataWithoutProcessing.length}} price range of {{categoryName}}</p>
+                    </div>
+                    <div class="single-widget-container pad-lr-0">
+                        <div [debounceTime]="100" data-observeVisibility (visible)="loadPriceWidget()">
+                            <ng-container #priceContainerRef></ng-container>
+                        </div>
+                        <div class="single-card-container">
+                            <div (click)="generateFragmentUrl('price',formatPrice(price.interval,false))"
+                                *ngFor="let price of priceDataWithoutProcessing" class="card">
+                                <p class="dots"></p>
+                                <p *ngIf="price.interval.toLowerCase() !== 'others'">
+                                    {{price.orderPercentage}}% of users prefer {{categoryName}} in price range of
+                                    {{formatPrice(price.interval,true)}}
+                                </p>
+                                <p *ngIf="price.interval.toLowerCase() === 'others'">
+                                    {{price.orderPercentage}}% of users prefer {{categoryName}} in other price range.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </ng-container>
+        </div>
+        
     </div>
 </ng-container>
 <ng-container *ngIf="chartContainer =='brandChartContainer'">
-    <div class="chart-wrapper" [debounceTime]="100"  data-observeVisibility (visible)="loadBrandWidget()" >
-        <ng-container #brandContainerRef>
-        </ng-container>
+    <div class="chart-wrapper">
+        <div class="single-widget">
+        <div class="inner-widget-section">
+            <div class="widget-heading">
+                <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
+                <p class="heading-txt">Top {{brandDataWithoutProcessing.length}} brands of {{categoryName}}</p>
+            </div>
+            <div class="single-widget-container pad-lr-0">
+                <div [debounceTime]="100"  data-observeVisibility (visible)="loadBrandWidget()">
+                    <ng-container #brandContainerRef>
+                    </ng-container>
+                </div>
+                <div class="single-card-container">
+                    <div (click)="generateFragmentUrl('brand',brand.brandName)"
+                        *ngFor="let brand of brandDataWithoutProcessing" class="card">
+                        <p *ngIf="brand.brandName !== 'others'">
+                            {{brand.orderPercentage}}% of users prefer {{categoryName}} of {{brand.brandName}}
+                        </p>
+                        <p *ngIf="brand.brandName.toLowerCase() === 'others'">
+                            {{brand.orderPercentage}}% of users prefer {{categoryName}} of other brands
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
     </div>
  </ng-container>
  <ng-container *ngIf="chartContainer =='attributeChartContainer'">
-    <div class="chart-wrapper" [debounceTime]="100"  data-observeVisibility (visible)="loadAttributeWidget()" >
-        <ng-container #attributeContainerRef></ng-container> 
+    <div class="chart-wrapper">
+        <div class="inner-widget-section">
+            <div class="multiple-widgets-container">
+                <div [debounceTime]="100" data-observeVisibility (visible)="loadAttributeWidget()" >
+                    <ng-container #attributeContainerRef></ng-container> 
+                </div>
+                <ng-container *ngIf="isServer">
+                    <div *ngFor="let attribute of attributeDataWithoutProcessing;let i = index" (click)="generateFragmentUrl(attribute.attributeName,getMaxValue(attribute.attributePercentange,'percent'))" class="card">
+                        <p>
+                            {{getMaxValue(attribute.attributePercentange)}}% of users buy {{categoryName}} in {{getMaxValue(attribute.attributePercentange,'percent')}} {{attribute.attributeName | titlecase}}
+                        </p>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
     </div>
  </ng-container>
 

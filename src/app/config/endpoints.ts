@@ -119,5 +119,6 @@ export const ENDPOINTS = {
   GET_LAST_ORDERS: '/checkout/order/getLastOrders',
   TOKEN_AUTHENTICATION:'/createProductUrl/tokenAuthentication',
   GET_ADD_SIMILAR_PRODUCT_ON_CART:'/search/similarProducts/search',
-  GET_COUPOUN_ON_BRAND_CATEGORY:'/cmsapi/prepaidDiscount/getByBrandNameAndCategoryCode'
+  GET_COUPOUN_ON_BRAND_CATEGORY:'/cmsapi/prepaidDiscount/getByBrandNameAndCategoryCode',
+  CLICK_STREAM: '/clickStream/clickStreamData'
 };

@@ -47,6 +47,7 @@ export class CategoryComponent {
     accordiansDetails:AccordiansDetails[]=[];
     prodUrl=CONSTANTS.PROD;
     graphData;
+    lastLevelCategory:Boolean = false;
 
     constructor(
         public _router: Router,
@@ -57,7 +58,6 @@ export class CategoryComponent {
         private _analytics: GlobalAnalyticsService,
         private _localStorageService: LocalStorageService,
         private _sessionStorageService: SessionStorageService,
-        private _dataService: DataService,
         private _title: Title,
         @Optional() @Inject(RESPONSE) private _response,
         public _commonService: CommonService,
@@ -66,6 +66,8 @@ export class CategoryComponent {
         private _categoryService: CategoryService,
         public _productListService: ProductListService,
         private _componentFactoryResolver: ComponentFactoryResolver,
+        private globalAnalyticsService: GlobalAnalyticsService,
+        private _dataService: DataService
     ) {
         this._commonService.isHomeHeader = false;
         this._commonService.isPLPHeader = true;
@@ -101,6 +103,7 @@ export class CategoryComponent {
 
             // set API result data
             this.API_RESPONSE = result;
+            console.log("this.API_RESPONSE", this.API_RESPONSE)
 
             this._productListService.excludeAttributes = [];
 
@@ -148,7 +151,14 @@ export class CategoryComponent {
             if (this.sharedProductList) {
                 this.sharedProductList.getSponseredProducts();
             }
-            this.getChartData();
+            if( this.API_RESPONSE.category[7]){
+                this.graphData = this.API_RESPONSE.category[7].data;
+            }
+            if(this.API_RESPONSE.category[0].categoryDetails.childList.length == 0){
+                this.lastLevelCategory = true;
+                console.log("this.lastLevelCategory",this.lastLevelCategory)
+            }
+            
             this.setCanonicalUrls();
 
             // send tracking data 
@@ -157,22 +167,22 @@ export class CategoryComponent {
         });
     }
 
-     callChartApi() {
-         let categoryId =  this.API_RESPONSE['category'][0]['categoryDetails']['categoryId']
-        let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
-        return this._dataService.callRestful("GET", url);
-      }
-      getChartData(){
-        this.callChartApi().subscribe(res => {
-           if(res['statusCode'] == 200){
-           this.graphData = res['data']; 
-           console.log("hello");
-          }
-          else{
-            console.log("error");
-          }
-        })
-      }
+    //  callChartApi() {
+    //      let categoryId =  this.API_RESPONSE['category'][0]['categoryDetails']['categoryId']
+    //     let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
+    //     return this._dataService.callRestful("GET", url);
+    //   }
+    //   getChartData(){
+    //     this.callChartApi().subscribe(res => {
+    //        if(res['statusCode'] == 200){
+    //        this.graphData = res['data']; 
+    //        console.log("hello");
+    //       }
+    //       else{
+    //         console.log("error");
+    //       }
+    //     })
+    //   }
 
     private createFooterAccordianData() {
         this.accordiansDetails = [];
@@ -261,7 +271,7 @@ export class CategoryComponent {
                 url_complete_load_time: null,
                 page_type: "Category"
             }
-            this._dataService.sendMessage(trackData);
+            this.globalAnalyticsService.sendMessage(trackData);
         }
     }
 

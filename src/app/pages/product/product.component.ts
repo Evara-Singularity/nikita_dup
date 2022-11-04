@@ -350,7 +350,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         private modalService: ModalService,
         private cartService: CartService,
         public commonService: CommonService,
-        private dataService: DataService,
         public formBuilder: FormBuilder,
         private globalLoader: GlobalLoaderService,
         private siemaCrouselService: SiemaCrouselService,
@@ -362,7 +361,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         private _trackingService: TrackingService,
         private _navigationService:NavigationService,
         @Inject(DOCUMENT) private document,
-        @Optional() @Inject(RESPONSE) private _response: any
+        @Optional() @Inject(RESPONSE) private _response: any,
+        private globalAnalyticsService: GlobalAnalyticsService
     )
     {
         this.isServer = commonService.isServer;
@@ -1909,7 +1909,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 eventData: eventData,
             };
             this.analytics.sendGTMCall(dataLayerObj);
-            this.dataService.sendMessage(dataLayerObj);
+            this.globalAnalyticsService.sendMessage(dataLayerObj);
         }
     }
 

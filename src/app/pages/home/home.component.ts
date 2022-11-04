@@ -137,6 +137,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 		public _commonService: CommonService,
 		private analytics: GlobalAnalyticsService,
 		private _productService: ProductService,
+		private globalAnalyticsService: GlobalAnalyticsService
 		
 	) {
 		this.isServer = _commonService.isServer;
@@ -169,7 +170,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 				channel: 'Home',
 				page_type: 'home_page',
 			};
-			this.dataService.sendMessage(trackData);
+			this.globalAnalyticsService.sendMessage(trackData);
 			this.setAnalyticTags();
 			setTimeout(() => {
 				if (document.querySelector('#search-input')) {

@@ -53,6 +53,7 @@ export class BrandComponent {
         public _productListService: ProductListService,
         private _globalLoader: GlobalLoaderService,
         @Optional() @Inject(RESPONSE) private _response,
+        private globalAnalyticsService: GlobalAnalyticsService
     ) {
         this._commonService.isHomeHeader = false;
         this._commonService.isPLPHeader = true;
@@ -505,6 +506,7 @@ export class BrandComponent {
     // }
 
     setAdobeTrackingData() {
+        // console.log('setAdobeTrackingData', 'nrand called');
         if (this._commonService.isBrowser) {
             var trackingData = {
                 event_type: "page_load",
@@ -515,7 +517,7 @@ export class BrandComponent {
                 filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
                 product_count: this.API_RESPONSE['brand'][1][0].productSearchResult.totalCount
             }
-            this._dataService.sendMessage(trackingData);
+            this.globalAnalyticsService.sendMessage(trackingData);
         }
     }
 

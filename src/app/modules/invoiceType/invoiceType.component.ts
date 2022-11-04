@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, OnInit, Input, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { environment } from 'environments/environment';
 import CONSTANTS from '../../config/constants';
 import { CartService } from '../../utils/services/cart.service';
@@ -30,7 +31,8 @@ export class InvoiceTypeComponent implements OnInit, AfterViewInit {
         public dataService: DataService,
         public cartService: CartService,
         private _formBuilder: FormBuilder,
-        private _checkoutService: CheckoutService) {
+        private _checkoutService: CheckoutService,
+        private globalAnalyticsService: GlobalAnalyticsService) {
 
         this.totalAmount = 0;
 
@@ -68,7 +70,7 @@ export class InvoiceTypeComponent implements OnInit, AfterViewInit {
                     }
                 })
             }
-            this.dataService.sendMessage(trackData);
+            this.globalAnalyticsService.sendMessage(trackData);
             // this.sessionCart = this.session;
         }
     }
@@ -116,7 +118,7 @@ export class InvoiceTypeComponent implements OnInit, AfterViewInit {
                     }
                 })
             }
-            this.dataService.sendMessage(trackData);
+            this.globalAnalyticsService.sendMessage(trackData);
             // this.sessionCart = this.session;
         }
         this.outData$.emit({ uit: { type: this.type } });

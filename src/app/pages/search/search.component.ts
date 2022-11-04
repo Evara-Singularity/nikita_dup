@@ -35,13 +35,13 @@ export class SearchComponent implements OnInit {
     public _localStorageService: LocalStorageService,
     public _productListService: ProductListService,
     public _commonService: CommonService,
-    private _dataService: DataService,
     private _title: Title,
     private meta: Meta,
     @Inject(DOCUMENT) private _document,
     private _renderer2: Renderer2,
     private _analytics: GlobalAnalyticsService,
-    private _router: Router
+    private _router: Router,
+    private globalAnalyticsService: GlobalAnalyticsService
   ) {
     this._commonService.isHomeHeader = false;
     this._commonService.isPLPHeader = true;
@@ -208,7 +208,7 @@ export class SearchComponent implements OnInit {
       product_count: this.API_RESULT['searchData'][0].productSearchResult.totalCount
     }
 
-    this._dataService.sendMessage(trackingData);
+    this.globalAnalyticsService.sendMessage(trackingData);
 
     let relatedSearchResults = '';
 

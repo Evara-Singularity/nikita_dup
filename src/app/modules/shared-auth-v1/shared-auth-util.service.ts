@@ -20,7 +20,6 @@ export class SharedAuthUtilService implements OnInit
     readonly SINGUP_REQUEST = { source: 'signup', userType: 'online', phoneVerified: true, emailVerified: false };
     redirectUrl = this.HOME_URL;
     private _checkoutLoginHandler: Subject<number> = new Subject<number>();
-    private _autoLogin: Subject<number> = new Subject<number>();
 
     constructor(private _localStorage: LocalStorageService,
         private _globalLoader: GlobalLoaderService, private _cartService: CartService, private _localAuthService: LocalAuthService,
@@ -54,9 +53,9 @@ export class SharedAuthUtilService implements OnInit
             redirectUrl += '?state=' + queryParams['state'];
         }
         let cartSession = Object.assign(this._cartService.getGenericCartSession);
+        console.log('cartSession----' , cartSession)
         cartSession['cart']['userId'] = response['userId'];
         const userName = response['userName'] === 'User' ? "!" : ", " + response['userName'];
-        this._autoLogin.subscribe()
         this.updateCartSession(`Welcome to Moglix ${userName}`, isCheckout, redirectUrl || '/');
     }
 

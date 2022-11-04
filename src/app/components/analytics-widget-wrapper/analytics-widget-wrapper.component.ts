@@ -14,7 +14,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 })
 export class AnalyticsWidgetWrapperComponent implements OnInit {
   isServer: boolean;
-  constructor(private _componentFactoryResolver:ComponentFactoryResolver,private _viewContainerReference:ViewContainerRef, private injector: Injector,private commonService:CommonService,@Inject(PLATFORM_ID) private platformId,private _globalAnalyticsService:GlobalAnalyticsService,private _localStoragService:LocalStorageService) {
+  constructor(private _componentFactoryResolver:ComponentFactoryResolver,private _viewContainerReference:ViewContainerRef, private injector: Injector,private commonService:CommonService,@Inject(PLATFORM_ID) private platformId,private _globalAnalyticsService:GlobalAnalyticsService) {
     this.isServer = isPlatformServer(platformId);
    }
   priceContainerInstance = null;
@@ -163,12 +163,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
           loginStatus: "guest",
       };
       // let custData = {};
-      let custData = {
-        'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-        'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-        'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-        'customerType': (user && user["userType"]) ? user["userType"] : '',
-      };
+      const custData = this.commonService.custDataTracking;
       let order = {}
       this._globalAnalyticsService.sendAdobeCall({ page, custData, order }, "genericClick"); 
   }

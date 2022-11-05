@@ -998,7 +998,7 @@ export class ProductService {
             productMinimmumQuantity: product['moq'] ? product['moq'] : 1,
             discount: (product['discount']) ? product['discount'] : null,
             rating: (product.rating) ? product.rating : null,
-            categoryCodes: product['categoryCodes'][0],
+            categoryCodes: product['categoryCodes'],
             taxonomy: product['taxonomy'],
             mainImageLink: "",
             mainImageMediumLink: "",
@@ -1006,8 +1006,8 @@ export class ProductService {
             // mainImageMediumLink: productPartDetails['images']
             //     ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['medium'])
             //     : "",    
-            mainImageThumnailLink: product['mainImagePath']
-                ? product['mainImagePath']
+            mainImageThumnailLink: product['mainImageLink']
+                ? product['mainImageLink']
                 : "",
             productTags: product['productTags'] || [],
             filterableAttributes: product['filterableAttributes'] || {},

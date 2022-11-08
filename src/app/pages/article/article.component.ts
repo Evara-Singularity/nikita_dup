@@ -87,7 +87,7 @@ export class ArticleComponent implements OnInit
         }
         this.breadCrumbTitle = response['title'];
         this.categoryCode = response['category'];
-        this.articles = response[this.data];
+        this.articles = response;
     }
 
     setMetaInformation(metaData)

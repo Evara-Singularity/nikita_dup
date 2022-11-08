@@ -259,7 +259,6 @@ export class CartService
          *  Return cart from server session.
          *  Save returned to service local variable: `cartSession`
          */
-        console.log(' getCartBySession ---called ');
         return this._dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CartBySession, { params: params })
             .pipe(map((cartSessionResponse) => this.handleCartResponse(cartSessionResponse)),);
     }
@@ -331,21 +330,12 @@ export class CartService
         }
     ): Observable<any>
     {
-       
         const userSession = this.localAuthService.getUserSession();
-        const params = { "sessionid": userSession['sessionId'] }
-
-        return this.getCartBySession(params)
-        .pipe(
-            mergeMap((cart)=>
-            {
-                const updatedCartSession = this.generateGenericCartSession(cart);
-                this.setGenericCartSession(updatedCartSession);
-                const cartSession = Object.assign(this.getGenericCartSession);
-                cartSession['cart']['userId'] = userSession.userId;
-                return this.getSessionByUserId(cartSession)
-             }),
-                mergeMap((cartSession) => 
+        const cartSession = Object.assign(this.getGenericCartSession);
+        cartSession['cart']['userId'] = userSession.userId;
+        return this.getSessionByUserId(cartSession)
+            .pipe(
+                mergeMap((cartSession) =>
                 {
                     if (this.buyNow) {
                         return this.updateCartSessions(null, this._updateCartSessionForBuyNow(cartSession, userSession))

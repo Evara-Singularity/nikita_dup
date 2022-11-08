@@ -66,6 +66,7 @@ export class ProductCardVerticalGridViewComponent extends ProductCardCoreCompone
 
   ngOnInit(): void {
     super.ngOnInit();
+    // console.log('product ==>', this.product)
   }
 
   splitBrandName(str){
@@ -73,6 +74,9 @@ export class ProductCardVerticalGridViewComponent extends ProductCardCoreCompone
      return brand[1];
   }
 
-  getProductImage(product) { return product['mainImageThumnailLink'] || product['imageLink_medium'] || product['mainImageMediumLink'] || product['mainImageLink'] }
+  getProductImage(product) { 
+    // console.log('getProductImage', product);
+    return product['mainImageThumnailLink'] || product['imageLink_medium'] || product['mainImageMediumLink'] || product['mainImageLink'] ;
+  }
 
 }

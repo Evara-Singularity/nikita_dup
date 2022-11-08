@@ -4,6 +4,9 @@ import { ClientUtility } from "../../utils/client.utility";
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+import CONSTANTS from '@app/config/constants';
+
 
 
 @Component({
@@ -16,6 +19,7 @@ export class SharedFooterComponent {
   today: number = Date.now();
   playStoreLink = "https://play.google.com/store/apps/details?id=com.moglix.online";
   appStoreLink = "https://apps.apple.com/in/app/moglix-best-industrial-app/id1493763517";
+  defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
 
   constructor(
     private _analytics: GlobalAnalyticsService,
@@ -48,12 +52,7 @@ export class SharedFooterComponent {
       page: {
         linkName: 'Install App'
       },
-      custData: {
-        'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-        'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-        'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-        'customerType': (user && user["userType"]) ? user["userType"] : '',
-      }
+      custData:this._commonService.custDataTracking
     };
 
   
@@ -67,6 +66,7 @@ export class SharedFooterComponent {
 @NgModule({
   imports: [
     CommonModule,
+    LazyLoadImageModule
   ],
   declarations: [
     SharedFooterComponent

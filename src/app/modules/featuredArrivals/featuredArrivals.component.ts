@@ -30,5 +30,6 @@ export class FeaturedArrivals {
 @NgModule({
 	declarations: [FeaturedArrivals],
 	imports: [CommonModule, RouterModule, LazyLoadImageModule],
+	exports:[FeaturedArrivals]
 })
 export class FeaturedArrivalModule {}

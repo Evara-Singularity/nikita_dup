@@ -9,7 +9,7 @@ import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from "@a
 import { ClientUtility } from "@app/utils/client.utility";
 import { DataService } from "./data.service";
 import { CheckoutService } from "./checkout.service";
-import { isPlatformServer, isPlatformBrowser } from "@angular/common";
+import { isPlatformServer, isPlatformBrowser, DOCUMENT } from "@angular/common";
 import { Observable } from "rxjs";
 import { Subject } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
@@ -53,7 +53,7 @@ export class CommonService
     public oosSimilarCard$: Subject<any> = new Subject<any>();
 
     public attachScrollEvent$: Subject<any> = new Subject<any>();
-
+    showWhatsappToolTip=true
     isHomeHeader = false;
     isPLPHeader = false;
     isScrolledHeader = false;
@@ -78,6 +78,7 @@ export class CommonService
     public initiateLoginPopUp: Subject<string> = new Subject<string>();
 
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
+    public addLottieScriptSubject: Subject<any> = new Subject<any>();
 
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
@@ -88,6 +89,8 @@ export class CommonService
     ;
     public previousUrl: string = "/";
     public currentUrl: string = null;
+
+    goldMemberPopupOpened = new Subject();
 
     constructor(
         @Inject(PLATFORM_ID) platformId,
@@ -100,6 +103,7 @@ export class CommonService
         private rendererFactory: RendererFactory2,
         private _router: Router,
         private _route: ActivatedRoute,
+        @Inject(DOCUMENT) private _document: Document
     )
     {
         this.windowLoaded = false;
@@ -421,6 +425,7 @@ export class CommonService
 
     generateQueryParams()
     {
+        // debugger;
         const url = location.search.substring(1);
         const queryParams = url
             ? JSON.parse(
@@ -466,7 +471,9 @@ export class CommonService
 
     generateFragmentString(productFilterData)
     {
+        // debugger;
         let fragment = "";
+        console.log("productFilterData",productFilterData)
         if (Object.keys(productFilterData).length > 0) {
             let filter = productFilterData;
             let keys = Object.keys(filter);
@@ -968,6 +975,7 @@ export class CommonService
                     deliveryMethodId: 77,
                     type: "kjhlh",
                 },
+                prepaidDiscounts: cartSession.prepaidDiscountList || null,
                 offersList:
                     offersList != undefined && offersList.length > 0 ? offersList : null,
                 extraOffer: cartSession["extraOffer"]
@@ -1128,6 +1136,7 @@ export class CommonService
             emailID: user && user["email"] ? btoa(user["email"]) : "",
             mobile: user && user["phone"] ? btoa(user["phone"]) : "",
             customerType: user && user["userType"] ? user["userType"] : "",
+            customerCategory: user && user["customerCategory"]
         };
     }
 
@@ -1245,6 +1254,7 @@ export class CommonService
 
     genricApplyFilter(key, item)
     {
+        // debugger;
         if (this.selectedFilterData.filter.hasOwnProperty(key)) {
             const indexInSelectedFilterDataFilterArray =
                 this.selectedFilterData.filter[key].findIndex((x) => x === item.term);
@@ -1260,7 +1270,6 @@ export class CommonService
             this.selectedFilterData.filter[key] = [];
             this.selectedFilterData.filter[key].push(item.term);
         }
-
         this.applyFilter();
     }
 
@@ -1269,13 +1278,14 @@ export class CommonService
         const currentRoute = !currentRouteFromCategoryFilter
             ? this.getCurrentRoute(this._router.url)
             : currentRouteFromCategoryFilter;
+        console.log("currentRoute",currentRoute);
 
         const extras: NavigationExtras = { queryParams: {} };
-
+        console.log("")
         const fragmentString = this.generateFragmentString(
             this.selectedFilterData.filter
         );
-
+        console.log("fragmentString",fragmentString);
         const queryParams = this.generateQueryParams();
 
         extras.queryParams = queryParams;
@@ -1289,14 +1299,13 @@ export class CommonService
             this.selectedFilterData.pageSize = GLOBAL_CONSTANT.default.pageSize;
             delete extras.queryParams["page"];
         }
-
         if (page > 1) {
             this.selectedFilterData.page = page;
             extras.queryParams["page"] = page;
+            console.log("extras", extras);
         }
-
         this.toggleFilter(true);
-        this._router.navigate([currentRoute], extras);
+        this._router.navigate([currentRoute],extras);
     }
 
     toggleFilter(forceFillyRemove?: boolean)
@@ -1535,13 +1544,39 @@ export class CommonService
             return productTags
         }
     }
-
     slicingHref(image) {
         const invalidURL = `${CONSTANTS.IMAGE_BASE_URL}${CONSTANTS.IMAGE_BASE_URL}`
         if (image.includes(invalidURL)) {
-            return image.replace(invalidURL,CONSTANTS.IMAGE_BASE_URL);
+            return image.replace(invalidURL, CONSTANTS.IMAGE_BASE_URL);
+        } else if (!image.includes(CONSTANTS.IMAGE_BASE_URL)) {
+            return (CONSTANTS.IMAGE_BASE_URL + image);
         }
         return image;
+    }
+    callLottieScript(){
+        let script = this._renderer2.createElement('script');
+        script.src = CONSTANTS.CDN_LOTTIE_PATH;
+        script.id = 'lottieScript';
+        let scripts = this._document.getElementsByTagName('script');
+        for (var i = scripts.length; i--;) {
+            if (scripts[i].src == CONSTANTS.CDN_LOTTIE_PATH){
+                return;
+            }
+            else{
+                this._renderer2.appendChild(this._document.body,script);
+                script.onload = ()=>{
+                    console.log("loaded");
+                };
+            }
+         }
+    }   
+  
+    showgoldMembershipPopup(){
+        this.goldMemberPopupOpened.next();
+    }
+
+    getGoldMembershipPopup(){
+        return this.goldMemberPopupOpened.asObservable();
     }
 
 }

@@ -13,6 +13,7 @@ import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toa
 import CategoryCardModule from '@app/components/category-card/category-card.component';
 import { HomePageSkeletonsModule } from '@app/components/home-page-skeletons/home-page-skeletons.component';
 import { BottomNavigationModule } from '@app/modules/bottom-navigation/bottom-navigation.module';
+import { MockLottiePlayerModule } from '@app/components/mock-lottie-player/mock-lottie-player.module';
 import { LoginPopupModule } from '@app/modules/login-popup/login-popup.module';
 
 
@@ -32,6 +33,7 @@ import { LoginPopupModule } from '@app/modules/login-popup/login-popup.module';
         CategoryCardModule,
         HomePageSkeletonsModule,
         BottomNavigationModule,
+        MockLottiePlayerModule,
         LoginPopupModule
     ],
     declarations: [

@@ -13,7 +13,7 @@ export class YTThumbnailPipe implements PipeTransform {
     imports: [],
     exports: [YTThumbnailPipe],
     declarations: [YTThumbnailPipe],
-    providers: [],
+    providers: [YTThumbnailPipe],
 })
 export class YTThumnailPipeModule { }
 

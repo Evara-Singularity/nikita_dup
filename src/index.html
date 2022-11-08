@@ -24,6 +24,7 @@
     <meta name="environment" content="development" />
     <link rel="icon" type="image/x-icon" href="assets/img/favicon-con.png"/>
     <link rel="manifest" href="manifest.webmanifest" crossorigin="use-credentials">
+    
 
     <!-- INSERT DYNAMIC FONT PRELOAD AFTER SSR BUILD HERE -->
 
@@ -54,19 +55,22 @@
                     j.defer = true;
                     j.src =
                         'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                    j.onload = ()=>{
+                        console.log('GTAG Loaded')
+                    }
                     setTimeout(() => {
                         f.parentNode.insertBefore(j, f)
                     }, 0);
                 })(window, document, 'script', 'dataLayer', gtmKey);
-        }
+         }
         window._satellite = window._satellite || {};
         digitalData = {};
         digitalData.event = [];
     </script>
     <script defer src="//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js" ></script>
     <script defer src="https://www.google-analytics.com/analytics.js" ></script>
+    
     <!-- Adobe Tag Manager -->
     <noscript>Please enable JavaScript to continue using this application.</noscript>
-</body>
-
+ </body>
 </html>

@@ -1,8 +1,17 @@
-<div class="whatsapp-float-icon">
-    <a [attr.href]="'https://api.whatsapp.com/send?phone=' + GLOBAL_CONSTANT.whatsapp_number + '&text=' + convertURL(customText)" target="_blank">
-        <span class="st-icon-whatsapp">
-            <span class="icon-whatsapp_icon1"></span>
-            <span class="icon-whatsapp_icon2"></span>
-        </span>
-    </a>
+<div class="whatsapp-animation">
+    <div class="abcd" *ngIf="commonService.showWhatsappToolTip">
+        <div class="whatsapp-tolltip">
+            <p class="need-help">Need help?</p>
+            <p class="whatsapp-contact">Connect to us on WhatsApp…</p>
+        </div>
+    </div>
+    <div class="whatsapp-float-icon">
+        <a [attr.href]="'https://api.whatsapp.com/send?phone=' + GLOBAL_CONSTANT.whatsapp_number + '&text=' + convertURL(customText)"
+            target="_blank">
+            <span class="st-icon-whatsapp">
+                <span class="icon-whatsapp_icon1"></span>
+                <span class="icon-whatsapp_icon2"></span>
+            </span>
+        </a>
+    </div>
 </div>

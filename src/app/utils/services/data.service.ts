@@ -66,32 +66,6 @@ export class DataService {
         return xhr;
     }
 
-    sendMessage(msg: any) {
-        if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
-            var userSession = this._localAuthService.getUserSession();
-            const previousUrl = localStorage.getItem("previousUrl");
-            let prevUrl;
-            if (previousUrl) {
-                prevUrl = previousUrl.split("$$$").length >= 2 ? localStorage.getItem("previousUrl").split("$$$")[1] : "";
-            }
-            var trackingData = {
-                message: (msg.message) ? msg.message : "tracking",
-                session_id: userSession ? userSession.sessionId : null,
-                cookie: "",
-                user_id: userSession ? userSession.userId : null,
-                url: document.location.href,
-                device: "Mobile",
-                ip_address: null,
-                user_agent: navigator.userAgent,
-                timestamp: new Date().getTime(),
-                referrer: document.referrer,
-                previous_url: prevUrl
-            }
-            // to be replaced by API solution
-            // this.socket.emit("track", { ...trackingData, ...msg });
-        }
-    }
-
     getMessage() {
         // return this.socket
         //     .fromEvent("track")
@@ -316,4 +290,12 @@ export class DataService {
         return this.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_SESSION);
     }
 
+    getCouponOnBrandCategory(brandName, categoryId) {
+        let URL =
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPOUN_ON_BRAND_CATEGORY +
+            "?brandName=" + brandName +
+            "&categoryCode=" + categoryId;
+        return this.callRestful("GET", URL);
+
+    }
 }

@@ -66,19 +66,9 @@ export class BussinessRfqComponent {
           ? "registered user"
           : "guest",
     };
-    let custData = {
-      customerID:
-        userSession && userSession["userId"] ? btoa(userSession["userId"]) : "",
-      emailID:
-        userSession && userSession["email"] ? btoa(userSession["email"]) : "",
-      mobile:
-        userSession && userSession["phone"] ? btoa(userSession["phone"]) : "",
-      customerType:
-        userSession && userSession["userType"] ? userSession["userType"] : "",
-    };
     let order = {};
     digitalData["page"] = pageData;
-    digitalData["custData"] = custData;
+    digitalData["custData"] = this._commonService.custDataTracking;
     digitalData["order"] = order;
     if (_satellite) {
       _satellite.track("genericPageLoad");

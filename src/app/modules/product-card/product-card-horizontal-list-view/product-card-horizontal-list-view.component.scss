@@ -159,3 +159,18 @@
         }
     }
 }
+
+.prepaid-btn{
+    width: 100%;
+    background: var(--primary);
+    color: var(--white);
+    font-weight: $font-bold;
+    padding: 0 2px;
+    margin-right: 0 !important;
+    font-size: 10px;
+    .icon-cart1{
+        color: var(--white);
+        font-size: 16px;
+        vertical-align: sub;
+    }
+}

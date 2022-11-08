@@ -43,6 +43,7 @@ export class SharedAuthUtilService implements OnInit
 
     processAuthentication(response, isCheckout, redirectUrl)
     {
+        console.log("After api send")
         this._localAuthService.setUserSession(response);
         this._localAuthService.clearAuthFlow();
         const queryParams = this._commonService.extractQueryParamsManually(location.search.substring(1))
@@ -52,6 +53,7 @@ export class SharedAuthUtilService implements OnInit
             redirectUrl += '?state=' + queryParams['state'];
         }
         let cartSession = Object.assign(this._cartService.getGenericCartSession);
+        console.log('cartSession----' , cartSession)
         cartSession['cart']['userId'] = response['userId'];
         const userName = response['userName'] === 'User' ? "!" : ", " + response['userName'];
         this.updateCartSession(`Welcome to Moglix ${userName}`, isCheckout, redirectUrl || '/');

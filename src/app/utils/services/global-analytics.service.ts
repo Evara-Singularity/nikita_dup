@@ -1,7 +1,12 @@
 
-import { Injectable, Injector } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 import { LocalStorageService } from 'ngx-webstorage';
 import { trackData } from '../clickStream';
+import { LocalAuthService } from './auth.service';
+import { DataService } from './data.service';
 
 declare var dataLayer;
 declare var digitalData;
@@ -14,10 +19,15 @@ export class GlobalAnalyticsService {
 
   readonly COMMON_ORDER_KEYS = ["productID", "price", "quantity", "brand"];
   isServer: boolean = typeof window !== "undefined" ? false : true;
+  isBrowser: boolean;
 
   constructor(
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private _localAuthService: LocalAuthService,
+    private _dataService: DataService,
+    @Inject(PLATFORM_ID) platformId
   ) {
+    this.isBrowser = isPlatformBrowser(platformId);
   }
 
   sendAdobeCall(data: any, trackingname = "genericPageLoad") {
@@ -53,6 +63,7 @@ export class GlobalAnalyticsService {
       }
       // Comment as we are rmeoving socket and will implement API in future releases
       // this.socket.emit("track", { ...trackingData, ...data });
+      
     }
   }
 
@@ -164,4 +175,40 @@ export class GlobalAnalyticsService {
     };
   }
 
+  sendMessage(msg: any) {
+    if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
+      var userSession = this._localAuthService.getUserSession();
+      const previousUrl = localStorage.getItem("previousUrl");
+      let prevUrl;
+      if (previousUrl) {
+        prevUrl =
+          previousUrl.split("$$$").length >= 2
+            ? localStorage.getItem("previousUrl").split("$$$")[1]
+            : "";
+      }
+      var trackingData = {
+        message: msg.message ? msg.message : "tracking",
+        session_id: userSession ? userSession.sessionId : null,
+        cookie: "",
+        user_id: userSession ? userSession.userId : null,
+        url: document.location.href,
+        device: "Mobile",
+        ip_address: null,
+        user_agent: navigator.userAgent,
+        timestamp: new Date().getTime(),
+        referrer: document.referrer,
+        previous_url: prevUrl,
+      };
+      this.postClickStreamData({ ...trackingData, ...msg });
+    }
+  }
+
+  postClickStreamData(data){
+    if(this.isBrowser){
+      // console.log('clickstream in', data);
+      this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CLICK_STREAM,{ body: data }).subscribe(res=>{
+        console.log('clickstream captured');
+      });
+    }
+  }
 }

@@ -709,6 +709,7 @@ export class ProductService {
     }
 
     recentProductResponseToProductEntity(product: any) {
+        // console.log('product ==>', product);
         const partNumber =
             product["partNumber"] ||
             product["defaultPartNumber"] ||
@@ -716,7 +717,7 @@ export class ProductService {
         const productMrp = product["priceMrp"];
         const productPrice = product["priceWithTax"];
         const priceWithoutTax = product["priceWithoutTax"];
-        return {
+        const productReturn = {
             moglixPartNumber: partNumber,
             moglixProductNo: product["moglixProductNo"] || null,
             mrp: productMrp,
@@ -749,9 +750,12 @@ export class ProductService {
             internalProduct: true,
             outOfStock: product.outOfStock,
         } as ProductsEntity;
+        // console.log('product ==>', productReturn);
+        return productReturn;
     }
 
     productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
+        // console.log('product ==>', product);
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
         const productEntity: ProductsEntity =  {
@@ -788,6 +792,7 @@ export class ProductService {
             internalProduct: true,
             outOfStock: product.outOfStock,
         };
+        // console.log('productEntity ==>', productEntity);
         return productEntity;
     }
 
@@ -972,5 +977,47 @@ export class ProductService {
         return { page, custData, order }
     }
 
+    addCartSimilarProductToProductEntity(product: any) {
+        // TODO: search response mapping. 
+        const productEntity: ProductsEntity = {
+            moglixPartNumber: product['moglixPartNumber'],
+            moglixProductNo: product['moglixProductNo'],
+            mrp: product['mrp'],
+            salesPrice: product['salesPrice'],
+            priceWithoutTax: product['priceWithoutTax'],
+            keyFeatures: product['keyFeatures'],
+            productName: product['productName'],
+            variantName: product['productName'],
+            productUrl: product['productUrl'],
+            shortDesc: product['shortDesc'],
+            brandId: product['brandId'],
+            brandName: product['brandName'],
+            description: product['shortDesc'],
+            outOfStock: false,
+            quantityAvailable: product['quantityAvailable'],
+            productMinimmumQuantity: product['moq'] ? product['moq'] : 1,
+            discount: (product['discount']) ? product['discount'] : null,
+            rating: (product.rating) ? product.rating : null,
+            categoryCodes: product['categoryCodes'],
+            taxonomy: product['taxonomy'],
+            mainImageLink: "",
+            mainImageMediumLink: "",
+            // mainImageLink: productPartDetails['images'] ? this.getForLeadingSlash(product["productImage"]) : "",
+            // mainImageMediumLink: productPartDetails['images']
+            //     ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['medium'])
+            //     : "",    
+            mainImageThumnailLink: product['mainImageLink']
+                ? product['mainImageLink']
+                : "",
+            productTags: product['productTags'] || [],
+            filterableAttributes: product['filterableAttributes'] || {},
+            avgRating: (product.avgRating) ? product.avgRating : null, //this.product.avgRating,
+            itemInPack: product['itemInPack'],
+            ratingCount: (product.ratingCount) ? product.ratingCount : null, //this.product.ratingCount,
+            reviewCount: (product.reviewCount) ? product.reviewCount : null //this.product.reviewCount
+        };
+
+        return productEntity;
+    }
 
 }

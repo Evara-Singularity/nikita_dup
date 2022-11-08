@@ -5,6 +5,7 @@ import { MyAccountGuard } from '@utils/guards/myAccount.guard';
 import { IsNotAuthenticatedGuard } from '@utils/guards/is-not-authenticated.guard';
 import RoutingMatcher from '@utils/routing.matcher';
 import CONSTANTS from '@app/config/constants';
+import { AutologinPageComponent } from '@app/components/autologin-page/autologin-page.component';
 
 const _routingMatcher = new RoutingMatcher();
 
@@ -13,15 +14,27 @@ const routes: Routes = [
 		path: '',
 		component: PagesComponent,
 		children: [
+			// {
+			// 	path: '',
+			// 	loadChildren: () =>
+			// 		import('./home/home.module').then((m) => m.HomeModule),
+			// 	data: {
+			// 		footer: true,
+			// 		logo: true,
+			// 		moreOpt: true,
+			// 		pageName: 'home',
+			// 		moduleName: CONSTANTS.MODULE_NAME.HOME
+			// 	},
+			// },
 			{
 				path: '',
 				loadChildren: () =>
-					import('./home/home.module').then((m) => m.HomeModule),
+					import('./home-v1/home-v1.module').then(m => m.HomeV1Module),
 				data: {
 					footer: true,
 					logo: true,
 					moreOpt: true,
-					pageName: 'home',
+					pageName: 'home-v1',
 					moduleName: CONSTANTS.MODULE_NAME.HOME
 				},
 			},
@@ -813,6 +826,10 @@ const routes: Routes = [
 					searchBar: false,
 					pageName: 'Payment Confirmation'
 				},
+			},
+			{
+				path: 'auto-login',
+				component: AutologinPageComponent
 			},
 			{
 				path: '**',

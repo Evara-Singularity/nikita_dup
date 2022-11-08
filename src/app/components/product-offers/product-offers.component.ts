@@ -6,6 +6,10 @@ import { forkJoin} from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute, NavigationEnd, NavigationExtras, NavigationStart, Router } from "@angular/router";
 import { CommonService } from '@app/utils/services/common.service';
+import { DataService } from '@app/utils/services/data.service';
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { MathCeilPipeModule } from '@pipes/math-ceil';
+
 @Component({
     selector: 'app-product-offers',
     templateUrl: './product-offers.component.html',
@@ -21,8 +25,14 @@ export class ProductOffersComponent implements OnInit
     @Input() price = 0;
     @Input() gstPercentage;
     @Input() productmsn;
+    @Input() brandName;
+    @Input() categoryId;
+    @Input() categoryName;
     disableEMIView = false;
     promoCodes: any;
+    couponForbrandCategory:any=null;
+    minimumRequiredPriceforCoupon: any;
+    couponForbrandCategoryDiscount: any;
 
     constructor(
         private productService: ProductService,
@@ -30,6 +40,8 @@ export class ProductOffersComponent implements OnInit
         private common: CommonService,
         private route: ActivatedRoute,
         private router: Router,
+        private _dataService: DataService,
+        private _globalLoader: GlobalLoaderService,
     ) { }
 
     ngOnInit(): void
@@ -39,6 +51,7 @@ export class ProductOffersComponent implements OnInit
         if (this.price < 3000) { this.disableEMIView = true; }
         this.getOfferAllData(user.userId);
       }else { this.getOfferAllData(null);}
+
     }
 
     getOfferAllData(user){
@@ -68,6 +81,27 @@ export class ProductOffersComponent implements OnInit
           );
     }
 
+    ngAfterViewInit(){
+      this.couponOnPDPBrandCategory();
+  }
+
+  couponOnPDPBrandCategory() {
+    if (this.brandName && this.categoryId) {
+      this._globalLoader.setLoaderState(true);
+      this._dataService.getCouponOnBrandCategory(this.brandName, this.categoryId).subscribe(response => {
+        if (response['statusCode'] == 200 && response['data'] != null) {
+          this.couponForbrandCategory = response['data'];
+          this.minimumRequiredPriceforCoupon = response['data']['minimumCartValue']
+          this.couponForbrandCategoryDiscount = this.couponForbrandCategory['absoluteDiscount'] ? ('₹' + this.couponForbrandCategory['absoluteDiscount']) : (this.couponForbrandCategory['percentageDiscount'] + '%')
+        } else {
+          this.couponForbrandCategory = null;
+        }
+        this._globalLoader.setLoaderState(false)
+      })
+
+    }
+  }
+
  
     sendOfferData(offerData)
     {
@@ -88,7 +122,8 @@ export class ProductOffersComponent implements OnInit
 @NgModule({
     declarations: [ProductOffersComponent],
     imports: [
-        CommonModule
+        CommonModule,
+        MathCeilPipeModule
     ]
 })
 export class ProductOffersModule

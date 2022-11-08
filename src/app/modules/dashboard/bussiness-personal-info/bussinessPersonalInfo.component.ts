@@ -8,6 +8,7 @@ import { CommonService } from "@app/utils/services/common.service";
 import { GlobalState } from "@app/utils/global.state";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { environment } from "environments/environment";
 
 @Component({
   selector: "bussiness-info",
@@ -28,13 +29,14 @@ export class BussinessInfoComponent {
   set showLoader(value){
     this.loaderService.setLoaderState(value);
   }
+  imgAssetPath: string = environment.IMAGE_ASSET_URL
 
   constructor(
     private _state: GlobalState,
     private _router: Router,
-    private _commonService: CommonService,
+    public _commonService: CommonService,
     private _cartService: CartService,
-    private _localAuthService: LocalAuthService,
+    public _localAuthService: LocalAuthService,
     public localStorageService: LocalStorageService,
     private _dashboardService: DashboardService,
     private loaderService:GlobalLoaderService,
@@ -73,6 +75,10 @@ export class BussinessInfoComponent {
       this.userInfo = res;
       this.showLoader = false;
     });
+  }
+  ngAfterViewInit(){
+    this._commonService.callLottieScript();
+    this.addLottieScript();
   }
 
   logout() {
@@ -121,6 +127,12 @@ export class BussinessInfoComponent {
 
   activateInput(){
     this.isNameInputDisabled = false;
+  }
+  addLottieScript() {
+    this._commonService.addLottieScriptSubject.subscribe(lottieInstance => {
+      this._commonService.callLottieScript();
+      lottieInstance.next();
+    });
   }
 
   get userName() {

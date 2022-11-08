@@ -47,7 +47,7 @@ export class CreditDebitCardComponent implements OnInit {
     constructor(
         private _localStorageService: LocalStorageService,
         private _localAuthService: LocalAuthService,
-        private _cartService: CartService,
+        public _cartService: CartService,
         private _loaderService: GlobalLoaderService,
         private _analytics: GlobalAnalyticsService,
         private _commonService: CommonService,
@@ -89,11 +89,14 @@ export class CreditDebitCardComponent implements OnInit {
 
     ngOnInit() {
         this.cartSession = this._cartService.getGenericCartSession;
-        this.getPrePaidDiscount('CC'); // Credit card as default options
-
-        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
-            this.getPrePaidDiscount(this.creditDebitCardForm.controls['mode'].value);
-        })
+        if(CONSTANTS.enableGenericPrepaid){
+            this.getPrePaidDiscount('CC'); // Credit card as default options
+            this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+                this.getPrePaidDiscount(this.creditDebitCardForm.controls['mode'].value);
+            })
+        }else{
+            this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
+        }
     }
 
 
@@ -199,7 +202,7 @@ export class CreditDebitCardComponent implements OnInit {
                 "user_id": userSession["userId"],
                 "store_card": data.store_card == true ? "true" : "false",
             },
-            "validatorRequest": this._cartService.createValidatorRequest(extra),
+            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra),
         };
 
         if (this.type == "tax") {
@@ -234,17 +237,21 @@ export class CreditDebitCardComponent implements OnInit {
     }
 
     getPrePaidDiscount(mode) {
-        this.isShowLoader = true;
         (this.creditDebitCardForm.get('requestParams') as FormControl).reset();
         this.selectedMonth = null;
         this.selectedYear = null;
-        this._cartService.validatePaymentsDiscount(mode, (mode == 'CC' ? 9 : 2)).subscribe(response => {
-            this.isShowLoader = false;
-            if (response) {
-                this.prepaidDiscount = response['prepaidDiscount'];
-                this.totalPayableAmount = response['totalPayableAmount']
-            }
-        })
+        if(CONSTANTS.enableGenericPrepaid){
+            this.isShowLoader = true;
+            this._cartService.validatePaymentsDiscount(mode, (mode == 'CC' ? 9 : 2)).subscribe(response => {
+                this.isShowLoader = false;
+                if (response) {
+                    this.prepaidDiscount = response['prepaidDiscount'];
+                    this.totalPayableAmount = response['totalPayableAmount']
+                }
+            })
+        }else{
+            this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
+        }
     }
 
     getBankCode(ccnum) {

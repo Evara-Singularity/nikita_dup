@@ -16,6 +16,18 @@
                 <i class="icon-information_about_us"></i>
             </div>
         </div> -->
+        <div class="pwa-row inline-list-item more-coupon-offers online-discount" *ngIf="couponForbrandCategory">
+            <div class="inline-list-icon">
+                <img src="../../../assets/img/best_deals.png">
+            </div>
+            <div class="inline-list-text coupon-list-text" *ngIf="couponForbrandCategory['absoluteDiscount']">
+                <span class="green-promo-code">Get instant {{couponForbrandCategory['absoluteDiscount'] | currency: 'INR' : 'symbol' :'1.0-0'}} discount with online payment</span>
+                <span class="discount-txt">Shop for min {{minimumRequiredPriceforCoupon| mathCeil  | currency: 'INR' : 'symbol' :'1.0-0'}} in {{brandName}} {{categoryName}}</span>
+            </div>
+            <div class="inline-list-text coupon-list-text" *ngIf="couponForbrandCategory['percentageDiscount']">
+                <span class="green-promo-code">Get {{couponForbrandCategory['percentageDiscount']}}% OFF on online payment.</span>
+            </div>
+        </div>
         <div class="pwa-row inline-list-item more-coupon-offers" *ngIf="promoCodes">
             <div class="inline-list-icon">
                 <i class="icon-coupon-3-fill-1"></i>

@@ -1,0 +1,115 @@
+<div class="home-parent">
+
+    <!-- search at backUrl -->
+    <div class="search-widget-container" *ngIf="isBrowser && isRoutedBack">
+        <div class="search-widget-section pwa-row">
+            <div class="inner-search-widget">
+                <p>Search for <span>{{ searchTerm }}</span></p>
+                <div class="search-bar widget-search-bar">
+                    <input class="search-bar-input widget-search-input" type="text" autocomplete="off"
+                        placeholder="Search Product,Category,Brand..." (click)="loadSearchNav()">
+                </div>
+            </div>
+            <div class="search-widget-bg"></div>
+        </div>
+    </div>
+
+    <!-- app prome -->
+    <app-promo [page]="'home'" class="fixed-btm-app-prmo home-app-promo" [isOverlayMode]="true"></app-promo>
+
+    <!-- home page banner carousel -->
+    <div class="css-banner-component">
+        <div class="internalBanner">
+            <ng-container *ngIf="this._commonService.isBrowser && this.bannerDataFinal && bannerDataFinal.length>0">
+                <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
+                    [items]="bannerDataFinal">
+                </siema-carousel>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="pwa-row pwa-row-noPad">
+        <div class="pwa-col-12 pad-lr-15">
+
+            <!-- trending category -->
+            <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
+
+            <!-- middle banner -->
+            <div [class.mutiple-banner-cards]="_localAuthService.IsUserGoldMember()" >
+                <div class="pwa-banner" *ngIf="_localAuthService.IsUserGoldMember()">
+                    <a class="full-banner" (click)="_commonService.showgoldMembershipPopup()"> 
+                        <img src="{{imageAssetURL}}assets/img/others/goldMemberBanner.png" alt="Gold Member Banner" width="312" height="110">
+                    </a>
+                </div>
+                <div class="pwa-banner">
+                    <a class="full-banner" href="{{whatsAppBannerUrl}}"> 
+                        <img src="{{imageAssetURL}}assets/img/whatsappBanner.png" alt="whatsapp banner" width="312" height="110">
+                    </a>
+                </div>
+            </div>
+            
+
+            <!-- category stores -->
+            <div class="pwa-col-12 category-grid-container mb-15">
+                <h2>Category Stores</h2>
+                <div class="pwa-row pwa-row-noPad pad-tb-0 row-gutter-space">
+                    <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card pwa-col-4"
+                        [routerLink]="item.category_url">
+                        <a>
+                            <img alt={{item.CategoryName}}
+                            [defaultImage]="defaultImage" [lazyLoad]="clusterimagePath + 'img/cluster/'+item.category_image"
+                             width="97" height="65">
+                            <p class="category-text">{{item.CategoryName}}</p>
+                        </a>
+                    </div>
+                    <div class="category-grid-card pwa-col-4" [routerLink]="['/all-categories']">
+                        <a>
+                            <img alt="View All Categories" src="{{clusterimagePath + 'img/cluster/all_categories.png'}}"
+                                width="97" height="65">
+                            <p class="category-text view-all-cate">View All Categories</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- featured brand Carousel -->
+        <div class="pwa-col-12 pad-lr-15">
+            <home-feature-brands [featureBrandData]="featureBrandData" [defaultImage]="defaultImage">
+            </home-feature-brands>
+        </div>
+
+        <!-- recently view Carousel -->
+        <div class="pwa-col-12 recently-container">
+            <div data-observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
+                *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
+                <ng-container #RecentlyViewedCarouselComponent></ng-container>
+                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="carouselInstance"></home-page-skeletons>
+            </div>
+        </div>
+  
+        <!-- category data Carousel -->
+        <home-categories class="pwa-col-12" [carouselData]="homePageCategoryCarouselData" [categories]="categories"
+            [defaultImage]="defaultImage" [imagePath]="imagePath" [middleImageJsonData]="middleImageJsonData"
+            [recentProductList]="recentProductList"></home-categories>
+
+        <!-- feature arrival banner  -->
+        <ng-container *ngIf="featureArrivalData && featureArrivalData.length>0">
+            <div class="featr_arrival pwa-col-12 pad-lr-15">
+                <home-feature-arrivals [defaultImage]="defaultImage" [featureArrivalData]="featureArrivalData"
+                    [imagePath]="imagePath"></home-feature-arrivals>
+            </div>
+        </ng-container>
+
+        <!-- home accordion  -->
+        <div class="pwa-col-12">
+            <home-accordians [carouselData]="homePageCategoryCarouselData"></home-accordians>
+        </div>
+
+        <!-- whatsApp tost -->
+        <whatsapp-toast (click)="sendTrackingData()" [customText]="'Hi'"></whatsapp-toast>
+    </div>
+
+    <!-- bottom menu bar -->
+    <bottom-navigation></bottom-navigation>
+</div>

@@ -1,4 +1,90 @@
-<div class="pwa-row pwa-row-noPad moglix-benefits mt-10" *ngIf="isProductReturnAble && !productOutOfStock"  >
+<!-- gold member benifits -->
+<div class="pwa-row pwa-row-noPad gold-member-benefits mt-10 pad-t-0" *ngIf=" _localAuthService.IsUserGoldMember() && !productOutOfStock">
+    <div class="pdp-section-header">
+        <h3 class="heading-3">
+            Gold Member Benefits
+        </h3>
+    </div>
+    <div class="pwa-col-12 pwa-tabs-container pad-lr-15">
+        <div class="pwa-image-tab">
+            <span class="tab-img">
+                <i class="icon-restart-line"></i>
+            </span>
+            <span class="tab-img-txt-gray">
+                Hassle-Free <br /> Return
+            </span>
+        </div>
+        <div class="pwa-image-tab" >
+            <span class="tab-img">
+                <i class="icon-restart-line-1"></i>
+            </span>
+            <span class="tab-img-txt-gray">
+                Priority <br /> Dispatch
+            </span>
+        </div>
+        <div class="pwa-image-tab">
+            <span class="tab-img">
+                <i class="icon-customer-service-fill"></i>
+            </span>
+            <span class="tab-img-txt-gray">
+                Priority <br /> Support
+            </span>
+        </div>
+        <div class="pwa-image-tab">
+            <span class="tab-img">
+                <i class="icon-Group-14030"></i>
+            </span>
+            <span class="tab-img-txt-gray">
+                GST Invoice<br> Available
+            </span>
+        </div>
+        <div class="pwa-image-tab">
+            <span class="tab-img">
+                <i class="icon-secure-payment-fill"></i>
+            </span>
+            <span class="tab-img-txt-gray">
+                Secure <br> Payments
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="pwa-row pwa-row-noPad moglix-benefits mt-10 pad-t-0" *ngIf="isProductReturnAble && !productOutOfStock && _localAuthService.IsUserGoldMember()"  >
+    <div class="pdp-section-header">
+        <h3 class="heading-3">
+            Return Policy
+        </h3>
+    </div>
+    <div class="pwa-col-12 pwa-tabs-container pad-lr-15">
+        <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
+            <span class="tab-img">
+                <i class="icon-restart-line-1"></i>
+            </span>
+            <span class="tab-img-txt">
+                Wrong <br /> Product
+            </span>
+        </div>
+        <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
+            <span class="tab-img">
+                <i class="icon-restart-line-3"></i>
+            </span>
+            <span class="tab-img-txt">
+                Damaged <br /> Product
+            </span>
+        </div>
+        <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
+            <span class="tab-img">
+                <i class="icon-restart-line-2"></i>
+            </span>
+            <span class="tab-img-txt">
+                Defective <br />Product
+            </span>
+        </div>
+    </div>
+</div>
+
+
+<div class="pwa-row pwa-row-noPad moglix-benefits mt-10 pad-t-0" *ngIf="isProductReturnAble && !productOutOfStock && !_localAuthService.IsUserGoldMember()"  >
     <!-- start moglix benifits -->
     <div class="pdp-section-header">
         <h3 class="heading-3">

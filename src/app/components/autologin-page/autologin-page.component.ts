@@ -5,7 +5,6 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { map } from 'rxjs/operators';
 import { AutoLoginService } from './autoLogin.service';
 
 
@@ -44,20 +43,20 @@ export class AutologinPageComponent implements OnInit {
     this.autoLoginService.getTokenAuthentication( postBody
     ).subscribe(res=>{
       if(res && res['status'] ){
-        this.cartService.getCartBySession({sessionId : postBody.sessionId}).pipe(
-          map(res=> {
-            if(res && res.status){
-            const updatedCartSession = this.cartService.generateGenericCartSession(res);
+        this.cartService.getCartBySession({sessionId : postBody.sessionId}).subscribe(
+          data=> {
+            if(data && data.status){
+            const updatedCartSession = this.cartService.generateGenericCartSession(data);
             this.cartService.setGenericCartSession(updatedCartSession);
             this.localStorageService.clear('user');
             this.localAuthService.setUserSession(res['data']);
             let redirectedTo = (res['data']['redirectedTo'] ? res['data']['redirectedTo'] : '');
             this.sharedAuthUtilService.processAuthentication(res['data'], false, redirectedTo);
             }else{
-              this.globalLoaderService.setLoaderState(false);
+              this.globalLoaderService.setLoaderState(false); 
               this.router.navigate(['']); 
             }
-          })
+          }
         )
       }else{
         this.globalLoaderService.setLoaderState(false);

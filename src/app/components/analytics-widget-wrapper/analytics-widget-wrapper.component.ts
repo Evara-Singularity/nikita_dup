@@ -37,20 +37,20 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
   ngOnInit(): void {
-     console.log("categoryId",this.categoryId);
+     // console.log("categoryId",this.categoryId);
      this.getData();
   }
   
   getData(){
       if(this.graphData && this.graphData.length > 0){
-        console.log("this.graphData",this.graphData);
+        // console.log("this.graphData",this.graphData);
       this.graphData.forEach(element => {
        if (element && element.block_name == 'attribute_report'){
             this.attributeDataWithoutProcessing = element.data;
         }
         else if (element && element.block_name == 'product_report') {
             this.priceDataWithoutProcessing = element.data;
-            console.log(" this.priceDataWithoutProcessing", this.priceDataWithoutProcessing);
+            // console.log(" this.priceDataWithoutProcessing", this.priceDataWithoutProcessing);
         }
         else {
           this.brandDataWithoutProcessing = element.data;
@@ -82,7 +82,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
       null,
       this.injector
      )
-     console.log("this.priceContainerInstance",this.priceContainerInstance);
+     // console.log("this.priceContainerInstance",this.priceContainerInstance);
      this.priceContainerInstance.instance['chartType'] = 'price';
      this.priceContainerInstance.instance['categoryId'] = this.categoryId;
      this.priceContainerInstance.instance['graphData'] = this.graphData;
@@ -184,7 +184,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
       }
   }   
   ngOnDestroy(){
-    console.log("destroyed");
+    // console.log("destroyed");
     this.resetLazyComponents();
   }
 }

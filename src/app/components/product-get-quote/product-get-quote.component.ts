@@ -84,8 +84,8 @@ export class ProductGetQuoteComponent implements OnInit, AfterViewInit
 		this.mouseIsDown = false;
 		let currentMouse = event.clientX || event.changedTouches[0].pageX;
 		let relativeMouse = currentMouse - this.initialMouse;
-		console.log('currentMouse -> ' + currentMouse);
-		console.log('relativeMouse -> ' + relativeMouse);
+		// console.log('currentMouse -> ' + currentMouse);
+		// console.log('relativeMouse -> ' + relativeMouse);
 
 		if (relativeMouse < this.slideMovementTotal) {
 			// $('.slide-text').fadeTo(300, 1);

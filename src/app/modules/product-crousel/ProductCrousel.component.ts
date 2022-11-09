@@ -103,7 +103,7 @@ export class ProductCrouselComponent implements OnInit {
 
       if (this.moveToSlide$) {
         this.moveToSlide$.subscribe((slideNumber: number) => {
-          console.log('called');
+          // console.log('called');
           this._commonService.enableNudge = false;
           this.ngxSiemaService.goTo(slideNumber, this.options.selector);
         });

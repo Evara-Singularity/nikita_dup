@@ -18,7 +18,7 @@ export class QuestionAnswerComponent implements OnInit, OnDestroy
     ngOnDestroy() { }
     outData($event)
     {
-        console.log($event);
+        // console.log($event);
         this.closePopup$.emit();
     }
     closeVariant2Popup()

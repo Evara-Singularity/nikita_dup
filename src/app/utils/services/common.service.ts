@@ -473,7 +473,7 @@ export class CommonService
     {
         // debugger;
         let fragment = "";
-        console.log("productFilterData",productFilterData)
+        // console.log("productFilterData",productFilterData)
         if (Object.keys(productFilterData).length > 0) {
             let filter = productFilterData;
             let keys = Object.keys(filter);
@@ -1278,14 +1278,14 @@ export class CommonService
         const currentRoute = !currentRouteFromCategoryFilter
             ? this.getCurrentRoute(this._router.url)
             : currentRouteFromCategoryFilter;
-        console.log("currentRoute",currentRoute);
+        // console.log("currentRoute",currentRoute);
 
         const extras: NavigationExtras = { queryParams: {} };
-        console.log("")
+        // console.log("")
         const fragmentString = this.generateFragmentString(
             this.selectedFilterData.filter
         );
-        console.log("fragmentString",fragmentString);
+        // console.log("fragmentString",fragmentString);
         const queryParams = this.generateQueryParams();
 
         extras.queryParams = queryParams;
@@ -1302,7 +1302,7 @@ export class CommonService
         if (page > 1) {
             this.selectedFilterData.page = page;
             extras.queryParams["page"] = page;
-            console.log("extras", extras);
+            // console.log("extras", extras);
         }
         this.toggleFilter(true);
         this._router.navigate([currentRoute],extras);
@@ -1393,7 +1393,7 @@ export class CommonService
     }
 
     debounceFunctionAndEvents(func, timeout = 100){
-        console.log('called : ' + timeout);
+        // console.log('called : ' + timeout);
         let timer;
         return (...args) => {
           clearTimeout(timer);

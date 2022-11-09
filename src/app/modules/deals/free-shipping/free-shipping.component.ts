@@ -78,7 +78,7 @@ export class FreeShippingComponent {
           this.reinsertLinks();
         }, 0);
       } else {
-        console.log('FreeShippingComponent API data error', rawData);
+        // console.log('FreeShippingComponent API data error', rawData);
         this.router.navigateByUrl('/');
       }
     }, error => {

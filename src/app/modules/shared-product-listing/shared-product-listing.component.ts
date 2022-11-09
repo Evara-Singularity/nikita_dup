@@ -293,7 +293,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
       // console.log(this.productsListingData.filterData);
     }
-    console.log(this.productsListingData.filterData);
+    // console.log(this.productsListingData.filterData);
   }
 
   async toggleSortBy() {

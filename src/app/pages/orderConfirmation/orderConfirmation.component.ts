@@ -11,6 +11,7 @@ import CONSTANTS from '@app/config/constants';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { UrlsService } from '@app/utils/services/urls.service';
 
 declare let dataLayer;
 declare var ADMITAD;
@@ -64,7 +65,8 @@ export class OrderConfirmationComponent implements OnInit {
         private injector: Injector,
         public _commonService: CommonService,
         private _globalSessionService:GlobalSessionStorageService,
-        private globalAnalyticsService: GlobalAnalyticsService
+        private globalAnalyticsService: GlobalAnalyticsService,
+        private _urlsService: UrlsService,
         ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -89,12 +91,30 @@ export class OrderConfirmationComponent implements OnInit {
                 orderId: this.queryParams["orderId"],
                 transactionAmount: this.queryParams["transactionAmount"],
             });
+            this.getCartSessionAnalyticsCallUpdated(this.orderId,utm_medium,userSession);
             this.getCartSessionAnalyticsCall(userSession, utm_medium);
             this.footerService.setFooterObj({ footerData: false });
             this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
             this._orderConfrimationService.getOrderbyUserid(userSession.userId, 0, this.orderId).subscribe((order)=>{
                 this.processedItems = order? order.numberOfItem : 0;
             });
+        }
+    }
+
+    getCartSessionAnalyticsCallUpdated(orderId, utm_medium, userSession) {
+        if (userSession && userSession.authenticated && userSession.authenticated == "true") {
+            if (orderId) {
+                this._urlsService.getRetryPaymentByOrderId(orderId).subscribe(response => {
+                    // console.log("get cart by session response in the order summary via retry payment", response['data']['shoppingCartDto'])
+                    if (response && response['status'] && response['data'] && response['data']['shoppingCartDto']) {
+                        const anayticsData = this.getAnalyticCartItemObj(response['data']['shoppingCartDto'], utm_medium)
+                        this.admitAdsTracking(utm_medium, anayticsData.orderedItem);
+                        this.gtmTracking(userSession, anayticsData);
+                        this.adobeTracking(userSession, anayticsData);
+                        this.sendClickStreamData(response['data']['shoppingCartDto']);
+                    }
+                })
+            }
         }
     }
 
@@ -114,11 +134,11 @@ export class OrderConfirmationComponent implements OnInit {
                 // console.log("Received Processed Cart Session");
                 if (cartSession["cart"]) {
                     this.setVars(cartSession);
-                    const anayticsData = this.getAnalyticCartItemObj(cartSession, utm_medium)
-                    this.admitAdsTracking(utm_medium, anayticsData.orderedItem);
-                    this.gtmTracking(userSession, anayticsData);
-                    this.adobeTracking(userSession, anayticsData);
-                    this.sendClickStreamData(cartSession);
+                    // const anayticsData = this.getAnalyticCartItemObj(cartSession, utm_medium)
+                    // this.admitAdsTracking(utm_medium, anayticsData.orderedItem);
+                    // this.gtmTracking(userSession, anayticsData);
+                    // this.adobeTracking(userSession, anayticsData);
+                    // this.sendClickStreamData(cartSession);
                     this.getUpdatedCart(buyNow, userSession, cartSession);
                 }
             },
@@ -492,7 +512,7 @@ export class OrderConfirmationComponent implements OnInit {
                     quantity: cartSession["itemsList"].map((item) => {
                         return (totQuantity = totQuantity + item.productQuantity);
                     })[cartSession["itemsList"].length - 1],
-                    shipping: parseFloat(cartSession["shippingCharges"]),
+                    shipping: parseFloat(cartSession["cart"]["shippingCharges"]) || '',
                     invoiceType: null,
                     paymentMode: this.queryParams["mode"],
                     itemList: cartSession["itemsList"].map((item) => {

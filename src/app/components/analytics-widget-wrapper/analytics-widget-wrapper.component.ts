@@ -1,11 +1,10 @@
-import { Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef, Inject,
-  Injector, } from '@angular/core';
+import {
+  Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef, Inject,
+  Injector,
+} from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 import CONSTANTS from '../../config/constants';
-import { isPlatformServer, isPlatformBrowser } from '@angular/common';
-import { PLATFORM_ID } from '@angular/core';
 import { GlobalAnalyticsService } from '../../utils/services/global-analytics.service';
-import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: 'analytics-widget-wrapper',
@@ -14,13 +13,10 @@ import { LocalStorageService } from 'ngx-webstorage';
 })
 export class AnalyticsWidgetWrapperComponent implements OnInit {
   isServer: boolean;
-  constructor(private _componentFactoryResolver:ComponentFactoryResolver,private _viewContainerReference:ViewContainerRef, private injector: Injector,private commonService:CommonService,@Inject(PLATFORM_ID) private platformId,private _globalAnalyticsService:GlobalAnalyticsService) {
-    this.isServer = isPlatformServer(platformId);
-   }
   priceContainerInstance = null;
   attributeContainerInstance = null;
   brandContainerInstance = null;
-  
+
   @ViewChild("priceContainerRef", { read: ViewContainerRef })
   priceContainerRef: ViewContainerRef;
   @ViewChild("attributeContainerRef", { read: ViewContainerRef })
@@ -36,85 +32,92 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   attributeDataWithoutProcessing;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
-  ngOnInit(): void {
-     // console.log("categoryId",this.categoryId);
-     this.getData();
+  constructor(
+    private _componentFactoryResolver: ComponentFactoryResolver,
+    private injector: Injector,
+    public commonService: CommonService,
+    private _globalAnalyticsService: GlobalAnalyticsService) {
   }
-  
-  getData(){
-      if(this.graphData && this.graphData.length > 0){
-        // console.log("this.graphData",this.graphData);
+
+  ngOnInit(): void {
+    // console.log("categoryId",this.categoryId);
+    this.getData();
+  }
+
+  getData() {
+    if (this.graphData && this.graphData.length > 0) {
+      // console.log("this.graphData",this.graphData);
       this.graphData.forEach(element => {
-       if (element && element.block_name == 'attribute_report'){
-            this.attributeDataWithoutProcessing = element.data;
+        if (element && element.block_name == 'attribute_report') {
+          this.attributeDataWithoutProcessing = element.data;
         }
         else if (element && element.block_name == 'product_report') {
-            this.priceDataWithoutProcessing = element.data;
-            // console.log(" this.priceDataWithoutProcessing", this.priceDataWithoutProcessing);
+          this.priceDataWithoutProcessing = element.data;
+          // console.log(" this.priceDataWithoutProcessing", this.priceDataWithoutProcessing);
         }
         else {
           this.brandDataWithoutProcessing = element.data;
-         }
-        });
-      }
-  }
-  getMaxValue(element,percent?){
-    let maxValue = 0,maxValueAttributeName;
-    let attrName = element; 
-    for(var attr in attrName){
-        if(attrName[attr] > maxValue){
-            maxValue = attrName[attr];
-            maxValueAttributeName = attr;
         }
+      });
     }
-    if(percent=='percent'){
+  }
+  getMaxValue(element, percent?) {
+    let maxValue = 0, maxValueAttributeName;
+    let attrName = element;
+    for (var attr in attrName) {
+      if (attrName[attr] > maxValue) {
+        maxValue = attrName[attr];
+        maxValueAttributeName = attr;
+      }
+    }
+    if (percent == 'percent') {
       return maxValueAttributeName;
     }
-    else{
+    else {
       return maxValue;
     }
   }
- async loadPriceWidget(){
-    const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
+  async loadPriceWidget() {
+    const { AnalyticsGraphWidgetComponent } = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
     const factory = this._componentFactoryResolver.resolveComponentFactory(AnalyticsGraphWidgetComponent)
     this.priceContainerInstance = this.priceContainerRef.createComponent(
       factory,
       null,
       this.injector
-     )
-     // console.log("this.priceContainerInstance",this.priceContainerInstance);
-     this.priceContainerInstance.instance['chartType'] = 'price';
-     this.priceContainerInstance.instance['categoryId'] = this.categoryId;
-     this.priceContainerInstance.instance['graphData'] = this.graphData;
-     this.priceContainerInstance.instance['categoryName'] = this.categoryName;
+    )
+    // console.log("this.priceContainerInstance",this.priceContainerInstance);
+    this.priceContainerInstance.instance['chartType'] = 'price';
+    this.priceContainerInstance.instance['categoryId'] = this.categoryId;
+    this.priceContainerInstance.instance['graphData'] = this.graphData;
+    this.priceContainerInstance.instance['categoryName'] = this.categoryName;
   }
-  async loadBrandWidget(){
-    const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
+  async loadBrandWidget() {
+    const { AnalyticsGraphWidgetComponent } = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
     const factory = this._componentFactoryResolver.resolveComponentFactory(AnalyticsGraphWidgetComponent)
     this.brandContainerInstance = this.brandContainerRef.createComponent(
       factory,
       null,
       this.injector
-     )
-     this.brandContainerInstance.instance['chartType'] = 'brand';
-     this.brandContainerInstance.instance['categoryId'] = this.categoryId;
-     this.brandContainerInstance.instance['graphData'] = this.graphData;
-     this.brandContainerInstance.instance['categoryName'] = this.categoryName;
+    )
+    this.brandContainerInstance.instance['chartType'] = 'brand';
+    this.brandContainerInstance.instance['categoryId'] = this.categoryId;
+    this.brandContainerInstance.instance['graphData'] = this.graphData;
+    this.brandContainerInstance.instance['categoryName'] = this.categoryName;
   }
-  async loadAttributeWidget(){
-    const {AnalyticsGraphWidgetComponent} = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
+  async loadAttributeWidget() {
+    const { AnalyticsGraphWidgetComponent } = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
     const factory = this._componentFactoryResolver.resolveComponentFactory(AnalyticsGraphWidgetComponent)
     this.attributeContainerInstance = this.attributeContainerRef.createComponent(
       factory,
       null,
       this.injector
-     )
-     this.attributeContainerInstance.instance['chartType'] = 'attribute';
-     this.attributeContainerInstance.instance['categoryId'] = this.categoryId;
-     this.attributeContainerInstance.instance['graphData'] = this.graphData;
-     this.attributeContainerInstance.instance['categoryName'] = this.categoryName;
+    )
+    this.attributeContainerInstance.instance['chartType'] = 'attribute';
+    this.attributeContainerInstance.instance['categoryId'] = this.categoryId;
+    this.attributeContainerInstance.instance['graphData'] = this.graphData;
+    this.attributeContainerInstance.instance['categoryName'] = this.categoryName;
   }
-  resetLazyComponents(){
+  resetLazyComponents() {
     if (this.priceContainerInstance) {
       this.priceContainerInstance = null;
       this.priceContainerRef.remove();
@@ -128,9 +131,9 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
       this.attributeContainerRef.remove();
     }
   }
-  generateFragmentUrl(filterName, filterValue){
+  generateFragmentUrl(filterName, filterValue) {
     this.sendAnalyticsFilterTracking;
-    if(filterValue && filterValue.toString().toLowerCase() === 'others'){
+    if (filterValue && filterValue.toString().toLowerCase() === 'others') {
       return;
     }
     let fragmentPriceObject = {};
@@ -153,37 +156,35 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
       this.commonService.applyFilter();
     }
   }
-  sendAnalyticsFilterTracking()
-  {
-      let page = {
-          channel: "category",
-          pageName: "moglix:category page",
-          linkName: "post analytics click",
-          loginStatus: "guest",
-      };
-      // let custData = {};
-      const custData = this.commonService.custDataTracking;
-      let order = {}
-      this._globalAnalyticsService.sendAdobeCall({ page, custData, order }, "genericClick"); 
+  sendAnalyticsFilterTracking() {
+    let page = {
+      channel: "category",
+      pageName: "moglix:category page",
+      linkName: "post analytics click",
+      loginStatus: "guest",
+    };
+    // let custData = {};
+    const custData = this.commonService.custDataTracking;
+    let order = {}
+    this._globalAnalyticsService.sendAdobeCall({ page, custData, order }, "genericClick");
   }
-  formatPrice(value:string,addSymbol?:boolean) {
+  formatPrice(value: string, addSymbol?: boolean) {
     const RUPEE = "₹";
     let formatValue = value.split(',');
-    if(formatValue[1]){
-        return (addSymbol ? (RUPEE + formatValue[0] + '-' + RUPEE+formatValue[1]) : (formatValue[0] + '-' +formatValue[1]));
+    if (formatValue[1]) {
+      return (addSymbol ? (RUPEE + formatValue[0] + '-' + RUPEE + formatValue[1]) : (formatValue[0] + '-' + formatValue[1]));
     }
-     else{
+    else {
       return (value.match("^[a-zA-Z]*$") ? formatValue[0] : (RUPEE + formatValue[0]));
-     }
-   }
-  
-  ngAfterViewInit()
-  {
-      if (this.commonService.isBrowser) {
-        this.resetLazyComponents()
-      }
-  }   
-  ngOnDestroy(){
+    }
+  }
+
+  ngAfterViewInit() {
+    if (this.commonService.isBrowser) {
+      this.resetLazyComponents()
+    }
+  }
+  ngOnDestroy() {
     // console.log("destroyed");
     this.resetLazyComponents();
   }

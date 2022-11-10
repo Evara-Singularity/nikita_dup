@@ -20,6 +20,7 @@ import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import IdleTimer from "../idleTimeDetect";
 import { GlobalAnalyticsService } from "./global-analytics.service";
 import { ServerLogSchema } from "../models/log.modal";
+import { LocalAuthService } from "./auth.service";
 
 @Injectable({
     providedIn: "root",
@@ -103,7 +104,8 @@ export class CommonService
         private rendererFactory: RendererFactory2,
         private _router: Router,
         private _route: ActivatedRoute,
-        @Inject(DOCUMENT) private _document: Document
+        @Inject(DOCUMENT) private _document: Document,
+        private _authService: LocalAuthService
     )
     {
         this.windowLoaded = false;
@@ -1553,22 +1555,29 @@ export class CommonService
         }
         return image;
     }
+
     callLottieScript(){
-        let script = this._renderer2.createElement('script');
-        script.src = CONSTANTS.CDN_LOTTIE_PATH;
-        script.id = 'lottieScript';
-        let scripts = this._document.getElementsByTagName('script');
-        for (var i = scripts.length; i--;) {
-            if (scripts[i].src == CONSTANTS.CDN_LOTTIE_PATH){
-                return;
+        try {
+            if(this._authService.IsUserGoldMember()){
+                let script = this._renderer2.createElement('script');
+                script.src = CONSTANTS.CDN_LOTTIE_PATH;
+                script.id = 'lottieScript';
+                let scripts = this._document.getElementsByTagName('script');
+                for (var i = scripts.length; i--;) {
+                    if (scripts[i].src == CONSTANTS.CDN_LOTTIE_PATH){
+                        return;
+                    }
+                    else{
+                        this._renderer2.appendChild(this._document.body,script);
+                        script.onload = ()=>{
+                            console.log("lottie loaded");
+                        };
+                    }
+                 }
             }
-            else{
-                this._renderer2.appendChild(this._document.body,script);
-                script.onload = ()=>{
-                    console.log("loaded");
-                };
-            }
-         }
+        } catch (error) {
+            console.log('callLottieScript', error);
+        }
     }   
   
     showgoldMembershipPopup(){

@@ -181,7 +181,7 @@ export class ProductInfoComponent implements OnInit
         if (this._commonService.isBrowser) {
             let tabsId = document.getElementById("infoTabs");
             if (selectedValue > 1) {
-                console.log("slide if"+selectedValue,"selectedValue");
+                // console.log("slide if"+selectedValue,"selectedValue");
                 tabsId.scroll({
                     left: 330,
                     top: 0,
@@ -189,7 +189,7 @@ export class ProductInfoComponent implements OnInit
                 })
             }
             if (selectedValue <= 1) {
-                console.log("slide else"+selectedValue,"selectedValue");
+                // console.log("slide else"+selectedValue,"selectedValue");
                 tabsId.scroll({
                     left: 0,
                     top: 0,

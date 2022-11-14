@@ -20,7 +20,7 @@ export class ProductShareComponent implements OnInit {
   public API = CONSTANTS;
 
   ngOnInit(): void {
-    console.log(this.shareFbUrl);
+    // console.log(this.shareFbUrl);
   }
 
   hide() {

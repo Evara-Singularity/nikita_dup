@@ -40,19 +40,19 @@ export class SeasonSaleComponent {
     // data received by layout resolver
     this.route.data.subscribe(
       (rawData) => {
-        console.log(JSON.stringify(rawData, null, 2));
+        // console.log(JSON.stringify(rawData, null, 2));
         if (rawData && !rawData["data"]["error"]) {
           this.SeasonSaleData = rawData["data"][0];
           setTimeout(() => {
             this.reinsertLinks();
           }, 0);
         } else {
-          console.log("SeasonSaleComponent API data error", rawData);
+          // console.log("SeasonSaleComponent API data error", rawData);
           this.router.navigateByUrl("/");
         }
       },
       (error) => {
-        console.log("SeasonSaleComponent API data catch error", error);
+        // console.log("SeasonSaleComponent API data catch error", error);
       }
     );
   }

@@ -370,7 +370,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   }
 
   generateFragmentUrl(filterName, filterValue){
-    console.log("filterName",filterName,"filterValue",filterValue)
+    // console.log("filterName",filterName,"filterValue",filterValue)
     if(filterValue && filterValue.toString().toLowerCase() === 'others'){
       return;
     }

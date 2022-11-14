@@ -23,7 +23,7 @@ export class ProductOfferPopupComponent implements OnInit {
   }
 
   outData(data) {
-    console.log('outData', data);
+    // console.log('outData', data);
     this.out.emit(data);
   }
 

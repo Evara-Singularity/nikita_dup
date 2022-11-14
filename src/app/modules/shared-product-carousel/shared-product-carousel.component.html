@@ -27,10 +27,12 @@
                     <div class="pinch-zoom element-pseudo"
                         (click)="$event.stopPropagation();sendProductImageClickTracking()"
                         style="transform-origin: 0% 0%; height: 100%;">
-                        <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['large'] }}"
-                            width="330" alt="{{productName}}">
-                        <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
-                            class="loader-image" />
+                        <ng-container *ngIf="productAllImages && productAllImages[0] && productAllImages[0]['large']" >
+                            <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['large'] }}"
+                                width="330" alt="{{productName}}">
+                            <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
+                                class="loader-image" />
+                        </ng-container>
                     </div>
                 </div>
 

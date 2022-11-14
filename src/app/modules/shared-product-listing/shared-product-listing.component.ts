@@ -8,10 +8,6 @@ import { LocalAuthService } from '@app/utils/services/auth.service';
 import { ProductService } from '@app/utils/services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '@app/utils/services/data.service';
-import { PercentPipe } from '@angular/common';
-import { chart } from 'highcharts';
-import { ENDPOINTS } from '@app/config/endpoints';
-import { environment } from 'environments/environment';
 
 @Component({
   selector: 'shared-product-listing',
@@ -293,7 +289,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       this.filterInstance.instance['filterData'] = this.productsListingData.filterData;
       // console.log(this.productsListingData.filterData);
     }
-    console.log(this.productsListingData.filterData);
+    // console.log(this.productsListingData.filterData);
   }
 
   async toggleSortBy() {

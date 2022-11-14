@@ -27,7 +27,7 @@ export class PostProductReviewPopupComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('PostProductReviewPopupComponent productInfo', this.productInfo);
+    // console.log('PostProductReviewPopupComponent productInfo', this.productInfo);
     this.createForm();
   }
 
@@ -62,7 +62,7 @@ export class PostProductReviewPopupComponent implements OnInit {
             this.isFormSubmitted = true;
           } else {
             this.submitted.emit(false);
-            console.log('review not submitted', res);
+            // console.log('review not submitted', res);
             this.isFormSubmitted = true;
           }
         }
@@ -71,7 +71,7 @@ export class PostProductReviewPopupComponent implements OnInit {
   }
 
   outData(data) {
-    console.log('write review outData data', data)
+    // console.log('write review outData data', data)
     this.removed.emit(data);
   }
   get review_title() { return this.reviewForm.get("review_subject"); }

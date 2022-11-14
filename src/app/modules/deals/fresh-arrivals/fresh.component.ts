@@ -118,7 +118,7 @@ export class FreshComponent {
     // data received by layout resolver
     this.route.data.subscribe(
       (rawData) => {
-        console.log(JSON.stringify(rawData, null, 2));
+        // console.log(JSON.stringify(rawData, null, 2));
         if (rawData && !rawData["data"]["error"]) {
           this.freshData = rawData["data"][0];
           setTimeout(() => {
@@ -126,7 +126,7 @@ export class FreshComponent {
             this.initializeClicks();
           }, 0);
         } else {
-          console.log("FreshComponent API data error", rawData);
+          // console.log("FreshComponent API data error", rawData);
           this.router.navigateByUrl("/");
         }
       },

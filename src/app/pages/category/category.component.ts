@@ -103,7 +103,7 @@ export class CategoryComponent {
 
             // set API result data
             this.API_RESPONSE = result;
-            console.log("this.API_RESPONSE", this.API_RESPONSE)
+            // console.log("this.API_RESPONSE", this.API_RESPONSE)
 
             this._productListService.excludeAttributes = [];
 
@@ -156,7 +156,7 @@ export class CategoryComponent {
             }
             if(this.API_RESPONSE.category[0].categoryDetails.childList.length == 0){
                 this.lastLevelCategory = true;
-                console.log("this.lastLevelCategory",this.lastLevelCategory)
+                // console.log("this.lastLevelCategory",this.lastLevelCategory)
             }
             
             this.setCanonicalUrls();

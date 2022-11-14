@@ -107,7 +107,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy, AfterViewInit
             {
                 const cart = this.cartService.getCartItemsCount;
                 this.noOfCart = this.cartService.getCartItemsCount();
-                console.log("fixed header --" , this.noOfCart , cart);
+                // console.log("fixed header --" , this.noOfCart , cart);
             });
           })
     }

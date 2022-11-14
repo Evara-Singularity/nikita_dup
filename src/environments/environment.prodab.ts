@@ -3,8 +3,8 @@ export const environment = {
   enableServerLogs: true,
   PROD_NAME: 'https://www.moglix.com',
   // BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
-  BASE_URL: 'https://apinew-kube.moglix.com/nodeApi/v1',
-  BASE_URL_V2: 'https://apinew-kube.moglix.com/nodeApi/v2',
+  BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
+  BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2',
   //BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   APP_BASE_URL: 'https://api.moglix.com',
   IMAGE_ASSET_URL: 'https://cdn.moglix.com/online/prod/pwa-ab/bundles/',
@@ -14,7 +14,7 @@ export const environment = {
   CDN_IMAGE_URL: 'https://cdn.moglix.com/',
   GTM_ANALYTICS_CODE: 'GTM-PKRGCH2',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-fd00645b6c3b.min.js',
-  buildVersion: '18',
+  buildVersion: '18.3',
   SOCIAL_LOGIN: {
     "google": {
       "clientId": "218214169080-34r0q5pi8gkg1kmgl6ehpkicm7jhihau.apps.googleusercontent.com"

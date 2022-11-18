@@ -30,6 +30,7 @@ export class CartComponent
     removableItem = null;
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     cartSubscription: Subscription;
+    shippingSubscription: Subscription;
     pageEvent = "genericPageLoad";
     cartSession = null;
     noOfCartItems = 0;
@@ -62,34 +63,51 @@ export class CartComponent
         if (this._commonService.isBrowser) {
             this.sendCriteoPageLoad();
             this.sendEmailGTMCall();
+            this.shippingCallSubscribers();
         }
         // const cartSession = this._cartService.getCartSession();
         // this.noOfCartItems = (cartSession['itemsList'] as any[]).length || 0;
     }
 
     // Function to get and set the latest cart
-    loadCartDataFromAPI()
-    {
+    loadCartDataFromAPI() {
         this._globalLoaderService.setLoaderState(true);
         this.cartSubscription = this._cartService.getCartUpdatesChanges().pipe(
-            map((cartSession: any) =>
-            {
+            map((cartSession: any) => {
                 if (cartSession.proxy) { return cartSession }
                 this.sendCritieoDataonView(cartSession);
                 this.sendAdobeAnalyticsData(this.pageEvent);
                 this.pageEvent = "genericClick";
                 return cartSession;
-            }),
-            concatMap((res) => this._cartService.getShippingAndUpdateCartSession(res))).subscribe(
-                (cartSessionWithShiping) =>
-                {
-                    this.cartSession = cartSessionWithShiping;
-                    this.noOfCartItems = (cartSessionWithShiping['itemsList'] as any[]).length;
-                    if (this.noOfCartItems) {
-                        this._cartService.verifyAndUpdateNotfications();
-                    }
-                    this._globalLoaderService.setLoaderState(false);
-                });
+            })).subscribe((cartSession) => {
+                this.cartChangesUpdates(cartSession);
+                if(this.moduleName == 'QUICKORDER'){
+                    this._cartService.callShippingValueApi(cartSession)
+                }
+            });
+    }
+
+    shippingCallSubscribers() {
+        this.shippingSubscription = this._cartService.shippingValueApiUpdates().subscribe((cartSessionWithShiping) => {
+            console.log('shippingCallSubscribers', this.moduleName);
+            this.shippingApiCall();
+        })
+    }
+
+
+    shippingApiCall() {
+        this._cartService.getShippingAndUpdateCartSession(this.cartSession).subscribe(cartsession => {
+            this.cartChangesUpdates(cartsession);
+        })
+    }
+
+    cartChangesUpdates(cartSession) {
+        this.cartSession = cartSession;
+        this.noOfCartItems = (cartSession['itemsList'] as any[]).length;
+        if (this.noOfCartItems) {
+            this._cartService.verifyAndUpdateNotfications();
+        }
+        this._globalLoaderService.setLoaderState(false);
     }
 
     removeItemFromCart(itemIndex, packageUnit)
@@ -511,5 +529,8 @@ export class CartComponent
 
     get isQuickorder() { return this.moduleName === "QUICKORDER" }
 
-    ngOnDestroy() { if (this.cartSubscription) this.cartSubscription.unsubscribe(); }
+    ngOnDestroy() { 
+        if (this.cartSubscription) this.cartSubscription.unsubscribe(); 
+        if(this.shippingSubscription) this.shippingSubscription.unsubscribe();
+    }
 }

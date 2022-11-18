@@ -56,9 +56,13 @@ export class ProductCardHorizontalListViewComponent extends ProductCardCoreCompo
     super.ngOnInit();
   }
 
-  get youtubeThumbnail(){
-    return this._ytThumbnail.transform(this.product['videoInfo'][0]['link'],'hqdefault') || null;
+  get youtubeThumbnail() {
+    if (this.product['videoInfo'] && this.product['videoInfo'] && (this.product['videoInfo'].length > 0) && this.product['videoInfo'][0]['link']) {
+      return this._ytThumbnail.transform(this.product['videoInfo'][0]['link'], 'hqdefault') || null;
+    } else {
+      return null;
+    }
+    // return null
   }
-
 
 }

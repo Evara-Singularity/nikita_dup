@@ -73,14 +73,14 @@ export class NewYearComponent {
     // data received by layout resolver
     this.route.data.subscribe(
       (rawData) => {
-        console.log(JSON.stringify(rawData, null, 2));
+        // console.log(JSON.stringify(rawData, null, 2));
         if (rawData && !rawData["data"]["error"]) {
           this.freshData = rawData["data"][0];
           setTimeout(() => {
             this.reinsertLinks();
           }, 0);
         } else {
-          console.log("NeYearComponent API data error", rawData);
+          // console.log("NeYearComponent API data error", rawData);
           this.router.navigateByUrl("/");
         }
       },

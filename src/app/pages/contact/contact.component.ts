@@ -14,6 +14,7 @@ export class ContactComponent {
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   imgAssetPath = CONSTANTS.IMAGE_ASSET_URL;
   CUSTOMER_CARE_TIME=CONSTANTS.CUSTOMER_CARE_TIME.call_timing_text;
+  whatsappUrl=CONSTANTS.whatsAppBannerUrl
 
   contactUsSchema;
   isServer: boolean;

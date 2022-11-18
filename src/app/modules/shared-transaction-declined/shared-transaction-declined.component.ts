@@ -13,6 +13,8 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { forkJoin } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { BottomMenuComponent } from '../bottomMenu/bottom-menu.component';
+import { CommonService } from '@utils/services/common.service';
+
 
 @Component({
 	selector: 'shared-transaction-declined',
@@ -56,6 +58,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 		private _quickCodService: QuickCodService, 
 		public localStorageService: LocalStorageService,
     	private globalAnalyticService: GlobalAnalyticsService,
+		public _commonService: CommonService,
 		private _retryPaymentService: RetryPaymentService) { }
 
 	ngOnInit()
@@ -79,6 +82,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			this.nonCods = codInfo.nonCods || [];
 			this.canCOD = (codInfo.iswithInCODLimit && codInfo.nonCods.length === 0 && codInfo.nonServiceables.length === 0);
 			this.cartSession = results[1];
+			// console.log('cartSession initiateRehydration', results[1]);
 			//upfront we are validating for time saving and as this mandatory action
 			this.validateCart();
 			this.isRehydrationDone = true;
@@ -146,6 +150,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 		}
 		this.adobeAnayticInitCall("moglix:payment:transaction:failed:repay", "transaction:failed:repay", "transaction:failed:popup:repay");
 		this._cartService.updateNonDeliverableItems(this.cartSession['itemsList'], this.nonCods);
+		this.cartSession = this._cartService.generateGenericCartSession(this.cartSession);
 		this._cartService.setGenericCartSession(this.cartSession);
 		this.emitCloseEvent(this.lastCartDetails);
 	}
@@ -155,8 +160,11 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	get lastCartDetails()
 	{
 		const lastCartInfo = {
-			invoiceType: this.invoiceType, shippingAddress: this.shippingAddress, billingAddress: this.billingAddress,
-			lastPaymentMode: this.shoppingCartDto['payment']['type'], lastParentOrderId: this.shoppingCartDto['cart']['parentOrderId'],
+			invoiceType: this.invoiceType, 
+			shippingAddress: this.shippingAddress, 
+			billingAddress: this.billingAddress,
+			lastPaymentMode: this.shoppingCartDto['payment']['type'], 
+			lastParentOrderId: this.shoppingCartDto['cart']['parentOrderId'],
 			buyNow: this.isBuyNow
 		}
 		return lastCartInfo;
@@ -170,16 +178,10 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			'subSection': subSection,
 			'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
 		};
-		let custData = {
-			'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-			'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-			'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-			'customerType': (user && user["userType"]) ? user["userType"] : '',
-		};
 		let order = {};
 		let adobeObj = {};
 		adobeObj["page"] = page;
-		adobeObj["custData"] = custData;
+		adobeObj["custData"] = this._commonService.custDataTracking;
 		adobeObj["order"] = order;
 		this.globalAnalyticService.sendAdobeCall(adobeObj);
 	}

@@ -14,6 +14,8 @@ import { PopUpComponent } from '@app/modules/popUp/pop-up.component';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { OrderDetailService } from './order-detail.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { CommonService } from "@app/utils/services/common.service";
+
 
 declare var digitalData: {};
 declare let _satellite;
@@ -109,6 +111,7 @@ export class OrderDetailComponent implements OnInit {
     private _router: Router,
     private _tms: ToastMessageService,
     private _modalService: ModalService,
+    private _commonService: CommonService,
     public localStorageService: LocalStorageService,
     private loaderService:GlobalLoaderService) {
 
@@ -319,7 +322,7 @@ export class OrderDetailComponent implements OnInit {
       } else {
         if (detail && detail.status === 'RETURN DONE' && detail.dates.delivered.flag == false) {
           this.customerReturn = true;
-          console.log("hello");
+          // console.log("hello");
         }
         trackOrderBoxDetail.firstDate = detail.dates.delivered.date;
         trackOrderBoxDetail.firstDateLabel = 'Delivered';
@@ -512,7 +515,7 @@ export class OrderDetailComponent implements OnInit {
     * @param detail : item details
     */
   fetchTrackingData(itemDetails) {
-    console.log(itemDetails);
+    // console.log(itemDetails);
     let status = (itemDetails['status'] as string).trim().toUpperCase();
     itemDetails['hasInfo'] = false;
 
@@ -595,7 +598,7 @@ export class OrderDetailComponent implements OnInit {
     this.closePopup$.emit();
   }
   orderTrackingPopup(itemDetails) {
-    console.log('itemDetails', itemDetails);
+    // console.log('itemDetails', itemDetails);
     this._modalService.show({
       component: TrackOrderComponent,
       inputs: { itemDetails: itemDetails },
@@ -617,20 +620,14 @@ export class OrderDetailComponent implements OnInit {
       'channel': 'moglix:my account',
       'loginStatus': (user.userId) ? 'registered' : 'guest',
     }
-    let custData = {
-      'customerID': (user && user["userId"]) ? btoa(user["userId"]) : '',
-      'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
-      'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
-      'customerType': (user && user["userType"]) ? user["userType"] : '',
-    }
     let order = {
       'productID': productID
     }
 
     digitalData["page"] = page;
-    digitalData["custData"] = custData;
+    digitalData["custData"] = this._commonService.custDataTracking;
     digitalData["order"] = order;
-    console.log(digitalData);
+    // console.log(digitalData);
     if(_satellite){
       _satellite.track("genericClick");
     }

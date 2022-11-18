@@ -1,0 +1,67 @@
+@import '../../scss/variables';
+.gold-animation{
+    position:absolute;
+    left:0px;
+    right:0px;
+    top:25%;
+    left:50%;
+    z-index: 99;
+    transform:translate(-50%, -50%);
+    margin:0 auto;
+    lottie-player{
+        margin:0 auto;
+        text-align: center;
+    }
+  }
+.gold-membership-container{
+    background-color: #fff;
+  
+    .cross-icon{
+        padding: 15px 15px 5px;
+        background: #070b2e;
+        i{
+            text-align: right;
+            display: block;
+            font-size: 16px;
+            color: white;
+        }
+        .gold-membership-img{
+            padding: 5px 0 15px;
+            text-align: center;
+            position: relative;
+            display: block;
+            img{
+                max-width: 100%;
+                text-align: center;
+                width: auto;
+            }
+        }
+    }
+
+    .gold-membership-txt{
+        padding: 15px;
+        p{
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 18px;
+        }
+        .membership-benifits{
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            .image-section{
+                width: 46px;
+                height: 46px;
+            }
+            .benifit-txt{
+                padding-left: 10px;
+                .sub-txt{
+                    font-size: 10px;
+                    line-height: 14px;
+                    padding-top: 4px;
+                    font-weight: 400;
+                }
+            }
+        }
+    }
+}

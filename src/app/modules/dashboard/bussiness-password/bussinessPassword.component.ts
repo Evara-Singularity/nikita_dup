@@ -59,7 +59,7 @@ export class BussinessPasswordComponent {
     };
 
     this.dashboardService.updatePassword(obj).subscribe((res) => {
-      console.log(obj);
+      // console.log(obj);
       let data = res;
       this.userPasswordInfo = data;
       this.showLoader = false;

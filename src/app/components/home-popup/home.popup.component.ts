@@ -20,7 +20,7 @@ export class HomePopupComponet implements OnInit {
   @Input('dataKeyToPopUpPage') dataKeyToPopUpPage;
   @Output() outData$: EventEmitter<{}>;
   ngOnInit() {
-    console.log(this);
+    // console.log(this);
   }
 
   outData(data) {

@@ -4,6 +4,8 @@ import { CONSTANTS } from '@app/config/constants';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { FooterService } from '@app/utils/services/footer.service';
+import { CommonService } from '@utils/services/common.service';
+
 
 declare var digitalData: {};
 declare let _satellite;
@@ -24,7 +26,8 @@ export class OrderFailureComponent {
     public footerService: FooterService,
     private _activatedRoute: ActivatedRoute,
     private _localAuthService: LocalAuthService,
-    private _cartService: CartService
+    private _cartService: CartService,
+    public _commonService: CommonService
   ) {}
 
   ngOnInit() {
@@ -88,24 +91,6 @@ export class OrderFailureComponent {
           channel: "purchase",
           subSection: "payment failure" + ((userSession && userSession["agentId"]) ? " | Inside Sales" : ''),
         };
-        let custData = {
-          customerID:
-            userSession && userSession["userId"]
-              ? btoa(userSession["userId"])
-              : "",
-          emailID:
-            userSession && userSession["email"]
-              ? btoa(userSession["email"])
-              : "",
-          mobile:
-            userSession && userSession["phone"]
-              ? btoa(userSession["phone"])
-              : "",
-          agentId: 
-          userSession && userSession["agentId"] 
-            ? btoa(userSession["agentId"]) 
-            : '',
-        };
         let order = {
           transactionID: this.queryParams["orderId"],
           platformType: "mobile",
@@ -126,7 +111,7 @@ export class OrderFailureComponent {
         };
 
         digitalData["page"] = page;
-        digitalData["custData"] = custData;
+        digitalData["custData"] = this._commonService.custDataTracking;
         digitalData["order"] = order;
         if(_satellite){
           _satellite.track("genericPageLoad");

@@ -193,7 +193,7 @@ export class SavedCardComponent {
             "paymentId": extra.paymentId,
             "paymentGateway": "",
             "isSavedCard": true,
-            "validatorRequest": this._cartService.createValidatorRequest(extra)
+            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra),
         };
         if (this.type == "tax") {
             newdata["requestParams"] = {};

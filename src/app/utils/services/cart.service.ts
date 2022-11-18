@@ -39,8 +39,9 @@ export class CartService
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public cartCountSubject: Subject<any> = new Subject<any>(); // cartCountSubject 
+    public autoLoginSubject: Subject<any> = new Subject<any>(); // autoLoginSubject 
     public codNotAvailableObj = {}; // cart.component
-    public quickCheckoutCodMaxErrorMessage = null;
+    public quickCheckoutCodMaxErrorMessage = null; 
     itemsValidationMessage = [];
     cartNotications = [];
     notifications = [];
@@ -73,6 +74,13 @@ export class CartService
 
     private previousUrl: string = null;
     private currentUrl: string = null;
+    prepaidDataMapping: any=null;
+    totalPrepaidSaving=0;
+
+    // TODO: move it to component level
+    totalPayableAmountAfterPrepaid: number=0;
+    totalPayableAmountWithoutPrepaid:number=0
+
 
     constructor(
         private _dataService: DataService, private _localStorageService: LocalStorageService, private localAuthService: LocalAuthService,
@@ -126,18 +134,60 @@ export class CartService
 
     setPayBusinessDetails(data) { Object.assign(this.payBusinessDetails, data); }
 
-    getPayBusinessDetails() { return this.payBusinessDetails; }
+    getPayBusinessDetails() { return this.payBusinessDetails; }  
+
+    //prepaid object
+    generatePrepaidSession(prepaidDiscount) {
+        this.totalPrepaidSaving = 0;
+        this.prepaidDataMapping = Object.assign({}, ...prepaidDiscount.map(object => {
+            if (object.applicable) {
+                this.totalPrepaidSaving = this.totalPrepaidSaving + object.amount
+            }
+            return ({ [object.msn]: object })
+        }))
+    }
+
+    get totalDisplayPayableAmountWithPrepaid() {
+        let totalBasicAmount = this.getGenericCartSession.cart.tawot + this.getGenericCartSession.cart.tpt;
+        // shipping
+        totalBasicAmount = totalBasicAmount + (this.getGenericCartSession.cart.shippingCharges || 0)
+        // offer 
+        if (this.getGenericCartSession.cart.totalOffer !== 0 && this.getGenericCartSession.cart.totalOffer !== null) {
+            totalBasicAmount = totalBasicAmount -  this.getGenericCartSession.cart.totalOffer
+        }
+        // prepaid saving
+        totalBasicAmount = totalBasicAmount - (this.totalPrepaidSaving || 0)
+        return totalBasicAmount;
+    }
+
+    get totalDisplayPayableAmountWithOutPrepaid() {
+        let totalBasicAmount = this.getGenericCartSession.cart.tawot + this.getGenericCartSession.cart.tpt;
+        // shipping
+        totalBasicAmount = totalBasicAmount + (this.getGenericCartSession.cart.shippingCharges || 0)
+        // offer 
+        if (this.getGenericCartSession.cart.totalOffer !== 0 && this.getGenericCartSession.cart.totalOffer !== null) {
+            totalBasicAmount = totalBasicAmount -  this.getGenericCartSession.cart.totalOffer
+        }
+        // prepaid saving
+        return totalBasicAmount;
+    }
+
+
 
     // get generic cart session object
     generateGenericCartSession(cartSessionFromAPI)
     {
+        if (cartSessionFromAPI['prepaidDiscountList']) {
+            this.generatePrepaidSession(cartSessionFromAPI['prepaidDiscountList']);
+        }
         const modifiedCartSessionObject = {
             cart: Object.assign({}, cartSessionFromAPI['cart']),
             itemsList: (cartSessionFromAPI["itemsList"] ? [...cartSessionFromAPI["itemsList"]] : []),
             addressList: (cartSessionFromAPI["addressList"] ? [...cartSessionFromAPI["addressList"]] : []),
             payment: cartSessionFromAPI["payment"],
             offersList: cartSessionFromAPI["offersList"],
-            extraOffer: cartSessionFromAPI["extraOffer"]
+            extraOffer: cartSessionFromAPI["extraOffer"],
+            prepaidDiscountList:cartSessionFromAPI['prepaidDiscountList'] || null            
         }
         let totalAmount: number = 0;
         let tawot: number = 0; // totalAmountWithOutTax
@@ -1081,6 +1131,7 @@ export class CartService
             map(res =>
             {
                 this.localAuthService.setUserSession(res);
+                this.autoLoginSubject.next(res);
                 return res;
             })
         );
@@ -2125,6 +2176,7 @@ export class CartService
             'emailID': (user && user['email']) ? btoa(user['email']) : '',
             'mobile': (user && user['phone']) ? btoa(user['phone']) : '',
             'type': (user && user['userType']) ? user['userType'] : '',
+            'customerCategory': user && user["customerCategory"]
         }
         let order = {
             'productCategoryL1': taxo1,
@@ -2232,6 +2284,7 @@ export class CartService
             'emailID': (user && user["email"]) ? btoa(user["email"]) : '',
             'mobile': (user && user["phone"]) ? btoa(user["phone"]) : '',
             'customerType': (user && user["userType"]) ? user["userType"] : '',
+            'customerCategory': user && user["customerCategory"]
         }
         let order = {
             'productCategoryL1': taxo1,
@@ -2253,6 +2306,22 @@ export class CartService
         data["order"] = order;
         this._globalAnalyticsService.sendAdobeCall(data, trackingname);
         /*End Adobe Analytics Tags */
+    }
+
+    AddSimilarProductOncartItem(productName,categoryId,BrandName,productId) {
+
+        let URL =
+        CONSTANTS.NEW_MOGLIX_API+ ENDPOINTS.GET_ADD_SIMILAR_PRODUCT_ON_CART +
+        "?str=" + productName +
+        "&category=" + categoryId +
+        "&productId=" + productId +
+        "&brand=" + BrandName ;
+        
+        return this._dataService.callRestful("GET", URL).pipe(
+            map(res => {
+                return res;
+            })
+        );
     }
 
     

@@ -73,20 +73,11 @@ export class BottomNavigationComponent implements OnInit {
 					? 'registered user'
 					: 'guest',
 		};  
-		let custData = {
-			customerID:
-				userSession && userSession['userId'] ? btoa(userSession['userId']) : '',
-			emailID:
-				userSession && userSession['email'] ? btoa(userSession['email']) : '',
-			mobile:
-				userSession && userSession['phone'] ? btoa(userSession['phone']) : '',
-			customerType:
-				userSession && userSession['userType'] ? userSession['userType'] : '',
-		};
+		
 		let order = {}; 
 		let digitalData = {};
 		digitalData['page'] = page;
-		digitalData['custData'] = custData;
+		digitalData['custData'] = this._commonService.custDataTracking;
 		digitalData['order'] = order;
 		this.analytics.sendAdobeCall(digitalData);
 	}

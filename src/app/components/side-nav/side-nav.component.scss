@@ -33,7 +33,7 @@
     color: var(--white);
     display: flex;
     align-items: center;
-    border-radius: $border-radius-8;
+    border-radius: 8px 8px 0 0;
     .icon-profile {
       font-size: $extra-large-5-font;
       margin: 7px 0 7px 8px;
@@ -108,4 +108,25 @@
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.gold-member-strip{
+  display: flex;
+  align-items: center;
+  background: #070b2e;
+  padding: 5px 15px;
+  border-radius: 0 0 8px 8px;
+  p{
+    color:#D2C381;
+    font-size: $large-font;
+    font-weight: $font-bold;
+  }
+  .lottie-span{
+    width: 30px;
+    margin-left: auto;
+  }
+}
+
+.full-border-radius{
+  border-radius: 8px !important;
 }

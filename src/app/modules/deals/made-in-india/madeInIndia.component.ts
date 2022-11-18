@@ -54,7 +54,7 @@ export class MadeInIndiaComponent {
             this.reinsertLinks();
           }, 0);
         } else {
-          console.log("MadeInIndiaComponent API data error", rawData);
+          // console.log("MadeInIndiaComponent API data error", rawData);
           this.router.navigateByUrl("/");
         }
       },

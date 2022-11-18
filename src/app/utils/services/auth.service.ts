@@ -102,4 +102,12 @@ export class LocalAuthService
         }
         return false;
     }
+ 
+    IsUserGoldMember(){
+        if(this.getUserSession()){
+            return (this.getUserSession()).customerCategory; 
+        }else
+            return false;
+         
+    }
 }

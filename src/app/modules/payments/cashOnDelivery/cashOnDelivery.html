@@ -1,5 +1,6 @@
-<section class="cash-container container">
-    <div id="cash_block" class=" pad-lr-15">
+<section class="cash-container">
+    <div id="cash_block">
+        <p class="medium-cod-heading prepaid-txt"  *ngIf="_cartService.totalPrepaidSaving>0">You are losing out on an extra {{_cartService.totalPrepaidSaving | currency:'INR' : 'symbol' : '1.0-0'}} prepaid discount by making cash on delivery.</p>
         <p class="green-txt mb-15 f-14" *ngIf="isCODEnable">Great! All products in your cart are eligible for cash on delivery.</p>
         <p class="medium-cod-heading">*Payment through Card on delivery, is subject to availability of the device.</p>
         <div class="wp-100 mar-tb-15 pad-lr-10 o-hidden">
@@ -33,7 +34,7 @@
                         <div class="container">
                             <p class="total-mount">
                                 <span class="payable-amnt">Payable Amount</span> ₹{{totalPayableAmount | number : '1.2-2'}} </p>
-                            <button (click)="confirmOrder()" type="submit" class="btn">Confirm Order</button>
+                            <button [disabled]="!isConfirmOrderDisabled" (click)="confirmOrder()" type="submit" class="btn">Confirm Order</button>
                             <!-- [disabled]="!mobileRef.valid" -->
                         </div>
                     </div>

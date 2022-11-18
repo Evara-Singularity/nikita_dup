@@ -1,6 +1,23 @@
 @import "../../scss/variables";
 @import "../../scss/inline-list-item.scss";
 @import "../../scss/utils/utilities.scss";
+
+.online-discount{
+  padding: 15px;
+  border-bottom: 1px solid var(--platinum);
+  .inline-list-icon{
+    img{
+      width: 24px;
+    }
+  }
+  .discount-txt{
+    font-size: 12px;
+    display: block;
+    line-height: 16px;
+    padding-top: 5px;
+  }
+}
+
 .coupon-skeleton {
   background: var(--white);
   .skeleton-header {

@@ -48,6 +48,7 @@ import * as $ from 'jquery';
 import { catchError, delay, filter, map, mergeMap } from "rxjs/operators";
 import { TrackingService } from "@app/utils/services/tracking.service";
 
+
 interface ProductDataArg
 {
     productBO: string;
@@ -349,7 +350,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         private modalService: ModalService,
         private cartService: CartService,
         public commonService: CommonService,
-        private dataService: DataService,
         public formBuilder: FormBuilder,
         private globalLoader: GlobalLoaderService,
         private siemaCrouselService: SiemaCrouselService,
@@ -361,7 +361,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         private _trackingService: TrackingService,
         private _navigationService:NavigationService,
         @Inject(DOCUMENT) private document,
-        @Optional() @Inject(RESPONSE) private _response: any
+        @Optional() @Inject(RESPONSE) private _response: any,
+        private globalAnalyticsService: GlobalAnalyticsService
     )
     {
         this.isServer = commonService.isServer;
@@ -1908,7 +1909,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 eventData: eventData,
             };
             this.analytics.sendGTMCall(dataLayerObj);
-            this.dataService.sendMessage(dataLayerObj);
+            this.globalAnalyticsService.sendMessage(dataLayerObj);
         }
     }
 
@@ -2500,6 +2501,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.offerSectionInstance.instance["price"] = price;
             this.offerSectionInstance.instance['gstPercentage'] = gstPercentage;
             this.offerSectionInstance.instance['productmsn'] = this.productSubPartNumber || this.defaultPartNumber;
+            this.offerSectionInstance.instance['brandName'] = this.rawProductData["brandDetails"]['brandName'];
+            this.offerSectionInstance.instance['categoryId'] = this.rawProductData["categoryDetails"][0]["categoryCode"];
+            this.offerSectionInstance.instance['categoryName'] = this.rawProductData["categoryDetails"][0]["categoryName"];
             (
                 this.offerSectionInstance.instance[
                 "viewPopUpHandler"
@@ -2982,6 +2986,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         {
             this.appPromoVisible = status;
         });
+        
     }
 
 
@@ -4097,6 +4102,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             const brand = {
                 name: this.productBrandDetails["brandName"],
                 link: this.getBrandLink(this.productBrandDetails),
+                brandId:this.productBrandDetails["idBrand"]                
             };
             contentInfo["specifications"] = {
                 attributes: this.productAttributes,
@@ -4388,5 +4394,4 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.closeProductInfoPopup();
 
     }
-
 }

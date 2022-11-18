@@ -58,6 +58,7 @@
         "angularx-social-login": "^3.5.7",
         "credit-card-type": "^9.1.0",
         "express": "^4.15.2",
+        "highcharts": "^10.2.1",
         "jquery": "^3.6.0",
         "ng-lazyload-image": "9.1.0",
         "ng2-cc-library": "^1.0.1",

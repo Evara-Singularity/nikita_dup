@@ -44,7 +44,7 @@ export class PaytmUpiComponent {
         private loaderService: GlobalLoaderService,
         private _commonService: CommonService,
         private _localAuthService: LocalAuthService,
-        private _cartService: CartService,
+        public _cartService: CartService,
         private _formBuilder: FormBuilder,
         private _dataService: DataService,
         private _analytics: GlobalAnalyticsService) {
@@ -55,10 +55,14 @@ export class PaytmUpiComponent {
         this.upiForm = this._formBuilder.group({
             "upi": ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9_.]+@[0-9a-zA-Z]+$')]] //(?!\.)(?!.*\.$)(?!.*?\.\.)
         });
-        this.getPrePaidDiscount();
-        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+        if(CONSTANTS.enableGenericPrepaid){
             this.getPrePaidDiscount();
-        })
+            this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+                this.getPrePaidDiscount();
+            })
+        }else{
+            this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
+        }
     }
 
     pay(data, valid) {
@@ -137,7 +141,7 @@ export class PaytmUpiComponent {
                 "email": addressList["email"] != null ? addressList["email"] : userSession["email"],
                 "paymentChannel": "WEB",
             },
-            "validatorRequest": this._cartService.createValidatorRequest(extra)
+            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra),
         };
         return upiData;
     }
@@ -170,7 +174,9 @@ export class PaytmUpiComponent {
     }
 
     ngOnDestroy() {
-        this.prepaidsubscription.unsubscribe();
+        if(this.prepaidsubscription){
+            this.prepaidsubscription.unsubscribe();
+        }
         this._cartService.setGenericCartSession(this.cartSesssion);
         this._cartService.orderSummary.next(this.cartSesssion);
     }

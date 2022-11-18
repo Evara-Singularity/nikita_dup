@@ -143,6 +143,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this.deliveryAddress = address;
         this._cartService.shippingAddress = address;
         this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
+        this._cartService.callShippingValueApi(this.cartSession);
     }
 
     handleBillingAddressEvent(address)

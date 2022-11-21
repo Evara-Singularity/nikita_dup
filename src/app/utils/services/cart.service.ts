@@ -71,6 +71,7 @@ export class CartService
     private _cartUpdatesChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
     public isProductRemoved: BehaviorSubject<boolean> = new BehaviorSubject(false);
     private _shippingPriceChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
+    private _shippingApiCall: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
 
     private previousUrl: string = null;
     private currentUrl: string = null;
@@ -250,7 +251,7 @@ export class CartService
      */
     getShippingObj(cartSessions)
     {
-        return CartUtils.getShippingObj(cartSessions);
+        return CartUtils.getShippingObj(cartSessions, this.shippingAddress || null);
     }
 
     getCartBySession(params): Observable<any>
@@ -836,6 +837,16 @@ export class CartService
 
     public setShippingPriceChanges(cartsession): void {
         this._shippingPriceChanges.next(cartsession);
+    }
+
+    public shippingValueApiUpdates(): Observable<any>
+    {
+        return this._shippingApiCall.asObservable()
+    }
+
+    public callShippingValueApi(cartsession): void {
+        // console.log('callShippingValueApi cartsession', cartsession);
+        this._shippingApiCall.next(cartsession);
     }
 
     // refresh and chnages to communicated 

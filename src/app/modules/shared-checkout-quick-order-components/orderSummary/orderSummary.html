@@ -36,9 +36,16 @@
                     </li>
 
                     <li>
-                        <span class="tag-label">Total Shipping</span>
+                        <span class="tag-label">
+                            Total Shipping
+                            <ng-container *ngIf="!(_cartService.shippingAddress && _cartService.shippingAddress['postCode'])" >
+                                <br/>
+                                <span class="tag-label-v2" >Charges may vary according to delivery location</span>
+                            </ng-container>
+                        </span>
                         <span class="tag-value">₹{{ _cartService.getGenericCartSession.cart.shippingCharges | mathRound
                             | number :'1.2-2' }}</span>
+                        
                     </li>
                     <li>
                         <span class="tag-label">Total Coupon Discount</span>

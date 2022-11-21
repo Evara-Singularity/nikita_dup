@@ -13,19 +13,19 @@
     <!-- <a class="s-h-l" [attr.href]="prodUrl+'/'+this.product.productUrl">{{product.productName}}</a> -->
     <div class="card-container">
         <div class="inner-container">
-            <div class="left" (click)="navigateToPDP()" *ngIf="this.product && this.product['productTags']">
-                <div *ngFor="let tag of product['productTags'] | slice:0:1   ;let i = index;" class="tags">
-                    <img [src]="tag['tagImageLink']" alt=""/>
-                </div>
+            <div class="left" (click)="navigateToPDP()">
+                <ng-container *ngIf="this.product && this.product['productTags']">
+                    <div *ngFor="let tag of product['productTags'] | slice:0:1   ;let i = index;" class="tags">
+                        <img [src]="tag['tagImageLink']" alt="" />
+                    </div>
+                </ng-container>
                 <ng-container *ngIf="isPDPImageLazyLoaded || !cardFeaturesConfig.lazyLoadImage">
-                    <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}"
-                        height="125" width="125"
-                        (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
+                    <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}" height="125"
+                        width="125" (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
                 </ng-container>
                 <ng-container *ngIf="!isPDPImageLazyLoaded && cardFeaturesConfig.lazyLoadImage">
-                    <img alt="{{product.productName}}" [src]="defaultImage"
-                        [lazyLoad]="imageCdnPath + product.mainImageMediumLink" height="125" width="125"
-                        (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
+                    <img alt="{{product.productName}}" [src]="defaultImage" [lazyLoad]="imageCdnPath + product.mainImageMediumLink"
+                        height="125" width="125" (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
                 </ng-container>
             </div>
             <div class="right">

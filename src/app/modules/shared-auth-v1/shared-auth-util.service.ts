@@ -62,7 +62,7 @@ export class SharedAuthUtilService implements OnInit
     updateCartSession(message, isCheckout, redirectUrl = null) {
         this._globalLoader.setLoaderState(true);
         this._cartService.performAuthAndCartMerge({
-            enableShippingCheck: true,
+            enableShippingCheck: false,
             redirectUrl: redirectUrl,
         }).subscribe(cartSession => {
             this._globalLoader.setLoaderState(false);

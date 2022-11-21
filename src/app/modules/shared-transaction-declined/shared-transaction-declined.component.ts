@@ -82,7 +82,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 			this.nonCods = codInfo.nonCods || [];
 			this.canCOD = (codInfo.iswithInCODLimit && codInfo.nonCods.length === 0 && codInfo.nonServiceables.length === 0);
 			this.cartSession = results[1];
-			console.log('cartSession initiateRehydration', results[1]);
+			// console.log('cartSession initiateRehydration', results[1]);
 			//upfront we are validating for time saving and as this mandatory action
 			this.validateCart();
 			this.isRehydrationDone = true;

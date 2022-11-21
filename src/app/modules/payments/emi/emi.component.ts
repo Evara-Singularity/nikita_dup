@@ -486,11 +486,11 @@ export class EmiComponent {
 
                 this.payuData = payuData;
                 this.payuData['emi_duration'] = parseInt(this.selectedEMIKey);
-                console.log('retail ==>', this.payuData);
+                // console.log('retail ==>', this.payuData);
             } else {
                 this.payuData = data;
                 this.payuData['emi_duration'] = parseInt(this.selectedEMIKey);
-                console.log('payu ==>', this.payuData);
+                // console.log('payu ==>', this.payuData);
             }
             this._commonService.isBrowser && this.updateBuyNowToLocalStorage();
             this.isValid = true;

@@ -64,7 +64,7 @@ export class MonsoonSaleComponent {
             this.initializeClicks();
           }, 0);
         } else {
-          console.log("MonsoonSaleComponent API data error", rawData);
+          // console.log("MonsoonSaleComponent API data error", rawData);
           this.router.navigateByUrl("/");
         }
       },

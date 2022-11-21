@@ -175,7 +175,7 @@ export class CategoryResolver implements Resolve<any> {
 
         const getcategoryanalyticsObs = this.http.get(get_analytics_widget_url).pipe(share(), 
         map(res=>{
-          console.log("get_analytics_widget_url",get_analytics_widget_url);
+          // console.log("get_analytics_widget_url",get_analytics_widget_url);
           const logInfo =  this._commonService.getLoggerObj(get_analytics_widget_url,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();
           logInfo.responseStatus = res["status"];
@@ -199,7 +199,7 @@ export class CategoryResolver implements Resolve<any> {
                 return of(err);
             }),
             tap(result => {
-              console.log(result);
+              // console.log(result);
                 if (isPlatformServer(this.platformId)) {
                     this.transferState.set(GET_RELATED_CATEGORY_KEY, result[0]);
                     this.transferState.set(REFRESH_KEY, result[1]);

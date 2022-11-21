@@ -35,7 +35,7 @@ export class SearchBannerCardComponent {
     analyticObj['page']['linkName'] = 'search card';
     analyticObj['page']['linkPageName'] = 'search:nudge:bottom-card';
     analyticObj['page']['channel'] = 'listing';
-    console.log(analyticObj);
+    // console.log(analyticObj);
     this.globalAnalyticService.sendAdobeCall(analyticObj, 'genericClick')
     this.fireSearchEvent$.emit(true);
   }

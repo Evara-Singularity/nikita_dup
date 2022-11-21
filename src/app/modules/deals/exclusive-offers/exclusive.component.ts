@@ -58,7 +58,7 @@ export class ExclusiveComponent {
           this.reinsertLinks();
         }, 0);
       } else {
-        console.log('ExclusiveComponent API data error', rawData);
+        // console.log('ExclusiveComponent API data error', rawData);
         this.router.navigateByUrl('/');
       }
     }, error => {

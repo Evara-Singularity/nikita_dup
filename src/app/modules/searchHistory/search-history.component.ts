@@ -20,7 +20,7 @@ export class SearchHistoryComponent {
     }
 
     removeFromLocalStorage(index) {
-        console.log(index);
+        // console.log(index);
         this.shd.splice(index, 1);
         this._lss.store('search-history', this.shd);
     }

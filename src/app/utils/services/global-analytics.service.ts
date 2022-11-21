@@ -203,12 +203,18 @@ export class GlobalAnalyticsService {
     }
   }
 
-  postClickStreamData(data){
-    if(this.isBrowser){
+  postClickStreamData(data) {
+    if (this.isBrowser) {
       // console.log('clickstream in', data);
-      this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CLICK_STREAM,{ body: data }).subscribe(res=>{
-        console.log('clickstream captured');
-      });
+      // temp fix to check if this API impacting pageload time.
+      setTimeout(() => {
+        this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CLICK_STREAM, { body: data }).subscribe(res => {
+          console.log('clickstream captured');
+        });
+      }, 6000);
+    }else{
+      console.log('clickstream called on server', data);
     }
   }
+
 }

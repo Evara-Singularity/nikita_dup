@@ -322,7 +322,7 @@ export class OrderDetailComponent implements OnInit {
       } else {
         if (detail && detail.status === 'RETURN DONE' && detail.dates.delivered.flag == false) {
           this.customerReturn = true;
-          console.log("hello");
+          // console.log("hello");
         }
         trackOrderBoxDetail.firstDate = detail.dates.delivered.date;
         trackOrderBoxDetail.firstDateLabel = 'Delivered';
@@ -515,7 +515,7 @@ export class OrderDetailComponent implements OnInit {
     * @param detail : item details
     */
   fetchTrackingData(itemDetails) {
-    console.log(itemDetails);
+    // console.log(itemDetails);
     let status = (itemDetails['status'] as string).trim().toUpperCase();
     itemDetails['hasInfo'] = false;
 
@@ -598,7 +598,7 @@ export class OrderDetailComponent implements OnInit {
     this.closePopup$.emit();
   }
   orderTrackingPopup(itemDetails) {
-    console.log('itemDetails', itemDetails);
+    // console.log('itemDetails', itemDetails);
     this._modalService.show({
       component: TrackOrderComponent,
       inputs: { itemDetails: itemDetails },
@@ -627,7 +627,7 @@ export class OrderDetailComponent implements OnInit {
     digitalData["page"] = page;
     digitalData["custData"] = this._commonService.custDataTracking;
     digitalData["order"] = order;
-    console.log(digitalData);
+    // console.log(digitalData);
     if(_satellite){
       _satellite.track("genericClick");
     }

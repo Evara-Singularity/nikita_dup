@@ -20,6 +20,7 @@ import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import IdleTimer from "../idleTimeDetect";
 import { GlobalAnalyticsService } from "./global-analytics.service";
 import { ServerLogSchema } from "../models/log.modal";
+import { LocalAuthService } from "./auth.service";
 
 @Injectable({
     providedIn: "root",
@@ -103,7 +104,8 @@ export class CommonService
         private rendererFactory: RendererFactory2,
         private _router: Router,
         private _route: ActivatedRoute,
-        @Inject(DOCUMENT) private _document: Document
+        @Inject(DOCUMENT) private _document: Document,
+        private _authService: LocalAuthService
     )
     {
         this.windowLoaded = false;
@@ -473,7 +475,7 @@ export class CommonService
     {
         // debugger;
         let fragment = "";
-        console.log("productFilterData",productFilterData)
+        // console.log("productFilterData",productFilterData)
         if (Object.keys(productFilterData).length > 0) {
             let filter = productFilterData;
             let keys = Object.keys(filter);
@@ -1278,14 +1280,14 @@ export class CommonService
         const currentRoute = !currentRouteFromCategoryFilter
             ? this.getCurrentRoute(this._router.url)
             : currentRouteFromCategoryFilter;
-        console.log("currentRoute",currentRoute);
+        // console.log("currentRoute",currentRoute);
 
         const extras: NavigationExtras = { queryParams: {} };
-        console.log("")
+        // console.log("")
         const fragmentString = this.generateFragmentString(
             this.selectedFilterData.filter
         );
-        console.log("fragmentString",fragmentString);
+        // console.log("fragmentString",fragmentString);
         const queryParams = this.generateQueryParams();
 
         extras.queryParams = queryParams;
@@ -1302,7 +1304,7 @@ export class CommonService
         if (page > 1) {
             this.selectedFilterData.page = page;
             extras.queryParams["page"] = page;
-            console.log("extras", extras);
+            // console.log("extras", extras);
         }
         this.toggleFilter(true);
         this._router.navigate([currentRoute],extras);
@@ -1393,7 +1395,7 @@ export class CommonService
     }
 
     debounceFunctionAndEvents(func, timeout = 100){
-        console.log('called : ' + timeout);
+        // console.log('called : ' + timeout);
         let timer;
         return (...args) => {
           clearTimeout(timer);
@@ -1553,22 +1555,29 @@ export class CommonService
         }
         return image;
     }
+
     callLottieScript(){
-        let script = this._renderer2.createElement('script');
-        script.src = CONSTANTS.CDN_LOTTIE_PATH;
-        script.id = 'lottieScript';
-        let scripts = this._document.getElementsByTagName('script');
-        for (var i = scripts.length; i--;) {
-            if (scripts[i].src == CONSTANTS.CDN_LOTTIE_PATH){
-                return;
+        try {
+            if(this._authService.IsUserGoldMember()){
+                let script = this._renderer2.createElement('script');
+                script.src = CONSTANTS.CDN_LOTTIE_PATH;
+                script.id = 'lottieScript';
+                let scripts = this._document.getElementsByTagName('script');
+                for (var i = scripts.length; i--;) {
+                    if (scripts[i].src == CONSTANTS.CDN_LOTTIE_PATH){
+                        return;
+                    }
+                    else{
+                        this._renderer2.appendChild(this._document.body,script);
+                        script.onload = ()=>{
+                            console.log("lottie loaded");
+                        };
+                    }
+                 }
             }
-            else{
-                this._renderer2.appendChild(this._document.body,script);
-                script.onload = ()=>{
-                    console.log("loaded");
-                };
-            }
-         }
+        } catch (error) {
+            console.log('callLottieScript', error);
+        }
     }   
   
     showgoldMembershipPopup(){

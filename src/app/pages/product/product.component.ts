@@ -163,6 +163,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     alreadyLiked: boolean = true;
     //recently view
     hasRecentlyView = true;
+    msn:string;
 
     productShareInstance = null;
     @ViewChild("productShare", { read: ViewContainerRef })
@@ -401,6 +402,21 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.attachBackClickHandler();
             this.navigationOnFragmentChange();
         }
+        this.getProductTag()
+    }
+
+    getProductTag(){
+        this.globalLoader.setLoaderState(true);
+        this.productService.getProductTag(this.msn).subscribe(response => {
+            if (response['statusCode'] == 200 && response['data'] != null) {
+                this.productTags=response['data']
+                this.getRefinedProductTags();
+            } else {
+                this.productTags=null;
+            }
+            this.globalLoader.setLoaderState(false)
+        })
+
     }
 
     navigationOnFragmentChange() {
@@ -750,6 +766,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 : this.rawProductData["partNumber"];
         this.productSubPartNumber = partNumber;
 
+        this.msn=partNumber;
         // mapping general information
         this.productName = this.rawProductData["productName"];
         this.isProductReturnAble = this.rawProductData["returnable"] || false;
@@ -763,8 +780,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.productKeyFeatures = this.rawProductData["keyFeatures"];
         this.productVideos = this.rawProductData["videosInfo"];
         this.productDocumentInfo = this.rawProductData["documentInfo"];
-        this.productTags = this.rawProductData["productTags"];
-        this.getRefinedProductTags();
+        // this.productTags = this.rawProductData["productTags"];
+        // this.getRefinedProductTags();
         this.productAttributes =
             this.rawProductData["productPartDetails"][partNumber]["attributes"] || [];
         this.productRating =
@@ -3529,11 +3546,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
 
         let ele = []; // product tags for adobe;
-        this.productTags.forEach((element) =>
-        {
-            ele.push(element.name);
-        });
-        this.productTags = this.commonService.sortProductTagsOnPriority(this.productTags);
+        // this.productTags.forEach((element) =>
+        // {
+        //     ele.push(element.name);
+        // });
+        // this.productTags = this.commonService.sortProductTagsOnPriority(this.productTags);
         const tagsForAdobe = ele.join("|");
 
         let page = {
@@ -3584,10 +3601,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
 
         let ele = []; // product tags for adobe;
-        this.productTags.forEach((element) =>
-        {
-            ele.push(element.name);
-        });
+        // this.productTags.forEach((element) =>
+        // {
+        //     ele.push(element.name);
+        // });
         const tagsForAdobe = ele.join("|");
 
         let page = {
@@ -3666,10 +3683,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             taxo3 = this.productCategoryDetails["taxonomyCode"].split("/")[2] || "";
         }
         let ele = []; // product tags for adobe;
-        this.productTags.forEach((element) =>
-        {
-            ele.push(element.name);
-        });
+        // this.productTags.forEach((element) =>
+        // {
+        //     ele.push(element.name);
+        // });
         const tagsForAdobe = ele.join("|");
 
         this.analytics.sendGTMCall({
@@ -4217,12 +4234,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         const TAXNONS = this.taxons;
         const TAGS = [];
 
-        if (this.productTags && this.productTags.length > 0) {
-            this.productTags.forEach((element) =>
-            {
-                TAGS.push(element.name);
-            });
-        }
+        // if (this.productTags && this.productTags.length > 0) {
+        //     this.productTags.forEach((element) =>
+        //     {
+        //         TAGS.push(element.name);
+        //     });
+        // }
 
         const tagsForAdobe = TAGS.join("|");
         return {

@@ -120,5 +120,6 @@ export const ENDPOINTS = {
   TOKEN_AUTHENTICATION:'/createProductUrl/tokenAuthentication',
   GET_ADD_SIMILAR_PRODUCT_ON_CART:'/search/similarProducts/search',
   GET_COUPOUN_ON_BRAND_CATEGORY:'/cmsapi/prepaidDiscount/getByBrandNameAndCategoryCode',
-  CLICK_STREAM: '/clickStream/clickStreamData'
+  CLICK_STREAM: '/clickStream/clickStreamData',
+  PRODUCT_TAGS:'/cmsapi/getTagsByMsn?msn='
 };

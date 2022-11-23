@@ -58,6 +58,7 @@ export class BussinessOrderComponent {
     "EXCHANGE APPROVED",
     "EXCHANGE PICKED",
   ];
+  readonly PAYMENT_PENDING_STATUS = "AWAITING PAYMENT CONFIRMATION";
   currentOrderTotalAmount = 0.0;
   currentOrderShippingCharges = 0.0;
   currentOrderDiscountCharges = 0.0;

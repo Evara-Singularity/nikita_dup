@@ -50,7 +50,7 @@
                                     <i class="icon-next"></i>
                                 </ng-template>
                             </div>
-                            <div class="pending-order-container">
+                            <div class="pending-order-container" *ngIf="detail.status == PAYMENT_PENDING_STATUS " >
                                 <p><span>IMPORTANT:</span> We are continuously checking the status of your payment. We request you to not make multiple payments and wait for a minutes till the status is updated in the Passbook. Don’t worry, your money is safe. Bank may take upto 3-5 working days to confirm the final status of your payment. In case this payment fails, your bank will automatically refund money to your account.</p>
                             </div>
                         </div>

@@ -67,8 +67,7 @@ export class ProductCheckPincodeComponent implements OnInit
                 }
             ],
             "totalPayableAmount": this.pageData['productPrice'],
-            // DO NOT REMOVE will be activated later
-            // "pincode":pincode
+            "pincode":pincode
         }
         this._cartService.getShippingValue(request).subscribe((response) =>
         {

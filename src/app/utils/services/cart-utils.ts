@@ -89,10 +89,9 @@ export class CartUtils
         if (cartSessions && cartSessions['cart']) {
             sro['totalPayableAmount'] = cartSessions['cart']['totalPayableAmount'];
         }
-        // DO NOT REMOVE will be activated later
-        // if(shippingAddress && shippingAddress['postCode']){
-        //     sro['pincode'] = shippingAddress['postCode'];
-        // }
+        if(shippingAddress && shippingAddress['postCode']){
+            sro['pincode'] = shippingAddress['postCode'];
+        }
         return sro;
     }
 

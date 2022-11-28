@@ -9,8 +9,7 @@ const routes: Routes = [
     path: '',
     component: ProductComponent,
     resolve: {
-      product: ProductResolver,
-      productSecondaryApisData: ProductSectionResolver
+      product: ProductResolver
     }
   }
 ];

@@ -190,6 +190,69 @@
     </div>
 </div>
 
+
+
+<!-- category+brand+validity popup -->
+<app-bottom-menu *ngIf="showListPopup" (outData$)="togglePopUp2()">
+    <div content>
+        <div class="list-of-brand-e-gifts">
+            <div class="top-head">
+                <div class="th-left">
+                    <h2>List of 200+ brands e-Gift<br> vouchers & validity</h2>
+                </div>
+                <div class="th-right" (click)="togglePopUp2()">
+                    <img src="assets/img/close-circle-fill.svg">
+                </div>
+            </div>
+            <div class="table-area">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Brands</th>
+                            <th>Validity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let category of categoryList">
+                            <tr *ngFor="let brands of categoryBrandInfo[category]">
+                                <td>{{category}}</td>
+                                <td>{{brands.brandName}}</td>
+                                <td>{{brands.validity}}</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</app-bottom-menu>
+
+
+<!-- success popup -->
+<app-bottom-menu *ngIf="showSuccessPopup" (outData$)="togglePopUp1()">
+    <div content>
+        <div class="thanks-pop">
+            <div class="top-cross-area" (click)="togglePopUp1()">
+                <img src="assets/img/close-circle-fill.svg">
+            </div>
+            <div class="pop-img-area">
+                <img src="assets/img/checkbox-circle-fill-m.svg">
+            </div>
+            <div class="pop-text-area">
+                <h5>Thanks for submitting the query, we will call you with the best discounts within 30 min.</h5>
+            </div>
+            <div class="pop-rnr" (click)="togglePopUp1()">
+                <button>RAISE NEW REQUEST</button>
+            </div>
+        </div>
+    </div>
+</app-bottom-menu>
+
+
+
+
+<!-- rate-experiance code -->
 <div class="rate-exp">
     <div class="rate-exp-inner rate-exp-one pwa-row">
         <div class="exp-stars">
@@ -351,60 +414,3 @@
         </div>
     </div>
 </div>
-
-<!-- category+brand+validity popup -->
-<app-bottom-menu *ngIf="showListPopup" (outData$)="togglePopUp2()">
-    <div content>
-        <div class="list-of-brand-e-gifts">
-            <div class="top-head">
-                <div class="th-left">
-                    <h2>List of 200+ brands e-Gift<br> vouchers & validity</h2>
-                </div>
-                <div class="th-right" (click)="togglePopUp2()">
-                    <img src="assets/img/close-circle-fill.svg">
-                </div>
-            </div>
-            <div class="table-area">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Brands</th>
-                            <th>Validity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ng-container *ngFor="let category of categoryList">
-                            <tr *ngFor="let brands of categoryBrandInfo[category]">
-                                <td>{{category}}</td>
-                                <td>{{brands.brandName}}</td>
-                                <td>{{brands.validity}}</td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</app-bottom-menu>
-
-
-<!-- success popup -->
-<app-bottom-menu *ngIf="showSuccessPopup" (outData$)="togglePopUp1()">
-    <div content>
-        <div class="thanks-pop">
-            <div class="top-cross-area" (click)="togglePopUp1()">
-                <img src="assets/img/close-circle-fill.svg">
-            </div>
-            <div class="pop-img-area">
-                <img src="assets/img/checkbox-circle-fill-m.svg">
-            </div>
-            <div class="pop-text-area">
-                <h5>Thanks for submitting the query, we will call you with the best discounts within 30 min.</h5>
-            </div>
-            <div class="pop-rnr" (click)="togglePopUp1()">
-                <button>RAISE NEW REQUEST</button>
-            </div>
-        </div>
-    </div>
-</app-bottom-menu>

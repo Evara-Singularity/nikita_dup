@@ -110,5 +110,18 @@
                 }
             }
         }
+        .pending-order-container{
+            border: 1px solid var(--orange-red);
+            border-radius: 0 0 8px 8px;
+            padding: 10px;
+            background: #FFF1EA;
+            p{
+                font-size: $small-font;
+                line-height: $small-line-height;
+                span{
+                    font-weight: $font-bold;
+                }
+            }
+        }
     }
 }

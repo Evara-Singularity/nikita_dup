@@ -7,8 +7,24 @@
     text-align: center;
     padding: 10px;
     font-size: $medium-font;
-    margin-top:-5px;
+    margin-top: -5px;
     margin-bottom: 5px;
     width: 100%;
     text-transform: none;
+}
+
+.large-text {
+    font-weight: $font-bold;
+    font-size: $large-font;
+}
+
+.small-text {
+    font-weight: $font-bold;
+    font-size: $small-font;
+}
+
+.small-text-v2{
+    font-size: $small-font;
+    color: var(--slimy-green);
+    font-weight: $font-bold;
 }

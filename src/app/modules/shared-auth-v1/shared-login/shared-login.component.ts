@@ -274,6 +274,9 @@ export class SharedLoginComponent implements OnInit
                         return;
                     }
                 } else {
+                    if (backRedirectUrl != 'null'){
+                        this._router.navigateByUrl(backRedirectUrl);
+                    }else
                     this._router.navigateByUrl('/');
                 }
             }

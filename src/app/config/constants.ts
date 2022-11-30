@@ -419,7 +419,7 @@ export const CONSTANTS = {
   NEFT_AMOUNT_LMIT: 2000,
   EMI_MINIMUM_AMOUNT: 3000,
   CUSTOMER_CARE_TIME:{
-    'call_timing_text': 'Call Timings: 9:00 AM - 8:00 PM (Monday to Saturday)'
+    'call_timing_text': 'Call Timings: 9:00 AM - 6:00 PM (Monday to Saturday)'
   },
   DEFAULT_USER_NAME_PLACE_HOLDER:'User',
   SEARCH_ABT_FLAG: 'y',

@@ -88,6 +88,7 @@ export const ENDPOINTS = {
   GET_CATEGORY: "/category/getcategory",
   GET_CATEGORY_ANALYTICS: "/category/productsReport",
   GET_BUCKET: "/bucketAggregation",
+  GET_CATEGORY_BUCKET: "/category/bucketAggregation",
   GET_BRANDS: "/brand/getbrand",
   GET_CMS_CONTROLLED_PAGES: "/cmsapi/getCmsControlledPage?requestParam=article-1",
   GET_CMS_LAYOUT: "/cmsapi/getLayoutJsonByCode?layoutCode=",

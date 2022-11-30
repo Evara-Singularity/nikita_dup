@@ -36,13 +36,13 @@ export class LoggerService {
     // this.isLoggingEnabled && console.error(...args);
   }
 
-  apiServerLog(data: ServerLogSchema) {
+  apiResolverLog(data: ServerLogSchema) {
 
     if (this.isServer) {
       data.startDateTimeV2 = new Date(data.startDateTime).toLocaleString('en-GB'),
       data.endDateTimev2 = new Date(data.endDateTime).toLocaleString('en-GB'),
       data.apiRequestTime = data.endDateTime - data.startDateTime;
-      // console.log('apiServerLog', JSON.stringify(data));
+      console.log('apiResolverLog', JSON.stringify(data));
       // fs.appendFile(this.PATH_TO_LOG_FOLDER, JSON.stringify(data), function (err) {
       //   if (err) {
       //     console.log('apiServerLog', err);
@@ -51,7 +51,26 @@ export class LoggerService {
       // });
     } else {
       // console.log("logger service is called")
-      // this.isLoggingEnabled && console.log(data);
+      // console.log(data);
+    }
+  }
+
+  apiServerLog(data: ServerLogSchema) {
+
+    if (this.isServer) {
+      data.startDateTimeV2 = new Date(data.startDateTime).toLocaleString('en-GB'),
+      data.endDateTimev2 = new Date(data.endDateTime).toLocaleString('en-GB'),
+      data.apiRequestTime = data.endDateTime - data.startDateTime;
+      console.log('apiServerLog', JSON.stringify(data));
+      // fs.appendFile(this.PATH_TO_LOG_FOLDER, JSON.stringify(data), function (err) {
+      //   if (err) {
+      //     console.log('apiServerLog', err);
+      //     // console.log(err);
+      //   }
+      // });
+    } else {
+      // console.log("logger service is called")
+      // console.log(data);
     }
   }
 

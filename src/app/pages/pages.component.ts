@@ -80,6 +80,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.initialize();
     this._commonService.getGoldMembershipPopup().subscribe(res=>{
       this.showGoldMembershipPopUp();
    })
@@ -90,7 +91,15 @@ export class PagesComponent implements OnInit, AfterViewInit {
     const queryParams = this._aRoute.snapshot.queryParams;
     const orderId = queryParams['orderId'];
     if (orderId) return;
-    this.initialize();
+    this.intiaizeV2();
+  }
+
+  intiaizeV2(){
+    // separately checking for back param, because on angular router navigation this param is not getting updated
+    if (this.isBrowser) {
+      this.isRoutedBack = window.location.toString().includes('back=1');
+      this.checkAndRedirect();
+    }
   }
 
   initialize()
@@ -100,9 +109,6 @@ export class PagesComponent implements OnInit, AfterViewInit {
      * Also, for page refresh
      */
     if (this.isBrowser) {
-      // separately checking for back param, because on angular router navigation this param is not getting updated
-      this.isRoutedBack = window.location.toString().includes('back=1');
-      this.checkAndRedirect();
       // this.dataService.startHistory();
       this.setEnvIdentiferCookie();
       this.setConnectionType();

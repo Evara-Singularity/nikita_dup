@@ -324,6 +324,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     isAskQuestionPopupOpen: boolean;
     mainProductURL: string;
 
+    // footer accordian vars
+    relatedLinkRes: any = null
+    categoryBucketRes: any = null
+    similarCategoryRes: any = null 
+
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);
@@ -401,8 +406,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
             this.navigationOnFragmentChange();
+            this.getProductTag()
         }
-        this.getProductTag()
+        
     }
 
     getProductTag(){
@@ -516,6 +522,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.route.data.subscribe(
             (rawData) =>
             {
+                // console.log(rawData["product"]);
                 if (!rawData["product"]["error"] && rawData["product"][0]["active"]==true) {
                     if (
                         rawData["product"][0]["productBO"] &&
@@ -532,10 +539,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                             },
                             rawData["product"][0]
                         );
-                        // Load secondary APIs data from resolver only when product data is received
-                        if (!rawData["productSecondaryApisData"]["error"]) {
-                            this.getSecondaryApiData(rawData["productSecondaryApisData"]);
-                        }
+                        this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6]);
                     } else {
                         this.showLoader = false;
                         this.globalLoader.setLoaderState(false);
@@ -588,21 +592,29 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
-    getSecondaryApiData(secondaryRawData)
-    {
-        if (secondaryRawData[0]["data"]) {
-            const rawReviews = Object.assign({}, secondaryRawData[0]["data"]);
+    getSecondaryApiData(reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes) {
+        // console.log({
+        //     reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes
+        // });
+        if (reviewsDataApiData && reviewsDataApiData["data"]) {
+            const rawReviews = Object.assign({}, reviewsDataApiData["data"]);
             rawReviews["reviewList"] = rawReviews["reviewList"] as [];
             this.setReviewsRatingData(rawReviews);
             this.rawReviewsData = Object.assign({}, rawReviews);
         }
 
-        if (secondaryRawData[1] && Array.isArray(secondaryRawData[1])) {
-            this.setProductaBreadcrum(secondaryRawData[1]);
+        if (breadcrumbApiData && Array.isArray(breadcrumbApiData)) {
+            this.setProductaBreadcrum(breadcrumbApiData);
         }
-        if (secondaryRawData[2]["data"]) {
-            this.setQuestionsAnswerData(secondaryRawData[2]);
+
+        if (questAnsApiData && questAnsApiData["data"]) {
+            this.setQuestionsAnswerData(questAnsApiData);
         }
+        
+        this.relatedLinkRes = relatedLinkRes;
+        this.categoryBucketRes = categoryBucketRes;
+        this.similarCategoryRes = similarCategoryRes;
+
     }
 
     private duplicateOrderCheck(duplicateRawResponse)

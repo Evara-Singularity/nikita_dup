@@ -213,7 +213,7 @@ export class GlobalAnalyticsService {
         });
       }, 6000);
     }else{
-      console.log('clickstream called on server', data);
+      // console.log('clickstream called on server', data);
     }
   }
 

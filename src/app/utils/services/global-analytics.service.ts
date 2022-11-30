@@ -32,20 +32,20 @@ export class GlobalAnalyticsService {
 
   sendAdobeCall(data: any, trackingname = "genericPageLoad") {
     // console.log(environment["ISCHROME"]);
-    if (_satellite && _satellite.track) {
+    if (this.isBrowser && _satellite && _satellite.track) {
       digitalData = Object.assign({}, data);
       _satellite.track(trackingname);
     }
   }
 
   sendGTMCall(data: any) {
-    if (dataLayer) {
+    if (this.isBrowser && dataLayer) {
       dataLayer.push(data);
     }
   }
 
   sendToClicstreamViaSocket(data) {
-    if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
+    if (this.isBrowser && navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
       const user = this.localStorageService.retrieve('user');
       const previousUrl = localStorage.getItem("previousUrl");
       var trackingData = {
@@ -68,7 +68,9 @@ export class GlobalAnalyticsService {
   }
 
   sendToClicstreamViaAPI(data) {
-    trackData(data);
+    if(this.isBrowser){
+      trackData(data);
+    }
   }
 
   sendPDPAddToCartTracking(product?, channel?, linkName?) {
@@ -176,7 +178,7 @@ export class GlobalAnalyticsService {
   }
 
   sendMessage(msg: any) {
-    if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
+    if (this.isBrowser && navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
       var userSession = this._localAuthService.getUserSession();
       const previousUrl = localStorage.getItem("previousUrl");
       let prevUrl;
@@ -211,7 +213,7 @@ export class GlobalAnalyticsService {
         this._dataService.callRestful("POST", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CLICK_STREAM, { body: data }).subscribe(res => {
           console.log('clickstream captured');
         });
-      }, 6000);
+      }, 3000);
     }else{
       console.log('clickstream called on server', data);
     }

@@ -69,7 +69,7 @@ export class ContactComponent {
         },
         "email": "care@moglix.com",
         "sameAs": [
-          "https://www.facebook.com/moglix.global/", "https://www.linkedin.com/company/moglix", "https://twitter.com/moglix", "https://en.wikipedia.org/wiki/Moglix"]
+          "https://www.facebook.com/moglix.global/", "https://www.linkedin.com/company/moglix", "https://twitter.com/moglix"]
       }
 
     )

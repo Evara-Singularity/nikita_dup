@@ -189,13 +189,19 @@ export class CategoryResolver implements Resolve<any> {
         }));
 
         const getInformationVideoObs = this.http.get(get_information_video_url).pipe(share(), 
-        map(res=>{
-          const logInfo =  this._commonService.getLoggerObj(get_information_video_url,'GET',startTime)
-          logInfo.endDateTime = new Date().getTime();
-          logInfo.responseStatus = res["status"];
-          this._loggerService.apiServerLog(logInfo);
-          return res;
-        }));
+          map(res => {
+            const logInfo = this._commonService.getLoggerObj(get_information_video_url, 'GET', startTime)
+            logInfo.endDateTime = new Date().getTime();
+            logInfo.responseStatus = res["status"];
+            this._loggerService.apiServerLog(logInfo);
+            // console.log('res  ==>', res);
+            return res;
+          }), catchError((err) => {
+            console.log('getInformationVideoObs error==>', err);
+            // this.loaderService.setLoaderState(false);
+            return of([]);
+            // return of(err);
+          }));
         
         const apiList = [
           getRelatedCategoriesObs, 
@@ -210,6 +216,7 @@ export class CategoryResolver implements Resolve<any> {
 
         return forkJoin(apiList).pipe(
             catchError((err) => {
+              console.log('category forkJoin error ==>', err);
                 this.loaderService.setLoaderState(false);
                 return of(err);
             }),

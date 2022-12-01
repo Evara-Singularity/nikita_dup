@@ -104,7 +104,7 @@ export class CategoryComponent {
 
             // set API result data
             this.API_RESPONSE = result;
-            console.log("this.API_RESPONSE", this.API_RESPONSE)
+            // console.log("this.API_RESPONSE", this.API_RESPONSE)
 
             this._productListService.excludeAttributes = [];
 
@@ -124,8 +124,9 @@ export class CategoryComponent {
             this.setFaqSchema(this.API_RESPONSE.category[2]);
 
             //set youtube informative video data
-            if(this.API_RESPONSE.category[8].data.length>0){
-            this.informativeVideosData=this.API_RESPONSE.category[8].data}
+            if (this.API_RESPONSE.category[8] && this.API_RESPONSE.category[8].data && this.API_RESPONSE.category[8].data.length > 0) {
+                this.informativeVideosData = this.API_RESPONSE.category[8].data
+            }
 
             // Update total product account
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE['category'][1].productSearchResult.totalCount;

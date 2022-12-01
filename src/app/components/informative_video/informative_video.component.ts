@@ -45,7 +45,6 @@ export class Informative_videoComponent implements OnInit {
 @NgModule({
   imports: [
     CommonModule,
-    ProductCardVerticalContainerModule,
     YTThumnailPipeModule
   ],
   declarations: [

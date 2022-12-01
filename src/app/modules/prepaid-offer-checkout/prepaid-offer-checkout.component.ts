@@ -10,6 +10,7 @@ import { CartService } from '@app/utils/services/cart.service';
 export class PrepaidOfferCheckoutComponent implements OnInit {
 
   @Input('displayMode') displayMode: 'LABEL' | 'FLOATING' = 'FLOATING';
+  @Input('displayName') displayText: string = 'UPI payment';
   constructor(public _cartService: CartService) { }
 
   ngOnInit() {

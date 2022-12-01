@@ -33,7 +33,7 @@
     }
 
     &.before-init {
-        height: 360px;
+        // height: 360px;
         overflow: hidden;
 
         &.hasOneImage {
@@ -44,12 +44,12 @@
 .prod-carsl {
     background: #fff;
     .prod-carsl-pseudo{
-        height: 330px;
+        // height: 330px;
         .img-block-pseudo{
             .inner-block-pseudo{
                 .element-pseudo{
                     img{
-                        height: 100%;
+                        // height: 100%;
                     }
                 }
             }
@@ -78,19 +78,19 @@
 
     .img-block {
         width: 100%;
-        height: 330px;
+        // height: 330px;
         background: white;
         position: relative;
-        padding: 30px;
+        // padding: 30px;
 
         .inner_block {
-            height: 100%;
+            // height: 100%;
             .element{
-                height: 100%;
+                // height: 100%;
             }
             img{
                 width: 100%;
-                height: 100%;
+                // height: 100%;
             }
         }
     }

@@ -472,9 +472,6 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     }
     tabIndexUpdated(index, pinCodeStatus: Array<any>) {
         let isShippingAddressValid: boolean = false;
-        //alert(JSON.stringify(pinCodeStatus));
-        // let pinCodeStatus=this.checkPinCodeAddress();
-        // alert(JSON.stringify(pinCodeStatus));
         let serviceAvailable: boolean = pinCodeStatus.every((element) => {
             return element.serviceAvailable == true;
         })

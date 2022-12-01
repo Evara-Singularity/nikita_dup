@@ -140,6 +140,7 @@ export class PaytmUpiComponent {
                 "phone": addressList["phone"] != null ? addressList["phone"] : userSession["phone"],
                 "email": addressList["email"] != null ? addressList["email"] : userSession["email"],
                 "paymentChannel": "WEB",
+                "paytmUpi": this.upi
             },
             "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra),
         };

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, NgModule, OnInit } from '@angular/core';
+import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { CartService } from '@app/utils/services/cart.service';
 
 @Component({
@@ -9,6 +9,8 @@ import { CartService } from '@app/utils/services/cart.service';
 })
 export class PrepaidOfferCheckoutComponent implements OnInit {
 
+  @Input('displayMode') displayMode: 'LABEL' | 'FLOATING' = 'FLOATING';
+  @Input('displayName') displayText: string = 'UPI payment';
   constructor(public _cartService: CartService) { }
 
   ngOnInit() {

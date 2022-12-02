@@ -298,10 +298,12 @@ export class PaymentComponent implements OnInit
   callApisAsyncly() {
     this.isShowLoader = true;
     const userSession = this._localAuthService.getUserSession();
+    // ?userEmail=7044317877&userType=retail&userId=3395297&phone=7044317877
     const data = {
-      userEmail: userSession && userSession["email"] ? userSession["email"] : "",
+      userEmail: userSession && userSession["email"] ? userSession["email"] : ((userSession["phone"]) ? userSession["phone"] : ''),
       userType: this.invoiceType,
-      userId: userSession["userId"]
+      userId: userSession["userId"],
+      phone: userSession["phone"] || ''
     };
     const savedCards = this._paymentService.getSavedCards(data, this.invoiceType)
     const paymentsMethodData = this._paymentService.getPaymentsMethodData(this.invoiceType);

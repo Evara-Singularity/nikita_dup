@@ -74,6 +74,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
     this.lastLevelCategory; 
+    console.log("in shared listing ",this.informativeVideosData)
   }
   
  

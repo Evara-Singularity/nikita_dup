@@ -37,7 +37,7 @@ export class BrandComponent {
     accordiansDetails: AccordiansDetails[] = [];
     popularCategories = [];
     couponForbrandCategory: Object= null;
-
+    informativeVideosData:any;    
     constructor(
         public _activatedRoute: ActivatedRoute,
         public _router: Router,
@@ -110,6 +110,16 @@ export class BrandComponent {
                     this.genrateAndUpdateBrandFooterData();
                 }
             });
+
+            //set youtube informative video data
+            if (this.API_RESPONSE['brand'][1][0].categoryName &&
+                this.API_RESPONSE['brand'][6] &&
+                (this.API_RESPONSE['brand'][6].status == true) &&
+                this.API_RESPONSE['brand'][6].data &&
+                this.API_RESPONSE['brand'][6].data.length > 0) {
+                this.informativeVideosData = this.API_RESPONSE['brand'][6].data
+            }
+
             // handle if brand is not active or has zero product count
             this.handleIfBrandIsNotActive();
             // Send Adobe Tracking Data

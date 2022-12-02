@@ -124,7 +124,10 @@ export class CategoryComponent {
             this.setFaqSchema(this.API_RESPONSE.category[2]);
 
             //set youtube informative video data
-            if (this.API_RESPONSE.category[8] && this.API_RESPONSE.category[8].data && this.API_RESPONSE.category[8].data.length > 0) {
+            if (this.API_RESPONSE.category[8] && 
+                (this.API_RESPONSE.category[8].status == true) && 
+                this.API_RESPONSE.category[8].data && 
+                this.API_RESPONSE.category[8].data.length > 0) {
                 this.informativeVideosData = this.API_RESPONSE.category[8].data
             }
 

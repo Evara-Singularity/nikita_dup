@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { ModalService } from '@app/modules/modal/modal.service';
-import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
 import { YoutubePlayerComponent } from '../youtube-player/youtube-player.component';
 
@@ -13,8 +12,8 @@ import { YoutubePlayerComponent } from '../youtube-player/youtube-player.compone
 export class Informative_videoComponent implements OnInit {
 
   @Input() informativeVideosData: any;
+  @Input() categoryName:string;
   numberOfInformativeVideos: number = 0
-  processedInformativeData: any
   youtubeModalInstance = null;
 
   constructor(

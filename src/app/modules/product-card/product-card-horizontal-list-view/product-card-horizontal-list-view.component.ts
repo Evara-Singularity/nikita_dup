@@ -65,4 +65,10 @@ export class ProductCardHorizontalListViewComponent extends ProductCardCoreCompo
     // return null
   }
 
+  stopNavigation(event){
+    event.preventDefault();
+    event.stopPropagation();
+    return false;
+  }
+
 }

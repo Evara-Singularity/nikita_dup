@@ -2,12 +2,14 @@
     <!-- YOUTUBE FEATURE START -->
     <div class="youtubeThumbnail-listing"
         *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0 && this.youtubeThumbnail">
-        <div class="thumbnail"
-            [lazyLoad]="youtubeThumbnail"
-            [defaultImage]="defaultImage" >
-            <input class="youtube_icon" (click)="showYTVideo(product['videoInfo'][0]['link']);$event.stopPropagation();"
-                type="image" src="/assets/img/video_icon.svg" alt="text">
-        </div>
+        <a  [title]="product['videoInfo'][0]['link']" (click)="stopNavigation($event)" >
+            <div class="thumbnail"
+                [lazyLoad]="youtubeThumbnail"
+                [defaultImage]="defaultImage" >
+                <input class="youtube_icon" (click)="showYTVideo(product['videoInfo'][0]['link']);$event.stopPropagation();"
+                    type="image" src="/assets/img/video_icon.svg" alt="text">
+            </div>
+        </a>
     </div>
     <!-- YOUTUBE FEATURE ENDS -->
     <!-- <a class="s-h-l" [attr.href]="prodUrl+'/'+this.product.productUrl">{{product.productName}}</a> -->

@@ -4,7 +4,13 @@ import { Pipe, PipeTransform, NgModule } from '@angular/core';
 })
 export class YTThumbnailPipe implements PipeTransform {
     transform(link: string, type: string): any {
-        let key = link.split('/')[4].split('?')[0];
+        let key = '';
+        if(link.includes('watch?v=')){
+            const key2 = link.split('watch?v=');
+            key = key2[key2.length - 1];
+            return 'https://img.youtube.com/vi/' + key + '/' + type + '.jpg';
+        }
+        key = link.split('/')[4].split('?')[0];
         return 'https://img.youtube.com/vi/' + key + '/' + type + '.jpg';
     }
 }

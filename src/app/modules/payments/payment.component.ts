@@ -327,7 +327,7 @@ export class PaymentComponent implements OnInit
       this.isSavedCardExist = true;
       this.paymentBlock = this.globalConstants["savedCard"];
     }
-    this.updatePaymentBlock(this.globalConstants['upi'], 'upi', 'upiSection');
+    // this.updatePaymentBlock(this.globalConstants['upi'], 'upi', 'upiSection');
   }
 
   handlePaymentsData(response)

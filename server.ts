@@ -65,7 +65,7 @@ export function app() {
       requestLogObj.endTime = new Date().getTime(),
       requestLogObj.endTimeV2 = (new Date).toLocaleString('en-GB'),
       requestLogObj.processTime = requestLogObj.endTime - requestLogObj.startTime;
-      // console.log('PageLoadTimeLog :', requestLogObj); 
+      console.log('PageLoadTimeLog :', requestLogObj); 
       if(html){
         res.status(html ? res.statusCode : 500).send(appendImagePreloads(html) || err.message);
       }else{

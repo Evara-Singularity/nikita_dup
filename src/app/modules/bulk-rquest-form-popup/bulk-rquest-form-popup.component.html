@@ -1,0 +1,156 @@
+<!-- <app-pop-up (outData$)="outData($event)" [headerType]="'pop-up-header1'" [data]="{headerText: 'Write Question'}"> -->
+
+    <div class="rfq-phase2-container">
+        <div class="header-strip">
+            <i class="icon-back-arrow"></i>
+            <div class="heading-name">
+                <h2>Get customise & best price</h2>
+                <p>Just in 2 simple steps</p>
+                <i class="icon-circle_check succes-icon"></i>
+            </div>
+        </div>
+        <div class="stepper-wrapper">
+            <div class="stepper-item active">
+                <div class="step-counter active">1</div>
+                <i class="icon-circle_check"></i>
+            </div>
+            <div class="stepper-item active">
+                <div class="step-counter">2</div>
+            </div>
+        </div>
+    </div>
+    
+    <ng-container [ngSwitch]="stepState">
+        <ng-container *ngSwitchCase="stepNameLogin">
+            <div class="card mb-10">
+                <div class="material-form">
+                    <div class="outline-input-label">
+                        <label>
+                            <input type="text" name="">
+                            <span class="label">Enter Product Type*</span>
+                        </label>
+                    </div>
+                    <div class="multiple-form-field quantity-block">
+                        <div class="outline-input-label">
+                            <p class="required-qty-txt">Enter your required quantity</p>
+                        </div>
+                        <div class="outline-input-label qty-field">
+                            <label>
+                                <input type="text" name="" placeholder="Enter Quantity">
+                            </label>
+                            <div class="qty-dropdown">
+                                <p>Select from suggested Qty</p>
+                                <ul>
+                                    <li>1 qty</li>
+                                    <li>2 - 5 qty</li>
+                                    <li>6 - 10 qty</li>
+                                    <li>11 - 15 qty</li>
+                                    <li>16 - 1100 qty</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="outline-input-label mb-0">
+                        <label>
+                            <input type="text" name="">
+                            <span class="label">Budget (Optional)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="material-form">
+                    <div class="outline-input-label">
+                        <label>
+                            <input type="tel" name="">
+                            <span class="label">Enter Mobile Number*</span>
+                        </label>
+                    </div>
+                </div>
+                <button class="btn secondry-btn disabled">NEXT</button>
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="stepNameOtp">
+    
+        </ng-container>
+        <ng-container *ngSwitchCase="stepNameRfqForm">
+            <div class="card pad-15">
+                <h2 class="pb-15">Your nature of purchase</h2>
+                <div class="material-form">
+                    <div class="outline-input-label">
+                        <label>
+                            <input type="tel" name="">
+                            <span class="label">Enter GST no.</span>
+                        </label>
+                    </div>
+                    <div class="outline-input-label">
+                        <label>
+                            <input type="tel" name="">
+                            <span class="label">Enter Email-ID</span>
+                        </label>
+                    </div>
+                    <div class="outline-input-label">
+                        <label>
+                            <textarea></textarea>
+                            <span class="label">Add product description (Optional)</span>
+                        </label>
+                    </div>
+                    <button class="btn secondry-btn disabled">NEXT</button>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="stepNameConfimation">
+            <div class="thanks-query-container">
+                <div class="heading-txt">
+                    <h2>Thanks, for submitting the query</h2>
+                    <p>Below is your request summary</p>
+                </div>
+                <div class="card">
+                    <div class="material-form">
+                        <div class="outline-input-label">
+                            <label>
+                                <input type="text" name="">
+                                <span class="label">Product Name</span>
+                            </label>
+                        </div>
+                        <div class="multiple-form-field quantity-block">
+                            <div class="outline-input-label">
+                                <label>
+                                    <input type="text" name="">
+                                    <span class="label">Qty</span>
+                                </label>
+                            </div>
+                            <div class="outline-input-label">
+                                <label>
+                                    <input type="text" name="">
+                                    <span class="label">Budget</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="outline-input-label ">
+                            <label>
+                                <input type="text" name="">
+                                <span class="label">GST no.</span>
+                            </label>
+                        </div>
+                        <div class="outline-input-label ">
+                            <label>
+                                <input type="text" name="">
+                                <span class="label">Email ID</span>
+                            </label>
+                        </div>
+                        <div class="outline-input-label mb-0">
+                            <label>
+                                <input type="text" name="">
+                                <span class="label">Product Description</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <h2 style="padding-top: 20px;">Similar Items You Can Buy Now</h2>
+                <button class="btn secondry-full-btn ">ADD NEW RFQ REQUEST</button>
+            </div>
+        </ng-container>
+    </ng-container>
+    
+<!-- </app-pop-up> -->

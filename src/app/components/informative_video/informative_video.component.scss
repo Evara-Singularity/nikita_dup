@@ -2,7 +2,7 @@
 
 .video-container {
     width: 100%;
-    padding: 10px;
+    padding: 10px 10px 15px;
 
     .video-headeing {
         font-size: $extra-large-font;
@@ -28,7 +28,8 @@
 
             .video-img {
                 img {
-                    min-width: 345px;
+                    min-width: 300px;
+                    max-height: 170px;
                     border-radius: $border-radius-8;
 
                 }
@@ -36,7 +37,7 @@
 
         }
 
-        span {
+        a {
             display: block;
             font-size: $large-font;
             padding-top: 10px;

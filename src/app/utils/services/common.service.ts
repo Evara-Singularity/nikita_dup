@@ -77,6 +77,7 @@ export class CommonService
     public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
     public initiateLoginPopUp: Subject<string> = new Subject<string>();
+    public _initiateBulkRfq: Subject<boolean> = new Subject<boolean>();
 
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
     public addLottieScriptSubject: Subject<any> = new Subject<any>();
@@ -217,6 +218,16 @@ export class CommonService
     getSearchPopupStatus()
     {
         return this._loadSearchPopup.asObservable();
+    }
+
+    initiateBulkRfq(status: boolean)
+    {
+        this._initiateBulkRfq.next(status);
+    }
+
+    initiateBulkRfqStatus()
+    {
+        return this._initiateBulkRfq.asObservable();
     }
 
     resetLimitTrendingCategoryNumber()

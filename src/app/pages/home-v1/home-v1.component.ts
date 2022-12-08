@@ -131,6 +131,10 @@ export class HomeV1Component implements OnInit {
     this.setAnalyticTags();
   }
 
+  loadBulkRFQ(){
+    this._commonService.initiateBulkRfq(true);
+  }
+
   homePageData(response: any) {
     response['data'].forEach((block) => {
       const layoutCode = block.layout_code;

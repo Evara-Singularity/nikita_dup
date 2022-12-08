@@ -27,7 +27,7 @@ import { SharedSocialLoginComponent } from './shared-social-login/shared-social-
     ],
     imports: [
         CommonModule,
-        SocialLoginModule,
+        //SocialLoginModule,
         FormsModule,
         ReactiveFormsModule,
         NumberDirectiveModule,

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AutologinPageComponent } from './autologin-page.component';
 import { AutoLoginService } from './autoLogin.service';
 import { GlobalLoaderModule } from '@app/modules/global-loader/global-loader.module';
+import { LoginPopupModule } from '@app/modules/login-popup/login-popup.module';
 
 
 
@@ -10,7 +11,8 @@ import { GlobalLoaderModule } from '@app/modules/global-loader/global-loader.mod
   declarations: [AutologinPageComponent],
   imports: [
     CommonModule,
-    GlobalLoaderModule
+    GlobalLoaderModule,
+    LoginPopupModule
   ],
  providers: [
   AutoLoginService

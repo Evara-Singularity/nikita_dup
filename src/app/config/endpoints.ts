@@ -118,6 +118,7 @@ export const ENDPOINTS = {
   GET_PAYMENT_DETAILS: '/payment/getRetryRequest',
   GET_LAST_ORDERS: '/checkout/order/getLastOrders',
   TOKEN_AUTHENTICATION:'/createProductUrl/tokenAuthentication',
+  PROCESS_D2C_TOKEN: '/createProductUrl/processD2cToken',
   GET_ADD_SIMILAR_PRODUCT_ON_CART:'/search/similarProducts/search',
   GET_COUPOUN_ON_BRAND_CATEGORY:'/cmsapi/prepaidDiscount/getByBrandNameAndCategoryCode',
   CLICK_STREAM: '/clickStream/clickStreamData'

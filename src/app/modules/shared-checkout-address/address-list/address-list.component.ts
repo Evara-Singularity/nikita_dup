@@ -43,7 +43,7 @@ export class AddressListComponent implements OnInit
     {
         $event.stopPropagation();
         this.emitActionEvent$.emit({ action: action, address: address });
-        this._commonService.setBodyScroll($event, false);
+        this._commonService.setBodyScroll($event, true);
     }
 
     get headerText() { return `${this.addressType} Address` }

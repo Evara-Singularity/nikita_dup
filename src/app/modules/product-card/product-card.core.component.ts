@@ -212,6 +212,7 @@ export class ProductCardCoreComponent implements OnInit {
       let videoDetails = { url: link, params: ytParams };
       let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true } };
       modalData.inputs = { videoDetails: videoDetails, analyticsDetails: analyticsDetails};
+      this._commonService.setBodyScroll(null, false);
       this.modalService.show(modalData);
     }
   }

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { ModalService } from '@app/modules/modal/modal.service';
 import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
+import { CommonService } from '@app/utils/services/common.service';
 import { YoutubePlayerComponent } from '../youtube-player/youtube-player.component';
 
 @Component({
@@ -18,6 +19,7 @@ export class Informative_videoComponent implements OnInit {
 
   constructor(
     public modalService: ModalService,
+    private commonService: CommonService,
   ) { }
 
   ngOnInit() {
@@ -35,6 +37,7 @@ export class Informative_videoComponent implements OnInit {
       let videoDetails = { url: link, params: ytParams };
       let modalData = { component: YoutubePlayerComponent, inputs: null, outputs: {}, mConfig: { showVideoOverlay: true } };
       modalData.inputs = { videoDetails: videoDetails };
+      this.commonService.setBodyScroll(null, false);
       this.modalService.show(modalData);
     }
   }

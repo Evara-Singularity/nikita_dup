@@ -123,6 +123,7 @@ export const ENDPOINTS = {
   GET_COUPOUN_ON_BRAND_CATEGORY:'/cmsapi/prepaidDiscount/getByBrandNameAndCategoryCode',
   CLICK_STREAM: '/clickStream/clickStreamData',
   PRODUCT_TAGS:'/cmsapi/getTagsByMsn?msn=',
+  INFORMATION_VIDEO:'/category/getvideoLinkByCategoryCode',
   CUSTOMER_FEEDBACK:'/feedback/customerGetFeedback',
   SUBMIT_RATING_FEEDBACK:'/feedback/customerSubmitFeedback'
 };

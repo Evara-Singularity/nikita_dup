@@ -37,9 +37,11 @@
                     </div>
                 </div>
             </div>
+            
+            <prepaid-offer-checkout [displayMode]="'LABEL'" [displayName]="'Net Banking payment'" ></prepaid-offer-checkout>
 
             <div class="continue-button">
-                <prepaid-offer-checkout ></prepaid-offer-checkout> 
+                <!-- <prepaid-offer-checkout ></prepaid-offer-checkout>  -->
                 <div class="container">
                     <p class="total-mount" >
                         <span class="payable-amnt">Payable Amount</span> ₹{{totalPayableAmount | mathRound | number : '1.2-2'}} </p>

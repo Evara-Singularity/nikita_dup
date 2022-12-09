@@ -48,6 +48,7 @@ export class AboutComponent {
         let scrollEl = document.scrollingElement || document.documentElement;
         let scroll = scrollEl.scrollTop;
         // (<HTMLElement>document.querySelector('.about-us')).style.top = -scroll * 4.5 + 'px';
+        if(document.querySelector('.about-pointer')!=null)
         if ((scroll + window.outerHeight) > (<HTMLElement>document.querySelector('.about-pointer')).offsetTop) {
           document.querySelector('.about-pointer').classList.add('test');
           if (!executed) {

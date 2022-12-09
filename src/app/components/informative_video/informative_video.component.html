@@ -1,0 +1,18 @@
+<!-- <product-card-vertical-container [numberOfItems]="numberOfInformativeVideos"> -->
+    <div class="video-container">
+        <p class="video-headeing">Choose right {{categoryName}} for you</p>
+        <div class="video-block">
+            <div class="video-inner-blk" *ngFor="let videoData of informativeVideosData">
+                <div class="video-img-container" (click)="showYTVideo(videoData.link);$event.stopPropagation();">
+                    <div class="video-img">
+                        <img src="{{videoData.link | ytthumbnail:'hqdefault' }}">
+                    </div>
+                    <div class="youtube-icon">
+                        <img src="/assets/img/video_icon.svg">
+                    </div>
+                </div>
+                <a href="{{videoData.link}}" target="_blank">{{videoData.title}}</a>
+            </div>
+        </div>
+    </div>
+<!-- </product-card-vertical-container> -->

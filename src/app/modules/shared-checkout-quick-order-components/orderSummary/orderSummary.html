@@ -6,7 +6,12 @@
         </div>
         <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" *ngIf="showPromoOfferPopup">
         </promo-code-list>
-        <div class="payment_summary-conatiner">
+        <div class="payment_summary-conatiner ">
+            <div class="pwa-row border-bottom" *ngIf="_cartService.totalPrepaidSaving>0">
+                <p class="save-prise-txt">
+                    Pay online & save EXTRA {{_cartService.totalPrepaidSaving| currency:'INR' : 'symbol' : '1.0-0'}} OFF on this order.
+                </p>
+            </div>
             <div class="order-summary pwa-row no-border" id="payment_summary">
                 <!--Move promocode popup-->
                 <div class="alert-box" *ngIf="showPromoSuccessPopup">
@@ -22,6 +27,7 @@
                     </div>
                 </div>
                 <!--Move promocode popup-->
+                
                 <h3>Payment Summary</h3>
                 <ul class="txt-list">
                     <li class="border">
@@ -57,31 +63,13 @@
                             *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">-₹0.00</span>
                     </li>
 
-                    <li class="bold-txt" *ngIf="_cartService.totalPrepaidSaving==0">
+                    <li class="bold-txt" >
                         <span class="tag-label">Amount Payable</span>
                         <span class="tag-value">₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathRound | number :
                             '1.2-2'}}</span>
                     </li>
 
-                                       
-                    <li class="bold-txt" *ngIf="_cartService.totalPrepaidSaving > 0">
-                        <span class="tag-label">Total Cart Value </span>
-                        <span class="tag-value">₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathRound | number :
-                            '1.2-2'}}</span> 
-                    </li>
-                    <li  *ngIf="_cartService.totalPrepaidSaving > 0" class="prepaid-section">
-                        <span class="tag-label">Total Prepaid Discount</span>
-                        <span class="tag-value green-txt">-{{_cartService.totalPrepaidSaving| currency:'INR' : 'symbol' : '1.2-2'}}</span>
-                    </li>
-                    <li class="bold-txt" *ngIf="_cartService.totalPrepaidSaving > 0">
-                        <span class="tag-label">Amount Payable</span>
-                        <span class="tag-value">₹{{ (_cartService.totalDisplayPayableAmountWithPrepaid) | mathRound | number :
-                            '1.2-2'}}</span>
-                    </li>
                 </ul>
-            </div>
-            <div class="pwa-row" *ngIf="_cartService.totalPrepaidSaving>0">
-                <p class="save-prise-txt">You save {{_cartService.totalPrepaidSaving| currency:'INR' : 'symbol' : '1.0-0'}} on this order</p>
             </div>
         </div>
     </div>

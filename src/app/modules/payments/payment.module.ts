@@ -15,6 +15,7 @@ import { PaytmUpiModule } from './paytmUpi/paytmUpi.module';
 import { PopUpModule } from '../popUp/pop-up.module';
 import { PaymentComponent } from './payment.component';
 import { GenericOffersModule } from '../ui/generic-offers/generic-offers.component';
+import { PrepaidOfferCheckoutModule } from '../prepaid-offer-checkout/prepaid-offer-checkout.component';
 
 @NgModule({
     imports: [
@@ -33,6 +34,7 @@ import { GenericOffersModule } from '../ui/generic-offers/generic-offers.compone
         UpiModule,
         PaytmUpiModule,
         PopUpModule,
+        PrepaidOfferCheckoutModule,
     ],
     declarations: [
         PaymentComponent

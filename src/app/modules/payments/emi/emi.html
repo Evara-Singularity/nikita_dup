@@ -163,7 +163,7 @@
             </ng-container>
 
             <div class="continue-button">
-                <prepaid-offer-checkout ></prepaid-offer-checkout> 
+                <!-- <prepaid-offer-checkout ></prepaid-offer-checkout>  -->
                 <div class="container">
                     <p class="total-mount" *ngIf="totalPayableAmount>0">
                         <span class="payable-amnt">Payable Amount</span> ₹{{ (totalPayableAmount - (totalPayableAmount
@@ -186,6 +186,10 @@
             | number : '1.2-2'}}</b> ,
         and released after the amount is converted to an EMI. <span *ngIf="selectedBankName == 'State Bank of India'">A
             Processing fee of Rs. 99 + Taxes will be charged for your credit card EMI transactions by SBI Card.</span>
+    </div>
+
+    <div style="margin-bottom: 15px" >
+        <prepaid-offer-checkout [displayMode]="'LABEL'" [displayName]="'EMI payment'" ></prepaid-offer-checkout>
     </div>
 
     <!-- <p class="emi-note-text">

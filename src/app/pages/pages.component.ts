@@ -3,8 +3,10 @@ import {
   Component,
   ComponentFactoryResolver,
   EventEmitter,
+  Inject,
   Injector,
   OnInit,
+  Optional,
   Renderer2,
   ViewChild,
   ViewContainerRef,
@@ -57,7 +59,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
     private dataService: DataService,
     private cfr: ComponentFactoryResolver,
     private injector: Injector,
-
+    @Optional() @Inject(CONSTANTS.LOG_TOKEN) private logToken: string
   ) {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
@@ -91,6 +93,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
     const orderId = queryParams['orderId'];
     if (orderId) return;
     this.initialize();
+    console.log('log token received ============================>', this.logToken);
   }
 
   initialize()

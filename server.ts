@@ -10,6 +10,7 @@ import { existsSync } from 'fs';
 
 import * as compression from 'compression'
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import CONSTANTS from '@app/config/constants';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app() {
@@ -20,6 +21,12 @@ export function app() {
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
   server.engine('html', ngExpressEngine({
     bootstrap: AppServerModule,
+    providers: [
+      {
+        provide: CONSTANTS.LOG_TOKEN,
+        useValue: 'DUMMYLOG_TOKEN',
+      },
+    ],
     // inlineCriticalCss: true,
   }));
 

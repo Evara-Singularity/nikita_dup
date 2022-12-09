@@ -1,0 +1,112 @@
+<div [ngSwitch]="pageNav">
+  <form [formGroup]="productOverAllRating" (ngSubmit)="onSubmit()">
+    <div class="rate-exp" *ngSwitchCase="'pageOne'">
+      <div class="rate-exp-inner rate-exp-one pwa-row">
+        <div class="exp-img">
+          <img src="assets/img/expimg.svg" alt="">
+        </div>
+        <h3 class="exp-txt">
+          Rate overall experience with Moglix
+        </h3>
+        <div class="exp-stars">
+          <div class="exp-star-icon" *ngFor="let starObject of starObject">
+            <a (click)="chooseStar('overAllExperience', starObject.ratingCount)">
+              <i class="icon-rating-star" [ngClass]="{'yellow-txt':starObject.ratingCount <= overallFeedback}"></i>
+            </a>
+            <p class="mt-10">{{starObject.ratingText}}</p>
+          </div>
+        </div>
+        <div class="fixed-bottom-cta">
+          <button class="btn br-8 continue-btn" [ngClass]="{'disabled':disableContinue}"
+            (click)="continue()">CONTINUE</button>
+        </div>
+      </div>
+    </div>
+    <div *ngSwitchCase="'pageTwo'">
+      <div class="rate-exp">
+        <div class="rate-exp-inner rate-exp-one pwa-row">
+          <div class="exp-stars">
+            <div class="exp-star-icon" *ngFor="let starObject of starObject">
+              <a (click)="chooseStar('overAllExperience', starObject.ratingCount)">
+                <i class="icon-rating-star" [ngClass]="{'yellow-txt':starObject.ratingCount <= overallFeedback}"></i>
+              </a>
+              <p class="mt-10">{{starObject.ratingText}}</p>
+            </div>
+          </div>
+          <div class="exp-result-txt">
+            <h4>Your experience with us is {{overallFeedback}} <i class="icon-rating-star"></i></h4>
+          </div>
+        </div>
+        <div class="rate-exp-inner rate-our-service pwa-row mt-15">
+          <h3>Rate our service & features</h3>
+          <div class="service-type">
+            <h4>Delivery Experience</h4>
+            <div class="exp-stars">
+              <div class="exp-star-icon" *ngFor="let starObject of starObject">
+                <a (click)="chooseStar('deliveryExperience', starObject.ratingCount)">
+                  <i class="icon-rating-star" [ngClass]="{'yellow-txt':starObject.ratingCount <= deliveryFeedback}"></i>
+                </a>
+              </div>
+              <div class="exp-star-icon">
+                <p class="mt-10" *ngIf="deliveryFeedback">{{deliveryExperienceText}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="service-type">
+            <h4>Product Quality</h4>
+            <div class="exp-stars">
+              <div class="exp-star-icon" *ngFor="let starObject of starObject">
+                <a (click)="chooseStar('productQualityExperience', starObject.ratingCount)">
+                  <i class="icon-rating-star"
+                    [ngClass]="{'yellow-txt':starObject.ratingCount <= productQualityFeedback}"></i>
+                </a>
+              </div>
+              <div class="exp-star-icon">
+                <p class="mt-10" *ngIf="productQualityFeedback">{{productQualityExperienceText}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="service-type">
+            <h4>Customer care Experience</h4>
+            <div class="exp-stars">
+              <div class="exp-star-icon" *ngFor="let starObject of starObject">
+                <a (click)="chooseStar('customerCareExperience', starObject.ratingCount)">
+                  <i class="icon-rating-star"
+                    [ngClass]="{'yellow-txt':starObject.ratingCount <= customerConnectFeedback}"></i>
+                </a>
+              </div>
+              <div class="exp-star-icon">
+                <p class="mt-10" *ngIf="customerConnectFeedback">{{customerCareExperienceText}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="service-type">
+            <h4>Comments</h4>
+            <div class="comment-sec">
+              <textarea name="" id="" cols="30" rows="10"
+                placeholder="Please enter comments here about your Experience with us."
+                formControlName="Comment"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="fixed-bottom-cta">
+          <button class="btn br-8 continue-btn" type="submit">SUBMIT</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="rate-exp" *ngSwitchCase="'pageThree'">
+    <div class="rate-exp-inner rate-our-service pwa-row mt-15">
+      <div class="thanks-img pwa-row">
+        <img src="assets/img/rating-thanks.svg" alt="">
+      </div>
+      <div class="thanks-txt pwa-row">
+        <h4 *ngIf="!alreadySubmittedResponse">Thank you for submitting your responses!</h4>
+        <h4 *ngIf="alreadySubmittedResponse">You have already submitted your responses!</h4>
+      </div>
+      <div class="continue-btn-sec pwa-row">
+        <button class="btn br-8 continue-btn" [routerLink]="['/']">CONTINUE SHOPPING</button>
+      </div>
+    </div>
+  </div>
+</div>

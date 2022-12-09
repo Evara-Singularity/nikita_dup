@@ -1,0 +1,108 @@
+@import '../../scss/variables';
+
+.rate-exp {
+    margin-bottom: 80px;
+
+    .rate-exp-inner {
+        background-color: var(--white);
+        width: 100%;
+
+        .exp-img {
+            width: 80%;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+
+            img {
+                width: 90%;
+                max-width: 200px;
+            }
+        }
+
+        .exp-txt {
+            text-align: center;
+            margin: 20px 0px;
+            font-size: $extra-large-1-font;
+        }
+
+        .exp-stars {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+
+            .exp-star-icon {
+                i {
+                    font-size: 40px;
+                    color: var(--rimary);
+                    padding-right: 5px;
+                    color: var(--form-label-grey);
+                }
+
+                p {
+                    text-align: center;
+                }
+            }
+
+        }
+
+        .exp-result-txt {
+            h4 {
+                font-size: $large-font;
+                text-align: center;
+                margin-top: 20px;
+            }
+        }
+
+        &.rate-our-service {
+            h3 {
+                font-size: $extra-large-font;
+            }
+
+            .service-type {
+                margin-bottom: 10px;
+                padding: 10px 0px;
+                width: 100%;
+
+                h4 {
+                    padding: 10px 0px;
+                    font-size: $large-font;
+                }
+
+                textarea {
+                    height: 100px;
+                    width: 100%;
+                    border: 1px solid var(--ghost-white);
+                    border-radius: $border-radius-8;
+                    padding: 10px;
+                }
+
+                i {
+                    font-size: 30px !important;
+                }
+            }
+        }
+
+        .thanks-img {
+            width: 80%;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+
+            img {
+                width: 90%;
+                max-width: 200px;
+            }
+        }
+
+        .thanks-txt {
+            h4 {
+                text-align: center;
+            }
+        }
+
+        .continue-btn-sec {
+            width: 100%;
+            padding: 20px 10px;
+        }
+    }
+}

@@ -832,6 +832,18 @@ const routes: Routes = [
 				component: AutologinPageComponent
 			},
 			{
+				path: 'order-rating/:orderId/:itemId',
+				loadChildren: () =>
+					import('./order-rating/order-rating.module').then((m) => m.OrderRatingModule),
+					data: {
+						footer: false,
+						logo: true,
+						moreOpt: true,
+						title: 'Rate your experience',
+						
+					},
+			},
+			{
 				path: '**',
 				loadChildren: () =>
 					import('./pageNotFound/pageNotFound.module').then(

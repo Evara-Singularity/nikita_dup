@@ -299,4 +299,17 @@ export class DataService {
         return this.callRestful("GET", URL);
 
     }
+    registerFeedbackId(orderId, itemId) {
+        let URL =
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CUSTOMER_FEEDBACK +
+            "?orderId=" + orderId +
+            "&itemId=" + itemId;
+        return this.callRestful("GET", URL);
+    }
+
+    submtFeedbackRating(postBody) {
+        let URL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SUBMIT_RATING_FEEDBACK
+
+        return this.callRestful("POST", URL, { body: postBody });
+    }
 }

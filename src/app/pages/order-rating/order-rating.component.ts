@@ -30,7 +30,7 @@ export class OrderRatingComponent implements OnInit {
   },
   {
     ratingCount: 5,
-    ratingText: 'great',
+    ratingText: 'Great',
   }
   ];
 

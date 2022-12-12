@@ -1,6 +1,6 @@
-<app-pop-up  class="open" (outData$)="outData($event)" [headerType]="'pop-up-header2'" [data]="{headerText: 'Write Question', headerSubText: 'Just in 2 simple steps'}">
+<app-pop-up  class="open" (outData$)="outData($event)" [headerType]="'pop-up-header3'" [data]="{headerText: 'Write Question', headerSubText: 'Just in 2 simple steps'}">
 
-    <div class="content-popup bulkRequest" content>
+    <div class="content-popup bulkRFQ" content>
 
         <!-- <div class="rfq-phase2-container">
             <div class="header-strip">
@@ -11,16 +11,17 @@
                     <i class="icon-circle_check succes-icon"></i>
                 </div>
             </div>
-            <div class="stepper-wrapper">
-                <div class="stepper-item active">
-                    <div class="step-counter active">1</div>
-                    <i class="icon-circle_check"></i>
-                </div>
-                <div class="stepper-item active">
-                    <div class="step-counter">2</div>
-                </div>
-            </div>
         </div> -->
+        <div class="stepper-wrapper">
+            <div class="stepper-item active">
+                <div class="step-counter active">1</div>
+                <!-- <i class="icon-circle_check"></i> -->
+            </div>
+            <div class="stepper-item active">
+                <div class="step-counter">2</div>
+            </div>
+        </div>    
+       
         
         <ng-container [ngSwitch]="stepState">
             <ng-container *ngSwitchCase="stepNameLogin">

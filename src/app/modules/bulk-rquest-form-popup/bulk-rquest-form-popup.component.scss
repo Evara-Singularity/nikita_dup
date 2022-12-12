@@ -5,31 +5,10 @@
 @import '../../scss/layout/forms';
 @import '../../scss/components/buttons';
 
-.rfq-phase2-container {
+.bulkRFQ{
+    height: calc(100% - 65px);
+    background: var(--ghost-white);
     padding: 15px;
-
-    .header-strip {
-        display: flex;
-        align-items: center;
-        padding-bottom: 15px;
-
-        i {
-            width: 10%;
-            font-size: 24px;
-        }
-
-        .heading-name {
-            p {
-                padding-top: 5px;
-            }
-
-            .succes-icon {
-                margin-left: 120px;
-                font-size: 45px;
-                color: var(--slimy-green);
-            }
-        }
-    }
 
     .stepper-wrapper {
         margin-top: 25px;
@@ -120,6 +99,34 @@
                 &::before {
                     border-color: var(--slimy-green);
                 }
+            }
+        }
+    }
+
+}
+
+.rfq-phase2-container {
+    padding: 15px;
+
+    .header-strip {
+        display: flex;
+        align-items: center;
+        padding-bottom: 15px;
+
+        i {
+            width: 10%;
+            font-size: 24px;
+        }
+
+        .heading-name {
+            p {
+                padding-top: 5px;
+            }
+
+            .succes-icon {
+                margin-left: 120px;
+                font-size: 45px;
+                color: var(--slimy-green);
             }
         }
     }

@@ -20,7 +20,9 @@ export const CONSTANTS = {
   AB_TESTING: environment.AB_TESTING,
   CDN_IMAGE_PATH: environment.CDN_IMAGE_URL,
   BROWSER_AGENT_TOKEN: new InjectionToken<string>('browserName'),
-  LOG_TOKEN: new InjectionToken<string>('logToken'),
+  LOG_TOKEN_SERVER: new InjectionToken<string>('logTokenServer'),
+  LOG_TOKEN_MAIN: new InjectionToken<string>('logTokenMain'),
+  SERVER_CLIENT_IP: new InjectionToken<string>('serverClientIp'),
   SPEED_TEST_IMAGE: 'https://cdn.moglix.com/cms/flyout/Images_2021-09-15_15-45-36_Images_2020-06-03_16-42-50_SafetyImage-min.png', // ~500 KB image
   CDN_LOTTIE_PATH:'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
   pwaImages: {

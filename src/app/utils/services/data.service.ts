@@ -27,6 +27,7 @@ export class DataService {
     history = [];
     public dataServiceCart: Subject<any> = new Subject<any>();
     private getSessionApi: any;
+    clientIpFromServer: string = null;
 
     constructor(
         private _tms: ToastMessageService,

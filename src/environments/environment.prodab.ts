@@ -15,6 +15,7 @@ export const environment = {
   GTM_ANALYTICS_CODE: 'GTM-PKRGCH2',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-fd00645b6c3b.min.js',
   buildVersion: '19.3',
+  LOG_FILE_PATH: "/var/log/moglix/online/pwa/",
   SOCIAL_LOGIN: {
     "google": {
       "clientId": "218214169080-34r0q5pi8gkg1kmgl6ehpkicm7jhihau.apps.googleusercontent.com"

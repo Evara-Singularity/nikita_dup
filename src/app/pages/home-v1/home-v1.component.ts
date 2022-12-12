@@ -328,6 +328,8 @@ export class HomeV1Component implements OnInit {
       digitalData['custData'] = this._commonService.custDataTracking;
       digitalData['order'] = order;
       this.analytics.sendAdobeCall(digitalData);
+      // clickstream data
+      this.clickStreamData();
     }
 	}
 
@@ -395,6 +397,16 @@ export class HomeV1Component implements OnInit {
 			this._renderer2.appendChild(this._document.head, s);
 		}
 	}
+
+  clickStreamData() {
+    var trackData = {
+      event_type: 'page_load',
+      label: 'view',
+      channel: 'Home',
+      page_type: 'home_page',
+    };
+    this.analytics.sendMessage(trackData);
+  }
 
   orgSchema() {
 		this.oganizationSchema = this._renderer2.createElement('script');

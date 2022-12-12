@@ -1,5 +1,5 @@
 import { InjectionToken, NgModule, Optional } from '@angular/core';
-import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
+import { BrowserModule, BrowserTransferStateModule, makeStateKey } from '@angular/platform-browser';
 import { REQUEST } from '@nguniversal/express-engine/tokens';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -41,6 +41,16 @@ import { environment } from '../environments/environment';
       useFactory: userAgentFactory,
       deps: [PLATFORM_ID, [new Optional(), REQUEST] ],
     },
+    {
+      provide: CONSTANTS.LOG_TOKEN_MAIN,
+      useFactory: logTokenFactory,
+      deps: [PLATFORM_ID, [new Optional(), CONSTANTS.LOG_TOKEN_SERVER] ],
+    },
+    {
+      provide: CONSTANTS.SERVER_CLIENT_IP,
+      useFactory: userAgentIpFactory,
+      deps: [PLATFORM_ID, [new Optional(), REQUEST] ],
+    },
   ],
   bootstrap: [AppComponent]
 })
@@ -60,4 +70,19 @@ export function userAgentFactory(platformId, req: Request): string {
   }
   const userAgent = (req['get']('user-agent') || '').toLowerCase();
   return userAgent;
+}
+
+export function userAgentIpFactory(platformId, req: Request): string {
+  if (isPlatformBrowser(platformId)) {
+    return '';
+  }
+  const ip = req.headers['x-forwarded-for'] || req['connection'].remoteAddress;
+  return ip;
+}
+
+export function logTokenFactory(platformId, req): string {
+  if (isPlatformBrowser(platformId)) {
+    return '';
+  }
+  return req;
 }

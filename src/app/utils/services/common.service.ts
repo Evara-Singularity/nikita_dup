@@ -1514,23 +1514,12 @@ export class CommonService
         return (url.indexOf('://') > 0 || url.indexOf('//') === 0)
     }
 
-    getLoggerObj(url: string, method: string =null, startTime?, endTime?){
-        
-        const logInfo: ServerLogSchema = {
-            apiURL: url,
-            method: method,
-            payload: null,
-            endDateTime: null,
-            responseStatus: null,
-            startDateTime: startTime,
-            sessionId: null,
-          };
-
-          if(this.isBrowser){
+    getLoggerObj(url: string, method: string = null, startTime?, endTime?) {
+        const logInfo: ServerLogSchema = { apiURL: url, method: method, payload: null, endDateTime: null, responseStatus: null, startDateTime: startTime, sessionId: null };
+        if (this.isBrowser) {
             logInfo.sessionId = this.userSession ? this.userSession.sessionId : null;
-          }
-
-          return logInfo;
+        }
+        return logInfo;
     }
 
     sortProductTagsOnPriority(productTags) {

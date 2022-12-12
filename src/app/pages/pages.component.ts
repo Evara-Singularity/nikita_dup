@@ -22,6 +22,7 @@ import { ENDPOINTS } from "@app/config/endpoints";
 import { environment } from "environments/environment";
 import { LocalStorageService } from "ngx-webstorage";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
+import { makeStateKey, TransferState } from "@angular/platform-browser";
 declare var dataLayer;
 
 @Component({
@@ -31,6 +32,9 @@ declare var dataLayer;
   encapsulation: ViewEncapsulation.None,
 })
 export class PagesComponent implements OnInit, AfterViewInit {
+
+  readonly REQUEST_CLIENT_IP = makeStateKey<object>('request-client-ip');
+
   isServer: boolean = false;
   isBrowser: boolean = false;
   iData: {
@@ -59,7 +63,8 @@ export class PagesComponent implements OnInit, AfterViewInit {
     private dataService: DataService,
     private cfr: ComponentFactoryResolver,
     private injector: Injector,
-    @Optional() @Inject(CONSTANTS.LOG_TOKEN) private logToken: string
+    private transferState: TransferState,
+    @Optional() @Inject(CONSTANTS.SERVER_CLIENT_IP) private requestServerIp: string,
   ) {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
@@ -79,6 +84,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
         this.isRoutedBack = (res['url'] == "/?back=1") ? true : false;
       }
     });
+    this.getRequestIpServer();
   }
 
   ngAfterViewInit(): void {
@@ -89,11 +95,25 @@ export class PagesComponent implements OnInit, AfterViewInit {
 
   ngOnInit()
   {
+    console.log('requestServerIp', this.requestServerIp);
     const queryParams = this._aRoute.snapshot.queryParams;
     const orderId = queryParams['orderId'];
     if (orderId) return;
     this.initialize();
-    console.log('log token received ============================>', this.logToken);
+  }
+
+  getRequestIpServer() {
+    if (this._commonService.isBrowser) {
+      if (this.transferState.hasKey(this.REQUEST_CLIENT_IP)) {
+        const ipObj = this.transferState.get<object>(this.REQUEST_CLIENT_IP, null);
+        console.log('getRequestIpServer browser', ipObj);
+        this.dataService.clientIpFromServer = ipObj['ipAddress'];
+      }
+    } else {
+      console.log('getRequestIpServer server', this.requestServerIp);
+      this.dataService.clientIpFromServer = this.requestServerIp;
+      this.transferState.set(this.REQUEST_CLIENT_IP, { ipAddress: this.requestServerIp });
+    }
   }
 
   initialize()

@@ -308,7 +308,6 @@ export class DataService {
 
     submtFeedbackRating(postBody) {
         let URL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SUBMIT_RATING_FEEDBACK
-        console.log("nik in service",URL,postBody)
 
         return this.callRestful("POST", URL, { body: postBody });
     }

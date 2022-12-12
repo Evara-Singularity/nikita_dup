@@ -161,7 +161,6 @@ export class OrderRatingComponent implements OnInit {
   onSubmit() {
     this.pageNav = "pageThree";
     this.ratingFeedback(true);
-    console.log("blaabalkla", this.productOverAllRating.value)
   }
 
   ratingFeedback(completed) {

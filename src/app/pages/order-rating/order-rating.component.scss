@@ -1,11 +1,23 @@
 @import '../../scss/variables';
 
 .rate-exp {
-    margin-bottom: 80px;
-
     .rate-exp-inner {
         background-color: var(--white);
         width: 100%;
+
+        &.rate-exp-one{
+            height: calc(100vh - 64px);
+            margin-top: 64px;
+            align-items: center;
+            .rate-exp-one-inner{
+                margin-top: -25%;
+            }
+        }
+        &.rate-exp-two{
+            margin-top: 64px;
+            padding: 20px 15px;
+        }
+        
 
         .exp-img {
             width: 80%;
@@ -21,7 +33,7 @@
 
         .exp-txt {
             text-align: center;
-            margin: 20px 0px;
+            margin: 30px 0px 20px;
             font-size: $extra-large-1-font;
         }
 
@@ -32,7 +44,7 @@
 
             .exp-star-icon {
                 i {
-                    font-size: 40px;
+                    font-size: 44px;
                     color: var(--rimary);
                     padding-right: 5px;
                     color: var(--form-label-grey);
@@ -46,6 +58,7 @@
         }
 
         .exp-result-txt {
+            width: 100%;
             h4 {
                 font-size: $large-font;
                 text-align: center;
@@ -54,6 +67,7 @@
         }
 
         &.rate-our-service {
+            padding-bottom: 70px;
             h3 {
                 font-size: $extra-large-font;
             }
@@ -80,6 +94,13 @@
                     font-size: 30px !important;
                 }
             }
+            &.thanks-sec{
+                height: calc(100vh - 64px);
+                position: fixed;
+                bottom: 0px;
+               align-items: center;
+                overflow: scroll;
+            }
         }
 
         .thanks-img {
@@ -87,22 +108,28 @@
             margin: auto;
             display: flex;
             justify-content: center;
-
+            padding: 0px 0px 50px;
             img {
                 width: 90%;
-                max-width: 200px;
+                max-width: 208px;
             }
         }
 
         .thanks-txt {
+            width: 100%;
+            padding: 10px 0px;
             h4 {
                 text-align: center;
+                font-size: $large-font;
             }
         }
 
         .continue-btn-sec {
             width: 100%;
-            padding: 20px 10px;
+            padding: 20px 10px;   
+        }
+        button{
+            font-size: $large-font !important;
         }
     }
 }

@@ -1,7 +1,7 @@
 <div [ngSwitch]="pageNav">
   <form [formGroup]="productOverAllRating" (ngSubmit)="onSubmit()">
     <div class="rate-exp" *ngSwitchCase="'pageOne'">
-      <div class="rate-exp-inner rate-exp-one pwa-row">
+      <!-- <div class="rate-exp-inner rate-exp-one pwa-row">
         <div class="exp-img">
           <img src="assets/img/expimg.svg" alt="">
         </div>
@@ -20,11 +20,33 @@
           <button class="btn br-8 continue-btn" [ngClass]="{'disabled':disableContinue}"
             (click)="continue()">CONTINUE</button>
         </div>
+      </div> -->
+      <div class="rate-exp-inner rate-exp-one pwa-row">
+        <div class="rate-exp-one-inner">
+          <div class="exp-img">
+            <img src="assets/img/expimg.svg" alt="">
+          </div>
+          <h3 class="exp-txt">
+            Rate overall experience with Moglix
+          </h3>
+          <div class="exp-stars">
+            <div class="exp-star-icon" *ngFor="let starObject of starObject">
+              <a (click)="chooseStar('overAllExperience', starObject.ratingCount)">
+                <i class="icon-rating-star" [ngClass]="{'yellow-txt':starObject.ratingCount <= overallFeedback}"></i>
+              </a>
+              <p class="mt-10">{{starObject.ratingText}}</p>
+            </div>
+          </div>
+          <div class="fixed-bottom-cta">
+            <button class="btn br-8 continue-btn" [ngClass]="{'disabled':disableContinue}"
+              (click)="continue()">CONTINUE</button>
+          </div>
+        </div>
       </div>
     </div>
     <div *ngSwitchCase="'pageTwo'">
       <div class="rate-exp">
-        <div class="rate-exp-inner rate-exp-one pwa-row">
+        <div class="rate-exp-inner rate-exp-two pwa-row">
           <div class="exp-stars">
             <div class="exp-star-icon" *ngFor="let starObject of starObject">
               <a (click)="chooseStar('overAllExperience', starObject.ratingCount)">
@@ -96,16 +118,18 @@
     </div>
   </form>
   <div class="rate-exp" *ngSwitchCase="'pageThree'">
-    <div class="rate-exp-inner rate-our-service pwa-row mt-15">
-      <div class="thanks-img pwa-row">
-        <img src="assets/img/rating-thanks.svg" alt="">
-      </div>
-      <div class="thanks-txt pwa-row">
-        <h4 *ngIf="!alreadySubmittedResponse">Thank you for submitting your responses!</h4>
-        <h4 *ngIf="alreadySubmittedResponse">You have already submitted your responses!</h4>
-      </div>
-      <div class="continue-btn-sec pwa-row">
-        <button class="btn br-8 continue-btn" [routerLink]="['/']">CONTINUE SHOPPING</button>
+    <div class="rate-exp-inner pwa-row rate-our-service thanks-sec mt-15">
+      <div class="thanks-sec-inner">
+        <div class="thanks-img pwa-row">
+          <img src="assets/img/rating-thanks.svg" alt="">
+        </div>
+        <div class="thanks-txt">
+          <h4 *ngIf="!alreadySubmittedResponse">Thank you for submitting your responses!</h4>
+          <h4 *ngIf="alreadySubmittedResponse">You have already submitted your responses!</h4>
+        </div>
+        <div class="continue-btn-sec pwa-row">
+          <button class="btn br-8 continue-btn" [routerLink]="['/']">CONTINUE SHOPPING</button>
+        </div>
       </div>
     </div>
   </div>

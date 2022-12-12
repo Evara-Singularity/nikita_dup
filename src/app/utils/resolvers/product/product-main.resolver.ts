@@ -203,7 +203,7 @@ export class ProductResolver implements Resolve<object> {
             this.loaderService.setLoaderState(false);
             logInfoResolver.endDateTime = new Date().getTime();
             logInfoResolver.responseStatus = '';
-            this._loggerService.apiResolverLog(logInfoResolver);
+            this._loggerService.apiServerLog(logInfoResolver, ProductResolver.name + '-Consolidated');
           }
         })
       )

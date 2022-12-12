@@ -1,15 +1,18 @@
 import 'zone.js/dist/zone-node';
-
 import { ngExpressEngine } from '@nguniversal/express-engine';
+import * as fs from 'fs';
 import * as express from 'express';
 import { join } from 'path';
 
 import { AppServerModule } from './src/main.server';
 import { APP_BASE_HREF } from '@angular/common';
 import { existsSync } from 'fs';
+import { v4 as uuidv4 } from 'uuid';
 
 import * as compression from 'compression'
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import CONSTANTS from '@app/config/constants';
+import { environment } from 'environments/environment';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app() {
@@ -20,8 +23,13 @@ export function app() {
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
   server.engine('html', ngExpressEngine({
     bootstrap: AppServerModule,
-    inlineCriticalCss: true,
-
+    // providers: [
+    //   {
+    //     provide: CONSTANTS.LOG_TOKEN,
+    //     useValue: 'DUMMYLOG_TOKEN',
+    //   },
+    // ],
+    // inlineCriticalCss: true,
   }));
 
   server.set('view engine', 'html');
@@ -39,26 +47,14 @@ export function app() {
 
   // All regular routes use the Universal engine
   server.get('*', (req, res) => {
-    const requestLogObj = {
-      baseUrl: req.baseUrl,
-      body: req.body,
-      cookies: req.cookies,
-      method: req.method,
-      originalUrl: req.originalUrl,
-      params: req.params,
-      path: req.path,
-      query: req.query,
-      startTime: new Date().getTime(),
-      startTimeV2: (new Date).toLocaleString('en-GB'),
-      endTime: null,
-      endTimeV2: null,
-      processTime: 0,
-    }; 
+    const logUuid = uuidv4();
+    const requestLogObj = { logId: logUuid, baseUrl: req.baseUrl, body: req.body, cookies: req.cookies, method: req.method, originalUrl: req.originalUrl, params: req.params, path: req.path, query: req.query, startTime: new Date().getTime(), startTimeV2: (new Date).toLocaleString('en-GB'), endTime: null, endTimeV2: null, processTime: 0 }; 
     res.render(indexHtml, {
       req,
       providers: [
         { provide: APP_BASE_HREF, useValue: req.baseUrl },
-        { provide: RESPONSE, useValue: (res) }
+        { provide: RESPONSE, useValue: (res) },
+        { provide: CONSTANTS.LOG_TOKEN_SERVER, useValue: logUuid }
       ]
     }, (err: Error, html: string) => {
       // manipulate html string to add preloads for images
@@ -66,6 +62,7 @@ export function app() {
       requestLogObj.endTimeV2 = (new Date).toLocaleString('en-GB'),
       requestLogObj.processTime = requestLogObj.endTime - requestLogObj.startTime;
       // console.log('PageLoadTimeLog :', requestLogObj); 
+      writeLog(requestLogObj)
       if(html){
         res.status(html ? res.statusCode : 500).send(appendImagePreloads(html) || err.message);
       }else{
@@ -75,6 +72,15 @@ export function app() {
   });
 
   return server;
+}
+
+function writeLog(log) {
+  fs.appendFile(environment.LOG_FILE_PATH + 'pageLoadtimeLog.log', `${JSON.stringify(log)}\n`, function (err) {
+    if (err) {
+      console.log('PageLoadTimeLog', err);
+      // console.log(err);
+    }
+  });
 }
 
 function shouldCompress (req, res) {
@@ -127,8 +133,7 @@ function appendImagePreloads(indexHtml) {
 }
 
 function run() {
-  const port = process.env.PORT || 5000;
-
+  const port = process.env.PORT || 5001;
   // Start up the Node server
   const server = app();
   server.use(compression({ filter: shouldCompress }))

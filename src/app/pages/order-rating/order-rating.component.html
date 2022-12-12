@@ -1,26 +1,6 @@
 <div [ngSwitch]="pageNav">
   <form [formGroup]="productOverAllRating" (ngSubmit)="onSubmit()">
     <div class="rate-exp" *ngSwitchCase="'pageOne'">
-      <!-- <div class="rate-exp-inner rate-exp-one pwa-row">
-        <div class="exp-img">
-          <img src="assets/img/expimg.svg" alt="">
-        </div>
-        <h3 class="exp-txt">
-          Rate overall experience with Moglix
-        </h3>
-        <div class="exp-stars">
-          <div class="exp-star-icon" *ngFor="let starObject of starObject">
-            <a (click)="chooseStar('overAllExperience', starObject.ratingCount)">
-              <i class="icon-rating-star" [ngClass]="{'yellow-txt':starObject.ratingCount <= overallFeedback}"></i>
-            </a>
-            <p class="mt-10">{{starObject.ratingText}}</p>
-          </div>
-        </div>
-        <div class="fixed-bottom-cta">
-          <button class="btn br-8 continue-btn" [ngClass]="{'disabled':disableContinue}"
-            (click)="continue()">CONTINUE</button>
-        </div>
-      </div> -->
       <div class="rate-exp-inner rate-exp-one pwa-row">
         <div class="rate-exp-one-inner">
           <div class="exp-img">

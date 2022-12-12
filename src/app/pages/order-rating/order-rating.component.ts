@@ -97,13 +97,15 @@ export class OrderRatingComponent implements OnInit {
         if (response['data']['id']) {
           this.feedbackId = response['data']['id'];
         }
-        if (!response['completed']) {
+        if (!response['data']['completed']) {
           this.productOverAllRating.controls.id.setValue(response['data'].id);
           if (response['data']['feedback'] != null) {
             if (response['data']['feedback']['overallFeedback'] != null) {
               this.productOverAllRating.controls.overAllExperience.setValue(response['data']['feedback']['overallFeedback']);
               this.disableContinue = false;
               this.pageNav = 'pageTwo';
+              this._globalLoader.setLoaderState(false);
+
             }
             if (response['data']['feedback']['deliveryFeedback'] != null) {
               this.productOverAllRating.controls.deliveryExperience.setValue(response['data']['feedback']['deliveryFeedback']);
@@ -130,10 +132,11 @@ export class OrderRatingComponent implements OnInit {
 
       } else {
         this._tms.show({ type: 'error', text: response['message'] + 'Invalid order Id' });
-        // this.router.navigate(['/']);
+        this.router.navigate(['/']);
       }
       this._globalLoader.setLoaderState(false)
     })
+    this._globalLoader.setLoaderState(false)
 
   }
 

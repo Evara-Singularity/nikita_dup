@@ -3,7 +3,6 @@ import { Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { environment } from 'environments/environment';
 import { ServerLogSchema } from '../models/log.modal';
-import * as fs from 'fs';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +45,8 @@ export class LoggerService {
       data.endDateTimev2 = new Date(data.endDateTime).toLocaleString('en-GB');
       data.apiRequestTime = data.endDateTime - data.startDateTime;
       // console.log(logName, data);
-      fs.appendFile(this.PATH_TO_LOG_FOLDER, JSON.stringify(data), function (err) {
+      const fs = require("fs");
+      fs.appendFile(this.PATH_TO_LOG_FOLDER, `${JSON.stringify(data)}\n`, function (err) {
         if (err) {
           console.log('apiServerLog', err);
           // console.log(err);

@@ -1,8 +1,7 @@
 import 'zone.js/dist/zone-node';
-
 import { ngExpressEngine } from '@nguniversal/express-engine';
-import * as express from 'express';
 import * as fs from 'fs';
+import * as express from 'express';
 import { join } from 'path';
 
 import { AppServerModule } from './src/main.server';
@@ -62,7 +61,8 @@ export function app() {
       requestLogObj.endTime = new Date().getTime(),
       requestLogObj.endTimeV2 = (new Date).toLocaleString('en-GB'),
       requestLogObj.processTime = requestLogObj.endTime - requestLogObj.startTime;
-      console.log('PageLoadTimeLog :', requestLogObj); 
+      // console.log('PageLoadTimeLog :', requestLogObj); 
+      writeLog(requestLogObj)
       if(html){
         res.status(html ? res.statusCode : 500).send(appendImagePreloads(html) || err.message);
       }else{
@@ -75,7 +75,7 @@ export function app() {
 }
 
 function writeLog(log) {
-  fs.appendFile(environment.LOG_FILE_PATH+'pageLoadtimeLog.log', JSON.stringify(log), function (err) {
+  fs.appendFile(environment.LOG_FILE_PATH + 'pageLoadtimeLog.log', `${JSON.stringify(log)}\n`, function (err) {
     if (err) {
       console.log('PageLoadTimeLog', err);
       // console.log(err);
@@ -134,7 +134,6 @@ function appendImagePreloads(indexHtml) {
 
 function run() {
   const port = process.env.PORT || 5001;
-
   // Start up the Node server
   const server = app();
   server.use(compression({ filter: shouldCompress }))

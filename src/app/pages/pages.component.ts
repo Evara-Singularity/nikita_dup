@@ -95,7 +95,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
 
   ngOnInit()
   {
-    console.log('requestServerIp', this.requestServerIp);
+    // console.log('requestServerIp', this.requestServerIp);
     const queryParams = this._aRoute.snapshot.queryParams;
     const orderId = queryParams['orderId'];
     if (orderId) return;
@@ -106,11 +106,11 @@ export class PagesComponent implements OnInit, AfterViewInit {
     if (this._commonService.isBrowser) {
       if (this.transferState.hasKey(this.REQUEST_CLIENT_IP)) {
         const ipObj = this.transferState.get<object>(this.REQUEST_CLIENT_IP, null);
-        console.log('getRequestIpServer browser', ipObj);
+        // console.log('getRequestIpServer browser', ipObj);
         this.dataService.clientIpFromServer = ipObj['ipAddress'];
       }
     } else {
-      console.log('getRequestIpServer server', this.requestServerIp);
+      // console.log('getRequestIpServer server', this.requestServerIp);
       this.dataService.clientIpFromServer = this.requestServerIp;
       this.transferState.set(this.REQUEST_CLIENT_IP, { ipAddress: this.requestServerIp });
     }

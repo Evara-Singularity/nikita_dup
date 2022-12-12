@@ -63,7 +63,10 @@ export class YoutubePlayerComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
-    closeModal() { this.closePopup$.emit(); }
+    closeModal() { 
+        this.closePopup$.emit(); 
+        this._commonService.setBodyScroll(null, true);
+    }
 
     ngOnDestroy()
     {

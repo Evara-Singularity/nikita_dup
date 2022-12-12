@@ -88,6 +88,7 @@ export const ENDPOINTS = {
   GET_CATEGORY: "/category/getcategory",
   GET_CATEGORY_ANALYTICS: "/category/productsReport",
   GET_BUCKET: "/bucketAggregation",
+  GET_CATEGORY_BUCKET: "/category/bucketAggregation",
   GET_BRANDS: "/brand/getbrand",
   GET_CMS_CONTROLLED_PAGES: "/cmsapi/getCmsControlledPage?requestParam=article-1",
   GET_CMS_LAYOUT: "/cmsapi/getLayoutJsonByCode?layoutCode=",
@@ -120,5 +121,7 @@ export const ENDPOINTS = {
   TOKEN_AUTHENTICATION:'/createProductUrl/tokenAuthentication',
   GET_ADD_SIMILAR_PRODUCT_ON_CART:'/search/similarProducts/search',
   GET_COUPOUN_ON_BRAND_CATEGORY:'/cmsapi/prepaidDiscount/getByBrandNameAndCategoryCode',
-  CLICK_STREAM: '/clickStream/clickStreamData'
+  CLICK_STREAM: '/clickStream/clickStreamData',
+  PRODUCT_TAGS:'/cmsapi/getTagsByMsn?msn=',
+  INFORMATION_VIDEO:'/category/getvideoLinkByCategoryCode'
 };

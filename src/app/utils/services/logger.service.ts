@@ -37,8 +37,8 @@ export class LoggerService {
   error(...args) {
     // this.isLoggingEnabled && console.error(...args);
   }
-
-  apiServerLog(data: ServerLogSchema, logName?) {
+  
+  apiServerLog(data: ServerLogSchema, logNameIdentifier?) {
     if (this.isServer) {
       data.logId = this.logToken;
       data.startDateTimeV2 = new Date(data.startDateTime).toLocaleString('en-GB');
@@ -46,7 +46,8 @@ export class LoggerService {
       data.apiRequestTime = data.endDateTime - data.startDateTime;
       // console.log(logName, data);
       const fs = require("fs");
-      fs.appendFile(this.PATH_TO_LOG_FOLDER, `${JSON.stringify(data)}\n`, function (err) {
+      const fileLine = (logNameIdentifier) ? `${logNameIdentifier} :: ${JSON.stringify(data)}\n` : `${JSON.stringify(data)}\n`
+      fs.appendFile(this.PATH_TO_LOG_FOLDER, fileLine, function (err) {
         if (err) {
           console.log('apiServerLog', err);
           // console.log(err);

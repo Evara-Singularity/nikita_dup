@@ -68,8 +68,12 @@ export class SearchComponent implements OnInit {
     } else if (this.toggleRcommendFlag && (!this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation != 'or')) {
       this.headerNameBasedOnCondition = 'Results for ' + (this.API_RESULT['searchData'][0].productSearchResult.displayString ? this.API_RESULT['searchData'][0].productSearchResult.displayString : this.API_RESULT['searchData'][0].productSearchResult.inputSearchString);
     } else {
-      this.headerNameBasedOnCondition = this.API_RESULT['searchData'][0].productSearchResult.displayString;
+      this.headerNameBasedOnCondition = this.checkForCorrectString(this.API_RESULT['searchData'][0].productSearchResult.displayString,this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString);
     }
+  }
+
+  checkForCorrectString(displayString, CorrectedString){
+    return (CorrectedString)?CorrectedString:displayString;
   }
 
   setDataFromResolver() {

@@ -209,7 +209,7 @@ export class GlobalAnalyticsService {
 
   postClickStreamData(data) {
     if (this.isBrowser) {
-      console.log('postClickStreamData data', data);
+      // console.log('postClickStreamData data', data);
       // console.log('clickstream in', data);
       // temp fix to check if this API impacting pageload time.
       setTimeout(() => {
@@ -218,7 +218,7 @@ export class GlobalAnalyticsService {
         });
       }, 3000);
     }else{
-      console.log('clickstream called on server', data);
+      // console.log('clickstream called on server', data);
     }
   }
 

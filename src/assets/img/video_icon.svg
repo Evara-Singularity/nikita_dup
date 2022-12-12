@@ -1,1 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="69.846" height="69.846" viewBox="0 0 69.846 69.846"><defs><style>.a{fill:none;}.b{fill:#1d89f0;}.c{fill:#fff;}</style></defs><path class="a" d="M0,0H69.846V69.846H0Z"/><path class="b" d="M31.1,60.2A29.1,29.1,0,1,1,60.2,31.1,29.1,29.1,0,0,1,31.1,60.2Zm-4.01-39.536a1.164,1.164,0,0,0-1.81.966V40.569a1.164,1.164,0,0,0,1.81.966l14.2-9.464a1.164,1.164,0,0,0,0-1.938l-14.2-9.464Z" transform="translate(3.82 3.82)"/><path class="c" d="M19.144,14.362a1.164,1.164,0,0,0-1.81.966V34.262a1.164,1.164,0,0,0,1.81.966l14.2-9.464a1.164,1.164,0,0,0,0-1.938l-14.2-9.464Z" transform="translate(11.769 10.127)"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="425.596" height="313.602" viewBox="0 0 425.596 313.602">
+  <g id="Group_74372" data-name="Group 74372" transform="translate(12613.596 17555)">
+    <g id="noun-play-icon-3523388" transform="translate(-12750.798 -17678.199)">
+      <path id="Path_112537" data-name="Path 112537" d="M215.6,436.8H484.4a78.485,78.485,0,0,0,78.4-78.4V201.6a78.485,78.485,0,0,0-78.4-78.4l-268.8,0a78.485,78.485,0,0,0-78.4,78.4V358.4a78.481,78.481,0,0,0,78.4,78.4Zm84-240.8,117.6,84L299.6,364Z" fill="#d9232d"/>
+    </g>
+    <path id="Polygon_3" data-name="Polygon 3" d="M84.5,0,169,120.193H0Z" transform="translate(-12331.307 -17482.5) rotate(90)" fill="#fff"/>
+  </g>
+</svg>

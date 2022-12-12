@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ModalService } from './modal.service';
 import { ModalDirective } from './modal.directive';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'app-modal',
@@ -21,6 +22,7 @@ export class ModalComponent implements OnInit {
     showVideoOverlay:boolean;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
+        private _common: CommonService,
         private _ms: ModalService) {
         this.modals = {};
         this.showModal = false;
@@ -48,7 +50,7 @@ export class ModalComponent implements OnInit {
             }
             // console.log(data);
             this.appendComponentTo(data.component, componentConfig);
-
+            this._common.setBodyScroll(null, false);
             
             // document.getElementById('overlayVisible').classList.remove('hidden_desktop');
         });
@@ -56,6 +58,7 @@ export class ModalComponent implements OnInit {
     }
 
     ngOnDestroy() {
+        this._common.setBodyScroll(null, true);
         this.cDistryoyed.next();
         this.cDistryoyed.unsubscribe();
     }

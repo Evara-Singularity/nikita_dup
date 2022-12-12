@@ -64,5 +64,5 @@ export const environment = {
   //   CAT_H: "cm814985",
   //   FEATURE_ARRIVAL: "cm977811",
   // },
-  logger:false
+  logger:true
 };

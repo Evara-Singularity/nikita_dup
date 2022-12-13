@@ -5,6 +5,11 @@
 @import '../../scss/layout/forms';
 @import '../../scss/components/buttons';
 
+.card{
+    padding: 20px 15px 15px ;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.2);
+    border: none;
+}
 .bulkRFQ{
     height: calc(100% - 65px);
     background: var(--ghost-white);
@@ -102,7 +107,64 @@
             }
         }
     }
+    .quantity-block {
+        .qty-field {
+            width: 65%;
+        }
+    }
 
+    .qty-field {
+        position: relative;
+    }
+
+    .qty-dropdown {
+        position: absolute;
+        background: var(--white);
+        border-radius: $border-radius-8;
+        box-shadow: 0 0 8px 0px rgba(0, 0, 0, .1);
+        z-index: 1;
+        top: 45px;
+        min-height: 305px;
+
+        p {
+            padding: 15px;
+            font-size: 9px;
+            color: var(--spanish-gray);
+            font-weight: $font-bold;
+        }
+
+        ul {
+            li {
+                border-bottom: 1px solid var(--ghost-white);
+                padding: 15px;
+                font-size: 14px;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+    .secondry-btn {
+        width: 100%;
+    }
+    .thanks-query-container {
+        .heading-txt {
+            padding: 15px 15px 20px;
+            text-align: center;
+
+            p {
+                font-size: 14px;
+                color: var(--gray-web);
+                padding-top: 10px;
+            }
+        }
+    }
+    .required-qty-txt {
+        font-size: 12px;
+        color: var(--onyx-black);
+        line-height: 18px;
+    }
 }
 
 .rfq-phase2-container {
@@ -127,73 +189,6 @@
                 margin-left: 120px;
                 font-size: 45px;
                 color: var(--slimy-green);
-            }
-        }
-    }
-
-    .card {
-        border: none;
-        padding: 25px 15px;
-    }
-
-    .required-qty-txt {
-        font-size: 14px;
-        color: var(--onyx-black);
-        line-height: 18px;
-    }
-
-    .quantity-block {
-        .qty-field {
-            width: 65%;
-        }
-    }
-
-    .qty-field {
-        position: relative;
-    }
-
-    .qty-dropdown {
-        position: absolute;
-        background: var(--white);
-        border-radius: $border-radius-8;
-        box-shadow: 0 0 8px 0px rgba(0, 0, 0, .1);
-        z-index: 1;
-        top: 45px;
-        min-height: 305px;
-
-        p {
-            padding: 15px;
-            font-size: 10px;
-            color: var(--spanish-gray);
-            font-weight: $font-bold;
-        }
-
-        ul {
-            li {
-                border-bottom: 1px solid var(--ghost-white);
-                padding: 15px;
-                font-size: 14px;
-
-                &:last-child {
-                    border-bottom: none;
-                }
-            }
-        }
-    }
-
-    .secondry-btn {
-        width: 100%;
-    }
-
-    .thanks-query-container {
-        .heading-txt {
-            padding: 15px 15px 20px;
-            text-align: center;
-
-            p {
-                font-size: 14px;
-                color: var(--gray-web);
-                padding-top: 10px;
             }
         }
     }

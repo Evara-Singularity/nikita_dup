@@ -797,78 +797,84 @@ export class CartService
     {
         this.buyNow = args.buyNow;
         this.buyNowSessionDetails = null;
-        return this._checkForUserAndCartSession()
-        .pipe((
-            // Action : Check whether product already exist in cart itemList if exist exit
-            map(cartSession =>
-            {
-                // incase of buynow do not exlude 
-                for(let i=0; i< args.productDetailsList.length; i++){
-
-                let productItemExistInCart = false;
-                productItemExistInCart = this._checkProductItemExistInCart(args.productDetailsList[i].productId, cartSession);
-                let updatedCartSession = cartSession;
-                updatedCartSession = this._checkQuantityOfProductItemAndUpdate(
-                    args.productDetailsList[i],
-                    cartSession,
-                    args.productDetailsList[i].productQuantity,
-                    args.buyNow,
-                    args.productDetailsList[i].isProductUpdate
-                );
-                   // do not add product if already existed in cart
-                   if (!productItemExistInCart) {
-                    args.productDetailsList[i].cartId = cartSession['cart']['cartId'];
-                    args.productDetailsList[i].buyNow = args.buyNow;
-                    cartSession['cart']['buyNow'] = args.buyNow;
-                    // Action : While adding check whether it is buynow flow, 
-                    // if yes then a add a single product and maintain buynow flow
-                    const items = (cartSession['itemsList']) ? [...cartSession['itemsList']] : [];
-                    // update buynow flag items
-                    cartSession['itemsList'] = (args.buyNow) ? [args.productDetailsList[i]] : [...items, args.productDetailsList[i]];
-                }
-                // remove promocodes incase of buynow
-                //cartSession = (args.buyNow) ? this._removePromoCode(cartSession) : Object.assign({}, cartSession);
-                // calculate total price and cart value.
-                console.log("cartSession ---->" , cartSession);
-                cartSession = this.generateGenericCartSession(cartSession)
-                //if not buynow flow then update global cart session in service
-                if (!args.buyNow) {
-                    this.setGenericCartSession(cartSession);
-                }
-                if(i == args.productDetailsList.length-1){
+        return this._checkForUserAndCartSession().pipe(
+          // Action : Check whether product already exist in cart itemList if exist exit
+          map((cartSession) => {
+            // incase of buynow do not exlude
+            for (let i = 0; i < args.productDetailsList.length; i++) {
+              let productItemExistInCart = false;
+              productItemExistInCart = this._checkProductItemExistInCart(
+                args.productDetailsList[i].productId,
+                cartSession
+              );
+              let updatedCartSession = cartSession;
+              updatedCartSession = this._checkQuantityOfProductItemAndUpdate(
+                args.productDetailsList[i],
+                cartSession,
+                args.productDetailsList[i].productQuantity,
+                args.buyNow,
+                args.productDetailsList[i].isProductUpdate
+              );
+              // do not add product if already existed in cart
+              if (!productItemExistInCart) {
+                args.productDetailsList[i].cartId =
+                  cartSession["cart"]["cartId"];
+                args.productDetailsList[i].buyNow = args.buyNow;
+                cartSession["cart"]["buyNow"] = args.buyNow;
+                // Action : While adding check whether it is buynow flow,
+                // if yes then a add a single product and maintain buynow flow
+                const items = cartSession["itemsList"]
+                  ? [...cartSession["itemsList"]]
+                  : [];
+                // update buynow flag items
+                cartSession["itemsList"] = args.buyNow
+                  ? [args.productDetailsList[i]]
+                  : [...items, args.productDetailsList[i]];
+              }
+              // remove promocodes incase of buynow
+              //cartSession = (args.buyNow) ? this._removePromoCode(cartSession) : Object.assign({}, cartSession);
+              // calculate total price and cart value.
+              console.log("cartSession ---->", cartSession);
+              cartSession = this.generateGenericCartSession(cartSession);
+              //if not buynow flow then update global cart session in service
+              if (!args.buyNow) {
+                this.setGenericCartSession(cartSession);
+              }
+              if (i == args.productDetailsList.length - 1) {
                 return cartSession;
-                }
+              }
             }
-            })
-        ),
-            mergeMap(request =>
-            {
-                console.log("request=====>" , request);
-                if (request) { return this.updateCartSession(request).pipe(
-                    map(updatedCartResponse=>{
-                        const updatedCartSession = this.generateGenericCartSession(updatedCartResponse);
-                        this.setGenericCartSession(updatedCartSession);
-                        return updatedCartResponse;
-                    })
-                ); }
-                return of(null)
-            }),
-            mergeMap((cartSession: any) =>
-            {
-                // only run shipping API when specified, eg. not required in Auth Module
-                // shipping API should be called after updatecart API always
-                if (cartSession) {
-                    return this._getShipping(cartSession).pipe(
-                        map((cartSession: any) => {
-                            return cartSession; 
-                        }),
-                        map((cartSession) => { return this._notifyCartChanges(cartSession, null); })
-                    );
-                } else {
-                    return of(cartSession);
-                }
-            }),
-        )
+          }),
+          mergeMap((request) => {
+            if (request) {
+              return this.updateCartSession(request).pipe(
+                map((updatedCartResponse) => {
+                  const updatedCartSession =
+                    this.generateGenericCartSession(updatedCartResponse);
+                  this.setGenericCartSession(updatedCartSession);
+                  return updatedCartResponse;
+                })
+              );
+            }
+            return of(null);
+          }),
+          mergeMap((cartSession: any) => {
+            // only run shipping API when specified, eg. not required in Auth Module
+            // shipping API should be called after updatecart API always
+            if (cartSession) {
+              return this._getShipping(cartSession).pipe(
+                map((cartSession: any) => {
+                  return cartSession;
+                }),
+                map((cartSession) => {
+                  return this._notifyCartChanges(cartSession, null);
+                })
+              );
+            } else {
+              return of(cartSession);
+            }
+          })
+        );
     }
     updateCartSession(sessionCart): Observable<any>
     {

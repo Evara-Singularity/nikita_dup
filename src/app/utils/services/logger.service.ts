@@ -46,7 +46,7 @@ export class LoggerService {
       data.apiRequestTime = data.endDateTime - data.startDateTime;
       // console.log(logName, data);
       const fs = require("fs");
-      const fileLine = (logNameIdentifier) ? `${logNameIdentifier} :: ${JSON.stringify(data)}\n` : `${JSON.stringify(data)}\n`
+      const fileLine = (logNameIdentifier) ? `${logNameIdentifier} :: ${JSON.stringify(data)}\n` : `${JSON.stringify(data)}\n`;
       fs.appendFile(this.PATH_TO_LOG_FOLDER, fileLine, function (err) {
         if (err) {
           console.log('apiServerLog', err);

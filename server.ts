@@ -133,7 +133,7 @@ function appendImagePreloads(indexHtml) {
 }
 
 function run() {
-  const port = process.env.PORT || 5001;
+  const port = process.env.PORT || 5000;
   // Start up the Node server
   const server = app();
   server.use(compression({ filter: shouldCompress }))

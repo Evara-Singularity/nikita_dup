@@ -157,8 +157,10 @@ export class OrderRatingComponent implements OnInit {
   }
 
   continue() {
-    this.pageNav = "pageTwo";
-    this.chooseStar('overAllExperience', this.overallFeedback)
+    if (this.overallFeedback>0) {    
+      this.pageNav = "pageTwo";
+      this.chooseStar('overAllExperience', this.overallFeedback)
+    }
   }
 
   onSubmit() {

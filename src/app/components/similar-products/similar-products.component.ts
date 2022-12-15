@@ -91,4 +91,4 @@ export class SimilarProductsComponent implements OnInit {
         ProductCardVerticalGridViewModule
     ]
 })
-export class ProductModule { }
+export class SimilarProductModule { }

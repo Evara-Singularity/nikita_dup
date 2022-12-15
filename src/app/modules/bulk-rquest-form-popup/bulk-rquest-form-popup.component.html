@@ -24,13 +24,21 @@
        
         
         <ng-container [ngSwitch]="stepState">
-            <ng-container *ngSwitchCase="stepNameLogin">
-                <div class="card mb-10">
+            <ng-container *ngSwitchCase="stepNameLogin" [formGroup]="bulkrfqForm">
+                <div class="card mb-10" *ngIf="PRICE_VALUES.length">
                     <div class="material-form">
                         <div class="outline-input-label">
                             <label>
-                                <input type="text" name="">
-                                <span class="label">Enter Product Type*</span>
+                                <list-autocomplete class="value-auto-co" [control]="bulkrfqForm.get('productType')"
+                                    [placeholder]="'Enter Product Type*'" [productType]="PRODUCT_TYPES"
+                                    (onSelect)="updateProductType(bulkrfqForm.get('productType'))">
+                                </list-autocomplete>
+                                <p *ngIf="bulkrfqForm.get('productType').touched && 
+                                       bulkrfqForm.get('productType').invalid" class="error-txt">
+                                    Kindly select a Product
+                                </p>
+                                <!-- <input formControlName="productType" type="text" name=""> -->
+                                <!-- <span class="label">Enter Product Type*</span> -->
                             </label>
                         </div>
                         <div class="multiple-form-field quantity-block">
@@ -38,24 +46,34 @@
                                 <p class="required-qty-txt">Enter your <br>required quantity</p>
                             </div>
                             <div class="outline-input-label qty-field">
-                                <label>
-                                    <input type="text" name="" placeholder="Enter Quantity">
+                                <label >
+                                    <list-autocomplete [isAutoCompleteOnPopup]="true" class="value-auto-co"
+                                        [control]="bulkrfqForm.get('quantity')"
+                                        [placeholder]="'Select from suggested Qty'" [quantity]="PRICE_VALUES"
+                                        (onSelect)="updateQuantity(bulkrfqForm.get('quantity'))">
+                                    </list-autocomplete>
+                                    <p *ngIf="bulkrfqForm.get('quantity').touched && 
+                                       bulkrfqForm.get('quantity').invalid" class="error-txt">
+                                        Kindly select quantity.
+                                    </p>
+
+                                    <!-- <input formControlName="quantity" type="text" name="" placeholder="Enter Quantity"> -->
                                 </label>
                                 <div class="qty-dropdown">
-                                    <p>Select from suggested Qty</p>
+                                    <!-- <p>Select from suggested Qty</p>
                                     <ul>
                                         <li>1 qty</li>
                                         <li>2 - 5 qty</li>
                                         <li>6 - 10 qty</li>
                                         <li>11 - 15 qty</li>
                                         <li>16 - 1100 qty</li>
-                                    </ul>
+                                    </ul> -->
                                 </div>
                             </div>
                         </div>
                         <div class="outline-input-label mb-0">
-                            <label>
-                                <input type="text" name="">
+                            <label  [class.is-focus]="bulkrfqForm.get('budget').value.length">
+                                <input formControlName="budget" type="text" name="" data-numbersOnly>
                                 <span class="label">Budget (Optional)</span>
                             </label>
                         </div>
@@ -64,43 +82,64 @@
                 <div class="card">
                     <div class="material-form">
                         <div class="outline-input-label">
-                            <label>
-                                <input type="tel" name="">
+                            <label [class.is-focus]="bulkrfqForm.get('phone').value.length" >
+                                <input formControlName="phone" type="tel" name="" data-numbersOnly>
+                                <p *ngIf="bulkrfqForm.get('phone').touched && 
+                                       bulkrfqForm.get('phone').invalid" class="error-txt">
+                                        Kindly enter valid phone no.
+                                    </p>
                                 <span class="label">Enter Mobile Number*</span>
                             </label>
                         </div>
                     </div>
-                    <button class="btn secondry-btn disabled" (click)="moveToNext(stepNameOtp)" >NEXT</button>
-                </div>
+                    <button class="btn secondry-btn disabled" [disabled]="!bulkrfqForm.valid"
+                    (click)="$event.stopPropagation();validateUserWithPhone();">1NEXT</button>                </div>
             </ng-container>
             <ng-container *ngSwitchCase="stepNameOtp">
-                <!-- <shared-auth-otp [isLoginPopup]="true" [isLoginPopup]="true" [otpFormArray]="otpForm" [source]="'login_otp'" [withLabel]="false"></shared-auth-otp> -->
-                <button class="btn secondry-btn disabled" (click)="moveToNext(stepNameRfqForm)" >NEXT</button>
+                <!-- <shared-otp (togglePopUp$)="togglePopUp($event)" [isBulkRfq]="true" [isLoginPopup]="true"   (removeAuthComponent$)="removeAuthComponent()"></shared-otp> -->
+ 
+                <shared-auth-otp 
+                  [isLoginPopup]="isLoginPopup" 
+                  (togglePopUp$)="toggle($event)"
+
+                  [otpFormArray]="otpForm" [source]="'login_otp'" 
+                  [identifier]="bulkrfqForm.get('phone').value"
+            (otpEmitter)="captureOTP($event)" [withLabel]="false"></shared-auth-otp>
+                <!-- <shared-auth-otp [isLoginPopup]="true" [isLoginPopup]="true"  [source]="'login_otp'" [withLabel]="false"></shared-auth-otp> -->
+                <button class="btn secondry-btn disabled" (click)="moveToNext(stepNameRfqForm)">2NEXT</button>
             </ng-container>
             <ng-container *ngSwitchCase="stepNameRfqForm">
                 <div class="card pad-15">
                     <h2 class="pb-15">Your nature of purchase</h2>
-                    <div class="material-form">
+                    <div class="material-form" [formGroup]="gstinForm">
                         <div class="outline-input-label">
-                            <label>
-                                <input type="tel" name="">
+                            <label [class.is-focus]="gstinForm.get('gstin').value.length">
+                                <input formControlName="gstin" type="tel" name="">
+                                <p *ngIf="gstinForm.get('gstin').touched && 
+                                gstinForm.get('gstin').invalid" class="error-txt">
+                                        Kindly enter valid gstin.
+                                    </p>
                                 <span class="label">Enter GST no.</span>
                             </label>
                         </div>
                         <div class="outline-input-label">
-                            <label>
-                                <input type="tel" name="">
+                            <label  [class.is-focus]="gstinForm.get('email').value.length">
+                                <input formControlName="email" type="tel" name="">
+                                <p *ngIf="gstinForm.get('email').touched && 
+                                gstinForm.get('email').invalid" class="error-txt">
+                                        Kindly enter valid email.
+                                    </p>
                                 <span class="label">Enter Email-ID</span>
                             </label>
                         </div>
                         <div class="outline-input-label">
                             <label>
-                                <textarea></textarea>
+                                <textarea formControlName="description"></textarea>
                                 <span class="label">Add product description (Optional)</span>
                             </label>
                         </div>
-                        <button class="btn secondry-btn disabled" (click)="moveToNext(stepNameConfimation)" >NEXT</button>
-                    </div>
+                        <button class="btn secondry-btn disabled" [disabled]="!gstinForm.valid"
+                            (click)="moveToNext(stepNameConfimation)">4NEXT</button>                    </div>
                 </div>
             </ng-container>
             <ng-container *ngSwitchCase="stepNameConfimation">
@@ -109,49 +148,50 @@
                         <h2>Thanks, for submitting the query</h2>
                         <p>Below is your request summary</p>
                     </div>
-                    <div class="card">
+                    <div class="card" [formGroup]="confirmationForm">
                         <div class="material-form">
                             <div class="outline-input-label">
                                 <label>
-                                    <input type="text" name="">
+                                    <input formControlName="productName" type="text" name="">
                                     <span class="label">Product Name</span>
                                 </label>
                             </div>
                             <div class="multiple-form-field quantity-block">
                                 <div class="outline-input-label">
                                     <label>
-                                        <input type="text" name="">
+                                        <input formControlName="quantity" type="text" name="">
                                         <span class="label">Qty</span>
                                     </label>
                                 </div>
                                 <div class="outline-input-label">
                                     <label>
-                                        <input type="text" name="">
+                                        <input formControlName="budget" type="text" name="">
                                         <span class="label">Budget</span>
                                     </label>
                                 </div>
                             </div>
                             <div class="outline-input-label ">
                                 <label>
-                                    <input type="text" name="">
+                                    <input formControlName="gstin" type="text" name="">
                                     <span class="label">GST no.</span>
                                 </label>
                             </div>
                             <div class="outline-input-label ">
                                 <label>
-                                    <input type="text" name="">
+                                    <input formControlName="email" type="text" name="">
                                     <span class="label">Email ID</span>
                                 </label>
                             </div>
                             <div class="outline-input-label mb-0">
                                 <label>
-                                    <input type="text" name="">
+                                    <input  formControlName="description" type="text" name="">
                                     <span class="label">Product Description</span>
                                 </label>
                             </div>
                         </div>
                     </div>
                     <h2 style="padding-top: 20px;">Similar Items You Can Buy Now</h2>
+                    <!-- <app-similar-products></app-similar-products> -->
                     <button class="btn secondry-full-btn ">ADD NEW RFQ REQUEST</button>
                 </div>
             </ng-container>

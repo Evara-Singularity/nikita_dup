@@ -17,10 +17,10 @@
               <p class="mt-10">{{starObject.ratingText}}</p>
             </div>
           </div>
-          <div class="fixed-bottom-cta">
-            <button class="btn br-8 continue-btn" [ngClass]="{'disabled':disableContinue}"
-              (click)="continue()">CONTINUE</button>
-          </div>
+        </div>
+        <div class="fixed-bottom-cta">
+          <button class="btn br-8 continue-btn" [ngClass]="{'disabled':disableContinue}"
+            (click)="continue()">CONTINUE</button>
         </div>
       </div>
     </div>
@@ -43,42 +43,48 @@
           <h3>Rate our service & features</h3>
           <div class="service-type">
             <h4>Delivery Experience</h4>
-            <div class="exp-stars">
-              <div class="exp-star-icon" *ngFor="let starObject of starObject">
-                <a (click)="chooseStar('deliveryExperience', starObject.ratingCount)">
-                  <i class="icon-rating-star" [ngClass]="{'yellow-txt':starObject.ratingCount <= deliveryFeedback}"></i>
-                </a>
+            <div class="exp-stars-container">
+              <div class="stars-container">
+                <div class="exp-star-icon" *ngFor="let starObject of starObject">
+                  <a (click)="chooseStar('deliveryExperience', starObject.ratingCount)">
+                    <i class="icon-rating-star" [ngClass]="{'yellow-txt':starObject.ratingCount <= deliveryFeedback}"></i>
+                  </a>
+                </div>
               </div>
-              <div class="exp-star-icon">
-                <p class="mt-10" *ngIf="deliveryFeedback">{{deliveryExperienceText}}</p>
+              <div class="exp-star-icon1">
+                <p  *ngIf="deliveryFeedback">{{deliveryExperienceText}}</p>
               </div>
             </div>
           </div>
           <div class="service-type">
             <h4>Product Quality</h4>
-            <div class="exp-stars">
-              <div class="exp-star-icon" *ngFor="let starObject of starObject">
-                <a (click)="chooseStar('productQualityExperience', starObject.ratingCount)">
-                  <i class="icon-rating-star"
-                    [ngClass]="{'yellow-txt':starObject.ratingCount <= productQualityFeedback}"></i>
-                </a>
+            <div class="exp-stars-container">
+              <div class="stars-container">
+                <div class="exp-star-icon" *ngFor="let starObject of starObject">
+                  <a (click)="chooseStar('productQualityExperience', starObject.ratingCount)">
+                    <i class="icon-rating-star"
+                      [ngClass]="{'yellow-txt':starObject.ratingCount <= productQualityFeedback}"></i>
+                  </a>
+                </div>
               </div>
-              <div class="exp-star-icon">
-                <p class="mt-10" *ngIf="productQualityFeedback">{{productQualityExperienceText}}</p>
+              <div class="exp-star-icon1">
+                <p *ngIf="productQualityFeedback">{{productQualityExperienceText}}</p>
               </div>
             </div>
           </div>
           <div class="service-type">
             <h4>Customer care Experience</h4>
-            <div class="exp-stars">
-              <div class="exp-star-icon" *ngFor="let starObject of starObject">
-                <a (click)="chooseStar('customerCareExperience', starObject.ratingCount)">
-                  <i class="icon-rating-star"
-                    [ngClass]="{'yellow-txt':starObject.ratingCount <= customerConnectFeedback}"></i>
-                </a>
+            <div class="exp-stars-container">
+              <div class="stars-container">
+                <div class="exp-star-icon" *ngFor="let starObject of starObject">
+                  <a (click)="chooseStar('customerCareExperience', starObject.ratingCount)">
+                    <i class="icon-rating-star"
+                      [ngClass]="{'yellow-txt':starObject.ratingCount <= customerConnectFeedback}"></i>
+                  </a>
+                </div>
               </div>
-              <div class="exp-star-icon">
-                <p class="mt-10" *ngIf="customerConnectFeedback">{{customerCareExperienceText}}</p>
+              <div class="exp-star-icon1">
+                <p  *ngIf="customerConnectFeedback">{{customerCareExperienceText}}</p>
               </div>
             </div>
           </div>
@@ -92,7 +98,8 @@
           </div>
         </div>
         <div class="fixed-bottom-cta">
-          <button class="btn br-8 continue-btn" (click)="onSubmit()">SUBMIT</button>
+
+          <button class="btn br-8 continue-btn" style="font-size: 14px;" (click)="onSubmit()">SUBMIT</button>
         </div>
       </div>
     </div>

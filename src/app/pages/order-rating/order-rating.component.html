@@ -1,5 +1,5 @@
 <div [ngSwitch]="pageNav">
-  <form [formGroup]="productOverAllRating" (ngSubmit)="onSubmit()">
+  <form [formGroup]="productOverAllRating">
     <div class="rate-exp" *ngSwitchCase="'pageOne'">
       <div class="rate-exp-inner rate-exp-one pwa-row">
         <div class="rate-exp-one-inner">
@@ -98,7 +98,8 @@
           </div>
         </div>
         <div class="fixed-bottom-cta">
-          <button class="btn br-8 continue-btn" style="font-size: 14px;" type="submit">SUBMIT</button>
+
+          <button class="btn br-8 continue-btn" style="font-size: 14px;" (click)="onSubmit()">SUBMIT</button>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { LocalStorageService } from 'ngx-webstorage';
 import { ProductService } from '../../utils/services/product.service';
 import CONSTANTS from '@app/config/constants';
+import { product } from '../../config/static-en';
 @Component({
     selector: 'product-check-pincode',
     templateUrl: './product-check-pincode.component.html',
@@ -28,6 +29,7 @@ export class ProductCheckPincodeComponent implements OnInit
     itemShippingAmount = 0;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     isSubmitted: boolean = false;
+    readonly product = product;
 
 
     constructor(

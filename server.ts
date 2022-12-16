@@ -52,6 +52,7 @@ export function app() {
       endTime: null,
       endTimeV2: null,
       processTime: 0,
+    
     }; 
     res.render(indexHtml, {
       req,

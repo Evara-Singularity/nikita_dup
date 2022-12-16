@@ -47,7 +47,7 @@ import { FbtComponent } from "./../../components/fbt/fbt.component";
 import * as $ from 'jquery';
 import { catchError, delay, filter, map, mergeMap } from "rxjs/operators";
 import { TrackingService } from "@app/utils/services/tracking.service";
-
+import {loadTsFiles} from '../../config/mapping-config';
 
 interface ProductDataArg
 {
@@ -68,6 +68,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     readonly baseDomain = CONSTANTS.PROD;
     readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+  
     showScrollToTopButton: boolean = false;
     isServer: boolean;
     isBrowser: boolean;
@@ -298,6 +299,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     quickOrderContainerRef: ViewContainerRef;
 
     iOptions: any = null;
+    
 
     featuresMap = {
         Antiskid: "antiskid",
@@ -309,6 +311,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         "Toe Type": "steel-toe",
         Waterproof: "waterproof",
     };
+    prod_json:any = './static-en.json';
 
     appPromoVisible: boolean = true;
     productInfo = null;
@@ -2253,6 +2256,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         this.holdRFQForm = false;
         this.onVisibleProductRFQ($event);
+    }
+    toggleLanguageFile(){
+        loadTsFiles('hi');
     }
 
     async onVisibleProductRFQ(htmlElement)

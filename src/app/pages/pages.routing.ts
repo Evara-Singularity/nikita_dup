@@ -832,6 +832,17 @@ const routes: Routes = [
 				component: AutologinPageComponent
 			},
 			{
+				path: 'rfq-supplier',
+				loadChildren: () =>
+					import('./rfq-supplier/rfq-supplier.module').then((m) => m.RfqSupplierModule),
+				data: {
+					footer: true,
+					logo: true,
+					moreOpt: true,
+					pageName: 'articles'
+				},
+			},
+			{
 				path: '**',
 				loadChildren: () =>
 					import('./pageNotFound/pageNotFound.module').then(

@@ -43,11 +43,12 @@ import { ProductUtilsService } from "../../utils/services/product-utils.service"
 import { ProductService } from "../../utils/services/product.service";
 import { SiemaCrouselService } from "../../utils/services/siema-crousel.service";
 import { FbtComponent } from "./../../components/fbt/fbt.component";
-
 import * as $ from 'jquery';
 import { catchError, delay, filter, map, mergeMap } from "rxjs/operators";
 import { TrackingService } from "@app/utils/services/tracking.service";
-import {loadTsFiles} from '../../config/mapping-config';
+import * as localization_en from '../../config/static-en';
+import * as localization_hi from '../../config/static-hi';
+
 
 interface ProductDataArg
 {
@@ -68,7 +69,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     readonly baseDomain = CONSTANTS.PROD;
     readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
-  
+    productStaticData:any = localization_en.product;
+
     showScrollToTopButton: boolean = false;
     isServer: boolean;
     isBrowser: boolean;
@@ -2258,7 +2260,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.onVisibleProductRFQ($event);
     }
     toggleLanguageFile(){
-        loadTsFiles('hi');
+        // console.log("this.productStaticData", this.productStaticData)
+        this.productStaticData = localization_hi.product;
+        // console.log("this.productStaticData", this.productStaticData)
+        this.commonService.changeStaticJson.next(this.productStaticData);
     }
 
     async onVisibleProductRFQ(htmlElement)

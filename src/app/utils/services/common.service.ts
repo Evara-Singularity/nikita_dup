@@ -21,6 +21,8 @@ import IdleTimer from "../idleTimeDetect";
 import { GlobalAnalyticsService } from "./global-analytics.service";
 import { ServerLogSchema } from "../models/log.modal";
 import { LocalAuthService } from "./auth.service";
+import { abort } from "process";
+import * as localization_en from '../../config/static-en';
 
 @Injectable({
     providedIn: "root",
@@ -68,7 +70,7 @@ export class CommonService
     updateSortBy: Subject<string> = new Subject();
     bharatcraftUserSessionArrived: Subject<boolean> = new Subject<boolean>();
     scrolledViewPort: number = 0;
-
+    public defaultLocaleValue = localization_en.product;
     private _networkSpeed: Number = null;
     private _webpSupport: boolean = false;
     private networkSpeedState: Subject<number> = new Subject<number>();
@@ -80,7 +82,7 @@ export class CommonService
 
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
     public addLottieScriptSubject: Subject<any> = new Subject<any>();
-
+    public changeStaticJson: Subject<any> = new Subject<any>();
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
     private routeData: { currentUrl: string; previousUrl: string };
@@ -162,7 +164,6 @@ export class CommonService
     {
         return this.initiateLoginPopUp.asObservable();
     }
-
 
     setSideNavToggle(enable: boolean){
         // console.log("setSideNavToggle", enable);

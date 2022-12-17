@@ -1,7 +1,7 @@
 <div class="content-popup" content>
     <div class="delivery-details-area pwa-row mt-10">
         <div class="delivery-details container pwa-col-12">
-            <h3 class="heading-3">Delivery Details</h3>
+            <h3 *ngIf="productStaticData" class="heading-3">{{productStaticData.delivery_details}}</h3>
             <div class="delivery-details-inner">
                 <div class="delivery-details-inner-img">
                     <i class="icon-map-pin-fill"></i>
@@ -91,7 +91,7 @@
                 <span class="icon-cod_4"></span>
                 </span>
                 <div class="about-delivery-txt">
-                    <h4 class="green-txt">{{product.cod_available}}</h4>
+                    <h4 class="green-txt">{{productStaticData.cod_available}}</h4>
                     <span>You can pay at the time of delivery</span>
                 </div>
             </div>

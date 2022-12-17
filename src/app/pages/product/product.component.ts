@@ -19,7 +19,7 @@ import
 import { Location } from "@angular/common";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { DomSanitizer, Meta, Title } from "@angular/platform-browser";
-import { ActivatedRoute, NavigationEnd, NavigationExtras, NavigationStart, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, NavigationExtras, NavigationStart, PRIMARY_OUTLET, Router, UrlSegment, UrlSegmentGroup, UrlTree } from "@angular/router";
 import { YoutubePlayerComponent } from "@app/components/youtube-player/youtube-player.component";
 import CONSTANTS from "@app/config/constants";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
@@ -64,6 +64,7 @@ interface ProductDataArg
 })
 export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 {
+    switchLanguage: boolean = false;  
     encodeURI = encodeURI;
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly baseDomain = CONSTANTS.PROD;
@@ -4396,6 +4397,16 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.raiseRFQGetQuoteSubscription.unsubscribe();
         }
         this.resetLazyComponents();
+    }
+
+    translate() {
+        this.switchLanguage = !this.switchLanguage;
+        if (!this.switchLanguage) {
+            this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'))
+        }
+        else {
+            this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
+        }
     }
 
     @HostListener('window:popstate', ['$event'])

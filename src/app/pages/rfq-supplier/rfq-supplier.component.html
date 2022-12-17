@@ -1,3 +1,107 @@
-<p>
-  rfq-supplier works!
-</p>
+<div class="main-container">
+  <div class="rfq-banner-container">
+    <div class="banner-main-container">
+      <div class="banner-content">
+        <h1>Find B2B Bulk Buyers </h1>
+        <p>This is a one-stop shop for buyers and sellers, to purchase and sell wholesale industrial goods. </p>
+      </div>
+      <div class="banner-img">
+        <img src="../../../assets/img/product-box.png">
+      </div>
+    </div>
+    <div class="supplier-counter-container">
+      <div class="supplier-counter-section">
+        <div class="counter-section">
+          <h1>1000</h1>
+          <p>Deals Closed past week</p>
+        </div>
+        <div class="counter-section">
+          <h1>11000</h1>
+          <p>Deals Closed past week</p>
+        </div>
+        <div class="counter-section">
+          <h1>1000</h1>
+          <p>New suppliers joined Moglix Universe</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sub-header-container">
+    <i class="icon-all-categories" (click)="openPopup=true"></i>
+    <div class="search-container">
+      <div class="searchfield-section">
+        <input id="searchvalue" value="" placeholder="Search for category, brand, product...">
+        <button type="submit"><i class="icon-search"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="product-category-info">
+    <div class="caregory-name">
+      Top Buying Leads for Category Name
+    </div>
+    <div class="filter-chip-section">
+      <span class="filter-chip">Power Tools <i class="icon-circle-delete"></i></span>
+    </div>
+    <div class="prod-category-section" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,10]">
+      <div class="product-container">
+        <div class="product-img">
+          <img src="https://cdn.moglix.com/p/cEYgqis4IoWf2-medium.jpg">
+        </div>
+        <div class="product-descrioption">
+          <h2>Plumbing & Bathroom Fitting/ Water Storage Tanks</h2>
+          <p>Brand : Black+Decker</p>
+        </div>
+      </div>
+      <div class="attribute-section">
+        10mm 550W Variable Speed Hammer Drill, KR5010V
+      </div>
+      <div class="quantity-section">
+        <div class="qty-blk">
+          Quantity: 10
+        </div>
+        <div class=" posted-sectoion">
+          Posted:
+          <span class="clock-section"><img src="../../../assets/img/clock-icon.png">3 Hours Old</span>
+        </div>
+      </div>
+      <button class="btn secondry-btn">I CAN SUPPLY</button>
+    </div>
+    <ng-template #pagination></ng-template>
+  </div>
+  <div class="register-now-container">
+   
+    <h1>Become Supplier at Moglix & increase your business</h1>
+    <button class="btn secondry-btn">REGISTER NOW</button>
+  </div>
+  <div class="customer-img">
+    <img src="../../../assets/img/happy-customer.png">
+
+  </div>
+</div>
+
+<ng-template #listingPopup>
+  <div class="category-list-header">
+    <p>Category (44)</p>
+    <i class="icon-circle-delete"></i>
+  </div>
+  <div class="search-field">
+    <div class="search-container">
+      <div class="searchfield-section">
+        <input id="searchvalue" value="" placeholder="Search for category, brand, product...">
+        <button type="submit"><i class="icon-search"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="category-list-container">
+    <div class="category-info">
+      <span class="category-name active">Power Tools(20)</span>
+    </div>
+    <div class="category-info" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]">
+      <span class="category-name">Office Stationery & Supplies (76)</span>
+    </div>
+  </div>
+</ng-template>
+
+<app-bottom-menu  *ngIf="openPopup">
+  <ng-container content [ngTemplateOutlet]="listingPopup"></ng-container>
+</app-bottom-menu>

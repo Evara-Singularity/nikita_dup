@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RfqSupplierComponent implements OnInit {
 
+  openPopup: boolean;
   constructor() { }
 
   ngOnInit() {

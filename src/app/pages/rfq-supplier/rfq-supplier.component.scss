@@ -76,6 +76,9 @@
         padding: 15px;
         display: flex;
         align-items: center;
+        position: sticky;
+        top: 50px;
+        z-index: 1;
         border-bottom: 1px solid #EFEFF5;
         .icon-all-categories{
             font-size: 24px;

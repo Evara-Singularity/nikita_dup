@@ -6,14 +6,14 @@ import { ClientUtility } from '@app/utils/client.utility';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { CommonService } from '../../utils/services/common.service';
-import * as localization_en from '../../config/static-en';
+
 @Component({
   selector: 'product-description',
   templateUrl: './product-description.component.html',
   styleUrls: ['./product-description.component.scss']
 })
 export class ProductDescriptionComponent implements OnInit {
-  productStaticData = localization_en.product;
+  productStaticData = this._commonService.defaultLocaleValue;
   @Input() productName;
   @Input() productPrice;
   @Input() productTags;
@@ -37,7 +37,9 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() selectedProductBulkPrice;
   @Output() checkCartQuantityAndUpdate$: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private _tms: ToastMessageService,private _commonService:CommonService) { }
+  constructor(private _tms: ToastMessageService,private _commonService:CommonService) {
+  
+   }
 
   ngOnInit(): void {
    this.getStaticSubjectData();
@@ -45,7 +47,6 @@ export class ProductDescriptionComponent implements OnInit {
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
-      console.log("me yaha hu",this.productStaticData,)
     });
   }
   updateProductQunatity(type: 'INCREMENT' | 'DECREMENT') {

@@ -1,18 +1,18 @@
 <section class="reviewSection mt-10" id="reviewSection">
     <div class="pwa-row reviewrating-heading">
         <div class="pwa-col-6">
-            <p class="heading-3">Reviews & Ratings</p>
+            <p class="heading-3">{{productStaticData.rating_review}}</p>
         </div>
         <div class="pwa-col-6 align-right" *ngIf="overallRating > 0">
-            <button class="btn quaternary-btn-1" (click)="writeReview.emit(-1)">WRITE A REVIEW</button>
+            <button class="btn quaternary-btn-1" (click)="writeReview.emit(-1)">{{productStaticData.write_review}}</button>
         </div>
     </div>
 
     <div class="pwa-row" *ngIf="overallRating < 1">
         <p class="review_text">
-            Be the first one to provide review for this product
+            {{productStaticData.be_the_first_one_to_review}}
         </p>
-        <button [style.width.%]="100" class="btn quaternary-btn-1" (click)="writeReview.emit(-1)">WRITE A REVIEW</button>
+        <button [style.width.%]="100" class="btn quaternary-btn-1" (click)="writeReview.emit(-1)">{{productStaticData.write_review}}</button>
     </div>
     <div class="pwa-row" *ngIf="overallRating > 0">
         <p class="extra-small-txt">

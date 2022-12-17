@@ -17,7 +17,7 @@ import { ProductCardCoreComponent } from '../product-card.core.component';
   styleUrls: ['./product-card-horizontal-grid-view.component.scss']
 })
 export class ProductCardHorizontalGridViewComponent extends ProductCardCoreComponent {
-
+  
   constructor(
     public _cartService: CartService,
     public _productListService: ProductListService,

@@ -17,6 +17,7 @@ import { MathCeilPipeModule } from '@pipes/math-ceil';
 })
 export class ProductOffersComponent implements OnInit
 {
+    productStaticData = this.common.defaultLocaleValue;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     allofferData: any = null;
     @Output() promoCodePopUpHandler: EventEmitter<any> = new EventEmitter<any>();
@@ -46,12 +47,19 @@ export class ProductOffersComponent implements OnInit
 
     ngOnInit(): void
     {
+      this.getStaticSubjectData();
       let user: any = this.localStorageService.retrieve('user');
       if (user && user.authenticated == "true") {
         if (this.price < 3000) { this.disableEMIView = true; }
         this.getOfferAllData(user.userId);
       }else { this.getOfferAllData(null);}
 
+    }
+    getStaticSubjectData(){
+      this.common.changeStaticJson.subscribe(staticJsonData => {
+        this.common.defaultLocaleValue = staticJsonData;
+        this.productStaticData = staticJsonData;
+      });
     }
 
     getOfferAllData(user){

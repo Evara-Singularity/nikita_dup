@@ -3,13 +3,13 @@
         <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
             [href]="[baseDomain+'/'+productCategoryDetails['categoryLink']]" class="widget-items">
             <div class="content-wrap">
-                <p>More from {{productCategoryDetails['categoryName']}}</p>
+                <p>{{productStaticData.more_from}} {{productCategoryDetails['categoryName']}}</p>
                 <span class="explore-now">Explore Now</span>
             </div>
             <i class="icon-next"></i>
         </a>
         <a (click)="$event.preventDefault();sendWidgetTracking('brand + category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productBrandCategoryUrl, true);$event.preventDefault()"
-            [href]="[baseDomain+'/'+productBrandCategoryUrl]" class="widget-items">
+        More from   [href]="[baseDomain+'/'+productBrandCategoryUrl]" class="widget-items">
             <div class="content-wrap">
                 <p>More from {{productBrandDetails ? productBrandDetails['brandName'] : ''}}
                     {{productCategoryDetails ? productCategoryDetails['categoryName'] : ''}}</p>

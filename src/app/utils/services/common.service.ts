@@ -70,7 +70,6 @@ export class CommonService
     updateSortBy: Subject<string> = new Subject();
     bharatcraftUserSessionArrived: Subject<boolean> = new Subject<boolean>();
     scrolledViewPort: number = 0;
-    public defaultLocaleValue = localization_en.product;
     private _networkSpeed: Number = null;
     private _webpSupport: boolean = false;
     private networkSpeedState: Subject<number> = new Subject<number>();
@@ -92,9 +91,9 @@ export class CommonService
     ;
     public previousUrl: string = "/";
     public currentUrl: string = null;
-
+    
     goldMemberPopupOpened = new Subject();
-
+    public defaultLocaleValue = localization_en.product;
     constructor(
         @Inject(PLATFORM_ID) platformId,
         private checkoutService: CheckoutService,
@@ -119,6 +118,7 @@ export class CommonService
         this.isBrowser = isPlatformBrowser(platformId);
         this.userSession = this._localStorageService.retrieve("user");
         this._renderer2 = this.rendererFactory.createRenderer(null, null);
+  
         // this.abTesting = this._dataService.getCookie('AB_TESTING');
     }
 

@@ -2,10 +2,9 @@
     <div class="pwa-col-12">
         <div *ngIf="!isFromOosSimilarCard" class="pdp-section-header">
             <h3 class="heading-3">
-                About This Product
+               {{productStaticData.about_this_product}}
             </h3>
         </div>
-
         <div *ngIf="productKeyFeatures && productKeyFeatures?.length > 0" class="key-features">
             <h2 class="heading-3">Key Features</h2>
             <ul class="feature-list">
@@ -15,8 +14,8 @@
                     </p>
                 </li>
             </ul>
-            <div *ngIf="!isFromOosSimilarCard" (click)="handleProductInfoPopup('key features', 'show all specifications')" class="show-all-strip">
-                <span>Show All Key Features</span>
+            <div *ngIf="!isFromOosSimilarCard" (click)="handleProductInfoPopup('key features', 'show_all_key_features')" class="show-all-strip">
+                <span>{{productStaticData.show_all_key_features}}</span>
             </div>
         </div>
 
@@ -60,7 +59,7 @@
             </table>
             <div *ngIf="!isFromOosSimilarCard" (click)="handleProductInfoPopup('specifications', 'show all specifications')"
                 class="show-all-strip spec">
-                <span>Show All Specifications</span>
+                <span>{{productStaticData.show_all_key_features}}</span>
             </div>
         </div>
 
@@ -101,13 +100,13 @@
                         productCategoryDetails['categoryName'] : ''}}</a>.
                 </p>
             </ng-template>
-            <div (click)="handleProductInfoPopup('product details', 'read more')" class="show-all-strip">
-                <span>Read More</span>
+            <div (click)="handleProductInfoPopup('product details',productStaticData.read_more)" class="show-all-strip">
+                <span>{{productStaticData.read_more}}</span>
             </div>
         </div>
 
         <div *ngIf="productVideos && productVideos.length > 0 && !isFromOosSimilarCard" class="prod-detail detail-videos">
-            <h2 class="heading-3">Product Videos</h2>
+            <h2 class="heading-3">{{productStaticData.product_videos}}</h2>
             <div [style.width]="productVideos.length * 252">
                 <div class="prod-desc-video-container clearfix">
                     <div *ngFor="let video of productVideos" class="prod-desc-video">

@@ -11,6 +11,7 @@ import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
   styleUrls: ["./product-oos-similar.component.scss"],
 })
 export class ProductOosSimilarComponent {
+  productStaticData = this._commonService.defaultLocaleValue;
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
   productCardCurrentyInViewPort = -1;
   @Input("productBaseUrl") productBaseUrl: string;
@@ -19,7 +20,6 @@ export class ProductOosSimilarComponent {
   @Output("showAllKeyFeatureClickEvent") showAllKeyFeatureClickEvent = new EventEmitter();
   @Output("metaUpdateEvent") metaUpdateEvent = new EventEmitter();
   @Output("updateScrollToTop") updateScrollToTop = new EventEmitter();
-
   listener;
 
   constructor(
@@ -33,6 +33,13 @@ export class ProductOosSimilarComponent {
 
   ngAfterViewInit() {
     this.attachScrollHandler();
+    this.getStaticSubjectData();
+  }
+  
+  getStaticSubjectData(){
+    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+      this.productStaticData = staticJsonData;
+    });
   }
 
   handleCheckEventToStopLoader(index) {

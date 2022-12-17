@@ -6,7 +6,7 @@ import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { LocalStorageService } from 'ngx-webstorage';
 import { ProductService } from '../../utils/services/product.service';
 import CONSTANTS from '@app/config/constants';
-import * as localization_en from '../../config/static-en';
+
 
 @Component({
     selector: 'product-check-pincode',
@@ -31,7 +31,6 @@ export class ProductCheckPincodeComponent implements OnInit
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     isSubmitted: boolean = false;
     productStaticData = this._commonService.defaultLocaleValue;
-    
 
     constructor(
         private localStorageService: LocalStorageService,
@@ -58,8 +57,9 @@ export class ProductCheckPincodeComponent implements OnInit
     }
     getStaticSubjectData(){
         this._commonService.changeStaticJson.subscribe(staticJsonData => {
+          console.log("hello got it",staticJsonData)
+          this._commonService.defaultLocaleValue = staticJsonData;
           this.productStaticData = staticJsonData;
-          console.log("me besak hu",this.productStaticData)
         });
       }
 

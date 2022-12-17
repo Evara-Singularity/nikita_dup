@@ -48,6 +48,7 @@ import { catchError, delay, filter, map, mergeMap } from "rxjs/operators";
 import { TrackingService } from "@app/utils/services/tracking.service";
 import * as localization_en from '../../config/static-en';
 import * as localization_hi from '../../config/static-hi';
+import { product } from '../../config/static-hi';
 
 
 interface ProductDataArg
@@ -64,13 +65,14 @@ interface ProductDataArg
 })
 export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 {
+    
     switchLanguage: boolean = false;  
     encodeURI = encodeURI;
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly baseDomain = CONSTANTS.PROD;
     readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
-    productStaticData:any = localization_en.product;
+    productStaticData:any = this.commonService.defaultLocaleValue;
 
     showScrollToTopButton: boolean = false;
     isServer: boolean;
@@ -386,6 +388,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.setProductSeoSchema();
         this.setQuestionAnswerSchema();
         this.productService.resetOOOSimilarProductsData();
+        this.commonService.defaultLocaleValue = localization_en.product;
     }
 
     scrollToTop()
@@ -4399,12 +4402,14 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     translate() {
         this.switchLanguage = !this.switchLanguage;
         if (!this.switchLanguage) {
-            this.productStaticData = localization_hi.product;
+            this.productStaticData = localization_en.product;
+            this.commonService.defaultLocaleValue = localization_en.product
             this.commonService.changeStaticJson.next(this.productStaticData);
             this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'))
         }
         else {
-            this.productStaticData = localization_en.product;
+            this.commonService.defaultLocaleValue = localization_hi.product
+            this.productStaticData = localization_hi.product;
             this.commonService.changeStaticJson.next(this.productStaticData);
             this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
         }

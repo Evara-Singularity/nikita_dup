@@ -43,7 +43,7 @@
                 <i class="icon-coupon-3-fill-1"></i>
             </div>
             <div class="inline-list-text coupon-list-text">
-                <span>Use Code : <span class="green-promo-code">{{promoCodes[0].promoCode}}</span> and get {{promoCodes[0].promoDescription}}</span><br/>
+                <span>{{productStaticData.use_code}} : <span class="green-promo-code">{{promoCodes[0].promoCode}}</span> and get {{promoCodes[0].promoDescription}}</span><br/>
                 <span class="green-promo-code-min" *ngIf="promoCodes[0].minCartValue > 0">Min cart value {{ promoCodes[0].minCartValue | currency:'INR': 'symbol': '1.0-0'}}</span>
             </div>
             <!-- <div class="inline-list-link">
@@ -67,7 +67,7 @@
                 <i class="icon-coupon-3-fill-1"></i>
             </div>
             <div class="inline-list-text">
-                <span *ngIf="i == 0">Get GST invoice and save up to {{gstPercentage}}% on business purchases.</span>
+                <span *ngIf="i == 0">{{productStaticData.emi_gst_text_part1}} {{gstPercentage}}% {{productStaticData.emi_gst_text_part2}} </span>
                 <span *ngIf="i > 0">{{ item?.block_data?.image_block['0']['image_title'] || 'Get GST invoice and save upto '+gstPercentage+'% on business purchases.'}}</span>
             </div>
             <div class="inline-list-link">
@@ -80,7 +80,7 @@
             </div>
             <div class="inline-list-text">
                 <strong>EMIs Available </strong>
-                <span>On min. purchase of Rs. 3000 across banks and Rs. 4500 for Bajaj Finserv</span>
+                <span>{{productStaticData.min_emi_text}}</span>
             </div>
             <div class="inline-list-link">
                 <span class="link-text" *ngIf="!disableEMIView">VIEW</span>

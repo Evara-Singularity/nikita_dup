@@ -1,4 +1,4 @@
-<h2 class="heading-3 pwa-col-12">Product Details</h2>
+<h2 class="heading-3 pwa-col-12">{{productStaticData.product_details}}</h2>
 <ng-container *ngIf="product.productDescripton != undefined else noProdDesc">
     <p [innerHTML]="product.productDescripton" class="pwa-col-12"></p>
     <p class="static-desc pwa-col-12"> Browse through the extensive list of

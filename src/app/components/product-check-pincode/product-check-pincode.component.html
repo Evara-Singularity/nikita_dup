@@ -38,8 +38,8 @@
             <span class="icon-delivery_8"></span>
             </span>
             <div class="about-delivery-txt">
-                <h4 class="green-txt">Free Delivery</h4>
-                <span class="green-txt">No shipping charge on this order</span>
+                <h4 class="green-txt">{{productStaticData.free_delivery}}</h4>
+                <span class="green-txt">{{productStaticData.no_shipping_charge}}</span>
             </div>
         </div>
         <div class="about-delivery pwa-col-12" *ngIf="isServiceable && isPincodeAvailble && itemShippingAmount > 0 && this.pincode.value != null">

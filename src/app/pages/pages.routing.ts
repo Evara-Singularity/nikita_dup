@@ -39,12 +39,23 @@ const routes: Routes = [
 				},
 			},
 			{
+				matcher: _routingMatcher.productMatchTranslate,
+				loadChildren: () =>
+					import('./product/product.module').then((m) => m.ProductModule),
+				data: {
+					pageName: 'pdp',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT,
+					language: 'hi'
+				},
+			},
+			{
 				matcher: _routingMatcher.productMatch,
 				loadChildren: () =>
 					import('./product/product.module').then((m) => m.ProductModule),
 				data: {
 					pageName: 'pdp',
-					moduleName: CONSTANTS.MODULE_NAME.PRODUCT
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT,
+					language: 'en'
 				},
 			},
 			{

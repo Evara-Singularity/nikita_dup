@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, share, tap } from 'rxjs/operators'
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ENDPOINTS } from '../../../config/endpoints';
 import { environment } from '../../../../environments/environment';
 import { GlobalLoaderService } from '../../services/global-loader.service';
@@ -21,6 +21,9 @@ import { LoggerService } from '@app/utils/services/logger.service';
   providedIn: 'root'
 })
 export class ProductSectionResolver implements Resolve<object> {
+  productCrumb: Observable<Object>;
+  productReviewObs: Observable<Object>;
+  product_Q_AND_A: Observable<Object>;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId,
@@ -37,6 +40,14 @@ export class ProductSectionResolver implements Resolve<object> {
 
     this.loaderService.setLoaderState(true);
     const startTime = new Date().getTime();
+
+    const languageHeader = {
+      'language': 'hi'
+    };
+
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders(languageHeader), 
+    };
 
     let productMsnId = route.params['msnid'];  // get MSN id from URL
     if (productMsnId.indexOf("-g") > -1) {
@@ -89,7 +100,19 @@ export class ProductSectionResolver implements Resolve<object> {
 
       const reviewRequestBody = { review_type: 'PRODUCT_REVIEW', item_type: 'PRODUCT', item_id: productMsnId, user_id: " " };
 
-      const productReviewObs = this.http.post(REVIEW_URL, reviewRequestBody).pipe(share(),
+      if (route.data['language'] == 'hi') {
+        this.productReviewObs = this.http.post(REVIEW_URL, reviewRequestBody);
+        this.productCrumb = this.http.get(CRUM_URL);
+        this.product_Q_AND_A = this.http.get(Q_AND_A_URL,requestOptions);
+      }
+
+      else if (route.data['language'] == 'en') {
+        this.productReviewObs = this.http.post(REVIEW_URL, reviewRequestBody,requestOptions);
+        this.productCrumb = this.http.get(CRUM_URL,requestOptions);
+        this.product_Q_AND_A = this.http.get(Q_AND_A_URL);
+      }
+
+      this.productReviewObs.pipe(share(),
       map(res => {
         const logInfo = this._commonService.getLoggerObj(REVIEW_URL, 'GET', startTime)
         logInfo.endDateTime = new Date().getTime();
@@ -97,7 +120,8 @@ export class ProductSectionResolver implements Resolve<object> {
         this._loggerService.apiServerLog(logInfo);
         return res;
       }));;
-      const productCrumb = this.http.get(CRUM_URL).pipe(share(),
+
+      this.productCrumb.pipe(share(),
       map(res => {
         const logInfo = this._commonService.getLoggerObj(CRUM_URL, 'GET', startTime)
         logInfo.endDateTime = new Date().getTime();
@@ -105,7 +129,8 @@ export class ProductSectionResolver implements Resolve<object> {
         this._loggerService.apiServerLog(logInfo);
         return res;
       }));;;
-      const product_Q_AND_A = this.http.get(Q_AND_A_URL).pipe(share(),
+
+      this.product_Q_AND_A.pipe(share(),
       map(res => {
         const logInfo = this._commonService.getLoggerObj(Q_AND_A_URL, 'GET', startTime)
         logInfo.endDateTime = new Date().getTime();
@@ -117,7 +142,7 @@ export class ProductSectionResolver implements Resolve<object> {
       // const product_status_count = this.http.get(PRODUCT_STATUS_COUNT_URL);
       
       const pdpFirstFoldApiList = [
-        productReviewObs, productCrumb, product_Q_AND_A, 
+        this.productReviewObs, this.productCrumb, this.product_Q_AND_A, 
         // product_fbt, product_status_count
       ];
 

@@ -64,7 +64,6 @@ interface ProductDataArg
 })
 export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 {
-    switchLanguage: boolean = false;  
     encodeURI = encodeURI;
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly baseDomain = CONSTANTS.PROD;
@@ -4397,16 +4396,15 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
     translate() {
-        this.switchLanguage = !this.switchLanguage;
-        if (!this.switchLanguage) {
+        if ((this.router.url).includes("/mp/hi")) {
             this.productStaticData = localization_hi.product;
             this.commonService.changeStaticJson.next(this.productStaticData);
-            this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'))
+            this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
         }
-        else {
+        else  {
             this.productStaticData = localization_en.product;
             this.commonService.changeStaticJson.next(this.productStaticData);
-            this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
+            this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'))
         }
     }
 

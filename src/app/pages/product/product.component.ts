@@ -4405,13 +4405,13 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.productStaticData = localization_en.product;
             this.commonService.defaultLocaleValue = localization_en.product
             this.commonService.changeStaticJson.next(this.productStaticData);
-            this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'))
+            this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
         }
         else {
             this.commonService.defaultLocaleValue = localization_hi.product
             this.productStaticData = localization_hi.product;
             this.commonService.changeStaticJson.next(this.productStaticData);
-            this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
+            this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'))
         }
     }
 

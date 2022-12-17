@@ -2261,10 +2261,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.onVisibleProductRFQ($event);
     }
     toggleLanguageFile(){
-        // console.log("this.productStaticData", this.productStaticData)
-        this.productStaticData = localization_hi.product;
-        // console.log("this.productStaticData", this.productStaticData)
-        this.commonService.changeStaticJson.next(this.productStaticData);
+        
     }
 
     async onVisibleProductRFQ(htmlElement)
@@ -4402,9 +4399,13 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     translate() {
         this.switchLanguage = !this.switchLanguage;
         if (!this.switchLanguage) {
+            this.productStaticData = localization_hi.product;
+            this.commonService.changeStaticJson.next(this.productStaticData);
             this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'))
         }
         else {
+            this.productStaticData = localization_en.product;
+            this.commonService.changeStaticJson.next(this.productStaticData);
             this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
         }
     }

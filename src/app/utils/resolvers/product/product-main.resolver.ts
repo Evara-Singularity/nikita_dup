@@ -71,11 +71,11 @@ export class ProductResolver implements Resolve<object> {
       // Store request observable in a validable
 
       if (route.data['language'] == 'hi') {
-        alert("hi")
+        // alert("hi")
         this.productObs = this.http.get(PRODUCT_URL, requestOptions)
       }
       else if (route.data['language'] == 'en') {
-        alert("en")
+        // alert("en")
         this.productObs = this.http.get(PRODUCT_URL)
       }
 

@@ -57,7 +57,6 @@ export class ProductCheckPincodeComponent implements OnInit
         }
     }
     getStaticSubjectData(){
-        debugger;
         this._commonService.changeStaticJson.subscribe(staticJsonData => {
           this.productStaticData = staticJsonData;
           console.log("me besak hu",this.productStaticData)

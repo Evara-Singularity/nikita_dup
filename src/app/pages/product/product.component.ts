@@ -4419,7 +4419,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.router.navigate([URL]);
         }
         else {
-            alert("ele")
             const URL = '/hi' + (this.router.url);
             //console.log(this.commonService.defaultLocaleValue.language, URL);
             // this.productStaticData = localization_hi.product;

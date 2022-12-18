@@ -388,7 +388,16 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.setProductSeoSchema();
         this.setQuestionAnswerSchema();
         this.productService.resetOOOSimilarProductsData();
-        this.commonService.defaultLocaleValue = localization_en.product;
+        
+        if ((this.router.url).includes("/mp/hi")) {
+            this.commonService.defaultLocaleValue = localization_hi.product;
+            this.productStaticData = localization_hi.product;
+            this.commonService.changeStaticJson.next(this.productStaticData);
+        }else{
+            this.commonService.defaultLocaleValue = localization_en.product;
+            this.productStaticData = localization_en.product;
+            this.commonService.changeStaticJson.next(this.productStaticData);
+        }
         this.commonService.changeStaticJson.asObservable().subscribe(localization_content => {
             this.productStaticData = localization_content;
         })
@@ -4420,7 +4429,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     translate() {
         if((this.router.url).toLowerCase().indexOf('/mp/msn') !== -1){
             const URL = (this.router.url).toLowerCase().split("/mp/msn").join('/mp/hi/msn');
-            console.log(this.commonService.defaultLocaleValue.language, URL);
+            //console.log(this.commonService.defaultLocaleValue.language, URL);
+            // this.productStaticData = localization_hi.product;
+            // this.commonService.changeStaticJson.next(this.productStaticData);
             this.router.navigate([URL]);
         }
         if((this.router.url).toLowerCase().indexOf('/mp/hi/msn') !== -1){

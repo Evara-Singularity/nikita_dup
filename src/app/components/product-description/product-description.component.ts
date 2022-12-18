@@ -37,7 +37,7 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() selectedProductBulkPrice;
   @Output() checkCartQuantityAndUpdate$: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private _tms: ToastMessageService,private _commonService:CommonService) {
+  constructor(private _tms: ToastMessageService,public _commonService:CommonService) {
   
    }
 
@@ -45,9 +45,15 @@ export class ProductDescriptionComponent implements OnInit {
    this.getStaticSubjectData();
   }
   getStaticSubjectData(){
-    this._commonService.changeStaticJson.subscribe(staticJsonData => {
-      this.productStaticData = staticJsonData;
-    });
+    setTimeout(()=>{
+        console.log( this._commonService.defaultLocaleValue)
+    },2000)
+    // this._commonService.changeStaticJson.subscribe(staticJsonData => {
+    //   console.log("ia  herr",staticJsonData);
+
+
+    //   this.productStaticData = staticJsonData;
+    // });
   }
   updateProductQunatity(type: 'INCREMENT' | 'DECREMENT') {
     switch (type) {

@@ -8,13 +8,13 @@
                 </div>
                 <div class="details-right">
                     <div class="pwa-search-input">
-                        <input (keyup)="checkPinocdeKey($event)" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" [formControl]="pincode" class="inp-box" type="number" placeholder="Enter your pincode" maxlength="6">
+                        <input (keyup)="checkPinocdeKey($event)" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" [formControl]="pincode" class="inp-box" type="number" placeholder="{{productStaticData.enter_your_pincode}}" maxlength="6">
                         <div class="input-group-append">
                             <span (click)="checkAvailblityOnPinCode()" class="btn-submit">CHECK</span>
                         </div>
                     </div>
                     <p class="availability-text">
-                        Check serviceability at your location
+                        {{productStaticData.check_serviceability}}
                     </p>
                     <div *ngIf="pincode.hasError('pattern') && isSubmitted" class="invalid-txt pwa-col-12">
                         <p class="right-txt">Invalid pincode provided</p>

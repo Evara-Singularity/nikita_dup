@@ -36,6 +36,20 @@ export const product = {
     recently_viewed:"Recently Viewed",
     view_more_faq:"VIEW MORE FAQs",
     show_all_key_features:"Show All Key Features",
-    buy_it_again:"Buy It Again"
+    buy_it_again:"Buy It Again",
+    brand_store:"Brand Store",
+    interested_to_buy_in_bulk:"Interested to buy in bulk?",
+    get_quote:"GET QUOTE",
+    incl_of_taxes:"Incl. of all taxes",
+    get_customized_price:"Get customized price",
+    slide_to_request:"SLIDE TO RAISE REQUEST",
+    open_app:"Open App",
+    enter_your_pincode:"Enter your pincode",
+    check_serviceability:"Check serviceability at your location",
+    gst:"GST",
+    off:"OFF",
+    reviews:"Reviews",
+    offers_coupons:"Offers and Coupons",
+    emi_available:"EMI's Available"
 }
   

@@ -26,7 +26,7 @@ import { Router } from '@angular/router';
 })
 export class ProductInfoComponent implements OnInit
 {
-  
+    productStaticData = this._commonService.defaultLocaleValue;
     @Input("openProductInfo") openProductInfo = false;
     @Input("modalData") modalData = null;
     @Input("oosProductIndex") oosProductIndex = -1;
@@ -102,6 +102,12 @@ export class ProductInfoComponent implements OnInit
         const user = this.localStorageService.retrieve("user");
         this.loginStatus =
             user && user["authenticated"] == "true" ? "registered user" : "guest";
+        this.getStaticSubjectData();  
+    }
+    getStaticSubjectData(){
+        this._commonService.changeStaticJson.subscribe(staticJsonData => {
+          this.productStaticData = staticJsonData;
+        });
     }
 
     ngAfterViewInit()

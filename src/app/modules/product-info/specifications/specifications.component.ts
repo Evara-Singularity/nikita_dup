@@ -16,6 +16,7 @@ import { BrandLinkMapping } from '@app/utils/brandLinkMapping';
 })
 export class SpecificationsComponent implements OnInit
 {
+    productStaticData = this._commonService.defaultLocaleValue;
     @Output() callback: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Input("specifications") specifications = null;
     @Output() openLoginPopUp: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -33,7 +34,13 @@ export class SpecificationsComponent implements OnInit
             this.showNavToStorePage=true;
             this.specifications["brand"]['storeLink']=BrandLinkMapping[this.specifications["brand"]["brandId"]];
           }
+        this.getStaticSubjectData();  
     }
+    getStaticSubjectData(){
+        this._commonService.changeStaticJson.subscribe(staticJsonData => {
+          this.productStaticData = staticJsonData;
+        });
+      }
 
     checkSecondaryAttributes() {
         if (this.specifications['secondaryAttributes']) {

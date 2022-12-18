@@ -45,15 +45,9 @@ export class ProductDescriptionComponent implements OnInit {
    this.getStaticSubjectData();
   }
   getStaticSubjectData(){
-    setTimeout(()=>{
-        console.log( this._commonService.defaultLocaleValue)
-    },2000)
-    // this._commonService.changeStaticJson.subscribe(staticJsonData => {
-    //   console.log("ia  herr",staticJsonData);
-
-
-    //   this.productStaticData = staticJsonData;
-    // });
+    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+      this.productStaticData = staticJsonData;
+    });
   }
   updateProductQunatity(type: 'INCREMENT' | 'DECREMENT') {
     switch (type) {

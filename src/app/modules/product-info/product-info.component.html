@@ -1,6 +1,6 @@
 <login-popup [isRouteBased]="false" ></login-popup>
 <app-pop-up  *ngIf="openProductInfo" (outData$)="closeProducInfo($event)" [headerType]="'pop-up-header1'" [class.open1]="openProductInfo"
-    [data]="{class: 'payment-popup addAddressPopup', headerText: 'About this Product', selector:'openProductInfo'}">
+    [data]="{class: 'payment-popup addAddressPopup', headerText: productStaticData.about_this_product}">
     <!-- <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeProducInfo($event)"></i>

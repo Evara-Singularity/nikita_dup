@@ -9,12 +9,12 @@
                         <p class="actual-price" *ngIf="productPrice > 0">
                             <small *ngIf="(+(productPrice-priceWithoutTax) > 0)">
                                 <ng-container *ngIf="+productMrp == +productPrice" >MRP&nbsp;</ng-container>
-                                {{productPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp;(Incl. of all taxes)
+                                {{productPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp;({{productStaticData.incl_of_taxes}})
                             </small>
                         </p>
                         <p class="actual-price main-price mt-5" *ngIf="priceWithoutTax">
                             <strong>{{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}} 
-                                <small class="inline-price" *ngIf="((productPrice-priceWithoutTax) > 0)"><i class="icon-expand"></i>{{ (productPrice-priceWithoutTax) | currency: 'INR' : 'symbol' : '1.0-0'}} GST
+                                <small class="inline-price" *ngIf="((productPrice-priceWithoutTax) > 0)"><i class="icon-expand"></i>{{ (productPrice-priceWithoutTax) | currency: 'INR' : 'symbol' : '1.0-0'}} {{productStaticData.gst}}
                                 </small>
                             </strong>
 
@@ -22,7 +22,7 @@
                         <p class="mrp mt-5" *ngIf="(productMrp > productPrice) && (productDiscount != undefined && productDiscount>0 && productMrp > 0)">
                             MRP&nbsp;<small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
                             <span>
-                             {{ productDiscount | number:'1.0-0'}}% OFF
+                             {{ productDiscount | number:'1.0-0'}}% {{productStaticData.off}}
                             </span>
                         </p>
                     </ng-container>
@@ -38,13 +38,13 @@
                         <p class="actual-price main-price">
                             <strong>{{selectedProductBulkPrice['bulkSPWithoutTax'] | currency: 'INR' : 'symbol' : '1.0-0'}}</strong>
                             <small class="inline-price" *ngIf="(+(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax'])) > 0">
-                                &nbsp;<i class="icon-expand"></i>{{ +(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax']) | currency: 'INR' : 'symbol' : '1.0-0' }} GST
+                                &nbsp;<i class="icon-expand"></i>{{ +(selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax']) | currency: 'INR' : 'symbol' : '1.0-0' }} {{productStaticData.gst}}
                             </small>
                         </p>
                         <p class="mrp" *ngIf="(productMrp > selectedProductBulkPrice['bulkSellingPrice'])">
                             MRP&nbsp;<small>{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</small>
                             <span>
-                             {{selectedProductBulkPrice['discount'] | mathFloor | number:'1.0-0'}}% OFF
+                             {{selectedProductBulkPrice['discount'] | mathFloor | number:'1.0-0'}}% {{productStaticData.off}}
                             </span>
                         </p>
                     </ng-container>
@@ -89,7 +89,7 @@
                 <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
                 <p class="prod-status-right">
                     <small class="review"  (click)="scrollToResults('reviewSection',-30)" *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
-                        Reviews
+                        {{productStaticData.reviews}}
                     </small>
                 </p>
             </div>

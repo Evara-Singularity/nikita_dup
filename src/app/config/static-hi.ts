@@ -37,6 +37,19 @@ export const product = {
     view_more_faq:"अधिक बार पूछे जाने वाले प्रश्न देखें",
     show_all_key_features:"सभी प्रमुख विशेषताएं दिखाएं",
     free_details:"",
-    buy_it_again:"फिर से खरीदें"
-
+    buy_it_again:"फिर से खरीदें",
+    brand_store:"Brand Store",
+    interested_to_buy_in_bulk:"थोक में खरीदारी के इच्छुक?",
+    get_customized_price:"कस्टमाइज़्ड प्राइस पाएं",
+    get_quote:"कोटेशन प्राप्त करें",
+    incl_of_taxes:"सभी टैक्स सहित",
+    slide_to_request:"कोटेशन रिक्वेस्ट करने के लिए स्लाइड करें",
+    open_app:"ऐप खोलें",
+    enter_your_pincode:"अपना पिनकोड दर्ज करें",
+    check_serviceability:"अपने स्थान पर सेवा की योग्यता की जांच करें",
+    gst:"जीएसटी",
+    off:"छूट",
+    reviews:"समीक्षा",
+    offers_coupons:"ऑफर्स और कूपन्स",
+    emi_available:"ईएमआई उपलब्ध"
 }  

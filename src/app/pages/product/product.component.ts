@@ -389,7 +389,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.setQuestionAnswerSchema();
         this.productService.resetOOOSimilarProductsData();
         
-        if ((this.router.url).includes("/mp/hi")) {
+        if ((this.router.url).includes("/hi")) {
             this.commonService.defaultLocaleValue = localization_hi.product;
             this.productStaticData = localization_hi.product;
             this.commonService.changeStaticJson.next(this.productStaticData);
@@ -4426,17 +4426,15 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     //         this.commonService.changeStaticJson.next(this.productStaticData);
     //     }
     // }
+
     translate() {
-        if((this.router.url).toLowerCase().indexOf('/mp/msn') !== -1){
-            const URL = (this.router.url).toLowerCase().split("/mp/msn").join('/mp/hi/msn');
-            //console.log(this.commonService.defaultLocaleValue.language, URL);
-            // this.productStaticData = localization_hi.product;
-            // this.commonService.changeStaticJson.next(this.productStaticData);
+        if ((this.router.url).toLowerCase().indexOf('/hi') !== -1) {
+            const URL = (this.router.url).toLowerCase().split("/hi").join('/');
+            console.log(this.commonService.defaultLocaleValue.language, URL);
             this.router.navigate([URL]);
         }
-        if((this.router.url).toLowerCase().indexOf('/mp/hi/msn') !== -1){
-            const URL = (this.router.url).toLowerCase().split("/mp/hi/msn").join('/mp/msn');
-            console.log(this.commonService.defaultLocaleValue.language, URL);
+        else {
+            const URL = '/hi' + (this.router.url);
             this.router.navigate([URL]);
         }
     }

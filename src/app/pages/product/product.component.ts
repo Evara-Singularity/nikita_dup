@@ -4400,8 +4400,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
     translate() {
-        this.switchLanguage = !this.switchLanguage;
-        if (!this.switchLanguage) {
+        if ((this.router.url).includes("/mp/hi")) {
             this.productStaticData = localization_en.product;
             this.commonService.defaultLocaleValue = localization_en.product
             this.commonService.changeStaticJson.next(this.productStaticData);

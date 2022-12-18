@@ -4412,31 +4412,18 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.resetLazyComponents();
     }
 
-    // translate() {
-    //     if ((this.router.url).includes("/mp/hi")) {
-    //         this.commonService.defaultLocaleValue = localization_hi.product;
-    //         this.productStaticData = localization_hi.product;
-    //         this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
-    //         this.commonService.changeStaticJson.next(this.productStaticData);
-    //     }
-    //     else {
-    //         this.commonService.defaultLocaleValue = localization_en.product
-    //         this.productStaticData = localization_en.product;
-    //         this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'));
-    //         this.commonService.changeStaticJson.next(this.productStaticData);
-    //     }
-    // }
     translate() {
-        if((this.router.url).toLowerCase().indexOf('/mp/msn') !== -1){
-            const URL = (this.router.url).toLowerCase().split("/mp/msn").join('/mp/hi/msn');
+        if(((this.router.url).toLowerCase().indexOf('/hi') !== -1)){
+            const URL = (this.router.url).toLowerCase().split("/hi").join('/');
+            console.log(this.commonService.defaultLocaleValue.language, URL);
+            this.router.navigate([URL]);
+        }
+        else {
+            alert("ele")
+            const URL = '/hi' + (this.router.url);
             //console.log(this.commonService.defaultLocaleValue.language, URL);
             // this.productStaticData = localization_hi.product;
             // this.commonService.changeStaticJson.next(this.productStaticData);
-            this.router.navigate([URL]);
-        }
-        if((this.router.url).toLowerCase().indexOf('/mp/hi/msn') !== -1){
-            const URL = (this.router.url).toLowerCase().split("/mp/hi/msn").join('/mp/msn');
-            console.log(this.commonService.defaultLocaleValue.language, URL);
             this.router.navigate([URL]);
         }
     }

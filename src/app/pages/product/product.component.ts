@@ -530,8 +530,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         )[0]["images"] !== null
                     ) {
                         this.commonService.enableNudge = false;
-                        console.log('rawData["product"]["acceptLanguage"] ===>', rawData["product"]["acceptLanguage"]);
-                        this.isAcceptLanguage = rawData["product"]["acceptLanguage"] ? true : false;
+                        this.isAcceptLanguage = (rawData["product"][0]["acceptLanguage"] != null && rawData["product"][0]["acceptLanguage"] != undefined) ? true : false;
                         this.processProductData(
                             {
                                 productBO: rawData["product"][0]["productBO"],

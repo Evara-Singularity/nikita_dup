@@ -388,7 +388,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.setProductSeoSchema();
         this.setQuestionAnswerSchema();
         this.productService.resetOOOSimilarProductsData();
-        this.commonService.defaultLocaleValue = localization_en.product;
+        // this.commonService.defaultLocaleValue = localization_en.product;
     }
 
     scrollToTop()
@@ -4399,18 +4399,32 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.resetLazyComponents();
     }
 
+    // translate() {
+    //     if ((this.router.url).includes("/mp/hi")) {
+    //         this.commonService.defaultLocaleValue = localization_hi.product;
+    //         this.productStaticData = localization_hi.product;
+    //         this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
+    //         this.commonService.changeStaticJson.next(this.productStaticData);
+    //     }
+    //     else {
+    //         this.commonService.defaultLocaleValue = localization_en.product
+    //         this.productStaticData = localization_en.product;
+    //         this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'));
+    //         this.commonService.changeStaticJson.next(this.productStaticData);
+    //     }
+    // }
     translate() {
         if ((this.router.url).includes("/mp/hi")) {
             this.productStaticData = localization_en.product;
             this.commonService.defaultLocaleValue = localization_en.product
             this.commonService.changeStaticJson.next(this.productStaticData);
-            this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
+            this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'))
         }
         else {
             this.commonService.defaultLocaleValue = localization_hi.product
             this.productStaticData = localization_hi.product;
             this.commonService.changeStaticJson.next(this.productStaticData);
-            this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'))
+            this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
         }
     }
 

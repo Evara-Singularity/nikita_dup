@@ -91,6 +91,7 @@ export class SharedAuthUtilService implements OnInit
         }).pipe(map(cartsession => {
             this._globalLoader.setLoaderState(false);
             this._toastService.show({ type: 'success', text: welcomeText });
+            this._commonService.setLoginNotify(response);
             return cartsession;
         }));
     }

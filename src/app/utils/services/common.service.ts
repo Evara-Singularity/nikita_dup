@@ -52,7 +52,7 @@ export class CommonService
     public refreshProducts$: Subject<any> = new Subject<any>();
 
     public oosSimilarCard$: Subject<any> = new Subject<any>();
-
+    private loginPerformed$: Subject<any> = new Subject<any>();
     public attachScrollEvent$: Subject<any> = new Subject<any>();
     showWhatsappToolTip=true
     isHomeHeader = false;
@@ -153,10 +153,20 @@ export class CommonService
         return this.networkSpeedState.asObservable();
     }
 
+    setLoginNotify(user){
+        this.loginPerformed$.next(user);
+    }
+
+    loginPerformedNotify(): Observable<number>
+    {
+        return this.loginPerformed$.asObservable();
+    }
+
     setInitaiteLoginPopUp(redirectUrl = null)
     {
         this.initiateLoginPopUp.next(redirectUrl);
     }
+    
 
     getInitaiteLoginPopUp(): Observable<string>
     {

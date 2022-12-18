@@ -832,7 +832,7 @@ const routes: Routes = [
 				component: AutologinPageComponent
 			},
 			{
-				path: 'rfq-supplier',
+				path: 'find-b2b-bulk-buyers',
 				loadChildren: () =>
 					import('./rfq-supplier/rfq-supplier.module').then((m) => m.RfqSupplierModule),
 				data: {

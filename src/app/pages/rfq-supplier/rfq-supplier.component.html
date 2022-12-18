@@ -1,3 +1,4 @@
+<login-popup [isRouteBased]="false"></login-popup>
 <div class="main-container">
   <div class="rfq-banner-container">
     <div class="banner-main-container">
@@ -12,25 +13,25 @@
     <div class="supplier-counter-container">
       <div class="supplier-counter-section">
         <div class="counter-section">
-          <h1>1000</h1>
-          <p>Deals Closed past week</p>
+          <h1>{{numericDashboardCount['dealClosedPastWeek'] | number : '1.0-0'}}</h1>
+          <p>Deals closed past week</p>
         </div>
         <div class="counter-section">
-          <h1>11000</h1>
-          <p>Deals Closed past week</p>
+          <h1>{{numericDashboardCount["potentialBusinessOpportunity"] | currency: 'INR' : 'symbol' : '1.0-0'}}</h1>
+          <p>Potential business opportunity at Moglix</p>
         </div>
         <div class="counter-section">
-          <h1>1000</h1>
-          <p>New suppliers joined Moglix Universe</p>
+          <h1>{{numericDashboardCount["numberOfBuyingRequest"] | number : '1.0-0'}}</h1>
+          <p>Number of buying request</p>
         </div>
       </div>
     </div>
   </div>
   <div class="sub-header-container">
-    <i class="icon-all-categories" (click)="openPopup=true"></i>
+    <i class="icon-all-categories" (click)="togglePopup(true)"></i>
     <div class="search-container">
       <div class="searchfield-section">
-        <input id="searchvalue" value="" placeholder="Search for category, brand, product...">
+        <input id="searchvalue" value="" [formControl]="searchTerm" placeholder="Search for category, brand, product...">
         <button type="submit"><i class="icon-search"></i></button>
       </div>
     </div>
@@ -39,37 +40,43 @@
     <div class="caregory-name">
       Top Buying Leads for Category Name
     </div>
-    <div class="filter-chip-section">
-      <span class="filter-chip">Power Tools <i class="icon-circle-delete"></i></span>
+    <div class="filter-chip-section" *ngIf="paramsOfRfqList['categoryName'].length>0" >
+      <span class="filter-chip">{{paramsOfRfqList['categoryName']}}<i (click)="removeFilter()" class="icon-circle-delete"></i></span>
     </div>
-    <div class="prod-category-section" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,10]">
+    <div class="no-result-found" *ngIf="rfqItemListCount==0">
+      <h2>No Leads Found!</h2>
+    </div>
+    <div class="prod-category-section" *ngFor="let item of rfqItemList; index as i;" >
       <div class="product-container">
         <div class="product-img">
-          <img src="https://cdn.moglix.com/p/cEYgqis4IoWf2-medium.jpg">
+          <img [src]="processImage(item.images)">
         </div>
         <div class="product-descrioption">
-          <h2>Plumbing & Bathroom Fitting/ Water Storage Tanks</h2>
-          <p>Brand : Black+Decker</p>
+          <h2>{{item.categoryName}}</h2>
+          <p>Brand : {{item.brand}}</p>
         </div>
       </div>
       <div class="attribute-section">
-        10mm 550W Variable Speed Hammer Drill, KR5010V
+        {{item.productName}}
       </div>
       <div class="quantity-section">
         <div class="qty-blk">
-          Quantity: 10
+          Quantity: {{item.quantity}}
         </div>
         <div class=" posted-sectoion">
           Posted:
-          <span class="clock-section"><img src="../../../assets/img/clock-icon.png">3 Hours Old</span>
+          <span class="clock-section"><img src="../../../assets/img/clock-icon.png">{{ item.timeDiff}}</span>
         </div>
       </div>
-      <button class="btn secondry-btn">I CAN SUPPLY</button>
+      <button class="btn secondry-btn" (click)="supply(item, i)" [disabled]="item.interested" [ngClass]="{'supply-btn-disbled': item.interested }" >I CAN SUPPLY</button>
     </div>
-    <ng-template #pagination></ng-template>
+
+    <div style="height: 100px; width: 100%;" (click)="loadMore()">
+      <button class="btn secondry-btn">LOAD MORE</button>
+    </div>
+
   </div>
   <div class="register-now-container">
-   
     <h1>Become Supplier at Moglix & increase your business</h1>
     <button class="btn secondry-btn">REGISTER NOW</button>
   </div>
@@ -81,23 +88,20 @@
 
 <ng-template #listingPopup>
   <div class="category-list-header">
-    <p>Category (44)</p>
-    <i class="icon-circle-delete"></i>
+    <p>Categories</p>
+    <i class="icon-circle-delete" (click)="togglePopup(false)" ></i>
   </div>
-  <div class="search-field">
+  <!-- <div class="search-field">
     <div class="search-container">
       <div class="searchfield-section">
         <input id="searchvalue" value="" placeholder="Search for category, brand, product...">
         <button type="submit"><i class="icon-search"></i></button>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="category-list-container">
-    <div class="category-info">
-      <span class="category-name active">Power Tools(20)</span>
-    </div>
-    <div class="category-info" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]">
-      <span class="category-name">Office Stationery & Supplies (76)</span>
+    <div class="category-info" *ngFor="let item of rfqcategoryList, let i=index" >
+      <span class="category-name" [ngClass]="{'selected': (item.name == paramsOfRfqList['categoryName']) }" (click)="rfqSupplierCategory(item)">{{item.name}}</span>
     </div>
   </div>
 </ng-template>

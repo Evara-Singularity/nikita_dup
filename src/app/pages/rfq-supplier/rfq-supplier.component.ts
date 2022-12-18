@@ -1,4 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { Meta, Title } from '@angular/platform-browser';
+import { SortByComponent } from '@app/components/sortBy/sortBy.component';
+import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { CommonService } from '@app/utils/services/common.service';
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { RfqSupplierService } from './rfq-supplier.service';
 
 @Component({
   selector: 'app-rfq-supplier',
@@ -8,10 +19,292 @@ import { Component, OnInit } from '@angular/core';
 export class RfqSupplierComponent implements OnInit {
 
   openPopup: boolean;
-  constructor() { }
+  rfqItemList: any = [];
+  rfqcategoryList: Object;
+  user: any;
+  rfqcategoryListLength: any;
+  numericDashboardCount: any = {};
+  paramsOfRfqList = {
+    limit: 40,
+    offset: 0,
+    searchString: '',
+    categoryName: '',
+    userId: null,
+  }
+  callbackRFQid = null;
+  selectedCat: boolean = false;
+  searchTerm = new FormControl('', [Validators.required]);
+  epochNow = (new Date).getTime();
+  userInterestedRFQIDs = [];
+  paginationUpdated: Subject<any> = new Subject<any>();
+  sortByComponentUpdated: Subject<SortByComponent> = new Subject<SortByComponent>();
+  rfqItemListCount: number;
+  prelLoginRFqData: any = null;
+  prelLoginRFqIndex: any = null;
+  page = 1;
+
+  private paginationInstance = null;
+  @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
+
+  constructor(
+    private _rfqSupplierService: RfqSupplierService,
+    private title: Title,
+    private meta: Meta,
+    private _common: CommonService,
+    private _renderer2: Renderer2,
+    @Inject(DOCUMENT) private _document,
+    private _localAuthService: LocalAuthService,
+    private _tms: ToastMessageService,
+    private _loader: GlobalLoaderService,
+    private _componentFactoryResolver: ComponentFactoryResolver,
+    private _injector: Injector,
+  ) { }
 
   ngOnInit() {
-    console.log('heyy')
+    this.setSeo();
+    if (this._common.isBrowser) {
+      this.user = this._localAuthService.getUserSession();
+      this.processData();
+
+      this.searchTerm.valueChanges.pipe(
+        debounceTime(400))
+        .subscribe(term => {
+          if (term.trim().length > 2) {
+            this.search(term.trim());
+          }
+          if(term.trim()==''){
+            this.search('');
+          }
+        });
+
+      this._common.loginPerformedNotify().subscribe(user => {
+        console.log('user', user, this.prelLoginRFqData, this.prelLoginRFqIndex);
+        this.callSupplyInternal(this.prelLoginRFqData, this.prelLoginRFqIndex);
+      });
+
+    }
+  }
+
+  processData() {
+    this.setSeo();
+    this.processRfqListData();
+    this.processRfqCategories();
+    this.getNumericdashboard();
+  }
+
+  setSeo() {
+    this.title.setTitle("Find B2B Bulk Buyers to Grow Your Business | Moglix.com");
+    this.meta.addTag({ "property": "og:title", "content": "Find B2B Bulk Buyers to Grow Your Business | Moglix.com" });
+    this.meta.addTag({ "property": "og:description", "content": "Moglix is India's largest B2B online portal connecting buyers and sellers. Suppliers can easily find buyers on the platform & can do bulk sales at one place." });
+    this.meta.addTag({ "property": "og:url", "content": " https://moglix.com/find-b2b-bulk-buyers" });
+    this.meta.addTag({ "name": "description", "content": "Moglix is India's largest B2B online portal connecting buyers and sellers. Suppliers can easily find buyers on the platform & can do bulk sales at one place." });
+    if (this._common.isServer) {
+      let links = this._renderer2.createElement('link');
+      links.rel = "canonical";
+      links.href = "https://moglix.com/find-b2b-bulk-buyers";
+      this._renderer2.appendChild(this._document.head, links);
+    }
+  }
+
+  processRfqListData() {
+
+    const user = this._localAuthService.getUserSession();
+    if (user && user.authenticated == 'true') {
+      this.paramsOfRfqList['userId'] = user['userId'];
+      console.log('this.paramsOfRfqList', this.paramsOfRfqList);
+      this.newFuprocessRfqListDataCore(true);
+    } else {
+      this.newFuprocessRfqListDataCore(true);
+    }
+  }
+
+  newFuprocessRfqListDataCore(pagination = false) {
+    this._loader.setLoaderState(true);
+    this._rfqSupplierService.getRfqList(this.paramsOfRfqList).subscribe(res => {
+      this._loader.setLoaderState(false);
+      if (res['status'] && res['statusCode'] == 200 && res['data']['totalCount'] > 0) {
+        this.rfqItemListCount = res['data']['totalCount']
+        // console.log("nikkkkkkk", this.rfqItemListCount)
+        if (pagination) {
+          this.paginationUpdated.next({ itemCount: res['data']['totalCount'] });
+        }
+        const newData = res['data']['rfqResponseItemList'].map(item => {
+          item['timeDiff'] = this.timeDateCalculation(item['postedAt'])
+          if (res['data']['supplierRFQList'].includes(item.rfqId.toString())) {
+            item['interested'] = true;
+          } else {
+            item['interested'] = false;
+          }
+          return item;
+        });
+        this.rfqItemList = [...this.rfqItemList, ...newData];
+        this.userInterestedRFQIDs = res['data']['supplierRFQList'];
+      } else if (res['status'] && res['statusCode'] == 200 && res['data']['totalCount'] == 0) {
+        this.rfqItemListCount = 0
+        console.log("nikkkkkkk", this.rfqItemListCount)
+      }
+
+    })
+  }
+  processRfqCategories() {
+    this._rfqSupplierService.getCategories().subscribe(res => {
+      if (res['status'] && res['statusCode'] == 200) {
+        this.rfqcategoryList = res['data'];
+        this.rfqcategoryListLength = (Object.keys(this.rfqcategoryList)).length
+      } else {
+      }
+    })
+  }
+
+  processImage(image) {
+    const imageLink = image.split("||");
+    return "https://cdn.moglix.com/" + imageLink[0];
+  }
+
+  supply(item, index) {
+    if (this._common.isBrowser) {
+      const user = this._localAuthService.getUserSession();
+      if (user && user.authenticated == 'true') {
+        this.callSupplyInternal(item, index, false);
+      } else {
+        // const callback = () => this.callSupplyInternal(item, index)
+        // this._state.notifyDataChanged('loginPopup.open', { callbacks: [callback] });
+        this.prelLoginRFqData = item; 
+        this.prelLoginRFqIndex = index; 
+        this._common.setInitaiteLoginPopUp(null);
+      }
+    }
+  }
+
+  openLogin() {
+    // this._state.notifyDataChanged('loginPopup.open', {});
+  }
+
+
+  callSupplyInternal(item, index, refreshMode = false) {
+    const user = this._localAuthService.getUserSession();
+    console.log('callSupplyInternal', 'called', item, user);
+    const request = {
+      "rfqId": item.rfqId,
+      "rfqItemId": item.rfqItemId || null,
+      "userId": user.userId,
+      "qty": item.quantity,
+      "userName": user.userName,
+      "email": user.email || '',
+      "mobile": user.phone,
+      "status": "Open",
+      "description": '',
+      "productName": item.productName,
+      "msn": item.msn,
+      "brand": item.brand,
+      "item": item.categoryName
+    }
+    console.log('item', item, index, this.rfqItemList);
+    this._loader.setLoaderState(true);
+    this._rfqSupplierService.captureInterestApi(request).subscribe(response => {
+      this._loader.setLoaderState(false);
+      this._tms.show({ type: 'success', text: 'Thank you for showing interest, request submitted successfully' });
+      if (response && response['data']) {
+        this.rfqItemList[index]['interested'] = true;
+      }
+      if (refreshMode) {
+        this.processRfqListData();
+      }
+    })
+
+  }
+
+  getNumericdashboard() {
+    this._rfqSupplierService.numericdashboard().subscribe(res => {
+      if (res['status'] && res['statusCode'] == 200 && res['data']) {
+        this.numericDashboardCount = res['data']
+      } else {
+      }
+    })
+  }
+
+  rfqSupplierCategory(category) {
+    this.selectedCat = true;
+    this.paramsOfRfqList['categoryName'] = category.name;
+    this.rfqItemList = [];
+    this.processRfqListData();
+    this.togglePopup(false);
+  }
+
+  search(string) {
+    console.log('term', string);
+    this.paramsOfRfqList['searchString'] = string;
+    this.rfqItemList = [];
+    this.processRfqListData();
+  }
+
+
+  timeDateCalculation(previous) {
+    var msPerMinute = 60 * 1000;
+    var msPerHour = msPerMinute * 60;
+    var msPerDay = msPerHour * 24;
+    var msPerMonth = msPerDay * 30;
+    var msPerYear = msPerDay * 365;
+    var elapsed = new Date().getTime() - previous;
+    if (elapsed < msPerMinute) {
+      return Math.round(elapsed / 1000) + ' seconds ago';
+    }
+    else if (elapsed < msPerHour) {
+      return Math.round(elapsed / msPerMinute) + ' minutes ago';
+    }
+    else if (elapsed < msPerDay) {
+      return Math.round(elapsed / msPerHour) + ' hours ago';
+    }
+    else if (elapsed < msPerMonth) {
+      return Math.round(elapsed / msPerDay) + ' days ago';
+    }
+    else if (elapsed < msPerYear) {
+      return Math.round(elapsed / msPerMonth) + ' months ago';
+    }
+    else {
+      return Math.round(elapsed / msPerYear) + ' years ago';
+    }
+  }
+
+  pageChanged() {
+    if (this.page == 1) {
+      this.paramsOfRfqList.offset = 0;
+      this.paramsOfRfqList.limit = 40
+    } else {
+      this.paramsOfRfqList.offset = (this.page - 1) * 40;
+      this.paramsOfRfqList.limit = 40
+    }
+    this.newFuprocessRfqListDataCore(false);
+  }
+
+
+  isRFQAlreadyIncluded(rfqId) {
+    return this.userInterestedRFQIDs.includes(rfqId.toString());
+  }
+
+  removeFilter() {
+    this.paramsOfRfqList['categoryName'] = '';
+    this.rfqItemList = [];
+    this.processRfqListData();
+  }
+
+  togglePopup(mode: boolean) {
+    if (mode) {
+      this.openPopup = true
+      this._common.setBodyScroll(null, false);
+    } else {
+      this.openPopup = false
+      this._common.setBodyScroll(null, true);
+    }
+  }
+
+  loadMore() {
+    // this.page = this.page++;
+    const queryObject = Object.assign({}, this.paramsOfRfqList)
+    queryObject.offset = queryObject.offset + queryObject.limit;
+    this.paramsOfRfqList = Object.assign({}, queryObject);
+    //console.log('requsst', queryObject, Object.assign({}, this.paramsOfRfqList));
+    this.newFuprocessRfqListDataCore(false);
   }
 
 }

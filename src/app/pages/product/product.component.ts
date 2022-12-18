@@ -389,6 +389,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.setQuestionAnswerSchema();
         this.productService.resetOOOSimilarProductsData();
         this.commonService.defaultLocaleValue = localization_en.product;
+        this.commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+            this.productStaticData = localization_content;
+        })
     }
 
     scrollToTop()
@@ -2263,6 +2266,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.holdRFQForm = false;
         this.onVisibleProductRFQ($event);
     }
+
     toggleLanguageFile(){
         
     }
@@ -4400,18 +4404,15 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
     translate() {
-        this.switchLanguage = !this.switchLanguage;
-        if (!this.switchLanguage) {
-            this.productStaticData = localization_en.product;
-            this.commonService.defaultLocaleValue = localization_en.product
-            this.commonService.changeStaticJson.next(this.productStaticData);
-            this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
+        if((this.router.url).toLowerCase().indexOf('/mp/msn') !== -1){
+            const URL = (this.router.url).toLowerCase().split("/mp/msn").join('/mp/hi/msn');
+            console.log(this.commonService.defaultLocaleValue.language, URL);
+            this.router.navigate([URL]);
         }
-        else {
-            this.commonService.defaultLocaleValue = localization_hi.product
-            this.productStaticData = localization_hi.product;
-            this.commonService.changeStaticJson.next(this.productStaticData);
-            this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'))
+        if((this.router.url).toLowerCase().indexOf('/mp/hi/msn') !== -1){
+            const URL = (this.router.url).toLowerCase().split("/mp/hi/msn").join('/mp/msn');
+            console.log(this.commonService.defaultLocaleValue.language, URL);
+            this.router.navigate([URL]);
         }
     }
 

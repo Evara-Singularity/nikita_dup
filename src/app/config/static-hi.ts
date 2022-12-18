@@ -1,4 +1,7 @@
+import CONSTANTS from "./constants";
+
 export const product = {
+    language: CONSTANTS.LANGUAGE_HI, // do not transalate this 
     search_bar_text: "सर्च प्रोडक्ट्स/ कैटेगरीज",
     coupon_text: "EMI बैंकों में न्यूनतम रु. 3000 और बजाज फिनसर्व में रु. 4500 की खरीद पर उपलब्ध है",
     cod_available:"कैश ऑन डिलीवरी उपलब्ध (आप डिलीवरी के समय भुगतान कर सकते हैं",

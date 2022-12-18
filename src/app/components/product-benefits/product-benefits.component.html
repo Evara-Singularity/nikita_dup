@@ -97,7 +97,7 @@
                 <i class="icon-Group-14030"></i>
             </span>
             <span class="tab-img-txt-gray">
-                GST Invoice<br> Available
+                {{productStaticData.gst_invoice}}<br>{{productStaticData.available}}
             </span>
         </div>
         <div class="pwa-image-tab">
@@ -105,7 +105,7 @@
                 <i class="icon-secure-payment-fill"></i>
             </span>
             <span class="tab-img-txt-gray">
-                Secure <br> Payments
+                {{productStaticData.secure}} <br> {{productStaticData.payments}} 
             </span>
         </div>
         <div class="pwa-image-tab">
@@ -113,7 +113,7 @@
                 <i class="icon-customer-service-fill"></i>
             </span>
             <span class="tab-img-txt-gray">
-                365 Days <br> Help Desk
+                {{productStaticData.days_365}} <br> {{productStaticData.help_desk}}
             </span>
         </div>
     </div>
@@ -128,7 +128,7 @@
                 <i class="icon-restart-line"></i>
             </span>
             <span class="tab-img-txt">
-                Upto 7 days <br /> returnable
+                {{productStaticData.upto_7days}} <br/>{{productStaticData.returnable}}
             </span>
         </div>
         <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
@@ -136,7 +136,7 @@
                 <i class="icon-restart-line-1"></i>
             </span>
             <span class="tab-img-txt">
-                Wrong <br /> Product
+                {{productStaticData.wrong}} <br />   {{productStaticData.product}}
             </span>
         </div>
         <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
@@ -144,7 +144,7 @@
                 <i class="icon-restart-line-3"></i>
             </span>
             <span class="tab-img-txt">
-                Damaged <br /> Product
+                {{productStaticData.damaged}} <br /> {{productStaticData.product}}
             </span>
         </div>
         <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
@@ -152,7 +152,7 @@
                 <i class="icon-restart-line-2"></i>
             </span>
             <span class="tab-img-txt">
-                Defective <br />Product
+                {{productStaticData.defective}} <br />{{productStaticData.product}}
             </span>
         </div>
     </div>

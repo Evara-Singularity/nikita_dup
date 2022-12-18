@@ -16,7 +16,7 @@
     </div>
     <div class="pwa-row" *ngIf="overallRating > 0">
         <p class="extra-small-txt">
-            Customer Reviews on {{ productName}}
+           {{productStaticData.customer_reviews}} on {{ productName}}
         </p>
     </div>
     <div class="pwa-row rating-sec" *ngIf="overallRating > 0">
@@ -24,8 +24,8 @@
             <div class="overall-rating">
                 <h3>{{ overallRating | number:'1.1-1' }}<i class="icon-rating-star"></i>
                 </h3>
-                <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }}
-                    ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
+                <p class="small-txt">{{productStaticData.avg_rating_based_on}} {{ rawReviewsData?.summaryData?.final_rating }}
+                    {{productStaticData.ratings_and}} {{ rawReviewsData?.summaryData?.review_count }} {{productStaticData.reviews_small}}</p>
             </div>
         </div>
         <div class="pwa-col-6">
@@ -89,7 +89,7 @@
                 </p>
             </div>
             <div class="pwa-col-6 align-right">
-                <p class="small-txt green-txt" *ngIf="review?.is_approved">Verified Purchase</p>
+                <p class="small-txt green-txt" *ngIf="review?.is_approved">{{productStaticData.verified_purchase}}</p>
             </div>
             <div>
                 <h3 class="heading-3-txt">
@@ -121,7 +121,7 @@
     <div class="pwa-row">
         <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="pwa-col-12 show-all-strip"
             (click)="$event.stopPropagation(); reviewRatingPopup.emit()">
-            <span>VIEW {{ reviewLength - 2 }} MORE HELPFUL REVIEW</span>
+            <span> {{productStaticData.view}} {{ reviewLength - 2 }} {{productStaticData.more_helpful_review}}</span>
             <span>
                 <i class="icon-next"></i>
             </span>

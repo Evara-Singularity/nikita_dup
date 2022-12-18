@@ -15,6 +15,7 @@ import CONSTANTS from '@app/config/constants';
 })
 export class ProductCheckPincodeComponent implements OnInit
 {
+    productStaticData = this._commonService.defaultLocaleValue;
     readonly FALSE = false;
     readonly TRUE = true;
     @Input() pageData: any;
@@ -30,7 +31,7 @@ export class ProductCheckPincodeComponent implements OnInit
     itemShippingAmount = 0;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     isSubmitted: boolean = false;
-    productStaticData = this._commonService.defaultLocaleValue;
+    
 
     constructor(
         private localStorageService: LocalStorageService,

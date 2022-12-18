@@ -68,10 +68,10 @@
             </div>
             <div class="inline-list-text">
                 <span *ngIf="i == 0">{{productStaticData.emi_gst_text_part1}} {{gstPercentage}}% {{productStaticData.emi_gst_text_part2}} </span>
-                <span *ngIf="i > 0">{{ item?.block_data?.image_block['0']['image_title'] || 'Get GST invoice and save upto '+gstPercentage+'% on business purchases.'}}</span>
+                <span *ngIf="i > 0">{{ item?.block_data?.image_block['0']['image_title'] || productStaticData.emi_gst_text_part1+gstPercentage+'%'+productStaticData.emi_gst_text_part2}}</span>
             </div>
             <div class="inline-list-link">
-                <span class="link-text" (click)="sendOfferData(item)">VIEW</span>
+                <span class="link-text" (click)="sendOfferData(item)">{{productStaticData.view}}</span>
             </div>
         </div>
         <div class="pwa-row inline-list-item" (click)="openEmiPopup()">
@@ -83,7 +83,7 @@
                 <span>{{productStaticData.min_emi_text}}</span>
             </div>
             <div class="inline-list-link">
-                <span class="link-text" *ngIf="!disableEMIView">VIEW</span>
+                <span class="link-text" *ngIf="!disableEMIView">  {{productStaticData.view}}</span>
             </div>
         </div>
     </div>

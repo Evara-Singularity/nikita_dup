@@ -2,13 +2,13 @@
     <div class="pwa-col-12">
         <div class="faq-head">
             <h3 *ngIf="questionAnswerList?.data.qlist.length <= 1">{{productStaticData.have_doubts_regarding_this_product}}?&nbsp;</h3>
-            <h3 *ngIf="questionAnswerList?.data.qlist.length > 1">{{productStaticData.frequently_bought_together}}</h3>
+            <h3 *ngIf="questionAnswerList?.data.qlist.length > 1">{{productStaticData.frequently_asked_questions}}</h3>
             <button (click)="$event.stopPropagation();askQuestion.emit()" class="btn quaternary-btn-1">{{productStaticData.ask_now}}</button>
         </div>
         <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
 
             <p class="display-qn">
-                Displaying Questions
+                {{productStaticData.displaying_questions}}
                 <span>1-2</span> of
                 <span>{{questionAnswerList.data.qlist.length}} </span>
             </p>

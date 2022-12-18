@@ -6,6 +6,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ProductService } from '@app/utils/services/product.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
+import { CommonService } from '../../utils/services/common.service';
 
 @Component({
     selector: 'review-rating',
@@ -13,6 +14,7 @@ import { ToastMessageService } from '@app/modules/toastMessage/toast-message.ser
     styleUrls: ['./review-rating.scss']
 })
 export class ReviewRatingComponent {
+    productStaticData = this._commonService.defaultLocaleValue;
     displayVariant2Popup = true;
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     @Output() emitWriteReview$: EventEmitter<any> = new EventEmitter<any>();
@@ -25,10 +27,20 @@ export class ReviewRatingComponent {
         public localStorageService: LocalStorageService,
         private productService: ProductService,
         private _tms: ToastMessageService,
+        private _commonService:CommonService
     ) { }
+    ngOnInit(){
+        this.getStaticSubjectData();
+    }
     outData($event) {
         this.closePopup$.emit();
     }
+    getStaticSubjectData(){
+        this._commonService.changeStaticJson.subscribe(staticJsonData => {
+          this._commonService.defaultLocaleValue = staticJsonData;
+          this.productStaticData = staticJsonData;
+        });
+      }
 
     emitWriteReview() {
         this.closePopup$.emit();

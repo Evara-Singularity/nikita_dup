@@ -18,8 +18,8 @@
                     <h3>{{ rawReviewsData?.summaryData?.final_average_rating | number:'1.1-1' }}<i
                             class="icon-rating-star"></i>
                     </h3>
-                    <p class="small-txt">Average Rating based on {{ rawReviewsData?.summaryData?.final_rating }}
-                        ratings and {{ rawReviewsData?.summaryData?.review_count }} reviews</p>
+                    <p class="small-txt">{{productStaticData.avg_rating_based_on}} {{ rawReviewsData?.summaryData?.final_rating }} jkhdkdj
+                        {{productStaticData.ratings_and}} {{ rawReviewsData?.summaryData?.review_count }} {{productStaticData.reviews_small}}</p>
                 </div>
             </div>
             <div class="pwa-col-6">
@@ -88,7 +88,7 @@
                     </p>
                 </div>
                 <div class="pwa-col-6 align-right">
-                    <p class="small-txt green-txt" *ngIf="review?.is_approved">Verified Purchase</p>
+                    <p class="small-txt green-txt" *ngIf="review?.is_approved">{{productStaticData.verified_purchase}}</p>
                 </div>
                 <div>
                     <h3 class="heading-3-txt">

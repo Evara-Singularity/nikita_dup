@@ -24,7 +24,7 @@
             <table style="width:100%" class="product-spec">
                 <tr>
                     <td class="left">
-                        <div>Brand</div>
+                        <div>{{productStaticData.brand}}</div>
                     </td>
                     <td class="right">
                         <div *ngIf="productBrandDetails">
@@ -36,7 +36,7 @@
                 <tr *ngIf="showNavToStorePage">
                     <td class="left">
                         <!-- <div>Explore {{productBrandDetails['brandName']}} store </div> -->
-                      <div>Brand Store </div>
+                      <div>{{productStaticData.brand_store}} </div>
 
                     </td>
                     <td class="right">

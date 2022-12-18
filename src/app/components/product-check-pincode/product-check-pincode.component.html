@@ -10,7 +10,7 @@
                     <div class="pwa-search-input">
                         <input (keyup)="checkPinocdeKey($event)" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" [formControl]="pincode" class="inp-box" type="number" placeholder="{{productStaticData.enter_your_pincode}}" maxlength="6">
                         <div class="input-group-append">
-                            <span (click)="checkAvailblityOnPinCode()" class="btn-submit">CHECK</span>
+                            <span (click)="checkAvailblityOnPinCode()" class="btn-submit">{{productStaticData.check}}</span>
                         </div>
                     </div>
                     <p class="availability-text">

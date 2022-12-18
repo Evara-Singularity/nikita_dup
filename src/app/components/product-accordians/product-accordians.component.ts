@@ -24,6 +24,7 @@ const ACC: any = makeStateKey<{}>("ACC");
 export class ProductAccordiansComponent {
   @Input('categoryBrandDetails') categoryBrandDetails: any;
   @Input('analyticsInfo') analyticsInfo: any;
+  @Input('msn') msn:any;
   ACCORDIAN_DATA: Array<any> = [[],[],[]];
   accordiansDetails:AccordiansDetails[]=[];
   isServer: boolean;
@@ -82,8 +83,8 @@ export class ProductAccordiansComponent {
       this._tState.remove(ACC);
       return of(accordianObj);
     } else {
-      const GET_RELATED_LINKS = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryID;
-      const SIMILAR_CATEGORY = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + categoryID;
+      const GET_RELATED_LINKS = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryID + "&msn" + this.msn;
+      const SIMILAR_CATEGORY = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + categoryID + "&msn" +this.msn;
 
       const relatedObs = this._dataService.callRestful('GET', GET_RELATED_LINKS);
       const getPopularCategoryObs = this.getFilterBucket(categoryID, 'category')

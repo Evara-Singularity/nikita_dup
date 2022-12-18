@@ -304,6 +304,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     quickOrderContainerRef: ViewContainerRef;
 
     iOptions: any = null;
+    isAcceptLanguage:boolean = false;
     
 
     featuresMap = {
@@ -529,6 +530,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         )[0]["images"] !== null
                     ) {
                         this.commonService.enableNudge = false;
+                        console.log('rawData["product"]["acceptLanguage"] ===>', rawData["product"]["acceptLanguage"]);
+                        this.isAcceptLanguage = rawData["product"]["acceptLanguage"] ? true : false;
                         this.processProductData(
                             {
                                 productBO: rawData["product"][0]["productBO"],
@@ -4431,7 +4434,14 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if ((this.router.url).toLowerCase().indexOf('/hi') !== -1) {
             const URL = (this.router.url).toLowerCase().split("/hi").join('/');
             console.log(this.commonService.defaultLocaleValue.language, URL);
+            console.log("this.productUrl",this.productUrl)
             this.router.navigate([URL]);
+            const links = this.renderer2.createElement("link");
+            links.rel = "alternate";
+            links.hreflang = "hi";
+            console.log('links.hreflang =====>',links.hreflang);
+            links.href = URL;
+            
         }
         else {
             const URL = '/hi' + (this.router.url);

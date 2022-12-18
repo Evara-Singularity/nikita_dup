@@ -101,14 +101,14 @@ export class ProductSectionResolver implements Resolve<object> {
       const reviewRequestBody = { review_type: 'PRODUCT_REVIEW', item_type: 'PRODUCT', item_id: productMsnId, user_id: " " };
 
       if (route.data['language'] == 'hi') {
-        this.productReviewObs = this.http.post(REVIEW_URL, reviewRequestBody);
-        this.productCrumb = this.http.get(CRUM_URL);
+        this.productReviewObs = this.http.post(REVIEW_URL, reviewRequestBody,requestOptions);
+        this.productCrumb = this.http.get(CRUM_URL,requestOptions);
         this.product_Q_AND_A = this.http.get(Q_AND_A_URL,requestOptions);
       }
 
       else if (route.data['language'] == 'en') {
-        this.productReviewObs = this.http.post(REVIEW_URL, reviewRequestBody,requestOptions);
-        this.productCrumb = this.http.get(CRUM_URL,requestOptions);
+        this.productReviewObs = this.http.post(REVIEW_URL, reviewRequestBody);
+        this.productCrumb = this.http.get(CRUM_URL);
         this.product_Q_AND_A = this.http.get(Q_AND_A_URL);
       }
 

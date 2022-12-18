@@ -18,9 +18,8 @@ export default class RoutingMatcher {
     productMatchTranslate(url: UrlSegment[]): any {
         const urlLength = url.length;
         if (urlLength > 2) {
-            const secondURLString = url[1].toString();
-            const thirdURLString = url[2].toString();
-            if (thirdURLString === 'hi' && secondURLString ==='mp' ) {
+            const firstURLString = url[0].toString();
+            if (firstURLString === 'hi') {
                 return { consumed: url, posParams: { msnid: url[3] } };
             }
         }

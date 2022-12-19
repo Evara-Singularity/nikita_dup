@@ -12,6 +12,7 @@ import { debounceTime } from 'rxjs/operators';
 import { RfqSupplierService } from './rfq-supplier.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { ClientUtility } from '@app/utils/client.utility';
 
 @Component({
   selector: 'app-rfq-supplier',
@@ -89,6 +90,7 @@ export class RfqSupplierComponent implements OnInit {
         });
 
       this._common.loginPerformedNotify().subscribe(user => {
+        this.loggedInUser = true;
         if (this.prelLoginRFqData) {
           this.callSupplyInternal(this.prelLoginRFqData, this.prelLoginRFqIndex);
         } else {
@@ -283,6 +285,7 @@ export class RfqSupplierComponent implements OnInit {
     this.rfqItemList = [];
     this.processRfqListData();
     this.togglePopup(false);
+    ClientUtility.scrollToTop(100);
   }
 
   search(string) {
@@ -291,6 +294,7 @@ export class RfqSupplierComponent implements OnInit {
     this.paramsOfRfqList['offset'] = 0;
     this.rfqItemList = [];
     this.processRfqListData();
+    ClientUtility.scrollToTop(100);
   }
 
 

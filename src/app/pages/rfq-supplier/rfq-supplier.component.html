@@ -13,16 +13,16 @@
     <div class="supplier-counter-container">
       <div class="supplier-counter-section">
         <div class="counter-section">
-          <h1>{{numericDashboardCount['dealClosedPastWeek'] | number : '1.0-0'}}</h1>
+          <h1 class="small-font">{{numericDashboardCount['dealClosedPastWeek'] | number : '1.0-0'}}</h1>
           <p>Deals closed past week</p>
         </div>
         <div class="counter-section">
-          <h1>{{numericDashboardCount["potentialBusinessOpportunity"] | currency: 'INR' : 'symbol' : '1.0-0'}}</h1>
+          <h1 class="small-font" >{{numericDashboardCount["potentialBusinessOpportunity"] | currency: 'INR' : 'symbol' : '1.0-0'}}</h1>
           <p>Potential business opportunity at Moglix</p>
         </div>
         <div class="counter-section">
-          <h1>{{numericDashboardCount["numberOfBuyingRequest"] | number : '1.0-0'}}</h1>
-          <p>Number of buying request</p>
+          <h1 class="small-font" >{{numericDashboardCount["numberOfBuyingRequest"] | number : '1.0-0'}}</h1>
+          <p>Number of buying requests</p>
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@
   </div>
   <div class="product-category-info">
     <div class="caregory-name">
-      Top Buying Leads for Category Name
+      Top Buying Leads
     </div>
     <div class="filter-chip-section" *ngIf="paramsOfRfqList['categoryName'].length>0" >
       <span class="filter-chip">{{paramsOfRfqList['categoryName']}}<i (click)="removeFilter()" class="icon-circle-delete"></i></span>
@@ -71,7 +71,7 @@
       <button class="btn secondry-btn" (click)="supply(item, i)" [disabled]="item.interested" [ngClass]="{'supply-btn-disbled': item.interested }" >I CAN SUPPLY</button>
     </div>
 
-    <div style="height: 100px; width: 100%;" (click)="loadMore()">
+    <div style="height: 100px; width: 100%; text-align: center;" (click)="loadMore()">
       <button class="btn secondry-btn">LOAD MORE</button>
     </div>
 

@@ -71,6 +71,7 @@ export class SharedAuthUtilService implements OnInit
                 // console.log('redirectUrl', redirectUrl);
                 setTimeout(() => {
                     this._globalLoader.setLoaderState(false);
+                    this._commonService.setLoginNotify(null);
                     redirectUrl && this._commonService.redirectPostAuth(redirectUrl)
                     redirectUrl && this._toastService.show({ type: 'success', text: message });
                     !redirectUrl && console.log('express sign up completed');

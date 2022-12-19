@@ -79,7 +79,7 @@
     <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="popularDealsContainerRef"></product-skeletons>
 </section>
 
-<product-accordian [categoryBrandDetails]="getCategoryBrandDetails()" [msn] = "productSubPartNumber || defaultPartNumber" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
+<product-accordian [isHindiMode]="isHindiUrl" [categoryBrandDetails]="getCategoryBrandDetails()" [msn] = "productSubPartNumber || defaultPartNumber" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
 
 <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
     <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>

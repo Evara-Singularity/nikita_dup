@@ -79,6 +79,9 @@ export const product = {
     frequently_asked_questions:"Frequently Asked Questions",
     customer_reviews:"customer_reviews",
     displaying_questions:"Displaying Questions",
-    more_helpful_review:"MORE HELPFUL REVIEW"
+    more_helpful_review:"MORE HELPFUL REVIEW",
+    accordian_list1_label: 'Related Searches',
+    accordian_list2_label: 'Popular Brand Categories',
+    accordian_list3_label: 'Shop by Related Categories',
 }
   

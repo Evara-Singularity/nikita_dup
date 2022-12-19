@@ -80,5 +80,8 @@ export const product = {
     frequently_asked_questions:"अक्सर पूछे जाने वाले सवाल",
     customer_reviews:"ग्राहक समीक्षा",
     displaying_questions:"प्रदर्शन कर रहे हैं सवाल",
-    more_helpful_review:"अधिक उपयोगी समीक्षा"
+    more_helpful_review:"अधिक उपयोगी समीक्षा",
+    accordian_list1_label: 'संबंधित प्रोडक्ट खोजें',
+    accordian_list2_label: 'प्रिंटर में लोकप्रिय ब्रांड',
+    accordian_list3_label: 'संबंधित प्रोडक्ट की खरीदारी करे',
 }  

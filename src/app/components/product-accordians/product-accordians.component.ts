@@ -83,8 +83,8 @@ export class ProductAccordiansComponent {
       this._tState.remove(ACC);
       return of(accordianObj);
     } else {
-      const GET_RELATED_LINKS = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryID + "&msn" + this.msn;
-      const SIMILAR_CATEGORY = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + categoryID + "&msn" +this.msn;
+      const GET_RELATED_LINKS = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryID + "&msn=" + this.msn;
+      const SIMILAR_CATEGORY = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + categoryID + "&msn=" +this.msn;
 
       const relatedObs = this._dataService.callRestful('GET', GET_RELATED_LINKS);
       const getPopularCategoryObs = this.getFilterBucket(categoryID, 'category')
@@ -107,7 +107,7 @@ export class ProductAccordiansComponent {
   getFilterBucket(categoryId, pageName, brandName?: string) {
     let filter_url = environment.BASE_URL + '/' + pageName.toLowerCase() + ENDPOINTS.GET_BUCKET;
     if (categoryId) {
-      filter_url += "?category=" + categoryId + "&msn" + this.msn;
+      filter_url += "?category=" + categoryId + "&msn=" + this.msn;
     }
     const params = { pageName: pageName };
     const actualParams = this._commonService.formatParams(params);

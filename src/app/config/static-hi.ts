@@ -80,5 +80,19 @@ export const product = {
     frequently_asked_questions:"अक्सर पूछे जाने वाले सवाल",
     customer_reviews:"ग्राहक समीक्षा",
     displaying_questions:"प्रदर्शन कर रहे हैं सवाल",
-    more_helpful_review:"अधिक उपयोगी समीक्षा"
+    more_helpful_review:"अधिक उपयोगी समीक्षा",
+    explore_now:"अब एक्सप्लोर करें",
+    get_best_price:"बेस्ट प्राइस पाएं",
+    store:"स्टोर",
+    product_specifications:"प्रोडक्ट स्पेसिफिकेशंस",
+    available_coupons:"उपलब्ध कूपन",
+    and_get:"और प्राप्त करें",
+    //product info key
+    "specifications":"स्पेसिफिकेशंस",
+    "images":"तस्वीरें",
+    "product details":"प्रोडक्ट विवरण",
+    "key features": 'प्रमुख विशेषताएं',
+    "videos": 'वीडियो',
+    invalid_pincode_validation:"गलत पिनकोड दिया गया",
+    prepaid_payment_only:"केवल प्रीपेड भुगतान उपलब्ध है"
 }  

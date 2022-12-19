@@ -79,6 +79,21 @@ export const product = {
     frequently_asked_questions:"Frequently Asked Questions",
     customer_reviews:"customer_reviews",
     displaying_questions:"Displaying Questions",
-    more_helpful_review:"MORE HELPFUL REVIEW"
+    more_helpful_review:"MORE HELPFUL REVIEW",
+    explore_now:"Explore Now",
+    get_best_price:"GET BEST PRICE'",
+    store:"Store",
+    product_specifications:"Product Specifications",
+    available_coupons:"Available Coupons",
+    and_get:"and get",
+     //product info key
+    "specifications":"specifications",
+    "images":"images",
+    "product details":"product details",
+    "key features": 'key features',
+    "videos": 'videos',
+    invalid_pincode_validation:"Invalid pincode provided",
+    prepaid_payment_only:"Prepaid payment only"
+
 }
   

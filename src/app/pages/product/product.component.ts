@@ -3201,7 +3201,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         });
         if (this.isServer) {
             const links = this.renderer2.createElement("link");
-
             links.rel = "canonical";
             let url = metaObj.productUrl;
             if (

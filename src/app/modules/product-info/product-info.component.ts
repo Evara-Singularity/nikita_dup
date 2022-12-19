@@ -76,6 +76,7 @@ export class ProductInfoComponent implements OnInit
     }
     slides:HTMLCollection;
     siemaTab:HTMLDivElement;
+    showHindiContent:boolean;
 
 
     constructor(
@@ -91,6 +92,7 @@ export class ProductInfoComponent implements OnInit
 
     ngOnInit()
     {
+        
         if (this.modalData) {
             this.analyticsInfo = this.modalData["analyticsInfo"];
             this.processMainInfo(this.modalData["mainInfo"]);
@@ -141,6 +143,7 @@ export class ProductInfoComponent implements OnInit
     {
         this.contentInfo = contentInfo;
         this.tabs = Object.keys(contentInfo);
+        contentInfo.specifications = "abc",
         this.selectedIndex = this.tabs.indexOf(infoType);
         this.updateTab(infoType, this.selectedIndex);
     }
@@ -239,8 +242,13 @@ export class ProductInfoComponent implements OnInit
     }
     displaySlide(slide: string) { return this.tabs.includes(slide) }
 
+    
+
     openLoginPopUp() {
         this._localAuthService.setBackURLTitle(this.router.url, '');
         this._commonService.setInitaiteLoginPopUp();
+    }
+    get isHindiUrl() {
+        return (this.router.url).toLowerCase().indexOf('/hi') !== -1
     }
 }

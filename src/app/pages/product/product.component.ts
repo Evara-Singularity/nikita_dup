@@ -73,6 +73,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     productStaticData:any = this.commonService.defaultLocaleValue;
+    readonly alternateUrl = this.isHindiUrl ? this.router.url.split('/hi').join('') : "hi" + this.router.url
 
     showScrollToTopButton: boolean = false;
     isServer: boolean;
@@ -3243,6 +3244,30 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
             links.href = CONSTANTS.PROD + "/" + url;
             this.renderer2.appendChild(this.document.head, links);
+
+            // const links = this.renderer2.createElement("link");
+            // links.rel = "alternate";
+            // links.hreflang = "hi";
+            // console.log('links.hreflang =====>',links.hreflang);
+            // links.href = URL;
+            
+            if (this.isAcceptLanguage && this.isHindiUrl) {
+                const languagelink = this.renderer2.createElement("link");
+                links.rel = "alternate";
+                links.href = CONSTANTS.PROD + "/" + this.alternateUrl;
+                links.hreflang = 'hi-in'
+                links.lang ='hi'
+                this.renderer2.appendChild(this.document.head, languagelink);
+                
+            }
+            else if (this.isAcceptLanguage) {
+                const languagelink = this.renderer2.createElement("link");
+                links.rel = "alternate";
+                links.href = CONSTANTS.PROD + "/" + this.alternateUrl;
+                links.hreflang = 'en-us'
+                links.lang = 'en'
+                this.renderer2.appendChild(this.document.head, languagelink);
+            }
         }
     }
 
@@ -3341,7 +3366,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     },
                     offers: {
                         "@type": "Offer",
-                        url: CONSTANTS.PROD + "/" + this.getProductURL(),
+                        url: CONSTANTS.PROD + "/" + this.router.url,
                         priceCurrency: "INR",
                         price: (
                             this.productPrice * this.productMinimmumQuantity
@@ -4450,13 +4475,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             const URL = (this.router.url).toLowerCase().split("/hi").join('/');
             console.log(this.commonService.defaultLocaleValue.language, URL);
             console.log("this.productUrl",this.productUrl)
-            this.router.navigate([URL]);
-            const links = this.renderer2.createElement("link");
-            links.rel = "alternate";
-            links.hreflang = "hi";
-            console.log('links.hreflang =====>',links.hreflang);
-            links.href = URL;
-            
+            this.router.navigate([URL]); 
         }
         else {
             const URL = '/hi' + (this.router.url);

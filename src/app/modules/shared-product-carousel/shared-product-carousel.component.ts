@@ -22,6 +22,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   @Input('rawProductData') rawProductData;
   @Input('moveToSlide$') moveToSlide$: Subject<number>;
   @Input('refreshSiemaItems$') refreshSiemaItems$:  Subject<{ items: Array<{}>; type: string; currentSlide: number; } >;
+  @Input('isAcceptLanguage') isAcceptLanguage:boolean = false;
   @Output() loadProductShare$: EventEmitter<any> = new EventEmitter<any>();
   @Output() addToPurchaseList$: EventEmitter<any> = new EventEmitter<any>();
   @Output() scrollToId$: EventEmitter<any> = new EventEmitter<any>();

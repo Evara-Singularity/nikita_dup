@@ -4,7 +4,7 @@
 
 <shared-product-carousel (openPopUpcrousel$)="openPopUpcrousel()" [productAllImages]="productAllImages" [carouselInitialized]="carouselInitialized" (loadProductShare$)="loadProductShare()" [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName" (addToPurchaseList$)="addToPurchaseList()"
     [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$" [productOutOfStock]="productOutOfStock" [rawProductData]="rawProductData" (scrollToId$)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')" [imagePathAsset]="imagePathAsset"
-    (openPopUpcrousel)="openPopUpcrousel(0)" (sendProductImageClickTracking)="sendProductImageClickTracking()" [isProductCrouselLoaded]="isProductCrouselLoaded" [iOptions]="iOptions" [productTags]="productTags" (translate$)="translate()"></shared-product-carousel>
+    (openPopUpcrousel)="openPopUpcrousel(0)" (sendProductImageClickTracking)="sendProductImageClickTracking()" [isProductCrouselLoaded]="isProductCrouselLoaded" [iOptions]="iOptions" [productTags]="productTags" (translate$)="translate()" [isAcceptLanguage] = "isAcceptLanguage"></shared-product-carousel>
 <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)" [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPrices" [selectedProductBulkPrice]="selectedProductBulkPrice" [qunatityFormControl]="qunatityFormControl"
     [productPrice]="productPrice" [productName]="productName" [productTags]="productTags" [refinedProdTags]="refinedProdTags" [productMrp]="productMrp" [priceWithoutTax]="priceWithoutTax" [productDiscount]="productDiscount" [bulkPriceWithoutTax]="bulkPriceWithoutTax"
     [bulkDiscount]="bulkDiscount" [taxPercentage]="taxPercentage" [bulkSellingPrice]="bulkSellingPrice" [productOutOfStock]="productOutOfStock" [productMinimmumQuantity]="productMinimmumQuantity" [priceQuantityCountry]="priceQuantityCountry" [starsCount]="starsCount"
@@ -79,7 +79,7 @@
     <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="popularDealsContainerRef"></product-skeletons>
 </section>
 
-<product-accordian [categoryBrandDetails]="getCategoryBrandDetails()" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
+<product-accordian [categoryBrandDetails]="getCategoryBrandDetails()" [msn] = "productSubPartNumber || defaultPartNumber" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
 
 <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
     <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>

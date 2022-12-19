@@ -331,6 +331,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     GLOBAL_CONSTANT = GLOBAL_CONSTANT;
     isAskQuestionPopupOpen: boolean;
     mainProductURL: string;
+    originalProductBO: any = null;
 
     set showLoader(value: boolean)
     {
@@ -539,6 +540,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                             },
                             rawData["product"][0]
                         );
+                        this.originalProductBO = rawData["product"][0]["original_productBO"] || null;
                         // Load secondary APIs data from resolver only when product data is received
                         if (!rawData["productSecondaryApisData"]["error"]) {
                             this.getSecondaryApiData(rawData["productSecondaryApisData"]);
@@ -1783,7 +1785,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             productGroupData: this.rawProductData,
             buyNow: buyNow,
             selectPriceMap: this.selectedProductBulkPrice,
-            quantity: this.cartQunatityForProduct
+            quantity: this.cartQunatityForProduct,
+            languageMode: this.isHindiUrl,
+            originalProductBO: this.originalProductBO,
         });
         this.cartService.addToCart({ buyNow, productDetails: cartAddToCartProductRequest }).subscribe(result =>
         {
@@ -4446,6 +4450,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             const URL = '/hi' + (this.router.url);
             this.router.navigate([URL]);
         }
+    }
+
+
+    get isHindiUrl() {
+        return (this.router.url).toLowerCase().indexOf('/hi') !== -1
     }
 
     @HostListener('window:popstate', ['$event'])

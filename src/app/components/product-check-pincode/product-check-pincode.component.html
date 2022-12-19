@@ -54,8 +54,8 @@
             <span class="icon-delivery_8"></span>
             </span>
             <div class="about-delivery-txt">
-                <h4>Shipping applicable - ₹{{itemShippingAmount}}</h4>
-                <span>On this order</span>
+                <h4>{{productStaticData.pincode_shipping_applicable}} - ₹{{itemShippingAmount}}</h4>
+                <span>{{productStaticData.pincode_on_this_order}}</span>
             </div>
         </div>
         <ng-container *ngIf="isPincodeAvailble && !pincode.hasError('pattern') && this.pincode.value != null">
@@ -68,7 +68,10 @@
                 <span class="icon-delivery_y_5"></span>
                 </span>
                 <div class="about-delivery-txt">
-                    <h4>Delivery available at {{pincode.value}} in {{deliveryDays}}</h4>
+                    <h4>
+                        {{ productStaticData.pincode_delivery_text.replace('___pincode', pincode.value).replace('___deliveryDays___',
+                        deliveryDays)}}
+                    </h4>
                 </div>
             </div>
             <div class="about-delivery pwa-col-12" *ngIf="!(isServiceable)">
@@ -92,7 +95,7 @@
                 </span>
                 <div class="about-delivery-txt">
                     <h4 class="green-txt">{{productStaticData.cod_available}}</h4>
-                    <span>You can pay at the time of delivery</span>
+                    <span>{{productStaticData.pincode_pay_at_time_delivery}}</span>
                 </div>
             </div>
             <div class="about-delivery pwa-col-12" *ngIf="isServiceable && !isCashOnDelivery">

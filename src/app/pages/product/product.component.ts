@@ -2490,6 +2490,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         productInfo["categoryDetails"] = this.productCategoryDetails;
         productInfo["productPrice"] = this.productPrice;
         productInfo["quantity"] = quantity;
+        productInfo["isHindiMode"] = this.isHindiUrl;
         this.pincodeFormInstance.instance["pageData"] = productInfo;
         if (this.pincodeFormInstance) {
             (

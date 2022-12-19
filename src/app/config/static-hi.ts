@@ -94,5 +94,8 @@ export const product = {
     "key features": 'प्रमुख विशेषताएं',
     "videos": 'वीडियो',
     invalid_pincode_validation:"गलत पिनकोड दिया गया",
-    prepaid_payment_only:"केवल प्रीपेड भुगतान उपलब्ध है"
+    prepaid_payment_only:"केवल प्रीपेड भुगतान उपलब्ध है",
+    accordian_list1_label: 'संबंधित प्रोडक्ट खोजें',
+    accordian_list2_label: 'प्रिंटर में लोकप्रिय ब्रांड',
+    accordian_list3_label: 'संबंधित प्रोडक्ट की खरीदारी करे',
 }  

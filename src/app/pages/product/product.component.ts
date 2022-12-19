@@ -304,6 +304,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     quickOrderContainerRef: ViewContainerRef;
 
     iOptions: any = null;
+    isAcceptLanguage:boolean = false;
     
 
     featuresMap = {
@@ -330,6 +331,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     GLOBAL_CONSTANT = GLOBAL_CONSTANT;
     isAskQuestionPopupOpen: boolean;
     mainProductURL: string;
+    originalProductBO: any = null;
 
     set showLoader(value: boolean)
     {
@@ -529,6 +531,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         )[0]["images"] !== null
                     ) {
                         this.commonService.enableNudge = false;
+                        this.isAcceptLanguage = (rawData["product"][0]["acceptLanguage"] != null && rawData["product"][0]["acceptLanguage"] != undefined) ? true : false;
                         this.processProductData(
                             {
                                 productBO: rawData["product"][0]["productBO"],
@@ -537,6 +540,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                             },
                             rawData["product"][0]
                         );
+                        this.originalProductBO = rawData["product"][0]["original_productBO"] || null;
                         // Load secondary APIs data from resolver only when product data is received
                         if (!rawData["productSecondaryApisData"]["error"]) {
                             this.getSecondaryApiData(rawData["productSecondaryApisData"]);
@@ -1781,7 +1785,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             productGroupData: this.rawProductData,
             buyNow: buyNow,
             selectPriceMap: this.selectedProductBulkPrice,
-            quantity: this.cartQunatityForProduct
+            quantity: this.cartQunatityForProduct,
+            languageMode: this.isHindiUrl,
+            originalProductBO: this.originalProductBO,
         });
         this.cartService.addToCart({ buyNow, productDetails: cartAddToCartProductRequest }).subscribe(result =>
         {
@@ -4430,12 +4436,24 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if ((this.router.url).toLowerCase().indexOf('/hi') !== -1) {
             const URL = (this.router.url).toLowerCase().split("/hi").join('/');
             console.log(this.commonService.defaultLocaleValue.language, URL);
+            console.log("this.productUrl",this.productUrl)
             this.router.navigate([URL]);
+            const links = this.renderer2.createElement("link");
+            links.rel = "alternate";
+            links.hreflang = "hi";
+            console.log('links.hreflang =====>',links.hreflang);
+            links.href = URL;
+            
         }
         else {
             const URL = '/hi' + (this.router.url);
             this.router.navigate([URL]);
         }
+    }
+
+
+    get isHindiUrl() {
+        return (this.router.url).toLowerCase().indexOf('/hi') !== -1
     }
 
     @HostListener('window:popstate', ['$event'])

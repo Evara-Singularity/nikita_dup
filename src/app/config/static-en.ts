@@ -93,7 +93,9 @@ export const product = {
     "key features": 'key features',
     "videos": 'videos',
     invalid_pincode_validation:"Invalid pincode provided",
-    prepaid_payment_only:"Prepaid payment only"
-
+    prepaid_payment_only:"Prepaid payment only",
+    accordian_list1_label: 'Related Searches',
+    accordian_list2_label: 'Popular Brand Categories',
+    accordian_list3_label: 'Shop by Related Categories',
 }
   

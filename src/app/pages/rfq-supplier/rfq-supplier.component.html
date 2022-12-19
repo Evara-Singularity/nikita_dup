@@ -50,7 +50,7 @@
     <div class="prod-category-section" *ngFor="let item of rfqItemList; index as i;" >
       <div class="product-container">
         <div class="product-img">
-          <img [src]="processImage(item.images)">
+          <img [src]="processImage(item.images)" alt="{{item.productName}}">
         </div>
         <div class="product-descrioption">
           <h2>{{item.categoryName}}</h2>

@@ -110,6 +110,9 @@ export class DataService {
             if (options.headerData['Access-Control-Allow-Methods']) {
                 headers['Access-Control-Allow-Methods'] = options.headerData['Access-Control-Allow-Methods'];
             }
+            if (options.headerData['language']) {
+                headers['language'] = options.headerData['language'];
+            }
         }
 
         const start_time = new Date().getTime();

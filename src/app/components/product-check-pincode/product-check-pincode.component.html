@@ -17,7 +17,7 @@
                         {{productStaticData.check_serviceability}}
                     </p>
                     <div *ngIf="pincode.hasError('pattern') && isSubmitted" class="invalid-txt pwa-col-12">
-                        <p class="right-txt">Invalid pincode provided</p>
+                        <p class="right-txt"> {{productStaticData.invalid_pincode_validation}}</p>
                     </div>
                 </div>
 
@@ -104,7 +104,7 @@
                 <span class="icon-prepaid_5"></span>
                 </span>
                 <div class="about-delivery-txt">
-                    <h4>Prepaid payment only</h4>
+                    <h4>{{productStaticData.prepaid_payment_only}}</h4>
                 </div>
             </div>
         </ng-container>

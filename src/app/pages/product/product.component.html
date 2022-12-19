@@ -79,7 +79,7 @@
     <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="popularDealsContainerRef"></product-skeletons>
 </section>
 
-<product-accordian [categoryBrandDetails]="getCategoryBrandDetails()" [msn] = "productSubPartNumber || defaultPartNumber" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
+<product-accordian [isHindiMode]="isHindiUrl" [categoryBrandDetails]="getCategoryBrandDetails()" [msn] = "productSubPartNumber || defaultPartNumber" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
 
 <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
     <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
@@ -117,11 +117,11 @@
 
 <floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2">
     <floating-button [label]="'VIEW IN-STOCK'" [type]="'WHITE'" (onClick)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"></floating-button>
-    <floating-button [iconClass]="''" [label]="'GET BEST PRICE'" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
+    <floating-button [iconClass]="''" [label]="productStaticData.get_best_price" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
 </floating-button-container>
 
 <floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton  && (!productService.oosSimilarProductsData.similarData  || productService.oosSimilarProductsData.similarData.length <= 2 )">
-    <floating-button [iconClass]="''" [label]="'GET BEST PRICE'" [type]="'RED'" [isMultiple]="false" (onClick)="getBestPrice($event)"></floating-button>
+    <floating-button [iconClass]="''" [label]="productStaticData.get_best_price" [type]="'RED'" [isMultiple]="false" (onClick)="getBestPrice($event)"></floating-button>
 </floating-button-container>
 <!-- CTA Fixed position -->
 

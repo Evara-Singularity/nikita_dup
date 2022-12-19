@@ -332,6 +332,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     isAskQuestionPopupOpen: boolean;
     mainProductURL: string;
     isLanguageHindi: boolean;
+    originalProductBO: any = null;
 
     set showLoader(value: boolean)
     {
@@ -541,6 +542,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                             },
                             rawData["product"][0]
                         );
+                        this.originalProductBO = rawData["product"][0]["original_productBO"] || null;
                         // Load secondary APIs data from resolver only when product data is received
                         if (!rawData["productSecondaryApisData"]["error"]) {
                             this.getSecondaryApiData(rawData["productSecondaryApisData"]);
@@ -1785,7 +1787,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             productGroupData: this.rawProductData,
             buyNow: buyNow,
             selectPriceMap: this.selectedProductBulkPrice,
-            quantity: this.cartQunatityForProduct
+            quantity: this.cartQunatityForProduct,
+            languageMode: this.isHindiUrl,
+            originalProductBO: this.originalProductBO,
         });
         this.cartService.addToCart({ buyNow, productDetails: cartAddToCartProductRequest }).subscribe(result =>
         {
@@ -3216,7 +3220,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         });
         if (this.isServer) {
             const links = this.renderer2.createElement("link");
-
             links.rel = "canonical";
             let url = metaObj.productUrl;
             if (
@@ -4459,6 +4462,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             const URL = '/hi' + (this.router.url);
             this.router.navigate([URL]);
         }
+    }
+
+
+    get isHindiUrl() {
+        return (this.router.url).toLowerCase().indexOf('/hi') !== -1
     }
 
     @HostListener('window:popstate', ['$event'])

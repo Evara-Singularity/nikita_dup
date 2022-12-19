@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="coupon-card-container" *ngIf="_cartService?.allPromoCodes.length">
-        <p class="pwa-text">Available Coupons</p>
+        <p class="pwa-text">{{productStaticData.available_coupons}}</p>
         <ng-container *ngFor="let item of _cartService?.allPromoCodes; let i = index;">
           <div class="card">
             <div class="apply-coupon">

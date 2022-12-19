@@ -98,4 +98,11 @@ export const product = {
     accordian_list1_label: 'संबंधित प्रोडक्ट खोजें',
     accordian_list2_label: 'प्रिंटर में लोकप्रिय ब्रांड',
     accordian_list3_label: 'संबंधित प्रोडक्ट की खरीदारी करे',
+
+    pincode_shipping_applicable: 'Shipping applicable',
+    pincode_on_this_order: 'On this order',
+    pincode_delivery_text: 'Delivery available at @#@pincode@#@ in @#@deliveryDays@#@',
+    pincode_delivery_unavalible: 'Delivery unavailable at @#@pincode@#@',
+    pincode_pay_at_time_delivery: 'You can pay at the time of delivery'
+    
 }  

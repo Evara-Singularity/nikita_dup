@@ -19,6 +19,7 @@ export class ProductCheckPincodeComponent implements OnInit
     readonly FALSE = false;
     readonly TRUE = true;
     @Input() pageData: any;
+    @Input() isHindiMode: boolean;
     @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() sendAnalyticsCall: EventEmitter<any> = new EventEmitter<any>();
     pincode = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6), Validators.pattern('^[0-9]{6}$')]);
@@ -36,7 +37,7 @@ export class ProductCheckPincodeComponent implements OnInit
     constructor(
         private localStorageService: LocalStorageService,
         private productService: ProductService,
-        private _commonService: CommonService,
+        public _commonService: CommonService,
         private _cartService: CartService,
     ) { }
 

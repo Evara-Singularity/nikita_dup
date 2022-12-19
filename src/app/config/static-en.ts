@@ -97,5 +97,12 @@ export const product = {
     accordian_list1_label: 'Related Searches',
     accordian_list2_label: 'Popular Brand Categories',
     accordian_list3_label: 'Shop by Related Categories',
+
+    pincode_shipping_applicable: 'Shipping applicable',
+    pincode_on_this_order: 'On this order',
+    pincode_delivery_text: 'Delivery available at ___pincode___ in ___deliveryDays___',
+    pincode_delivery_unavalible: 'Delivery unavailable at @#@pincode@#@',
+    pincode_pay_at_time_delivery: 'You can pay at the time of delivery'
+
 }
   

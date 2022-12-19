@@ -72,7 +72,7 @@
       <button class="btn secondry-btn" (click)="supply(item, i)" [disabled]="item.interested" [ngClass]="{'supply-btn-disbled': item.interested }" >I CAN SUPPLY</button>
     </div>
 
-    <div style="height: 100px; width: 100%; text-align: center;" *ngIf="showLoadMore && rfqItemListCount!=0" (click)="loadMore()">
+    <div style="height: 100px; width: 100%; text-align: center;" *ngIf="showLoadMore && rfqItemListCount!=0 && rfqItemListCount>=40 " (click)="loadMore()">
       <button class="btn secondry-btn">LOAD MORE</button>
     </div>
 
@@ -87,8 +87,6 @@
     </div>
   </ng-container>
 </div>
-
-<h1>{{paramsOfRfqList['categoryName']}}</h1>
 
 <ng-template #listingPopup>
   <div class="category-list-header">

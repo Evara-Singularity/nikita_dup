@@ -48,7 +48,7 @@ export class RfqSupplierComponent implements OnInit {
   showLoadMore: boolean = true;
   totalNumberOfListRFq = 0;
   breadCrumbList = [{
-    name:'Find B2B Bulk Buyer',
+    name:'Find B2B Bulk Buyers',
     link:'/find-b2b-bulk-buyers'
   }];
 
@@ -178,6 +178,10 @@ export class RfqSupplierComponent implements OnInit {
         this.rfqItemList = [...this.rfqItemList, ...newData];
         this.rfqItemListCount = this.rfqItemList.length
         this.userInterestedRFQIDs = res['data']['supplierRFQList'];
+        if (this.rfqItemListCount>=40) {
+          this.showLoadMore = true;
+        }
+        
       } else if (res['status'] && res['statusCode'] == 200 && res['data']['totalCount'] == 0) {
         this.showLoadMore = false;
         this.rfqItemListCount = this.rfqItemList.length;
@@ -252,7 +256,7 @@ export class RfqSupplierComponent implements OnInit {
     this._loader.setLoaderState(true);
     this._rfqSupplierService.captureInterestApi(request).subscribe(response => {
       this._loader.setLoaderState(false);
-      this._tms.show({ type: 'success', text: 'Thank you for showing interest, request submitted successfully' });
+      this._tms.show({ type: 'success', text: 'Thank you for showing interest, request submitted successfully. We will get in touch with you within 48 hours' });
       if (response && response['data']) {
         this.rfqItemList[index]['interested'] = true;
       }
@@ -275,6 +279,7 @@ export class RfqSupplierComponent implements OnInit {
   rfqSupplierCategory(category) {
     this.selectedCat = true;
     this.paramsOfRfqList['categoryName'] = category.name;
+    this.paramsOfRfqList['offset'] = 0;
     this.rfqItemList = [];
     this.processRfqListData();
     this.togglePopup(false);
@@ -283,6 +288,7 @@ export class RfqSupplierComponent implements OnInit {
   search(string) {
     console.log('term', string);
     this.paramsOfRfqList['searchString'] = string;
+    this.paramsOfRfqList['offset'] = 0;
     this.rfqItemList = [];
     this.processRfqListData();
   }

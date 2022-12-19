@@ -13,20 +13,21 @@
     <div class="supplier-counter-container">
       <div class="supplier-counter-section">
         <div class="counter-section">
-          <h1 class="small-font">{{numericDashboardCount['dealClosedPastWeek'] | number : '1.0-0'}}</h1>
+          <h1  *ngIf="numericDashboardCount['dealClosedPastWeek']" >{{numericDashboardCount['dealClosedPastWeek'] | number : '1.0-0'}}</h1>
           <p>Deals closed past week</p>
         </div>
         <div class="counter-section">
-          <h1 class="small-font" >{{numericDashboardCount["potentialBusinessOpportunity"] | currency: 'INR' : 'symbol' : '1.0-0'}}</h1>
+          <h1  *ngIf="numericDashboardCount['potentialBusinessOpportunity']" >{{fancyCurrency(numericDashboardCount["potentialBusinessOpportunity"]).amount | currency:'INR': 'symbol' }} {{fancyCurrency(numericDashboardCount["potentialBusinessOpportunity"]).denomination}}</h1>
           <p>Potential business opportunity at Moglix</p>
         </div>
         <div class="counter-section">
-          <h1 class="small-font" >{{numericDashboardCount["numberOfBuyingRequest"] | number : '1.0-0'}}</h1>
+          <h1  *ngIf="numericDashboardCount['numberOfBuyingRequest']" >{{numericDashboardCount["numberOfBuyingRequest"] | number : '1.0-0'}}</h1>
           <p>Number of buying requests</p>
         </div>
       </div>
     </div>
   </div>
+  <static-breadcrumb [breadCrumbList]="breadCrumbList"></static-breadcrumb>
   <div class="sub-header-container">
     <i class="icon-all-categories" (click)="togglePopup(true)"></i>
     <div class="search-container">
@@ -37,14 +38,14 @@
     </div>
   </div>
   <div class="product-category-info">
-    <div class="caregory-name">
-      Top Buying Leads
+    <div class="caregory-name" *ngIf="rfqItemListCount!=0">
+      Top Buying Leads ({{totalNumberOfListRFq}})
     </div>
     <div class="filter-chip-section" *ngIf="paramsOfRfqList['categoryName'].length>0" >
       <span class="filter-chip">{{paramsOfRfqList['categoryName']}}<i (click)="removeFilter()" class="icon-circle-delete"></i></span>
     </div>
     <div class="no-result-found" *ngIf="rfqItemListCount==0">
-      <h2>No Leads Found!</h2>
+      <h2>No Requirements Found!</h2>
     </div>
     <div class="prod-category-section" *ngFor="let item of rfqItemList; index as i;" >
       <div class="product-container">
@@ -71,19 +72,20 @@
       <button class="btn secondry-btn" (click)="supply(item, i)" [disabled]="item.interested" [ngClass]="{'supply-btn-disbled': item.interested }" >I CAN SUPPLY</button>
     </div>
 
-    <div style="height: 100px; width: 100%; text-align: center;" (click)="loadMore()">
+    <div style="height: 100px; width: 100%; text-align: center;" *ngIf="showLoadMore && rfqItemListCount!=0" (click)="loadMore()">
       <button class="btn secondry-btn">LOAD MORE</button>
     </div>
 
   </div>
-  <div class="register-now-container">
-    <h1>Become Supplier at Moglix & increase your business</h1>
-    <button class="btn secondry-btn">REGISTER NOW</button>
-  </div>
-  <div class="customer-img">
-    <img src="../../../assets/img/happy-customer.png">
-
-  </div>
+  <ng-container *ngIf="!loggedInUser && user" >
+    <div class="register-now-container" >
+      <h1>Become Supplier at Moglix & increase your business</h1>
+      <button class="btn secondry-btn">REGISTER NOW</button>
+    </div>
+    <div class="customer-img">
+      <img src="../../../assets/img/happy-customer.png">
+    </div>
+  </ng-container>
 </div>
 
 <ng-template #listingPopup>

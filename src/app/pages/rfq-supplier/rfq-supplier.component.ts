@@ -42,6 +42,14 @@ export class RfqSupplierComponent implements OnInit {
   prelLoginRFqData: any = null;
   prelLoginRFqIndex: any = null;
   page = 1;
+  loggedInUser: boolean;
+  showLoadMore: boolean = true;
+  totalNumberOfListRFq = 0;
+  breadCrumbList = [{
+    name:'Find B2B Bulk Buyer',
+    link:'/find-b2b-bulk-buyers'
+  }];
+
 
   private paginationInstance = null;
   @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
@@ -78,11 +86,15 @@ export class RfqSupplierComponent implements OnInit {
         });
 
       this._common.loginPerformedNotify().subscribe(user => {
-        console.log('user', user, this.prelLoginRFqData, this.prelLoginRFqIndex);
-        this.callSupplyInternal(this.prelLoginRFqData, this.prelLoginRFqIndex);
+        if (this.prelLoginRFqData) {
+          this.callSupplyInternal(this.prelLoginRFqData, this.prelLoginRFqIndex);
+        } else {
+          this._tms.show({ type: 'success', text: 'Thank you for showing interest. We will get in touch with you within 48 hours' });
+        }
       });
 
     }
+    console.log('fancy name', this.fancyCurrency(1460350000));
   }
 
   processData() {
@@ -110,10 +122,12 @@ export class RfqSupplierComponent implements OnInit {
 
     const user = this._localAuthService.getUserSession();
     if (user && user.authenticated == 'true') {
+      this.loggedInUser=true;
       this.paramsOfRfqList['userId'] = user['userId'];
       console.log('this.paramsOfRfqList', this.paramsOfRfqList);
       this.newFuprocessRfqListDataCore(true);
     } else {
+      this.loggedInUser=false;
       this.newFuprocessRfqListDataCore(true);
     }
   }
@@ -123,8 +137,8 @@ export class RfqSupplierComponent implements OnInit {
     this._rfqSupplierService.getRfqList(this.paramsOfRfqList).subscribe(res => {
       this._loader.setLoaderState(false);
       if (res['status'] && res['statusCode'] == 200 && res['data']['totalCount'] > 0) {
-        this.rfqItemListCount = res['data']['totalCount']
         // console.log("nikkkkkkk", this.rfqItemListCount)
+        this.totalNumberOfListRFq = res['data']['totalCount'];
         if (pagination) {
           this.paginationUpdated.next({ itemCount: res['data']['totalCount'] });
         }
@@ -138,10 +152,13 @@ export class RfqSupplierComponent implements OnInit {
           return item;
         });
         this.rfqItemList = [...this.rfqItemList, ...newData];
+        this.rfqItemListCount = this.rfqItemList.length
         this.userInterestedRFQIDs = res['data']['supplierRFQList'];
       } else if (res['status'] && res['statusCode'] == 200 && res['data']['totalCount'] == 0) {
-        this.rfqItemListCount = 0
-        console.log("nikkkkkkk", this.rfqItemListCount)
+        this.showLoadMore = false;
+        this.rfqItemListCount = this.rfqItemList.length;
+        // this.rfqItemListCount = 0
+        // console.log("nikkkkkkk", this.rfqItemListCount)
       }
 
     })
@@ -177,7 +194,13 @@ export class RfqSupplierComponent implements OnInit {
   }
 
   openLogin() {
-    // this._state.notifyDataChanged('loginPopup.open', {});
+    const user = this._localAuthService.getUserSession();
+    if (user && user.authenticated == 'true') {
+      this.loggedInUser = true;
+    }else{
+
+      this._common.setInitaiteLoginPopUp(null);
+    }
   }
 
 
@@ -284,6 +307,7 @@ export class RfqSupplierComponent implements OnInit {
 
   removeFilter() {
     this.paramsOfRfqList['categoryName'] = '';
+    this.paramsOfRfqList.offset = 0;
     this.rfqItemList = [];
     this.processRfqListData();
   }
@@ -305,6 +329,29 @@ export class RfqSupplierComponent implements OnInit {
     this.paramsOfRfqList = Object.assign({}, queryObject);
     //console.log('requsst', queryObject, Object.assign({}, this.paramsOfRfqList));
     this.newFuprocessRfqListDataCore(false);
+  }
+
+  fancyCurrency(amount){
+    const lac = {
+      'name': 'Lakhs',
+      'amount': 100000
+    };
+    const crore = {
+      'name': 'Cr',
+      'amount': 10000000
+    }; 
+    // console.log(amount, (amount / crore.amount), (amount / crore.amount >= 1));
+    if (amount / crore.amount >= 1) {
+      return {
+        amount: (amount / crore.amount).toFixed(2) ,
+        denomination: crore.name
+      };
+    } else {
+      return {
+        amount: (amount / lac.amount).toFixed(2),
+        denomination: lac.name
+      };
+    }
   }
 
 }

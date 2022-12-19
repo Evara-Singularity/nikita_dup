@@ -10,6 +10,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LoginPopupModule } from '@app/modules/login-popup/login-popup.module';
 import { PaginationModule } from '@app/components/pagination/pagination.component';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
+import { StaticBreadcrumbModule } from './../../components/static-breadcrumb/static-breadcrumb.component';
+
 
 const routes: Routes = [
   {
@@ -30,7 +32,8 @@ const routes: Routes = [
     LoginPopupModule,
     PaginationModule,
     NumberDirectiveModule,
-    ObserveVisibilityDirectiveModule
+    ObserveVisibilityDirectiveModule,
+    StaticBreadcrumbModule
   ],
   declarations: [RfqSupplierComponent],
   exports: [RfqSupplierComponent],

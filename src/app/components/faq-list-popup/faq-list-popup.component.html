@@ -1,4 +1,4 @@
-<app-pop-up [headerType]="'pop-up-header1'" [data]="{headerText:'Frequently Asked Questions'}">
+<app-pop-up [headerType]="'pop-up-header1'" [data]="{headerText:productStaticData.frequently_asked_questions}">
     <!-- <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeVariant2Popup()"></i>
@@ -9,7 +9,7 @@
         <section class="pwa-row">
             <div class="pwa-col-12">
                 <p class="display-qn">
-                    Displaying Questions
+                   {{productStaticData.displaying_questions}}
                     <span>{{questionAnswerList?.data.qlist.length}}</span> of
                     <span>{{questionAnswerList?.data.qlist.length}} </span>
                 </p>

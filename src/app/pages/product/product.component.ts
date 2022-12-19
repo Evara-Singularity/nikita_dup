@@ -1478,7 +1478,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         if (res["status"]) {
                             this._tms.show({
                                 type: "success",
-                                text: "Successfully added to WishList",
+                                text: this.productStaticData.successfully_added_to_wishlist,
                             });
                         }
                     });
@@ -2493,6 +2493,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         productInfo["categoryDetails"] = this.productCategoryDetails;
         productInfo["productPrice"] = this.productPrice;
         productInfo["quantity"] = quantity;
+        productInfo["isHindiMode"] = this.isHindiUrl;
         this.pincodeFormInstance.instance["pageData"] = productInfo;
         if (this.pincodeFormInstance) {
             (

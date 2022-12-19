@@ -412,7 +412,7 @@ export class CommonService
                 })
             );
     }
-
+    
     getCurrentRoute(fullUrl)
     {
         let fullUrlArray = fullUrl.split("?");

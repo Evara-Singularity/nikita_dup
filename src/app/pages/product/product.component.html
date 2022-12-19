@@ -116,7 +116,7 @@
 </floating-button-container>
 
 <floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2">
-    <floating-button [label]="'VIEW IN-STOCK'" [type]="'WHITE'" (onClick)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"></floating-button>
+    <floating-button [label]="productStaticData.view_in_stock" [type]="'WHITE'" (onClick)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"></floating-button>
     <floating-button [iconClass]="''" [label]="productStaticData.get_best_price" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
 </floating-button-container>
 

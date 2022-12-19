@@ -331,6 +331,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     GLOBAL_CONSTANT = GLOBAL_CONSTANT;
     isAskQuestionPopupOpen: boolean;
     mainProductURL: string;
+    isLanguageHindi: boolean;
     originalProductBO: any = null;
 
     set showLoader(value: boolean)
@@ -377,6 +378,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         this.isServer = commonService.isServer;
         this.isBrowser = commonService.isBrowser;
+        this.isLanguageHindi =((this.router.url).toLowerCase().indexOf('/hi') !== -1) || false
     }
 
     ngOnInit(): void
@@ -2490,6 +2492,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         productInfo["categoryDetails"] = this.productCategoryDetails;
         productInfo["productPrice"] = this.productPrice;
         productInfo["quantity"] = quantity;
+        productInfo["isHindiMode"] = this.isHindiUrl;
         this.pincodeFormInstance.instance["pageData"] = productInfo;
         if (this.pincodeFormInstance) {
             (
@@ -3133,21 +3136,32 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             };
         }
 
-
         let title = metaObj.productName;
-
-        if (metaObj.productPrice && metaObj.productPrice > 0 && metaObj["quantityAvailable"] > 0) {
+        if (metaObj.productPrice && metaObj.productPrice > 0 && metaObj["quantityAvailable"] > 0 && !this.isLanguageHindi) {
             title += " - Buy at Rs." + metaObj.productPrice;
         }
+        if (metaObj.productPrice && metaObj.productPrice > 0 && metaObj["quantityAvailable"] > 0 && this.isLanguageHindi) {
+            title += metaObj.productPrice;
+        }
 
-        if (metaObj.productOutOfStock == true) {
-            this.pageTitle.setTitle(
-                "Buy " + metaObj.productName + " Online At Best Price On Moglix"
-            );
-        } else {
-            this.pageTitle.setTitle(
-                "Buy " + metaObj.productName + " Online At Price ₹" + metaObj.productPrice
-            );
+        if (!this.isLanguageHindi) {
+            if (metaObj.productOutOfStock == true) {
+                this.pageTitle.setTitle(
+                    "Buy " + metaObj.productName + " Online At Best Price On Moglix"
+                );
+            } else {
+                this.pageTitle.setTitle(
+                    "Buy " + metaObj.productName + " Online At Price ₹" + metaObj.productPrice
+                );
+            }
+        }
+        else {
+            if (metaObj.productOutOfStock == true) {
+                this.pageTitle.setTitle(metaObj.productName);
+            } else {
+                this.pageTitle.setTitle(metaObj.productName + " Online At Price ₹" + metaObj.productPrice
+                );
+            }
         }
 
         let metaDescription = "";

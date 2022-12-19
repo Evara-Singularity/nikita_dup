@@ -29,8 +29,13 @@
             </div>
             <div class="inline-list-text coupon-list-text" *ngIf="couponForbrandCategory['percentageDiscount']">
                 <span class="green-promo-code">
-                    Pay online & get EXTRA {{couponForbrandCategory['percentageDiscount']}}% OFF on
-                    {{brandName}} {{categoryName}}
+                    <!-- Pay online & get EXTRA {{couponForbrandCategory['percentageDiscount']}}% OFF on
+                    {{brandName}} {{categoryName}} -->
+                    {{
+                     productStaticData.coupon_static_text.replace('___coupon_discount___', couponForbrandCategory['percentageDiscount'])
+                     .replace('___brandName ___', brandName) 
+                     .replace('___categoryName___',categoryName)
+                   }} 
                 </span>
                 <span class="discount-txt" *ngIf="couponForbrandCategory['minimumCartValue']" >
                     Using <b>UPI, EMI, Credit/Debit Card, Net Banking, Wallets</b> on min. cart value of

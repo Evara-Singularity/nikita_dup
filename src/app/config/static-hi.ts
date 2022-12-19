@@ -102,4 +102,10 @@ export const product = {
     // we_will_get_in_touch:"We will get in touch with you on",
     successfully_added_to_wishlist:"इच्छा सूची में सफलतापूर्वक जोड़ा गया",
     view_in_stock:"इन-स्टॉक देखें",
-} 
+    pincode_shipping_applicable: 'शिपिंग लागू',
+    pincode_on_this_order: 'इस आर्डर पर',
+    pincode_delivery_text: 'वितरण ___deliveryDays___ दिनों में ___pincode___ पर उपलब्ध है',
+    pincode_delivery_unavalible: '___pincode___ में डिलीवरी अनुपलब्ध है',
+    pincode_pay_at_time_delivery: 'आप डिलीवरी के समय भुगतान कर सकते हैं',
+    coupon_static_text:'भुगतान ऑनलाइन करें और ___brandName ___ ___categoryName___ पर ___coupon_discount___% की छूट प्राप्त करें।',
+}  

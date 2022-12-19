@@ -101,7 +101,10 @@ export const product = {
     // we_will_get_in_touch:"We will get in touch with you on",
     successfully_added_to_wishlist:"Successfully added to wishlist",
     view_in_stock:"VIEW IN-STOCK",
-    
-    
+    pincode_shipping_applicable: 'Shipping applicable',
+    pincode_on_this_order: 'On this order',
+    pincode_delivery_text: 'Delivery available at ___pincode___ in ___deliveryDays___',
+    pincode_delivery_unavalible: 'Delivery unavailable at ___pincode___',
+    pincode_pay_at_time_delivery: 'You can pay at the time of delivery',
+    coupon_static_text:'Pay online & get EXTRA ___coupon_discount___ % OFF on ___brandName ___ ___categoryName___',
 }
-  

@@ -3460,13 +3460,13 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             product_name: this.productName,
             msn: this.productSubPartNumber,
             brand: this.productBrandDetails["brandName"],
-            category_l1: this.productCategoryDetails["taxonomy"].split("/")[0]
+            category_l1: this.productCategoryDetails["taxonomy"]?.split("/")[0]
                 ? this.productCategoryDetails["taxonomy"].split("/")[0]
                 : null,
-            category_l2: this.productCategoryDetails["taxonomy"].split("/")[1]
+            category_l2: this.productCategoryDetails["taxonomy"]?.split("/")[1]
                 ? this.productCategoryDetails["taxonomy"].split("/")[1]
                 : null,
-            category_l3: this.productCategoryDetails["taxonomy"].split("/")[2]
+            category_l3: this.productCategoryDetails["taxonomy"]?.split("/")[2]
                 ? this.productCategoryDetails["taxonomy"].split("/")[2]
                 : null,
             oos: this.productOutOfStock.toString(),
@@ -3598,7 +3598,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
 
         let ele = []; // product tags for adobe;
-        this.productTags.forEach((element) =>
+        this.productTags?.forEach((element) =>
         {
             ele.push(element.name);
         });
@@ -4269,7 +4269,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             "text",
             "object"
         );
-        this.refinedProdTags = (this.refinedProdTags as []).slice(0, 3);
+        if (this.refinedProdTags !==null) {
+            this.refinedProdTags = (this.refinedProdTags as []).slice(0, 3);
+        }
     }
 
     get overallRating()
@@ -4310,8 +4312,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         const taxon = [];
         if (
-            this.productCategoryDetails &&
-            this.productCategoryDetails.hasOwnProperty("taxonomyCode")
+            this.productCategoryDetails && this.productCategoryDetails["taxonomyCode"]!==null &&
+            this.productCategoryDetails.hasOwnProperty("taxonomyCode") 
         ) {
             taxon.push(
                 this.productCategoryDetails["taxonomyCode"].split("/")[0] || ""

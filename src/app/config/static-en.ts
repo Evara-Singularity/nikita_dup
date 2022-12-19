@@ -97,5 +97,11 @@ export const product = {
     accordian_list1_label: 'Related Searches',
     accordian_list2_label: 'Popular Brand Categories',
     accordian_list3_label: 'Shop by Related Categories',
+    slide_to_raise_request:'Slide to Raise Request',
+    // we_will_get_in_touch:"We will get in touch with you on",
+    successfully_added_to_wishlist:"Successfully added to wishlist",
+    view_in_stock:"VIEW IN-STOCK",
+    
+    
 }
   

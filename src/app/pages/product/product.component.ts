@@ -1475,7 +1475,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         if (res["status"]) {
                             this._tms.show({
                                 type: "success",
-                                text: "Successfully added to WishList",
+                                text: this.productStaticData.successfully_added_to_wishlist,
                             });
                         }
                     });

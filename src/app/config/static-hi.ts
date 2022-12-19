@@ -98,4 +98,8 @@ export const product = {
     accordian_list1_label: 'संबंधित प्रोडक्ट खोजें',
     accordian_list2_label: 'प्रिंटर में लोकप्रिय ब्रांड',
     accordian_list3_label: 'संबंधित प्रोडक्ट की खरीदारी करे',
-}  
+    slide_to_raise_request:'कोटेशन रिक्वेस्ट करने के लिए स्लाइड करें',
+    // we_will_get_in_touch:"We will get in touch with you on",
+    successfully_added_to_wishlist:"इच्छा सूची में सफलतापूर्वक जोड़ा गया",
+    view_in_stock:"इन-स्टॉक देखें",
+} 

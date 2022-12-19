@@ -69,8 +69,11 @@
                 </span>
                 <div class="about-delivery-txt">
                     <h4>
-                        {{ productStaticData.pincode_delivery_text.replace('___pincode', pincode.value).replace('___deliveryDays___',
-                        deliveryDays)}}
+                        {{ 
+                            productStaticData.pincode_delivery_text
+                            .replace('___pincode___', pincode.value)
+                            .replace('___deliveryDays___',deliveryDays)
+                        }}
                     </h4>
                 </div>
             </div>
@@ -83,7 +86,7 @@
                 <span class="icon-delivery_n_5"></span>
                 </span>
                 <div class="about-delivery-txt">
-                    <h4 class="red-txt">Delivery unavailable at {{pincode.value}}</h4>
+                    <h4 class="red-txt">{{productStaticData.pincode_delivery_unavalible.replace('___pincode___', pincode.value)}}</h4>
                 </div>
             </div>
             <div class="about-delivery pwa-col-12" *ngIf="isServiceable && (isCashOnDelivery)">

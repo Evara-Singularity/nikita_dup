@@ -412,24 +412,6 @@ export class CommonService
                 })
             );
     }
-
-    patchContentValue(patchObj, str: string) {
-        const strFinal = str;
-        for (const key in patchObj) {
-            if (Object.prototype.hasOwnProperty.call(patchObj, key)) {
-                const element = patchObj[key];
-                const patchKey = '___' + key + '___';
-                // console.log('includes 3', patchKey);
-                if (str.includes(patchKey)) {
-                    strFinal.replace(patchKey, element);
-                    console.log('includes 3', patchKey, element);
-                    console.log('strFinal', strFinal);
-                }
-            }
-        }
-        // console.log('==============');
-        return strFinal;
-    }
     
     getCurrentRoute(fullUrl)
     {

@@ -101,7 +101,7 @@ export const product = {
     pincode_shipping_applicable: 'Shipping applicable',
     pincode_on_this_order: 'On this order',
     pincode_delivery_text: 'Delivery available at ___pincode___ in ___deliveryDays___',
-    pincode_delivery_unavalible: 'Delivery unavailable at @#@pincode@#@',
+    pincode_delivery_unavalible: 'Delivery unavailable at ___pincode___',
     pincode_pay_at_time_delivery: 'You can pay at the time of delivery'
 
 }

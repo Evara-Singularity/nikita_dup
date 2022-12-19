@@ -114,12 +114,13 @@ export class RfqSupplierComponent implements OnInit {
     this.title.setTitle("Find B2B Bulk Buyers to Grow Your Business | Moglix.com");
     this.meta.addTag({ "property": "og:title", "content": "Find B2B Bulk Buyers to Grow Your Business | Moglix.com" });
     this.meta.addTag({ "property": "og:description", "content": "Moglix is India's largest B2B online portal connecting buyers and sellers. Suppliers can easily find buyers on the platform & can do bulk sales at one place." });
-    this.meta.addTag({ "property": "og:url", "content": " https://moglix.com/find-b2b-bulk-buyers" });
+    this.meta.addTag({ "property": "og:url", "content": " https://www.moglix.com/find-b2b-bulk-buyers"});
     this.meta.addTag({ "name": "description", "content": "Moglix is India's largest B2B online portal connecting buyers and sellers. Suppliers can easily find buyers on the platform & can do bulk sales at one place." });
+    this.meta.addTag({ "name": "robots", "content": 'index,follow' });
     if (this._common.isServer) {
       let links = this._renderer2.createElement('link');
       links.rel = "canonical";
-      links.href = "https://moglix.com/find-b2b-bulk-buyers";
+      links.href = "https://www.moglix.com/find-b2b-bulk-buyers";
       this._renderer2.appendChild(this._document.head, links);
     }
   }

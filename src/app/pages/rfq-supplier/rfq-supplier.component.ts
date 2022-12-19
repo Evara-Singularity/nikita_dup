@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { SortByComponent } from '@app/components/sortBy/sortBy.component';
@@ -10,6 +10,8 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { RfqSupplierService } from './rfq-supplier.service';
+import { LocalStorageService } from 'ngx-webstorage';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 @Component({
   selector: 'app-rfq-supplier',
@@ -64,8 +66,9 @@ export class RfqSupplierComponent implements OnInit {
     private _localAuthService: LocalAuthService,
     private _tms: ToastMessageService,
     private _loader: GlobalLoaderService,
-    private _componentFactoryResolver: ComponentFactoryResolver,
-    private _injector: Injector,
+    private _localStorageService: LocalStorageService,
+    private _commonService: CommonService,
+    private _analytics: GlobalAnalyticsService
   ) { }
 
   ngOnInit() {
@@ -99,6 +102,7 @@ export class RfqSupplierComponent implements OnInit {
 
   processData() {
     this.setSeo();
+    this.setAnalyticTags('Find B2B Bulk Buyers','Find B2B Bulk Buyers',false);
     this.processRfqListData();
     this.processRfqCategories();
     this.getNumericdashboard();
@@ -116,6 +120,26 @@ export class RfqSupplierComponent implements OnInit {
       links.href = "https://moglix.com/find-b2b-bulk-buyers";
       this._renderer2.appendChild(this._document.head, links);
     }
+  }
+
+  setAnalyticTags(pageName,subSection,genericClick)
+  {
+      let user;
+      if (this._localStorageService.retrieve('user')) {
+          user = this._localStorageService.retrieve('user');
+      }
+      /*Start Adobe Analytics Tags */
+      let page = {
+          'pageName': "moglix:" + pageName,
+          'channel': "article",
+          'subSection': "moglix:" +subSection,
+          'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
+      };
+      const digitalData = {};
+      digitalData['page'] = page;
+      digitalData['custData'] = this._commonService.custDataTracking;
+      setTimeout(() => this._analytics.sendAdobeCall(digitalData,genericClick));
+      /*End Adobe Analytics Tags */
   }
 
   processRfqListData() {
@@ -180,6 +204,7 @@ export class RfqSupplierComponent implements OnInit {
 
   supply(item, index) {
     if (this._common.isBrowser) {
+      this.setAnalyticTags('Supplier','Supplier Intrest CTA',true);
       const user = this._localAuthService.getUserSession();
       if (user && user.authenticated == 'true') {
         this.callSupplyInternal(item, index, false);
@@ -194,6 +219,7 @@ export class RfqSupplierComponent implements OnInit {
   }
 
   openLogin() {
+    this.setAnalyticTags('Supplier','Supplier Intrest CTA',true);
     const user = this._localAuthService.getUserSession();
     if (user && user.authenticated == 'true') {
       this.loggedInUser = true;

@@ -80,7 +80,7 @@
   <ng-container *ngIf="!loggedInUser && user" >
     <div class="register-now-container" >
       <h1>Become Supplier at Moglix & increase your business</h1>
-      <button class="btn secondry-btn">REGISTER NOW</button>
+      <button class="btn secondry-btn"(click)="openLogin()">REGISTER NOW</button>
     </div>
     <div class="customer-img">
       <img src="../../../assets/img/happy-customer.png">
@@ -88,22 +88,16 @@
   </ng-container>
 </div>
 
+<h1>{{paramsOfRfqList['categoryName']}}</h1>
+
 <ng-template #listingPopup>
   <div class="category-list-header">
     <p>Categories</p>
     <i class="icon-circle-delete" (click)="togglePopup(false)" ></i>
   </div>
-  <!-- <div class="search-field">
-    <div class="search-container">
-      <div class="searchfield-section">
-        <input id="searchvalue" value="" placeholder="Search for category, brand, product...">
-        <button type="submit"><i class="icon-search"></i></button>
-      </div>
-    </div>
-  </div> -->
   <div class="category-list-container">
     <div class="category-info" *ngFor="let item of rfqcategoryList, let i=index" >
-      <span class="category-name" [ngClass]="{'selected': (item.name == paramsOfRfqList['categoryName']) }" (click)="rfqSupplierCategory(item)">{{item.name}}</span>
+      <span class="category-name" [ngClass]="{'color': (item.name == paramsOfRfqList['categoryName']) }" (click)="rfqSupplierCategory(item)">{{item.name}}</span>
     </div>
   </div>
 </ng-template>

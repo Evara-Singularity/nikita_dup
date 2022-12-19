@@ -107,7 +107,7 @@ export class ProductAccordiansComponent {
   getFilterBucket(categoryId, pageName, brandName?: string) {
     let filter_url = environment.BASE_URL + '/' + pageName.toLowerCase() + ENDPOINTS.GET_BUCKET;
     if (categoryId) {
-      filter_url += "?category=" + categoryId;
+      filter_url += "?category=" + categoryId + "&msn" + this.msn;
     }
     const params = { pageName: pageName };
     const actualParams = this._commonService.formatParams(params);

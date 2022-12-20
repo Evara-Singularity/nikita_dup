@@ -73,7 +73,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     productStaticData:any = this.commonService.defaultLocaleValue;
-    readonly alternateUrl = this.isHindiUrl ? this.router.url.split('/hi').join('') : "hi" + this.router.url
 
     showScrollToTopButton: boolean = false;
     isServer: boolean;
@@ -334,6 +333,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     mainProductURL: string;
     isLanguageHindi: boolean;
     originalProductBO: any = null;
+    englishUrl: string;
+    hindiUrl: string;
 
     set showLoader(value: boolean)
     {
@@ -379,7 +380,15 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         this.isServer = commonService.isServer;
         this.isBrowser = commonService.isBrowser;
-        this.isLanguageHindi =((this.router.url).toLowerCase().indexOf('/hi') !== -1) || false
+        this.isLanguageHindi =((this.router.url).toLowerCase().indexOf('/hi') !== -1) || false;
+        if(((this.router.url).toLowerCase().indexOf('/hi') !== -1)){
+            this.englishUrl = this.router.url.toLowerCase().split("/hi").join('');;
+            this.hindiUrl =  this.router.url;
+        }
+        else {
+            this.hindiUrl = "/hi" + this.router.url;
+            this.englishUrl = (this.router.url).toLowerCase().split("hi").join('/');
+        }
     }
 
     ngOnInit(): void
@@ -3225,7 +3234,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             links.rel = "canonical";
             let url = metaObj.productUrl;
             if (
-                !this.isCommonProduct &&
+                !this.isCommonProduct ||
                 !this.listOfGroupedCategoriesForCanonicalUrl.includes(
                     metaObj.productCategoryDetails["categoryCode"]
                 )
@@ -3242,7 +3251,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             if (url && url.substring(url.length - 2, url.length) == "-g") {
                 url = url.substring(0, url.length - 2);
             }
-
             links.href = CONSTANTS.PROD + "/" + url;
             this.renderer2.appendChild(this.document.head, links);
 
@@ -3251,24 +3259,21 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             // links.hreflang = "hi";
             // console.log('links.hreflang =====>',links.hreflang);
             // links.href = URL;
-            
-            if (this.isAcceptLanguage && this.isHindiUrl) {
+            if (this.isAcceptLanguage) {
                 const languagelink = this.renderer2.createElement("link");
-                links.rel = "alternate";
-                links.href = CONSTANTS.PROD + "/" + this.alternateUrl;
-                links.hreflang = 'hi-in'
-                links.lang ='hi'
+                languagelink.rel = "alternate";
+                languagelink.href = CONSTANTS.PROD + this.hindiUrl;
+                languagelink.hreflang = 'hi-in';
                 this.renderer2.appendChild(this.document.head, languagelink);
                 
+                const elanguagelink = this.renderer2.createElement("link");
+                elanguagelink.rel = "alternate";
+                elanguagelink.href = CONSTANTS.PROD + this.englishUrl;
+                elanguagelink.hreflang = 'en-us'
+                this.renderer2.appendChild(this.document.head, elanguagelink);
+
             }
-            else if (this.isAcceptLanguage) {
-                const languagelink = this.renderer2.createElement("link");
-                links.rel = "alternate";
-                links.href = CONSTANTS.PROD + "/" + this.alternateUrl;
-                links.hreflang = 'en-us'
-                links.lang = 'en'
-                this.renderer2.appendChild(this.document.head, languagelink);
-            }
+            this.isHindiUrl ?   document.documentElement.setAttribute("lang", 'hi'):  document.documentElement.setAttribute("lang", 'en');
         }
     }
 

@@ -335,6 +335,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     originalProductBO: any = null;
     englishUrl: string;
     hindiUrl: string;
+    ProductStatusCount: Observable<Object>;
 
     set showLoader(value: boolean)
     {
@@ -4362,9 +4363,13 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     productStatusCount()
     {
-        this.productService
-            .getProductStatusCount(this.defaultPartNumber)
-            .subscribe((productStatusCountResult) =>
+        if(this.isHindiUrl){
+        this.ProductStatusCount = this.productService.getProductStatusCount(this.defaultPartNumber,{ headerData: { 'language': 'hi' }})
+        }
+        else{ 
+            this.ProductStatusCount = this.productService.getProductStatusCount(this.defaultPartNumber)
+        }
+        this.ProductStatusCount.subscribe((productStatusCountResult) =>
             {
                 this.rawProductCountData = Object.assign({}, productStatusCountResult);
                 this.remoteApiCallRecentlyBought();

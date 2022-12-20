@@ -260,13 +260,13 @@ export class ProductService {
         );
     }
 
-    getProductStatusCount(productMsnId) {
+    getProductStatusCount(productMsnId, header?) {
         const PRODUCT_STATUS_COUNT_URL =
             CONSTANTS.NEW_MOGLIX_API +
             ENDPOINTS.PRODUCT_STATUS_COUNT +
             "?productId=" +
             (productMsnId ? productMsnId.toUpperCase() : '');
-        return this._dataService.callRestful("GET", PRODUCT_STATUS_COUNT_URL);
+        return this._dataService.callRestful("GET", PRODUCT_STATUS_COUNT_URL,header);
     }
 
     getUserDuplicateOrder(productMsnId, userId) {

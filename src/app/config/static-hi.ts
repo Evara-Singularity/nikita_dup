@@ -4,7 +4,7 @@ export const product = {
     language: CONSTANTS.LANGUAGE_HI, // do not transalate this 
     search_bar_text: "सर्च प्रोडक्ट्स/ कैटेगरीज",
     coupon_text: "EMI बैंकों में न्यूनतम रु. 3000 और बजाज फिनसर्व में रु. 4500 की खरीद पर उपलब्ध है",
-    cod_available:"कैश ऑन डिलीवरी उपलब्ध (आप डिलीवरी के समय भुगतान कर सकते हैं",
+    cod_available:"कैश ऑन डिलीवरी उपलब्ध",
     delivery_details:"डिलिवरी डिटेल्स",
     best_matching_heading:"बेस्ट मैचिंग इन-स्टॉक प्रोडक्ट्स",
     available_on_request:"रिक्वेस्ट पर उपलब्ध",
@@ -96,7 +96,7 @@ export const product = {
     invalid_pincode_validation:"गलत पिनकोड दिया गया",
     prepaid_payment_only:"केवल प्रीपेड भुगतान उपलब्ध है",
     accordian_list1_label: 'संबंधित प्रोडक्ट खोजें',
-    accordian_list2_label: 'प्रिंटर में लोकप्रिय ब्रांड',
+    accordian_list2_label: 'लोकप्रिय ब्रांड कैटेगरी',
     accordian_list3_label: 'संबंधित प्रोडक्ट की खरीदारी करे',
     slide_to_raise_request:'कोटेशन रिक्वेस्ट करने के लिए स्लाइड करें',
     // we_will_get_in_touch:"We will get in touch with you on",
@@ -104,8 +104,12 @@ export const product = {
     view_in_stock:"इन-स्टॉक देखें",
     pincode_shipping_applicable: 'शिपिंग लागू',
     pincode_on_this_order: 'इस आर्डर पर',
-    pincode_delivery_text: 'वितरण ___deliveryDays___ दिनों में ___pincode___ पर उपलब्ध है',
+    pincode_delivery_text: 'वितरण ___deliveryDays___ ___pincode___ पर उपलब्ध है',
     pincode_delivery_unavalible: '___pincode___ में डिलीवरी अनुपलब्ध है',
     pincode_pay_at_time_delivery: 'आप डिलीवरी के समय भुगतान कर सकते हैं',
     coupon_static_text:'भुगतान ऑनलाइन करें और ___brandName ___ ___categoryName___ पर ___coupon_discount___% की छूट प्राप्त करें।',
+    requested_successfully:"रिक्वेस्ट सफल",
+    coupon_text1:"भुगतान ऑनलाइन करें और ___discount___ की छूट प्राप्त करें।",
+    looking_for_category:"क्या आप ___categoryName___ की तलाश कर रहे हैं"
+    
 }  

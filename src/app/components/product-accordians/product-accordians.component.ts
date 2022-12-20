@@ -165,6 +165,7 @@ export class ProductAccordiansComponent {
       this.ACCORDIAN_DATA[1] = res[1]['categoryLinkList'];
 
       // accordian data
+      console.log(this.accordiansDetails['name']);
       this.accordiansDetails.push({
         name: this.productStaticData.accordian_list2_label,
         extra: this.categoryBrandDetails.brand.brandName,

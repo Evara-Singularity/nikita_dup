@@ -21,7 +21,11 @@
                 <img src="../../../assets/img/best_deals.png">
             </div>
             <div class="inline-list-text coupon-list-text" *ngIf="couponForbrandCategory['absoluteDiscount']">
-                <span class="green-promo-code">Pay online & get EXTRA {{couponForbrandCategory['absoluteDiscount'] | currency:'INR' : 'symbol' : '1.0-0'}} OFF</span>
+                <span class="green-promo-code">
+                    {{productStaticData.coupon_text1
+                        .replace('___discount___',couponForbrandCategory['absoluteDiscount'] | currency:'INR' : 'symbol' : '1.0-0')
+                    }}
+                </span>
                 <span class="discount-txt">
                     Using <b>UPI, EMI, Credit/Debit Card, Net Banking, Wallets</b> on min. cart value of
                     {{couponForbrandCategory['minimumCartValue'] | mathCeil | currency: 'INR' : 'symbol' :'1.0-0'}} in {{brandName}} {{categoryName}}
@@ -32,10 +36,10 @@
                     <!-- Pay online & get EXTRA {{couponForbrandCategory['percentageDiscount']}}% OFF on
                     {{brandName}} {{categoryName}} -->
                     {{
-                     productStaticData.coupon_static_text.replace('___coupon_discount___', couponForbrandCategory['percentageDiscount'])
+                     productStaticData.coupon_static_text.replace('___couponDiscount___', couponForbrandCategory['percentageDiscount'])
                      .replace('___brandName ___', brandName) 
                      .replace('___categoryName___',categoryName)
-                   }} 
+                    }} 
                 </span>
                 <span class="discount-txt" *ngIf="couponForbrandCategory['minimumCartValue']" >
                     Using <b>UPI, EMI, Credit/Debit Card, Net Banking, Wallets</b> on min. cart value of
@@ -48,7 +52,7 @@
                 <i class="icon-coupon-3-fill-1"></i>
             </div>
             <div class="inline-list-text coupon-list-text">
-                <span>{{productStaticData.use_code}} : <span class="green-promo-code">{{promoCodes[0].promoCode}}</span> {{productStaticData.and_get}} {{promoCodes[0].promoDescription}}</span><br/>
+                <span>{{productStaticData.use_code}} : <span class="green-promo-code">{{promoCodes[0].promoCode}}</span> {{productStaticData.and_get}} {{promoCodes[0].promoDescription}} hhh</span><br/>
                 <span class="green-promo-code-min" *ngIf="promoCodes[0].minCartValue > 0">Min cart value {{ promoCodes[0].minCartValue | currency:'INR': 'symbol': '1.0-0'}}</span>
             </div>
             <!-- <div class="inline-list-link">
@@ -88,7 +92,7 @@
                 <span>{{productStaticData.min_emi_text}}</span>
             </div>
             <div class="inline-list-link">
-                <span class="link-text" *ngIf="!disableEMIView">  {{productStaticData.view}}</span>
+                <span class="link-text" *ngIf="!disableEMIView">{{productStaticData.view}}</span>
             </div>
         </div>
     </div>

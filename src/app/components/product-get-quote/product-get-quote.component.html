@@ -1,5 +1,5 @@
 <div id="get-quote-section" class="buy-nowsec mt-10" *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
-    <h4 class="heading-3">Looking for {{ productCategoryDetails["categoryName"] }}</h4>
+    <h4 class="heading-3">{{productStaticData.looking_for_category.replace('___categoryName___',productCategoryDetails["categoryName"])}}</h4>
     <p class="small-txt prodct-name"> {{ productName }} </p>
     <div class="buynow-flex">
         <div class="bn-left">
@@ -35,7 +35,7 @@
         <ng-template #raisedTemplate>
             <p class="small-txt">Thank you! Our support member will get in touch with you within 24 hours.</p>
             <div class="button-area wrapper">
-                <button class="valid-button shimmer-button">REQUESTED SUCCESSFULLY</button>
+                <button class="valid-button shimmer-button">{{productStaticData.requested_successfully}}</button>
             </div>
         </ng-template>
     </div>

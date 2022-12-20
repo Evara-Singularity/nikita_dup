@@ -1,5 +1,5 @@
 <app-pop-up (outData$)="outData($event)" [class.open1]="displayVariant2Popup" [headerType]="'pop-up-header1'"
-    [data]="{headerText: 'Reviews & Ratings'}">
+    [data]="{headerText:productStaticData.rating_review}">
     <!-- <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeVariant2Popup()"></i>
@@ -18,7 +18,7 @@
                     <h3>{{ rawReviewsData?.summaryData?.final_average_rating | number:'1.1-1' }}<i
                             class="icon-rating-star"></i>
                     </h3>
-                    <p class="small-txt">{{productStaticData.avg_rating_based_on}} {{ rawReviewsData?.summaryData?.final_rating }} jkhdkdj
+                    <p class="small-txt">{{productStaticData.avg_rating_based_on}} {{ rawReviewsData?.summaryData?.final_rating }}
                         {{productStaticData.ratings_and}} {{ rawReviewsData?.summaryData?.review_count }} {{productStaticData.reviews_small}}</p>
                 </div>
             </div>
@@ -69,7 +69,7 @@
         </div>
         <div class="pwa-row review-btn">
             <div class="pwa-col-12">
-                <button class="btn secondry-btn" (click)="emitWriteReview()">WRITE A REVIEW</button>
+                <button class="btn secondry-btn" (click)="emitWriteReview()">{{productStaticData.write_review}}</button>
             </div>
         </div>
         <div *ngFor="let review of rawReviewsData?.reviewList; let i = index;" class="reviewRow popup-reviewRow">

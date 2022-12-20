@@ -3152,7 +3152,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             title += " - Buy at Rs." + metaObj.productPrice;
         }
         if (metaObj.productPrice && metaObj.productPrice > 0 && metaObj["quantityAvailable"] > 0 && this.isLanguageHindi) {
-            title += metaObj.productPrice;
+            title += metaObj['seoDetails']['title'];
         }
 
         if (!this.isLanguageHindi) {
@@ -3168,9 +3168,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
         else {
             if (metaObj.productOutOfStock == true) {
-                this.pageTitle.setTitle(metaObj.productName);
+                this.pageTitle.setTitle("खरीदें "+ metaObj.productName + " ऑनलाइन सबसे अच्छी कीमत पर मोगलिक्स से" );
             } else {
-                this.pageTitle.setTitle(metaObj.productName + " Online At Price ₹" + metaObj.productPrice
+                this.pageTitle.setTitle("खरीदें "+ metaObj.productName + " ऑनलाइन कीमत ₹" + metaObj.productPrice + " में"
                 );
             }
         }
@@ -3218,7 +3218,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             name: "og:url",
             content: CONSTANTS.PROD + "/" + this.getProductURL(),
         });
-        this.meta.addTag({ name: "og:title", content: title });
+        // this.pageTitle.setTitle("खरीदें "+ metaObj.productName + " ऑनलाइन कीमत ₹" + metaObj.productPrice + " में"
+        if (!this.hindiUrl) {
+            this.meta.addTag({ name: "og:title", content: title });
+        } else {
+            this.meta.addTag({ name: "og:title", content: "खरीदें " + metaObj.productName + " ऑनलाइन कीमत ₹" + metaObj.productPrice + " में" });
+        }
         this.meta.addTag({ name: "og:image", content: metaObj.productDefaultImage });
         this.meta.addTag({ name: "robots", content: CONSTANTS.META.ROBOT });
         this.meta.addTag({
@@ -3233,12 +3238,18 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if (this.isServer) {
             const links = this.renderer2.createElement("link");
             links.rel = "canonical";
-            let url = metaObj.productUrl;
+            let url = ''
+            if (this.isHindiUrl){
+                url = CONSTANTS.PROD + this.hindiUrl;
+            }
+            else{
+                url = metaObj.productUrl;
+            }
             if (
                 !this.isCommonProduct ||
                 !this.listOfGroupedCategoriesForCanonicalUrl.includes(
                     metaObj.productCategoryDetails["categoryCode"]
-                )
+                ) && !this.hindiUrl
             ) {
                 url = this.rawProductData.productPartDetails[
                     this.rawProductData["partNumber"]
@@ -3252,7 +3263,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             if (url && url.substring(url.length - 2, url.length) == "-g") {
                 url = url.substring(0, url.length - 2);
             }
-            links.href = CONSTANTS.PROD + "/" + url;
+            if(!this.hindiUrl){
+                links.href = CONSTANTS.PROD + "/" + url;
+            }
+            else {
+                links.href = url;
+            }
             this.renderer2.appendChild(this.document.head, links);
 
             // const links = this.renderer2.createElement("link");

@@ -25,7 +25,7 @@ export const product = {
     return_policy:"रिटर्न पॉलिसी",
     add_to_cart:"कार्ट में डालें",
     buy_now:"अभी खरीदें",
-    more_from:"और एक्सप्लोर करें",
+    more_from:"दूसरे एक्सप्लोर करें",
     use_code:"कोड का इस्तेमाल करें",
     best_of_moglix:"मोगलिक्स का बेस्ट",
     frequently_bought_together:"इस प्रोडक्ट  को खरीदने वाले ग्राहकों ने ये भी खरीदाइस",
@@ -122,6 +122,6 @@ export const product = {
     get_rfq_text_4: 'शुक्रिया! हमारा समर्थन सदस्य 24 घंटे के भीतर आपसे संपर्क करेगा।',
     show_more: 'और दिखाएं',
     show_less: 'कम दिखाएं',
-    of:'/'
-
+    of:'/',
+    emis_availaible:'उपलब्ध EMIs: '
 }  

@@ -400,8 +400,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.getProductApiData();
         this.addSubcriber();
         this.createSiemaOption();
-        this.setProductSeoSchema();
-        this.setQuestionAnswerSchema();
+        // this.setProductSeoSchema();
+        // this.setQuestionAnswerSchema();
         this.productService.resetOOOSimilarProductsData();
         
         if ((this.router.url).includes("/hi")) {
@@ -616,7 +616,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             const rawReviews = Object.assign({}, secondaryRawData[0]["data"]);
             rawReviews["reviewList"] = rawReviews["reviewList"] as [];
             this.setReviewsRatingData(rawReviews);
+            // console.log('rawReviews', rawReviews);
             this.rawReviewsData = Object.assign({}, rawReviews);
+            this.setProductSeoSchema();
         }
 
         if (secondaryRawData[1] && Array.isArray(secondaryRawData[1])) {
@@ -624,6 +626,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
         if (secondaryRawData[2]["data"]) {
             this.setQuestionsAnswerData(secondaryRawData[2]);
+            this.setQuestionAnswerSchema();
         }
     }
 
@@ -3280,7 +3283,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             else {
                 links.href = url;
             }
-            this.renderer2.appendChild(this.document.head, links);
 
             // const links = this.renderer2.createElement("link");
             // links.rel = "alternate";
@@ -3301,7 +3303,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 this.renderer2.appendChild(this.document.head, elanguagelink);
 
             }
-            this.isHindiUrl ?   document.documentElement.setAttribute("lang", 'hi'):  document.documentElement.setAttribute("lang", 'en');
+            if (this.commonService.isServer) {
+                this.renderer2.appendChild(this.document.head, links);
+            }
+            if (this.commonService.isBrowser) {
+                this.isHindiUrl ? document.documentElement.setAttribute("lang", 'hi') : document.documentElement.setAttribute("lang", 'en');
+            }
         }
     }
 

@@ -27,8 +27,7 @@
                     }}
                 </span>
                 <span class="discount-txt">
-                    Using <b>UPI, EMI, Credit/Debit Card, Net Banking, Wallets</b> on min. cart value of
-                    {{couponForbrandCategory['minimumCartValue'] | mathCeil | currency: 'INR' : 'symbol' :'1.0-0'}} in {{brandName}} {{categoryName}}
+                    {{productStaticData.prepaid_discount_text.replace('___minimumCartValue___', couponForbrandCategory['minimumCartValue']).replace('___brandName___', brandName).replace('___categoryName___', categoryName)}}
                 </span>
             </div>
             <div class="inline-list-text coupon-list-text" *ngIf="couponForbrandCategory['percentageDiscount']">
@@ -42,8 +41,7 @@
                     }} 
                 </span>
                 <span class="discount-txt" *ngIf="couponForbrandCategory['minimumCartValue']" >
-                    Using <b>UPI, EMI, Credit/Debit Card, Net Banking, Wallets</b> on min. cart value of
-                    {{couponForbrandCategory['minimumCartValue'] | mathCeil | currency: 'INR' : 'symbol' :'1.0-0'}} in {{brandName}} {{categoryName}}
+                    {{productStaticData.prepaid_discount_text.replace('___minimumCartValue___', couponForbrandCategory['minimumCartValue']).replace('___brandName___', brandName).replace('___categoryName___', categoryName)}}
                 </span>
             </div>
         </div>
@@ -53,7 +51,9 @@
             </div>
             <div class="inline-list-text coupon-list-text">
                 <span>{{productStaticData.use_code}} : <span class="green-promo-code">{{promoCodes[0].promoCode}}</span> {{productStaticData.and_get}} {{promoCodes[0].promoDescription}} hhh</span><br/>
-                <span class="green-promo-code-min" *ngIf="promoCodes[0].minCartValue > 0">Min cart value {{ promoCodes[0].minCartValue | currency:'INR': 'symbol': '1.0-0'}}</span>
+                <span class="green-promo-code-min" *ngIf="promoCodes[0].minCartValue > 0">
+                    {{productStaticData.min_cart_value.replace('___count___', promoCodes[0].minCartValue | currency:'INR': 'symbol': '1.0-0')}}
+                </span>
             </div>
             <!-- <div class="inline-list-link">
                 <span class="link-text" *ngIf="!disableEMIView">VIEW</span>
@@ -64,8 +64,9 @@
                 <div class="inline-list-icon">
                 </div>
                 <div class="inline-list-text">
-                    <a class="link-text" (click)="seeMoreOffers()">SEE {{promoCodes.length - 1}} MORE {{(promoCodes.length - 1)
-                        == 1 ? 'COUPON' :'COUPONS'}}</a>
+                    <a class="link-text" (click)="seeMoreOffers()">
+                        {{ productStaticData.see_more_coupons.replace('___promoCodes___', (promoCodes.length - 1).toString()) }}
+                    </a>
                 </div>
                 <div class="inline-list-link">
                 </div>

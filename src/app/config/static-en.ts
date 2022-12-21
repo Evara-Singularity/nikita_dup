@@ -36,6 +36,7 @@ export const product = {
     recently_viewed:"Recently Viewed",
     view_more_faq:"VIEW MORE FAQs",
     show_all_key_features:"Show All Key Features",
+    show_all_specifination: "Show All Specifications",
     buy_it_again:"Buy It Again",
     interested_to_buy_in_bulk:"Interested to buy in bulk?",
     get_quote:"GET QUOTE",
@@ -77,7 +78,7 @@ export const product = {
     buy_more_save_more:"Buy More and Save More",
     buy_more:"Buy More",
     frequently_asked_questions:"Frequently Asked Questions",
-    customer_reviews:"customer reviews",
+    customer_reviews:"Customer Reviews",
     displaying_questions:"Displaying Questions",
     more_helpful_review:"MORE HELPFUL REVIEW",
     explore_now:"Explore Now",
@@ -109,5 +110,13 @@ export const product = {
     coupon_static_text:'Pay online & get EXTRA ___couponDiscount___ OFF on  ___brandName ___ ___categoryName___',
     requested_successfully:"REQUESTED SUCCESSFULLY",
     coupon_text1:"Pay online & get EXTRA ___discount___ OFF",
-    looking_for_category:"Looking for ___categoryName___"
+    looking_for_category:"Looking for ___categoryName___",
+    min_cart_value: 'Min cart value ___count___',
+    see_more_coupons: 'SEE ___promoCodes___ MORE COUPON(S)',
+    prepaid_discount_text: `Using UPI, EMI, Credit/Debit Card, Net Banking, Wallets on min. cart value of ___minimumCartValue___ in ___brandName___ ___categoryName___`,
+    get_rfq_text_1: 'Purchase item in bulk quantity',
+    get_rfq_text_2: 'Get at best price for your business',
+    get_rfq_text_3: 'We will get in touch with you on',
+    get_rfq_text_4: 'Thank you! Our support member will get in touch with you within 24 hours.',
+
 }

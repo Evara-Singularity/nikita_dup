@@ -143,7 +143,6 @@ export class ProductInfoComponent implements OnInit
     {
         this.contentInfo = contentInfo;
         this.tabs = Object.keys(contentInfo);
-        contentInfo.specifications = "abc",
         this.selectedIndex = this.tabs.indexOf(infoType);
         this.updateTab(infoType, this.selectedIndex);
     }

@@ -44,7 +44,7 @@
                                 <span class="status" *ngIf="detail.status == PAYMENT_PENDING_STATUS " >{{ PAYMENT_PENDING_STATUS_LABEL }}</span>
                                 <button
                                     *ngIf="(detail.status !== 'ACCEPTED' && detail.status !== 'PROCESSING' && detail.status !== 'PACKED' && detail.status !== 'ORDERED' && detail.status !== 'SHIPPED'); else elseBlock"
-                                    class="btn quinary-btn" (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event)">
+                                    class="btn quinary-btn" (click)="trackAndNavigateToProductPage(detail.productUrl, detail.product_msn, $event, detail)">
                                     BUY AGAIN
                                 </button>
                                 <ng-template #elseBlock>

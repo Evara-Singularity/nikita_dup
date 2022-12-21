@@ -150,8 +150,8 @@ export class ProductAccordiansComponent {
   }
 
   setAccordianData(res){
-    if (res[0]['status']) {
-      this.ACCORDIAN_DATA[0] = res[0]['data'];
+    if (res[0]['status'] || res[0]) {
+      this.ACCORDIAN_DATA[0] = res[0]['data'] || res[0];
       // accordian data
       if (this.ACCORDIAN_DATA[0]?.length > 0) {
         this.accordiansDetails.push({
@@ -165,7 +165,7 @@ export class ProductAccordiansComponent {
       this.ACCORDIAN_DATA[1] = res[1]['categoryLinkList'];
 
       // accordian data
-      console.log(this.accordiansDetails['name']);
+      // console.log(this.accordiansDetails['name']);
       this.accordiansDetails.push({
         name: this.productStaticData.accordian_list2_label,
         extra: this.categoryBrandDetails.brand.brandName,

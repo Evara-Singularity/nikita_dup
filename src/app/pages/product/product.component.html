@@ -59,7 +59,13 @@
 <product-qa [questionAnswerList]="questionAnswerList" (handleFaqListPopup)="handleFaqListPopup()" (askQuestion)="askQuestion()">
 </product-qa>
 
-<product-get-quote (raiseRFQQuote$)="raiseRFQQuote()" [rfqQuoteRaised]="rfqQuoteRaised" [productOutOfStock]="productOutOfStock" [productMrp]="productMrp" [productCategoryDetails]="productCategoryDetails" [productName]="productName" [productAllImages]="productAllImages"></product-get-quote>
+<product-get-quote 
+    (raiseRFQQuote$)="raiseRFQQuote()" 
+    [rfqQuoteRaised]="rfqQuoteRaised" 
+    [productOutOfStock]="productOutOfStock" 
+    [productMrp]="productMrp" 
+    [productCategoryDetails]="productCategoryDetails" 
+    [productName]="productName" [productAllImages]="productAllImages"></product-get-quote>
 
 <div *ngIf="!productOutOfStock" id="similarProducts" class="common-product" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
     <ng-container #similarProduct></ng-container>

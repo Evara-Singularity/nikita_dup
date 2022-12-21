@@ -940,6 +940,7 @@ export class CartService
         const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
         const incrementUnit = (priceQuantityCountry && priceQuantityCountry['incrementUnit']) ? priceQuantityCountry['incrementUnit'] : 1;
         const productLinks = productPartDetails['productLinks'];
+        const productURL = (args.languageMode) ? args.originalProductBO['defaultCanonicalUrl'] : (productPartDetails['canonicalUrl'] || productLinks['canonical'] || productLinks['default']);
         const product = {
             cartId: null,
             productId: partNumber,
@@ -960,7 +961,7 @@ export class CartService
             productQuantity: (args.quantity && !isNaN(args.quantity) && +args.quantity > productMinimmumQuantity) ? args.quantity : productMinimmumQuantity,
             productUnitPrice: productPrice,
             expireAt: null,
-            productUrl: productPartDetails['canonicalUrl'] || productLinks['canonical'] || productLinks['default'],
+            productUrl: productURL,
             bulkPriceMap: priceQuantityCountry['bulkPrices'],
             bulkPrice: null,
             bulkPriceWithoutTax: null,

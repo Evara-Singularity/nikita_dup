@@ -157,17 +157,19 @@ export class ProductService {
         return this._dataService.callRestful("POST", url, { body: data });
     }
 
-    getAllOffers() {
+    getAllOffers(headerData?) {
         return this._dataService.callRestful(
             "GET",
-            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategoryExtras + "mobikwikpdp"
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategoryExtras + "mobikwikpdp",
+            headerData
         );
     }
 
-    getAllPromoCodeOffers(url) {
+    getAllPromoCodeOffers(url, headerData?) {
         return this._dataService.callRestful(
             "GET",
-            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPON_CODE  + url
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPON_CODE  + url,
+            headerData
         );
     }
 

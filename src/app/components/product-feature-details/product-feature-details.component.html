@@ -20,7 +20,7 @@
         </div>
 
         <div class="product-specification" *ngIf="productAttributes != null">
-            <h2 class="heading-3">{{productStaticData.show_all_key_features}}</h2>
+            <h2 class="heading-3">{{productStaticData.product_specifications}}</h2>
             <table style="width:100%" class="product-spec">
                 <tr>
                     <td class="left">
@@ -59,7 +59,7 @@
             </table>
             <div *ngIf="!isFromOosSimilarCard" (click)="handleProductInfoPopup('specifications', 'show all specifications')"
                 class="show-all-strip spec">
-                <span>{{productStaticData.show_all_key_features}}</span>
+                <span>{{productStaticData.show_all_specifination}}</span>
             </div>
         </div>
 

@@ -23,6 +23,7 @@ import { ServerLogSchema } from "../models/log.modal";
 import { LocalAuthService } from "./auth.service";
 import { abort } from "process";
 import * as localization_en from '../../config/static-en';
+import * as localization_hi from '../../config/static-hi';
 
 @Injectable({
     providedIn: "root",
@@ -120,6 +121,10 @@ export class CommonService
         this._renderer2 = this.rendererFactory.createRenderer(null, null);
   
         // this.abTesting = this._dataService.getCookie('AB_TESTING');
+    }
+
+    getLocalizationData(isEnglish) {
+        return isEnglish ? localization_en.product : localization_hi.product
     }
 
     updateUserSession() {

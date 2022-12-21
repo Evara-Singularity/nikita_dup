@@ -80,9 +80,6 @@ export class RfqSupplierComponent implements OnInit {
     this.setSeo();
     if (this._common.isBrowser) {
       this.user = this._localAuthService.getUserSession();
-      
-      this.processData();
-
       this.searchTerm.valueChanges.pipe(
         debounceTime(400))
         .subscribe(term => {

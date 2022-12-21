@@ -107,7 +107,7 @@ export const product = {
     pincode_delivery_text: 'Delivery available at ___pincode___ in ___deliveryDays___',
     pincode_delivery_unavalible: 'Delivery unavailable at ___pincode___',
     pincode_pay_at_time_delivery: 'You can pay at the time of delivery',
-    coupon_static_text:'Pay online & get EXTRA ___couponDiscount___ OFF on  ___brandName ___ ___categoryName___',
+    coupon_static_text:'Pay online & get EXTRA ___coupon_discount___ OFF on  ___brandName ___ ___categoryName___',
     requested_successfully:"REQUESTED SUCCESSFULLY",
     coupon_text1:"Pay online & get EXTRA ___discount___ OFF",
     looking_for_category:"Looking for ___categoryName___",

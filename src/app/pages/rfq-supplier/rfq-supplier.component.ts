@@ -13,6 +13,8 @@ import { RfqSupplierService } from './rfq-supplier.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ClientUtility } from '@app/utils/client.utility';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-rfq-supplier',
@@ -69,7 +71,9 @@ export class RfqSupplierComponent implements OnInit {
     private _loader: GlobalLoaderService,
     private _localStorageService: LocalStorageService,
     private _commonService: CommonService,
-    private _analytics: GlobalAnalyticsService
+    private _analytics: GlobalAnalyticsService,
+        private _route: ActivatedRoute
+
   ) { }
 
   ngOnInit() {
@@ -97,13 +101,23 @@ export class RfqSupplierComponent implements OnInit {
           this._tms.show({ type: 'success', text: 'Thank you for showing interest. We will get in touch with you within 48 hours' });
         }
       });
-
+      
     }
-    console.log('fancy name', this.fancyCurrency(1460350000));
+    this._route.queryParamMap.subscribe(query=>{
+      if(query.get('category')) {
+        this.paramsOfRfqList['categoryName'] = query.get('category');
+      } 
+      if(query.get('search')) {
+        this.searchTerm.setValue(query.get('search'));
+        this.paramsOfRfqList['searchString'] = query.get('search'); 
+      }
+      console.log('paramsOfRfqList', this.paramsOfRfqList);
+      this.processData()
+    })
+
   }
 
   processData() {
-    this.setSeo();
     this.setAnalyticTags('Find B2B Bulk Buyers','Find B2B Bulk Buyers',false);
     this.processRfqListData();
     this.processRfqCategories();
@@ -390,5 +404,8 @@ export class RfqSupplierComponent implements OnInit {
       };
     }
   }
+
+
+
 
 }

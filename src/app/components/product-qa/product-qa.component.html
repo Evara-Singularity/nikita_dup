@@ -9,7 +9,7 @@
 
             <p class="display-qn">
                 {{productStaticData.displaying_questions}}
-                <span>1-2</span> of
+                <span>1-2</span>{{productStaticData.of}}
                 <span>{{questionAnswerList.data.qlist.length}} </span>
             </p>
             <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">

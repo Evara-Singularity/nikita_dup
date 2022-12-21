@@ -118,5 +118,8 @@ export const product = {
     get_rfq_text_2: 'Get at best price for your business',
     get_rfq_text_3: 'We will get in touch with you on',
     get_rfq_text_4: 'Thank you! Our support member will get in touch with you within 24 hours.',
+    show_more: 'SHOW MORE',
+    show_less: 'SHOW LESS',
+    of:'/'
 
 }

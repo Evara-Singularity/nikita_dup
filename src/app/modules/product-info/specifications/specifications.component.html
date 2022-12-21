@@ -51,7 +51,7 @@
         <tr class="spec-row show-more-row" *ngIf="enableSecondaryAttributes" >
             <td class="right" [attr.colspan]="2">
                 <div (click)="showMore()">
-                    <a class="link-text">{{ (showSecondaryAttributes)?'SHOW LESS':'SHOW MORE'  }}</a>
+                    <a class="link-text">{{ (showSecondaryAttributes)? productStaticData.show_less:productStaticData.show_more  }}</a>
                 </div>
             </td>
         </tr>

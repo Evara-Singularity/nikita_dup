@@ -9,7 +9,7 @@
     <ng-container *ngFor="let breadcrumb of breadCrumbList">
         <li class="item" *ngIf="breadcrumb.link">
             <a routerLink="{{breadcrumb.link}}">{{breadcrumb.name}}
-                <span class="arrow-icon">
+                <span class="arrow-icon"  *ngIf="breadCrumbList.length >=2">
                     <i class="icon-next" aria-hidden="true"></i>
                 </span>
             </a>

@@ -3230,7 +3230,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.meta.addTag({ name: "og:description", content: metaDescription });
         this.meta.addTag({
             name: "og:url",
-            content: CONSTANTS.PROD + "/" + this.getProductURL(),
+            content: (this.hindiUrl)? CONSTANTS.PROD + this.router.url : CONSTANTS.PROD + "/" + this.getProductURL(),
         });
         // this.pageTitle.setTitle("खरीदें "+ metaObj.productName + " ऑनलाइन कीमत ₹" + metaObj.productPrice + " में"
         if (!this.hindiUrl) {
@@ -3397,7 +3397,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     },
                     offers: {
                         "@type": "Offer",
-                        url: CONSTANTS.PROD + "/" + this.router.url,
+                        url: CONSTANTS.PROD + this.router.url,
                         priceCurrency: "INR",
                         price: (
                             this.productPrice * this.productMinimmumQuantity

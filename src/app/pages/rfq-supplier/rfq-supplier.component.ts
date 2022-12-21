@@ -72,14 +72,15 @@ export class RfqSupplierComponent implements OnInit {
     private _localStorageService: LocalStorageService,
     private _commonService: CommonService,
     private _analytics: GlobalAnalyticsService,
-        private _route: ActivatedRoute
-
+    private _route: ActivatedRoute,
+    private _router: Router,
   ) { }
 
   ngOnInit() {
     this.setSeo();
     if (this._common.isBrowser) {
       this.user = this._localAuthService.getUserSession();
+      
       this.processData();
 
       this.searchTerm.valueChanges.pipe(
@@ -88,9 +89,9 @@ export class RfqSupplierComponent implements OnInit {
           if (term.trim().length > 2) {
             this.search(term.trim());
           }
-          if(term.trim()==''){
+          if (term.trim() == '') {
             this.search('');
-          }
+        }
         });
 
       this._common.loginPerformedNotify().subscribe(user => {
@@ -103,6 +104,7 @@ export class RfqSupplierComponent implements OnInit {
       });
       
     }
+
     this._route.queryParamMap.subscribe(query=>{
       if(query.get('category')) {
         this.paramsOfRfqList['categoryName'] = query.get('category');
@@ -111,9 +113,10 @@ export class RfqSupplierComponent implements OnInit {
         this.searchTerm.setValue(query.get('search'));
         this.paramsOfRfqList['searchString'] = query.get('search'); 
       }
-      console.log('paramsOfRfqList', this.paramsOfRfqList);
+      // console.log('paramsOfRfqList', this.paramsOfRfqList);
       this.processData()
     })
+
 
   }
 
@@ -155,7 +158,7 @@ export class RfqSupplierComponent implements OnInit {
       const digitalData = {};
       digitalData['page'] = page;
       digitalData['custData'] = this._commonService.custDataTracking;
-      setTimeout(() => this._analytics.sendAdobeCall(digitalData,genericClick));
+      // setTimeout(() => this._analytics.sendAdobeCall(digitalData, genericClick));
       /*End Adobe Analytics Tags */
   }
 
@@ -298,18 +301,30 @@ export class RfqSupplierComponent implements OnInit {
     this.paramsOfRfqList['categoryName'] = category.name;
     this.paramsOfRfqList['offset'] = 0;
     this.rfqItemList = [];
-    this.processRfqListData();
     this.togglePopup(false);
     ClientUtility.scrollToTop(100);
+    const query = { 'category': category.name };
+    if (this.paramsOfRfqList.searchString) {
+      query['search'] = this.paramsOfRfqList.searchString;
+    }
+    this._router.navigate([], { queryParams: query })
   }
 
   search(string) {
-    console.log('term', string);
+    // console.log('term', string);
     this.paramsOfRfqList['searchString'] = string;
     this.paramsOfRfqList['offset'] = 0;
     this.rfqItemList = [];
-    this.processRfqListData();
+    // this.processRfqListData();
+    let query = {};
+    if (string) {
+      query = { 'search': string };
+    }
+    if (this.paramsOfRfqList.categoryName) {
+      query['category'] = this.paramsOfRfqList.categoryName;
+    }
     ClientUtility.scrollToTop(100);
+    this._router.navigate([], { queryParams: query })
   }
 
 
@@ -360,7 +375,13 @@ export class RfqSupplierComponent implements OnInit {
     this.paramsOfRfqList['categoryName'] = '';
     this.paramsOfRfqList.offset = 0;
     this.rfqItemList = [];
-    this.processRfqListData();
+    const query = {};
+    if (this.paramsOfRfqList.searchString) {
+      query['search'] = this.paramsOfRfqList.searchString;
+    }
+    ClientUtility.scrollToTop(100);
+    this._router.navigate([], { queryParams: query })
+    // this.processRfqListData();
   }
 
   togglePopup(mode: boolean) {

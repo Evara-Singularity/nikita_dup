@@ -23,7 +23,7 @@
         <i class="icon-circle-delete"  (click)="closePopup()"></i>
     </div>
     <div *ngIf="headerType === 'pop-up-header3'" class="pop-up-header3">
-        <i class="icon-back-arrow"  (click)="closePopup()"></i>
+        <i class="icon-back-arrow"  (click)="popUpName !== 'bulkRfqPopUp' ? closePopup() : emitClick();"></i>
         <div class="text-section">
             <h3 class="heading-3 pad-tb-0">
                 {{headerText}}

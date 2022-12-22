@@ -11,11 +11,16 @@ import { ActivatedRoute, Router } from "@angular/router";
     styleUrls: ['./pop-up.component.scss'],
 })
 export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
+    emitClick() {
+        this.outData$.emit()
+    }
 
     @Input() data;
     @Input('headerType') headerType: any;
     @Input('headerSubText') headerSubText: any;
     @Output() outData$: EventEmitter<any> = new EventEmitter<any>();
+    @Input('popUpName') popUpName: string;
+
     // closeClass: any = "icon-circle-delete";
     // paraClass: any = "txt";
     isServer: boolean;

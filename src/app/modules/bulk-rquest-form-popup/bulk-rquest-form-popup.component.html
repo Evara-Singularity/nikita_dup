@@ -1,17 +1,5 @@
-<app-pop-up  class="open" (outData$)="outData($event)" [headerType]="'pop-up-header3'" [data]="{headerText: 'Write Question', headerSubText: 'Just in 2 simple steps'}">
-
+<app-pop-up  [popUpName]="'bulkRfqPopUp'"class="open" (outData$)="outData($event)" [headerType]="'pop-up-header3'" [data]="{headerText: 'Get customise & best price', headerSubText: 'Just in 2 simple steps'}">
     <div class="content-popup bulkRFQ" content>
-
-        <!-- <div class="rfq-phase2-container">
-            <div class="header-strip">
-                <i class="icon-back-arrow"></i>
-                <div class="heading-name">
-                    <h2>Get customise & best price</h2>
-                    <p>Just in 2 simple steps</p>
-                    <i class="icon-circle_check succes-icon"></i>
-                </div>
-            </div>
-        </div> -->
         <div class="stepper-wrapper">
             <div class="stepper-item active">
                 <div class="step-counter active">1</div>
@@ -93,20 +81,16 @@
                         </div>
                     </div>
                     <button class="btn secondry-btn disabled" [disabled]="!bulkrfqForm.valid"
-                    (click)="$event.stopPropagation();validateUserWithPhone();">1NEXT</button>                </div>
+                    (click)="$event.stopPropagation();loginAndValidatePhone()">NEXT</button>                
+                </div>
             </ng-container>
-            <ng-container *ngSwitchCase="stepNameOtp">
-                <!-- <shared-otp (togglePopUp$)="togglePopUp($event)" [isBulkRfq]="true" [isLoginPopup]="true"   (removeAuthComponent$)="removeAuthComponent()"></shared-otp> -->
- 
-                <shared-auth-otp 
-                  [isLoginPopup]="isLoginPopup" 
-                  (togglePopUp$)="toggle($event)"
 
-                  [otpFormArray]="otpForm" [source]="'login_otp'" 
-                  [identifier]="bulkrfqForm.get('phone').value"
-            (otpEmitter)="captureOTP($event)" [withLabel]="false"></shared-auth-otp>
-                <!-- <shared-auth-otp [isLoginPopup]="true" [isLoginPopup]="true"  [source]="'login_otp'" [withLabel]="false"></shared-auth-otp> -->
-                <button class="btn secondry-btn disabled" (click)="moveToNext(stepNameRfqForm)">2NEXT</button>
+            <ng-container *ngSwitchCase="stepNameOtp">
+ 
+                <shared-auth-otp [isLoginPopup]="isLoginPopup" (togglePopUp$)="toggle($event)" [otpFormArray]="otpForm"
+                    [source]="'login_otp'" [identifier]="bulkrfqForm.get('phone').value" (otpEmitter)="captureOTP($event)"
+                    [withLabel]="false"></shared-auth-otp>
+
             </ng-container>
             <ng-container *ngSwitchCase="stepNameRfqForm">
                 <div class="card pad-15">
@@ -139,62 +123,69 @@
                             </label>
                         </div>
                         <button class="btn secondry-btn disabled" [disabled]="!gstinForm.valid"
-                            (click)="moveToNext(stepNameConfimation)">4NEXT</button>                    </div>
+                            (click)="moveToNext(stepNameConfimation)">SUBMIT</button>                    </div>
                 </div>
             </ng-container>
+
             <ng-container *ngSwitchCase="stepNameConfimation">
                 <div class="thanks-query-container">
                     <div class="heading-txt">
                         <h2>Thanks, for submitting the query</h2>
                         <p>Below is your request summary</p>
                     </div>
-                    <div class="card" [formGroup]="confirmationForm">
+                    <div class="card" >
                         <div class="material-form">
                             <div class="outline-input-label">
                                 <label>
-                                    <input formControlName="productName" type="text" name="">
-                                    <span class="label">Product Name</span>
+                                    <input [disabled]="true" type="text" name="">
+                                    <span class="label">{{bulkrfqForm.get('productType').value}}</span>
                                 </label>
                             </div>
                             <div class="multiple-form-field quantity-block">
                                 <div class="outline-input-label">
                                     <label>
-                                        <input formControlName="quantity" type="text" name="">
-                                        <span class="label">Qty</span>
+                                        <input [disabled]="true" type="text" name="">
+                                        <span class="label">{{bulkrfqForm.get('quantity').value}}</span>
                                     </label>
                                 </div>
                                 <div class="outline-input-label">
                                     <label>
-                                        <input formControlName="budget" type="text" name="">
-                                        <span class="label">Budget</span>
+                                        <input [disabled]="true" type="text" name="">
+                                        <span class="label">{{bulkrfqForm.get('budget').value}}</span>
                                     </label>
                                 </div>
                             </div>
                             <div class="outline-input-label ">
                                 <label>
-                                    <input formControlName="gstin" type="text" name="">
-                                    <span class="label">GST no.</span>
+                                    <input [disabled]="true" type="text" name="">
+                                    <span class="label">{{gstinForm.get('gstin').value}}</span>
                                 </label>
                             </div>
                             <div class="outline-input-label ">
                                 <label>
-                                    <input formControlName="email" type="text" name="">
-                                    <span class="label">Email ID</span>
+                                    <input [disabled]="true" type="text" name="">
+                                    <span class="label">{{gstinForm.get('email').value}}</span>
                                 </label>
                             </div>
                             <div class="outline-input-label mb-0">
                                 <label>
-                                    <input  formControlName="description" type="text" name="">
-                                    <span class="label">Product Description</span>
+                                    <input [disabled]="true" type="text" name="">
+                                    <span class="label">{{gstinForm.get('description').value}}</span>
                                 </label>
                             </div>
                         </div>
                     </div>
                     <h2 style="padding-top: 20px;">Similar Items You Can Buy Now</h2>
-                    <!-- <app-similar-products></app-similar-products> -->
-                    <button class="btn secondry-full-btn ">ADD NEW RFQ REQUEST</button>
+                    <!-- add produtOOS condition in ngIF below -->
+                    <div *ngIf="true" id="similarProducts" class="common-product" data-observeVisibility [debounceTime]="100"
+                        (visible)="onVisibleSimilar($event)">
+                        <ng-container #similarProduct></ng-container>
+                        <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="similarProductInstance"></product-skeletons>
+                    </div>
+                    <button (click)="newRfqRequest()" class="btn secondry-full-btn ">ADD NEW RFQ REQUEST</button>
                 </div>
             </ng-container>
+            
         </ng-container>
         
     </div>

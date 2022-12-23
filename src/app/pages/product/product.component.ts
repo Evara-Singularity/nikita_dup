@@ -3233,7 +3233,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             content: (this.hindiUrl)? CONSTANTS.PROD + this.router.url : CONSTANTS.PROD + "/" + this.getProductURL(),
         });
         // this.pageTitle.setTitle("खरीदें "+ metaObj.productName + " ऑनलाइन कीमत ₹" + metaObj.productPrice + " में"
-        if (!this.hindiUrl) {
+        if (!this.isHindiUrl) {
             this.meta.addTag({ name: "og:title", content: title });
         } else {
             this.meta.addTag({ name: "og:title", content: "खरीदें " + metaObj.productName + " ऑनलाइन कीमत ₹" + metaObj.productPrice + " में" });
@@ -3289,7 +3289,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             // links.hreflang = "hi";
             // console.log('links.hreflang =====>',links.hreflang);
             // links.href = URL;
-            if (this.isAcceptLanguage) {
+            if (this.commonService.isServer && this.isAcceptLanguage) {
                 const languagelink = this.renderer2.createElement("link");
                 languagelink.rel = "alternate";
                 languagelink.href = CONSTANTS.PROD + this.hindiUrl;

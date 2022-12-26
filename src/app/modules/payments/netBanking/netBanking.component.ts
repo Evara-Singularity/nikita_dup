@@ -188,7 +188,7 @@ export class NetBankingComponent implements OnInit {
                 "productinfo": "MSNghihjbc",
                 "bankcode": this.selectedBankCode,
             },
-            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
+            "validatorRequest": this._cartService.createValidatorRequest(extra)
         };
         if (this.type == "tax") {
             // newdata["requestParams"]["paymentId"]=this.netBankingForm.get('requestParams').get('paymentId').value;

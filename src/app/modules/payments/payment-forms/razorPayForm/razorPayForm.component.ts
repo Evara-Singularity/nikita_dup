@@ -162,7 +162,7 @@ export class RazorPayFormComponent {
     };
     cartSession["extraOffer"] = null;
 
-    let validatorRequest = this._commonService.createValidatorRequest(cartSession, userSession, extra);
+    let validatorRequest = this._cartService.createValidatorRequest(extra);
 
     let body = validatorRequest.shoppingCartDto;
     this.isShowLoader = true;

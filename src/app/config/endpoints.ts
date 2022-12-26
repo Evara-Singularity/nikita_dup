@@ -111,6 +111,7 @@ export const ENDPOINTS = {
   GET_CartBySession: "/cart/getCartBySession",
   IS_BRAND_CATEGORY: "/search/isBrandCategory",
   SEARCH: '/search',
+  SEARCH_V1: '/search/v1',
   SPONSERED_PRODUCTS: '/search/getSponsoredProducts',
   GET_PARENT_CATEGORY_JSON_BODY: '/category/getparentcategoryjsonbody',
   SAVE_CORPORATE_GIFTING: '/cmsapi/giftingQuery',

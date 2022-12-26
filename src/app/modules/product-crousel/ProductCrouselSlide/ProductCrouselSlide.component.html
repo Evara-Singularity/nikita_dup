@@ -14,7 +14,7 @@
     <div [attr.id]="'prodImg' + itemIndex" class="img-block">
       <div class="oos-tag">
         <span *ngIf="productOutOfStock">
-          AVAILABLE ON REQUEST
+         {{productStaticData.available_on_request}}
         </span>
       </div>
       <div class="inner_block">

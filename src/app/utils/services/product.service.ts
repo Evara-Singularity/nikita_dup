@@ -157,17 +157,19 @@ export class ProductService {
         return this._dataService.callRestful("POST", url, { body: data });
     }
 
-    getAllOffers() {
+    getAllOffers(headerData?) {
         return this._dataService.callRestful(
             "GET",
-            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategoryExtras + "mobikwikpdp"
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CategoryExtras + "mobikwikpdp",
+            headerData
         );
     }
 
-    getAllPromoCodeOffers(url) {
+    getAllPromoCodeOffers(url, headerData?) {
         return this._dataService.callRestful(
             "GET",
-            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPON_CODE  + url
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPON_CODE  + url,
+            headerData
         );
     }
 
@@ -260,13 +262,13 @@ export class ProductService {
         );
     }
 
-    getProductStatusCount(productMsnId) {
+    getProductStatusCount(productMsnId, header?) {
         const PRODUCT_STATUS_COUNT_URL =
             CONSTANTS.NEW_MOGLIX_API +
             ENDPOINTS.PRODUCT_STATUS_COUNT +
             "?productId=" +
             (productMsnId ? productMsnId.toUpperCase() : '');
-        return this._dataService.callRestful("GET", PRODUCT_STATUS_COUNT_URL);
+        return this._dataService.callRestful("GET", PRODUCT_STATUS_COUNT_URL,header);
     }
 
     getUserDuplicateOrder(productMsnId, userId) {

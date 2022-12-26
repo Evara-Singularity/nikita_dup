@@ -64,6 +64,7 @@ export class ProductCrouselSlideComponent {
   readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;
   analyticsInfo: any = {};
   @Input('productBo') productBo: any;
+  productStaticData = this._commonService.defaultLocaleValue;
 
   constructor(
     private _commonService: CommonService,
@@ -76,6 +77,16 @@ export class ProductCrouselSlideComponent {
     private _analytics: GlobalAnalyticsService,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
+  }
+  
+  ngOnInit(){
+    this.getStaticSubjectData();
+  }
+  getStaticSubjectData(){
+    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+      this._commonService.defaultLocaleValue = staticJsonData;
+      this.productStaticData = staticJsonData;
+    });
   }
 
   ngAfterViewInit() {

@@ -13,6 +13,8 @@ import { RfqSupplierService } from './rfq-supplier.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ClientUtility } from '@app/utils/client.utility';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-rfq-supplier',
@@ -69,24 +71,24 @@ export class RfqSupplierComponent implements OnInit {
     private _loader: GlobalLoaderService,
     private _localStorageService: LocalStorageService,
     private _commonService: CommonService,
-    private _analytics: GlobalAnalyticsService
+    private _analytics: GlobalAnalyticsService,
+    private _route: ActivatedRoute,
+    private _router: Router,
   ) { }
 
   ngOnInit() {
     this.setSeo();
     if (this._common.isBrowser) {
       this.user = this._localAuthService.getUserSession();
-      this.processData();
-
       this.searchTerm.valueChanges.pipe(
         debounceTime(400))
         .subscribe(term => {
           if (term.trim().length > 2) {
             this.search(term.trim());
           }
-          if(term.trim()==''){
+          if (term.trim() == '') {
             this.search('');
-          }
+        }
         });
 
       this._common.loginPerformedNotify().subscribe(user => {
@@ -97,13 +99,25 @@ export class RfqSupplierComponent implements OnInit {
           this._tms.show({ type: 'success', text: 'Thank you for showing interest. We will get in touch with you within 48 hours' });
         }
       });
-
+      
     }
-    console.log('fancy name', this.fancyCurrency(1460350000));
+
+    this._route.queryParamMap.subscribe(query=>{
+      if(query.get('category')) {
+        this.paramsOfRfqList['categoryName'] = query.get('category');
+      } 
+      if(query.get('search')) {
+        this.searchTerm.setValue(query.get('search'));
+        this.paramsOfRfqList['searchString'] = query.get('search'); 
+      }
+      // console.log('paramsOfRfqList', this.paramsOfRfqList);
+      this.processData()
+    })
+
+
   }
 
   processData() {
-    this.setSeo();
     this.setAnalyticTags('Find B2B Bulk Buyers','Find B2B Bulk Buyers',false);
     this.processRfqListData();
     this.processRfqCategories();
@@ -141,7 +155,7 @@ export class RfqSupplierComponent implements OnInit {
       const digitalData = {};
       digitalData['page'] = page;
       digitalData['custData'] = this._commonService.custDataTracking;
-      setTimeout(() => this._analytics.sendAdobeCall(digitalData,genericClick));
+      // setTimeout(() => this._analytics.sendAdobeCall(digitalData, genericClick));
       /*End Adobe Analytics Tags */
   }
 
@@ -151,7 +165,7 @@ export class RfqSupplierComponent implements OnInit {
     if (user && user.authenticated == 'true') {
       this.loggedInUser=true;
       this.paramsOfRfqList['userId'] = user['userId'];
-      console.log('this.paramsOfRfqList', this.paramsOfRfqList);
+      // console.log('this.paramsOfRfqList', this.paramsOfRfqList);
       this.newFuprocessRfqListDataCore(true);
     } else {
       this.loggedInUser=false;
@@ -284,18 +298,30 @@ export class RfqSupplierComponent implements OnInit {
     this.paramsOfRfqList['categoryName'] = category.name;
     this.paramsOfRfqList['offset'] = 0;
     this.rfqItemList = [];
-    this.processRfqListData();
     this.togglePopup(false);
     ClientUtility.scrollToTop(100);
+    const query = { 'category': category.name };
+    if (this.paramsOfRfqList.searchString) {
+      query['search'] = this.paramsOfRfqList.searchString;
+    }
+    this._router.navigate([], { queryParams: query })
   }
 
   search(string) {
-    console.log('term', string);
+    // console.log('term', string);
     this.paramsOfRfqList['searchString'] = string;
     this.paramsOfRfqList['offset'] = 0;
     this.rfqItemList = [];
-    this.processRfqListData();
+    // this.processRfqListData();
+    let query = {};
+    if (string) {
+      query = { 'search': string };
+    }
+    if (this.paramsOfRfqList.categoryName) {
+      query['category'] = this.paramsOfRfqList.categoryName;
+    }
     ClientUtility.scrollToTop(100);
+    this._router.navigate([], { queryParams: query })
   }
 
 
@@ -346,7 +372,13 @@ export class RfqSupplierComponent implements OnInit {
     this.paramsOfRfqList['categoryName'] = '';
     this.paramsOfRfqList.offset = 0;
     this.rfqItemList = [];
-    this.processRfqListData();
+    const query = {};
+    if (this.paramsOfRfqList.searchString) {
+      query['search'] = this.paramsOfRfqList.searchString;
+    }
+    ClientUtility.scrollToTop(100);
+    this._router.navigate([], { queryParams: query })
+    // this.processRfqListData();
   }
 
   togglePopup(mode: boolean) {
@@ -390,5 +422,8 @@ export class RfqSupplierComponent implements OnInit {
       };
     }
   }
+
+
+
 
 }

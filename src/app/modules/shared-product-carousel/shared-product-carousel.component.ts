@@ -2,6 +2,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { ProductService } from '@app/utils/services/product.service';
 import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef, AfterViewInit, HostListener } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'shared-product-carousel',
@@ -10,6 +11,7 @@ import { Subject } from 'rxjs';
 })
 export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 {
+  productStaticData = this.commonService.defaultLocaleValue;
   @Input('productAllImages') productAllImages;
   @Input('carouselInitialized') carouselInitialized = false;
   @Input('isPurcahseListProduct') isPurcahseListProduct;
@@ -22,21 +24,37 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   @Input('rawProductData') rawProductData;
   @Input('moveToSlide$') moveToSlide$: Subject<number>;
   @Input('refreshSiemaItems$') refreshSiemaItems$:  Subject<{ items: Array<{}>; type: string; currentSlide: number; } >;
+  @Input('isAcceptLanguage') isAcceptLanguage:boolean = false;
   @Output() loadProductShare$: EventEmitter<any> = new EventEmitter<any>();
   @Output() addToPurchaseList$: EventEmitter<any> = new EventEmitter<any>();
   @Output() scrollToId$: EventEmitter<any> = new EventEmitter<any>();
   @Output() openPopUpcrousel$: EventEmitter<any> = new EventEmitter<any>();
   @Output() loadProductCrousel$: EventEmitter<any> = new EventEmitter<any>();
   @Output() sendProductImageClickTracking$: EventEmitter<any> = new EventEmitter<any>();
+  @Output() translate$: EventEmitter<any> = new EventEmitter<any>();
+
   productCrouselInstance = null;
   @ViewChild("productCrousel", { read: ViewContainerRef })
   productCrouselContainerRef: ViewContainerRef;
   @ViewChild("productCrouselPseudo", { read: ElementRef })
   productCrouselPseudoContainerRef: ElementRef;
 
-  constructor(private cfr: ComponentFactoryResolver, private injector: Injector, public productService: ProductService, private commonService: CommonService) { }
+  constructor(
+    private cfr: ComponentFactoryResolver, 
+    private injector: Injector, public productService: ProductService, 
+    private router: Router,
+    private commonService: CommonService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.productStaticData = this.commonService.getLocalizationData(!this.isHindiUrl)
+    // this.getStaticSubjectData();
+  }
+
+  getStaticSubjectData() {
+    this.commonService.changeStaticJson.subscribe(staticJsonData => {
+      this.productStaticData = staticJsonData;
+    });
+  }
 
   ngAfterViewInit(): void
   {
@@ -112,4 +130,12 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     this.openPopUpcrousel$.emit();
     this.sendProductImageClickTracking$.emit();
   }
+  translate() {
+    this.translate$.emit();
+  }
+
+  get isHindiUrl() {
+    return (this.router.url).toLowerCase().indexOf('/hi') !== -1
+  }
+
 }

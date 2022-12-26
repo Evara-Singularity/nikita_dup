@@ -1,23 +1,23 @@
 <div class="content-popup" content>
     <div class="delivery-details-area pwa-row mt-10">
         <div class="delivery-details container pwa-col-12">
-            <h3 class="heading-3">Delivery Details</h3>
+            <h3 *ngIf="productStaticData" class="heading-3">{{productStaticData.delivery_details}}</h3>
             <div class="delivery-details-inner">
                 <div class="delivery-details-inner-img">
                     <i class="icon-map-pin-fill"></i>
                 </div>
                 <div class="details-right">
                     <div class="pwa-search-input">
-                        <input (keyup)="checkPinocdeKey($event)" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" [formControl]="pincode" class="inp-box" type="number" placeholder="Enter your pincode" maxlength="6">
+                        <input (keyup)="checkPinocdeKey($event)" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" [formControl]="pincode" class="inp-box" type="number" placeholder="{{productStaticData.enter_your_pincode}}" maxlength="6">
                         <div class="input-group-append">
-                            <span (click)="checkAvailblityOnPinCode()" class="btn-submit">CHECK</span>
+                            <span (click)="checkAvailblityOnPinCode()" class="btn-submit">{{productStaticData.check}}</span>
                         </div>
                     </div>
                     <p class="availability-text">
-                        Check serviceability at your location
+                        {{productStaticData.check_serviceability}}
                     </p>
                     <div *ngIf="pincode.hasError('pattern') && isSubmitted" class="invalid-txt pwa-col-12">
-                        <p class="right-txt">Invalid pincode provided</p>
+                        <p class="right-txt"> {{productStaticData.invalid_pincode_validation}}</p>
                     </div>
                 </div>
 
@@ -28,7 +28,7 @@
         </div> -->
         <div class="about-delivery pwa-col-12" *ngIf="!(itemShippingAmount > 0) && isPincodeAvailble && this.pincode.value != null && isServiceable">
             <span class="st-icon-shipping">
-                <span class="icon-delivery_1"></span>
+            <span class="icon-delivery_1"></span>
             <span class="icon-delivery_2"></span>
             <span class="icon-delivery_3"></span>
             <span class="icon-delivery_4"></span>
@@ -38,8 +38,8 @@
             <span class="icon-delivery_8"></span>
             </span>
             <div class="about-delivery-txt">
-                <h4 class="green-txt">Free Delivery</h4>
-                <span class="green-txt">No shipping charge on this order</span>
+                <h4 class="green-txt">{{productStaticData.free_delivery}}</h4>
+                <span class="green-txt">{{productStaticData.no_shipping_charge}}</span>
             </div>
         </div>
         <div class="about-delivery pwa-col-12" *ngIf="isServiceable && isPincodeAvailble && itemShippingAmount > 0 && this.pincode.value != null">
@@ -54,21 +54,27 @@
             <span class="icon-delivery_8"></span>
             </span>
             <div class="about-delivery-txt">
-                <h4>Shipping applicable - ₹{{itemShippingAmount}}</h4>
-                <span>On this order</span>
+                <h4>{{productStaticData.pincode_shipping_applicable}} - ₹{{itemShippingAmount}}</h4>
+                <span>{{productStaticData.pincode_on_this_order}}</span>
             </div>
         </div>
         <ng-container *ngIf="isPincodeAvailble && !pincode.hasError('pattern') && this.pincode.value != null">
             <div class="about-delivery pwa-col-12" *ngIf="isServiceable">
                 <span class="st-icon-delivery_available">
-                    <span class="icon-delivery_y_1"></span>
+                <span class="icon-delivery_y_1"></span>
                 <span class="icon-delivery_y_2"></span>
                 <span class="icon-delivery_y_3"></span>
                 <span class="icon-delivery_y_4"></span>
                 <span class="icon-delivery_y_5"></span>
                 </span>
                 <div class="about-delivery-txt">
-                    <h4>Delivery available at {{pincode.value}} in {{deliveryDays}}</h4>
+                    <h4>
+                        {{ 
+                            productStaticData.pincode_delivery_text
+                            .replace('___pincode___', pincode.value)
+                            .replace('___deliveryDays___',deliveryDays)
+                        }}
+                    </h4>
                 </div>
             </div>
             <div class="about-delivery pwa-col-12" *ngIf="!(isServiceable)">
@@ -80,7 +86,7 @@
                 <span class="icon-delivery_n_5"></span>
                 </span>
                 <div class="about-delivery-txt">
-                    <h4 class="red-txt">Delivery unavailable at {{pincode.value}}</h4>
+                    <h4 class="red-txt">{{productStaticData.pincode_delivery_unavalible.replace('___pincode___', pincode.value)}}</h4>
                 </div>
             </div>
             <div class="about-delivery pwa-col-12" *ngIf="isServiceable && (isCashOnDelivery)">
@@ -91,22 +97,22 @@
                 <span class="icon-cod_4"></span>
                 </span>
                 <div class="about-delivery-txt">
-                    <h4 class="green-txt">COD Available</h4>
-                    <span>You can pay at the time of delivery</span>
+                    <h4 class="green-txt">{{productStaticData.cod_available}}</h4>
+                    <span>{{productStaticData.pincode_pay_at_time_delivery}}</span>
                 </div>
             </div>
             <div class="about-delivery pwa-col-12" *ngIf="isServiceable && !isCashOnDelivery">
                 <span class="st-icon-prepaid">
-                    <span class="icon-prepaid_1"></span>
+                <span class="icon-prepaid_1"></span>
                 <span class="icon-prepaid_2"></span>
                 <span class="icon-prepaid_3"></span>
                 <span class="icon-prepaid_4"></span>
                 <span class="icon-prepaid_5"></span>
                 </span>
                 <div class="about-delivery-txt">
-                    <h4>Prepaid payment only</h4>
+                    <h4>{{productStaticData.prepaid_payment_only}}</h4>
                 </div>
             </div>
         </ng-container>
     </div>
-</div>
+</div> 

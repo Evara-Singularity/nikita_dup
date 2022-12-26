@@ -79,7 +79,7 @@ export class WinterComponent {
             this.reinsertLinks();
           }, 0);
         } else {
-          console.log("WinterSaleComponent API data error", rawData);
+          // console.log("WinterSaleComponent API data error", rawData);
           this.router.navigateByUrl("/");
         }
       },

@@ -12,7 +12,7 @@ import { DOCUMENT } from "@angular/common";
 })
 export class ProductGetQuoteComponent implements OnInit, AfterViewInit
 {
-
+    productStaticData = this.commonService.defaultLocaleValue;
 	@Input() productMrp: any;
 	@Input() productOutOfStock: any;
 	@Input() productCategoryDetails: any;
@@ -31,7 +31,13 @@ export class ProductGetQuoteComponent implements OnInit, AfterViewInit
 
 	ngOnInit(): void
 	{
+		this.getStaticSubjectData();
 	}
+	getStaticSubjectData(){
+		this.commonService.changeStaticJson.subscribe(staticJsonData => {
+		  this.productStaticData = staticJsonData;
+		});
+	  }
 
 	ngAfterViewInit()
 	{

@@ -20,6 +20,7 @@ import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/pro
     styleUrls: ['./similar-products.component.scss']
 })
 export class SimilarProductsComponent implements OnInit {
+    productStaticData = this.commonService.defaultLocaleValue;
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     similarProducts: ProductsEntity[] = null;
     @Input('outOfStock') outOfStock = false;
@@ -51,12 +52,19 @@ export class SimilarProductsComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        this.getStaticSubjectData()
         this.getProductSimilar();
         this.cardMetaInfo = {
             redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
             redirectedSectionName: this.outOfStock ? 'similar_product_oos' : 'similar_products'
         }
     }
+    getStaticSubjectData(){
+        this.commonService.changeStaticJson.subscribe(staticJsonData => {
+          this.commonService.defaultLocaleValue = staticJsonData;
+          this.productStaticData = staticJsonData;
+        });
+      }
 
     getProductSimilar() {
         this.productService.getSimilarProducts(this.productName, this.categoryCode, this.partNumber, this.groupId).subscribe((response: any) => {

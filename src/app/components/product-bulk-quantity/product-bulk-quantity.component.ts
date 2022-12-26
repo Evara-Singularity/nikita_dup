@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
+import { CommonService } from '../../utils/services/common.service';
 
 @Component({
   selector: 'product-bulk-quantity',
@@ -9,7 +10,7 @@ import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
   styleUrls: ['./product-bulk-quantity.component.scss']
 })
 export class ProductBulkQuantityComponent implements OnInit {
-
+  productStaticData = this._commonService.defaultLocaleValue;
   @Input() rawProductData;
   @Input() productOutOfStock;
   @Input() isCommonProduct;
@@ -21,10 +22,17 @@ export class ProductBulkQuantityComponent implements OnInit {
   @Output() selectProductBulkPrice$: EventEmitter<number> = new EventEmitter<number>();
   @Input() productMinimmumQuantity;
 
-  constructor(private _tms: ToastMessageService) { }
+  constructor(private _tms: ToastMessageService,private _commonService:CommonService) { }
 
   ngOnInit(): void {
     // this.getEachItem();
+    this.getStaticSubjectData();
+  }
+  getStaticSubjectData(){
+    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+      this._commonService.defaultLocaleValue = staticJsonData;
+      this.productStaticData = staticJsonData;
+    });
   }
 
   selectProductBulkPrice(qunatity) {

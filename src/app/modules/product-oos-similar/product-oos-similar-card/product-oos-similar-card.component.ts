@@ -32,6 +32,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ["./product-oos-similar-card.component.scss"],
 })
 export class ProductOosSimilarCardComponent {
+  productStaticData = this.commonService.defaultLocaleValue;
   breadcrumData: any;
   @Input("productMsn") productMsn;
   @Input("index") index: number;
@@ -92,14 +93,21 @@ export class ProductOosSimilarCardComponent {
     private localAuthService: LocalAuthService,
     private _toastMessageService: ToastMessageService,
     private _router: Router,
-    private _analytic: GlobalAnalyticsService
+    private _analytic: GlobalAnalyticsService,
+    
   ) { }
 
   ngOnInit() {
+    this.getStaticSubjectData();
     if (this.productMsn) {
       this.createSiemaOption(this.index);
       this.getProductData();
     }
+  }
+  getStaticSubjectData(){
+    this.commonService.changeStaticJson.subscribe(staticJsonData => {
+      this.productStaticData = staticJsonData;
+    });
   }
 
   get similarProductData() {

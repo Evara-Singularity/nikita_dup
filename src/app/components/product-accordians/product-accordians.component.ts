@@ -24,11 +24,14 @@ const ACC: any = makeStateKey<{}>("ACC");
 export class ProductAccordiansComponent {
   @Input('categoryBrandDetails') categoryBrandDetails: any;
   @Input('analyticsInfo') analyticsInfo: any;
+  @Input('msn') msn:any;
+  @Input('isHindiMode') isHindiMode: boolean = false;
   ACCORDIAN_DATA: Array<any> = [[],[],[]];
   accordiansDetails:AccordiansDetails[]=[];
   isServer: boolean;
   isBrowser: boolean;
   categoryId: any;
+  productStaticData = this._commonService.defaultLocaleValue;
 
   constructor(
     public _commonService: CommonService,
@@ -49,6 +52,13 @@ export class ProductAccordiansComponent {
         console.log("API error",error)
       })
     }
+    this.getStaticSubjectData();
+  }
+
+  getStaticSubjectData(){
+    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+      this.productStaticData = staticJsonData;
+    });
   }
 
   loadShopByAttributeData() {
@@ -82,12 +92,19 @@ export class ProductAccordiansComponent {
       this._tState.remove(ACC);
       return of(accordianObj);
     } else {
-      const GET_RELATED_LINKS = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryID;
-      const SIMILAR_CATEGORY = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + categoryID;
+      const GET_RELATED_LINKS = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryID + "&msn=" + this.msn;
+      const SIMILAR_CATEGORY = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + categoryID + "&msn=" +this.msn;
+      
+      const headers = {
+        headerData: {}
+      };
+      if (this.isHindiMode) {
+        headers['headerData']['language'] = 'hi'
+      }
 
-      const relatedObs = this._dataService.callRestful('GET', GET_RELATED_LINKS);
+      const relatedObs = this._dataService.callRestful('GET', GET_RELATED_LINKS, headers);
       const getPopularCategoryObs = this.getFilterBucket(categoryID, 'category')
-      const similarObs = this._dataService.callRestful('GET', SIMILAR_CATEGORY);
+      const similarObs = this._dataService.callRestful('GET', SIMILAR_CATEGORY, headers);
 
       return forkJoin([relatedObs, getPopularCategoryObs, similarObs,]).pipe(
         catchError((err) => {
@@ -106,13 +123,18 @@ export class ProductAccordiansComponent {
   getFilterBucket(categoryId, pageName, brandName?: string) {
     let filter_url = environment.BASE_URL + '/' + pageName.toLowerCase() + ENDPOINTS.GET_BUCKET;
     if (categoryId) {
-      filter_url += "?category=" + categoryId;
+      filter_url += "?category=" + categoryId + "&msn=" + this.msn;
     }
     const params = { pageName: pageName };
     const actualParams = this._commonService.formatParams(params);
-    return this._dataService.callRestful("GET", filter_url, {
+    const headers = {
       params: actualParams,
-    });
+      headerData: {}
+    };
+    if (this.isHindiMode) {
+      headers['headerData']['language'] = 'hi'
+    }
+    return this._dataService.callRestful("GET", filter_url, headers);
   }
 
   setDataForPopularBrandCategories(response) {
@@ -128,12 +150,12 @@ export class ProductAccordiansComponent {
   }
 
   setAccordianData(res){
-    if (res[0]['status']) {
-      this.ACCORDIAN_DATA[0] = res[0]['data'];
+    if (res[0]['status'] || res[0]) {
+      this.ACCORDIAN_DATA[0] = res[0]['data'] || res[0];
       // accordian data
       if (this.ACCORDIAN_DATA[0]?.length > 0) {
         this.accordiansDetails.push({
-          name: 'Related Searches',
+          name: this.productStaticData.accordian_list1_label,
           data: (this.ACCORDIAN_DATA[0]).map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
           icon:'icon-attribute'
         });
@@ -143,8 +165,9 @@ export class ProductAccordiansComponent {
       this.ACCORDIAN_DATA[1] = res[1]['categoryLinkList'];
 
       // accordian data
+      // console.log(this.accordiansDetails['name']);
       this.accordiansDetails.push({
-        name: 'Popular Brand Categories',
+        name: this.productStaticData.accordian_list2_label,
         extra: this.categoryBrandDetails.brand.brandName,
         data: Object.entries(this.ACCORDIAN_DATA[1]).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
         icon: 'icon-brand_store'
@@ -155,7 +178,7 @@ export class ProductAccordiansComponent {
       // accordian data
       if (this.ACCORDIAN_DATA[2]?.length > 0) {
         this.accordiansDetails.push({
-          name: ' Shop by Related Categories',
+          name: this.productStaticData.accordian_list3_label,
           data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
           icon:'icon-categories'
         });

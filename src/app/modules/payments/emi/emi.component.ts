@@ -707,7 +707,7 @@ export class EmiComponent {
 export class BankNameChangePipe implements PipeTransform {
     transform(val: any, args) {
         if (val) {
-            console.log(val);
+            // console.log(val);
         }
         return val;
     }

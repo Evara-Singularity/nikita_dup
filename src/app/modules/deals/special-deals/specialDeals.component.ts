@@ -89,7 +89,7 @@ export class SpecialDealsComponent {
             this.reinsertLinks();
           }, 0);
         } else {
-          console.log("SpecialDealsComponent API data error", rawData);
+          // console.log("SpecialDealsComponent API data error", rawData);
           this.router.navigateByUrl("/");
         }
       },

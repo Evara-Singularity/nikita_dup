@@ -1,5 +1,5 @@
 <div class="prod-detail pwa-row">
-    <h2 class="heading-3 pwa-col-12">Product Details</h2>
+    <h2 class="heading-3 pwa-col-12">{{productStaticData.product_details}}</h2>
     <ng-container *ngIf="details.description != null else noProdDesc">
         <p [innerHTML]="details.description" class="pwa-col-12"></p>
         <p class="pwa-col-12"> Browse through the extensive list of

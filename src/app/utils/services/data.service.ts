@@ -110,6 +110,9 @@ export class DataService {
             if (options.headerData['Access-Control-Allow-Methods']) {
                 headers['Access-Control-Allow-Methods'] = options.headerData['Access-Control-Allow-Methods'];
             }
+            if (options.headerData['language']) {
+                headers['language'] = options.headerData['language'];
+            }
         }
 
         const start_time = new Date().getTime();
@@ -290,12 +293,12 @@ export class DataService {
         return this.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_SESSION);
     }
 
-    getCouponOnBrandCategory(brandName, categoryId) {
+    getCouponOnBrandCategory(brandName, categoryId, headerData?) {
         let URL =
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_COUPOUN_ON_BRAND_CATEGORY +
             "?brandName=" + brandName +
             "&categoryCode=" + categoryId;
-        return this.callRestful("GET", URL);
+        return this.callRestful("GET", URL, headerData);
 
     }
 }

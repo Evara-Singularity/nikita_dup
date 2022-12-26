@@ -29,7 +29,6 @@ import { ConfirmationFormModule } from '@app/components/bulkRfq/confirmationForm
   styleUrls: ["./bulk-rquest-form-popup.component.scss"],
 })
 export class BulkRquestFormPopupComponent implements OnInit {
-
   readonly stepNameLogin = "LOGIN";
   readonly stepNameOtp = "OTP";
   readonly stepNameSignUp = "SIGN_UP";
@@ -57,6 +56,25 @@ export class BulkRquestFormPopupComponent implements OnInit {
 
   setBulkRfqForm(data) {
     this.bulkrfqForm = data;
+  }
+
+  setHeaderData(): any {
+    if (this.stepState == this.stepNameLogin) {
+      return {
+        headerText: "Get customise & best price",
+        headerSubText: "Just in 2 simple steps",
+      };
+    } else if (this.stepState == this.stepNameRfqForm) {
+      return {
+        headerText: "Thank you for showing your interest",
+        headerSubText: "Help with the below details to prioritise your query",
+      };
+    } else if (this.stepState == this.stepNameConfimation) {
+      return {
+        headerText: "Thanks, for submitting the query",
+        headerSubText: "Below is your request summary",
+      };
+    } else return "";
   }
 
   captureOTP(otpValue) {

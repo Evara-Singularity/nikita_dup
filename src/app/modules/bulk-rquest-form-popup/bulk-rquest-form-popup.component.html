@@ -1,5 +1,5 @@
 <app-pop-up [popUpName]="'bulkRfqPopUp'" class="open" (outData$)="outData($event)" [headerType]="'pop-up-header3'"
-    [data]="{headerText: 'Get customise & best price', headerSubText: 'Just in 2 simple steps'}">
+    [data]="setHeaderData()">
     <div class="content-popup bulkRFQ" content>
         <div class="stepper-wrapper">
             <div class="stepper-item active">

@@ -1,5 +1,5 @@
 import { delay } from 'rxjs/operators';
-import { Component, ViewEncapsulation, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, SimpleChanges } from '@angular/core';
 import { of } from 'rxjs';
 import { CommonService } from '@app/utils/services/common.service';
 import { ActivatedRoute, Router } from "@angular/router";
@@ -59,6 +59,11 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         // console.log(this.headerCustom,"this.headerText");
         // console.log(this.headerText,"this.headerText");
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        this.headerText = changes['data']['currentValue']['headerText'];
+        this.headerSubText = changes['data']['currentValue']['headerSubText'];
     }
 
     ngAfterViewInit() {

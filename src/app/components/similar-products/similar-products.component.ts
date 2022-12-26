@@ -89,6 +89,9 @@ export class SimilarProductsComponent implements OnInit {
         LazyLoadImageModule,
         ProductCardVerticalContainerModule,
         ProductCardVerticalGridViewModule
+    ],
+    exports: [
+        SimilarProductsComponent
     ]
 })
 export class SimilarProductModule { }

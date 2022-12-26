@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, NgModule, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ListAutocompleteModule } from '@app/components/list-autocomplete/list-autocomplete.component';
 import { ProductSkeletonsModule } from '@app/components/product-skeletons/product-skeletons.component';
 import { SimilarProductModule } from '@app/components/similar-products/similar-products.component';
-import { ProductModule } from '@app/pages/product/product.module';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -20,6 +19,9 @@ import { SharedAuthService } from '../shared-auth-v1/shared-auth.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { CartService } from '@app/utils/services/cart.service';
+import { BulkRfqFormModule } from '@app/components/bulkRfq/bulkRfqForm/bulkRfqForm.module';
+import { GstinFormModule } from '@app/components/bulkRfq/gstinForm/gstinForm.module';
+import { ConfirmationFormModule } from '@app/components/bulkRfq/confirmationForm/confirmationForm.module';
 
 @Component({
   selector: "bulk-rquest-form-popup",
@@ -28,82 +30,72 @@ import { CartService } from '@app/utils/services/cart.service';
 })
 export class BulkRquestFormPopupComponent implements OnInit {
 
-
-  newRfqRequest() {
-    this.bulkrfqForm.get("productType").setValue('');
-    this.bulkrfqForm.get("quantity").setValue('');
-    this.bulkrfqForm.get("budget").setValue('');
-    this.bulkrfqForm.get("phone").setValue('');
-    this.bulkrfqForm.markAsPristine();
-    this.bulkrfqForm.markAsUntouched();
-    this.moveToNext(this.stepNameLogin);
-  }
-
-  toggle(event) {
-    // alert("oggle"+JSON.stringify(event,null,2))
-  }
-
-  captureOTP(otpValue)
-  {
-      if (!otpValue) return;
-      this._loader.setLoaderState(true);
-      const REQUEST = { email: '', phone: '', source: "login_otp" };
-      REQUEST['type'] = this._sharedAuthUtilService.getUserType(this._sharedAuthService.AUTH_LOGIN_FLOW, this.bulkrfqForm.get('phone').value);
-      REQUEST['otp'] = otpValue;
-      REQUEST.phone = this.bulkrfqForm.get('phone').value;
-      this._sharedAuthService.authenticate(REQUEST).subscribe(
-          (response) =>
-          {
-              this._loader.setLoaderState(false);
-              if (response['statusCode'] !== undefined && response['statusCode'] === 500) {
-                  this._tms.show({ type: "error", text: response['status'] || response['message'] });
-                  this._cartService.logOutAndClearCart();
-                  return;
-              }
-              this.processAuthenticaton(response);
-          },
-          (error) => { this._loader.setLoaderState(false); }
-      )
-      this._loader.setLoaderState(false);
-  }
-
-  readonly stepNameLogin = 'LOGIN';
-  readonly stepNameOtp = 'OTP';
-  readonly stepNameSignUp = 'SIGN_UP';
-  readonly stepNameRfqForm = 'RFQ_FORM';
-  readonly stepNameConfimation = 'CONFIRMATION';
+  readonly stepNameLogin = "LOGIN";
+  readonly stepNameOtp = "OTP";
+  readonly stepNameSignUp = "SIGN_UP";
+  readonly stepNameRfqForm = "RFQ_FORM";
+  readonly stepNameConfimation = "CONFIRMATION";
   @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
   @Input("isCheckout") isCheckout = false;
   @Input("isLoginPopup") isLoginPopup = true;
   @Output() togglePopUp$: EventEmitter<any> = new EventEmitter<any>();
   @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
-  similarProductInstance = null;
-  @ViewChild("similarProduct", { read: ViewContainerRef })
-  similarProductContainerRef: ViewContainerRef;
-
-  stepState: "LOGIN" | "OTP" | "" | "RFQ_FORM" | "CONFIRMATION" = this.stepNameLogin;
+  stepState: "LOGIN" | "OTP" | "" | "RFQ_FORM" | "CONFIRMATION" =
+  this.stepNameLogin;
   bulkrfqForm: FormGroup;
   gstinForm: FormGroup;
   confirmationForm: FormGroup;
-  readonly PRICE_VALUES = [
-    "1 qty",
-    "2 - 5 qty",
-    "6 - 10 qty",
-    "11 - 15 qty",
-    "16 - 1100 qty",
-  ];
-  readonly PRODUCT_TYPES = [
-    "PRODUCT 1",
-    "PRODUCT 2",
-    "PRODUCT 3",
-    "PRODUCT 4",
-    "PRODUCT 5",
-  ];
   otpForm: FormArray = new FormArray([]);
   authFlow: AuthFlowType; //gives flowtype & identifier information
   user: boolean = false;
+  loginAndValidatePhone: boolean = false;
+  bulkRfqFormPhoneno: any;
 
-  // openDropdown: boolean=false;
+  setGstinForm(data) {
+    this.gstinForm = data;
+  }
+
+  setBulkRfqForm(data) {
+    this.bulkrfqForm = data;
+  }
+
+  captureOTP(otpValue) {
+    if (!otpValue) return;
+    this._loader.setLoaderState(true);
+    const REQUEST = { email: "", phone: "", source: "login_otp" };
+    REQUEST["type"] = this._sharedAuthUtilService.getUserType(
+      this._sharedAuthService.AUTH_USING_PHONE,
+      this.bulkrfqForm?.get("phone").value
+        ? this.bulkrfqForm?.get("phone").value
+        : this.bulkRfqFormPhoneno
+    );
+    REQUEST["otp"] = otpValue;
+    REQUEST["phone"] = this.bulkrfqForm?.get("phone").value
+      ? this.bulkrfqForm?.get("phone").value
+      : this.bulkRfqFormPhoneno;
+    this._sharedAuthService.authenticate(REQUEST).subscribe(
+      (response) => {
+        this._loader.setLoaderState(false);
+
+        if (
+          response["statusCode"] !== undefined ||
+          response["statusCode"] === 500
+        ) {
+          this._tms.show({
+            type: "error",
+            text: response["status"] || response["message"],
+          });
+          this._cartService.logOutAndClearCart();
+          return;
+        }
+        this.processAuthenticaton(response);
+      },
+      (error) => {
+        this._loader.setLoaderState(false);
+      }
+    );
+    this._loader.setLoaderState(false);
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -113,23 +105,17 @@ export class BulkRquestFormPopupComponent implements OnInit {
     private _sharedAuthService: SharedAuthService,
     private _tms: ToastMessageService,
     private _localAuthService: LocalAuthService,
-    private activatedRoute: ActivatedRoute,
-    private _router: Router,
     private _sharedAuthUtilService: SharedAuthUtilService,
-    private cfr: ComponentFactoryResolver,
-    private injector: Injector,
     private _cartService: CartService
   ) {
-    this.createRfqForm();
     this.createGstinForm();
   }
 
   ngOnInit(): void {
-    this.user=this.localStorageService.retrieve("user");
+    this.user = this.localStorageService.retrieve("user");
     this.authFlow = this._localAuthService.getAuthFlow();
     this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
   }
-
 
   createGstinForm() {
     const userSession = this._localAuthService.getUserSession();
@@ -151,251 +137,69 @@ export class BulkRquestFormPopupComponent implements OnInit {
     });
   }
 
-  createRfqForm() {
-    const user = this.localStorageService.retrieve("user");
-    this.bulkrfqForm = this.formBuilder.group({
-      productType: ["", [Validators.required]],
-      quantity: ["", [Validators.required]],
-      budget: [""],
-      phone: [
-        user != null && user.authenticated == "true" ? user.phone : "",
-        [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-        ],
-      ],
-    });
-  }
-
   outData(data) {
-    // alert("this.stepState"+this.stepState)
-    // alert("this.user['authenticated']"+this.user['authenticated']=="true")
-
-    if (this.stepState === this.stepNameOtp){
-      this.moveToNext(this.stepNameLogin)
+    const user = this.localStorageService.retrieve("user");
+    if (this.stepState === this.stepNameOtp) {
+      this.moveToNext(this.stepNameLogin);
+    } else if (this.stepState === this.stepNameLogin) {
+      this.closePopup$.emit();
+    } else if (this.stepState === this.stepNameRfqForm) {
+      user["authenticated"] == "true"
+        ? this.moveToNext(this.stepNameLogin)
+        : (this.loginAndValidatePhone = true);
+    } else if (this.stepState === this.stepNameConfimation) {
+      this.closePopup$.emit();
     }
-    else if (this.stepState === this.stepNameLogin){
-     this.closePopup$.emit();
   }
 
-  else if (this.stepState === this.stepNameRfqForm){
-    this.user['authenticated'] == "true" ?
-    this.moveToNext(this.stepNameLogin):
-    this.loginAndValidatePhone();
-  }
-  else if (this.stepState === this.stepNameConfimation){
-    this.closePopup$.emit();
-  }
-
-    // alert(this.stepState);
-    // alert(this.stepNameRfqForm);
-    // // alert("data==>",data);
-    // // alert("this.stepState === this.stepNameRfqForm   "+this.stepState+" :  "+this.stepNameRfqForm+"  ===>"+this.stepState == this.stepNameRfqForm);
-    // if(this.stepState === 'RFQ_FORM'){
-    //   this.moveToNext(this.stepNameLogin)
-    //   // return;
-    // }
-
-    // else this.closePopup$.emit();
+  setPhoneNo(event) {
+    this.bulkRfqFormPhoneno = event;
   }
 
   moveToNext(stepName) {
     this.stepState = stepName;
   }
 
-  updateQuantity(arg0: AbstractControl) {}
-
-  updateProductType(arg0: AbstractControl) {}
-
   processAuthenticaton(response) {
     this._sharedAuthUtilService.sendGenericPageClickTracking(true);
     const BACKURLTITLE = this._localAuthService.getBackURLTitle();
-    let REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;
-    const queryParams = this._commonService.extractQueryParamsManually(location.search.substring(1))
-    if (queryParams.hasOwnProperty('state') && queryParams.state === 'raiseRFQQuote') {
-        REDIRECT_URL += '?state=' + queryParams['state'];
+    let REDIRECT_URL =
+      (BACKURLTITLE && BACKURLTITLE["backurl"]) ||
+      this._sharedAuthService.redirectUrl;
+    const queryParams = this._commonService.extractQueryParamsManually(
+      location.search.substring(1)
+    );
+    if (
+      queryParams.hasOwnProperty("state") &&
+      queryParams.state === "raiseRFQQuote"
+    ) {
+      REDIRECT_URL += "?state=" + queryParams["state"];
     }
     this._localAuthService.setUserSession(response);
     this._localAuthService.clearAuthFlow();
     this._localAuthService.clearBackURLTitle();
     this.moveToNext(this.stepNameRfqForm);
   }
-  
-  loginAndValidatePhone() {
-    this.user['authenticated'] == "true" ?this.moveToNext(this.stepNameRfqForm):this.validateUserWithPhone();
-  }
-  validateUserWithPhone() {
-    this._loader.setLoaderState(true);
-    const body = {
-      email: "",
-      phone: this.bulkrfqForm.get("phone").value,
-      type: "p",
-    };
-    this._sharedAuthService.isUserExist(body).subscribe((response) => {
-      if (response["statusCode"] == 200) {
-        const isUserExists = response["exists"] as boolean;
-        //NOTE:using local storage//flowType, identifierType, identifier, data
-        const FLOW_TYPE = isUserExists
-          ? this._sharedAuthService.AUTH_LOGIN_FLOW
-          : this._sharedAuthService.AUTH_SIGNUP_FLOW;
-        // alert("FLOW_TYPE: " + FLOW_TYPE)
-        this._localAuthService.setAuthFlow(
-          isUserExists,
-          FLOW_TYPE,
-          this._sharedAuthService.AUTH_USING_PHONE,
-          this.bulkrfqForm.get("phone").value
-        );
-        // if (this.isLoginPopup) {
-        //   this.navigateToNextPopUp(isUserExists);
-        // }
-        this.moveToNext(this.stepNameOtp);
-
-      } else {
-        this._tms.show({ type: "error", text: response["message"] });
-      }
-      this._loader.setLoaderState(false);
-    });
-  }
-
-  navigateToNextPopUp(isUserExists) {
-    const LINK =  "OTP";
-
-    if (LINK === "OTP") {
-      this.moveToNext(this.stepNameOtp);
-    }
-  }
-
-  removeAuthComponent() {
-    this.moveToNext(this.stepNameRfqForm);
-  }
-
-  togglePopUp(value) {
-  }
-
-  // getProductApiData()
-  // {
-  //     // data received by product resolver
-  //     this.route.data.subscribe(
-  //         (rawData) =>
-  //         {
-  //             // console.log(rawData["product"]);
-  //             if (!rawData["product"]["error"] && rawData["product"][0]["active"]==true) {
-  //                 if (
-  //                     rawData["product"][0]["productBO"] &&
-  //                     Object.values(
-  //                         rawData["product"][0]["productBO"]["productPartDetails"]
-  //                     )[0]["images"] !== null
-  //                 ) {
-  //                     this.commonService.enableNudge = false;
-  //                     this.processProductData(
-  //                         {
-  //                             productBO: rawData["product"][0]["productBO"],
-  //                             refreshCrousel: true,
-  //                             subGroupMsnId: null,
-  //                         },
-  //                         rawData["product"][0]
-  //                     );
-  //                     this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6]);
-  //                 } else {
-  //                     this.showLoader = false;
-  //                     this.globalLoader.setLoaderState(false);
-  //                     this.productNotFound = true;
-  //                     this.pageTitle.setTitle("Page Not Found");
-  //                     if (this.isServer && this.productNotFound) {
-  //                         this._response.status(404);
-  //                     }
-  //                 }
-  //             } else {
-  //                 this.productNotFound = true;
-  //                 this.pageTitle.setTitle("Page Not Found");
-  //                 if (this.isServer && this.productNotFound) {
-  //                     this._response.status(404);
-  //                 }
-  //             }
-  //             this.showLoader = false;
-  //             this.globalLoader.setLoaderState(false);
-  //             this.checkForRfqGetQuote();
-  //             this.checkForAskQuestion();
-  //             this.updateUserSession();
-  //         },
-  //         (error) =>
-  //         {
-  //             this.showLoader = false;
-  //             this.globalLoader.setLoaderState(false);
-  //         }
-  //     );
-  // }
-
-  async onVisibleSimilar(htmlElement)
-  {
-      if (!this.similarProductInstance) {
-          const { SimilarProductsComponent } = await import(
-              "./../../components/similar-products/similar-products.component"
-          );
-          const factory = this.cfr.resolveComponentFactory(
-              SimilarProductsComponent
-          );
-          this.similarProductInstance =
-              this.similarProductContainerRef.createComponent(
-                  factory,
-                  null,
-                  this.injector
-              );
-
-          this.similarProductInstance.instance["partNumber"] = 'MSN39YR74XXL5Q';
-          this.similarProductInstance.instance["groupId"] = '';
-          this.similarProductInstance.instance["productName"] = 'Melbon 40 inch Black Full HD Smart Android LED TV with 18 Months Warranty';
-          this.similarProductInstance.instance["categoryCode"] =
-              '250131100';
-
-          this.similarProductInstance.instance["outOfStock"] =
-              'false';
-          (
-              this.similarProductInstance.instance[
-              "similarDataLoaded$"
-              ] as EventEmitter<any>
-          ).subscribe((data) =>
-          {
-              this._commonService.triggerAttachHotKeysScrollEvent('similar-products');
-          });
-      //     const custData = this._commonService.custDataTracking;
-      //     const orderData = this.orderTracking;
-      //     const TAXONS = this.taxons;
-      //     const page = {
-      //         pageName: null,
-      //         channel: "pdp",
-      //         subSection: "Similar Products",
-      //         linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-      //         linkName: null,
-      //         loginStatus: this.commonService.loginStatusTracking,
-      //     };
-      //     this.similarProductInstance.instance["analytics"] = {
-      //         page: page,
-      //         custData: custData,
-      //         order: orderData,
-      //     };
-      // }
-      // this.holdRFQForm = false;
-        }
-  }
 }
 
 @NgModule({
-    declarations: [BulkRquestFormPopupComponent],
-    exports: [
-        BulkRquestFormPopupComponent
-    ],
-    imports: [
-        CommonModule,
-        PopUpModule,
-        SharedAuthModule,
-        ReactiveFormsModule,
-        ListAutocompleteModule,
-        NumberDirectiveModule,
-        SimilarProductModule,
-        ProductSkeletonsModule,
-        ObserveVisibilityDirectiveModule,
-      ]
+  declarations: [BulkRquestFormPopupComponent],
+  exports: [
+    BulkRquestFormPopupComponent
+  ],
+  imports: [
+    CommonModule,
+    PopUpModule,
+    SharedAuthModule,
+    ReactiveFormsModule,
+    ListAutocompleteModule,
+    NumberDirectiveModule,
+    SimilarProductModule,
+    ProductSkeletonsModule,
+    ObserveVisibilityDirectiveModule,
+    BulkRfqFormModule,
+    GstinFormModule,
+    ConfirmationFormModule
+  ]
 })
 export class BulkRquestFormPopupModule { }

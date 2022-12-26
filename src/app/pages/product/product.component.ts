@@ -3299,7 +3299,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 const elanguagelink = this.renderer2.createElement("link");
                 elanguagelink.rel = "alternate";
                 elanguagelink.href = CONSTANTS.PROD + this.englishUrl;
-                elanguagelink.hreflang = 'en-us'
+                elanguagelink.hreflang = 'en'
                 this.renderer2.appendChild(this.document.head, elanguagelink);
 
             }

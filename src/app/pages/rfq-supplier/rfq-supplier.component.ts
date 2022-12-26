@@ -267,7 +267,7 @@ export class RfqSupplierComponent implements OnInit {
       "productName": item.productName,
       "msn": item.msn,
       "brand": item.brand,
-      "item": item.categoryName
+      "category": item.categoryName
     }
     console.log('item', item, index, this.rfqItemList);
     this._loader.setLoaderState(true);

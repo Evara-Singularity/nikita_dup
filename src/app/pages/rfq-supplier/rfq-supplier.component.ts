@@ -165,7 +165,7 @@ export class RfqSupplierComponent implements OnInit {
     if (user && user.authenticated == 'true') {
       this.loggedInUser=true;
       this.paramsOfRfqList['userId'] = user['userId'];
-      console.log('this.paramsOfRfqList', this.paramsOfRfqList);
+      // console.log('this.paramsOfRfqList', this.paramsOfRfqList);
       this.newFuprocessRfqListDataCore(true);
     } else {
       this.loggedInUser=false;

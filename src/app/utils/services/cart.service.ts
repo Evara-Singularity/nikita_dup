@@ -527,7 +527,7 @@ export class CartService
                     deliveryMethodId: 77,
                     type: "kjhlh",
                 },
-                prepaidDiscounts: this.getCartSession().prepaidDiscountList || null,
+                prepaidDiscounts: (extra.mode == 'COD') ? null : ((this.getCartSession().prepaidDiscountList) ? this.getCartSession().prepaidDiscountList : null),
                 offersList: offersList != undefined && offersList.length > 0 ? offersList : null,
                 extraOffer: this.cartSession["extraOffer"] ? this.cartSession["extraOffer"] : null,
                 device: CONSTANTS.DEVICE.device,

@@ -925,7 +925,7 @@ export class CommonService
         );
     }
 
-        createValidatorRequest(cartSession, userSession, extra) {
+    createValidatorRequest(cartSession, userSession, extra) {
         let cart = cartSession["cart"];
         let cartItems = cartSession["itemsList"];
         let billingAddress: any = this.checkoutService.getBillingAddress();
@@ -1007,6 +1007,7 @@ export class CommonService
             obj["shoppingCartDto"]["cart"]["buyNow"] = cart["buyNow"];
         }
 
+        //console.log('billingAddress', billingAddress);
         if (billingAddress !== undefined && billingAddress !== null) {
             obj.shoppingCartDto.addressList.push({
                 addressId: billingAddress.idAddress,
@@ -1014,6 +1015,7 @@ export class CommonService
                 invoiceType: this.checkoutService.getInvoiceType(),
             });
         }
+        // console.log('createValidatorRequest', obj);
         return obj;
     }
 

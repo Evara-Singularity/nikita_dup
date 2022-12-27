@@ -129,6 +129,8 @@ export class CategoryComponent {
                 this.API_RESPONSE.category[8].data && 
                 this.API_RESPONSE.category[8].data.length > 0) {
                 this.informativeVideosData = this.API_RESPONSE.category[8].data
+            }else{
+                this.informativeVideosData =[];
             }
 
             // Update total product account

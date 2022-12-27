@@ -30,6 +30,13 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
                 this.closePromoOfferPopup.emit(false);
             }
         })
+
+        this._cartService.promoCodeSubject.asObservable().subscribe(promocode => {
+            // console.log('promocode', promocode);
+            if(promocode && promocode.isNewPromocode == false){
+                this.closePopup();
+            }
+        })
     }
 
     closePromoListPopup(flag) { this.closePromoOfferPopup.emit(false); }
@@ -37,8 +44,11 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
     submitPromocode(e, promocode) {
         if (this.selectedPromocode === promocode) { return }
         this._cartService.genericApplyPromoCode(promocode);
-        this.isQuickCheckoutPopup ? this._commonService.setBodyScroll(e, false) : this._commonService.setBodyScroll(e, true);
-        document.querySelector('app-pop-up').classList.remove('open');
+    }
+
+    closePopup() {
+        // this.isQuickCheckoutPopup ? this._commonService.setBodyScroll(null, false) : this._commonService.setBodyScroll(null, true);
+        // document.querySelector('app-pop-up').classList.remove('open');
     }
 
     ngOnDestroy(): void

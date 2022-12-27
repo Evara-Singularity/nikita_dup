@@ -140,6 +140,7 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
      */
     async displayAddressListPopup(addressType: string)
     {
+        console.log('addressType', addressType);
         const { AddressListComponent } = await import("./../address-list/address-list.component").finally(() => { });
         const factory = this.cfr.resolveComponentFactory(AddressListComponent);
         this.addressListInstance = this.addressListRef.createComponent(factory, null, this.injector);
@@ -308,8 +309,10 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     {
         if (!this.addressListInstance) return
         this.addressListInstance.instance['displayAddressListPopup'] = false;
+        this.addressListRef.detach();
         this.addressListRef.remove();
         this.addressListInstance = null;
+        console.log('addressListInstance', this.addressListInstance, this.addressListRef );
     }
 
     get selectedDeliveryAddress()

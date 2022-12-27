@@ -154,6 +154,7 @@ export class BussinessDetailComponent implements OnDestroy {
         }
       }
     );
+    this.getBusinessDetail()
   }
 
   getBusinessDetail() {
@@ -162,7 +163,7 @@ export class BussinessDetailComponent implements OnDestroy {
     this._businessDetailService.getBusinessDetail(data).subscribe((res) => {
       let data = res["data"];
       if (data) {
-        this.isGSTINVerified = data["gstinVerified"] ? true : false;
+        this.isGSTINVerified = data["gstinVerified"] == 'true' ? true : false;
         this.businessDetailForm.controls["companyName"].setValue(
           data["companyName"]
         );
@@ -290,7 +291,7 @@ export class BussinessDetailComponent implements OnDestroy {
             ].value
           )
             this.getBusinessDetail();
-
+          
           user["userType"] = "business";
           this._localStorageService.store("user", user);
           this._cartService.payBusinessDetails = {
@@ -299,6 +300,7 @@ export class BussinessDetailComponent implements OnDestroy {
             is_gstin: data["isGstInvoice"],
           };
           this.successfulMessage = true;
+          this.isGSTINVerified = true;
           setTimeout(() => {
             this.successfulMessage = false;
           }, 5000);

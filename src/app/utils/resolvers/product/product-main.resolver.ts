@@ -36,8 +36,9 @@ export class ProductResolver implements Resolve<object> {
       'language': 'hi'
     };
 
+
     const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders(languageHeader), 
+      headers: new HttpHeaders((route.data['language'] == 'hi')?languageHeader:{}), 
     };
     // Show loder of the page
     this.loaderService.setLoaderState(true);
@@ -101,7 +102,7 @@ export class ProductResolver implements Resolve<object> {
       const FOOTER_GET_BUCKET = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_BUCKET + "?msn=" + productMsnId;
 
       // Store request observable in a validable
-      const productObs = this.http.get(PRODUCT_URL).pipe(share(),
+      const productObs = this.http.get(PRODUCT_URL, requestOptions).pipe(share(),
         map(res => {
           const logInfo = this._commonService.getLoggerObj(PRODUCT_URL, 'GET', startTime)
           logInfo.endDateTime = new Date().getTime();
@@ -114,7 +115,7 @@ export class ProductResolver implements Resolve<object> {
         }));
 
       const reviewRequestBody = { review_type: 'PRODUCT_REVIEW', item_type: 'PRODUCT', item_id: productMsnId, user_id: " " };
-      const productReviewObs = this.http.post(REVIEW_URL, reviewRequestBody).pipe(share(),
+      const productReviewObs = this.http.post(REVIEW_URL, reviewRequestBody, requestOptions).pipe(share(),
         map(res => {
           const logInfo = this._commonService.getLoggerObj(REVIEW_URL, 'GET', startTime)
           logInfo.endDateTime = new Date().getTime();
@@ -126,7 +127,7 @@ export class ProductResolver implements Resolve<object> {
           return of(null);
         }));
 
-      const productCrumb = this.http.get(CRUM_URL).pipe(share(),
+      const productCrumb = this.http.get(CRUM_URL, requestOptions).pipe(share(),
         map(res => {
           const logInfo = this._commonService.getLoggerObj(CRUM_URL, 'GET', startTime)
           logInfo.endDateTime = new Date().getTime();
@@ -138,7 +139,7 @@ export class ProductResolver implements Resolve<object> {
           return of(null);
         }));
 
-      const product_Q_AND_A = this.http.get(Q_AND_A_URL).pipe(share(),
+      const product_Q_AND_A = this.http.get(Q_AND_A_URL, requestOptions).pipe(share(),
         map(res => {
           const logInfo = this._commonService.getLoggerObj(Q_AND_A_URL, 'GET', startTime)
           logInfo.endDateTime = new Date().getTime();
@@ -154,7 +155,7 @@ export class ProductResolver implements Resolve<object> {
           return of(null);
         }));
 
-      const footer_accordian_related_link = this.http.get(FOOTER_RELATED_LINK).pipe(share(),
+      const footer_accordian_related_link = this.http.get(FOOTER_RELATED_LINK, requestOptions).pipe(share(),
         map(res => {
           const logInfo = this._commonService.getLoggerObj(FOOTER_RELATED_LINK, 'GET', startTime)
           logInfo.endDateTime = new Date().getTime();
@@ -166,7 +167,7 @@ export class ProductResolver implements Resolve<object> {
           return of(null);
         }));
 
-      const footer_accordian_similar_category = this.http.get(FOOTER_SIMILAR_CATEGORY).pipe(share(),
+      const footer_accordian_similar_category = this.http.get(FOOTER_SIMILAR_CATEGORY, requestOptions).pipe(share(),
         map(res => {
           const logInfo = this._commonService.getLoggerObj(FOOTER_SIMILAR_CATEGORY, 'GET', startTime)
           logInfo.endDateTime = new Date().getTime();
@@ -178,7 +179,7 @@ export class ProductResolver implements Resolve<object> {
           return of(null);
         }));
 
-      const footer_accordian_category_bucket = this.http.get(FOOTER_GET_BUCKET).pipe(share(),
+      const footer_accordian_category_bucket = this.http.get(FOOTER_GET_BUCKET, requestOptions).pipe(share(),
         map(res => {
           const logInfo = this._commonService.getLoggerObj(FOOTER_GET_BUCKET, 'GET', startTime)
           logInfo.endDateTime = new Date().getTime();

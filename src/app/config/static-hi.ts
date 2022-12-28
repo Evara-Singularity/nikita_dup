@@ -25,7 +25,7 @@ export const product = {
     return_policy:"रिटर्न पॉलिसी",
     add_to_cart:"कार्ट में डालें",
     buy_now:"अभी खरीदें",
-    more_from:"एक्सप्लोर करें दूसरे __categoryName__",
+    more_from:"एक्सप्लोर करें दूसरे ___categoryName___",
     more_from_brand:"एक्सप्लोर करें दूसरे ___brandName___ ___categoryName___",
     use_code:"कोड का इस्तेमाल करें",
     best_of_moglix:"मोगलिक्स का बेस्ट",

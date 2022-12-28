@@ -35,6 +35,7 @@ export class AppPromoComponent implements OnInit {
   @Input() productMsn: string = null;
   @Input() isLazyLoaded: boolean = false;
   @Output() appPromoStatus$: EventEmitter<boolean> = new EventEmitter<boolean>();
+  productStaticData = this._commonService.defaultLocaleValue;
 
   public appPromoStatus: boolean = true;
   public mobile_os = null;
@@ -48,15 +49,23 @@ export class AppPromoComponent implements OnInit {
     private _analytics: GlobalAnalyticsService,
     private _localStorageService: LocalStorageService,
     public _commonService: CommonService,
+
   ) {
   }
 
   ngOnInit(): void {
+    this.getStaticSubjectData();
     this.readStatusFromLocalStorage();
     this.getUserAuthenticationStatus();
     this.getUserAuthenticationStatusChange();
     this.mobile_os = this.getMobileOperatingSystem();
     this.createPlayStoreLink();
+  }
+  getStaticSubjectData(){
+    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+      this._commonService.defaultLocaleValue = staticJsonData;
+      this.productStaticData = staticJsonData;
+    });
   }
 
   ngAfterViewInit(){

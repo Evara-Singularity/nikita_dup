@@ -39,12 +39,23 @@ const routes: Routes = [
 				},
 			},
 			{
+				matcher: _routingMatcher.productMatchTranslate,
+				loadChildren: () =>
+					import('./product/product.module').then((m) => m.ProductModule),
+				data: {
+					pageName: 'pdp',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT,
+					language: 'hi'
+				},
+			},
+			{
 				matcher: _routingMatcher.productMatch,
 				loadChildren: () =>
 					import('./product/product.module').then((m) => m.ProductModule),
 				data: {
 					pageName: 'pdp',
-					moduleName: CONSTANTS.MODULE_NAME.PRODUCT
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT,
+					language: 'en'
 				},
 			},
 			{
@@ -835,13 +846,24 @@ const routes: Routes = [
 				path: 'order-rating/:orderId/:itemId',
 				loadChildren: () =>
 					import('./order-rating/order-rating.module').then((m) => m.OrderRatingModule),
-					data: {
-						footer: false,
-						logo: true,
-						moreOpt: true,
-						title: 'Rate your experience',
-						
-					},
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					title: 'Rate your experience',
+
+				},
+			},
+			{
+				path: 'find-b2b-bulk-buyers',
+				loadChildren: () =>
+					import('./rfq-supplier/rfq-supplier.module').then((m) => m.RfqSupplierModule),
+				data: {
+					footer: true,
+					logo: true,
+					moreOpt: true,
+					pageName: 'articles'
+				},
 			},
 			{
 				path: '**',

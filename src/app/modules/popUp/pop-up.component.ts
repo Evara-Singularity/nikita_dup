@@ -82,7 +82,7 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
             }else{
                 this.outData$.emit({ hide: true, selector: this.selector });
             }
-            console.log('curentURL', currentUrl);
+            // console.log('curentURL', currentUrl);
         }, 200);
     }
     ngOnDestroy() {

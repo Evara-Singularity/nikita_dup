@@ -1,15 +1,15 @@
 <section id="ask-question-section" class="pwa-row Qa mt-10">
     <div class="pwa-col-12">
         <div class="faq-head">
-            <h3 *ngIf="questionAnswerList?.data.qlist.length <= 1">Have doubts regarding this product?&nbsp;</h3>
-            <h3 *ngIf="questionAnswerList?.data.qlist.length > 1">Frequently Asked Questions</h3>
-            <button (click)="$event.stopPropagation();askQuestion.emit()" class="btn quaternary-btn-1">ASK&nbsp;NOW</button>
+            <h3 *ngIf="questionAnswerList?.data.qlist.length <= 1">{{productStaticData.have_doubts_regarding_this_product}}?&nbsp;</h3>
+            <h3 *ngIf="questionAnswerList?.data.qlist.length > 1">{{productStaticData.frequently_asked_questions}}</h3>
+            <button (click)="$event.stopPropagation();askQuestion.emit()" class="btn quaternary-btn-1">{{productStaticData.ask_now}}</button>
         </div>
         <ng-container *ngIf="questionAnswerList?.data.qlist.length > 1">
 
             <p class="display-qn">
-                Displaying Questions
-                <span>1-2</span> of
+                {{productStaticData.displaying_questions}}
+                <span>1-2</span>{{productStaticData.of}}
                 <span>{{questionAnswerList.data.qlist.length}} </span>
             </p>
             <div class="qna-block" *ngFor="let item of questionAnswerList.data.qlist | slice:0:2;index as i">
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup.emit()">
-                <p class="small-txt">VIEW MORE FAQs<i class="icon-arrow-right-s-line small-txt"></i></p>
+                <p class="small-txt">{{productStaticData.view_more_faq}}<i class="icon-arrow-right-s-line small-txt"></i></p>
             </div>
         </ng-container>
     </div>

@@ -19,7 +19,7 @@ import
 import { Location } from "@angular/common";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { DomSanitizer, Meta, Title } from "@angular/platform-browser";
-import { ActivatedRoute, NavigationEnd, NavigationExtras, NavigationStart, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, NavigationExtras, NavigationStart, PRIMARY_OUTLET, Router, UrlSegment, UrlSegmentGroup, UrlTree } from "@angular/router";
 import { YoutubePlayerComponent } from "@app/components/youtube-player/youtube-player.component";
 import CONSTANTS from "@app/config/constants";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
@@ -43,10 +43,12 @@ import { ProductUtilsService } from "../../utils/services/product-utils.service"
 import { ProductService } from "../../utils/services/product.service";
 import { SiemaCrouselService } from "../../utils/services/siema-crousel.service";
 import { FbtComponent } from "./../../components/fbt/fbt.component";
-
 import * as $ from 'jquery';
 import { catchError, delay, filter, map, mergeMap } from "rxjs/operators";
 import { TrackingService } from "@app/utils/services/tracking.service";
+import * as localization_en from '../../config/static-en';
+import * as localization_hi from '../../config/static-hi';
+import { product } from '../../config/static-hi';
 
 
 interface ProductDataArg
@@ -63,11 +65,15 @@ interface ProductDataArg
 })
 export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 {
+    
+    switchLanguage: boolean = false;  
     encodeURI = encodeURI;
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly baseDomain = CONSTANTS.PROD;
     readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+    productStaticData:any = this.commonService.defaultLocaleValue;
+
     showScrollToTopButton: boolean = false;
     isServer: boolean;
     isBrowser: boolean;
@@ -299,6 +305,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     quickOrderContainerRef: ViewContainerRef;
 
     iOptions: any = null;
+    isAcceptLanguage:boolean = false;
+    
 
     featuresMap = {
         Antiskid: "antiskid",
@@ -310,6 +318,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         "Toe Type": "steel-toe",
         Waterproof: "waterproof",
     };
+    prod_json:any = './static-en.json';
 
     appPromoVisible: boolean = true;
     productInfo = null;
@@ -323,6 +332,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     GLOBAL_CONSTANT = GLOBAL_CONSTANT;
     isAskQuestionPopupOpen: boolean;
     mainProductURL: string;
+    isLanguageHindi: boolean;
+    originalProductBO: any = null;
+    englishUrl: string;
+    hindiUrl: string;
+    ProductStatusCount: Observable<Object>;
 
     // footer accordian vars
     relatedLinkRes: any = null
@@ -373,6 +387,15 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         this.isServer = commonService.isServer;
         this.isBrowser = commonService.isBrowser;
+        this.isLanguageHindi =((this.router.url).toLowerCase().indexOf('/hi') !== -1) || false;
+        if(((this.router.url).toLowerCase().indexOf('/hi') !== -1)){
+            this.englishUrl = this.router.url.toLowerCase().split("/hi").join('');;
+            this.hindiUrl =  this.router.url;
+        }
+        else {
+            this.hindiUrl = "/hi" + this.router.url;
+            this.englishUrl = (this.router.url).toLowerCase().split("hi").join('/');
+        }
     }
 
     ngOnInit(): void
@@ -383,9 +406,22 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.getProductApiData();
         this.addSubcriber();
         this.createSiemaOption();
-        this.setProductSeoSchema();
-        this.setQuestionAnswerSchema();
+        // this.setProductSeoSchema();
+        // this.setQuestionAnswerSchema();
         this.productService.resetOOOSimilarProductsData();
+        
+        if ((this.router.url).includes("/hi")) {
+            this.commonService.defaultLocaleValue = localization_hi.product;
+            this.productStaticData = localization_hi.product;
+            this.commonService.changeStaticJson.next(this.productStaticData);
+        }else{
+            this.commonService.defaultLocaleValue = localization_en.product;
+            this.productStaticData = localization_en.product;
+            this.commonService.changeStaticJson.next(this.productStaticData);
+        }
+        this.commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+            this.productStaticData = localization_content;
+        })
     }
 
     scrollToTop()
@@ -531,6 +567,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         )[0]["images"] !== null
                     ) {
                         this.commonService.enableNudge = false;
+                        this.isAcceptLanguage = (rawData["product"][0]["acceptLanguage"] != null && rawData["product"][0]["acceptLanguage"] != undefined) ? true : false;
                         this.processProductData(
                             {
                                 productBO: rawData["product"][0]["productBO"],
@@ -539,7 +576,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                             },
                             rawData["product"][0]
                         );
-                        this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6]);
+                        
+                        this.originalProductBO = rawData["product"][0]["original_productBO"] || null;
+                        // Load secondary APIs data from resolver only when product data is received
+                        if (!rawData["productSecondaryApisData"]["error"]) {
+                            this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6]);
+                        }
                     } else {
                         this.showLoader = false;
                         this.globalLoader.setLoaderState(false);
@@ -600,15 +642,17 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             const rawReviews = Object.assign({}, reviewsDataApiData["data"]);
             rawReviews["reviewList"] = rawReviews["reviewList"] as [];
             this.setReviewsRatingData(rawReviews);
+            // console.log('rawReviews', rawReviews);
             this.rawReviewsData = Object.assign({}, rawReviews);
+            this.setProductSeoSchema();
         }
 
         if (breadcrumbApiData && Array.isArray(breadcrumbApiData)) {
             this.setProductaBreadcrum(breadcrumbApiData);
         }
-
         if (questAnsApiData && questAnsApiData["data"]) {
             this.setQuestionsAnswerData(questAnsApiData);
+            this.setQuestionAnswerSchema();
         }
         
         this.relatedLinkRes = relatedLinkRes;
@@ -1479,7 +1523,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         if (res["status"]) {
                             this._tms.show({
                                 type: "success",
-                                text: "Successfully added to WishList",
+                                text: this.productStaticData.successfully_added_to_wishlist,
                             });
                         }
                     });
@@ -1789,7 +1833,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             productGroupData: this.rawProductData,
             buyNow: buyNow,
             selectPriceMap: this.selectedProductBulkPrice,
-            quantity: this.cartQunatityForProduct
+            quantity: this.cartQunatityForProduct,
+            languageMode: this.isHindiUrl,
+            originalProductBO: this.originalProductBO,
         });
         this.cartService.addToCart({ buyNow, productDetails: cartAddToCartProductRequest }).subscribe(result =>
         {
@@ -2284,6 +2330,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.onVisibleProductRFQ($event);
     }
 
+    toggleLanguageFile(){
+        
+    }
+
     async onVisibleProductRFQ(htmlElement)
     {
         if (this.holdRFQForm) return
@@ -2316,9 +2366,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             url: this.productUrl,
             price: this.productPrice,
             msn: this.productSubPartNumber || this.defaultPartNumber,
-            productName: this.productName,
+            productName: (this.hindiUrl) ? this.originalProductBO['productName'] : this.productName,
             moq: this.productMinimmumQuantity,
-            brand: this.productBrandDetails["brandName"],
+            brand: (this.hindiUrl) ? this.originalProductBO['brandDetails']['brandName'] : this.productBrandDetails["brandName"],
             taxonomyCode: this.productCategoryDetails["taxonomy"],
             adobeTags: "",
         };
@@ -2349,7 +2399,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         let params = { customerId: user.userId, invoiceType: "retail" };
         let product = {
             url: this.productUrl,
-            productName: this.productName,
+            productName: (this.hindiUrl)? this.originalProductBO['productName']  : this.productName,
             moq: this.productMinimmumQuantity,
         };
         this.raiseRFQGetQuoteSubscription = this.commonService.getAddressList(params).subscribe(res =>
@@ -2488,6 +2538,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         productInfo["categoryDetails"] = this.productCategoryDetails;
         productInfo["productPrice"] = this.productPrice;
         productInfo["quantity"] = quantity;
+        productInfo["isHindiMode"] = this.isHindiUrl;
         this.pincodeFormInstance.instance["pageData"] = productInfo;
         if (this.pincodeFormInstance) {
             (
@@ -2533,6 +2584,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.offerSectionInstance.instance['brandName'] = this.rawProductData["brandDetails"]['brandName'];
             this.offerSectionInstance.instance['categoryId'] = this.rawProductData["categoryDetails"][0]["categoryCode"];
             this.offerSectionInstance.instance['categoryName'] = this.rawProductData["categoryDetails"][0]["categoryName"];
+            this.offerSectionInstance.instance['isHindiMode'] = this.hindiUrl;
             (
                 this.offerSectionInstance.instance[
                 "viewPopUpHandler"
@@ -3088,6 +3140,16 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
      * Please place all functional code above this section
      */
 
+    getProductURL()
+    {
+        const productURL =
+            this.rawProductData.productPartDetails[this.productSubPartNumber][
+            "canonicalUrl"
+            ];
+        const finalURL = productURL ? productURL : this.productUrl;
+        return finalURL;
+    }
+    
     setMetatag(index: number = -1)
     {
         if (!this.rawProductData) {
@@ -3131,21 +3193,32 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             };
         }
 
-
         let title = metaObj.productName;
-
-        if (metaObj.productPrice && metaObj.productPrice > 0 && metaObj["quantityAvailable"] > 0) {
+        if (metaObj.productPrice && metaObj.productPrice > 0 && metaObj["quantityAvailable"] > 0 && !this.isLanguageHindi) {
             title += " - Buy at Rs." + metaObj.productPrice;
         }
+        if (metaObj.productPrice && metaObj.productPrice > 0 && metaObj["quantityAvailable"] > 0 && this.isLanguageHindi) {
+            title += metaObj['seoDetails']['title'];
+        }
 
-        if (metaObj.productOutOfStock == true) {
-            this.pageTitle.setTitle(
-                "Buy " + metaObj.productName + " Online At Best Price On Moglix"
-            );
-        } else {
-            this.pageTitle.setTitle(
-                "Buy " + metaObj.productName + " Online At Price ₹" + metaObj.productPrice
-            );
+        if (!this.isLanguageHindi) {
+            if (metaObj.productOutOfStock == true) {
+                this.pageTitle.setTitle(
+                    "Buy " + metaObj.productName + " Online At Best Price On Moglix"
+                );
+            } else {
+                this.pageTitle.setTitle(
+                    "Buy " + metaObj.productName + " Online At Price ₹" + metaObj.productPrice
+                );
+            }
+        }
+        else {
+            if (metaObj.productOutOfStock == true) {
+                this.pageTitle.setTitle("खरीदें "+ metaObj.productName + " ऑनलाइन सबसे अच्छी कीमत पर मोगलिक्स से" );
+            } else {
+                this.pageTitle.setTitle("खरीदें "+ metaObj.productName + " ऑनलाइन कीमत ₹" + metaObj.productPrice + " में"
+                );
+            }
         }
 
         let metaDescription = "";
@@ -3189,9 +3262,14 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.meta.addTag({ name: "og:description", content: metaDescription });
         this.meta.addTag({
             name: "og:url",
-            content: CONSTANTS.PROD + "/" + this.getProductURL(),
+            content: (this.hindiUrl)? CONSTANTS.PROD + this.router.url : CONSTANTS.PROD + "/" + this.getProductURL(),
         });
-        this.meta.addTag({ name: "og:title", content: title });
+        // this.pageTitle.setTitle("खरीदें "+ metaObj.productName + " ऑनलाइन कीमत ₹" + metaObj.productPrice + " में"
+        if (!this.isHindiUrl) {
+            this.meta.addTag({ name: "og:title", content: title });
+        } else {
+            this.meta.addTag({ name: "og:title", content: "खरीदें " + metaObj.productName + " ऑनलाइन कीमत ₹" + metaObj.productPrice + " में" });
+        }
         this.meta.addTag({ name: "og:image", content: metaObj.productDefaultImage });
         this.meta.addTag({ name: "robots", content: CONSTANTS.META.ROBOT });
         this.meta.addTag({
@@ -3205,14 +3283,19 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         });
         if (this.isServer) {
             const links = this.renderer2.createElement("link");
-
             links.rel = "canonical";
-            let url = metaObj.productUrl;
+            let url = ''
+            if (this.isHindiUrl){
+                url = CONSTANTS.PROD + this.hindiUrl;
+            }
+            else{
+                url = metaObj.productUrl;
+            }
             if (
-                !this.isCommonProduct &&
+                !this.isCommonProduct ||
                 !this.listOfGroupedCategoriesForCanonicalUrl.includes(
                     metaObj.productCategoryDetails["categoryCode"]
-                )
+                ) && !this.hindiUrl
             ) {
                 url = this.rawProductData.productPartDetails[
                     this.rawProductData["partNumber"]
@@ -3226,20 +3309,39 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             if (url && url.substring(url.length - 2, url.length) == "-g") {
                 url = url.substring(0, url.length - 2);
             }
+            if(!this.hindiUrl){
+                links.href = CONSTANTS.PROD + "/" + url;
+            }
+            else {
+                links.href = url;
+            }
 
-            links.href = CONSTANTS.PROD + "/" + url;
-            this.renderer2.appendChild(this.document.head, links);
+            // const links = this.renderer2.createElement("link");
+            // links.rel = "alternate";
+            // links.hreflang = "hi";
+            // console.log('links.hreflang =====>',links.hreflang);
+            // links.href = URL;
+            if (this.commonService.isServer && this.isAcceptLanguage) {
+                const languagelink = this.renderer2.createElement("link");
+                languagelink.rel = "alternate";
+                languagelink.href = CONSTANTS.PROD + this.hindiUrl;
+                languagelink.hreflang = 'hi-in';
+                this.renderer2.appendChild(this.document.head, languagelink);
+                
+                const elanguagelink = this.renderer2.createElement("link");
+                elanguagelink.rel = "alternate";
+                elanguagelink.href = CONSTANTS.PROD + this.englishUrl;
+                elanguagelink.hreflang = 'en'
+                this.renderer2.appendChild(this.document.head, elanguagelink);
+
+            }
+            if (this.commonService.isServer) {
+                this.renderer2.appendChild(this.document.head, links);
+            }
+            if (this.commonService.isBrowser) {
+                this.isHindiUrl ? document.documentElement.setAttribute("lang", 'hi') : document.documentElement.setAttribute("lang", 'en');
+            }
         }
-    }
-
-    getProductURL()
-    {
-        const productURL =
-            this.rawProductData.productPartDetails[this.productSubPartNumber][
-            "canonicalUrl"
-            ];
-        const finalURL = productURL ? productURL : this.productUrl;
-        return finalURL;
     }
 
     setQuestionAnswerSchema()
@@ -3327,7 +3429,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     },
                     offers: {
                         "@type": "Offer",
-                        url: CONSTANTS.PROD + "/" + this.getProductURL(),
+                        url: CONSTANTS.PROD + this.router.url,
                         priceCurrency: "INR",
                         price: (
                             this.productPrice * this.productMinimmumQuantity
@@ -3420,13 +3522,13 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             product_name: this.productName,
             msn: this.productSubPartNumber,
             brand: this.productBrandDetails["brandName"],
-            category_l1: this.productCategoryDetails["taxonomy"].split("/")[0]
+            category_l1: this.productCategoryDetails["taxonomy"]?.split("/")[0]
                 ? this.productCategoryDetails["taxonomy"].split("/")[0]
                 : null,
-            category_l2: this.productCategoryDetails["taxonomy"].split("/")[1]
+            category_l2: this.productCategoryDetails["taxonomy"]?.split("/")[1]
                 ? this.productCategoryDetails["taxonomy"].split("/")[1]
                 : null,
-            category_l3: this.productCategoryDetails["taxonomy"].split("/")[2]
+            category_l3: this.productCategoryDetails["taxonomy"]?.split("/")[2]
                 ? this.productCategoryDetails["taxonomy"].split("/")[2]
                 : null,
             oos: this.productOutOfStock.toString(),
@@ -4229,7 +4331,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             "text",
             "object"
         );
-        this.refinedProdTags = (this.refinedProdTags as []).slice(0, 3);
+        if (this.refinedProdTags !==null) {
+            this.refinedProdTags = (this.refinedProdTags as []).slice(0, 3);
+        }
     }
 
     get overallRating()
@@ -4270,8 +4374,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         const taxon = [];
         if (
-            this.productCategoryDetails &&
-            this.productCategoryDetails.hasOwnProperty("taxonomyCode")
+            this.productCategoryDetails && this.productCategoryDetails["taxonomyCode"]!==null &&
+            this.productCategoryDetails.hasOwnProperty("taxonomyCode") 
         ) {
             taxon.push(
                 this.productCategoryDetails["taxonomyCode"].split("/")[0] || ""
@@ -4315,9 +4419,13 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     productStatusCount()
     {
-        this.productService
-            .getProductStatusCount(this.defaultPartNumber)
-            .subscribe((productStatusCountResult) =>
+        if(this.isHindiUrl){
+        this.ProductStatusCount = this.productService.getProductStatusCount(this.defaultPartNumber,{ headerData: { 'language': 'hi' }})
+        }
+        else{ 
+            this.ProductStatusCount = this.productService.getProductStatusCount(this.defaultPartNumber)
+        }
+        this.ProductStatusCount.subscribe((productStatusCountResult) =>
             {
                 this.rawProductCountData = Object.assign({}, productStatusCountResult);
                 this.remoteApiCallRecentlyBought();
@@ -4414,6 +4522,39 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.raiseRFQGetQuoteSubscription.unsubscribe();
         }
         this.resetLazyComponents();
+    }
+
+    // translate() {
+    //     if ((this.router.url).includes("/mp/hi")) {
+    //         this.commonService.defaultLocaleValue = localization_hi.product;
+    //         this.productStaticData = localization_hi.product;
+    //         this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
+    //         this.commonService.changeStaticJson.next(this.productStaticData);
+    //     }
+    //     else {
+    //         this.commonService.defaultLocaleValue = localization_en.product
+    //         this.productStaticData = localization_en.product;
+    //         this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'));
+    //         this.commonService.changeStaticJson.next(this.productStaticData);
+    //     }
+    // }
+
+    translate() {
+        if ((this.router.url).toLowerCase().indexOf('/hi') !== -1) {
+            const URL = (this.router.url).toLowerCase().split("/hi").join('/');
+            // console.log(this.commonService.defaultLocaleValue.language, URL);
+            // console.log("this.productUrl",this.productUrl)
+            this.router.navigate([URL]); 
+        }
+        else {
+            const URL = '/hi' + (this.router.url);
+            this.router.navigate([URL]);
+        }
+    }
+
+
+    get isHindiUrl() {
+        return (this.router.url).toLowerCase().indexOf('/hi') !== -1
     }
 
     @HostListener('window:popstate', ['$event'])

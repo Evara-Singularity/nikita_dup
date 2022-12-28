@@ -125,5 +125,9 @@ export const ENDPOINTS = {
   PRODUCT_TAGS:'/cmsapi/getTagsByMsn?msn=',
   INFORMATION_VIDEO:'/category/getvideoLinkByCategoryCode',
   CUSTOMER_FEEDBACK:'/feedback/customerGetFeedback',
-  SUBMIT_RATING_FEEDBACK:'/feedback/customerSubmitFeedback'
+  SUBMIT_RATING_FEEDBACK:'/feedback/customerSubmitFeedback',
+  SUPPLIER_RFQ_LIST: '/rfq/supplierRFQListing',
+  SUPPLIER_RFQ_CATEGORY: '/rfq/supplierRFQCategoryListing',
+  SUPPLIER_RFQ_REPORT: '/rfq/supplierRFQReport',
+  SUPPLIER_RFQ_SAVE: '/rfq/supplierRFQSave'
 };

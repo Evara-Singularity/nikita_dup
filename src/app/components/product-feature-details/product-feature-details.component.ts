@@ -14,7 +14,7 @@ import { BrandLinkMapping } from '@app/utils/brandLinkMapping';
   styleUrls: ['./product-feature-details.component.scss']
 })
 export class ProductFeatureDetailsComponent implements OnInit {
-
+  productStaticData = this.commonService.defaultLocaleValue;
   readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
   readonly baseDomain = CONSTANTS.PROD;
   readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
@@ -36,10 +36,17 @@ export class ProductFeatureDetailsComponent implements OnInit {
   constructor( private router: Router, public commonService: CommonService) { }
 
   ngOnInit(): void {
+    this.getStaticSubjectData();
     if (this.productBrandDetails && this.productBrandDetails["idBrand"] && BrandLinkMapping.hasOwnProperty(this.productBrandDetails["idBrand"])) {
       this.showNavToStorePage=true;
       this.productBrandDetails['storeLink']=BrandLinkMapping[this.productBrandDetails["idBrand"]];
     }
+  }
+  
+  getStaticSubjectData(){
+    this.commonService.changeStaticJson.subscribe(staticJsonData => {
+      this.productStaticData = staticJsonData;
+    });
   }
 
   handleProductInfoPopup(infoType, cta) {

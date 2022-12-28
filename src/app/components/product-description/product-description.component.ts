@@ -5,6 +5,7 @@ import { ToastMessageService } from '@app/modules/toastMessage/toast-message.ser
 import { ClientUtility } from '@app/utils/client.utility';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
+import { CommonService } from '../../utils/services/common.service';
 
 @Component({
   selector: 'product-description',
@@ -12,8 +13,9 @@ import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
   styleUrls: ['./product-description.component.scss']
 })
 export class ProductDescriptionComponent implements OnInit {
-  @Input() productPrice;
+  productStaticData = this._commonService.defaultLocaleValue;
   @Input() productName;
+  @Input() productPrice;
   @Input() productTags;
   @Input() refinedProdTags;
   @Input() productMrp;
@@ -35,11 +37,18 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() selectedProductBulkPrice;
   @Output() checkCartQuantityAndUpdate$: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private _tms: ToastMessageService) { }
+  constructor(private _tms: ToastMessageService,public _commonService:CommonService) {
+  
+   }
 
   ngOnInit(): void {
+   this.getStaticSubjectData();
   }
-
+  getStaticSubjectData(){
+    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+      this.productStaticData = staticJsonData;
+    });
+  }
   updateProductQunatity(type: 'INCREMENT' | 'DECREMENT') {
     switch (type) {
       case 'DECREMENT':

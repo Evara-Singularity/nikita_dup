@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, share, tap } from 'rxjs/operators'
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { isPlatformServer } from '@angular/common';
 import { ENDPOINTS } from '../../../config/endpoints';
 import { environment } from '../../../../environments/environment';
@@ -19,6 +19,7 @@ import { LoggerService } from '@app/utils/services/logger.service';
   providedIn: 'root'
 })
 export class ProductResolver implements Resolve<object> {
+  productObs: Observable<Object>;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId,
@@ -31,6 +32,13 @@ export class ProductResolver implements Resolve<object> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
     const startTime = new Date().getTime();
+    const languageHeader = {
+      'language': 'hi'
+    };
+
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders(languageHeader), 
+    };
     // Show loder of the page
     this.loaderService.setLoaderState(true);
 

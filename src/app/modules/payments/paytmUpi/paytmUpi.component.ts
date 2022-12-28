@@ -142,7 +142,7 @@ export class PaytmUpiComponent {
                 "paymentChannel": "WEB",
                 "paytmUpi": this.upi
             },
-            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra),
+            "validatorRequest": this._cartService.createValidatorRequest(extra)
         };
         return upiData;
     }

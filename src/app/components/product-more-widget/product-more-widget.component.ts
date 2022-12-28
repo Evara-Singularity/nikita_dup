@@ -9,6 +9,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
   styleUrls: ['./product-more-widget.component.scss']
 })
 export class ProductMoreWidgetComponent implements OnInit {
+  productStaticData:any = this.commonService.defaultLocaleValue;
   @Input('baseDomain') baseDomain;
   @Input('taxons') taxons;
   @Input('orderTracking') orderTracking;
@@ -22,7 +23,9 @@ export class ProductMoreWidgetComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
   }
+
 
   sendWidgetTracking(widgetType) {
     const TAXONS = this.taxons;

@@ -436,7 +436,7 @@ export class EmiComponent {
                 "user_id": userSession["userId"],
                 "store_card": data.store_card == true ? "true" : "false"
             },
-            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra),
+            "validatorRequest": this._cartService.createValidatorRequest(extra)
         };
 
         if (this.type == "tax") {
@@ -707,7 +707,7 @@ export class EmiComponent {
 export class BankNameChangePipe implements PipeTransform {
     transform(val: any, args) {
         if (val) {
-            console.log(val);
+            // console.log(val);
         }
         return val;
     }

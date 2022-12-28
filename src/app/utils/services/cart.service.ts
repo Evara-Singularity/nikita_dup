@@ -528,6 +528,7 @@ export class CartService
                     deliveryMethodId: 77,
                     type: "kjhlh",
                 },
+                prepaidDiscounts: (extra.mode == 'COD') ? null : ((this.getCartSession().prepaidDiscountList) ? this.getCartSession().prepaidDiscountList : null),
                 offersList: offersList != undefined && offersList.length > 0 ? offersList : null,
                 extraOffer: this.cartSession["extraOffer"] ? this.cartSession["extraOffer"] : null,
                 device: CONSTANTS.DEVICE.device,
@@ -936,8 +937,7 @@ export class CartService
         )
     }
 
-    getAddToCartProductItemRequest(args: { productGroupData, buyNow, selectPriceMap?, quantity?, isFbt?}): AddToCartProductSchema
-    {
+    getAddToCartProductItemRequest(args: { productGroupData, buyNow, selectPriceMap?, quantity?, isFbt?, languageMode?, originalProductBO?}): AddToCartProductSchema {
         const partNumber = args.productGroupData['partNumber'] || args.productGroupData['defaultPartNumber'];
         const isProductPriceValid = args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
         const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
@@ -952,6 +952,7 @@ export class CartService
         const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
         const incrementUnit = (priceQuantityCountry && priceQuantityCountry['incrementUnit']) ? priceQuantityCountry['incrementUnit'] : 1;
         const productLinks = productPartDetails['productLinks'];
+        const productURL = (args.languageMode) ? args.originalProductBO['defaultCanonicalUrl'] : (productPartDetails['canonicalUrl'] || productLinks['canonical'] || productLinks['default']);
         const product = {
             cartId: null,
             productId: partNumber,
@@ -963,8 +964,8 @@ export class CartService
             taxes: productTax,
             amountWithTaxes: null,
             totalPayableAmount: productPrice,
-            productName: args.productGroupData['productName'],
-            brandName: productBrandDetails['brandName'],
+            productName: (args.languageMode) ? args.originalProductBO['productName'] : args.productGroupData['productName'],
+            brandName: (args.languageMode) ? args.originalProductBO['brandDetails']['brandName'] : productBrandDetails['brandName'],
             priceWithoutTax: priceWithoutTax,
             taxPercentage: priceQuantityCountry['taxRule']['taxPercentage'],
             productImg: (productPartDetails['images']) ? `${this.imageCdnPath}${productPartDetails['images'][0]['links']['thumbnail']}` : '',
@@ -972,7 +973,7 @@ export class CartService
             productQuantity: (args.quantity && !isNaN(args.quantity) && +args.quantity > productMinimmumQuantity) ? args.quantity : productMinimmumQuantity,
             productUnitPrice: productPrice,
             expireAt: null,
-            productUrl: productPartDetails['canonicalUrl'] || productLinks['canonical'] || productLinks['default'],
+            productUrl: productURL,
             bulkPriceMap: priceQuantityCountry['bulkPrices'],
             bulkPrice: null,
             bulkPriceWithoutTax: null,
@@ -981,7 +982,7 @@ export class CartService
             buyNow: args.buyNow,
             filterAttributesList: args.productGroupData['filterAttributesList'] || null,
             discount: this.calculcateDiscount(priceQuantityCountry['discount'], productMrp, productPrice),
-            category: productCategoryDetails['taxonomy'],
+            category: (args.languageMode) ? args.originalProductBO['categoryDetails'][0]['taxonomy'] : productCategoryDetails['taxonomy'],
             isOutOfStock: this._setOutOfStockFlag(priceQuantityCountry),
             quantityAvailable: priceQuantityCountry['quantityAvailable'] || 0,
             productMRP: productMrp,

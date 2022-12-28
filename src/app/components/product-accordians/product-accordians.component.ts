@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule} from '@angular/core';
+import { Component, Input, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AccordianModule } from "@app/modules/accordian/accordian.module";
 import { CommonService } from '@app/utils/services/common.service';
-import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
+import { AccordiansDetails, AccordianDataItem } from '@app/utils/models/accordianInterface';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { makeStateKey } from '@angular/platform-browser';
 @Component({
@@ -17,16 +17,20 @@ export class ProductAccordiansComponent {
   @Input('relatedLinkRes') relatedLinkRes: any;
   @Input('categoryBucketRes') categoryBucketRes: any;
   @Input('similarCategoryRes') similarCategoryRes: any;
-  ACCORDIAN_DATA: Array<any> = [[],[],[]];
-  accordiansDetails:AccordiansDetails[]=[];
+  @Input('msn') msn: any;
+  @Input('isHindiMode') isHindiMode: boolean = false;
+
+  ACCORDIAN_DATA: Array<any> = [[], [], []];
+  accordiansDetails: AccordiansDetails[] = [];
   isServer: boolean;
   isBrowser: boolean;
   categoryId: any;
+  productStaticData = this._commonService.defaultLocaleValue;
 
   constructor(
     public _commonService: CommonService,
     private globalAnalyticService: GlobalAnalyticsService,
-  ) { 
+  ) {
     this.isServer = this._commonService.isServer;
     this.isBrowser = this._commonService.isBrowser;
   }
@@ -34,16 +38,24 @@ export class ProductAccordiansComponent {
   ngOnInit() {
     // console.log('setAccordianData', this.relatedLinkRes, this.categoryBucketRes, this.similarCategoryRes);
     this.setAccordianData(this.relatedLinkRes, this.categoryBucketRes, this.similarCategoryRes);
+    this.getStaticSubjectData();
+  }
+
+
+  getStaticSubjectData() {
+    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+      this.productStaticData = staticJsonData;
+    });
   }
 
   setAccordianData(relatedLinkRes, categoryBucketRes, similarCategoryRes) {
-    
+
     if (relatedLinkRes && relatedLinkRes['status']) {
       this.ACCORDIAN_DATA[0] = relatedLinkRes['data'];
       // accordian data
       if (this.ACCORDIAN_DATA[0]?.length > 0) {
         this.accordiansDetails.push({
-          name: 'Related Searches',
+          name: this.productStaticData.accordian_list1_label,
           data: (this.ACCORDIAN_DATA[0]).map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
           icon: 'icon-attribute'
         });
@@ -53,8 +65,9 @@ export class ProductAccordiansComponent {
       this.ACCORDIAN_DATA[1] = categoryBucketRes['categoryLinkList'];
 
       // accordian data
+      // console.log(this.accordiansDetails['name']);
       this.accordiansDetails.push({
-        name: 'Popular Brand Categories',
+        name: this.productStaticData.accordian_list2_label,
         extra: this.categoryBrandDetails.brand.brandName,
         data: Object.entries(this.ACCORDIAN_DATA[1]).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
         icon: 'icon-brand_store'
@@ -65,7 +78,7 @@ export class ProductAccordiansComponent {
       // accordian data
       if (this.ACCORDIAN_DATA[2]?.length > 0) {
         this.accordiansDetails.push({
-          name: 'Shop by Related Categories',
+          name: this.productStaticData.accordian_list3_label,
           data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
           icon: 'icon-categories'
         });
@@ -73,7 +86,7 @@ export class ProductAccordiansComponent {
     }
   }
 
-  sendAnalyticsInfo() {    
+  sendAnalyticsInfo() {
     this.globalAnalyticService.sendAdobeCall(this.analyticsInfo, 'genericClick');
   }
 
@@ -87,7 +100,7 @@ export class ProductAccordiansComponent {
     RouterModule,
     AccordianModule
   ],
-  exports:[ProductAccordiansComponent]
+  exports: [ProductAccordiansComponent]
 })
 export default class ProductAccordiansModule {
 }

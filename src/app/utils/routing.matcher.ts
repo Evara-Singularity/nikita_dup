@@ -15,6 +15,16 @@ export default class RoutingMatcher {
         }
     }
 
+    productMatchTranslate(url: UrlSegment[]): any {
+        const urlLength = url.length;
+        if (urlLength > 2) {
+            const firstURLString = url[0].toString();
+            if (firstURLString === 'hi') {
+                return { consumed: url, posParams: { msnid: url[3] } };
+            }
+        }
+    }
+
     categoriesMatcher(url: UrlSegment[]): any {
         const urlLength = url.length;
         if (urlLength > 0) {

@@ -2,12 +2,11 @@
     <div class="pwa-col-12">
         <div *ngIf="!isFromOosSimilarCard" class="pdp-section-header">
             <h3 class="heading-3">
-                About This Product
+               {{productStaticData.about_this_product}}
             </h3>
         </div>
-
         <div *ngIf="productKeyFeatures && productKeyFeatures?.length > 0" class="key-features">
-            <h2 class="heading-3">Key Features</h2>
+            <h2 class="heading-3"> {{productStaticData.key_features}}</h2>
             <ul class="feature-list">
                 <li *ngFor="let feature of productKeyFeatures | sliceArray:3">
                     <p>
@@ -15,17 +14,17 @@
                     </p>
                 </li>
             </ul>
-            <div *ngIf="!isFromOosSimilarCard" (click)="handleProductInfoPopup('key features', 'show all specifications')" class="show-all-strip">
-                <span>Show All Key Features</span>
+            <div *ngIf="!isFromOosSimilarCard" (click)="handleProductInfoPopup('key features', 'show_all_key_features')" class="show-all-strip">
+                <span>{{productStaticData.show_all_key_features}}</span>
             </div>
         </div>
 
         <div class="product-specification" *ngIf="productAttributes != null">
-            <h2 class="heading-3">Product Specifications</h2>
+            <h2 class="heading-3">{{productStaticData.product_specifications}}</h2>
             <table style="width:100%" class="product-spec">
                 <tr>
                     <td class="left">
-                        <div>Brand</div>
+                        <div>{{productStaticData.brand}}</div>
                     </td>
                     <td class="right">
                         <div *ngIf="productBrandDetails">
@@ -37,7 +36,7 @@
                 <tr *ngIf="showNavToStorePage">
                     <td class="left">
                         <!-- <div>Explore {{productBrandDetails['brandName']}} store </div> -->
-                      <div>Brand Store </div>
+                      <div>{{productStaticData.brand_store}} </div>
 
                     </td>
                     <td class="right">
@@ -60,12 +59,12 @@
             </table>
             <div *ngIf="!isFromOosSimilarCard" (click)="handleProductInfoPopup('specifications', 'show all specifications')"
                 class="show-all-strip spec">
-                <span>Show All Specifications</span>
+                <span>{{productStaticData.show_all_specifination}}</span>
             </div>
         </div>
 
         <div class="prod-detail" *ngIf="!isFromOosSimilarCard">
-            <h2 class="heading-3">Product Details</h2>
+            <h2 class="heading-3">{{productStaticData.product_details}}</h2>
             <ng-container *ngIf="this.productDescripton != undefined else noProdDesc">
                 <p [innerHTML]="this.productDescripton"></p>
                 <p *ngIf="productCategoryDetails" class="static-desc"> Browse through the extensive list of
@@ -101,13 +100,13 @@
                         productCategoryDetails['categoryName'] : ''}}</a>.
                 </p>
             </ng-template>
-            <div (click)="handleProductInfoPopup('product details', 'read more')" class="show-all-strip">
-                <span>Read More</span>
+            <div (click)="handleProductInfoPopup('product details',productStaticData.read_more)" class="show-all-strip">
+                <span>{{productStaticData.read_more}}</span>
             </div>
         </div>
 
         <div *ngIf="productVideos && productVideos.length > 0 && !isFromOosSimilarCard" class="prod-detail detail-videos">
-            <h2 class="heading-3">Product Videos</h2>
+            <h2 class="heading-3">{{productStaticData.product_videos}}</h2>
             <div [style.width]="productVideos.length * 252">
                 <div class="prod-desc-video-container clearfix">
                     <div *ngFor="let video of productVideos" class="prod-desc-video">

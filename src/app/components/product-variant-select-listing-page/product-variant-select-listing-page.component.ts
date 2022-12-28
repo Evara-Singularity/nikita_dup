@@ -7,6 +7,7 @@ import { ProductsEntity } from '@app/utils/models/product.listing.search';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { RatingPipeModule } from '@app/utils/pipes/rating.pipe';
 import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
+import { CommonService } from '../../utils/services/common.service';
 
 @Component({
   selector: 'product-variant-select-listing-page',
@@ -14,9 +15,8 @@ import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
   styleUrls: ['./product-variant-select-listing-page.component.scss']
 })
 export class ProductVariantSelectListingPageComponent implements OnInit {
-
+  productStaticData = this._commonService.defaultLocaleValue;
   readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
-
   @Input() product: ProductsEntity;
   @Input() productGroupData: AddToCartProductSchema;
   @Input() buyNow: boolean = false;
@@ -29,11 +29,22 @@ export class ProductVariantSelectListingPageComponent implements OnInit {
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
   avgRating: number;
   reviewCount: number;
+ constructor(private _commonService:CommonService){
 
+ }
+  
+ 
   ngOnInit(): void {
+    this.getStaticSubjectData();
     this.currentlySelectedMSN = this.product.moglixPartNumber;
     this.avgRating = this.product.avgRating;
     this.reviewCount = this.product.reviewCount;
+    
+  }
+  getStaticSubjectData(){
+    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+      this.productStaticData = staticJsonData;
+    });
   }
 
   emitVariant(msn: string): void {

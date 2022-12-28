@@ -29,6 +29,7 @@ import { ToastMessageService } from "@app/modules/toastMessage/toast-message.ser
 import { QuickCodService } from "@app/utils/services/quick-cod.service";
 import { InitiateQuickCod } from "@app/utils/models/cart.initial";
 import { BottomMenuComponent } from "@app/modules/bottomMenu/bottom-menu.component";
+import { product}  from '../../config/static-en';
 
 @Component({
   selector: "pdp-quick-checkout",
@@ -69,6 +70,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   shippingCharges: number = 0;
   item = null;
   removableItem = null;
+  readonly product = product;
 
   constructor(
     public commonService: CommonService,

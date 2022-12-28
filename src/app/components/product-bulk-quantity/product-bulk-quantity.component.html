@@ -3,7 +3,7 @@
         <div class="pdp-subdetail" [class.no-pad]="productOutOfStock && isCommonProduct">
             <div class="bulk-qty">
                 <div class="bul-qty-head">
-                    <h3 class="heading-3">Buy More & Save More</h3>
+                    <h3 class="heading-3">{{productStaticData.buy_more_save_more}}</h3>
                 </div>
                 <div class="blk-contain">
                     <div [style.width.px]="(priceQuantityCountry['bulkPricesModified'].length * 135)" class="inner-blk-contain clearfix">
@@ -36,7 +36,7 @@
         <div class="pdp-subdetail pad-15" [class.no-pad]="productOutOfStock && isCommonProduct">
             <div class="bulk-qty">
                 <div class="bul-qty-head">
-                    <h3 class="heading-3">Buy More & Save More</h3>
+                    <h3 class="heading-3">{{productStaticData.buy_more_save_more}}</h3>
                 </div>
                 <div class="bulk-block bulk-container-single-grp" *ngFor="let items of productBulkPrices; let last=last; let index = index;" (click)="selectProductBulkPrice(items.minQty)" [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                     <div *ngIf="rawProductData['quantityAvailable']>=items.minQty">

@@ -3,7 +3,7 @@
         <a (click)="$event.preventDefault();sendWidgetTracking('category'); commonService.setSectionClickInformation('pdp_widget', 'listing'); commonService.navigateTo('/'+productCategoryDetails['categoryLink'], true)"
             [href]="[baseDomain+'/'+productCategoryDetails['categoryLink']]" class="widget-items">
             <div class="content-wrap">
-                <p>{{productStaticData.more_from.replace('__categoryName__',productCategoryDetails['categoryName'])}}</p>
+                <p>{{productStaticData.more_from.replace('___categoryName___',productCategoryDetails['categoryName'])}}</p>
                 <span class="explore-now">{{productStaticData.explore_now}}</span>
             </div>
             <i class="icon-next"></i>

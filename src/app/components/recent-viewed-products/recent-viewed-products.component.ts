@@ -9,6 +9,7 @@ import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
 import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
+import { CommonService } from '../../utils/services/common.service';
 
 @Component({
   selector: 'recent-viewed-products',
@@ -16,7 +17,7 @@ import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card
   styleUrls: ['./recent-viewed-products.component.scss']
 })
 export class RecentViewedProductsComponent implements OnInit {
-
+  productStaticData = this._commonService.defaultLocaleValue;
   recentProductItems: ProductsEntity[] = null;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   @Output() noRecentlyViewed$: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -42,6 +43,7 @@ export class RecentViewedProductsComponent implements OnInit {
     private productService: ProductService,
     public _router: Router,
     private localStorageService: LocalStorageService,
+    private _commonService:CommonService
   ) { }
 
   ngOnInit(): void {
@@ -50,8 +52,13 @@ export class RecentViewedProductsComponent implements OnInit {
       redirectedSectionName: this.outOfStock ? 'recent_products_oos' : 'recent_productss'
     }
     this.getRecents();
+    this.getStaticSubjectData();
   }
-
+  getStaticSubjectData(){
+    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+      this.productStaticData = staticJsonData;
+    });
+  }
   getRecents() {
     let user = this.localStorageService.retrieve('user');
     const userId = (user['userId']) ? user['userId'] : null;

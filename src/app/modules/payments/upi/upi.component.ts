@@ -162,7 +162,7 @@ export class UpiComponent implements OnInit {
                 "productinfo": "MSNghihjbc",
                 "bankcode": "TEZ",
             },
-            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra),
+            "validatorRequest": this._cartService.createValidatorRequest(extra)
             
         };
         if(this.type == "tax"){

@@ -71,6 +71,7 @@ export class SharedAuthUtilService implements OnInit
                 // console.log('redirectUrl', redirectUrl);
                 setTimeout(() => {
                     this._globalLoader.setLoaderState(false);
+                    this._commonService.setLoginNotify(null);
                     redirectUrl && this._commonService.redirectPostAuth(redirectUrl)
                     redirectUrl && this._toastService.show({ type: 'success', text: message });
                     !redirectUrl && console.log('express sign up completed');
@@ -91,6 +92,7 @@ export class SharedAuthUtilService implements OnInit
         }).pipe(map(cartsession => {
             this._globalLoader.setLoaderState(false);
             this._toastService.show({ type: 'success', text: welcomeText });
+            this._commonService.setLoginNotify(response);
             return cartsession;
         }));
     }

@@ -6,6 +6,8 @@ import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { LocalStorageService } from 'ngx-webstorage';
 import { ProductService } from '../../utils/services/product.service';
 import CONSTANTS from '@app/config/constants';
+
+
 @Component({
     selector: 'product-check-pincode',
     templateUrl: './product-check-pincode.component.html',
@@ -13,9 +15,11 @@ import CONSTANTS from '@app/config/constants';
 })
 export class ProductCheckPincodeComponent implements OnInit
 {
+    productStaticData = this._commonService.defaultLocaleValue;
     readonly FALSE = false;
     readonly TRUE = true;
     @Input() pageData: any;
+    @Input() isHindiMode: boolean;
     @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() sendAnalyticsCall: EventEmitter<any> = new EventEmitter<any>();
     pincode = new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6), Validators.pattern('^[0-9]{6}$')]);
@@ -28,17 +32,19 @@ export class ProductCheckPincodeComponent implements OnInit
     itemShippingAmount = 0;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     isSubmitted: boolean = false;
-
+    
 
     constructor(
         private localStorageService: LocalStorageService,
         private productService: ProductService,
-        private _commonService: CommonService,
+        public _commonService: CommonService,
         private _cartService: CartService,
     ) { }
 
     ngOnInit(): void
     {
+        this.getStaticSubjectData();
+        this.checkShippingCharges();
         const user = this.localStorageService.retrieve('user');
         if (user && user.authenticated == "true") {
             let params = { customerId: user.userId, invoiceType: "retail" };
@@ -54,6 +60,14 @@ export class ProductCheckPincodeComponent implements OnInit
             });
         }
     }
+    
+    getStaticSubjectData(){
+        this._commonService.changeStaticJson.subscribe(staticJsonData => {
+          console.log("hello got it",staticJsonData)
+          this._commonService.defaultLocaleValue = staticJsonData;
+          this.productStaticData = staticJsonData;
+        });
+      }
 
     checkShippingCharges(pincode = null)
     {

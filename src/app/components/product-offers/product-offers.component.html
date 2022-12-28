@@ -2,7 +2,7 @@
     <div class="pwa-col-12">
         <div class="pdp-section-header green-bg">
             <h3 class="heading-3">
-                Offers & Coupons
+              {{productStaticData.offers_coupons}}
             </h3>
         </div>
         <!-- <div class="pwa-row inline-list-item more-coupon-offers" *ngIf="promoCodes">
@@ -21,20 +21,27 @@
                 <img src="../../../assets/img/best_deals.png">
             </div>
             <div class="inline-list-text coupon-list-text" *ngIf="couponForbrandCategory['absoluteDiscount']">
-                <span class="green-promo-code">Pay online & get EXTRA {{couponForbrandCategory['absoluteDiscount'] | currency:'INR' : 'symbol' : '1.0-0'}} OFF</span>
+                <span class="green-promo-code">
+                    {{productStaticData.coupon_text1
+                        .replace('___discount___',couponForbrandCategory['absoluteDiscount'] | currency:'INR' : 'symbol' : '1.0-0')
+                    }}
+                </span>
                 <span class="discount-txt">
-                    Using <b>UPI, EMI, Credit/Debit Card, Net Banking, Wallets</b> on min. cart value of
-                    {{couponForbrandCategory['minimumCartValue'] | mathCeil | currency: 'INR' : 'symbol' :'1.0-0'}} in {{brandName}} {{categoryName}}
+                    {{productStaticData.prepaid_discount_text.replace('___minimumCartValue___', couponForbrandCategory['minimumCartValue']).replace('___brandName___', brandName).replace('___categoryName___', categoryName)}}
                 </span>
             </div>
             <div class="inline-list-text coupon-list-text" *ngIf="couponForbrandCategory['percentageDiscount']">
                 <span class="green-promo-code">
-                    Pay online & get EXTRA {{couponForbrandCategory['percentageDiscount']}}% OFF on
-                    {{brandName}} {{categoryName}}
+                    <!-- Pay online & get EXTRA {{couponForbrandCategory['percentageDiscount']}}% OFF on
+                    {{brandName}} {{categoryName}} -->
+                    {{
+                     productStaticData.coupon_static_text.replace('___coupon_discount___', couponForbrandCategory['percentageDiscount'])
+                     .replace('___brandName ___', brandName) 
+                     .replace('___categoryName___',categoryName)
+                    }} 
                 </span>
                 <span class="discount-txt" *ngIf="couponForbrandCategory['minimumCartValue']" >
-                    Using <b>UPI, EMI, Credit/Debit Card, Net Banking, Wallets</b> on min. cart value of
-                    {{couponForbrandCategory['minimumCartValue'] | mathCeil | currency: 'INR' : 'symbol' :'1.0-0'}} in {{brandName}} {{categoryName}}
+                    {{productStaticData.prepaid_discount_text.replace('___minimumCartValue___', couponForbrandCategory['minimumCartValue']).replace('___brandName___', brandName).replace('___categoryName___', categoryName)}}
                 </span>
             </div>
         </div>
@@ -43,8 +50,10 @@
                 <i class="icon-coupon-3-fill-1"></i>
             </div>
             <div class="inline-list-text coupon-list-text">
-                <span>Use Code : <span class="green-promo-code">{{promoCodes[0].promoCode}}</span> and get {{promoCodes[0].promoDescription}}</span><br/>
-                <span class="green-promo-code-min" *ngIf="promoCodes[0].minCartValue > 0">Min cart value {{ promoCodes[0].minCartValue | currency:'INR': 'symbol': '1.0-0'}}</span>
+                <span>{{productStaticData.use_code}} : <span class="green-promo-code">{{promoCodes[0].promoCode}}</span> {{productStaticData.and_get}} {{promoCodes[0].promoDescription}}</span><br/>
+                <span class="green-promo-code-min" *ngIf="promoCodes[0].minCartValue > 0">
+                    {{productStaticData.min_cart_value.replace('___count___', promoCodes[0].minCartValue | currency:'INR': 'symbol': '1.0-0')}}
+                </span>
             </div>
             <!-- <div class="inline-list-link">
                 <span class="link-text" *ngIf="!disableEMIView">VIEW</span>
@@ -55,8 +64,9 @@
                 <div class="inline-list-icon">
                 </div>
                 <div class="inline-list-text">
-                    <a class="link-text" (click)="seeMoreOffers()">SEE {{promoCodes.length - 1}} MORE {{(promoCodes.length - 1)
-                        == 1 ? 'COUPON' :'COUPONS'}}</a>
+                    <a class="link-text" (click)="seeMoreOffers()">
+                        {{ productStaticData.see_more_coupons.replace('___promoCodes___', (promoCodes.length - 1).toString()) }}
+                    </a>
                 </div>
                 <div class="inline-list-link">
                 </div>
@@ -67,11 +77,11 @@
                 <i class="icon-coupon-3-fill-1"></i>
             </div>
             <div class="inline-list-text">
-                <span *ngIf="i == 0">Get GST invoice and save up to {{gstPercentage}}% on business purchases.</span>
-                <span *ngIf="i > 0">{{ item?.block_data?.image_block['0']['image_title'] || 'Get GST invoice and save upto '+gstPercentage+'% on business purchases.'}}</span>
+                <span *ngIf="i == 0">{{productStaticData.emi_gst_text_part1}} {{gstPercentage}}% {{productStaticData.emi_gst_text_part2}} </span>
+                <span *ngIf="i > 0">{{ item?.block_data?.image_block['0']['image_title'] || productStaticData.emi_gst_text_part1+gstPercentage+'%'+productStaticData.emi_gst_text_part2}}</span>
             </div>
             <div class="inline-list-link">
-                <span class="link-text" (click)="sendOfferData(item)">VIEW</span>
+                <span class="link-text" (click)="sendOfferData(item)">{{productStaticData.view}}</span>
             </div>
         </div>
         <div class="pwa-row inline-list-item" (click)="openEmiPopup()">
@@ -79,11 +89,11 @@
                 <i class="icon-coupon-3-fill1"></i>
             </div>
             <div class="inline-list-text">
-                <strong>EMIs Available </strong>
-                <span>On min. purchase of Rs. 3000 across banks and Rs. 4500 for Bajaj Finserv</span>
+                <strong>{{ productStaticData.emis_availaible}}</strong>
+                <span>{{productStaticData.min_emi_text}}</span>
             </div>
             <div class="inline-list-link">
-                <span class="link-text" *ngIf="!disableEMIView">VIEW</span>
+                <span class="link-text" *ngIf="!disableEMIView">{{productStaticData.view}}</span>
             </div>
         </div>
     </div>

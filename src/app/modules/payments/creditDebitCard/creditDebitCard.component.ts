@@ -202,7 +202,7 @@ export class CreditDebitCardComponent implements OnInit {
                 "user_id": userSession["userId"],
                 "store_card": data.store_card == true ? "true" : "false",
             },
-            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra),
+            "validatorRequest": this._cartService.createValidatorRequest(extra)
         };
 
         if (this.type == "tax") {

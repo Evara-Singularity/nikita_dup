@@ -64,7 +64,7 @@ export function app() {
       // console.log('PageLoadTimeLog :', requestLogObj); 
       writeLog(requestLogObj)
       if(html){
-        res.status(html ? res.statusCode : 500).send(appendImagePreloads(html) || err.message);
+        res.status(html ? res.statusCode : 500).send(appendImagePreloads(html,requestLogObj['originalUrl']) || err.message);
       }else{
         res.status(500).send(err.message || `<h1>Something went wrong.</h1>${req.url}`);
       }
@@ -92,7 +92,7 @@ function shouldCompress (req, res) {
   return compression.filter(req, res)
 }
 
-function appendImagePreloads(indexHtml) {
+function appendImagePreloads(indexHtml, url) {
   const regexImage = /<img.*?src=".*?"/g
   const regexImageSrc = /src=".*?"/g
   // maxLimit is to make sure only images coming in first view ports are being preloaded.
@@ -129,6 +129,12 @@ function appendImagePreloads(indexHtml) {
   newIndexHtml = newIndexHtml.split("ng-transition").join('data-ng-transition'); 
   newIndexHtml = newIndexHtml.split("ng-reflect").join('data-ng-reflect'); 
   newIndexHtml = newIndexHtml.split("_ngcontent").join('data-_ngcontent');
+  if(url.includes('/hi')){
+    newIndexHtml = newIndexHtml.split('<html lang="en">').join('<html lang="hi">');
+  }
+  else {
+    newIndexHtml = newIndexHtml.split('<html lang="hi">').join('<html lang="en">');
+  }
   return newIndexHtml;
 }
 

@@ -84,7 +84,7 @@ export class NeftRtgsComponent {
                 "paymentId": 4,
                 "paymentGateway": "payu",
                 "requestParams": null,
-                "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
+                "validatorRequest": this._cartService.createValidatorRequest(extra)
             };
         } else {
             newdata = {
@@ -93,7 +93,7 @@ export class NeftRtgsComponent {
                 "paymentId": 4,
                 "paymentGateway": "razorpay",
                 "requestParams": null,
-                "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra)
+                "validatorRequest": this._cartService.createValidatorRequest(extra)
             };
         }
         this._commonService.isBrowser &&  this._analytics.sendAdobeOrderRequestTracking(newdata,`pay-initiated:neft-rtgs`);

@@ -243,7 +243,7 @@ export class WalletComponent {
                 "productinfo": "MSNghihjbc",
                 "bankcode": bankcode,
             },
-            "validatorRequest": this._commonService.createValidatorRequest(cartSession, userSession, extra),
+            "validatorRequest": this._cartService.createValidatorRequest(extra)
         };
         return freechargeData;
     }

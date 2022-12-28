@@ -29,7 +29,7 @@ export class UnAvailableItemsComponent {
 
     ngOnInit() {
         this.itemsList = this.data['items'];
-        console.log(this.data['items']);
+        // console.log(this.data['items']);
     }
 
     ngAfterViewInit() {

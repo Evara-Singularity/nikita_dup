@@ -80,7 +80,7 @@ export class TripleNineComponent {
             this.reinsertLinks();
           }, 0);
         } else {
-          console.log("TripleNineComponent API data error", rawData);
+          // console.log("TripleNineComponent API data error", rawData);
           this.router.navigateByUrl("/");
         }
       },

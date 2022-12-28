@@ -10,7 +10,7 @@ import { Subject, Subscription, timer } from 'rxjs';
 })
 export class PromoCodeListComponent implements OnInit, OnDestroy
 {
-
+    productStaticData = this._commonService.defaultLocaleValue;
     public nextPromocode: Subject<string> = new Subject<string>();
     @Output('closePromoOfferPopup') closePromoOfferPopup = new EventEmitter();
     @Input("isQuickCheckoutPopup") isQuickCheckoutPopup :boolean = false;
@@ -22,6 +22,7 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
 
     ngOnInit()
     {
+        this.getStaticSubjectData();
         this.selectedPromocode = this._cartService.appliedPromoCode;
         this.appliedPromocodeSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode }) =>
         {
@@ -37,6 +38,11 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
                 this.closePopup();
             }
         })
+    }
+    getStaticSubjectData(){
+        this._commonService.changeStaticJson.subscribe(staticJsonData => {
+          this.productStaticData = staticJsonData;
+        });
     }
 
     closePromoListPopup(flag) { this.closePromoOfferPopup.emit(false); }

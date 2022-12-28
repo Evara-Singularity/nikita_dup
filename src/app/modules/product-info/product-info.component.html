@@ -1,6 +1,6 @@
 <login-popup [isRouteBased]="false" ></login-popup>
 <app-pop-up  *ngIf="openProductInfo" (outData$)="closeProducInfo($event)" [headerType]="'pop-up-header1'" [class.open1]="openProductInfo"
-    [data]="{class: 'payment-popup addAddressPopup', headerText: 'About this Product', selector:'openProductInfo'}">
+    [data]="{class: 'payment-popup addAddressPopup', headerText: productStaticData.about_this_product}">
     <!-- <div class="head-sec header_add_edit" header>
         <div class="container">
             <i class="icon-back f-left white_text" (click)="closeProducInfo($event)"></i>
@@ -48,7 +48,12 @@
                 <ng-container *ngFor="let tab of tabs;let tabIndex = index">
                     <li [id]="'tab'+tabIndex" class="pwa-tab pwa-tab-variant2" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"
                         (click)="goTo(tabIndex,ngxSiemaOptions.selector,tab)">
-                        {{tab | titlecase}}
+                        <ng-container *ngIf="!isHindiUrl">
+                            {{tab | titlecase}}
+                        </ng-container>
+                        <ng-container *ngIf="isHindiUrl">
+                              {{productStaticData[tab]}}
+                        </ng-container>
                     </li>
                 </ng-container>
             </ul>

@@ -576,12 +576,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                             },
                             rawData["product"][0]
                         );
-                        
+                         
                         this.originalProductBO = rawData["product"][0]["original_productBO"] || null;
                         // Load secondary APIs data from resolver only when product data is received
-                        if (!rawData["productSecondaryApisData"]["error"]) {
+                       
                             this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6]);
-                        }
+                        
                     } else {
                         this.showLoader = false;
                         this.globalLoader.setLoaderState(false);

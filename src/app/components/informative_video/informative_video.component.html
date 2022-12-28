@@ -1,5 +1,5 @@
 <!-- <product-card-vertical-container [numberOfItems]="numberOfInformativeVideos"> -->
-    <div class="video-container">
+    <div class="video-container" *ngIf="informativeVideosData && informativeVideosData.length!=0">
         <p class="video-headeing">Choose right {{categoryName}} for you</p>
         <div class="video-block">
             <div class="video-inner-blk" *ngFor="let videoData of informativeVideosData">

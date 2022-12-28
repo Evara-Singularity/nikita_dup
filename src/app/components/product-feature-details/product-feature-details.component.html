@@ -42,7 +42,8 @@
                     <td class="right">
                         <div *ngIf="productBrandDetails">
                             <a class="brandName"
-                                (click)="commonService.navigateTo([productBrandDetails['storeLink']])">{{productBrandDetails['brandName']}} Store </a>
+                                (click)="commonService.navigateTo([productBrandDetails['storeLink']])">{{productStaticData.brand_store_text
+                                    .replace('___brand___',productBrandDetails['brandName'])}}</a>
                         </div>
                     </td>
                 </tr>

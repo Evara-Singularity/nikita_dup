@@ -25,7 +25,8 @@ export const product = {
     return_policy:"Return Policy",
     add_to_cart:"ADD TO CART",
     buy_now:"BUY NOW",
-    more_from:"More from",
+    more_from:"More from ___categoryName___",
+    more_from_brand:"More from ___brandName___ ___categoryName___",
     use_code:"Use Code",
     best_of_moglix:"Best of Moglix",
     frequently_bought_together:"Frequently Bought Together",
@@ -121,6 +122,6 @@ export const product = {
     show_more: 'SHOW MORE',
     show_less: 'SHOW LESS',
     of:'/',
-    emis_availaible:'EMIs Available '
-
+    emis_availaible:'EMIs Available',
+    brand_store_text:'___brand___ Store'
 }

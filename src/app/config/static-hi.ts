@@ -25,7 +25,8 @@ export const product = {
     return_policy:"रिटर्न पॉलिसी",
     add_to_cart:"कार्ट में डालें",
     buy_now:"अभी खरीदें",
-    more_from:"दूसरे एक्सप्लोर करें",
+    more_from:"एक्सप्लोर करें दूसरे __categoryName__",
+    more_from_brand:"एक्सप्लोर करें दूसरे ___brandName___ ___categoryName___",
     use_code:"कोड का इस्तेमाल करें",
     best_of_moglix:"मोगलिक्स का बेस्ट",
     frequently_bought_together:"इस प्रोडक्ट  को खरीदने वाले ग्राहकों ने ये भी खरीदा है",
@@ -82,7 +83,7 @@ export const product = {
     customer_reviews:"ग्राहक समीक्षा",
     displaying_questions:"प्रदर्शन कर रहे हैं सवाल",
     more_helpful_review:"अधिक उपयोगी समीक्षा",
-    explore_now:"अब एक्सप्लोर करें",
+    explore_now:"अभी एक्सप्लोर करें",
     get_best_price:"बेस्ट प्राइस पाएं",
     store:"स्टोर",
     product_specifications:"प्रोडक्ट स्पेसिफिकेशंस",
@@ -123,5 +124,6 @@ export const product = {
     show_more: 'और दिखाएं',
     show_less: 'कम दिखाएं',
     of:'/',
-    emis_availaible:'उपलब्ध EMIs: '
+    emis_availaible:'उपलब्ध EMIs:',
+    brand_store_text:"___brand___ स्टोर"
 }  

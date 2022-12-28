@@ -63,7 +63,6 @@ export class ProductCheckPincodeComponent implements OnInit
     
     getStaticSubjectData(){
         this._commonService.changeStaticJson.subscribe(staticJsonData => {
-          console.log("hello got it",staticJsonData)
           this._commonService.defaultLocaleValue = staticJsonData;
           this.productStaticData = staticJsonData;
         });

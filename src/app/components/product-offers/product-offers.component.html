@@ -30,12 +30,12 @@
                     {{productStaticData.prepaid_discount_text.replace('___minimumCartValue___', couponForbrandCategory['minimumCartValue']).replace('___brandName___', brandName).replace('___categoryName___', categoryName)}}
                 </span>
             </div>
-            <div class="inline-list-text coupon-list-text" *ngIf="couponForbrandCategory['percentageDiscount']">
+            <div class="inline-list-text coupon-list-text" *ngIf="couponForbrandCategory['percentageDiscount']+'%'">
                 <span class="green-promo-code">
                     <!-- Pay online & get EXTRA {{couponForbrandCategory['percentageDiscount']}}% OFF on
                     {{brandName}} {{categoryName}} -->
                     {{
-                     productStaticData.coupon_static_text.replace('___coupon_discount___', couponForbrandCategory['percentageDiscount'])
+                     productStaticData.coupon_static_text.replace('___coupon_discount___', couponForbrandCategory['percentageDiscount']+'%')
                      .replace('___brandName ___', brandName) 
                      .replace('___categoryName___',categoryName)
                     }} 

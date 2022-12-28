@@ -123,5 +123,6 @@ export const product = {
     show_more: 'और दिखाएं',
     show_less: 'कम दिखाएं',
     of:'/',
-    emis_availaible:'उपलब्ध EMIs: '
+    emis_availaible:'उपलब्ध EMIs:',
+    brand_store_text:"___brand___ स्टोर"
 }  

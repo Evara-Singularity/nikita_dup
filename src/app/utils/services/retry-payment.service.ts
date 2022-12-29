@@ -26,7 +26,7 @@ export class RetryPaymentService
     );
   }
 
-  reHydrateCartSession(shoppingCartDto)
+  reHydrateCartSession(shoppingCartDto, shippingAddress?)
   {
     const cart = shoppingCartDto['cart'];
     const offerId = shoppingCartDto['offersList'] ? shoppingCartDto['offersList']['offerId'] : null;
@@ -40,7 +40,7 @@ export class RetryPaymentService
         return newCartSession;
       }),
       concatMap((newCartSession) => { 
-        return this.updateCartSessionWithShipping(newCartSession) 
+        return this.updateCartSessionWithShipping(newCartSession, shippingAddress) 
       })
     )
   }
@@ -76,9 +76,9 @@ export class RetryPaymentService
     );
   }
 
-  updateCartSessionWithShipping(cartSession)
+  updateCartSessionWithShipping(cartSession, shippingAddress)
   {
-    const shipping = CartUtils.getShippingObj(cartSession);
+    const shipping = CartUtils.getShippingObj(cartSession, shippingAddress);
     return this._urlsService.getShippingCharges(shipping).pipe(
       map((response) =>
       {

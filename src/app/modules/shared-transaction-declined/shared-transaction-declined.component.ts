@@ -47,6 +47,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	invoiceType: any;
 	shippingPincode = null;
 	isValidCartMsg = null;
+	prepaidDiscounts = null;
 	nonCods = [];
 
 	constructor(
@@ -76,19 +77,35 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	initiateRehydration(shoppingCartDto)
 	{
 		this._loaderService.setLoaderState(true);
-		forkJoin([this.reHydrateAddressesAndCOD(shoppingCartDto), this._retryPaymentService.reHydrateCartSession(shoppingCartDto)]).subscribe((results) =>
-		{
-			const codInfo: CodDetails = results[0];
+
+		this.reHydrateAddressesAndCOD(shoppingCartDto).subscribe(results_0 => {
+			const codInfo: CodDetails = results_0;
 			this.nonCods = codInfo.nonCods || [];
 			this.canCOD = (codInfo.iswithInCODLimit && codInfo.nonCods.length === 0 && codInfo.nonServiceables.length === 0);
-			this.cartSession = results[1];
-			// console.log('cartSession initiateRehydration', results[1]);
-			//upfront we are validating for time saving and as this mandatory action
-			this.validateCart();
-			this.isRehydrationDone = true;
-			this._loaderService.setLoaderState(false);
-		},
-			(error) => { this.isRehydrationDone = true; })
+			this._retryPaymentService.reHydrateCartSession(shoppingCartDto, this.shippingAddress).subscribe(results_1 => {
+				this.cartSession = results_1;
+				// console.log('cartSession initiateRehydration', results[1]);
+				//upfront we are validating for time saving and as this mandatory action
+				this.validateCart();
+				this.isRehydrationDone = true;
+				this._loaderService.setLoaderState(false);
+			}, (error) => { this.isRehydrationDone = true; })
+		}, (error) => { this.isRehydrationDone = true; })
+
+		// forkJoin([this.reHydrateAddressesAndCOD(shoppingCartDto), this._retryPaymentService.reHydrateCartSession(shoppingCartDto, this.shippingAddress)]).subscribe((results) =>
+		// {
+		// 	const codInfo: CodDetails = results[0];
+		// 	this.nonCods = codInfo.nonCods || [];
+		// 	this.canCOD = (codInfo.iswithInCODLimit && codInfo.nonCods.length === 0 && codInfo.nonServiceables.length === 0);
+		// 	this.cartSession = results[1];
+		// 	// console.log('cartSession initiateRehydration', results[1]);
+		// 	//upfront we are validating for time saving and as this mandatory action
+		// 	this.validateCart();
+		// 	this.isRehydrationDone = true;
+		// 	this._loaderService.setLoaderState(false);
+		// 	// this.prepaidDiscounts = 
+		// },
+		// 	(error) => { this.isRehydrationDone = true; })
 	}
 
 	reHydrateAddressesAndCOD(shoppingCartDto)
@@ -99,8 +116,10 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 				this.shippingAddress = shippingAddress;
 				this.billingAddress = billingAddress || null;
 				this.invoiceType = invoiceType;
+				this.prepaidDiscounts = shoppingCartDto['prepaidDiscounts'] || null;
 				this.shippingPincode = (shippingAddress && shippingAddress['postCode']) ? shippingAddress['postCode'] : null;
-				return { shoppingCartDto: shoppingCartDto, shippingPincode: this.shippingPincode };
+				// console.log('reHydrateAddressesAndCOD', shippingAddress, this.shippingPincode);
+				return { shoppingCartDto: shoppingCartDto, shippingPincode: this.shippingPincode, prepaidDiscounts: this.prepaidDiscounts };
 			}),
 			concatMap(({ shoppingCartDto, shippingPincode }) =>
 			{
@@ -151,6 +170,10 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 		this.adobeAnayticInitCall("moglix:payment:transaction:failed:repay", "transaction:failed:repay", "transaction:failed:popup:repay");
 		this._cartService.updateNonDeliverableItems(this.cartSession['itemsList'], this.nonCods);
 		this.cartSession = this._cartService.generateGenericCartSession(this.cartSession);
+		if(this.cartSession['prepaidDiscountList']){
+			this._cartService.generatePrepaidSession(this.cartSession['prepaidDiscountList']);
+		}
+		// console.log('this.cartSession', this.cartSession);
 		this._cartService.setGenericCartSession(this.cartSession);
 		this.emitCloseEvent(this.lastCartDetails);
 	}

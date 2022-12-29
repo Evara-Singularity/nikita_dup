@@ -163,7 +163,7 @@ export class BussinessDetailComponent implements OnDestroy {
     this._businessDetailService.getBusinessDetail(data).subscribe((res) => {
       let data = res["data"];
       if (data) {
-        this.isGSTINVerified = data["gstinVerified"] == 'true' ? true : false;
+        this.isGSTINVerified = (data["gstinVerified"] && (data["gstinVerified"] == true)) ? true : false;
         this.businessDetailForm.controls["companyName"].setValue(
           data["companyName"]
         );
@@ -304,6 +304,7 @@ export class BussinessDetailComponent implements OnDestroy {
           setTimeout(() => {
             this.successfulMessage = false;
           }, 5000);
+          this.setSavedState();
           this.showBEMsgs("success", res["statusDescription"]);
         } else {
           this.showBEMsgs("error", res["statusDescription"]);
@@ -368,6 +369,11 @@ export class BussinessDetailComponent implements OnDestroy {
       this.businessDetailForm.valid &&
       this.isGSTINVerified
     );
+  }
+
+  setSavedState(){
+    this.isPinCodeAvailble == true;
+    this.isGSTINVerified = true;
   }
 
   showBEMsgs(type, message) {

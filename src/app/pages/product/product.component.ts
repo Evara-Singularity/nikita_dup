@@ -4541,15 +4541,19 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     translate() {
         if ((this.router.url).toLowerCase().indexOf('/hi') !== -1) {
-            const URL = (this.router.url).toLowerCase().split('#')[0].split('?')[0].split("/hi").join('/');
+            const URL = this.getSanitizedUrl(this.router.url).split("/hi").join('/');
             // console.log(this.commonService.defaultLocaleValue.language, URL);
             // console.log("this.productUrl",this.productUrl)
-            this.router.navigate([URL]); 
-        }
-        else {
-            const URL = '/hi' + (this.router.url);
             this.router.navigate([URL]);
         }
+        else {
+            const URL = '/hi' + this.getSanitizedUrl(this.router.url);
+            this.router.navigate([URL]);
+        }
+    }
+
+    getSanitizedUrl(url){
+        return (url).toLowerCase().split('#')[0].split('?')[0];
     }
 
 

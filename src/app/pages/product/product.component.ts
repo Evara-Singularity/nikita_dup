@@ -3228,9 +3228,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             metaObj["seoDetails"]["metaDescription"] != undefined &&
             metaObj["seoDetails"]["metaDescription"] != null &&
             metaObj["seoDetails"]["metaDescription"] != ""
-        )
-            metaDescription = metaObj["seoDetails"]["metaDescription"];
-        else {
+        ) {
+            metaDescription = metaObj["seoDetails"]["metaDescription"].replace('___productPrice___', '₹'+this.productPrice);
+        } else {
             if (metaObj.productOutOfStock == true) {
                 metaDescription =
                     "Buy " +

@@ -59,7 +59,7 @@
             </div>
             <div class="addButtonContainer">
                 <button class="btn quaternary-btn-1" *ngIf="addressCount > 0"
-                    (click)="$event.stopPropagation();displayAddressListPopupMain(label)">
+                    (click)="$event.stopPropagation();displayAddressListPopup(label)">
                     CHANGE OR ADD {{getLabel(label)}}
                 </button>
                 <button class="btn quaternary-btn-1" *ngIf="addressCount == 0"

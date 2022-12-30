@@ -340,7 +340,14 @@ export class BussinessDetailComponent implements OnDestroy {
 
   postGSTINVerification() {
     let billingAddress = this.verifiedGSTINDetails["billing_address"]["addr"];
+    const user = this._localStorageService.retrieve('user');
     this.postCode.setValue(billingAddress["pncd"]);
+    this.email.setValue(user.email || '');
+    this.email.markAsDirty;
+
+    this.phone.setValue(user.phone || '');
+    this.phone.markAsDirty;
+
     this.companyName.markAsDirty();
     this.companyName.setValue(
       this.verifiedGSTINDetails["legal_name_of_business"]

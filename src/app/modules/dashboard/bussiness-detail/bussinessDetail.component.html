@@ -22,8 +22,8 @@
                 </div>
                 <!--Business Entity Name-->
                 <div class="outline-input-label">
-                    <label [class.is-focus]="companyName.value.length!=0" [class.disableInput]="(isGSTINVerified)">
-                        <input maxlength="75" type="text" formControlName="companyName" [readonly]="(isGSTINVerified)">
+                    <label [class.is-focus]="companyName.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
+                        <input maxlength="75" type="text" formControlName="companyName" [readonly]="!(isGSTINVerified)">
                         <span class="label">Business Entity Name*</span>
                     </label>
                     <ng-container *ngIf="companyName.dirty && companyName.errors != null">
@@ -34,8 +34,8 @@
                 </div>
                 <!--Business Email Id-->
                 <div class="outline-input-label">
-                    <label [class.is-focus]="email.value != null && email.value.length!=0" [class.disableInput]="(!canSave)">
-                        <input formControlName="email" type="text" [readonly]="(!canSave)">
+                    <label [class.is-focus]="email.value != null && email.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
+                        <input formControlName="email" type="text" [readonly]="!(isGSTINVerified)">
                         <span class="label">Business Email Id (Optional)</span>
                     </label>
                     <ng-container *ngIf="email.dirty && email.errors != null">
@@ -60,8 +60,8 @@
                     </ng-container>
                 </div> -->
                 <div class="outline-input-label">
-                    <label [class.is-focus]="phone.value != null && phone.value.length!=0" [class.disableInput]="(!canSave)">
-                        <input formControlName="phone" type="text" [readonly]="(!canSave)" maxlength="10">
+                    <label [class.is-focus]="phone.value != null && phone.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
+                        <input formControlName="phone" type="text" [readonly]="!(isGSTINVerified)" maxlength="10">
                         <span class="label">Business Phone No.*</span>
                     </label>
                     <ng-container *ngIf="(phone.dirty || phone.touched) && phone.errors!=null">
@@ -78,8 +78,8 @@
                 </div>
                 <!--PIN-->
                 <div class="outline-input-label">
-                    <label [class.is-focus]="postCode.value != null && postCode.value.length!=0" [class.disableInput]="(isGSTINVerified)">
-                        <input formControlName="postCode" type="text" [readonly]="(isGSTINVerified)">
+                    <label [class.is-focus]="postCode.value != null && postCode.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
+                        <input formControlName="postCode" type="text" [readonly]="!(isGSTINVerified)">
                         <span class="label">PIN*</span>
                     </label>
                     <ng-container *ngIf="postCode.dirty">
@@ -95,8 +95,8 @@
                 <div formGroupName="address">
                     <!--Registered Address-->
                     <div class="outline-input-label">
-                        <label [class.is-focus]="addressLine.value != null && addressLine.value.length!=0" [class.disableInput]="(isGSTINVerified)">
-                            <input formControlName="addressLine" type="text" [readonly]="(isGSTINVerified)">
+                        <label [class.is-focus]="addressLine.value != null && addressLine.value.length!=0" [class.disableInput]="!(isGSTINVerified)">
+                            <input formControlName="addressLine" type="text" [readonly]="!(isGSTINVerified)">
                             <span class="label">Registered Address*</span>
                         </label>
                         <ng-container *ngIf="addressLine.dirty && addressLine.errors != null">

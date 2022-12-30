@@ -2366,9 +2366,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             url: this.productUrl,
             price: this.productPrice,
             msn: this.productSubPartNumber || this.defaultPartNumber,
-            productName: (this.hindiUrl) ? this.originalProductBO['productName'] : this.productName,
+            productName: (this.isHindiUrl) ? this.originalProductBO['productName'] : this.productName,
             moq: this.productMinimmumQuantity,
-            brand: (this.hindiUrl) ? this.originalProductBO['brandDetails']['brandName'] : this.productBrandDetails["brandName"],
+            brand: (this.isHindiUrl) ? this.originalProductBO['brandDetails']['brandName'] : this.productBrandDetails["brandName"],
             taxonomyCode: this.productCategoryDetails["taxonomy"],
             adobeTags: "",
         };
@@ -2399,7 +2399,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         let params = { customerId: user.userId, invoiceType: "retail" };
         let product = {
             url: this.productUrl,
-            productName: (this.hindiUrl)? this.originalProductBO['productName']  : this.productName,
+            productName: (this.isHindiUrl)? this.originalProductBO['productName']  : this.productName,
             moq: this.productMinimmumQuantity,
         };
         this.raiseRFQGetQuoteSubscription = this.commonService.getAddressList(params).subscribe(res =>
@@ -2584,7 +2584,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.offerSectionInstance.instance['brandName'] = this.rawProductData["brandDetails"]['brandName'];
             this.offerSectionInstance.instance['categoryId'] = this.rawProductData["categoryDetails"][0]["categoryCode"];
             this.offerSectionInstance.instance['categoryName'] = this.rawProductData["categoryDetails"][0]["categoryName"];
-            this.offerSectionInstance.instance['isHindiMode'] = this.hindiUrl;
+            this.offerSectionInstance.instance['isHindiMode'] = this.isHindiUrl;
             (
                 this.offerSectionInstance.instance[
                 "viewPopUpHandler"

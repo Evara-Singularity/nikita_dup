@@ -28,6 +28,9 @@
     <ng-container #addressListRef></ng-container>
 </section>
 <section>
+    <ng-container #addressListBillingRef></ng-container>
+</section>
+<section>
     <ng-container #createEditAddressRef></ng-container>
 </section>
 <!--common template to display address-->
@@ -56,7 +59,7 @@
             </div>
             <div class="addButtonContainer">
                 <button class="btn quaternary-btn-1" *ngIf="addressCount > 0"
-                    (click)="$event.stopPropagation();displayAddressListPopup(label)">
+                    (click)="$event.stopPropagation();displayAddressListPopupMain(label)">
                     CHANGE OR ADD {{getLabel(label)}}
                 </button>
                 <button class="btn quaternary-btn-1" *ngIf="addressCount == 0"

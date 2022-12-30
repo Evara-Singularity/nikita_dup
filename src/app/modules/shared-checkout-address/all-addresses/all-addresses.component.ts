@@ -33,7 +33,6 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     @Output("emitInvoiceTypeEvent$") emitInvoiceTypeEvent$: EventEmitter<string> = new EventEmitter<string>();
 
     invoiceType: FormControl = null;
-    addressListInstance = null;
     createEditAddressInstance = null;
     _displayBillingAddresses: string = 'none';
     _isGSTUser:boolean = false;
@@ -42,14 +41,20 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
     billingAddressList = [];
     countryList = [];
 
+    addressListInstance = null;
     @ViewChild("addressListRef", { read: ViewContainerRef })
     addressListRef: ViewContainerRef;
+    
+    addressListBillingInstance = null;
+    @ViewChild("addressListBillingRef", { read: ViewContainerRef })
+    addressListBillingRef: ViewContainerRef;
 
     @ViewChild("createEditAddressRef", { read: ViewContainerRef })
     createEditAddressRef: ViewContainerRef;
 
     addressListCloseSubscription: Subscription = null;
     addressListActionSubscription: Subscription = null;
+    addressListActionBillingSubscription: Subscription = null;
     createEditAddressSubscription: Subscription = null;
     triggerDeliveryOrBillingSubscription: Subscription = null;
 
@@ -138,6 +143,16 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
      * @description:displays list of delivery or billing addreses depending on 'addressType'
      * @param addressType :Delivery or Billing
      */
+
+    displayAddressListPopupMain(addressType) {
+        if (addressType == this.ADDRESS_TYPES.DELIVERY) {
+            this.displayAddressListPopup(addressType);
+        }
+        if (addressType == this.ADDRESS_TYPES.BILLING) {
+            this.displayAddressListBillingPopup(addressType);
+        }
+    }
+
     async displayAddressListPopup(addressType: string)
     {
         console.log('addressType', addressType);
@@ -178,6 +193,56 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
             //Below code is to handle "Deliver Here".
             if (actionInfo.action === "SELECTED") {
                 this.closeAddressListPopup();
+                this.updateDeliveryOrBillingAddress(IS_DELIVERY, actionInfo.address);
+                return;
+            }
+            //Below code is to handle "Delete functionality"
+            if (actionInfo.action === "DELETE") {
+                this.deleteAddress(addressType, actionInfo.address);
+                return;
+            }
+        });
+    }
+
+    async displayAddressListBillingPopup(addressType: string)
+    {
+        const { AddressListComponent } = await import("./../address-list/address-list.component").finally(() => { });
+        const factory = this.cfr.resolveComponentFactory(AddressListComponent);
+        this.addressListBillingInstance = this.addressListBillingRef.createComponent(factory, null, this.injector);
+        const IS_DELIVERY = addressType === this.ADDRESS_TYPES.DELIVERY;
+        let ADDRESSES = null;
+        let cIdAddress = null;
+        if (IS_DELIVERY) {
+            ADDRESSES = this.deliveryAddressList;
+            if (this._cartService.shippingAddress && this.isCheckoutModule) {
+                cIdAddress = this._cartService.shippingAddress['idAddress'];
+            }
+        } else {
+            ADDRESSES = this.billingAddressList;
+            if (this._cartService.billingAddress && this.isCheckoutModule) {
+                cIdAddress = this._cartService.billingAddress['idAddress'];
+            }
+        }
+        this.addressListBillingInstance.instance['addresses'] = ADDRESSES;
+        this.addressListBillingInstance.instance['parentModule'] = this.parentModule;
+        this.addressListBillingInstance.instance['cIdAddress'] = cIdAddress;
+        this.addressListBillingInstance.instance['addressType'] = addressType;
+        this.addressListBillingInstance.instance['displayAddressListPopup'] = true;
+        this.addressListCloseSubscription = (this.addressListBillingInstance.instance["emitCloseEvent$"] as EventEmitter<any>).subscribe((actionInfo: AddressListActionModel) =>
+        {
+            this.closeAddressListBillingPopup();
+        });
+        this.addressListActionBillingSubscription = (this.addressListBillingInstance.instance["emitActionEvent$"] as EventEmitter<any>).subscribe((actionInfo: AddressListActionModel) =>
+        {
+            //Expected Actions from Address List component are : ADD or EDIT or SELECTED;
+            //Below code is to handle "Add or Edit".
+            if (actionInfo.action === "ADD" || actionInfo.action === "EDIT") {
+                this.displayAddressFormPopup(addressType, actionInfo.address);
+                return;
+            }
+            //Below code is to handle "Deliver Here".
+            if (actionInfo.action === "SELECTED") {
+                this.closeAddressListBillingPopup();
                 this.updateDeliveryOrBillingAddress(IS_DELIVERY, actionInfo.address);
                 return;
             }
@@ -312,7 +377,17 @@ export class AllAddressesComponent implements OnInit, AfterViewInit, OnDestroy
         this.addressListRef.detach();
         this.addressListRef.remove();
         this.addressListInstance = null;
-        console.log('addressListInstance', this.addressListInstance, this.addressListRef );
+        console.log('addressListInstance', this.addressListInstance, this.addressListRef.element.nativeElement );
+    }
+
+    closeAddressListBillingPopup()
+    {
+        if (!this.addressListBillingInstance) return
+        this.addressListBillingInstance.instance['displayAddressListPopup'] = false;
+        this.addressListBillingRef.detach();
+        this.addressListBillingRef.remove();
+        this.addressListBillingInstance = null;
+        // console.log('addressListBillingInstance', this.addressListBillingInstance, this.addressListRef.element.nativeElement );
     }
 
     get selectedDeliveryAddress()

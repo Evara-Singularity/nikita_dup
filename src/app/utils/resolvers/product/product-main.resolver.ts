@@ -208,7 +208,7 @@ export class ProductResolver implements Resolve<object> {
             this.transferState.set(PRODUCT_Q_AND_A_KEY, result[3]);
             this.transferState.set(PDP_FOOTER_ACCORDIAN_DATA_RELATED_LINK, result[4]);
             this.transferState.set(PDP_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY, result[6]);
-            this.transferState.set(PDP_FOOTER_ACCORDIAN_DATA_GET_BUCKET, result[6]);
+            this.transferState.set(PDP_FOOTER_ACCORDIAN_DATA_GET_BUCKET, result[7]);
             this.loaderService.setLoaderState(false);
             logInfoResolver.endDateTime = new Date().getTime();
             logInfoResolver.responseStatus = '';

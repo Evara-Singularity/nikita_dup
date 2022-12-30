@@ -26,7 +26,9 @@ export class AddressListComponent implements OnInit
         private _commonService: CommonService,
     ) { }
 
-    ngOnInit() { }
+    ngOnInit(
+    ) {
+     }
 
     updateAddressId(event, idAddress)
     {

@@ -36,7 +36,6 @@ export class ProductAccordiansComponent {
   }
 
   ngOnInit() {
-    // console.log('setAccordianData', this.relatedLinkRes, this.categoryBucketRes, this.similarCategoryRes);
     this.setAccordianData(this.relatedLinkRes, this.categoryBucketRes, this.similarCategoryRes);
     this.getStaticSubjectData();
   }
@@ -50,7 +49,7 @@ export class ProductAccordiansComponent {
 
   setAccordianData(relatedLinkRes, categoryBucketRes, similarCategoryRes) {
 
-    if (relatedLinkRes && relatedLinkRes['status']) {
+    if (relatedLinkRes && relatedLinkRes['data']) {
       this.ACCORDIAN_DATA[0] = relatedLinkRes['data'];
       // accordian data
       if (this.ACCORDIAN_DATA[0]?.length > 0) {

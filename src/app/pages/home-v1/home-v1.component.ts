@@ -133,7 +133,6 @@ export class HomeV1Component implements OnInit {
 
   homePageData(response: any) {
     response['data'].forEach((block) => {
-      // console.log('homePageData ==>', JSON.stringify(block));
       const layoutCode = block.layout_code;
 
       switch (layoutCode) {

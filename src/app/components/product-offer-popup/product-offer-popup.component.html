@@ -7,9 +7,7 @@
             <div class="pwa-col-12 top-txt">
                 <ng-container *ngIf="offerIndex != null && offerIndex == 0">
                     <b>
-                        Get GST invoice and save up to {{gstPercentage}}% on
-                        business
-                        purchases.
+                        {{productStaticData.emi_gst_text_part1}} {{gstPercentage}}% {{productStaticData.emi_gst_text_part2}} 
                     </b><br>
                 </ng-container>
                 <ng-container *ngIf="offerIndex != null && offerIndex > 0">

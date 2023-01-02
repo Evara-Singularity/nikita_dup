@@ -331,7 +331,8 @@ export class BussinessOrderComponent {
     }
   }
 
-  trackAndNavigateToProductPage(url, productID, e) {
+  trackAndNavigateToProductPage(url, productID, e, detail?) {
+    // console.log(arguments);
     const user = this.localStorageService.retrieve("user");
     let page = {
       linkPageName: "moglix:account dashboard-myorders",

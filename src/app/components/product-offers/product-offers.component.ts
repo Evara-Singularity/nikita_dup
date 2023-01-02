@@ -17,6 +17,7 @@ import { MathCeilPipeModule } from '@pipes/math-ceil';
 })
 export class ProductOffersComponent implements OnInit
 {
+    productStaticData = this.common.defaultLocaleValue;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     allofferData: any = null;
     @Output() promoCodePopUpHandler: EventEmitter<any> = new EventEmitter<any>();
@@ -28,11 +29,13 @@ export class ProductOffersComponent implements OnInit
     @Input() brandName;
     @Input() categoryId;
     @Input() categoryName;
+    @Input() isHindiMode: boolean = false;;
     disableEMIView = false;
     promoCodes: any;
     couponForbrandCategory:any=null;
     minimumRequiredPriceforCoupon: any;
     couponForbrandCategoryDiscount: any;
+    readonly hindiHeader = { headerData: { 'language': 'hi' }};
 
     constructor(
         private productService: ProductService,
@@ -46,12 +49,19 @@ export class ProductOffersComponent implements OnInit
 
     ngOnInit(): void
     {
+      this.getStaticSubjectData();
       let user: any = this.localStorageService.retrieve('user');
       if (user && user.authenticated == "true") {
         if (this.price < 3000) { this.disableEMIView = true; }
         this.getOfferAllData(user.userId);
       }else { this.getOfferAllData(null);}
 
+    }
+    getStaticSubjectData(){
+      this.common.changeStaticJson.subscribe(staticJsonData => {
+        this.common.defaultLocaleValue = staticJsonData;
+        this.productStaticData = staticJsonData;
+      });
     }
 
     getOfferAllData(user){
@@ -62,8 +72,8 @@ export class ProductOffersComponent implements OnInit
             url= "?msn=" + this.productmsn + "&device=web";
           }
          forkJoin([
-          this.productService.getAllPromoCodeOffers(url),
-          this.productService.getAllOffers()
+          this.productService.getAllPromoCodeOffers(url, (this.isHindiMode)? this.hindiHeader : null),
+          this.productService.getAllOffers((this.isHindiMode)? this.hindiHeader : null)
           ]).subscribe(
             (responses) => {
               let data1: any = responses[0] || [];
@@ -88,7 +98,7 @@ export class ProductOffersComponent implements OnInit
   couponOnPDPBrandCategory() {
     if (this.brandName && this.categoryId) {
       this._globalLoader.setLoaderState(true);
-      this._dataService.getCouponOnBrandCategory(this.brandName, this.categoryId).subscribe(response => {
+      this._dataService.getCouponOnBrandCategory(this.brandName, this.categoryId, (this.isHindiMode)? this.hindiHeader : null).subscribe(response => {
         if (response['statusCode'] == 200 && response['data'] != null) {
           this.couponForbrandCategory = response['data'];
           this.minimumRequiredPriceforCoupon = response['data']['minimumCartValue']

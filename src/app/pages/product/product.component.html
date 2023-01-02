@@ -1,12 +1,10 @@
 <div *ngIf="!productNotFound">
-
 <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer" [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
 </app-oos-similar-section>
 
 <shared-product-carousel (openPopUpcrousel$)="openPopUpcrousel()" [productAllImages]="productAllImages" [carouselInitialized]="carouselInitialized" (loadProductShare$)="loadProductShare()" [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName" (addToPurchaseList$)="addToPurchaseList()"
     [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$" [productOutOfStock]="productOutOfStock" [rawProductData]="rawProductData" (scrollToId$)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')" [imagePathAsset]="imagePathAsset"
-    (openPopUpcrousel)="openPopUpcrousel(0)" (sendProductImageClickTracking)="sendProductImageClickTracking()" [isProductCrouselLoaded]="isProductCrouselLoaded" [iOptions]="iOptions" [productTags]="productTags"></shared-product-carousel>
-
+    (openPopUpcrousel)="openPopUpcrousel(0)" (sendProductImageClickTracking)="sendProductImageClickTracking()" [isProductCrouselLoaded]="isProductCrouselLoaded" [iOptions]="iOptions" [productTags]="productTags" (translate$)="translate()" [isAcceptLanguage] = "isAcceptLanguage"></shared-product-carousel>
 <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)" [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPrices" [selectedProductBulkPrice]="selectedProductBulkPrice" [qunatityFormControl]="qunatityFormControl"
     [productPrice]="productPrice" [productName]="productName" [productTags]="productTags" [refinedProdTags]="refinedProdTags" [productMrp]="productMrp" [priceWithoutTax]="priceWithoutTax" [productDiscount]="productDiscount" [bulkPriceWithoutTax]="bulkPriceWithoutTax"
     [bulkDiscount]="bulkDiscount" [taxPercentage]="taxPercentage" [bulkSellingPrice]="bulkSellingPrice" [productOutOfStock]="productOutOfStock" [productMinimmumQuantity]="productMinimmumQuantity" [priceQuantityCountry]="priceQuantityCountry" [starsCount]="starsCount"
@@ -61,7 +59,13 @@
 <product-qa [questionAnswerList]="questionAnswerList" (handleFaqListPopup)="handleFaqListPopup()" (askQuestion)="askQuestion()">
 </product-qa>
 
-<product-get-quote (raiseRFQQuote$)="raiseRFQQuote()" [rfqQuoteRaised]="rfqQuoteRaised" [productOutOfStock]="productOutOfStock" [productMrp]="productMrp" [productCategoryDetails]="productCategoryDetails" [productName]="productName" [productAllImages]="productAllImages"></product-get-quote>
+<product-get-quote 
+    (raiseRFQQuote$)="raiseRFQQuote()" 
+    [rfqQuoteRaised]="rfqQuoteRaised" 
+    [productOutOfStock]="productOutOfStock" 
+    [productMrp]="productMrp" 
+    [productCategoryDetails]="productCategoryDetails" 
+    [productName]="productName" [productAllImages]="productAllImages"></product-get-quote>
 
 <div *ngIf="!productOutOfStock" id="similarProducts" class="common-product" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSimilar($event)">
     <ng-container #similarProduct></ng-container>
@@ -81,7 +85,7 @@
     <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="popularDealsContainerRef"></product-skeletons>
 </section>
 
-<product-accordian [categoryBrandDetails]="getCategoryBrandDetails()" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
+<product-accordian [isHindiMode]="isHindiUrl" [categoryBrandDetails]="getCategoryBrandDetails()" [msn] = "productSubPartNumber || defaultPartNumber" [analyticsInfo]="getAnalyticsInfo()"></product-accordian>
 
 <ng-container *ngIf="breadcrumbData && breadcrumbData.length > 0 && productOutOfStock">
     <breadcrumb-nav [breadcrumb]="breadcrumbData" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
@@ -113,17 +117,17 @@
 <div *ngIf="!productOutOfStock" class="pt-50"></div>
 <!-- CTA Fixed position -->
 <floating-button-container [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
-    <floating-button [iconClass]="'icon-cart1'" [label]="'ADD TO CART'" [type]="'WHITE'" (onClick)="showFBT()"></floating-button>
-    <floating-button [iconClass]="''" [label]="'BUY NOW'" [type]="'RED'" (onClick)="addToCart(true)"></floating-button>
+    <floating-button [iconClass]="'icon-cart1'" [label]="productStaticData.add_to_cart" [type]="'WHITE'" (onClick)="showFBT()"></floating-button>
+    <floating-button [iconClass]="''" [label]="productStaticData.buy_now" [type]="'RED'" (onClick)="addToCart(true)"></floating-button>
 </floating-button-container>
 
 <floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2">
-    <floating-button [label]="'VIEW IN-STOCK'" [type]="'WHITE'" (onClick)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"></floating-button>
-    <floating-button [iconClass]="''" [label]="'GET BEST PRICE'" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
+    <floating-button [label]="productStaticData.view_in_stock" [type]="'WHITE'" (onClick)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"></floating-button>
+    <floating-button [iconClass]="''" [label]="productStaticData.get_best_price" [type]="'RED'" (onClick)="getBestPrice($event)"></floating-button>
 </floating-button-container>
 
 <floating-button-container *ngIf="productOutOfStock && !showScrollToTopButton  && (!productService.oosSimilarProductsData.similarData  || productService.oosSimilarProductsData.similarData.length <= 2 )">
-    <floating-button [iconClass]="''" [label]="'GET BEST PRICE'" [type]="'RED'" [isMultiple]="false" (onClick)="getBestPrice($event)"></floating-button>
+    <floating-button [iconClass]="''" [label]="productStaticData.get_best_price" [type]="'RED'" [isMultiple]="false" (onClick)="getBestPrice($event)"></floating-button>
 </floating-button-container>
 <!-- CTA Fixed position -->
 

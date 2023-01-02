@@ -21,6 +21,9 @@ import IdleTimer from "../idleTimeDetect";
 import { GlobalAnalyticsService } from "./global-analytics.service";
 import { ServerLogSchema } from "../models/log.modal";
 import { LocalAuthService } from "./auth.service";
+import { abort } from "process";
+import * as localization_en from '../../config/static-en';
+import * as localization_hi from '../../config/static-hi';
 
 @Injectable({
     providedIn: "root",
@@ -52,7 +55,7 @@ export class CommonService
     public refreshProducts$: Subject<any> = new Subject<any>();
 
     public oosSimilarCard$: Subject<any> = new Subject<any>();
-
+    private loginPerformed$: Subject<any> = new Subject<any>();
     public attachScrollEvent$: Subject<any> = new Subject<any>();
     showWhatsappToolTip=true
     isHomeHeader = false;
@@ -68,7 +71,6 @@ export class CommonService
     updateSortBy: Subject<string> = new Subject();
     bharatcraftUserSessionArrived: Subject<boolean> = new Subject<boolean>();
     scrolledViewPort: number = 0;
-
     private _networkSpeed: Number = null;
     private _webpSupport: boolean = false;
     private networkSpeedState: Subject<number> = new Subject<number>();
@@ -80,7 +82,7 @@ export class CommonService
 
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
     public addLottieScriptSubject: Subject<any> = new Subject<any>();
-
+    public changeStaticJson: Subject<any> = new Subject<any>();
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
     private routeData: { currentUrl: string; previousUrl: string };
@@ -90,9 +92,9 @@ export class CommonService
     ;
     public previousUrl: string = "/";
     public currentUrl: string = null;
-
+    
     goldMemberPopupOpened = new Subject();
-
+    public defaultLocaleValue = localization_en.product;
     constructor(
         @Inject(PLATFORM_ID) platformId,
         private checkoutService: CheckoutService,
@@ -117,7 +119,12 @@ export class CommonService
         this.isBrowser = isPlatformBrowser(platformId);
         this.userSession = this._localStorageService.retrieve("user");
         this._renderer2 = this.rendererFactory.createRenderer(null, null);
+  
         // this.abTesting = this._dataService.getCookie('AB_TESTING');
+    }
+
+    getLocalizationData(isEnglish) {
+        return isEnglish ? localization_en.product : localization_hi.product
     }
 
     updateUserSession() {
@@ -153,16 +160,25 @@ export class CommonService
         return this.networkSpeedState.asObservable();
     }
 
+    setLoginNotify(user){
+        this.loginPerformed$.next(user);
+    }
+
+    loginPerformedNotify(): Observable<number>
+    {
+        return this.loginPerformed$.asObservable();
+    }
+
     setInitaiteLoginPopUp(redirectUrl = null)
     {
         this.initiateLoginPopUp.next(redirectUrl);
     }
+    
 
     getInitaiteLoginPopUp(): Observable<string>
     {
         return this.initiateLoginPopUp.asObservable();
     }
-
 
     setSideNavToggle(enable: boolean){
         // console.log("setSideNavToggle", enable);
@@ -411,7 +427,7 @@ export class CommonService
                 })
             );
     }
-
+    
     getCurrentRoute(fullUrl)
     {
         let fullUrlArray = fullUrl.split("?");
@@ -991,6 +1007,7 @@ export class CommonService
             obj["shoppingCartDto"]["cart"]["buyNow"] = cart["buyNow"];
         }
 
+        //console.log('billingAddress', billingAddress);
         if (billingAddress !== undefined && billingAddress !== null) {
             obj.shoppingCartDto.addressList.push({
                 addressId: billingAddress.idAddress,
@@ -998,6 +1015,7 @@ export class CommonService
                 invoiceType: this.checkoutService.getInvoiceType(),
             });
         }
+        // console.log('createValidatorRequest', obj);
         return obj;
     }
 

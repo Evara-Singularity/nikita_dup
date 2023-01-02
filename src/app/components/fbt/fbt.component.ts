@@ -20,6 +20,7 @@ import { ProductUtilsService } from '../../utils/services/product-utils.service'
 })
 export class FbtComponent implements OnInit
 {
+    productStaticData = this._commonService.defaultLocaleValue;
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     @Input('addToCartFromModal') addToCartFromModal = null;
     rootProduct;
@@ -52,8 +53,15 @@ export class FbtComponent implements OnInit
         this.isBrowser = _commonService.isBrowser;
     }
 
-    ngOnInit() { this.intialize(); }
-
+    ngOnInit() { 
+       this.intialize(); 
+       this.getStaticSubjectData(); 
+    }
+    getStaticSubjectData(){
+        this._commonService.changeStaticJson.subscribe(staticJsonData => {
+          this.productStaticData = staticJsonData;
+        });
+      }
     intialize()
     {
         if (this.modalData) {

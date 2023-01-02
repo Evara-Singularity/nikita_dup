@@ -128,7 +128,7 @@ export class NavigationService
 
   getHistory() { return this._localStorage.retrieve("history") }
 
-  isPDPUrl(url: string) { return url.toLowerCase().includes("/mp/msn") }
+  isPDPUrl(url: string) { return url.toLowerCase().includes("/mp/msn" || "/hi") }
 
   isCheckout(url: string) { return url.toLowerCase().includes(this.CHECKOUT_URL) }
   

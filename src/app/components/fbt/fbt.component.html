@@ -1,8 +1,7 @@
 <section *ngIf="mFBTProducts.length>0">
     <div class="fbt-card-container mb-10 mt-10">
         <div class="container">
-            <h3 class="f-left heading-3">Frequently Bought Together With
-            </h3>
+            <h3 class="f-left heading-3">{{productStaticData.frequently_bought_together}}</h3>
             <i class="fbt-close-ico icon-circle-delete" (click)="$event.stopPropagation();backToCartFlow()" *ngIf="isModal"></i>
             <!--backToCartFlow('/quickorder', 'ADD TO CART')-->
         </div>
@@ -65,7 +64,7 @@
             <!--TODO:Yogender-->
             <div class="f-right" *ngIf="!(isModal)">
                 <button class="btn secondry-btn" (click)="$event.stopPropagation();initiateAddToCart()">{{noOfFBTS?'BUY
-                    TOGETHER':'ADD TO CART'}}</button>
+                    TOGETHER':productStaticData.add_to_cart}}</button>
             </div>
             <div class="f-right" *ngIf="isModal">
                 <button class="btn secondry-btn" (click)="$event.stopPropagation();initiateAddToCart()">{{noOfFBTS?'BUY

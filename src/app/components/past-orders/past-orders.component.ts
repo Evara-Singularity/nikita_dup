@@ -10,6 +10,7 @@ import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { ProductBrowserService } from '@app/utils/services/product-browser.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { CommonService } from '../../utils/services/common.service';
 
 @Component({
     selector: 'past-orders',
@@ -18,6 +19,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 })
 export class PastOrdersComponent implements OnInit
 {
+    productStaticData = this._commonService.defaultLocaleValue;
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     productList: any[] = [];
     @Input('userId') userId = null;
@@ -39,16 +41,22 @@ export class PastOrdersComponent implements OnInit
     }
     cardMetaInfo: ProductCardMetaInfo = null;
 
-    constructor(private _productService: ProductBrowserService, public localStorageService: LocalStorageService,) { }
+    constructor(private _productService: ProductBrowserService, public localStorageService: LocalStorageService,private _commonService:CommonService) { }
 
     ngOnInit(): void
     {
+        this.getStaticSubjectData();
         this.userId = this.localStorageService.retrieve('user').userId;
         this.cardMetaInfo = {
             redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
             redirectedSectionName: this.outOfStock ? 'past_orders_product_oos' : 'past_orders__products'
         }
     }
+    getStaticSubjectData(){
+        this._commonService.changeStaticJson.subscribe(staticJsonData => {
+          this.productStaticData = staticJsonData;
+        });
+      }
 
     onVisiblePastOrders($event)
     {

@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, share, tap } from 'rxjs/operators'
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { isPlatformServer } from '@angular/common';
 import { ENDPOINTS } from '../../../config/endpoints';
 import { environment } from '../../../../environments/environment';
@@ -19,6 +19,7 @@ import { LoggerService } from '@app/utils/services/logger.service';
   providedIn: 'root'
 })
 export class ProductResolver implements Resolve<object> {
+  productObs: Observable<Object>;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId,
@@ -31,6 +32,13 @@ export class ProductResolver implements Resolve<object> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<object> {
     const startTime = new Date().getTime();
+    const languageHeader = {
+      'language': 'hi'
+    };
+
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders(languageHeader), 
+    };
     // Show loder of the page
     this.loaderService.setLoaderState(true);
 
@@ -61,17 +69,26 @@ export class ProductResolver implements Resolve<object> {
       const PRODUCT_URL = environment.BASE_URL + ENDPOINTS.PRODUCT_INFO + `?productId=${productMsnId}&fetchGroup=true`;
 
       // Store request observable in a validable
-      const productObs = this.http.get(PRODUCT_URL).pipe(share(),
-        map(res => {
-          const logInfo = this._commonService.getLoggerObj(PRODUCT_URL, 'GET', startTime)
-          logInfo.endDateTime = new Date().getTime();
-          logInfo.responseStatus = res["status"];
-          this._loggerService.apiServerLog(logInfo);
-          return res;
-        }));;
+
+      if (route.data['language'] == 'hi') {
+        // alert("hi")
+        this.productObs = this.http.get(PRODUCT_URL, requestOptions)
+      }
+      else if (route.data['language'] == 'en') {
+        // alert("en")
+        this.productObs = this.http.get(PRODUCT_URL)
+      }
+
+      this.productObs.pipe(share(), map(res => {
+        const logInfo = this._commonService.getLoggerObj(PRODUCT_URL, 'GET', startTime)
+        logInfo.endDateTime = new Date().getTime();
+        logInfo.responseStatus = res["status"];
+        this._loggerService.apiServerLog(logInfo);
+        return res;
+      }));;
 
       // List of API's needed for renderig of first fold UI of Product Page 
-      const pdpFirstFoldApiList = [productObs];
+      const pdpFirstFoldApiList = [this.productObs];
 
       return forkJoin(pdpFirstFoldApiList).pipe(
         catchError((err) => {

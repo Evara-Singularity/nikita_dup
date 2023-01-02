@@ -119,6 +119,7 @@
             </div>
             <div id="pseudoSection" *ngIf="!isPaymentSelected">
                 <div class="continue-button">
+                    <prepaid-offer-checkout ></prepaid-offer-checkout>
                     <div class="container">
                         <p class="total-mount">
                             <span class="payable-amnt">Payable Amount</span> ₹{{totalAmount | number : '1.2-2'}}

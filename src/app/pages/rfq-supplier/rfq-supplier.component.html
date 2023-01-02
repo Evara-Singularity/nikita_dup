@@ -1,0 +1,105 @@
+<login-popup [isRouteBased]="false"></login-popup>
+<div class="main-container">
+  <div class="rfq-banner-container">
+    <div class="banner-main-container">
+      <div class="banner-content">
+        <h1>Find B2B Bulk Buyers </h1>
+        <p>This is a one-stop shop for buyers and sellers, to purchase and sell wholesale industrial goods. </p>
+      </div>
+      <div class="banner-img">
+        <img src="../../../assets/img/product-box.png">
+      </div>
+    </div>
+    <div class="supplier-counter-container">
+      <div class="supplier-counter-section">
+        <div class="counter-section">
+          <h1  *ngIf="numericDashboardCount['dealClosedPastWeek']" >{{numericDashboardCount['dealClosedPastWeek'] | number : '1.0-0'}}</h1>
+          <p>Deals closed past week</p>
+        </div>
+        <div class="counter-section">
+          <h1  *ngIf="numericDashboardCount['potentialBusinessOpportunity']" >{{fancyCurrency(numericDashboardCount["potentialBusinessOpportunity"]).amount | currency:'INR': 'symbol' }} {{fancyCurrency(numericDashboardCount["potentialBusinessOpportunity"]).denomination}}</h1>
+          <p>Potential business opportunity at Moglix</p>
+        </div>
+        <div class="counter-section">
+          <h1  *ngIf="numericDashboardCount['numberOfBuyingRequest']" >{{numericDashboardCount["numberOfBuyingRequest"] | number : '1.0-0'}}</h1>
+          <p>Number of buying requests</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <static-breadcrumb [breadCrumbList]="breadCrumbList"></static-breadcrumb>
+  <div class="sub-header-container">
+    <i class="icon-all-categories" (click)="togglePopup(true)"></i>
+    <div class="search-container">
+      <div class="searchfield-section">
+        <input id="searchvalue" value="" [formControl]="searchTerm" placeholder="Search for category, brand, product...">
+        <button type="submit"><i class="icon-search"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="product-category-info">
+    <div class="caregory-name" *ngIf="rfqItemListCount!=0">
+      Top Buying Leads ({{totalNumberOfListRFq}} RFQs)
+    </div>
+    <div class="filter-chip-section" *ngIf="paramsOfRfqList['categoryName'].length>0" >
+      <span class="filter-chip">{{paramsOfRfqList['categoryName']}}<i (click)="removeFilter()" class="icon-circle-delete"></i></span>
+    </div>
+    <div class="no-result-found" *ngIf="rfqItemListCount==0">
+      <h2>No Requirements Found!</h2>
+    </div>
+    <div class="prod-category-section" *ngFor="let item of rfqItemList; index as i;" >
+      <div class="product-container">
+        <div class="product-img">
+          <img [src]="processImage(item.images)" alt="{{item.productName}}">
+        </div>
+        <div class="product-descrioption">
+          <h2>{{item.categoryName}}</h2>
+          <p>Brand : {{item.brand}}</p>
+        </div>
+      </div>
+      <div class="attribute-section">
+        {{item.productName}}
+      </div>
+      <div class="quantity-section">
+        <div class="qty-blk">
+          Quantity: {{item.quantity}}
+        </div>
+        <div class=" posted-sectoion">
+          Posted:
+          <span class="clock-section"><img src="../../../assets/img/clock-icon.png">{{ item.timeDiff}}</span>
+        </div>
+      </div>
+      <button class="btn secondry-btn" (click)="supply(item, i)" [disabled]="item.interested" [ngClass]="{'supply-btn-disbled': item.interested }" >I CAN SUPPLY</button>
+    </div>
+
+    <div style="height: 100px; width: 100%; text-align: center;" *ngIf="showLoadMore && rfqItemListCount!=0 && rfqItemListCount>=40 " (click)="loadMore()">
+      <button class="btn secondry-btn">LOAD MORE</button>
+    </div>
+
+  </div>
+  <ng-container *ngIf="!loggedInUser && user" >
+    <div class="register-now-container" >
+      <h1>Become Supplier at Moglix & increase your business</h1>
+      <button class="btn secondry-btn"(click)="openLogin()">REGISTER NOW</button>
+    </div>
+    <div class="customer-img">
+      <img src="../../../assets/img/happy-customer.png">
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #listingPopup>
+  <div class="category-list-header">
+    <p>Categories</p>
+    <i class="icon-circle-delete" (click)="togglePopup(false)" ></i>
+  </div>
+  <div class="category-list-container">
+    <div class="category-info" *ngFor="let item of rfqcategoryList, let i=index" >
+      <span class="category-name" [ngClass]="{'color': (item.name == paramsOfRfqList['categoryName']) }" (click)="rfqSupplierCategory(item)">{{item.name}}</span>
+    </div>
+  </div>
+</ng-template>
+
+<app-bottom-menu  *ngIf="openPopup">
+  <ng-container content [ngTemplateOutlet]="listingPopup"></ng-container>
+</app-bottom-menu>

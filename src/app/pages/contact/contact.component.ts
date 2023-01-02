@@ -19,7 +19,7 @@ export class ContactComponent {
   contactUsSchema;
   isServer: boolean;
 
-  constructor(
+  constructor( 
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private _document,
     private title: Title,
@@ -28,11 +28,11 @@ export class ContactComponent {
 
     this.isServer = isPlatformServer(this.platformId)
 
-    this.title.setTitle("Contact Us - Moglix - Call 8448 233 444");
-    this.meta.addTag({ "property": "og:title", "content": "Contact Us - Moglix - Call 8448 233 444" });
-    this.meta.addTag({ "property": "og:description", "content": "Write to us at care[at]moglix.com or contact customer care at 8448 233 444. We are happy to help you round the clock to the best of our ability." });
-    this.meta.addTag({ "property": "og:url", "content": CONSTANTS.PROD + "/contact" });
-    this.meta.addTag({ "name": "description", "content": "Write to us at care[at]moglix.com or contact customer care at 8448 233 444. We are happy to help you round the clock to the best of our ability." });
+    this.title.setTitle("Contact Us - Moglix - WhatsApp at +91 9999049135");
+    this.meta.addTag({ "property": "og:title", "content": "Contact Us - Moglix - WhatsApp at +91 9999049135" });
+    this.meta.addTag({ "property": "og:description", "content": "Write to us at care[at]moglix.com or contact customer care through WhatsApp at +91 9999049135. We are happy to help you round the clock to the best of our ability." });
+    this.meta.addTag({ "property": "og:url", "content": "https://www.moglix.com/contact" });
+    this.meta.addTag({ "name": "description", "content": "Write to us at care[at]moglix.com or contact customer care through WhatsApp at +91 9999049135. We are happy to help you round the clock to the best of our ability." });
 
     if (this.isServer) {
       let links = this._renderer2.createElement('link');
@@ -69,7 +69,7 @@ export class ContactComponent {
         },
         "email": "care@moglix.com",
         "sameAs": [
-          "https://www.facebook.com/moglix.global/", "https://www.linkedin.com/company/moglix", "https://twitter.com/moglix", "https://en.wikipedia.org/wiki/Moglix"]
+          "https://www.facebook.com/moglix.global/", "https://www.linkedin.com/company/moglix", "https://twitter.com/moglix"]
       }
 
     )

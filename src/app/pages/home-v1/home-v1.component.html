@@ -35,10 +35,15 @@
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
 
             <!-- middle banner -->
-            <div [class.mutiple-banner-cards]="_localAuthService.IsUserGoldMember()" >
+            <div class="mutiple-banner-cards">
                 <div class="pwa-banner" *ngIf="_localAuthService.IsUserGoldMember()">
                     <a class="full-banner" (click)="_commonService.showgoldMembershipPopup()"> 
                         <img src="{{imageAssetURL}}assets/img/others/goldMemberBanner.png" alt="Gold Member Banner" width="312" height="110">
+                    </a>
+                </div>
+                <div class="pwa-banner">
+                    <a class="full-banner" [routerLink]="'/find-b2b-bulk-buyers'"> 
+                        <img src="{{imageAssetURL}}assets/img/others/rfqSupplier.png" alt="rfq supplier banner" width="312" height="110">
                     </a>
                 </div>
                 <div class="pwa-banner">

@@ -578,6 +578,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         );
                          
                         this.originalProductBO = rawData["product"][0]["original_productBO"] || null;
+                        // console.log('originalProductBO log', this.originalProductBO);
                         // Load secondary APIs data from resolver only when product data is received
                        
                             this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6]);
@@ -1829,6 +1830,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     addToCartFromModal(buyNow: boolean)
     {
+        // console.log('originalProductBO', this.originalProductBO);
         const cartAddToCartProductRequest = this.cartService.getAddToCartProductItemRequest({
             productGroupData: this.rawProductData,
             buyNow: buyNow,
@@ -2752,6 +2754,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             );
             //this.fbtComponentInstance.instance['addToCartFromModal'] = this.addToCartFromModal.bind(this);
             this.fbtComponentInstance.instance["isModal"] = false;
+            this.fbtComponentInstance.instance["originalProductBO"] = this.originalProductBO;
             const TAXONS = this.taxons;
             let page = {
                 pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,

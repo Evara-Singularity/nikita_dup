@@ -62,7 +62,7 @@ export class SharedAuthUtilService implements OnInit
     updateCartSession(message, isCheckout, redirectUrl = null) {
         this._globalLoader.setLoaderState(true);
         this._cartService.performAuthAndCartMerge({
-            enableShippingCheck: true,
+            enableShippingCheck: false,
             redirectUrl: redirectUrl,
         }).subscribe(cartSession => {
             this._globalLoader.setLoaderState(false);
@@ -75,7 +75,7 @@ export class SharedAuthUtilService implements OnInit
                     redirectUrl && this._commonService.redirectPostAuth(redirectUrl)
                     redirectUrl && this._toastService.show({ type: 'success', text: message });
                     !redirectUrl && console.log('express sign up completed');
-                }, 300);
+                }, 1000);
             } else {
                 this._toastService.show({ type: 'error', text: 'Something went wrong' });
             }

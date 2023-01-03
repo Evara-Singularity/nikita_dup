@@ -10,7 +10,7 @@ export class FloatingButtonComponent implements OnInit {
   @Input() type: 'RED' | 'WHITE' = 'RED';
   @Input() isMultiple = true;
   @Input() label: string = 'Button';
-  @Input() iconClass: string = 'icon-cart1';
+  @Input() iconClass: string;
   @Output() onClick: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }

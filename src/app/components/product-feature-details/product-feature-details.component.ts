@@ -37,11 +37,12 @@ export class ProductFeatureDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getStaticSubjectData();
-    if(BrandLinkMapping.hasOwnProperty(this.productBrandDetails["idBrand"])) {
+    if (this.productBrandDetails && this.productBrandDetails["idBrand"] && BrandLinkMapping.hasOwnProperty(this.productBrandDetails["idBrand"])) {
       this.showNavToStorePage=true;
       this.productBrandDetails['storeLink']=BrandLinkMapping[this.productBrandDetails["idBrand"]];
     }
   }
+  
   getStaticSubjectData(){
     this.commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;

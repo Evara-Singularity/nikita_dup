@@ -50,7 +50,7 @@ resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<o
           const logInfo =  this._commonService.getLoggerObj(LAYOUT_URL,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();
           logInfo.responseStatus = res["status"];
-          this._loggerService.apiServerLog(logInfo);
+          this._loggerService.apiServerLog(logInfo, HomeResolver.name);
           // console.log('stateObs res ===>', res);
           return res;
         })
@@ -62,7 +62,7 @@ resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<o
           const logInfo =  this._commonService.getLoggerObj(FDK_URL,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();
           logInfo.responseStatus = res["status"];
-          this._loggerService.apiServerLog(logInfo);
+          this._loggerService.apiServerLog(logInfo, HomeResolver.name);
           // console.log('fdkObj res ===>', res);
           return res;
         })

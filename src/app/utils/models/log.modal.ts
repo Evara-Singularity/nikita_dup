@@ -1,4 +1,5 @@
 export interface ServerLogSchema {
+    logId?: any,
     startDateTime: any;
     endDateTime: any;
     startDateTimeV2?: any;

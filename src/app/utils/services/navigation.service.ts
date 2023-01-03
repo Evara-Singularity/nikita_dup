@@ -44,6 +44,8 @@ export class NavigationService
           if (index > -1) {
             this.history.splice(index, 1)
           }
+          //not appending dashboard/order in history since user is automatically redirected to orders page
+          if(currentUrl!="/dashboard/order") 
           this.history.push(currentUrl);
           this.saveHistory(this.history);
         }

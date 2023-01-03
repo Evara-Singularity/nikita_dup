@@ -40,6 +40,7 @@ export class BrandResolver implements Resolve<any> {
     const ATTRIBUTE_KEY = makeStateKey<object>('attribute-url-data-pwa');
     const SIMILAR_KEY = makeStateKey<object>('similar-category-pwa');
     const SIMILAR_BRAND_KEY = makeStateKey<object>('similar-brand-pwa');
+    const GET_INFORMATION_VIDEO_KEY = makeStateKey<{}>('information-key');
     const startTime = new Date().getTime();
 
     if (
@@ -48,7 +49,8 @@ export class BrandResolver implements Resolve<any> {
       this.transferState.hasKey(CMS_DATA_KEY) &&
       this.transferState.hasKey(ATTRIBUTE_KEY) &&
       this.transferState.hasKey(SIMILAR_KEY) &&
-      this.transferState.hasKey(SIMILAR_BRAND_KEY) 
+      this.transferState.hasKey(SIMILAR_BRAND_KEY)&&
+      this.transferState.hasKey(GET_INFORMATION_VIDEO_KEY) 
     ) {
       const brandCategory_data = this.transferState.get<object>(BRAND_DESC_KEY, null);
       const brandList_data = this.transferState.get<object>(BRAND_LIST_KEY, null);
@@ -56,6 +58,8 @@ export class BrandResolver implements Resolve<any> {
       const attribute_data = this.transferState.get<object>(ATTRIBUTE_KEY, null);
       const similar_category_data = this.transferState.get<object>(SIMILAR_KEY, null);
       const similar_brand_data = this.transferState.get<object>(SIMILAR_BRAND_KEY, null);
+      const INFORMATION_VIDEO_KEY_OBJ = this.transferState.get<object>(GET_INFORMATION_VIDEO_KEY, null);
+
 
       this.transferState.remove(BRAND_DESC_KEY);
       this.transferState.remove(BRAND_LIST_KEY);
@@ -63,10 +67,11 @@ export class BrandResolver implements Resolve<any> {
       this.transferState.remove(ATTRIBUTE_KEY);
       this.transferState.remove(SIMILAR_KEY);
       this.transferState.remove(SIMILAR_BRAND_KEY);
+      this.transferState.remove(GET_INFORMATION_VIDEO_KEY);
 
       this.loaderService.setLoaderState(false);
 
-      return of([brandCategory_data, brandList_data, similar_category_data,  cms_data, attribute_data, similar_brand_data]);
+      return of([brandCategory_data, brandList_data, similar_category_data,  cms_data, attribute_data, similar_brand_data,INFORMATION_VIDEO_KEY_OBJ]);
     } else {
       const GET_BRAND_NAME_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRAND_NAME + '?name=' + encodeURIComponent(_activatedRouteSnapshot.params.brand);
       let GET_BRAND_LIST_API_URL = environment.BASE_URL + ENDPOINTS.GET_BRANDS;
@@ -75,6 +80,8 @@ export class BrandResolver implements Resolve<any> {
       const ATTRIBUTE_URL = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + _activatedRouteSnapshot.params.category;
       const SIMILAR_CATEGORY_URL = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + _activatedRouteSnapshot.params.category;
       const SIMILAR_BRAND_URL = environment.BASE_URL + ENDPOINTS.SIMILAR_BRAND + "?brand=" + _activatedRouteSnapshot.params.brand;
+      const get_information_video_url = environment.BASE_URL + ENDPOINTS.INFORMATION_VIDEO + "?categoryCode=" +_activatedRouteSnapshot.params.category;
+
 
       const params = {
         filter:  this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),
@@ -173,6 +180,23 @@ export class BrandResolver implements Resolve<any> {
 
       dataList[1] = getBrandListObs;
 
+      const getInformationVideoObs = this.http.get(get_information_video_url).pipe(share(), 
+      map(res => {
+        const logInfo = this._commonService.getLoggerObj(get_information_video_url, 'GET', startTime)
+        logInfo.endDateTime = new Date().getTime();
+        logInfo.responseStatus = res["status"];
+        this._loggerService.apiServerLog(logInfo);
+        // console.log('res  ==>', res);
+        return res;
+      }), catchError((err) => {
+        console.log('getInformationVideoObs error==>', err);
+        // this.loaderService.setLoaderState(false);
+        return of([]);
+        // return of(err);
+      }));
+
+      dataList.push(getInformationVideoObs);
+
       return forkJoin(dataList).pipe(
         catchError((err) => {
           this.loaderService.setLoaderState(false);
@@ -185,6 +209,7 @@ export class BrandResolver implements Resolve<any> {
             this.transferState.set(SIMILAR_KEY, result[2]);
             this.transferState.set(CMS_DATA_KEY, result[3]);
             this.transferState.set(ATTRIBUTE_KEY, result[4]);
+            this.transferState.set(GET_INFORMATION_VIDEO_KEY, result[5]);
           }
           this.loaderService.setLoaderState(false);
         })

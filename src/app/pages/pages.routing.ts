@@ -843,6 +843,18 @@ const routes: Routes = [
 				component: AutologinPageComponent
 			},
 			{
+				path: 'order-rating/:orderId/:itemId',
+				loadChildren: () =>
+					import('./order-rating/order-rating.module').then((m) => m.OrderRatingModule),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					title: 'Rate your experience',
+
+				},
+			},
+			{
 				path: 'find-b2b-bulk-buyers',
 				loadChildren: () =>
 					import('./rfq-supplier/rfq-supplier.module').then((m) => m.RfqSupplierModule),

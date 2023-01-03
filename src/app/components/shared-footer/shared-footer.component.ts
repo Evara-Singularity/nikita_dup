@@ -4,6 +4,7 @@ import { ClientUtility } from "../../utils/client.utility";
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { RouterModule } from '@angular/router';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import CONSTANTS from '@app/config/constants';
 
@@ -66,6 +67,7 @@ export class SharedFooterComponent {
 @NgModule({
   imports: [
     CommonModule,
+    RouterModule,
     LazyLoadImageModule
   ],
   declarations: [

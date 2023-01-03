@@ -54,18 +54,21 @@ export class ProductCheckPincodeComponent implements OnInit
                     this.pincode.setValue(res["addressList"][0].postCode);
                     this.checkAvailblityOnPinCode();
                 }
+                else if (res["statusCode"] == 200 && res["addressList"] && res["addressList"].length == 0) {
+                    this.checkAvailblityOnPinCode();
+                }
             });
         }
     }
+    
     getStaticSubjectData(){
         this._commonService.changeStaticJson.subscribe(staticJsonData => {
-          console.log("hello got it",staticJsonData)
           this._commonService.defaultLocaleValue = staticJsonData;
           this.productStaticData = staticJsonData;
         });
       }
 
-    checkShippingCharges()
+    checkShippingCharges(pincode = null)
     {
         const categoryDetails = this.pageData['categoryDetails'];
         const request = {
@@ -76,7 +79,8 @@ export class ProductCheckPincodeComponent implements OnInit
                     "taxonomy": categoryDetails['taxonomyCode']
                 }
             ],
-            "totalPayableAmount": this.pageData['productPrice']
+            "totalPayableAmount": this.pageData['productPrice'],
+            "pincode":pincode
         }
         this._cartService.getShippingValue(request).subscribe((response) =>
         {
@@ -94,12 +98,13 @@ export class ProductCheckPincodeComponent implements OnInit
         const PARTNUMBER = this.pageData['partNumber'];
         this.isPincodeAvailble = this.FALSE;
         if (this.pincode.valid) {
-            let pincode: number = this.pincode.value;
+            let pincode: number = this.pincode.value || null;
             this.isServiceable = this.FALSE;
             this.isCashOnDelivery = this.FALSE;
             const msnArr = [];
             msnArr.push(PARTNUMBER);
             this.isLoading.emit(true);
+            this.checkShippingCharges( pincode);
             this.productService.getLogisticAvailability({ productId: msnArr, toPincode: pincode, price: this.pageData['productPrice'] }).subscribe(
                 (response: any) =>
                 {

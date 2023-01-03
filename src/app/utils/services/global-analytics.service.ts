@@ -1,6 +1,6 @@
 
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, Optional, PLATFORM_ID } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -25,6 +25,8 @@ export class GlobalAnalyticsService {
     private localStorageService: LocalStorageService,
     private _localAuthService: LocalAuthService,
     private _dataService: DataService,
+    @Optional() @Inject(CONSTANTS.BROWSER_AGENT_TOKEN) private requestUserAgent: string,
+    @Optional() @Inject(CONSTANTS.SERVER_CLIENT_IP) private reuestServerIp: string,
     @Inject(PLATFORM_ID) platformId
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -45,7 +47,7 @@ export class GlobalAnalyticsService {
   }
 
   sendToClicstreamViaSocket(data) {
-    if (this.isBrowser && navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
+    if (this.isBrowser ) {
       const user = this.localStorageService.retrieve('user');
       const previousUrl = localStorage.getItem("previousUrl");
       var trackingData = {
@@ -55,8 +57,8 @@ export class GlobalAnalyticsService {
         user_id: user ? user.userId : null,
         url: document.location.href,
         device: "Mobile",
-        ip_address: null,
-        user_agent: navigator.userAgent,
+        ip_address: this.reuestServerIp,
+        user_agent:  '',
         timestamp: new Date().getTime(),
         referrer: document.referrer,
         previous_url: (previousUrl && previousUrl.split("$$$").length >= 2) ? localStorage.getItem("previousUrl").split("$$$")[1] : ""
@@ -178,7 +180,7 @@ export class GlobalAnalyticsService {
   }
 
   sendMessage(msg: any) {
-    if (this.isBrowser && navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
+    if (this.isBrowser && this.requestUserAgent && this.requestUserAgent.toLocaleLowerCase().indexOf("googlebot") === -1 ) {
       var userSession = this._localAuthService.getUserSession();
       const previousUrl = localStorage.getItem("previousUrl");
       let prevUrl;
@@ -195,8 +197,8 @@ export class GlobalAnalyticsService {
         user_id: userSession ? userSession.userId : null,
         url: document.location.href,
         device: "Mobile",
-        ip_address: null,
-        user_agent: navigator.userAgent,
+        ip_address: this._dataService.clientIpFromServer || '',
+        user_agent: this.requestUserAgent || navigator.userAgent,
         timestamp: new Date().getTime(),
         referrer: document.referrer,
         previous_url: prevUrl,
@@ -207,6 +209,7 @@ export class GlobalAnalyticsService {
 
   postClickStreamData(data) {
     if (this.isBrowser) {
+      // console.log('postClickStreamData data', data);
       // console.log('clickstream in', data);
       // temp fix to check if this API impacting pageload time.
       setTimeout(() => {
@@ -215,7 +218,7 @@ export class GlobalAnalyticsService {
         });
       }, 3000);
     }else{
-      console.log('clickstream called on server', data);
+      // console.log('clickstream called on server', data);
     }
   }
 

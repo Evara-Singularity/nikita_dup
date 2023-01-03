@@ -154,6 +154,7 @@ export class BussinessDetailComponent implements OnDestroy {
         }
       }
     );
+    this.getBusinessDetail()
   }
 
   getBusinessDetail() {
@@ -162,7 +163,7 @@ export class BussinessDetailComponent implements OnDestroy {
     this._businessDetailService.getBusinessDetail(data).subscribe((res) => {
       let data = res["data"];
       if (data) {
-        this.isGSTINVerified = data["gstinVerified"] ? true : false;
+        this.isGSTINVerified = (data["gstinVerified"] && (data["gstinVerified"] == true)) ? true : false;
         this.businessDetailForm.controls["companyName"].setValue(
           data["companyName"]
         );
@@ -290,7 +291,7 @@ export class BussinessDetailComponent implements OnDestroy {
             ].value
           )
             this.getBusinessDetail();
-
+          
           user["userType"] = "business";
           this._localStorageService.store("user", user);
           this._cartService.payBusinessDetails = {
@@ -299,9 +300,11 @@ export class BussinessDetailComponent implements OnDestroy {
             is_gstin: data["isGstInvoice"],
           };
           this.successfulMessage = true;
+          this.isGSTINVerified = true;
           setTimeout(() => {
             this.successfulMessage = false;
           }, 5000);
+          this.setSavedState();
           this.showBEMsgs("success", res["statusDescription"]);
         } else {
           this.showBEMsgs("error", res["statusDescription"]);
@@ -337,7 +340,14 @@ export class BussinessDetailComponent implements OnDestroy {
 
   postGSTINVerification() {
     let billingAddress = this.verifiedGSTINDetails["billing_address"]["addr"];
+    const user = this._localStorageService.retrieve('user');
     this.postCode.setValue(billingAddress["pncd"]);
+    this.email.setValue(user.email || '');
+    this.email.markAsDirty;
+
+    this.phone.setValue(user.phone || '');
+    this.phone.markAsDirty;
+
     this.companyName.markAsDirty();
     this.companyName.setValue(
       this.verifiedGSTINDetails["legal_name_of_business"]
@@ -366,6 +376,11 @@ export class BussinessDetailComponent implements OnDestroy {
       this.businessDetailForm.valid &&
       this.isGSTINVerified
     );
+  }
+
+  setSavedState(){
+    this.isPinCodeAvailble == true;
+    this.isGSTINVerified = true;
   }
 
   showBEMsgs(type, message) {

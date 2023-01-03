@@ -1,21 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule} from '@angular/core';
+import { Component, Input, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AccordianModule } from "@app/modules/accordian/accordian.module";
-import { ENDPOINTS } from '@app/config/endpoints';
 import { CommonService } from '@app/utils/services/common.service';
-import { DataService } from '@app/utils/services/data.service';
-import { ProductListService } from '@app/utils/services/productList.service';
-import { environment } from 'environments/environment';
-import { forkJoin, Observable, of } from 'rxjs';
-import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
+import { AccordiansDetails, AccordianDataItem } from '@app/utils/models/accordianInterface';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { catchError, tap } from 'rxjs/operators';
-
-const ACC: any = makeStateKey<{}>("ACC");
-
-
+import { makeStateKey } from '@angular/platform-browser';
 @Component({
   selector: 'product-accordian',
   templateUrl: './product-accordians.component.html',
@@ -24,10 +14,14 @@ const ACC: any = makeStateKey<{}>("ACC");
 export class ProductAccordiansComponent {
   @Input('categoryBrandDetails') categoryBrandDetails: any;
   @Input('analyticsInfo') analyticsInfo: any;
-  @Input('msn') msn:any;
+  @Input('relatedLinkRes') relatedLinkRes: any;
+  @Input('categoryBucketRes') categoryBucketRes: any;
+  @Input('similarCategoryRes') similarCategoryRes: any;
+  @Input('msn') msn: any;
   @Input('isHindiMode') isHindiMode: boolean = false;
-  ACCORDIAN_DATA: Array<any> = [[],[],[]];
-  accordiansDetails:AccordiansDetails[]=[];
+
+  ACCORDIAN_DATA: Array<any> = [[], [], []];
+  accordiansDetails: AccordiansDetails[] = [];
   isServer: boolean;
   isBrowser: boolean;
   categoryId: any;
@@ -35,134 +29,39 @@ export class ProductAccordiansComponent {
 
   constructor(
     public _commonService: CommonService,
-    private _dataService: DataService,
-    private _productListService: ProductListService,
     private globalAnalyticService: GlobalAnalyticsService,
-    private _tState: TransferState
-  ) { 
+  ) {
     this.isServer = this._commonService.isServer;
     this.isBrowser = this._commonService.isBrowser;
   }
 
   ngOnInit() {
-    if (this.categoryBrandDetails && this.categoryBrandDetails.category && this.categoryBrandDetails.category.categoryCode) {
-      this.getDataFromAPI(this.categoryBrandDetails.category.categoryCode).subscribe((res) => {
-        this.setAccordianData(res);
-      }, (error) => {
-        console.log("API error",error)
-      })
-    }
+    this.setAccordianData(this.relatedLinkRes, this.categoryBucketRes, this.similarCategoryRes);
     this.getStaticSubjectData();
   }
 
-  getStaticSubjectData(){
+
+  getStaticSubjectData() {
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
     });
   }
 
-  loadShopByAttributeData() {
-    if (this._tState.hasKey(ACC)) {
-      let response = this._tState.get(ACC, {});
-      if (this.categoryBrandDetails && this.categoryBrandDetails.category && this.categoryBrandDetails.category.categoryCode) {
-        this.categoryId = this.categoryBrandDetails.category.categoryCode;
-        this.setDataForPopularBrandCategories(response);
-      }
-      return;
-    }
+  setAccordianData(relatedLinkRes, categoryBucketRes, similarCategoryRes) {
 
-    if (this.categoryBrandDetails && this.categoryBrandDetails.category && this.categoryBrandDetails.category.categoryCode) {
-      this.categoryId = this.categoryBrandDetails.category.categoryCode;
-      const apiList = [
-        this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + this.categoryId),
-        this._dataService.callRestful('GET', environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + this.categoryId)
-      ];
-      forkJoin(apiList).subscribe((response) => {
-        if (this.isServer) {
-          this._tState.set(ACC, response);
-        }
-      });
-    }
-  }
-
-  getDataFromAPI(categoryID): Observable<object> {
-    const PDP_FOOTER_ACCORDIAN_DATA: any = makeStateKey<{}>("PDP_FOOTER_ACCORDIAN_DATA");
-    if (this._tState.hasKey(PDP_FOOTER_ACCORDIAN_DATA)) {
-      const accordianObj = this._tState.get(PDP_FOOTER_ACCORDIAN_DATA, {});
-      this._tState.remove(ACC);
-      return of(accordianObj);
-    } else {
-      const GET_RELATED_LINKS = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryID + "&msn=" + this.msn;
-      const SIMILAR_CATEGORY = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?catId=" + categoryID + "&msn=" +this.msn;
-      
-      const headers = {
-        headerData: {}
-      };
-      if (this.isHindiMode) {
-        headers['headerData']['language'] = 'hi'
-      }
-
-      const relatedObs = this._dataService.callRestful('GET', GET_RELATED_LINKS, headers);
-      const getPopularCategoryObs = this.getFilterBucket(categoryID, 'category')
-      const similarObs = this._dataService.callRestful('GET', SIMILAR_CATEGORY, headers);
-
-      return forkJoin([relatedObs, getPopularCategoryObs, similarObs,]).pipe(
-        catchError((err) => {
-          return of(err);
-        }),
-        tap(result => {
-          if (this.isServer) {
-            this._tState.set(PDP_FOOTER_ACCORDIAN_DATA, result);
-          }
-        })
-      )
-    }
-  }
-
-
-  getFilterBucket(categoryId, pageName, brandName?: string) {
-    let filter_url = environment.BASE_URL + '/' + pageName.toLowerCase() + ENDPOINTS.GET_BUCKET;
-    if (categoryId) {
-      filter_url += "?category=" + categoryId + "&msn=" + this.msn;
-    }
-    const params = { pageName: pageName };
-    const actualParams = this._commonService.formatParams(params);
-    const headers = {
-      params: actualParams,
-      headerData: {}
-    };
-    if (this.isHindiMode) {
-      headers['headerData']['language'] = 'hi'
-    }
-    return this._dataService.callRestful("GET", filter_url, headers);
-  }
-
-  setDataForPopularBrandCategories(response) {
-    this._productListService.getFilterBucket(this.categoryId, 'CATEGORY').subscribe(
-      (res) => {
-        response.push(res);
-        this.setAccordianData(response);
-      },
-      (error) => {
-        console.log("API error", error)
-      }
-    );
-  }
-
-  setAccordianData(res){
-    if (res[0]['status'] || res[0]) {
-      this.ACCORDIAN_DATA[0] = res[0]['data'] || res[0];
+    if (relatedLinkRes && relatedLinkRes['data']) {
+      this.ACCORDIAN_DATA[0] = relatedLinkRes['data'];
       // accordian data
       if (this.ACCORDIAN_DATA[0]?.length > 0) {
         this.accordiansDetails.push({
           name: this.productStaticData.accordian_list1_label,
           data: (this.ACCORDIAN_DATA[0]).map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
-          icon:'icon-attribute'
+          icon: 'icon-attribute'
         });
       }
     }
-    if (res[1].hasOwnProperty('categoryLinkList') && res[1]['categoryLinkList']) {
-      this.ACCORDIAN_DATA[1] = res[1]['categoryLinkList'];
+    if (categoryBucketRes && categoryBucketRes.hasOwnProperty('categoryLinkList') && categoryBucketRes['categoryLinkList']) {
+      this.ACCORDIAN_DATA[1] = categoryBucketRes['categoryLinkList'];
 
       // accordian data
       // console.log(this.accordiansDetails['name']);
@@ -173,20 +72,20 @@ export class ProductAccordiansComponent {
         icon: 'icon-brand_store'
       });
     }
-    if (res[2].hasOwnProperty('mostSoledSiblingCategories')) {
-      this.ACCORDIAN_DATA[2] = res[2]['mostSoledSiblingCategories'];
+    if (similarCategoryRes && similarCategoryRes.hasOwnProperty('mostSoledSiblingCategories')) {
+      this.ACCORDIAN_DATA[2] = similarCategoryRes['mostSoledSiblingCategories'];
       // accordian data
       if (this.ACCORDIAN_DATA[2]?.length > 0) {
         this.accordiansDetails.push({
           name: this.productStaticData.accordian_list3_label,
           data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
-          icon:'icon-categories'
+          icon: 'icon-categories'
         });
       }
     }
   }
 
-  sendAnalyticsInfo() {    
+  sendAnalyticsInfo() {
     this.globalAnalyticService.sendAdobeCall(this.analyticsInfo, 'genericClick');
   }
 
@@ -200,7 +99,7 @@ export class ProductAccordiansComponent {
     RouterModule,
     AccordianModule
   ],
-  exports:[ProductAccordiansComponent]
+  exports: [ProductAccordiansComponent]
 })
 export default class ProductAccordiansModule {
 }

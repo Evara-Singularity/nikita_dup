@@ -27,6 +27,7 @@ export class DataService {
     history = [];
     public dataServiceCart: Subject<any> = new Subject<any>();
     private getSessionApi: any;
+    clientIpFromServer: string = null;
 
     constructor(
         private _tms: ToastMessageService,
@@ -188,7 +189,7 @@ export class DataService {
                     this._localAuthService.setUserSession(res);
                     this.dataServiceCart.next(res['cart'] !== undefined ? res['cart']['noOfItems'] : 0);
                     this._localAuthService.logout$.emit();
-                    this._router.navigate(['']);
+                    // this._router.navigate(['']);
                 }
             });
         }
@@ -206,7 +207,7 @@ export class DataService {
                             this._localAuthService.setUserSession(res);
                             this._localAuthService.logout$.emit();
                             this._tms.show({ type: 'success', text: "Your session has expired , please login again", tDelay: 5000 });
-                            this._router.navigateByUrl('/login');
+                            // this._router.navigateByUrl('/login');
                         }
                         this.getSessionApi = undefined;
                     });
@@ -300,5 +301,18 @@ export class DataService {
             "&categoryCode=" + categoryId;
         return this.callRestful("GET", URL, headerData);
 
+    }
+    registerFeedbackId(orderId, itemId) {
+        let URL =
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CUSTOMER_FEEDBACK +
+            "?orderId=" + orderId +
+            "&itemId=" + itemId;
+        return this.callRestful("GET", URL);
+    }
+
+    submtFeedbackRating(postBody) {
+        let URL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SUBMIT_RATING_FEEDBACK
+
+        return this.callRestful("POST", URL, { body: postBody });
     }
 }

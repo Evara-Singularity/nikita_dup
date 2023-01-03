@@ -75,8 +75,9 @@ export class CartUtils
         return modifiedCartSessionObject;
     }
 
-    static getShippingObj(cartSessions)
+    static getShippingObj(cartSessions, shippingAddress = null)
     {
+        // console.log('getShippingObj', shippingAddress);
         let sro = { itemsList: [], totalPayableAmount: 0 };
         if (cartSessions && cartSessions['itemsList'] && cartSessions['itemsList'].length > 0) {
             let itemsList: Array<{}> = cartSessions['itemsList'];
@@ -87,6 +88,9 @@ export class CartUtils
         }
         if (cartSessions && cartSessions['cart']) {
             sro['totalPayableAmount'] = cartSessions['cart']['totalPayableAmount'];
+        }
+        if(shippingAddress && shippingAddress['postCode']){
+            sro['pincode'] = shippingAddress['postCode'];
         }
         return sro;
     }

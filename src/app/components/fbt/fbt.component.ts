@@ -39,6 +39,7 @@ export class FbtComponent implements OnInit
     rootProductSubscription = null;
     @Input('modalData') modalData = null;
     @Input('analytics') analytics = null;
+    @Input('originalProductBO') originalProductBO = null;
     private cDistryoyed = new Subject();
     isModal = false;
     currentCTA = '';
@@ -130,7 +131,7 @@ export class FbtComponent implements OnInit
         let partReference = product.partNumber;
         let productPartDetails = product['productPartDetails'];
         if (productPartDetails && productPartDetails[partReference]['productPriceQuantity'] && productPartDetails[partReference]['productPriceQuantity']['india']) {
-            const productObject = this.cartService.getAddToCartProductItemRequest({ productGroupData: product, buyNow: false, quantity: 1, isFbt: isFBT });
+            const productObject = this.cartService.getAddToCartProductItemRequest({ productGroupData: product, buyNow: false, quantity: 1, isFbt: isFBT, originalProductBO: this.originalProductBO });
             returnObj = { mProduct: productObject, validation: true }
         }
         return returnObj;

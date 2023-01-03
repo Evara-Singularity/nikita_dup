@@ -9,6 +9,7 @@ import { NotFoundModule } from "@app/modules/not-found/not-found.module";
 import { ProductCardHorizontalListViewModule } from '../product-card/product-card-horizontal-list-view/product-card-horizontal-list-view.module';
 import { ProductCardSkeletonModule } from '../ui/skeletons/product-card-skeleton/product-card-skeleton.module';
 import { AnalyticsWidgetWrapperModule } from '@app/components/analytics-widget-wrapper/analytics-widget-wrapper.module';
+import { Informative_videoModule } from '@app/components/informative_video/informative_video.component';
 
 @NgModule({
   declarations: [SharedProductListingComponent],
@@ -21,7 +22,8 @@ import { AnalyticsWidgetWrapperModule } from '@app/components/analytics-widget-w
     NgxPaginationModule,
     ObserveVisibilityDirectiveModule,
     NotFoundModule,
-    AnalyticsWidgetWrapperModule
+    AnalyticsWidgetWrapperModule,
+    Informative_videoModule
   ],
   exports: [
     SharedProductListingComponent

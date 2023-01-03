@@ -42,6 +42,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   @Input() categoryMidPlpFilterData: any; // only received in case used in search module
   @Input() graphData:any = null;
   @Input() lastLevelCategory;
+  @Input() informativeVideosData:any;
   @Output('categoryClicked') categoryClicked: EventEmitter<string> = new EventEmitter<string>();
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -73,6 +74,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
     this.lastLevelCategory; 
+    // console.log("in shared listing ",this.informativeVideosData)
   }
   
  

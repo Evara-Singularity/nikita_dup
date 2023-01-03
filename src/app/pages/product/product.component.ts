@@ -169,6 +169,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     alreadyLiked: boolean = true;
     //recently view
     hasRecentlyView = true;
+    msn:string;
 
     productShareInstance = null;
     @ViewChild("productShare", { read: ViewContainerRef })
@@ -337,6 +338,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     hindiUrl: string;
     ProductStatusCount: Observable<Object>;
 
+    // footer accordian vars
+    relatedLinkRes: any = null
+    categoryBucketRes: any = null
+    similarCategoryRes: any = null 
+
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);
@@ -436,7 +442,23 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
             this.navigationOnFragmentChange();
+            this.getProductTag()
         }
+        
+    }
+
+    getProductTag(){
+        this.globalLoader.setLoaderState(true);
+        this.productService.getProductTag(this.msn).subscribe(response => {
+            if (response['statusCode'] == 200 && response['data'] != null) {
+                this.productTags=response['data']
+                this.getRefinedProductTags();
+            } else {
+                this.productTags=null;
+            }
+            this.globalLoader.setLoaderState(false)
+        })
+
     }
 
     navigationOnFragmentChange() {
@@ -536,6 +558,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.route.data.subscribe(
             (rawData) =>
             {
+                // console.log(rawData["product"]);
                 if (!rawData["product"]["error"] && rawData["product"][0]["active"]==true) {
                     if (
                         rawData["product"][0]["productBO"] &&
@@ -553,11 +576,13 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                             },
                             rawData["product"][0]
                         );
+                         
                         this.originalProductBO = rawData["product"][0]["original_productBO"] || null;
+                        // console.log('originalProductBO log', this.originalProductBO);
                         // Load secondary APIs data from resolver only when product data is received
-                        if (!rawData["productSecondaryApisData"]["error"]) {
-                            this.getSecondaryApiData(rawData["productSecondaryApisData"]);
-                        }
+                       
+                            this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6]);
+                        
                     } else {
                         this.showLoader = false;
                         this.globalLoader.setLoaderState(false);
@@ -610,10 +635,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
-    getSecondaryApiData(secondaryRawData)
-    {
-        if (secondaryRawData[0]["data"]) {
-            const rawReviews = Object.assign({}, secondaryRawData[0]["data"]);
+    getSecondaryApiData(reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes) {
+        // console.log({
+        //     reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes
+        // });
+        if (reviewsDataApiData && reviewsDataApiData["data"]) {
+            const rawReviews = Object.assign({}, reviewsDataApiData["data"]);
             rawReviews["reviewList"] = rawReviews["reviewList"] as [];
             this.setReviewsRatingData(rawReviews);
             // console.log('rawReviews', rawReviews);
@@ -621,13 +648,18 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.setProductSeoSchema();
         }
 
-        if (secondaryRawData[1] && Array.isArray(secondaryRawData[1])) {
-            this.setProductaBreadcrum(secondaryRawData[1]);
+        if (breadcrumbApiData && Array.isArray(breadcrumbApiData)) {
+            this.setProductaBreadcrum(breadcrumbApiData);
         }
-        if (secondaryRawData[2]["data"]) {
-            this.setQuestionsAnswerData(secondaryRawData[2]);
+        if (questAnsApiData && questAnsApiData["data"]) {
+            this.setQuestionsAnswerData(questAnsApiData);
             this.setQuestionAnswerSchema();
         }
+        
+        this.relatedLinkRes = relatedLinkRes;
+        this.categoryBucketRes = categoryBucketRes;
+        this.similarCategoryRes = similarCategoryRes;
+
     }
 
     private duplicateOrderCheck(duplicateRawResponse)
@@ -791,6 +823,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 : this.rawProductData["partNumber"];
         this.productSubPartNumber = partNumber;
 
+        this.msn=partNumber;
         // mapping general information
         this.productName = this.rawProductData["productName"];
         this.isProductReturnAble = this.rawProductData["returnable"] || false;
@@ -804,8 +837,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.productKeyFeatures = this.rawProductData["keyFeatures"];
         this.productVideos = this.rawProductData["videosInfo"];
         this.productDocumentInfo = this.rawProductData["documentInfo"];
-        this.productTags = this.rawProductData["productTags"];
-        this.getRefinedProductTags();
+        // this.productTags = this.rawProductData["productTags"];
+        // this.getRefinedProductTags();
         this.productAttributes =
             this.rawProductData["productPartDetails"][partNumber]["attributes"] || [];
         this.productRating =
@@ -1797,6 +1830,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     addToCartFromModal(buyNow: boolean)
     {
+        // console.log('originalProductBO', this.originalProductBO);
         const cartAddToCartProductRequest = this.cartService.getAddToCartProductItemRequest({
             productGroupData: this.rawProductData,
             buyNow: buyNow,
@@ -2334,9 +2368,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             url: this.productUrl,
             price: this.productPrice,
             msn: this.productSubPartNumber || this.defaultPartNumber,
-            productName: (this.hindiUrl) ? this.originalProductBO['productName'] : this.productName,
+            productName: (this.isHindiUrl) ? this.originalProductBO['productName'] : this.productName,
             moq: this.productMinimmumQuantity,
-            brand: (this.hindiUrl) ? this.originalProductBO['brandDetails']['brandName'] : this.productBrandDetails["brandName"],
+            brand: (this.isHindiUrl) ? this.originalProductBO['brandDetails']['brandName'] : this.productBrandDetails["brandName"],
             taxonomyCode: this.productCategoryDetails["taxonomy"],
             adobeTags: "",
         };
@@ -2367,7 +2401,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         let params = { customerId: user.userId, invoiceType: "retail" };
         let product = {
             url: this.productUrl,
-            productName: (this.hindiUrl)? this.originalProductBO['productName']  : this.productName,
+            productName: (this.isHindiUrl)? this.originalProductBO['productName']  : this.productName,
             moq: this.productMinimmumQuantity,
         };
         this.raiseRFQGetQuoteSubscription = this.commonService.getAddressList(params).subscribe(res =>
@@ -2552,7 +2586,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.offerSectionInstance.instance['brandName'] = this.rawProductData["brandDetails"]['brandName'];
             this.offerSectionInstance.instance['categoryId'] = this.rawProductData["categoryDetails"][0]["categoryCode"];
             this.offerSectionInstance.instance['categoryName'] = this.rawProductData["categoryDetails"][0]["categoryName"];
-            this.offerSectionInstance.instance['isHindiMode'] = this.hindiUrl;
+            this.offerSectionInstance.instance['isHindiMode'] = this.isHindiUrl;
             (
                 this.offerSectionInstance.instance[
                 "viewPopUpHandler"
@@ -2720,6 +2754,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             );
             //this.fbtComponentInstance.instance['addToCartFromModal'] = this.addToCartFromModal.bind(this);
             this.fbtComponentInstance.instance["isModal"] = false;
+            this.fbtComponentInstance.instance["originalProductBO"] = this.originalProductBO;
             const TAXONS = this.taxons;
             let page = {
                 pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
@@ -3196,9 +3231,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             metaObj["seoDetails"]["metaDescription"] != undefined &&
             metaObj["seoDetails"]["metaDescription"] != null &&
             metaObj["seoDetails"]["metaDescription"] != ""
-        )
-            metaDescription = metaObj["seoDetails"]["metaDescription"];
-        else {
+        ) {
+            metaDescription = metaObj["seoDetails"]["metaDescription"].replace('___productPrice___', '₹'+this.productPrice);
+        } else {
             if (metaObj.productOutOfStock == true) {
                 metaDescription =
                     "Buy " +
@@ -3628,11 +3663,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
 
         let ele = []; // product tags for adobe;
-        this.productTags?.forEach((element) =>
-        {
-            ele.push(element.name);
-        });
-        this.productTags = this.commonService.sortProductTagsOnPriority(this.productTags);
+        // this.productTags.forEach((element) =>
+        // {
+        //     ele.push(element.name);
+        // });
+        // this.productTags = this.commonService.sortProductTagsOnPriority(this.productTags);
         const tagsForAdobe = ele.join("|");
 
         let page = {
@@ -3683,10 +3718,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
 
         let ele = []; // product tags for adobe;
-        this.productTags.forEach((element) =>
-        {
-            ele.push(element.name);
-        });
+        // this.productTags.forEach((element) =>
+        // {
+        //     ele.push(element.name);
+        // });
         const tagsForAdobe = ele.join("|");
 
         let page = {
@@ -3765,10 +3800,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             taxo3 = this.productCategoryDetails["taxonomyCode"].split("/")[2] || "";
         }
         let ele = []; // product tags for adobe;
-        this.productTags.forEach((element) =>
-        {
-            ele.push(element.name);
-        });
+        // this.productTags.forEach((element) =>
+        // {
+        //     ele.push(element.name);
+        // });
         const tagsForAdobe = ele.join("|");
 
         this.analytics.sendGTMCall({
@@ -4318,12 +4353,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         const TAXNONS = this.taxons;
         const TAGS = [];
 
-        if (this.productTags && this.productTags.length > 0) {
-            this.productTags.forEach((element) =>
-            {
-                TAGS.push(element.name);
-            });
-        }
+        // if (this.productTags && this.productTags.length > 0) {
+        //     this.productTags.forEach((element) =>
+        //     {
+        //         TAGS.push(element.name);
+        //     });
+        // }
 
         const tagsForAdobe = TAGS.join("|");
         return {
@@ -4509,15 +4544,19 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     translate() {
         if ((this.router.url).toLowerCase().indexOf('/hi') !== -1) {
-            const URL = (this.router.url).toLowerCase().split("/hi").join('/');
+            const URL = this.getSanitizedUrl(this.router.url).split("/hi").join('/');
             // console.log(this.commonService.defaultLocaleValue.language, URL);
             // console.log("this.productUrl",this.productUrl)
-            this.router.navigate([URL]); 
-        }
-        else {
-            const URL = '/hi' + (this.router.url);
             this.router.navigate([URL]);
         }
+        else {
+            const URL = '/hi' + this.getSanitizedUrl(this.router.url);
+            this.router.navigate([URL]);
+        }
+    }
+
+    getSanitizedUrl(url){
+        return (url).toLowerCase().split('#')[0].split('?')[0];
     }
 
 

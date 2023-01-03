@@ -26,7 +26,7 @@
                         .replace('___discount___',couponForbrandCategory['absoluteDiscount'] | currency:'INR' : 'symbol' : '1.0-0')
                     }}
                 </span>
-                <span class="discount-txt">
+                <span class="discount-txt"  >
                     {{productStaticData.prepaid_discount_text.replace('___minimumCartValue___', couponForbrandCategory['minimumCartValue']).replace('___brandName___', brandName).replace('___categoryName___', categoryName)}}
                 </span>
             </div>
@@ -35,7 +35,7 @@
                     <!-- Pay online & get EXTRA {{couponForbrandCategory['percentageDiscount']}}% OFF on
                     {{brandName}} {{categoryName}} -->
                     {{
-                     productStaticData.coupon_static_text.replace('___coupon_discount___', couponForbrandCategory['percentageDiscount'])
+                     productStaticData.coupon_static_text.replace('___coupon_discount___', couponForbrandCategory['percentageDiscount']+'%')
                      .replace('___brandName ___', brandName) 
                      .replace('___categoryName___',categoryName)
                     }} 

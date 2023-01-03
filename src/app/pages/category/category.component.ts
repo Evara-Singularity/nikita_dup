@@ -48,6 +48,7 @@ export class CategoryComponent {
     prodUrl=CONSTANTS.PROD;
     graphData;
     lastLevelCategory:Boolean = false;
+    informativeVideosData:any;
 
     constructor(
         public _router: Router,
@@ -122,6 +123,15 @@ export class CategoryComponent {
             // create FAQ section schema
             this.setFaqSchema(this.API_RESPONSE.category[2]);
 
+            //set youtube informative video data
+            if (this.API_RESPONSE.category[8] && 
+                (this.API_RESPONSE.category[8].status == true) && 
+                this.API_RESPONSE.category[8].data && 
+                this.API_RESPONSE.category[8].data.length > 0) {
+                this.informativeVideosData = this.API_RESPONSE.category[8].data
+            }else{
+                this.informativeVideosData =[];
+            }
 
             // Update total product account
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE['category'][1].productSearchResult.totalCount;

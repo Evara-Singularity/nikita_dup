@@ -18,7 +18,6 @@ export class BulkRfqFormComponent implements OnInit
 	@Output() bulkRfqFormPhoneno$: EventEmitter<any> = new EventEmitter<any>();
 	@Output() setBulkRfqForm$: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
 
-
 	readonly PRICE_VALUES = ["1 qty","2 - 5 qty","6 - 10 qty","11 - 15 qty","16 - 1100 qty"];
 	readonly PRODUCT_TYPES = ["PRODUCT 1","PRODUCT 2","PRODUCT 3","PRODUCT 4","PRODUCT 5"];
 	readonly stepNameOtp = 'OTP';
@@ -26,7 +25,6 @@ export class BulkRfqFormComponent implements OnInit
 
     bulkrfqForm: FormGroup;
 	user: any;
-
 
 	constructor(
 		private localStorageService: LocalStorageService,

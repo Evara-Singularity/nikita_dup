@@ -8,12 +8,8 @@ import { Step } from '@app/utils/validators/step.validate';
 	templateUrl: './gstinForm.component.html',
 	styleUrls: ['./gstinForm.component.scss']
 })
-export class GstinForm implements OnInit
-{
-onSubmit() {
-	this.setGstinForm$.emit(this.gstinForm.value);
-	this.moveToNext(this.stepNameConfimation)
-    }
+export class GstinForm implements OnInit {
+
 	gstinForm: FormGroup;
 	@Output() moveToNext$: EventEmitter<any> = new EventEmitter<any>();
     @Input('bulkrfqForm') bulkrfqForm: String;
@@ -49,7 +45,12 @@ onSubmit() {
 		  ],
 		  description: [""],
 		});
-	  }
+	}
+
+	onSubmit() {
+		this.setGstinForm$.emit(this.gstinForm.value);
+		this.moveToNext(this.stepNameConfimation)
+	} 
 
 	  moveToNext(stepName) {
 		this.moveToNext$.emit(stepName);

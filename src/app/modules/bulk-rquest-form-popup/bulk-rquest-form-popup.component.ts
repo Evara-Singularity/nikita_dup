@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, NgModule, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ListAutocompleteModule } from '@app/components/list-autocomplete/list-autocomplete.component';
 import { ProductSkeletonsModule } from '@app/components/product-skeletons/product-skeletons.component';
 import { SimilarProductModule } from '@app/components/similar-products/similar-products.component';
@@ -10,7 +9,6 @@ import { AuthFlowType } from '@app/utils/models/auth.modals';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
-import { Step } from '@app/utils/validators/step.validate';
 import { LocalStorageService } from 'ngx-webstorage';
 import { PopUpModule } from '../popUp/pop-up.module';
 import { SharedAuthUtilService } from '../shared-auth-v1/shared-auth-util.service';
@@ -39,81 +37,15 @@ export class BulkRquestFormPopupComponent implements OnInit {
   @Input("isLoginPopup") isLoginPopup = true;
   @Output() togglePopUp$: EventEmitter<any> = new EventEmitter<any>();
   @Output() removeAuthComponent$: EventEmitter<any> = new EventEmitter<any>();
-  stepState: "LOGIN" | "OTP" | "" | "RFQ_FORM" | "CONFIRMATION" =
-  this.stepNameLogin;
-  bulkrfqForm: FormGroup;
-  gstinForm: FormGroup;
+  stepState: "LOGIN" | "OTP" | "" | "RFQ_FORM" | "CONFIRMATION" = this.stepNameLogin;
+  bulkrfqForm: any;
+  gstinForm: any;
   confirmationForm: FormGroup;
   otpForm: FormArray = new FormArray([]);
   authFlow: AuthFlowType; //gives flowtype & identifier information
   user: boolean = false;
   loginAndValidatePhone: boolean = false;
   bulkRfqFormPhoneno: any;
-
-  setGstinForm(data) {
-    this.gstinForm = data;
-  }
-
-  setBulkRfqForm(data) {
-    this.bulkrfqForm = data;
-  }
-
-  setHeaderData(): any {
-    if (this.stepState == this.stepNameLogin) {
-      return {
-        headerText: "Get customise & best price",
-        headerSubText: "Just in 2 simple steps",
-      };
-    } else if (this.stepState == this.stepNameRfqForm) {
-      return {
-        headerText: "Thank you for showing your interest",
-        headerSubText: "Help with the below details to prioritise your query",
-      };
-    } else if (this.stepState == this.stepNameConfimation) {
-      return {
-        headerText: "Thanks, for submitting the query",
-        headerSubText: "Below is your request summary",
-      };
-    } else return "";
-  }
-
-  captureOTP(otpValue) {
-    if (!otpValue) return;
-    this._loader.setLoaderState(true);
-    const REQUEST = { email: "", phone: "", source: "login_otp" };
-    REQUEST["type"] = this._sharedAuthUtilService.getUserType(
-      this._sharedAuthService.AUTH_USING_PHONE,
-      this.bulkrfqForm?.get("phone").value
-        ? this.bulkrfqForm?.get("phone").value
-        : this.bulkRfqFormPhoneno
-    );
-    REQUEST["otp"] = otpValue;
-    REQUEST["phone"] = this.bulkrfqForm?.get("phone").value
-      ? this.bulkrfqForm?.get("phone").value
-      : this.bulkRfqFormPhoneno;
-    this._sharedAuthService.authenticate(REQUEST).subscribe(
-      (response) => {
-        this._loader.setLoaderState(false);
-
-        if (
-          response["statusCode"] !== undefined ||
-          response["statusCode"] === 500
-        ) {
-          this._tms.show({
-            type: "error",
-            text: response["status"] || response["message"],
-          });
-          this._cartService.logOutAndClearCart();
-          return;
-        }
-        this.processAuthenticaton(response);
-      },
-      (error) => {
-        this._loader.setLoaderState(false);
-      }
-    );
-    this._loader.setLoaderState(false);
-  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -125,34 +57,12 @@ export class BulkRquestFormPopupComponent implements OnInit {
     private _localAuthService: LocalAuthService,
     private _sharedAuthUtilService: SharedAuthUtilService,
     private _cartService: CartService
-  ) {
-    this.createGstinForm();
-  }
+  ) { }
 
   ngOnInit(): void {
     this.user = this.localStorageService.retrieve("user");
     this.authFlow = this._localAuthService.getAuthFlow();
     this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
-  }
-
-  createGstinForm() {
-    const userSession = this._localAuthService.getUserSession();
-    this.gstinForm = this.formBuilder.group({
-      gstin: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern(
-            "[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9a-zA-Z]{1}"
-          ),
-        ],
-      ],
-      email: [
-        userSession && userSession["email"] ? userSession["email"] : "",
-        [Validators.required, Step.validateEmail],
-      ],
-      description: [""],
-    });
   }
 
   outData(data) {
@@ -197,6 +107,66 @@ export class BulkRquestFormPopupComponent implements OnInit {
     this._localAuthService.clearAuthFlow();
     this._localAuthService.clearBackURLTitle();
     this.moveToNext(this.stepNameRfqForm);
+  }
+
+  setGstinForm(data) {
+    this.gstinForm = data;
+  } 
+
+  setBulkRfqForm(data) {
+    this.bulkrfqForm = data;
+  }
+
+  setHeaderData(): any {
+    if (this.stepState == this.stepNameLogin) {
+      return {
+        headerText: "Get customise & best price",
+        headerSubText: "Just in 2 simple steps",
+      };
+    } else if (this.stepState == this.stepNameRfqForm) {
+      return {
+        headerText: "Thank you for showing your interest",
+        headerSubText: "Help with the below details to prioritise your query",
+      };
+    } else if (this.stepState == this.stepNameConfimation) {
+      return {
+        headerText: "Thanks, for submitting the query",
+        headerSubText: "Below is your request summary",
+      };
+    } else return "";
+  }
+
+  captureOTP(otpValue) {
+    if (!otpValue) return;
+    this._loader.setLoaderState(true);
+    const REQUEST = { email: "", phone: "", source: "login_otp" };
+    REQUEST["type"] = this._sharedAuthUtilService.getUserType(
+      this._sharedAuthService.AUTH_USING_PHONE, this.bulkRfqFormPhoneno
+    );
+    REQUEST["otp"] = otpValue;
+    REQUEST["phone"] = this.bulkRfqFormPhoneno;
+    this._sharedAuthService.authenticate(REQUEST).subscribe(
+      (response) => {
+        this._loader.setLoaderState(false);
+
+        if (
+          response["statusCode"] !== undefined ||
+          response["statusCode"] === 500
+        ) {
+          this._tms.show({
+            type: "error",
+            text: response["status"] || response["message"],
+          });
+          this._cartService.logOutAndClearCart();
+          return;
+        }
+        this.processAuthenticaton(response);
+      },
+      (error) => {
+        this._loader.setLoaderState(false);
+      }
+    );
+    this._loader.setLoaderState(false);
   }
 }
 

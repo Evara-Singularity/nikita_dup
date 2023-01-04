@@ -1,10 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SharedAuthService } from '@app/modules/shared-auth-v1/shared-auth.service';
-import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
-import { LocalAuthService } from '@app/utils/services/auth.service';
-import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
-import { LocalStorageService } from 'ngx-webstorage';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
 	selector: 'confirmationForm',

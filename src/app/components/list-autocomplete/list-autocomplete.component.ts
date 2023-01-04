@@ -32,7 +32,6 @@ export class ListAutocompleteComponent implements OnInit
     @Output("onSelect") onSelect: EventEmitter<any> = new EventEmitter()
     filteredList: any[] = [];
     toggleDropdownForPopup: boolean =false;
-    showDropDown: boolean =false;
 
     constructor() { }
 
@@ -93,12 +92,7 @@ export class ListAutocompleteComponent implements OnInit
 
     onClick(list)
     {
-      
-        // alert("70")
         this.control.setValue(list);
-        // this.onSelect.emit(list)
-        
-
     }
 
     toggleListDisplay(flag)

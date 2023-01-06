@@ -109,7 +109,7 @@ export const product = {
     pincode_delivery_text: 'वितरण ___deliveryDays___ में ___pincode___ पर उपलब्ध है',
     pincode_delivery_unavalible: '___pincode___ में डिलीवरी अनुपलब्ध है',
     pincode_pay_at_time_delivery: 'आप डिलीवरी के समय भुगतान कर सकते हैं',
-    coupon_static_text:'भुगतान ऑनलाइन करें और ___brandName ___ ___categoryName___ पर ___coupon_discount___% की छूट प्राप्त करें।',
+    coupon_static_text:'भुगतान ऑनलाइन करें और ___brandName ___ ___categoryName___ पर ___coupon_discount___ की छूट प्राप्त करें।',
     requested_successfully:"रिक्वेस्ट सफल",
     coupon_text1:"भुगतान ऑनलाइन करें और ___discount___ की छूट प्राप्त करें।",
     looking_for_category:"क्या आप ___categoryName___ की तलाश कर रहे हैं",

@@ -387,14 +387,14 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         this.isServer = commonService.isServer;
         this.isBrowser = commonService.isBrowser;
-        this.isLanguageHindi =((this.router.url).toLowerCase().indexOf('/hi') !== -1) || false;
-        if(((this.router.url).toLowerCase().indexOf('/hi') !== -1)){
-            this.englishUrl = this.router.url.toLowerCase().split("/hi").join('');;
+        this.isLanguageHindi =((this.router.url).toLowerCase().indexOf('/hi/') !== -1) || false;
+        if(((this.router.url).toLowerCase().indexOf('/hi/') !== -1)){
+            this.englishUrl = this.router.url.toLowerCase().split("/hi/").join('/');;
             this.hindiUrl =  this.router.url;
         }
         else {
             this.hindiUrl = "/hi" + this.router.url;
-            this.englishUrl = (this.router.url).toLowerCase().split("hi").join('/');
+            this.englishUrl = (this.router.url).toLowerCase().split("/hi/").join('/');
         }
     }
 
@@ -410,7 +410,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         // this.setQuestionAnswerSchema();
         this.productService.resetOOOSimilarProductsData();
         
-        if ((this.router.url).includes("/hi")) {
+        if ((this.router.url).includes("/hi/")) {
             this.commonService.defaultLocaleValue = localization_hi.product;
             this.productStaticData = localization_hi.product;
             this.commonService.changeStaticJson.next(this.productStaticData);
@@ -4527,24 +4527,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.resetLazyComponents();
     }
 
-    // translate() {
-    //     if ((this.router.url).includes("/mp/hi")) {
-    //         this.commonService.defaultLocaleValue = localization_hi.product;
-    //         this.productStaticData = localization_hi.product;
-    //         this.router.navigateByUrl((this.router.url).split("/mp/hi").join('/mp'))
-    //         this.commonService.changeStaticJson.next(this.productStaticData);
-    //     }
-    //     else {
-    //         this.commonService.defaultLocaleValue = localization_en.product
-    //         this.productStaticData = localization_en.product;
-    //         this.router.navigateByUrl((this.router.url).split("/mp").join('/mp/hi'));
-    //         this.commonService.changeStaticJson.next(this.productStaticData);
-    //     }
-    // }
-
     translate() {
-        if ((this.router.url).toLowerCase().indexOf('/hi') !== -1) {
-            const URL = this.getSanitizedUrl(this.router.url).split("/hi").join('/');
+        if ((this.router.url).toLowerCase().indexOf('/hi/') !== -1) {
+            const URL = this.getSanitizedUrl(this.router.url).split("/hi/").join('/');
             // console.log(this.commonService.defaultLocaleValue.language, URL);
             // console.log("this.productUrl",this.productUrl)
             this.router.navigate([URL]);
@@ -4561,7 +4546,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
 
     get isHindiUrl() {
-        return (this.router.url).toLowerCase().indexOf('/hi') !== -1
+        return (this.router.url).toLowerCase().indexOf('/hi/') !== -1
     }
 
     @HostListener('window:popstate', ['$event'])

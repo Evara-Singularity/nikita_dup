@@ -598,7 +598,7 @@ export class CommonService
                 }
                 this.currentRequest = this.getSearchData(
                     "GET",
-                    CONSTANTS.NEW_MOGLIX_API + "/search",
+                    CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SEARCH_V1,
                     defaultParams
                 )
                     .pipe(
@@ -621,7 +621,7 @@ export class CommonService
                 if (this.currentRequest != undefined) this.currentRequest.unsubscribe();
                 this.currentRequest = this.getPopularSeachData(
                     "GET",
-                    CONSTANTS.NEW_MOGLIX_API + "/search",
+                    CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SEARCH_V1,
                     defaultParams
                 )
                     .pipe(
@@ -644,7 +644,7 @@ export class CommonService
                 if (this.currentRequest != undefined) this.currentRequest.unsubscribe();
                 let _observerable: Observable<any> = null;
                 if (defaultParams['searchTerm']) {
-                    _observerable = this.getSearchData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SEARCH, defaultParams);
+                    _observerable = this.getSearchData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SEARCH_V1, defaultParams);
                 } else {
                     _observerable = this.getCategoryData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY, defaultParams);
                 }

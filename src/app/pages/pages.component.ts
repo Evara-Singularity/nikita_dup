@@ -231,7 +231,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
     const actualParams = this._commonService.formatParams(params);
     actualParams["str"] = msn;
     this.dataService
-      .callRestful("GET", environment.BASE_URL + ENDPOINTS.SEARCH, {
+      .callRestful("GET", environment.BASE_URL + ENDPOINTS.SEARCH_V1, {
         params: actualParams,
       })
       .subscribe((res) =>

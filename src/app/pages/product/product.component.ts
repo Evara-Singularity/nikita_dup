@@ -3300,13 +3300,13 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     metaObj.productCategoryDetails["categoryCode"]
                 ) && !this.hindiUrl
             ) {
-                url = this.rawProductData.productPartDetails[
+                url = CONSTANTS.PROD + '/' + (this.rawProductData.productPartDetails[
                     this.rawProductData["partNumber"]
                 ].canonicalUrl
                     ? this.rawProductData.productPartDetails[
                         this.rawProductData["partNumber"]
                     ].canonicalUrl
-                    : metaObj["defaultCanonicalUrl"];
+                    : metaObj["defaultCanonicalUrl"]);
             }
 
             if (url && url.substring(url.length - 2, url.length) == "-g") {

@@ -3292,7 +3292,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 url = CONSTANTS.PROD + this.hindiUrl;
             }
             else{
-                url = metaObj.productUrl;
+                url = CONSTANTS.PROD + '/' + metaObj.productUrl;
             }
             if (
                 !this.isCommonProduct ||
@@ -3312,18 +3312,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             if (url && url.substring(url.length - 2, url.length) == "-g") {
                 url = url.substring(0, url.length - 2);
             }
-            if(!this.hindiUrl){
-                links.href = CONSTANTS.PROD + "/" + url;
-            }
-            else {
-                links.href = url;
-            }
-
-            // const links = this.renderer2.createElement("link");
-            // links.rel = "alternate";
-            // links.hreflang = "hi";
-            // console.log('links.hreflang =====>',links.hreflang);
-            // links.href = URL;
+            links.href = url;
             if (this.commonService.isServer && this.isAcceptLanguage) {
                 const languagelink = this.renderer2.createElement("link");
                 languagelink.rel = "alternate";

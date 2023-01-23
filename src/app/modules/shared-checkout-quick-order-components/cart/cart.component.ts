@@ -40,7 +40,8 @@ export class CartComponent
     @ViewChild('cartAddProductPopup', { read: ViewContainerRef }) cartAddProductPopupContainerRef: ViewContainerRef;
 
     totalPayableAmountAfterPrepaid: number=0;
-    totalPayableAmountWithoutPrepaid:number=0
+    totalPayableAmountWithoutPrepaid:number=0;
+    cartUpdatesSubscription: Subscription = null;
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -69,6 +70,12 @@ export class CartComponent
         // this.noOfCartItems = (cartSession['itemsList'] as any[]).length || 0;
     }
 
+    ngOnDestroy() {
+        if (this.cartSubscription) this.cartSubscription.unsubscribe();
+        if (this.shippingSubscription) this.shippingSubscription.unsubscribe();
+        if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
+    }
+
     // Function to get and set the latest cart
     loadCartDataFromAPI() {
         this._globalLoaderService.setLoaderState(true);
@@ -89,15 +96,18 @@ export class CartComponent
 
     shippingCallSubscribers() {
         this.shippingSubscription = this._cartService.shippingValueApiUpdates().subscribe((cartSessionWithShiping) => {
-            console.log('shippingCallSubscribers', this.moduleName);
-            this.shippingApiCall();
+            // console.log('shippingCallSubscribers', this.moduleName);
+            if (!(cartSessionWithShiping && cartSessionWithShiping['offersList'] && cartSessionWithShiping['offersList'].length > 0)) {
+                this.shippingApiCall();
+            }
         })
     }
 
 
     shippingApiCall() {
         this._cartService.getShippingAndUpdateCartSession(this.cartSession).subscribe(cartsession => {
-            this.cartChangesUpdates(cartsession);
+            console.log('shipping:: called from cart');
+            // this.cartChangesUpdates(cartsession);
         })
     }
 
@@ -105,7 +115,11 @@ export class CartComponent
         this.cartSession = cartSession;
         this.noOfCartItems = (cartSession['itemsList'] as any[]).length;
         if (this.noOfCartItems) {
-            this._cartService.verifyAndUpdateNotfications();
+            this.cartUpdatesSubscription = this._cartService.verifyAndUpdateNotfications().subscribe(response => {
+                if(response){
+                    this._cartService.verifyAndUpdateNotficationsAfterCall(response)
+                }
+            });
         }
         this._globalLoaderService.setLoaderState(false);
     }
@@ -529,8 +543,4 @@ export class CartComponent
 
     get isQuickorder() { return this.moduleName === "QUICKORDER" }
 
-    ngOnDestroy() { 
-        if (this.cartSubscription) this.cartSubscription.unsubscribe(); 
-        if(this.shippingSubscription) this.shippingSubscription.unsubscribe();
-    }
 }

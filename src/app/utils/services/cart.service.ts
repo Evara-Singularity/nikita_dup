@@ -1432,30 +1432,34 @@ export class CartService
     }
 
     //promo code section
-    getPromoCodesByUserId(userId = null)
-    {
+    getPromoCodesByUserId(userId = null, onlyVerifyPromoCode = false) {
         this._loaderService.setLoaderState(true);
         const cartSession = this.getCartSession();
         const offerId = (cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
-        if(userId) {
+        if (userId) {
             this.getAllPromoCodesByUserId(userId).subscribe(res => {
-                this.processPromoData(res, offerId);
+                this.processPromoData(res, offerId, onlyVerifyPromoCode);
             });
         } else {
             this.getAllPromoCodes().subscribe(res => {
-                this.processPromoData(res, offerId);
+                this.processPromoData(res, offerId, onlyVerifyPromoCode);
             })
         }
     }
 
-    processPromoData(res, offerId) {
+    processPromoData(res, offerId, onlyVerifyPromoCode = false) {
         if (res['statusCode'] === 200) {
             this.allPromoCodes = res['data'];
             const promo = this.allPromoCodes.find(promo => promo.promoId === offerId);
             if (promo) {
                 this.appliedPromoCode = promo['promoCode'];
                 //back end code as getCartBysession is not updating with offerdetails of promocde applied
-                this.updatePromoDetail(this.appliedPromoCode);
+                // this.updatePromoDetail(this.appliedPromoCode);
+                if (onlyVerifyPromoCode) {
+                    this.postProcessAfterPromocodeWithoutUpdate(this.appliedPromoCode);
+                }else{
+                    this.updatePromoDetail(this.appliedPromoCode);
+                }
             }
             this.pushPromocodesDataLayer();
         }
@@ -1526,6 +1530,20 @@ export class CartService
             if (totalOffer) { this.promoCodeSubject.next({ promocode: promocode, isNewPromocode: isNewPromocode}); }
             this._loaderService.setLoaderState(false);
         })
+    }
+
+    postProcessAfterPromocodeWithoutUpdate(promocode) {
+        console.log('postProcessAfterPromocodeWithoutUpdate', promocode);
+        const cartSession = this.getCartSession();
+        const totalOffer = cartSession['cart']['totalOffer'] || null;
+        cartSession['extraOffer'] = null;
+        cartSession['cart']['totalOffer'] = totalOffer;
+        const _cartSession = this.generateGenericCartSession(cartSession);
+        this.setGenericCartSession(_cartSession);
+        this._cartUpdatesChanges.next(cartSession);
+        this.orderSummary.next(_cartSession);
+        if (totalOffer) { this.promoCodeSubject.next({ promocode: promocode, isNewPromocode: false }); }
+        this._loaderService.setLoaderState(false);
     }
 
     verifyAndApplyPromocode(_cartSession, promcode, isUpdateCart)
@@ -1823,8 +1841,7 @@ export class CartService
         this.notificationsSubject.next(this.notifications);
     }
 
-    verifyAndUpdateNotfications(time?)
-    {
+    verifyAndUpdateNotfications(time?) {
         if (this.localAuthService.isUserLoggedIn()) {
             const USER_SESSION = this.localAuthService.getUserSession();
             const CART_SESSION = this.getGenericCartSession;
@@ -1832,16 +1849,21 @@ export class CartService
             const VALIDATE_CART_MESSAGE_REQUEST = { userId: USER_SESSION['userId'] };
             const buyNow = this.buyNow;
             if (buyNow) { VALIDATE_CART_MESSAGE_REQUEST['buyNow'] = buyNow; }
-            forkJoin([this.validateCartApi(VALIDATE_CART_REQUEST), this.getValidateCartMessageApi(VALIDATE_CART_MESSAGE_REQUEST)]).pipe(delay(time ? time : 0)).subscribe((responses) =>
-            {
-                const validateCartResponse = responses[0];
-                const validateCartMessageResponse = responses[1];
-                let validateCartData = null, validateCartMessageData = null;
-                if (validateCartResponse['status']) { validateCartData = validateCartResponse['data'] }
-                if (validateCartMessageResponse['statusCode']) { validateCartMessageData = validateCartMessageResponse['data'] }
-                this.processNotifications(CART_SESSION['itemsList'], validateCartData, validateCartMessageData);
-            });
+            return forkJoin([this.validateCartApi(VALIDATE_CART_REQUEST), this.getValidateCartMessageApi(VALIDATE_CART_MESSAGE_REQUEST)]).pipe(delay(time ? time : 0))
+        } else {
+            return null;
         }
+    }
+
+
+    public verifyAndUpdateNotficationsAfterCall(responses: [Object, Object]) {
+        const CART_SESSION = this.getGenericCartSession;
+        const validateCartResponse = responses[0];
+        const validateCartMessageResponse = responses[1];
+        let validateCartData = null, validateCartMessageData = null;
+        if (validateCartResponse['status']) { validateCartData = validateCartResponse['data']; }
+        if (validateCartMessageResponse['statusCode']) { validateCartMessageData = validateCartMessageResponse['data']; }
+        this.processNotifications(CART_SESSION['itemsList'], validateCartData, validateCartMessageData);
     }
 
     /**

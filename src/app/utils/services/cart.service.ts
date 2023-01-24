@@ -1432,22 +1432,22 @@ export class CartService
     }
 
     //promo code section
-    getPromoCodesByUserId(userId = null, onlyVerifyPromoCode = false) {
+    getPromoCodesByUserId(userId = null, isUpdatePromoCode = true) {
         this._loaderService.setLoaderState(true);
         const cartSession = this.getCartSession();
         const offerId = (cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
         if (userId) {
             this.getAllPromoCodesByUserId(userId).subscribe(res => {
-                this.processPromoData(res, offerId, onlyVerifyPromoCode);
+                this.processPromoData(res, offerId, isUpdatePromoCode);
             });
         } else {
             this.getAllPromoCodes().subscribe(res => {
-                this.processPromoData(res, offerId, onlyVerifyPromoCode);
+                this.processPromoData(res, offerId, isUpdatePromoCode);
             })
         }
     }
 
-    processPromoData(res, offerId, onlyVerifyPromoCode = false) {
+    processPromoData(res, offerId, isUpdatePromoCode = false) {
         if (res['statusCode'] === 200) {
             this.allPromoCodes = res['data'];
             const promo = this.allPromoCodes.find(promo => promo.promoId === offerId);
@@ -1455,7 +1455,7 @@ export class CartService
                 this.appliedPromoCode = promo['promoCode'];
                 //back end code as getCartBysession is not updating with offerdetails of promocde applied
                 // this.updatePromoDetail(this.appliedPromoCode);
-                if (onlyVerifyPromoCode) {
+                if (!isUpdatePromoCode) {
                     this.postProcessAfterPromocodeWithoutUpdate(this.appliedPromoCode);
                 }else{
                     this.updatePromoDetail(this.appliedPromoCode);
@@ -1525,7 +1525,7 @@ export class CartService
             newCartSession['cart']['totalOffer'] = totalOffer;
             const _cartSession = this.generateGenericCartSession(newCartSession);
             this.setGenericCartSession(_cartSession);
-            this._cartUpdatesChanges.next(cartSession);
+            // this._cartUpdatesChanges.next(cartSession);
             this.orderSummary.next(_cartSession);
             if (totalOffer) { this.promoCodeSubject.next({ promocode: promocode, isNewPromocode: isNewPromocode}); }
             this._loaderService.setLoaderState(false);
@@ -1533,17 +1533,20 @@ export class CartService
     }
 
     postProcessAfterPromocodeWithoutUpdate(promocode) {
-        console.log('postProcessAfterPromocodeWithoutUpdate', promocode);
-        const cartSession = this.getCartSession();
-        const totalOffer = cartSession['cart']['totalOffer'] || null;
-        cartSession['extraOffer'] = null;
-        cartSession['cart']['totalOffer'] = totalOffer;
-        const _cartSession = this.generateGenericCartSession(cartSession);
-        this.setGenericCartSession(_cartSession);
-        this._cartUpdatesChanges.next(cartSession);
-        this.orderSummary.next(_cartSession);
-        if (totalOffer) { this.promoCodeSubject.next({ promocode: promocode, isNewPromocode: false }); }
-        this._loaderService.setLoaderState(false);
+        const cartSessionTemp = this.getCartSession();
+        this.getShippingAndUpdateCartSession(cartSessionTemp).subscribe(cartsessionResponse => {
+            // this.cartChangesUpdates(cartsession);
+            const cartSession = cartsessionResponse;
+            const totalOffer = cartSession['cart']['totalOffer'] || null;
+            cartSession['extraOffer'] = null;
+            cartSession['cart']['totalOffer'] = totalOffer;
+            const _cartSession = this.generateGenericCartSession(cartSession);
+            this.setGenericCartSession(_cartSession);
+            // this._cartUpdatesChanges.next(cartSession);
+            this.orderSummary.next(_cartSession);
+            if (totalOffer) { this.promoCodeSubject.next({ promocode: promocode, isNewPromocode: false }); }
+            this._loaderService.setLoaderState(false);
+        })
     }
 
     verifyAndApplyPromocode(_cartSession, promcode, isUpdateCart)

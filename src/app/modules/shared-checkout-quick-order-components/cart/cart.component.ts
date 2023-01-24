@@ -64,7 +64,7 @@ export class CartComponent
         if (this._commonService.isBrowser) {
             this.sendCriteoPageLoad();
             this.sendEmailGTMCall();
-            this.shippingCallSubscribers();
+            //  this.shippingCallSubscribers();
         }
         // const cartSession = this._cartService.getCartSession();
         // this.noOfCartItems = (cartSession['itemsList'] as any[]).length || 0;
@@ -88,28 +88,39 @@ export class CartComponent
                 return cartSession;
             })).subscribe((cartSession) => {
                 this.cartChangesUpdates(cartSession);
-                if(this.moduleName == 'QUICKORDER'){
-                    this._cartService.callShippingValueApi(cartSession)
-                }
+                const userSession = this._localAuthService.getUserSession();
+                this._cartService.getPromoCodesByUserId(userSession['userId'], false);
+
+                // if (!(cartSession && cartSession['offersList'] && cartSession['offersList'].length > 0)) {
+                //     const userSession = this._localAuthService.getUserSession();
+                //     this._cartService.getPromoCodesByUserId(userSession['userId'], false)
+                // } else {
+                //     if (this.moduleName == 'QUICKORDER') {
+                //         this._cartService.callShippingValueApi(cartSession)
+                //     }
+                // }
             });
     }
 
-    shippingCallSubscribers() {
-        this.shippingSubscription = this._cartService.shippingValueApiUpdates().subscribe((cartSessionWithShiping) => {
-            // console.log('shippingCallSubscribers', this.moduleName);
-            if (!(cartSessionWithShiping && cartSessionWithShiping['offersList'] && cartSessionWithShiping['offersList'].length > 0)) {
-                this.shippingApiCall();
-            }
-        })
-    }
+    // shippingCallSubscribers() {
+    //     this.shippingSubscription = this._cartService.shippingValueApiUpdates().subscribe((cartSessionWithShiping) => {
+    //         // console.log('shippingCallSubscribers', this.moduleName);
+    //         // this.shippingApiCall();
+    //         // new coded added to check promo codes
+    //         // const userSession = this._localAuthService.getUserSession();
+    //         // this._cartService.getPromoCodesByUserId(userSession['userId']);
+    //         // if (!(cartSessionWithShiping && cartSessionWithShiping['offersList'] && cartSessionWithShiping['offersList'].length > 0)) {
+    //         // }
+    //     })
+    // }
 
 
-    shippingApiCall() {
-        this._cartService.getShippingAndUpdateCartSession(this.cartSession).subscribe(cartsession => {
-            console.log('shipping:: called from cart');
-            // this.cartChangesUpdates(cartsession);
-        })
-    }
+    // shippingApiCall() {
+    //     this._cartService.getShippingAndUpdateCartSession(this.cartSession).subscribe(cartsession => {
+    //         console.log('shipping:: called from cart');
+    //         // this.cartChangesUpdates(cartsession);
+    //     })
+    // }
 
     cartChangesUpdates(cartSession) {
         this.cartSession = cartSession;
@@ -117,7 +128,7 @@ export class CartComponent
         if (this.noOfCartItems) {
             this.cartUpdatesSubscription = this._cartService.verifyAndUpdateNotfications().subscribe(response => {
                 if(response){
-                    this._cartService.verifyAndUpdateNotficationsAfterCall(response)
+                    this._cartService.verifyAndUpdateNotficationsAfterCall(response);
                 }
             });
         }

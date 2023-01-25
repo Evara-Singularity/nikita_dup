@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -28,13 +28,13 @@ declare let dataLayer;
 export class CartComponent
 {
     removableItem = null;
-    @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     cartSubscription: Subscription;
     shippingSubscription: Subscription;
     pageEvent = "genericPageLoad";
     cartSession = null;
     noOfCartItems = 0;
-
+    @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
+    
     //cartAddproduct var
     cartAddProductPopupInstance = null;
     @ViewChild('cartAddProductPopup', { read: ViewContainerRef }) cartAddProductPopupContainerRef: ViewContainerRef;
@@ -87,10 +87,10 @@ export class CartComponent
                 this.pageEvent = "genericClick";
                 return cartSession;
             })).subscribe((cartSession) => {
+                console.log('loadCartDataFromAPI', cartSession);
                 this.cartChangesUpdates(cartSession);
                 const userSession = this._localAuthService.getUserSession();
                 this._cartService.getPromoCodesByUserId(userSession['userId'], false);
-
                 // if (!(cartSession && cartSession['offersList'] && cartSession['offersList'].length > 0)) {
                 //     const userSession = this._localAuthService.getUserSession();
                 //     this._cartService.getPromoCodesByUserId(userSession['userId'], false)

@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { CategoryData } from '@app/utils/models/categoryData';
@@ -17,7 +17,7 @@ import { LocalAuthService } from './../../../utils/services/auth.service';
     styleUrls: ['./cart-no-item.component.scss'],
 })
 
-export class CartNoItemComponent implements OnInit, OnDestroy
+export class CartNoItemComponent implements OnInit, AfterViewInit, OnDestroy
 {
 
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -27,14 +27,17 @@ export class CartNoItemComponent implements OnInit, OnDestroy
     constructor(public cartService: CartService, private _dataService: DataService, private _localAuthService:LocalAuthService,private _router:Router) { }
 
 
-    ngOnInit(): void
-    {
-        const FLYOUT_URL = environment.BASE_URL + ENDPOINTS.GET_FDK_HOME;
-        this.flyOutDataSubscription = this._dataService.callRestful("GET", FLYOUT_URL).pipe(map((response: CategoryData[]) =>
-        {
-            if (response && response['data']) { return response['data']; }
-            return [];
-        })).subscribe((data) => this.flyOutData = data);
+    ngOnInit(): void {
+    }
+
+    ngAfterViewInit(): void {
+        if (this.cartService.getGenericCartSession?.itemsList?.length == 0) {
+            const FLYOUT_URL = environment.BASE_URL + ENDPOINTS.GET_FDK_HOME;
+            this.flyOutDataSubscription = this._dataService.callRestful("GET", FLYOUT_URL).pipe(map((response: CategoryData[]) => {
+                if (response && response['data']) { return response['data']; }
+                return [];
+            })).subscribe((data) => this.flyOutData = data);
+        }
     }
 
     navigateToLogin()

@@ -443,6 +443,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.attachBackClickHandler();
             this.navigationOnFragmentChange();
             this.getProductTag()
+            this.onVisibleOffer();
         }
         
     }
@@ -2561,7 +2562,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         // }
     }
 
-    async onVisibleOffer(htmlElement)
+    async onVisibleOffer()
     {
         if (!this.productOutOfStock && this.productMrp > 0) {
             const { ProductOffersComponent } = await import(

@@ -19,7 +19,7 @@
 </ng-container>
 
 <!-- TODO: skeleton to be implemented -->
-<div *ngIf="!productOutOfStock" class="coupon" data-observeVisibility [debounceTime]="300" (visible)="onVisibleOffer($event)">
+<div *ngIf="!productOutOfStock" class="coupon" >
     <ng-container #offerSection></ng-container>
     <product-skeletons [type]="'COUPON'" [templateRefInstance]="offerSectionInstance"></product-skeletons>
 </div>

@@ -203,7 +203,7 @@ textarea {
                 left: 10px;
                 font-size: $large-font;
                 top: 12px;
-                color: var(--silver);
+                color: var(--dim-gray);
                 @extend %transition;
                 .error-txt {
                     margin-left: 10px !important;
@@ -284,7 +284,9 @@ textarea {
         .input-field-boxed {
             margin-bottom: 20px;
             position: relative;
-
+            @include placeholder{
+                color: var(--dim-gray);
+            }
             input,
             select {
                 width: 100%;

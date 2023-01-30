@@ -148,7 +148,7 @@ app-search-bar {
 
         form {
             @include placeholder {
-                color: var(--silver);
+                color: var(--dim-gray);
                 font-size: $large-font;
             }
 

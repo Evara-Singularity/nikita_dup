@@ -42,14 +42,14 @@
                 margin-bottom: 5px;
                 text-align: left;
                 font-size: $small-font;
-                color: var(--gray-web);
+                color: var(--dim-gray);
             }
             .prod-price-row{
                 margin-bottom:4px;
                 .prod-mrp{
-                    color: var(--onyx-black);
+                    color: var(--dim-gray);
                     text-decoration: line-through;
-                    opacity: .5;
+                    // opacity: .5;
                     margin-right:5px;
                 }
                 .prod-discount{

@@ -15,7 +15,7 @@
         .brand {
             font-size: $small-font;
             line-height: $small-line-height;
-            color: var(--silver);
+            color: var(--dim-gray);
             font-weight: bold;
             margin-top: 5px;
         }
@@ -31,8 +31,8 @@
             .before-discount {
                 text-decoration: line-through;
                 margin: 0 6px 0 0;
-                opacity: 0.5;
-                color: #3c3c3c;
+                // opacity: 0.5;
+                color: var(--dim-gray);
             }
             .discount {
                 color: var(--slimy-green);

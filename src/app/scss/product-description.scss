@@ -51,7 +51,7 @@
                 color: var(--black);
 
                 .review {
-                    color: var(--onyx-black);
+                    color: var(--dim-gray);
                     font-size: $medium-font;
                 }
 
@@ -76,7 +76,7 @@
 
         .mrp {
             font-size: $medium-font;
-            color: var(--spanish-gray);
+            color: var(--dim-gray);
 
             span {
                 color: var(--slimy-green);
@@ -101,7 +101,7 @@
                 font-weight: normal !important;
                 // display: block;
                 padding-top: 5px;
-                color: var(--spanish-gray);
+                color: var(--dim-gray);
                 .icon-expand {
                     font-size: 6px;
                     vertical-align: middle;

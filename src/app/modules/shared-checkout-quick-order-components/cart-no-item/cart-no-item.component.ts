@@ -53,6 +53,8 @@ export class CartNoItemComponent implements OnInit, AfterViewInit, OnDestroy
 
     ngOnDestroy(): void
     {
-        this.flyOutDataSubscription.unsubscribe()
+        if(this.flyOutDataSubscription){
+            this.flyOutDataSubscription.unsubscribe()
+        }
     }
 }

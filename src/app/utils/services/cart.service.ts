@@ -1854,7 +1854,7 @@ export class CartService
             if (buyNow) { VALIDATE_CART_MESSAGE_REQUEST['buyNow'] = buyNow; }
             return forkJoin([this.validateCartApi(VALIDATE_CART_REQUEST), this.getValidateCartMessageApi(VALIDATE_CART_MESSAGE_REQUEST)]).pipe(delay(time ? time : 0))
         } else {
-            return null;
+            return of(null);
         }
     }
 

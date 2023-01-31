@@ -19,9 +19,11 @@
 </ng-container>
 
 <!-- TODO: skeleton to be implemented -->
-<div *ngIf="!productOutOfStock" class="coupon" >
+<div class="coupon" >
     <ng-container #offerSection></ng-container>
-    <product-skeletons [type]="'COUPON'" [templateRefInstance]="offerSectionInstance"></product-skeletons>
+    <div [ngClass]="{ 'coupon-inner': !offerSectionInstance}" class="coupon-inner" *ngIf="!productOutOfStock" >
+        <product-skeletons [type]="'COUPON'" [templateRefInstance]="offerSectionInstance"></product-skeletons>
+    </div>
 </div>
 
 <!-- TODO: skeleton to be implemented -->

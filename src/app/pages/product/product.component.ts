@@ -701,7 +701,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             .subscribe((productData) =>
             {
                 if (productData["status"] == true && productData["active"] == true ) {
-
                     this.processProductData(
                         {
                             productBO: productData["productBO"],
@@ -711,6 +710,15 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         productData
                     );
                     this.productFbtData();
+                    if(this.productOutOfStock){
+                        if (this.offerSectionInstance) {
+                            if (this.offerSectionContainerRef) {
+                                this.offerSectionContainerRef.remove();
+                            }
+                        }
+                    }else{
+                        this.onVisibleOffer();
+                    }
                     this.showLoader = false;
                 }
             });
@@ -2612,6 +2620,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             {
                 this.promoCodePopUpOpen(data);
             });
+        }else{
+
         }
     }
     async promoCodePopUpOpen(data){

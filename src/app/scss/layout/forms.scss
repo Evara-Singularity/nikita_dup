@@ -324,7 +324,7 @@ textarea {
         }
 
         @include placeholder {
-            color: #b5b5b5;
+            color: var(--dim-gray);
             font-size: 14px;
         }
 

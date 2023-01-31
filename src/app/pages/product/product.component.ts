@@ -449,7 +449,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
     getProductTag(){
-        this.globalLoader.setLoaderState(true);
+        // this.globalLoader.setLoaderState(true);
         this.productService.getProductTag(this.msn).subscribe(response => {
             if (response['statusCode'] == 200 && response['data'] != null) {
                 this.productTags=response['data']
@@ -457,7 +457,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             } else {
                 this.productTags=null;
             }
-            this.globalLoader.setLoaderState(false)
+            // this.globalLoader.setLoaderState(false)
         })
 
     }

@@ -35,7 +35,7 @@ export class CartService
     public selectedBusinessAddressObservable: Subject<any> = new Subject();
     public productShippingChargesListObservable: Subject<any> = new Subject();
     private notificationsSubject: Subject<any[]> = new Subject<any[]>();
-    public promoCodeSubject: Subject<{ promocode: string, isNewPromocode: boolean }> = new Subject<{ promocode: string, isNewPromocode: boolean }>();
+    public promoCodeSubject: Subject<{ promocode: string, isNewPromocode: boolean, totalOffer?: number }> = new Subject<{ promocode: string, isNewPromocode: boolean }>();
     public isCartEditButtonClick: boolean = false;
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public cartCountSubject: Subject<any> = new Subject<any>(); // cartCountSubject 
@@ -1460,6 +1460,9 @@ export class CartService
                 }else{
                     this.updatePromoDetail(this.appliedPromoCode);
                 }
+            }else{
+                // call shipping directly,
+                this.postProcessAfterPromocodeWithoutUpdate();
             }
             this.pushPromocodesDataLayer();
         }
@@ -1527,24 +1530,22 @@ export class CartService
             this.setGenericCartSession(_cartSession);
             // this._cartUpdatesChanges.next(cartSession);
             this.orderSummary.next(_cartSession);
-            if (totalOffer) { this.promoCodeSubject.next({ promocode: promocode, isNewPromocode: isNewPromocode}); }
+            if (totalOffer) { this.promoCodeSubject.next({ promocode: promocode, isNewPromocode: isNewPromocode, totalOffer: totalOffer}); }
             this._loaderService.setLoaderState(false);
         })
     }
 
-    postProcessAfterPromocodeWithoutUpdate(promocode) {
+    postProcessAfterPromocodeWithoutUpdate(promocode = null) {
         const cartSessionTemp = this.getCartSession();
         this.getShippingAndUpdateCartSession(cartSessionTemp).subscribe(cartsessionResponse => {
-            // this.cartChangesUpdates(cartsession);
             const cartSession = cartsessionResponse;
             const totalOffer = cartSession['cart']['totalOffer'] || null;
             cartSession['extraOffer'] = null;
             cartSession['cart']['totalOffer'] = totalOffer;
             const _cartSession = this.generateGenericCartSession(cartSession);
             this.setGenericCartSession(_cartSession);
-            // this._cartUpdatesChanges.next(cartSession);
             this.orderSummary.next(_cartSession);
-            if (totalOffer) { this.promoCodeSubject.next({ promocode: promocode, isNewPromocode: false }); }
+            if (totalOffer && promocode) { this.promoCodeSubject.next({ promocode: promocode, isNewPromocode: false }); }
             this._loaderService.setLoaderState(false);
         })
     }

@@ -45,7 +45,7 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy
         this.cartSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession => {
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
                 // no global changes triggered
-                this.totalOffer = cartSession['cart']['totalOffer'] || 0;
+                // this.totalOffer = cartSession['cart']['totalOffer'] || 0;
                 this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
             }
             this.isCartFetched = true;
@@ -56,9 +56,10 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy
             this.updateShippingCharges();
         })
 
-        this.promoSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode }) => {
+        this.promoSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode, totalOffer }) => {
             // no global changes triggered
             this.showPromoSuccessPopup = isNewPromocode;
+            this.totalOffer = totalOffer || 0;
             setTimeout(() => { this.showPromoSuccessPopup = false; }, 800)
         })
     }

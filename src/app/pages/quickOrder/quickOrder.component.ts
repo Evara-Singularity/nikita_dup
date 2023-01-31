@@ -38,7 +38,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
             delay(800)
         )
             .subscribe((cartSession) => {
-                console.log('cartSession ==>', cartSession)
+                // console.log('cartSession ==>', cartSession)
                 if ((cartSession && cartSession.itemsList && cartSession.itemsList.length === 0)) {
                     this.isCartNoItems = true;
                 }else{

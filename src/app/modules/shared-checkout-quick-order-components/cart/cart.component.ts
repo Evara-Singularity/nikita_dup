@@ -16,7 +16,7 @@ import { GlobalLoaderService } from '@utils/services/global-loader.service';
 import { ProductService } from '@utils/services/product.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { forkJoin, of, Subscription } from 'rxjs';
-import { catchError, concatMap, delay, first, map, switchMap } from 'rxjs/operators';
+import { catchError, concatMap, delay, first, map, mergeMap, switchMap } from 'rxjs/operators';
 
 declare let dataLayer;
 @Component({
@@ -86,20 +86,24 @@ export class CartComponent
                 this.sendAdobeAnalyticsData(this.pageEvent);
                 this.pageEvent = "genericClick";
                 return cartSession;
-            })).subscribe((cartSession) => {
-                console.log('loadCartDataFromAPI', cartSession);
-                this.cartChangesUpdates(cartSession);
-                const userSession = this._localAuthService.getUserSession();
-                this._cartService.getPromoCodesByUserId(userSession['userId'], false);
-                // if (!(cartSession && cartSession['offersList'] && cartSession['offersList'].length > 0)) {
-                //     const userSession = this._localAuthService.getUserSession();
-                //     this._cartService.getPromoCodesByUserId(userSession['userId'], false)
-                // } else {
-                //     if (this.moduleName == 'QUICKORDER') {
-                //         this._cartService.callShippingValueApi(cartSession)
-                //     }
-                // }
-            });
+            }),
+            // mergeMap((cartSession: any) => {
+            //     return this._cartService.getShippingAndUpdateCartSession(cartSession);
+            // }),
+        ).subscribe((cartSession) => {
+            // console.log('loadCartDataFromAPI', cartSession);
+            this.cartChangesUpdates(cartSession);
+            const userSession = this._localAuthService.getUserSession();
+            this._cartService.getPromoCodesByUserId(userSession['userId'], false);
+            // if (!(cartSession && cartSession['offersList'] && cartSession['offersList'].length > 0)) {
+            //     const userSession = this._localAuthService.getUserSession();
+            //     this._cartService.getPromoCodesByUserId(userSession['userId'], false)
+            // } else {
+            //     if (this.moduleName == 'QUICKORDER') {
+            //         this._cartService.callShippingValueApi(cartSession)
+            //     }
+            // }
+        });
     }
 
     // shippingCallSubscribers() {

@@ -2,8 +2,7 @@
     <div class="pwa-row order-confirmation-banner">
         <div class="pwa-col-12 card">
             <p class="green-txt"> Order Placed Successfully</p>
-            <img class="mt-15 main-img" src="../.././../assets/img/order_placed.png">
-            <p class="pwa-text">Hi User! Thank you for your order. We’ll send a confirmation when your order ships.</p>
+            <img class="mt-15 main-img" src="../.././../assets/img/order-confirmation-img.png">
         </div>
     </div>
     <div class="pwa-row order-item-section">
@@ -38,16 +37,13 @@
                 </li>
                
             </ul>
-            <p class="note-info"><b>Note:</b> We do not demand your banking and credit card details verbally or
-                telephnocially. Please do not divulge your details to fraudsters falsely claming to be calling on
-                moglix’s behalf.</p>
         </div>
     </div>
     <div class="order-confirmation-btn">
         <button class="btn tertiary-outline-cta" (click)="navigateTo('dashboard/order')">VIEW ORDER</button>
         <button class="btn tertiary-btn" (click)="navigateTo('/')">SHOP MORE</button>
     </div>
-
+    
     <div class="pwa-row promo-section">
         <div data-observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)" class="inner-promo">
             <ng-container #appPromo></ng-container>

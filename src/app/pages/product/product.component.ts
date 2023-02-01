@@ -711,17 +711,23 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     );
                     this.productFbtData();
                     if(this.productOutOfStock){
-                        if (this.offerSectionInstance) {
-                            if (this.offerSectionContainerRef) {
-                                this.offerSectionContainerRef.remove();
-                            }
-                        }
+                        this.clearOfferInstance();
                     }else{
+                        this.clearOfferInstance();
                         this.onVisibleOffer();
                     }
                     this.showLoader = false;
                 }
             });
+    }
+
+    private clearOfferInstance() {
+        if (this.offerSectionInstance) {
+            this.offerSectionInstance = null;
+            if (this.offerSectionContainerRef) {
+                this.offerSectionContainerRef.remove();
+            }
+        }
     }
 
     removeRfqForm()

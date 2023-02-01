@@ -91,6 +91,7 @@ export class HomeV1Component implements OnInit {
   //metadata var
   oganizationSchema: any;
 
+  isUserLoggedIn:any;
 
 
   constructor(
@@ -113,6 +114,7 @@ export class HomeV1Component implements OnInit {
   }
 
   ngOnInit() {
+  this.isUserLoggedIn = this._localAuthService.getUserSession();
     this._commonService.isHomeHeader = true;
 		this._commonService.isPLPHeader = false;
     this.loadSearchTerms();

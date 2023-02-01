@@ -90,7 +90,7 @@
         </div>
 
         <!-- recently view Carousel -->
-        <div class="pwa-col-12 recently-container">
+        <div class="pwa-col-12 recently-container"  *ngIf="!isUserLoggedIn">
             <div data-observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
                 *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
                 <ng-container #RecentlyViewedCarouselComponent></ng-container>
@@ -99,10 +99,10 @@
         </div>
 
         <!--homeMiscellaneousCarousel ( Buy it again, Recently Viewed, wishlist & my RFQ section)-->
-        <section *ngIf="1" id="popularDeals" data-observeVisibility [debounceTime]="100" (visible)="onVisiblePopularDeals($event)">
+        <section *ngIf="isUserLoggedIn" id="popularDeals" data-observeVisibility [debounceTime]="100" (visible)="onVisiblePopularDeals($event)">
             <ng-container #homeMiscellaneousCarousel></ng-container>
-            <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="carouselInstance"></home-page-skeletons>
-        </section>
+            <!-- <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="carouselInstance"></home-page-skeletons> -->
+        </section>      
   
         <!-- category data Carousel -->
         <home-categories class="pwa-col-12" [carouselData]="homePageCategoryCarouselData" [categories]="categories"

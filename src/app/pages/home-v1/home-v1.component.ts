@@ -106,15 +106,16 @@ export class HomeV1Component implements OnInit {
     private title: Title,
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private _document,
-
-
   ) {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
   }
 
   ngOnInit() {
-  this.isUserLoggedIn = this._localAuthService.getUserSession();
+    
+
+    this.isUserLoggedIn = this._localAuthService.getUserSession();
+
     this._commonService.isHomeHeader = true;
 		this._commonService.isPLPHeader = false;
     this.loadSearchTerms();
@@ -136,6 +137,12 @@ export class HomeV1Component implements OnInit {
     this.setMetaData();
     //setting analytics
     this.setAnalyticTags();
+    this.checkForUser();
+  }
+
+  checkForUser(){
+    let userData = this._localAuthService.getUserSession();
+    this.isUserLoggedIn = (userData.authenticated == "true") ? true: false
   }
 
   homePageData(response: any) {

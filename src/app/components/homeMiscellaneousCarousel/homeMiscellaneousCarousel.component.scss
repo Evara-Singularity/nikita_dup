@@ -1,0 +1,15 @@
+@import '../../scss/layout/horizontalProductListing';
+@import '../../scss/components/tabs';
+
+.popularDeals{
+    background:#bdbdbe;
+    padding-top: 5px;
+    .view-all-strip{
+      h3{
+        font-size:$extra-large-font
+      }  
+    }
+    .pwa-tabs-container{
+        padding-bottom:10px;
+    }
+}

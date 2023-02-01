@@ -66,6 +66,11 @@ export class HomeV1Component implements OnInit {
   showRecentlyViewedCarousel = true;
   recentProductList: Array<any> = [];
 
+   // ondemad loaded component for homeMiscellaneousCarousel ( Buy it again, Recently Viewed, wishlist & my RFQ section )
+   homeMiscellaneousCarouselInstance = null;
+   @ViewChild("homeMiscellaneousCarousel", { read: ViewContainerRef })
+   homeMiscellaneousCarouselContainerRef: ViewContainerRef;
+
   // ondemad loaded components: PWA Categories
   categoriesInstance = null;
   @ViewChild('Categories', { read: ViewContainerRef })
@@ -255,6 +260,48 @@ export class HomeV1Component implements OnInit {
       this.carouselInstance.instance['prodList'] = this.recentProductList;
     }
   }
+
+  async onVisiblePopularDeals(htmlElement) {
+    if (!this.homeMiscellaneousCarouselInstance) {
+      const { HomeMiscellaneousCarouselComponent } = await import(
+        "./../../components/homeMiscellaneousCarousel/homeMiscellaneousCarousel.component"
+      );
+      const factory = this.cfr.resolveComponentFactory(HomeMiscellaneousCarouselComponent);
+      this.homeMiscellaneousCarouselInstance =
+        this.homeMiscellaneousCarouselContainerRef.createComponent(
+          factory,
+          null,
+          this.injector
+        );
+
+
+
+
+      this.homeMiscellaneousCarouselInstance.instance["categoryCode"] =this.recentProductList
+
+      // const custData = this.commonService.custDataTracking;
+      // const orderData = this.orderTracking;
+      // const TAXONS = this.taxons;
+      // const page = {
+      //   pageName: null,
+      //   channel: "pdp",
+      //   subSection: "Our Popular Deals",
+      //   linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+      //   linkName: null,
+      //   loginStatus: this.commonService.loginStatusTracking,
+      // };
+      // this.popularDealsInstance.instance["analytics"] = {
+      //   page: page,
+      //   custData: custData,
+      //   order: orderData,
+      // };
+
+
+
+
+    }
+  }
+
 
   loadSearchNav() {
     this._commonService.loadNav.next(true);

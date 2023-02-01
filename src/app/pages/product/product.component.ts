@@ -443,12 +443,13 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.attachBackClickHandler();
             this.navigationOnFragmentChange();
             this.getProductTag()
+            this.onVisibleOffer();
         }
         
     }
 
     getProductTag(){
-        this.globalLoader.setLoaderState(true);
+        // this.globalLoader.setLoaderState(true);
         this.productService.getProductTag(this.msn).subscribe(response => {
             if (response['statusCode'] == 200 && response['data'] != null) {
                 this.productTags=response['data']
@@ -456,7 +457,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             } else {
                 this.productTags=null;
             }
-            this.globalLoader.setLoaderState(false)
+            // this.globalLoader.setLoaderState(false)
         })
 
     }
@@ -700,7 +701,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             .subscribe((productData) =>
             {
                 if (productData["status"] == true && productData["active"] == true ) {
-
                     this.processProductData(
                         {
                             productBO: productData["productBO"],
@@ -710,9 +710,24 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         productData
                     );
                     this.productFbtData();
+                    if(this.productOutOfStock){
+                        this.clearOfferInstance();
+                    }else{
+                        this.clearOfferInstance();
+                        this.onVisibleOffer();
+                    }
                     this.showLoader = false;
                 }
             });
+    }
+
+    private clearOfferInstance() {
+        if (this.offerSectionInstance) {
+            this.offerSectionInstance = null;
+            if (this.offerSectionContainerRef) {
+                this.offerSectionContainerRef.remove();
+            }
+        }
     }
 
     removeRfqForm()
@@ -2561,7 +2576,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         // }
     }
 
-    async onVisibleOffer(htmlElement)
+    async onVisibleOffer()
     {
         if (!this.productOutOfStock && this.productMrp > 0) {
             const { ProductOffersComponent } = await import(
@@ -2611,6 +2626,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             {
                 this.promoCodePopUpOpen(data);
             });
+        }else{
+
         }
     }
     async promoCodePopUpOpen(data){

@@ -99,7 +99,7 @@ export class ProductV1Resolver implements Resolve<any> {
 
       const reviewRequestBody = { review_type: 'PRODUCT_REVIEW', item_type: 'PRODUCT', item_id: productMsnId, user_id: " " };
 
-      const productResponseObj = this.http.get(productUrl).pipe(share(),
+      const productResponseObj = this.http.get(productUrl, requestOptions).pipe(share(),
         map(res => {
           const logInfo = this._commonService.getLoggerObj(productUrl, 'GET', startTime)
           logInfo.endDateTime = new Date().getTime();

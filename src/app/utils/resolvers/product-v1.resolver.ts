@@ -44,6 +44,9 @@ export class ProductV1Resolver implements Resolve<any> {
     };
     // Get product MSN from url
     let productMsnId = _activatedRouteSnapshot.params['msnid'];  // get MSN id from URL
+    if (productMsnId.indexOf("-g") > -1) {
+      productMsnId = productMsnId.substring(0, productMsnId.length - 2);
+    }
 
     const PRODUCT_KEY: any = makeStateKey<{}>('product-' + productMsnId);
     const PRODUCT_REVIEW_KEY = makeStateKey<object>('product-review-' + productMsnId);

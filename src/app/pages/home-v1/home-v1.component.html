@@ -99,7 +99,7 @@
         </div>
 
         <!--homeMiscellaneousCarousel ( Buy it again, Recently Viewed, wishlist & my RFQ section)-->
-        <section *ngIf="isUserLoggedIn" id="popularDeals" data-observeVisibility [debounceTime]="100" (visible)="onVisiblePopularDeals($event)">
+        <section *ngIf="isUserLoggedIn" class="popular-Deals-section" id="popularDeals" data-observeVisibility [debounceTime]="100" (visible)="onVisiblePopularDeals($event)">
             <ng-container #homeMiscellaneousCarousel></ng-container>
             <!-- <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="carouselInstance"></home-page-skeletons> -->
         </section>      

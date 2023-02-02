@@ -3,13 +3,16 @@
 
 .popularDeals{
     background:var(--ghost-white);
-    padding-top: 5px;
+    padding: 5px 0 15px;
     .view-all-strip{
       h3{
         font-size:$extra-large-font
       }  
     }
     .pwa-tabs-container{
-        padding-bottom:10px;
+        padding: 5px 15px 15px; 
+    }
+    .product-card-section{
+      padding-left: 15px;
     }
 }

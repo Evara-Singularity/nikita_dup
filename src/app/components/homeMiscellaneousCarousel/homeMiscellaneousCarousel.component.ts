@@ -82,15 +82,15 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   ngOnInit() {
     if (this.isBrowser) {
       this.userId = this.localStorageService.retrieve('user').userId;
-      this.getRecentViewed(this.userId || 'null');
-      this.PastOrders();
-      this.getPurcahseList();
+      this.getRecentViewed(this.userId || 'null', true);
+      // this.PastOrders();
+      // this.getPurcahseList();
     }
 
   }
 
   //recently viewed items config
-  private getRecentViewed(setCId) {
+  private getRecentViewed(setCId, isSelected = false) {
     this._dataservice
       .callRestful(
         'GET',
@@ -101,12 +101,15 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
       .subscribe((res) => {
         if ((res['statusCode'] === 200) && res['data'] && res['data'].length > 0) {
           this.miscTabArray['0']['data'] = (res['data'] as any[]).map((item) => this._productService.recentProductResponseToProductEntity(item));
+          if(isSelected){
+            this.setProductList(0,this.miscTabArray['0']['data']);
+          }
         }
       });
   }
 
   //buy again items config
-  PastOrders() {
+  pastOrders() {
     if (this.userId)
       this._productBrowserService.getPastOrderProducts(this.userId).subscribe((response) => {
         if (response['status']) {
@@ -150,11 +153,9 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     }
   }
 
-
   onClick(e) {
     let containerId = document.getElementById("topDealsContainer");
     let tabsId = document.getElementById("tabs");
-
     if (this.isBrowser && containerId && tabsId) {
       tabsId.addEventListener(
         "click",

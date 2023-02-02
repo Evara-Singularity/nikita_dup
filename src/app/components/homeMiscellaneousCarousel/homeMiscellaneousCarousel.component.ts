@@ -36,11 +36,11 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
       name: 'Wishlist',
       data: []
     },
-    {
-      id: 4,
-      name:'My RFQ',
-      data: []
-    }
+    // {
+    //   id: 4,
+    //   name:'My RFQ',
+    //   data: []
+    // }
   ]
 
   @Input("selectedProducts") selectedProducts;
@@ -145,7 +145,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
 
   setProductList(index, products) {
     this.selectedIndex = index;
-    if (1) {
+    if (products.length) {
       this.selectedProducts = products
     }
   }

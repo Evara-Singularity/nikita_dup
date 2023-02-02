@@ -1,11 +1,11 @@
-<section class=" popularDeals mt-10 pad-r-0">
+<section class=" popularDeals mt-10 pad-r-0" *ngIf="miscTabArray['0']['data'] || miscTabArray['1']['data'] ||                                                                                                                                                       miscTabArray['2']['data']">
     <section class="pwa-col-12">
         <div class="view-all-strip pad-lr-15">
             <h3>Your Activity</h3>
         </div>
         <div class="pwa-tabs-container" id="tabs">
             <ng-container *ngFor="let item of miscTabArray;let tabIndex = index">
-                <div class="pwa-tab pwa-tab-variant2" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"
+                <div class="pwa-tab pwa-tab-variant2" *ngIf="item['data']" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"
                 (click)="setProductList(tabIndex,item['data']);onClick($event)">
                     {{item['name']}}
                 </div>

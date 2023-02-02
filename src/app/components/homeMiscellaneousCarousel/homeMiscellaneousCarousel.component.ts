@@ -20,25 +20,34 @@ import { map } from 'rxjs/operators';
 })
 export class HomeMiscellaneousCarouselComponent implements OnInit {
 
-  miscTabArray={
-    'Recently Viewed':[],
-    'Buy it Again':[],
-    'Wishlist':[],
-    // 'My RFQ':[]
-  }
-
-// miscTabArray=[
-//   {'Recently Viewed':[]},
-//   {'Buy it Again':[]},
-//   {'Wishlist':[]},
-//   {'My RFQ':[]}
-// ]
+  miscTabArray = [
+    {
+      id: 1,
+      name: 'Recently Viewed',
+      data: []
+    },
+    {
+      id: 2,
+      name: 'Buy it Again',
+      data: []
+    },
+    {
+      id: 3,
+      name: 'Wishlist',
+      data: []
+    },
+    {
+      id: 4,
+      name:'My RFQ',
+      data: []
+    }
+  ]
 
   @Input("selectedProducts") selectedProducts;
   @Input("analytics") analytics = null;
   recentlyViewedProducts: ProductsEntity[] = [];
   selectedIndex: any;
-  userId:any;
+  userId: any;
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config
@@ -55,8 +64,8 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   };
   cardMetaInfo: ProductCardMetaInfo = null;
   isBrowser: boolean;
-	isServer: boolean;
-  
+  isServer: boolean;
+
   constructor(
     public localStorageService: LocalStorageService,
     public _commonService: CommonService,
@@ -67,95 +76,79 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   ) {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
-    
+
   }
 
   ngOnInit() {
     if (this.isBrowser) {
       this.userId = this.localStorageService.retrieve('user').userId;
-      console.log("nikkkkkkkkkkk",this.userId)
-			this.getRecentViewed(this.userId || 'null');
+      this.getRecentViewed(this.userId || 'null');
       this.PastOrders();
       this.getPurcahseList();
-		}
-    
+    }
+
   }
 
-//recently viewed items config
-	private getRecentViewed(setCId) {
-		this._dataservice
-			.callRestful(
-				'GET',
-				CONSTANTS.NEW_MOGLIX_API +
-				ENDPOINTS.RECENTLY_VIEWED +
-				setCId
-			)
-			.subscribe((res) => {
-				if ((res['statusCode'] === 200) && res['data'] && res['data'].length > 0) {
-					this.miscTabArray['Recently Viewed'] = (res['data'] as any[]).map((item) => this._productService.recentProductResponseToProductEntity(item));
-				}
-			});
-	}
+  //recently viewed items config
+  private getRecentViewed(setCId) {
+    this._dataservice
+      .callRestful(
+        'GET',
+        CONSTANTS.NEW_MOGLIX_API +
+        ENDPOINTS.RECENTLY_VIEWED +
+        setCId
+      )
+      .subscribe((res) => {
+        if ((res['statusCode'] === 200) && res['data'] && res['data'].length > 0) {
+          this.miscTabArray['0']['data'] = (res['data'] as any[]).map((item) => this._productService.recentProductResponseToProductEntity(item));
+        }
+      });
+  }
 
   //buy again items config
-  PastOrders()
-  {
+  PastOrders() {
     if (this.userId)
       this._productBrowserService.getPastOrderProducts(this.userId).subscribe((response) => {
         if (response['status']) {
-          this.miscTabArray['Buy it Again'] = (response['data'] as any[]).slice(0, 10).map(product => this._productBrowserService.pastOrdersProductResponseToProductEntity(product));
+          this.miscTabArray['1']['data'] = (response['data'] as any[]).slice(0, 10).map(product => this._productBrowserService.pastOrdersProductResponseToProductEntity(product));
         }
       });
   }
 
   //wishlist item data
-
-  getPurcahseList()
-  {
-    console.log("heyyyyyyyyyy")
+  getPurcahseList() {
     let request = { idUser: this.userId, userType: "business" };
     this._commonService
       .getPurchaseList(request)
       .pipe(
-        map((res) =>
-        {
+        map((res) => {
           let index = 0;
-          res = res.sort((a, b) =>
-          {
+          res = res.sort((a, b) => {
             return b.updated_on - a.updated_on;
           });
-          return res.map((item) =>
-          {
+          return res.map((item) => {
             item["matCodeMode"] = false;
             if (item["matCodeFlag"] == undefined || item["matCodeFlag"] == null)
               item["matCodeFlag"] = false;
-            //TODO-REMOVE
-            /*below is temporary solution, will remove below line after search is implemented from backend*/
-            /*below index is added because after searching on purchase list, index passed by for loop in view doesn't matches the index of object in array*/
             item["index"] = index;
             index++;
             return item;
           });
         })
       )
-      .subscribe((res) =>
-      {
-        return this.miscTabArray['Wishlist'] = res.map(product => {
+      .subscribe((res) => {
+        return this.miscTabArray['2']['data'] = res.map(product => {
           return this._productService.wishlistToProductEntity(product)
         });
       })
   }
 
-
   setProductList(index, products) {
     this.selectedIndex = index;
     if (1) {
-      this.selectedProducts = products 
-      //   as any[]).map(
-      //   (product) => this._productService.searchResponseToProductEntity(product)
-      // );
-    } 
-  } 
+      this.selectedProducts = products
+    }
+  }
 
 
   onClick(e) {
@@ -183,9 +176,9 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     HomeMiscellaneousCarouselComponent
   ],
   imports: [
-      CommonModule,
-      ProductCardVerticalContainerModule,
-      ProductCardVerticalGridViewModule
+    CommonModule,
+    ProductCardVerticalContainerModule,
+    ProductCardVerticalGridViewModule
   ],
 })
 export class HomeMiscellaneousCarouselModule { }

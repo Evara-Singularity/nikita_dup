@@ -4,11 +4,10 @@
             <h3>Your Activity</h3>
         </div>
         <div class="pwa-tabs-container" id="tabs">
-            <ng-container *ngFor="let item of miscTabArray|keyvalue;let tabIndex = index">
-              <!-- <pre>{{item.value | json}}</pre> -->
+            <ng-container *ngFor="let item of miscTabArray;let tabIndex = index">
                 <div class="pwa-tab pwa-tab-variant2" [ngClass]="{'selectedTab':selectedIndex == tabIndex}"
-                (click)="setProductList(tabIndex,item.value);onClick($event)">
-                    {{item.key}}
+                (click)="setProductList(tabIndex,item['data']);onClick($event)">
+                    {{item['name']}}
                 </div>
             </ng-container>
         </div>

@@ -7,6 +7,7 @@ import { SafeUrlPipeModule } from '@app/utils/pipes/safe-url.pipe';
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
 import { AppBannerModule } from '../../components/app-banner/app-banner.module';
+import { RecentlyViewedCarouselModule } from '@app/components/recentlyViewedCarousel/recentlyViewedCarousel.component';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { AppBannerModule } from '../../components/app-banner/app-banner.module';
         SafeUrlPipeModule,
         AppPromoModule,
         ObserveVisibilityDirectiveModule,
-        AppBannerModule
+        AppBannerModule,
+        RecentlyViewedCarouselModule
     ],
     declarations: [
         OrderConfirmationComponent,

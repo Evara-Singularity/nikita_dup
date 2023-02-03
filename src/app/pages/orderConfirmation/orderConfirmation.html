@@ -45,12 +45,13 @@
     </div>
     <app-app-banner></app-app-banner>
     
-    <div class="pwa-row promo-section">
+    <!-- <div class="pwa-row promo-section">
         <div data-observeVisibility [debounceTime]="300" (visible)="onVisibleAppPromo($event)" class="inner-promo">
             <ng-container #appPromo></ng-container>
         </div>
-    </div>
+    </div> -->
     <!-- <app-promo [page]="'order-confirmation'" class="fixed-btm-app-prmo" *ngIf="isBrowser" [isOverlayMode]="true"></app-promo> -->
+    <recently-viewed-carousel></recently-viewed-carousel> 
 </section>
 <iframe *ngIf="iFrameUrl != undefined && afType != undefined && afType=='iFrame' && id=='undefined'"
     [src]="iFrameUrl | safeUrl" width="1" height="1"></iframe>

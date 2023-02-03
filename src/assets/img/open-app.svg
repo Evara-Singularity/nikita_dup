@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37">
+  <g id="Group_21696" data-name="Group 21696" transform="translate(0.307 0.252)">
+    <g id="Group_21695" data-name="Group 21695" transform="translate(9.404 3.231)">
+      <g id="Group_21694" data-name="Group 21694" transform="translate(0 6.304)">
+        <path id="Subtraction_2" data-name="Subtraction 2" d="M12.949,24.683H1.548A1.548,1.548,0,0,1,0,23.135V1.548A1.548,1.548,0,0,1,1.548,0h11.4A1.548,1.548,0,0,1,14.5,1.548V23.135A1.548,1.548,0,0,1,12.949,24.683ZM2.718,1.244A1.534,1.534,0,0,0,1.17,2.761v18.12c0,.774.574,1.209,1.576,1.209h9.069c.687,0,1.507-.211,1.507-1.209V2.761a1.534,1.534,0,0,0-1.548-1.517H2.718Z" fill="#3c3c3c"/>
+      </g>
+      <path id="Path_75135" data-name="Path 75135" d="M0,0S5.729.929,2.753,6.585" transform="translate(12.046 3.608) rotate(-12.007)" fill="none" stroke="#3c3c3c" stroke-linecap="round" stroke-width="0.6"/>
+      <path id="Path_75136" data-name="Path 75136" d="M0,0S8.837,1.443,4.251,10.17" transform="translate(12.146 1.159) rotate(-12.007)" fill="none" stroke="#3c3c3c" stroke-linecap="round" stroke-width="0.6"/>
+    </g>
+    <rect id="Rectangle_18612" data-name="Rectangle 18612" width="37" height="37" transform="translate(-0.307 -0.252)" fill="none"/>
+  </g>
+</svg>

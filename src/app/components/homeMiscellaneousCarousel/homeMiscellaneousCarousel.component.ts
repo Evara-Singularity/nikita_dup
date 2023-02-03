@@ -83,8 +83,6 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     if (this.isBrowser) {
       this.userId = this.localStorageService.retrieve('user').userId;
       this.getRecentViewed(this.userId || 'null', true);
-      // this.PastOrders();
-      // this.getPurcahseList();
     }
 
   }
@@ -101,8 +99,8 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
       .subscribe((res) => {
         if ((res['statusCode'] === 200) && res['data'] && res['data'].length > 0) {
           this.miscTabArray['0']['data'] = (res['data'] as any[]).map((item) => this._productService.recentProductResponseToProductEntity(item));
-          if(isSelected){
-            this.setProductList(0,this.miscTabArray['0']['data']);
+          if (isSelected) {
+            this.setProductList(0, this.miscTabArray['0']['data']);
           }
         }
       });
@@ -114,6 +112,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
       this._productBrowserService.getPastOrderProducts(this.userId).subscribe((response) => {
         if (response['status']) {
           this.miscTabArray['1']['data'] = (response['data'] as any[]).slice(0, 10).map(product => this._productBrowserService.pastOrdersProductResponseToProductEntity(product));
+          this.setProductList(1, this.miscTabArray['1']['data']);
         }
       });
   }
@@ -140,20 +139,35 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         })
       )
       .subscribe((res) => {
-        return this.miscTabArray['2']['data'] = res.map(product => {
+        this.miscTabArray['2']['data'] = res.map(product => {
           return this._productService.wishlistToProductEntity(product)
         });
+        this.setProductList(2, this.miscTabArray['2']['data']);
+
       })
   }
 
   setProductList(index, products) {
     this.selectedIndex = index;
-    if (products.length) {
+    if (!products.length) {
+      switch (index) {
+        case 1:
+          console.log("It is a Monday.");
+          this.pastOrders();
+          break;
+        case 2:
+          console.log("It is a Tuesday.");
+          this.getPurcahseList();
+          break;
+      }
+    }
+    else if (products.length) {
       this.selectedProducts = products
+      this.tabshift();
     }
   }
 
-  onClick(e) {
+  tabshift() {
     let containerId = document.getElementById("topDealsContainer");
     let tabsId = document.getElementById("tabs");
     if (this.isBrowser && containerId && tabsId) {
@@ -166,10 +180,6 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
       );
     }
   }
-
-
-
-
 
 }
 @NgModule({

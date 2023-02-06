@@ -87,7 +87,7 @@
                         width: 100%;
                         .price {
                             font-size: $medium-font;
-                            margin-bottom: 4px;
+                            margin-bottom: 2px;
                             .prod-mrp {
                                 // color: var(--gray-web);
                                 text-decoration: line-through;
@@ -104,7 +104,6 @@
                             font-size: $extra-large-font;
                             font-weight: bold;
                             margin-bottom: 4px;
-                            margin-top: 4px;
                         }
                         .out-of-stock-text {
                             font-size: $small-font;
@@ -166,6 +165,10 @@
                 margin-right: 15px;
                 background: var(--white);
                 color: var(--primary);
+                font-size: 12px;
+                i{
+                    font-size: 16px;
+                }
             }
         }
         .secondry-btn-1{

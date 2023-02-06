@@ -46,7 +46,7 @@
                     <span>{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
                                 }}</span>
                 </div>
-                <div class="out-of-stock-text" *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice">
+                <div class="out-of-stock-text" *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
                     <span>Available on Request</span>
                 </div>
                 <div class="out-of-stock-price" *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice && product.priceWithoutTax!=0">
@@ -55,7 +55,7 @@
                 </div>
             </div>
         </div>
-        <div class="right">
+        <div class="right" *ngIf="!product.homePageRFQ">
             <div class="card-btn-row">
                 <ng-container *ngIf="(cardFeaturesConfig.enableAddToCart || cardFeaturesConfig.enableBuyNow) && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
                     <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart" (click)="buyNow()">
@@ -70,6 +70,13 @@
                             </button>
             </ng-container>
         </div>
+        <div class="right" *ngIf="product.homePageRFQ">
+            <ng-container>  
+              {{product['HomePageRFQstatus']['status']}} <br>
+              <span>placed on:-{{product['HomePageRFQstatus']['createdOn'] | date:'mediumDate'}}</span>
+            </ng-container>
+        </div>
+
     </div>
     <ng-container #variantPopup></ng-container>
     <ng-container #addToCartToast></ng-container>

@@ -36,11 +36,11 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
       name: 'Wishlist',
       data: []
     },
-    // {
-    //   id: 4,
-    //   name:'My RFQ',
-    //   data: []
-    // }
+    {
+      id: 4,
+      name:'My RFQ',
+      data: []
+    }
   ]
 
   @Input("selectedProducts") selectedProducts;
@@ -62,7 +62,6 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     horizontalOrientation: false,
     lazyLoadImage: true,
   };
-  cardMetaInfo: ProductCardMetaInfo = null;
   isBrowser: boolean;
   isServer: boolean;
 
@@ -84,7 +83,6 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
       this.userId = this.localStorageService.retrieve('user').userId;
       this.getRecentViewed(this.userId || 'null', true);
     }
-
   }
 
   //recently viewed items config
@@ -144,7 +142,44 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         });
         this.setProductList(2, this.miscTabArray['2']['data']);
 
-      })
+      });
+  }
+
+  //get my rfq list
+
+  getMyRfqList() {
+    let user = this.localStorageService.retrieve("user");
+    let obj = {};
+
+    if (user.email != undefined && user.email != null)
+      obj["email"] = user.email;
+
+    if (user.phone != undefined && user.phone != null)
+      obj["phone"] = user.phone;
+
+    if (user.userId != undefined && user.userId != null)
+      obj["idCustomer"] = user.userId;
+
+    this._commonService
+      .getRfqList(obj)
+      .pipe(
+        map((res) => {
+          res["data"].map((item, index) => {
+            if (index != 0) {
+              item["toggle"] = false;
+            } else {
+              item["toggle"] = true;
+            }
+          });
+          return res;
+        })
+      )
+      .subscribe((res) => {
+        this.miscTabArray['3']['data'] = res['data'].map(product => {
+          return this._productService.myRfqToProductEntity(product)
+        });
+        this.setProductList(3, this.miscTabArray['3']['data']);
+      });
   }
 
   setProductList(index, products) {
@@ -152,12 +187,13 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     if (!products.length) {
       switch (index) {
         case 1:
-          console.log("It is a Monday.");
           this.pastOrders();
           break;
         case 2:
-          console.log("It is a Tuesday.");
           this.getPurcahseList();
+          break;
+        case 3:
+          this.getMyRfqList();
           break;
       }
     }

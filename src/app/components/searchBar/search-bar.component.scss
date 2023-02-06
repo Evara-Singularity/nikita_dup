@@ -8,7 +8,7 @@
     font-size: $extra-large-font;
 }
 .search_heading {
-    color: #a8a8a8;
+    color: var(--dim-gray);
     font-size: $small-font;
     i {
         font-size: 12px;

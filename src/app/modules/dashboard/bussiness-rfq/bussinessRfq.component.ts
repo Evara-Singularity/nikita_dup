@@ -21,6 +21,7 @@ export class BussinessRfqComponent {
   myRfqList: any;
   i: any;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
+  readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
   set showLoader(value) {
     this.loaderService.setLoaderState(value);
   }

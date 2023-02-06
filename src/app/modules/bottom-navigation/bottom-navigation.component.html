@@ -18,15 +18,19 @@
 
         <a (click)="loadSideNav();setAnalyticTags('profile')" *ngIf="isUserLogin">
             <div class="menu-icon-txt">
-                <i class="icon-profile"></i>
+                <!-- <i class="icon-profile"></i> -->
+                <span>A</span>
                 <p>Profile</p>
             </div>
         </a>
 
         <a (click)="redirectionToSearchPopUp();setAnalyticTags('search')">
-            <div class="menu-icon-txt">
-                <i class="icon-search"></i>
-                <p>Search</p>
+            <div class="search-container">
+                <div class="search-inner-sec">
+                <div class="menu-icon-txt">
+                    <i class="icon-search"></i>
+                </div>
+            </div>
             </div>
         </a>
 

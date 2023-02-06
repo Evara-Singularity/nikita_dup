@@ -18,6 +18,7 @@ export class BottomNavigationComponent implements OnInit {
 
   menuSelected:boolean=true
   isUserLogin: any;
+  initialNameLetter:any;
 
 
   constructor(
@@ -32,6 +33,16 @@ export class BottomNavigationComponent implements OnInit {
 
   ngOnInit() {
     this.isUserLogin = this.localAuthService.isUserLoggedIn();
+    this.getFirstletterofUser()
+  }
+
+  getFirstletterofUser() {
+    let user = this.localStorageService.retrieve("user");
+    if (user && user.authenticated == "true") {
+      this.initialNameLetter = Array.from(user.userName)[0];
+    }
+
+
   }
 
   bottomNavRedirection(url, title = "") {
@@ -40,10 +51,11 @@ export class BottomNavigationComponent implements OnInit {
     this.checkIfUserLoggedIn(url, title);
   }
 
+
   checkIfUserLoggedIn(url, title = "") {
     let user = this.localStorageService.retrieve("user");
-    if (user && user.authenticated == "true" || url=='/quickorder' || url == '/login' || url=='/' ) {
-      this.router.navigate([url]); 
+    if (user && user.authenticated == "true" || url == '/quickorder' || url == '/login' || url == '/') {
+      this.router.navigate([url]);
     } else {
       this.localAuthService.setBackURLTitle(url, title);
       this._commonService.setInitaiteLoginPopUp('/dashboard/order');

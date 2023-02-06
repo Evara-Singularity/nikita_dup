@@ -19,7 +19,7 @@
         <a (click)="loadSideNav();setAnalyticTags('profile')" *ngIf="isUserLogin">
             <div class="menu-icon-txt">
                 <!-- <i class="icon-profile"></i> -->
-                <span>P</span>
+                <span>{{initialNameLetter | titlecase }}</span>
                 <p>Profile</p>
             </div>
         </a>

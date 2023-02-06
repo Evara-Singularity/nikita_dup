@@ -87,6 +87,32 @@
 
 .css-banner-component {
     position: relative;
+    .indicator-container{
+        position: absolute;
+        bottom: 10px;
+        background: var(--onyx-black);
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0.6;
+        border-radius: 8px;
+        padding: 4px 8px;
+        display: flex;
+        span{
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            display: inline-block;
+            background: rgba(255,255,255,.4) ;
+            margin-right: 10px;
+            &:last-child{
+                margin-right: 0;
+            }
+            
+        }
+        .active{
+            background: #fff;
+        }
+    }
 }
 // search-widget
 .search-widget-container {

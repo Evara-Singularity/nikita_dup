@@ -1,6 +1,17 @@
 <!--this will be injected into the instock or out of stock accrodingly-->
 <ng-template #rfqFormTemplate>
-    
+    <section class="fgkj">
+    <div class="bulk-rfq-header">
+        <div class="header-container">
+            <p>Interested To Buy In Bulk</p>
+            <i class="icon-circle-delete"></i>
+        </div>
+        <div class="desc-section">
+            <p>Kirloskar 240Hp Three Phase Double Pole Squirrel Cage Foot Mounted Induction Motor</p>
+            <span>By : Luminous</span>
+        </div>
+
+    </div>
     <form class="rfqForm" [formGroup]="rfqForm">
         <div class="product-rfq material-form" [class.in-instock]="!isOutOfStock">
 
@@ -51,34 +62,34 @@
                             <span class="label">Full Name*</span>
                         </label>
                     </div>
-                    <div class="multiple-form-field">
-                        <div class="outline-input-label">
-                            <label [class.is-focus]="mobile.value.length > 0">
-                                <input type="text" name="phone-no"  type="text" formControlName="mobile"
-                                    maxlength="10" (click)="isOutOfStock?initiateLogin():false" #mobile>
-                                <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (this.rfqForm.controls.mobile.touched || this.rfqForm.controls.mobile.dirty)">
-                                    <p class="error-txt" *ngIf="this.rfqForm.controls.mobile.hasError('required')">Kindly enter your mobile no.</p>
-                                    <p class="error-txt" *ngIf="this.rfqForm.controls.mobile.hasError('pattern')">Mobile should contain only digits.
-                                    </p>
-                                    <p class="error-txt" *ngIf="!this.rfqForm.controls.mobile.hasError('pattern') && this.rfqForm.controls.mobile.hasError('minlength')">
-                                        Mobile should contain 10 digits.</p>
-                                </ng-container>
-                                <span class="label">Mobile*</span>
-                            </label>
-                        </div>
-                        <div class="outline-input-label">
-                            <label [class.is-focus]="email.value.length > 0">
-                                <input type="email" name="email" formControlName="email"  maxlength="150"
-                                    (click)="isOutOfStock?initiateLogin():false" #email>
-                                <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (this.rfqForm.controls.email.touched || this.rfqForm.controls.email.dirty)">
-                                    <p class="error-txt" *ngIf="this.rfqForm.controls.email.hasError('required')">Kindly enter your email id.</p>
-                                    <p class="error-txt" *ngIf="this.rfqForm.controls.email.hasError('invalidEmail')">Kindly enter valid email id.
-                                    </p>
-                                </ng-container>
-                                <span class="label">Email</span>
-                            </label>
-                        </div>
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="email.value.length > 0">
+                            <input type="email" name="email" formControlName="email"  maxlength="150"
+                                (click)="isOutOfStock?initiateLogin():false" #email>
+                            <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (this.rfqForm.controls.email.touched || this.rfqForm.controls.email.dirty)">
+                                <p class="error-txt" *ngIf="this.rfqForm.controls.email.hasError('required')">Kindly enter your email id.</p>
+                                <p class="error-txt" *ngIf="this.rfqForm.controls.email.hasError('invalidEmail')">Kindly enter valid email id.
+                                </p>
+                            </ng-container>
+                            <span class="label">Email</span>
+                        </label>
                     </div>
+                    <div class="outline-input-label">
+                        <label [class.is-focus]="mobile.value.length > 0">
+                            <input type="text" name="phone-no"  type="text" formControlName="mobile"
+                                maxlength="10" (click)="isOutOfStock?initiateLogin():false" #mobile>
+                            <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (this.rfqForm.controls.mobile.touched || this.rfqForm.controls.mobile.dirty)">
+                                <p class="error-txt" *ngIf="this.rfqForm.controls.mobile.hasError('required')">Kindly enter your mobile no.</p>
+                                <p class="error-txt" *ngIf="this.rfqForm.controls.mobile.hasError('pattern')">Mobile should contain only digits.
+                                </p>
+                                <p class="error-txt" *ngIf="!this.rfqForm.controls.mobile.hasError('pattern') && this.rfqForm.controls.mobile.hasError('minlength')">
+                                    Mobile should contain 10 digits.</p>
+                            </ng-container>
+                            <span class="label">Mobile*</span>
+                        </label>
+                    </div>
+                   
+                   
                     <div class="multiple-form-field">
                         <div class="outline-input-label">
                             <label [class.is-focus]="this.rfqForm.controls.pincode.value.length > 0">
@@ -163,13 +174,16 @@
                             <p class="error-txt" *ngIf="isRFQSubmitted && tin.errors ==null && gstinError">{{gstinError}}</p>
                         </label>
                     </div>
-                    <div [class.fixed-bottom-cta]="isOutOfStock" [class.mt-60]="!isOutOfStock">
-                        <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="btn primary-full-btn">SUBMIT YOUR REQUIREMENT</button>
-                    </div>
+                    
                 </div>
             </div>
         </div>
     </form>
+    <!-- [class.fixed-bottom-cta]="isOutOfStock" [class.mt-60]="!isOutOfStock" -->
+    <div class="fixed-bottom-cta">
+        <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="btn primary-full-btn">SUBMIT YOUR REQUIREMENT</button>
+    </div>
+</section>
 </ng-template>
 <!--non-popup-->
 <app-bottom-menu [isRFQPopUp]="true" *ngIf="isOutOfStock && isPopup" (outData$)="onUpdate($event)">

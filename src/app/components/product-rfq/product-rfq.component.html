@@ -1,5 +1,6 @@
 <!--this will be injected into the instock or out of stock accrodingly-->
 <ng-template #rfqFormTemplate>
+    
     <form class="rfqForm" [formGroup]="rfqForm">
         <div class="product-rfq material-form" [class.in-instock]="!isOutOfStock">
 
@@ -175,12 +176,14 @@
     <ng-container content *ngTemplateOutlet="rfqFormTemplate"></ng-container>
 </app-bottom-menu>
 <!--Popup-->
-<app-pop-up *ngIf="!isOutOfStock && isPopup"
-    [headerType]="'pop-up-header2'"
-    [data]="{headerText: 'Interested to buy in bulk', headerSubText: 'Add more details to get the best deal'}">
+<app-bottom-menu *ngIf="!isOutOfStock && isPopup">
     <div class="content-popup rfqPopup pwa-row" content>
         <div class="pwa-col-12">
             <ng-container *ngTemplateOutlet="rfqFormTemplate "></ng-container>
         </div>
     </div>
-</app-pop-up>
+</app-bottom-menu>
+
+
+<!-- [headerType]="'pop-up-header2'"
+    [data]="{headerText: 'Interested to buy in bulk', headerSubText: 'Add more details to get the best deal'}" -->

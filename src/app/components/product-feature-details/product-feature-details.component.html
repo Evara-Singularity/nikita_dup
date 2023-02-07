@@ -8,7 +8,7 @@
         <div *ngIf="productKeyFeatures && productKeyFeatures?.length > 0" class="key-features">
             <h2 class="heading-3"> {{productStaticData.key_features}}</h2>
             <ul class="feature-list">
-                <li *ngFor="let feature of productKeyFeatures | sliceArray:3">
+                <li *ngFor="let feature of productKeyFeatures; let i = index" [class.hide]='i > 2'>
                     <p>
                         <span>{{feature}}.</span>
                     </p>
@@ -28,7 +28,7 @@
                     </td>
                     <td class="right">
                         <div *ngIf="productBrandDetails">
-                            <a class="brandName"
+                            <a class="brandName" [href]='baseDomain + getBrandLink(productBrandDetails)'
                                 (click)="commonService.navigateTo(getBrandLink(productBrandDetails))">{{productBrandDetails['brandName']}}</a>
                         </div>
                     </td>
@@ -41,13 +41,13 @@
                     </td>
                     <td class="right">
                         <div *ngIf="productBrandDetails">
-                            <a class="brandName"
+                            <a class="brandName" [href]='baseDomain + productBrandDetails["storeLink"]'
                                 (click)="commonService.navigateTo([productBrandDetails['storeLink']])">{{productStaticData.brand_store_text
                                     .replace('___brand___',productBrandDetails['brandName'])}}</a>
                         </div>
                     </td>
                 </tr>
-                <tr *ngFor="let attr of productAttributes | objectToArray:'associative' | sliceArray:3s">
+                <tr *ngFor="let attr of productAttributes | objectToArray:'associative'; let i=index" [class.hide]='i > 2'>
                     <td class="left">
                         <div>{{attr.key}}</div>
                     </td>

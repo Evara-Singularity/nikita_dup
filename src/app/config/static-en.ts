@@ -81,7 +81,7 @@ export const product = {
     frequently_asked_questions:"Frequently Asked Questions",
     customer_reviews:"Customer Reviews",
     displaying_questions:"Displaying Questions",
-    more_helpful_review:"MORE HELPFUL REVIEW",
+    more_helpful_review:"MORE HELPFUL REVIEWS",
     explore_now:"Explore Now",
     get_best_price:"GET BEST PRICE",
     store:"Store",

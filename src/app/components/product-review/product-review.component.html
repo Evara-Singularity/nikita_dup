@@ -121,7 +121,7 @@
     <div class="pwa-row">
         <div *ngIf="rawReviewsData?.reviewList?.length > 2" class="pwa-col-12 show-all-strip"
             (click)="$event.stopPropagation(); reviewRatingPopup.emit()">
-            <span> {{productStaticData.view}} {{ reviewLength - 2 }} {{productStaticData.more_helpful_review}}</span>
+            <span> {{ reviewLength - 2 }} {{productStaticData.more_helpful_review}}</span>
             <span>
                 <i class="icon-next"></i>
             </span>

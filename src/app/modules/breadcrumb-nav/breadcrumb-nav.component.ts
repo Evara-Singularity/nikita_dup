@@ -13,6 +13,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 export class BreadcrumbNavComponent implements OnInit {
   @Input() breadcrumb: [] = null;
   @Input('analytics') analytics = null;
+  readonly baseDomain = CONSTANTS.PROD;
 
   constructor(
     private renderer2: Renderer2,

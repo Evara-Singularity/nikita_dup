@@ -43,8 +43,8 @@
                 </div>
                 <div *ngIf="!isWishlist" class="name" (click)="trackProductTitle('title');$event.preventDefault()">
                     <a [href]="prodUrl + '/' + product.productUrl">
-                        <span>{{product.productName | slice:0:60}}
-                            <span *ngIf="product.productName.length>60">...</span></span></a>
+                        <span>{{product.productName | slice:0:75}}
+                            <span *ngIf="product.productName.length>75">...</span></span></a>
                 </div>
                 <div *ngIf="isWishlist" class="name-with-icon">
                     <div class="name" (click)="trackProductTitle('title');$event.preventDefault()">
@@ -81,10 +81,10 @@
                     </div>
 
                 </div>
-                <div class="emi-container">
+                <!-- <div class="emi-container">
                     <i class="icon-circle_check"></i>
                     <span>Easy EMI available</span>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- <div class="keyfeatures"
@@ -94,7 +94,7 @@
                         *ngIf="features.split(' ').length>20">...</span></li>
             </ul>
         </div> -->
-        <div class="attribute-section">
+        <!-- <div class="attribute-section">
             <div class="pwa-tabs-container">
                 <div class="pwa-tab">
                     Black & white printer
@@ -103,7 +103,7 @@
                     Inject
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="btn-container">
             <div class="card-btn-row">
                 <ng-container

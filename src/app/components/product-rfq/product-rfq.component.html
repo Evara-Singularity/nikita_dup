@@ -4,18 +4,16 @@
     <div class="bulk-rfq-header">
         <div class="header-container">
             <p>Interested To Buy In Bulk</p>
-            <i class="icon-circle-delete"></i>
+            <i class="icon-circle-delete" (click)="isPopup = false; _commonService.oosSimilarCard$.next(false);" ></i>
         </div>
         <div class="desc-section">
-            <p>Kirloskar 240Hp Three Phase Double Pole Squirrel Cage Foot Mounted Induction Motor</p>
-            <span>By : Luminous</span>
+            <p>{{product.productName}}</p>
+            <span>By : {{product.brand}} </span>
         </div>
-
     </div>
     <form class="rfqForm" [formGroup]="rfqForm">
         <div class="product-rfq material-form" [class.in-instock]="!isOutOfStock">
-
-            <div *ngIf="isOutOfStock" class="rfq_header">
+            <!-- <div *ngIf="isOutOfStock" class="rfq_header">
                 <i class="icon-dropbox-fill"></i>
                 <div class="rfq_header_text">
                     <h3 [class.ins-text]="!isOutOfStock">
@@ -24,9 +22,9 @@
                     </h3>
                     <p>Add more details to get the best deal.</p>
                 </div>
-                <i (click)="isPopup = false; _commonService.oosSimilarCard$.next(false);"
+                <i 
                     class="icon-circle-delete del-ico"></i>
-            </div>
+            </div> -->
             <div class="pwa-row rfq-container">
                 <div class="pwa col-12">
                     <div class="req-qty">

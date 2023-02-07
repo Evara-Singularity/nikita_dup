@@ -1,0 +1,27 @@
+@import '../../../scss/variables';
+@import '../../../scss/payment-common';
+@import '../payment-continue-btn.scss';
+@import '../../../scss/components/radio';
+
+.bnpl-container {
+    label {
+        padding: 10px 15px;
+        border-bottom: 1px solid var(--platinum);
+        &:last-child {
+            border-bottom: 0;
+        }
+        img {
+            width: 130px;
+        }
+        .custom-box {
+            margin-top: 10px;
+        }
+    }
+}
+
+.bnplInner {
+    @extend %pwa-universal-radio;
+    .pad-l-8 {
+        padding-left: 8px;
+    }
+}

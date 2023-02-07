@@ -87,6 +87,19 @@
                     </div>
                 </div>
             </div>
+            <div id="bnplSection"  *ngIf="invoiceType=='retail'" class="payment_accordion_item pwa-row pad-0">
+                <div (click)="updatePaymentBlock(globalConstants['bnpl'], 'bnpl', 'bnplSection')"
+                    class="payment-accordion_header">
+                    <i class="icon-wallet ico-accord-left"></i>
+                    <span class="accordion-text">BNPL</span>
+                    <i class="icon-down"></i>
+                </div>
+                <div class="payment-accordion_body">
+                    <div *ngIf="paymentBlock==globalConstants['bnpl']">
+                        <bnpl [type]="invoiceType"></bnpl>
+                    </div>
+                </div>
+            </div>
             <div id="neftRtgsSection" *ngIf="canNEFT_RTGS" class="payment_accordion_item pwa-row pad-0">
                 <div (click)="updatePaymentBlock(globalConstants['neftRtgs'],'neftRtgs', 'neftRtgsSection')"
                     class="payment-accordion_header">

@@ -26,6 +26,7 @@ import { PaymentService } from "./payment.service";
 })
 export class PaymentComponent implements OnInit
 {
+
   readonly REPLACE_URL = { replaceUrl: true };
   paymentBlock: number;
   globalConstants: any = CONSTANTS.GLOBAL;
@@ -38,6 +39,7 @@ export class PaymentComponent implements OnInit
   messageEmi: string;
   messageCod: string;
   messageNeft: string;
+  messageBnpl: string;
   disableCod: boolean;
   showPopup: boolean = false;
   unAvailableMsnList: Array<any> = [];
@@ -54,6 +56,8 @@ export class PaymentComponent implements OnInit
   @ViewChild("txnDeclined", { read: ViewContainerRef })
   txnDeclinedContainerRef: ViewContainerRef;
   isSavedCardChecked: any;
+  hasPhoneNumber : boolean;
+  
 
   constructor(
     public _dataService: DataService,
@@ -118,6 +122,8 @@ export class PaymentComponent implements OnInit
       const _cartItems = cartData["itemsList"] || [];
       const _cartMSNs = (_cartItems as any[]).map((item) => item["productId"]);
       this._paymentService.updatePaymentMsns(_cartMSNs);
+        
+
       // TODO  -- change this and use it from cart service
       let invoiceType = this._cartService.invoiceType;
       this.invoiceType = invoiceType;
@@ -162,6 +168,7 @@ export class PaymentComponent implements OnInit
     this.messageEmi = "";
     this.messageCod = "";
     this.messageNeft = "";
+    this.messageBnpl ="";
     if (block == 4 && this.totalAmount < 3000) {
       this.messageEmi = "Not available below Rs. 3000";
       this.paymentBlock == null;
@@ -178,7 +185,8 @@ export class PaymentComponent implements OnInit
       this.messageNeft = "Not available below Rs. 2000";
       this.paymentBlock == null;
       return;
-    } else {
+    } 
+    else {
       this.paymentBlock = block;
       this.spp = true;
     }

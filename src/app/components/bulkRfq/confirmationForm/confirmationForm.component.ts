@@ -1,22 +1,22 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 
 @Component({
-	selector: 'confirmationForm',
-	templateUrl: './confirmationForm.component.html',
-	styleUrls: ['./confirmationForm.component.scss']
+  selector: "confirmationForm",
+  templateUrl: "./confirmationForm.component.html",
+  styleUrls: ["./confirmationForm.component.scss"],
 })
-export class ConfirmationFormComponent implements OnInit
-{
-	@Output() moveToNext$: EventEmitter<any> = new EventEmitter<any>();
-    @Input('bulkrfqForm') bulkrfqForm: String;
-	@Input('gstinForm') gstinForm: String;
-	readonly stepNameLogin = 'LOGIN';
+export class ConfirmationFormComponent implements OnInit {
+  @Output() moveToNext$: EventEmitter<any> = new EventEmitter<any>();
+  @Input("bulkrfqForm") bulkrfqForm: String;
+  @Input("gstinForm") gstinForm: String;
+  readonly stepNameLogin = "LOGIN";
 
-	constructor() {}
+  constructor() {}
 
-	ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
-    moveToNext(stepName) {
-		this.moveToNext$.emit(stepName);
-	}
+  moveToNext(stepName) {
+    this.moveToNext$.emit(stepName);
+  }
 }

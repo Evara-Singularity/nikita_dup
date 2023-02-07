@@ -1,59 +1,87 @@
 <div [formGroup]="bulkrfqForm">
-    <div class="card mb-10" *ngIf="PRICE_VALUES.length">
-        <div class="material-form">
-            <div class="outline-input-label">
-                <label>
-                    <list-autocomplete class="value-auto-co" [control]="bulkrfqForm.get('productType')"
-                        [placeholder]="'Enter Product Type*'" [productType]="PRODUCT_TYPES"
-                        (onSelect)="updateProductType(bulkrfqForm.get('productType'))">
-                    </list-autocomplete>
-                    <p *ngIf="bulkrfqForm.get('productType').touched && 
-                       bulkrfqForm.get('productType').invalid" class="error-txt">
-                        Kindly select a Product
-                    </p>
-                </label>
-            </div>
-            <div class="multiple-form-field quantity-block">
-                <div class="outline-input-label">
-                    <p class="required-qty-txt">Enter your <br>required quantity</p>
-                </div>
-                <div class="outline-input-label qty-field">
-                    <label>
-                        <list-autocomplete [isAutoCompleteOnPopup]="true" class="value-auto-co"
-                            [control]="bulkrfqForm.get('quantity')" [placeholder]="'Select from suggested Qty'"
-                            [quantity]="PRICE_VALUES" (onSelect)="updateQuantity(bulkrfqForm.get('quantity'))">
-                        </list-autocomplete>
-                        <p *ngIf="bulkrfqForm.get('quantity').touched && 
-                       bulkrfqForm.get('quantity').invalid" class="error-txt">
-                            Kindly select quantity.
-                        </p>
-                    </label>
-                    <div class="qty-dropdown">
-                    </div>
-                </div>
-            </div>
-            <div class="outline-input-label mb-0">
-                <label [class.is-focus]="bulkrfqForm.get('budget').value.length">
-                    <input formControlName="budget" type="text" name="" data-numbersOnly>
-                    <span class="label">Budget (Optional)</span>
-                </label>
-            </div>
+  <div class="card mb-10" *ngIf="PRICE_VALUES.length">
+    <div class="material-form">
+      <div class="outline-input-label">
+        <label for="none">
+          <list-autocomplete
+            class="value-auto-co"
+            [control]="bulkrfqForm.get('productType')"
+            [placeholder]="'Enter Product Type*'"
+            [productType]="PRODUCT_TYPES"
+            (onSelect)="updateProductType(bulkrfqForm.get('productType'))"
+          >
+          </list-autocomplete>
+          <p
+            *ngIf="
+              bulkrfqForm.get('productType').touched &&
+              bulkrfqForm.get('productType').invalid
+            "
+            class="error-txt"
+          >
+            Kindly select a Product
+          </p>
+        </label>
+      </div>
+      <div class="multiple-form-field quantity-block">
+        <div class="outline-input-label">
+          <p class="required-qty-txt">Enter your <br />required quantity</p>
         </div>
+        <div class="outline-input-label qty-field">
+          <label for="none">
+            <list-autocomplete
+              [isAutoCompleteOnPopup]="true"
+              class="value-auto-co"
+              [control]="bulkrfqForm.get('quantity')"
+              [placeholder]="'Select from suggested Qty'"
+              [quantity]="PRICE_VALUES"
+              (onSelect)="updateQuantity(bulkrfqForm.get('quantity'))"
+            >
+            </list-autocomplete>
+            <p
+              *ngIf="
+                bulkrfqForm.get('quantity').touched &&
+                bulkrfqForm.get('quantity').invalid
+              "
+              class="error-txt"
+            >
+              Kindly select quantity.
+            </p>
+          </label>
+          <div class="qty-dropdown"></div>
+        </div>
+      </div>
+      <div class="outline-input-label mb-0">
+        <label [class.is-focus]="bulkrfqForm.get('budget').value.length">
+          <input
+            formControlName="budget"
+            type="text"
+            name=""
+            data-numbersOnly
+          />
+          <span class="label">Budget (Optional)</span>
+        </label>
+      </div>
     </div>
-    <div class="card">
-        <div class="material-form">
-            <div class="outline-input-label">
-                <label [class.is-focus]="bulkrfqForm.get('phone').value.length">
-                    <input formControlName="phone" type="text" name="" data-numbersOnly>
-                    <!-- <p *ngIf="bulkrfqForm.get('phone').touched && 
+  </div>
+  <div class="card">
+    <div class="material-form">
+      <div class="outline-input-label">
+        <label [class.is-focus]="bulkrfqForm.get('phone').value.length">
+          <input formControlName="phone" type="text" name="" data-numbersOnly />
+          <!-- <p *ngIf="bulkrfqForm.get('phone').touched && 
                        bulkrfqForm.get('phone').invalid" class="error-txt">
                         Kindly enter valid phone no.
                     </p> -->
-                    <span class="label">Enter Mobile Number*</span>
-                </label>
-            </div>
-        </div>
-        <button class="btn secondry-btn disabled" [disabled]="!bulkrfqForm.valid"
-            (click)="$event.stopPropagation();loginAndValidatePhone()">NEXT</button>
+          <span class="label">Enter Mobile Number*</span>
+        </label>
+      </div>
     </div>
+    <button
+      class="btn secondry-btn disabled"
+      [disabled]="!bulkrfqForm.valid"
+      (click)="$event.stopPropagation(); loginAndValidatePhone()"
+    >
+      NEXT
+    </button>
+  </div>
 </div>

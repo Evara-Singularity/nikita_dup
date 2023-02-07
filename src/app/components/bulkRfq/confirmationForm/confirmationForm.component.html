@@ -1,57 +1,64 @@
 <div class="thanks-query-container">
-    <div class="heading-txt">
-        <h2>Thanks, for submitting the query</h2>
-        <p>Below is your request summary</p>
-    </div>
-    <div class="card" >
-        <div class="material-form">
-            <div class="outline-input-label">
-                <label>
-                    <input [disabled]="true" type="text" name="">
-                    <span class="label">{{bulkrfqForm['productType']}}</span>
-                </label>
-            </div>
-            <div class="multiple-form-field quantity-block">
-                <div class="outline-input-label">
-                    <label>
-                        <input [disabled]="true" type="text" name="">
-                        <span class="label">{{bulkrfqForm['quantity']}}</span>
-                    </label>
-                </div>
-                <div class="outline-input-label">
-                    <label>
-                        <input [disabled]="true" type="text" name="">
-                        <span class="label">{{bulkrfqForm['budget']}}</span>
-                    </label>
-                </div>
-            </div>
-            <div class="outline-input-label ">
-                <label>
-                    <input [disabled]="true" type="text" name="">
-                    <span class="label">{{gstinForm['gstin']}}</span>
-                </label>
-            </div>
-            <div class="outline-input-label ">
-                <label>
-                    <input [disabled]="true" type="text" name="">
-                    <span class="label">{{gstinForm['email']}}</span>
-                </label>
-            </div>
-            <div class="outline-input-label mb-0">
-                <label>
-                    <input [disabled]="true" type="text" name="">
-                    <span class="label">{{gstinForm['description']}}</span>
-                </label>
-            </div>
+  <div class="heading-txt">
+    <h2>Thanks, for submitting the query</h2>
+    <p>Below is your request summary</p>
+  </div>
+  <div class="card">
+    <div class="material-form">
+      <div class="outline-input-label">
+        <label>
+          <input [disabled]="true" type="text" name="" />
+          <span class="label">{{ bulkrfqForm["productType"] }}</span>
+        </label>
+      </div>
+      <div class="multiple-form-field quantity-block">
+        <div class="outline-input-label">
+          <label>
+            <input [disabled]="true" type="text" name="" />
+            <span class="label">{{ bulkrfqForm["quantity"] }}</span>
+          </label>
         </div>
+        <div class="outline-input-label">
+          <label>
+            <input [disabled]="true" type="text" name="" />
+            <span class="label">{{ bulkrfqForm["budget"] }}</span>
+          </label>
+        </div>
+      </div>
+      <div class="outline-input-label">
+        <label>
+          <input [disabled]="true" type="text" name="" />
+          <span class="label">{{ gstinForm["gstin"] }}</span>
+        </label>
+      </div>
+      <div class="outline-input-label">
+        <label>
+          <input [disabled]="true" type="text" name="" />
+          <span class="label">{{ gstinForm["email"] }}</span>
+        </label>
+      </div>
+      <div class="outline-input-label mb-0">
+        <label>
+          <input [disabled]="true" type="text" name="" />
+          <span class="label">{{ gstinForm["description"] }}</span>
+        </label>
+      </div>
     </div>
-    <h2 style="padding-top: 20px;">Similar Items You Can Buy Now</h2>
-    <app-similar-products 
-         [partNumber]="'MSN39YR74XXL5Q'"
-         [groupId] = "''"
-         [productName] = "'Melbon 40 inch Black Full HD Smart Android LED TV with 18 Months Warranty'"
-         [categoryCode] ="'250131100'">
-    </app-similar-products>
-    <button (click)="moveToNext(this.stepNameLogin)" class="btn secondry-full-btn ">ADD NEW RFQ REQUEST</button>
+  </div>
+  <h2 style="padding-top: 20px">Similar Items You Can Buy Now</h2>
+  <app-similar-products
+    [partNumber]="'MSN39YR74XXL5Q'"
+    [groupId]="''"
+    [productName]="
+      'Melbon 40 inch Black Full HD Smart Android LED TV with 18 Months Warranty'
+    "
+    [categoryCode]="'250131100'"
+  >
+  </app-similar-products>
+  <button
+    (click)="moveToNext(this.stepNameLogin)"
+    class="btn secondry-full-btn"
+  >
+    ADD NEW RFQ REQUEST
+  </button>
 </div>
-

@@ -17,7 +17,7 @@
             </ng-container>
 
             <ng-container *ngSwitchCase="stepNameOtp">
-                <shared-auth-otp [isLoginPopup]="isLoginPopup" [otpFormArray]="otpForm" [source]="'login_otp'"
+                <shared-auth-otp [isLoginPopup]="isLoginPopup" [otpFormArray]="otpForm" [source]="sourceFlow"
                     [identifier]="bulkRfqFormPhoneno" (otpEmitter)="captureOTP($event)" [withLabel]="false">
                 </shared-auth-otp>
             </ng-container>

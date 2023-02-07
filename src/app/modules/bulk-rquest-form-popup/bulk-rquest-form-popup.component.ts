@@ -20,6 +20,8 @@ import { CartService } from '@app/utils/services/cart.service';
 import { BulkRfqFormModule } from '@app/components/bulkRfq/bulkRfqForm/bulkRfqForm.module';
 import { GstinFormModule } from '@app/components/bulkRfq/gstinForm/gstinForm.module';
 import { ConfirmationFormModule } from '@app/components/bulkRfq/confirmationForm/confirmationForm.module';
+import CONSTANTS from '@app/config/constants';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: "bulk-rquest-form-popup",
@@ -46,6 +48,8 @@ export class BulkRquestFormPopupComponent implements OnInit {
   user: boolean = false;
   loginAndValidatePhone: boolean = false;
   bulkRfqFormPhoneno: any;
+  isUserExists:boolean = false;
+  sourceFlow:string = "login_otp"  // default it should be login
 
   constructor(
     private formBuilder: FormBuilder,
@@ -79,9 +83,11 @@ export class BulkRquestFormPopupComponent implements OnInit {
       this.closePopup$.emit();
     }
   }
-
+  
   setPhoneNo(event) {
-    this.bulkRfqFormPhoneno = event;
+    this.bulkRfqFormPhoneno = event.phone ? event.phone : "";
+    this.sourceFlow = (event && event.isUserExists ? "login_otp" : "signup");
+    this.isUserExists = event.isUserExists ? event.isUserExists : false;
   }
 
   moveToNext(stepName) {
@@ -138,16 +144,55 @@ export class BulkRquestFormPopupComponent implements OnInit {
 
   captureOTP(otpValue) {
     if (!otpValue) return;
+    (!this.isUserExists ? this.signUpProcess(otpValue) : this.authenticationProcess(otpValue));
+  }
+
+  private signUpProcess(otpValue){
+    const REQUEST = this.postBodyForSignUp(otpValue)
     this._loader.setLoaderState(true);
-    const REQUEST = { email: "", phone: "", source: "login_otp" };
-    REQUEST["type"] = this._sharedAuthUtilService.getUserType(
-      this._sharedAuthService.AUTH_USING_PHONE, this.bulkRfqFormPhoneno
-    );
+    this._sharedAuthService.signUp(REQUEST).subscribe(result=>{
+      if(result && result['authenticated']){
+      this._sharedAuthUtilService.sendGenericPageClickTracking(false);
+      this._localAuthService.clearAuthFlow();
+      this._localAuthService.clearBackURLTitle();
+      this._sharedAuthUtilService.postSignup(
+          REQUEST, result,
+          false, 
+          false,
+          null
+      );
+      setTimeout((()=>{
+        this.moveToNext(this.stepNameRfqForm)
+      }),300)
+    }
+    this._loader.setLoaderState(false);
+    })
+  }
+
+  private postBodyForSignUp(otpValue){
+    const REQUEST = { email: "", phone: "", source: this.sourceFlow };
+    REQUEST['type'] = 'p';
     REQUEST["otp"] = otpValue;
     REQUEST["phone"] = this.bulkRfqFormPhoneno;
+    REQUEST['firstName'] = CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER;
+    REQUEST['buildVersion'] =  environment.buildVersion;
+    return REQUEST;
+  }
+
+  private postBodyForAuthentication(otpValue){
+    const REQUEST = { email: "", phone: "", source: this.sourceFlow };
+    REQUEST['type'] = 'p';
+    REQUEST["otp"] = otpValue;
+    REQUEST["phone"] = this.bulkRfqFormPhoneno;
+    return REQUEST;
+  }
+
+  private authenticationProcess(otpValue){
+    const REQUEST = this.postBodyForAuthentication(otpValue);
+    this._loader.setLoaderState(true);
     this._sharedAuthService.authenticate(REQUEST).subscribe(
       (response) => {
-        this._loader.setLoaderState(false);
+        this._loader.setLoaderState(false); 
 
         if (
           response["statusCode"] !== undefined ||
@@ -161,13 +206,14 @@ export class BulkRquestFormPopupComponent implements OnInit {
           return;
         }
         this.processAuthenticaton(response);
+        this._loader.setLoaderState(false);
       },
       (error) => {
         this._loader.setLoaderState(false);
       }
     );
-    this._loader.setLoaderState(false);
   }
+
 }
 
 @NgModule({

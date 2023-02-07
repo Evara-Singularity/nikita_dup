@@ -95,7 +95,7 @@ getBNPEligibility(phone) {
 
             this.dataBnpl = this._objectToArray.transform(data.bnplResponse, "associative");
             this.dataBnpl.forEach((element, index) => {
-              if(this.bnplMapKeys.includes(element.key) && element.value.eligibility.status == true)
+              if(this.bnplMapKeys.includes(element.key) )
               {
                  this.bnplMap[element.key].active = true;
                  this.showBanks.push(this.bnplMap[element.key]);
@@ -128,7 +128,7 @@ getBNPEligibility(phone) {
         }
 
 getBNPEligibilityCall(phone){
-    return this._dataService.callRestful('GET', "http://localhost:8084/payment_war/payment/getBNPLEligibility?phone=9506353593&price=1000").pipe(
+    return this._dataService.callRestful('GET', "http://paymentqa.moglilabs.com/payment/payment/getBNPLEligibility?phone=9506353593&price=1000").pipe(
         catchError((res: HttpErrorResponse) => {
             return of({status: false, statusCode: res.status});
         })

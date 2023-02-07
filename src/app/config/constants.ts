@@ -80,13 +80,13 @@ export const CONSTANTS = {
           paymentId: 300,
           imgUrl: "lazypay.png"  
         },
-        ICICI :{
+        ICICIPL :{
           mode: "BNPL",
-          type: 'icici-pl',
+          type: 'icicipl',
           active : false,
-          bankcode : 'ICICPL',
+          bankcode : 'ICICIPL',
           paymentId: 301,
-          imgUrl: "icici-pl.png"  
+          imgUrl: "icicipl.png"  
         }
 
       }

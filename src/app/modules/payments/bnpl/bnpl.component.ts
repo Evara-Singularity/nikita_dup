@@ -54,6 +54,7 @@ prepaidDiscount: number = 0;
 totalPayableAmount: number = 0;
 userNum;
 message: string = "You are not eligible for BNPL";
+phone: string;
 bankArray =["LAZYPAY" ];
 showBanks: any[] = [];
 bnplType: any;
@@ -72,18 +73,23 @@ ngOnInit() {
       
     let userSession = this._localAuthService.getUserSession();
     let addressList = this._cartService.shippingAddress;
-    let phone = addressList["phone"] != null ? addressList["phone"] : userSession["phone"];
+    this.phone = addressList["phone"] != null ? addressList["phone"] : userSession["phone"];
 
-    this.getBNPEligibility(phone);
+    //this.getBNPEligibility();
+    this.bnplMap = CONSTANTS.GLOBAL.bnplMap[this.type];
+    this.showBanks.push(this.bnplMap["LAZYPAY"]);
+    this.showBanks.push(this.bnplMap["ICICIPL"]);
+
+    this.selectDefaultBNPL(); 
 }
 
-getBNPEligibility(phone) {
+getBNPEligibility() {
 
    
     this.bnplMap = CONSTANTS.GLOBAL.bnplMap[this.type];
     this.bnplMapKeys = Object.keys(this.bnplMap);
    
-        this.getBNPEligibilityCall({ phone: phone }).subscribe((res): void => {
+        this.getBNPEligibilityCall().subscribe((res): void => {
             if (res["status"] != true) {
                 this.isBnplEnable = false;
                 return;
@@ -127,8 +133,8 @@ getBNPEligibility(phone) {
 
         }
 
-getBNPEligibilityCall(phone){
-    return this._dataService.callRestful('GET', "http://paymentqa.moglilabs.com/payment/payment/getBNPLEligibility?phone=9506353593&price=1000").pipe(
+getBNPEligibilityCall(){
+    return this._dataService.callRestful('GET', "http://paymentqa.moglilabs.com/payment/payment/getBNPLEligibility?phone="+this.phone+"&price="+this.totalPayableAmount).pipe(
         catchError((res: HttpErrorResponse) => {
             return of({status: false, statusCode: res.status});
         })

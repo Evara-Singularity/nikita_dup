@@ -17,6 +17,8 @@ export class PlpFixedHeaderComponent implements OnInit, OnDestroy {
   @Output() loadSearchNav$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() goBack$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() noOfCart: number = 0;
+  @Input() enableAppBanner: boolean = false;
+
   searchValue='';
   buyNow:boolean = false;
   pdpPage=false;
@@ -29,7 +31,6 @@ export class PlpFixedHeaderComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.isPDPUrl();
     this.buyNow = this.cartService.buyNow == undefined ? false : this.cartService.buyNow;
     this.route.queryParams.subscribe(res => {
       this.searchValue = (res['search_query']) ? res['search_query'] : ''
@@ -38,15 +39,6 @@ export class PlpFixedHeaderComponent implements OnInit, OnDestroy {
      // console.log("fixed header --" , this.cartService.buyNow);
        window.location.reload(); 
     })
-  }
-
-  isPDPUrl() { 
-    const currentUrl = this.router.url
-    if (currentUrl.toLowerCase().includes("/mp/msn" || "/hi")) {
-      this.pdpPage = true;
-    } else {
-      this.pdpPage = false;
-    }
   }
 
   ngOnDestroy(): void {

@@ -1205,8 +1205,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
-    setOutOfStockFlag()
-    {
+    setOutOfStockFlag() {
         if (this.priceQuantityCountry) {
             // incase outOfStockFlag of is avaliable then set its value
             this.productOutOfStock = this.priceQuantityCountry["outOfStockFlag"];
@@ -1218,13 +1217,16 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 if (parseInt(this.priceQuantityCountry["quantityAvailable"]) == 0) {
                     this.productOutOfStock = true;
                 }
-                
+
             } else {
                 this.productOutOfStock = true;
             }
         } else {
             // incase priceQuantityCountry element not present in API
             this.productOutOfStock = true;
+        }
+        if (this.productOutOfStock) {
+            this.commonService.enableAppPromoInHeader = true;
         }
     }
 

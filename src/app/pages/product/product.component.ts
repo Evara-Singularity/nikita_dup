@@ -342,6 +342,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     relatedLinkRes: any = null
     categoryBucketRes: any = null
     similarCategoryRes: any = null 
+    fbtAnalytics: { page: { pageName: string; channel: string; subSection: any; linkPageName: any; linkName: any; loginStatus: string; }; custData: { customerID: string; emailID: string; mobile: string; customerType: any; customerCategory: any; }; order: { productID: string; productCategoryL1: any; productCategoryL2: any; productCategoryL3: any; brand: any; price: number; stockStatus: string; tags: string; }; };
 
     set showLoader(value: boolean)
     {
@@ -1632,6 +1633,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             );
             if (validFbts.length > 0) {
                 this.productUtil.changeFBTSource(productResponse, validFbts);
+                this.getFbtIntance(); 
                 this.fbtFlag = true;
             } else {
                 this.fbtFlag = false;
@@ -2766,21 +2768,21 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
-    async getFbtIntance(htmlElement)
+    getFbtIntance()
     {
-        if (!this.fbtComponentInstance) {
-            const { FbtComponent } = await import(
-                "./../../components/fbt/fbt.component"
-            );
-            const factory = this.cfr.resolveComponentFactory(FbtComponent);
-            this.fbtComponentInstance = this.fbtComponentContainerRef.createComponent(
-                factory,
-                null,
-                this.injector
-            );
+        // if (!this.fbtComponentInstance) {
+            // const { FbtComponent } = await import(
+            //     "./../../components/fbt/fbt.component"
+            // );
+            // const factory = this.cfr.resolveComponentFactory(FbtComponent);
+            // this.fbtComponentInstance = this.fbtComponentContainerRef.createComponent(
+            //     factory,
+            //     null,
+            //     this.injector
+            // );
             //this.fbtComponentInstance.instance['addToCartFromModal'] = this.addToCartFromModal.bind(this);
-            this.fbtComponentInstance.instance["isModal"] = false;
-            this.fbtComponentInstance.instance["originalProductBO"] = this.originalProductBO;
+            // this.fbtComponentInstance.instance["isModal"] = false;
+            // this.fbtComponentInstance.instance["originalProductBO"] = this.originalProductBO;
             const TAXONS = this.taxons;
             let page = {
                 pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
@@ -2790,12 +2792,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 linkName: null,
                 loginStatus: this.commonService.loginStatusTracking,
             };
-            this.fbtComponentInstance.instance["analytics"] = {
+            this.fbtAnalytics = {
                 page: page,
                 custData: this.commonService.custDataTracking,
                 order: this.orderTracking,
             };
-        }
+        // }
     }
 
     async showAddToCartToast()

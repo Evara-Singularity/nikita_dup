@@ -57,9 +57,10 @@
 
 <!-- TODO: skeleton to be implemented -->
 <!-- TODO: Check in case TYPE B & TYPE C products -->
-<div class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" data-observeVisibility [debounceTime]="100" (visible)="getFbtIntance($event)">
-    <ng-container #fbt></ng-container>
-    <product-skeletons [type]="'FBT'" [templateRefInstance]="fbtComponentInstance"></product-skeletons>
+<div class="card" [class.fbtSection]='fbtFlag' *ngIf='fbtFlag'>
+    <fbt [originalProductBO]='originalProductBO' [analytics]='fbtAnalytics'></fbt>
+    <!-- <ng-container #fbt></ng-container>
+    <product-skeletons [type]="'FBT'" [templateRefInstance]="fbtComponentInstance"></product-skeletons> -->
 </div>
 
 <app-product-review [productName]="productName" [reviewLength]="reviewLength" [overallRating]="overallRating" [rawReviewsData]="rawReviewsData" (writeReview)="writeReview($event)" (reviewRatingPopup)="handleReviewRatingPopup($event)" (postHelpful)="handlePostHelpful($event)">

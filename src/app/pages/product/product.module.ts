@@ -37,6 +37,7 @@ import { OosSimilarSectionModule } from '@app/components/oos-similar-section/oos
 import { ProductSkeletonsModule } from '@app/components/product-skeletons/product-skeletons.component';
 import ProductAccordiansModule from '@app/components/product-accordians/product-accordians.component';
 import { ProductOffersModule } from '@app/components/product-offers/product-offers.component';
+import FbtComponentModule from '@app/components/fbt/fbt.component';
 
 @NgModule({
   declarations: [ProductComponent],
@@ -82,7 +83,8 @@ import { ProductOffersModule } from '@app/components/product-offers/product-offe
     SharedProductCarouselModule,
     ProductSkeletonsModule,
     ProductAccordiansModule,
-    ProductOffersModule
+    ProductOffersModule,
+    FbtComponentModule
   ],
   exports: [],
   providers: [NgxSiemaService]

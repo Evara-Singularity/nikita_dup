@@ -16,29 +16,36 @@
 
         <ng-container *ngFor="let item of miscTabArray;let tabIndex = index">
             <div class="product-card-section" *ngIf="(tabIndex < 3) && item['isSelected']" >
-                <product-card-vertical-container  [containerId]="'topDealsContainer'+tabIndex" [numberOfItems]="10">
-                    <ng-container *ngFor="let product of miscTabArray[tabIndex]['data']; let pIndex=index">
-                        <product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
-                            [moduleUsedIn]="'POPULAR_DEALS'"
-                            [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
-                            [analytics]="analytics">
-                        </product-card-vertical-grid-view>
-                    </ng-container>
-                </product-card-vertical-container>
+                <ng-container *ngIf=" miscTabArray[tabIndex]['data'].length > 0" >
+                    <product-card-vertical-container  [containerId]="'topDealsContainer'+tabIndex" [numberOfItems]="10">
+                        <ng-container *ngFor="let product of miscTabArray[tabIndex]['data']; let pIndex=index">
+                            <product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
+                                [moduleUsedIn]="'POPULAR_DEALS'"
+                                [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
+                                [analytics]="analytics">
+                            </product-card-vertical-grid-view>
+                        </ng-container>
+                    </product-card-vertical-container>
+                </ng-container>
+                <ng-container *ngIf=" miscTabArray[tabIndex]['data'].length == 0 &&  _loaderService.state == false" >
+                    <h1>No Data</h1>
+                </ng-container>
             </div>
-            <div class="product-card-section" *ngIf="(item == 3) && item['isSelected']" >
-                <pre>
-                    {{ miscTabArray[3]['data'] | json }}
-                </pre>
-                <product-card-vertical-container [containerId]="'topDealsContainer'" [numberOfItems]="10">
-                    <ng-container *ngFor="let product of miscTabArray[tabIndex]['data']; let pIndex=index">
-                        <rfq-product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
-                            [moduleUsedIn]="'POPULAR_DEALS'"
-                            [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
-                            [analytics]="analytics">
-                        </rfq-product-card-vertical-grid-view>
-                    </ng-container>
-                </product-card-vertical-container>
+            <div class="product-card-section" *ngIf="(tabIndex == 3) && item['isSelected']" >
+                <ng-container *ngIf=" miscTabArray[tabIndex]['data'].length > 0"  >
+                    <product-card-vertical-container [containerId]="'topDealsContainer'" [numberOfItems]="10">
+                        <ng-container *ngFor="let product of miscTabArray[tabIndex]['data']; let pIndex=index">
+                            <rfq-product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
+                                [moduleUsedIn]="'POPULAR_DEALS'"
+                                [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
+                                [analytics]="analytics">
+                            </rfq-product-card-vertical-grid-view>
+                        </ng-container>
+                    </product-card-vertical-container>
+                </ng-container>
+                <ng-container *ngIf=" miscTabArray[tabIndex]['data'].length == 0 && _loaderService.state == false" >
+                    <h1>No Data</h1>
+                </ng-container>
             </div>
         </ng-container>
         

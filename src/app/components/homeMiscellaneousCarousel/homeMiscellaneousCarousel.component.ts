@@ -12,6 +12,8 @@ import { ProductService } from '@app/utils/services/product.service';
 import { ProductBrowserService } from '@app/utils/services/product-browser.service';
 import { map } from 'rxjs/operators';
 import { RfqProductCardVerticalGridViewModule } from '@app/modules/product-card/rfq-product-card-vertical-grid-view/rfq-product-card-vertical-grid-view.module';
+import * as G from 'glob';
+import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 
 
 @Component({
@@ -77,6 +79,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     private _dataservice: DataService,
     private _productService: ProductService,
     private _productBrowserService: ProductBrowserService,
+    public _loaderService: GlobalLoaderService,
 
   ) {
     this.isServer = _commonService.isServer;
@@ -102,6 +105,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         this.userId
       )
       .subscribe((res) => {
+        this._loaderService.setLoaderState(false);
         if ((res['statusCode'] === 200) && res['data'] && res['data'].length > 0) {
           this.miscTabArray[0]['data'] = (res['data'] as any[]).map((item) => this._productService.recentProductResponseToProductEntity(item));
         }
@@ -113,6 +117,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     if (this.userId)
       this.miscTabArray[1]['data'] = [];
       this._productBrowserService.getPastOrderProducts(this.userId).subscribe((response) => {
+        this._loaderService.setLoaderState(false);
         if (response['status']) {
           this.showRfqGrid = false;
           this.miscTabArray[1]['data'] = (response['data'] as any[]).slice(0, 10).map(product => this._productBrowserService.pastOrdersProductResponseToProductEntity(product));
@@ -143,6 +148,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         })
       )
       .subscribe((res) => {
+        this._loaderService.setLoaderState(false);
         this.showRfqGrid=false;
         this.miscTabArray[2]['data'] = res.map(product => {
           return this._productService.wishlistToProductEntity(product)
@@ -180,6 +186,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         })
       )
       .subscribe((res) => {
+        this._loaderService.setLoaderState(false);
         this.showRfqGrid=true;
         this.miscTabArray[3]['data'] = res['data'].map(product => {
           return this._productService.myRfqToProductEntity(product)
@@ -193,6 +200,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
       this.miscTabArray[index].isSelected = false;
     });
     this.miscTabArray[index].isSelected = true;
+    this._loaderService.setLoaderState(true);
     switch (index) {
       case 0:
         this.getRecentViewed();
@@ -212,16 +220,18 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   }
 
   tabshift() {
-    let containerId = document.getElementById("topDealsContainer");
-    let tabsId = document.getElementById("tabs");
-    if (this.isBrowser && containerId && tabsId) {
-      tabsId.addEventListener(
-        "click",
-        () => {
-          containerId.scroll({ left: 0, top: 0, behavior: "smooth" });
-        },
-        { passive: true }
-      );
+    let containerId = document.getElementsByClassName("pwa-tabs-container");
+    if (this.isBrowser && containerId && containerId) {
+      for (let index = 0; index < containerId.length; index++) {
+        const element = containerId[index] as HTMLElement;
+        element.addEventListener(
+          "click",
+          () => {
+            element.scroll({ left: 0, top: 0, behavior: "smooth" });
+          },
+          { passive: true }
+        );
+      }
     }
   }
 

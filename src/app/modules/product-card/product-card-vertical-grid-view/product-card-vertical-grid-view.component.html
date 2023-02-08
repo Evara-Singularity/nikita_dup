@@ -55,7 +55,7 @@
                 </div>
             </div>
         </div>
-        <div class="right" *ngIf="!product.homePageRFQ">
+        <div class="right">
             <div class="card-btn-row">
                 <ng-container *ngIf="(cardFeaturesConfig.enableAddToCart || cardFeaturesConfig.enableBuyNow) && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
                     <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart" (click)="buyNow()">
@@ -68,12 +68,6 @@
                 <button class="btn tertiary-outline-cta tertiary-outline-cta-8" (click)="openRfqForm()">
                                 SEND QUERY
                             </button>
-            </ng-container>
-        </div>
-        <div class="right" *ngIf="product.homePageRFQ">
-            <ng-container>  
-              {{product['HomePageRFQstatus']['status']}} <br>
-              <span>placed on:-{{product['HomePageRFQstatus']['createdOn'] | date:'mediumDate'}}</span>
             </ng-container>
         </div>
 

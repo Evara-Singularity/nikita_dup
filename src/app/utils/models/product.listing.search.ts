@@ -68,8 +68,9 @@ export interface FilterableAttributes {
 }
 export interface HomePageRFQstatus{
     status:string;
-    qty?:number;
-    createdOn?:Date;
+    qty:number;
+    createdOn:Date;
+    rfqId:number;
 }
 
 export interface BucketsEntity {

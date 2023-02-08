@@ -902,7 +902,8 @@ export class ProductService {
             HomePageRFQstatus: {
                 status: product['statusText'],
                 qty: productItemLevel['quantity'],
-                createdOn: product['createdDate']
+                createdOn: product['createdDate'],
+                rfqId:product['id']
             }
         } as ProductsEntity;
         return productReturn;

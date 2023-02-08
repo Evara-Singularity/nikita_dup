@@ -27,7 +27,7 @@
                     *ngIf="cardFeaturesConfig.enableRating && product.ratingCount">({{productReviewCount}})</span>
             </div> -->
             <div class="rfq-no-section">
-                <p>RFQ ID: 65345677</p>
+                <p>RFQ ID: {{product['HomePageRFQstatus']['rfqId']}}</p>
             </div>
             <div class="name" (click)="trackProductTitle('title');$event.preventDefault()">
                 <a [href]="prodUrl + '/' + product.productUrl">
@@ -51,7 +51,7 @@
                 <div class="prod-selling-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
                     <span class="selling-price">{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
                     </span>
-                        <span class="qty-amount">(Qty 2)</span>
+                        <span class="qty-amount">(Qty {{product['HomePageRFQstatus']['qty']}})</span>
                 </div>
                 <div class="out-of-stock-text" *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
                     <span>Available on Request</span>
@@ -60,7 +60,7 @@
                     *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice && product.priceWithoutTax!=0">
                     <span class="oos-price">{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}
                     </span>
-                    <span class="oos-qty-amount">(Qty 2)</span>
+                    <span class="oos-qty-amount">(Qty {{product['HomePageRFQstatus']['qty']}})</span>
 
                 </div>
             </div>

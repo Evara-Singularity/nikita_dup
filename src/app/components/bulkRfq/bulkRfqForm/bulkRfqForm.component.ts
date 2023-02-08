@@ -5,9 +5,11 @@ import {
   FormGroup,
   Validators,
 } from "@angular/forms";
+import CONSTANTS from "@app/config/constants";
 import { SharedAuthService } from "@app/modules/shared-auth-v1/shared-auth.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { LocalAuthService } from "@app/utils/services/auth.service";
+import { DataService } from "@app/utils/services/data.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { LocalStorageService } from "ngx-webstorage";
 
@@ -23,22 +25,11 @@ export class BulkRfqFormComponent implements OnInit {
   @Output() setBulkRfqForm$: EventEmitter<FormGroup> =
     new EventEmitter<FormGroup>();
 
-  readonly PRICE_VALUES = [
-    "1 qty",
-    "2 - 5 qty",
-    "6 - 10 qty",
-    "11 - 15 qty",
-    "16 - 1100 qty",
-  ];
-  readonly PRODUCT_TYPES = [
-    "PRODUCT 1",
-    "PRODUCT 2",
-    "PRODUCT 3",
-    "PRODUCT 4",
-    "PRODUCT 5",
-  ];
+  readonly PRICE_VALUES = ["1","5","10","15","20"];
+  PRODUCT_TYPES : any [] =[]
   readonly stepNameOtp = "OTP";
   readonly stepNameRfqForm = "RFQ_FORM";
+  readonly API = "https://searchapidev.moglilabs.com/" || CONSTANTS.NEW_MOGLIX_API ;
 
   bulkrfqForm: FormGroup;
 
@@ -48,7 +39,8 @@ export class BulkRfqFormComponent implements OnInit {
     private _localAuthService: LocalAuthService,
     private _loader: GlobalLoaderService,
     private _sharedAuthService: SharedAuthService,
-    private _tms: ToastMessageService
+    private _tms: ToastMessageService,
+    private _dataService: DataService,
   ) {
     this.createRfqForm();
   }
@@ -125,6 +117,30 @@ export class BulkRfqFormComponent implements OnInit {
 
   moveToNext(stepName) {
     this.moveToNext$.emit(stepName);
+  }
+
+  onkeyUp(value: string){
+    if(value.length > 2){
+      this.fetchCategoryList(value);
+    }
+  }
+
+  private fetchCategoryList(value: string){
+    this._loader.setLoaderState(true);
+    const url = this.API + `searchApi/category/list?str=${value}&countryCode=356`;
+        this._dataService.callRestful("GET", url).subscribe(
+            (response) => 
+            {
+                this._loader.setLoaderState(false); 
+                if(response && response['totalCount'] > 0){
+                  const categoryData = response['categorylist'];
+                  this.PRODUCT_TYPES = categoryData.map(res=>(res.categoryName as string).trim());
+                }else{
+                  this._tms.show({ type: 'error', text: 'data not found' });
+                }
+            },
+            (error) => { this._loader.setLoaderState(false); this._tms.show({ type: 'error', text: 'Something Went Wrong' }); }
+        );
   }
 
   updateProductType(arg0: AbstractControl) {}

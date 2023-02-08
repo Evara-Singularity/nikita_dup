@@ -30,6 +30,7 @@ export class ListAutocompleteComponent implements OnInit
 
     @Input("isAutoCompleteOnPopup") isAutoCompleteOnPopup: boolean = false;
     @Output("onSelect") onSelect: EventEmitter<any> = new EventEmitter()
+    @Output("onkeyUp") onkeyUp: EventEmitter<any> = new EventEmitter<any>()
     filteredList: any[] = [];
     toggleDropdownForPopup: boolean =false;
 
@@ -55,6 +56,7 @@ export class ListAutocompleteComponent implements OnInit
     }
 
     filter(value: string) {
+        this.onkeyUp.emit(value); 
         if (this.brandList.length) {          //for case brands
             if (value.length > 0) {
                 value = value.toLowerCase();

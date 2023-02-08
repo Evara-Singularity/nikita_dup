@@ -1,27 +1,40 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ListAutocompleteModule } from '@app/components/list-autocomplete/list-autocomplete.component';
-import { ProductSkeletonsModule } from '@app/components/product-skeletons/product-skeletons.component';
-import { SimilarProductModule } from '@app/components/similar-products/similar-products.component';
-import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
-import { AuthFlowType } from '@app/utils/models/auth.modals';
-import { LocalAuthService } from '@app/utils/services/auth.service';
-import { CommonService } from '@app/utils/services/common.service';
-import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
-import { LocalStorageService } from 'ngx-webstorage';
-import { PopUpModule } from '../popUp/pop-up.module';
-import { SharedAuthUtilService } from '../shared-auth-v1/shared-auth-util.service';
-import { SharedAuthModule } from '../shared-auth-v1/shared-auth.module';
-import { SharedAuthService } from '../shared-auth-v1/shared-auth.service';
-import { ToastMessageService } from '../toastMessage/toast-message.service';
-import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
-import { CartService } from '@app/utils/services/cart.service';
-import { BulkRfqFormModule } from '@app/components/bulkRfq/bulkRfqForm/bulkRfqForm.module';
-import { GstinFormModule } from '@app/components/bulkRfq/gstinForm/gstinForm.module';
-import { ConfirmationFormModule } from '@app/components/bulkRfq/confirmationForm/confirmationForm.module';
-import CONSTANTS from '@app/config/constants';
-import { environment } from 'environments/environment';
+import { CommonModule } from "@angular/common";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  NgModule,
+  OnInit,
+  Output,
+} from "@angular/core";
+import {
+  FormArray,
+  FormGroup,
+  ReactiveFormsModule,
+} from "@angular/forms";
+import { ListAutocompleteModule } from "@app/components/list-autocomplete/list-autocomplete.component";
+import { ProductSkeletonsModule } from "@app/components/product-skeletons/product-skeletons.component";
+import { SimilarProductModule } from "@app/components/similar-products/similar-products.component";
+import { NumberDirectiveModule } from "@app/utils/directives/numeric-only.directive";
+import { AuthFlowType } from "@app/utils/models/auth.modals";
+import { LocalAuthService } from "@app/utils/services/auth.service";
+import { CommonService } from "@app/utils/services/common.service";
+import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
+import { LocalStorageService } from "ngx-webstorage";
+import { PopUpModule } from "../popUp/pop-up.module";
+import { SharedAuthUtilService } from "../shared-auth-v1/shared-auth-util.service";
+import { SharedAuthModule } from "../shared-auth-v1/shared-auth.module";
+import { SharedAuthService } from "../shared-auth-v1/shared-auth.service";
+import { ToastMessageService } from "../toastMessage/toast-message.service";
+import { ObserveVisibilityDirectiveModule } from "@app/utils/directives/observe-visibility.directive";
+import { CartService } from "@app/utils/services/cart.service";
+import { BulkRfqFormModule } from "@app/components/bulkRfq/bulkRfqForm/bulkRfqForm.module";
+import { GstinFormModule } from "@app/components/bulkRfq/gstinForm/gstinForm.module";
+import { ConfirmationFormModule } from "@app/components/bulkRfq/confirmationForm/confirmationForm.module";
+import CONSTANTS from "@app/config/constants";
+import { environment } from "environments/environment";
+import { DataService } from "@app/utils/services/data.service";
+import { ProductService } from "../../utils/services/product.service";
 
 @Component({
   selector: "bulk-rquest-form-popup",
@@ -45,14 +58,12 @@ export class BulkRquestFormPopupComponent implements OnInit {
   confirmationForm: FormGroup;
   otpForm: FormArray = new FormArray([]);
   authFlow: AuthFlowType; //gives flowtype & identifier information
-  user: boolean = false;
   loginAndValidatePhone: boolean = false;
   bulkRfqFormPhoneno: any;
-  isUserExists:boolean = false;
-  sourceFlow:string = "login_otp"  // default it should be login
+  isUserExists: boolean = false;
+  sourceFlow: string = "login_otp"; // default it should be login
 
   constructor(
-    private formBuilder: FormBuilder,
     private localStorageService: LocalStorageService,
     private _commonService: CommonService,
     private _loader: GlobalLoaderService,
@@ -60,11 +71,11 @@ export class BulkRquestFormPopupComponent implements OnInit {
     private _tms: ToastMessageService,
     private _localAuthService: LocalAuthService,
     private _sharedAuthUtilService: SharedAuthUtilService,
-    private _cartService: CartService
-  ) { }
+    private _cartService: CartService,
+    private _productService: ProductService
+  ) {}
 
   ngOnInit(): void {
-    this.user = this.localStorageService.retrieve("user");
     this.authFlow = this._localAuthService.getAuthFlow();
     this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
   }
@@ -83,14 +94,17 @@ export class BulkRquestFormPopupComponent implements OnInit {
       this.closePopup$.emit();
     }
   }
-  
+
   setPhoneNo(event) {
     this.bulkRfqFormPhoneno = event.phone ? event.phone : "";
-    this.sourceFlow = (event && event.isUserExists ? "login_otp" : "signup");
+    this.sourceFlow = event && event.isUserExists ? "login_otp" : "signup";
     this.isUserExists = event.isUserExists ? event.isUserExists : false;
   }
 
   moveToNext(stepName) {
+    if (stepName == this.stepNameConfimation) {
+      this.saveBulkRfq();
+    }
     this.stepState = stepName;
   }
 
@@ -117,7 +131,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
 
   setGstinForm(data) {
     this.gstinForm = data;
-  } 
+  }
 
   setBulkRfqForm(data) {
     this.bulkrfqForm = data;
@@ -144,55 +158,58 @@ export class BulkRquestFormPopupComponent implements OnInit {
 
   captureOTP(otpValue) {
     if (!otpValue) return;
-    (!this.isUserExists ? this.signUpProcess(otpValue) : this.authenticationProcess(otpValue));
+    !this.isUserExists
+      ? this.signUpProcess(otpValue)
+      : this.authenticationProcess(otpValue);
   }
 
-  private signUpProcess(otpValue){
-    const REQUEST = this.postBodyForSignUp(otpValue)
+  private signUpProcess(otpValue) {
+    const REQUEST = this.postBodyForSignUp(otpValue);
     this._loader.setLoaderState(true);
-    this._sharedAuthService.signUp(REQUEST).subscribe(result=>{
-      if(result && result['authenticated']){
-      this._sharedAuthUtilService.sendGenericPageClickTracking(false);
-      this._localAuthService.clearAuthFlow();
-      this._localAuthService.clearBackURLTitle();
-      this._sharedAuthUtilService.postSignup(
-          REQUEST, result,
-          false, 
+    this._sharedAuthService.signUp(REQUEST).subscribe((result) => {
+      if (result && result["authenticated"]) {
+        this._sharedAuthUtilService.sendGenericPageClickTracking(false);
+        this._localAuthService.clearAuthFlow();
+        this._localAuthService.clearBackURLTitle();
+        this._sharedAuthUtilService.postSignup(
+          REQUEST,
+          result,
+          false,
           false,
           null
-      );
-      setTimeout((()=>{
-        this.moveToNext(this.stepNameRfqForm)
-      }),300)
-    }
-    this._loader.setLoaderState(false);
-    })
+        );
+        setTimeout(() => {
+          this.moveToNext(this.stepNameRfqForm);
+        }, 300);
+      }
+      this._loader.setLoaderState(false);
+    });
   }
 
-  private postBodyForSignUp(otpValue){
+  private postBodyForSignUp(otpValue) {
     const REQUEST = { email: "", phone: "", source: this.sourceFlow };
-    REQUEST['type'] = 'p';
+    REQUEST["type"] = "p";
     REQUEST["otp"] = otpValue;
     REQUEST["phone"] = this.bulkRfqFormPhoneno;
-    REQUEST['firstName'] = CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER;
-    REQUEST['buildVersion'] =  environment.buildVersion;
+    REQUEST["firstName"] = CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER;
+    REQUEST["buildVersion"] = environment.buildVersion;
     return REQUEST;
   }
 
-  private postBodyForAuthentication(otpValue){
+  private postBodyForAuthentication(otpValue) {
     const REQUEST = { email: "", phone: "", source: this.sourceFlow };
-    REQUEST['type'] = 'p';
+    REQUEST["type"] = "p";
     REQUEST["otp"] = otpValue;
     REQUEST["phone"] = this.bulkRfqFormPhoneno;
     return REQUEST;
   }
 
-  private authenticationProcess(otpValue){
+  private authenticationProcess(otpValue) {
     const REQUEST = this.postBodyForAuthentication(otpValue);
     this._loader.setLoaderState(true);
     this._sharedAuthService.authenticate(REQUEST).subscribe(
       (response) => {
-        this._loader.setLoaderState(false); 
+        this._loader.setLoaderState(false);
 
         if (
           response["statusCode"] !== undefined ||
@@ -214,13 +231,65 @@ export class BulkRquestFormPopupComponent implements OnInit {
     );
   }
 
+  private saveBulkRfq() {
+    if (this.bulkrfqForm.invalid) {
+      this.bulkrfqForm.markAllAsTouched();
+      return;
+    }
+    this._loader.setLoaderState(true);
+    const postBody = this.postBodyForBulkRfq();
+    this._productService.postBulkEnquiry(postBody).subscribe(
+      (response) => {
+        this._loader.setLoaderState(false);
+        if (response["status"]) {
+          this._tms.show({
+            type: "success",
+            text: response["statusDescription"],
+          });
+        }else{
+          this._tms.show({
+            type: "error",
+            text: response["statusDescription"] || 'Something Went Wrong.',
+          });
+        }
+      },
+      (error) => {
+        this._tms.show({ type: "error", text: "Something Went Wrong." });
+      },
+      () => {
+        this._loader.setLoaderState(false);
+      }
+    );
+  }
+
+  private postBodyForBulkRfq() {
+    const user = this._localAuthService.getUserSession();
+    const requestBody = {
+      rfqEnquiryCustomer: {
+        firstName: user.userName || "User",
+        mobile: this.bulkRfqFormPhoneno,
+        email: this.gstinForm["email"],
+        device: "mobile",
+        customerId: Number(user.userId || null),
+        budget: Number(this.bulkrfqForm["budget"]),
+      },
+      rfqEnquiryItemsList: [
+        {
+          brand: "",
+          quantity: Number(this.bulkrfqForm["quantity"]),
+          prodReference: "",
+          outOfStock: "bulk",
+          productType: this.bulkrfqForm["productType"],
+        },
+      ],
+    };
+    return requestBody;
+  }
 }
 
 @NgModule({
   declarations: [BulkRquestFormPopupComponent],
-  exports: [
-    BulkRquestFormPopupComponent
-  ],
+  exports: [BulkRquestFormPopupComponent],
   imports: [
     CommonModule,
     PopUpModule,
@@ -233,7 +302,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
     ObserveVisibilityDirectiveModule,
     BulkRfqFormModule,
     GstinFormModule,
-    ConfirmationFormModule
-  ]
+    ConfirmationFormModule,
+  ],
 })
-export class BulkRquestFormPopupModule { }
+export class BulkRquestFormPopupModule {}

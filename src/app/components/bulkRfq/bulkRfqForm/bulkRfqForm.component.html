@@ -9,6 +9,7 @@
             [placeholder]="'Enter Product Type*'"
             [productType]="PRODUCT_TYPES"
             (onSelect)="updateProductType(bulkrfqForm.get('productType'))"
+            (onkeyUp)="onkeyUp($event)"
           >
           </list-autocomplete>
           <p

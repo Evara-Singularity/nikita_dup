@@ -65,7 +65,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   };
   isBrowser: boolean;
   isServer: boolean;
-  ShowRfqGrid=false;
+  showRfqGrid=false;
 
   constructor(
     public localStorageService: LocalStorageService,
@@ -100,7 +100,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         if ((res['statusCode'] === 200) && res['data'] && res['data'].length > 0) {
           this.miscTabArray['0']['data'] = (res['data'] as any[]).map((item) => this._productService.recentProductResponseToProductEntity(item));
           if (isSelected) {
-            this.ShowRfqGrid=false;
+            this.showRfqGrid=false;
             this.setProductList(0, this.miscTabArray['0']['data']);
           }
         }
@@ -112,7 +112,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     if (this.userId)
       this._productBrowserService.getPastOrderProducts(this.userId).subscribe((response) => {
         if (response['status']) {
-          this.ShowRfqGrid=false;
+          this.showRfqGrid=false;
           this.miscTabArray['1']['data'] = (response['data'] as any[]).slice(0, 10).map(product => this._productBrowserService.pastOrdersProductResponseToProductEntity(product));
           this.setProductList(1, this.miscTabArray['1']['data']);
         }
@@ -141,7 +141,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         })
       )
       .subscribe((res) => {
-        this.ShowRfqGrid=false;
+        this.showRfqGrid=false;
         this.miscTabArray['2']['data'] = res.map(product => {
           return this._productService.wishlistToProductEntity(product)
         });
@@ -180,7 +180,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         })
       )
       .subscribe((res) => {
-        this.ShowRfqGrid=true;
+        this.showRfqGrid=true;
         this.miscTabArray['3']['data'] = res['data'].map(product => {
           return this._productService.myRfqToProductEntity(product)
         });

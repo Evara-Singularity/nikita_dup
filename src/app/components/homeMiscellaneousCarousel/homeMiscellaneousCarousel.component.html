@@ -13,7 +13,7 @@
                 </div>
             </ng-container>
         </div>
-        <div class="product-card-section">
+        <div class="product-card-section" *ngIf="!ShowRfqGrid">
             <product-card-vertical-container [containerId]="'topDealsContainer'" [numberOfItems]="10">
                 <ng-container *ngFor="let product of selectedProducts; let pIndex=index">
                     <product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
@@ -21,6 +21,19 @@
                         [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
                         [analytics]="analytics">
                     </product-card-vertical-grid-view>
+                </ng-container>
+            </product-card-vertical-container>
+        </div>
+
+        <!-- for my rfq integration -->
+        <div class="product-card-section" *ngIf="ShowRfqGrid">
+            <product-card-vertical-container [containerId]="'topDealsContainer'" [numberOfItems]="10">
+                <ng-container *ngFor="let product of selectedProducts; let pIndex=index">
+                    <rfq-product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
+                        [moduleUsedIn]="'POPULAR_DEALS'"
+                        [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true"
+                        [analytics]="analytics">
+                    </rfq-product-card-vertical-grid-view>
                 </ng-container>
             </product-card-vertical-container>
         </div>

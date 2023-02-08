@@ -25,22 +25,26 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     {
       id: 1,
       name: 'Recently Viewed',
-      data: []
+      data: [],
+      isSelected: true,
     },
     {
       id: 2,
       name: 'Buy it Again',
-      data: []
+      data: [],
+      isSelected: false,
     },
     {
       id: 3,
       name: 'Wishlist',
-      data: []
+      data: [],
+      isSelected: false,
     },
     {
       id: 4,
       name:'My RFQ',
-      data: []
+      data: [],
+      isSelected: false,
     }
   ]
 
@@ -83,26 +87,23 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   ngOnInit() {
     if (this.isBrowser) {
       this.userId = this.localStorageService.retrieve('user').userId;
-      this.getRecentViewed(this.userId || 'null', true);
+      this.getRecentViewed();
     }
   }
 
   //recently viewed items config
-  private getRecentViewed(setCId, isSelected = false) {
+  private getRecentViewed() {
+    this.miscTabArray['0']['data'] = [];
     this._dataservice
       .callRestful(
         'GET',
         CONSTANTS.NEW_MOGLIX_API +
         ENDPOINTS.RECENTLY_VIEWED +
-        setCId
+        this.userId
       )
       .subscribe((res) => {
         if ((res['statusCode'] === 200) && res['data'] && res['data'].length > 0) {
-          this.miscTabArray['0']['data'] = (res['data'] as any[]).map((item) => this._productService.recentProductResponseToProductEntity(item));
-          if (isSelected) {
-            this.showRfqGrid=false;
-            this.setProductList(0, this.miscTabArray['0']['data']);
-          }
+          this.miscTabArray[0]['data'] = (res['data'] as any[]).map((item) => this._productService.recentProductResponseToProductEntity(item));
         }
       });
   }
@@ -110,11 +111,11 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   //buy again items config
   pastOrders() {
     if (this.userId)
+      this.miscTabArray[1]['data'] = [];
       this._productBrowserService.getPastOrderProducts(this.userId).subscribe((response) => {
         if (response['status']) {
-          this.showRfqGrid=false;
-          this.miscTabArray['1']['data'] = (response['data'] as any[]).slice(0, 10).map(product => this._productBrowserService.pastOrdersProductResponseToProductEntity(product));
-          this.setProductList(1, this.miscTabArray['1']['data']);
+          this.showRfqGrid = false;
+          this.miscTabArray[1]['data'] = (response['data'] as any[]).slice(0, 10).map(product => this._productBrowserService.pastOrdersProductResponseToProductEntity(product));
         }
       });
   }
@@ -122,6 +123,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   //wishlist item data
   getPurcahseList() {
     let request = { idUser: this.userId, userType: "business" };
+    this.miscTabArray[2]['data'] = [];
     this._commonService
       .getPurchaseList(request)
       .pipe(
@@ -142,11 +144,9 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
       )
       .subscribe((res) => {
         this.showRfqGrid=false;
-        this.miscTabArray['2']['data'] = res.map(product => {
+        this.miscTabArray[2]['data'] = res.map(product => {
           return this._productService.wishlistToProductEntity(product)
         });
-        this.setProductList(2, this.miscTabArray['2']['data']);
-
       });
   }
 
@@ -164,7 +164,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
 
     if (user.userId != undefined && user.userId != null)
       obj["idCustomer"] = user.userId;
-
+    this.miscTabArray[3]['data'] = [];
     this._commonService
       .getRfqList(obj)
       .pipe(
@@ -181,31 +181,33 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
       )
       .subscribe((res) => {
         this.showRfqGrid=true;
-        this.miscTabArray['3']['data'] = res['data'].map(product => {
+        this.miscTabArray[3]['data'] = res['data'].map(product => {
           return this._productService.myRfqToProductEntity(product)
         });
-        this.setProductList(3, this.miscTabArray['3']['data']);
+        console.log('miscTabArray', this.miscTabArray);
       });
   }
 
-  setProductList(index, products) {
-    this.selectedIndex = index;
-    if (!products.length) {
-      switch (index) {
-        case 1:
-          this.pastOrders();
-          break;
-        case 2:
-          this.getPurcahseList();
-          break;
-        case 3:
-          this.getMyRfqList();
-          break;
-      }
-    }
-    else if (products.length) {
-      this.selectedProducts = products
-      this.tabshift();
+  setProductList(index) {
+    this.miscTabArray.forEach((element, index) => {
+      this.miscTabArray[index].isSelected = false;
+    });
+    this.miscTabArray[index].isSelected = true;
+    switch (index) {
+      case 0:
+        this.getRecentViewed();
+        break;
+      case 1:
+        this.pastOrders();
+        break;
+      case 2:
+        this.getPurcahseList();
+        break;
+      case 3:
+        this.getMyRfqList();
+        break;
+      default:
+        break;
     }
   }
 

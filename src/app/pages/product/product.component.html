@@ -19,11 +19,19 @@
 </ng-container>
 
 <!-- TODO: skeleton to be implemented -->
-<div class="coupon" >
-    <ng-container #offerSection></ng-container>
+<div class="coupon" *ngIf='!productOutOfStock && productMrp > 0'>
+    <app-product-offers [price]='productPrice' [gstPercentage]='taxPercentage'
+        [productmsn]='productSubPartNumber || defaultPartNumber' [isHindiMode]='isHindiUrl'
+        (viewPopUpHandler)='viewPopUpOpen($event)' (promoCodePopUpHandler)='promoCodePopUpOpen($event)'
+        [brandName]='rawProductData?.brandDetails?.brandname'
+        [categoryId]='rawProductData?.categoryDetails[0]?.categoryCode'
+        [categoryName]='rawProductData?.categoryDetails[0]?.categoryName'
+        (emaiComparePopUpHandler)='emiComparePopUpOpen($event)'>
+    </app-product-offers>
+    <!-- <ng-container #offerSection></ng-container>
     <div [ngClass]="{ 'coupon-inner': !offerSectionInstance}" class="coupon-inner" *ngIf="!productOutOfStock" >
         <product-skeletons [type]="'COUPON'" [templateRefInstance]="offerSectionInstance"></product-skeletons>
-    </div>
+    </div> -->
 </div>
 
 <!-- TODO: skeleton to be implemented -->

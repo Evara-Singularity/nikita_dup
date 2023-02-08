@@ -99,7 +99,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     productOutOfStock: boolean = false;
     priceQuantityCountry: any;
     productAttributes: any = null;
-    productMrp: number;
+    productMrp: number = 0;
     priceWithoutTax: number;
     productDiscount: number = 0;
     taxPercentage: number;
@@ -441,23 +441,23 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
-            this.getProductTag()
-            this.onVisibleOffer();
+            // this.getProductTag()
+            // this.onVisibleOffer();
         }
         
     }
 
     getProductTag(){
         // this.globalLoader.setLoaderState(true);
-        this.productService.getProductTag(this.msn).subscribe(response => {
-            if (response['statusCode'] == 200 && response['data'] != null) {
-                this.productTags=response['data']
-                this.getRefinedProductTags();
-            } else {
-                this.productTags=null;
-            }
-            // this.globalLoader.setLoaderState(false)
-        })
+        // this.productService.getProductTag(this.msn).subscribe(response => {
+        //     if (response['statusCode'] == 200 && response['data'] != null) {
+        //         this.productTags=response['data']
+        //         this.getRefinedProductTags();
+        //     } else {
+        //         this.productTags=null;
+        //     }
+        //     // this.globalLoader.setLoaderState(false)
+        // })
 
     }
 
@@ -584,7 +584,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         // console.log('originalProductBO log', this.originalProductBO);
                         // Load secondary APIs data from resolver only when product data is received
                        
-                            this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6]);
+                            this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6], rawData['product'][7]);
                         
                     } else {
                         this.showLoader = false;
@@ -638,7 +638,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
-    getSecondaryApiData(reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes) {
+    getSecondaryApiData(reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes, productTagRes) {
         // console.log({
         //     reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes
         // });
@@ -657,6 +657,13 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if (questAnsApiData && questAnsApiData["data"]) {
             this.setQuestionsAnswerData(questAnsApiData);
             this.setQuestionAnswerSchema();
+        }
+
+        if (productTagRes['statusCode'] == 200 && productTagRes['data'] != null) {
+            this.productTags = productTagRes['data']
+            this.getRefinedProductTags();
+        } else {
+            this.productTags = null;
         }
         
         this.relatedLinkRes = relatedLinkRes;

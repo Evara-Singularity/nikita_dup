@@ -134,7 +134,8 @@ export class ProductOffersComponent implements OnInit
     imports: [
         CommonModule,
         MathCeilPipeModule
-    ]
+    ],
+    exports: [ProductOffersComponent]
 })
 export class ProductOffersModule
 {

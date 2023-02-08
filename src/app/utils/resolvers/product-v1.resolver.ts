@@ -55,6 +55,7 @@ export class ProductV1Resolver implements Resolve<any> {
     const PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_KEY: any = makeStateKey<{}>("PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK");
     const PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_KEY: any = makeStateKey<{}>("PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY");
     const PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY: any = makeStateKey<{}>("PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET");
+    const PRODUCT_TAG_KEY = makeStateKey<object>('product-tag-' + productMsnId);
 
     if (
       this.transferState.hasKey(PRODUCT_KEY) &&
@@ -63,7 +64,8 @@ export class ProductV1Resolver implements Resolve<any> {
       this.transferState.hasKey(PRODUCT_Q_AND_A_KEY) &&
       this.transferState.hasKey(PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_KEY) &&
       this.transferState.hasKey(PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_KEY) &&
-      this.transferState.hasKey(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY)
+      this.transferState.hasKey(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY) && 
+      this.transferState.hasKey(PRODUCT_TAG_KEY)
     ) {
       const PRODUCT_KEY_OBJ = this.transferState.get<{}>(PRODUCT_KEY, null);
       const PRODUCT_REVIEW_OBJ = this.transferState.get<{}>(PRODUCT_REVIEW_KEY, null);
@@ -72,6 +74,7 @@ export class ProductV1Resolver implements Resolve<any> {
       const PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_OBJ = this.transferState.get<{}>(PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_KEY, null);
       const PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_OBJ = this.transferState.get<{}>(PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_KEY, null);
       const PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_OBJ = this.transferState.get<{}>(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY, null);
+      const PRODUCT_TAG_OBJ = this.transferState.get<{}>(PRODUCT_TAG_KEY, null)
 
       this.transferState.remove(PRODUCT_KEY);
       this.transferState.remove(PRODUCT_REVIEW_KEY);
@@ -80,6 +83,7 @@ export class ProductV1Resolver implements Resolve<any> {
       this.transferState.remove(PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_KEY);
       this.transferState.remove(PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_KEY);
       this.transferState.remove(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY);
+      this.transferState.remove(PRODUCT_TAG_KEY);
 
       this.loaderService.setLoaderState(false);
       return of([
@@ -89,7 +93,8 @@ export class ProductV1Resolver implements Resolve<any> {
         PRODUCT_Q_AND_A_OBJ,
         PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_OBJ,
         PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_OBJ,
-        PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_OBJ
+        PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_OBJ,
+        PRODUCT_TAG_OBJ
       ]);
     } else {
       const productUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_INFO + `?productId=${productMsnId}&fetchGroup=true`;
@@ -99,6 +104,7 @@ export class ProductV1Resolver implements Resolve<any> {
       const productRelatedLinkUrl = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?msn=" + productMsnId;
       const productSimilarCategoryUrl = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?moglixPNumber=" + productMsnId;
       const productCategoryBucketUrl = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_BUCKET + "?msn=" + productMsnId;
+      const productTagUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_TAGS + productMsnId.toUpperCase();
 
       const reviewRequestBody = { review_type: 'PRODUCT_REVIEW', item_type: 'PRODUCT', item_id: productMsnId, user_id: " " };
 
@@ -187,6 +193,18 @@ export class ProductV1Resolver implements Resolve<any> {
           return of(null);
         }));
 
+        const productTagResponseObj = this.http.get(productTagUrl, requestOptions).pipe(share(),
+        map(res => {
+          const logInfo = this._commonService.getLoggerObj(productCategoryBucketUrl, 'GET', startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        }), catchError((err) => {
+          console.log(`${ProductV1Resolver.name} APIS ERRORS`, productCategoryBucketUrl, err);
+          return of(null);
+        }));
+
       const apiList = [
         productResponseObj,
         ProductReviewsResponseObj,
@@ -194,7 +212,8 @@ export class ProductV1Resolver implements Resolve<any> {
         productQuesAnsResponseObj,
         productRelatedLinkResponseObj,
         productSimilarCategoryResponseObj,
-        productCategoryBucketResponseObj
+        productCategoryBucketResponseObj,
+        productTagResponseObj
       ];
 
       return forkJoin(apiList).pipe(
@@ -213,6 +232,7 @@ export class ProductV1Resolver implements Resolve<any> {
             this.transferState.set(PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_KEY, result[4]);
             this.transferState.set(PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_KEY, result[5]);
             this.transferState.set(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY, result[6]);
+            this.transferState.set(PRODUCT_TAG_KEY, result[7]);
           }
           this.loaderService.setLoaderState(false);
         })

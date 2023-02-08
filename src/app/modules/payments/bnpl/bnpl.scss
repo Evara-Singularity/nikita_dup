@@ -24,4 +24,17 @@
     .pad-l-8 {
         padding-left: 8px;
     }
+    .form-horizontal{
+        .pwa-radio-list{
+            .pwa-radio-list-item{
+                .bnpl-inner-section{
+                    display: flex;
+                    align-items: center;
+                    img{
+                        width: 35px;
+                    }
+                }
+            }
+        }
+    }
 }

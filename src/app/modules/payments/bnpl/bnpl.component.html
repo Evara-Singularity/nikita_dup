@@ -7,10 +7,10 @@
                 <input type="radio" formControlName="bnplType" [value]="bank['bankcode']">
                 <span class="custom-box"></span>
             </label>
-        <div>
-            <img class="wallet-img" src="{{imagePath + 'assets/img/bnpl-icons/'+bnplMap[bank['bankcode']].imgUrl}}">
-            
-        </div> 
+            <div class="bnpl-inner-section">
+                <img class="wallet-img" src="{{imagePath + 'assets/img/bnpl-icons/'+bnplMap[bank['bankcode']].imgUrl}}">
+                <p>HDFC Pay Later</p>
+            </div> 
      </label>
     </ul>
     <div style="margin-bottom: 15px" >

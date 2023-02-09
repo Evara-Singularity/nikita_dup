@@ -1,7 +1,5 @@
 <div class="product-container">
-    <div class="open-app-toast" (click)="openStore()">
-        <span>OPEN APP</span>
-    </div>    
+    <appInstallWidget></appInstallWidget>
     <div *ngIf="!productNotFound">
     <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer" [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
     </app-oos-similar-section>

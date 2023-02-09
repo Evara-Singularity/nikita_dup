@@ -303,6 +303,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     quickOrderInstance = null;
     @ViewChild("quickOrder", { read: ViewContainerRef })
     quickOrderContainerRef: ViewContainerRef;
+    // ondemand loaded component for return info
+    returnInfoInstance = null;
+    @ViewChild("returnInfo", { read: ViewContainerRef })
+    returnInfoContainerRef: ViewContainerRef;
 
     iOptions: any = null;
     isAcceptLanguage:boolean = false;
@@ -1150,6 +1154,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.productInfoPopupInstance = null;
             this.productInfoPopupContainerRef.remove();
         }
+        if (this.returnInfoInstance) {
+            this.returnInfoInstance = null;
+            this.returnInfoContainerRef.remove();
+        }
     }
 
     setSimilarProducts(productName, categoryCode, productId, groupId)
@@ -1475,6 +1483,33 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         } else {
             //toggle side menu
             this.productShareInstance.instance["btmMenu"] = true;
+        }
+    }
+    // return, replacement, warranty info popup
+    async loadReturnInfo()
+    {
+        if (!this.returnInfoInstance) {
+            const shareURL = this.baseDomain + this.router.url;
+            const { ReturnInfoComponent } = await import(
+                "./../../components/return-info/return-info.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(ReturnInfoComponent);
+            this.returnInfoInstance = this.returnInfoContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.returnInfoInstance.instance['show'] = true;
+            (
+                this.returnInfoInstance.instance["removed"] as EventEmitter<boolean>
+            ).subscribe((status) =>
+            {
+                this.returnInfoInstance = null;
+                this.returnInfoContainerRef.detach();
+            });
+        } else {
+            //toggle side menu
+            this.returnInfoInstance.instance["show"] = true;
         }
     }
 

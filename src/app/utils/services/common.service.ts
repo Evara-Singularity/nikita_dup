@@ -92,6 +92,7 @@ export class CommonService
     ;
     public previousUrl: string = "/";
     public currentUrl: string = null;
+    public enableAppPromoInHeader = false;
     
     goldMemberPopupOpened = new Subject();
     public defaultLocaleValue = localization_en.product;

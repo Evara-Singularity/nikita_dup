@@ -94,13 +94,10 @@
                         *ngIf="features.split(' ').length>20">...</span></li>
             </ul>
         </div> -->
-        <div class="attribute-section">
+        <div class="attribute-section" *ngIf="product['filterableAttributes']!=null">
             <div class="pwa-tabs-container">
-                <div class="pwa-tab">
-                    Black & white printer
-                </div>
-                <div class="pwa-tab">
-                    Inject
+                <div class="pwa-tab" *ngFor="let item of product['filterableAttributes'] | keyvalue">
+                   {{item.value}}
                 </div>
             </div>
         </div>

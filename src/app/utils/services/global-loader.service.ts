@@ -9,6 +9,7 @@ export class GlobalLoaderService {
   private loaderState: Subject<boolean> = new Subject<boolean>();
 
   setLoaderState(status: boolean) {
+    console.trace();
     this.loaderState.next(status);
   }
 

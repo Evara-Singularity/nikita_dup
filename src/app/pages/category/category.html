@@ -34,10 +34,12 @@
             *ngIf="API_RESPONSE?.category[0] && _productListService &&_productListService.productListingData" [graphData]="graphData" [lastLevelCategory]=lastLevelCategory>
         </shared-product-listing>
     </div>
+
+    <recent-viewed-products-wrapper></recent-viewed-products-wrapper>
     
     <!-- This is sub category section -->
-    <div class="category-list pwa-row" [class.visibility]="_commonService.selectedFilterData.page > 1"
-        [class.sub-cate-container]="API_RESPONSE.category[0]?.children?.length > 0">
+    <div class="pwa-row" [class.visibility]="_commonService.selectedFilterData.page > 1" [class.category-list]="_commonService.selectedFilterData.page > 1"
+        [class.sub-cate-container]="API_RESPONSE.category[0]?.children?.length > 0" *ngIf="">
         <div class="pwa-col-12">
             <div class=""  *ngIf="API_RESPONSE.category[0]?.children?.length > 0">
                 <p class="sub_category_heading">

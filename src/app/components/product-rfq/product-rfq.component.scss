@@ -66,6 +66,9 @@
         }
         .outline-input-label {
             margin-bottom: 20px !important;
+            @include placeholder{
+                color: var(--dim-gray);
+            }
         }
         .rfq-checkbox {
             margin-bottom: 15px;
@@ -91,7 +94,7 @@
                 }
                 .txt {
                     font-size: $medium-font;
-                    color: var(--form-label-grey);
+                    color: var(--dim-gray);
                 }
             }
         }

@@ -67,6 +67,9 @@
                 }
                 .name {
                     font-size: $large-font;
+                    span{
+                        color: #303030;
+                    }
                 }
                 .name-with-icon{
                     display: inline-flex;
@@ -79,7 +82,7 @@
                     }
                    }
                 .price-details {
-                    color: #2b2b2b;
+                    color: var(--dim-gray);
                     margin-bottom: 8px;
                     margin-top: 10px;
                     align-items: center;
@@ -108,11 +111,11 @@
                         }
                         .out-of-stock-text {
                             font-size: $small-font;
-                            opacity: 0.5;
+                            // opacity: 0.5;
                         }
                         .out-of-stock-price {
                             font-size: $large-font;
-                            opacity: 0.5;
+                            // opacity: 0.5;
                             font-weight: bold;
                             padding-top: 4px;
                         }

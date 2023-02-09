@@ -82,7 +82,7 @@
                     }
                    }
                 .price-details {
-                    color: var(--dim-gray);
+                    color: var(--onyx-black);
                     margin-bottom: 8px;
                     margin-top: 10px;
                     align-items: center;
@@ -112,12 +112,14 @@
                         .out-of-stock-text {
                             font-size: $small-font;
                             // opacity: 0.5;
+                            color: var(--dim-gray);
                         }
                         .out-of-stock-price {
                             font-size: $large-font;
                             // opacity: 0.5;
                             font-weight: bold;
                             padding-top: 4px;
+                            color: var(--dim-gray);
                         }
                     }
                 }

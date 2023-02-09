@@ -8,7 +8,6 @@
 ::ng-deep {
     .home-parent {
         background: var(--white);
-        padding-top: 10px;
         h2 {
             font-size: $extra-large-font;
             text-transform: capitalize;
@@ -98,12 +97,12 @@
         padding: 4px 8px;
         display: flex;
         span{
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
+            width: 6px;
+            height: 6px;
+            border-radius: 10px;
             display: inline-block;
-            background: rgba(255,255,255,.4) ;
-            margin-right: 10px;
+            background: rgba(255,255,255,.4);
+            margin-right: 8px;
             &:last-child{
                 margin-right: 0;
             }
@@ -111,6 +110,8 @@
         }
         .active{
             background: #fff;
+            width: 23px;
+            height: 6px;
         }
     }
 }

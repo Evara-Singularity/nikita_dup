@@ -2,50 +2,61 @@
 <login-popup [isRouteBased]="false" ></login-popup>
 <section class="menubar-horizontal-container">
     <div class="menubar-horizontal-section">
-        <a (click)="bottomNavRedirection('/');setAnalyticTags('home')">
-            <div class="menu-icon-txt menu-selected" [ngClass]="{'menu-selected': menuSelected}">
-                <i class="icon-home2"></i>
-                <p>Home</p>
-            </div>
-        </a>
-
-        <a (click)="bottomNavRedirection('/login');setAnalyticTags('login')" *ngIf="!isUserLogin">
-            <div class="menu-icon-txt">
-                <i class="icon-profile"></i>
-                <p>Log-In</p>
-            </div>
-        </a>
-
-        <a (click)="loadSideNav();setAnalyticTags('profile')" *ngIf="isUserLogin">
-            <div class="menu-icon-txt">
-                <!-- <i class="icon-profile"></i> -->
-                <span>{{initialNameLetter | titlecase }}</span>
-                <p>Profile</p>
-            </div>
-        </a>
-
-        <a (click)="redirectionToSearchPopUp();setAnalyticTags('search')">
-            <div class="search-container">
-                <div class="search-inner-sec">
-                <div class="menu-icon-txt">
-                    <i class="icon-search"></i>
+        <div class="menubar-inner-container">
+            <a (click)="bottomNavRedirection('/');setAnalyticTags('home')" class="wp-50">
+                <div class="menu-icon-txt menu-selected" [ngClass]="{'menu-selected': menuSelected}">
+                    <i class="icon-home2"></i>
+                    <p>Home</p>
                 </div>
-            </div>
-            </div>
-        </a>
+            </a>
+    
+            <a (click)="bottomNavRedirection('/login');setAnalyticTags('login')" *ngIf="!isUserLogin" class="wp-50">
+                <div class="menu-icon-txt">
+                    <i class="icon-profile"></i>
+                    <p>Login</p>
+                </div>
+            </a>
+            <a (click)="loadSideNav();setAnalyticTags('profile')" *ngIf="isUserLogin" class="wp-50">
+                <div class="menu-icon-txt">
+                    <!-- <i class="icon-profile"></i> -->
+                    <span>{{initialNameLetter | titlecase }}</span>
+                    <p>Profile</p>
+                </div>
+            </a>
+        </div>
+        <div class="menubar-inner-container searchbar-container">
+            <a (click)="redirectionToSearchPopUp();setAnalyticTags('search')">
+                <div class="search-container">
+                    <div class="search-inner-sec">
+                    <div class="menu-icon-txt">
+                        <i class="icon-search"></i>
+                    </div>
+                </div>
+                </div>
+            </a>
+        </div>
+        <div class="menubar-inner-container">
+            <a (click)="bottomNavRedirection('/dashboard/order', 'Continue to track your orders');setAnalyticTags('orders')" class="wp-50">
+                <div class="menu-icon-txt">
+                    <i class="icon-my-orders"></i>
+                    <p>Orders</p>
+                </div>
+            </a>
+    
+            <a (click)="bottomNavRedirection('/quickorder');setAnalyticTags('cart')" class="wp-50">
+                <div class="menu-icon-txt">
+                    <i class="icon-cart1"></i>
+                    <p>My Cart</p>
+                </div>
+            </a>
+        </div>
 
-        <a (click)="bottomNavRedirection('/dashboard/order', 'Continue to track your orders');setAnalyticTags('orders')">
-            <div class="menu-icon-txt">
-                <i class="icon-my-orders"></i>
-                <p>Orders</p>
-            </div>
-        </a>
 
-        <a (click)="bottomNavRedirection('/quickorder');setAnalyticTags('cart')">
-            <div class="menu-icon-txt">
-                <i class="icon-cart1"></i>
-                <p>My Cart</p>
-            </div>
-        </a>
+
+
+
+
+
+
     </div>
 </section>

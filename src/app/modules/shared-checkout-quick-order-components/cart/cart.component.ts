@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -16,7 +16,7 @@ import { GlobalLoaderService } from '@utils/services/global-loader.service';
 import { ProductService } from '@utils/services/product.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { forkJoin, of, Subscription } from 'rxjs';
-import { catchError, concatMap, delay, first, map, switchMap } from 'rxjs/operators';
+import { catchError, concatMap, delay, first, map, mergeMap, switchMap } from 'rxjs/operators';
 
 declare let dataLayer;
 @Component({
@@ -28,19 +28,20 @@ declare let dataLayer;
 export class CartComponent
 {
     removableItem = null;
-    @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     cartSubscription: Subscription;
     shippingSubscription: Subscription;
     pageEvent = "genericPageLoad";
     cartSession = null;
     noOfCartItems = 0;
-
+    @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
+    
     //cartAddproduct var
     cartAddProductPopupInstance = null;
     @ViewChild('cartAddProductPopup', { read: ViewContainerRef }) cartAddProductPopupContainerRef: ViewContainerRef;
 
     totalPayableAmountAfterPrepaid: number=0;
-    totalPayableAmountWithoutPrepaid:number=0
+    totalPayableAmountWithoutPrepaid:number=0;
+    cartUpdatesSubscription: Subscription = null;
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -63,10 +64,16 @@ export class CartComponent
         if (this._commonService.isBrowser) {
             this.sendCriteoPageLoad();
             this.sendEmailGTMCall();
-            this.shippingCallSubscribers();
+            //  this.shippingCallSubscribers();
         }
         // const cartSession = this._cartService.getCartSession();
         // this.noOfCartItems = (cartSession['itemsList'] as any[]).length || 0;
+    }
+
+    ngOnDestroy() {
+        if (this.cartSubscription) this.cartSubscription.unsubscribe();
+        if (this.shippingSubscription) this.shippingSubscription.unsubscribe();
+        if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
     }
 
     // Function to get and set the latest cart
@@ -79,33 +86,55 @@ export class CartComponent
                 this.sendAdobeAnalyticsData(this.pageEvent);
                 this.pageEvent = "genericClick";
                 return cartSession;
-            })).subscribe((cartSession) => {
-                this.cartChangesUpdates(cartSession);
-                if(this.moduleName == 'QUICKORDER'){
-                    this._cartService.callShippingValueApi(cartSession)
-                }
-            });
+            }),
+            // mergeMap((cartSession: any) => {
+            //     return this._cartService.getShippingAndUpdateCartSession(cartSession);
+            // }),
+        ).subscribe((cartSession) => {
+            // console.log('loadCartDataFromAPI', cartSession);
+            this.cartChangesUpdates(cartSession);
+            const userSession = this._localAuthService.getUserSession();
+            this._cartService.getPromoCodesByUserId(userSession['userId'], false);
+            // if (!(cartSession && cartSession['offersList'] && cartSession['offersList'].length > 0)) {
+            //     const userSession = this._localAuthService.getUserSession();
+            //     this._cartService.getPromoCodesByUserId(userSession['userId'], false)
+            // } else {
+            //     if (this.moduleName == 'QUICKORDER') {
+            //         this._cartService.callShippingValueApi(cartSession)
+            //     }
+            // }
+        });
     }
 
-    shippingCallSubscribers() {
-        this.shippingSubscription = this._cartService.shippingValueApiUpdates().subscribe((cartSessionWithShiping) => {
-            console.log('shippingCallSubscribers', this.moduleName);
-            this.shippingApiCall();
-        })
-    }
+    // shippingCallSubscribers() {
+    //     this.shippingSubscription = this._cartService.shippingValueApiUpdates().subscribe((cartSessionWithShiping) => {
+    //         // console.log('shippingCallSubscribers', this.moduleName);
+    //         // this.shippingApiCall();
+    //         // new coded added to check promo codes
+    //         // const userSession = this._localAuthService.getUserSession();
+    //         // this._cartService.getPromoCodesByUserId(userSession['userId']);
+    //         // if (!(cartSessionWithShiping && cartSessionWithShiping['offersList'] && cartSessionWithShiping['offersList'].length > 0)) {
+    //         // }
+    //     })
+    // }
 
 
-    shippingApiCall() {
-        this._cartService.getShippingAndUpdateCartSession(this.cartSession).subscribe(cartsession => {
-            this.cartChangesUpdates(cartsession);
-        })
-    }
+    // shippingApiCall() {
+    //     this._cartService.getShippingAndUpdateCartSession(this.cartSession).subscribe(cartsession => {
+    //         console.log('shipping:: called from cart');
+    //         // this.cartChangesUpdates(cartsession);
+    //     })
+    // }
 
     cartChangesUpdates(cartSession) {
         this.cartSession = cartSession;
         this.noOfCartItems = (cartSession['itemsList'] as any[]).length;
         if (this.noOfCartItems) {
-            this._cartService.verifyAndUpdateNotfications();
+            this.cartUpdatesSubscription = this._cartService.verifyAndUpdateNotfications().subscribe(response => {
+                if(response){
+                    this._cartService.verifyAndUpdateNotficationsAfterCall(response);
+                }
+            });
         }
         this._globalLoaderService.setLoaderState(false);
     }
@@ -529,8 +558,4 @@ export class CartComponent
 
     get isQuickorder() { return this.moduleName === "QUICKORDER" }
 
-    ngOnDestroy() { 
-        if (this.cartSubscription) this.cartSubscription.unsubscribe(); 
-        if(this.shippingSubscription) this.shippingSubscription.unsubscribe();
-    }
 }

@@ -2,7 +2,7 @@ import { Component, Input ,OnInit} from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { LocalStorageService } from 'ngx-webstorage';
 import CONSTANTS from '../../../config/constants';
-import { CheckoutService } from '../../../utils/services/checkout.service';
+import { Subscription } from 'rxjs';
 import { CartService } from '../../../utils/services/cart.service';
 import { LocalAuthService } from '../../../utils/services/auth.service';
 import { ObjectToArray } from '../../../utils/pipes/object-to-array.pipe';
@@ -63,6 +63,7 @@ payuData: any = {};
 bnplMap : any;
 bnplMapKeys =[];
 cartSesssion: any;
+prepaidsubscription: Subscription;
     
 
 ngOnInit() {
@@ -74,13 +75,22 @@ ngOnInit() {
     let userSession = this._localAuthService.getUserSession();
     let addressList = this._cartService.shippingAddress;
     this.phone = addressList["phone"] != null ? addressList["phone"] : userSession["phone"];
+    
+    this.cartSesssion = Object.assign({}, this._cartService.getCartSession());
+    if(CONSTANTS.enableGenericPrepaid){
+        this.getPrePaidDiscount();
+        this.prepaidsubscription = this._cartService.prepaidDiscountSubject.subscribe((data) => {
+            this.getPrePaidDiscount();
+        })
+    }else{
+        this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
+    }
+    this.getBNPEligibility();
+    //this.bnplMap = CONSTANTS.GLOBAL.bnplMap[this.type];
+    //this.showBanks.push(this.bnplMap["LAZYPAY"]);
+    //this.showBanks.push(this.bnplMap["ICICIPL"]);
 
-    //this.getBNPEligibility();
-    this.bnplMap = CONSTANTS.GLOBAL.bnplMap[this.type];
-    this.showBanks.push(this.bnplMap["LAZYPAY"]);
-    this.showBanks.push(this.bnplMap["ICICIPL"]);
-
-    this.selectDefaultBNPL(); 
+    //this.selectDefaultBNPL(); 
 }
 
 getBNPEligibility() {
@@ -134,7 +144,7 @@ getBNPEligibility() {
         }
 
 getBNPEligibilityCall(){
-    return this._dataService.callRestful('GET', "http://paymentqa.moglilabs.com/payment/payment/getBNPLEligibility?phone="+this.phone+"&price="+this.totalPayableAmount).pipe(
+    return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_BNPL_ELIGIBILITY+ "?phone="+this.phone+"&price="+this.totalPayableAmount).pipe(
         catchError((res: HttpErrorResponse) => {
             return of({status: false, statusCode: res.status});
         })
@@ -217,6 +227,17 @@ pay(data, valid) {
         }, 1000)
     });
 
+}
+
+getPrePaidDiscount() {
+    this.isShowLoader = true;
+    this._cartService.validatePaymentsDiscount("BNPL", 300).subscribe(response => {
+        this.isShowLoader = false;
+        if (response) {
+            this.prepaidDiscount = response['prepaidDiscount'];
+            this.totalPayableAmount = response['totalPayableAmount']
+        }
+    })
 }
 
 createBnplData(paymentId, mode, bankcode) {

@@ -74,7 +74,7 @@ export const CONSTANTS = {
       retail :{
         LAZYPAY :{
           mode: "BNPL",
-          type: 'lazypay',
+          type: 'LazyPay',
           active : false,
           bankcode : 'LAZYPAY',
           paymentId: 300,
@@ -82,7 +82,7 @@ export const CONSTANTS = {
         },
         ICICIPL :{
           mode: "BNPL",
-          type: 'icicipl',
+          type: 'ICICI Pay Later',
           active : false,
           bankcode : 'ICICIPL',
           paymentId: 301,

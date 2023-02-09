@@ -25,11 +25,12 @@ export class BulkRfqFormComponent implements OnInit {
   @Output() setBulkRfqForm$: EventEmitter<FormGroup> =
     new EventEmitter<FormGroup>();
 
-  readonly PRICE_VALUES = ["1","5","10","15","20"];
-  PRODUCT_TYPES : any [] =[]
+  readonly PRICE_VALUES = ["1", "5", "10", "15", "20"];
+  PRODUCT_TYPES: any[] = [];
   readonly stepNameOtp = "OTP";
   readonly stepNameRfqForm = "RFQ_FORM";
-  readonly API = "https://searchapidev.moglilabs.com/" || CONSTANTS.NEW_MOGLIX_API ;
+  readonly API =
+    "https://searchapidev.moglilabs.com/" || CONSTANTS.NEW_MOGLIX_API;
 
   bulkrfqForm: FormGroup;
 
@@ -40,7 +41,7 @@ export class BulkRfqFormComponent implements OnInit {
     private _loader: GlobalLoaderService,
     private _sharedAuthService: SharedAuthService,
     private _tms: ToastMessageService,
-    private _dataService: DataService,
+    private _dataService: DataService
   ) {
     this.createRfqForm();
   }
@@ -119,28 +120,35 @@ export class BulkRfqFormComponent implements OnInit {
     this.moveToNext$.emit(stepName);
   }
 
-  onkeyUp(value: string){
-    if(value.length > 2){
-      this.fetchCategoryList(value);
+  onkeyUp(value: string) {
+    if (value.length > 2) {
+      setTimeout(() => {
+        this.fetchCategoryList(value);
+      }, 600);
     }
   }
 
-  private fetchCategoryList(value: string){
+  private fetchCategoryList(value: string) {
     this._loader.setLoaderState(true);
-    const url = this.API + `searchApi/category/list?str=${value}&countryCode=356`;
-        this._dataService.callRestful("GET", url).subscribe(
-            (response) => 
-            {
-                this._loader.setLoaderState(false); 
-                if(response && response['totalCount'] > 0){
-                  const categoryData = response['categorylist'];
-                  this.PRODUCT_TYPES = categoryData.map(res=>(res.categoryName as string).trim());
-                }else{
-                  this._tms.show({ type: 'error', text: 'data not found' });
-                }
-            },
-            (error) => { this._loader.setLoaderState(false); this._tms.show({ type: 'error', text: 'Something Went Wrong' }); }
-        );
+    const url =
+      this.API + `searchApi/category/list?str=${value}&countryCode=356`;
+    this._dataService.callRestful("GET", url).subscribe(
+      (response) => {
+        this._loader.setLoaderState(false);
+        if (response && response["totalCount"] > 0) {
+          const categoryData = response["categorylist"];
+          this.PRODUCT_TYPES = categoryData.map((res) =>
+            (res.categoryName as string).trim()
+          );
+        } else {
+          this._tms.show({ type: "error", text: "data not found" });
+        }
+      },
+      (error) => {
+        this._loader.setLoaderState(false);
+        this._tms.show({ type: "error", text: "Something Went Wrong" });
+      }
+    );
   }
 
   updateProductType(arg0: AbstractControl) {}

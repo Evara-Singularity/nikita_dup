@@ -4,10 +4,7 @@ import { LocalAuthService } from '@utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-
-
-
-
+import { CartService } from '@app/utils/services/cart.service';
 
 @Component({
   selector: 'bottom-navigation',
@@ -19,6 +16,7 @@ export class BottomNavigationComponent implements OnInit {
   menuSelected:boolean=true
   isUserLogin: any;
   initialNameLetter:any;
+  noOfCart: number = 0;
 
 
   constructor(
@@ -27,22 +25,24 @@ export class BottomNavigationComponent implements OnInit {
     public _commonService: CommonService,
     private localStorageService: LocalStorageService,
     private analytics: GlobalAnalyticsService,
-    
-
+    private cartService: CartService,
     ) { }
 
   ngOnInit() {
-    this.isUserLogin = this.localAuthService.isUserLoggedIn();
-    this.getFirstletterofUser()
+    if (this._commonService.isBrowser) {
+      this.isUserLogin = this.localAuthService.isUserLoggedIn();
+      this.getFirstletterofUser();
+    }
+    this.cartService.getCartUpdatesChanges().subscribe((data) => {
+      this.noOfCart = this.cartService.getCartItemsCount();
+    });
   }
 
   getFirstletterofUser() {
     let user = this.localStorageService.retrieve("user");
-    if (user && user.authenticated == "true") {
-      this.initialNameLetter = Array.from(user.userName)[0];
-    }
-
-
+      if (user && user.authenticated == "true") {
+        this.initialNameLetter = Array.from(user.userName)[0];
+      }
   }
 
   bottomNavRedirection(url, title = "") {

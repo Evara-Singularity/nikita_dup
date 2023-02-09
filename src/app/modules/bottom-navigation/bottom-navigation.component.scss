@@ -95,3 +95,22 @@
 
     }
 }
+
+.badge-cart-number {
+    position: absolute !important ;
+    top: -12px !important;
+    right: 14px !important;
+    padding: 2px 4px !important;
+    border-radius: $border-radius-6 !important;
+    color: var(--white) !important;
+    background: var(--primary) !important;
+    font-size: 9px !important;
+    border: 2px solid var(--white) !important;
+    font-family: "Roboto", sans-serif !important;
+    width: 20px !important;
+    height: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-weight: bold !important;
+}

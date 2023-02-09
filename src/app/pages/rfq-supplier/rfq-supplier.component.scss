@@ -145,7 +145,7 @@
                     }
                     p{
                         font-size: 12px;
-                        color: #979797;
+                        color: var(--dim-gray);
                         padding-top: 5px;
                     }
                 }
@@ -227,6 +227,9 @@
         overflow: hidden;
         border: 1px solid #EFEFF5;
         width: 100%;
+        @include placeholder{
+            color: var(--dim);
+        }
         input {
           height: 45px;
           border: none;

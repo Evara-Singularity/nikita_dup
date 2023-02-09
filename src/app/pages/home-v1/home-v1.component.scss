@@ -133,7 +133,7 @@
             z-index: 1;
             p {
                 font-size: $large-font;
-                color: var(--spanish-gray);
+                color: var(--dim-gray);
                 padding: 0 0px 10px 20px;
                 span {
                     font-weight: $font-bold;
@@ -144,6 +144,9 @@
                 }
             }
             .widget-search-bar {
+                @include placeholder{
+                    color: var(--dim-gray);
+                }
                 .widget-search-input {
                     height: 60px;
                     border-radius: 50px;

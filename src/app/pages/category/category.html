@@ -31,7 +31,7 @@
             [categoryTaxonomay]="API_RESPONSE['category'][0]['categoryDetails']['taxonomy']"
             [productsListingData]="_productListService?.productListingData"
             [informativeVideosData]="informativeVideosData"
-            *ngIf="API_RESPONSE?.category[0] && _productListService &&_productListService.productListingData" [graphData]="graphData" [lastLevelCategory]=lastLevelCategory>
+        *ngIf="API_RESPONSE?.category[0] && _productListService &&_productListService.productListingData" [graphData]="graphData" [lastLevelCategory]=lastLevelCategory [isL2CategoryCheck]="isL2CategoryCheck">
         </shared-product-listing>
     </div>
     

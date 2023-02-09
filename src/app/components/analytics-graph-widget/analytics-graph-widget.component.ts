@@ -10,19 +10,21 @@ import ColumnSeries from 'highcharts/es-modules/Series/Column/ColumnSeries.js';
 import ColumnDataLabel from 'highcharts/es-modules/Series/Column/ColumnDataLabel.js';
 
 
+
 @Component({
   selector: 'analytics-graph-widget',
   templateUrl: './analytics-graph-widget.component.html',
   styleUrls: ['./analytics-graph-widget.component.scss']
 })
 export class AnalyticsGraphWidgetComponent implements OnInit {
-  
+ 
   chartOptions = {};
   @Input() chartType;
   @Input() filterData: Array<any>;
   @Input() categoryId: any;
   @Input() categoryName: string;
   @Input() graphData;
+  @Input() isL2CategoryCheck;
   fragmentPriceObject: any;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
   readonly attributeChartId = 'attribute-chart';
@@ -46,6 +48,9 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     this.getData();
     ColumnDataLabel.compose(ColumnSeries);
   }
+  ngAfterViewInit(){
+  }
+  
   getData(){
     if(this.graphData && this.graphData.length > 0){
     this.graphData.forEach(element => {
@@ -115,7 +120,6 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   }
 
   prepareBrandChartData(brandData) {
-    //  debugger;
     const seriesBrandArray = [];
     let brandObj = {};
     brandObj['name'] = brandData['brandName'].toString();
@@ -127,13 +131,20 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
 
   preparePriceChartData(priceData) {
     const seriesPriceArray = [];
-    
     let priceObj = {};
-    priceObj['name'] = this.formatPrice(priceData['interval'],true);
+    console.log("this.isL2CategoryCheck",this.isL2CategoryCheck);
+
+    if(this.isL2CategoryCheck === true){
+      priceObj['name'] = priceData['categoryName'];
+    }  
+    else{console.log("else case");
+
+      priceObj['name'] = this.formatPrice(priceData['interval'],true);
+    }
     priceObj['y'] = priceData['orderPercentage'];
     priceObj['drilldown'] = null;
+    
     seriesPriceArray.push(priceObj);
-
     return seriesPriceArray;
   }
   // function to get Max Value in data
@@ -358,6 +369,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   }
    
   loadChart(htmlId, data, seriesData,attributeName?){
+   
     if (htmlId.startsWith(`${this.priceChartId}`)) {
       const myChart1 = new Chart(htmlId ,this.createChartPriceSingleObject(data,seriesData));
     }

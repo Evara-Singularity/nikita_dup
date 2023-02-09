@@ -27,6 +27,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   @Input() categoryId;
   @Input() graphData = null;
   @Input() categoryName;
+  @Input() isL2CategoryCheck;
   priceDataWithoutProcessing;
   brandDataWithoutProcessing;
   attributeDataWithoutProcessing;
@@ -90,6 +91,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
     this.priceContainerInstance.instance['categoryId'] = this.categoryId;
     this.priceContainerInstance.instance['graphData'] = this.graphData;
     this.priceContainerInstance.instance['categoryName'] = this.categoryName;
+    this.priceContainerInstance.instance['isL2CategoryCheck'] = this.isL2CategoryCheck;
   }
   async loadBrandWidget() {
     const { AnalyticsGraphWidgetComponent } = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
@@ -103,6 +105,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
     this.brandContainerInstance.instance['categoryId'] = this.categoryId;
     this.brandContainerInstance.instance['graphData'] = this.graphData;
     this.brandContainerInstance.instance['categoryName'] = this.categoryName;
+    this.brandContainerInstance.instance['isL2CategoryCheck'] = this.isL2CategoryCheck;
   }
   async loadAttributeWidget() {
     const { AnalyticsGraphWidgetComponent } = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');

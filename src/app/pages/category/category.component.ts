@@ -48,7 +48,9 @@ export class CategoryComponent {
     prodUrl=CONSTANTS.PROD;
     graphData;
     lastLevelCategory:Boolean = false;
+    isL2CategoryCheck:Boolean = false;
     informativeVideosData:any;
+   
 
     constructor(
         public _router: Router,
@@ -161,12 +163,20 @@ export class CategoryComponent {
             if (this.sharedProductList) {
                 this.sharedProductList.getSponseredProducts();
             }
+            
             if( this.API_RESPONSE.category[7]){
                 this.graphData = this.API_RESPONSE.category[7].data;
             }
-            if(this.API_RESPONSE.category[0].categoryDetails.childList.length == 0){
+            let taxonomyArr = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split('/');
+            if(this.API_RESPONSE.category[0].categoryDetails.childList.length == 0 || taxonomyArr.length == 2){
                 this.lastLevelCategory = true;
-                // console.log("this.lastLevelCategory",this.lastLevelCategory)
+                if(taxonomyArr.length == 2){
+                    this.isL2CategoryCheck = true;
+                }
+                else{
+                    this.isL2CategoryCheck = false;
+                }
+                
             }
             
             this.setCanonicalUrls();

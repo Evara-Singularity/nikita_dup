@@ -59,6 +59,7 @@ export const ENDPOINTS = {
   SPL_DEALS: "/deals/special-deals",
   SPL_OFFR: "/deals/special-offer",
   GET_EMI_VAL: "/payment/getEMIValues",
+  GET_BNPL_ELIGIBILITY :"/payment/getBNPLEligibility",
   GET_COUPON_CODE : "/promoCode/productApplicablepromo",
   GET_CLUSTER_EMI_VAL: "/payment/getClusterEmiValues",
   PAYMENT: "/payment/pay",

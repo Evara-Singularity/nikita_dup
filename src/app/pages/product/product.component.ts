@@ -172,8 +172,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     msn:string;
 
     //app download link generation
-    playStoreLink = "https://play.google.com/store/apps/details?id=com.moglix.online";
-    appStoreLink = "https://apps.apple.com/in/app/moglix-best-industrial-app/id1493763517";
+    playStoreLink = "https://moglix.page.link/?link="+this.baseDomain+this.router.url+"&apn=com.moglix.online&isi=1493763517&ibi=com.moglix.onlineapp";
+    appStoreLink = "https://moglix.page.link/?link="+this.baseDomain+this.router.url+"&apn=com.moglix.online&isi=1493763517&ibi=com.moglix.onlineapp";
     isOverlayMode: boolean = true;
     readonly MOBILE_ENVS = {
         IOS: 'iOS',
@@ -4582,8 +4582,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
 
     createPlayStoreLink() {
-        const homepageaLink = "https://play.google.com/store/apps/details?id=com.moglix.online&referrer=utm_source%3DPWA%26utm_medium%3Dhomepage%26utm_campaign%3Dapp_download_nudge";
-        const pdpLink = "https://play.google.com/store/apps/details?id=com.moglix.online&referrer=utm_source%3DPWA%26utm_medium%3Dproductpage%26utm_campaign%3Dapp_download_nudge"
+        const homepageaLink = "https://moglix.page.link/?link="+this.baseDomain+this.router.url+"&apn=com.moglix.online&isi=1493763517&ibi=com.moglix.onlineapp";
+        const pdpLink = "https://moglix.page.link/?link="+this.baseDomain+this.router.url+"&apn=com.moglix.online&isi=1493763517&ibi=com.moglix.onlineapp"
         this.playStoreLink = (!this.isOverlayMode) ? homepageaLink : pdpLink
     }
 

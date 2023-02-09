@@ -27,14 +27,13 @@ export class ProductV1Resolver implements Resolve<any> {
     private transferState: TransferState,
     private _commonService: CommonService,
     private http: HttpClient,
-    private loaderService: GlobalLoaderService,
     private _loggerService: LoggerService,
   ) {
   }
 
   resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
 
-    this.loaderService.setLoaderState(true);
+    // this.loaderService.setLoaderState(true);
     const startTime = new Date().getTime();
     const languageHeader = {
       'language': 'hi'
@@ -44,6 +43,9 @@ export class ProductV1Resolver implements Resolve<any> {
     };
     // Get product MSN from url
     let productMsnId = _activatedRouteSnapshot.params['msnid'];  // get MSN id from URL
+    if (productMsnId.indexOf("-g") > -1) {
+      productMsnId = productMsnId.substring(0, productMsnId.length - 2);
+    }
 
     const PRODUCT_KEY: any = makeStateKey<{}>('product-' + productMsnId);
     const PRODUCT_REVIEW_KEY = makeStateKey<object>('product-review-' + productMsnId);
@@ -78,7 +80,7 @@ export class ProductV1Resolver implements Resolve<any> {
       this.transferState.remove(PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_KEY);
       this.transferState.remove(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY);
 
-      this.loaderService.setLoaderState(false);
+      // this.loaderService.setLoaderState(false);
       return of([
         PRODUCT_KEY_OBJ,
         PRODUCT_REVIEW_OBJ,
@@ -140,7 +142,7 @@ export class ProductV1Resolver implements Resolve<any> {
           this._loggerService.apiServerLog(logInfo);
           return res;
         }), catchError((err) => {
-          this.loaderService.setLoaderState(false);
+          // this.loaderService.setLoaderState(false);
           console.log(ProductV1Resolver.name, err);
           return of(err);
         }), catchError((err) => {
@@ -197,7 +199,7 @@ export class ProductV1Resolver implements Resolve<any> {
       return forkJoin(apiList).pipe(
         catchError((err) => {
           console.log('category forkJoin error ==>', err);
-          this.loaderService.setLoaderState(false);
+          // this.loaderService.setLoaderState(false);
           return of(err);
         }),
         tap(result => {
@@ -211,7 +213,7 @@ export class ProductV1Resolver implements Resolve<any> {
             this.transferState.set(PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_KEY, result[5]);
             this.transferState.set(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY, result[6]);
           }
-          this.loaderService.setLoaderState(false);
+          // this.loaderService.setLoaderState(false);
         })
       );
     }

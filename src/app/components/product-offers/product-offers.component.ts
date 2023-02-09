@@ -97,7 +97,7 @@ export class ProductOffersComponent implements OnInit
 
   couponOnPDPBrandCategory() {
     if (this.brandName && this.categoryId) {
-      this._globalLoader.setLoaderState(true);
+      // this._globalLoader.setLoaderState(true);
       this._dataService.getCouponOnBrandCategory(this.brandName, this.categoryId, (this.isHindiMode)? this.hindiHeader : null).subscribe(response => {
         if (response['statusCode'] == 200 && response['data'] != null) {
           this.couponForbrandCategory = response['data'];
@@ -106,7 +106,7 @@ export class ProductOffersComponent implements OnInit
         } else {
           this.couponForbrandCategory = null;
         }
-        this._globalLoader.setLoaderState(false)
+        // this._globalLoader.setLoaderState(false)
       })
 
     }

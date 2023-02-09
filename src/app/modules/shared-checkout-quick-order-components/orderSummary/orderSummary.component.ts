@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
@@ -10,7 +10,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
     selector: 'order-summary',
     styleUrls: ['./orderSummary.scss'],
 })
-export class OrderSummaryComponent implements OnInit, OnDestroy
+export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy
 {
     showPromoOfferPopup: boolean = false;
     showPromoSuccessPopup: boolean = false;
@@ -29,28 +29,38 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
         private _globalAnalyticeService: GlobalAnalyticsService,
     ) { }
 
+    /**
+     * NOTES: 
+     * Promocode intial validation are move to cart.component.ts to sync other APIs eg validate, shipping and etc
+     * This component will only responsible to handle and change event trigger by user action, like remove promo, change and other
+     */
 
     ngOnInit(): void
     {
         this._cartService.appliedPromoCode = "";
-        const userSession = this._localAuthService.getUserSession();
-        this.cartSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
-        {
+    }
+
+    ngAfterViewInit(): void {
+        
+        this.cartSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession => {
             if (cartSession && cartSession.itemsList && cartSession.itemsList.length > 0) {
-                // this.updateShippingCharges();
-                this.totalOffer = cartSession['cart']['totalOffer'] || 0;
+                // no global changes triggered
+                // this.totalOffer = cartSession['cart']['totalOffer'] || 0;
                 this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
             }
             this.isCartFetched = true;
         });
-        this.shippingPriceChangesSubscription = this._cartService.getShippingPriceChanges().subscribe(cartSession=>{
+
+        this.shippingPriceChangesSubscription = this._cartService.getShippingPriceChanges().subscribe(cartSession => {
+            // no global changes triggered
             this.updateShippingCharges();
         })
-        this._cartService.getPromoCodesByUserId(userSession['userId']);
-        this.promoSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode }) =>
-        {
+
+        this.promoSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode, totalOffer }) => {
+            // no global changes triggered
             this.showPromoSuccessPopup = isNewPromocode;
-            setTimeout(() => { this.showPromoSuccessPopup = false; },  800)
+            this.totalOffer = totalOffer || 0;
+            setTimeout(() => { this.showPromoSuccessPopup = false; }, 800)
         })
     }
 
@@ -88,8 +98,6 @@ export class OrderSummaryComponent implements OnInit, OnDestroy
     preventDefault(e) {
         e.preventDefault();
     }
-
-
 
     //analytics
     getGTMData(cartSession)

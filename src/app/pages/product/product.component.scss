@@ -29,6 +29,11 @@
 }
 
 .coupon {
+    width: 100%;
+    background: var(--white);
+}
+
+.coupon-inner {
     min-height: 180px;
     width: 100%;
     background: var(--white);

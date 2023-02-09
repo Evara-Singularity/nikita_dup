@@ -60,9 +60,17 @@ export interface ProductsEntity {
     outOfStock?: boolean;
     description?:string;
     short_description?: null;
+    homePageRFQ?:boolean;
+    HomePageRFQstatus?:HomePageRFQstatus
 }
 
 export interface FilterableAttributes {
+}
+export interface HomePageRFQstatus{
+    status:string;
+    qty:number;
+    createdOn:Date;
+    rfqId:number;
 }
 
 export interface BucketsEntity {

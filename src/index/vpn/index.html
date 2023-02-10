@@ -57,6 +57,7 @@
                         'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
                     setTimeout(() => {
                         f.parentNode.insertBefore(j, f)
+                        console.log('<===GTM SCRIPT LOADED===>', new Date().getTime())
                     }, 0);
                 })(window, document, 'script', 'dataLayer', gtmKey);
             }

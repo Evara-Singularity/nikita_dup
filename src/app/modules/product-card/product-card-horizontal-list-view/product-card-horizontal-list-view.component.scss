@@ -34,12 +34,13 @@
                 width: 128px;
                 position: relative;
                 border: 1px solid #EBEBEB;
-                height: 154px;
+                // height: 154px;
                 border-radius: 6px;
                 display: grid;
                 align-items: center;
                 text-align: center;
                 justify-content: center;
+                padding: 5px;
                 img {
                     width: 100%;
                     height: auto;
@@ -69,6 +70,7 @@
                     font-size: $large-font;
                     span{
                         color: #303030;
+                        line-height: 20px;
                     }
                 }
                 .name-with-icon{

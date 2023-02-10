@@ -1,5 +1,3 @@
-
-
 <div *ngIf="!productNotFound">
     <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer" [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
     </app-oos-similar-section>
@@ -34,6 +32,10 @@
         <product-skeletons [type]="'PINCODE'" [templateRefInstance]="pincodeFormInstance"></product-skeletons>
     </div>
     
+    <!-- //moglix insight -->
+    <moglix-insight></moglix-insight>
+
+    <!-- product benifits and policy -->
     <product-benefits [isProductReturnAble]="isProductReturnAble" [productOutOfStock]="productOutOfStock" (navigateToFAQ$)="navigateToFAQ()"></product-benefits>
     
     

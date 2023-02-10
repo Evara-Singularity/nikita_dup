@@ -97,17 +97,9 @@ export class CategoryResolver implements Resolve<any> {
         const attribute_url = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryId;
         const related_article_url = environment.BASE_URL + ENDPOINTS.GET_RELATED_ARTICLES + categoryId;
         const category_extra_url = environment.BASE_URL + ENDPOINTS.GET_CategoryExtras + categoryId;
-        this.get_analytics_widget_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
+         const get_analytics_widget_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
         const get_information_video_url = environment.BASE_URL + ENDPOINTS.INFORMATION_VIDEO + "?categoryCode=" +categoryId;
-
         
-        // if(this.taxonomyArr.length == 2){
-        //   this.get_analytics_widget_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId+"&&isL2Category="+this.isthereL2Category;
-        //   console.log("this.get_analytics_widget_url",this.get_analytics_widget_url);
-        // }
-        // else{
-        //   this.get_analytics_widget_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
-        // }
         const params = {  
           filter: this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),
           queryParams: _activatedRouteSnapshot.queryParams,
@@ -190,9 +182,8 @@ export class CategoryResolver implements Resolve<any> {
           return res;
         }));
         
-        const getcategoryanalyticsObs = this.http.get(this.get_analytics_widget_url).pipe(share(), 
+        const getcategoryanalyticsObs = this.http.get(get_analytics_widget_url).pipe(share(), 
         map(res=>{
-          // console.log("get_analytics_widget_url",get_analytics_widget_url);
           const logInfo =  this._commonService.getLoggerObj(this.get_analytics_widget_url,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();
           logInfo.responseStatus = res["status"];

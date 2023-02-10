@@ -40,7 +40,8 @@
     <!-- Adobe Tag Manager -->
     <script defer="true" >
         dataLayer = [];
-        if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
+        document.addEventListener('DOMContentLoaded', function () {
+            if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
                 var gtmKey = "GTM-PMPXQQ"; //PROD Key
                 (function (w, d, s, l, i) {
                     w[l] = w[l] || [];
@@ -56,9 +57,11 @@
                         'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
                     setTimeout(() => {
                         f.parentNode.insertBefore(j, f)
+                        console.log('<===GTM SCRIPT LOADED===>', new Date().getTime())
                     }, 0);
                 })(window, document, 'script', 'dataLayer', gtmKey);
-        }
+            }
+        }, false);
         digitalData = {};
         digitalData.event = [];
     </script>

@@ -58,7 +58,7 @@
                     margin-top: 4px;
                     text-align: left;
                     font-size: $small-font;
-                    color: var(--gray-web);
+                    color: var(--dim-gray);
                   }
                 
                 .price-details {
@@ -77,9 +77,8 @@
                         margin-bottom:4px;
                         margin-top:4px;
                         .prod-mrp {
-                            color:var(--onyx-black);
+                            color:var(--dim-gray);
                             text-decoration: line-through;
-                            opacity: 0.5;
                             margin-right:5px;
                         }
                         .prod-discount {

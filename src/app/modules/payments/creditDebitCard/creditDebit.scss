@@ -20,7 +20,11 @@
         padding-left:10px;
     }
 }
-
+.custom_select_input{
+    span{
+        color: var(--dim-gray);
+    }
+}
 .radio-with-label-container {
     display: flex;
     margin: 10px 0px;

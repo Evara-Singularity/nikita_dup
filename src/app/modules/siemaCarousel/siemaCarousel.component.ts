@@ -35,6 +35,7 @@ export class SiemaCarouselComponent {
     @ViewChild(SiemaSlideComponent) ssc: SiemaSlideComponent;
     @ViewChild('kelsiema', { read: ElementRef }) kelsiema: ElementRef;
     @ViewChild('kvcsiema', { read: ViewContainerRef }) kvcsiema: ViewContainerRef;
+    @Output() currentIndex$: EventEmitter<number> = new EventEmitter<number>();
 
     isServer: boolean;
     isBrowser: boolean;
@@ -268,6 +269,7 @@ export class SiemaCarouselComponent {
         this.ngxSiemaService.currentSlide(this.ngxSiemaOptions.selector).subscribe((data) => {
             if (data && typeof data.currentSlide !== "undefined") {
                 this.currentIndex = data.currentSlide;
+                this.currentIndex$.next(this.currentIndex);
                 this.lazyLoadImage(this.currentIndex)
             }
         });

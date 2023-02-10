@@ -11,9 +11,13 @@ import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-p
 import { AccordianModule } from "@app/modules/accordian/accordian.module";
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 import { MathCeilPipeModule } from '@pipes/math-ceil';
+import RecentViewedProductsWrapperModule from '@app/components/recent-viewed-products-wrapper/recent-viewed-products-wrapper.component';
 
 
 @NgModule({
+    declarations: [
+        BrandComponent,
+    ],
     imports: [
         CmsModule,
         CommonModule,
@@ -25,11 +29,9 @@ import { MathCeilPipeModule } from '@pipes/math-ceil';
         ProductListingAppPromoModule,
         AccordianModule,
         AppPromoModule,
-        MathCeilPipeModule
-    ],
-    declarations: [
-        BrandComponent,
-    ],
+        MathCeilPipeModule,
+        RecentViewedProductsWrapperModule,
+    ]
 })
 
-export class BrandModule {}
+export  class BrandModule {}

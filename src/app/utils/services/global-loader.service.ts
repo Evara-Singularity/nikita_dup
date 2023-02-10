@@ -7,8 +7,10 @@ import { Observable, Subject } from 'rxjs';
 export class GlobalLoaderService {
 
   private loaderState: Subject<boolean> = new Subject<boolean>();
+  public state: boolean = false;
 
   setLoaderState(status: boolean) {
+    this.state = status;
     this.loaderState.next(status);
   }
 

@@ -12,12 +12,13 @@
             <span class="fixed_ico wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
                 <i [ngClass]="isPurcahseListProduct ? 'icon-wishlist1-active' : 'icon-wishlist1-inactive'"></i>
             </span>
+            <span class="fixed_ico whatsapp" ><i class="icon-whatsapp"></i></span>
             <span *ngIf="productOutOfStock  && productService.oosSimilarProductsData.similarData.length > 2"
                 (click)="$event.stopPropagation();scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
                 class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">
             </span>
-            <span *ngIf="isAcceptLanguage" class="fixed_ico" (click)="translate()">
-                <img height="24" width="24" style="height: 24px; width: 24px;" src="{{imagePathAsset}}assets/img/translate.gif">
+            <span *ngIf="isAcceptLanguage" class="fixed_ico fixed_ico-img" (click)="translate()">
+                <img height="24" width="24" style="height: 24px; width: 24px;" src="{{imagePathAsset}}assets/img/translator_icon.png">
             </span>
         </div>
         <ng-container #productCrousel></ng-container>

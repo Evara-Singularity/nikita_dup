@@ -107,9 +107,11 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
     });
     setTimeout(() => {
       containerIDs.forEach(element => {
-        this.intiatePinchZoom(element);
+        if(element){
+          this.intiatePinchZoom(element);
+        }
       });
-    }, 0);
+    }, 100);
   }
 
   intiatePinchZoom(el: HTMLElement){

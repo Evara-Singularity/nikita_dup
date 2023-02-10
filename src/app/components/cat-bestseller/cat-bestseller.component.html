@@ -51,10 +51,10 @@
                     </div>
                     <div class="product-card-lower-inner">
                         <div class="name">{{product.productName | slice:0:60}} <span *ngIf="product.productName.length>60">...</span></div>
-                        <p class="brandname"><span>By :</span>{{getBrandBy(product.short_description)}}</p>
+                        <p class="brandname" style="color: #6f6f6f;"><span>By :</span>{{getBrandBy(product.short_description)}}</p>
                         <div class="prod-price-row">
                             <div class="price">
-                                <span class="prod-mrp">₹{{product.mrp}}</span> 
+                                <span class="prod-mrp" style="color: #6f6f6f">₹{{product.mrp}}</span> 
                                 <span class="prod-discount">{{product.discount_percentage}}% OFF</span>
                             </div>
                             <p class="prod-selling-price">₹{{product.sellingPrice}}</p>

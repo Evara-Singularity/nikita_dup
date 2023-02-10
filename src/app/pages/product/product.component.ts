@@ -441,7 +441,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
-            this.navigationOnFragmentChange();
             this.getProductTag()
             this.onVisibleOffer();
         }
@@ -462,20 +461,23 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     }
 
-    navigationOnFragmentChange() {
-        this.route.fragment.pipe(delay(300)).subscribe(fragment => {
-            switch (fragment) {
-                case CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_EMIS :
-                    this.emiComparePopUpOpen(true);
-                    break;
-                case CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_OFFERS:
-                    this.viewPopUpOpen(this.productService.productCouponItem);
-                    break;    
-                default:
-                    break;
-            }
-        })
-    }
+    /**
+     * This is feature is still in development, please dont uncomment this code
+     */
+    // navigationOnFragmentChange() {
+    //     this.route.fragment.pipe(delay(300)).subscribe(fragment => {
+    //         switch (fragment) {
+    //             case CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_EMIS :
+    //                 this.emiComparePopUpOpen(true);
+    //                 break;
+    //             case CONSTANTS.PDP_POPUP_FRAGMENT.PRODUCT_OFFERS:
+    //                 this.viewPopUpOpen(this.productService.productCouponItem);
+    //                 break;    
+    //             default:
+    //                 break;
+    //         }
+    //     })
+    // }
 
     backUrlNavigationHandler()
     {
@@ -1205,8 +1207,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
-    setOutOfStockFlag()
-    {
+    setOutOfStockFlag() {
         if (this.priceQuantityCountry) {
             // incase outOfStockFlag of is avaliable then set its value
             this.productOutOfStock = this.priceQuantityCountry["outOfStockFlag"];
@@ -1218,13 +1219,16 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 if (parseInt(this.priceQuantityCountry["quantityAvailable"]) == 0) {
                     this.productOutOfStock = true;
                 }
-                
+
             } else {
                 this.productOutOfStock = true;
             }
         } else {
             // incase priceQuantityCountry element not present in API
             this.productOutOfStock = true;
+        }
+        if (this.productOutOfStock) {
+            this.commonService.enableAppPromoInHeader = true;
         }
     }
 
@@ -2885,12 +2889,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         });
     }
 
-    handleRoutingForPopUps()
-    {
-        window.history.replaceState('', '', this.router.url);
-        window.history.pushState('', '', this.router.url);
-    }
-
     handleRestoreRoutingForPopups()
     {
         window.history.replaceState('', '', this.commonService.getPreviousUrl);
@@ -2920,7 +2918,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             (this.popupCrouselInstance.instance["out"] as EventEmitter<boolean>).subscribe((status) =>
             {
                 this.clearImageCrouselPopup();
-                this.handleRestoreRoutingForPopups();
             });
             (this.popupCrouselInstance.instance["currentSlide"] as EventEmitter<boolean>).subscribe((slideData) =>
             {
@@ -2929,7 +2926,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 }
             });
             this.backTrackIndex = oosProductIndex;
-            this.handleRoutingForPopUps();
         }
     }
 
@@ -4069,7 +4065,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.closeProductInfoPopup();
             this.handleRestoreRoutingForPopups();
         });
-        this.handleRoutingForPopUps();
         this.backTrackIndex = oosProductIndex;
     }
 
@@ -4553,11 +4548,4 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         return (this.router.url).toLowerCase().indexOf('/hi/') !== -1
     }
 
-    @HostListener('window:popstate', ['$event'])
-    onPopState(event)
-    {
-        this.clearImageCrouselPopup();
-        this.closeProductInfoPopup();
-
-    }
 }

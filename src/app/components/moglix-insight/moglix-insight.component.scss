@@ -6,21 +6,64 @@
     @extend %hide-scrollbar;
 }
 
-.gold-member-benefits {
-    background: #F0E3B6;
-    @extend %hide-scrollbar;
-    opacity: .9;
-    .pdp-section-header{
-        background-color: #F0E3B6;
-    }
-    .pwa-tabs-container{
-        .pwa-image-tab{
-            border: 1px solid #D3C780;
-            background-color: var(--white);
-            align-items: center;
-            .tab-img{
-                background-color: #F0E3B6;
+.moglix-insight {
+    background-color: var(--white);
+
+    .moglix-insight-inner {
+        display: flex;
+        justify-content: space-between;
+
+        .moglix-insight-trustWidget {
+            width: calc(50% - 7px) !important;
+            background-color: #E8F3FD;
+            border: 1px solid#77B9F883;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            display: flex;
+
+            .bull {
+                // width: 20px;
+                font-size: 36px;
+                margin-top: -13px;
+            }
+
+            p {
+                font-size: $large-font;
+                line-height: $medium-line-height;
+                display: flex;
+                span {
+                    display: inline-block;
+                    line-height: 20px;
+                    vertical-align: top;
+                }
+
+                &:before {
+                    content: "•";
+                    font-size: $extra-large-6-font;
+                    padding-right: 2px;
+                    vertical-align: top;
+                    line-height: $medium-line-height;
+                }
             }
         }
     }
 }
+
+// .gold-member-benefits {
+//     background: #F0E3B6;
+//     @extend %hide-scrollbar;
+//     opacity: .9;
+//     .pdp-section-header{
+//         background-color: #F0E3B6;
+//     }
+//     .pwa-tabs-container{
+//         .pwa-image-tab{
+//             border: 1px solid #D3C780;
+//             background-color: var(--white);
+//             align-items: center;
+//             .tab-img{
+//                 background-color: #F0E3B6;
+//             }
+//         }
+//     }
+// }

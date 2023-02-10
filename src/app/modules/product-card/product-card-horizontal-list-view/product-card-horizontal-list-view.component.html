@@ -94,7 +94,7 @@
                         *ngIf="features.split(' ').length>20">...</span></li>
             </ul>
         </div> -->
-        <div class="attribute-section" *ngIf="product['filterableAttributes']!=null">
+        <div class="attribute-section" *ngIf="product['filterableAttributes'] != null && (product['filterableAttributes'] | keyvalue).length != 0">
             <div class="pwa-tabs-container">
                 <div class="pwa-tab" *ngFor="let item of product['filterableAttributes'] | keyvalue">
                    {{item.value}}

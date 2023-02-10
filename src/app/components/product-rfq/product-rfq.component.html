@@ -188,7 +188,7 @@
     <ng-container content *ngTemplateOutlet="rfqFormTemplate"></ng-container>
 </app-bottom-menu>
 <!--Popup-->
-<app-bottom-menu *ngIf="!isOutOfStock && isPopup">
+<app-bottom-menu [containerHeight]="'rfq'" *ngIf="!isOutOfStock && isPopup">
     <div class="content-popup rfqPopup pwa-row" content>
         <div class="pwa-col-12">
             <ng-container *ngTemplateOutlet="rfqFormTemplate "></ng-container>

@@ -38,6 +38,7 @@ import { ProductSkeletonsModule } from '@app/components/product-skeletons/produc
 import ProductAccordiansModule from '@app/components/product-accordians/product-accordians.component';
 import { ProductOffersModule } from '@app/components/product-offers/product-offers.component';
 import FbtComponentModule from '@app/components/fbt/fbt.component';
+import { ProductDealsModule } from '@app/components/product-popular-deals/product-popular-deals.component';
 
 @NgModule({
   declarations: [ProductComponent],
@@ -84,7 +85,8 @@ import FbtComponentModule from '@app/components/fbt/fbt.component';
     ProductSkeletonsModule,
     ProductAccordiansModule,
     ProductOffersModule,
-    FbtComponentModule
+    FbtComponentModule,
+    ProductDealsModule
   ],
   exports: [],
   providers: [NgxSiemaService]

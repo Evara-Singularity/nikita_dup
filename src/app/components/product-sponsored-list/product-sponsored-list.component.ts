@@ -44,7 +44,7 @@ export class ProductSponsoredListComponent implements OnInit {
     private commonService: CommonService,
   ) { }
 
-  ngOnInit() {
+  ngOnInit() {alert('I am in 1')
     this.cardMetaInfo = {
       redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
       redirectedSectionName: this.outOfStock ? 'sponsered_products_oos' : 'sponsered_products'
@@ -61,7 +61,9 @@ export class ProductSponsoredListComponent implements OnInit {
       page_type: 'PRODUCT',
       device_id: this.commonService.getUniqueGAId()
     }
+    alert('I am in 2')
     this.productService.getSponseredProducts(query).subscribe((response: any) => {
+      alert('I am in 3')
       let products = response['products'];
       if (products && (products as []).length > this.lowestCountToDisplay) {
         this.productList = (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));

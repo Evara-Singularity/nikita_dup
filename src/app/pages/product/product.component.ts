@@ -295,10 +295,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     pdpAccordianInstance = null;
     @ViewChild("pdpAccordian", { read: ViewContainerRef })
     pdpAccordianContainerRef: ViewContainerRef;
-    // ondemad loaded component for product popular deals
-    popularDealsInstance = null;
-    @ViewChild("popularDeals", { read: ViewContainerRef })
-    popularDealsContainerRef: ViewContainerRef;
     // ondemad loaded components for quick order popUp
     quickOrderInstance = null;
     @ViewChild("quickOrder", { read: ViewContainerRef })
@@ -343,7 +339,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     categoryBucketRes: any = null
     similarCategoryRes: any = null 
     fbtAnalytics: { page: { pageName: string; channel: string; subSection: any; linkPageName: any; linkName: any; loginStatus: string; }; custData: { customerID: string; emailID: string; mobile: string; customerType: any; customerCategory: any; }; order: { productID: string; productCategoryL1: any; productCategoryL2: any; productCategoryL3: any; brand: any; price: number; stockStatus: string; tags: string; }; };
-
+    dealsAnalytics: any;
+    bestProductsRes: any;
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);
@@ -585,7 +582,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         // console.log('originalProductBO log', this.originalProductBO);
                         // Load secondary APIs data from resolver only when product data is received
                        
-                            this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6], rawData['product'][7]);
+                            this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6], rawData['product'][7], rawData['product'][8]);
                         
                     } else {
                         this.showLoader = false;
@@ -639,7 +636,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
-    getSecondaryApiData(reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes, productTagRes) {
+    getSecondaryApiData(reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes, productTagRes, bestproductsRes) {
         // console.log({
         //     reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes
         // });
@@ -665,6 +662,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.getRefinedProductTags();
         } else {
             this.productTags = null;
+        }
+
+        if(bestproductsRes && bestproductsRes['totalCount'] > 0) {
+            this.onVisiblePopularDeals();
+            this.bestProductsRes = bestproductsRes;
         }
         
         this.relatedLinkRes = relatedLinkRes;
@@ -1087,12 +1089,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.recentProductsInstance = null;
             this.recentProductsContainerRef.remove();
             this.onVisibleRecentProduct(null);
-        }
-
-        if (this.popularDealsInstance) {
-            this.popularDealsInstance = null;
-            this.popularDealsContainerRef.remove();
-            this.onVisiblePopularDeals(null);
         }
   
         if (this.rfqFormInstance) {
@@ -2086,20 +2082,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
 
-    async onVisiblePopularDeals(htmlElement) {
-        if (!this.popularDealsInstance && !this.productOutOfStock) {
-            const { ProductPopularDealsComponent } = await import(
-                "./../../components/product-popular-deals/product-popular-deals.component"
-            );
-            const factory = this.cfr.resolveComponentFactory(ProductPopularDealsComponent);
-            this.popularDealsInstance =
-                this.popularDealsContainerRef.createComponent(
-                    factory,
-                    null,
-                    this.injector
-                );
-            this.popularDealsInstance.instance["categoryCode"] = this.productCategoryDetails["categoryCode"];
-
+    async onVisiblePopularDeals() {
             const custData = this.commonService.custDataTracking;
             const orderData = this.orderTracking;
             const TAXONS = this.taxons;
@@ -2111,12 +2094,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 linkName: null,
                 loginStatus: this.commonService.loginStatusTracking,
             };
-            this.popularDealsInstance.instance["analytics"] = {
+            this.dealsAnalytics = {
                 page: page,
                 custData: custData,
                 order: orderData,
             };
-        }
     }
 
     readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {
@@ -2216,6 +2198,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     async onVisibleSponsered(htmlElement)
     {
         if (!this.sponseredProductsInstance) {
+            alert('I am in')
             const { ProductSponsoredListComponent } = await import(
                 "./../../components/product-sponsored-list/product-sponsored-list.component"
             );

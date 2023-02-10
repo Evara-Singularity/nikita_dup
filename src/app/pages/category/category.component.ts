@@ -5,7 +5,7 @@ import { CategoryService } from '@app/utils/services/category.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { FooterService } from '@app/utils/services/footer.service';
 import { Meta, Title } from '@angular/platform-browser';
@@ -17,6 +17,8 @@ import { SharedProductListingComponent } from '@app/modules/shared-product-listi
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
 
 let digitalData = {
     page: {},
@@ -77,6 +79,7 @@ export class CategoryComponent {
     }
 
     ngOnInit(): void {
+        this._router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.setDataFromResolver();
         if (this._commonService.isBrowser) {
             this._footerService.setMobileFoooters();
@@ -172,11 +175,20 @@ export class CategoryComponent {
                 this.lastLevelCategory = true;
                 if(taxonomyArr.length == 2){
                     this.isL2CategoryCheck = true;
+                    this.callChartApi().subscribe(
+                        res => {
+                            if(res['statusCode'] == 200){
+                                this.graphData = res['data'];
+                            }
+                        });
                 }
                 else{
                     this.isL2CategoryCheck = false;
                 }
                 
+            }
+            if(this.API_RESPONSE.category[0].categoryDetails.childList.length == 0 && taxonomyArr.length == 2){
+                this.graphData = [];
             }
             
             this.setCanonicalUrls();
@@ -186,23 +198,15 @@ export class CategoryComponent {
            
         });
     }
-
-    //  callChartApi() {
-    //      let categoryId =  this.API_RESPONSE['category'][0]['categoryDetails']['categoryId']
-    //     let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
-    //     return this._dataService.callRestful("GET", url);
-    //   }
-    //   getChartData(){
-    //     this.callChartApi().subscribe(res => {
-    //        if(res['statusCode'] == 200){
-    //        this.graphData = res['data']; 
-    //        console.log("hello");
-    //       }
-    //       else{
-    //         console.log("error");
-    //       }
-    //     })
-    //   }
+    callChartApi() {
+        let categoryId =  this.API_RESPONSE['category'][0]['categoryDetails']['categoryId'];
+        const url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId+"&&isL2Category="+true;
+        return this._dataService.callRestful("GET", url).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ data: [], code: res.status });
+            })
+        );
+    }
 
     private createFooterAccordianData() {
         this.accordiansDetails = [];

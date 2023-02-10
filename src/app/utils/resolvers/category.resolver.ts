@@ -101,13 +101,13 @@ export class CategoryResolver implements Resolve<any> {
         const get_information_video_url = environment.BASE_URL + ENDPOINTS.INFORMATION_VIDEO + "?categoryCode=" +categoryId;
 
         
-        if(this.taxonomyArr.length == 1){
-          this.get_analytics_widget_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId+"&&isL2Category="+this.isthereL2Category;
-          console.log("this.get_analytics_widget_url",this.get_analytics_widget_url);
-        }
-        else{
-          this.get_analytics_widget_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
-        }
+        // if(this.taxonomyArr.length == 2){
+        //   this.get_analytics_widget_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId+"&&isL2Category="+this.isthereL2Category;
+        //   console.log("this.get_analytics_widget_url",this.get_analytics_widget_url);
+        // }
+        // else{
+        //   this.get_analytics_widget_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
+        // }
         const params = {  
           filter: this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),
           queryParams: _activatedRouteSnapshot.queryParams,

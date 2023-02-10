@@ -41,7 +41,6 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log("categoryId",this.categoryId);
     this.getData();
   }
 

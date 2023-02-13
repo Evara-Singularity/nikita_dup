@@ -7,3 +7,75 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.top-header-bottom-menu{
+    h3{
+        padding: 15px 5px;
+        font-size: $extra-large-font;
+        
+    }
+    i{
+        top: 15px;
+    }
+}
+.return-tbl{
+    .tblflx{
+        padding: 0px 10px;
+        display: flex;
+        justify-content: space-between;
+        // border-bottom: 1px solid var(--ghost-white);
+        border-bottom: 1px solid #e2e2e2;
+        .flxinner{
+            width: 33%;
+            padding: 10px 5px;
+        }
+        &.return-tbl-head{
+            background-color: var(--cultured);
+        }
+    }
+}
+.warranty-policy{
+    padding: 15px;
+    h4{
+        font-size: $large-font;
+        line-height: $medium-line-height;
+    }
+    p {
+        font-size: $medium-font;
+        line-height: $small-line-height;
+        padding: 5px 0px;
+        display: flex;
+        span {
+            display: inline-block;
+            line-height: 20px;
+            vertical-align: top;
+        }
+
+        &:before {
+            content: "•";
+            font-size: $extra-large-4-font;
+            padding-right: 2px;
+            vertical-align: top;
+            line-height: $medium-line-height;
+        }
+    }
+}
+
+.read-full-cta{
+    padding: 5px 15px 15px;
+    button{
+        width: 100%;
+        background-color: #e2e2e2;
+        height: 40px;
+        border-radius: 8px;
+        border: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: $large-font;
+        padding: 0px 15px;
+        i{
+            font-size: 20px;
+        }
+    }
+}

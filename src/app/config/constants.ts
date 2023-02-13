@@ -63,11 +63,35 @@ export const CONSTANTS = {
     netBanking: 2,
     wallet: 3,
     emi: 4,
+    bnpl : 12, 
     cashOnDelivery: 5,
     neftRtgs: 6,
     savedCard: 7,
     upi: 8,
     paytmUpi: 9,
+    bnplMap: 
+    {
+      retail :{
+        LAZYPAY :{
+          mode: "BNPL",
+          type: 'LazyPay',
+          active : false,
+          bankcode : 'LAZYPAY',
+          paymentId: 300,
+          imgUrl: "lazypay.png"  
+        },
+        ICICIPL :{
+          mode: "BNPL",
+          type: 'ICICI Pay Later',
+          active : false,
+          bankcode : 'ICICIPL',
+          paymentId: 301,
+          imgUrl: "icicipl.png"  
+        }
+
+      }
+
+    },
     walletMap: {
       tax: {
         walletPaytm: {

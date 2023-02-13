@@ -8,7 +8,7 @@
     font-size: $extra-large-font;
 }
 .search_heading {
-    color: #a8a8a8;
+    color: var(--dim-gray);
     font-size: $small-font;
     i {
         font-size: 12px;
@@ -44,7 +44,7 @@
                 .search-count {
                     float: right;
                     padding: 5px 0 2px;
-                    color: #a8a8a8;
+                    color: var(--dim-gray);
                     max-width: 65px;
                     vertical-align: top;
                     display: flex;
@@ -59,7 +59,7 @@
                     .interfaceIcon {
                         float: right;
                         font-size: 22px;
-                        color: var(--light-black);
+                        color: var(--dim-gray);
                     }
                 }
 
@@ -148,7 +148,7 @@ app-search-bar {
 
         form {
             @include placeholder {
-                color: var(--silver);
+                color: var(--dim-gray);
                 font-size: $large-font;
             }
 

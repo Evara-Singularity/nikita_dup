@@ -103,7 +103,7 @@ export class ProductV1Resolver implements Resolve<any> {
       const productRelatedLinkUrl = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?msn=" + productMsnId;
       const productSimilarCategoryUrl = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?moglixPNumber=" + productMsnId;
       const productCategoryBucketUrl = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_BUCKET + "?msn=" + productMsnId;
-      const moglixInsightUrl = `${environment.BASE_URL}/cmsApi/getProductWidget?msn=msn2vor0zhn313`;
+      const moglixInsightUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_WIDGET+"?msn=" + productMsnId;
 
       const reviewRequestBody = { review_type: 'PRODUCT_REVIEW', item_type: 'PRODUCT', item_id: productMsnId, user_id: " " };
 

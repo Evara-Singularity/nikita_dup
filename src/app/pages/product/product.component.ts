@@ -347,6 +347,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     categoryBucketRes: any = null
     similarCategoryRes: any = null 
     moglixInightData: any;
+    showMoglixInsight: boolean=false;
 
     set showLoader(value: boolean)
     {
@@ -590,7 +591,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         // Load secondary APIs data from resolver only when product data is received
                        
                             this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6]);
-                            this.moglixInightData=rawData["product"][7]
+                            if (rawData["product"][7]['status']=true &&rawData["product"][7]['statusCode']==200 && rawData["product"][7]['data']) {
+                                this.showMoglixInsight=true;
+                                this.moglixInightData=rawData["product"][7]['data']
+                            }
                         
                     } else {
                         this.showLoader = false;
@@ -621,6 +625,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             }
         );
     }
+
 
     checkForRfqGetQuote()
     {

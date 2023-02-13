@@ -30,7 +30,7 @@
                 <div class="inner_block inner-block-pseudo">
                     <div class="pinch-zoom element-pseudo"
                         (click)="$event.stopPropagation();sendProductImageClickTracking()"
-                        style="transform-origin: 0% 0%; height: 100%;">
+                        style="transform-origin: 0% 0%;">
                         <ng-container *ngIf="productAllImages && productAllImages[0] && productAllImages[0]['xxlarge']" >
                             <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['xxlarge'] }}"
                                  alt="{{productName}}">

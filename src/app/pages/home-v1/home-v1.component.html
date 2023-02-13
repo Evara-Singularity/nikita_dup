@@ -21,10 +21,14 @@
     <div class="css-banner-component">
         <div class="internalBanner">
             <ng-container *ngIf="this._commonService.isBrowser && this.bannerDataFinal && bannerDataFinal.length>0">
-                <siema-carousel [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
+                <siema-carousel (currentIndex$)="changeBannerIndicator($event)" [defaultImage]="defaultBannerImage" [imagePath]="imagePathBanner" [options]="options"
                     [items]="bannerDataFinal">
                 </siema-carousel>
             </ng-container>
+        </div>
+        <div class="indicator-container"  >
+            <!-- class="active" -->
+            <span id="btn1" *ngFor="let indicatorItem of bannerDataFinal; index as i;" [ngClass]="{'active': i == (mainBannerIndicator)}" ></span>
         </div>
     </div>
 

@@ -35,7 +35,7 @@
         }
         .green-promo-code-min {
             font-size: x-small;
-            color: rgb(136, 133, 133);
+            color: var(--dim-gray);
         }
         &.coupon-list-text{
             width: 90%;
@@ -93,7 +93,7 @@
     small {
         font-size: $medium-font;
         display: block;
-        color: var(--gray-web);
+        color: var(--dim-gray);
     }
     p {
         font-size: $small-font;

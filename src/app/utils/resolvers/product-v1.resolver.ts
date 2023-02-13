@@ -54,6 +54,7 @@ export class ProductV1Resolver implements Resolve<any> {
     const PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_KEY: any = makeStateKey<{}>("PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK");
     const PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_KEY: any = makeStateKey<{}>("PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY");
     const PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY: any = makeStateKey<{}>("PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET");
+    const MOGLIX_INSIGHT_KEY = makeStateKey<object>('moglix-insight');
 
     if (
       this.transferState.hasKey(PRODUCT_KEY) &&
@@ -62,7 +63,8 @@ export class ProductV1Resolver implements Resolve<any> {
       this.transferState.hasKey(PRODUCT_Q_AND_A_KEY) &&
       this.transferState.hasKey(PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_KEY) &&
       this.transferState.hasKey(PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_KEY) &&
-      this.transferState.hasKey(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY)
+      this.transferState.hasKey(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY)&&
+      this.transferState.hasKey(MOGLIX_INSIGHT_KEY)
     ) {
       const PRODUCT_KEY_OBJ = this.transferState.get<{}>(PRODUCT_KEY, null);
       const PRODUCT_REVIEW_OBJ = this.transferState.get<{}>(PRODUCT_REVIEW_KEY, null);
@@ -71,6 +73,7 @@ export class ProductV1Resolver implements Resolve<any> {
       const PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_OBJ = this.transferState.get<{}>(PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_KEY, null);
       const PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_OBJ = this.transferState.get<{}>(PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_KEY, null);
       const PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_OBJ = this.transferState.get<{}>(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY, null);
+      const MOGLIX_INSIGHT_DATA = this.transferState.get<object>(MOGLIX_INSIGHT_KEY, {});
 
       this.transferState.remove(PRODUCT_KEY);
       this.transferState.remove(PRODUCT_REVIEW_KEY);
@@ -79,6 +82,7 @@ export class ProductV1Resolver implements Resolve<any> {
       this.transferState.remove(PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_KEY);
       this.transferState.remove(PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_KEY);
       this.transferState.remove(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY);
+      this.transferState.remove(MOGLIX_INSIGHT_KEY);
 
       // this.loaderService.setLoaderState(false);
       return of([
@@ -88,7 +92,8 @@ export class ProductV1Resolver implements Resolve<any> {
         PRODUCT_Q_AND_A_OBJ,
         PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_OBJ,
         PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_OBJ,
-        PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_OBJ
+        PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_OBJ,
+        MOGLIX_INSIGHT_DATA
       ]);
     } else {
       const productUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_INFO + `?productId=${productMsnId}&fetchGroup=true`;
@@ -98,6 +103,7 @@ export class ProductV1Resolver implements Resolve<any> {
       const productRelatedLinkUrl = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?msn=" + productMsnId;
       const productSimilarCategoryUrl = environment.BASE_URL + ENDPOINTS.SIMILAR_CATEGORY + "?moglixPNumber=" + productMsnId;
       const productCategoryBucketUrl = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_BUCKET + "?msn=" + productMsnId;
+      const moglixInsightUrl = `${environment.BASE_URL}/cmsApi/getProductWidget?msn=msn2vor0zhn313`;
 
       const reviewRequestBody = { review_type: 'PRODUCT_REVIEW', item_type: 'PRODUCT', item_id: productMsnId, user_id: " " };
 
@@ -186,6 +192,15 @@ export class ProductV1Resolver implements Resolve<any> {
           return of(null);
         }));
 
+        const moglixInsightResponseObj = this.http.get(moglixInsightUrl).pipe(share(),
+        map(res => {
+          const logInfo = this._commonService.getLoggerObj(moglixInsightUrl, 'GET', startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        }));
+
       const apiList = [
         productResponseObj,
         ProductReviewsResponseObj,
@@ -193,7 +208,8 @@ export class ProductV1Resolver implements Resolve<any> {
         productQuesAnsResponseObj,
         productRelatedLinkResponseObj,
         productSimilarCategoryResponseObj,
-        productCategoryBucketResponseObj
+        productCategoryBucketResponseObj,
+        moglixInsightResponseObj
       ];
 
       return forkJoin(apiList).pipe(
@@ -212,6 +228,7 @@ export class ProductV1Resolver implements Resolve<any> {
             this.transferState.set(PRODUCT_FOOTER_ACCORDIAN_DATA_RELATED_LINK_KEY, result[4]);
             this.transferState.set(PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_KEY, result[5]);
             this.transferState.set(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY, result[6]);
+            this.transferState.set(MOGLIX_INSIGHT_KEY, result[7]);
           }
           // this.loaderService.setLoaderState(false);
         })

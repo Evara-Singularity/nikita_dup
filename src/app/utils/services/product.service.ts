@@ -1074,9 +1074,6 @@ export class ProductService {
         return this._dataService.callRestful("GET",URL);
     }
 
-    getMoglixInsight(){
-          const URL="https://cmsapi.moglix.com/cmsapi/report/get-product-widgets?msn=msn2vor0zhn313"
-        return this._dataService.callRestful("GET",URL);
-    }
+
 
 }

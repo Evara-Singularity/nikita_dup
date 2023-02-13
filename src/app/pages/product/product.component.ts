@@ -303,6 +303,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     quickOrderInstance = null;
     @ViewChild("quickOrder", { read: ViewContainerRef })
     quickOrderContainerRef: ViewContainerRef;
+     // ondemad loaded components offer section
+     moglixInsightInstance = null;
+     @ViewChild("moglixInsightSection", { read: ViewContainerRef })
+     moglixInsightContainerRef: ViewContainerRef;
 
     iOptions: any = null;
     isAcceptLanguage:boolean = false;
@@ -342,6 +346,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     relatedLinkRes: any = null
     categoryBucketRes: any = null
     similarCategoryRes: any = null 
+    moglixInightData: any;
 
     set showLoader(value: boolean)
     {
@@ -561,7 +566,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.route.data.subscribe(
             (rawData) =>
             {
-                // console.log(rawData["product"]);
+                console.log(rawData["product"]);
                 if (!rawData["product"]["error"] && rawData["product"][0]["active"]==true) {
                     if (
                         rawData["product"][0]["productBO"] &&
@@ -585,6 +590,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         // Load secondary APIs data from resolver only when product data is received
                        
                             this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6]);
+                            this.moglixInightData=rawData["product"][7]
                         
                     } else {
                         this.showLoader = false;
@@ -1149,6 +1155,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if (this.productInfo) {
             this.productInfoPopupInstance = null;
             this.productInfoPopupContainerRef.remove();
+        }
+        if (this.moglixInsightInstance) {
+            this.moglixInsightInstance = null;
+            if (this.moglixInsightContainerRef) {
+                this.moglixInsightContainerRef.remove();
+            }
         }
     }
 
@@ -2631,6 +2643,23 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 this.promoCodePopUpOpen(data);
             });
         }else{
+
+        }
+    }
+
+    async onVisiblemoglixInsight() {
+        if (1) {
+            const { MoglixInsightPdpComponent } = await import(
+                "./../../components/moglix-insight-pdp/moglix-insight-pdp.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(MoglixInsightPdpComponent);
+            this.moglixInsightInstance = this.moglixInsightContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+
+            this.moglixInsightInstance.instance["data"] = this.moglixInightData;
 
         }
     }

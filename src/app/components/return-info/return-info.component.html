@@ -3,18 +3,18 @@
         <div class="return-policies">
             <div class="top-header-bottom-menu">
                 <h3>Return & Warranty Policy</h3>
-                <i class="icon-circle-delete"></i>
+                <i class="icon-circle-delete" (click)='hide()'></i>
             </div>
             <div class="return-tbl">
                 <div class="tblflx return-tbl-head">
                     <div class="flxinner reason">
-                        <p>Reason for Return</p>
+                        <p>Reason</p>
                     </div>
                     <div class="flxinner refund-prod">
-                        <p>Return Periods</p>
+                        <p>Periods</p>
                     </div>
                     <div class="flxinner return-policy">
-                        <p>Return Policy</p>
+                        <p>Policy</p>
                     </div>
                 </div>
                 <div class="tblflx return-tbl-body">
@@ -50,7 +50,7 @@
                         <p>Full refund & replacement</p>
                     </div>
                 </div>
-                <div class="tblflx return-tbl-body">
+                <div class="tblflx return-tbl-body" *ngIf='!isBrandMsn'>
                     <div class="flxinner">
                         <p>Defective product</p>
                     </div>
@@ -62,12 +62,12 @@
                     </div>
                 </div>
             </div>
-            <div class="warranty-policy">
+            <div class="warranty-policy" *ngIf='isBrandMsn'>
                 <h4>Customer Warranty Policy</h4>
                 <p>The warranty is at the discretion of brand. On-site and off-site warranty shall be confirmed by brand only.</p>
                 <p>In case the product is received in Defective/Missing condition, the customer needs to connect the brand.</p>
             </div>
-            <div class="read-full-cta">
+            <div class="read-full-cta" (click)='navigateToFAQ$.emit()'>
                 <button>Read Full Return Policy<i class="icon-arrow-right-s-line"></i></button>
             </div>
         </div>

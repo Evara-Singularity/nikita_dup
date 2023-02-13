@@ -66,7 +66,7 @@ export const product = {
     payments:"Payments",
     days_365:"365 Days",
     help_desk:"Help Desk",
-    upto_7days:"Upto 7 Days",
+    upto_7days:"Upto ___number___ Days",
     returnable:"Returnable",
     wrong:"Wrong",
     product:"Product",
@@ -123,5 +123,6 @@ export const product = {
     show_less: 'SHOW LESS',
     of:'/',
     emis_availaible:'EMIs Available ',
-    brand_store_text:'___brand___ Store'
+    brand_store_text:'___brand___ Store',
+    missing: 'Missing'
 }

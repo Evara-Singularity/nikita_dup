@@ -128,7 +128,15 @@
                 <i class="icon-restart-line"></i>
             </span>
             <span class="tab-img-txt">
-                {{productStaticData.upto_7days}} <br/>{{productStaticData.returnable}}
+                {{productStaticData.upto_7days.replace('___number___', isBrandMsn ? '2' : '7')}} <br/>{{productStaticData.returnable}}
+            </span>
+        </div>
+        <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
+            <span class="tab-img">
+                <i class="icon-restart-line-1"></i>
+            </span>
+            <span class="tab-img-txt">
+                {{productStaticData.missing}} <br />   {{productStaticData.product}}
             </span>
         </div>
         <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
@@ -147,7 +155,7 @@
                 {{productStaticData.damaged}} <br /> {{productStaticData.product}}
             </span>
         </div>
-        <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
+        <div class="pwa-image-tab" *ngIf='!isBrandMsn' (click)="$event.stopPropagation();navigateToFAQ();">
             <span class="tab-img">
                 <i class="icon-restart-line-2"></i>
             </span>

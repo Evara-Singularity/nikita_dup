@@ -125,5 +125,6 @@ export const product = {
     show_less: 'कम दिखाएं',
     of:'/',
     emis_availaible:'उपलब्ध EMIs:',
-    brand_store_text:"___brand___ स्टोर"
+    brand_store_text:"___brand___ स्टोर",
+    missing: 'Missing'
 }  

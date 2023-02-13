@@ -345,6 +345,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     fbtAnalytics: { page: { pageName: string; channel: string; subSection: any; linkPageName: any; linkName: any; loginStatus: string; }; custData: { customerID: string; emailID: string; mobile: string; customerType: any; customerCategory: any; }; order: { productID: string; productCategoryL1: any; productCategoryL2: any; productCategoryL3: any; brand: any; price: number; stockStatus: string; tags: string; }; };
     dealsAnalytics: any;
     bestProductsRes: any;
+    isBrandMsn = false;
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);
@@ -860,6 +861,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.isProductReturnAble = this.rawProductData["returnable"] || false;
         this.productDescripton = this.rawProductData["desciption"];
         this.productBrandDetails = this.rawProductData["brandDetails"];
+        this.isBrandMsn = this.productBrandDetails['brandTag'] == 'Brand' ? true : false;
         this.productCategoryDetails = this.rawProductData["categoryDetails"][0];
         this.productUrl = this.rawProductData["defaultCanonicalUrl"];
         this.mainProductURL = this.rawProductData["productPartDetails"][partNumber]["productLinks"]['default'];
@@ -1505,6 +1507,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 null,
                 this.injector
             );
+            this.returnInfoInstance.instance['isBrandMsn'] = this.isBrandMsn;
             this.returnInfoInstance.instance['show'] = true;
             (
                 this.returnInfoInstance.instance["removed"] as EventEmitter<boolean>
@@ -1512,6 +1515,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             {
                 this.returnInfoInstance = null;
                 this.returnInfoContainerRef.detach();
+            });
+            (
+                this.returnInfoInstance.instance["navigateToFAQ$"] as EventEmitter<boolean>
+            ).subscribe((status) =>
+            {
+                this.navigateToFAQ();
             });
         } else {
             //toggle side menu

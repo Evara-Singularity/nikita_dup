@@ -11,7 +11,9 @@ import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 export class ReturnInfoComponent implements OnInit {
 
   @Input() show: boolean = true;
+  @Input() isBrandMsn: boolean;
   @Output() removed: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() navigateToFAQ$: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   ngOnInit(): void {
     // console.log(this.shareFbUrl);

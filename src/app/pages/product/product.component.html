@@ -33,9 +33,10 @@
     </div>
     
     <!-- //moglix insight -->
-    <!-- <moglix-insight-pdp></moglix-insight-pdp> -->
-    <ng-container #moglixInsightSection></ng-container>
-
+    <div data-observeVisibility [debounceTime]="100" (visible)="onVisiblemoglixInsight()">
+        <ng-container #moglixInsightSection></ng-container>
+    </div>
+    
     <!-- product benifits and policy -->
     <product-benefits [isProductReturnAble]="isProductReturnAble" [productOutOfStock]="productOutOfStock" (navigateToFAQ$)="navigateToFAQ()"></product-benefits>
     

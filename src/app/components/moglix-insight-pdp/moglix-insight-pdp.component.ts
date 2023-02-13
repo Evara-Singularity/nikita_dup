@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '@app/utils/services/product.service';
 
 @Component({
@@ -12,16 +11,9 @@ export class MoglixInsightPdpComponent implements OnInit {
   @Input() data: any;
   constructor(
     public productService: ProductService,
-    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-  }
-
-  getMoglixInsightData(){
-    // this.productService.getMoglixInsight().subscribe((res)=>{
-    //   console.log("nikita",res)
-    // })
   }
 }
 
@@ -29,7 +21,6 @@ export class MoglixInsightPdpComponent implements OnInit {
   declarations: [MoglixInsightPdpComponent],
   imports: [
     CommonModule,
-    // MoglixInsightPdpRoutingModule
   ],
   exports:[MoglixInsightPdpComponent]
   

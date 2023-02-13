@@ -2648,7 +2648,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
     async onVisiblemoglixInsight() {
-        if (1) {
+        if (!this.moglixInsightInstance) {
             const { MoglixInsightPdpComponent } = await import(
                 "./../../components/moglix-insight-pdp/moglix-insight-pdp.component"
             );

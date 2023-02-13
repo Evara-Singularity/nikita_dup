@@ -7,3 +7,51 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.top-header-bottom-menu{
+    h3{
+        padding: 15px 0px;
+        font-size: $extra-large-1-font;
+        
+    }
+    i{
+        top: 15px;
+    }
+}
+.return-tbl{
+    .tblflx{
+        display: flex;
+        justify-content: space-between;
+        // border-bottom: 1px solid var(--ghost-white);
+        border-bottom: 1px solid #e2e2e2;
+        .flxinner{
+            width: 33%;
+            padding: 10px;
+        }
+        &.return-tbl-head{
+            background-color: var(--cultured);
+        }
+    }
+}
+.warranty-policy{
+    padding: 10px;
+    h4{
+        font-size: $large-font;
+    }
+}
+
+.read-full-cta{
+    button{
+        width: 100%;
+        background-color: #e2e2e2;
+        height: 40px;
+        border-radius: 8px;
+        border: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        i{
+            font-size: 20px;
+        }
+    }
+}

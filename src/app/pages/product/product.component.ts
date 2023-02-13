@@ -99,7 +99,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     productOutOfStock: boolean = false;
     priceQuantityCountry: any;
     productAttributes: any = null;
-    productMrp: number;
+    productMrp: number = 0;
     priceWithoutTax: number;
     productDiscount: number = 0;
     taxPercentage: number;
@@ -295,10 +295,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     pdpAccordianInstance = null;
     @ViewChild("pdpAccordian", { read: ViewContainerRef })
     pdpAccordianContainerRef: ViewContainerRef;
-    // ondemad loaded component for product popular deals
-    popularDealsInstance = null;
-    @ViewChild("popularDeals", { read: ViewContainerRef })
-    popularDealsContainerRef: ViewContainerRef;
     // ondemad loaded components for quick order popUp
     quickOrderInstance = null;
     @ViewChild("quickOrder", { read: ViewContainerRef })
@@ -342,7 +338,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     relatedLinkRes: any = null
     categoryBucketRes: any = null
     similarCategoryRes: any = null 
-
+    fbtAnalytics: { page: { pageName: string; channel: string; subSection: any; linkPageName: any; linkName: any; loginStatus: string; }; custData: { customerID: string; emailID: string; mobile: string; customerType: any; customerCategory: any; }; order: { productID: string; productCategoryL1: any; productCategoryL2: any; productCategoryL3: any; brand: any; price: number; stockStatus: string; tags: string; }; };
+    dealsAnalytics: any;
+    bestProductsRes: any;
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);
@@ -441,23 +439,23 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
-            this.getProductTag()
-            this.onVisibleOffer();
+            // this.getProductTag()
+            // this.onVisibleOffer();
         }
         
     }
 
     getProductTag(){
         // this.globalLoader.setLoaderState(true);
-        this.productService.getProductTag(this.msn).subscribe(response => {
-            if (response['statusCode'] == 200 && response['data'] != null) {
-                this.productTags=response['data']
-                this.getRefinedProductTags();
-            } else {
-                this.productTags=null;
-            }
-            // this.globalLoader.setLoaderState(false)
-        })
+        // this.productService.getProductTag(this.msn).subscribe(response => {
+        //     if (response['statusCode'] == 200 && response['data'] != null) {
+        //         this.productTags=response['data']
+        //         this.getRefinedProductTags();
+        //     } else {
+        //         this.productTags=null;
+        //     }
+        //     // this.globalLoader.setLoaderState(false)
+        // })
 
     }
 
@@ -584,7 +582,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         // console.log('originalProductBO log', this.originalProductBO);
                         // Load secondary APIs data from resolver only when product data is received
                        
-                            this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6]);
+                            this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6], rawData['product'][7], rawData['product'][8]);
                         
                     } else {
                         this.showLoader = false;
@@ -638,7 +636,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
-    getSecondaryApiData(reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes) {
+    getSecondaryApiData(reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes, productTagRes, bestproductsRes) {
         // console.log({
         //     reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes
         // });
@@ -657,6 +655,18 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if (questAnsApiData && questAnsApiData["data"]) {
             this.setQuestionsAnswerData(questAnsApiData);
             this.setQuestionAnswerSchema();
+        }
+
+        if (productTagRes['statusCode'] == 200 && productTagRes['data'] != null) {
+            this.productTags = productTagRes['data']
+            this.getRefinedProductTags();
+        } else {
+            this.productTags = null;
+        }
+
+        if(bestproductsRes && bestproductsRes['totalCount'] > 0) {
+            this.onVisiblePopularDeals();
+            this.bestProductsRes = bestproductsRes;
         }
         
         this.relatedLinkRes = relatedLinkRes;
@@ -1079,12 +1089,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.recentProductsInstance = null;
             this.recentProductsContainerRef.remove();
             this.onVisibleRecentProduct(null);
-        }
-
-        if (this.popularDealsInstance) {
-            this.popularDealsInstance = null;
-            this.popularDealsContainerRef.remove();
-            this.onVisiblePopularDeals(null);
         }
   
         if (this.rfqFormInstance) {
@@ -1625,6 +1629,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             );
             if (validFbts.length > 0) {
                 this.productUtil.changeFBTSource(productResponse, validFbts);
+                this.getFbtIntance(); 
                 this.fbtFlag = true;
             } else {
                 this.fbtFlag = false;
@@ -2077,20 +2082,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
 
-    async onVisiblePopularDeals(htmlElement) {
-        if (!this.popularDealsInstance && !this.productOutOfStock) {
-            const { ProductPopularDealsComponent } = await import(
-                "./../../components/product-popular-deals/product-popular-deals.component"
-            );
-            const factory = this.cfr.resolveComponentFactory(ProductPopularDealsComponent);
-            this.popularDealsInstance =
-                this.popularDealsContainerRef.createComponent(
-                    factory,
-                    null,
-                    this.injector
-                );
-            this.popularDealsInstance.instance["categoryCode"] = this.productCategoryDetails["categoryCode"];
-
+    async onVisiblePopularDeals() {
             const custData = this.commonService.custDataTracking;
             const orderData = this.orderTracking;
             const TAXONS = this.taxons;
@@ -2102,12 +2094,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 linkName: null,
                 loginStatus: this.commonService.loginStatusTracking,
             };
-            this.popularDealsInstance.instance["analytics"] = {
+            this.dealsAnalytics = {
                 page: page,
                 custData: custData,
                 order: orderData,
             };
-        }
     }
 
     readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {
@@ -2207,6 +2198,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     async onVisibleSponsered(htmlElement)
     {
         if (!this.sponseredProductsInstance) {
+            alert('I am in')
             const { ProductSponsoredListComponent } = await import(
                 "./../../components/product-sponsored-list/product-sponsored-list.component"
             );
@@ -2759,21 +2751,21 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
-    async getFbtIntance(htmlElement)
+    getFbtIntance()
     {
-        if (!this.fbtComponentInstance) {
-            const { FbtComponent } = await import(
-                "./../../components/fbt/fbt.component"
-            );
-            const factory = this.cfr.resolveComponentFactory(FbtComponent);
-            this.fbtComponentInstance = this.fbtComponentContainerRef.createComponent(
-                factory,
-                null,
-                this.injector
-            );
+        // if (!this.fbtComponentInstance) {
+            // const { FbtComponent } = await import(
+            //     "./../../components/fbt/fbt.component"
+            // );
+            // const factory = this.cfr.resolveComponentFactory(FbtComponent);
+            // this.fbtComponentInstance = this.fbtComponentContainerRef.createComponent(
+            //     factory,
+            //     null,
+            //     this.injector
+            // );
             //this.fbtComponentInstance.instance['addToCartFromModal'] = this.addToCartFromModal.bind(this);
-            this.fbtComponentInstance.instance["isModal"] = false;
-            this.fbtComponentInstance.instance["originalProductBO"] = this.originalProductBO;
+            // this.fbtComponentInstance.instance["isModal"] = false;
+            // this.fbtComponentInstance.instance["originalProductBO"] = this.originalProductBO;
             const TAXONS = this.taxons;
             let page = {
                 pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
@@ -2783,12 +2775,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 linkName: null,
                 loginStatus: this.commonService.loginStatusTracking,
             };
-            this.fbtComponentInstance.instance["analytics"] = {
+            this.fbtAnalytics = {
                 page: page,
                 custData: this.commonService.custDataTracking,
                 order: this.orderTracking,
             };
-        }
+        // }
     }
 
     async showAddToCartToast()

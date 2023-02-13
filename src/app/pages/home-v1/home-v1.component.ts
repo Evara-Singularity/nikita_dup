@@ -85,7 +85,7 @@ export class HomeV1Component implements OnInit {
 
   //metadata var
   oganizationSchema: any;
-
+  mainBannerIndicator: number = 0;
 
 
   constructor(
@@ -429,6 +429,10 @@ export class HomeV1Component implements OnInit {
 		)
 		this._renderer2.appendChild(this._document.head, this.oganizationSchema);
 	}
+
+  changeBannerIndicator(index) {
+    this.mainBannerIndicator = index;
+  }
   
 
 }

@@ -1,7 +1,7 @@
 <div class="close-popup">
     <div class="bottom-options" [attr.id]="isRFQPopUp ? 'bottom-options-rfq' : ''" [class.bottom-options-rfq]="isRFQPopUp">
         <div  class="overlay" [class.overlay1]="isLoginPopup" (click)="updateParent({popupClose : true})"></div>
-        <div class="content-box" [class.otp-popup-height]="containerHeight">
+        <div class="content-box" [class.otp-popup-height]="containerHeight" [class.otp-popup-height-v2]="containerHeight == 'rfq'" >
             <ng-content select="[content]"></ng-content>
         </div>
     </div>

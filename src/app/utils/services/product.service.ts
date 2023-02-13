@@ -862,6 +862,53 @@ export class ProductService {
         return productEntity;
     }
 
+    myRfqToProductEntity(product: any, overrideProductB0 = null) {
+        const productItemLevel = product['itemData'][0];
+
+        const productReturn = {
+            moglixPartNumber: productItemLevel['prodReference'],
+            // moglixProductNo?: null;
+            mrp: productItemLevel['price'],
+            salesPrice: productItemLevel['price'],
+            priceWithoutTax: productItemLevel['price'],
+            productName: productItemLevel['productName'],
+            variantName: productItemLevel['productName'],
+            // productMinimmumQuantity?: number;
+            productUrl: productItemLevel['productURL'],
+            shortDesc: null,
+            brandId: null,
+            brandName: productItemLevel['brand'],
+            quantityAvailable: productItemLevel['quantity'],
+            discount: null,
+            // rating?: null;
+            // categoryCodes?: null;
+            // taxonomy?: null;
+            mainImageLink: productItemLevel['imageUrl'],
+            mainImageThumnailLink: productItemLevel['imageUrl'],
+            mainImageMediumLink: productItemLevel['imageUrl'],
+            // productTags?: any ;
+            filterableAttributes: null,
+            itemInPack: null,
+            ratingCount: null,
+            reviewCount: null,
+            avgRating: null,
+            // uclid?: string;
+            // keyFeatures?: string[];
+            // internalProduct?: boolean; // used in case of sponsered Ad
+            // outOfStock?: boolean;
+            // description?:string;
+            // short_description?: null;
+            homePageRFQ: true,
+            HomePageRFQstatus: {
+                status: product['statusText'],
+                qty: productItemLevel['quantity'],
+                createdOn: product['createdDate'],
+                rfqId:product['id']
+            }
+        } as ProductsEntity;
+        return productReturn;
+    }
+
     productEntityFromProductBO(productBO, overrideProductB0 = null) {
         const partNumber = productBO['partNumber'] || productBO['defaultPartNumber'];
         const isProductPriceValid = productBO['productPartDetails'][partNumber]['productPriceQuantity'] != null;
@@ -1020,11 +1067,6 @@ export class ProductService {
         };
 
         return productEntity;
-    }
-
-    getProductTag(msn) {
-        const URL=CONSTANTS.NEW_MOGLIX_API+ENDPOINTS.PRODUCT_TAGS + msn
-        return this._dataService.callRestful("GET",URL);
     }
 
 }

@@ -1,0 +1,15 @@
+.open-app-toast{
+    position: fixed;
+    bottom: 100px;
+    z-index: 9;
+    right: 0; 
+    span{
+        background: #3C3C3C;
+        color: #fff;
+        padding: 7px 12px 7px 15px;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 14px 0 0 14px;
+        box-shadow: 0 2px 12px rgba(0,0,0,.3);
+    }
+}

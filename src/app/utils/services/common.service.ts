@@ -92,6 +92,7 @@ export class CommonService
     ;
     public previousUrl: string = "/";
     public currentUrl: string = null;
+    public enableAppPromoInHeader = false;
     
     goldMemberPopupOpened = new Subject();
     public defaultLocaleValue = localization_en.product;
@@ -1593,6 +1594,24 @@ export class CommonService
 
     getGoldMembershipPopup(){
         return this.goldMemberPopupOpened.asObservable();
+    }
+
+    getPurchaseList(data) {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST;
+        return this._dataService.callRestful("GET", url, { params: data }).pipe(
+            map((res) => {
+                if (res["status"] && res["statusCode"] == 200) {
+                    return res["data"];
+                } else {
+                    return [];
+                }
+            })
+        );
+    }
+
+    getRfqList(obj) {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RFQ_LIST;
+        return this._dataService.callRestful("POST", url, { body: obj });
     }
 
 }

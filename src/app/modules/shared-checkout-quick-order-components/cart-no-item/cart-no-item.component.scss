@@ -15,7 +15,7 @@
             .noitems-txt{
                 font-size: $extra-large-font;
                 font-weight: $font-bold;
-                color: var(--light-black);
+                color: var(--dim-gray);
                 margin-top: 15px;
             }
             button{
@@ -24,7 +24,7 @@
             }
             .small-txt{
                 font-size: $small-font;
-                color: var(--light-black);
+                color: var(--dim-gray);
                 margin-top: 5px;
             }
         }

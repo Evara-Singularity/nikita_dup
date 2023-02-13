@@ -104,5 +104,6 @@ export class RecentlyViewedCarouselComponent {
 		ProductCardVerticalContainerModule,
 	],
 	providers: [],
+	exports:[RecentlyViewedCarouselComponent]
 })
 export class RecentlyViewedCarouselModule { }

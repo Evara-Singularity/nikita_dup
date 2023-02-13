@@ -3,14 +3,14 @@
 }
 
 .recentSearchProduct {
-    color: #333333 !important;
+    color: var(--onyx-black) !important;
     line-height: 24px;
 }
 
 .interfaceIcon {
     float: right;
     font-size: 22px;
-    color: var(--light-black);
+    color: var(--dim-gray);
 }
 
 .recentSearchWrapper {
@@ -27,7 +27,7 @@
     margin: 0px 15px 0 2px;
     font-size: 6px;
     font-weight: bold;
-    background: var(--light-black);
+    background: var(--dim-gray);
     color: var(--white);
     border-radius: 50%;
     padding: 4px;
@@ -45,4 +45,9 @@
 
 .normal-text {
     text-transform: unset !important;
+}
+.search_heading{
+    .f-left{
+        color: var(--dim-gray);
+    }
 }

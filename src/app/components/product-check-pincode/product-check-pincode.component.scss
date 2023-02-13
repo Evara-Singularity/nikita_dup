@@ -34,7 +34,9 @@
         .pwa-search-input {
           display: flex;
           position: relative;
-
+          @include placeholder{
+            color: var(--dim-gray);
+          }
           input {
             -webkit-box-flex: 1;
             -ms-flex: 1 1 auto;
@@ -69,7 +71,7 @@
 
         .availability-text {
           font-size: $small-font;
-          color: var(--gray-web);
+          color: var(--dim-gray);
           margin-top: 4px;
           padding-bottom: 5px;
         }
@@ -99,7 +101,7 @@
 
       span {
         font-size: $small-font;
-        color: var(--gray-web);
+        color: var(--dim-gray);
       }
     }
   }

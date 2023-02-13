@@ -6,13 +6,15 @@ import { routing } from "./businessOrder.routing";
 import { DashboardService } from "../dashboard.service";
 import { BusinessOrderService } from "./businessOrder.service";
 import { NgxPaginationModule } from 'ngx-pagination';
+import { AppBannerModule } from '@app/components/app-banner/app-banner.module';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     routing,
-    NgxPaginationModule
+    NgxPaginationModule,
+    AppBannerModule
   ],
   declarations: [
     BussinessOrderComponent,

@@ -1,0 +1,163 @@
+// @import "../../../scss/components/product-cards";
+@import '../../../scss/variables';
+@import '../../../scss/components/rating';
+@import '../../../scss/components/buttons';
+
+      .product-vertical-grid-card{
+        background:var(--white);
+        border:1px solid var(--ghost-white);
+        border-radius:$border-radius-8;
+        padding: 10px;
+        position: relative;
+        width:152px;
+        margin:10px 0px 0px 15px;
+        min-height: 310px;
+        .product-card-upper {
+            text-align: center;
+            position: relative;
+            .pwa-image{
+                img{
+                    width:115px
+                }
+          }
+        }
+        .product-card-lower {
+            .product-card-lower-inner{
+                min-height: 125px;
+            }
+            .rfq-no-section{
+                p{
+                    font-size: 10px;
+                    color: #6f6f6f;
+                    font-weight: bold;
+                    margin-top:5px;
+                    margin-bottom: 5px;
+                }
+            }
+            .name {
+                -webkit-line-clamp: 2;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                height: 2.8em;
+                margin-bottom: 5px;
+                line-height: 1.4em;
+                font-size: $large-font;
+                color: var(--onyx-black);
+            }
+            .brand {
+                margin-top: 4px;
+                margin-bottom: 5px;
+                text-align: left;
+                font-size: $small-font;
+                color: var(--gray-web);
+            }
+            .prod-price-row{
+                margin-bottom:4px;
+                .prod-mrp{
+                    color: var(--onyx-black);
+                    text-decoration: line-through;
+                    opacity: .5;
+                    margin-right:5px;
+                }
+                .prod-discount{
+                    font-weight:$font-bold;
+                    color:var(--slimy-green);
+                }
+                .prod-selling-price{
+                    margin-top:10px;
+                    font-size:16px;
+                    color: var(--onyx-black);
+                    font-weight: $font-bold;
+                    display: flex;
+                    align-items: center;
+                    .selling-price{
+                        margin-right: 5px;
+                    }
+                    .qty-amount{
+                        font-size: 12px;
+                        font-weight: $font-normal;
+                    }
+                }
+                .out-of-stock-text{
+                    color: var(--gray-web);
+                    margin-top: 10px;
+                }
+                .out-of-stock-price{
+                    font-size: $large-font;
+                    font-weight: $font-bold;
+                    color: #6f6f6f;
+                    margin-top: 4px;
+                    display: flex;
+                    align-items: center;
+                    .oos-price{
+                        margin-right: 5px;
+                    }
+                    .oos-qty-amount{
+                        font-size: 12px;
+                        font-weight: $font-normal;
+                    }
+                }
+            }
+        }
+        .card-btn-row{
+            display:flex;
+            margin-top: 10px;
+            button{
+                flex-basis:calc(100% - 40px);
+                padding: 0;
+            }
+        }
+      }
+       
+
+      .status-section{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-top: 1px solid var(--ghost-white);
+        padding-top: 10px;
+        .status-inner-container{
+            padding: 0 10px 10px;
+            position: relative;
+            .text-container{
+                padding-left: 20px;
+                .status{
+                    font-weight: bold;
+                    font-size: 12px;
+                    display: block;
+                }
+                .place-date{
+                    font-size: 10px;
+                    color: #6f6f6f;
+                }
+            }
+           
+            &:before{
+                content: "";
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: var(--spanish-gray);
+                top: 12px;
+            }
+            &.green{
+                &::before{
+                    background-color: #309615;
+                }
+            }
+            &.red{
+                &::before{
+                    background-color: var(--primary);
+                }
+            }
+            &.orange{
+                &::before{
+                    background-color: #F65E0E;
+                }
+            }
+        }
+    }

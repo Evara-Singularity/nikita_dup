@@ -28,7 +28,7 @@ button.btn[disabled] {
             font-size: $medium-font;
             font-weight: 400;
             text-transform: capitalize;
-            color: #3030308c;
+            color: var(--dim-gray);
             padding-bottom: 4px;
             align-items: center;
             span {

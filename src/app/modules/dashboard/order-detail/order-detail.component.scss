@@ -566,11 +566,19 @@
   margin: 15px;
 
   .need-help-strip-btm {
-    background-color: var(--cultured);
-    padding: 5px;
+    padding-top: 8px;
+    margin-top: -8px;
+    background-color: var(--white);
+    border-radius: 0px 0px 8px 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    p{
+      background-color: var(--cultured);
+    padding: 5px 10px;
     font-size: $small-font;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
+    }
   }
 }
 
@@ -1120,4 +1128,29 @@
 }
 .ordersumBox{
   margin-bottom: 5px !important;
+}
+.bg-white-btm-cta{
+  background-color: var(--white) !important;
+  border: none;
+  box-shadow: none;
+  padding: 15px !important;
+  button{
+    width: 100%;
+    font-size: $large-font;
+  }
+}
+
+::ng-deep{
+  .moglix-benefits{
+    background-color: var(--ghost-white) !important;
+    .pdp-section-header{
+      background-color: var(--ghost-white) !important;
+    }
+    .pwa-tabs-container{
+      .pwa-image-tab{
+        background-color: var(--white) !important;
+        
+      }
+    }
+  }
 }

@@ -118,8 +118,9 @@
 
             <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span>
         </div>
-        <div class="need-help-strip-btm" *ngIf="detail && detail.dates.delivered.flag">
-            <p *ngIf="detail.dates.delivered.flag && showReturn">Return Policy valid till {{returnEndDate}}</p>
+
+        <div class="need-help-strip-btm" >
+            <p >Return Policy valid till {{returnEndDate}}</p>
         </div>
     </div>
 
@@ -503,8 +504,8 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                 [disabled]="!returnForm.controls['quantity'].valid || !returnForm.controls['reason'].valid || !returnForm.controls['requestType'].valid || this.itemImages.length == 0"
                                 (click)="returnProduct(returnForm.value, returnForm.valid)">NEXT</button>
                         </div>
-                        <div class="fixed-bottom-cta" *ngIf='showError'>
-                            <button class='primary-full-btn' (click)='outData({hide: true})'>VIEW ORDER</button>
+                        <div class="fixed-bottom-cta bg-white-btm-cta" *ngIf='showError'>
+                            <button class='btn tertiary-outline-cta' (click)='outData({hide: true})'>VIEW ORDER</button>
                         </div>
                     </div>
                     <!-- Bank Details for Return -->

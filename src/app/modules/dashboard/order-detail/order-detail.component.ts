@@ -246,7 +246,7 @@ export class OrderDetailComponent implements OnInit {
           this.detail = item;
           this._OrderService.fetchItemDetails(item.product_msn).subscribe(resp => {
             if(resp && resp['status']) {
-              this.isBrandMsn = resp['productBO']['brandDetails']['brandTag'] == 'Brand' ? true : false;
+              this.isBrandMsn = resp['productBO']['brandDetails']['brandTag'] == 'Brand' ? true : true;
             }
           })
           if (this.detail && this.detail.dates.delivered.date) {

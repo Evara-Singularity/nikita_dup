@@ -5,20 +5,11 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toast.component';
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
-import { SwipeDirectiveModule } from '@app/utils/directives/swipe.directive';
 import { NgxSiemaService } from 'ngx-siema';
 import { BreadcrumbNavModule } from '../../modules/breadcrumb-nav/breadcrumb-nav.module';
 import { ArrayFilterPipeModule } from '../../utils/pipes/k-array-filter.pipe';
-import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
-import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
-import { ObjectToArrayPipeModule } from '../../utils/pipes/object-to-array.pipe';
-import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
-import { ProductInfoModule } from './../../modules/product-info/product-info.module';
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductComponent } from './product.component';
-import { SliceArrayPipeModule } from '@app/utils/pipes/slice-array.pipe';
-import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/product-oos-similar.module';
-import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 import { PastOrdersModule } from '@app/components/past-orders/past-orders.component';
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
 import ProductDescriptionModule from '@app/components/product-description/product-description.component';
@@ -30,39 +21,43 @@ import { ProductReviewModule } from '@app/components/product-review/product-revi
 import { ProductQaModule } from '@app/components/product-qa/product-qa.component';
 import { FloatingButtonContainerModule } from '@app/modules/ui/floating-button-container/floating-button-container.module';
 import { ProductBenefitsModule } from '@app/components/product-benefits/product-benefits.component';
-import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { ProductGetQuoteModule } from '@app/components/product-get-quote/product-get-quote.component';
 import { ProductGroupingAttributesModule } from '@app/components/product-grouping-attributes/product-grouping-attributes.component';
 import { OosSimilarSectionModule } from '@app/components/oos-similar-section/oos-similar-section.module';
 import { ProductSkeletonsModule } from '@app/components/product-skeletons/product-skeletons.component';
 import ProductAccordiansModule from '@app/components/product-accordians/product-accordians.component';
 import AppInstallWidgetModule from '@app/components/appInstallWidget/appInstallWidget.component';
+import { ProductOffersModule } from '@app/components/product-offers/product-offers.component';
+import FbtComponentModule from '@app/components/fbt/fbt.component';
+import { ProductDealsModule } from '@app/components/product-popular-deals/product-popular-deals.component';
+import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/product-oos-similar.module';
+import { ProductInfoModule } from '@app/modules/product-info/product-info.module';
 
 @NgModule({
   declarations: [ProductComponent],
   imports: [
     ObserveVisibilityDirectiveModule,
     CommonModule,
-    BottomMenuModule,
+    // BottomMenuModule,
     ProductRoutingModule,
     ProductOosSimilarModule,
     BreadcrumbNavModule,
     // pipes
-    ObjectToArrayPipeModule,
-    MathFloorPipeModule,
-    MathCeilPipeModule,
+    // ObjectToArrayPipeModule,
+    // MathFloorPipeModule,
+    // MathCeilPipeModule,
     ReactiveFormsModule,
     // LazyLoadImageModule,
     ArrayFilterPipeModule,
-    YTThumnailPipeModule,
+    // YTThumnailPipeModule,
     WhatsAppToastModule,
     ProductInfoModule,
     EmiPlansModule,
-    SliceArrayPipeModule,
-    NumberDirectiveModule,
+    // SliceArrayPipeModule,
+    // NumberDirectiveModule,
     // Directives
     //ProductCardHorizontalGridViewModule,
-    SwipeDirectiveModule,
+    // SwipeDirectiveModule,
     // IdleUserSearchNudgeModule,
     PastOrdersModule,
     NotFoundModule,
@@ -82,7 +77,10 @@ import AppInstallWidgetModule from '@app/components/appInstallWidget/appInstallW
     SharedProductCarouselModule,
     ProductSkeletonsModule,
     ProductAccordiansModule,
-    AppInstallWidgetModule
+    AppInstallWidgetModule,
+    ProductOffersModule,
+    FbtComponentModule,
+    ProductDealsModule
   ],
   exports: [],
   providers: [NgxSiemaService]

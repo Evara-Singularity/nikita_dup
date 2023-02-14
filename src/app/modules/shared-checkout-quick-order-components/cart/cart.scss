@@ -277,14 +277,14 @@
             .price-mrp{
                 font-weight: bold;
                 font-size: $small-font;
-                color: var(--silver);
+                color: var(--dim-gray);
                 position: relative; 
                 .strike-off-upper{
                     position: relative;
                     .strike-off{
                         height: 1px;
-                        background-color: var(--silver);
-                        top: 5px;
+                        background-color: var(--dim-gray);
+                        top: 6px;
                         position: absolute;
                         left: 0;
                         width: 100%;

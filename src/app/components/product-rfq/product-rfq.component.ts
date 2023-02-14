@@ -93,6 +93,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
             this.setUserDetails();
             this.getBusinessDetail(this.userSession);
         }
+        // console.log('product', this.product);
     }
 
     ngAfterViewInit() { this.addSubscribers(); }

@@ -222,7 +222,6 @@ export class CategoryResolver implements Resolve<any> {
                 return of(err);
             }),
             tap(result => {
-              // console.log(result);
                 if (isPlatformServer(this.platformId)) {
                     this.transferState.set(GET_RELATED_CATEGORY_KEY, result[0]);
                     this.transferState.set(REFRESH_KEY, result[1]);

@@ -1140,7 +1140,7 @@
   }
 }
 
-::ng-deep{
+:host ::ng-deep{
   .moglix-benefits{
     background-color: var(--ghost-white) !important;
     .pdp-section-header{

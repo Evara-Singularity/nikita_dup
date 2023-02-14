@@ -1,9 +1,9 @@
 <div class="thanks-query-container">
-  <div class="heading-txt">
+  <!-- <div class="heading-txt">
     <h2>Thanks, for submitting the query</h2>
     <p>Below is your request summary</p>
-  </div>
-  <div class="card">
+  </div> -->
+  <!-- <div class="card">
     <div class="material-form">
       <div class="outline-input-label">
         <label>
@@ -44,21 +44,48 @@
         </label>
       </div>
     </div>
+  </div> -->
+
+
+  <!-- new design -->
+  <div class="thanks-for-query ">
+    <div class="query-header pad-15">
+      <img src="assets/img/checkbox-circle-fill-m.svg" alt="">
+      <h3 class="pad-0">Thanks, for submitting the query</h3>
+      <p class="mt-5">Below is your request summary</p>
+    </div>
+    <div class="query-body br-8">
+      <div class="query-inner query-inner-upper pad-15">
+        <p class="label">Product Name</p>
+        <h4 class="maintxt">{{ bulkrfqForm["productType"] }}</h4>
+        <div class="query-inner-flx">
+          <div class="flx-child">
+            <p class="label">Qty</p>
+            <h4 class="maintxt">{{ bulkrfqForm["quantity"] }}</h4>
+          </div>
+          <div class="flx-child">
+            <p class="label">Budget</p>
+            <h4 class="maintxt">{{ bulkrfqForm["budget"] }}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="query-inner query-inner-bottom pad-15">
+        <p class="label">GST no.</p>
+        <h4 class="maintxt">{{ gstinForm["gstin"] }}</h4>
+        <p class="label">Email ID</p>
+        <h4 class="maintxt">{{ gstinForm["email"] }}</h4>
+        <p class="label">Product Description</p>
+        <h4 class="maintxt">{{ gstinForm["description"] }}</h4>
+      </div>
+    </div>
   </div>
+
   <h2 style="padding-top: 20px">Similar Items You Can Buy Now</h2>
-  <app-similar-products
-    [partNumber]="'MSN39YR74XXL5Q'"
-    [groupId]="''"
-    [productName]="
+  <app-similar-products [partNumber]="'MSN39YR74XXL5Q'" [groupId]="''" [productName]="
       'Melbon 40 inch Black Full HD Smart Android LED TV with 18 Months Warranty'
-    "
-    [categoryCode]="'250131100'"
-  >
+    " [categoryCode]="'250131100'">
   </app-similar-products>
-  <button
-    (click)="moveToNext(this.stepNameLogin)"
-    class="btn secondry-full-btn"
-  >
+  <button (click)="moveToNext(this.stepNameLogin)" class="btn secondry-full-btn">
     ADD NEW RFQ REQUEST
   </button>
 </div>

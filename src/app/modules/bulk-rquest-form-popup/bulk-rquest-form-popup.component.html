@@ -10,6 +10,34 @@
             </div>
         </div>
 
+        <!-- <div class="thanks-for-query ">
+            <div class="query-header pad-15">
+                <img src="assets/img/checkbox-circle-fill-m.svg" alt="">
+                <h3 class="pad-0">Thanks, for submitting the query</h3>
+                <p class="mt-5">Below is your request summary</p>
+            </div>
+            <div class="query-body br-8">
+                <div class="query-inner query-inner-upper pad-15">
+                    <p class="label">Product Name</p>
+                    <h4 class="maintxt">Motor Pump</h4>
+                    <div class="query-inner-flx">
+                        <div class="flx-child">
+                            <p class="label">Qty</p>
+                            <h4 class="maintxt">2</h4>
+                        </div>
+                        <div class="flx-child">
+                            <p class="label">Budget</p>
+                            <h4 class="maintxt">₹10,000</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="query-inner query-inner-bottom pad-15">
+                    <p class="label">GST no.</p>
+                    <h4 class="maintxt">35AABCS1429B1ZX</h4>
+                </div>
+            </div>
+        </div> -->
+
         <ng-container [ngSwitch]="stepState">
             <ng-container *ngSwitchCase="stepNameLogin">
                 <bulkRfqForm [loginAndValidatePhone]="loginAndValidatePhone" (moveToNext$)="moveToNext($event)"
@@ -32,4 +60,5 @@
             </ng-container>
         </ng-container>
     </div>
+    <h1>sachin</h1>
 </app-pop-up>

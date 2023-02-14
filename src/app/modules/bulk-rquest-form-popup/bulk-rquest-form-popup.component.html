@@ -1,9 +1,10 @@
 <app-pop-up [popUpName]="'bulkRfqPopUp'" class="open" (outData$)="outData($event)" [headerType]="'pop-up-header3'"
     [data]="setHeaderData()">
     <div class="content-popup bulkRFQ" content>
-        <div class="stepper-wrapper">
+        <div class="stepper-wrapper" *ngIf="rfqSubmmisionInProcess !=3">
             <div class="stepper-item active">
-                <div class="step-counter active">1</div>
+                <div class="step-counter active" *ngIf="rfqSubmmisionInProcess == 1">1</div>
+                <img src="assets/img/checkbox-circle-fill-m.svg" alt="" *ngIf="rfqSubmmisionInProcess == 2">
             </div>
             <div class="stepper-item active">
                 <div class="step-counter">2</div>
@@ -60,5 +61,4 @@
             </ng-container>
         </ng-container>
     </div>
-    <h1>sachin</h1>
 </app-pop-up>

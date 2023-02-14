@@ -19,7 +19,7 @@
             "
             class="error-txt"
           >
-            Kindly select a Product
+            Kindly select a product
           </p>
         </label>
       </div>
@@ -30,12 +30,11 @@
         <div class="outline-input-label qty-field">
           <label for="none">
             <list-autocomplete
-              [isAutoCompleteOnPopup]="true"
               class="value-auto-co"
               [control]="bulkrfqForm.get('quantity')"
               [placeholder]="'Select from suggested Qty'"
               [quantity]="PRICE_VALUES"
-              (onSelect)="updateQuantity(bulkrfqForm.get('quantity'))"
+              (onSelect)="updateQuantity(bulkrfqForm)"
             >
             </list-autocomplete>
             <p

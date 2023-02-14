@@ -62,6 +62,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
   bulkRfqFormPhoneno: any;
   isUserExists: boolean = false;
   sourceFlow: string = "login_otp"; // default it should be login
+  rfqSubmmisionInProcess: number = 1;
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -102,7 +103,11 @@ export class BulkRquestFormPopupComponent implements OnInit {
   }
 
   moveToNext(stepName) {
-    if (stepName == this.stepNameConfimation) {
+    if(stepName == this.stepNameRfqForm){
+      this.rfqSubmmisionInProcess = 2;
+    }
+    else if (stepName == this.stepNameConfimation) {
+      this.rfqSubmmisionInProcess = 3;
       this.saveBulkRfq();
     }
     this.stepState = stepName;
@@ -149,10 +154,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
         headerSubText: "Help with the below details to prioritise your query",
       };
     } else if (this.stepState == this.stepNameConfimation) {
-      return {
-        headerText: "Thanks, for submitting the query",
-        headerSubText: "Below is your request summary",
-      };
+      return "";
     } else return "";
   }
 
@@ -236,11 +238,9 @@ export class BulkRquestFormPopupComponent implements OnInit {
       this.bulkrfqForm.markAllAsTouched();
       return;
     }
-    this._loader.setLoaderState(true);
     const postBody = this.postBodyForBulkRfq();
     this._productService.postBulkEnquiry(postBody).subscribe(
       (response) => {
-        this._loader.setLoaderState(false);
         if (response["status"]) {
           this._tms.show({
             type: "success",
@@ -255,9 +255,6 @@ export class BulkRquestFormPopupComponent implements OnInit {
       },
       (error) => {
         this._tms.show({ type: "error", text: "Something Went Wrong." });
-      },
-      () => {
-        this._loader.setLoaderState(false);
       }
     );
   }

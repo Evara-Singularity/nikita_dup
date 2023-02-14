@@ -26,7 +26,7 @@ export class BulkRfqFormComponent implements OnInit {
     new EventEmitter<FormGroup>();
 
   readonly PRICE_VALUES = ["1", "5", "10", "15", "20"];
-  PRODUCT_TYPES: any[] = [];
+  PRODUCT_TYPES = [];
   readonly stepNameOtp = "OTP";
   readonly stepNameRfqForm = "RFQ_FORM";
   readonly API =
@@ -50,6 +50,7 @@ export class BulkRfqFormComponent implements OnInit {
     if (this.LoginAndValidatePhone) {
       this.loginAndValidatePhone();
     }
+    this.fetchCategoryList("tools");
   }
 
   createRfqForm() {
@@ -73,7 +74,7 @@ export class BulkRfqFormComponent implements OnInit {
     const user = this._localAuthService.getUserSession();
     this.setBulkRfqForm$.emit(this.bulkrfqForm.value);
     user && user["authenticated"] == "true"
-      ? this.moveToNext(this.stepNameRfqForm)
+      ? this.moveToNext(this.stepNameRfqForm, true)
       : this.validateUserWithPhone();
   }
 
@@ -94,21 +95,7 @@ export class BulkRfqFormComponent implements OnInit {
           this._sharedAuthService.AUTH_USING_PHONE,
           this.bulkrfqForm.get("phone").value
         );
-        if (isUserExists) {
-          const data = {
-            phone: this.bulkrfqForm.get("phone").value,
-            isUserExists: isUserExists,
-          };
-          this.bulkRfqFormPhoneno$.emit(data);
-          this.moveToNext(this.stepNameOtp);
-        } else {
-          const data = {
-            phone: this.bulkrfqForm.get("phone").value,
-            isUserExists: isUserExists,
-          };
-          this.bulkRfqFormPhoneno$.emit(data);
-          this.moveToNext(this.stepNameOtp);
-        }
+        this.moveToNext(this.stepNameOtp, isUserExists);
       } else {
         this._tms.show({ type: "error", text: response["message"] });
       }
@@ -116,7 +103,12 @@ export class BulkRfqFormComponent implements OnInit {
     });
   }
 
-  moveToNext(stepName) {
+  moveToNext(stepName, isUserExists) {
+    const data = {
+      phone: this.bulkrfqForm.get("phone").value,
+      isUserExists: isUserExists,
+    };
+    this.bulkRfqFormPhoneno$.emit(data);
     this.moveToNext$.emit(stepName);
   }
 
@@ -129,7 +121,6 @@ export class BulkRfqFormComponent implements OnInit {
   }
 
   private fetchCategoryList(value: string) {
-    this._loader.setLoaderState(true);
     const url =
       this.API + `searchApi/category/list?str=${value}&countryCode=356`;
     this._dataService.callRestful("GET", url).subscribe(
@@ -141,16 +132,19 @@ export class BulkRfqFormComponent implements OnInit {
             (res.categoryName as string).trim()
           );
         } else {
-          this._tms.show({ type: "error", text: "data not found" });
+          this.bulkrfqForm.get("productType").setErrors({ invalid: true });
+          this._tms.show({ type: "error", text: "Related data not found" });
         }
       },
       (error) => {
-        this._loader.setLoaderState(false);
+        this.bulkrfqForm.get("productType").setErrors({ invalid: true });
         this._tms.show({ type: "error", text: "Something Went Wrong" });
       }
     );
   }
 
   updateProductType(arg0: AbstractControl) {}
-  updateQuantity(arg0: AbstractControl) {}
+
+  updateQuantity(arg0: FormGroup) {}
+
 }

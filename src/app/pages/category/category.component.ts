@@ -79,7 +79,6 @@ export class CategoryComponent {
     }
 
     ngOnInit(): void {
-        this._router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.setDataFromResolver();
         if (this._commonService.isBrowser) {
             this._footerService.setMobileFoooters();

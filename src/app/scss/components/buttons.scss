@@ -65,7 +65,9 @@
     font-size: $large-font;
     width: $fullwidth;
 }
-
+.btnFull{
+    width: $fullwidth;
+}
 .primary-btn-1 {
     border-radius: $border-radius-8;
     padding: 0px 15px;

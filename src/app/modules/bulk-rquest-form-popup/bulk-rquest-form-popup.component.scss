@@ -27,7 +27,12 @@
             flex-direction: column;
             align-items: center;
             flex: 1;
-
+            img{
+                height: 30px;
+                width: 30px;
+                z-index: 5;
+                // margin-top: -5px;
+            }
             i {
                 font-size: 28px;
                 z-index: 5;
@@ -55,7 +60,12 @@
                 margin-bottom: 6px;
                 color: var(--white);
                 font-weight: bold;
-                border: 2px solid var(--silver);
+                border: 2px solid var(--ghost-white);
+                margin-top: -2px;
+                &.whtBg{
+                    background-color: var(--ghost-white) !important;
+                    border: none !important;
+                }
 
                 &.active {
                     border-color: var(--slimy-green);
@@ -229,6 +239,16 @@
                 .flx-child{
                     width: 50%;
                 }
+            }
+        }
+    }
+}
+
+::ng-deep{
+    .pop-up-header3{
+        .text-section{
+            .page-name{
+                line-height: 18px !important;
             }
         }
     }

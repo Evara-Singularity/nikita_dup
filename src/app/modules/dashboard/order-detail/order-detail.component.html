@@ -266,7 +266,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
     </div>
 
     <div class="return-and-warranty">
-        <div class="pdp-section-header">
+        <!-- <div class="pdp-section-header">
             <h3 class="heading-3">
                 Return & Warranty Policy
             </h3>
@@ -304,50 +304,9 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                     Damaged<br> Product
                 </span>
             </div>
-        </div>
+        </div> -->
+        <product-benefits [moduleUsedIn]="'orders'" [isProductReturnAble]="true" [isBrandMsn]='isBrandMsn' [productOutOfStock]="false" (navigateToFAQ$)="loadReturnInfo()"></product-benefits>
     </div>
-    <!-- <div>
-        <div class="pdp-section-header">
-            <h3 class="heading-3">
-                {{productStaticData.return_policy}}
-            </h3>
-        </div>
-        <div class="pwa-col-12 pwa-tabs-container pad-lr-15">
-            <div class="pwa-image-tab" (click)="$event.stopPropagation(); navigateToFAQ();">
-                <span class="tab-img">
-                    <i class="icon-restart-line"></i>
-                </span>
-                <span class="tab-img-txt">
-                    {{productStaticData.upto_7days}} <br/>{{productStaticData.returnable}}
-                </span>
-            </div>
-            <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
-                <span class="tab-img">
-                    <i class="icon-restart-line-1"></i>
-                </span>
-                <span class="tab-img-txt">
-                    {{productStaticData.wrong}} <br />   {{productStaticData.product}}
-                </span>
-            </div>
-            <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
-                <span class="tab-img">
-                    <i class="icon-restart-line-3"></i>
-                </span>
-                <span class="tab-img-txt">
-                    {{productStaticData.damaged}} <br /> {{productStaticData.product}}
-                </span>
-            </div>
-            <div class="pwa-image-tab" (click)="$event.stopPropagation();navigateToFAQ();">
-                <span class="tab-img">
-                    <i class="icon-restart-line-2"></i>
-                </span>
-                <span class="tab-img-txt">
-                    {{productStaticData.defective}} <br />{{productStaticData.product}}
-                </span>
-            </div>
-        </div>
-    </div> -->
-
 </ng-container>
 
 <!-- order cancellation pop up  -->
@@ -476,56 +435,64 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                             <p *ngIf="returnForm.controls['reason']?.touched && !returnForm.controls['reason'].valid && returnForm.controls['reason'].errors.required"
                                 class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
                         </div>
-
-                        <div class="outline-input-label">
-                            <label class="indusrty show pos-rel" [class.is-focus]="quantity.value.length > 0">
-                                <input type="number" formControlName="quantity" minlength="1" #quantity>
-                                <span class="label">Quantity*</span>
-                                <!-- <i class="icon-down"></i> -->
-                            </label>
-                            <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.required"
-                                class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
-                            <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.min"
-                                class="f-size-10 text-red text-400 absolute top-33 error-txt">Enter valid quantity</p>
-                            <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.max"
-                                class="f-size-10 text-red text-400 absolute top-33 error-txt">Maximum quantity exceeded
-                            </p>
-
+                        <div class="returnerror pad-10 br-8" *ngIf='showError'>
+                            <h3>We’re sorry you are experiencing an issue with your products! To help expedite your concern, please see the below mentioned general guidelines.</h3>
+                            <p>The warranty is at the discretion of brand. On-site and off-site warranty shall be
+                                confirmed by brand only.</p>
+                            <p>In case the product is received in Defective/Missing condition, the customer needs to
+                                connect the brand.</p>
                         </div>
-                        <div class="outline-input-label">
-                            <label [class.is-focus]="commentMsg.value.length > 0">
-                                <textarea class="large-height" formControlName="comment" #commentMsg></textarea>
-                                <span class="label">Comment</span>
-                            </label>
-                        </div>
-
-                        <div class="clearfix" style="margin-bottom: 100px">
-                            <!-- <span class="label"></span> -->
-                            <h3 class="heading-4">Upload Photos* </h3>
-                            <p class="photoNotetxt">
-                                <span>Max. 8 images with jpeg, jpg & png formats allowed.
-                                    Please include images of <strong>(1) Exterior Packaging/Box &nbsp;(2) Interior
-                                        Packaging/Box or Bubble Wrap &nbsp;(3) Complete Product &nbsp;(4) Shipping
-                                        label</strong></span>
-                            </p>
-                            <label class="upload-img" [class.imgDisable]="itemImages.length > 7">
-                                <input formControlName="productImage" type="file" class="hide" accept="image/*"
-                                    (change)="addItemImage($event)">
-                                <i class="icon-expand"></i>
-                            </label>
-                            <label class="upload-img" *ngFor="let itemImage of itemImages; let i = index">
-                                <img src="{{imagePath}}web/dist/assets/img/placeholder.svg" appImageToSrc
-                                    [itemImage]="itemImage['file']">
-                                <i class="icon-circle-delete" (click)="removeItemImage(i)"></i>
-                            </label>
-                            <p *ngIf="showFileError" class="f-size-10 text-red text-400 absolute top-33 error-txt">
-                                Mandatory
-                            </p>
-
-                        </div>
+                        <section *ngIf='!showError'>
+                            <div class="outline-input-label">
+                                <label class="indusrty show pos-rel" [class.is-focus]="quantity.value.length > 0">
+                                    <input type="number" formControlName="quantity" minlength="1" #quantity>
+                                    <span class="label">Quantity*</span>
+                                    <!-- <i class="icon-down"></i> -->
+                                </label>
+                                <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.required"
+                                    class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+                                <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.min"
+                                    class="f-size-10 text-red text-400 absolute top-33 error-txt">Enter valid quantity</p>
+                                <p *ngIf="returnForm.controls['quantity']?.touched && !returnForm.controls['quantity'].valid && returnForm.controls['quantity'].errors.max"
+                                    class="f-size-10 text-red text-400 absolute top-33 error-txt">Maximum quantity exceeded
+                                </p>
+    
+                            </div>
+                            <div class="outline-input-label">
+                                <label [class.is-focus]="commentMsg.value.length > 0">
+                                    <textarea class="large-height" formControlName="comment" #commentMsg></textarea>
+                                    <span class="label">Comment</span>
+                                </label>
+                            </div>
+    
+                            <div class="clearfix" style="margin-bottom: 100px">
+                                <!-- <span class="label"></span> -->
+                                <h3 class="heading-4">Upload Photos* </h3>
+                                <p class="photoNotetxt">
+                                    <span>Max. 8 images with jpeg, jpg & png formats allowed.
+                                        Please include images of <strong>(1) Exterior Packaging/Box &nbsp;(2) Interior
+                                            Packaging/Box or Bubble Wrap &nbsp;(3) Complete Product &nbsp;(4) Shipping
+                                            label</strong></span>
+                                </p>
+                                <label class="upload-img" [class.imgDisable]="itemImages.length > 7">
+                                    <input formControlName="productImage" type="file" class="hide" accept="image/*"
+                                        (change)="addItemImage($event)">
+                                    <i class="icon-expand"></i>
+                                </label>
+                                <label class="upload-img" *ngFor="let itemImage of itemImages; let i = index">
+                                    <img src="{{imagePath}}web/dist/assets/img/placeholder.svg" appImageToSrc
+                                        [itemImage]="itemImage['file']">
+                                    <i class="icon-circle-delete" (click)="removeItemImage(i)"></i>
+                                </label>
+                                <p *ngIf="showFileError" class="f-size-10 text-red text-400 absolute top-33 error-txt">
+                                    Mandatory
+                                </p>
+    
+                            </div>
+                        </section>
 
                         <!-- {{returnForm.controls['quantity'].valid}} -->
-                        <div class="fixed-bottom-cta">
+                        <div class="fixed-bottom-cta" *ngIf='!showError'>
                             <button class="primary-full-btn confirmbtn btn"
                                 *ngIf="step==1 && (!returnForm.controls['requestType'].value || returnForm.controls['requestType'].value == 'return') && (returnForm.controls['quantity'].value != 'exchange')"
                                 [disabled]="!returnForm.controls['quantity'].valid || !returnForm.controls['reason'].valid || !returnForm.controls['requestType'].valid || this.itemImages.length == 0"
@@ -536,13 +503,8 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                 [disabled]="!returnForm.controls['quantity'].valid || !returnForm.controls['reason'].valid || !returnForm.controls['requestType'].valid || this.itemImages.length == 0"
                                 (click)="returnProduct(returnForm.value, returnForm.valid)">NEXT</button>
                         </div>
-
-                        <div class="returnerror pad-10 br-8">
-                            <h3>We’re sorry you are experiencing an issue with your products! To help expedite your concern, please see the below mentioned general guidelines.</h3>
-                            <p>The warranty is at the discretion of brand. On-site and off-site warranty shall be
-                                confirmed by brand only.</p>
-                            <p>In case the product is received in Defective/Missing condition, the customer needs to
-                                connect the brand.</p>
+                        <div class="fixed-bottom-cta" *ngIf='showError'>
+                            <button class='primary-full-btn' (click)='outData({hide: true})'>VIEW ORDER</button>
                         </div>
                     </div>
                     <!-- Bank Details for Return -->
@@ -722,3 +684,5 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
         </div>
     </div>
 </app-pop-up>
+<!-- Return info bottom popup -->
+<ng-container #returnInfo></ng-container>

@@ -10,6 +10,7 @@ import { ImageToSrcDirectiveModule } from '@app/utils/directives/imageToSrc.dire
 import { TrackOrderStatusPipeModule } from '@app/utils/pipes/track-order-status.pipe';
 import { OrderDetailService } from './order-detail.service';
 import { AppBannerModule } from '@app/components/app-banner/app-banner.module';
+import { ProductBenefitsModule } from '@app/components/product-benefits/product-benefits.component';
 
 export const routes: Routes = [
     {
@@ -29,7 +30,8 @@ export const routes: Routes = [
       ImageToSrcDirectiveModule,
       TrackOrderStatusPipeModule,
       TrackOrderModule,
-      AppBannerModule
+      AppBannerModule,
+      ProductBenefitsModule
    ],
    declarations: [
       OrderDetailComponent,

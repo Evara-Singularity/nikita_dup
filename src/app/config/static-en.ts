@@ -22,7 +22,7 @@ export const product = {
     free_delivery:"Free Delivery",
     no_shipping_charge:"No shipping charge on this order",
     moglix_benefits:"Moglix Benefits",
-    return_policy:"Return Policy",
+    return_policy:"Return & Warranty Policy",
     add_to_cart:"ADD TO CART",
     buy_now:"BUY NOW",
     more_from:"More from ___categoryName___",

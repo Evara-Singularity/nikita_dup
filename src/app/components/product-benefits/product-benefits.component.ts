@@ -13,6 +13,7 @@ export class ProductBenefitsComponent implements OnInit {
   @Input() isProductReturnAble: boolean;
   @Input() productOutOfStock: boolean;
   @Input() isBrandMsn: boolean = false;
+  @Input() moduleUsedIn = '';
   @Output() navigateToFAQ$: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(

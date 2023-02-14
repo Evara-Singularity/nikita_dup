@@ -1497,7 +1497,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     async loadReturnInfo()
     {
         if (!this.returnInfoInstance) {
-            const shareURL = this.baseDomain + this.router.url;
             const { ReturnInfoComponent } = await import(
                 "./../../components/return-info/return-info.component"
             );

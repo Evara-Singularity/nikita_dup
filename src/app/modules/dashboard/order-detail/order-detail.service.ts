@@ -84,4 +84,9 @@ groupBy = function (xs, key)
     }, {});
 };
 
+fetchItemDetails(msn) {
+    const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRODUCT_INFO + `?productId=${msn}&fetchGroup=true`;
+    return this.dataService.callRestful('GET', url);
+}
+
 }

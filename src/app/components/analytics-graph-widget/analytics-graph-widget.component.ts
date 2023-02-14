@@ -48,8 +48,6 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     this.getData();
     ColumnDataLabel.compose(ColumnSeries);
   }
-  ngAfterViewInit(){
-  }
   
   getData(){
     if(this.graphData && this.graphData.length > 0){
@@ -132,13 +130,10 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   preparePriceChartData(priceData) {
     const seriesPriceArray = [];
     let priceObj = {};
-    console.log("this.isL2CategoryCheck",this.isL2CategoryCheck);
-
     if(this.isL2CategoryCheck === true){
       priceObj['name'] = priceData['categoryName'];
     }  
-    else{console.log("else case");
-
+    else{
       priceObj['name'] = this.formatPrice(priceData['interval'],true);
     }
     priceObj['y'] = priceData['orderPercentage'];

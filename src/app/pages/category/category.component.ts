@@ -170,25 +170,27 @@ export class CategoryComponent {
             if( this.API_RESPONSE.category[7]){
                 this.graphData = this.API_RESPONSE.category[7].data;
             }
-            let taxonomyArr = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split('/');
-            if(this.API_RESPONSE.category[0].categoryDetails.childList.length == 0 || taxonomyArr.length == 2){
-                this.lastLevelCategory = true;
-                if(taxonomyArr.length == 2){
-                    this.isL2CategoryCheck = true;
-                    this.callChartApi().subscribe(
-                        res => {
-                            if(res['statusCode'] == 200){
-                                this.graphData = res['data'];
-                            }
-                        });
+            if(this.API_RESPONSE.category[0]){
+                let taxonomyArr = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split('/');
+                if(this.API_RESPONSE.category[0].categoryDetails.childList.length == 0 || taxonomyArr.length == 2){
+                    this.lastLevelCategory = true;
+                    if(taxonomyArr.length == 2){
+                        this.isL2CategoryCheck = true;
+                        this.callChartApi().subscribe(
+                            res => {
+                                if(res['statusCode'] == 200){
+                                    this.graphData = res['data'];
+                                }
+                            });
+                    }
+                    else{
+                        this.isL2CategoryCheck = false;
+                    }
+                    
                 }
-                else{
-                    this.isL2CategoryCheck = false;
+                if(this.API_RESPONSE.category[0].categoryDetails.childList.length == 0 && taxonomyArr.length == 2){
+                    this.graphData = [];
                 }
-                
-            }
-            if(this.API_RESPONSE.category[0].categoryDetails.childList.length == 0 && taxonomyArr.length == 2){
-                this.graphData = [];
             }
             
             this.setCanonicalUrls();

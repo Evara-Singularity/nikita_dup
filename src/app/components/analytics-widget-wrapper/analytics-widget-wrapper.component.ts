@@ -5,6 +5,7 @@ import {
 import { CommonService } from '@app/utils/services/common.service';
 import CONSTANTS from '../../config/constants';
 import { GlobalAnalyticsService } from '../../utils/services/global-analytics.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'analytics-widget-wrapper',
@@ -37,6 +38,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
     private _componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector,
     public commonService: CommonService,
+    private router : Router, 
     private _globalAnalyticsService: GlobalAnalyticsService) {
   }
 
@@ -189,6 +191,15 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   ngOnDestroy() {
     // console.log("destroyed");
     this.resetLazyComponents();
+  }
+  callPriceFunction(priceObj){
+    if(this.isL2CategoryCheck){
+      this.router.navigate(['/'+ priceObj.categoryLink])
+    }
+    else{
+      this.generateFragmentUrl('price',this.formatPrice(priceObj.interval,false))
+    }
+    
   }
 }
 

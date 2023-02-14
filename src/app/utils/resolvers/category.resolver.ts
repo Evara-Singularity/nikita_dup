@@ -21,7 +21,6 @@ import { LoggerService } from '../services/logger.service';
   providedIn: 'root'
 })
 export class CategoryResolver implements Resolve<any> {
-  taxonomyArr:any = [];
   isthereL2Category:boolean = true;
   get_analytics_widget_url:any;
   constructor(
@@ -97,7 +96,7 @@ export class CategoryResolver implements Resolve<any> {
         const attribute_url = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?categoryCode=" + categoryId;
         const related_article_url = environment.BASE_URL + ENDPOINTS.GET_RELATED_ARTICLES + categoryId;
         const category_extra_url = environment.BASE_URL + ENDPOINTS.GET_CategoryExtras + categoryId;
-         const get_analytics_widget_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
+        const get_analytics_widget_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
         const get_information_video_url = environment.BASE_URL + ENDPOINTS.INFORMATION_VIDEO + "?categoryCode=" +categoryId;
         
         const params = {  
@@ -111,7 +110,6 @@ export class CategoryResolver implements Resolve<any> {
 
         const getRelatedCategoriesObs = this.http.get(get_rel_cat_url).pipe(share(), 
         map(res=>{
-          this.taxonomyArr = res['categoryDetails'].taxonomy.split('/');
           const logInfo =  this._commonService.getLoggerObj(get_rel_cat_url,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();
           logInfo.responseStatus = res["status"];
@@ -184,7 +182,7 @@ export class CategoryResolver implements Resolve<any> {
         
         const getcategoryanalyticsObs = this.http.get(get_analytics_widget_url).pipe(share(), 
         map(res=>{
-          const logInfo =  this._commonService.getLoggerObj(this.get_analytics_widget_url,'GET',startTime)
+          const logInfo =  this._commonService.getLoggerObj(get_analytics_widget_url,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();
           logInfo.responseStatus = res["status"];
           this._loggerService.apiServerLog(logInfo);

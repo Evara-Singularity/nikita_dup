@@ -1,10 +1,10 @@
 .rating {
     position: relative;
-    font-size: $small-font;
+    font-size: $medium-font;
     height: 20px;
     display: flex;
     align-items: center;
-    margin-top: 5px;
+    // margin-top: 5px;
     margin-bottom: 5px;
     .avgrating {
         display: inline;
@@ -12,7 +12,7 @@
         padding: 3px 5px;
         color: #fff;
         border-radius: 3px;
-        font-size: $small-font;
+        font-size: $medium-font;
         margin-right: 5px;
         i {
             padding-left: 2px;
@@ -20,7 +20,7 @@
         }
     }
     .count {
-        color: #c0c0c0;
+        color: var(--dim-gray);
     }
     .ads{
         position: absolute;

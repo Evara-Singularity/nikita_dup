@@ -1,5 +1,3 @@
-
-
 <div *ngIf="!productNotFound">
     <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer" [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
     </app-oos-similar-section>
@@ -21,11 +19,19 @@
     </ng-container>
     
     <!-- TODO: skeleton to be implemented -->
-    <div class="coupon" >
-        <ng-container #offerSection></ng-container>
+    <div class="coupon" *ngIf='!productOutOfStock && productMrp > 0'>
+        <app-product-offers [price]='productPrice' [gstPercentage]='taxPercentage'
+            [productmsn]='productSubPartNumber || defaultPartNumber' [isHindiMode]='isHindiUrl'
+            (viewPopUpHandler)='viewPopUpOpen($event)' (promoCodePopUpHandler)='promoCodePopUpOpen($event)'
+            [brandName]='rawProductData?.brandDetails?.brandname'
+            [categoryId]='rawProductData?.categoryDetails[0]?.categoryCode'
+            [categoryName]='rawProductData?.categoryDetails[0]?.categoryName'
+            (emaiComparePopUpHandler)='emiComparePopUpOpen($event)'>
+        </app-product-offers>
+        <!-- <ng-container #offerSection></ng-container>
         <div [ngClass]="{ 'coupon-inner': !offerSectionInstance}" class="coupon-inner" *ngIf="!productOutOfStock" >
             <product-skeletons [type]="'COUPON'" [templateRefInstance]="offerSectionInstance"></product-skeletons>
-        </div>
+        </div> -->
     </div>
     
     <!-- TODO: skeleton to be implemented -->
@@ -51,9 +57,10 @@
     
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
-    <div class="card" [ngClass]="{'fbtSection': fbtComponentInstance}" data-observeVisibility [debounceTime]="100" (visible)="getFbtIntance($event)">
-        <ng-container #fbt></ng-container>
-        <product-skeletons [type]="'FBT'" [templateRefInstance]="fbtComponentInstance"></product-skeletons>
+    <div class="card" [class.fbtSection]='fbtFlag' *ngIf='fbtFlag'>
+        <fbt [originalProductBO]='originalProductBO' [analytics]='fbtAnalytics'></fbt>
+        <!-- <ng-container #fbt></ng-container>
+        <product-skeletons [type]="'FBT'" [templateRefInstance]="fbtComponentInstance"></product-skeletons> -->
     </div>
     
     <app-product-review [productName]="productName" [reviewLength]="reviewLength" [overallRating]="overallRating" [rawReviewsData]="rawReviewsData" (writeReview)="writeReview($event)" (reviewRatingPopup)="handleReviewRatingPopup($event)" (postHelpful)="handlePostHelpful($event)">
@@ -78,15 +85,14 @@
     
     <product-more-widget [taxons]="taxons" [baseDomain]="baseDomain" [orderTracking]="orderTracking" [productBrandDetails]="productBrandDetails" [productCategoryDetails]="productCategoryDetails" [productBrandCategoryUrl]="productBrandCategoryUrl">
     </product-more-widget>
-    
-    <div id="sponseredProducts" [ngClass]="{'common-product': !sponseredProductsInstance}" *ngIf="!sponseredProductsInstance" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+    <!-- removed sponsored products -->
+    <!-- <div id="sponseredProducts" [ngClass]="{'common-product': !sponseredProductsInstance}" *ngIf="!sponseredProductsInstance" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
         <ng-container #sponseredProducts></ng-container>
         <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
-    </div>
+    </div> -->
     
-    <section id="popularDeals"  *ngIf="!productOutOfStock" [ngClass]="{'common-product': !popularDealsInstance}" data-observeVisibility [debounceTime]="100" (visible)="onVisiblePopularDeals($event)">
-        <ng-container #popularDeals></ng-container>
-        <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="popularDealsContainerRef"></product-skeletons>
+    <section id="popularDeals" class="common-product"  *ngIf="!productOutOfStock && bestProductsRes?.totalCount > 0">
+        <product-popular-deals [outOfStock]='productOutOfStock' [apiResponse]='bestProductsRes' [analytics]='dealsAnalytics'></product-popular-deals>
     </section>
     
     <product-accordian [isHindiMode]="isHindiUrl" [categoryBrandDetails]="getCategoryBrandDetails()" [msn] = "productSubPartNumber || defaultPartNumber" [relatedLinkRes]="relatedLinkRes" [categoryBucketRes]="categoryBucketRes" [similarCategoryRes]="similarCategoryRes"
@@ -180,6 +186,5 @@
     <ng-container *ngIf="!productOutOfStock">
         <appInstallWidget></appInstallWidget>
     </ng-container>
-
-    <app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>
     
+    <app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>

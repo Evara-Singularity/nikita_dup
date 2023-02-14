@@ -39,26 +39,28 @@
     <!-- Adobe Tag Manager -->
     <script defer="true" >
          dataLayer = [];
-        if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
-            // these vars needs present in global document scope
-            var gtmKey = "GTM-WW4R83Z"; //Qa Key
-            (function (w, d, s, l, i) {
-                w[l] = w[l] || [];
-                w[l].push({
-                    'gtm.start': new Date().getTime(),
-                    event: 'gtm.js'
-                });
-                var f = d.getElementsByTagName(s)[0],
-                    j = d.createElement(s),
-                    dl = l != 'dataLayer' ? '&l=' + l : '';
-                j.defer = true;
-                j.src =
-                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-                setTimeout(() => {
-                    f.parentNode.insertBefore(j, f)
-                }, 0);
-            })(window, document, 'script', 'dataLayer', gtmKey);
-        }
+        document.addEventListener('DOMContentLoaded', function () {
+            if (navigator && navigator.userAgent.indexOf("Googlebot") === -1) {
+                var gtmKey = "GTM-WW4R83Z"; //PROD Key
+                (function (w, d, s, l, i) {
+                    w[l] = w[l] || [];
+                    w[l].push({
+                        'gtm.start': new Date().getTime(),
+                        event: 'gtm.js'
+                    });
+                    var f = d.getElementsByTagName(s)[0],
+                        j = d.createElement(s),
+                        dl = l != 'dataLayer' ? '&l=' + l : '';
+                    j.defer = true;
+                    j.src =
+                        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                    setTimeout(() => {
+                        f.parentNode.insertBefore(j, f)
+                        console.log('<===GTM SCRIPT LOADED===>', new Date().getTime())
+                    }, 0);
+                })(window, document, 'script', 'dataLayer', gtmKey);
+            }
+        }, false);
         digitalData = {};
         digitalData.event = [];
     </script>

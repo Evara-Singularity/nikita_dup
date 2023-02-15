@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
-import { ProductService } from '@app/utils/services/product.service';
+// import { ProductService } from '@app/utils/services/product.service';
 
 @Component({
   selector: 'moglix-insight-pdp',
@@ -10,23 +10,13 @@ import { ProductService } from '@app/utils/services/product.service';
 export class MoglixInsightPdpComponent implements OnInit {
   @Input() data: any;
   constructor(
-    public productService: ProductService,
+    // public productService: ProductService,
   ) { }
 
   ngOnInit() {
-    this.setDataMessage();
   }
 
   setDataMessage() {
-    if (this.data['brand']['message']) {
-      document.getElementById('brandMessage').innerHTML = this.data['brand']['message']; 
-    }
-    if (this.data['price']['message']) {
-      document.getElementById('priceMessage').innerHTML = this.data['price']['message'];
-
-    }
-    // document.getElementById('brandMessage').innerHTML = this.data['brand']['message'];
-    // document.getElementById('priceMessage').innerHTML = this.data['price']['message'];
   }
 }
 

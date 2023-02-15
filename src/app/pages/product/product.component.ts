@@ -303,10 +303,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     quickOrderInstance = null;
     @ViewChild("quickOrder", { read: ViewContainerRef })
     quickOrderContainerRef: ViewContainerRef;
-     // ondemad loaded components offer section
-     moglixInsightInstance = null;
-     @ViewChild("moglixInsightSection", { read: ViewContainerRef })
-     moglixInsightContainerRef: ViewContainerRef;
 
     iOptions: any = null;
     isAcceptLanguage:boolean = false;
@@ -1162,12 +1158,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if (this.productInfo) {
             this.productInfoPopupInstance = null;
             this.productInfoPopupContainerRef.remove();
-        }
-        if (this.moglixInsightInstance) {
-            this.moglixInsightInstance = null;
-            if (this.moglixInsightContainerRef) {
-                this.moglixInsightContainerRef.remove();
-            }
         }
     }
 
@@ -2654,22 +2644,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
-    async onVisiblemoglixInsight() {
-        if (!this.moglixInsightInstance) {
-            const { MoglixInsightPdpComponent } = await import(
-                "./../../components/moglix-insight-pdp/moglix-insight-pdp.component"
-            );
-            const factory = this.cfr.resolveComponentFactory(MoglixInsightPdpComponent);
-            this.moglixInsightInstance = this.moglixInsightContainerRef.createComponent(
-                factory,
-                null,
-                this.injector
-            );
-
-            this.moglixInsightInstance.instance["data"] = this.moglixInightData;
-
-        }
-    }
     async promoCodePopUpOpen(data){
         if (!this.promoOfferPopupInstance) {
             this.showLoader = true;

@@ -5,16 +5,14 @@
     </h3>
   </div>
   <div class="pwa-col-12 moglix-insight-inner pad-lr-15">
-    <div class="moglix-insight-trustWidget pad-10" *ngIf="data['brand']['message'] " >
-      <!-- <p><span><strong>Epson</strong> is the top brand, preferred by <strong>63%</strong> of the users</span></p> -->
+    <div class="moglix-insight-trustWidget pad-10" *ngIf="data['brand']['message']">
       <div class="content-desc">
-        <p id="brandMessage"></p>
+        <p [innerHTML]="data['brand']['message']"></p>
       </div>
     </div>
-    <div class="moglix-insight-trustWidget pad-10">
-      <!-- <p><span><strong>24%</strong>  of the users prefer printers in <strong>₹12000-13000</strong> price</span></p> -->
+    <div class="moglix-insight-trustWidget pad-10" *ngIf="data['price']['message']">
       <div class="content-desc">
-        <p id="priceMessage"></p>
+        <p [innerHTML]="data['price']['message']"></p>
       </div>
     </div>
   </div>

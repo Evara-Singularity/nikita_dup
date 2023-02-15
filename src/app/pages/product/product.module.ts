@@ -37,6 +37,7 @@ import { OosSimilarSectionModule } from '@app/components/oos-similar-section/oos
 import { ProductSkeletonsModule } from '@app/components/product-skeletons/product-skeletons.component';
 import ProductAccordiansModule from '@app/components/product-accordians/product-accordians.component';
 import AppInstallWidgetModule from '@app/components/appInstallWidget/appInstallWidget.component';
+import { MoglixInsightPdpModule } from '@app/components/moglix-insight-pdp/moglix-insight-pdp.component';
 
 @NgModule({
   declarations: [ProductComponent],
@@ -83,6 +84,7 @@ import AppInstallWidgetModule from '@app/components/appInstallWidget/appInstallW
     ProductSkeletonsModule,
     ProductAccordiansModule,
     AppInstallWidgetModule,
+    MoglixInsightPdpModule
   ],
   exports: [],
   providers: [NgxSiemaService]

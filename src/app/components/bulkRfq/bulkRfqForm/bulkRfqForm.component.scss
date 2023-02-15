@@ -25,7 +25,7 @@
             flex-direction: column;
             align-items: center;
             flex: 1;
-
+           
             i {
                 font-size: 28px;
                 z-index: 5;
@@ -59,6 +59,10 @@
                     border-color: var(--slimy-green);
                     color: var(--slimy-green);
                     background: var(--white);
+                    img{
+                        height: 30px;
+                        border: 2px solid red;
+                    }
 
                     &::after {
                         border-color: red;
@@ -190,4 +194,17 @@
             }
         }
     }
+}
+
+::ng-deep{
+    #bulk-autocomp{
+        .list-container{
+            input{
+                height: 40px !important;
+                border-radius: 8px !important;
+                border: 1px solid #c4c4c4 !important;
+            }
+        }
+    }
+    
 }

@@ -3,23 +3,15 @@
     <div class="material-form">
       <div class="outline-input-label">
         <label for="none">
-          <list-autocomplete
-            class="value-auto-co"
-            [control]="bulkrfqForm.get('productType')"
-            [placeholder]="'Enter Product Type*'"
-            [productType]="PRODUCT_TYPES"
-            (onSelect)="updateProductType(bulkrfqForm.get('productType'))"
-            (onkeyUp)="onkeyUp($event)"
-          >
+          <list-autocomplete class="value-auto-co sachin" id="bulk-autocomp" [control]="bulkrfqForm.get('productType')"
+            [placeholder]="'Enter Product Type*'" [productType]="PRODUCT_TYPES"
+            (onSelect)="updateProductType(bulkrfqForm.get('productType'))" (onkeyUp)="onkeyUp($event)">
           </list-autocomplete>
-          <p
-            *ngIf="
+          <p *ngIf="
               bulkrfqForm.get('productType').touched &&
               bulkrfqForm.get('productType').invalid
-            "
-            class="error-txt"
-          >
-            Kindly select a Product
+            " class="error-txt">
+            Kindly select a product
           </p>
         </label>
       </div>
@@ -29,22 +21,14 @@
         </div>
         <div class="outline-input-label qty-field">
           <label for="none">
-            <list-autocomplete
-              [isAutoCompleteOnPopup]="true"
-              class="value-auto-co"
-              [control]="bulkrfqForm.get('quantity')"
-              [placeholder]="'Select from suggested Qty'"
-              [quantity]="PRICE_VALUES"
-              (onSelect)="updateQuantity(bulkrfqForm.get('quantity'))"
-            >
+            <list-autocomplete class="value-auto-co" id="bulk-autocomp" [control]="bulkrfqForm.get('quantity')"
+              [placeholder]="'Select from suggested Qty'" [quantity]="PRICE_VALUES"
+              (onSelect)="updateQuantity(bulkrfqForm)">
             </list-autocomplete>
-            <p
-              *ngIf="
+            <p *ngIf="
                 bulkrfqForm.get('quantity').touched &&
                 bulkrfqForm.get('quantity').invalid
-              "
-              class="error-txt"
-            >
+              " class="error-txt">
               Kindly select quantity.
             </p>
           </label>
@@ -53,12 +37,7 @@
       </div>
       <div class="outline-input-label mb-0">
         <label [class.is-focus]="bulkrfqForm.get('budget').value.length">
-          <input
-            formControlName="budget"
-            type="text"
-            name=""
-            data-numbersOnly
-          />
+          <input formControlName="budget" type="text" name="" data-numbersOnly />
           <span class="label">Budget (Optional)</span>
         </label>
       </div>
@@ -77,11 +56,8 @@
         </label>
       </div>
     </div>
-    <button
-      class="btn secondry-btn disabled"
-      [disabled]="!bulkrfqForm.valid"
-      (click)="$event.stopPropagation(); loginAndValidatePhone()"
-    >
+    <button class="btn secondry-btn disabled btnFull" [disabled]="!bulkrfqForm.valid"
+      (click)="$event.stopPropagation(); loginAndValidatePhone()">
       NEXT
     </button>
   </div>

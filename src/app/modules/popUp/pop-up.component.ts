@@ -62,8 +62,8 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        this.headerText = changes['data']['currentValue']['headerText'];
-        this.headerSubText = changes['data']['currentValue']['headerSubText'];
+        this.headerText = (changes && changes['data'] && changes['data']['currentValue'] && changes['data']['currentValue']['headerText'])? changes['data']['currentValue']['headerText'] : "";
+        this.headerSubText = (changes && changes['data'] && changes['data']['currentValue'] && changes['data']['currentValue']['headerSubText'])? changes['data']['currentValue']['headerSubText'] : "";
     }
 
     ngAfterViewInit() {

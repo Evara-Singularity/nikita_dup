@@ -47,7 +47,7 @@ export class ListAutocompleteComponent implements OnInit
         }
 
         else if (this.quantity.length && this.control) {   //for productType
-            this.control.setValidators([Validators.required, listValidator(this.quantity)])
+            this.control.setValidators([Validators.required, Validators.pattern(/^[0-9]\d*$/), Validators.min(1)])
         }
 
         else if (this.productType.length && this.control) {   //for productType

@@ -21,7 +21,6 @@ import { LoggerService } from '../services/logger.service';
   providedIn: 'root'
 })
 export class CategoryResolver implements Resolve<any> {
-  isthereL2Category:boolean = true;
   constructor(
     @Inject(PLATFORM_ID) private platformId,
     private transferState: TransferState,

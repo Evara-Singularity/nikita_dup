@@ -165,30 +165,17 @@ export class CategoryComponent {
             if (this.sharedProductList) {
                 this.sharedProductList.getSponseredProducts();
             }
-            
             if( this.API_RESPONSE.category[7]){
                 this.graphData = this.API_RESPONSE.category[7].data;
-            }
-            if(this.API_RESPONSE.category[0]){
-                let taxonomyArr = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split('/');
-                if(this.API_RESPONSE.category[0].categoryDetails.childList.length == 0 || taxonomyArr.length == 2){
-                    this.lastLevelCategory = true;
-                    if(taxonomyArr.length == 2){
-                        this.isL2CategoryCheck = true;
-                        this.callChartApi().subscribe(
-                            res => {
-                                if(res['statusCode'] == 200){
-                                    this.graphData = res['data'];
-                                }
-                            });
-                    }
-                    else{
-                        this.isL2CategoryCheck = false;
-                    }
-                    
+                let categoryLevel = this.API_RESPONSE.category[7].categoryLevel;
+                if(categoryLevel == 1){
+                  this.graphData = [];
                 }
-                if(this.API_RESPONSE.category[0].categoryDetails.childList.length == 0 && taxonomyArr.length == 2){
-                    this.graphData = [];
+                if(categoryLevel == 2 && this.graphData){
+                    this.isL2CategoryCheck = true;
+                }
+                else{
+                    this.isL2CategoryCheck = false;
                 }
             }
             
@@ -199,15 +186,7 @@ export class CategoryComponent {
            
         });
     }
-    callChartApi() {
-        let categoryId =  this.API_RESPONSE['category'][0]['categoryDetails']['categoryId'];
-        const url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId+"&&isL2Category="+true;
-        return this._dataService.callRestful("GET", url).pipe(
-            catchError((res: HttpErrorResponse) => {
-                return of({ data: [], code: res.status });
-            })
-        );
-    }
+ 
 
     private createFooterAccordianData() {
         this.accordiansDetails = [];

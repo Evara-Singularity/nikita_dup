@@ -63,6 +63,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
   isUserExists: boolean = false;
   sourceFlow: string = "login_otp"; // default it should be login
   rfqSubmmisionInProcess: number = 1;
+  headerType:string = "pop-up-header3";
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -154,6 +155,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
         headerSubText: "Help with the below details to prioritise your query",
       };
     } else if (this.stepState == this.stepNameConfimation) {
+      this.headerType = "";
       return "";
     } else return "";
   }

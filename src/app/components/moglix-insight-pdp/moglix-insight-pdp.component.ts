@@ -14,6 +14,19 @@ export class MoglixInsightPdpComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.setDataMessage();
+  }
+
+  setDataMessage() {
+    if (this.data['brand']['message']) {
+      document.getElementById('brandMessage').innerHTML = this.data['brand']['message']; 
+    }
+    if (this.data['price']['message']) {
+      document.getElementById('priceMessage').innerHTML = this.data['price']['message'];
+
+    }
+    // document.getElementById('brandMessage').innerHTML = this.data['brand']['message'];
+    // document.getElementById('priceMessage').innerHTML = this.data['price']['message'];
   }
 }
 
@@ -22,8 +35,8 @@ export class MoglixInsightPdpComponent implements OnInit {
   imports: [
     CommonModule,
   ],
-  exports:[MoglixInsightPdpComponent]
-  
+  exports: [MoglixInsightPdpComponent]
+
 })
 export class MoglixInsightPdpModule { }
 

@@ -33,7 +33,7 @@
     </div>
     
     <!-- //moglix insight -->
-    <div data-observeVisibility [debounceTime]="100" (visible)="onVisiblemoglixInsight()">
+    <div data-observeVisibility [debounceTime]="100" (visible)="onVisiblemoglixInsight()" *ngIf="showMoglixInsight" >
         <ng-container #moglixInsightSection></ng-container>
     </div>
     

@@ -594,6 +594,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                             if (rawData["product"][7]['status']=true &&rawData["product"][7]['statusCode']==200 && rawData["product"][7]['data']) {
                                 this.showMoglixInsight=true;
                                 this.moglixInightData=rawData["product"][7]['data']
+                            }else{
+                                this.showMoglixInsight=false;
                             }
                         
                     } else {

@@ -22,19 +22,17 @@
             display: flex;
 
             .bull {
-                // width: 20px;
                 font-size: 36px;
                 margin-top: -13px;
             }
 
-            p {
-                font-size: $large-font;
-                line-height: $medium-line-height;
+            .content-desc {
                 display: flex;
-                span {
-                    display: inline-block;
-                    line-height: 20px;
-                    vertical-align: top;
+
+                p {
+                    font-size: $large-font;
+                    line-height: $medium-line-height;
+
                 }
 
                 &:before {
@@ -45,6 +43,7 @@
                     line-height: $medium-line-height;
                 }
             }
+
         }
     }
 }

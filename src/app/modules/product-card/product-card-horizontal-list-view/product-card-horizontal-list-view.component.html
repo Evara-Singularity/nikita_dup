@@ -81,19 +81,19 @@
                     </div>
 
                 </div>
-                <!-- <div class="emi-container">
+                <div class="emi-container"  *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice>=3000">
                     <i class="icon-circle_check"></i>
                     <span>Easy EMI available</span>
-                </div> -->
+                </div>
             </div>
         </div>
-        <!-- <div class="keyfeatures"
+        <div class="keyfeatures"
             *ngIf="cardFeaturesConfig.enableFeatures && product['keyFeatures'] && product['keyFeatures'].length > 0">
             <ul class="round">
                 <li *ngFor="let features of product['keyFeatures']">{{features.split(" ").splice(0,20).join(" ")}}<span
                         *ngIf="features.split(' ').length>20">...</span></li>
             </ul>
-        </div> -->
+        </div>
         <div class="attribute-section" *ngIf="product['filterableAttributes'] != null && (product['filterableAttributes'] | keyvalue).length != 0">
             <div class="pwa-tabs-container">
                 <div class="pwa-tab" *ngFor="let item of product['filterableAttributes'] | keyvalue">

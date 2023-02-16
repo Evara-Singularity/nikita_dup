@@ -1,6 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AutoLoginService } from '@app/components/autologin-page/autoLogin.service';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -20,11 +21,13 @@ export class SharedAuthUtilService implements OnInit
     readonly SINGUP_REQUEST = { source: 'signup', userType: 'online', phoneVerified: true, emailVerified: false };
     redirectUrl = this.HOME_URL;
     private _checkoutLoginHandler: Subject<number> = new Subject<number>();
+    public msnList:any [] = [];
+    public promocode:string = null;
 
     constructor(private _localStorage: LocalStorageService,
         private _globalLoader: GlobalLoaderService, private _cartService: CartService, private _localAuthService: LocalAuthService,
         private _toastService: ToastMessageService, private _commonService: CommonService,
-        private _router: Router, private _activatedRoute: ActivatedRoute, private _globalAnalyticsService: GlobalAnalyticsService) { }
+        private _router: Router, private _activatedRoute: ActivatedRoute, private _globalAnalyticsService: GlobalAnalyticsService,private autoLoginService: AutoLoginService) { }
 
 
     ngOnInit(): void
@@ -67,15 +70,19 @@ export class SharedAuthUtilService implements OnInit
         }).subscribe(cartSession => {
             this._globalLoader.setLoaderState(false);
             if (cartSession) {
-                this._globalLoader.setLoaderState(true);
-                // console.log('redirectUrl', redirectUrl);
-                setTimeout(() => {
-                    this._globalLoader.setLoaderState(false);
-                    this._commonService.setLoginNotify(null);
-                    redirectUrl && this._commonService.redirectPostAuth(redirectUrl)
-                    redirectUrl && this._toastService.show({ type: 'success', text: message });
-                    !redirectUrl && console.log('express sign up completed');
-                }, 1000);
+                if(this.msnList.length>0){
+                    this.autoLoginService.processMsnsAndAddtoCart(this.msnList, this.promocode, redirectUrl);
+                }else{
+                    this._globalLoader.setLoaderState(true);
+                    // console.log('redirectUrl', redirectUrl);
+                    setTimeout(() => {
+                        this._globalLoader.setLoaderState(false);
+                        this._commonService.setLoginNotify(null);
+                        redirectUrl && this._commonService.redirectPostAuth(redirectUrl)
+                        redirectUrl && this._toastService.show({ type: 'success', text: message });
+                        !redirectUrl && console.log('express sign up completed');
+                    }, 1000);   
+                }
             } else {
                 this._toastService.show({ type: 'error', text: 'Something went wrong' });
             }

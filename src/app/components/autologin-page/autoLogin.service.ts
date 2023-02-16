@@ -5,18 +5,20 @@ import { ENDPOINTS } from "@app/config/endpoints";
 import { CartService } from "@app/utils/services/cart.service";
 import { ProductService } from "@app/utils/services/product.service";
 import { Router } from "@angular/router";
-import { forkJoin } from "rxjs";
-import { CommonService } from "@app/utils/services/common.service";
+import { forkJoin, Subject } from "rxjs";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 
-@Injectable()
+@Injectable({
+  providedIn: "root",
+})
 export class AutoLoginService {
+  public msnList = [];
+
   constructor(
     private router: Router,
     private _dataService: DataService,
     private cartService: CartService,
     private productService: ProductService,
-    private _commonService: CommonService,
     private _toastService: ToastMessageService
   ) {}
 
@@ -30,9 +32,9 @@ export class AutoLoginService {
     return this._dataService.callRestful("POST", url, { body: postBody });
   }
 
-  processMsnsAndAddtoCart(msn) {
+  processMsnsAndAddtoCart(msn, promocode, redirectedTo: string) {
     const buyNow = false;
-   // const msn = ["msn2r9cfnauwxd", "msng9vn4gd1dkp"];
+    // const msn = ["msn2r9cfnauwxd", "msng9vn4gd1dkp"];
     let getGroupProductApi = [];
     msn.forEach((ele) => {
       getGroupProductApi.push(this.productService.getGroupProductObj(ele));
@@ -55,14 +57,21 @@ export class AutoLoginService {
               .multipleAddToCart({ buyNow, productDetailsList: addToCartData })
               .subscribe((ress) => {
                 if (ress) {
-                  this._commonService.setInitaiteLoginPopUp(null);
+                  if (promocode != null) {
+                    this.cartService.genericApplyPromoCode(promocode);
+                  }
+                  // incase of open login popUp.
+                  //this._commonService.setInitaiteLoginPopUp(null);
+                  this.router.navigate([redirectedTo]);
                 }
-                console.log("ress =====>", ress);
               });
           }
         }
       } else {
-        this._toastService.show({ type: "error", text: "Please make sure token and clientId is appended in url", });
+        this._toastService.show({
+          type: "error",
+          text: "Please make sure token and clientId is appended in url",
+        });
         this.router.navigate([""]);
       }
     });

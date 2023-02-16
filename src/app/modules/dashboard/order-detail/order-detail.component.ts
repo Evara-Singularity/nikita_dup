@@ -170,7 +170,7 @@ export class OrderDetailComponent implements OnInit {
     const diffTime = Math.abs(currDate.getTime() - deliveryDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays <= 3) {
+    if (diffDays < 3) {
       return [
         { id: 1, text: 'Product Damaged/Item Broken' },
         { id: 2, text: 'Wrong Item sent' },
@@ -179,7 +179,7 @@ export class OrderDetailComponent implements OnInit {
       ];
     }
     return [
-      { id: 3, text: 'Parts or Accessories missing' },
+      // { id: 3, text: 'Parts or Accessories missing' },
       { id: 4, text: 'Item is defective' }
     ]
   }
@@ -246,7 +246,7 @@ export class OrderDetailComponent implements OnInit {
           this.detail = item;
           this._OrderService.fetchItemDetails(item.product_msn).subscribe(resp => {
             if(resp && resp['status']) {
-              this.isBrandMsn = resp['productBO']['brandDetails']['brandTag'] == 'Brand' ? true : true;
+              this.isBrandMsn = resp['productBO']['brandDetails']['brandTag'] == 'Brand' ? true : false;
             }
           })
           if (this.detail && this.detail.dates.delivered.date) {

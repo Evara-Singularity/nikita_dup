@@ -132,5 +132,6 @@ export const ENDPOINTS = {
   SUPPLIER_RFQ_LIST: '/rfq/supplierRFQListing',
   SUPPLIER_RFQ_CATEGORY: '/rfq/supplierRFQCategoryListing',
   SUPPLIER_RFQ_REPORT: '/rfq/supplierRFQReport',
-  SUPPLIER_RFQ_SAVE: '/rfq/supplierRFQSave'
+  SUPPLIER_RFQ_SAVE: '/rfq/supplierRFQSave',
+  PRODUCT_WIDGET:'/cmsApi/getProductWidget'
 };

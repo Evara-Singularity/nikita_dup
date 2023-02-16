@@ -1069,4 +1069,11 @@ export class ProductService {
         return productEntity;
     }
 
+    getProductTag(msn) {
+        const URL=CONSTANTS.NEW_MOGLIX_API+ENDPOINTS.PRODUCT_TAGS + msn
+        return this._dataService.callRestful("GET",URL);
+    }
+
+
+
 }

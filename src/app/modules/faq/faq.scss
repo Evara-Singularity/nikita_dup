@@ -31,6 +31,9 @@
     width: $fullwidth;
     .searchfield{
       margin-bottom: -24px;
+      @include placeholder{
+        color: var(--dim-gray);
+      }
     }
   }
   .faq-search-container{

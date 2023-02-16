@@ -45,7 +45,11 @@
         }
     }
 }
-
+.custom_select_input{
+    span{
+        color: var(--dim-gray);
+    }
+}
 .column-field {
     .w-45 {
         width: 45%;
@@ -135,7 +139,7 @@ p {
     }
 }
 .emi-note-text {
-    color: var(--gray-web);
+    color: var(--dim-gray);
     font-size: $small-font;
     line-height: 18px;
     padding-bottom: 20px;

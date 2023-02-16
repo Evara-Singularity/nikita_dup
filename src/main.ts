@@ -11,7 +11,7 @@ if (environment.production) {
 document.addEventListener('DOMContentLoaded', () => {
     platformBrowserDynamic().bootstrapModule(AppModule)
         .then(res => {
-            console.log('Moglix PWA bootstraped successfully');
+            console.log('<===ANGULAR SCRIPTS LOADED===>', new Date().getTime())
         })
         .catch(err => console.error(err));
 });

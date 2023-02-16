@@ -60,7 +60,7 @@
         border-radius: 8px;
         p {
             padding: 10px 0px 20px;
-            color: var(--gray-web);
+            color: var(--dim-gray);
         }
         .qty-area {
             display: flex;
@@ -128,7 +128,7 @@
             }
             .ask-txt {
                 font-size: $small-font;
-                color: var(--gray-web);
+                color: var(--dim-gray);
             }
         }
         label {

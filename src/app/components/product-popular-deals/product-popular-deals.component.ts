@@ -17,8 +17,8 @@ export class ProductPopularDealsComponent implements OnInit {
   readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
   polpularDealsProducts: ProductsEntity[] = null;
   @Input("outOfStock") outOfStock = false;
-  @Input("categoryCode") categoryCode;
-  @Input("analytics") analytics = null;
+  @Input('analytics') analytics = {};
+  @Input() apiResponse: any;
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config
@@ -47,7 +47,8 @@ export class ProductPopularDealsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getProductPopularDeals();
+    console.log(this.apiResponse);
+    this.getProductPopularDeals(this.apiResponse);
     this.cardMetaInfo = {
       redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
       redirectedSectionName: this.outOfStock
@@ -61,17 +62,14 @@ export class ProductPopularDealsComponent implements OnInit {
       this.productStaticData = staticJsonData;
     });
   }
-  getProductPopularDeals() {
-    this.productService
-      .getProductPopular(this.categoryCode)
-      .subscribe((response: any) => {
-        this.resultArray = Object.keys(response["taggedProducts"])
-          .map((index) => {
-            return response["taggedProducts"][index];
-          })
-          .filter((item) => item.productList.length !== 0); // removing Tags with 0 products
-        this.setProductList(0, this.resultArray[0]);        // to set first default value
-      });
+  
+  getProductPopularDeals(response: any) {
+    this.resultArray = Object.keys(response["taggedProducts"])
+      .map((index) => {
+        return response["taggedProducts"][index];
+      })
+      .filter((item) => item.productList.length !== 0); // removing Tags with 0 products
+    this.setProductList(0, this.resultArray[0]);        // to set first default value
   }
 
   setProductList(index, products) {
@@ -108,6 +106,7 @@ export class ProductPopularDealsComponent implements OnInit {
         CommonModule,
         ProductCardVerticalContainerModule,
         ProductCardVerticalGridViewModule
-    ]
+    ],
+    exports: [ProductPopularDealsComponent]
 })
-export class ProductModule { }
+export class ProductDealsModule { }

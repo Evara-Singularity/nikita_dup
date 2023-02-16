@@ -38,6 +38,9 @@
         &.otp-popup-height{
             min-height: 55% !important;
         }
+        &.otp-popup-height-v2{
+            min-height: 80% !important;
+        }
         li {
             padding: 10px 0;
             font-size: $extra-large-font;

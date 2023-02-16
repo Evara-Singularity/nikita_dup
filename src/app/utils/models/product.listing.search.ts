@@ -49,7 +49,7 @@ export interface ProductsEntity {
     mainImageThumnailLink?: string;
     mainImageMediumLink?: string;
     productTags?: any ;
-    filterableAttributes: FilterableAttributes;
+    filterableAttributes?: FilterableAttributes;
     itemInPack: string;
     ratingCount: number;
     reviewCount: number;

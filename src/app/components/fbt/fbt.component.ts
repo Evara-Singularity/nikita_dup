@@ -254,7 +254,8 @@ export class FbtComponent implements OnInit
         ModalModule,
         MathCeilPipeModule,
         MathFloorPipeModule
-    ]
+    ],
+    exports: [FbtComponent]
 })
 export default class FbtComponentModule
 {

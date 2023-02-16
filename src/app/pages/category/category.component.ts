@@ -5,7 +5,7 @@ import { CategoryService } from '@app/utils/services/category.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { FooterService } from '@app/utils/services/footer.service';
 import { Meta, Title } from '@angular/platform-browser';
@@ -17,6 +17,8 @@ import { SharedProductListingComponent } from '@app/modules/shared-product-listi
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { environment } from 'environments/environment';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
 
 let digitalData = {
     page: {},
@@ -48,7 +50,9 @@ export class CategoryComponent {
     prodUrl=CONSTANTS.PROD;
     graphData;
     lastLevelCategory:Boolean = false;
+    isL2CategoryCheck:Boolean = false;
     informativeVideosData:any;
+   
 
     constructor(
         public _router: Router,
@@ -163,10 +167,16 @@ export class CategoryComponent {
             }
             if( this.API_RESPONSE.category[7]){
                 this.graphData = this.API_RESPONSE.category[7].data;
-            }
-            if(this.API_RESPONSE.category[0].categoryDetails.childList.length == 0){
-                this.lastLevelCategory = true;
-                // console.log("this.lastLevelCategory",this.lastLevelCategory)
+                let categoryLevel = this.API_RESPONSE.category[7].categoryLevel;
+                if(categoryLevel == 1){
+                  this.graphData = [];
+                }
+                if(categoryLevel == 2 && this.graphData){
+                    this.isL2CategoryCheck = true;
+                }
+                else{
+                    this.isL2CategoryCheck = false;
+                }
             }
             
             this.setCanonicalUrls();
@@ -176,23 +186,7 @@ export class CategoryComponent {
            
         });
     }
-
-    //  callChartApi() {
-    //      let categoryId =  this.API_RESPONSE['category'][0]['categoryDetails']['categoryId']
-    //     let url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
-    //     return this._dataService.callRestful("GET", url);
-    //   }
-    //   getChartData(){
-    //     this.callChartApi().subscribe(res => {
-    //        if(res['statusCode'] == 200){
-    //        this.graphData = res['data']; 
-    //        console.log("hello");
-    //       }
-    //       else{
-    //         console.log("error");
-    //       }
-    //     })
-    //   }
+ 
 
     private createFooterAccordianData() {
         this.accordiansDetails = [];

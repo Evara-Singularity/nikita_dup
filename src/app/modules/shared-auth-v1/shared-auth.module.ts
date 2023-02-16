@@ -39,7 +39,8 @@ import { SharedSocialLoginComponent } from './shared-social-login/shared-social-
         SharedLoginComponent,
         SharedOtpComponent,
         SharedSignupComponent,
-        SharedForgotPasswordComponent
+        SharedForgotPasswordComponent,
+        SharedAuthOtpComponent
     ],
     providers: [
         SocialAuthService,

@@ -112,18 +112,15 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this._globalLoader.setLoaderState(true);
         const REQUEST = this.getUserData();
         REQUEST['otp'] = otpValue;
-        console.log('validateOTP ==> ++ --' , REQUEST);
         this._sharedAuthService.validateOTP(REQUEST).subscribe(
             (response) =>
             {
-                console.log("response==>" , response)
                 if (response['status']) {
                     this.verifiedOTP = otpValue;
                     this.incorrectOTP = null;
                     this.timer = 0;
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this._globalLoader.setLoaderState(false);
-                    console.log("called here -----")
                     this.otpEmitter.emit(otpValue);
                     if (!(this.withLabel)) { setTimeout(() => {  
                         this.otpSuccess$.emit();
@@ -197,7 +194,6 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     getUserData()
     {
-        console.log("this.authFlow ===>" , this.authFlow);
         let requestData = { email: '', phone: '', type: "p", source: this.source, buildVersion: environment.buildVersion };
         if (this.authFlow.flowType.includes("SIGNUP") || this.authFlow.identifierType.includes("PHONE")) {
             requestData['phone'] = this.identifier;

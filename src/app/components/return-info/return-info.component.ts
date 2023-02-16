@@ -14,6 +14,7 @@ export class ReturnInfoComponent implements OnInit {
   @Input() isBrandMsn: boolean;
   @Output() removed: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() navigateToFAQ$: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly baseDomain = CONSTANTS.PROD;
 
   ngOnInit(): void {
     // console.log(this.shareFbUrl);

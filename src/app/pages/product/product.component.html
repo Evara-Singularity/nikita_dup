@@ -44,7 +44,7 @@
     <moglix-insight-pdp *ngIf="showMoglixInsight" [data]="moglixInightData"></moglix-insight-pdp>
     
     <!-- product benifits and policy -->
-    <product-benefits [isProductReturnAble]="isProductReturnAble" [productOutOfStock]="productOutOfStock" (navigateToFAQ$)="navigateToFAQ()"></product-benefits>
+    <product-benefits [isProductReturnAble]="isProductReturnAble" [isBrandMsn]='isBrandMsn' [productOutOfStock]="productOutOfStock" (navigateToFAQ$)="loadReturnInfo()"></product-benefits>
     
     
     <product-feature-details (showYTVideo$)="showYTVideo1($event)" (handleProductInfoPopup$)="handleProductInfoPopup1($event)" [productKeyFeatures]="productKeyFeatures" [productAttributes]="productAttributes" [productDescripton]="productDescripton" [productCategoryDetails]="productCategoryDetails"
@@ -169,6 +169,7 @@
     <ng-container #addToCartToast></ng-container>
     <ng-container #popupCrousel></ng-container>
     <ng-container #quickOrder></ng-container>
+    <ng-container #returnInfo></ng-container>
     
     
     <!-- // TODO: product-rfq-thanks-popup should be lazy loaded -->

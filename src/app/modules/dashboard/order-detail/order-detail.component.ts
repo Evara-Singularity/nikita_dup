@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe, formatDate } from '@angular/common';
@@ -94,9 +94,14 @@ export class OrderDetailComponent implements OnInit {
   chequeImage: {};
   statusListForReturnExchange = ['EXCHANGE REQUESTED', 'EXCHANGE REJECTED','RETURN REQUESTED', 'RETURN REJECTED', 'EXCHANGE APPROVED', 'EXCHANGE PICKED', 'RETURN APPROVED', 'RETURN PICKED', 'RETURN DONE']
   private cDistryoyed = new Subject();
+  isBrandMsn: boolean;
   set showLoader(value){
     this.loaderService.setLoaderState(value);
-  }
+  }    
+  // ondemand loaded component for return info
+  returnInfoInstance = null;
+  @ViewChild("returnInfo", { read: ViewContainerRef })
+  returnInfoContainerRef: ViewContainerRef;
 
   readonly validBuyAgainStatus = ['DELIVERED', 'RETURN REQUESTED', 'RETURN REJECTED', 'RETURN APPROVED', 'RETURN PICKED', 'RETURN DONE', 'EXCHANGE REQUESTED', 'EXCHANGE REJECTED', 'EXCHANGE APPROVED', 'EXCHANGE PICKED'];
   readonly validTrackingStatus = ['SHIPPED', 'DELIVERED'];
@@ -113,7 +118,9 @@ export class OrderDetailComponent implements OnInit {
     private _modalService: ModalService,
     private _commonService: CommonService,
     public localStorageService: LocalStorageService,
-    private loaderService:GlobalLoaderService) {
+    private loaderService:GlobalLoaderService,
+    private cfr: ComponentFactoryResolver,
+    private injector: Injector) {
 
     this.showLoader = true;
     this.showFileError = false;
@@ -163,7 +170,7 @@ export class OrderDetailComponent implements OnInit {
     const diffTime = Math.abs(currDate.getTime() - deliveryDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays <= 3) {
+    if (diffDays < 3) {
       return [
         { id: 1, text: 'Product Damaged/Item Broken' },
         { id: 2, text: 'Wrong Item sent' },
@@ -172,7 +179,7 @@ export class OrderDetailComponent implements OnInit {
       ];
     }
     return [
-      { id: 3, text: 'Parts or Accessories missing' },
+      // { id: 3, text: 'Parts or Accessories missing' },
       { id: 4, text: 'Item is defective' }
     ]
   }
@@ -206,6 +213,10 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
+  get showError() {
+    return (this.returnForm.controls?.reason?.value == "Item is defective" && this.isBrandMsn) ? true : false;
+  }
+
   createReturnForm(oDetail) {
     this.returnForm = this._formBuilder.group({
       "requestType": [null, [Validators.required]],
@@ -233,6 +244,11 @@ export class OrderDetailComponent implements OnInit {
       res.map((item) => {
         if (item.item_id === this.itemIdParam) {
           this.detail = item;
+          this._OrderService.fetchItemDetails(item.product_msn).subscribe(resp => {
+            if(resp && resp['status']) {
+              this.isBrandMsn = resp['productBO']['brandDetails']['brandTag'] == 'Brand' ? true : false;
+            }
+          })
           if (this.detail && this.detail.dates.delivered.date) {
             this.showReturn = this.showReturnHandler(this.detail.dates.delivered.date);
           }
@@ -609,6 +625,39 @@ export class OrderDetailComponent implements OnInit {
   showBuyAgain_Invoice(status: string) {
     if(!status) return false;
     return this.validBuyAgainStatus.indexOf(status.toUpperCase()) > -1;
+  }
+
+  async loadReturnInfo()
+  {
+      if (!this.returnInfoInstance) {
+          const { ReturnInfoComponent } = await import(
+              "../../../components/return-info/return-info.component"
+          );
+          const factory = this.cfr.resolveComponentFactory(ReturnInfoComponent);
+          this.returnInfoInstance = this.returnInfoContainerRef.createComponent(
+              factory,
+              null,
+              this.injector
+          );
+          this.returnInfoInstance.instance['isBrandMsn'] = this.isBrandMsn;
+          this.returnInfoInstance.instance['show'] = true;
+          (
+              this.returnInfoInstance.instance["removed"] as EventEmitter<boolean>
+          ).subscribe((status) =>
+          {
+              this.returnInfoInstance = null;
+              this.returnInfoContainerRef.detach();
+          });
+          (
+              this.returnInfoInstance.instance["navigateToFAQ$"] as EventEmitter<boolean>
+          ).subscribe((status) =>
+          {
+            this._router.navigate(["faq", { active: "CRP" }]);
+          });
+      } else {
+          //toggle side menu
+          this.returnInfoInstance.instance["show"] = true;
+      }
   }
 
 

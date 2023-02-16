@@ -1,0 +1,113 @@
+@import '../../scss/variables';
+@import '../../scss/components/bottom-popup.scss';
+
+.share-container {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.top-header-bottom-menu {
+    h3 {
+        padding: 15px 5px;
+        font-size: $extra-large-font;
+
+    }
+
+    i {
+        top: 15px;
+    }
+}
+
+.return-tbl {
+    .tblflx {
+        padding: 0px 10px;
+        display: flex;
+        justify-content: space-between;
+        // border-bottom: 1px solid var(--ghost-white);
+        border-bottom: 1px solid #e2e2e2;
+
+        .flxinner {
+            width: 31%;
+            padding: 10px 5px;
+
+            p {
+                font-size: 14px;
+                line-height: 20px;
+                color: #303030;
+            }
+
+            &.table-head {
+                p {
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+            }
+
+            &.reason {
+                width: 38% !important;
+            }
+        }
+
+        &.return-tbl-head {
+            background-color: var(--cultured);
+        }
+    }
+}
+
+.warranty-policy {
+    padding: 15px;
+
+    h4 {
+        font-size: $large-font;
+        line-height: $medium-line-height;
+        padding-bottom: 10px;
+    }
+    .warranty-info{
+        position: relative;
+        p {
+            font-size: 12px;
+            line-height: 18px;
+            color: #303030;
+            margin-left: 15px;
+            margin-bottom: 10px;
+            .linktxt{
+                color: #008AFF;
+            }
+        }
+        &:before {
+            content: "";
+            height: 8px;
+            width: 8px;
+            line-height: 20px;
+            display: inline-block;
+            position: absolute;
+            background: #303030;
+            border-radius: 50px;
+            top: 5px;
+        }
+    }
+    
+}
+
+.read-full-cta {
+    padding: 35px 15px 15px;
+
+    button {
+        width: 100%;
+        background-color: #e2e2e2;
+        height: 50px;
+        border-radius: 8px;
+        border: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: $large-font;
+        padding: 0px 15px;
+
+        i {
+            font-size: 20px;
+        }
+    }
+}

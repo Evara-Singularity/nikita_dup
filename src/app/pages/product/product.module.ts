@@ -27,6 +27,7 @@ import { OosSimilarSectionModule } from '@app/components/oos-similar-section/oos
 import { ProductSkeletonsModule } from '@app/components/product-skeletons/product-skeletons.component';
 import ProductAccordiansModule from '@app/components/product-accordians/product-accordians.component';
 import AppInstallWidgetModule from '@app/components/appInstallWidget/appInstallWidget.component';
+import { MoglixInsightPdpModule } from '@app/components/moglix-insight-pdp/moglix-insight-pdp.component';
 import { ProductOffersModule } from '@app/components/product-offers/product-offers.component';
 import FbtComponentModule from '@app/components/fbt/fbt.component';
 import { ProductDealsModule } from '@app/components/product-popular-deals/product-popular-deals.component';
@@ -78,6 +79,7 @@ import { ProductInfoModule } from '@app/modules/product-info/product-info.module
     ProductSkeletonsModule,
     ProductAccordiansModule,
     AppInstallWidgetModule,
+    MoglixInsightPdpModule,
     ProductOffersModule,
     FbtComponentModule,
     ProductDealsModule

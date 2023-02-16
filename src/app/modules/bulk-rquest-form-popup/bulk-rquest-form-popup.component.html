@@ -1,0 +1,64 @@
+<app-pop-up [popUpName]="'bulkRfqPopUp'" class="open" (outData$)="outData($event)" [headerType]="headerType"
+    [data]="setHeaderData()">
+    <div class="content-popup bulkRFQ" content>
+        <div class="stepper-wrapper" *ngIf="rfqSubmmisionInProcess !=3">
+            <div class="stepper-item active">
+                <div class="step-counter active" *ngIf="rfqSubmmisionInProcess == 1">1</div>
+                <img class="step-counter whtBg" src="assets/img/checkbox-circle-fill-m.svg" alt="" *ngIf="rfqSubmmisionInProcess == 2">
+            </div>
+            <div class="stepper-item active">
+                <div class="step-counter">2</div>
+            </div>
+        </div>
+
+        <!-- <div class="thanks-for-query ">
+            <div class="query-header pad-15">
+                <img src="assets/img/checkbox-circle-fill-m.svg" alt="">
+                <h3 class="pad-0">Thanks, for submitting the query</h3>
+                <p class="mt-5">Below is your request summary</p>
+            </div>
+            <div class="query-body br-8">
+                <div class="query-inner query-inner-upper pad-15">
+                    <p class="label">Product Name</p>
+                    <h4 class="maintxt">Motor Pump</h4>
+                    <div class="query-inner-flx">
+                        <div class="flx-child">
+                            <p class="label">Qty</p>
+                            <h4 class="maintxt">2</h4>
+                        </div>
+                        <div class="flx-child">
+                            <p class="label">Budget</p>
+                            <h4 class="maintxt">₹10,000</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="query-inner query-inner-bottom pad-15">
+                    <p class="label">GST no.</p>
+                    <h4 class="maintxt">35AABCS1429B1ZX</h4>
+                </div>
+            </div>
+        </div> -->
+
+        <ng-container [ngSwitch]="stepState">
+            <ng-container *ngSwitchCase="stepNameLogin">
+                <bulkRfqForm [loginAndValidatePhone]="loginAndValidatePhone" (moveToNext$)="moveToNext($event)"
+                    (bulkRfqFormPhoneno$)="setPhoneNo($event)" (setBulkRfqForm$)="setBulkRfqForm($event)"></bulkRfqForm>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="stepNameOtp">
+                <shared-auth-otp [isLoginPopup]="isLoginPopup" [otpFormArray]="otpForm" [source]="sourceFlow"
+                    [identifier]="bulkRfqFormPhoneno" (otpEmitter)="captureOTP($event)" [withLabel]="false">
+                </shared-auth-otp>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="stepNameRfqForm">
+                <gstinForm (moveToNext$)="moveToNext($event)" (setGstinForm$)="setGstinForm($event)"></gstinForm>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="stepNameConfimation">
+                <confirmationForm (moveToNext$)="moveToNext($event)" [bulkrfqForm]="bulkrfqForm"
+                    [gstinForm]="gstinForm"></confirmationForm>
+            </ng-container>
+        </ng-container>
+    </div>
+</app-pop-up>

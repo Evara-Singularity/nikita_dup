@@ -342,6 +342,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     relatedLinkRes: any = null
     categoryBucketRes: any = null
     similarCategoryRes: any = null 
+    moglixInightData: any;
+    showMoglixInsight: boolean=false;
+
     fbtAnalytics: { page: { pageName: string; channel: string; subSection: any; linkPageName: any; linkName: any; loginStatus: string; }; custData: { customerID: string; emailID: string; mobile: string; customerType: any; customerCategory: any; }; order: { productID: string; productCategoryL1: any; productCategoryL2: any; productCategoryL3: any; brand: any; price: number; stockStatus: string; tags: string; }; };
     dealsAnalytics: any;
     bestProductsRes: any;
@@ -564,7 +567,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.route.data.subscribe(
             (rawData) =>
             {
-                // console.log(rawData["product"]);
+                console.log(rawData["product"]);
                 if (!rawData["product"]["error"] && rawData["product"][0]["active"]==true) {
                     if (
                         rawData["product"][0]["productBO"] &&
@@ -587,8 +590,14 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         // console.log('originalProductBO log', this.originalProductBO);
                         // Load secondary APIs data from resolver only when product data is received
                        
-                            this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6], rawData['product'][7], rawData['product'][8]);
-                        
+                        this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6], rawData['product'][7], rawData['product'][8]);
+                        if (rawData["product"][9]['status'] = true && rawData["product"][9]['statusCode'] == 200 && rawData["product"][9]['data']) {
+                            this.showMoglixInsight = true;
+                            this.moglixInightData = rawData["product"][9]['data']
+                        } else {
+                            this.showMoglixInsight = false;
+                        }
+
                     } else {
                         this.showLoader = false;
                         this.globalLoader.setLoaderState(false);
@@ -619,6 +628,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         );
     }
 
+
     checkForRfqGetQuote()
     {
         if (!this.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'raiseRFQQuote') {
@@ -641,7 +651,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
-    getSecondaryApiData(reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes, productTagRes, bestproductsRes) {
+    getSecondaryApiData(
+        reviewsDataApiData, breadcrumbApiData, 
+        questAnsApiData, relatedLinkRes, 
+        similarCategoryRes, categoryBucketRes, 
+        productTagRes, bestproductsRes) {
         // console.log({
         //     reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes
         // });
@@ -2669,6 +2683,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
         }
     }
+
     async promoCodePopUpOpen(data){
         if (!this.promoOfferPopupInstance) {
             this.showLoader = true;

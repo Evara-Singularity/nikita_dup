@@ -41,7 +41,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   @Input() searchKeyword: string; // only received in case used in search module
   @Input() categoryMidPlpFilterData: any; // only received in case used in search module
   @Input() graphData:any = null;
-  @Input() lastLevelCategory;
+  @Input() isL2CategoryCheck;
   @Input() informativeVideosData:any;
   @Output('categoryClicked') categoryClicked: EventEmitter<string> = new EventEmitter<string>();
   Object = Object;
@@ -73,7 +73,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
-    this.lastLevelCategory; 
     // console.log("in shared listing ",this.informativeVideosData)
   }
   

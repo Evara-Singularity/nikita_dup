@@ -156,8 +156,9 @@ export class OrderDetailComponent implements OnInit {
 
     const diffTime = Math.abs(currDate.getTime() - date2.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays <= 8) {
+    if(diffDays <= 2 && this.isBrandMsn) {
+      return true;
+    } else if(diffDays <= 8 && !this.isBrandMsn) {
       return true;
     }
     return false;
@@ -247,11 +248,11 @@ export class OrderDetailComponent implements OnInit {
           this._OrderService.fetchItemDetails(item.product_msn).subscribe(resp => {
             if(resp && resp['status']) {
               this.isBrandMsn = resp['productBO']['brandDetails']['brandTag'] == 'Brand' ? true : false;
+              if (this.detail && this.detail.dates.delivered.date) {
+                this.showReturn = this.showReturnHandler(this.detail.dates.delivered.date);
+              }
             }
           })
-          if (this.detail && this.detail.dates.delivered.date) {
-            this.showReturn = this.showReturnHandler(this.detail.dates.delivered.date);
-          }
           this.returnReasons = this.getReturnReasons(item.dates.delivered.date);
           let deliveryDate = new Date(item.dates.delivered.date);
           let crrDate = new Date(deliveryDate.getFullYear(), deliveryDate.getMonth(), deliveryDate.getDate() + 7); 

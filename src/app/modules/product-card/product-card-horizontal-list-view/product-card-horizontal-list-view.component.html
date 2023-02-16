@@ -81,7 +81,7 @@
                     </div>
 
                 </div>
-                <div class="emi-container"  *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice>=3000">
+                <div class="emi-container"  *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice >= easyEMILimit">
                     <i class="icon-circle_check"></i>
                     <span>Easy EMI available</span>
                 </div>

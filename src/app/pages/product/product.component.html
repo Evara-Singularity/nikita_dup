@@ -40,6 +40,10 @@
         <product-skeletons [type]="'PINCODE'" [templateRefInstance]="pincodeFormInstance"></product-skeletons>
     </div>
     
+    <!-- //moglix insight -->
+    <moglix-insight-pdp *ngIf="showMoglixInsight" [data]="moglixInightData"></moglix-insight-pdp>
+    
+    <!-- product benifits and policy -->
     <product-benefits [isProductReturnAble]="isProductReturnAble" [productOutOfStock]="productOutOfStock" (navigateToFAQ$)="navigateToFAQ()"></product-benefits>
     
     

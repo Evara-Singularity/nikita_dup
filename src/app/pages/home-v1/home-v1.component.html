@@ -34,10 +34,8 @@
 
     <div class="pwa-row pwa-row-noPad">
         <div class="pwa-col-12 pad-lr-15">
-
             <!-- trending category -->
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
-
             <!-- middle banner -->
             <div id="container-div">
                 <div (touchstart)="swipeStart($event)" [ngStyle]="{'width.px': _localAuthService.IsUserGoldMember() ? 1550 : homeSecondaryCarouselData.length * 310}"  id="home-banner-second" performBatchActions (touchend)="swipeEnd($event)">
@@ -58,8 +56,6 @@
                     </div>
                 </div>
             </div>
-            
-
             <!-- category stores -->
             <div class="pwa-col-12 category-grid-container mb-15">
                 <h2>Category Stores</h2>

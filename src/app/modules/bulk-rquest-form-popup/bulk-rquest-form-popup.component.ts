@@ -107,6 +107,9 @@ export class BulkRquestFormPopupComponent implements OnInit {
     if(stepName == this.stepNameRfqForm){
       this.rfqSubmmisionInProcess = 2;
     }
+    else if(stepName == this.stepNameLogin){
+      this.rfqSubmmisionInProcess = 1;
+    }
     else if (stepName == this.stepNameConfimation) {
       this.rfqSubmmisionInProcess = 3;
       this.saveBulkRfq();
@@ -145,6 +148,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
 
   setHeaderData(): any {
     if (this.stepState == this.stepNameLogin) {
+      this.headerType = "pop-up-header3";
       return {
         headerText: "Get customise & best price",
         headerSubText: "Just in 2 simple steps",

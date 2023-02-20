@@ -5,12 +5,12 @@
     </h3>
   </div>
   <div class="pwa-col-12 moglix-insight-inner pad-lr-15">
-    <div class="moglix-insight-trustWidget pad-10" *ngIf="data['brand']['message']">
+    <div class="moglix-insight-trustWidget pad-10" *ngIf="data['brand'] && data['brand']['message']">
       <div class="content-desc">
         <p [innerHTML]="data['brand']['message']"></p>
       </div>
     </div>
-    <div class="moglix-insight-trustWidget pad-10" *ngIf="data['price']['message']">
+    <div class="moglix-insight-trustWidget pad-10" *ngIf="data['price'] && data['price']['message']">
       <div class="content-desc">
         <p [innerHTML]="data['price']['message']"></p>
       </div>

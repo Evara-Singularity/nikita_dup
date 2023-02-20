@@ -47,6 +47,7 @@ export const environment = {
     CAT_G: "cm416640",
     CAT_H: "cm814985",
     FEATURE_ARRIVAL: "cm976581",
+    SECONDARY_CAROUSEL_DATA:"cm336308"
   },
   // NEW_CMS_IDS: {
   //    // Use this with nodeApiQA

@@ -672,5 +672,7 @@ export const CONSTANTS = {
     PRODUCT_REVIEW_FORM: 'product-write-review',
   },
   enableGenericPrepaid: false,
+
+  bulkRfqConstant:'BULK_RFQ_CONSTANT'
 };
 export default CONSTANTS;

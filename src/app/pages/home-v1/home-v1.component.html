@@ -34,35 +34,28 @@
 
     <div class="pwa-row pwa-row-noPad">
         <div class="pwa-col-12 pad-lr-15">
-
             <!-- trending category -->
             <trending-categories [tocd]="'Trending Categories'" [flyOutData]="flyOutData"></trending-categories>
-
             <!-- middle banner -->
-            <div class="mutiple-banner-cards">
-                <div class="pwa-banner" *ngIf="_localAuthService.IsUserGoldMember()">
-                    <a class="full-banner" (click)="_commonService.showgoldMembershipPopup()"> 
-                        <img src="{{imageAssetURL}}assets/img/others/goldMemberBanner.png" alt="Gold Member Banner" width="312" height="110">
-                    </a>
-                </div>
-                <div class="pwa-banner">
-                    <a class="full-banner" [routerLink]="'/find-b2b-bulk-buyers'"> 
-                        <img src="{{imageAssetURL}}assets/img/others/rfqSupplier.png" alt="rfq supplier banner" width="312" height="110">
-                    </a>
-                </div>
-                <div class="pwa-banner">
-                    <a class="full-banner" [routerLink]="'/store/trending-products-hindi'"> 
-                        <img src="{{imageAssetURL}}assets/img/others/vernacular-banner.png" alt="rfq supplier banner" width="312" height="110">
-                    </a>
-                </div>
-                <div class="pwa-banner">
-                    <a class="full-banner" href="{{whatsAppBannerUrl}}"> 
-                        <img src="{{imageAssetURL}}assets/img/whatsappBanner.png" alt="whatsapp banner" width="312" height="110">
-                    </a>
+            <div id="container-div">
+                <div (touchstart)="swipeStart($event)" [ngStyle]="{'width.px': _localAuthService.IsUserGoldMember() ? 1550 : homeSecondaryCarouselData.length * 310}"  id="home-banner-second" performBatchActions (touchend)="swipeEnd($event)">
+                    <div class ="internal-scroll">
+                        <div *ngFor="let bannerSecondary of homeSecondaryCarouselData"  class="mySlides">
+                            <a *ngIf="bannerSecondary.image_link != bulkRfqConstant" href="{{bannerSecondary.image_link}}" class="full-banner">
+                                <img src="{{imagePathBanner}}{{bannerSecondary.image_name}}" width="312" height="110">
+                            </a>
+                            <a *ngIf="bannerSecondary.image_link == bulkRfqConstant" (click)="loadBulkRFQ()" class="full-banner">
+                                <img src="{{imagePathBanner}}{{bannerSecondary.image_name}}" width="312" height="110">
+                            </a>
+                        </div>
+                        <div *ngIf="_localAuthService.IsUserGoldMember()" class="mySlides" >
+                            <a class="full-banner" (click)="_commonService.showgoldMembershipPopup()"> 
+                                <img src="{{imageAssetURL}}assets/img/others/goldMemberBanner.png" alt="Gold Member Banner" width="312" height="110">
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-
             <!-- category stores -->
             <div class="pwa-col-12 category-grid-container mb-15">
                 <h2>Category Stores</h2>

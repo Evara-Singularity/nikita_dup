@@ -175,18 +175,6 @@
         border-bottom-right-radius: $border-radius-16;
     }
 }
-.mutiple-banner-cards{
-    display: flex;
-    overflow-y:auto;
-    @extend %hide-scrollbar;
-   .pwa-banner{
-       flex:0 0 90%;
-       margin-right:10px;
-       &:last-of-type{
-           margin-right:0px;
-       }
-   } 
-}
 #container-div {
     overflow-y: auto;
 }
@@ -194,7 +182,6 @@
 #home-banner-second {
     overflow-y: auto;
     float: left;
-    ;
     transition: all 200ms ease-out 0s;
 
     .mySlides {

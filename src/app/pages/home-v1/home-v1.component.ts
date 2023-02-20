@@ -1,6 +1,6 @@
 import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import CONSTANTS from '@app/config/constants';
+import {CONSTANTS} from '@app/config/constants';
 import { CategoryData } from '@app/utils/models/categoryData';
 import { CommonService } from '@app/utils/services/common.service';
 import { environment } from 'environments/environment';
@@ -19,10 +19,10 @@ import { DOCUMENT } from '@angular/common';
 })
 export class HomeV1Component implements OnInit {
 
-
+  readonly bulkRfqConstant = CONSTANTS.bulkRfqConstant;
   isBrowser: boolean;
   isServer: boolean;
-
+  bannerInterval;
   //banner data var
   bannerDataFinal: any = [];
   primaryTopBannerData: any = null;
@@ -86,6 +86,7 @@ export class HomeV1Component implements OnInit {
   //metadata var
   oganizationSchema: any;
   mainBannerIndicator: number = 0;
+  homeSecondaryCarouselData: any = [];
 
 
   constructor(
@@ -108,6 +109,7 @@ export class HomeV1Component implements OnInit {
   }
 
   ngOnInit() {
+    this.startBannerInterval()
     this._commonService.isHomeHeader = true;
 		this._commonService.isPLPHeader = false;
     this.loadSearchTerms();
@@ -184,6 +186,9 @@ export class HomeV1Component implements OnInit {
 
         case environment.NEW_CMS_IDS.FEATURE_ARRIVAL:
           this.featureArrivalData = block.block_data.image_block;
+          break;
+        case environment.NEW_CMS_IDS.SECONDARY_CAROUSEL_DATA:
+          this.homeSecondaryCarouselData = block.block_data.image_block;
           break;
 
         default:
@@ -433,6 +438,33 @@ export class HomeV1Component implements OnInit {
   changeBannerIndicator(index) {
     this.mainBannerIndicator = index;
   }
+    //addAnimation
+    addAnimationBanner() {
+      let bannerId = document.getElementById("home-banner-second");
+      bannerId.classList.add('slide');
+    }
   
-
+    //start Animation
+    startBannerInterval() {
+      if (this.bannerInterval) {
+        clearInterval(this.bannerInterval);
+      }
+      this.bannerInterval = setInterval(() => {
+        this.addAnimationBanner();
+      }, 800);
+    }
+     //touchStart and touchEnd
+    swipeStart(e) {
+    let bannerId = document.getElementById("home-banner-second");
+    if (this.bannerInterval) {
+      clearInterval(this.bannerInterval);
+      bannerId.classList.remove('slide');
+    }
+   }
+   swipeEnd(e) {
+    this.startBannerInterval();
+  }
+  loadBulkRFQ(){
+    
+  }
 }

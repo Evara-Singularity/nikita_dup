@@ -163,7 +163,7 @@ export class OrderDetailComponent implements OnInit {
     const diffTime = Math.abs(currDate.getTime() - deliveryDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays <= 3) {
+    if (diffDays <= 2) {
       return [
         { id: 1, text: 'Product Damaged/Item Broken' },
         { id: 2, text: 'Wrong Item sent' },

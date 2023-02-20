@@ -87,18 +87,19 @@
                 </div>
             </div>
         </div>
+        <!-- -- {{ product['attributeValuesForPart'] | json }} -- -->
         <div class="keyfeatures"
             *ngIf="cardFeaturesConfig.enableFeatures && product['keyFeatures'] && product['keyFeatures'].length > 0
-           && (product['filterableAttributes'] | keyvalue).length == 0">
+           && !(product['attributeValuesForPart'])">
             <ul class="round">
                 <li *ngFor="let features of product['keyFeatures'].slice(0,2)">{{features.split(" ").splice(0,20).join(" ")}}<span
                         *ngIf="features.split(' ').length>20">...</span></li>
             </ul>
         </div>
-        <div class="attribute-section" *ngIf="product['filterableAttributes'] != null && (product['filterableAttributes'] | keyvalue).length != 0">
+        <div class="attribute-section" *ngIf="product['attributeValuesForPart'] != null && (product['attributeValuesForPart'] | keyvalue).length != 0">
             <div class="pwa-tabs-container">
-                <div class="pwa-tab" *ngFor="let item of product['filterableAttributes'] | keyvalue">
-                   {{item.key}} : {{item.value}}
+                <div class="pwa-tab" *ngFor="let item of (product['attributeValuesForPart'] | keyvalue).slice(0,4)">
+                   {{item.key | titlecase}} : {{item.value[0] | titlecase  }}
                 </div>
             </div>
         </div>

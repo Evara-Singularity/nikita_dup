@@ -109,7 +109,6 @@ export class HomeV1Component implements OnInit {
   }
 
   ngOnInit() {
-    this.startBannerInterval()
     this._commonService.isHomeHeader = true;
 		this._commonService.isPLPHeader = false;
     this.loadSearchTerms();
@@ -131,6 +130,9 @@ export class HomeV1Component implements OnInit {
     this.setMetaData();
     //setting analytics
     this.setAnalyticTags();
+    if(this._commonService.isBrowser){
+      this.startBannerInterval()
+    }
   }
 
   homePageData(response: any) {

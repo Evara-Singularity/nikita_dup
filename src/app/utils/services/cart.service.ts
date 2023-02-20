@@ -334,6 +334,10 @@ export class CartService
         const userSession = this.localAuthService.getUserSession();
         const cartSession = Object.assign(this.getGenericCartSession);
         cartSession['cart']['userId'] = userSession.userId;
+        
+        if(cartSession.cart && cartSession.cart.sessionId == undefined){
+            cartSession.cart.sessionId = userSession.sessionId
+        }
         return this.getSessionByUserId(cartSession)
             .pipe(
                 mergeMap((cartSession) =>

@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, Inject, Injector, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {CONSTANTS} from '@app/config/constants';
 import { CategoryData } from '@app/utils/models/categoryData';
@@ -17,7 +17,7 @@ import { DOCUMENT } from '@angular/common';
   templateUrl: './home-v1.component.html',
   styleUrls: ['./home-v1.component.scss']
 })
-export class HomeV1Component implements OnInit {
+export class HomeV1Component implements OnInit, OnDestroy {
 
   readonly bulkRfqConstant = CONSTANTS.bulkRfqConstant;
   isBrowser: boolean;
@@ -440,33 +440,42 @@ export class HomeV1Component implements OnInit {
   changeBannerIndicator(index) {
     this.mainBannerIndicator = index;
   }
-    //addAnimation
-    addAnimationBanner() {
-      let bannerId = document.getElementById("home-banner-second");
-      bannerId.classList.add('slide');
+  //addAnimation
+  addAnimationBanner() {
+    let bannerId = document.getElementById("home-banner-second");
+    bannerId.classList.add('slide');
+  }
+
+  //start Animation
+  startBannerInterval() {
+    if (this.bannerInterval) {
+      clearInterval(this.bannerInterval);
     }
-  
-    //start Animation
-    startBannerInterval() {
-      if (this.bannerInterval) {
-        clearInterval(this.bannerInterval);
-      }
-      this.bannerInterval = setInterval(() => {
-        this.addAnimationBanner();
-      }, 800);
-    }
-     //touchStart and touchEnd
-    swipeStart(e) {
+    this.bannerInterval = setInterval(() => {
+      this.addAnimationBanner();
+    }, 800);
+  }
+  //touchStart and touchEnd
+  swipeStart(e) {
     let bannerId = document.getElementById("home-banner-second");
     if (this.bannerInterval) {
       clearInterval(this.bannerInterval);
       bannerId.classList.remove('slide');
     }
-   }
-   swipeEnd(e) {
+  }
+
+  swipeEnd(e) {
     this.startBannerInterval();
   }
+
   loadBulkRFQ(){
     
   }
+
+  ngOnDestroy(): void {
+    if (this.bannerInterval) {
+      clearInterval(this.bannerInterval);
+    }
+  }
+
 }

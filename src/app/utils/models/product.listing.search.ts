@@ -60,6 +60,7 @@ export interface ProductsEntity {
     outOfStock?: boolean;
     description?:string;
     short_description?: null;
+    attributeValuesForPart?: any;
 }
 
 export interface FilterableAttributes {

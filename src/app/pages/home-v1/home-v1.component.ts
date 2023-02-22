@@ -1,6 +1,6 @@
-import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, Inject, Injector, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import CONSTANTS from '@app/config/constants';
+import {CONSTANTS} from '@app/config/constants';
 import { CategoryData } from '@app/utils/models/categoryData';
 import { CommonService } from '@app/utils/services/common.service';
 import { environment } from 'environments/environment';
@@ -19,15 +19,16 @@ import { DOCUMENT } from '@angular/common';
 })
 export class HomeV1Component implements OnInit {
 
-
+  readonly bulkRfqConstant = CONSTANTS.bulkRfqConstant;
   isBrowser: boolean;
   isServer: boolean;
-
+  bannerInterval;
   //banner data var
   bannerDataFinal: any = [];
   primaryTopBannerData: any = null;
   secondaryTopBannerData: any = null;
   bannerCarouselSelector = '.banner-carousel-siema';
+  bannerCarouselV2Selector = '.banner-carousel-siema-2';
   options = {
     interval: 5000,
     selector: this.bannerCarouselSelector,
@@ -38,6 +39,18 @@ export class HomeV1Component implements OnInit {
     threshold: 20,
     loop: true,
     autoPlay: true,
+  };
+  options_v1 = {
+    interval: 5000,
+    selector: this.bannerCarouselV2Selector,
+    duration: 200,
+    perPage: 1,
+    startIndex: 0,
+    draggable: false,
+    threshold: 20,
+    loop: true,
+    autoPlay: true,
+    topCarouselV2: true,
   };
   topOptions: any = this.options;
   defaultBannerImage = CONSTANTS.IMAGE_BASE_URL + 'image_placeholder.jpg';
@@ -86,6 +99,7 @@ export class HomeV1Component implements OnInit {
   //metadata var
   oganizationSchema: any;
   mainBannerIndicator: number = 0;
+  homeSecondaryCarouselData: any = [];
 
 
   constructor(
@@ -129,6 +143,9 @@ export class HomeV1Component implements OnInit {
     this.setMetaData();
     //setting analytics
     this.setAnalyticTags();
+    // if(this._commonService.isBrowser){
+    //   this.startBannerInterval()
+    // }
   }
 
   homePageData(response: any) {
@@ -184,6 +201,9 @@ export class HomeV1Component implements OnInit {
 
         case environment.NEW_CMS_IDS.FEATURE_ARRIVAL:
           this.featureArrivalData = block.block_data.image_block;
+          break;
+        case environment.NEW_CMS_IDS.SECONDARY_CAROUSEL_DATA:
+          this.homeSecondaryCarouselData = block.block_data.image_block;
           break;
 
         default:
@@ -433,6 +453,21 @@ export class HomeV1Component implements OnInit {
   changeBannerIndicator(index) {
     this.mainBannerIndicator = index;
   }
-  
+
+  resetScrollPos(selector) {
+    var divs = document.querySelectorAll(selector);
+    for (var p = 0; p < divs.length; p++) {
+      if (Boolean(divs[p].style.transform)) { //for IE(10) and firefox
+        divs[p].style.transform = 'translate3d(0px, 0px, 0px)';
+      } else { //for chrome and safari
+        divs[p].style['-webkit-transform'] = 'translate3d(0px, 0px, 0px)';
+      }
+    }
+  }
+
+  loadBulkRFQ(){
+    
+  }
+
 
 }

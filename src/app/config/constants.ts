@@ -205,6 +205,7 @@ export const CONSTANTS = {
     },
     codMin: 300,
     codMax: 30000,
+    easyEMILimit: 3000,
     userType: {
       business: "business",
       online: "online",
@@ -671,5 +672,7 @@ export const CONSTANTS = {
     PRODUCT_REVIEW_FORM: 'product-write-review',
   },
   enableGenericPrepaid: false,
+
+  bulkRfqConstant:'BULK_RFQ_CONSTANT'
 };
 export default CONSTANTS;

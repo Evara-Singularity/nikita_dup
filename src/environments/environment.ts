@@ -2,9 +2,11 @@ export const environment = {
   production: false,
   enableServerLogs: false,
   PROD_NAME: 'https://www.moglix.com',
+
   BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2',
   APP_BASE_URL: 'https://api.moglix.com',
+  
   // BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   // BASE_URL_V2: 'https://nodeapiqa.moglilabs.com/nodeApi/v2',
   // APP_BASE_URL: 'https://apiqa.moglilabs.com',
@@ -17,7 +19,7 @@ export const environment = {
   GTM_ANALYTICS_CODE: 'GTM-WW4R83Z',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js',
   LOG_FILE_PATH: "/var/log/moglix/online/pwa/",
-  buildVersion: '21.9',
+  buildVersion: '21.10',
   SOCIAL_LOGIN: {
     google: {
       clientId:
@@ -47,6 +49,7 @@ export const environment = {
     CAT_G: "cm416640",
     CAT_H: "cm814985",
     FEATURE_ARRIVAL: "cm976581",
+    SECONDARY_CAROUSEL_DATA:"cm336308"
   },
   // NEW_CMS_IDS: {
   //    // Use this with nodeApiQA

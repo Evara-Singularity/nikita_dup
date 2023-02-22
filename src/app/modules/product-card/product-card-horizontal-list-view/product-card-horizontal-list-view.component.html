@@ -90,7 +90,7 @@
         <!-- -- {{ product['attributeValuesForPart'] | json }} -- -->
         <div class="keyfeatures"
             *ngIf="cardFeaturesConfig.enableFeatures && product['keyFeatures'] && product['keyFeatures'].length > 0
-           && !(product['attributeValuesForPart'])">
+           && (product['attributeValuesForPart'] == null || (product['attributeValuesForPart'] | keyvalue).length == 0)">
             <ul class="round">
                 <li *ngFor="let features of product['keyFeatures'].slice(0,2)">{{features.split(" ").splice(0,20).join(" ")}}<span
                         *ngIf="features.split(' ').length>20">...</span></li>

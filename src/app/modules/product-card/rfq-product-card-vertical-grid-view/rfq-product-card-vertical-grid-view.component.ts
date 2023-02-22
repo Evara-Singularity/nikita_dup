@@ -20,7 +20,7 @@ import { ProductCardCoreComponent } from '../product-card.core.component';
 })
 export class RfqProductCardVerticalGridViewComponent extends ProductCardCoreComponent{
 
- 
+  rfqStatuscolour:string
   @Input() cardFeaturesConfig: ProductCardFeature = {
     // feature config
     enableAddToCart: true,
@@ -68,7 +68,21 @@ export class RfqProductCardVerticalGridViewComponent extends ProductCardCoreComp
 
   ngOnInit(): void {
     super.ngOnInit();
-    // console.log('product ==>', this.product)
+    this.rfqstatusColourConfig(this.product['HomePageRFQstatus']['status']);
+  }
+
+  rfqstatusColourConfig(status){
+    switch (status) {
+      case 'Pending':
+        this.rfqStatuscolour = 'orange'
+        break;
+      case 'Closed':
+        this.rfqStatuscolour = ''
+        break;
+      case 'Created':
+        this.rfqStatuscolour = 'green'
+        break;
+    }
   }
 
   splitBrandName(str){

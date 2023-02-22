@@ -5,7 +5,7 @@
         </div>
         <div class="pwa-tabs-container" id="tabs">
             <ng-container *ngFor="let item of tabsArray;let tabIndex = index">
-                <div class="pwa-tab pwa-tab-variant2" *ngIf="item['data']"
+                <div class="pwa-tab pwa-tab-variant2" *ngIf="item['data'].length>0"
                     [ngClass]="{'selectedTab': tabsArray[tabIndex]['isSelected'] }" (click)="setProductTab(item.name)">
                     {{item['name']}}
                 </div>
@@ -13,7 +13,7 @@
         </div>
         <ng-container *ngFor="let item of tabsArray;let tabIndex = index">
             <div class="product-card-section" *ngIf="item['isSelected'] && tabsArray[tabIndex]['data'].length > 0">
-                <ng-container *ngIf="(tabIndex < 3)">
+                <ng-container *ngIf="(tabsArray[tabIndex]['id']!=4)">
                     <product-card-vertical-container [containerId]="'topDealsContainer'+tabIndex" [numberOfItems]="10">
                         <ng-container *ngFor="let product of tabsArray[tabIndex]['data']; let pIndex=index">
                             <product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
@@ -23,7 +23,7 @@
                         </ng-container>
                     </product-card-vertical-container>
                 </ng-container>
-                <ng-container *ngIf="(tabIndex == 3)">
+                <ng-container *ngIf="(tabsArray[tabIndex]['id']== 4)">
                     <product-card-vertical-container [containerId]="'topDealsContainer'+tabIndex" [numberOfItems]="10">
                         <ng-container *ngFor="let product of tabsArray[tabIndex]['data']; let pIndex=index">
                             <rfq-product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"

@@ -76,10 +76,16 @@ export class RfqProductCardVerticalGridViewComponent extends ProductCardCoreComp
       case 'Pending':
         this.rfqStatuscolour = 'orange'
         break;
+      case 'Created':
+        this.rfqStatuscolour = 'orange'
+        break;
       case 'Closed':
         this.rfqStatuscolour = ''
         break;
-      case 'Created':
+      case 'Quoted':
+        this.rfqStatuscolour = 'green'
+        break;
+      case 'Order Created':
         this.rfqStatuscolour = 'green'
         break;
     }

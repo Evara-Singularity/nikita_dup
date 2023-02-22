@@ -5,35 +5,17 @@
         </div>
         <div class="pwa-tabs-container" id="tabs">
             <ng-container *ngFor="let item of tabsArray;let tabIndex = index">
-                <div class="pwa-tab pwa-tab-variant2" *ngIf="item['data']"
-                    [ngClass]="{'selectedTab': tabsArray[tabIndex]['isSelected'] }"
-                    (click)="setProductTab(item.name)">
+                <div class="pwa-tab pwa-tab-variant2" *ngIf="item['data'].length>0"
+                    [ngClass]="{'selectedTab': tabsArray[tabIndex]['isSelected'] }" (click)="setProductTab(item.name)">
                     {{item['name']}}
                 </div>
             </ng-container>
         </div>
-
         <ng-container *ngFor="let item of tabsArray;let tabIndex = index">
             <div class="product-card-section" *ngIf="item['isSelected'] && tabsArray[tabIndex]['data'].length > 0">
-                <ng-container>
+                <ng-container *ngIf="(tabsArray[tabIndex]['id']!=4)">
                     <product-card-vertical-container [containerId]="'topDealsContainer'+tabIndex" [numberOfItems]="10">
                         <ng-container *ngFor="let product of tabsArray[tabIndex]['data']; let pIndex=index">
-                            <product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
-                                [moduleUsedIn]="'POPULAR_DEALS'" [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex"
-                                [enableTracking]="true" [analytics]="analytics">
-                            </product-card-vertical-grid-view>
-                        </ng-container>
-                    </product-card-vertical-container>
-                </ng-container>
-            </div>
-        </ng-container>
-
-        <!-- <ng-container *ngFor="let item of miscTabArray;let tabIndex = index">
-            <div class="product-card-section"
-                *ngIf="(tabIndex < 3) && item['isSelected'] && miscTabArray[tabIndex]['data'].length > 0">
-                <ng-container *ngIf="miscTabArray[tabIndex]['data'].length > 0">
-                    <product-card-vertical-container [containerId]="'topDealsContainer'+tabIndex" [numberOfItems]="10">
-                        <ng-container *ngFor="let product of miscTabArray[tabIndex]['data']; let pIndex=index">
                             <product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
                                 [moduleUsedIn]="'POPULAR_DEALS'" [cardFeaturesConfig]='cardFeaturesConfig'
                                 [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
@@ -41,24 +23,9 @@
                         </ng-container>
                     </product-card-vertical-container>
                 </ng-container>
-            </div>
-            <ng-container *ngIf="(tabIndex < 3) && item['isSelected']">
-                <ng-container *ngIf=" miscTabArray[tabIndex]['data'].length == 0 &&  _loaderService.state == false">
-                    <div class="pad-lr-15">
-                        <div class="no-result-found-container">
-                            <div class="not-found-section">
-                                <h2>No Data Found</h2>
-                                <img class="no-product" src="../../../../assets/img/no-product.png">
-                            </div>
-                        </div>
-                    </div>
-                </ng-container>
-            </ng-container>
-            <div class="product-card-section"
-                *ngIf="(tabIndex == 3) && item['isSelected'] && miscTabArray[tabIndex]['data'].length > 0">
-                <ng-container *ngIf=" miscTabArray[tabIndex]['data'].length > 0">
-                    <product-card-vertical-container [containerId]="'topDealsContainer'" [numberOfItems]="10">
-                        <ng-container *ngFor="let product of miscTabArray[tabIndex]['data']; let pIndex=index">
+                <ng-container *ngIf="(tabsArray[tabIndex]['id']== 4)">
+                    <product-card-vertical-container [containerId]="'topDealsContainer'+tabIndex" [numberOfItems]="10">
+                        <ng-container *ngFor="let product of tabsArray[tabIndex]['data']; let pIndex=index">
                             <rfq-product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
                                 [moduleUsedIn]="'POPULAR_DEALS'" [cardFeaturesConfig]='cardFeaturesConfig'
                                 [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
@@ -67,21 +34,6 @@
                     </product-card-vertical-container>
                 </ng-container>
             </div>
-            <ng-container *ngIf="(tabIndex == 3) && item['isSelected']">
-                <ng-container *ngIf=" miscTabArray[tabIndex]['data'].length == 0 && _loaderService.state == false">
-                    <div class="pad-lr-15">
-                        <div class="no-result-found-container">
-                            <div class="not-found-section">
-                                <h2>No Data Found</h2>
-                                <img class="no-product" src="../../../../assets/img/no-product.png">
-                            </div>
-                        </div>
-                    </div>
-                </ng-container>
-
-            </ng-container>
-
-        </ng-container> -->
-
+        </ng-container>
     </section>
 </section>

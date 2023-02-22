@@ -13,6 +13,11 @@
 
   .pwa-tabs-container {
     padding: 5px 15px 15px;
+    .pwa-tab-variant2{
+      &.selectedTab{
+        background: var(--misty-rose);
+      }
+    }
   }
 
   .product-card-section {

@@ -48,8 +48,8 @@ export class HomeV1Component implements OnInit {
     startIndex: 0,
     draggable: false,
     threshold: 20,
-    loop: false,
-    autoPlay: false,
+    loop: true,
+    autoPlay: true,
     topCarouselV2: true,
   };
   topOptions: any = this.options;

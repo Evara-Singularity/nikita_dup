@@ -29,6 +29,14 @@
         </a>
     </div>
 </ng-container>
+<!-- slider for home v2 siema -->
+<ng-container *ngIf="options?.topCarouselV2">
+    <div class="item pointer wp-100">
+        <a href="{{item.image_link}}" target="_blank" >
+            <img src="{{image_Path + item.image_name}}" class="wp-100" alt="Banner" style="width: 100%;" >
+        </a>
+    </div>
+</ng-container>
 <!-- slider for manufacturer store -->
 <ng-container *ngIf="options.manufacturer">
     <div class="supplier_review_section center-block">

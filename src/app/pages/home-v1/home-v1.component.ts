@@ -17,7 +17,7 @@ import { DOCUMENT } from '@angular/common';
   templateUrl: './home-v1.component.html',
   styleUrls: ['./home-v1.component.scss']
 })
-export class HomeV1Component implements OnInit, OnDestroy {
+export class HomeV1Component implements OnInit {
 
   readonly bulkRfqConstant = CONSTANTS.bulkRfqConstant;
   isBrowser: boolean;
@@ -28,6 +28,7 @@ export class HomeV1Component implements OnInit, OnDestroy {
   primaryTopBannerData: any = null;
   secondaryTopBannerData: any = null;
   bannerCarouselSelector = '.banner-carousel-siema';
+  bannerCarouselV2Selector = '.banner-carousel-siema-2';
   options = {
     interval: 5000,
     selector: this.bannerCarouselSelector,
@@ -38,6 +39,18 @@ export class HomeV1Component implements OnInit, OnDestroy {
     threshold: 20,
     loop: true,
     autoPlay: true,
+  };
+  options_v1 = {
+    interval: 5000,
+    selector: this.bannerCarouselV2Selector,
+    duration: 200,
+    perPage: 1,
+    startIndex: 0,
+    draggable: false,
+    threshold: 20,
+    loop: false,
+    autoPlay: false,
+    topCarouselV2: true,
   };
   topOptions: any = this.options;
   defaultBannerImage = CONSTANTS.IMAGE_BASE_URL + 'image_placeholder.jpg';
@@ -130,9 +143,9 @@ export class HomeV1Component implements OnInit, OnDestroy {
     this.setMetaData();
     //setting analytics
     this.setAnalyticTags();
-    if(this._commonService.isBrowser){
-      this.startBannerInterval()
-    }
+    // if(this._commonService.isBrowser){
+    //   this.startBannerInterval()
+    // }
   }
 
   homePageData(response: any) {
@@ -440,42 +453,21 @@ export class HomeV1Component implements OnInit, OnDestroy {
   changeBannerIndicator(index) {
     this.mainBannerIndicator = index;
   }
-  //addAnimation
-  addAnimationBanner() {
-    let bannerId = document.getElementById("home-banner-second");
-    bannerId.classList.add('slide');
-  }
 
-  //start Animation
-  startBannerInterval() {
-    if (this.bannerInterval) {
-      clearInterval(this.bannerInterval);
+  resetScrollPos(selector) {
+    var divs = document.querySelectorAll(selector);
+    for (var p = 0; p < divs.length; p++) {
+      if (Boolean(divs[p].style.transform)) { //for IE(10) and firefox
+        divs[p].style.transform = 'translate3d(0px, 0px, 0px)';
+      } else { //for chrome and safari
+        divs[p].style['-webkit-transform'] = 'translate3d(0px, 0px, 0px)';
+      }
     }
-    this.bannerInterval = setInterval(() => {
-      this.addAnimationBanner();
-    }, 800);
-  }
-  //touchStart and touchEnd
-  swipeStart(e) {
-    let bannerId = document.getElementById("home-banner-second");
-    if (this.bannerInterval) {
-      clearInterval(this.bannerInterval);
-      bannerId.classList.remove('slide');
-    }
-  }
-
-  swipeEnd(e) {
-    this.startBannerInterval();
   }
 
   loadBulkRFQ(){
     
   }
 
-  ngOnDestroy(): void {
-    if (this.bannerInterval) {
-      clearInterval(this.bannerInterval);
-    }
-  }
 
 }

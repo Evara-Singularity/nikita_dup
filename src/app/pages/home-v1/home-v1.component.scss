@@ -176,8 +176,7 @@
     }
 }
 #container-div {
-    overflow-y: auto;
-    @extend %hide-scrollbar;
+   height: 125px;
 }
 
 #home-banner-second {
@@ -197,32 +196,5 @@
 
     .internal-scroll {
         overflow-y: auto;
-    }
-}
-
-.slide {
-    animation: slide 8s 0.8s infinite;
-}
-
-
-@keyframes slide {
-    0%,5%,15%,100% {
-        transform: translateX(0);
-    }
-
-    25%,30%,40% {
-        transform: translateX(-310px);
-    }
-
-    50%,60%,65% {
-        transform: translateX(-610px);
-    }
-
-    75%,85%,90% {
-        transform: translateX(-910px);
-    }
-
-    95%,100% {
-        transform: translateX(0px);
     }
 }

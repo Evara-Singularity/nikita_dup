@@ -177,6 +177,7 @@
 }
 #container-div {
     overflow-y: auto;
+    @extend %hide-scrollbar;
 }
 
 #home-banner-second {
@@ -210,15 +211,15 @@
     }
 
     25%,30%,40% {
-        transform: translateX(-300px);
+        transform: translateX(-310px);
     }
 
     50%,60%,65% {
-        transform: translateX(-600px);
+        transform: translateX(-610px);
     }
 
     75%,85%,90% {
-        transform: translateX(-900px);
+        transform: translateX(-910px);
     }
 
     95%,100% {

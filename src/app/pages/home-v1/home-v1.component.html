@@ -41,15 +41,15 @@
                 <div (touchstart)="swipeStart($event)" [ngStyle]="{'width.px': _localAuthService.IsUserGoldMember() ? 1550 : homeSecondaryCarouselData.length * 310}"  id="home-banner-second" performBatchActions (touchend)="swipeEnd($event)">
                     <div class ="internal-scroll">
                         <div *ngFor="let bannerSecondary of homeSecondaryCarouselData"  class="mySlides">
-                            <a *ngIf="bannerSecondary.image_link != bulkRfqConstant" href="{{bannerSecondary.image_link}}" class="full-banner">
+                            <a target="_blank" *ngIf="bannerSecondary.image_link != bulkRfqConstant" href="{{bannerSecondary.image_link}}" class="full-banner">
                                 <img src="{{imagePathBanner}}{{bannerSecondary.image_name}}" width="312" height="110">
                             </a>
-                            <a *ngIf="bannerSecondary.image_link == bulkRfqConstant" (click)="loadBulkRFQ()" class="full-banner">
+                            <a target="_blank" *ngIf="bannerSecondary.image_link == bulkRfqConstant" (click)="loadBulkRFQ()" class="full-banner">
                                 <img src="{{imagePathBanner}}{{bannerSecondary.image_name}}" width="312" height="110">
                             </a>
                         </div>
                         <div *ngIf="_localAuthService.IsUserGoldMember()" class="mySlides" >
-                            <a class="full-banner" (click)="_commonService.showgoldMembershipPopup()"> 
+                            <a  target="_blank" class="full-banner" (click)="_commonService.showgoldMembershipPopup()"> 
                                 <img src="{{imageAssetURL}}assets/img/others/goldMemberBanner.png" alt="Gold Member Banner" width="312" height="110">
                             </a>
                         </div>

@@ -17,7 +17,7 @@ export class PlpFixedHeaderComponent implements OnInit, OnDestroy {
   @Output() loadSearchNav$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() goBack$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() noOfCart: number = 0;
-  @Input() enableAppBanner: boolean = false;
+  @Input() ModuleName:string='' ;
 
   searchValue='';
   buyNow:boolean = false;

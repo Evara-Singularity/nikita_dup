@@ -19,16 +19,16 @@
         top: -2px;
         right: 1px;
         padding: 2px 4px;
-        border-radius: $border-radius-6;
+        border-radius: 5.5px;
         color: var(--white);
         background: var(--primary);
         font-size: 9px;
         border: 2px solid var(--white);
         font-family: "Roboto", sans-serif;
-        width: 20px;
-        height: 20px;
+        width: fit-content;
+        height: 19px;
         display: flex;
-        align-items: center;
+        // align-items: center;
         justify-content: center;
         font-weight: bold;
     }

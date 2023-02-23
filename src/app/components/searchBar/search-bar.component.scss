@@ -9,7 +9,7 @@
 }
 .search_heading {
     color: var(--dim-gray);
-    font-size: $small-font;
+    font-size: $medium-font;
     i {
         font-size: 12px;
         margin-right: 5px;
@@ -366,6 +366,7 @@ section.search-popup {
     overflow: scroll;
     padding-bottom: 10px;
     border-bottom: 1px solid #f1f1f1;
+    @extend %hide-scrollbar;
     .brand{
         display: inline-flex;
         line-height: 20px;

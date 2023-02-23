@@ -95,7 +95,7 @@
         .actual-price {
             padding: 0px;
             color: var(--black);
-            letter-spacing: 0.5px;
+            // letter-spacing: 0.5px;
             small {
                 font-size: $medium-font;
                 font-weight: normal !important;
@@ -111,6 +111,7 @@
             }
             strong {
                 font-size: $extra-large-3-font;
+                line-height: 33px;
                 font-weight: $font-bolder;
             }
         }

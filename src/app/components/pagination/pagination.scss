@@ -62,7 +62,7 @@ pagination-controls {
 
 .ngx-pagination .pagination-previous.disabled::before,
 .ngx-pagination .pagination-next.disabled::after {
-    color: var(--silver) !important;
+    color: var(--spanish-gray) !important;
 }
 
 .ngx-pagination .pagination-next a::after,
@@ -72,6 +72,6 @@ pagination-controls {
     display: none;
     font-weight: bold;
     .disabled{
-        color: var(--silver);
+        color: var(--spanish-gray);
     }
 }

@@ -68,6 +68,7 @@ export class ProductBrowserService
             reviewCount: product.reviewCount || 0,
             internalProduct: true,
             outOfStock: product.outOfStock,
+            attributeValuesForPart: {}
         } as ProductsEntity;
     }
 }

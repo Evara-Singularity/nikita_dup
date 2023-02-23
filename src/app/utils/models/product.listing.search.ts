@@ -62,6 +62,7 @@ export interface ProductsEntity {
     short_description?: null;
     homePageRFQ?:boolean;
     HomePageRFQstatus?:HomePageRFQstatus
+    attributeValuesForPart?: any;
 }
 
 export interface FilterableAttributes {

@@ -20,6 +20,7 @@ import { ProductCardCoreComponent } from '../product-card.core.component';
 export class ProductCardHorizontalListViewComponent extends ProductCardCoreComponent {
 
   @Input() isAdEnable: boolean = false;
+  modifiedFilterableAtrribute=[];
 
   constructor(
     public _cartService: CartService,
@@ -54,7 +55,16 @@ export class ProductCardHorizontalListViewComponent extends ProductCardCoreCompo
 
   ngOnInit(): void {
     super.ngOnInit();
+    this.getFilterableAttribute()
   }
+
+  getFilterableAttribute(){
+    if(this.product['attributeValuesForPart'] != null && (Object.keys(this.product['attributeValuesForPart'])).length != 0){
+      this.modifiedFilterableAtrribute=[];
+      this.modifiedFilterableAtrribute=Object.entries(this.product['attributeValuesForPart']) 
+    }
+  }
+  
 
   get youtubeThumbnail() {
     if (this.product['videoInfo'] && this.product['videoInfo'] && (this.product['videoInfo'].length > 0) && this.product['videoInfo'][0]['link']) {

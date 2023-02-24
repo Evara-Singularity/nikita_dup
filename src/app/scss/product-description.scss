@@ -4,7 +4,8 @@
 .prod-description {
     background: var(--white);
     position: relative;
-    margin-bottom: 3px;
+    margin-bottom: 0px;
+    border-bottom: 1px solid var(--platinum);
 
     .prod-name {
         font-weight: $font-bolder;

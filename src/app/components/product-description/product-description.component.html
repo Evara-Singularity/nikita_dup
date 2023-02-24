@@ -95,8 +95,8 @@
             <div class="prod-status">
                 <!-- <h4 class="status" *ngIf="!productOutOfStock && productMrp > 0">IN STOCK</h4> -->
                 <p class="prod-status-right">
-                    <small class="review"  (click)="scrollToResults('reviewSection',-30)" *ngIf="rawReviewsData?.reviewList?.length > 0"> {{rawReviewsData.reviewList.length}}
-                        {{productStaticData.reviews}}
+                    <small class="review"  (click)="scrollToResults('reviewSection',-30)" *ngIf="rawReviewsData?.reviewList?.length > 0"> ({{rawReviewsData.reviewList.length}}
+                        {{productStaticData.reviews}})
                     </small>
                 </p>
             </div>

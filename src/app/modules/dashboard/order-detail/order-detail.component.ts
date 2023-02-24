@@ -173,8 +173,8 @@ export class OrderDetailComponent implements OnInit {
 
     if (diffDays <= 2) {
       return [
+        { id: 2, text: 'Received wrong item' },
         { id: 1, text: 'Product Damaged/Item Broken' },
-        { id: 2, text: 'Wrong Item sent' },
         { id: 3, text: 'Parts or Accessories missing' },
         { id: 4, text: 'Item is defective' }
       ];

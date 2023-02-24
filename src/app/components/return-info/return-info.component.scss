@@ -11,7 +11,7 @@
 .top-header-bottom-menu {
     h3 {
         padding: 15px 5px;
-        font-size: $extra-large-font;
+        font-size: 18px;
 
     }
 
@@ -105,9 +105,10 @@
         align-items: center;
         font-size: $large-font;
         padding: 0px 15px;
+        font-weight: bold;
 
         i {
-            font-size: 20px;
+            font-size: 24px;
         }
     }
 }

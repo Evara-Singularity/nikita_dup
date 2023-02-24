@@ -1,4 +1,4 @@
-
+<downloadAppPromoBanner *ngIf="(ModuleName=='PRODUCT') && _commonService.enableAppPromoInHeader"></downloadAppPromoBanner>
 <div class="plp-fixed-header">
     <i class="login-back-icon" (click)="goBack$.emit()" class="icon-back-arrow" id="icon-back"></i>
     <a class="moglix-app-logo" [routerLink]="['/']">
@@ -13,4 +13,3 @@
     </a>
     <a (click)="loadBottomSheet$.emit()" class="icon-more_options"></a>
 </div>
-<downloadAppPromoBanner *ngIf="enableAppBanner && _commonService.enableAppPromoInHeader"></downloadAppPromoBanner>

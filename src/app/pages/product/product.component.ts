@@ -1257,6 +1257,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
         if (this.productOutOfStock) {
             this.commonService.enableAppPromoInHeader = true;
+        }else{
+            this.commonService.enableAppPromoInHeader = false;
         }
     }
 

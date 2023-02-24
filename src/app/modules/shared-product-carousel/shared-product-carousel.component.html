@@ -12,7 +12,9 @@
             <span class="fixed_ico wishlist" [class.active]="isPurcahseListProduct" (click)="addToPurchaseList()">
                 <i [ngClass]="isPurcahseListProduct ? 'icon-wishlist1-active' : 'icon-wishlist1-inactive'"></i>
             </span>
-            <span class="fixed_ico whatsapp" ><i class="icon-whatsapp"></i></span>
+            <a [href]="whatsappUrl">
+                <span class="fixed_ico whatsapp"><i class="icon-whatsapp"></i></span>
+            </a>
             <span *ngIf="productOutOfStock  && productService.oosSimilarProductsData.similarData.length > 2"
                 (click)="$event.stopPropagation();scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
                 class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">

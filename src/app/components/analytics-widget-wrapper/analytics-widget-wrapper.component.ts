@@ -201,7 +201,22 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
     }
   }
   callBrandUrl(brandObj){
-    this.router.navigate(['/'+ brandObj.link])
+    if(this.isL2CategoryCheck === true){
+      if(brandObj.link == null == null){
+        return;
+      }
+      else{
+        this.router.navigate(['/'+ brandObj.link])
+      }
+    }
+    else{
+      if(brandObj.brandCategoryLink == null == null){
+       return;
+      }
+      else{
+        this.router.navigate(['/'+ brandObj.brandCategoryLink]);
+      }
+    }
   }
 }
 

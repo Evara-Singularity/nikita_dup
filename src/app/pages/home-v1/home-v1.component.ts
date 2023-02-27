@@ -162,9 +162,11 @@ export class HomeV1Component implements OnInit {
   }
 
   checkForUser() {
-    let userData = this._localAuthService.getUserSession();
-    this.userData = userData;
-    this.isUserLoggedIn = (userData.authenticated == "true") ? true : false
+    if(this._commonService.isBrowser){
+      let userData = this._localAuthService.getUserSession();
+      this.userData = userData;
+      this.isUserLoggedIn = (userData.authenticated == "true") ? true : false
+    }
   }
 
   loadBulkRFQ(){

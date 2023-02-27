@@ -286,11 +286,24 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
           point:{
             events: {
               click: function () {
+                // if(this.options.link == null || this.options.brandCategoryLink == null){
+                //   return;
+                // }
                 if(componentContext.isL2CategoryCheck === true){
-                 componentContext.callRouter(this.options.link);
+                  if(this.options.link == null){
+                    return;
+                  }
+                  else{
+                    componentContext.callRouter(this.options.link);
+                  }
                 }
                 else{
-                  componentContext.callRouter(this.options.brandCategoryLink);
+                  if(this.options.brandCategoryLink == null){
+                   return;
+                  }
+                  else{
+                    componentContext.callRouter(this.options.brandCategoryLink);
+                  }
                 }
               }
             }

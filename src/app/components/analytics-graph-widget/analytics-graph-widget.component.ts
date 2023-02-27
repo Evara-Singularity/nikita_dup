@@ -8,7 +8,8 @@ import { ProductListService } from '@app/utils/services/productList.service';
 import Chart from 'highcharts/es-modules/Core/Chart/Chart.js';
 import ColumnSeries from 'highcharts/es-modules/Series/Column/ColumnSeries.js';
 import ColumnDataLabel from 'highcharts/es-modules/Series/Column/ColumnDataLabel.js';
-
+import { Router } from '@angular/router';
+let componentContext;
 
 
 @Component({
@@ -17,7 +18,6 @@ import ColumnDataLabel from 'highcharts/es-modules/Series/Column/ColumnDataLabel
   styleUrls: ['./analytics-graph-widget.component.scss']
 })
 export class AnalyticsGraphWidgetComponent implements OnInit {
- 
   chartOptions = {};
   @Input() chartType;
   @Input() filterData: Array<any>;
@@ -41,10 +41,12 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   attributeDataWithoutProcessing;
 
 
-  constructor(private dataService: DataService, private commonService: CommonService, private _productListService: ProductListService) {
+  constructor(private dataService: DataService, private commonService: CommonService, private _productListService: ProductListService,public router:Router) {
+    
    }
 
   ngOnInit(): void {
+    componentContext = this;
     this.getData();
     ColumnDataLabel.compose(ColumnSeries);
   }
@@ -123,11 +125,18 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     brandObj['name'] = brandData['brandName'].toString();
     brandObj['y'] = brandData['orderPercentage'];
     brandObj['drilldown'] = null;
+    if(this.isL2CategoryCheck){
+      brandObj['link'] = brandData['link'];
+    }
+    else{
+      brandObj['brandCategoryLink'] = brandData['brandCategoryLink'];
+    }
     seriesBrandArray.push(brandObj);
     return seriesBrandArray;
   }
 
   preparePriceChartData(priceData) {
+  
     const seriesPriceArray = [];
     let priceObj = {};
     if(this.isL2CategoryCheck === true){
@@ -138,7 +147,9 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     }
     priceObj['y'] = priceData['orderPercentage'];
     priceObj['drilldown'] = null;
+    priceObj['link'] =  priceData['categoryLink'];
     
+
     seriesPriceArray.push(priceObj);
     return seriesPriceArray;
   }
@@ -165,7 +176,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       chart: {
         type: 'column',
         width: 270,
-        height:300
+        height:300,
       },
       title: {
         align: 'left',
@@ -206,7 +217,8 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
           },
           events: {
             legendItemClick: function() {
-              return false;
+              // return false;
+             
             }
           }
         }
@@ -271,9 +283,16 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
             enabled: true,
             format: '{point.y}%'
           },
-          events: {
-            legendItemClick: function() {
-              return false;
+          point:{
+            events: {
+              click: function () {
+                if(componentContext.isL2CategoryCheck === true){
+                 componentContext.callRouter(this.options.link);
+                }
+                else{
+                  componentContext.callRouter(this.options.brandCategoryLink);
+                }
+              }
             }
           }
         }
@@ -299,7 +318,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     let chartOptions = {
       chart: {
         type: 'column',
-        height:300
+        height:300,
       },
       title: {
         align: 'left',
@@ -338,9 +357,13 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
             enabled: true,
             format: '{point.y}%'
           },
-          events: {
-            legendItemClick: function() {
-              return false;
+          point:{
+            events: {
+              click: function () {
+                if(componentContext.isL2CategoryCheck === true){
+                  componentContext.callRouter(this.options.link);
+                }
+              }
             }
           }
         }
@@ -367,6 +390,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
    
     if (htmlId.startsWith(`${this.priceChartId}`)) {
       const myChart1 = new Chart(htmlId ,this.createChartPriceSingleObject(data,seriesData));
+      
     }
     if (htmlId.startsWith(`${this.attributeChartId}`)) {
       const myChart2 = new Chart(htmlId ,this.createAttributeChartOptionsObject(data,seriesData,attributeName));
@@ -412,6 +436,8 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       return (value.match("^[a-zA-Z]*$") ? formatValue[0] : (RUPEE + formatValue[0]));
      }
    }
-}
-
+   callRouter(link){
+     this.router.navigateByUrl(link);
+   }
+  }
 

@@ -21,7 +21,7 @@
                                     {{formatPrice(price.interval,true)}}
                                 </p>
                                 <p *ngIf="price.interval.toLowerCase() !== 'others' && isL2CategoryCheck">
-                                    {{price.orderPercentage}}% of users prefer {{categoryName}} in {{price.categoryName}}
+                                    {{price.orderPercentage}}% of users prefer {{price.categoryName}} 
                                 </p>
                                 <p *ngIf="price.interval.toLowerCase() === 'others'">
                                     {{price.orderPercentage}}% of users prefer {{categoryName}} in other price range.
@@ -49,10 +49,11 @@
                     </ng-container>
                 </div>
                 <div class="single-card-container">
-                    <div (click)="generateFragmentUrl('brand',brand.brandName)"
+                    <!-- <div (click)="generateFragmentUrl('brand',brand.brandName)" -->
+                     <div (click)="callBrandUrl(brand)" 
                         *ngFor="let brand of brandDataWithoutProcessing" class="card">
                         <p *ngIf="brand.brandName !== 'others'">
-                            {{brand.orderPercentage}}% of users prefer {{categoryName}} of {{brand.brandName}} brand
+                            {{brand.orderPercentage}}% of users prefer {{categoryName}} of <b>{{brand.brandName}}</b> brand
                         </p>
                         <p *ngIf="brand.brandName.toLowerCase() === 'others'">
                             {{brand.orderPercentage}}% of users prefer {{categoryName}} of other brands

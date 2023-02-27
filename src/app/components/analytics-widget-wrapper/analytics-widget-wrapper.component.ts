@@ -199,7 +199,9 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
     else{
       this.generateFragmentUrl('price',this.formatPrice(priceObj.interval,false))
     }
-    
+  }
+  callBrandUrl(brandObj){
+    this.router.navigate(['/'+ brandObj.link])
   }
 }
 

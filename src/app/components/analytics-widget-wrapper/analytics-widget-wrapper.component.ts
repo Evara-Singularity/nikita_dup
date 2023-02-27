@@ -202,7 +202,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   }
   callBrandUrl(brandObj){
     if(this.isL2CategoryCheck === true){
-      if(brandObj.link == null == null){
+      if(brandObj.link == null){
         return;
       }
       else{
@@ -210,7 +210,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
       }
     }
     else{
-      if(brandObj.brandCategoryLink == null == null){
+      if(brandObj.brandCategoryLink == null){
        return;
       }
       else{

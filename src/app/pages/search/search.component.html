@@ -19,7 +19,6 @@
             </div>
         </ng-container>
     </ng-container>
-    <!-- {{_productListService?.productListingData.products.length | json}} -->
     <shared-product-listing #sharedProductList 
         (categoryClicked)="handleCategoryClicked($event)" 
         [categoryMidPlpFilterData]="API_RESULT['searchData'][0]?.categoriesPrimary"

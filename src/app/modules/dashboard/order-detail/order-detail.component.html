@@ -119,8 +119,8 @@
             <span class="need-help" [routerLink]="[ '/faq'] " [queryParams]="{redirectUrl:pageUrl}">NEED HELP?</span>
         </div>
 
-        <div class="need-help-strip-btm" *ngIf="detail && detail.dates.delivered.flag">
-            <p *ngIf="detail.dates.delivered.flag && showReturn">Return Policy valid till {{returnEndDate}}</p>
+        <div class="need-help-strip-btm" *ngIf="detail && detail.status==='DELIVERED' && detail.requestType !='return' && detail.requestType !='exchange' && showReturn && detail.show_return_exchange">
+            <p>Return Policy valid till {{returnEndDate}}</p>
         </div>
     </div>
 

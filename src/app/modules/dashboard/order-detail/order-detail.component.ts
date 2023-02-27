@@ -165,16 +165,18 @@ export class OrderDetailComponent implements OnInit {
   }
 
   getReturnReasons(deliveryDate) {
-    let currDate = new Date();
+    const currDate: any = new Date();
     deliveryDate = new Date(deliveryDate);
 
-    const diffTime = Math.abs(currDate.getTime() - deliveryDate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const currentDate = new Date(`${currDate.getMonth() + 1}/${currDate.getDate()}/${currDate.getFullYear()}`)
+    const oldDate = new Date(`${deliveryDate.getMonth() + 1}/${deliveryDate.getDate()}/${Math.abs(deliveryDate.getFullYear())}`)
 
+    const diffTime = Math.abs(currentDate.getTime() - oldDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     if (diffDays <= 2) {
       return [
+        { id: 2, text: 'Received wrong item' },
         { id: 1, text: 'Product Damaged/Item Broken' },
-        { id: 2, text: 'Wrong Item sent' },
         { id: 3, text: 'Parts or Accessories missing' },
         { id: 4, text: 'Item is defective' }
       ];
@@ -250,14 +252,14 @@ export class OrderDetailComponent implements OnInit {
               this.isBrandMsn = resp['productBO']['brandDetails']['brandTag'] == 'Brand' ? true : false;
               if (this.detail && this.detail.dates.delivered.date) {
                 this.showReturn = this.showReturnHandler(this.detail.dates.delivered.date);
+                let deliveryDate = new Date(item.dates.delivered.date);
+                let number = this.isBrandMsn ? 2 : 7;
+                let crrDate = new Date(deliveryDate.getFullYear(), deliveryDate.getMonth(), deliveryDate.getDate() + number); 
+                this.returnEndDate = this.getFomrattedDate(crrDate.getFullYear(), crrDate.getMonth(), crrDate.getDate());
               }
             }
           })
           this.returnReasons = this.getReturnReasons(item.dates.delivered.date);
-          let deliveryDate = new Date(item.dates.delivered.date);
-          let crrDate = new Date(deliveryDate.getFullYear(), deliveryDate.getMonth(), deliveryDate.getDate() + 7); 
-          // crrDate.setDate(crrDate.getDate() + 7);
-          this.returnEndDate = this.getFomrattedDate(crrDate.getFullYear(), crrDate.getMonth(), crrDate.getDate());
           // const mydate = new Date(item.dates.delivered.date);
           // console.log('this.returnEndDate', item.dates.delivered.date, deliveryDate, crrDate, this.returnEndDate);
           this.createReturnForm(item);

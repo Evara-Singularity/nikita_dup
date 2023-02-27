@@ -1,4 +1,4 @@
-<div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader && _productListService?.productListingData && _productListService?.productListingData > 0}">
+<div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader && _productListService?.productListingData && _productListService?.productListingData > 0,'header-top-margin':_productListService?.productListingData.products.length}">
     <app-promo  [page]="'search'" class="fixed-btm-app-prmo" [isOverlayMode]="true"></app-promo>
     <ng-container
         *ngIf="(didYouMean == undefined || didYouMean == '') && API_RESULT['searchData'][0].productSearchResult != undefined">
@@ -19,7 +19,6 @@
             </div>
         </ng-container>
     </ng-container>
-
     <shared-product-listing #sharedProductList 
         (categoryClicked)="handleCategoryClicked($event)" 
         [categoryMidPlpFilterData]="API_RESULT['searchData'][0]?.categoriesPrimary"

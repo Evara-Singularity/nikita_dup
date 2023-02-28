@@ -1,10 +1,8 @@
 <div *ngIf="!productNotFound">
-    <div class="pt-50">
-        <app-oos-similar-section [productOutOfStock]="productOutOfStock"
-            [similarForOOSContainer]="similarForOOSContainer"
-            [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
-        </app-oos-similar-section>
-    </div>
+    <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer"
+        [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
+    </app-oos-similar-section>
+
 
     <shared-product-carousel (openPopUpcrousel$)="openPopUpcrousel()" [productAllImages]="productAllImages"
         [carouselInitialized]="carouselInitialized" (loadProductShare$)="loadProductShare()"

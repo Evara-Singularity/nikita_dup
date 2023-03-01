@@ -91,6 +91,12 @@
     </div>
     </ng-container>
 </ng-container>
+
+<ng-container
+    *ngIf="(pageName != 'SEARCH') && (productsListingData?.products != undefined && productsListingData?.products?.length>0)">
+    <bulk-rquest-form-popup-lazy></bulk-rquest-form-popup-lazy>
+</ng-container>
+
 <app-search-not-found 
     [helpText]="['No result found ', 'for your search.']"
     [helpSubText]="['Please check the spelling or try searching for something else']" 

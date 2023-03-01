@@ -44,6 +44,7 @@ export class BulkRquestFormPopupLazyComponent implements OnInit, AfterViewInit, 
   }
 
   async onVisiblePincodeSection() {
+    this.loader.setLoaderState(true);
     const { BulkRquestFormPopupComponent } = await import(
       "../bulk-rquest-form-popup/bulk-rquest-form-popup.component"
     ).finally(() => {

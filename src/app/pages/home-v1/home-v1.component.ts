@@ -169,10 +169,6 @@ export class HomeV1Component implements OnInit {
     }
   }
 
-  loadBulkRFQ(){
-    this._commonService.initiateBulkRfq(true);
-  }
-
   homePageData(response: any) {
     response['data'].forEach((block) => {
       const layoutCode = block.layout_code;

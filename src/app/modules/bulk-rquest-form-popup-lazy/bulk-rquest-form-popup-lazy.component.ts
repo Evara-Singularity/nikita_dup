@@ -4,7 +4,7 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 
 @Component({
   selector: 'bulk-rquest-form-popup-lazy',
-  template: `<ng-container #bulkRfqForm></ng-container>`,
+  templateUrl: './bulk-rquest-form-popup-lazy.component.html',
   styleUrls: []
 })
 export class BulkRquestFormPopupLazyComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -71,6 +71,10 @@ export class BulkRquestFormPopupLazyComponent implements OnInit, AfterViewInit, 
     console.log('deleteComponent', )
     this.bulkRfqComponent = null;
     this.bulkRfqFormContainerRef.remove();
+  }
+
+  loadBulkRFQ(){
+    this.commonService.initiateBulkRfq(true);
   }
 
 

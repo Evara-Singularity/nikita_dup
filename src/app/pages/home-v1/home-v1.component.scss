@@ -216,3 +216,11 @@
         overflow-y: auto;
     }
 }
+
+::ng-deep{
+    bulk-rquest-form-popup-lazy{
+        .load-bulk-rfq{
+            padding: 20px 15px 10px !important;
+        }
+    }
+}

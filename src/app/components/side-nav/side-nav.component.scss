@@ -130,3 +130,23 @@
 .full-border-radius{
   border-radius: 8px !important;
 }
+
+  .buy-with-gst-menu{
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-image: linear-gradient( to right, #AFA8FE, #F6CAFF);
+    h2{
+      width: calc(60% - 10px);
+      font-size: 14px;
+      line-height: $medium-line-height;
+    }
+    button{
+      width: 40%;
+      padding-left: 10px;
+      padding-right: 10px;
+      width: fit-content;
+      border-radius: 6px;
+    }
+  }

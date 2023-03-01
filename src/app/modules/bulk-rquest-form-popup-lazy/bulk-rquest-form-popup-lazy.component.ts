@@ -5,7 +5,7 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 @Component({
   selector: 'bulk-rquest-form-popup-lazy',
   templateUrl: './bulk-rquest-form-popup-lazy.component.html',
-  styleUrls: []
+  styleUrls: ['./bulk-rquest-form-popup-lazy.component.scss'],
 })
 export class BulkRquestFormPopupLazyComponent implements OnInit, AfterViewInit, OnDestroy {
 

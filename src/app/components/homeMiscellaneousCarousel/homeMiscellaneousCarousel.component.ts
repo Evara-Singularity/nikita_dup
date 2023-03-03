@@ -59,7 +59,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         id: 1,
         name: this.RECENT_TAB_NAME,
         data: (this.recentResponse['data'] as any[]).map((item) => this._productService.recentProductResponseToProductEntity(item)) || [],
-        isSelected: true,
+        isSelected: false,
       })
     }
     if(this.pastOrdersResponse && this.pastOrdersResponse['status'] && this.pastOrdersResponse['data'] && this.pastOrdersResponse['data'].length > 0){
@@ -70,23 +70,28 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         isSelected: false,
       })
     }
-    if (this.purcahseListResponse) {
-      this.tabsArray.push({
-        id: 3,
-        name: this.WISHLIST_TAB_NAME,
-        data: this.purcahseListResponse.map(product => this._productService.wishlistToProductEntity(product)),
-        isSelected: false,
-      })
+
+      if (this.purcahseListResponse && this.pastOrdersResponse.length > 0) {
+        this.tabsArray.push({
+          id: 3,
+          name: this.WISHLIST_TAB_NAME,
+          data: this.purcahseListResponse.map(product => this._productService.wishlistToProductEntity(product)),
+          isSelected: false,
+        })
+      }
+      if (this.rfqReponse && this.rfqReponse['data'] && this.rfqReponse['data'].length > 0) {
+        this.tabsArray.push({
+          id: 4,
+          name: this.RFQ_TAB_NAME,
+          data: this.rfqReponse['data'].filter(rfq => (rfq && rfq.itemData && rfq.itemData.length > 0)).map(product => this._productService.myRfqToProductEntity(product)),
+          isSelected: false,
+        })
+      }
+      if (this.tabsArray.length > 0) {
+        this.tabsArray[0].isSelected = true;
+
+      }
     }
-    if (this.rfqReponse && this.rfqReponse['data'] && this.rfqReponse['data'].length > 0) {
-      this.tabsArray.push({
-        id: 4,
-        name: this.RFQ_TAB_NAME,
-        data: this.rfqReponse['data'].filter(rfq=> (rfq && rfq.itemData && rfq.itemData.length > 0)).map(product =>  this._productService.myRfqToProductEntity(product)),
-        isSelected: false,
-      })
-    }
-  }
 
   setProductTab(tabName) {
     this.tabsArray.forEach((element, index) => {

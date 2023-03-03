@@ -33,7 +33,7 @@ export class PlpFixedHeaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.buyNow = this.cartService.buyNow == undefined ? false : this.cartService.buyNow;
     this.route.queryParams.subscribe(res => {
-      this.searchValue = (res['search_query']) ? res['search_query'] : ''
+      this.searchValue = (res['search_query']) ? decodeURIComponent(res['search_query']) : ''
     })
     this.cartService.cartCountSubject.subscribe(res=>{
      // console.log("fixed header --" , this.cartService.buyNow);

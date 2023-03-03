@@ -63,12 +63,16 @@ export class SearchComponent implements OnInit {
   }
 
   setHeaderNameBasedOnCondition() {
-    if (!this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or') {
-      this.headerNameBasedOnCondition = 'Results for ' + this.API_RESULT['searchData'][0].productSearchResult.displayString;
-    } else if (this.toggleRcommendFlag && (!this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation != 'or')) {
-      this.headerNameBasedOnCondition = 'Results for ' + (this.API_RESULT['searchData'][0].productSearchResult.displayString ? this.API_RESULT['searchData'][0].productSearchResult.displayString : this.API_RESULT['searchData'][0].productSearchResult.inputSearchString);
-    } else {
-      this.headerNameBasedOnCondition = this.checkForCorrectString(this.API_RESULT['searchData'][0].productSearchResult.displayString,this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString);
+    if(this.API_RESULT['searchData'][0].productSearchResult.displayString){
+      if (!this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation == 'or') {
+        this.headerNameBasedOnCondition = 'Results for ' + this.API_RESULT['searchData'][0].productSearchResult.displayString;
+      } else if (this.toggleRcommendFlag && (!this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString && this.API_RESULT['searchData'][0].productSearchResult.searchDisplayOperation != 'or')) {
+        this.headerNameBasedOnCondition = 'Results for ' + (this.API_RESULT['searchData'][0].productSearchResult.displayString ? this.API_RESULT['searchData'][0].productSearchResult.displayString : this.API_RESULT['searchData'][0].productSearchResult.inputSearchString);
+      } else {
+        this.headerNameBasedOnCondition = this.checkForCorrectString(this.API_RESULT['searchData'][0].productSearchResult.displayString,this.API_RESULT['searchData'][0].productSearchResult.correctedSearchString);
+      }
+    }else{
+      this.headerNameBasedOnCondition = '';
     }
   }
 
@@ -86,6 +90,12 @@ export class SearchComponent implements OnInit {
 
       // Set the API_RESULT variable
       this.API_RESULT = result;
+
+      //incase only product avaliable in search result
+      if (this.API_RESULT['searchData'][0] && this.API_RESULT['searchData'][0]['productSearchResult'] && this.API_RESULT['searchData'][0]['productSearchResult']['products'].length == 1) {
+        this._router.navigateByUrl(this.API_RESULT['searchData'][0]['productSearchResult']['products'][0]['productUrl']);
+        return;
+      }
 
       this.setCategoriesPrimaryForCategoryMidPlpFilter();
 

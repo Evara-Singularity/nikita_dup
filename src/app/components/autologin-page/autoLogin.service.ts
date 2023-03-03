@@ -37,7 +37,7 @@ export class AutoLoginService {
     // const msn = ["msn2r9cfnauwxd", "msng9vn4gd1dkp"];
     let getGroupProductApi = [];
     msn.forEach((ele) => {
-      getGroupProductApi.push(this.productService.getGroupProductObj(ele));
+      getGroupProductApi.push(this.productService.getGroupProductObj(ele.msn || ele));
     });
     forkJoin(getGroupProductApi).subscribe((results) => {
       const addToCartData = [];
@@ -49,7 +49,7 @@ export class AutoLoginService {
               productGroupData: data["productBO"],
               buyNow: buyNow,
               selectPriceMap: null,
-              quantity: 1,
+              quantity: msn[i].quantity || 1,
             });
           addToCartData.push(addToCartProductRequest);
           if (i == results.length - 1) {

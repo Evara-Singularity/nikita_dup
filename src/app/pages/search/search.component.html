@@ -8,7 +8,7 @@
                 <div class="container">
                     <div class="search-txt">
                         <p class="f-left">
-                            <span>Showing results for
+                            <span *ngIf="API_RESULT['searchData'][0].productSearchResult.correctedSearchString" >Showing results for
                                 <i>{{API_RESULT['searchData'][0].productSearchResult.correctedSearchString}}</i></span><br />
                             <a class="blue-text"
                                 (click)="redirectWithNoPreProcessRequiredParam(API_RESULT['searchData'][0].productSearchResult.inputSearchString)">Search

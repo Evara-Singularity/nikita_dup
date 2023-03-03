@@ -577,11 +577,10 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                             png
                                             formats allowed</span></p>
                                     <label class="upload-img">
-                                        <input type="file" class="hide" accept="image/*" formControlName="chequeUrl"
+                                        <input type="file" class="hide" accept="image/*"  formControlName="chequeUrl"
                                             (change)="addChequeImage($event)">
                                         <i class="icon-expand"></i>
                                     </label>
-
                                     <label class="upload-img" *ngIf="chequeImage">
                                         <img src="{{imagePath}}web/dist/assets/img/placeholder.svg" appImageToSrc
                                             [itemImage]="chequeImage['file']">

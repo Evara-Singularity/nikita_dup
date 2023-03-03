@@ -84,7 +84,7 @@ export class AutologinPageComponent implements OnInit {
     this.autoLoginService.getDecodeD2cToken(postBody).subscribe(res=>{
       if(res["status"] == true && res['data'] && res['data'].length > 0){
         const msnList = res['data'];
-        this.autoLoginService.processMsnsAndAddtoCart(msnList, "", "quickorder");
+        this.autoLoginService.processMsnsAndAddtoCart(msnList, null, "quickorder");
       }else{
         const errMsg = (typeof res['data'] == 'string'? res['data'] :"somthing went wrong");
         this._toastService.show({ type: 'error', text: errMsg });

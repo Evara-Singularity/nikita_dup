@@ -1,5 +1,5 @@
 <div *ngIf="!isBnplEnable" class="f-size-16 text-red"> {{message}} </div>
-<section *ngIf="isBnplEnable"  class="bnplInner">
+<section   class="bnplInner">
        <form [formGroup]="bnplForm" (ngSubmit)="pay(bnplForm.value, bnplForm.valid)" class="form-horizontal">
     <ul class="pwa-radio-list">
         <label  *ngFor="let bank of showBanks" class="pwa-radio-list-item">
@@ -13,7 +13,7 @@
             </div> 
      </label>
     </ul>
-    <div style="margin-bottom: 15px" >
+    <div *ngIf="isBnplEnable" style="margin-bottom: 15px" >
         <prepaid-offer-checkout [displayMode]="'LABEL'" [displayName]="'BNPL payment'" ></prepaid-offer-checkout>
     </div>
     <div class="continue-button">

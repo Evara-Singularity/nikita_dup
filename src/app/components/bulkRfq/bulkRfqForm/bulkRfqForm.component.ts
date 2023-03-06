@@ -6,6 +6,7 @@ import {
   Validators,
 } from "@angular/forms";
 import CONSTANTS from "@app/config/constants";
+import { ENDPOINTS } from "@app/config/endpoints";
 import { SharedAuthService } from "@app/modules/shared-auth-v1/shared-auth.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { LocalAuthService } from "@app/utils/services/auth.service";
@@ -29,8 +30,7 @@ export class BulkRfqFormComponent implements OnInit {
   PRODUCT_TYPES = [];
   readonly stepNameOtp = "OTP";
   readonly stepNameRfqForm = "RFQ_FORM";
-  readonly API =
-    "https://searchapidev.moglilabs.com/" || CONSTANTS.NEW_MOGLIX_API;
+  readonly API = CONSTANTS.NEW_MOGLIX_API;
 
   bulkrfqForm: FormGroup;
 
@@ -121,8 +121,7 @@ export class BulkRfqFormComponent implements OnInit {
   }
 
   private fetchCategoryList(value: string) {
-    const url =
-      this.API + `searchApi/category/list?str=${value}&countryCode=356`;
+    const url = this.API + ENDPOINTS.SEARCH_CATEGORY_LIST + value + "&countryCode=356";
     this._dataService.callRestful("GET", url).subscribe(
       (response) => {
         this._loader.setLoaderState(false);

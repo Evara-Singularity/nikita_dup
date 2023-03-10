@@ -15,14 +15,14 @@
           </p>
         </label>
       </div>
-      <div class="multiple-form-field quantity-block">
-        <div class="outline-input-label">
-          <p class="required-qty-txt">Enter your <br />required quantity</p>
+      <div class="multiple-form-field quantity-block items-center">
+        <div class="outline-input-label items-center">
+          <p class="required-qty-txt">Enter your  <br />required quantity</p>
         </div>
         <div class="outline-input-label qty-field">
           <label for="none">
             <list-autocomplete class="value-auto-co" id="bulk-autocomp" [control]="bulkrfqForm.get('quantity')"
-              [placeholder]="'Select from suggested Qty'" [quantity]="PRICE_VALUES"
+              [placeholder]="'Enter Quantity'" [quantity]="PRICE_VALUES"
               (onSelect)="updateQuantity(bulkrfqForm)">
             </list-autocomplete>
             <p *ngIf="

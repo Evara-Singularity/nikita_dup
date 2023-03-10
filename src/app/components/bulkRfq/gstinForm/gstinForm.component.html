@@ -8,7 +8,7 @@
                 gstinForm.get('gstin').invalid" class="error-txt">
                         Kindly enter valid gstin.
                     </p>
-                <span class="label">Enter GST no.</span>
+                <span class="label">Enter GST No.*</span>
             </label>
         </div>
         <div class="outline-input-label">
@@ -18,11 +18,11 @@
                 gstinForm.get('email').invalid" class="error-txt">
                         Kindly enter valid email.
                     </p>
-                <span class="label">Enter Email-ID</span>
+                <span class="label">Enter Email-ID*</span>
             </label>
         </div>
         <div class="outline-input-label">
-            <label>
+            <label [class.is-focus]="gstinForm.get('description').value.length">
                 <textarea formControlName="description"></textarea>
                 <span class="label">Add product description (Optional)</span>
             </label>

@@ -3,7 +3,7 @@
     <div class="material-form" [formGroup]="gstinForm">
         <div class="outline-input-label">
             <label [class.is-focus]="gstinForm.get('gstin').value.length">
-                <input formControlName="gstin" type="tel" name="">
+                <input formControlName="gstin" type="text" name="">
                 <p *ngIf="gstinForm.get('gstin').touched && 
                 gstinForm.get('gstin').invalid" class="error-txt">
                         Kindly enter valid gstin.
@@ -13,7 +13,7 @@
         </div>
         <div class="outline-input-label">
             <label  [class.is-focus]="gstinForm.get('email').value.length">
-                <input formControlName="email" type="tel" name="">
+                <input formControlName="email" type="email" name="">
                 <p *ngIf="gstinForm.get('email').touched && 
                 gstinForm.get('email').invalid" class="error-txt">
                         Kindly enter valid email.

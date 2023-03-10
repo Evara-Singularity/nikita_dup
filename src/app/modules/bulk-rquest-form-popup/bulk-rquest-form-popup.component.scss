@@ -16,7 +16,7 @@
     padding: 15px;
 
     .stepper-wrapper {
-        margin-top: 25px;
+        margin-top: 15px;
         display: flex;
         justify-content: space-between;
         margin-bottom: 25px;
@@ -71,10 +71,17 @@
                     border-color: var(--slimy-green);
                     color: var(--slimy-green);
                     background: var(--white);
+                    margin-right: 28px;
 
                     &::after {
                         border-color: red;
                     }
+                }
+                &.active2{
+                    border-color: var(--slimy-green);
+                    color: var(--slimy-green);
+                    background: var(--white);
+                    margin-right: -30px;
                 }
             }
 
@@ -229,7 +236,7 @@
             }
             .label{
                 color: var(--gray-web);
-                margin: 10px 0 5px;
+                margin: 15px 0 5px;
             }
             h4{
                 font-size: $large-font;
@@ -247,9 +254,20 @@
 ::ng-deep{
     .pop-up-header3{
         .text-section{
+            h3{
+                font-size: $extra-large-font;
+            }
             .page-name{
+                font-size: $medium-font !important;
                 line-height: 18px !important;
             }
+        }
+    }
+    .error-field{
+        margin-top: 0px;
+        padding-top: 5px;
+        .error-txt{
+            margin-left: 0px !important;
         }
     }
 }

@@ -95,6 +95,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
     } else if (this.stepState === this.stepNameConfimation) {
       this.closePopup$.emit();
     }
+    this._commonService.setBodyScroll(null, true);
   }
 
   setPhoneNo(event) {
@@ -113,6 +114,9 @@ export class BulkRquestFormPopupComponent implements OnInit {
     else if (stepName == this.stepNameConfimation) {
       this.rfqSubmmisionInProcess = 3;
       this.saveBulkRfq();
+    }
+    else if(stepName == this.stepNameOtp){
+      this.rfqSubmmisionInProcess = 3;
     }
     this.stepState = stepName;
   }

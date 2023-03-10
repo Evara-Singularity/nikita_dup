@@ -14,6 +14,7 @@ import { ENDPOINTS } from '@app/config/endpoints';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { DataService } from '@app/utils/services/data.service';
+import { FaqSuccessPopoupComponent } from '@app/components/faq-success-popup/faq-success-popup.component';
 
 
 @Component({
@@ -85,6 +86,7 @@ ngOnInit() {
     }else{
         this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
     }
+    this.isShowLoader = true;
     this.getBNPEligibility();
     //this.bnplMap = CONSTANTS.GLOBAL.bnplMap[this.type];
     //this.showBanks.push(this.bnplMap["LAZYPAY"]);
@@ -102,6 +104,7 @@ getBNPEligibility() {
         this.getBNPEligibilityCall().subscribe((res): void => {
             if (res["status"] != true) {
                 this.isBnplEnable = false;
+                this.isShowLoader = false;
                 return;
             }
 
@@ -111,15 +114,14 @@ getBNPEligibility() {
 
             this.dataBnpl = this._objectToArray.transform(data.bnplResponse, "associative");
             this.dataBnpl.forEach((element, index) => {
-              if(this.bnplMapKeys.includes(element.key) )
+              if(this.bnplMapKeys.includes(element.key) && element.value.eligibility.status == true)
               {
                  this.bnplMap[element.key].active = true;
                  this.showBanks.push(this.bnplMap[element.key]);
                  
-              }
-              
+              } 
             });
-
+            this.isShowLoader = false;
             this.selectDefaultBNPL(); 
         
         

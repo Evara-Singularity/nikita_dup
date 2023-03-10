@@ -327,6 +327,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     }
     return chartOptions;
   }
+  
   createChartPriceSingleObject(data, seriesArray) {
     let chartOptions = {
       chart: {
@@ -387,7 +388,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       series: [
         {
-          name: "Price Range",
+          name: (this.isL2CategoryCheck)?"Categories":"Price Range",
           colorByPoint: true,
           // dataSorting: {
           //   enabled: true

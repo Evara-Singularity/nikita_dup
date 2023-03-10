@@ -71,7 +71,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
       })
     }
 
-      if (this.purcahseListResponse && this.pastOrdersResponse.length > 0) {
+      if (this.purcahseListResponse && this.purcahseListResponse.length > 0) {
         this.tabsArray.push({
           id: 3,
           name: this.WISHLIST_TAB_NAME,

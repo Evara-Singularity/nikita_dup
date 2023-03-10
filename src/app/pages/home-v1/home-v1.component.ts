@@ -298,7 +298,7 @@ export class HomeV1Component implements OnInit {
   }
 
   async onVisiblePopularDeals([recentViewedResponse, pastOrderResponse, wishlistResponse, rfqListResponse]) {
-    console.log(arguments);
+
     if (!this.homeMiscellaneousCarouselInstance) {
       const { HomeMiscellaneousCarouselComponent } = await import(
         "./../../components/homeMiscellaneousCarousel/homeMiscellaneousCarousel.component"

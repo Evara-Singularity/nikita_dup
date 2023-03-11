@@ -121,6 +121,14 @@ getBNPEligibility() {
                  
               } 
             });
+
+            if(this.showBanks.length == 0)
+            {
+                this.isBnplEnable = false;
+                this.isShowLoader = false;
+                return;
+            }
+
             this.isShowLoader = false;
             this.selectDefaultBNPL(); 
         

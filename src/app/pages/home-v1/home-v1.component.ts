@@ -372,6 +372,8 @@ export class HomeV1Component implements OnInit {
       this.onVisiblePopularDeals(response)
     }, error => {
       console.log('error', error);
+      this.onVisiblePopularDeals([null, null, null, null])
+      // this.onVisiblePopularDeals(null, null, null, null)
     })
   }
 

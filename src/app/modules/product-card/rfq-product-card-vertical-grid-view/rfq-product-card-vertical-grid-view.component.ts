@@ -85,7 +85,7 @@ export class RfqProductCardVerticalGridViewComponent extends ProductCardCoreComp
       case 'Quoted':
         this.rfqStatuscolour = 'green'
         break;
-      case 'Order Created':
+      case 'Order_Created':
         this.rfqStatuscolour = 'green'
         break;
     }

@@ -256,6 +256,9 @@
                 display: flex;
                 .flx-child{
                     width: 50%;
+                    .breakText{
+                        word-wrap:break-word;
+                    }
                 }
             }
         }

@@ -65,7 +65,7 @@
             <h4 class="maintxt">{{ bulkrfqForm["quantity"] }}</h4>
           </div>
           <div class="flx-child">
-            <p class="label">Budget</p>
+            <p class="label" *ngIf="bulkrfqForm['budget'] != null && bulkrfqForm['budget'] != undefined">Budget</p>
             <h4 class="maintxt breakText">{{ bulkrfqForm["budget"] }}</h4>
           </div>
         </div>

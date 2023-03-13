@@ -71,7 +71,7 @@ export class BulkRfqFormComponent implements OnInit {
   }
 
   get isMaxQuantity(){ return this.bulkrfqForm.get('quantity') }
-  
+
   loginAndValidatePhone() {
     const user = this._localAuthService.getUserSession();
     this.setBulkRfqForm$.emit(this.bulkrfqForm.value);
@@ -121,8 +121,6 @@ export class BulkRfqFormComponent implements OnInit {
         this.fetchCategoryList(value);
       }, 600);
     }
-
-    console.log("PRODUCT_TYPES ======>" , this.PRODUCT_TYPES);
   }
 
   private fetchCategoryList(value: string) {

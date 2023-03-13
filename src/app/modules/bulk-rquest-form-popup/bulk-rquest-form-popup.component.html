@@ -7,7 +7,8 @@
                 <img class="step-counter whtBg" src="assets/img/checkbox-circle-fill-m.svg" alt="" *ngIf="rfqSubmmisionInProcess == 2">
             </div>
             <div class="stepper-item active">
-                <div class="step-counter">2</div>
+                <div class="step-counter active2" *ngIf="rfqSubmmisionInProcess == 2">2</div>
+                <div class="step-counter" *ngIf="rfqSubmmisionInProcess != 2">2</div>
             </div>
         </div>
 

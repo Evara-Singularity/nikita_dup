@@ -58,7 +58,7 @@ export class BulkRfqFormComponent implements OnInit {
     this.bulkrfqForm = this.formBuilder.group({
       productType: ["", [Validators.required]],
       quantity: ["", [Validators.required]],
-      budget: [""],
+      budget: ["", Validators.maxLength(8)],
       phone: [
         user != null && user.authenticated == "true" ? user.phone : "",
         [
@@ -113,11 +113,14 @@ export class BulkRfqFormComponent implements OnInit {
   }
 
   onkeyUp(value: string) {
+    this.PRODUCT_TYPES = [];
     if (value.length > 2) {
       setTimeout(() => {
         this.fetchCategoryList(value);
       }, 600);
     }
+
+    console.log("PRODUCT_TYPES ======>" , this.PRODUCT_TYPES);
   }
 
   private fetchCategoryList(value: string) {

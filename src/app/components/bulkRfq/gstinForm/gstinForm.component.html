@@ -24,6 +24,9 @@
         <div class="outline-input-label">
             <label [class.is-focus]="gstinForm.get('description').value.length">
                 <textarea formControlName="description"></textarea>
+                <p *ngIf="gstinForm.get('description').invalid" class="error-txt">
+                        Maximum 120 characters allowded.
+                    </p>
                 <span class="label">Add product description (Optional)</span>
             </label>
         </div>

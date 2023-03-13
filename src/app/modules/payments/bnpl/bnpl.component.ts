@@ -49,7 +49,8 @@ API: any = CONSTANTS;
 bnplResponse: {};
 dataBnpl: Array<any>;
 isValid: boolean = false;
-isBnplEnable: boolean = true;
+isBnplEnable: boolean = false;
+isEligibleResponse = true ;
 eligibleUser: boolean;
 prepaidDiscount: number = 0;
 totalPayableAmount: number = 0;
@@ -103,8 +104,8 @@ getBNPEligibility() {
    
         this.getBNPEligibilityCall().subscribe((res): void => {
             if (res["status"] != true) {
-                this.isBnplEnable = false;
                 this.isShowLoader = false;
+                this.isEligibleResponse = false;
                 return;
             }
 
@@ -124,11 +125,12 @@ getBNPEligibility() {
 
             if(this.showBanks.length == 0)
             {
-                this.isBnplEnable = false;
+                this.isEligibleResponse = false;
                 this.isShowLoader = false;
                 return;
             }
 
+            this.isBnplEnable = true;
             this.isShowLoader = false;
             this.selectDefaultBNPL(); 
         

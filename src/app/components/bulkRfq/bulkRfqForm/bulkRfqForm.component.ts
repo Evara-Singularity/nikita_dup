@@ -57,7 +57,7 @@ export class BulkRfqFormComponent implements OnInit {
     const user = this.localStorageService.retrieve("user");
     this.bulkrfqForm = this.formBuilder.group({
       productType: ["", [Validators.required]],
-      quantity: ["", [Validators.required]],
+      quantity: ["", [Validators.required, Validators.max(1000)]],
       budget: ["", Validators.maxLength(8)],
       phone: [
         user != null && user.authenticated == "true" ? user.phone : "",
@@ -70,6 +70,8 @@ export class BulkRfqFormComponent implements OnInit {
     });
   }
 
+  get isMaxQuantity(){ return this.bulkrfqForm.get('quantity') }
+  
   loginAndValidatePhone() {
     const user = this._localAuthService.getUserSession();
     this.setBulkRfqForm$.emit(this.bulkrfqForm.value);

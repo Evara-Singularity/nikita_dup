@@ -26,11 +26,11 @@
               [placeholder]="'Enter Quantity'" [quantity]="PRICE_VALUES"
               (onSelect)="updateQuantity(bulkrfqForm)">
             </list-autocomplete> -->
-            <p *ngIf="
-                bulkrfqForm.get('quantity').touched &&
-                bulkrfqForm.get('quantity').invalid
-              " class="error-txt">
-              Kindly select quantity.
+            <p *ngIf="bulkrfqForm.get('quantity').touched && isMaxQuantity.hasError('required')" class="error-txt error-txt-qty mt-5">
+              Kindly enter quantity.
+            </p>
+            <p *ngIf="isMaxQuantity.hasError('max')" class="error-txt error-txt-qty mt-5">
+                Maximum 1000 quantity allowded. 
             </p>
           </label>
           <div class="qty-dropdown"></div>

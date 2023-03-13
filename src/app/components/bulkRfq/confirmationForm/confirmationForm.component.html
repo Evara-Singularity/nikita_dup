@@ -75,7 +75,7 @@
         <h4 class="maintxt">{{ gstinForm["gstin"] }}</h4>
         <p class="label">Email ID</p>
         <h4 class="maintxt">{{ gstinForm["email"] }}</h4>
-        <p class="label">Product Description</p>
+        <p class="label" *ngIf="gstinForm['description'] != null && gstinForm['description'] != ''">Product Description</p>
         <h4 class="maintxt">{{ gstinForm["description"] }}</h4>
       </div>
     </div>

@@ -345,6 +345,8 @@ export class CartService
                     if (this.buyNow) {
                         return this.updateCartSessions(null, this._updateCartSessionForBuyNow(cartSession, userSession))
                     } else {
+                        const updatedCartSession = this.generateGenericCartSession(cartSession);
+                        this.setGenericCartSession(updatedCartSession);
                         return of(cartSession);
                     }
                 }),

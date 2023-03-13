@@ -1,4 +1,4 @@
-<div *ngIf="!isEligibleResponse" class="f-size-16 text-red"> {{message}} </div>
+<div *ngIf="!isEligibleResponse" class="f-size-16 text-red pb-10" style="margin-top: -10px;"> {{message}} </div>
 <section   class="bnplInner">
        <form [formGroup]="bnplForm" (ngSubmit)="pay(bnplForm.value, bnplForm.valid)" class="form-horizontal">
     <ul class="pwa-radio-list">

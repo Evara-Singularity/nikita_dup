@@ -1414,7 +1414,7 @@ export class CartService
 
     getAllPromoCodesByUserId(userID = null,cartId = null)
     {
-        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?userId=' + userID + '&cartId=' + cartId;
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?userId=' + userID + '&cartId=' + cartId + '&buyNow='+ (this._buyNow || 'false');
         return this._dataService.callRestful('GET', url);
     }
 

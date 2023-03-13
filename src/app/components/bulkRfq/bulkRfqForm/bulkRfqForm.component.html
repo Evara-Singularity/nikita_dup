@@ -38,6 +38,9 @@
       <div class="outline-input-label mb-0">
         <label [class.is-focus]="bulkrfqForm.get('budget').value.length">
           <input formControlName="budget" type="text" name="" data-numbersOnly />
+          <p *ngIf="bulkrfqForm.get('budget').invalid" class="error-txt">
+            Maximum 8 length allowded
+          </p>
           <span class="label">Budget (Optional)</span>
         </label>
       </div>

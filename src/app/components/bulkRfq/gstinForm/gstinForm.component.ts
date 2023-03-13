@@ -43,7 +43,7 @@ export class GstinForm implements OnInit {
 			userSession && userSession["email"] ? userSession["email"] : "",
 			[Validators.required, Step.validateEmail],
 		  ],
-		  description: [""],
+		  description: ["", Validators.maxLength(120)],
 		});
 	}
 

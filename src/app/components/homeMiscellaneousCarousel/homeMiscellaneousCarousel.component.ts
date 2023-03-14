@@ -9,6 +9,7 @@ import { ProductService } from '@app/utils/services/product.service';
 import { ProductBrowserService } from '@app/utils/services/product-browser.service';
 import { RfqProductCardVerticalGridViewModule } from '@app/modules/product-card/rfq-product-card-vertical-grid-view/rfq-product-card-vertical-grid-view.module';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 @Component({
   selector: 'app-homeMiscellaneousCarousel',
   templateUrl: './homeMiscellaneousCarousel.component.html',
@@ -50,6 +51,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     private _productService: ProductService,
     private _productBrowserService: ProductBrowserService,
     public _loaderService: GlobalLoaderService,
+    private _globalAnalyticsService: GlobalAnalyticsService
   ) {
   }
 
@@ -102,6 +104,20 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         this.tabsArray[index].isSelected = true;
       }
     });
+    this.sendAnalyticsFilterTracking(tabName);
+  }
+
+  sendAnalyticsFilterTracking(pageName) {
+    let page = {
+      channel: "homepage",
+      pageName: "homepage:widget:"+pageName,
+      linkName: "",
+      loginStatus: "",
+    };
+    // let custData = {};
+    const custData = this._commonService.custDataTracking;
+    let order = {}
+    this._globalAnalyticsService.sendAdobeCall({ page, custData, order }, "genericClick");
   }
 
   tabshift() {

@@ -32,6 +32,12 @@
             <p *ngIf="isMaxQuantity.hasError('max')" class="error-txt error-txt-qty mt-5">
                 Maximum 1000 quantity allowded. 
             </p>
+            <p class="error-txt error-txt-qty mt-5" *ngIf="isMaxQuantity.hasError('pattern')">
+              Quantity should contain only digits.
+            </p>
+            <p class="error-txt error-txt-qty mt-5" *ngIf="isMaxQuantity.hasError('min')">
+              Quantity should be greater than 1.
+            </p>
           </label>
           <div class="qty-dropdown"></div>
         </div>
@@ -51,11 +57,16 @@
     <div class="material-form">
       <div class="outline-input-label">
         <label [class.is-focus]="bulkrfqForm.get('phone').value.length">
-          <input formControlName="phone" type="text" name="" data-numbersOnly />
-          <!-- <p *ngIf="bulkrfqForm.get('phone').touched && 
-                       bulkrfqForm.get('phone').invalid" class="error-txt">
-                        Kindly enter valid phone no.
-                    </p> -->
+          <input formControlName="phone" type="tel" name="" data-numbersOnly />
+          <p *ngIf="phone.hasError('required')" class="error-txt">
+              Kindly enter phone no.
+          </p>
+          <p class="error-txt error-txt-qty mt-5" *ngIf="phone.invalid && phone.hasError('startwithzero')">Mobile
+              Number should not begin with 0
+          </p>
+          <p class="error-txt error-txt-qty mt-5" *ngIf="phone.touched && !phone.hasError('startwithzero')">Enter
+              10 digit mobile number
+          </p>          
           <span class="label">Enter Mobile Number*</span>
         </label>
       </div>

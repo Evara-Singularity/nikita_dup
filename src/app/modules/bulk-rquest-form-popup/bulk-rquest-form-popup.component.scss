@@ -11,7 +11,7 @@
     border: none;
 }
 .bulkRFQ{
-    height: calc(100% - 65px);
+    height: calc(100% - 58px);
     background: var(--ghost-white);
     padding: 15px;
 
@@ -269,5 +269,10 @@
         .error-txt{
             margin-left: 0px !important;
         }
+    }
+}
+::ng-deep{
+    .screen-view{
+        background-color: var(--ghost-white) !important;
     }
 }

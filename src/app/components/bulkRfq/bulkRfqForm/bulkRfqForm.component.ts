@@ -12,6 +12,7 @@ import { ToastMessageService } from "@app/modules/toastMessage/toast-message.ser
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { DataService } from "@app/utils/services/data.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
+import { UsernameValidator } from "@app/utils/validators/username.validator";
 import { LocalStorageService } from "ngx-webstorage";
 
 @Component({
@@ -57,25 +58,24 @@ export class BulkRfqFormComponent implements OnInit {
     const user = this.localStorageService.retrieve("user");
     this.bulkrfqForm = this.formBuilder.group({
       productType: ["", [Validators.required]],
-      quantity: ["", [Validators.required, Validators.max(1000)]],
+      quantity: ["", [Validators.required, Validators.pattern(/^[0-9]\d*$/), Validators.min(1), Validators.max(1000)]],
       budget: ["", Validators.maxLength(8)],
       phone: [
         user != null && user.authenticated == "true" ? user.phone : "",
         [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
+          UsernameValidator.validatePhone
         ],
       ],
     });
   }
 
   get isMaxQuantity(){ return this.bulkrfqForm.get('quantity') }
+  get phone() { return this.bulkrfqForm.get("phone"); }
 
   loginAndValidatePhone() {
     const user = this._localAuthService.getUserSession();
     this.setBulkRfqForm$.emit(this.bulkrfqForm.value);
-    user && user["authenticated"] == "true"
+    user && user["authenticated"] == "true" && user['phone'] == this.bulkrfqForm.value.phone
       ? this.moveToNext(this.stepNameRfqForm, true)
       : this.validateUserWithPhone();
   }

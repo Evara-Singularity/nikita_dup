@@ -9,7 +9,7 @@ export class ConfirmationFormComponent implements OnInit {
   @Output() moveToNext$: EventEmitter<any> = new EventEmitter<any>();
   @Input("bulkrfqForm") bulkrfqForm: String;
   @Input("gstinForm") gstinForm: String;
-  readonly stepNameLogin = "LOGIN";
+  readonly stepNameLogin = "CLOSE";
 
   constructor() {}
 

@@ -271,8 +271,12 @@
         }
     }
 }
+
+.otp-container{ margin: 0 -15px ;}
+
 ::ng-deep{
     .screen-view{
         background-color: var(--ghost-white) !important;
     }
 }
+

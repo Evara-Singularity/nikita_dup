@@ -46,9 +46,11 @@
                     (bulkRfqFormPhoneno$)="setPhoneNo($event)" (setBulkRfqForm$)="setBulkRfqForm($event)"></bulkRfqForm>
             </ng-container>
             <ng-container *ngSwitchCase="stepNameOtp">
-                <shared-auth-otp [isLoginPopup]="isLoginPopup" [otpFormArray]="otpForm" [source]="sourceFlow"
-                    [identifier]="bulkRfqFormPhoneno" (otpEmitter)="captureOTP($event)" [withLabel]="false">
-                </shared-auth-otp>
+                <div class="otp-container">
+                    <shared-auth-otp [isLoginPopup]="isLoginPopup" [otpFormArray]="otpForm" [source]="sourceFlow"
+                        [identifier]="bulkRfqFormPhoneno" (otpEmitter)="captureOTP($event)" [withLabel]="false">
+                    </shared-auth-otp>
+                </div>
             </ng-container>
             <ng-container *ngSwitchCase="stepNameRfqForm">
                 <gstinForm (moveToNext$)="moveToNext($event)" (setGstinForm$)="setGstinForm($event)"></gstinForm>

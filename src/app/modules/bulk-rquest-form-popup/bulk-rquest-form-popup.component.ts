@@ -141,6 +141,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
     this._localAuthService.setUserSession(response);
     this._localAuthService.clearAuthFlow();
     this._localAuthService.clearBackURLTitle();
+    this._sharedAuthUtilService.updateCartSession(null,null,null);
     this.moveToNext(this.stepNameRfqForm);
   }
 

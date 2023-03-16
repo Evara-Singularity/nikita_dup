@@ -5,6 +5,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { CartService } from '@app/utils/services/cart.service';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'bottom-navigation',
@@ -17,6 +18,7 @@ export class BottomNavigationComponent implements OnInit {
   isUserLogin: any;
   initialNameLetter:any;
   noOfCart: number = 0;
+  loginSubscriber: Subscription = null;
 
 
   constructor(
@@ -36,7 +38,20 @@ export class BottomNavigationComponent implements OnInit {
     this.cartService.getCartUpdatesChanges().subscribe((data) => {
       this.noOfCart = this.cartService.getCartItemsCount();
     });
+    this.addSubscribers();
   }
+  
+  addSubscribers() {
+    this.loginSubscriber = this.localAuthService.login$.subscribe((value) => {
+      this.isUserLogin = true;
+    })
+  }
+
+  ngOnDestroy() {
+    if (this.loginSubscriber) {
+        this.loginSubscriber.unsubscribe();
+    }
+  }  
 
   getFirstletterofUser() {
     let user = this.localStorageService.retrieve("user");

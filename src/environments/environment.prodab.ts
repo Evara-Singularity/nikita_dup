@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   enableServerLogs: true,
-  PROD_NAME: 'https://mobile-ab.moglix.com',
+  PROD_NAME: 'https://www.moglix.com',
   // BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2',

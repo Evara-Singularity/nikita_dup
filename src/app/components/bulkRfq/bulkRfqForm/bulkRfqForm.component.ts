@@ -29,6 +29,7 @@ export class BulkRfqFormComponent implements OnInit {
 
   readonly PRICE_VALUES = ["1", "5", "10", "15", "20"];
   PRODUCT_TYPES = [];
+  PRODUCT_LIST = []
   readonly stepNameOtp = "OTP";
   readonly stepNameRfqForm = "RFQ_FORM";
   readonly API = CONSTANTS.NEW_MOGLIX_API;
@@ -58,6 +59,7 @@ export class BulkRfqFormComponent implements OnInit {
     const user = this.localStorageService.retrieve("user");
     this.bulkrfqForm = this.formBuilder.group({
       productType: ["", [Validators.required]],
+      categoryId: "",
       quantity: ["", [Validators.required, Validators.pattern(/^[0-9]\d*$/), Validators.min(1), Validators.max(1000)]],
       budget: ["", Validators.maxLength(8)],
       phone: [
@@ -130,6 +132,7 @@ export class BulkRfqFormComponent implements OnInit {
         this._loader.setLoaderState(false);
         if (response && response["totalCount"] > 0) {
           const categoryData = response["categorylist"];
+          this.PRODUCT_LIST = response["categorylist"];
           this.PRODUCT_TYPES = categoryData.map((res) =>
             (res.categoryName as string).trim()
           );
@@ -145,7 +148,11 @@ export class BulkRfqFormComponent implements OnInit {
     );
   }
 
-  updateProductType(arg0: AbstractControl) {}
+  updateProductType(categoryName) {
+    const categoryData =  this.PRODUCT_LIST.find(res=> res.categoryName == categoryName);
+    const categoryId = (categoryData && categoryData.categoryId ? categoryData.categoryId : "");
+    this.bulkrfqForm.controls['categoryId'].setValue(categoryId); 
+  }
 
   updateQuantity(arg0: FormGroup) {}
 

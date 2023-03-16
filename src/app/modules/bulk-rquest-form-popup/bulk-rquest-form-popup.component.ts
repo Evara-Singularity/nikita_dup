@@ -88,6 +88,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
       this.moveToNext(this.stepNameLogin);
     } else if (this.stepState === this.stepNameLogin) {
       this.closePopup$.emit();
+      this._commonService.setBodyScroll(null, true);
     } else if (this.stepState === this.stepNameRfqForm) {
       user["authenticated"] == "true"
         ? this.moveToNext(this.stepNameLogin)
@@ -95,7 +96,6 @@ export class BulkRquestFormPopupComponent implements OnInit {
     } else if (this.stepState === this.stepNameConfimation) {
       this.closePopup$.emit();
     }
-    this._commonService.setBodyScroll(null, true);
   }
 
   setPhoneNo(event) {
@@ -193,6 +193,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
           null
         );
         setTimeout(() => {
+          this._commonService.setLoginNotify(null);
           this.moveToNext(this.stepNameRfqForm);
         }, 300);
       }

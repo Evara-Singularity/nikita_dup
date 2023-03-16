@@ -82,9 +82,7 @@
   </div>
 
   <h2 style="padding-top: 20px">Similar Items You Can Buy Now</h2>
-  <app-similar-products [partNumber]="'MSN39YR74XXL5Q'" [groupId]="''" [productName]="
-      'Melbon 40 inch Black Full HD Smart Android LED TV with 18 Months Warranty'
-    " [categoryCode]="'250131100'">
+  <app-similar-products [partNumber]="''" [groupId]="''" [productName]="bulkrfqForm['productType']" [categoryCode]="bulkrfqForm['categoryId']">
   </app-similar-products>
   <button (click)="moveToNext(this.stepNameLogin)" class="btn secondry-full-btn">
     ADD NEW RFQ REQUEST

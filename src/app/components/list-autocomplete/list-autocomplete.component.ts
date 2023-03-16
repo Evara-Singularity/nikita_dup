@@ -94,6 +94,7 @@ export class ListAutocompleteComponent implements OnInit
 
     onClick(list)
     {
+        this.onSelect.emit(list);
         this.control.setValue(list);
     }
 

@@ -43,8 +43,14 @@ export class BottomNavigationComponent implements OnInit {
   
   addSubscribers() {
     this.loginSubscriber = this.localAuthService.login$.subscribe((value) => {
-      this.isUserLogin = true;
+    this.updateUserState();
     })
+  }
+  updateUserState() {
+    const user = this.localAuthService.getUserSession();
+    if (user && user['authenticated'] == 'true') {
+      this.isUserLogin = true;
+    }
   }
 
   ngOnDestroy() {

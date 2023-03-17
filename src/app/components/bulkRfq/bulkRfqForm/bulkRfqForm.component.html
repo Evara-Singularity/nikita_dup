@@ -32,10 +32,13 @@
             <p *ngIf="isMaxQuantity.hasError('max')" class="error-txt error-txt-qty mt-5">
                 Maximum 1000 quantity allowded. 
             </p>
-            <p class="error-txt error-txt-qty mt-5" *ngIf="isMaxQuantity.hasError('pattern')">
+            <p class="error-txt error-txt-qty mt-5" *ngIf="isMaxQuantity.hasError('pattern') && !isMaxQuantity.hasError('min')">
               Quantity should contain only digits.
             </p>
-            <p class="error-txt error-txt-qty mt-5" *ngIf="isMaxQuantity.hasError('min')">
+            <p class="error-txt error-txt-qty mt-5" *ngIf="isMaxQuantity.hasError('pattern') && isMaxQuantity.hasError('min')">
+              Quantity should contain only digits.
+            </p>
+            <p class="error-txt error-txt-qty mt-5" *ngIf="isMaxQuantity.hasError('min') && !isMaxQuantity.hasError('pattern')">
               Quantity should be greater than 1.
             </p>
           </label>

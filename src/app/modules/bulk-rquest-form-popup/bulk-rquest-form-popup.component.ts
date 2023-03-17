@@ -118,6 +118,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
     else if(stepName == this.stepNameOtp){
       this.rfqSubmmisionInProcess = 3;
     }else{
+      this.closePopup$.emit();
       this.closePopup();
     }
     this.stepState = stepName;

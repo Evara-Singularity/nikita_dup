@@ -1,7 +1,7 @@
 
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { NgxSiemaModule, NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
@@ -37,6 +37,7 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
     private ngxSiemaService: NgxSiemaService,
     private modalService: ModalService,
     private _analyticService: GlobalAnalyticsService,
+    private _router:Router
   ) { }
 
   ngOnInit(): void {
@@ -86,7 +87,7 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
       this.currentSlide.emit(result);
     });
     this.out.emit(data);
-    
+    window.history.replaceState({}, '',`${this._router.url}`);
   }
 
   showYTVideo(link) {

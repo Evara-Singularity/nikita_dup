@@ -20,7 +20,7 @@ import { SiemaCrouselService } from "@app/utils/services/siema-crousel.service";
 import { YoutubePlayerComponent } from "@app/components/youtube-player/youtube-player.component";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 import { LocalStorageService } from "ngx-webstorage";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonService } from "@app/utils/services/common.service";
 
 @Component({
@@ -75,6 +75,7 @@ export class ProductCrouselSlideComponent {
     private _siemaCrouselService: SiemaCrouselService,
     private ngxSiemaService: NgxSiemaService,
     private _analytics: GlobalAnalyticsService,
+    private _activatedRoute:ActivatedRoute
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
@@ -190,9 +191,23 @@ export class ProductCrouselSlideComponent {
           oosProductCardIndex: this.clickedIndexOfOosProduct,
         });
       });
+      this.createFragment();
   }
 
   goTo(index, selector) {
     this.ngxSiemaService.goTo(index, selector);
+  }
+  createFragment(){
+    this._activatedRoute.fragment.subscribe((fragment: string)=>{
+      if(this._activatedRoute.snapshot.fragment == 'abc'){
+         console.log("if");
+        return;
+      }
+      else{
+        console.log("else");
+        window.history.replaceState({}, '',`${this._router.url}/#abc`);
+        window.history.pushState({}, '',`${this._router.url}/#abc`);
+      }
+    })
   }
 }

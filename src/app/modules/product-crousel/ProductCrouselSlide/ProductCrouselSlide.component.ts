@@ -200,11 +200,9 @@ export class ProductCrouselSlideComponent {
   createFragment(){
     this._activatedRoute.fragment.subscribe((fragment: string)=>{
       if(this._activatedRoute.snapshot.fragment == 'abc'){
-         console.log("if");
         return;
       }
       else{
-        console.log("else");
         window.history.replaceState({}, '',`${this._router.url}/#abc`);
         window.history.pushState({}, '',`${this._router.url}/#abc`);
       }

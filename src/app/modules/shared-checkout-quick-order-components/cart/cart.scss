@@ -194,6 +194,12 @@
                     width: 15px;
                     margin-left: 10px;
                 }
+                &.ico-up{
+                    .icon-down{
+                        transform: rotate(180deg) !important;
+                        margin-left: 10px;
+                    }
+                }
             }
 
             
@@ -312,7 +318,7 @@
         padding: 10px 0;
         border: solid var(--ghost-white);
         border-width: 1px 0 0px 0;
-
+        border-radius: 0 0 8px 8px;
         ul {
             li {
                 padding: 5px 15px;

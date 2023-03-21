@@ -50,6 +50,7 @@ export class BottomNavigationComponent implements OnInit {
     const user = this.localAuthService.getUserSession();
     if (user && user['authenticated'] == 'true') {
       this.isUserLogin = true;
+      this.getFirstletterofUser();
     }
   }
 

@@ -10,6 +10,7 @@ import { ENDPOINTS } from "@app/config/endpoints";
 import { SharedAuthService } from "@app/modules/shared-auth-v1/shared-auth.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { LocalAuthService } from "@app/utils/services/auth.service";
+import { CommonService } from "@app/utils/services/common.service";
 import { DataService } from "@app/utils/services/data.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { UsernameValidator } from "@app/utils/validators/username.validator";
@@ -43,7 +44,8 @@ export class BulkRfqFormComponent implements OnInit {
     private _loader: GlobalLoaderService,
     private _sharedAuthService: SharedAuthService,
     private _tms: ToastMessageService,
-    private _dataService: DataService
+    private _dataService: DataService,
+    private _commonService: CommonService
   ) {
     this.createRfqForm();
   }
@@ -73,6 +75,7 @@ export class BulkRfqFormComponent implements OnInit {
 
   get isMaxQuantity(){ return this.bulkrfqForm.get('quantity') }
   get phone() { return this.bulkrfqForm.get("phone"); }
+  get productType(){ return this.bulkrfqForm.get('productType') }
 
   loginAndValidatePhone() {
     const user = this._localAuthService.getUserSession();
@@ -120,8 +123,13 @@ export class BulkRfqFormComponent implements OnInit {
     this.PRODUCT_TYPES = [];
     if (value.length > 2) {
       setTimeout(() => {
-        this.fetchCategoryList(value);
+        if(!this.productType.invalid){
+          this.fetchCategoryList(value);
+        }
       }, 600);
+    }else{
+      this.bulkrfqForm.get("productType").setErrors({ invalid: true });
+      this._commonService.bulk_rfq_categoryList.next(this.PRODUCT_TYPES as any);
     }
   }
 
@@ -136,7 +144,10 @@ export class BulkRfqFormComponent implements OnInit {
           this.PRODUCT_TYPES = categoryData.map((res) =>
             (res.categoryName as string).trim()
           );
+          this._commonService.bulk_rfq_categoryList.next(this.PRODUCT_TYPES as any);
         } else {
+          this.PRODUCT_TYPES = [];
+          this._commonService.bulk_rfq_categoryList.next(this.PRODUCT_TYPES as any);
           this.bulkrfqForm.get("productType").setErrors({ invalid: true });
           this._tms.show({ type: "error", text: "Related data not found" });
         }

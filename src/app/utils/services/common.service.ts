@@ -69,6 +69,7 @@ export class CommonService
     replaceHeading: boolean = false;
     abTesting: any;
     updateSortBy: Subject<string> = new Subject();
+    bulk_rfq_categoryList: Subject<string> = new Subject();
     bharatcraftUserSessionArrived: Subject<boolean> = new Subject<boolean>();
     scrolledViewPort: number = 0;
     private _networkSpeed: Number = null;

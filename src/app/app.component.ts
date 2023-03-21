@@ -1,7 +1,8 @@
 import { NavigationService } from '@app/utils/services/navigation.service';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonService } from './utils/services/common.service';
+import CONSTANTS from './config/constants';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +35,9 @@ export class AppComponent {
       if (url !== "/" && !(url.includes("back=1"))) { 
         this._navigationService.goBack();
       }
+      if (window.location.hash.toString() == CONSTANTS.PDP_IMAGE_HASH){
+          window.history.replaceState({}, '',`${this._commonService.currentUrl.split('#')[0]}`);
+       }
     });
   }
 }

@@ -349,6 +349,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     dealsAnalytics: any;
     bestProductsRes: any;
     isBrandMsn = false;
+
+    
+
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);

@@ -199,12 +199,12 @@ export class ProductCrouselSlideComponent {
   }
   createFragment(){
     this._activatedRoute.fragment.subscribe((fragment: string)=>{
-      if(this._activatedRoute.snapshot.fragment == 'abc'){
+      if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_IMAGE_HASH){
         return;
       }
       else{
-        window.history.replaceState({}, '',`${this._router.url}/#abc`);
-        window.history.pushState({}, '',`${this._router.url}/#abc`);
+        window.history.replaceState({}, '',`${this._router.url}/#${CONSTANTS.PDP_IMAGE_HASH}`);
+        window.history.pushState({}, '',`${this._router.url}/#${CONSTANTS.PDP_IMAGE_HASH}`);
       }
     })
   }

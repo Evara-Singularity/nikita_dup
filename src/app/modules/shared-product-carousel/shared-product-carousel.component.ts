@@ -142,8 +142,8 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
         return;
       }
       else{
-        window.history.replaceState({}, '',`${this.router.url}/#abc`);
-        window.history.pushState({}, '',`${this.router.url}/#abc`);
+        window.history.replaceState({}, '',`${this.router.url}/#${CONSTANTS.PDP_IMAGE_HASH}`);
+        window.history.pushState({}, '',`${this.router.url}/#${CONSTANTS.PDP_IMAGE_HASH}`);
       }
     })
   }

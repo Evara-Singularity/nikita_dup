@@ -138,7 +138,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 
   createFragment(){
     this._activatedRoute.fragment.subscribe((fragment: string)=>{
-      if(this._activatedRoute.snapshot.fragment == 'abc'){
+      if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_IMAGE_HASH){
         return;
       }
       else{

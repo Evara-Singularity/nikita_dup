@@ -1,7 +1,46 @@
 <div *ngIf="!productNotFound">
-    <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer"
-        [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
-    </app-oos-similar-section>
+<app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer" [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
+</app-oos-similar-section>
+
+<shared-product-carousel (openPopUpcrousel$)="openPopUpcrousel()" [productAllImages]="productAllImages" [carouselInitialized]="carouselInitialized" (loadProductShare$)="loadProductShare()" [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName" (addToPurchaseList$)="addToPurchaseList()"
+    [moveToSlide$]="moveToSlide$" [refreshSiemaItems$]="refreshSiemaItems$" [productOutOfStock]="productOutOfStock" [rawProductData]="rawProductData" (scrollToId$)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')" [imagePathAsset]="imagePathAsset"
+    (openPopUpcrousel)="openPopUpcrousel(0)" (sendProductImageClickTracking)="sendProductImageClickTracking()" [isProductCrouselLoaded]="isProductCrouselLoaded" [iOptions]="iOptions" [productTags]="productTags" (translate$)="translate()" [isAcceptLanguage] = "isAcceptLanguage"></shared-product-carousel>
+<product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)" [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPrices" [selectedProductBulkPrice]="selectedProductBulkPrice" [qunatityFormControl]="qunatityFormControl"
+    [productPrice]="productPrice" [productName]="productName" [productTags]="productTags" [refinedProdTags]="refinedProdTags" [productMrp]="productMrp" [priceWithoutTax]="priceWithoutTax" [productDiscount]="productDiscount" [bulkPriceWithoutTax]="bulkPriceWithoutTax"
+    [bulkDiscount]="bulkDiscount" [taxPercentage]="taxPercentage" [bulkSellingPrice]="bulkSellingPrice" [productOutOfStock]="productOutOfStock" [productMinimmumQuantity]="productMinimmumQuantity" [priceQuantityCountry]="priceQuantityCountry" [starsCount]="starsCount"
+    [rawReviewsData]="rawReviewsData" [rawProductCountMessage]="rawProductCountMessage">
+</product-description>
+
+<product-grouping-attributes [isCommonProduct]="isCommonProduct" [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)" (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
+<ng-container *ngIf="productBulkPrices && productBulkPrices.length > 0">
+    <product-bulk-quantity  (checkBulkPriceMode$)="checkBulkPriceMode()" (selectProductBulkPrice$)="selectProductBulkPrice($event)" [rawProductData]="rawProductData" [productOutOfStock]="productOutOfStock" [isCommonProduct]="isCommonProduct" [priceQuantityCountry]="priceQuantityCountry"
+    [productBulkPrices]="productBulkPrices" [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl" [productMinimmumQuantity]="productMinimmumQuantity">
+   </product-bulk-quantity>
+</ng-container>
+
+<!-- TODO: skeleton to be implemented -->
+<div class="coupon" *ngIf='!productOutOfStock && productMrp > 0'>
+    <app-product-offers [price]='productPrice' [gstPercentage]='taxPercentage'
+        [productmsn]='productSubPartNumber || defaultPartNumber' [isHindiMode]='isHindiUrl'
+        (viewPopUpHandler)='viewPopUpOpen($event)' (promoCodePopUpHandler)='promoCodePopUpOpen($event)'
+        [brandName]='rawProductData?.brandDetails?.brandName'
+        [categoryId]='rawProductData?.categoryDetails[0]?.categoryCode'
+        [categoryName]='rawProductData?.categoryDetails[0]?.categoryName'
+        (emaiComparePopUpHandler)='emiComparePopUpOpen($event)'>
+    </app-product-offers>
+    <!-- <ng-container #offerSection></ng-container>
+    <div [ngClass]="{ 'coupon-inner': !offerSectionInstance}" class="coupon-inner" *ngIf="!productOutOfStock" >
+        <product-skeletons [type]="'COUPON'" [templateRefInstance]="offerSectionInstance"></product-skeletons>
+    </div> -->
+</div>
+
+<!-- TODO: skeleton to be implemented -->
+<div data-observeVisibility class="pincode" [debounceTime]="100" (visible)="onVisiblePincodeSection($event)" *ngIf="!productOutOfStock">
+    <ng-container #pincodeForm></ng-container>
+    <product-skeletons [type]="'PINCODE'" [templateRefInstance]="pincodeFormInstance"></product-skeletons>
+</div>
+
+<product-benefits [isProductReturnAble]="isProductReturnAble" [productOutOfStock]="productOutOfStock" (navigateToFAQ$)="navigateToFAQ()"></product-benefits>
 
 
     <shared-product-carousel (openPopUpcrousel$)="openPopUpcrousel()" [productAllImages]="productAllImages"

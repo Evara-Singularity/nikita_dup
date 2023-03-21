@@ -36,9 +36,8 @@ export class AppComponent {
         this._navigationService.goBack();
       }
       console.log("window.location.hash",window.location.hash);
-      if (window.location.hash.toString() == CONSTANTS.PDP_IMAGE_HASH){
-         console.log("jsghjsghgsah")
-          // window.history.replaceState({}, '',`${this._commonService.currentUrl.split('#')[0]}`);
+      if (window.location.hash === `#${CONSTANTS.PDP_IMAGE_HASH}`){
+          window.history.replaceState({}, '',`${this.router.url}`);
        }
     });
   }

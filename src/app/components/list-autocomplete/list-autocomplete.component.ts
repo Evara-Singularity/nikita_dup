@@ -111,6 +111,7 @@ export class ListAutocompleteComponent implements OnInit
     {
         this.onSelect.emit(list);
         this.control.setValue(list);
+        this.toggleListDisplay(false);
     }
 
     toggleListDisplay(flag)

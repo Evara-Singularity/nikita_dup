@@ -80,7 +80,7 @@ export class BulkRfqFormComponent implements OnInit {
   loginAndValidatePhone() {
     const user = this._localAuthService.getUserSession();
     this.setBulkRfqForm$.emit(this.bulkrfqForm.value);
-    user && user["authenticated"] == "true" && user['phone'] == this.bulkrfqForm.value.phone
+    user && user["authenticated"] == "true"
       ? this.moveToNext(this.stepNameRfqForm, true)
       : this.validateUserWithPhone();
   }

@@ -63,13 +63,13 @@
         <informative_video *ngIf="(i === 10) && informativeVideosData !=[] " [informativeVideosData]="informativeVideosData" [categoryName]="categoryName">
         </informative_video>
     </ng-container>
-   <ng-container *ngIf="pageName == 'CATEGORY' && lastLevelCategory  && appliedFilterCount == 0 && this.graphData">
+   <ng-container *ngIf="pageName == 'CATEGORY'  && appliedFilterCount == 0 && this.graphData">
        <div *ngFor="let block of this.graphData;">
           <ng-container *ngIf="block.block_name == 'product_report' && block.data && block.data.length > 0">
-            <analytics-widget-wrapper *ngIf="(i == 5)"  [chartContainer]="'priceChartContainer'" [categoryId]="categoryId" [categoryName]="categoryName" [graphData]="graphData"></analytics-widget-wrapper>
+            <analytics-widget-wrapper *ngIf="(i == 5)"  [chartContainer]="'priceChartContainer'" [categoryId]="categoryId" [categoryName]="categoryName" [graphData]="graphData" [isL2CategoryCheck]="isL2CategoryCheck"></analytics-widget-wrapper>
           </ng-container>
           <ng-container *ngIf="block.block_name == 'brand_report' &&  block.data && block.data.length > 0">
-            <analytics-widget-wrapper *ngIf="(i == 10)" [chartContainer]="'brandChartContainer'" [categoryId]="categoryId" [graphData]="graphData" [categoryName]="categoryName"></analytics-widget-wrapper>
+            <analytics-widget-wrapper *ngIf="(i == 10)" [chartContainer]="'brandChartContainer'" [categoryId]="categoryId" [graphData]="graphData" [categoryName]="categoryName" [isL2CategoryCheck]="isL2CategoryCheck"></analytics-widget-wrapper>
           </ng-container>
           <ng-container *ngIf="block.block_name == 'attribute_report' && block.data && block.data.length > 0">
             <analytics-widget-wrapper *ngIf="(i == 15)" [chartContainer]="'attributeChartContainer'" [categoryId]="categoryId" [graphData]="graphData" [categoryName]="categoryName"></analytics-widget-wrapper>
@@ -91,14 +91,22 @@
     </div>
     </ng-container>
 </ng-container>
+
+<ng-container
+    *ngIf="(pageName != 'SEARCH') && (productsListingData?.products != undefined && productsListingData?.products?.length>0)">
+    <bulk-rquest-form-popup-lazy></bulk-rquest-form-popup-lazy>
+</ng-container>
+
 <app-search-not-found 
     [helpText]="['No result found ', 'for your search.']"
     [helpSubText]="['Please check the spelling or try searching for something else']" 
      *ngIf="productsListingData?.products != undefined && productsListingData?.products?.length==0">
 </app-search-not-found>
 
-<span data-observeVisibility [debounceTime]="100" (visible)="onVisiblePagination()"></span>
-<span data-observeVisibility [debounceTime]="100" (visible)="onVisiblesearchBannerCard()"></span>
+<ng-container *ngIf="productsListingData && productsListingData.products && productsListingData.products.length > 0"> 
+    <span data-observeVisibility [debounceTime]="100" (visible)="onVisiblePagination()"></span>
+    <span data-observeVisibility [debounceTime]="100" (visible)="onVisiblesearchBannerCard()"></span>
+</ng-container>
 
 <!-- search-card-plp.svg -->
 <ng-template #searchBannerCard></ng-template>

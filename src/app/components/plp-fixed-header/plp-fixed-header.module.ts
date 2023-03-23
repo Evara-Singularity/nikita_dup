@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlpFixedHeaderComponent } from './plp-fixed-header.component';
 import { RouterModule } from '@angular/router';
+import DownloadAppPromoBannerModule from '../downloadAppPromoBanner/downloadAppPromoBanner.component';
 
 
 
@@ -9,7 +10,8 @@ import { RouterModule } from '@angular/router';
   declarations: [PlpFixedHeaderComponent],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    DownloadAppPromoBannerModule
   ],
   exports: [
     PlpFixedHeaderComponent

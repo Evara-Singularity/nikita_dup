@@ -8,6 +8,8 @@ import { ProductListService } from '@app/utils/services/productList.service';
 import Chart from 'highcharts/es-modules/Core/Chart/Chart.js';
 import ColumnSeries from 'highcharts/es-modules/Series/Column/ColumnSeries.js';
 import ColumnDataLabel from 'highcharts/es-modules/Series/Column/ColumnDataLabel.js';
+import { Router } from '@angular/router';
+let componentContext;
 
 
 @Component({
@@ -16,13 +18,13 @@ import ColumnDataLabel from 'highcharts/es-modules/Series/Column/ColumnDataLabel
   styleUrls: ['./analytics-graph-widget.component.scss']
 })
 export class AnalyticsGraphWidgetComponent implements OnInit {
-  
   chartOptions = {};
   @Input() chartType;
   @Input() filterData: Array<any>;
   @Input() categoryId: any;
   @Input() categoryName: string;
   @Input() graphData;
+  @Input() isL2CategoryCheck;
   fragmentPriceObject: any;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
   readonly attributeChartId = 'attribute-chart';
@@ -39,13 +41,16 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   attributeDataWithoutProcessing;
 
 
-  constructor(private dataService: DataService, private commonService: CommonService, private _productListService: ProductListService) {
+  constructor(private dataService: DataService, private commonService: CommonService, private _productListService: ProductListService,public router:Router) {
+    
    }
 
   ngOnInit(): void {
+    componentContext = this;
     this.getData();
     ColumnDataLabel.compose(ColumnSeries);
   }
+  
   getData(){
     if(this.graphData && this.graphData.length > 0){
     this.graphData.forEach(element => {
@@ -115,25 +120,37 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   }
 
   prepareBrandChartData(brandData) {
-    //  debugger;
     const seriesBrandArray = [];
     let brandObj = {};
     brandObj['name'] = brandData['brandName'].toString();
     brandObj['y'] = brandData['orderPercentage'];
     brandObj['drilldown'] = null;
+    if(this.isL2CategoryCheck){
+      brandObj['link'] = brandData['link'];
+    }
+    else{
+      brandObj['brandCategoryLink'] = brandData['brandCategoryLink'];
+    }
     seriesBrandArray.push(brandObj);
     return seriesBrandArray;
   }
 
   preparePriceChartData(priceData) {
+  
     const seriesPriceArray = [];
-    
     let priceObj = {};
-    priceObj['name'] = this.formatPrice(priceData['interval'],true);
+    if(this.isL2CategoryCheck === true){
+      priceObj['name'] = priceData['categoryName'];
+    }  
+    else{
+      priceObj['name'] = this.formatPrice(priceData['interval'],true);
+    }
     priceObj['y'] = priceData['orderPercentage'];
     priceObj['drilldown'] = null;
-    seriesPriceArray.push(priceObj);
+    priceObj['link'] =  priceData['categoryLink'];
+    
 
+    seriesPriceArray.push(priceObj);
     return seriesPriceArray;
   }
   // function to get Max Value in data
@@ -159,7 +176,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       chart: {
         type: 'column',
         width: 270,
-        height:300
+        height:300,
       },
       title: {
         align: 'left',
@@ -200,7 +217,8 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
           },
           events: {
             legendItemClick: function() {
-              return false;
+              // return false;
+             
             }
           }
         }
@@ -265,9 +283,29 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
             enabled: true,
             format: '{point.y}%'
           },
-          events: {
-            legendItemClick: function() {
-              return false;
+          point:{
+            events: {
+              click: function () {
+                // if(this.options.link == null || this.options.brandCategoryLink == null){
+                //   return;
+                // }
+                if(componentContext.isL2CategoryCheck === true){
+                  if(this.options.link == null){
+                    return;
+                  }
+                  else{
+                    componentContext.callRouter(this.options.link);
+                  }
+                }
+                else{
+                  if(this.options.brandCategoryLink == null){
+                   return;
+                  }
+                  else{
+                    componentContext.callRouter(this.options.brandCategoryLink);
+                  }
+                }
+              }
             }
           }
         }
@@ -289,11 +327,12 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
     }
     return chartOptions;
   }
+  
   createChartPriceSingleObject(data, seriesArray) {
     let chartOptions = {
       chart: {
         type: 'column',
-        height:300
+        height:300,
       },
       title: {
         align: 'left',
@@ -332,9 +371,13 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
             enabled: true,
             format: '{point.y}%'
           },
-          events: {
-            legendItemClick: function() {
-              return false;
+          point:{
+            events: {
+              click: function () {
+                if(componentContext.isL2CategoryCheck === true){
+                  componentContext.callRouter(this.options.link);
+                }
+              }
             }
           }
         }
@@ -345,7 +388,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       series: [
         {
-          name: "Price Range",
+          name: (this.isL2CategoryCheck)?"Categories":"Price Range",
           colorByPoint: true,
           // dataSorting: {
           //   enabled: true
@@ -358,8 +401,10 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   }
    
   loadChart(htmlId, data, seriesData,attributeName?){
+   
     if (htmlId.startsWith(`${this.priceChartId}`)) {
       const myChart1 = new Chart(htmlId ,this.createChartPriceSingleObject(data,seriesData));
+      
     }
     if (htmlId.startsWith(`${this.attributeChartId}`)) {
       const myChart2 = new Chart(htmlId ,this.createAttributeChartOptionsObject(data,seriesData,attributeName));
@@ -405,6 +450,8 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       return (value.match("^[a-zA-Z]*$") ? formatValue[0] : (RUPEE + formatValue[0]));
      }
    }
-}
-
+   callRouter(link){
+     this.router.navigateByUrl(link);
+   }
+  }
 

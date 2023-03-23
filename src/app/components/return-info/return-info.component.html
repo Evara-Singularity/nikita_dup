@@ -1,0 +1,77 @@
+<app-bottom-menu *ngIf="show" (outData$)="hide()">
+    <div content>
+        <div class="return-policies">
+            <div class="top-header-bottom-menu">
+                <h3>Return & Warranty Policy</h3>
+                <i class="icon-circle-delete" (click)='hide()'></i>
+            </div>
+            <div class="return-tbl">
+                <div class="tblflx return-tbl-head">
+                    <div class="flxinner reason table-head">
+                        <p>Reason</p>
+                    </div>
+                    <div class="flxinner refund-prod table-head">
+                        <p>Periods</p>
+                    </div>
+                    <div class="flxinner return-policy table-head">
+                        <p>Policy</p>
+                    </div>
+                </div>
+                <div class="tblflx return-tbl-body">
+                    <div class="flxinner reason">
+                        <p>Missing product</p>
+                    </div>
+                    <div class="flxinner">
+                        <p>2 days from delivery</p>
+                    </div>
+                    <div class="flxinner">
+                        <p>Full refund & replacement</p>
+                    </div>
+                </div>
+                <div class="tblflx return-tbl-body">
+                    <div class="flxinner reason">
+                        <p>Wrong product</p>
+                    </div>
+                    <div class="flxinner">
+                        <p>2 days from delivery</p>
+                    </div>
+                    <div class="flxinner">
+                        <p>Full refund & replacement</p>
+                    </div>
+                </div>
+                <div class="tblflx return-tbl-body">
+                    <div class="flxinner reason">
+                        <p>Damaged product</p>
+                    </div>
+                    <div class="flxinner">
+                        <p>2 days from delivery</p>
+                    </div>
+                    <div class="flxinner">
+                        <p>Full refund & replacement</p>
+                    </div>
+                </div>
+                <div class="tblflx return-tbl-body" *ngIf='!isBrandMsn'>
+                    <div class="flxinner reason">
+                        <p>Defective product</p>
+                    </div>
+                    <div class="flxinner">
+                        <p>7 days from delivery</p>
+                    </div>
+                    <div class="flxinner">
+                        <p>Full refund & replacement</p>
+                    </div>
+                </div>
+            </div>
+            <div class="warranty-policy" *ngIf='isBrandMsn'>
+                <h4>Customer Warranty Policy</h4>
+                <div class="warranty-info"><p>The warranty is at the discretion of brand. On-site and off-site warranty shall be confirmed by brand only.</p></div>
+                <div class="warranty-info"><p>In case the product is received in Defective/Missing condition, the customer needs to connect the brand.</p></div>
+                <!-- <div class="warranty-info"><p>Call the brand at <a href="tel:9898989898" class="linktxt"> +91 9898989898</a> or mail at <a href="mailto:brandxyz@gmail.com" class="linktxt">brandxyz@gmail.com</a>.</p></div> -->
+            </div>
+            <div class="read-full-cta" (click)='navigateToFAQ$.emit();$event.stopPropagation()'>
+                <button><a (click)='$event.preventDefault()' [href]="baseDomain + '/faq'">Read Full Return Policy</a><i class="icon-arrow-right-s-line"></i></button>
+            </div>
+        </div>
+    </div>
+    
+</app-bottom-menu>

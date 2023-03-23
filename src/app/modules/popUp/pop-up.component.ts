@@ -1,5 +1,5 @@
 import { delay } from 'rxjs/operators';
-import { Component, ViewEncapsulation, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, AfterViewInit, Input, Output, EventEmitter, OnDestroy, SimpleChanges } from '@angular/core';
 import { of } from 'rxjs';
 import { CommonService } from '@app/utils/services/common.service';
 import { ActivatedRoute, Router } from "@angular/router";
@@ -11,11 +11,16 @@ import { ActivatedRoute, Router } from "@angular/router";
     styleUrls: ['./pop-up.component.scss'],
 })
 export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
+    emitClick() {
+        this.outData$.emit()
+    }
 
     @Input() data;
     @Input('headerType') headerType: any;
     @Input('headerSubText') headerSubText: any;
     @Output() outData$: EventEmitter<any> = new EventEmitter<any>();
+    @Input('popUpName') popUpName: string;
+
     // closeClass: any = "icon-circle-delete";
     // paraClass: any = "txt";
     isServer: boolean;
@@ -54,6 +59,11 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         // console.log(this.headerCustom,"this.headerText");
         // console.log(this.headerText,"this.headerText");
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        this.headerText = (changes && changes['data'] && changes['data']['currentValue'] && changes['data']['currentValue']['headerText'])? changes['data']['currentValue']['headerText'] : "";
+        this.headerSubText = (changes && changes['data'] && changes['data']['currentValue'] && changes['data']['currentValue']['headerSubText'])? changes['data']['currentValue']['headerSubText'] : "";
     }
 
     ngAfterViewInit() {

@@ -1,4 +1,4 @@
-<div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader && _productListService?.productListingData && _productListService?.productListingData > 0}">
+<div [ngClass]="{'plp-container-header-adjust': !_commonService.isScrolledHeader && _productListService?.productListingData && _productListService?.productListingData > 0,'header-top-margin':_productListService?.productListingData.products.length}">
     <app-promo  [page]="'search'" class="fixed-btm-app-prmo" [isOverlayMode]="true"></app-promo>
     <ng-container
         *ngIf="(didYouMean == undefined || didYouMean == '') && API_RESULT['searchData'][0].productSearchResult != undefined">
@@ -8,7 +8,7 @@
                 <div class="container">
                     <div class="search-txt">
                         <p class="f-left">
-                            <span>Showing results for
+                            <span *ngIf="API_RESULT['searchData'][0].productSearchResult.correctedSearchString" >Showing results for
                                 <i>{{API_RESULT['searchData'][0].productSearchResult.correctedSearchString}}</i></span><br />
                             <a class="blue-text"
                                 (click)="redirectWithNoPreProcessRequiredParam(API_RESULT['searchData'][0].productSearchResult.inputSearchString)">Search
@@ -19,7 +19,6 @@
             </div>
         </ng-container>
     </ng-container>
-
     <shared-product-listing #sharedProductList 
         (categoryClicked)="handleCategoryClicked($event)" 
         [categoryMidPlpFilterData]="API_RESULT['searchData'][0]?.categoriesPrimary"
@@ -28,6 +27,8 @@
         [searchKeyword]="API_RESULT['searchData'][0].productSearchResult.inputSearchString"
         [productsListingData]="_productListService?.productListingData">
     </shared-product-listing>
+
+    <recent-viewed-products-wrapper></recent-viewed-products-wrapper>
 
     <app-accordian (outerRoutingEvent)="goToRecommendedCategory($event)" [accordiansDetails]="accordiansDetails"></app-accordian>
 

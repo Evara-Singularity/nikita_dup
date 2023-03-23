@@ -19,6 +19,7 @@ import { CategoryBestSellerModule } from '@app/components/cat-bestseller/cat-bes
 import { ShopbyFeatrModule } from '@app/components/shopby-featr/shopby-featr.component';
 import { CmsModule } from '@app/modules/cms/cms.module';
 import { SubCategoryModule } from '@app/components/subCategory/subCategory.component';
+import RecentViewedProductsWrapperModule from '@app/components/recent-viewed-products-wrapper/recent-viewed-products-wrapper.component';
 
 @NgModule({
     imports: [
@@ -40,7 +41,8 @@ import { SubCategoryModule } from '@app/components/subCategory/subCategory.compo
         CategoryBestSellerModule,
         ShopbyFeatrModule,
         CmsModule,
-        SubCategoryModule
+        SubCategoryModule,
+        RecentViewedProductsWrapperModule
     ],
     declarations: [
         CategoryComponent,

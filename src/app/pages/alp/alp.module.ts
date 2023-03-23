@@ -25,6 +25,7 @@ import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-p
 import { NotFoundModule } from '@app/modules/not-found/not-found.module';
 import { SeoTablesModule } from '@app/modules/seo-tables/seo-tables.module';
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
+import RecentViewedProductsWrapperModule from '@app/components/recent-viewed-products-wrapper/recent-viewed-products-wrapper.component';
 
 @NgModule({
     imports: [
@@ -49,7 +50,8 @@ import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
         ProductListingAppPromoModule,
         NotFoundModule,
         SeoTablesModule,
-        AppPromoModule
+        AppPromoModule,
+        RecentViewedProductsWrapperModule
     ],
     declarations: [
         AlpComponent,

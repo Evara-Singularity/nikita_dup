@@ -334,6 +334,10 @@ export class CartService
         const userSession = this.localAuthService.getUserSession();
         const cartSession = Object.assign(this.getGenericCartSession);
         cartSession['cart']['userId'] = userSession.userId;
+        
+        if(cartSession.cart && cartSession.cart.sessionId == undefined){
+            cartSession.cart.sessionId = userSession.sessionId
+        }
         return this.getSessionByUserId(cartSession)
             .pipe(
                 mergeMap((cartSession) =>
@@ -1056,6 +1060,7 @@ export class CartService
             totalPayableAmount: productPrice,
             productName: (args.languageMode) ? args.originalProductBO['productName'] : args.productGroupData['productName'],
             brandName: (args.languageMode) ? args.originalProductBO['brandDetails']['brandName'] : productBrandDetails['brandName'],
+            brandId: (productBrandDetails)?productBrandDetails['idBrand']:'',
             priceWithoutTax: priceWithoutTax,
             taxPercentage: priceQuantityCountry['taxRule']['taxPercentage'],
             productImg: (productPartDetails['images']) ? `${this.imageCdnPath}${productPartDetails['images'][0]['links']['thumbnail']}` : '',
@@ -1401,15 +1406,15 @@ export class CartService
         return item;
     }
 
-    getAllPromoCodes()
+    getAllPromoCodes(cartId = null)
     {
-        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes;
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?cartId=' + cartId;
         return this._dataService.callRestful('GET', url);
     }
 
-    getAllPromoCodesByUserId(userID = null)
+    getAllPromoCodesByUserId(userID = null,cartId = null)
     {
-        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?userId=' + userID;
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?userId=' + userID + '&cartId=' + cartId;
         return this._dataService.callRestful('GET', url);
     }
 
@@ -1437,11 +1442,11 @@ export class CartService
         const cartSession = this.getCartSession();
         const offerId = (cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
         if (userId) {
-            this.getAllPromoCodesByUserId(userId).subscribe(res => {
+            this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId']).subscribe(res => {
                 this.processPromoData(res, offerId, isUpdatePromoCode);
             });
         } else {
-            this.getAllPromoCodes().subscribe(res => {
+            this.getAllPromoCodes(cartSession['cart']['cartId']).subscribe(res => {
                 this.processPromoData(res, offerId, isUpdatePromoCode);
             })
         }

@@ -120,6 +120,12 @@ export class SideNavComponent implements OnInit {
     this._commonService.callLottieScript();
     this.addLottieScript();
   }
+
+  loadBulkRFQ(){
+    this.sideMenu();
+    this._commonService.initiateBulkRfq(true);
+  }
+
 }
 
 

@@ -12,6 +12,8 @@ export class ProductBenefitsComponent implements OnInit {
   productStaticData = this._commonService.defaultLocaleValue;
   @Input() isProductReturnAble: boolean;
   @Input() productOutOfStock: boolean;
+  @Input() isBrandMsn: boolean = false;
+  @Input() moduleUsedIn = '';
   @Output() navigateToFAQ$: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(

@@ -1,5 +1,4 @@
 <div class="home-parent">
-
     <!-- search at backUrl -->
     <div class="search-widget-container" *ngIf="isBrowser && isRoutedBack">
         <div class="search-widget-section pwa-row">
@@ -42,6 +41,7 @@
                     [imagePath]="imagePathBanner" [options]="options_v1" [items]="homeSecondaryCarouselData">
                 </siema-carousel>
             </div>
+    
             <!-- category stores -->
             <div class="pwa-col-12 category-grid-container mb-15">
                 <h2>Category Stores</h2>
@@ -73,13 +73,19 @@
         </div>
 
         <!-- recently view Carousel -->
-        <div class="pwa-col-12 recently-container">
+        <div class="pwa-col-12 recently-container"  *ngIf="!isUserLoggedIn">
             <div data-observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
                 *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
                 <ng-container #RecentlyViewedCarouselComponent></ng-container>
                 <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="carouselInstance"></home-page-skeletons>
             </div>
         </div>
+
+        <!--homeMiscellaneousCarousel ( Buy it again, Recently Viewed, wishlist & my RFQ section)-->
+        <section *ngIf="isUserLoggedIn" class="popular-Deals-section" id="popularDeals" data-observeVisibility [debounceTime]="100" (visible)="callHomePageWidgetsApis()">
+            <ng-container #homeMiscellaneousCarousel></ng-container>
+            <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="homeMiscellaneousCarouselInstance"></home-page-skeletons>
+        </section>      
   
         <!-- category data Carousel -->
         <home-categories class="pwa-col-12" [carouselData]="homePageCategoryCarouselData" [categories]="categories"
@@ -93,6 +99,8 @@
                     [imagePath]="imagePath"></home-feature-arrivals>
             </div>
         </ng-container>
+
+        <bulk-rquest-form-popup-lazy></bulk-rquest-form-popup-lazy>
 
         <!-- home accordion  -->
         <div class="pwa-col-12">

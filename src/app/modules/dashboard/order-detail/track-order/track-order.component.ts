@@ -1,5 +1,6 @@
 import { Subject } from "rxjs";
 import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
+import { CommonService } from "@app/utils/services/common.service";
 
 @Component({
   selector: "track-order",
@@ -24,6 +25,7 @@ export class TrackOrderComponent implements OnInit {
     "Tracking information from courier partner is not available at the moment.";
   deliveredInfo = null;
 
+  constructor(private _commonService: CommonService) {}
 
   ngOnInit() {
     this.displayScans = this.itemDetails["hasInfo"];
@@ -49,6 +51,7 @@ export class TrackOrderComponent implements OnInit {
   }
 
   closeModal() {
+    this._commonService.setBodyScroll(null, true);
     this.closePopup$.emit();
   }
 

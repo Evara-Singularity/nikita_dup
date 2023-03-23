@@ -90,7 +90,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
 
         if (this.isBrowser) {
             this.route.queryParams.subscribe(res => {
-                this.searchValue = (res['search_query']) ? res['search_query'] : '';
+                this.searchValue = (res['search_query']) ? decodeURIComponent(res['search_query']) : '';
             })
         } else { this.searchValue = '' }
 
@@ -167,7 +167,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
         //     e.preventDefault();
         //     e.stopPropagation();
         // }
-        this.searchForm.get('searchTerm').setValue(data);
+        this.searchForm.get('searchTerm').setValue(decodeURIComponent(data));
         this.searchTermApi(data,data);
     }
 

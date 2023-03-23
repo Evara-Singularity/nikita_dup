@@ -1,3 +1,4 @@
+<downloadAppPromoBanner *ngIf="(ModuleName=='PRODUCT') && _commonService.enableAppPromoInHeader"></downloadAppPromoBanner>
 <div class="plp-fixed-header">
     <i class="login-back-icon" (click)="goBack$.emit()" class="icon-back-arrow" id="icon-back"></i>
     <a class="moglix-app-logo" [routerLink]="['/']">
@@ -5,10 +6,11 @@
     </a>
     <div class="search-bar-mini">
         <i class="icon-search"></i>
-        <input type="text" placeholder="Search Product/Category/Brand..."  [value]="searchValue" (click)="loadSearchNav$.emit()">
+        <input type="text" placeholder="Search Product/Category/Brand..."  [value]="searchValue" (click)="loadSearchNav$.emit()" />
     </div>
     <a (click)="_commonService.navigateTo('/quickorder', true)" class="icon-cart1">
         <span class="badge" *ngIf="noOfCart != 0">{{noOfCart}}</span>
     </a>
     <a (click)="loadBottomSheet$.emit()" class="icon-more_options"></a>
 </div>
+

@@ -5,6 +5,14 @@
 @import "../../scss/layout/forms";
 @import "../../scss/product-card";
 @import "../../scss/components/payment-accordion";
+
+.payment_accordion_item{
+    .payment-accordion_header{
+        img{
+            width: 20px;
+        }
+    }
+}
 .payment-options {
     & > div {
         @extend %cards;

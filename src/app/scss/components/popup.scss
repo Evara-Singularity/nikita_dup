@@ -85,3 +85,25 @@
     color:var(--white);
 }
 
+.pop-up-header3{
+    background:var(--ghost-white);
+    display: flex;
+    justify-content: flex-start;
+    align-items:center;
+    padding: 10px;
+    position: relative;
+    .page-name {
+     font-size: $large-font;
+     color:var(--onyx-black);
+   }
+   .text-section{
+       width: calc(100% - 30px);
+       .page-name{
+        font-weight:$font-normal;
+       }
+   }
+   i{
+    font-size: $extra-large-2-font;
+    width: 30px;
+  }
+}

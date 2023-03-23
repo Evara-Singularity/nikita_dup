@@ -72,6 +72,8 @@ export class SimilarProductsComponent implements OnInit {
             if (products && (products as []).length > 0) {
                 this.similarProducts = (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));
                 this.similarDataLoaded$.emit(true);
+            }else{
+                this.similarDataLoaded$.emit(false);
             }
         })
     }
@@ -97,6 +99,9 @@ export class SimilarProductsComponent implements OnInit {
         LazyLoadImageModule,
         ProductCardVerticalContainerModule,
         ProductCardVerticalGridViewModule
+    ],
+    exports: [
+        SimilarProductsComponent
     ]
 })
-export class ProductModule { }
+export class SimilarProductModule { }

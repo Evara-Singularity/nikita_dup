@@ -65,7 +65,7 @@ export class RecentViewedProductsComponent implements OnInit {
     this.productService.getrecentProduct(userId).subscribe(result => {
       if (result['statusCode'] === 200) {
         this.recentProductItems = (result['data'] as any[]).map(product => this.productService.recentProductResponseToProductEntity(product));
-        if (this.recentProductItems.length === 0) { this.noRecentlyViewed$.emit(true);}
+        if (this.recentProductItems.length <= 1 ) { this.noRecentlyViewed$.emit(true);}
       }
     })
   }

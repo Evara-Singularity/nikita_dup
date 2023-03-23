@@ -69,6 +69,7 @@ export class CommonService
     replaceHeading: boolean = false;
     abTesting: any;
     updateSortBy: Subject<string> = new Subject();
+    bulk_rfq_categoryList: Subject<string> = new Subject();
     bharatcraftUserSessionArrived: Subject<boolean> = new Subject<boolean>();
     scrolledViewPort: number = 0;
     private _networkSpeed: Number = null;
@@ -79,6 +80,7 @@ export class CommonService
     public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
     public initiateLoginPopUp: Subject<string> = new Subject<string>();
+    public _initiateBulkRfq: Subject<boolean> = new Subject<boolean>();
 
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
     public addLottieScriptSubject: Subject<any> = new Subject<any>();
@@ -92,6 +94,7 @@ export class CommonService
     ;
     public previousUrl: string = "/";
     public currentUrl: string = null;
+    public enableAppPromoInHeader = false;
     
     goldMemberPopupOpened = new Subject();
     public defaultLocaleValue = localization_en.product;
@@ -233,6 +236,16 @@ export class CommonService
     getSearchPopupStatus()
     {
         return this._loadSearchPopup.asObservable();
+    }
+
+    initiateBulkRfq(status: boolean)
+    {
+        this._initiateBulkRfq.next(status);
+    }
+
+    initiateBulkRfqStatus()
+    {
+        return this._initiateBulkRfq.asObservable();
     }
 
     resetLimitTrendingCategoryNumber()
@@ -1593,6 +1606,24 @@ export class CommonService
 
     getGoldMembershipPopup(){
         return this.goldMemberPopupOpened.asObservable();
+    }
+
+    getPurchaseList(data) {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST;
+        return this._dataService.callRestful("GET", url, { params: data }).pipe(
+            map((res) => {
+                if (res["status"] && res["statusCode"] == 200) {
+                    return res["data"];
+                } else {
+                    return [];
+                }
+            })
+        );
+    }
+
+    getRfqList(obj) {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RFQ_LIST;
+        return this._dataService.callRestful("POST", url, { body: obj });
     }
 
 }

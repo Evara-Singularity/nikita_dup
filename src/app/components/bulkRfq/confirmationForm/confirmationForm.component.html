@@ -1,0 +1,90 @@
+<div class="thanks-query-container">
+  <!-- <div class="heading-txt">
+    <h2>Thanks, for submitting the query</h2>
+    <p>Below is your request summary</p>
+  </div> -->
+  <!-- <div class="card">
+    <div class="material-form">
+      <div class="outline-input-label">
+        <label>
+          <input [disabled]="true" type="text" name="" />
+          <span class="label">{{ bulkrfqForm["productType"] }}</span>
+        </label>
+      </div>
+      <div class="multiple-form-field quantity-block">
+        <div class="outline-input-label">
+          <label>
+            <input [disabled]="true" type="text" name="" />
+            <span class="label">{{ bulkrfqForm["quantity"] }}</span>
+          </label>
+        </div>
+        <div class="outline-input-label">
+          <label>
+            <input [disabled]="true" type="text" name="" />
+            <span class="label">{{ bulkrfqForm["budget"] }}</span>
+          </label>
+        </div>
+      </div>
+      <div class="outline-input-label">
+        <label>
+          <input [disabled]="true" type="text" name="" />
+          <span class="label">{{ gstinForm["gstin"] }}</span>
+        </label>
+      </div>
+      <div class="outline-input-label">
+        <label>
+          <input [disabled]="true" type="text" name="" />
+          <span class="label">{{ gstinForm["email"] }}</span>
+        </label>
+      </div>
+      <div class="outline-input-label mb-0">
+        <label>
+          <input [disabled]="true" type="text" name="" />
+          <span class="label">{{ gstinForm["description"] }}</span>
+        </label>
+      </div>
+    </div>
+  </div> -->
+
+
+  <!-- new design -->
+  <div class="thanks-for-query ">
+    <div class="query-header pad-15">
+      <i class="icon-back-arrow" (click)="moveToNext(this.stepNameLogin)" ></i>
+      <img src="assets/img/checkbox-circle-fill-m.svg" alt="">
+      <h3 class="pad-0">Thanks, for submitting the query</h3>
+      <p class="mt-5">Below is your request summary</p>
+    </div>
+    <div class="query-body br-8">
+      <div class="query-inner query-inner-upper pad-15">
+        <p class="label">Product Name</p>
+        <h4 class="maintxt">{{ bulkrfqForm["productType"] }}</h4>
+        <div class="query-inner-flx">
+          <div class="flx-child">
+            <p class="label">Qty</p>
+            <h4 class="maintxt">{{ bulkrfqForm["quantity"] }}</h4>
+          </div>
+          <div class="flx-child">
+            <p class="label" *ngIf="bulkrfqForm['budget'] != null && bulkrfqForm['budget'] != ''">Budget</p>
+            <h4 class="maintxt breakText">{{ bulkrfqForm["budget"] }}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="query-inner query-inner-bottom pad-15">
+        <p class="label">GST no.</p>
+        <h4 class="maintxt">{{ gstinForm["gstin"] }}</h4>
+        <p class="label">Email ID</p>
+        <h4 class="maintxt">{{ gstinForm["email"] }}</h4>
+        <p class="label" *ngIf="gstinForm['description'] != null && gstinForm['description'] != ''">Product Description</p>
+        <h4 class="maintxt">{{ gstinForm["description"] }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="padding-top: 20px" *ngIf="isSimilarDataLoaded">Similar Items You Can Buy Now</h2>
+  <app-similar-products [partNumber]="''" [groupId]="''" [productName]="bulkrfqForm['productType']" [categoryCode]="bulkrfqForm['categoryId']" (similarDataLoaded$)="similarDataLoaded($event)">
+  </app-similar-products>
+  <button (click)="moveToNext('LOGIN')" class="btn secondry-full-btn">
+    ADD NEW RFQ REQUEST
+  </button>
+</div>

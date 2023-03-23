@@ -175,6 +175,24 @@
         border-bottom-right-radius: $border-radius-16;
     }
 }
+
+.mutiple-banner-cards{
+    display: flex;
+    overflow-y:auto;
+    @extend %hide-scrollbar;
+   .pwa-banner{
+       flex:0 0 90%;
+       margin-right:10px;
+       &:last-of-type{
+           margin-right:0px;
+       }
+   } 
+}
+
+.popular-Deals-section{
+    width: 100%;
+}
+
 #container-div {
    height: 125px;
 }
@@ -196,5 +214,13 @@
 
     .internal-scroll {
         overflow-y: auto;
+    }
+}
+
+::ng-deep{
+    bulk-rquest-form-popup-lazy{
+        .load-bulk-rfq{
+            padding: 20px 15px 10px !important;
+        }
     }
 }

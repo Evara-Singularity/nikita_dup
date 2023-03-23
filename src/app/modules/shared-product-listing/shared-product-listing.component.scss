@@ -198,3 +198,14 @@
         }
     }
 }
+
+::ng-deep{
+    bulk-rquest-form-popup-lazy{
+        .load-bulk-rfq{
+            padding: 0px 10px 10px !important;
+            .load-bulk-rfq-inner{
+                border: 1px solid var(--white);
+            }
+        }
+    }
+}

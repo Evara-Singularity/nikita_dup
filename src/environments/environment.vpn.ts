@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   enableServerLogs: true,
-  PROD_NAME: 'https://www.moglix.com',
+  PROD_NAME: 'https://m-vpn.moglilabs.com/',
   BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2',
   //BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',

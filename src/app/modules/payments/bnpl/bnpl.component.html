@@ -1,4 +1,4 @@
-<div *ngIf="!isBnplEnable" class="f-size-16 text-red"> {{message}} </div>
+<div *ngIf="!isEligibleResponse" class="f-size-16 text-red pb-10" style="margin-top: -10px;"> {{message}} </div>
 <section   class="bnplInner">
        <form [formGroup]="bnplForm" (ngSubmit)="pay(bnplForm.value, bnplForm.valid)" class="form-horizontal">
     <ul class="pwa-radio-list">
@@ -13,9 +13,6 @@
             </div> 
      </label>
     </ul>
-    <div *ngIf="isBnplEnable" style="margin-bottom: 15px" >
-        <prepaid-offer-checkout [displayMode]="'LABEL'" [displayName]="'BNPL payment'" ></prepaid-offer-checkout>
-    </div>
     <div class="continue-button">
         <!-- <prepaid-offer-checkout ></prepaid-offer-checkout> -->
         <div class="container">
@@ -26,5 +23,9 @@
         </div>
     </div>
 </form>
+
+<div *ngIf="isBnplEnable" style="margin-bottom: 15px" >
+    <prepaid-offer-checkout [displayMode]="'LABEL'" [displayName]="'BNPL payment'" ></prepaid-offer-checkout>
+</div>
 </section>
 <payu-form *ngIf="isValid&&type=='retail'" [data]="payuData"></payu-form>

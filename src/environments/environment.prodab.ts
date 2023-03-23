@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   enableServerLogs: true,
-  PROD_NAME: 'https://mobile-ab.moglix.com',
+  PROD_NAME: 'https://www.moglix.com',
   // BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2',
@@ -14,7 +14,7 @@ export const environment = {
   CDN_IMAGE_URL: 'https://cdn.moglix.com/',
   GTM_ANALYTICS_CODE: 'GTM-PKRGCH2',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-fd00645b6c3b.min.js',
-  buildVersion: '21.10',
+  buildVersion: '22.0',
   LOG_FILE_PATH: "/var/log/moglix/online/pwa-ab/",
   SOCIAL_LOGIN: {
     "google": {

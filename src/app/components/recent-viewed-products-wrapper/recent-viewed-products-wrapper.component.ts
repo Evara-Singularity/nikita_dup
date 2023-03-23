@@ -4,6 +4,7 @@ import {
   ComponentFactoryResolver,
   EventEmitter,
   Injector,
+  Input,
   NgModule,
   OnInit,
   ViewChild,
@@ -13,6 +14,7 @@ import { ObserveVisibilityDirectiveModule } from "@app/utils/directives/observe-
 import { MathCeilPipeModule } from "@app/utils/pipes/math-ceil";
 import { ReplacePipeModule } from "@app/utils/pipes/remove-html-from-string.pipe.";
 import { CommonService } from "@app/utils/services/common.service";
+import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 import { ProductSkeletonsModule } from "../product-skeletons/product-skeletons.component";
 
 @Component({
@@ -26,14 +28,16 @@ export class RecentViewedProductsWrapperComponent implements OnInit {
   recentProductsInstance = null;
   @ViewChild("recentProducts", { read: ViewContainerRef })
   recentProductsContainerRef: ViewContainerRef;
+  @Input('pageName') pageName = 'pdp';
 
   constructor(
     private commonService: CommonService,
     private cfr: ComponentFactoryResolver,
-    private injector: Injector
+    private injector: Injector,
+    private globalAnalyticsService: GlobalAnalyticsService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void { this.sendAnalyticsFilterTracking(); }
 
   async onVisibleRecentProduct(htmlElement) {
     if (!this.recentProductsInstance) {
@@ -81,6 +85,19 @@ export class RecentViewedProductsWrapperComponent implements OnInit {
       this.recentProductsInstance = null;
       this.recentProductsContainerRef.remove();
     }
+  }
+
+  sendAnalyticsFilterTracking() {
+    let page = {
+      channel: this.pageName,
+      pageName: this.pageName +":recently-viewed",
+      linkName: "",
+      loginStatus: "",
+    };
+    // let custData = {};
+    const custData = this.commonService.custDataTracking;
+    let order = {}
+    this.globalAnalyticsService.sendAdobeCall({ page, custData, order }, "genericClick");
   }
 }
 

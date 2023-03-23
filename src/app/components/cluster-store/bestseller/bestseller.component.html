@@ -42,35 +42,11 @@
         <h3 class="heading-3">{{data.title}}</h3>
         <a *ngIf="data['data'].length > 4" (click)="openPopup = true" class="quinary-btn">VIEW ALL</a>
     </div>
-    <div class="pwa-row verticle-view-card mb-0">
-        <div class="pwa-col-12 newarrivals-section row-gutter-space">
-            <div class="outer-view-section pwa-col-6" *ngFor="let product of data['data'] | slice:0:4; let i = index">
-                <a [routerLink]="['/'+product.productlink]">
-                    <div class="pwa-image">
-                        <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
-                    </div>
-                    <div class="product-card-lower-inner">
-                        <div class="name">
-                            {{product.productName | slice:0:27 }}
-                            <span *ngIf="product.productName.length >27">...</span>
-                        </div>
-                        <div class="brand" *ngFor="let item of product.short_description | characterremove;let i=index">
-                            <span *ngIf="i<1">By: {{ item.value}}</span>
-                        </div>
-                        <div class="prod-price-row">
-                            <div class="price">
-                                <span class="prod-mrp">{{product.mrp | currency:'INR': 'symbol': '1.0-0'}}</span>
-                                <span *ngIf="product.discount_percentage>0" class="prod-discount">{{product.discount_percentage}}% OFF</span>
-                            </div>
-                            <div class="prod-selling-price">
-                                {{product.sellingPrice | mathFloor | currency: 'INR': 'symbol': '1.0-0'}}
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
+    <product-card-vertical-container [isScroll]="false" [numberOfItems]="5">
+        <ng-container *ngFor="let product of ProductsData.slice(0,4);">
+          <product-card-vertical-grid-view [moduleUsedIn]="'new arrival'"  [product]="product"> </product-card-vertical-grid-view >
+        </ng-container>
+      </product-card-vertical-container>
 </div>
 <!-- <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
     [headerType]="'pop-up-header1'"
@@ -116,31 +92,11 @@
     <div class="content-popup otherCategoryBlock grey_bg" content>
         <div class="pwa-row verticle-view-card mb-15">
             <div class="pwa-col-12 newarrivals-section row-gutter-space">
-                <div class="outer-view-section pwa-col-6" *ngFor="let product of data['data']; let i = index">
-                    <a [routerLink]="['/'+product.productlink]">
-                        <div class="pwa-image">
-                            <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
-                        </div>
-                        <div class="product-card-lower-inner">
-                            <div class="name">
-                                {{product.productName | slice:0:27 }}
-                                <span *ngIf="product.productName.length >27">...</span>
-                            </div>
-                            <div class="brand" *ngFor="let item of product.short_description | characterremove;let i=index">
-                                <span *ngIf="i<1">By: {{ item.value}}</span>
-                            </div>
-                            <div class="prod-price-row">
-                                <div class="price">
-                                    <span class="prod-mrp">{{product.mrp | currency:'INR': 'symbol': '1.0-0'}}</span>
-                                    <span class="prod-discount">{{product.discount_percentage}}% OFF</span>
-                                </div>
-                                <div class="prod-selling-price">
-                                    {{product.sellingPrice | mathFloor | currency: 'INR': 'symbol': '1.0-0'}}
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                <product-card-vertical-container [isScroll]="false" [numberOfItems]="5">
+                    <ng-container *ngFor="let product of ProductsData;">
+                      <product-card-vertical-grid-view [moduleUsedIn]="'new arrival'"  [product]="product"> </product-card-vertical-grid-view >
+                    </ng-container>
+                  </product-card-vertical-container>
             </div>
         </div>
     </div>

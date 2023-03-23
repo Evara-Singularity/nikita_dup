@@ -2,6 +2,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgModule, AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { CommonService } from '@app/utils/services/common.service';
 
 export function listValidator(list: string[]): ValidatorFn
 {
@@ -34,7 +35,9 @@ export class ListAutocompleteComponent implements OnInit
     filteredList: any[] = [];
     toggleDropdownForPopup: boolean =false;
 
-    constructor() { }
+    constructor(
+        private _commonService: CommonService
+    ) { }
 
     ngOnInit(): void {}
 
@@ -53,6 +56,18 @@ export class ListAutocompleteComponent implements OnInit
         else if (this.productType.length && this.control) {   //for productType
             this.control.setValidators([Validators.required, listValidator(this.productType)])
         }
+        this.addSubscribers();
+    }
+
+    addSubscribers(){
+        this._commonService.bulk_rfq_categoryList.subscribe(res => {
+            if(res.length > 0){
+                this.brandList = res as any;
+                this.toggleListDisplay(true)
+            }else{
+                this.filteredList = []
+            }
+        });
     }
 
     filter(value: string) {
@@ -94,7 +109,9 @@ export class ListAutocompleteComponent implements OnInit
 
     onClick(list)
     {
+        this.onSelect.emit(list);
         this.control.setValue(list);
+        this.toggleListDisplay(false);
     }
 
     toggleListDisplay(flag)

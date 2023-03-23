@@ -49,16 +49,17 @@
                 width: 25px;
                 height: 25px;
                 border-radius: 50%;
-                background: var(--silver);
+                background: var(--white);
                 margin-bottom: 6px;
-                color: var(--white);
+                color: var(--slimy-green);
                 font-weight: bold;
-                border: 2px solid var(--silver);
+                border: 2px solid var(--slimy-green);
 
                 &.active {
                     border-color: var(--slimy-green);
                     color: var(--slimy-green);
                     background: var(--white);
+                    margin-right: -30px;
 
                     &::after {
                         border-color: red;
@@ -190,4 +191,14 @@
             }
         }
     }
+}
+
+::ng-deep{
+    
+    .error-txt{
+        margin-top: 3px !important;
+        margin-left: 10px;
+
+    }
+    
 }

@@ -2,12 +2,13 @@
     [data]="setHeaderData()">
     <div class="content-popup bulkRFQ" content>
         <div class="stepper-wrapper" *ngIf="rfqSubmmisionInProcess !=3">
-            <div class="stepper-item active">
+            <div class="stepper-item">
                 <div class="step-counter active" *ngIf="rfqSubmmisionInProcess == 1">1</div>
                 <img class="step-counter whtBg" src="assets/img/checkbox-circle-fill-m.svg" alt="" *ngIf="rfqSubmmisionInProcess == 2">
             </div>
-            <div class="stepper-item active">
-                <div class="step-counter">2</div>
+            <div class="stepper-item" [ngClass]="{'active': rfqSubmmisionInProcess == 2}">
+                <div class="step-counter active2" *ngIf="rfqSubmmisionInProcess == 2">2</div>
+                <div class="step-counter" *ngIf="rfqSubmmisionInProcess != 2">2</div>
             </div>
         </div>
 
@@ -44,17 +45,16 @@
                 <bulkRfqForm [loginAndValidatePhone]="loginAndValidatePhone" (moveToNext$)="moveToNext($event)"
                     (bulkRfqFormPhoneno$)="setPhoneNo($event)" (setBulkRfqForm$)="setBulkRfqForm($event)"></bulkRfqForm>
             </ng-container>
-
             <ng-container *ngSwitchCase="stepNameOtp">
-                <shared-auth-otp [isLoginPopup]="isLoginPopup" [otpFormArray]="otpForm" [source]="sourceFlow"
-                    [identifier]="bulkRfqFormPhoneno" (otpEmitter)="captureOTP($event)" [withLabel]="false">
-                </shared-auth-otp>
+                <div class="otp-container">
+                    <shared-auth-otp [isLoginPopup]="isLoginPopup" [otpFormArray]="otpForm" [source]="sourceFlow"
+                        [identifier]="bulkRfqFormPhoneno" (otpEmitter)="captureOTP($event)" [withLabel]="false">
+                    </shared-auth-otp>
+                </div>
             </ng-container>
-
             <ng-container *ngSwitchCase="stepNameRfqForm">
                 <gstinForm (moveToNext$)="moveToNext($event)" (setGstinForm$)="setGstinForm($event)"></gstinForm>
             </ng-container>
-
             <ng-container *ngSwitchCase="stepNameConfimation">
                 <confirmationForm (moveToNext$)="moveToNext($event)" [bulkrfqForm]="bulkrfqForm"
                     [gstinForm]="gstinForm"></confirmationForm>

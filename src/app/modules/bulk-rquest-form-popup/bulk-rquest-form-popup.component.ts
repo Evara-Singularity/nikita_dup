@@ -33,7 +33,6 @@ import { GstinFormModule } from "@app/components/bulkRfq/gstinForm/gstinForm.mod
 import { ConfirmationFormModule } from "@app/components/bulkRfq/confirmationForm/confirmationForm.module";
 import CONSTANTS from "@app/config/constants";
 import { environment } from "environments/environment";
-import { DataService } from "@app/utils/services/data.service";
 import { ProductService } from "../../utils/services/product.service";
 
 @Component({
@@ -48,6 +47,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
   readonly stepNameRfqForm = "RFQ_FORM";
   readonly stepNameConfimation = "CONFIRMATION";
   @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
+  @Output() outData$: EventEmitter<any> = new EventEmitter<any>();
   @Input("isCheckout") isCheckout = false;
   @Input("isLoginPopup") isLoginPopup = true;
   @Output() togglePopUp$: EventEmitter<any> = new EventEmitter<any>();
@@ -88,6 +88,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
       this.moveToNext(this.stepNameLogin);
     } else if (this.stepState === this.stepNameLogin) {
       this.closePopup$.emit();
+      this._commonService.setBodyScroll(null, true);
     } else if (this.stepState === this.stepNameRfqForm) {
       user["authenticated"] == "true"
         ? this.moveToNext(this.stepNameLogin)
@@ -114,6 +115,12 @@ export class BulkRquestFormPopupComponent implements OnInit {
       this.rfqSubmmisionInProcess = 3;
       this.saveBulkRfq();
     }
+    else if(stepName == this.stepNameOtp){
+      this.rfqSubmmisionInProcess = 3;
+    }else{
+      this.closePopup$.emit();
+      this.closePopup();
+    }
     this.stepState = stepName;
   }
 
@@ -135,6 +142,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
     this._localAuthService.setUserSession(response);
     this._localAuthService.clearAuthFlow();
     this._localAuthService.clearBackURLTitle();
+    this._sharedAuthUtilService.updateCartSession(null,null,null);
     this.moveToNext(this.stepNameRfqForm);
   }
 
@@ -187,6 +195,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
           null
         );
         setTimeout(() => {
+          this._commonService.setLoginNotify(null);
           this.moveToNext(this.stepNameRfqForm);
         }, 300);
       }
@@ -275,6 +284,8 @@ export class BulkRquestFormPopupComponent implements OnInit {
         device: "mobile",
         customerId: Number(user.userId || null),
         budget: Number(this.bulkrfqForm["budget"]),
+        description: this.gstinForm["description"],
+        tin: this.gstinForm["gstin"]
       },
       rfqEnquiryItemsList: [
         {
@@ -288,6 +299,15 @@ export class BulkRquestFormPopupComponent implements OnInit {
     };
     return requestBody;
   }
+
+  closePopup() {
+    (<HTMLElement>document.getElementById('body')).classList.remove('stop-scroll');
+    document.querySelector('app-pop-up').classList.remove('open');
+    setTimeout(() => {
+            this.outData$.emit({ hide: true, selector: "" });
+    }, 200);
+  }
+
 }
 
 @NgModule({

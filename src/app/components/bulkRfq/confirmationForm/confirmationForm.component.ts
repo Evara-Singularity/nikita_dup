@@ -10,6 +10,7 @@ export class ConfirmationFormComponent implements OnInit {
   @Input("bulkrfqForm") bulkrfqForm: String;
   @Input("gstinForm") gstinForm: String;
   readonly stepNameLogin = "CLOSE";
+  isSimilarDataLoaded: boolean = true; 
 
   constructor() {}
 
@@ -18,5 +19,9 @@ export class ConfirmationFormComponent implements OnInit {
 
   moveToNext(stepName) {
     this.moveToNext$.emit(stepName);
+  }
+
+  similarDataLoaded(isLoaded){
+    this.isSimilarDataLoaded = isLoaded;
   }
 }

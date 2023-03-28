@@ -37,7 +37,7 @@ export class RecentViewedProductsWrapperComponent implements OnInit {
     private globalAnalyticsService: GlobalAnalyticsService
   ) {}
 
-  ngOnInit(): void { this.sendAnalyticsFilterTracking(); }
+  ngOnInit(): void { }
 
   async onVisibleRecentProduct(htmlElement) {
     if (!this.recentProductsInstance) {
@@ -77,6 +77,7 @@ export class RecentViewedProductsWrapperComponent implements OnInit {
       ).subscribe((flag) => {
         this.hasRecentlyView = false;
       });
+      this.sendAnalyticsFilterTracking();
     }
   }
 

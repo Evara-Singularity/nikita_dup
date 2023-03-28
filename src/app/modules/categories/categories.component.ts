@@ -19,6 +19,7 @@ import { ProductCardHorizontalGridViewModule } from '../product-card/product-car
 import { ProductCardVerticalBlockViewModule } from '../product-card/product-card-vertical-block-view/product-card-vertical-block-view.module';
 import { ProductService } from '@app/utils/services/product.service';
 import { CONSTANTS } from '@app/config/constants';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 
 
@@ -68,7 +69,8 @@ export class Categories implements OnInit {
 
 	constructor(
 		public _commonService: CommonService,
-		private _productService: ProductService
+		private _productService: ProductService,
+		private _analytics: GlobalAnalyticsService,
 	) {}
 
 	getCategoryLabel(categoryName) {
@@ -190,6 +192,22 @@ export class Categories implements OnInit {
             reviewCount:  null //this.product.reviewCount
         };
         return productInfo;
+	}
+
+	setCookieCluster(imageURL, index) {
+		this._analytics.sendAdobeCall(this.clusterVisitAnalytic(imageURL, index), "genericClick")
+	}
+
+	clusterVisitAnalytic(imageURL, index) {
+		const page = {
+			pageName: 'home',
+			channel: "industry_cluster_" + index,
+			linkPageName: imageURL,
+			linkName: null,
+			loginStatus: this._commonService.loginStatusTracking,
+		};
+		const analytices = { page: page, custData: this._commonService.custDataTracking, order: {} }
+		return analytices;
 	}
 
 

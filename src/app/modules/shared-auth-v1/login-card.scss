@@ -11,7 +11,7 @@
     }
     input {
         width: 100%;
-        height: 40px !important;
+        height: 38px !important;
         border: 1px solid var(--spanish-gray);
         border-radius: 8px !important;
         padding: 0px 10px !important;
@@ -73,46 +73,63 @@
 %otp-card {
     .otp-form {
         .otp-form-inputs {
+            border: 1px solid var(--silver);
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            border-radius: 8px;
+            padding: 2px;
+
             input {
-                width: 40px;
-                border: 1px solid var(--silver);
+                border: none;
                 text-align: center;
-                box-shadow: 0px 3px 8px 0px #00000029;
+
             }
         }
+
         &.otp-form-invalid {
-            input {
+            .otp-form-inputs {
                 border: 1px solid var(--primary) !important;
+                box-shadow: 0px 3px 8px #00000029;
             }
         }
+
         &.otp-form-varified {
-            input {
+            .otp-form-inputs {
                 border: 1px solid var(--slimy-green) !important;
+                box-shadow: 0px 3px 8px #00000029;
             }
+
             .error-text {
                 color: var(--slimy-green) !important;
             }
         }
+        .error-field {
+            margin-left: 0px !important;
+        }
     }
+
     .otp-text {
         padding: 20px 0px;
         display: flex;
         align-items: center;
+
         .otp-text-inner {
             width: 50%;
         }
+
         .left {
             span {
                 font-size: $small-font;
-                &.resend{
+
+                &.resend {
                     font-weight: bold;
                 }
             }
         }
+
         .right {
             text-align: right;
+
             span {
                 font-size: $large-font;
                 font-weight: bold;
@@ -121,3 +138,54 @@
         }
     }
 }
+// %otp-card {
+//     .otp-form {
+//         .otp-form-inputs {
+//             display: flex;
+//             justify-content: space-between;
+//             input {
+//                 width: 40px;
+//                 border: 1px solid var(--silver);
+//                 text-align: center;
+//                 box-shadow: 0px 3px 8px 0px #00000029;
+//             }
+//         }
+//         &.otp-form-invalid {
+//             input {
+//                 border: 1px solid var(--primary) !important;
+//             }
+//         }
+//         &.otp-form-varified {
+//             input {
+//                 border: 1px solid var(--slimy-green) !important;
+//             }
+//             .error-text {
+//                 color: var(--slimy-green) !important;
+//             }
+//         }
+//     }
+//     .otp-text {
+//         padding: 20px 0px;
+//         display: flex;
+//         align-items: center;
+//         .otp-text-inner {
+//             width: 50%;
+//         }
+//         .left {
+//             span {
+//                 font-size: $small-font;
+//                 &.resend{
+//                     font-weight: bold;
+//                 }
+//             }
+//         }
+//         .right {
+//             text-align: right;
+//             span {
+//                 font-size: $large-font;
+//                 font-weight: bold;
+//                 color: var(--primary);
+//             }
+//         }
+//     }
+// }

@@ -115,6 +115,9 @@ padding-bottom: 60px;
 .br-8{
     border-radius: 8px;
 }
+.br-0{
+    border-radius: 0px !important;
+}
 
 //margin-bottom
 .mb-0{
@@ -145,4 +148,7 @@ padding-bottom: 60px;
 }
 .ml-10{
     margin-left: 10px;
+}
+.mar-lr-m-15{
+    margin: 0px -15px;
 }

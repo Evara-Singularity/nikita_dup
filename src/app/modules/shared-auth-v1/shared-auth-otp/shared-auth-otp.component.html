@@ -11,16 +11,16 @@
         <div class="otp-form-inputs">
             <ng-container *ngFor="let control of otpFormArray['controls'];let cIndex=index">
                 <!--added class='pseudo' for focus purpose-->
-                <input type="tel" autocomplete="on"  placeholder="-" (paste)="onPaste($event, cIndex)" data-numbersOnly pattern="\d*" [formControl]="control"
+                <input type="tel" autocomplete="on"  placeholder="—" (paste)="onPaste($event, cIndex)" data-numbersOnly pattern="\d*" [formControl]="control"
                     autofocus class="pseudo" maxlength="1" (keyup)="moveFocus($event, control.valid, cIndex)"
                     [readonly]="isOTPVerified">
             </ng-container>
         </div>
-        <div class="error-field pt-10" *ngIf="otpFormArray.dirty && (otpFormArray.invalid) && !(isOTPVerified)"><span
-                class="error-txt mt-10">Number not Verified</span> </div>
+        <div class="error-field" *ngIf="otpFormArray.dirty && (otpFormArray.invalid) && !(isOTPVerified)"><span
+                class="error-txt">Number not Verified</span> </div>
         <div class="error-field" *ngIf="(otpFormArray.valid) && incorrectOTP"><span
                 class="error-txt">{{incorrectOTP}}</span> </div>
-        <div class="success-field pt-10" *ngIf="isOTPVerified"><span class="success-txt">Number Verified</span></div>
+        <div class="success-field mt-5" *ngIf="isOTPVerified"><span class="success-txt">Number Verified</span></div>
         
     </form>
     <div class="otp-text">

@@ -201,9 +201,9 @@ export class Categories implements OnInit {
 	clusterVisitAnalytic(imageURL, index) {
 		const page = {
 			pageName: 'home',
-			channel: "industry_cluster_" + index,
-			linkPageName: imageURL,
-			linkName: null,
+			channel: '',
+			linkPageName: '',
+			linkName: "industry_cluster_" + index + imageURL,
 			loginStatus: this._commonService.loginStatusTracking,
 		};
 		const analytices = { page: page, custData: this._commonService.custDataTracking, order: {} }

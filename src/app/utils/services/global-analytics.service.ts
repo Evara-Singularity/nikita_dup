@@ -36,6 +36,7 @@ export class GlobalAnalyticsService {
     // console.log(environment["ISCHROME"]);
     if (this.isBrowser && _satellite && _satellite.track) {
       digitalData = Object.assign({}, data);
+      // console.log('digitalData', digitalData);
       _satellite.track(trackingname);
     }
   }

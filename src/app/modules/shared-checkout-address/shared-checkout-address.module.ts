@@ -4,15 +4,19 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AllAddressesComponent } from './all-addresses/all-addresses.component';
 import { CheckoutAddressPipeModule } from '@app/utils/pipes/checkout-address.pipe';
+import { QuickOrderAllAddressComponent } from './quick-order-all-address/quick-order-all-address.component';
+import { GstDetailsComponent } from './gst-details/gst-details.component';
+import { MathRoundPipeModule } from "../../utils/pipes/math-round";
 
 @NgModule({
-  declarations: [AllAddressesComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CheckoutAddressPipeModule,
-  ],
-  exports: [AllAddressesComponent]
+    declarations: [AllAddressesComponent, QuickOrderAllAddressComponent, GstDetailsComponent],
+    exports: [AllAddressesComponent, QuickOrderAllAddressComponent, GstDetailsComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CheckoutAddressPipeModule,
+        MathRoundPipeModule
+    ]
 })
 export class SharedCheckoutAddressModule { }

@@ -2,8 +2,15 @@
     <div class="pwa-col-12">
         <div *ngIf="_cartService.getGenericCartSession?.itemsList?.length > 0" class="mb-65">
             <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications>
+            <quick-order-all-address [addDeliveryOrBilling]="addDeliveryOrBilling"
+            (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
+            (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
+            (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"
+            ></quick-order-all-address>
+            <all-promocode-v1></all-promocode-v1>
             <prepaid-offer></prepaid-offer>
             <cart [moduleName]="'QUICKORDER'" ></cart>
+            <gst-details></gst-details>
             <order-summary></order-summary>
             <generic-offers></generic-offers>
             <div class="fixed-bottom-cta">

@@ -14,8 +14,14 @@ import { CartModule } from '@app/modules/shared-checkout-quick-order-components/
 import { GenericOffersModule } from '@app/modules/ui/generic-offers/generic-offers.component';
 import { PrepaidOfferModule } from '@app/modules/prepaid-offer/prepaid-offer.component';
 import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
+import { SharedCheckoutAddressModule } from '@app/modules/shared-checkout-address/shared-checkout-address.module';
+import { PromoCodeModule } from "../../modules/shared-checkout-quick-order-components/promoCode/promoCode.module";
+import { AllPromocodeV1Module } from '@app/modules/shared-checkout-quick-order-components/all-promocode-v1/all-promocode-v1.module';
 
 @NgModule({
+    declarations: [
+        QuickOrderComponent,
+    ],
     imports: [
         routing,
         CommonModule,
@@ -30,11 +36,11 @@ import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
         MathFloorPipeModule,
         SharedCheckoutUnavailableItemsModule,
         PrepaidOfferModule,
-        YTThumnailPipeModule
-    ],
-    declarations: [
-        QuickOrderComponent,
-    ],
+        YTThumnailPipeModule,
+        SharedCheckoutAddressModule,
+        PromoCodeModule,
+        AllPromocodeV1Module
+    ]
 })
 
 export class QuickOrderModule { }

@@ -1,0 +1,8 @@
+<div class="custom-promocode" *ngIf="appliedPromocode.length > 0">
+    <custom-promo-code></custom-promo-code>
+</div>
+<div class="promocode-list" *ngIf="appliedPromocode.length == 0">
+    <p class="open-offers" (click)="$event.stopPropagation();openPromoCodeList()">APPLY COUPON -->>>>></p>
+    <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" *ngIf="showPromoOfferPopup">
+    </promo-code-list>
+</div>

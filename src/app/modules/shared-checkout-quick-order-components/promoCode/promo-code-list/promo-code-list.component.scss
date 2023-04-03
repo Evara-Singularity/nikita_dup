@@ -19,13 +19,15 @@
         border-bottom: 1px solid var(--silver);
     }
     .no-coupon-card-container{
-        padding-top: 50px;
+        padding-top: 30px;
+        
         .card{
+            border: 1px solid var(--ghost-white);
             padding:70px 15px;
             .inner-no-coupon-card{
                 text-align: center;
                 img{
-                    width: 100px;
+                    width: 118px;
                 }
                 p{
                     font-size: $large-font;
@@ -42,24 +44,29 @@
             font-weight: $font-bold;
         }
         .card{
-            padding: 20px 15px;
+            padding:  0px;
             margin-bottom: 10px;
             .apply-coupon{
-                display: flex;
-                align-items: center;
+                // display: flex;
+                // align-items: center;
                 .inner-coupon{
-                    width:65%;
+                    padding: 15px;
                 }
                 h3{
+                    font-size: $extra-large-1-font;
                     padding: 0 0 5px;
                 }
                 .promo-description{
-                    font-size: $medium-font;
-                    line-height: $small-line-height;
+                    font-size: $large-font;
+                    line-height: $medium-line-height;
                 }
                 button{
                     margin-left:auto;
-                    align-self: self-start;
+                    width: 100%;
+                    background-color: var(--nyanza);
+                    color: var(--slimy-green);
+                    border-radius: 0 0 8px 8px;
+                    height: 35px;
                 }
             }
         }
@@ -105,3 +112,26 @@
     }
 }
 
+.coupen-card{
+    // background-image: url(../../../assets/img/coupen-full.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 10px;
+    border: none;
+    // margin: 15px;
+    border: 2px dashed var(--slimy-green);
+    // box-shadow: 0px 3px 8px var(--silver);
+    // background-color: var(--silver);
+    // &::before{
+        
+    // }
+    margin-bottom: 15px !important;
+    position: relative;
+    .seaser-icon{
+        width: 30px;
+        position: absolute;
+        right: 15px;
+        top: -15px;
+        rotate: 180deg;
+    }
+}

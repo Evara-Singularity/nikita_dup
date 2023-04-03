@@ -1,5 +1,14 @@
-<div class="gst">
-    <h2>Add gst details in the checkout page</h2>
-    <span>And claim ₹₹{{_cartService.getGenericCartSession.cart.tpt | mathRound | number :
-        '1.2-2'}} on your input tax credit.</span>
+<div class="pwa-row pt0 mb5">
+    <div class="cart-add-gst-strip">
+        <div class="gst-icon">
+            <i class="icon-email-invoice"></i>
+        </div>
+        <div class="gst-text">
+            <h3>Add GST details in checkout page</h3>
+            <p class="gst-clm-txt">and claim <span class="clm-amt">₹{{_cartService.getGenericCartSession.cart.tpt | mathRound | number :
+                '1.2-2'}}</span> on your input tax credit</p>
+        </div>
+        
+    </div>
 </div>
+

@@ -1,3 +1,36 @@
-.gst {
-  background-color: aquamarine;
+@import '../../../scss/variables';
+.cart-add-gst-strip{
+  display: flex;
+  background-color: var(--white);
+  border-radius: 8px;
+  padding: 15px;
+  align-items: center;
+  justify-content: unset;
+  width: 100%;
+  .gst-icon {
+      padding-right: 10px;
+      i {
+          font-size: $extra-large-3-font;
+      }
+  }
+  h3 {
+      padding: 0px !important;
+  }
+  .gst-text {
+      font-size: $large-font;
+      line-height: 19px;
+      .gst-clm-txt{
+          font-size: var(--medium-text);
+          line-height: $small-line-height;
+          .clm-amt{
+              color: var(--slimy-green);
+          }
+      }
+  }
+}
+.pt0{
+  padding-top: 0px;
+}
+.mb5{
+  margin-bottom: 5px;
 }

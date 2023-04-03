@@ -8,20 +8,25 @@
   padding: 15px;
   margin-top: 10px;
   @extend %cards;
+
   .invoice-select {
     display: flex;
     align-items: center;
+
     label {
       width: 20px;
       @extend %custom-check-box-checkout;
     }
+
     .invoice-txt {
       padding-left: 10px;
+
       p {
         font-size: $large-font;
         font-weight: bold;
         margin-bottom: 2px;
       }
+
       .invoice-subtxt {
         color: #9c9292;
         font-size: $medium-font;
@@ -31,64 +36,90 @@
 }
 
 .address-list {
+  background-color: var(--white);
   @extend %clear-fix;
   // @extend %container;
-  label {
-    padding: 10px 0;
-    display: block;
-    @extend %custom-radio-checkout;
-    @extend %clear-fix;
-    .chk-txt {
-      font-size: $medium-font;
-      width: calc(100% - 40px);
-      margin-left: 20px;
-      .heading-container {
-        display: block;
-        @extend %clear-fix;
-        margin-bottom: 5px;
-        .heading {
-          font-weight: 500;
-          float: left;
-          line-height: 20px;
-        }
-        .icon-dot {
-          line-height: 26px;
-          float: right;
-        }
-      }
-      .txt {
-        display: block;
+  padding: 10px 0;
+  margin-top: -14px;
+  margin-bottom: 5px;
+  @extend %custom-radio-checkout;
+  @extend %clear-fix;
+
+  .chk-txt {
+    font-size: $medium-font;
+    display: flex;
+    margin-left: 0px;
+    padding: 0px 15px;
+
+    // width: calc(100% - 40px);
+    // margin-left: 20px;
+    .heading-container {
+      display: block;
+      @extend %clear-fix;
+      margin-bottom: 5px;
+      display: block;
+      h2 {
         font-size: $large-font;
-        width: 65%;
-        line-height: 21px;
+      }
+      .persnName {
+        // margin-top: 25px;
+        display: -webkit-box;
+        height: 20px;
+        line-height: 1;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: $medium-font;
+        line-height: $small-line-height;
+      }
+
+      .icon-dot {
+        line-height: 26px;
+        float: right;
       }
     }
+    button{
+      height: unset;
+    }
+    .txt {
+      display: block;
+      font-size: $large-font;
+      width: 65%;
+      line-height: 21px;
+    }
   }
+
 }
 
-.persnName {
-  &:after {
-    content: "|";
-    padding: 0px 10px;
-    position: absolute;
-  }
-  & + span {
-    padding-left: 10px;
-  }
-}
+// .persnName {
+//   &:after {
+//     content: "|";
+//     padding: 0px 10px;
+//     position: absolute;
+//   }
+//   & + span {
+//     padding-left: 10px;
+//   }
+// }
 
 .multiple-address {
-  padding: 15px;
-  @extend %white-card;
+
+  // padding: 15px;
+  // @extend %white-card;
   &.withRadioContainer {
     &:last-child {
       border-bottom: none;
     }
+
     .chk-txt {
       margin-left: 5px;
+      display: flex
     }
   }
+
   @extend %clear-fix;
+
   .bin-icon {
     float: right;
     text-align: right;
@@ -100,6 +131,7 @@
 .address-btn-section {
   display: block;
   margin-top: 10px;
+
   .small-btn {
     color: var(--primary);
     width: 42%;
@@ -110,10 +142,12 @@
     float: left;
     font-weight: bold;
   }
+
   .edit {
     background: var(--misty-rose);
     color: var(--primary);
   }
+
   .delete {
     background: var(--primary);
     color: #fff;

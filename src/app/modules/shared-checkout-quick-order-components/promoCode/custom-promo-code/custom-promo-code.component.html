@@ -1,4 +1,4 @@
-<form class="pwa-row applied-code material-form" (ngSubmit)="$event.stopPropagation();submitPromocode()" autocomplete="off">
+<!-- <form class="pwa-row applied-code material-form" (ngSubmit)="$event.stopPropagation();submitPromocode()" autocomplete="off">
   <div class="pwa-col-12 apply-coupon">
     <div class="outline-input-label">
       <label [class.is-focus]="couponCode.value.length!=0">
@@ -9,8 +9,19 @@
     </div>
     <button class="btn" [class]="canApplyCode?'secondry-btn':'disabled'" [disabled]="isPromcodeValid">APPLY</button>
   </div>
-</form>
-
+</form> -->
+<div class="pwa-row">
+  <div class="coupen-strip">
+      <div class="coupen-icon">
+          <i class="icon-coupon-3-fill-1"></i>
+      </div>
+      <div class="coupen-text">
+          <span class="green-promo-code">MAR75</span> <br />
+          <span class="green-promo-code-min">Coupon applied on your cart</span>
+      </div>
+      <i class="icon-delete"></i>
+  </div>
+</div>
 
 
 

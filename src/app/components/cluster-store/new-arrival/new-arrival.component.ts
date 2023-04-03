@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, Input, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
-import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import { CharacterremovePipeModule } from '@app/utils/pipes/characterRemove.pipe';
 import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
 import { ProductCardVerticalContainerModule } from "../../../modules/ui/product-card-vertical-container/product-card-vertical-container.module";
@@ -48,7 +47,7 @@ export class NewArrivalComponent implements OnInit {
         RouterModule,
         CharacterremovePipeModule,
         MathCeilPipeModule,
-        PopUpModule,
+        // PopUpModule,
         ProductCardVerticalContainerModule,
         ProductCardVerticalGridViewModule
     ]

@@ -3,7 +3,6 @@
         [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
     </app-oos-similar-section>
 
-
     <shared-product-carousel (openPopUpcrousel$)="openPopUpcrousel()" [productAllImages]="productAllImages"
         [carouselInitialized]="carouselInitialized" (loadProductShare$)="loadProductShare()"
         [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName"
@@ -44,7 +43,7 @@
         <app-product-offers [price]='productPrice' [gstPercentage]='taxPercentage'
             [productmsn]='productSubPartNumber || defaultPartNumber' [isHindiMode]='isHindiUrl'
             (viewPopUpHandler)='viewPopUpOpen($event)' (promoCodePopUpHandler)='promoCodePopUpOpen($event)'
-            [brandName]='rawProductData?.brandDetails?.brandname'
+            [brandName]='rawProductData?.brandDetails?.brandName'
             [categoryId]='rawProductData?.categoryDetails[0]?.categoryCode'
             [categoryName]='rawProductData?.categoryDetails[0]?.categoryName'
             (emaiComparePopUpHandler)='emiComparePopUpOpen($event)'>

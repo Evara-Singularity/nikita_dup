@@ -760,7 +760,8 @@ export class ProductService {
         return productReturn;
     }
 
-    productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
+
+    productLayoutJsonToProductEntity(product: any, brandId?:any, brandName?:any) {
         // console.log('product ==>', product);
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
@@ -786,8 +787,8 @@ export class ProductService {
             mainImageMediumLink: product["imageLink_medium"]
                 ? this.getForLeadingSlash(product["imageLink_medium"])
                 : "",
-            mainImageThumnailLink: product["imageLink_small"]
-                ? this.getForLeadingSlash(product["imageLink_small"])
+            mainImageThumnailLink: product["imageLink_medium"]
+                ? this.getForLeadingSlash(product["imageLink_medium"])
                 : "",
             productTags: [],
             filterableAttributes: {},

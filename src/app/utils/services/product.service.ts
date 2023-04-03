@@ -760,48 +760,8 @@ export class ProductService {
         return productReturn;
     }
 
-    storePageResponseToProductEntity(product: any) {
-        console.log('product ==>', product);
-        const productReturn = {
-            moglixPartNumber: product["msn"] || null,
-            moglixProductNo: product["msn"] || null,
-            mrp: product['mrp'],
-            salesPrice: product['sellingPrice'],
-            priceWithoutTax: product['pricewithouttax'],
-            productName: product["productName"],
-            variantName: product["productName"],
-            productUrl: product["productlink"],
-            shortDesc: product["short_description"] || null,
-            brandId: product["brandId"] || null,
-            brandName: product["brandName"],
-            quantityAvailable: 1,
-            discount: this._commonService.calculcateDiscount(null, product['mrp'], product['sellingPrice']),
-            rating: product["rating"] || null,
-            categoryCodes: null,
-            taxonomy: product["taxonomy"] || null,
-            mainImageLink: product["imageLink_medium"] ? this.getForLeadingSlash(product["imageLink_medium"]) : "",
-            mainImageMediumLink: product["imageLink_medium"]
-                ? this.getForLeadingSlash(product["imageLink_medium"])
-                : "",
-            mainImageThumnailLink: product["imageLink_medium"]
-                ? this.getForLeadingSlash(product["imageLink_medium"])
-                : "",
-            productTags: [],
-            filterableAttributes: {},
-            attributeValuesForPart: ((product['attributeValuesForPart']) ? product['attributeValuesForPart'] :
-             {}) || {}, 
-            avgRating: product.avgRating || 0,
-            itemInPack: null,
-            ratingCount: product.ratingCount || 0,
-            reviewCount: product.reviewCount || 0,
-            internalProduct: true,
-            outOfStock: product.outOfStock,
-        } as ProductsEntity;
-        // console.log('product ==>', productReturn);
-        return productReturn;
-    }
 
-    productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
+    productLayoutJsonToProductEntity(product: any, brandId?:any, brandName?:any) {
         // console.log('product ==>', product);
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
@@ -827,8 +787,8 @@ export class ProductService {
             mainImageMediumLink: product["imageLink_medium"]
                 ? this.getForLeadingSlash(product["imageLink_medium"])
                 : "",
-            mainImageThumnailLink: product["imageLink_small"]
-                ? this.getForLeadingSlash(product["imageLink_small"])
+            mainImageThumnailLink: product["imageLink_medium"]
+                ? this.getForLeadingSlash(product["imageLink_medium"])
                 : "",
             productTags: [],
             filterableAttributes: {},

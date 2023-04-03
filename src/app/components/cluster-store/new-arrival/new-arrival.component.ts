@@ -28,7 +28,7 @@ export class NewArrivalComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.newArrivalProducts = (this.data['data']).map((item) => this._productService.storePageResponseToProductEntity(item));
+    this.newArrivalProducts = (this.data['data']).map((item) => this._productService.productLayoutJsonToProductEntity(item));
   }
   outData(data) {
     // console.log(data);

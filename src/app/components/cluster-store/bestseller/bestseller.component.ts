@@ -25,7 +25,7 @@ export class BestsellerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.ProductsData = (this.data['data']).map((item) => this._productService.storePageResponseToProductEntity(item));
+    this.ProductsData = (this.data['data']).map((item) => this._productService.productLayoutJsonToProductEntity(item));
 
   }
   outData(data) {

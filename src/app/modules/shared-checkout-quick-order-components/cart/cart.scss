@@ -6,32 +6,36 @@
 @import '../../../scss/components/static-small-card-container';
 
 
-.prepaid-discount-txt{
+.prepaid-discount-txt {
     padding-top: 5px;
-    font-size: $small-font;
+    font-size: $medium-font;
     color: var(--slimy-green);
 }
-.shop-more-container{
+
+.shop-more-container {
     padding: 8px;
-    background-color: #E9FDE8; 
+    background-color: #E9FDE8;
     width: 100%;
     border-radius: $border-radius-4;
     display: flex;
     align-items: center;
     font-size: $small-font;
-    .shop-more-text{
+
+    .shop-more-text {
         font-size: $small-font;
         line-height: $small-line-height;
         width: 60%;
-        padding-right:5px ;
+        padding-right: 5px;
     }
-    .add-products-btn{
+
+    .add-products-btn {
         font-weight: $font-bold;
         font-size: $medium-font;
         color: var(--bleu-de-france);
         margin-left: auto;
     }
 }
+
 // .sigle-line-txt{
 //     margin-top: -30px;
 // }
@@ -156,7 +160,7 @@
             width: 150px;
             display: flex;
             align-items: center;
-            height:32px;
+            height: 32px;
 
             .qty-txt {
                 width: 30px;
@@ -181,22 +185,40 @@
                 text-align: right;
                 display: inline-flex;
                 align-items: center;
-                &>span{
-                    height:32px;
+
+                &>span {
+                    height: 32px;
                 }
-                strong{
+
+                strong {
                     font-size: $large-font;
                 }
+
                 .grey-txt {
                     font-size: 10px;
                 }
-                .icon-down{
+
+                .icon-down {
                     width: 15px;
                     margin-left: 10px;
                 }
             }
 
-            
+
+        }
+    }
+    .cart-btm{
+        display: flex;
+        justify-content: space-between;
+        padding-top: 0px !important;
+        .free-ship{
+            display: flex;
+                align-items: center;
+                margin-right: 25px;
+            i{
+                font-size: $large-font;
+                margin-left: 5px;
+            }
         }
     }
 
@@ -232,9 +254,10 @@
             a {
                 font-size: $large-font;
                 float: left;
+                // font-weight: $font-bold;
                 width: 95%;
                 width: calc(100% - 22px);
-                line-height: 19px;
+                line-height: 18px;
             }
 
             .icon-dot {
@@ -274,14 +297,17 @@
 
         .price {
             margin-top: 10px;
-            .price-mrp{
+
+            .price-mrp {
                 font-weight: bold;
-                font-size: $small-font;
+                font-size: $medium-font;
                 color: var(--dim-gray);
-                position: relative; 
-                .strike-off-upper{
+                position: relative;
+
+                .strike-off-upper {
                     position: relative;
-                    .strike-off{
+
+                    .strike-off {
                         height: 1px;
                         background-color: var(--dim-gray);
                         top: 6px;
@@ -294,7 +320,7 @@
 
             .after-disc {
                 font-weight: bold !important;
-                font-size: $small-font !important;
+                font-size: $medium-font !important;
             }
 
             .discount {
@@ -312,10 +338,10 @@
         padding: 10px 0;
         border: solid var(--ghost-white);
         border-width: 1px 0 0px 0;
-
+        margin-bottom: 10px;
         ul {
             li {
-                padding: 5px 15px;
+                padding: 5px 40px 5px 15px;
 
                 &::after {
                     clear: both;
@@ -604,6 +630,7 @@
 
 .realTimePrice {
     margin: 15px 15px 0px;
+
     span {
         background: #ffedee;
         font-size: $medium-font;
@@ -619,7 +646,8 @@
             color: #d3182a;
             font-size: 12px;
         }
-        &::first-letter{
+
+        &::first-letter {
             text-transform: uppercase;
         }
     }
@@ -660,13 +688,91 @@
 
 }
 
-.top-header-bottom-menu{
+.top-header-bottom-menu {
     border-bottom: none !important;
     padding: 0px 15px;
-    .heading-3{
+
+    .heading-3 {
         width: 100%;
         font-size: $extra-large-font;
         padding-bottom: 0px;
     }
 
+}
+
+.cart-add-gst-strip{
+    display: flex;
+    background-color: var(--white);
+    border-radius: 8px;
+    padding: 15px;
+    align-items: center;
+    justify-content: unset;
+    width: 100%;
+    .gst-icon {
+        padding-right: 10px;
+        i {
+            font-size: $extra-large-3-font;
+        }
+    }
+    h3 {
+        padding: 0px !important;
+    }
+    .gst-text {
+        font-size: $large-font;
+        line-height: 19px;
+        .gst-clm-txt{
+            font-size: var(--medium-text);
+            line-height: $small-line-height;
+            .clm-amt{
+                color: var(--slimy-green);
+            }
+        }
+    }
+}
+
+.coupen-strip {
+    display: flex;
+    background-color: var(--white);
+    border-radius: 8px;
+    padding: 15px;
+    align-items: center;
+    justify-content: unset;
+    width: 100%;
+    .coupen-icon {
+        padding-right: 10px;
+        i {
+            font-size: $extra-large-3-font;
+            color: var(--slimy-green);
+        }
+    }
+    h3 {
+        padding: 0px !important;
+    }
+    .coupen-text {
+        max-width: 78%;
+        font-size: $large-font;
+        .green-promo-code {
+            color: var(--slimy-green);
+            font-weight: $font-bold;
+        }
+        .green-promo-code-min {
+            font-size: x-small;
+            color: var(--dim-gray);
+        }
+    }
+    i{
+        margin-left: auto;
+        &.icon-delete {
+            background: #c4c4c4;
+            padding: 4px;
+            border-radius: 50%;
+            font-size: 10px;
+            color: white;
+            cursor: pointer;
+        }
+    }
+    
+}
+.items-center{
+    align-items: center;
 }

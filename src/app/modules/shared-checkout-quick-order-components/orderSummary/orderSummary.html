@@ -7,12 +7,12 @@
         <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" *ngIf="showPromoOfferPopup">
         </promo-code-list>
         <div class="payment_summary-conatiner ">
-            <div class="pwa-row border-bottom" *ngIf="_cartService.totalPrepaidSaving>0">
+            <div class="pwa-row" *ngIf="_cartService.totalPrepaidSaving>0">
                 <p class="save-prise-txt">
                     Pay online & save EXTRA {{_cartService.totalPrepaidSaving| currency:'INR' : 'symbol' : '1.0-0'}} OFF on this order.
                 </p>
             </div>
-            <div class="order-summary pwa-row no-border" id="payment_summary">
+            <div class="order-summary pwa-row" id="payment_summary">
                 <!--Move promocode popup-->
                 <div class="alert-box" *ngIf="showPromoSuccessPopup">
                     <div class="overlay" (click)="$event.stopPropagation();closePromoSuccessPopUp()"></div>
@@ -63,14 +63,28 @@
                             *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">-₹0.00</span>
                     </li>
 
-                    <li class="bold-txt" >
+                    <li class="bold-txt amt-payble" >
                         <span class="tag-label">Amount Payable</span>
                         <span class="tag-value">₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathRound | number :
                             '1.2-2'}}</span>
                     </li>
+                    <!-- <li class="saved-amt" >
+                        <span class="tag-label green-txt">You save ₹₹1,564 on this order</span>
+                        
+                    </li> -->
 
                 </ul>
+                
             </div>
+            <div class="saved-amt pwa-row no-border">
+                <ul>
+                    <li class="" >
+                        <span class="tag-label green-txt">You save ₹₹1,564 on this order</span>
+                        
+                    </li> 
+                </ul>
+            </div>
+
         </div>
     </div>
 </div>

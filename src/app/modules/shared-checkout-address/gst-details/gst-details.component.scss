@@ -20,7 +20,7 @@
       font-size: $large-font;
       line-height: 19px;
       .gst-clm-txt{
-          font-size: var(--medium-text);
+          font-size: $medium-font;
           line-height: $small-line-height;
           .clm-amt{
               color: var(--slimy-green);

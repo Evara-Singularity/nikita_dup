@@ -63,9 +63,8 @@
         font-size: $large-font;
       }
       .persnName {
-        // margin-top: 25px;
         display: -webkit-box;
-        height: 20px;
+        height: 16px;
         line-height: 1;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
@@ -82,6 +81,8 @@
     }
     button{
       height: unset;
+      padding-right: 0px;
+      cursor: pointer;
     }
     .txt {
       display: block;

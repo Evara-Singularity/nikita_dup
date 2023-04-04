@@ -71,13 +71,9 @@ i.icon-circle-delete {
     }
     i{
         margin-left: auto;
-        &.icon-delete {
-            background: #c4c4c4;
-            padding: 4px;
-            border-radius: 50%;
-            font-size: 10px;
-            color: white;
-            cursor: pointer;
+        &.icon-circle-delete{
+            color: var(--silver);
+            font-size: 20px;
         }
     }
     

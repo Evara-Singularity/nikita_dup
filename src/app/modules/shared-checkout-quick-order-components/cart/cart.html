@@ -1,28 +1,6 @@
 <div *ngIf="displayPage">
-    <div class="pwa-row">
-        <div class="coupen-strip">
-            <div class="coupen-icon">
-                <i class="icon-coupon-3-fill-1"></i>
-            </div>
-            <div class="coupen-text">
-                <h3>APPLY COUPON</h3>
-            </div>
-            <i class="icon-next"></i>
-        </div>
-    </div>
-    <div class="pwa-row">
-        <div class="coupen-strip">
-            <div class="coupen-icon">
-                <i class="icon-coupon-3-fill-1"></i>
-            </div>
-            <div class="coupen-text">
-                <span class="green-promo-code">MAR75</span> <br />
-                <span class="green-promo-code-min">Coupon applied on your cart</span>
-            </div>
-            <i class="icon-delete"></i>
-        </div>
-    </div>
-    <div class="pwa-row pt-0 pb-0 items-center" *ngIf="isQuickorder">
+    
+    <div class="pwa-row pt-5 pb-0 items-center" *ngIf="isQuickorder">
         <h3 class="pad-0">{{_cartService.getGenericCartSession?.itemsList.length}} item(s) in your cart</h3>
         <button class="btn quaternary-btn-2">+ ADD FROM WISHLIST</button>
     </div>
@@ -180,19 +158,6 @@
                 </div> -->
         </div>
     </ng-container>
-</div>
-
-<div class="pwa-row">
-    <div class="cart-add-gst-strip">
-        <div class="gst-icon">
-            <i class="icon-email-invoice"></i>
-        </div>
-        <div class="gst-text">
-            <h3>Add GST details in checkout page</h3>
-            <p class="gst-clm-txt">and claim <span class="clm-amt">₹564</span> on your input tax credit</p>
-        </div>
-        
-    </div>
 </div>
 
 

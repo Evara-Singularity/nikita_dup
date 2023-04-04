@@ -49,6 +49,12 @@
                 // align-items: center;
                 .inner-coupon{
                     padding: 15px;
+                    display: flex;
+                    i{
+                        font-size: 20px;
+                        color: var(--slimy-green);
+                        margin-right: 10px;
+                    }
                 }
                 h3{
                     font-size: $extra-large-1-font;
@@ -63,7 +69,7 @@
                     width: 100%;
                     background-color: var(--nyanza);
                     color: var(--slimy-green);
-                    border-radius: 0 0 8px 8px;
+                    border-radius: 0 0 8px 8px !important;
                     height: 35px;
                 }
             }

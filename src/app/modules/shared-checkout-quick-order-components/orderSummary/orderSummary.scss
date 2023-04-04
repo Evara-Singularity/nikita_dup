@@ -96,38 +96,87 @@
     .content-area {
       border-radius: 12px;
 
+      // .info-area {
+      //   text-align: center;
+      //   padding: 30px;
+
+      //   i {
+      //     font-size: 35px;
+      //     color: var(--slimy-green);
+      //     padding-bottom: 15px;
+      //     display: block;
+      //   }
+
+      //   .applied-coupon {
+      //     font-weight: 600;
+      //     font-size: 14px;
+      //     padding-bottom: 20px;
+      //   }
+
+      //   .saving-applid-coupon {
+      //     font-size: 10px;
+      //     line-height: 16px;
+      //     display: grid;
+      //     line-height: $large-line-height;
+      //     padding-bottom: 15px;
+
+      //     span {
+      //       font-size: 28px;
+      //       font-weight: 600;
+      //     }
+      //   }
+
+      //   .green-text {
+      //     font-size: 14px;
+      //     color: var(--slimy-green);
+      //     font-weight: 600;
+      //   }
+      // }
       .info-area {
         text-align: center;
-        padding: 30px;
-
-        i {
-          font-size: 35px;
-          color: var(--slimy-green);
-          padding-bottom: 15px;
-          display: block;
+  
+        .coupen-sec {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 80px;
+          height: 80px;
+          margin: auto;
+          margin-top: -65px;
+          border-radius: 50%;
+          border: 1px solid var(--ghost-white);
+          background-color: var(--white);
+  
+          i {
+            font-size: 45px;
+            color: var(--slimy-green);
+            display: block;
+          }
         }
-
+  
         .applied-coupon {
+          margin-top: 30px;
           font-weight: 600;
-          font-size: 14px;
+          font-size: $large-font;
           padding-bottom: 20px;
         }
-
+  
         .saving-applid-coupon {
-          font-size: 10px;
+          font-size: $medium-font;
           line-height: 16px;
           display: grid;
           line-height: $large-line-height;
           padding-bottom: 15px;
-
+  
           span {
-            font-size: 28px;
+            font-size: 40px;
             font-weight: 600;
+            padding-bottom: 15px;
           }
         }
-
+  
         .green-text {
-          font-size: 14px;
+          font-size: 25px;
           color: var(--slimy-green);
           font-weight: 600;
         }

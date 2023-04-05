@@ -1,7 +1,7 @@
 <app-pop-up (outData$)="closePromoListPopup($event)" class="open" [headerType]="'pop-up-header1'" [data]="{headerText: 'Apply Coupon'}">
   <div class="content-popup select-offers" content>
     <section class="open">
-      <custom-promo-code [nextPromocode]="nextPromocode"></custom-promo-code>
+      <custom-promo-code [nextPromocode]="nextPromocode" [isPromocodeList]="true"></custom-promo-code>
       <div class="pwa-row no-coupon-card-container" *ngIf="_cartService?.allPromoCodes.length == 0">
         <div class="pwa-col-12 card">
           <div class="inner-no-coupon-card">

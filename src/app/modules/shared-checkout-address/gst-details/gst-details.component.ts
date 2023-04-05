@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { CartService } from "@app/utils/services/cart.service";
 
 @Component({
@@ -6,8 +6,6 @@ import { CartService } from "@app/utils/services/cart.service";
   templateUrl: "./gst-details.component.html",
   styleUrls: ["./gst-details.component.scss"],
 })
-export class GstDetailsComponent implements OnInit {
+export class GstDetailsComponent {
   constructor(public _cartService: CartService) {}
-
-  ngOnInit(): void {}
 }

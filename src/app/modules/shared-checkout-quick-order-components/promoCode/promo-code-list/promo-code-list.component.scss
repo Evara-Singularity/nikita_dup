@@ -62,7 +62,8 @@
                 }
                 button{
                     margin-left:auto;
-                    width: 100%;
+                    width: calc(100% - 1px);
+                    margin-left: 1px;
                     background-color: var(--nyanza);
                     color: var(--slimy-green);
                     border-radius: 0 0 8px 8px;
@@ -113,25 +114,11 @@
 }
 
 .coupen-card{
-    // background-image: url(../../../assets/img/coupen-full.svg);
     background-repeat: no-repeat;
     background-size: cover;
     padding: 10px;
     border: none;
-    // margin: 15px;
     border: 2px dashed var(--slimy-green);
-    // box-shadow: 0px 3px 8px var(--silver);
-    // background-color: var(--silver);
-    // &::before{
-        
-    // }
     margin-bottom: 15px !important;
     position: relative;
-    .seaser-icon{
-        width: 30px;
-        position: absolute;
-        right: 15px;
-        top: -15px;
-        rotate: 180deg;
-    }
 }

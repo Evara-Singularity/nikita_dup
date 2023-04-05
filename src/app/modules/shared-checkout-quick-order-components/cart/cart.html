@@ -24,11 +24,11 @@
                         <p *ngIf="!item.oos" class="price clearfix">
                             <span class="price-mrp gray-txt"><span class="strike-off-upper"><span
                                         class="strike-off"></span>₹{{item.amount | mathRound | number :
-                                    '1.2-2'}}</span> 
-                                    <!-- // remove this discount taxPercentage as this not yet synced with PDP -->
-                                    <!-- <span class="green-txt">&nbsp;({{item.taxPercentage}}%
+                                    '1.2-2'}}</span>
+                                <!-- // remove this discount taxPercentage as this not yet synced with PDP -->
+                                <!-- <span class="green-txt">&nbsp;({{item.taxPercentage}}%
                                     OFF)</span> -->
-                                </span>
+                            </span>
                             <span class="after-disc"
                                 *ngIf="item.priceWithoutTax > 0 && item.bulkPrice==null">&nbsp;₹{{item.priceWithoutTax |
                                 mathRound | number : '1.2-2'}}
@@ -36,7 +36,11 @@
                             <span class="after-disc" *ngIf="item.bulkPrice!==null">&nbsp;₹{{item.bulkPriceWithoutTax |
                                 mathRound | number : '1.2-2'}}</span>
                         </p>
-                        <p class="prepaid-discount-txt" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && _cartService.prepaidDataMapping[item.productId]['applicable'] && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue'])">You get {{_cartService.prepaidDataMapping[item.productId]['amount'] | currency:'INR' : 'symbol' : '1.0-0'}} prepaid discount</p> </div>
+                        <p class="prepaid-discount-txt"
+                            *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && _cartService.prepaidDataMapping[item.productId]['applicable'] && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue'])">
+                            You get {{_cartService.prepaidDataMapping[item.productId]['amount'] | currency:'INR' :
+                            'symbol' : '1.0-0'}} prepaid discount</p>
+                    </div>
 
                 </div>
             </div>
@@ -56,27 +60,35 @@
                     </div>
                 </div>
                 <div class="price-dtl-block">
-                        <span class="price-block-left" [appKpToggle]="{idName:'showPrice'+(itemIndex+1),iconMode : true}">
-                            <span>
-                                <strong *ngIf="item.bulkPrice === null && !item.oos" class="price-val">{{item.priceWithoutTax *
-                                    item.productQuantity | mathRound | currency:'INR' : 'symbol' : '1.2-2' }}</strong>
-                                <strong *ngIf="item.bulkPrice !== null && !item.oos"
-                                    class="price-val">{{item.bulkPriceWithoutTax *
-                                    item.productQuantity | mathRound | currency:'INR' : 'symbol' : '1.2-2' }}</strong><br>
-                                <strong *ngIf="item.oos" class="price-val">Not Available</strong>
-                                <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
-                                <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
-                                </span>
-                                <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
+                    <span class="price-block-left" [appKpToggle]="{idName:'showPrice'+(itemIndex+1),iconMode : true}">
+                        <span>
+                            <strong *ngIf="item.bulkPrice === null && !item.oos"
+                                class="price-val">{{item.priceWithoutTax *
+                                item.productQuantity | mathRound | currency:'INR' : 'symbol' : '1.2-2' }}</strong>
+                            <strong *ngIf="item.bulkPrice !== null && !item.oos"
+                                class="price-val">{{item.bulkPriceWithoutTax *
+                                item.productQuantity | mathRound | currency:'INR' : 'symbol' : '1.2-2' }}</strong><br>
+                            <strong *ngIf="item.oos" class="price-val">Not Available</strong>
+                            <span class="grey-txt" *ngIf="item?.shippingCharges == 0 && !item?.oos">Price Details</span>
+                            <span class="grey-txt" *ngIf="item?.shippingCharges > 0 && !item?.oos">Price + Shipping
                             </span>
-                            <i class="icon-down"></i>
+                            <span id="natxt" class="grey-txt " *ngIf="item.oos">NA</span>
                         </span>
+                        <i class="icon-down"></i>
+                    </span>
                 </div>
             </div>
-            <div class="pwa-row pad-t-0" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && !(_cartService.prepaidDataMapping[item.productId]['applicable']) && (_cartService.prepaidDataMapping[item.productId]['amount']) && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue'])">
-                <div class="shop-more-container" >
-                    <p class="shop-more-text">Shop more for {{_cartService.prepaidDataMapping[item.productId]['amount']| currency:'INR' : 'symbol' : '1.0-0'}} & get <span class="prepaid-discount-txt"><strong>{{_cartService.prepaidDataMapping[item.productId]['discountIn']| currency:'INR' : 'symbol' : '1.0-0'}} prepaid discount</strong></span> in the same category.</p>
-                    <p class="add-products-btn" (click)="similarProduct(item.productName,item.categoryCode,item.brandName,item.productId)">ADD PRODUCTS</p>
+            <div class="pwa-row pad-t-0"
+                *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && !(_cartService.prepaidDataMapping[item.productId]['applicable']) && (_cartService.prepaidDataMapping[item.productId]['amount']) && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue'])">
+                <div class="shop-more-container">
+                    <p class="shop-more-text">Shop more for {{_cartService.prepaidDataMapping[item.productId]['amount']|
+                        currency:'INR' : 'symbol' : '1.0-0'}} & get <span
+                            class="prepaid-discount-txt"><strong>{{_cartService.prepaidDataMapping[item.productId]['discountIn']|
+                                currency:'INR' : 'symbol' : '1.0-0'}} prepaid discount</strong></span> in the same
+                        category.</p>
+                    <p class="add-products-btn"
+                        (click)="similarProduct(item.productName,item.categoryCode,item.brandName,item.productId)">ADD
+                        PRODUCTS</p>
                 </div>
             </div>
             <div class="pwa-row pad-t-0" *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && (_cartService.prepaidDataMapping[item.productId]['applicable']) 
@@ -84,7 +96,9 @@
             && (_cartService.prepaidDataMapping[item.productId]['amount'])
             && (_cartService.prepaidDataMapping[item.productId]['discountIn'])">
                 <div class="shop-more-container sigle-line-txt">
-                    <p><span class="prepaid-discount-txt"><strong>Extra {{_cartService.prepaidDataMapping[item.productId]['discountIn']}} OFF</strong></span> while you make online payment.</p>
+                    <p><span class="prepaid-discount-txt"><strong>Extra
+                                {{_cartService.prepaidDataMapping[item.productId]['discountIn']}} OFF</strong></span>
+                        while you make online payment.</p>
                 </div>
             </div>
             <div *ngIf="item.oos" class="oos-item-block">
@@ -103,7 +117,8 @@
                 <ul class="txt-list">
                     <li>
                         <span class="tag-label">Price</span>
-                        <span class="tag-value">{{ item.tpawot | mathRound | currency:'INR' : 'symbol' : '1.2-2' }}</span>
+                        <span class="tag-value">{{ item.tpawot | mathRound | currency:'INR' : 'symbol' : '1.2-2'
+                            }}</span>
                     </li>
                     <li>
                         <span class="tag-label">{{item.taxPercentage}}% GST </span>
@@ -138,6 +153,7 @@
         <div class="content-area removePopup">
             <div class="top-header-bottom-menu">
                 <h3 class="heading-3">Are you sure to remove this item?</h3>
+                <i class="icon-circle-delete" (click)="$event.stopPropagation();resetRemoveItemCart();"></i>
             </div>
             <div [ngClass]="{'realTimeUpdate':removableItem['text1']}" class="pwa-row pad-tb-15">
                 <div class="pwa-col-12">
@@ -153,20 +169,47 @@
                                 src="{{removableItem.productImg}}">
                         </div>
                         <div class="product-description">
-                            <p class="description-txt">{{ (removableItem.productName.length > 50) ? (removableItem.productName | slice:0:48) + '..' : (removableItem.productName) }}</p>
-                            <p class="product-qty" *ngIf="removableItem.packageUnit">Qty/Pack :{{removableItem.packageUnit}}</p>
+                            <p class="description-txt">{{ (removableItem.productName.length > 50) ?
+                                (removableItem.productName | slice:0:48) + '..' : (removableItem.productName) }}</p>
+                            <p class="product-qty" *ngIf="removableItem.packageUnit">Qty/Pack
+                                :{{removableItem.packageUnit}}</p>
                             <!-- <p class="product-qty" *ngIf="!(removableItem.packageUnit)">Qty/Pack :{{removableItem.productQuantity}} Piece</p> -->
                         </div>
                     </div>
                     <div class="cta-row">
+                        <button class="btn secondry-btn-1" (click)="$event.stopPropagation();deleteProduct($event)"><i
+                            class="icon-bin"></i>&nbsp;REMOVE</button>
                         <button (click)="$event.stopPropagation();resetRemoveItemCart();" cstatic-small-card-container
-                            class="btn secondry-btn-1">CANCEL</button>
-                        <button class="btn secondry-btn" (click)="$event.stopPropagation();deleteProduct($event)"><i
-                                class="icon-bin"></i>&nbsp;REMOVE</button>
+                            class="btn secondry-btn">MOVE TO WISHLIST</button>
+                        <!-- <button class="btn secondry-btn" (click)="$event.stopPropagation();deleteProduct($event)"><i
+                                class="icon-bin"></i>&nbsp;REMOVE</button> -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </app-bottom-menu>
-<ng-container #cartAddProductPopup ></ng-container>
+
+
+<!-- <app-bottom-menu>
+    <div content>
+        <div class="pwa-row">
+            <div class="empty-wishlist-popup">
+
+                <div class="empty-wishlist">
+                    <div class="header-txt">
+                        <h3>Add From Wishlist</h3>
+                        <i class="icon-circle-delete"></i>
+                    </div>
+                    <img src="assets/img/empty-wishlist.svg" alt="">
+                    <h3 class="pad-0">Your wishlist is empty!</h3>
+                    <p class="pad-0">No item available now</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-bottom-menu> -->
+
+
+
+<ng-container #cartAddProductPopup></ng-container>

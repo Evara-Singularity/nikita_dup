@@ -99,6 +99,9 @@ i[class^="icon-"],
 .icon-email-invoice:before {
     content: "\e949";
 }
+.icon-free_shipping:before{
+    content: '\ea43';
+}
 
 .icon-edit-line-icon:before {
     content: "\e982";
@@ -834,6 +837,9 @@ i[class^="icon-"],
 .icon-circle_check:before{
     content: "\ea1c";
 }
-.icon-Invoice:before{
-    content: "\ea97";
+.icon-Price-offer:before{
+    content: "\ea98";
+}      
+.icon-offer:before{
+    content: "\ea0c";
 }

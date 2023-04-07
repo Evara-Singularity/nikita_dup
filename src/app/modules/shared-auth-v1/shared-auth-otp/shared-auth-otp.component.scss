@@ -7,6 +7,7 @@
         font-size: $medium-font;
         line-height: $small-line-height;
         color: var(--onyx-black);
+        margin-top: 3px
     }
 }
 .login-card {
@@ -22,7 +23,7 @@
     border-radius: $login-card-border !important;
 }
 .success-field{
-    margin-left: 10px;
+    // margin-left: 10px;
     .success-txt{
         font-size: $small-font;
     }

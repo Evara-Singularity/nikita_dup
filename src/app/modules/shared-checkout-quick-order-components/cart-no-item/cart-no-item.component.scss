@@ -5,7 +5,7 @@
     padding: 0 15px;
     .card{
         border: none;
-        padding: 25px 25px 15px;
+        padding: 30px 35px;
         margin-bottom: 10px;
         .emptycart-section{
             text-align: center;
@@ -15,18 +15,33 @@
             .noitems-txt{
                 font-size: $extra-large-font;
                 font-weight: $font-bold;
+                line-height: 21px;
                 color: var(--dim-gray);
                 margin-top: 15px;
             }
+            .add-item-txt{
+                font-size: $large-font;
+                line-height: 19px;
+                color: var(--dim-gray);
+
+            }
             button{
                 width: 100%;
-                margin-top: 20px;
+                margin-top: 30px;
             }
             .small-txt{
-                font-size: $small-font;
+                font-size: $medium-font;
+                line-height: $small-line-height;
                 color: var(--dim-gray);
                 margin-top: 5px;
             }
         }
+    }
+}
+
+::ng-deep{
+    .category-grid-card{
+        background-color: var(--white) !important;
+        border: 1px solid var(--ghost-white) !important;
     }
 }

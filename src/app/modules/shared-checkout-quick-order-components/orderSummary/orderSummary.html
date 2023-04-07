@@ -7,18 +7,27 @@
         <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" *ngIf="showPromoOfferPopup">
         </promo-code-list> -->
         <div class="payment_summary-conatiner ">
-            <div class="pwa-row border-bottom" *ngIf="_cartService.totalPrepaidSaving>0">
+            <div class="pwa-row" *ngIf="_cartService.totalPrepaidSaving>0">
                 <p class="save-prise-txt">
                     Pay online & save EXTRA {{_cartService.totalPrepaidSaving| currency:'INR' : 'symbol' : '1.0-0'}} OFF on this order.
                 </p>
             </div>
-            <div class="order-summary pwa-row no-border" id="payment_summary">
+            <div class="order-summary pwa-row" id="payment_summary">
                 <!--Move promocode popup-->
                 <div class="alert-box" *ngIf="showPromoSuccessPopup">
                     <div class="overlay" (click)="$event.stopPropagation();closePromoSuccessPopUp()"></div>
                     <div class="content-area">
-                        <div class="info-area">
+                        <!-- <div class="info-area">
                             <i class="icon-coupon-3-fill-1"></i>
+                            <p class="applied-coupon">'{{_cartService?.appliedPromoCode}}' applied</p>
+                            <p class="saving-applid-coupon"><span>&#8377;{{totalOffer | mathRound }}</span> saving with this coupon
+                            </p>
+                            <p class="green-text">YAY!</p>
+                        </div> -->
+                        <div class="info-area">
+                            <div class="coupen-sec">
+                                <i class="icon-coupon-3-fill-1"></i>
+                            </div>
                             <p class="applied-coupon">'{{_cartService?.appliedPromoCode}}' applied</p>
                             <p class="saving-applid-coupon"><span>&#8377;{{totalOffer | mathRound }}</span> saving with this coupon
                             </p>
@@ -63,14 +72,28 @@
                             *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">-₹0.00</span>
                     </li>
 
-                    <li class="bold-txt" >
+                    <li class="bold-txt amt-payble" >
                         <span class="tag-label">Amount Payable</span>
                         <span class="tag-value">₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathRound | number :
                             '1.2-2'}}</span>
                     </li>
+                    <!-- <li class="saved-amt" >
+                        <span class="tag-label green-txt">You save ₹₹1,564 on this order</span>
+                        
+                    </li> -->
 
                 </ul>
+                
             </div>
+            <div class="saved-amt pwa-row no-border">
+                <ul>
+                    <li class="" >
+                        <span class="tag-label green-txt">You save ₹₹1,564 on this order</span>
+                        
+                    </li> 
+                </ul>
+            </div>
+
         </div>
     </div>
 </div>

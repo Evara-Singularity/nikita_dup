@@ -1,6 +1,8 @@
 <div *ngIf="displayPage">
-    <div class="pwa-row pt-0 pb-0" *ngIf="isQuickorder">
+    
+    <div class="pwa-row pt-5 pb-0 items-center" *ngIf="isQuickorder">
         <h3 class="pad-0">{{_cartService.getGenericCartSession?.itemsList.length}} item(s) in your cart</h3>
+        <button class="btn quaternary-btn-2" (click)="openWishlistPopup()">+ ADD FROM WISHLIST</button>
     </div>
     <ng-container *ngFor="let item of _cartService.getGenericCartSession.itemsList; let itemIndex = index;">
         <div *ngIf="(!item.oos) && item['text1']" class="realTimePrice">
@@ -78,6 +80,12 @@
                     </span>
                 </div>
             </div>
+
+            <!-- <div class="cart-btm pad-15 ">
+                <span class="coup-disc green-txt">Coupon discount - ₹100</span>
+                <span class="free-ship green-txt">Free Shipping <i class="icon-free_shipping"></i></span>
+            </div> -->
+            
             <div class="pwa-row pad-t-0"
                 *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && !(_cartService.prepaidDataMapping[item.productId]['applicable']) && (_cartService.prepaidDataMapping[item.productId]['amount']) && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue'])">
                 <div class="shop-more-container">
@@ -140,6 +148,10 @@
                     </li>
                 </ul>
             </div>
+            <div class="cart-btm pad-15 ">
+                <span class="coup-disc green-txt">Coupon discount - ₹100</span>
+                <span class="free-ship green-txt">Free Shipping <i class="icon-free_shipping"></i></span>
+            </div>
             <!-- DO NOT REMOVE THIS SECTION IT WAS OF NEW DESIGN TO BE IMPLEMENTED LATER -->
             <!-- <div  class="coupen-and-discount">
                     <span>Coupon discount - ₹100</span>
@@ -148,6 +160,8 @@
         </div>
     </ng-container>
 </div>
+
+
 <app-bottom-menu *ngIf="removableItem !== null">
     <div content>
         <div class="content-area removePopup">
@@ -190,26 +204,5 @@
     </div>
 </app-bottom-menu>
 
-
-<!-- <app-bottom-menu>
-    <div content>
-        <div class="pwa-row">
-            <div class="empty-wishlist-popup">
-
-                <div class="empty-wishlist">
-                    <div class="header-txt">
-                        <h3>Add From Wishlist</h3>
-                        <i class="icon-circle-delete"></i>
-                    </div>
-                    <img src="assets/img/empty-wishlist.svg" alt="">
-                    <h3 class="pad-0">Your wishlist is empty!</h3>
-                    <p class="pad-0">No item available now</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</app-bottom-menu> -->
-
-
-
 <ng-container #cartAddProductPopup></ng-container>
+<ng-container #wishlistPopup></ng-container>

@@ -5,9 +5,11 @@ import {
   AfterViewInit,
   OnInit,
   OnDestroy,
+  ComponentFactoryResolver,
+  Injector
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
+import { DataService } from "@app/utils/services/data.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { LocalAuthService } from "@services/auth.service";
 import { CartService } from "@services/cart.service";
@@ -25,8 +27,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   isCartNoItems: boolean = false;
   cartSubscription: Subscription;
 
-  @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> =
-    new Subject();
+  @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = new Subject();
   readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
   deliveryAddress = null;
   billingAddress = null;

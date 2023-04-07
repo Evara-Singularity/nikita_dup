@@ -51,6 +51,12 @@
                 // align-items: center;
                 .inner-coupon{
                     padding: 15px;
+                    display: flex;
+                    i{
+                        font-size: 20px;
+                        color: var(--slimy-green);
+                        margin-right: 10px;
+                    }
                 }
                 h3{
                     font-size: $extra-large-1-font;
@@ -62,6 +68,10 @@
                 }
                 button{
                     margin-left:auto;
+                    width: 100%;
+                    background-color: var(--nyanza);
+                    color: var(--slimy-green);
+                    border-radius: 0 0 8px 8px !important;
                     width: calc(100% - 1px);
                     margin-left: 1px;
                     background-color: var(--nyanza);
@@ -114,11 +124,9 @@
 }
 
 .coupen-card{
-    background-repeat: no-repeat;
-    background-size: cover;
     padding: 10px;
-    border: none;
-    border: 2px dashed var(--slimy-green);
     margin-bottom: 15px !important;
     position: relative;
+    border: 2px dashed var(--slimy-green);
+    margin-bottom: 15px !important;
 }

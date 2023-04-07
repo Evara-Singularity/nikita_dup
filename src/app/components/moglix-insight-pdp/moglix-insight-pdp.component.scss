@@ -1,0 +1,49 @@
+@import "../../scss/variables";
+@import "../../scss/components/tabs.scss";
+
+.moglix-benefits {
+    background: var(--white);
+    @extend %hide-scrollbar;
+}
+
+.moglix-insight {
+    background-color: var(--white);
+
+    .moglix-insight-inner {
+        display: flex;
+        justify-content: space-between;
+
+        .moglix-insight-trustWidget {
+            width: calc(50% - 7px) !important;
+            background-color: #E8F3FD;
+            border: 1px solid#77B9F883;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            display: flex;
+
+            .bull {
+                font-size: 36px;
+                margin-top: -13px;
+            }
+
+            .content-desc {
+                display: flex;
+
+                p {
+                    font-size: $large-font;
+                    line-height: $medium-line-height;
+
+                }
+
+                &:before {
+                    content: "•";
+                    font-size: $extra-large-6-font;
+                    padding-right: 6px;
+                    vertical-align: top;
+                    line-height: $medium-line-height;
+                }
+            }
+
+        }
+    }
+}

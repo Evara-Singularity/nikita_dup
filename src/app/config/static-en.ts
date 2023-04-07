@@ -22,7 +22,7 @@ export const product = {
     free_delivery:"Free Delivery",
     no_shipping_charge:"No shipping charge on this order",
     moglix_benefits:"Moglix Benefits",
-    return_policy:"Return Policy",
+    return_policy:"Return & Warranty Policy",
     add_to_cart:"ADD TO CART",
     buy_now:"BUY NOW",
     more_from:"More from ___categoryName___",
@@ -66,7 +66,7 @@ export const product = {
     payments:"Payments",
     days_365:"365 Days",
     help_desk:"Help Desk",
-    upto_7days:"Upto 7 Days",
+    upto_7days:"Upto ___number___ Days",
     returnable:"Returnable",
     wrong:"Wrong",
     product:"Product",
@@ -123,5 +123,6 @@ export const product = {
     show_less: 'SHOW LESS',
     of:'/',
     emis_availaible:'EMIs Available ',
-    brand_store_text:'___brand___ Store'
+    brand_store_text:'___brand___ Store',
+    missing: 'Missing'
 }

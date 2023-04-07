@@ -10,6 +10,7 @@ import { ProductCardHorizontalListViewModule } from '../product-card/product-car
 import { ProductCardSkeletonModule } from '../ui/skeletons/product-card-skeleton/product-card-skeleton.module';
 import { AnalyticsWidgetWrapperModule } from '@app/components/analytics-widget-wrapper/analytics-widget-wrapper.module';
 import { Informative_videoModule } from '@app/components/informative_video/informative_video.component';
+import { BulkRquestFormPopupLazyModule } from '../bulk-rquest-form-popup-lazy/bulk-rquest-form-popup-lazy.module';
 
 @NgModule({
   declarations: [SharedProductListingComponent],
@@ -23,7 +24,8 @@ import { Informative_videoModule } from '@app/components/informative_video/infor
     ObserveVisibilityDirectiveModule,
     NotFoundModule,
     AnalyticsWidgetWrapperModule,
-    Informative_videoModule
+    Informative_videoModule,
+    BulkRquestFormPopupLazyModule
   ],
   exports: [
     SharedProductListingComponent

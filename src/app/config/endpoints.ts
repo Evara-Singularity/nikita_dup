@@ -59,6 +59,7 @@ export const ENDPOINTS = {
   SPL_DEALS: "/deals/special-deals",
   SPL_OFFR: "/deals/special-offer",
   GET_EMI_VAL: "/payment/getEMIValues",
+  GET_BNPL_ELIGIBILITY :"/payment/getBNPLEligibility",
   GET_COUPON_CODE : "/promoCode/productApplicablepromo",
   GET_CLUSTER_EMI_VAL: "/payment/getClusterEmiValues",
   PAYMENT: "/payment/pay",
@@ -131,5 +132,7 @@ export const ENDPOINTS = {
   SUPPLIER_RFQ_LIST: '/rfq/supplierRFQListing',
   SUPPLIER_RFQ_CATEGORY: '/rfq/supplierRFQCategoryListing',
   SUPPLIER_RFQ_REPORT: '/rfq/supplierRFQReport',
-  SUPPLIER_RFQ_SAVE: '/rfq/supplierRFQSave'
+  SUPPLIER_RFQ_SAVE: '/rfq/supplierRFQSave',
+  PRODUCT_WIDGET:'/cmsApi/getProductWidget',
+  SEARCH_CATEGORY_LIST:'/search/searchCategoryList?str='
 };

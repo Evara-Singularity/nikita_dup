@@ -14,6 +14,7 @@ import { HomefooterAccordianModule } from '@app/components/homefooter-accordian/
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toast.component';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { BulkRquestFormPopupLazyModule } from '@app/modules/bulk-rquest-form-popup-lazy/bulk-rquest-form-popup-lazy.module';
 
 
 
@@ -33,7 +34,8 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
     HomefooterAccordianModule,
     AppPromoModule,
     WhatsAppToastModule,
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    BulkRquestFormPopupLazyModule,
   ],
   exports: [HomeV1Component],
   declarations: [HomeV1Component]

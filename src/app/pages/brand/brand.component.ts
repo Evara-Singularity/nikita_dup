@@ -150,7 +150,7 @@ export class BrandComponent {
         });
         this.accordiansDetails.push({
             name: 'Related Searches',
-            data: this.API_RESPONSE.brand[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
+            data: this.API_RESPONSE.brand[5]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
             icon:'icon-attribute'
         });
         this.accordiansDetails.push({

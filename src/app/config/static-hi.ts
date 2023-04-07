@@ -67,7 +67,7 @@ export const product = {
     payments:"भुगतान",
     days_365:"365 दिन",
     help_desk:" हैल्प डेस्क",
-    upto_7days:"7 दिनों तक",
+    upto_7days:"___number___ दिनों तक",
     returnable:"वापसी योग्य",
     wrong:"गलत",
     product:"प्रोडक्ट",
@@ -125,5 +125,6 @@ export const product = {
     show_less: 'कम दिखाएं',
     of:'/',
     emis_availaible:'उपलब्ध EMIs:',
-    brand_store_text:"___brand___ स्टोर"
+    brand_store_text:"___brand___ स्टोर",
+    missing: 'Missing'
 }  

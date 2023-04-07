@@ -175,6 +175,7 @@
         border-bottom-right-radius: $border-radius-16;
     }
 }
+
 .mutiple-banner-cards{
     display: flex;
     overflow-y:auto;
@@ -186,4 +187,40 @@
            margin-right:0px;
        }
    } 
+}
+
+.popular-Deals-section{
+    width: 100%;
+}
+
+#container-div {
+   height: 125px;
+}
+
+#home-banner-second {
+    overflow-y: auto;
+    float: left;
+    transition: all 200ms ease-out 0s;
+
+    .mySlides {
+        float: left;
+        width: 300px;
+        margin-right: 10px;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .internal-scroll {
+        overflow-y: auto;
+    }
+}
+
+::ng-deep{
+    bulk-rquest-form-popup-lazy{
+        .load-bulk-rfq{
+            padding: 20px 15px 10px !important;
+        }
+    }
 }

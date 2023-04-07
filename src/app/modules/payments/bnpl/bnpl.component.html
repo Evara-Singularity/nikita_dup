@@ -1,0 +1,31 @@
+<div *ngIf="!isEligibleResponse" class="f-size-16 text-red pb-10" style="margin-top: -10px;"> {{message}} </div>
+<section   class="bnplInner">
+       <form [formGroup]="bnplForm" (ngSubmit)="pay(bnplForm.value, bnplForm.valid)" class="form-horizontal">
+    <ul class="pwa-radio-list">
+        <label  *ngFor="let bank of showBanks" class="pwa-radio-list-item">
+            <label class="pwa-radio-list-label">
+                <input type="radio" formControlName="bnplType" [value]="bank['bankcode']">
+                <span class="custom-box"></span>
+            </label>
+            <div class="bnpl-inner-section">
+                <img class="wallet-img" src="{{imagePath + 'assets/img/bnpl-icons/'+bnplMap[bank['bankcode']].imgUrl}}">
+                <p>{{bnplMap[bank['bankcode']].type}}</p>
+            </div> 
+     </label>
+    </ul>
+    <div class="continue-button">
+        <!-- <prepaid-offer-checkout ></prepaid-offer-checkout> -->
+        <div class="container">
+            <p class="total-mount" *ngIf="totalPayableAmount>0">
+                <span class="payable-amnt">Payable Amount</span> ₹{{totalPayableAmount | mathRound | number : '1.2-2'}}
+            </p>
+            <button type="submit" [disabled]="!bnplForm.valid" class="btn">PAY</button>
+        </div>
+    </div>
+</form>
+
+<div *ngIf="isBnplEnable" style="margin-bottom: 15px" >
+    <prepaid-offer-checkout [displayMode]="'LABEL'" [displayName]="'BNPL payment'" ></prepaid-offer-checkout>
+</div>
+</section>
+<payu-form *ngIf="isValid&&type=='retail'" [data]="payuData"></payu-form>

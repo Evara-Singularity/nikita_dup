@@ -21,7 +21,6 @@ import { LoggerService } from '../services/logger.service';
   providedIn: 'root'
 })
 export class CategoryResolver implements Resolve<any> {
-
   constructor(
     @Inject(PLATFORM_ID) private platformId,
     private transferState: TransferState,
@@ -86,6 +85,7 @@ export class CategoryResolver implements Resolve<any> {
         this.loaderService.setLoaderState(false);
         return of([GET_RELATED_CATEGORY_KEY_OBJ, REFRESH_KEY_OBJ, FAQ_KEY_OBJ, BREADCRUMP_KEY_OBJ, CMS_KEY_OBJ, RELATED_ARTICLES_OBJ, ATTRIBUTE_OBJ,CATEGORY_EXTRA_KEY_OBJ,CATEGORY_ANALYTICS_EXTRA_OBJ,INFORMATION_VIDEO_KEY_OBJ]);
     } else {
+       
         const get_rel_cat_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_BY_ID + '?catId=' + categoryId;
         const faq_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_SCHEMA + "?categoryCode=" + categoryId;
         const refresh_product_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY + "?category=" + categoryId + "&bucketReq=n";
@@ -96,7 +96,7 @@ export class CategoryResolver implements Resolve<any> {
         const category_extra_url = environment.BASE_URL + ENDPOINTS.GET_CategoryExtras + categoryId;
         const get_analytics_widget_url = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_ANALYTICS + "?categoryCode=" +categoryId;
         const get_information_video_url = environment.BASE_URL + ENDPOINTS.INFORMATION_VIDEO + "?categoryCode=" +categoryId;
-       
+        
         const params = {  
           filter: this._commonService.updateSelectedFilterDataFilterFromFragment(_activatedRouteSnapshot.fragment),
           queryParams: _activatedRouteSnapshot.queryParams,
@@ -177,10 +177,9 @@ export class CategoryResolver implements Resolve<any> {
           this._loggerService.apiServerLog(logInfo);
           return res;
         }));
-
+        
         const getcategoryanalyticsObs = this.http.get(get_analytics_widget_url).pipe(share(), 
         map(res=>{
-          // console.log("get_analytics_widget_url",get_analytics_widget_url);
           const logInfo =  this._commonService.getLoggerObj(get_analytics_widget_url,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();
           logInfo.responseStatus = res["status"];
@@ -221,7 +220,6 @@ export class CategoryResolver implements Resolve<any> {
                 return of(err);
             }),
             tap(result => {
-              // console.log(result);
                 if (isPlatformServer(this.platformId)) {
                     this.transferState.set(GET_RELATED_CATEGORY_KEY, result[0]);
                     this.transferState.set(REFRESH_KEY, result[1]);

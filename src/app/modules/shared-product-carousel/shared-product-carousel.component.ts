@@ -3,6 +3,7 @@ import { ProductService } from '@app/utils/services/product.service';
 import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef, AfterViewInit, HostListener } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
   selector: 'shared-product-carousel',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 {
   productStaticData = this.commonService.defaultLocaleValue;
+  whatsappUrl=CONSTANTS.whatsAppBannerUrl
   @Input('productAllImages') productAllImages;
   @Input('carouselInitialized') carouselInitialized = false;
   @Input('isPurcahseListProduct') isPurcahseListProduct;

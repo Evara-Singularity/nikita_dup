@@ -698,6 +698,8 @@ export class ProductService {
             ),
             productTags: [],
             filterableAttributes: {},
+            attributeValuesForPart: ((product['attributeValuesForPart']) ? product['attributeValuesForPart'] :
+            {}) || {}, 
             avgRating: product.avgRating,
             itemInPack: null,
             ratingCount: product.ratingCount,
@@ -745,6 +747,8 @@ export class ProductService {
                 : "",
             productTags: [],
             filterableAttributes: {},
+            attributeValuesForPart: ((product['attributeValuesForPart']) ? product['attributeValuesForPart'] :
+             {}) || {}, 
             avgRating: product.avgRating || 0,
             itemInPack: null,
             ratingCount: product.ratingCount || 0,
@@ -756,7 +760,8 @@ export class ProductService {
         return productReturn;
     }
 
-    productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
+
+    productLayoutJsonToProductEntity(product: any, brandId?:any, brandName?:any) {
         // console.log('product ==>', product);
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
@@ -782,11 +787,12 @@ export class ProductService {
             mainImageMediumLink: product["imageLink_medium"]
                 ? this.getForLeadingSlash(product["imageLink_medium"])
                 : "",
-            mainImageThumnailLink: product["imageLink_small"]
-                ? this.getForLeadingSlash(product["imageLink_small"])
+            mainImageThumnailLink: product["imageLink_medium"]
+                ? this.getForLeadingSlash(product["imageLink_medium"])
                 : "",
             productTags: [],
             filterableAttributes: {},
+            attributeValuesForPart: {}, 
             avgRating: product.avgRating || 0,
             itemInPack: null,
             ratingCount: product.ratingCount || 0,
@@ -853,6 +859,7 @@ export class ProductService {
                 : "",
             productTags: [],
             filterableAttributes: {},
+            attributeValuesForPart: {}, 
             avgRating: (overrideProductB0 && overrideProductB0.avgRating) ? overrideProductB0.avgRating : null, //this.product.avgRating,
             itemInPack: null,
             ratingCount: (overrideProductB0 && overrideProductB0.ratingCount) ? overrideProductB0.ratingCount : null, //this.product.ratingCount,
@@ -860,6 +867,53 @@ export class ProductService {
         };
 
         return productEntity;
+    }
+
+    myRfqToProductEntity(product: any, overrideProductB0 = null) {
+        const productItemLevel = product['itemData'][0];
+
+        const productReturn = {
+            moglixPartNumber: productItemLevel['prodReference'],
+            // moglixProductNo?: null;
+            mrp: productItemLevel['price'],
+            salesPrice: productItemLevel['price'],
+            priceWithoutTax: productItemLevel['price'],
+            productName: productItemLevel['productName'],
+            variantName: productItemLevel['productName'],
+            // productMinimmumQuantity?: number;
+            productUrl: productItemLevel['productURL'],
+            shortDesc: null,
+            brandId: null,
+            brandName: productItemLevel['brand'],
+            quantityAvailable: productItemLevel['quantity'],
+            discount: null,
+            // rating?: null;
+            // categoryCodes?: null;
+            // taxonomy?: null;
+            mainImageLink: productItemLevel['imageUrl'],
+            mainImageThumnailLink: productItemLevel['imageUrl'],
+            mainImageMediumLink: productItemLevel['imageUrl'],
+            // productTags?: any ;
+            filterableAttributes: null,
+            itemInPack: null,
+            ratingCount: null,
+            reviewCount: null,
+            avgRating: null,
+            // uclid?: string;
+            // keyFeatures?: string[];
+            // internalProduct?: boolean; // used in case of sponsered Ad
+            // outOfStock?: boolean;
+            // description?:string;
+            // short_description?: null;
+            homePageRFQ: true,
+            HomePageRFQstatus: {
+                status: product['statusText'],
+                qty: productItemLevel['quantity'],
+                createdOn: product['createdDate'],
+                rfqId:product['id']
+            }
+        } as ProductsEntity;
+        return productReturn;
     }
 
     productEntityFromProductBO(productBO, overrideProductB0 = null) {
@@ -897,6 +951,7 @@ export class ProductService {
             mainImageLink: (productPartDetails['images']) ? productPartDetails['images'][0]['links']['thumbnail'] : '',
             productTags: [],
             filterableAttributes: {},
+            attributeValuesForPart: {}, 
             avgRating: (overrideProductB0 && overrideProductB0.avgRating) ? overrideProductB0.avgRating : null, //this.product.avgRating,
             itemInPack: null,
             ratingCount: (overrideProductB0 && overrideProductB0.ratingCount) ? overrideProductB0.ratingCount : null, //this.product.ratingCount,
@@ -1013,6 +1068,8 @@ export class ProductService {
                 : "",
             productTags: product['productTags'] || [],
             filterableAttributes: product['filterableAttributes'] || {},
+            attributeValuesForPart: ((product['attributeValuesForPart']) ? product['attributeValuesForPart'] :
+             {}) || {}, 
             avgRating: (product.avgRating) ? product.avgRating : null, //this.product.avgRating,
             itemInPack: product['itemInPack'],
             ratingCount: (product.ratingCount) ? product.ratingCount : null, //this.product.ratingCount,
@@ -1021,5 +1078,12 @@ export class ProductService {
 
         return productEntity;
     }
+
+    getProductTag(msn) {
+        const URL=CONSTANTS.NEW_MOGLIX_API+ENDPOINTS.PRODUCT_TAGS + msn
+        return this._dataService.callRestful("GET",URL);
+    }
+
+
 
 }

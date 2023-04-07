@@ -55,6 +55,11 @@ export class AutologinPageComponent implements OnInit {
         this.localAuthService.setUserSession(res['data']);
         const redirectedTo = (res['data']['redirectedTo'] ? res['data']['redirectedTo'] : '');
         this.sharedAuthUtilService.processAuthentication(res['data'], false, redirectedTo);
+        if(res['msnList'] && res['msnList'].length>0){
+          this.sharedAuthUtilService.msnList = res['msnList'];
+          this.sharedAuthUtilService.promocode = res['promocode'] ? res['promocode'] : null;
+          this.sharedAuthUtilService.redirectUrl = (res['data']['redirectedTo'] ? res['data']['redirectedTo'] : 'checkout/address');
+        }
       }else{
         this.globalLoaderService.setLoaderState(false);
         this.router.navigate(['']); 
@@ -79,7 +84,7 @@ export class AutologinPageComponent implements OnInit {
     this.autoLoginService.getDecodeD2cToken(postBody).subscribe(res=>{
       if(res["status"] == true && res['data'] && res['data'].length > 0){
         const msnList = res['data'];
-        this.autoLoginService.processMsnsAndAddtoCart(msnList);
+        this.autoLoginService.processMsnsAndAddtoCart(msnList, null, "quickorder");
       }else{
         const errMsg = (typeof res['data'] == 'string'? res['data'] :"somthing went wrong");
         this._toastService.show({ type: 'error', text: errMsg });

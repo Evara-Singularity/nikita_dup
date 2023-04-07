@@ -1,6 +1,6 @@
-import { Component, ComponentFactoryResolver, Inject, Injector, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, Inject, Injector, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import CONSTANTS from '@app/config/constants';
+import {CONSTANTS} from '@app/config/constants';
 import { CategoryData } from '@app/utils/models/categoryData';
 import { CommonService } from '@app/utils/services/common.service';
 import { environment } from 'environments/environment';
@@ -8,6 +8,10 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { Meta,Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
+import { DataService } from '@app/utils/services/data.service';
+import { ENDPOINTS } from '@app/config/endpoints';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 
 
@@ -19,15 +23,16 @@ import { DOCUMENT } from '@angular/common';
 })
 export class HomeV1Component implements OnInit {
 
-
+  readonly bulkRfqConstant = CONSTANTS.bulkRfqConstant;
   isBrowser: boolean;
   isServer: boolean;
-
+  bannerInterval;
   //banner data var
   bannerDataFinal: any = [];
   primaryTopBannerData: any = null;
   secondaryTopBannerData: any = null;
   bannerCarouselSelector = '.banner-carousel-siema';
+  bannerCarouselV2Selector = '.banner-carousel-siema-2';
   options = {
     interval: 5000,
     selector: this.bannerCarouselSelector,
@@ -38,6 +43,18 @@ export class HomeV1Component implements OnInit {
     threshold: 20,
     loop: true,
     autoPlay: true,
+  };
+  options_v1 = {
+    interval: 5000,
+    selector: this.bannerCarouselV2Selector,
+    duration: 200,
+    perPage: 1,
+    startIndex: 0,
+    draggable: false,
+    threshold: 20,
+    loop: true,
+    autoPlay: true,
+    topCarouselV2: true,
   };
   topOptions: any = this.options;
   defaultBannerImage = CONSTANTS.IMAGE_BASE_URL + 'image_placeholder.jpg';
@@ -66,6 +83,11 @@ export class HomeV1Component implements OnInit {
   showRecentlyViewedCarousel = true;
   recentProductList: Array<any> = [];
 
+   // ondemad loaded component for homeMiscellaneousCarousel ( Buy it again, Recently Viewed, wishlist & my RFQ section )
+   homeMiscellaneousCarouselInstance = null;
+   @ViewChild("homeMiscellaneousCarousel", { read: ViewContainerRef })
+   homeMiscellaneousCarouselContainerRef: ViewContainerRef;
+
   // ondemad loaded components: PWA Categories
   categoriesInstance = null;
   @ViewChild('Categories', { read: ViewContainerRef })
@@ -85,7 +107,11 @@ export class HomeV1Component implements OnInit {
 
   //metadata var
   oganizationSchema: any;
+
+  isUserLoggedIn:any;
+  userData: any;
   mainBannerIndicator: number = 0;
+  homeSecondaryCarouselData: any = [];
 
 
   constructor(
@@ -100,14 +126,17 @@ export class HomeV1Component implements OnInit {
     private title: Title,
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private _document,
-
-
+    private _dataService: DataService,
   ) {
     this.isServer = _commonService.isServer;
     this.isBrowser = _commonService.isBrowser;
   }
 
   ngOnInit() {
+    
+
+    this.isUserLoggedIn = this._localAuthService.getUserSession();
+
     this._commonService.isHomeHeader = true;
 		this._commonService.isPLPHeader = false;
     this.loadSearchTerms();
@@ -129,6 +158,15 @@ export class HomeV1Component implements OnInit {
     this.setMetaData();
     //setting analytics
     this.setAnalyticTags();
+    this.checkForUser();
+  }
+
+  checkForUser() {
+    if(this._commonService.isBrowser){
+      let userData = this._localAuthService.getUserSession();
+      this.userData = userData;
+      this.isUserLoggedIn = (userData.authenticated == "true") ? true : false
+    }
   }
 
   homePageData(response: any) {
@@ -184,6 +222,9 @@ export class HomeV1Component implements OnInit {
 
         case environment.NEW_CMS_IDS.FEATURE_ARRIVAL:
           this.featureArrivalData = block.block_data.image_block;
+          break;
+        case environment.NEW_CMS_IDS.SECONDARY_CAROUSEL_DATA:
+          this.homeSecondaryCarouselData = block.block_data.image_block;
           break;
 
         default:
@@ -254,6 +295,86 @@ export class HomeV1Component implements OnInit {
       this.carouselInstance.instance['showHeading'] = true;
       this.carouselInstance.instance['prodList'] = this.recentProductList;
     }
+  }
+
+  async onVisiblePopularDeals([recentViewedResponse, pastOrderResponse, wishlistResponse, rfqListResponse]) {
+
+    if (!this.homeMiscellaneousCarouselInstance) {
+      const { HomeMiscellaneousCarouselComponent } = await import(
+        "./../../components/homeMiscellaneousCarousel/homeMiscellaneousCarousel.component"
+      );
+      const factory = this.cfr.resolveComponentFactory(HomeMiscellaneousCarouselComponent);
+      this.homeMiscellaneousCarouselInstance =
+        this.homeMiscellaneousCarouselContainerRef.createComponent(
+          factory,
+          null,
+          this.injector
+        );
+      this.homeMiscellaneousCarouselInstance.instance["categoryCode"] = this.recentProductList
+      this.homeMiscellaneousCarouselInstance.instance["recentResponse"] = recentViewedResponse
+      this.homeMiscellaneousCarouselInstance.instance["pastOrdersResponse"] = pastOrderResponse
+      this.homeMiscellaneousCarouselInstance.instance["purcahseListResponse"] = wishlistResponse
+      this.homeMiscellaneousCarouselInstance.instance["rfqReponse"] = rfqListResponse
+    }
+  }
+
+  callHomePageWidgetsApis() {
+    let rfqPayload = {};
+    if (this.userData.email != undefined && this.userData.email != null) {
+      rfqPayload["email"] = this.userData.email;
+    }
+    if (this.userData.phone != undefined && this.userData.phone != null) {
+      rfqPayload["phone"] = this.userData.phone;
+    }
+    if (this.userData.userId != undefined && this.userData.userId != null) {
+      rfqPayload["idCustomer"] = this.userData.userId;
+    }
+    const wishlistPayload = { idUser: this.userData['userId'], userType: "business" };
+
+    const recentViewedUrl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RECENTLY_VIEWED + this.userData['userId'];
+    const pastOrderURL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAST_ORDERS}${this.userData['userId']}`;
+    const wishlistUrl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST ;
+    const rfqUrl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RFQ_LIST;
+    const recentViewedApi = this._dataService.callRestful('GET', recentViewedUrl);
+    const pastOrderApi = this._dataService.callRestful("GET", pastOrderURL);
+    const wishlistApi = this._dataService.callRestful("GET", wishlistUrl, { params: wishlistPayload })
+      .pipe(
+        map((response: any) => {
+          let index = 0;
+          let res = response['data'];
+          res = res.sort((a, b) => {
+            return b.updated_on - a.updated_on;
+          });
+          return res.map((item) => {
+            item["matCodeMode"] = false;
+            if (item["matCodeFlag"] == undefined || item["matCodeFlag"] == null)
+              item["matCodeFlag"] = false;
+            item["index"] = index;
+            index++;
+            return item;
+          });
+        })
+      );
+    const rfqListApi = this._dataService.callRestful("POST", rfqUrl, { body: rfqPayload })
+      .pipe(
+        map((res) => {
+          res["data"].map((item, index) => {
+            if (index != 0) {
+              item["toggle"] = false;
+            } else {
+              item["toggle"] = true;
+            }
+          });
+          return res;
+        })
+      );
+    forkJoin([recentViewedApi, pastOrderApi, wishlistApi, rfqListApi]).subscribe(response => {
+      this.onVisiblePopularDeals(response)
+    }, error => {
+      console.log('error', error);
+      this.onVisiblePopularDeals([null, null, null, null])
+      // this.onVisiblePopularDeals(null, null, null, null)
+    })
   }
 
   loadSearchNav() {
@@ -433,6 +554,17 @@ export class HomeV1Component implements OnInit {
   changeBannerIndicator(index) {
     this.mainBannerIndicator = index;
   }
-  
+
+  resetScrollPos(selector) {
+    var divs = document.querySelectorAll(selector);
+    for (var p = 0; p < divs.length; p++) {
+      if (Boolean(divs[p].style.transform)) { //for IE(10) and firefox
+        divs[p].style.transform = 'translate3d(0px, 0px, 0px)';
+      } else { //for chrome and safari
+        divs[p].style['-webkit-transform'] = 'translate3d(0px, 0px, 0px)';
+      }
+    }
+  }
+
 
 }

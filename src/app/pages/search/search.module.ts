@@ -7,6 +7,7 @@ import { SharedProductListingModule } from '@modules/shared-product-listing/shar
 import { ProductListingAppPromoModule } from '@app/modules/product-listing-app-promo/product-listing-app-promo.module';
 import { KpToggleDirectiveModule } from '@utils/directives/kp-toggle.directive';
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
+import RecentViewedProductsWrapperModule from '@app/components/recent-viewed-products-wrapper/recent-viewed-products-wrapper.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
     KpToggleDirectiveModule,
     SharedProductListingModule,
     ProductListingAppPromoModule,
-    AppPromoModule
+    AppPromoModule,
+    RecentViewedProductsWrapperModule
   ]
 })
 export class SearchModule { }

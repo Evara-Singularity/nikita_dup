@@ -299,6 +299,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     quickOrderInstance = null;
     @ViewChild("quickOrder", { read: ViewContainerRef })
     quickOrderContainerRef: ViewContainerRef;
+    // ondemand loaded component for return info
+    returnInfoInstance = null;
+    @ViewChild("returnInfo", { read: ViewContainerRef })
+    returnInfoContainerRef: ViewContainerRef;
 
     iOptions: any = null;
     isAcceptLanguage:boolean = false;
@@ -338,9 +342,13 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     relatedLinkRes: any = null
     categoryBucketRes: any = null
     similarCategoryRes: any = null 
+    moglixInightData: any;
+    showMoglixInsight: boolean=false;
+
     fbtAnalytics: { page: { pageName: string; channel: string; subSection: any; linkPageName: any; linkName: any; loginStatus: string; }; custData: { customerID: string; emailID: string; mobile: string; customerType: any; customerCategory: any; }; order: { productID: string; productCategoryL1: any; productCategoryL2: any; productCategoryL3: any; brand: any; price: number; stockStatus: string; tags: string; }; };
     dealsAnalytics: any;
     bestProductsRes: any;
+    isBrandMsn = false;
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);
@@ -559,7 +567,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.route.data.subscribe(
             (rawData) =>
             {
-                // console.log(rawData["product"]);
+                console.log(rawData["product"]);
                 if (!rawData["product"]["error"] && rawData["product"][0]["active"]==true) {
                     if (
                         rawData["product"][0]["productBO"] &&
@@ -582,8 +590,14 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         // console.log('originalProductBO log', this.originalProductBO);
                         // Load secondary APIs data from resolver only when product data is received
                        
-                            this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6], rawData['product'][7], rawData['product'][8]);
-                        
+                        this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6], rawData['product'][7], rawData['product'][8]);
+                        if (rawData["product"][9]['status'] = true && rawData["product"][9]['statusCode'] == 200 && rawData["product"][9]['data']) {
+                            this.showMoglixInsight = true;
+                            this.moglixInightData = rawData["product"][9]['data']
+                        } else {
+                            this.showMoglixInsight = false;
+                        }
+
                     } else {
                         this.showLoader = false;
                         this.globalLoader.setLoaderState(false);
@@ -614,6 +628,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         );
     }
 
+
     checkForRfqGetQuote()
     {
         if (!this.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'raiseRFQQuote') {
@@ -636,7 +651,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
-    getSecondaryApiData(reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes, productTagRes, bestproductsRes) {
+    getSecondaryApiData(
+        reviewsDataApiData, breadcrumbApiData, 
+        questAnsApiData, relatedLinkRes, 
+        similarCategoryRes, categoryBucketRes, 
+        productTagRes, bestproductsRes) {
         // console.log({
         //     reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes
         // });
@@ -856,6 +875,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.isProductReturnAble = this.rawProductData["returnable"] || false;
         this.productDescripton = this.rawProductData["desciption"];
         this.productBrandDetails = this.rawProductData["brandDetails"];
+        this.isBrandMsn = this.productBrandDetails['brandTag'] == 'Brand' ? true : false;
         this.productCategoryDetails = this.rawProductData["categoryDetails"][0];
         this.productUrl = this.rawProductData["defaultCanonicalUrl"];
         this.mainProductURL = this.rawProductData["productPartDetails"][partNumber]["productLinks"]['default'];
@@ -1154,6 +1174,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.productInfoPopupInstance = null;
             this.productInfoPopupContainerRef.remove();
         }
+        if (this.returnInfoInstance) {
+            this.returnInfoInstance = null;
+            this.returnInfoContainerRef.remove();
+        }
     }
 
     setSimilarProducts(productName, categoryCode, productId, groupId)
@@ -1211,8 +1235,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
-    setOutOfStockFlag()
-    {
+    setOutOfStockFlag() {
         if (this.priceQuantityCountry) {
             // incase outOfStockFlag of is avaliable then set its value
             this.productOutOfStock = this.priceQuantityCountry["outOfStockFlag"];
@@ -1224,13 +1247,18 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 if (parseInt(this.priceQuantityCountry["quantityAvailable"]) == 0) {
                     this.productOutOfStock = true;
                 }
-                
+
             } else {
                 this.productOutOfStock = true;
             }
         } else {
             // incase priceQuantityCountry element not present in API
             this.productOutOfStock = true;
+        }
+        if (this.productOutOfStock) {
+            this.commonService.enableAppPromoInHeader = true;
+        }else{
+            this.commonService.enableAppPromoInHeader = false;
         }
     }
 
@@ -1479,6 +1507,39 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         } else {
             //toggle side menu
             this.productShareInstance.instance["btmMenu"] = true;
+        }
+    }
+    // return, replacement, warranty info popup
+    async loadReturnInfo()
+    {
+        if (!this.returnInfoInstance) {
+            const { ReturnInfoComponent } = await import(
+                "./../../components/return-info/return-info.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(ReturnInfoComponent);
+            this.returnInfoInstance = this.returnInfoContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.returnInfoInstance.instance['isBrandMsn'] = this.isBrandMsn;
+            this.returnInfoInstance.instance['show'] = true;
+            (
+                this.returnInfoInstance.instance["removed"] as EventEmitter<boolean>
+            ).subscribe((status) =>
+            {
+                this.returnInfoInstance = null;
+                this.returnInfoContainerRef.detach();
+            });
+            (
+                this.returnInfoInstance.instance["navigateToFAQ$"] as EventEmitter<boolean>
+            ).subscribe((status) =>
+            {
+                this.navigateToFAQ();
+            });
+        } else {
+            //toggle side menu
+            this.returnInfoInstance.instance["show"] = true;
         }
     }
 
@@ -2624,6 +2685,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
         }
     }
+
     async promoCodePopUpOpen(data){
         if (!this.promoOfferPopupInstance) {
             this.showLoader = true;

@@ -24,6 +24,7 @@ export class ProductCardCoreComponent implements OnInit {
 
   readonly imageCdnPath = CONSTANTS.IMAGE_BASE_URL;
   readonly defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
+  readonly easyEMILimit = CONSTANTS.GLOBAL.easyEMILimit
   prodUrl=CONSTANTS.PROD;
   @Input("pageName") pageName = "";
   @Input() product: ProductsEntity;

@@ -45,14 +45,14 @@ export class LoggerService {
       data.endDateTimev2 = new Date(data.endDateTime).toLocaleString('en-GB');
       data.apiRequestTime = data.endDateTime - data.startDateTime;
       // console.log(logName, data);
-      const fs = require("fs");
-      const fileLine = (logNameIdentifier) ? `${logNameIdentifier} :: ${JSON.stringify(data)}\n` : `${JSON.stringify(data)}\n`;
-      fs.appendFile(this.PATH_TO_LOG_FOLDER, fileLine, function (err) {
-        if (err) {
-          console.log('apiServerLog', err);
-          // console.log(err);
-        }
-      });
+      // const fs = require("fs");
+      // const fileLine = (logNameIdentifier) ? `${logNameIdentifier} :: ${JSON.stringify(data)}\n` : `${JSON.stringify(data)}\n`;
+      // fs.appendFile(this.PATH_TO_LOG_FOLDER, fileLine, function (err) {
+      //   if (err) {
+      //     console.log('apiServerLog', err);
+      //     // console.log(err);
+      //   }
+      // });
     } else {
       // console.log("logger service is called")
       // this.isLoggingEnabled && console.log(data);

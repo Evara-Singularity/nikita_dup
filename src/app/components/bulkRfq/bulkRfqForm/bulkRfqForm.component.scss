@@ -1,0 +1,84 @@
+@import '../../../scss/variables';
+@import '../../../scss/layout/cards';
+@import '../../../scss/layout/forms';
+@import '../../../scss/components/buttons';
+
+.card{
+    padding: 20px 15px 15px ;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.2);
+    border: none;
+}
+
+.rfq-phase2-container {
+    padding: 15px;
+
+    .header-strip {
+        display: flex;
+        align-items: center;
+        padding-bottom: 15px;
+
+        i {
+            width: 10%;
+            font-size: 24px;
+        }
+
+        .heading-name {
+            p {
+                padding-top: 5px;
+            }
+
+            .succes-icon {
+                margin-left: 120px;
+                font-size: 45px;
+                color: var(--slimy-green);
+            }
+        }
+    }
+}
+.items-center{
+    display: flex;
+    align-items: center !important;
+    .required-qty-txt{
+        font-weight: bold;
+        margin-top: -5px;
+    }
+}
+
+::ng-deep{
+    #bulk-autocomp{
+        .list-container{
+            input{
+                height: 40px !important;
+                border-radius: 8px !important;
+                // border: 1px solid var(--spanish-gray) !important;
+            }
+        }
+    }
+    .error-txt{
+        margin-top: -2px !important;
+        margin-left: 10px;
+        &.error-txt-qty{
+            margin-top: 3px !important;
+
+        }
+
+    }
+    .list-container{
+        input{
+            border: 1px solid var(--spanish-gray) !important;
+            &:focus{
+                border-color: #c4c4c4 !important;
+            }
+        }
+    }
+    
+}
+.label{
+    z-index: 5 !important;
+}
+
+::ng-deep{
+    .screen-view{
+        background-color: var(--ghost-white) !important;
+    }
+}

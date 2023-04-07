@@ -41,7 +41,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   @Input() searchKeyword: string; // only received in case used in search module
   @Input() categoryMidPlpFilterData: any; // only received in case used in search module
   @Input() graphData:any = null;
-  @Input() lastLevelCategory;
+  @Input() isL2CategoryCheck;
   @Input() informativeVideosData:any;
   @Output('categoryClicked') categoryClicked: EventEmitter<string> = new EventEmitter<string>();
   Object = Object;
@@ -73,7 +73,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
-    this.lastLevelCategory; 
     // console.log("in shared listing ",this.informativeVideosData)
   }
   
@@ -83,45 +82,45 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     return this.pageName == 'CATEGORY' || this.pageName == 'SEARCH'
   }
 
-  getSponseredProducts() {
-    if (this._commonService.isBrowser && this.isAdsEnable) {
-      const paramsUsedInModules = this.getParamsUsedInModules();
-      if (this.isCallSponseredApi(paramsUsedInModules)) {
-        const query = Object.assign({}, this.getSponseredRequest(), this._commonService.formatParams(paramsUsedInModules))
-        this._productService.getSponseredProducts(query).subscribe(response => {
-          if (response['products']) {
-            let products = response['products'] || [];
-            if (products && (products as []).length > 0) {
-              this.sponseredProductList = (products as any[]).map(product => this._productService.searchResponseToProductEntity(product));
-              // console.log('sponseredProductList', Object.assign([],this.sponseredProductList));
-              let tempProductList = JSON.parse(JSON.stringify(this.productsListingData.products));
-              const reversedSponseredProductList = this.sponseredProductList.reverse();
-              this.productsListingData.products.forEach((product, index) => {
-                if (this.sponseredProductPosition.includes(index)) {
-                  if (reversedSponseredProductList.length > 0) {
-                    tempProductList.splice(index, 0, reversedSponseredProductList.pop());
-                  }
-                }
-              });
-              // incase any product remains adding it to bottom most
-              if (reversedSponseredProductList.length > 0 && tempProductList.length == 24) {
-                reversedSponseredProductList.forEach(product => {
-                  tempProductList.push(reversedSponseredProductList.pop());
-                })
-              }
-              this.productsListingData.products = JSON.parse(JSON.stringify(tempProductList));
-            }
-            this.sponseredProductLoadStatus = true;
-          }
-        }, error => {
-          this.sponseredProductLoadStatus = true;
-          console.error('getSponseredProducts failed', error);
-        });
-      } else {
-        this.sponseredProductLoadStatus = true;
-      }
-    }
-  }
+    //getSponseredProducts() {
+    // if (this._commonService.isBrowser && this.isAdsEnable) {
+    //   const paramsUsedInModules = this.getParamsUsedInModules();
+    //   if (this.isCallSponseredApi(paramsUsedInModules)) {
+    //     const query = Object.assign({}, this.getSponseredRequest(), this._commonService.formatParams(paramsUsedInModules))
+    //     this._productService.getSponseredProducts(query).subscribe(response => {
+    //       if (response['products']) {
+    //         let products = response['products'] || [];
+    //         if (products && (products as []).length > 0) {
+    //           this.sponseredProductList = (products as any[]).map(product => this._productService.searchResponseToProductEntity(product));
+    //           // console.log('sponseredProductList', Object.assign([],this.sponseredProductList));
+    //           let tempProductList = JSON.parse(JSON.stringify(this.productsListingData.products));
+    //           const reversedSponseredProductList = this.sponseredProductList.reverse();
+    //           this.productsListingData.products.forEach((product, index) => {
+    //             if (this.sponseredProductPosition.includes(index)) {
+    //               if (reversedSponseredProductList.length > 0) {
+    //                 tempProductList.splice(index, 0, reversedSponseredProductList.pop());
+    //               }
+    //             }
+    //           });
+    //           // incase any product remains adding it to bottom most
+    //           if (reversedSponseredProductList.length > 0 && tempProductList.length == 24) {
+    //             reversedSponseredProductList.forEach(product => {
+    //               tempProductList.push(reversedSponseredProductList.pop());
+    //             })
+    //           }
+    //           this.productsListingData.products = JSON.parse(JSON.stringify(tempProductList));
+    //         }
+    //         this.sponseredProductLoadStatus = true;
+    //       }
+    //     }, error => {
+    //       this.sponseredProductLoadStatus = true;
+    //       console.error('getSponseredProducts failed', error);
+    //     });
+    //   } else {
+    //     this.sponseredProductLoadStatus = true;
+    //   }
+    // }
+    //}
 
   getSponseredRequest() {
     const request = {

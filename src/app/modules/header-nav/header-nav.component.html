@@ -44,6 +44,11 @@
         <ng-container *ngSwitchCase="MODULE_NAME.ORDER_CONFIRMATION">
             <ng-container *ngTemplateOutlet="logoheader"></ng-container>
         </ng-container>
+        <ng-container *ngSwitchCase="MODULE_NAME.PRODUCT">
+            <plp-fixed-header [noOfCart]="noOfCart" [ModuleName]="activeModuleName" (goBack$)="goBack()" (loadBottomSheet$)="loadBottomSheet()"
+                (loadSearchNav$)="loadSearchNav()">
+            </plp-fixed-header>
+        </ng-container>
         <ng-container *ngSwitchDefault>
             <plp-fixed-header [noOfCart]="noOfCart" (goBack$)="goBack()" (loadBottomSheet$)="loadBottomSheet()"
                 (loadSearchNav$)="loadSearchNav()">

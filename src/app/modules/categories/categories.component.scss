@@ -43,6 +43,7 @@
     &.bestSeller{
         background:none;
         padding-right:0px;
+        padding-top: 8px
     }
     .view-all-strip{
         @extend %view-all-strip;

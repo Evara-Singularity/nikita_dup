@@ -1,0 +1,82 @@
+<div [formGroup]="bulkrfqForm">
+  <div class="card mb-10" >
+    <div class="material-form">
+      <div class="outline-input-label">
+        <label for="none">
+          <list-autocomplete class="value-auto-co sachin" id="bulk-autocomp" [control]="bulkrfqForm.get('productType')"
+            [placeholder]="'Enter Product Type*'" [productType]="PRODUCT_TYPES"
+            (onSelect)="updateProductType($event)" (onkeyUp)="onkeyUp($event)">
+          </list-autocomplete>
+          <p *ngIf="
+              bulkrfqForm.get('productType').touched &&
+              bulkrfqForm.get('productType').invalid
+            " class="error-txt">
+            Kindly select a valid product type
+          </p>
+        </label>
+      </div>
+      <div class="multiple-form-field quantity-block items-center">
+        <div class="outline-input-label items-center">
+          <p class="required-qty-txt">Enter your  <br />required quantity</p>
+        </div>
+        <div class="outline-input-label qty-field">
+          <label for="none">
+            <input type="text" formControlName="quantity"  placeholder="Enter Quantity*">
+            <!-- <list-autocomplete class="value-auto-co" id="bulk-autocomp" [control]="bulkrfqForm.get('quantity')"
+              [placeholder]="'Enter Quantity'" [quantity]="PRICE_VALUES"
+              (onSelect)="updateQuantity(bulkrfqForm)">
+            </list-autocomplete> -->
+            <p *ngIf="bulkrfqForm.get('quantity').touched && isMaxQuantity.hasError('required')" class="error-txt error-txt-qty mt-5">
+              Kindly enter quantity.
+            </p>
+            <p *ngIf="isMaxQuantity.hasError('max')" class="error-txt error-txt-qty mt-5">
+                Maximum 1000 quantity allowded. 
+            </p>
+            <p class="error-txt error-txt-qty mt-5" *ngIf="isMaxQuantity.hasError('pattern') && !isMaxQuantity.hasError('min')">
+              Quantity should contain only digits.
+            </p>
+            <p class="error-txt error-txt-qty mt-5" *ngIf="isMaxQuantity.hasError('pattern') && isMaxQuantity.hasError('min')">
+              Quantity should contain only digits.
+            </p>
+            <p class="error-txt error-txt-qty mt-5" *ngIf="isMaxQuantity.hasError('min') && !isMaxQuantity.hasError('pattern')">
+              Quantity should be greater than 1.
+            </p>
+          </label>
+          <div class="qty-dropdown"></div>
+        </div>
+      </div>
+      <div class="outline-input-label mb-0">
+        <label [class.is-focus]="bulkrfqForm.get('budget').value.length">
+          <input formControlName="budget" type="text" name="" data-numbersOnly />
+          <p *ngIf="bulkrfqForm.get('budget').invalid" class="error-txt error-txt-qty">
+            Maximum 8 length allowded
+          </p>
+          <span class="label">Budget (Optional)</span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="material-form">
+      <div class="outline-input-label">
+        <label [class.is-focus]="bulkrfqForm.get('phone').value.length">
+          <input formControlName="phone" type="tel" name="" data-numbersOnly />
+          <p *ngIf="phone.hasError('required')" class="error-txt">
+              Kindly enter phone no.
+          </p>
+          <p class="error-txt error-txt-qty mt-5" *ngIf="phone.invalid && phone.hasError('startwithzero')">Mobile
+              Number should not begin with 0
+          </p>
+          <p class="error-txt error-txt-qty mt-5" *ngIf="phone.touched && phone.invalid && !phone.hasError('startwithzero')">Enter
+              10 digit mobile number
+          </p>          
+          <span class="label">Enter Mobile Number*</span>
+        </label>
+      </div>
+    </div>
+    <button class="btn secondry-btn disabled btnFull" [disabled]="!bulkrfqForm.valid"
+      (click)="$event.stopPropagation(); loginAndValidatePhone()">
+      NEXT
+    </button>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="card pad-15">
+    <h2 class="pb-15">Your nature of purchase</h2>
+    <div class="material-form" [formGroup]="gstinForm">
+        <div class="outline-input-label">
+            <label [class.is-focus]="gstinForm.get('gstin').value.length">
+                <input formControlName="gstin" type="text" name="">
+                <p *ngIf="gstinForm.get('gstin').touched && 
+                gstinForm.get('gstin').invalid" class="error-txt">
+                        Kindly enter valid GSTIN.
+                    </p>
+                <span class="label">Enter GST No.*</span>
+            </label>
+        </div>
+        <div class="outline-input-label">
+            <label  [class.is-focus]="gstinForm.get('email').value.length">
+                <input formControlName="email" type="email" name="">
+                <p *ngIf="gstinForm.get('email').touched && 
+                gstinForm.get('email').invalid" class="error-txt">
+                        Kindly enter valid email.
+                    </p>
+                <span class="label">Enter Email-ID*</span>
+            </label>
+        </div>
+        <div class="outline-input-label">
+            <label [class.is-focus]="gstinForm.get('description').value.length">
+                <textarea formControlName="description"></textarea>
+                <p *ngIf="gstinForm.get('description').invalid" class="error-txt">
+                        Maximum 120 characters allowded.
+                    </p>
+                <span class="label">Add product description (Optional)</span>
+            </label>
+        </div>
+        <button class="btn secondry-btn disabled btnFull" [disabled]="!gstinForm.valid"
+            (click)="onSubmit()">SUBMIT</button>                    </div>
+</div>

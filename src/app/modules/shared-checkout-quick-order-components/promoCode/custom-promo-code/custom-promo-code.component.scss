@@ -38,3 +38,46 @@ i.icon-circle-delete {
 .disabled{
     background: var(--form-label-grey);
 }
+
+.coupen-strip {
+    display: flex;
+    background-color: var(--white);
+    border-radius: 8px;
+    padding: 15px;
+    align-items: center;
+    justify-content: unset;
+    width: 100%;
+    .coupen-icon {
+        padding-right: 10px;
+        i {
+            font-size: $extra-large-3-font;
+            color: var(--slimy-green);
+        }
+    }
+    h3 {
+        padding: 0px !important;
+    }
+    .coupen-text {
+        max-width: 78%;
+        font-size: $large-font;
+        .green-promo-code {
+            color: var(--slimy-green);
+            font-weight: $font-bold;
+        }
+        .green-promo-code-min {
+            font-size: x-small;
+            color: var(--dim-gray);
+        }
+    }
+    i{
+        margin-left: auto;
+        &.icon-circle-delete{
+            color: var(--silver);
+            font-size: 20px;
+        }
+    }
+    
+}
+.items-center{
+    align-items: center;
+}

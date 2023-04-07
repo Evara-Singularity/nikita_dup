@@ -85,6 +85,7 @@
                 <span class="coup-disc green-txt">Coupon discount - ₹100</span>
                 <span class="free-ship green-txt">Free Shipping <i class="icon-free_shipping"></i></span>
             </div> -->
+            
             <div class="pwa-row pad-t-0"
                 *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && !(_cartService.prepaidDataMapping[item.productId]['applicable']) && (_cartService.prepaidDataMapping[item.productId]['amount']) && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue'])">
                 <div class="shop-more-container">
@@ -166,6 +167,7 @@
         <div class="content-area removePopup">
             <div class="top-header-bottom-menu">
                 <h3 class="heading-3">Are you sure to remove this item?</h3>
+                <i class="icon-circle-delete" (click)="$event.stopPropagation();resetRemoveItemCart();"></i>
             </div>
             <div [ngClass]="{'realTimeUpdate':removableItem['text1']}" class="pwa-row pad-tb-15">
                 <div class="pwa-col-12">
@@ -189,14 +191,38 @@
                         </div>
                     </div>
                     <div class="cta-row">
+                        <button class="btn secondry-btn-1" (click)="$event.stopPropagation();deleteProduct($event)"><i
+                            class="icon-bin"></i>&nbsp;REMOVE</button>
                         <button (click)="$event.stopPropagation();resetRemoveItemCart();" cstatic-small-card-container
-                            class="btn secondry-btn-1">CANCEL</button>
-                        <button class="btn secondry-btn" (click)="$event.stopPropagation();deleteProduct($event)"><i
-                                class="icon-bin"></i>&nbsp;REMOVE</button>
+                            class="btn secondry-btn">MOVE TO WISHLIST</button>
+                        <!-- <button class="btn secondry-btn" (click)="$event.stopPropagation();deleteProduct($event)"><i
+                                class="icon-bin"></i>&nbsp;REMOVE</button> -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </app-bottom-menu>
+
+
+<!-- <app-bottom-menu>
+    <div content>
+        <div class="pwa-row">
+            <div class="empty-wishlist-popup">
+
+                <div class="empty-wishlist">
+                    <div class="header-txt">
+                        <h3>Add From Wishlist</h3>
+                        <i class="icon-circle-delete"></i>
+                    </div>
+                    <img src="assets/img/empty-wishlist.svg" alt="">
+                    <h3 class="pad-0">Your wishlist is empty!</h3>
+                    <p class="pad-0">No item available now</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-bottom-menu> -->
+
+
 <ng-container #cartAddProductPopup></ng-container>

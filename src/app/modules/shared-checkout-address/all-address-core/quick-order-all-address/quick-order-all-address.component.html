@@ -1,0 +1,78 @@
+<!-- <section class="invoice-container">
+    <div class="invoice-select">
+        <label>
+            <input type="checkbox" [checked]="isGSTUser"
+                (change)="$event.stopPropagation();updateInvoiceType($event.target.checked)">
+            <span class="custom-box icon-box"></span>
+        </label>
+        <div class="invoice-txt">
+            <p>Get GST Invoice</p>
+            <span class="invoice-subtxt">Claim input tax credit on your purchase.</span>
+        </div>
+    </div>
+</section> -->
+<!--shipping container-->
+<section>
+    <ng-container
+        *ngTemplateOutlet="tAddress; context: {address : selectedDeliveryAddress, label:ADDRESS_TYPES.DELIVERY, addressCount:deliveryAddressList.length}">
+    </ng-container>
+</section>
+<!--billing container-->
+<section [style.display]="displayBillingAddresses">
+    <ng-container
+        *ngTemplateOutlet="tAddress; context: {address : selectedBillingAddress, label:ADDRESS_TYPES.BILLING, addressCount:billingAddressList.length}">
+    </ng-container>
+</section>
+<!--common section to display both delivery and shipping-->
+<section>
+    <ng-container #addressListRef></ng-container>
+</section>
+<section>
+    <ng-container #addressListBillingRef></ng-container>
+</section>
+<section>
+    <ng-container #createEditAddressRef></ng-container>
+</section>
+<!--common template to display address-->
+<ng-template #tAddress let-address="address" let-label="label" let-addressCount="addressCount">
+    <!-- <div class="sub-strip">
+        <div class="container">
+            <h4 class="heading">{{label}} Address ({{addressCount}})</h4>
+        </div>
+    </div> -->
+    <div class="address-container">
+        <div class="shipping-container  billing-adress-container">
+            <div class="address-list">
+                <div class="multiple-address multiple-address-checkout" *ngIf="address">
+                    <div class="chk-txt">
+                        <div class="heading-container">
+                            <h2> Deliver to : {{address.addressCustomerName | slice:0:60}}, {{address.phone}}
+                            </h2>
+                            <div class="persnName">{{address.addressCustomerName | slice:0:60}}, {{address |
+                                checkoutAddress}}, Mobile : {{address.phone}}</div>
+                        </div>
+
+                        <!-- <span class="txt">{{address | checkoutAddress}}</span>
+                            <span class="txt">Mobile : {{address.phone}}</span> -->
+                        <div>
+                            <button class="btn primary-btn-1" *ngIf="addressCount > 0"
+                                (click)="$event.stopPropagation();displayAddressListPopup(label)">
+                                CHANGE
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="addButtonContainer">
+                <button class="btn quaternary-btn-1" *ngIf="addressCount > 0"
+                    (click)="$event.stopPropagation();displayAddressListPopup(label)">
+                    CHANGE OR ADD {{getLabel(label)}}
+                </button>
+                <button class="btn quaternary-btn-1" *ngIf="addressCount == 0"
+                    (click)="$event.stopPropagation();displayAddressFormPopup(label, null)">
+                   + ADD NEW {{getLabel(label)}}
+                </button>
+            </div> -->
+        </div>
+    </div>
+</ng-template>

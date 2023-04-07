@@ -2,6 +2,7 @@ import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, Out
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ToastMessageService } from '@modules/toastMessage/toast-message.service';
@@ -43,6 +44,12 @@ export class CartComponent
     totalPayableAmountWithoutPrepaid:number=0;
     cartUpdatesSubscription: Subscription = null;
 
+    // on demand loading of wishlistPopup
+    wishlistPopupInstance = null;
+    @ViewChild("wishlistPopup", { read: ViewContainerRef })
+    wishlistPopupContainerRef: ViewContainerRef;
+    wishListData: Array<object> = [];
+
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
         public objectToArray: ObjectToArray, public footerService: FooterService, public activatedRoute: ActivatedRoute,
@@ -66,6 +73,7 @@ export class CartComponent
             this.sendEmailGTMCall();
             //  this.shippingCallSubscribers();
         }
+        this.getWishlistData();
         // const cartSession = this._cartService.getCartSession();
         // this.noOfCartItems = (cartSession['itemsList'] as any[]).length || 0;
     }
@@ -557,5 +565,42 @@ export class CartComponent
     get displayPage() { return this.noOfCartItems > 0 }
 
     get isQuickorder() { return this.moduleName === "QUICKORDER" }
+
+    async openWishlistPopup(){
+        const { WishlistPopupComponent } = await import(
+            "../../../components/wishlist-popup/wishlist-popup.component"
+      ).finally();
+      const factory = this.cfr.resolveComponentFactory(WishlistPopupComponent);
+      this.wishlistPopupInstance =
+          this.wishlistPopupContainerRef.createComponent(
+              factory,
+              null,
+              this.injector
+          );
+      this.wishlistPopupInstance.instance["wishListData"] = this.wishListData;
+      (
+        this.wishlistPopupInstance.instance[
+        "closePopup$"
+        ] as EventEmitter<any>
+      ).subscribe(res=>{
+        this.wishlistPopupContainerRef.remove();
+        this.wishlistPopupInstance = null;
+      })
+    }
+    
+    private getWishlistData(){
+        const userSession = this._localAuthService.getUserSession();
+        const wishlistPayload = { idUser: userSession['userId'], userType: "business" };
+        const wishlistUrl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST ;
+        this.dataService.callRestful("GET", wishlistUrl, { params: wishlistPayload }).subscribe(response=>{
+          if(response && response['status']){
+            const wishListResponseData = response["data"];
+             this.wishListData = wishListResponseData.map(product => this._productService.wishlistToProductEntity(product))
+          }
+        },error=>{
+         this.wishListData = [];
+        }
+        );
+    }
 
 }

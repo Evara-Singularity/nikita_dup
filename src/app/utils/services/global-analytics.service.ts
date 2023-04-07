@@ -34,7 +34,7 @@ export class GlobalAnalyticsService {
 
   sendAdobeCall(data: any, trackingname = "genericPageLoad") {
     // console.log(environment["ISCHROME"]);
-    if (this.isBrowser && _satellite && _satellite.track) {
+    if (this.isBrowser && _satellite != undefined) {
       digitalData = Object.assign({}, data);
       // console.log('digitalData', digitalData);
       _satellite.track(trackingname);
@@ -42,7 +42,7 @@ export class GlobalAnalyticsService {
   }
 
   sendGTMCall(data: any) {
-    if (this.isBrowser && dataLayer) {
+    if (this.isBrowser && dataLayer != undefined) {
       dataLayer.push(data);
     }
   }

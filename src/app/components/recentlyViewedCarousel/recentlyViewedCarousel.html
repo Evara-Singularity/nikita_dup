@@ -1,7 +1,7 @@
 <section *ngIf="isRecentDataLoaded && (recentlyViewedProducts && recentlyViewedProducts.length>1)"
   class="recently-view">
   <div class="view-all-strip">
-    <h2>RECENTLY VIEWED</h2>
+    <h2>Recently Viewed</h2>
   </div>
   <product-card-vertical-container [numberOfItems]="recentlyViewedProducts.length || 0">
     <ng-container *ngFor="let product of recentlyViewedProducts">

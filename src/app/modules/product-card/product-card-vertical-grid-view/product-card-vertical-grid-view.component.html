@@ -70,8 +70,8 @@
                             </button>
             </ng-container>
             <ng-container *ngIf="cardFeaturesConfig.enableFullAddToCart && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
-                <button class="btn tertiary-outline-cta tertiary-outline-cta-8" (click)="openRfqForm()">
-                                ADD TO CART
+                <button class="btn tertiary-btn wishlistBtn" (click)="openRfqForm()">
+                    <i class="icon-cart1"></i>&nbsp; ADD TO CART
                             </button>
             </ng-container>
         </div>

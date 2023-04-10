@@ -2,7 +2,7 @@
     
     <div class="pwa-row pt-5 pb-0 items-center" *ngIf="isQuickorder">
         <h3 class="pad-0">{{_cartService.getGenericCartSession?.itemsList.length}} item(s) in your cart</h3>
-        <button class="btn quaternary-btn-2" (click)="openWishlistPopup()">+ ADD FROM WISHLIST</button>
+        <button class="btn quaternary-btn-2 add-from-wishlist-item" (click)="openWishlistPopup()">+ ADD FROM WISHLIST</button>
     </div>
     <ng-container *ngFor="let item of _cartService.getGenericCartSession.itemsList; let itemIndex = index;">
         <div *ngIf="(!item.oos) && item['text1']" class="realTimePrice">

@@ -15,7 +15,7 @@
         <button [style.width.%]="100" class="btn quaternary-btn-1" (click)="writeReview.emit(-1)">{{productStaticData.write_review}}</button>
     </div>
     <div class="pwa-row" *ngIf="overallRating > 0">
-        <p class="extra-small-txt">
+        <p>
            {{productStaticData.customer_reviews}} : {{ productName}}
         </p>
     </div>

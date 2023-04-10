@@ -15,7 +15,7 @@
             border: 1px solid #8bc5ff;
             line-height: $extra-large-1-line-height;
             font-size: $large-font;
-            border-radius: $border-radius-2;
+            border-radius: $border-radius-4;
             font-weight: bold;
             display: flex;
             align-items: center;
@@ -33,7 +33,7 @@
             border: 1px solid var(--onyx-black);
             font-size: $large-font;
             font-weight: bold;
-            border-radius: $border-radius-2;
+            border-radius: $border-radius-4;
         }
     }
 

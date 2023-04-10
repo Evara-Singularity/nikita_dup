@@ -6,16 +6,20 @@ import {
   OnInit,
   OnDestroy,
   ComponentFactoryResolver,
-  Injector
+  Injector,
+  ViewContainerRef,
+  ViewChild,
 } from "@angular/core";
 import { Router } from "@angular/router";
+import CONSTANTS from "@app/config/constants";
+import { ENDPOINTS } from "@app/config/endpoints";
 import { DataService } from "@app/utils/services/data.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { LocalAuthService } from "@services/auth.service";
 import { CartService } from "@services/cart.service";
 import { CommonService } from "@services/common.service";
-import { Subject, Subscription } from "rxjs";
-import { delay } from "rxjs/operators";
+import { forkJoin, Subject, Subscription } from "rxjs";
+import { delay, map } from "rxjs/operators";
 
 @Component({
   selector: "quick-order",
@@ -36,16 +40,24 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   showPromoOfferPopup: boolean = false;
 
   constructor(
-    private _localAuthService: LocalAuthService,
+    public _localAuthService: LocalAuthService,
     public _cartService: CartService,
     public _commonService: CommonService,
     private _loaderService: GlobalLoaderService,
-    public router: Router
+    public router: Router,
+    private _dataService: DataService,
+    private injector:Injector,
+    private cfr:ComponentFactoryResolver
   ) {
     this._cartService.getGenericCartSession;
   }
+  userData:any;
+  // ondemad loaded component for homeMiscellaneousCarousel ( Buy it again, wishlist & FBT )
+  homeMiscellaneousCarouselInstance = null;
+  @ViewChild("homeMiscellaneousCarousel", { read: ViewContainerRef })
+  homeMiscellaneousCarouselContainerRef: ViewContainerRef;
 
-  ngOnInit(): void {}
+  ngOnInit(): void { this.userData = this._localAuthService.getUserSession(); }
 
   ngAfterViewInit(): void {
     this._loaderService.setLoaderState(false);
@@ -68,6 +80,10 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.cartSubscription) this.cartSubscription.unsubscribe();
+    if(this.homeMiscellaneousCarouselInstance){
+      this.homeMiscellaneousCarouselInstance = null;
+      this.homeMiscellaneousCarouselContainerRef.remove();
+    }
   }
 
   navigateToCheckout() {
@@ -144,5 +160,72 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   preventDefault(e) {
     e.preventDefault();
+  }
+
+  callHomePageWidgetsApis() {
+    const wishlistPayload = { idUser: this.userData['userId'], userType: "business" };
+    const fbt_prodcuts = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_FBT_PRODUCTS_BY_MSNS;
+    const pastOrderURL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAST_ORDERS}${this.userData['userId']}`;
+    const wishlistUrl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST ;
+    const pastOrderApi = this._dataService.callRestful("GET", pastOrderURL);
+    const wishlistApi = this._dataService.callRestful("GET", wishlistUrl, { params: wishlistPayload })
+      .pipe(
+        map((response: any) => {
+          let index = 0;
+          let res = response['data'];
+          res = res.sort((a, b) => {
+            return b.updated_on - a.updated_on;
+          });
+          return res.map((item) => {
+            item["matCodeMode"] = false;
+            if (item["matCodeFlag"] == undefined || item["matCodeFlag"] == null)
+              item["matCodeFlag"] = false;
+            item["index"] = index;
+            index++;
+            return item;
+          });
+        })
+      );
+    const fbtPostBody = this.getFbtPostBody();
+    console.log("fbtPostBody  =====>", fbtPostBody );
+    const fbtListApi = this._dataService.callRestful("POST", fbt_prodcuts, { body: fbtPostBody })
+      .pipe(
+        map((res) => {
+          return res;
+        })
+      );
+    forkJoin([pastOrderApi, wishlistApi, fbtListApi]).subscribe(response => {
+      this.onVisiblePopularDeals(response)
+    }, error => {
+      console.log('error', error);
+      this.onVisiblePopularDeals([null, null, null])
+    })
+  }
+  
+  async onVisiblePopularDeals([pastOrderResponse, wishlistResponse, fbtResponse]) {
+    if (!this.homeMiscellaneousCarouselInstance) {
+      const { HomeMiscellaneousCarouselComponent } = await import(
+        "./../../components/homeMiscellaneousCarousel/homeMiscellaneousCarousel.component"
+      );
+      const factory = this.cfr.resolveComponentFactory(HomeMiscellaneousCarouselComponent);
+      this.homeMiscellaneousCarouselInstance =
+        this.homeMiscellaneousCarouselContainerRef.createComponent(
+          factory,
+          null,
+          this.injector
+        );
+      this.homeMiscellaneousCarouselInstance.instance["headertext"] = "You Maybe Intrested in";
+      this.homeMiscellaneousCarouselInstance.instance["pastOrdersResponse"] = pastOrderResponse;
+      this.homeMiscellaneousCarouselInstance.instance["purcahseListResponse"] = wishlistResponse;
+      this.homeMiscellaneousCarouselInstance.instance["fbtResponse"] = fbtResponse;
+    }
+  }
+
+  private getFbtPostBody(){
+   const itemsList = this._cartService.getGenericCartSession.itemsList;
+   const postBody = {
+     "prodIdList": itemsList.map(res=> res.productId)
+   }
+    return postBody;
   }
 }

@@ -69,6 +69,11 @@
                                 SEND QUERY
                             </button>
             </ng-container>
+            <ng-container *ngIf="cardFeaturesConfig.enableFullAddToCart && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
+                <button class="btn tertiary-outline-cta tertiary-outline-cta-8" (click)="openRfqForm()">
+                                ADD TO CART
+                            </button>
+            </ng-container>
         </div>
 
     </div>

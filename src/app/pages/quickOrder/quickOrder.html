@@ -12,6 +12,14 @@
             <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications>
             <prepaid-offer></prepaid-offer>
             <cart [moduleName]="'QUICKORDER'" ></cart>
+
+              <!--homeMiscellaneousCarousel ( Buy it again, Recently Viewed, wishlist & my RFQ section)-->
+            <ng-container *ngIf="_localAuthService.isUserLoggedIn()"></ng-container>  
+            <section class="popular-Deals-section" id="popularDeals" data-observeVisibility [debounceTime]="100" (visible)="callHomePageWidgetsApis()">
+                <ng-container #homeMiscellaneousCarousel></ng-container>
+                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="homeMiscellaneousCarouselInstance"></home-page-skeletons>
+            </section> 
+
             <gst-details></gst-details>
             <order-summary></order-summary>
             <generic-offers></generic-offers>

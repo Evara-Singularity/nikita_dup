@@ -1,6 +1,6 @@
 export const ENDPOINTS = {
   PRODUCT_INFO: "/product/getProductGroup",
-  PRODUCT_REVIEW: "/reviews/getReviews",
+  PRODUCT_REVIEW: "/review/getReview",
   PRODUCT_FBT: "/product/getProductFbtDetails",
   BREADCRUMB: "/homepage/getbreadcrumb",
   Q_AND_A: "/quest/getQuest",
@@ -107,8 +107,8 @@ export const ENDPOINTS = {
   ADD_PURCHASE_LIST: "/purchase/addPurchaseList",
   SIMILAR_PRODUCTS: "/search/similarproducts",
   TAG_PRODUCTS: "/search/tagProducts",
-  SET_REVIEWS: "/reviews/setReviews",
-  IS_REVIEW_HELPFUL: "/reviews/isReviewHelpful",
+  SET_REVIEWS: "/review/addReview",
+  IS_REVIEW_HELPFUL: "/review/isReviewHelpful",
   SET_QUEST: "/quest/setQuest",
   GET_CartBySession: "/cart/getCartBySession",
   IS_BRAND_CATEGORY: "/search/isBrandCategory",

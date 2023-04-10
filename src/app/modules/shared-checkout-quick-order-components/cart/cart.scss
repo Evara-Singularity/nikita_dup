@@ -645,8 +645,6 @@
         display: block;
         margin-bottom: -30px;
         border-radius: $border-radius-8;
-        font-weight: bold;
-
         &>strong {
             color: #d3182a;
             font-size: 12px;
@@ -710,7 +708,6 @@
     i{
         font-size: $extra-large-2-font;
     }
-
 }
 
 .items-center{
@@ -756,4 +753,7 @@
             margin-bottom: 40px;
         }
     }
+}
+.add-from-wishlist-item{
+    padding: 5px 10px;
 }

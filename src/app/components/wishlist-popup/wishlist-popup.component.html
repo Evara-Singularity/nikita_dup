@@ -22,17 +22,20 @@
         <div content>
             <div class="pwa-row">
                 <div class="empty-wishlist-popup">
-
                     <div class="empty-wishlist">
                         <div class="header-txt">
                             <h3>Add From Wishlist</h3>
                             <i class="icon-circle-delete" (click)="closePopup()"></i>
                         </div>
-                        <div *ngFor="let data of wishListData">
-                            <h3 class="pad-0">Name : {{data.brandName}}</h3>
-                            <h2>moglixPartNumber : {{data.moglixPartNumber}}</h2>
-                        </div>
                     </div>
+                    <product-card-vertical-container [numberOfItems]="wishListData.length">
+                        <ng-container *ngFor="let product of wishListData;let pIndex = index">
+                            <product-card-vertical-grid-view [product]="product"
+                                [section]="'recently'" [cardFeaturesConfig]='cardFeaturesConfig'
+                                [moduleUsedIn]="'PRODUCT_RECENT_PRODUCT'" [pIndex]="pIndex">
+                            </product-card-vertical-grid-view>
+                        </ng-container>
+                    </product-card-vertical-container>
                 </div>
             </div>
         </div>

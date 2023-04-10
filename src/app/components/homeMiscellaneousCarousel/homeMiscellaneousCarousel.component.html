@@ -1,7 +1,7 @@
 <section class="popularDeals mt-10 pad-r-0" *ngIf="tabsArray.length > 0">
     <section class="pwa-col-12">
         <div class="view-all-strip pad-lr-15">
-            <h3>Your Activity</h3>
+            <h3>{{headertext}}</h3>
         </div>
         <div class="pwa-tabs-container" id="tabs">
             <ng-container *ngFor="let item of tabsArray;let tabIndex = index">

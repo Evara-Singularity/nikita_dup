@@ -21,6 +21,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   private readonly PAST_ORDER_TAB_NAME = 'Buy it Again';
   private readonly WISHLIST_TAB_NAME = 'Wishlist';
   private readonly RFQ_TAB_NAME = 'My RFQ';
+  private readonly FBT_TAB_NAME = 'Brougth Together ';
 
 
   readonly cardFeaturesConfig: ProductCardFeature = {
@@ -36,12 +37,15 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     horizontalOrientation: false,
     lazyLoadImage: true,
   };
+
   
   @Input("recentResponse") recentResponse = null;
   @Input("pastOrdersResponse") pastOrdersResponse = null;
   @Input("purcahseListResponse") purcahseListResponse = null;
   @Input("rfqReponse") rfqReponse = null;
+  @Input("rfqReponse") fbtResponse = null;
   @Input("analytics") analytics = null;
+  @Input("headertext") headertext:string = "Your Activity";
 
   tabsArray: { id: number, name: string, data: any[], isSelected: boolean }[] = [];
 
@@ -56,6 +60,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.setFullAddToCartButton();
     if (this.recentResponse && (this.recentResponse['statusCode'] === 200) && this.recentResponse['data'] && this.recentResponse['data'].length > 0) {
       this.tabsArray.push({
         id: 1,
@@ -89,9 +94,16 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
           isSelected: false,
         })
       }
+      if (this.fbtResponse && this.fbtResponse['data'] && this.fbtResponse['data'].length > 0) {
+        this.tabsArray.push({
+          id: 5,
+          name: this.FBT_TAB_NAME,
+          data: (this.fbtResponse['data'] as any []).map(product => this._productService.productEntityFromProductBO(product)),
+          isSelected: false,
+        })
+      }
       if (this.tabsArray.length > 0) {
         this.tabsArray[0].isSelected = true;
-
       }
     }
 
@@ -133,6 +145,14 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
           { passive: true }
         );
       }
+    }
+  }
+
+  setFullAddToCartButton(){
+    if(this.headertext == "You Maybe Intrested in"){ 
+      this.cardFeaturesConfig.enableFullAddToCart = true;
+      this.cardFeaturesConfig.enableBuyNow = false;
+      this.cardFeaturesConfig.enableAddToCart = false;
     }
   }
 

@@ -53,6 +53,10 @@ export class CartNotificationsComponent implements OnInit,  OnDestroy
     {
         this._cartService.clearNotifications();
         if (this.notificationSubscription) this.notificationSubscription.unsubscribe();
+        if(this.simillarProductsPopupInstance){
+            this.simillarProductsPopupInstance = null;
+            this.simillarProductsPopupContainerRef.remove();
+        }
     }
 
     async openSimillarProductsPopUp(msnid , data){

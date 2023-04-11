@@ -514,25 +514,11 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                     <ng-container *ngIf="returnForm['controls']['bankDetail']">
                         <div formGroupName="bankDetail" class="bankdetail mt-10" *ngIf="step == 2">
                             <div class="set-two-form">
-                                <div class="outline-input-label">
-                                    <label class="pos-rel" [class.is-focus]="bankName.value.length > 0">
-                                        <input type="text" onPaste="return false" onCopy="return false"
-                                            formControlName="bankName" #bankName>
-                                        <span class="label">Bank Name*</span>
-                                    </label>
-                                    <p *ngIf="returnForm?.get['bankDetail']?.get['bankName']?.touched && !returnForm?.get['bankDetail']?.get['bankName'].valid && returnForm?.get['bankDetail']?.get['bankName']?.errors?.required"
-                                        class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
-
-                                    <p *ngIf="returnForm['controls']['bankDetail']?.get['bankName']?.touched && !returnForm?.get['bankDetail']?.get['bankName'].valid && returnForm?.get['bankDetail']?.get['bankName'].errors.invalidBankName && returnForm?.get['bankDetail']?.get['bankName'].value.length>0"
-                                        class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Bank name
-                                        is invalid
-                                    </p>
-                                </div>
 
                                 <div class="outline-input-label">
                                     <label class="pos-rel" [class.is-focus]="IFSCCode.value.length > 0">
-                                        <input type="text" style="text-transform:uppercase" onPaste="return false"
-                                            onCopy="return false" formControlName="ifscCode" #IFSCCode>
+                                        <input type="text" style="text-transform:uppercase"
+                                             formControlName="ifscCode" #IFSCCode>
                                         <span class="label">IFSC Code(11-digit)*</span>
                                     </label>
                                     <p *ngIf="returnForm?.get['bankDetail']?.get['ifscCode']?.touched && !returnForm?.get['bankDetail']?.get['ifscCode'].valid && returnForm?.get['bankDetail']?.get['ifscCode'].errors.required"
@@ -544,9 +530,24 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                 </div>
 
                                 <div class="outline-input-label">
+                                    <label class="pos-rel" [class.is-focus]="bankName.value.length > 0">
+                                        <input type="text" disabled="disabled"
+                                            formControlName="bankName" #bankName>
+                                        <span class="label">Bank Name*</span>
+                                    </label>
+                                    <p *ngIf="returnForm?.get['bankDetail']?.get['bankName']?.touched && !returnForm?.get['bankDetail']?.get['bankName'].valid && returnForm?.get['bankDetail']?.get['bankName']?.errors?.required"
+                                        class="f-size-10 text-red text-400 absolute top-33 error-txt">Mandatory</p>
+
+                                    <p *ngIf="returnForm['controls']['bankDetail']?.get['bankName']?.touched && !returnForm?.get['bankDetail']?.get['bankName'].valid && returnForm?.get['bankDetail']?.get['bankName'].errors.invalidBankName && returnForm?.get['bankDetail']?.get['bankName'].value.length>0"
+                                        class="f-size-10 text-red right-5 text-400 absolute top-40 error-txt">Bank name
+                                        is invalid
+                                    </p>
+                                </div>
+                              
+                                <div class="outline-input-label">
                                     <label class="pos-rel" [class.is-focus]="accountName.value.length > 0">
-                                        <input type="text" style="text-transform:uppercase" onPaste="return false"
-                                            onCopy="return false" formControlName="acountName" #accountName>
+                                        <input type="text" style="text-transform:uppercase"
+                                            formControlName="acountName" #accountName>
                                         <span class="label">Account Holder Name*</span>
                                     </label>
                                     <p *ngIf="returnForm?.get['bankDetail']?.get['acountName']?.touched && !returnForm?.get['bankDetail']?.get['acountName'].valid && returnForm?.get['bankDetail']?.get['acountName'].errors.required"
@@ -561,7 +562,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
 
                                 <div class="outline-input-label">
                                     <label class="pos-rel" [class.is-focus]="accountNum.value.length > 0">
-                                        <input type="text" onPaste="return false" onCopy="return false"
+                                        <input type="text" 
                                             formControlName="acountNo" #accountNum>
                                         <span class="label">Account Number*</span>
                                     </label>

@@ -35,7 +35,6 @@ export class CartNotificationsComponent implements OnInit,  OnDestroy
         this.notificationSubscription = this._cartService.getCartNotificationsSubject().subscribe((notifications: any[]) =>
         {
             this.notfications = notifications || [];
-            console.log("this.notfications 938749847593847 ::====>",this.notfications)
         })
 
     }
@@ -57,7 +56,6 @@ export class CartNotificationsComponent implements OnInit,  OnDestroy
     }
 
     async openSimillarProductsPopUp(msnid , data){
-        console.log("msnId ====>" , data);
         const { SimillarProductsPopupComponent } = await import(
             "../../../components/simillar-products-popup/simillar-products-popup.component"
       ).finally();

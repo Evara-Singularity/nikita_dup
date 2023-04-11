@@ -712,6 +712,9 @@
 
 .items-center{
     align-items: center;
+    &.cart-items-info{
+        padding: 5px 15px !important;
+    }
 }
 .empty-wishlist-popup{
     display: flex;

@@ -22,7 +22,15 @@
     border-radius: 8px;
     width: 100%;
     &.block{
+        padding-bottom: 15px;
         display: block;
+        padding-left: 15px;
+        text-align: initial;
+        .header-txt{
+            i{
+                right: 15px;
+            }
+        }
     }
     .empty-wishlist{
         width: 100%;

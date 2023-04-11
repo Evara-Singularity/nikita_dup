@@ -17,7 +17,9 @@
             <ng-container *ngIf="_localAuthService.isUserLoggedIn()"></ng-container>  
             <section class="popular-Deals-section" id="popularDeals" data-observeVisibility [debounceTime]="100" (visible)="callHomePageWidgetsApis()">
                 <ng-container #homeMiscellaneousCarousel></ng-container>
-                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="homeMiscellaneousCarouselInstance"></home-page-skeletons>
+                <div class="mb-15">
+                    <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="homeMiscellaneousCarouselInstance"></home-page-skeletons>
+                </div>
             </section> 
 
             <gst-details></gst-details>

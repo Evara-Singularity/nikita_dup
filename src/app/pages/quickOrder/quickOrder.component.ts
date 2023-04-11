@@ -13,6 +13,9 @@ import {
 import { Router } from "@angular/router";
 import CONSTANTS from "@app/config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
+import { QuickOrderAllAddressComponent } from "@app/modules/shared-checkout-address/all-address-core/quick-order-all-address/quick-order-all-address.component";
+import { AddressListModel } from "@app/utils/models/shared-checkout.models";
+import { AddressService } from "@app/utils/services/address.service";
 import { DataService } from "@app/utils/services/data.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { LocalAuthService } from "@services/auth.service";
@@ -31,13 +34,16 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   isCartNoItems: boolean = false;
   cartSubscription: Subscription;
 
-  @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = new Subject();
+  @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> =
+    new Subject();
   readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
   deliveryAddress = null;
   billingAddress = null;
   invoiceType = this.INVOICE_TYPES.RETAIL;
   cartSession = null;
   showPromoOfferPopup: boolean = false;
+  @ViewChild(QuickOrderAllAddressComponent)
+  quickOrderAllAddressComponent: QuickOrderAllAddressComponent;
 
   constructor(
     public _localAuthService: LocalAuthService,
@@ -46,18 +52,23 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     private _loaderService: GlobalLoaderService,
     public router: Router,
     private _dataService: DataService,
-    private injector:Injector,
-    private cfr:ComponentFactoryResolver
+    private injector: Injector,
+    private cfr: ComponentFactoryResolver,
+    private _addressService: AddressService
   ) {
     this._cartService.getGenericCartSession;
   }
-  userData:any;
+  userData: any;
+  addressCount: number = 0;
   // ondemad loaded component for homeMiscellaneousCarousel ( Buy it again, wishlist & FBT )
   homeMiscellaneousCarouselInstance = null;
   @ViewChild("homeMiscellaneousCarousel", { read: ViewContainerRef })
   homeMiscellaneousCarouselContainerRef: ViewContainerRef;
 
-  ngOnInit(): void { this.userData = this._localAuthService.getUserSession(); }
+  ngOnInit(): void {
+    this.userData = this._localAuthService.getUserSession();
+    this.getAllddressList();
+  }
 
   ngAfterViewInit(): void {
     this._loaderService.setLoaderState(false);
@@ -80,13 +91,20 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.cartSubscription) this.cartSubscription.unsubscribe();
-    if(this.homeMiscellaneousCarouselInstance){
+    if (this.homeMiscellaneousCarouselInstance) {
       this.homeMiscellaneousCarouselInstance = null;
       this.homeMiscellaneousCarouselContainerRef.remove();
     }
   }
 
   navigateToCheckout() {
+    if (this.addressCount == 0) {
+      this.quickOrderAllAddressComponent.displayAddressFormPopup(
+        "Delivery",
+        null
+      );
+      return;
+    }
     const invalidIndex = this._cartService.findInvalidItem();
     if (invalidIndex > -1) return;
     this._localAuthService.setBackURLTitle(
@@ -163,16 +181,21 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   callHomePageWidgetsApis() {
-    const wishlistPayload = { idUser: this.userData['userId'], userType: "business" };
-    const fbt_prodcuts = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_FBT_PRODUCTS_BY_MSNS;
-    const pastOrderURL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAST_ORDERS}${this.userData['userId']}`;
-    const wishlistUrl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST ;
+    const wishlistPayload = {
+      idUser: this.userData["userId"],
+      userType: "business",
+    };
+    const fbt_prodcuts =
+      CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_FBT_PRODUCTS_BY_MSNS;
+    const pastOrderURL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAST_ORDERS}${this.userData["userId"]}`;
+    const wishlistUrl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST;
     const pastOrderApi = this._dataService.callRestful("GET", pastOrderURL);
-    const wishlistApi = this._dataService.callRestful("GET", wishlistUrl, { params: wishlistPayload })
+    const wishlistApi = this._dataService
+      .callRestful("GET", wishlistUrl, { params: wishlistPayload })
       .pipe(
         map((response: any) => {
           let index = 0;
-          let res = response['data'];
+          let res = response["data"];
           res = res.sort((a, b) => {
             return b.updated_on - a.updated_on;
           });
@@ -187,45 +210,70 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
         })
       );
     const fbtPostBody = this.getFbtPostBody();
-    console.log("fbtPostBody  =====>", fbtPostBody );
-    const fbtListApi = this._dataService.callRestful("POST", fbt_prodcuts, { body: fbtPostBody })
+    const fbtListApi = this._dataService
+      .callRestful("POST", fbt_prodcuts, { body: fbtPostBody })
       .pipe(
         map((res) => {
           return res;
         })
       );
-    forkJoin([pastOrderApi, wishlistApi, fbtListApi]).subscribe(response => {
-      this.onVisiblePopularDeals(response)
-    }, error => {
-      console.log('error', error);
-      this.onVisiblePopularDeals([null, null, null])
-    })
+    forkJoin([pastOrderApi, wishlistApi, fbtListApi]).subscribe(
+      (response) => {
+        this.onVisiblePopularDeals(response);
+      },
+      (error) => {
+        console.log("error", error);
+        this.onVisiblePopularDeals([null, null, null]);
+      }
+    );
   }
-  
-  async onVisiblePopularDeals([pastOrderResponse, wishlistResponse, fbtResponse]) {
+
+  async onVisiblePopularDeals([
+    pastOrderResponse,
+    wishlistResponse,
+    fbtResponse,
+  ]) {
     if (!this.homeMiscellaneousCarouselInstance) {
       const { HomeMiscellaneousCarouselComponent } = await import(
         "./../../components/homeMiscellaneousCarousel/homeMiscellaneousCarousel.component"
       );
-      const factory = this.cfr.resolveComponentFactory(HomeMiscellaneousCarouselComponent);
+      const factory = this.cfr.resolveComponentFactory(
+        HomeMiscellaneousCarouselComponent
+      );
       this.homeMiscellaneousCarouselInstance =
         this.homeMiscellaneousCarouselContainerRef.createComponent(
           factory,
           null,
           this.injector
         );
-      this.homeMiscellaneousCarouselInstance.instance["headertext"] = "You Maybe Intrested in";
-      this.homeMiscellaneousCarouselInstance.instance["pastOrdersResponse"] = pastOrderResponse;
-      this.homeMiscellaneousCarouselInstance.instance["purcahseListResponse"] = wishlistResponse;
-      this.homeMiscellaneousCarouselInstance.instance["fbtResponse"] = fbtResponse;
+      this.homeMiscellaneousCarouselInstance.instance["headertext"] =
+        "You Maybe Intrested in";
+      this.homeMiscellaneousCarouselInstance.instance["pastOrdersResponse"] =
+        pastOrderResponse;
+      this.homeMiscellaneousCarouselInstance.instance["purcahseListResponse"] =
+        wishlistResponse;
+      this.homeMiscellaneousCarouselInstance.instance["fbtResponse"] =
+        fbtResponse;
     }
   }
 
-  private getFbtPostBody(){
-   const itemsList = this._cartService.getGenericCartSession.itemsList;
-   const postBody = {
-     "prodIdList": itemsList.map(res=> res.productId)
-   }
+  private getFbtPostBody() {
+    const itemsList = this._cartService.getGenericCartSession.itemsList;
+    const postBody = {
+      prodIdList: itemsList.map((res) => res.productId),
+    };
     return postBody;
+  }
+
+  private getAllddressList() {
+    const params = { customerId: this.userData["userId"], invoiceType: "tax" };
+    this._addressService.getAddressList(params).subscribe(
+      (response: AddressListModel) => {
+        this.addressCount = response.deliveryAddressList.length || 0;
+      },
+      (err) => {
+        this.addressCount = 0;
+      }
+    );
   }
 }

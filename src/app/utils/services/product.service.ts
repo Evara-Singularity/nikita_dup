@@ -868,6 +868,57 @@ export class ProductService {
         return productEntity;
     }
 
+    productEntityFromFBT(productBO, overrideProductB0 = null) {
+        const partNumber = productBO['partNumber'] || productBO['defaultPartNumber'];
+        const isProductPriceValid = productBO['productPartDetails'][partNumber]['productPriceQuantity'] != null;
+        const productPartDetails = productBO['productPartDetails'][partNumber];
+        const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, productBO['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
+        const productMrp = (isProductPriceValid && priceQuantityCountry) ? priceQuantityCountry['mrp'] : null;
+        const productTax = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice']) && !isNaN(priceQuantityCountry['sellingPrice'])) ?
+            (Number(priceQuantityCountry['sellingPrice']) - Number(priceQuantityCountry['sellingPrice'])) : 0;
+        const productPrice = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice'])) ? Number(priceQuantityCountry['sellingPrice']) : 0;
+        const priceWithoutTax = (priceQuantityCountry) ? priceQuantityCountry['priceWithoutTax'] : null;
+        const productBrandDetails = productBO['brandDetails'];
+        const productCategoryDetails = productBO['categoryDetails'][0];
+        const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1
+
+        const product: any = {
+            moglixPartNumber: partNumber,
+            moglixProductNo: null,
+            mrp: productMrp,
+            salesPrice: productPrice,
+            priceWithoutTax: priceWithoutTax,
+            productName: productBO['productName'],
+            variantName: productBO['productName'],
+            productUrl: productBO['defaultCanonicalUrl'],
+            shortDesc: productBO['shortDesc'],
+            brandId: productBrandDetails['idBrand'],
+            brandName: productBrandDetails['brandName'],
+            quantityAvailable: priceQuantityCountry['quantityAvailable'],
+            productMinimmumQuantity: productMinimmumQuantity,
+            discount: this._commonService.calculcateDiscount(priceQuantityCountry['discount'], productMrp, productPrice),
+            rating: (overrideProductB0 && overrideProductB0.rating) ? overrideProductB0.rating : null,
+            categoryCodes: productCategoryDetails['categoryCode'],
+            taxonomy: productCategoryDetails['taxonomyCode'],
+            mainImageLink: (productPartDetails['images']) ? productPartDetails['images'][0]['links']['thumbnail'] : '',
+            mainImageMediumLink: productPartDetails['images']
+            ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['medium'])
+            : "",
+            mainImageThumnailLink: productPartDetails['images']
+            ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['thumbnail'])
+            : "",
+            productTags: [],
+            filterableAttributes: {},
+            attributeValuesForPart: {}, 
+            avgRating: (overrideProductB0 && overrideProductB0.avgRating) ? overrideProductB0.avgRating : null, //this.product.avgRating,
+            itemInPack: null,
+            ratingCount: (overrideProductB0 && overrideProductB0.ratingCount) ? overrideProductB0.ratingCount : null, //this.product.ratingCount,
+            reviewCount: (overrideProductB0 && overrideProductB0.reviewCount) ? overrideProductB0.reviewCount : null, //this.product.reviewCount
+            bulkSellingPrice: (priceQuantityCountry) ? priceQuantityCountry['bulkSellingPrice'] : null
+        };
+        return product;
+    }
+
     myRfqToProductEntity(product: any, overrideProductB0 = null) {
         const productItemLevel = product['itemData'][0];
 

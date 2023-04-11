@@ -11,6 +11,7 @@
                     <p class="unservicable">
                         <span class="prod-name">{{ivm.count}} {{ivm['data']['text1']}}</span>
                         <span class="mar-l-10 btn quaternary-btn-2" (click)="viewUnavailableItems()"> VIEW ITEM(s) </span>
+                        <span (click)="openSimillarProductsPopUp(ivm.msnid, ivm.data)"> simillar items</span>
                     </p>
                 </ng-container>
                 <ng-container *ngIf="ivm.type == 'price'">
@@ -28,3 +29,4 @@
         </ul>
     </div>
 </div>
+<ng-container #simillarProductsPopup></ng-container>

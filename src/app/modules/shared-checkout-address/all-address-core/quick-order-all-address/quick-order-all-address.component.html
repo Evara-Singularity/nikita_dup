@@ -42,7 +42,7 @@
     </div> -->
     <div class="address-container">
         <div class="shipping-container  billing-adress-container">
-            <div class="address-list">
+            <div class="address-list" [class.pad-0]="addressCount == 0">
                 <div class="multiple-address multiple-address-checkout" *ngIf="address">
                     <div class="chk-txt">
                         <div class="heading-container">

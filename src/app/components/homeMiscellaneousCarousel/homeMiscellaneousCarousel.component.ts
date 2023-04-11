@@ -98,7 +98,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         this.tabsArray.push({
           id: 5,
           name: this.FBT_TAB_NAME,
-          data: (this.fbtResponse['data'] as any []).map(product => this._productService.productEntityFromProductBO(product)),
+          data: (this.fbtResponse['data'] as any []).map(product => this._productService.productEntityFromFBT(product)),
           isSelected: false,
         })
       }

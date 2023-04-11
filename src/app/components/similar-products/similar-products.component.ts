@@ -29,6 +29,7 @@ export class SimilarProductsComponent implements OnInit {
     @Input('productName') productName;
     @Input('categoryCode') categoryCode;
     @Input('analytics') analytics = null;
+    @Input('isFromQuickOrderPage') isFromQuickOrderPage: boolean = false;
     @Output('similarDataLoaded$') similarDataLoaded$ = new EventEmitter();
     readonly cardFeaturesConfig: ProductCardFeature = {
         // feature config
@@ -58,6 +59,7 @@ export class SimilarProductsComponent implements OnInit {
             redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
             redirectedSectionName: this.outOfStock ? 'similar_product_oos' : 'similar_products'
         }
+        this.setFullAddToCartButton();
     }
     getStaticSubjectData(){
         this.commonService.changeStaticJson.subscribe(staticJsonData => {
@@ -83,6 +85,14 @@ export class SimilarProductsComponent implements OnInit {
         this.router.navigateByUrl(url);
         if (this.commonService.isBrowser) {
             ClientUtility.scrollToTop(100);
+        }
+    }
+
+    setFullAddToCartButton(){
+        if(this.isFromQuickOrderPage === true){ 
+          this.cardFeaturesConfig.enableFullAddToCart = true;
+          this.cardFeaturesConfig.enableBuyNow = false;
+          this.cardFeaturesConfig.enableAddToCart = false;
         }
     }
 

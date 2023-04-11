@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, ComponentFactoryResolver, EventEmitter, Injector, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '@app/utils/services/cart.service';
 import { Subscription } from 'rxjs';
@@ -16,7 +16,18 @@ export class CartNotificationsComponent implements OnInit,  OnDestroy
     notfications = [];
     is_quickorder = true;
     @Output("viewUnavailableItems$") viewUnavailableItems$: EventEmitter<string[]> = new EventEmitter<string[]>();
-    constructor(public _cartService: CartService, private _router: Router) { }
+
+     // on demand loading of wishlistPopup
+     simillarProductsPopupInstance = null;
+     @ViewChild("simillarProductsPopup", { read: ViewContainerRef })
+     simillarProductsPopupContainerRef: ViewContainerRef;
+     
+    constructor(
+        public _cartService: CartService,
+        private _router: Router,
+        private injector: Injector,
+        private cfr: ComponentFactoryResolver,
+        ) { }
     
     ngOnInit()
     {
@@ -24,7 +35,9 @@ export class CartNotificationsComponent implements OnInit,  OnDestroy
         this.notificationSubscription = this._cartService.getCartNotificationsSubject().subscribe((notifications: any[]) =>
         {
             this.notfications = notifications || [];
+            console.log("this.notfications 938749847593847 ::====>",this.notfications)
         })
+
     }
 
     viewUnavailableItems()
@@ -42,4 +55,29 @@ export class CartNotificationsComponent implements OnInit,  OnDestroy
         this._cartService.clearNotifications();
         if (this.notificationSubscription) this.notificationSubscription.unsubscribe();
     }
+
+    async openSimillarProductsPopUp(msnid , data){
+        console.log("msnId ====>" , data);
+        const { SimillarProductsPopupComponent } = await import(
+            "../../../components/simillar-products-popup/simillar-products-popup.component"
+      ).finally();
+      const factory = this.cfr.resolveComponentFactory(SimillarProductsPopupComponent);
+      this.simillarProductsPopupInstance =
+          this.simillarProductsPopupContainerRef.createComponent(
+              factory,
+              null,
+              this.injector
+          );
+      this.simillarProductsPopupInstance.instance["msnid"] = msnid; 
+      this.simillarProductsPopupInstance.instance["productName"] = data.productName;
+      (
+        this.simillarProductsPopupInstance.instance[
+        "closePopup$"
+        ] as EventEmitter<any>
+      ).subscribe(res=>{
+        this.simillarProductsPopupContainerRef.remove();
+        this.simillarProductsPopupInstance = null;
+      })
+    }
+
 }

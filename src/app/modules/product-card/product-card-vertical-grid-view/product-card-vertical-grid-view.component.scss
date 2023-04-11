@@ -68,6 +68,7 @@
             .prod-selling-price {
                 margin-top: 4px;
                 font-size: 17px;
+                height: 18px;
                 color: var(--onyx-black);
                 font-weight: $font-bold;
             }
@@ -79,6 +80,7 @@
             .out-of-stock-price {
                 font-size: $large-font;
                 font-weight: $font-bold;
+                height: 18px;
                 color: var(--dim-gray);
                 margin-top: 4px;
             }
@@ -99,6 +101,8 @@
     width: 100% !important;
     display: flex;
     align-items: center;
+    justify-content: center;
+    height: 35px;
     i{
         font-size: 16px;
     }

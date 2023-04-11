@@ -1,6 +1,6 @@
 <div *ngIf="displayPage">
     
-    <div class="pwa-row pt-5 pb-0 items-center" *ngIf="isQuickorder">
+    <div class="pwa-row items-center cart-items-info" *ngIf="isQuickorder">
         <h3 class="pad-0">{{_cartService.getGenericCartSession?.itemsList.length}} item(s) in your cart</h3>
         <button class="btn quaternary-btn-2 add-from-wishlist-item" (click)="openWishlistPopup()">+ ADD FROM WISHLIST</button>
     </div>

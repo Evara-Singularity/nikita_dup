@@ -3,26 +3,57 @@
 @import '../../scss/components/static-card-container';
 
 .oosProduct {
-    opacity: 0.5;
+  opacity: 0.5;
 }
-.unavailableItems{
-  padding-bottom:70px;
-  .top-header-bottom-menu{
-    border-bottom:none;
+
+.unavailableItems {
+  padding-bottom: 70px;
+
+  .top-header-bottom-menu {
+    border-bottom: none;
+    border-bottom: none;
+    position: sticky;
+    top: -1px;
+    width: 100%;
+    padding-left: 15px;
+    background-color: var(--white);
+    z-index: 1;
   }
-  .static-card-container{
-    border:1px solid var(--ghost-white);
-    border-radius:$border-radius-8;
+
+  .static-card-container {
+    border: 1px solid var(--ghost-white);
+    border-radius: $border-radius-8;
   }
-    .red-txt{
-      font-size:$small-font;
-      padding-top:10px;
+
+  .red-txt {
+    font-size: $small-font;
+    padding-top: 10px;
+  }
+
+  .oos {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.cta-row {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  justify-content: space-between;
+  padding: 5px 15px;
+
+  button {
+    &:first-child {
+      width: calc(45% - 10px);
     }
-    .oos{
-      opacity:0.5;
-      pointer-events:none;
+
+    &:nth-child(2) {
+      width: calc(55% - 10px);
+    }
+
+    i {
+      padding-right: 2px;
     }
   }
-
-
-
+}

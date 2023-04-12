@@ -235,6 +235,7 @@
         span {
             font-size: $medium-font;
             display: inline-flex;
+            font-weight: bold;
             align-items: center;
 
             i {
@@ -242,7 +243,9 @@
                 margin-right: 5px;
             }
         }
-
+        .font-medium {
+            font-size: $medium-font;
+        }
         .oos-text {
             margin-left: auto;
         }

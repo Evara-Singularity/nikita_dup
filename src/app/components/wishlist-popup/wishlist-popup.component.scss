@@ -53,3 +53,12 @@
         }
     }
 }
+::ng-deep{
+    product-card-vertical-grid-view{
+        &:last-child{
+            .product-vertical-grid-card{
+                margin-right: 5px;
+            }
+        }
+    }
+}

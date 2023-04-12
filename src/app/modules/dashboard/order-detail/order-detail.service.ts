@@ -89,4 +89,10 @@ fetchItemDetails(msn) {
     return this.dataService.callRestful('GET', url);
 }
 
+getIfscAndBankName(ifscCode){
+    // const user = this._localStorageService.retrieve("user");
+    // return this.dataService.callRestful("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.ORD_DET, { params: {orderid : orderId, customerid: user['userId']}});PYTM0123456
+    return this.dataService.callRestful("GET",'https://nodeapiqa.moglilabs.com/nodeApi/v1/payment/getBankDetails?ifsc=' + ifscCode);
+}
+
 }

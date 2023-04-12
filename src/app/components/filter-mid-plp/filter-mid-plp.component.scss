@@ -1,6 +1,8 @@
 @import "../../scss/variables";
 .filter-container {
+    padding-right: 0px;
     @extend %cards;
+    
     background-color: #3c3c3c;
     .filter-heading {
         font-size: $large-font;
@@ -11,6 +13,7 @@
     }
 }
 .inline-filter-card-list {
+    @extend %hide-scrollbar;
     padding: 5px 40px 10px 0px;
     overflow-x: scroll;
     overflow-y: hidden;

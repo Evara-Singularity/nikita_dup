@@ -59,7 +59,7 @@ export class SearchComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.sharedProductList.getSponseredProducts();
+    // this.sharedProductList.getSponseredProducts();
   }
 
   setHeaderNameBasedOnCondition() {
@@ -113,7 +113,7 @@ export class SearchComponent implements OnInit {
       });
 
       if (this.sharedProductList) {
-        this.sharedProductList.getSponseredProducts();
+        // this.sharedProductList.getSponseredProducts();
       }
 
       // Initialize the current activated filter count

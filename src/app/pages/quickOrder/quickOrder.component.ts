@@ -42,8 +42,20 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   invoiceType = this.INVOICE_TYPES.RETAIL;
   cartSession = null;
   showPromoOfferPopup: boolean = false;
+  userData: any;
+  addressCount: number = 0;
+
+  // ondemad loaded component for quickOrderAllAddress
   @ViewChild(QuickOrderAllAddressComponent)
   quickOrderAllAddressComponent: QuickOrderAllAddressComponent;
+  // ondemad loaded component for homeMiscellaneousCarousel ( Buy it again, wishlist & FBT )
+  homeMiscellaneousCarouselInstance = null;
+  @ViewChild("homeMiscellaneousCarousel", { read: ViewContainerRef })
+  homeMiscellaneousCarouselContainerRef: ViewContainerRef;
+// ondemad loaded component for quickOrderMiscellaneousCarousel
+  quickOrderMiscellaneousCarouselInstance = null;
+  @ViewChild("quickOrderMiscellaneousCarousel", { read: ViewContainerRef })
+  quickOrderMiscellaneousCarouselContainerRef: ViewContainerRef;
 
   constructor(
     public _localAuthService: LocalAuthService,
@@ -58,12 +70,6 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {
     this._cartService.getGenericCartSession;
   }
-  userData: any;
-  addressCount: number = 0;
-  // ondemad loaded component for homeMiscellaneousCarousel ( Buy it again, wishlist & FBT )
-  homeMiscellaneousCarouselInstance = null;
-  @ViewChild("homeMiscellaneousCarousel", { read: ViewContainerRef })
-  homeMiscellaneousCarouselContainerRef: ViewContainerRef;
 
   ngOnInit(): void {
     this.userData = this._localAuthService.getUserSession();
@@ -76,7 +82,6 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
       .getCartUpdatesChanges()
       .pipe(delay(800))
       .subscribe((cartSession) => {
-        // console.log('cartSession ==>', cartSession)
         if (
           cartSession &&
           cartSession.itemsList &&
@@ -94,6 +99,10 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.homeMiscellaneousCarouselInstance) {
       this.homeMiscellaneousCarouselInstance = null;
       this.homeMiscellaneousCarouselContainerRef.remove();
+    }
+    if(this.quickOrderMiscellaneousCarouselInstance){
+      this.quickOrderMiscellaneousCarouselInstance = null;
+      this.quickOrderMiscellaneousCarouselContainerRef.remove();
     }
   }
 
@@ -276,4 +285,50 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     );
   }
+
+  private postBodyForAllCategoryByMsns(){
+    const itemsList = this._cartService.getGenericCartSession.itemsList;
+    const postBody = {
+      "msnList": itemsList.map((res) => res.productId),
+      "count": itemsList.length,
+      "country": "india"
+    };
+    return postBody;
+  }
+
+  getAllCategoryByMsns() {
+    const postBody = this.postBodyForAllCategoryByMsns();
+    const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY_INFO_BY_MSNS
+    this._dataService.callRestful("POST", url, { body: postBody }).subscribe(res=>{
+      if(res && res['products'] != null){
+        this.onVisiblePopularDeals2(res['products'] as any)
+      }else{
+        this.onVisiblePopularDeals2(null)
+      }
+    },error=>{
+      this.onVisiblePopularDeals2(null);
+    });
+  }
+
+  async onVisiblePopularDeals2(data) {
+    if (!this.quickOrderMiscellaneousCarouselInstance && data != null) {
+      const { QuickOrderMiscellaneousCarouselComponent } = await import(
+        "./../../components/quick-order-miscellaneous-carousel/quick-order-miscellaneous-carousel.component"
+      ).finally(() => {
+       // console.log("component created .");
+      });
+      const factory = this.cfr.resolveComponentFactory(
+        QuickOrderMiscellaneousCarouselComponent
+      )
+      this.quickOrderMiscellaneousCarouselInstance =
+        this.quickOrderMiscellaneousCarouselContainerRef.createComponent(
+          factory,
+          null,
+          this.injector
+        );
+      this.quickOrderMiscellaneousCarouselInstance.instance["data"] =
+      data;
+    }
+  }
+  
 }

@@ -14,17 +14,26 @@
             <cart [moduleName]="'QUICKORDER'" ></cart>
 
               <!--homeMiscellaneousCarousel ( Buy it again, Recently Viewed, wishlist & my RFQ section)-->
-            <ng-container *ngIf="_localAuthService.isUserLoggedIn()"></ng-container>  
-            <section class="popular-Deals-section" id="popularDeals" data-observeVisibility [debounceTime]="100" (visible)="callHomePageWidgetsApis()">
-                <ng-container #homeMiscellaneousCarousel></ng-container>
-                <div class="mb-15">
-                    <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="homeMiscellaneousCarouselInstance"></home-page-skeletons>
-                </div>
-            </section> 
+            <ng-container *ngIf="_localAuthService.isUserLoggedIn()">
+                <section class="popular-Deals-section" id="popularDeals" data-observeVisibility [debounceTime]="100" (visible)="callHomePageWidgetsApis()">
+                    <ng-container #homeMiscellaneousCarousel></ng-container>
+                    <div class="mb-15">
+                        <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="homeMiscellaneousCarouselInstance"></home-page-skeletons>
+                    </div>
+                </section> 
+            </ng-container>  
 
             <gst-details></gst-details>
             <order-summary></order-summary>
             <generic-offers></generic-offers>
+            <ng-container *ngIf="_localAuthService.isUserLoggedIn()">
+                <section class="popular-Deals-section" data-observeVisibility [debounceTime]="100" (visible)="getAllCategoryByMsns()">
+                    <ng-container #quickOrderMiscellaneousCarousel></ng-container>
+                    <div class="mb-15">
+                        <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="quickOrderMiscellaneousCarouselInstance"></home-page-skeletons>
+                    </div>
+                </section> 
+            </ng-container>  
             <div class="fixed-bottom-cta">
                 <button class="btn primary-full-btn" (click)="navigateToCheckout()" >{{ _commonService?.userSession?.authenticated === 'true' ? 'CONTINUE TO CHECKOUT' : 'SIGN IN TO CHECKOUT' }}</button>
             </div>

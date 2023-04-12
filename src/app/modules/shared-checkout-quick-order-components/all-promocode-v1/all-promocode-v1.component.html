@@ -1,7 +1,7 @@
-<div class="custom-promocode" *ngIf="appliedPromocode.length > 0">
+<div class="custom-promocode" *ngIf="appliedPromocode != undefined && appliedPromocode.length > 0">
     <custom-promo-code [isPromocodeList]="false"></custom-promo-code>
 </div>
-<div class="promocode-list" *ngIf="appliedPromocode.length == 0">
+<div class="promocode-list" *ngIf="appliedPromocode != undefined && appliedPromocode.length == 0">
     <!-- <p class="open-offers" (click)="$event.stopPropagation();openPromoCodeList()">APPLY COUPON </p> -->
 
     <div class="pwa-row">

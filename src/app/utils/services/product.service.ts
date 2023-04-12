@@ -712,6 +712,60 @@ export class ProductService {
         } as ProductsEntity;
     }
 
+    searchResponseToProductEntityV1(product: any) {
+        const partNumber =
+            product["partNumber"] ||
+            product["defaultPartNumber"] ||
+            product["moglixPartNumber"];
+        const productMrp = product["mrp"];
+        const productPrice = product["salesPrice"];
+        const priceWithoutTax = product["priceWithoutTax"];
+        return {
+            moglixPartNumber: partNumber,
+            moglixProductNo: product["moglixProductNo"] || null,
+            mrp: productMrp,
+            salesPrice: productPrice,
+            priceWithoutTax: priceWithoutTax,
+            productName: product["productName"],
+            variantName: product["productName"],
+            productUrl: product["productUrl"],
+            shortDesc: product["shortDesc"],
+            brandId: product["brandId"],
+            brandName: product["brandName"],
+            quantityAvailable: product["quantityAvailable"],
+            discount: this._commonService.calculcateDiscount(product['discount'], productMrp, productPrice),
+            rating: product["rating"] || null,
+            categoryCodes: null,
+            taxonomy: product["taxonomy"],
+            mainImageLink: product["moglixImageNumber"]
+                ? product["mainImageLink"]
+                : "",
+            mainImageThumnailLink: this.getImageFromSearchProductResponse(
+                product["mainImageLink"],
+                "large",
+                "thumbnail"
+            ),
+            mainImageMediumLink: this.getImageFromSearchProductResponse(
+                product["mainImageLink"],
+                "large",
+                "medium"
+            ),
+            productTags: [],
+            filterableAttributes: {},
+            attributeValuesForPart: ((product['attributeValuesForPart']) ? product['attributeValuesForPart'] :
+            {}) || {}, 
+            avgRating: product.avgRating,
+            itemInPack: null,
+            ratingCount: product.ratingCount,
+            reviewCount: product.reviewCount,
+            uclid: product.uclid,
+            keyFeatures: product.keyFeatures || [],
+            internalProduct: product.hasOwnProperty("internalProduct")
+                ? false
+                : true, // if intenal product prop does not exist then it is internal product
+        } as ProductsEntity;
+    }
+
     recentProductResponseToProductEntity(product: any) {
         // console.log('product ==>', product);
         const partNumber =
@@ -744,6 +798,54 @@ export class ProductService {
                 : "",
             mainImageThumnailLink: product["productImage"]
                 ? this.getForLeadingSlash(product["productImage"])
+                : "",
+            productTags: [],
+            filterableAttributes: {},
+            attributeValuesForPart: ((product['attributeValuesForPart']) ? product['attributeValuesForPart'] :
+             {}) || {}, 
+            avgRating: product.avgRating || 0,
+            itemInPack: null,
+            ratingCount: product.ratingCount || 0,
+            reviewCount: product.reviewCount || 0,
+            internalProduct: true,
+            outOfStock: product.outOfStock,
+        } as ProductsEntity;
+        // console.log('product ==>', productReturn);
+        return productReturn;
+    }
+
+    recentProductResponseToProductEntityV1(product: any) {
+        // console.log('product ==>', product);
+        const partNumber =
+            product["partNumber"] ||
+            product["defaultPartNumber"] ||
+            product["moglixPartNumber"];
+        const productMrp = product["mrp"];
+        const productPrice = product["salesPrice"];
+        const priceWithoutTax = product["priceWithoutTax"];
+        const productReturn = {
+            moglixPartNumber: partNumber,
+            moglixProductNo: product["moglixProductNo"] || null,
+            mrp: productMrp,
+            salesPrice: productPrice,
+            priceWithoutTax: priceWithoutTax,
+            productName: product["productName"],
+            variantName: product["productName"],
+            productUrl: product["productUrl"],
+            shortDesc: product["shortDesc"] || null,
+            brandId: product["brandId"] || null,
+            brandName: product["brandName"],
+            quantityAvailable: 1,
+            discount: this._commonService.calculcateDiscount(null, productMrp, productPrice),
+            rating: product["rating"] || null,
+            categoryCodes: null,
+            taxonomy: product["taxonomy"] || null,
+            mainImageLink: product["mainImageLink"] ? this.getForLeadingSlash(product["mainImageLink"]) : "",
+            mainImageMediumLink: product["mainImageLink"]
+                ? this.getForLeadingSlash(product["mainImageLink"])
+                : "",
+            mainImageThumnailLink: product["mainImageLink"]
+                ? this.getForLeadingSlash(product["mainImageLink"])
                 : "",
             productTags: [],
             filterableAttributes: {},

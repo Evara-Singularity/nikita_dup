@@ -2,7 +2,7 @@
     
     <div class="pwa-row items-center cart-items-info" *ngIf="isQuickorder">
         <h3 class="pad-0">{{_cartService.getGenericCartSession?.itemsList.length}} item(s) in your cart</h3>
-        <button class="btn quaternary-btn-2 add-from-wishlist-item" (click)="openWishlistPopup()">+ ADD FROM WISHLIST</button>
+        <button class="btn quaternary-btn-2 add-from-wishlist-item" *ngIf="_localAuthService.isUserLoggedIn()" (click)="openWishlistPopup()">+ ADD FROM WISHLIST</button>
     </div>
     <ng-container *ngFor="let item of _cartService.getGenericCartSession.itemsList; let itemIndex = index;">
         <div *ngIf="(!item.oos) && item['text1']" class="realTimePrice">
@@ -148,9 +148,10 @@
                     </li>
                 </ul>
             </div>
-            <div class="cart-btm pad-15 ">
-                <span class="coup-disc green-txt">Coupon discount - ₹100</span>
-                <span class="free-ship green-txt">Free Shipping <i class="icon-free_shipping"></i></span>
+            <div class="cart-btm pad-15 " *ngIf="(item.offer >0) || (item.shippingCharges >0) ">
+                <span class="coup-disc green-txt" *ngIf="item.offer > 0">Coupon discount - ₹{{(item.offer ? item.offer : 0) | mathRound | number :
+                    '1.2-2'}}</span>
+                <span class="free-ship green-txt" *ngIf="item.shippingCharges >0">Free Shipping <i class="icon-free_shipping"></i></span>
             </div>
             <!-- DO NOT REMOVE THIS SECTION IT WAS OF NEW DESIGN TO BE IMPLEMENTED LATER -->
             <!-- <div  class="coupen-and-discount">

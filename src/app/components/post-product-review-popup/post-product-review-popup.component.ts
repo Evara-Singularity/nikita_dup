@@ -41,17 +41,29 @@ export class PostProductReviewPopupComponent implements OnInit {
   postReview() {
     if (this.reviewForm.valid && this.ratingValue > 0) {
       const user = this.localStorageService.retrieve('user');
+      // const obj = {
+      //   review_type: "PRODUCT_REVIEW",
+      //   item_type: "PRODUCT",
+      //   item_id: this.productInfo['partNumber'],
+      //   rating: this.ratingValue,
+      //   review_subject: this.reviewForm.controls['review_subject'].value,
+      //   review_text: this.reviewForm.controls['review_text'].value,
+      //   review_id: null,
+      //   user_id: user.userId,
+      //   user_name: user.userName
+      // };
       const obj = {
-        review_type: "PRODUCT_REVIEW",
-        item_type: "PRODUCT",
-        item_id: this.productInfo['partNumber'],
+        reviewType: "PRODUCT_REVIEW",
+        itemType: "PRODUCT",
+        itemId: this.productInfo['partNumber'],
         rating: this.ratingValue,
-        review_subject: this.reviewForm.controls['review_subject'].value,
-        review_text: this.reviewForm.controls['review_text'].value,
-        review_id: null,
-        user_id: user.userId,
-        user_name: user.userName
+        reviewSubject: this.reviewForm.controls['review_subject'].value,
+        reviewText: this.reviewForm.controls['review_text'].value,
+        reviewId: null,
+        userId: user.userId,
+        userName: user.userName
       };
+     
       this.productService.postReview(obj).subscribe(
         res => {
           this.reviewForm.controls['review_subject'].setValue('');

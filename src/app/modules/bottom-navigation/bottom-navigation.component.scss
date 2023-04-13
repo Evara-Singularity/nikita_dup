@@ -10,7 +10,7 @@
 
     .menubar-horizontal-section {
         background: var(--white);
-        padding: 10px 15px;
+        padding: 12px 15px;
         border-top-left-radius: $border-radius-16;
         border-top-right-radius: $border-radius-16;
         display: flex;
@@ -85,7 +85,6 @@
             p {
                 font-size: 10px;
                 font-weight: bold;
-                padding-top: 4px;
             }
 
             &.menu-selected {

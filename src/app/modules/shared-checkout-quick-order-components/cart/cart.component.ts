@@ -49,6 +49,10 @@ export class CartComponent
     @ViewChild("wishlistPopup", { read: ViewContainerRef })
     wishlistPopupContainerRef: ViewContainerRef;
     wishListData: Array<object> = [];
+    // on demand loading of wishlistPopup
+    simillarProductsPopupInstance = null;
+    @ViewChild("simillarProductsPopup", { read: ViewContainerRef })
+    simillarProductsPopupContainerRef: ViewContainerRef;
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -82,6 +86,10 @@ export class CartComponent
         if (this.cartSubscription) this.cartSubscription.unsubscribe();
         if (this.shippingSubscription) this.shippingSubscription.unsubscribe();
         if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
+        if(this.simillarProductsPopupInstance){
+           this.simillarProductsPopupInstance = null;
+           this.simillarProductsPopupContainerRef.remove();
+        }
     }
 
     // Function to get and set the latest cart
@@ -635,6 +643,29 @@ export class CartComponent
             }
           });
         }
+    }
+
+    async openSimillarProductsPopUp(msnid , data){
+        const { SimillarProductsPopupComponent } = await import(
+            "../../../components/simillar-products-popup/simillar-products-popup.component"
+      ).finally();
+      const factory = this.cfr.resolveComponentFactory(SimillarProductsPopupComponent);
+      this.simillarProductsPopupInstance =
+          this.simillarProductsPopupContainerRef.createComponent(
+              factory,
+              null,
+              this.injector
+          );
+      this.simillarProductsPopupInstance.instance["msnid"] = msnid; 
+      this.simillarProductsPopupInstance.instance["productName"] = data.productName;
+      (
+        this.simillarProductsPopupInstance.instance[
+        "closePopup$"
+        ] as EventEmitter<any>
+      ).subscribe(res=>{
+        this.simillarProductsPopupContainerRef.remove();
+        this.simillarProductsPopupInstance = null;
+      })
     }
 
 }

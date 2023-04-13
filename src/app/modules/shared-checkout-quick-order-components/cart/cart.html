@@ -116,7 +116,7 @@
                         REMOVE
                     </span>
                 </div>
-                <div class="oos-text">
+                <div class="oos-text" (click)="openSimillarProductsPopUp(item.msnid, item)">
                     <h3 class="font-medium red-txt ">VIEW SIMILAR ITEMS</h3>
                 </div>
             </div>
@@ -207,3 +207,4 @@
 
 <ng-container #cartAddProductPopup></ng-container>
 <ng-container #wishlistPopup></ng-container>
+<ng-container #simillarProductsPopup></ng-container>

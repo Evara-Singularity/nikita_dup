@@ -3,6 +3,7 @@
 
 .no-item-section{
     padding: 0 15px;
+    margin-top: -10px;
     .card{
         border: none;
         padding: 30px 35px;
@@ -10,14 +11,14 @@
         .emptycart-section{
             text-align: center;
             img{
-                width: 103px;
+                width: 150px;
             }
             .noitems-txt{
                 font-size: $extra-large-font;
                 font-weight: $font-bold;
                 line-height: 21px;
                 color: var(--dim-gray);
-                margin-top: 15px;
+                margin-top: 35px;
             }
             .add-item-txt{
                 font-size: $large-font;

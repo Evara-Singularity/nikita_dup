@@ -26,7 +26,7 @@
               </div>
               <button class="btn" *ngIf="item.promoCode.toLowerCase() != selectedPromocode.toLowerCase()" [class]="item.promoCode.toLowerCase() == selectedPromocode.toLowerCase() ? 'secondry-btn' : 'btn'" [disabled]="item.promoCode.toLowerCase() === selectedPromocode.toLowerCase()"
                 (click)="$event.stopPropagation();submitPromocode($event, item.promoCode)">APPLY</button>
-              <button class="secondry-btn" *ngIf="item.promoCode.toLowerCase() === selectedPromocode.toLowerCase()" [disabled]="item.promoCode.toLowerCase() === selectedPromocode.toLowerCase()"
+              <button class=" applied" *ngIf="item.promoCode.toLowerCase() === selectedPromocode.toLowerCase()" [disabled]="item.promoCode.toLowerCase() === selectedPromocode.toLowerCase()"
                 (click)="$event.stopPropagation();submitPromocode($event, item.promoCode)">APPLIED</button>  
             </div>
           </div>

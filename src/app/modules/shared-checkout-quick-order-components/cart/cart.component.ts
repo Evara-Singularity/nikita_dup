@@ -603,4 +603,38 @@ export class CartComponent
         );
     }
 
+    addToPurchaseList() {
+        let user = this.localStorageService.retrieve("user");
+        if (user && user.authenticated == "true") {
+          let userSession = this._localAuthService.getUserSession();
+          let obj = {
+            idUser: userSession.userId,
+            userType: "business",
+            idProduct:
+              this.removableItem.productId || this.removableItem.defaultPartNumber,
+            productName: this.removableItem.productName,
+            description: this.removableItem.productDescripton,
+            brand: this.removableItem.brandName,
+            category: this.removableItem.categoryCode,
+          };
+          this._productService.addToPurchaseList(obj).subscribe((res) => {
+            if (res["status"]) {
+              this._tms.show({
+                type: "success",
+                text: "Data added successfully.",
+              });
+              this.removableItem = null;
+              this.resetRemoveItemCart()
+            } else {
+              this._tms.show({
+                type: "success",
+                text: res["errorMessage"],
+              });
+              this.removableItem = null;
+              this.resetRemoveItemCart();
+            }
+          });
+        }
+    }
+
 }

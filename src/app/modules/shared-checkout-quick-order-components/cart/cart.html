@@ -194,7 +194,7 @@
                     <div class="cta-row">
                         <button class="btn secondry-btn-1" (click)="$event.stopPropagation();deleteProduct($event)"><i
                             class="icon-bin"></i>&nbsp;REMOVE</button>
-                        <button (click)="$event.stopPropagation();resetRemoveItemCart();" cstatic-small-card-container
+                        <button *ngIf="_localAuthService.isUserLoggedIn()" (click)="$event.stopPropagation();addToPurchaseList();" cstatic-small-card-container
                             class="btn secondry-btn">MOVE TO WISHLIST</button>
                         <!-- <button class="btn secondry-btn" (click)="$event.stopPropagation();deleteProduct($event)"><i
                                 class="icon-bin"></i>&nbsp;REMOVE</button> -->

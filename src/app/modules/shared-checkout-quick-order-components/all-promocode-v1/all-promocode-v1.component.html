@@ -1,4 +1,4 @@
-<div class="custom-promocode" *ngIf="appliedPromocode != undefined && appliedPromocode.length > 0">
+<div class="custom-promocode" *ngIf="appliedPromocode != undefined && appliedPromocode.length > 0" (click)="$event.stopPropagation();openPromoCodeList()">
     <custom-promo-code [isPromocodeList]="false"></custom-promo-code>
 </div>
 <div class="promocode-list" *ngIf="appliedPromocode != undefined && appliedPromocode.length == 0">
@@ -15,7 +15,6 @@
             <i class="icon-next"></i>
         </div>
     </div>
-
-    <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" *ngIf="showPromoOfferPopup">
-    </promo-code-list>
 </div>
+<promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" *ngIf="showPromoOfferPopup">
+</promo-code-list>

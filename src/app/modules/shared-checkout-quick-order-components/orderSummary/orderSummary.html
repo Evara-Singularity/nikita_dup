@@ -85,10 +85,11 @@
                 </ul>
                 
             </div>
-            <div class="saved-amt pwa-row no-border">
+            <div class="saved-amt pwa-row no-border" *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null">
                 <ul>
                     <li class="" >
-                        <span class="tag-label green-txt">You save ₹₹1,564 on this order</span>
+                        <span class="tag-label green-txt">You save ₹₹{{_cartService.getGenericCartSession.cart.totalOffer | mathRound | number :
+                            '1.2-2'}} on this order</span>
                         
                     </li> 
                 </ul>

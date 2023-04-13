@@ -9,4 +9,17 @@
     overflow: auto;
     @extend %hide-scrollbar;
     padding: 0 15px;
+    .featrBannerSlide{
+        padding-right: 15px;
+        &:last-child{
+            padding-right: 0px;
+        }
+        a{
+            img{
+                border-radius: 8px;
+                max-height: 150px;
+                width: 100%;
+            }
+        }
+    }
 }

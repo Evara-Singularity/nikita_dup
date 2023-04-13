@@ -42,11 +42,13 @@
         <!-- <a *ngIf="data['data'].length > 5" (click)="openPopup = true" class="quinary-btn">VIEW ALL</a> -->
     </div>
 
-    <product-card-vertical-container  [numberOfItems]="newArrivalProducts.length">
-        <ng-container *ngFor="let product of newArrivalProducts">
-          <product-card-vertical-grid-view [moduleUsedIn]="'new arrival'"  [product]="product"> </product-card-vertical-grid-view >
-        </ng-container>
-      </product-card-vertical-container>
+    <div class="pl-15 pb-15">
+        <product-card-vertical-container  [numberOfItems]="newArrivalProducts.length">
+            <ng-container *ngFor="let product of newArrivalProducts">
+              <product-card-vertical-grid-view [moduleUsedIn]="'new arrival'"  [product]="product"> </product-card-vertical-grid-view >
+            </ng-container>
+          </product-card-vertical-container>
+    </div>
 </div>
 
 

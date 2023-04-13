@@ -3153,6 +3153,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 //     is_review_helpful_count_yes: yes,
                 // };
                 let obj = {
+                    "id":item.id,
                     "reviewType": "PRODUCT_REVIEW",
                     "itemType": "PRODUCT",
                     "msn": item.itemId,

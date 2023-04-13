@@ -66,6 +66,7 @@ export class ReviewRatingComponent {
                 //     "is_review_helpful_count_yes": yes
                 // }
                 let obj = {
+                    "id":item.id,
                     "reviewType": "PRODUCT_REVIEW",
                     "itemType": "PRODUCT",
                     "msn": item.itemId,
@@ -76,7 +77,6 @@ export class ReviewRatingComponent {
                 }
                 this.productService.postHelpful(obj).subscribe((res) => {
                     if (res['code'] == 200) {
-                        console.log("reviewData", this.rawReviewsData.reviewList);
                         this._tms.show({ type: 'success', text: 'Your feedback has been taken' });
                         this.rawReviewsData.reviewList[i]['isPost'] = true;
                         this.rawReviewsData.reviewList[i]['like'] = yes;

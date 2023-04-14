@@ -784,10 +784,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 element["isPost"] = false;
                 element["yes"] = 0;
                 element["no"] = 0;
-                if (element.is_review_helpful_count_yes)
-                    element["yes"] = Number(element.is_review_helpful_count_yes["value"]);
-                if (element.is_review_helpful_count_no)
-                    element["no"] = Number(element.is_review_helpful_count_no["value"]);
+                if (element.isReviewHelpfulCountYes)
+                    element["yes"] = Number(element.isReviewHelpfulCountYes);
+                if (element.isReviewHelpfulCountNo)
+                    element["no"] = Number(element.isReviewHelpfulCountNo);
                 element["totalReview"] = element["yes"] + element["no"];
             });
         }

@@ -74,7 +74,7 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit {
 
     forkJoin(allApis).subscribe(
       (response) => {
-        if (response["status"]) {
+        if (response[0]["status"]) {
           this._tms.show({
             type: "success",
             text: "Product added to wishlist.",
@@ -83,7 +83,7 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit {
         } else {
           this._tms.show({
             type: "success",
-            text: response["errorMessage"],
+            text: response[0]["errorMessage"],
           });
           this.closeModal();
         }

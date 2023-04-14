@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit, Output, EventEmitter } from '@angular/core';
-import { ProductCardFeature, ProductCardMetaInfo } from '@app/utils/models/product.listing.search';
+import { Component, Input, NgModule, Output, EventEmitter } from '@angular/core';
+import { ProductCardFeature } from '@app/utils/models/product.listing.search';
 import { BottomMenuModule } from "../../modules/bottomMenu/bottom-menu.module";
 import { ProductCardVerticalGridViewModule } from "../../modules/product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module";
 import { ProductCardVerticalContainerModule } from "../../modules/ui/product-card-vertical-container/product-card-vertical-container.module";
@@ -10,7 +10,7 @@ import { ProductCardVerticalContainerModule } from "../../modules/ui/product-car
   templateUrl: './wishlist-popup.component.html',
   styleUrls: ['./wishlist-popup.component.scss']
 })
-export class WishlistPopupComponent implements OnInit {
+export class WishlistPopupComponent {
   @Input('wishListData') wishListData: Array<object>  = [];
   @Output('closePopup$') closePopup$ = new EventEmitter();
 
@@ -27,11 +27,6 @@ export class WishlistPopupComponent implements OnInit {
     verticalOrientation: true,
     horizontalOrientation: false,
     lazyLoadImage: false,
-  }
-
-  constructor() { }
-
-  ngOnInit(): void {
   }
 
   closePopup(){

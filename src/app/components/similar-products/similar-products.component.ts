@@ -11,6 +11,7 @@ import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/ut
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
+import { ProductSkeletonsModule } from "../product-skeletons/product-skeletons.component";
 
 
 
@@ -23,6 +24,7 @@ export class SimilarProductsComponent implements OnInit {
     productStaticData = this.commonService.defaultLocaleValue;
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     similarProducts: ProductsEntity[] = null;
+    isDataFetched = null;
     @Input('outOfStock') outOfStock = false;
     @Input('partNumber') partNumber;
     @Input('groupId') groupId;
@@ -74,6 +76,7 @@ export class SimilarProductsComponent implements OnInit {
             if (products && (products as []).length > 0) {
                 this.similarProducts = (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));
                 this.similarDataLoaded$.emit(true);
+                this.isDataFetched = response;
             }else{
                 this.similarDataLoaded$.emit(false);
             }
@@ -102,16 +105,17 @@ export class SimilarProductsComponent implements OnInit {
     declarations: [
         SimilarProductsComponent
     ],
+    exports: [
+        SimilarProductsComponent
+    ],
     imports: [
         CommonModule,
         MathFloorPipeModule,
         MathCeilPipeModule,
         LazyLoadImageModule,
         ProductCardVerticalContainerModule,
-        ProductCardVerticalGridViewModule
-    ],
-    exports: [
-        SimilarProductsComponent
+        ProductCardVerticalGridViewModule,
+        ProductSkeletonsModule
     ]
 })
 export class SimilarProductModule { }

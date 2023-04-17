@@ -11,7 +11,7 @@
         .emptycart-section{
             text-align: center;
             img{
-                width: 150px;
+                width: 250px;
             }
             .noitems-txt{
                 font-size: $extra-large-font;
@@ -39,7 +39,20 @@
         }
     }
 }
-
+// .emptycart-animation{
+//     height: 200px;
+//     width: 100%;
+//     position: relative;
+//     lottie-player{
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//     }
+// }
+.dark-btn{
+    background-color: var(--primary) !important;
+    color: var(--white) !important;
+}
 ::ng-deep{
     .category-grid-card{
         background-color: var(--white) !important;

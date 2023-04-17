@@ -108,12 +108,14 @@ $border-radius-16: 16px;
   align-items: center;
   padding: 5px 15px 10px 0px;
   h4,h2 {
-    width: 75%;
+    width: 70%;
     word-break: break-word;
   }
   .quinary-btn {
     display: inline;
     margin-left: auto;
+    font-size: $medium-font;
+    display: block;
   }
   span {
     right: 10px;

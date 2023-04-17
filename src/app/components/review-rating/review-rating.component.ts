@@ -56,17 +56,27 @@ export class ReviewRatingComponent {
         if (this.localStorageService.retrieve('user')) {
             let user = this.localStorageService.retrieve('user');
             if (user.authenticated == "true") {
+                // let obj = {
+                //     "review_type": "PRODUCT_REVIEW",
+                //     "item_type": "PRODUCT",
+                //     "item_id": item.item_id,
+                //     "review_id": item.review_id.uuid,
+                //     "user_id": user.userId,
+                //     "is_review_helpful_count_no": no,
+                //     "is_review_helpful_count_yes": yes
+                // }
                 let obj = {
-                    "review_type": "PRODUCT_REVIEW",
-                    "item_type": "PRODUCT",
-                    "item_id": item.item_id,
-                    "review_id": item.review_id.uuid,
-                    "user_id": user.userId,
-                    "is_review_helpful_count_no": no,
-                    "is_review_helpful_count_yes": yes
+                    "reviewType": "PRODUCT_REVIEW",
+                    "itemType": "PRODUCT",
+                    "msn": item.itemId,
+                    "reviewId": item.reviewId,
+                    "userId": user.userId,
+                    "isReviewHelpfulCountNo": no,
+                    "isReviewHelpfulCountYes": yes
                 }
                 this.productService.postHelpful(obj).subscribe((res) => {
                     if (res['code'] == 200) {
+                        console.log("reviewData", this.rawReviewsData.reviewList);
                         this._tms.show({ type: 'success', text: 'Your feedback has been taken' });
                         this.rawReviewsData.reviewList[i]['isPost'] = true;
                         this.rawReviewsData.reviewList[i]['like'] = yes;

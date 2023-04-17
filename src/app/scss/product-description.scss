@@ -4,7 +4,8 @@
 .prod-description {
     background: var(--white);
     position: relative;
-    margin-bottom: 3px;
+    margin-bottom: 0px;
+    border-bottom: 1px solid var(--platinum);
 
     .prod-name {
         font-weight: $font-bolder;
@@ -95,7 +96,7 @@
         .actual-price {
             padding: 0px;
             color: var(--black);
-            letter-spacing: 0.5px;
+            // letter-spacing: 0.5px;
             small {
                 font-size: $medium-font;
                 font-weight: normal !important;
@@ -111,6 +112,7 @@
             }
             strong {
                 font-size: $extra-large-3-font;
+                line-height: 33px;
                 font-weight: $font-bolder;
             }
         }

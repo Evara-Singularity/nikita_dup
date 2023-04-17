@@ -794,10 +794,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.sortReviewsList("date");
         if (
             this.rawReviewsData.summaryData &&
-            this.rawReviewsData.summaryData.hasOwnProperty("final_average_rating")
+            this.rawReviewsData.summaryData.hasOwnProperty("finalAverageRating")
         ) {
             this.setProductRating(
-                this.rawReviewsData.summaryData.final_average_rating
+                this.rawReviewsData.summaryData.finalAverageRating
             );
         }
     }
@@ -3143,15 +3143,24 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         if (this.localStorageService.retrieve("user")) {
             let user = this.localStorageService.retrieve("user");
             if (user.authenticated == "true") {
+                // let obj = {
+                //     review_type: "PRODUCT_REVIEW",
+                //     item_type: "PRODUCT",
+                //     item_id: item.item_id,
+                //     review_id: item.review_id.uuid,
+                //     user_id: user.userId,
+                //     is_review_helpful_count_no: no,
+                //     is_review_helpful_count_yes: yes,
+                // };
                 let obj = {
-                    review_type: "PRODUCT_REVIEW",
-                    item_type: "PRODUCT",
-                    item_id: item.item_id,
-                    review_id: item.review_id.uuid,
-                    user_id: user.userId,
-                    is_review_helpful_count_no: no,
-                    is_review_helpful_count_yes: yes,
-                };
+                    "reviewType": "PRODUCT_REVIEW",
+                    "itemType": "PRODUCT",
+                    "msn": item.itemId,
+                    "reviewId": item.reviewId,
+                    "userId": user.userId,
+                    "isReviewHelpfulCountNo": no,
+                    "isReviewHelpfulCountYes": yes
+                }
                 this.productService.postHelpful(obj).subscribe((res) => {
                     if (res["code"] === "200") {
                         this._tms.show({
@@ -3441,8 +3450,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     ? this.rawReviewsData.summaryData.review_count
                     : 1;
             let ratingValue =
-                this.rawReviewsData.summaryData.final_average_rating > 0
-                    ? this.rawReviewsData.summaryData.final_average_rating
+                this.rawReviewsData.summaryData.finalAverageRating > 0
+                    ? this.rawReviewsData.summaryData.finalAverageRating
                     : 3.5;
             let imageSchema = this.renderer2.createElement("script");
             imageSchema.type = "application/ld+json";
@@ -3528,7 +3537,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     delete schema["offers"]["availability"];
                 }
                 if (
-                    this.rawReviewsData?.summaryData?.final_average_rating === 0 ||
+                    this.rawReviewsData?.summaryData?.finalAverageRating === 0 ||
                     null ||
                     ""
                 ) {
@@ -4393,7 +4402,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     get overallRating()
     {
         if (this.rawReviewsData && this.rawReviewsData["summaryData"]) {
-            return this.rawReviewsData["summaryData"]["final_average_rating"];
+            return this.rawReviewsData["summaryData"]["finalAverageRating"];
         }
         return 0;
     }

@@ -36,7 +36,7 @@
             color: var(--primary);
             background-color: var(--champagne-pink);
             border-radius: $border-radius-4;
-            margin-right: 10px;
+            margin-right: 15px;
             font-weight: bold;
             padding: 5px 10px !important;
         }
@@ -80,7 +80,7 @@
     flex-grow: 1;
     padding: 0px 10px;
     align-items: center;
-    min-height: 52px;
+    min-height: 58px;
     & > * {
         vertical-align: middle;
         display: flex;

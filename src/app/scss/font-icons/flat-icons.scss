@@ -671,7 +671,9 @@ i[class^="icon-"],
 .icon-youtube:before {
     content: "\e981";
 }
-
+.icon-video-thumbnail::before{
+    content: "\ea70";
+}
 .icon-product_share:before {
     content: "\e9A4";
 }

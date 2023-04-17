@@ -9,19 +9,18 @@
     border-radius: $border-radius-8;
     padding: 10px;
     position: relative;
-    width: 152px;
-    margin: 10px 0px 0px 15px;
+    width:152px;
+    margin:10px 0px 0px 15px;
     min-height: 315px;
-
     .product-card-upper {
         text-align: center;
         position: relative;
-
-        .pwa-image {
-            img {
-                width: 115px
+        .pwa-image{
+            img{
+                width:132px;
+                height: 124px;
             }
-        }
+      }
     }
 
     .product-card-lower {
@@ -75,6 +74,7 @@
 
             .out-of-stock-text {
                 color: var(--dim-gray);
+                display: none;
             }
 
             .out-of-stock-price {

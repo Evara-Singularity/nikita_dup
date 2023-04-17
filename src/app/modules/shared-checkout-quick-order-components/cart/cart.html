@@ -10,6 +10,10 @@
                 <strong>{{item['oPrice'] | currency:'INR' : 'symbol' : '1.2-2'}} </strong> to <strong>
                     {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
         </div>
+        <!-- use this in for oos item -->
+        <div  class="realTimePrice">
+            <span>Product not available for now</span>
+        </div>
         <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative ">
             <div class="pwa-row pad-0" [ngClass]="{'oos':item.oos}">
                 <div class="pwa-col-12">

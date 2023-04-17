@@ -983,6 +983,7 @@ export class ProductService {
         const productBrandDetails = productBO['brandDetails'];
         const productCategoryDetails = productBO['categoryDetails'][0];
         const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1
+        const productUrl = (productBO['defaultCanonicalUrl'] == null) ? productBO['productPartDetails'][partNumber]['productLinks']['canonical'] : productBO['defaultCanonicalUrl'];
 
         const product: any = {
             moglixPartNumber: partNumber,
@@ -992,7 +993,7 @@ export class ProductService {
             priceWithoutTax: priceWithoutTax,
             productName: productBO['productName'],
             variantName: productBO['productName'],
-            productUrl: productBO['defaultCanonicalUrl'],
+            productUrl: productUrl,
             shortDesc: productBO['shortDesc'],
             brandId: productBrandDetails['idBrand'],
             brandName: productBrandDetails['brandName'],

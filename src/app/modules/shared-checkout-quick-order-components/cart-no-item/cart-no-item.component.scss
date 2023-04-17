@@ -39,13 +39,16 @@
         }
     }
 }
-.emptycart-animation{
-    height: 200px;
-    width: 100%;
-    img{
-        width: 100px;
-    }
-}
+// .emptycart-animation{
+//     height: 200px;
+//     width: 100%;
+//     position: relative;
+//     lottie-player{
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//     }
+// }
 .dark-btn{
     background-color: var(--primary) !important;
     color: var(--white) !important;

@@ -18,15 +18,14 @@ import { LocalAuthService } from './../../../utils/services/auth.service';
     styleUrls: ['./cart-no-item.component.scss'],
 })
 
-export class CartNoItemComponent implements OnInit, AfterViewInit, OnDestroy
-{
+export class CartNoItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     flyOutData: CategoryData[] = [];
     flyOutDataSubscription: Subscription = null;
 
-    constructor(public cartService: CartService, private _dataService: DataService, public _commonService: CommonService, private _localAuthService:LocalAuthService,private _router:Router) { }
-    
+    constructor(public cartService: CartService, private _dataService: DataService, public _commonService: CommonService, private _localAuthService: LocalAuthService, private _router: Router) { }
+
 
 
     ngOnInit(): void {
@@ -44,29 +43,28 @@ export class CartNoItemComponent implements OnInit, AfterViewInit, OnDestroy
         this._commonService.callLottieScript();
     }
 
-    navigateToLogin()
-    {
-        const queryParams = { backurl: '/quickorder', title:'Continue to access your cart'};
+    navigateToLogin() {
+        const queryParams = { backurl: '/quickorder', title: 'Continue to access your cart' };
         this._localAuthService.setBackURLTitle(queryParams.backurl, queryParams.title);
         let navigationExtras: NavigationExtras = { queryParams: queryParams };
         this._router.navigate(["/login"], navigationExtras);
 
     }
 
-    get isLoggedIn() { return this._localAuthService.isUserLoggedIn()}
+    get isLoggedIn() { return this._localAuthService.isUserLoggedIn() }
 
-    ngOnDestroy(): void
-    {
-        if(this.flyOutDataSubscription){
+    ngOnDestroy(): void {
+        if (this.flyOutDataSubscription) {
             this.flyOutDataSubscription.unsubscribe()
         }
     }
     addLottieScript() {
         this._commonService.addLottieScriptSubject.subscribe(lottieInstance => {
-          this._commonService.callLottieScript();
-          lottieInstance.next();
+            this._commonService.callLottieScript();
+            lottieInstance.next();
         });
-      }
+    }
+    
     //   ngAfterViewInit() {
     //     this.addLottieScript();
     //     this._commonService.callLottieScript();

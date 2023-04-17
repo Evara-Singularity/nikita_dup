@@ -2,8 +2,9 @@
 @import '../../scss/components/tabs';
 
 .popularDeals {
-  background: var(--ghost-white);
+  background: var(--ghost-white) !important;
   padding: 5px 0 0px;
+  margin-top: -35px;
 
   .view-all-strip {
     h3 {

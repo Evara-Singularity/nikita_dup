@@ -26,10 +26,10 @@
                 width: $fullwidth;
                 border: 1px solid var(--platinum);
                 .viewall_category{
+                    display: flex;
+                    align-items: center;
                     background: var(--misty-rose);
-                    height: 80%;
                     color: var(--primary);
-                    padding: 34px 10px;
                     line-height: $medium-line-height;
                     border-radius: $border-radius-4;
                     text-transform: capitalize;

@@ -16,6 +16,7 @@ import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
 import { CartUtils } from './../../../utils/services/cart-utils';
 import { RetryPaymentService } from './../../../utils/services/retry-payment.service';
+import { addressList } from '@app/modules/deliveryAddress/deliveryAddress';
 
 @Component({
     selector: 'checkout-address',
@@ -79,7 +80,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             if (value) {
                 const POST_CODE = this.deliveryAddress && this.deliveryAddress['postCode'];
                 if (!POST_CODE) return;
-                this.verifyServiceablityAndCashOnDelivery(POST_CODE);
+                this.verifyServiceablityAndCashOnDelivery(POST_CODE,this.deliveryAddress);
             }
         })
     }
@@ -164,19 +165,25 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (invoiceType) { this._cartService.invoiceType = invoiceType; }
         const POST_CODE = deliveryAddress && deliveryAddress['postCode'];
         if (!POST_CODE) return;
-        this.verifyServiceablityAndCashOnDelivery(POST_CODE);
+        this.verifyServiceablityAndCashOnDelivery(POST_CODE,deliveryAddress);
     }
 
     /**
    * @description to extract non-serviceable and COD msns
    * @param postCode deliverable post code
    */
-    verifyServiceablityAndCashOnDelivery(postCode)
+    verifyServiceablityAndCashOnDelivery(postCode,deliveryAddress)
     {
         const cartItems: any[] = this.cartSession['itemsList'] || [];
         if ((!cartItems) || (cartItems.length === 0)) return;
         const MSNS = cartItems.map(item => item.productId);
-        this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode }).subscribe((response) =>
+        let invoiceType = this._cartService.invoiceType;
+        const isGstInvoice = invoiceType == this.INVOICE_TYPES.TAX ? true : false; 
+        const orderPlatform =CONSTANTS.DEVICE.device;
+        const addressId = deliveryAddress && deliveryAddress['idAddress'];
+        const cartId = this.cartSession['cart']['cartId'];
+        this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode , isGstInvoice: isGstInvoice, 
+            orderPlatform: orderPlatform ,addressId :addressId ,cartId: cartId}).subscribe((response) =>
         {
             if (!response) return;
             const AGGREGATES = CheckoutUtil.formatAggregateValues(response);

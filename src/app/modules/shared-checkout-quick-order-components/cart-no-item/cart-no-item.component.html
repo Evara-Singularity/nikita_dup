@@ -15,11 +15,11 @@
                 <button class="btn secondry-btn" (click)="$event.stopPropagation();navigateToLogin()">LOGIN NOW</button>
                 <p class="small-txt">To see the items you added previously</p>
             </ng-container> -->
-            <ng-container  *ngIf="isLoggedIn">
+            <ng-container *ngIf="!isLoggedIn">
                 <button class="btn secondry-btn" (click)="$event.stopPropagation();navigateToLogin()">SIGN IN NOW</button>
                 <p class="small-txt">To see the items you added previously</p>
             </ng-container>
-            <button class="btn secondry-btn-1" [class.dark-btn] = "isLoggedIn" [routerLink]="['/']">CONTINUE SHOPPING</button>
+            <button class="btn" [ngClass]="!isLoggedIn ? 'secondry-btn-1':'secondry-btn'" [routerLink]="['/']">CONTINUE SHOPPING</button>
         </div>
     </div>
     <img class="w-100 mt-5 mb-10" src="assets/img/search-for-product.svg" alt="">

@@ -1,6 +1,6 @@
 import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { LocalAuthService } from '@app/utils/services/auth.service';
@@ -575,6 +575,14 @@ export class CartComponent
     get isQuickorder() { return this.moduleName === "QUICKORDER" }
 
     async openWishlistPopup(){
+        const userSession = this._localAuthService.getUserSession();
+        if(userSession['authenticated'] != "true"){
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'backurl': "quickorder" },
+              };
+            this._router.navigate(['/login'], navigationExtras);
+            return;
+        }
         const { WishlistPopupComponent } = await import(
             "../../../components/wishlist-popup/wishlist-popup.component"
       ).finally();

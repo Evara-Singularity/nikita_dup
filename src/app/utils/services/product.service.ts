@@ -863,7 +863,7 @@ export class ProductService {
         return productReturn;
     }
 
-    productLayoutJsonToProductEntity(product: any, brandId:any, brandName?:any) {
+       productLayoutJsonToProductEntity(product: any, brandId?:any, brandName?:any) {
         // console.log('product ==>', product);
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];

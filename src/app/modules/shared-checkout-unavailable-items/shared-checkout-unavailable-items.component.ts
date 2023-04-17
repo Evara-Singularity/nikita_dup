@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { NavigationExtras, Router } from "@angular/router";
 import { CONSTANTS } from "@app/config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
 import { LocalAuthService } from "@app/utils/services/auth.service";
@@ -27,12 +28,13 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit {
     public _cartService: CartService,
     public _localAuthService: LocalAuthService,
     private _dataService: DataService,
-    private _tms: ToastMessageService
+    private _tms: ToastMessageService,
+    private _router: Router
   ) {}
 
   ngOnInit() {
     this.itemsList = this.data["items"];
-    this.isQuickOrder = (this.data['page'] == "quickOrder" ? true : false);
+    this.isQuickOrder = this.data["page"] == "quickOrder" ? true : false;
     const userSession = this._localAuthService.getUserSession();
     this.itemsList.forEach((elememt) => {
       this.wishListPostBody.push({
@@ -61,43 +63,50 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit {
   }
 
   addToWishList() {
-    const allApis = [];
-    this.wishListPostBody.forEach((ele) => {
-      const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.ADD_PURCHASE_LIST;
-      const addToWishListApi = this._dataService
-        .callRestful("POST", url, { body: ele })
-        .pipe(
-          map((res) => {
-            return res;
-          })
-        );
-      allApis.push(addToWishListApi);
-    });
+    if (this._localAuthService.isUserLoggedIn()) {
+      const allApis = [];
+      this.wishListPostBody.forEach((ele) => {
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.ADD_PURCHASE_LIST;
+        const addToWishListApi = this._dataService
+          .callRestful("POST", url, { body: ele })
+          .pipe(
+            map((res) => {
+              return res;
+            })
+          );
+        allApis.push(addToWishListApi);
+      });
 
-    forkJoin(allApis).subscribe(
-      (response) => {
-        if (response[0]["status"]) {
+      forkJoin(allApis).subscribe(
+        (response) => {
+          if (response[0]["status"]) {
+            this._tms.show({
+              type: "success",
+              text: "Product added to wishlist.",
+            });
+            this.closeModal();
+          } else {
+            this._tms.show({
+              type: "success",
+              text: response[0]["errorMessage"],
+            });
+            this.closeModal();
+          }
+        },
+        (error) => {
           this._tms.show({
             type: "success",
-            text: "Product added to wishlist.",
-          });
-          this.closeModal();
-        } else {
-          this._tms.show({
-            type: "success",
-            text: response[0]["errorMessage"],
+            text: "Something went wrong.",
           });
           this.closeModal();
         }
-      },
-      (error) => {
-        this._tms.show({
-          type: "success",
-          text: "Something went wrong.",
-        });
-        this.closeModal();
-      }
-    );
+      );
+    } else {
+      const navigationExtras: NavigationExtras = {
+        queryParams: { backurl: "quickorder" },
+      };
+      this._router.navigate(["/login"], navigationExtras);
+    }
   }
 
   ngOnDestroy() {

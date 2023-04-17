@@ -620,8 +620,7 @@ export class CartComponent
     }
 
     addToPurchaseList() {
-        let user = this.localStorageService.retrieve("user");
-        if (user && user.authenticated == "true") {
+        if (this._localAuthService.isUserLoggedIn()) {
           let userSession = this._localAuthService.getUserSession();
           let obj = {
             idUser: userSession.userId,
@@ -650,6 +649,11 @@ export class CartComponent
               this.resetRemoveItemCart();
             }
           });
+        }else{
+            const navigationExtras: NavigationExtras = {
+                queryParams: { 'backurl': "quickorder" },
+              };
+            this._router.navigate(['/login'], navigationExtras);
         }
     }
 

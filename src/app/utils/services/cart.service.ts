@@ -1759,6 +1759,11 @@ export class CartService
             switchMap((newCartSession) =>
             {
                 tempCartSession = newCartSession;
+                return this.updateCartSession(tempCartSession)
+            }),
+            switchMap((newCartSession) =>
+            {
+                tempCartSession = newCartSession;
                 return this.validateCartApi(tempCartSession)
             })).
             subscribe((response) =>

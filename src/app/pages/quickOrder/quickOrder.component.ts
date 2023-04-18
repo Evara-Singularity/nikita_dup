@@ -109,7 +109,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   navigateToCheckout() {
-    if (this.addressCount == 0) {
+    if (this.addressCount == 0 && this._localAuthService.isUserLoggedIn()) {
       this.quickOrderAllAddressComponent.displayAddressFormPopup(
         "Delivery",
         null

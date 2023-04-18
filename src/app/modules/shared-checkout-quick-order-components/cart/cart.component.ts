@@ -77,7 +77,7 @@ export class CartComponent
             this.sendEmailGTMCall();
             //  this.shippingCallSubscribers();
         }
-        this.getWishlistData();
+        if(this._localAuthService.isUserLoggedIn()){ this.getWishlistData(); }
         // const cartSession = this._cartService.getCartSession();
         // this.noOfCartItems = (cartSession['itemsList'] as any[]).length || 0;
     }

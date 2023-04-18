@@ -1,5 +1,5 @@
 import { LocalStorageService } from 'ngx-webstorage';
-import { AfterViewInit, Compiler, Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -15,8 +15,6 @@ import { environment } from 'environments/environment';
 import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
 import { CartUtils } from './../../../utils/services/cart-utils';
-import { RetryPaymentService } from './../../../utils/services/retry-payment.service';
-import { addressList } from '@app/modules/deliveryAddress/deliveryAddress';
 
 @Component({
     selector: 'checkout-address',

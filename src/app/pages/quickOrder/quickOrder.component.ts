@@ -73,7 +73,9 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.userData = this._localAuthService.getUserSession();
-    this.getAllddressList();
+    if(this._localAuthService.isUserLoggedIn()){
+      this.getAllddressList();
+    }
   }
 
   ngAfterViewInit(): void {

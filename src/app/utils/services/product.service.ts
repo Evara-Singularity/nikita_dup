@@ -21,7 +21,7 @@ export class ProductService {
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     private basePath = CONSTANTS.NEW_MOGLIX_API;
     productCouponItem: any = null;
-    notifyImagePopupState: BehaviorSubject<boolean>  = new BehaviorSubject<boolean>(false);
+    notifyImagePopupState: BehaviorSubject<any>  = new BehaviorSubject<any>(null);
     oosSimilarProductsData = {
         similarData: [],
     };

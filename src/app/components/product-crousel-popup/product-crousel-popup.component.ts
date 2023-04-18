@@ -45,9 +45,11 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.setOptions();
+    let addSubscription = true;;
     this.productService.notifyImagePopupState.pipe(distinctUntilChanged()).subscribe(status => {
-      if(!status) {
-        console.log('I am in popup subscription')
+      if(!status && addSubscription) {
+        addSubscription = false;
+        console.log('I am in popup subscription ' + status)
         this.outData(null);
       }
     })
@@ -97,7 +99,6 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
       this.currentSlide.emit(result);
     });
     this.out.emit(data);
-    window.history.replaceState({}, '',`${this._router.url}`);
   }
 
   showYTVideo(link) {

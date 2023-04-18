@@ -59,6 +59,7 @@ export class NavigationService
   //in case of login flow no need to pop from history
   public goBack(isRemove = false)
   {
+    if(this.isPDPUrl) return;
     const currentURL = this.router.url;
     this.history = this.getHistory();
     if (!isRemove) { this.history.pop(); }

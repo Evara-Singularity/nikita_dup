@@ -13,7 +13,7 @@ import { ProductService } from './utils/services/product.service';
 export class AppComponent {
 
   pageRefreshed = true;
-
+  popupState = false;
   constructor(private _commonService: CommonService, private router: Router, private _navigationService:NavigationService,private productService: ProductService) {
     if (this._commonService.isBrowser && this.pageRefreshed && window.location.pathname !== '/') {
       const isPayment = window.location.pathname.includes("payment");
@@ -32,8 +32,10 @@ export class AppComponent {
       event.stopImmediatePropagation();
       event.stopPropagation();
       event.preventDefault();
+      let backButtonClick = true;
       this.productService.notifyImagePopupState.asObservable().subscribe(status => {
-        if(status) {
+        if(status && backButtonClick) {
+          backButtonClick = false;
           this.productService.notifyImagePopupState.next(false);
           return;
         }

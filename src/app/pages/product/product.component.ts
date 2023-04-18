@@ -495,6 +495,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         // make sure no browser history is present
         if (this.location.getState() && this.location.getState()['navigationId'] == 1) {
             this.sessionStorageService.store('NO_HISTROY_PDP', 'NO_HISTROY_PDP');
+            console.log('I am in back url hadler')
             if (this.productCategoryDetails && this.productCategoryDetails['categoryLink']) {
                 window.history.replaceState('', '', this.productCategoryDetails['categoryLink'] + '?back=1');
                 window.history.pushState('', '', this.router.url);
@@ -760,7 +761,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         this.clearOfferInstance();
                     }else{
                         this.clearOfferInstance();
-                        this.onVisibleOffer();
+                        // this.onVisibleOffer();
                     }
                     this.showLoader = false;
                 }
@@ -2963,7 +2964,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
     updateBackHandling() {
-        window.history.replaceState('', '', this.router.url);
+        window.history.replaceState('', '', null);
         window.history.pushState('', '', this.router.url);
     }
 
@@ -2991,7 +2992,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.popupCrouselInstance.instance["slideNumber"] = slideNumber;
             (this.popupCrouselInstance.instance["out"] as EventEmitter<boolean>).subscribe((status) =>
             {
-                console.log(' I am inside close method')
                 // this.productService.notifyImagePopupState.next(false);
                 this.clearImageCrouselPopup()
             });
@@ -3012,7 +3012,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.popupCrouselInstance = null;
             this.popupCrouselContainerRef.remove();
         }
-        this.commonService.setBodyScroll(null, true)
+        this.backUrlNavigationHandler();
+        this.commonService.setBodyScroll(null, true);
     }
 
     // async loadProductCrousel(slideIndex)

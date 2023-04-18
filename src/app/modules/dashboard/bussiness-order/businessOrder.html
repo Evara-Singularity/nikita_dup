@@ -35,8 +35,8 @@
                                         <span class="qtyleft">₹{{detail.price}}<span class="qtynum">&nbsp;({{detail.Quantity}} Qty)</span></span>
                                         <!-- <span><small class="greytxt">(Price Inclusive of GST)</small></span> -->
                                     </div>
-                                    <div class="orderqty clearfix">
-                                       <span class="qtynum" [routerLink]="['../order-detail',order.orderId, detail.item_id]">View Details ></span>
+                                    <div class="view-details-container clearfix">
+                                       <span [routerLink]="['../order-detail',order.orderId, detail.item_id]">View Details</span>
                                     </div>
                                 </div>
                             </div>

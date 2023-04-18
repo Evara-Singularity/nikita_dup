@@ -14,6 +14,8 @@ import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import PinchZoom from 'pinch-zoom-js';
 import CONSTANTS from '@app/config/constants';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { ProductService } from '@app/utils/services/product.service';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-crousel-popup',
@@ -37,11 +39,18 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
     private ngxSiemaService: NgxSiemaService,
     private modalService: ModalService,
     private _analyticService: GlobalAnalyticsService,
-    private _router:Router
+    private _router:Router,
+    private productService: ProductService
   ) { }
 
   ngOnInit(): void {
     this.setOptions();
+    this.productService.notifyImagePopupState.pipe(distinctUntilChanged()).subscribe(status => {
+      if(!status) {
+        console.log('I am in popup subscription')
+        this.outData(null);
+      }
+    })
   }
 
   ngAfterViewInit(){
@@ -83,6 +92,7 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
   }
 
   outData(data) {
+    console.log('I am in outdata')
     this.ngxSiemaService.currentSlide('.dummy_siema').subscribe(result => {
       this.currentSlide.emit(result);
     });

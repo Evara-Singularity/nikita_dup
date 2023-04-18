@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
+import { ProductService } from './product.service';
 
 @Injectable({ providedIn: 'root' })
 export class NavigationService
@@ -12,10 +13,12 @@ export class NavigationService
   private history: string[] = [];
   moduleName = null;
   pdpBreadCrumbData = [];
+  popUpState: boolean = false;
 
-  constructor(private router: Router, private _localStorage: LocalStorageService)
+  constructor(private router: Router, private _localStorage: LocalStorageService, private productService: ProductService)
   {
     this.saveHistory(this.history);
+    this.productService.notifyImagePopupState.asObservable().subscribe(status => this.popUpState = status);
   }
 
   public startSaveHistory(): void
@@ -105,6 +108,7 @@ export class NavigationService
 
   navigate(url:string)
   {
+    console.log(url)
     if(url === this.HOME_URL)
     {
       this.router.navigateByUrl("/?back=1");

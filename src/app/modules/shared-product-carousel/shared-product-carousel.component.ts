@@ -133,10 +133,11 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   {
     this.openPopUpcrousel$.emit();
     this.sendProductImageClickTracking$.emit();
-    this.createFragment();
+    // this.createFragment();
   }
 
   createFragment(){
+    console.log(1);
     this._activatedRoute.fragment.subscribe((fragment: string)=>{
       if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_IMAGE_HASH){
         return;

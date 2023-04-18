@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { catchError } from "rxjs/operators";
-import { Observable, of } from "rxjs";
+import { BehaviorSubject, Observable, of } from "rxjs";
 import { DataService } from "./data.service";
 import CONSTANTS from "../../config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
@@ -21,7 +21,7 @@ export class ProductService {
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     private basePath = CONSTANTS.NEW_MOGLIX_API;
     productCouponItem: any = null;
-
+    notifyImagePopupState: BehaviorSubject<boolean>  = new BehaviorSubject<boolean>(false);
     oosSimilarProductsData = {
         similarData: [],
     };

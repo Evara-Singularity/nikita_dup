@@ -1,8 +1,9 @@
 import { NavigationService } from '@app/utils/services/navigation.service';
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonService } from './utils/services/common.service';
 import CONSTANTS from './config/constants';
+import { ProductService } from './utils/services/product.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ export class AppComponent {
 
   pageRefreshed = true;
 
-  constructor(private _commonService: CommonService, private router: Router, private _navigationService:NavigationService) {
+  constructor(private _commonService: CommonService, private router: Router, private _navigationService:NavigationService,private productService: ProductService) {
     if (this._commonService.isBrowser && this.pageRefreshed && window.location.pathname !== '/') {
       const isPayment = window.location.pathname.includes("payment");
       const url = isPayment ? "checkout/address" : '/?back=1';
@@ -31,14 +32,21 @@ export class AppComponent {
       event.stopImmediatePropagation();
       event.stopPropagation();
       event.preventDefault();
+      this.productService.notifyImagePopupState.asObservable().subscribe(status => {
+        if(status) {
+          this.productService.notifyImagePopupState.next(false);
+          return;
+        }
+      })
       const url = this.router.url;
       if (url !== "/" && !(url.includes("back=1"))) { 
+        console.log('i am in')
         this._navigationService.goBack();
       }
       
-      if (window.location.hash === `#${CONSTANTS.PDP_IMAGE_HASH}`){
-          window.history.replaceState({}, '',`${this.router.url}`);
-       }
+      // if (window.location.hash === `#${CONSTANTS.PDP_IMAGE_HASH}`){
+      //     window.history.replaceState({}, '',`${this.router.url}`);
+      //  }
     });
   }
 }

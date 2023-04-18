@@ -191,7 +191,7 @@ export class ProductCrouselSlideComponent {
           oosProductCardIndex: this.clickedIndexOfOosProduct,
         });
       });
-      this.createFragment();
+      // this.createFragment();
   }
 
   goTo(index, selector) {

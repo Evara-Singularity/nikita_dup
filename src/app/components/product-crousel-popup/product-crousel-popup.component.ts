@@ -49,7 +49,6 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
     this.productService.notifyImagePopupState.pipe(distinctUntilChanged()).subscribe(status => {
       if(!status && addSubscription) {
         addSubscription = false;
-        console.log('I am in popup subscription ' + status)
         this.outData(null);
       }
     })
@@ -94,7 +93,6 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
   }
 
   outData(data) {
-    console.log('I am in outdata')
     this.ngxSiemaService.currentSlide('.dummy_siema').subscribe(result => {
       this.currentSlide.emit(result);
     });

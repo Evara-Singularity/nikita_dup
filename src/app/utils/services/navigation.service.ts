@@ -57,10 +57,12 @@ export class NavigationService
   }
 
   //in case of login flow no need to pop from history
-  public goBack(isRemove = false)
+  public goBack(isRemove = false, isBackBtnClicked = false)
   {
-    if(this.isPDPUrl) return;
     const currentURL = this.router.url;
+    if(this.isPDPUrl(currentURL) && isBackBtnClicked) {
+      return;
+    }
     this.history = this.getHistory();
     if (!isRemove) { this.history.pop(); }
     this.saveHistory(this.history);
@@ -109,7 +111,6 @@ export class NavigationService
 
   navigate(url:string)
   {
-    console.log(url)
     if(url === this.HOME_URL)
     {
       this.router.navigateByUrl("/?back=1");

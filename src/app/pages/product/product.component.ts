@@ -410,7 +410,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     ngOnInit(): void
     {
-        console.log('I am in pdp')
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         // this.scrollToTop();
         this.intializeForm();
@@ -495,7 +494,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         // make sure no browser history is present
         if (this.location.getState() && this.location.getState()['navigationId'] == 1) {
             this.sessionStorageService.store('NO_HISTROY_PDP', 'NO_HISTROY_PDP');
-            console.log('I am in back url hadler')
             if (this.productCategoryDetails && this.productCategoryDetails['categoryLink']) {
                 window.history.replaceState('', '', this.productCategoryDetails['categoryLink'] + '?back=1');
                 window.history.pushState('', '', this.router.url);
@@ -2275,7 +2273,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     async onVisibleSponsered(htmlElement)
     {
         if (!this.sponseredProductsInstance) {
-            alert('I am in')
             const { ProductSponsoredListComponent } = await import(
                 "./../../components/product-sponsored-list/product-sponsored-list.component"
             );

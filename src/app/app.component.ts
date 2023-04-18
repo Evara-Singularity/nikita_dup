@@ -42,8 +42,7 @@ export class AppComponent {
       })
       const url = this.router.url;
       if (url !== "/" && !(url.includes("back=1"))) { 
-        console.log('i am in')
-        this._navigationService.goBack();
+        this._navigationService.goBack(false, true);
       }
       
       // if (window.location.hash === `#${CONSTANTS.PDP_IMAGE_HASH}`){

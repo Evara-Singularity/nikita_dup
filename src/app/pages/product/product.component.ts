@@ -49,6 +49,7 @@ import { TrackingService } from "@app/utils/services/tracking.service";
 import * as localization_en from '../../config/static-en';
 import * as localization_hi from '../../config/static-hi';
 import { product } from '../../config/static-hi';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 
 interface ProductDataArg
@@ -349,6 +350,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     dealsAnalytics: any;
     bestProductsRes: any;
     isBrandMsn = false;
+
+    
+
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);
@@ -545,6 +549,16 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             {
                 this.nudgeOpened();
             })
+            // this.productService.notifyImagePopupState.pipe(distinctUntilChanged()).subscribe(status => {
+            //     if(!status && this.popupCrouselContainerRef) {
+            //         console.log('I am called');
+            //         this.clearImageCrouselPopup();
+            //         this.router.navigateByUrl(this.router.url);
+            //         // this.ngOnInit();
+            //         // this.ngOnInit();
+            //         // this.resetLazyComponents();
+            //     }
+            // })
 
         }
     }
@@ -745,7 +759,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         this.clearOfferInstance();
                     }else{
                         this.clearOfferInstance();
-                        this.onVisibleOffer();
+                        // this.onVisibleOffer();
                     }
                     this.showLoader = false;
                 }
@@ -2259,7 +2273,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     async onVisibleSponsered(htmlElement)
     {
         if (!this.sponseredProductsInstance) {
-            alert('I am in')
             const { ProductSponsoredListComponent } = await import(
                 "./../../components/product-sponsored-list/product-sponsored-list.component"
             );
@@ -2947,6 +2960,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         window.history.pushState('', '', this.router.url);
     }
 
+    updateBackHandling() {
+        window.history.replaceState('', '', null);
+        window.history.pushState('', '', this.router.url);
+    }
+
     async openPopUpcrousel(slideNumber: number = 0, oosProductIndex: number = -1)
     {
         if (!this.popupCrouselInstance) {
@@ -2958,6 +2976,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             });
             const factory = this.cfr.resolveComponentFactory(ProductCrouselPopupComponent);
             this.popupCrouselInstance = this.popupCrouselContainerRef.createComponent(factory, null, this.injector);
+            this.productService.notifyImagePopupState.next(true);
+            this.updateBackHandling();
             // sent anaytic call
             this.sendProductImageClickTracking(":oos:similar")
             const options = Object.assign({}, this.iOptions);
@@ -2969,7 +2989,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.popupCrouselInstance.instance["slideNumber"] = slideNumber;
             (this.popupCrouselInstance.instance["out"] as EventEmitter<boolean>).subscribe((status) =>
             {
-                this.clearImageCrouselPopup();
+                // this.productService.notifyImagePopupState.next(false);
+                this.clearImageCrouselPopup()
             });
             (this.popupCrouselInstance.instance["currentSlide"] as EventEmitter<boolean>).subscribe((slideData) =>
             {
@@ -2984,8 +3005,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     private clearImageCrouselPopup()
     {
         this.displayCardCta = false;
-        this.popupCrouselInstance = null;
-        this.popupCrouselContainerRef.remove();
+        if(this.popupCrouselInstance) {
+            this.popupCrouselInstance = null;
+            this.popupCrouselContainerRef.remove();
+        }
+        this.backUrlNavigationHandler();
+        this.commonService.setBodyScroll(null, true);
     }
 
     // async loadProductCrousel(slideIndex)
@@ -4609,6 +4634,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.raiseRFQGetQuoteSubscription.unsubscribe();
         }
         this.resetLazyComponents();
+        // this.productService.notifyImagePopupState.unsubscribe();
+        // this.productService.notifyImagePopupState.next(false);
     }
 
     translate() {

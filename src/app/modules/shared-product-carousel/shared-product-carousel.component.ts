@@ -2,7 +2,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { ProductService } from '@app/utils/services/product.service';
 import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef, AfterViewInit, HostListener } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 
 @Component({
@@ -45,7 +45,9 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     private cfr: ComponentFactoryResolver, 
     private injector: Injector, public productService: ProductService, 
     private router: Router,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    private _activatedRoute:ActivatedRoute
+    ) { }
 
   ngOnInit(): void {
     this.productStaticData = this.commonService.getLocalizationData(!this.isHindiUrl)
@@ -131,13 +133,26 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   {
     this.openPopUpcrousel$.emit();
     this.sendProductImageClickTracking$.emit();
+    // this.createFragment();
   }
-  translate() {
+
+  createFragment(){
+    console.log(1);
+    this._activatedRoute.fragment.subscribe((fragment: string)=>{
+      if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_IMAGE_HASH){
+        return;
+      }
+      else{
+        window.history.replaceState({}, '',`${this.router.url}/#${CONSTANTS.PDP_IMAGE_HASH}`);
+        window.history.pushState({}, '',`${this.router.url}/#${CONSTANTS.PDP_IMAGE_HASH}`);
+      }
+    })
+  }
+  translate(){
     this.translate$.emit();
   }
 
   get isHindiUrl() {
     return (this.router.url).toLowerCase().indexOf('/hi') !== -1
   }
-
 }

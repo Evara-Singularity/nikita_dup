@@ -134,7 +134,7 @@
       // }
       .info-area {
         text-align: center;
-  
+        position: relative;
         .coupen-sec {
           display: flex;
           align-items: center;
@@ -179,6 +179,11 @@
           font-size: 25px;
           color: var(--slimy-green);
           font-weight: 600;
+        }
+        .coupen-animation{
+          position: absolute;
+          top: -50px;
+          left: 0;
         }
       }
     }

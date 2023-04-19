@@ -60,7 +60,7 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy
             // no global changes triggered
             this.showPromoSuccessPopup = isNewPromocode;
             this.totalOffer = totalOffer || 0;
-            setTimeout(() => { this.showPromoSuccessPopup = false; }, 800)
+            setTimeout(() => { this.showPromoSuccessPopup = false; }, 2000)
         })
     }
 

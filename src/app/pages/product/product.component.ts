@@ -3177,9 +3177,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         this.productService.getReviewsRating(reviewObj).subscribe((newRes)=>{
                             if(newRes["code"] === 200){
                                 this.sortedReviewsByDate(newRes['data']['reviewList']);
-                                console.log("newRes",newRes['data']['reviewList'][i]);
-                                console.log(newRes['data']['reviewList'][i]["isReviewHelpfulCountYes"],"hi")
-                                console.log(newRes['data']['reviewList'][i]["isReviewHelpfulCountNo"],"hi-No")
                                 this.rawReviewsData.reviewList[i]["isReviewHelpfulCountYes"] = newRes['data']['reviewList'][i]["isReviewHelpfulCountYes"];
                                 this.rawReviewsData.reviewList[i]['like'] = reviewValue == 'yes' ? 1 : 0;
                                 this.rawReviewsData.reviewList[i]['dislike'] = reviewValue == 'no' ? 1 : 0;

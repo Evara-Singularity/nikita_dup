@@ -3139,7 +3139,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
 
-    postHelpful(item, yes, no, i) {
+    postHelpful(item,i,reviewValue) {
         if (this.localStorageService.retrieve("user")) {
             let user = this.localStorageService.retrieve("user");
             if (user.authenticated == "true") {
@@ -3159,30 +3159,48 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     "msn": item.itemId,
                     "reviewId": item.reviewId,
                     "userId": user.userId,
-                    "isReviewHelpfulCountNo": no,
-                    "isReviewHelpfulCountYes": yes
+                    "isReviewHelpfulCountNo": (reviewValue == 'no'?1:0),
+                    "isReviewHelpfulCountYes": (reviewValue == 'yes'?1:0)
                 }
                 this.productService.postHelpful(obj).subscribe((res) => {
-                    if (res["code"] === "200") {
+                    if (res["code"] === 200) {
                         this._tms.show({
                             type: "success",
                             text: "Your feedback has been taken",
                         });
-                        this.rawReviewsData.reviewList[i]["isPost"] = true;
-                        this.rawReviewsData.reviewList[i]["like"] = yes;
-                        this.rawReviewsData.reviewList[i]["dislike"] = no;
+                        let reviewObj = {
+                            reviewType: "PRODUCT_REVIEW",
+                            itemType: "PRODUCT",
+                            itemId: item.itemId,
+                            userId: ""
+                          }
+                        this.productService.getReviewsRating(reviewObj).subscribe((newRes)=>{
+                            if(newRes["code"] === 200){
+                                this.sortedReviewsByDate(newRes['data']['reviewList']);
+                                console.log("newRes",newRes['data']['reviewList'][i]);
+                                console.log(newRes['data']['reviewList'][i]["isReviewHelpfulCountYes"],"hi")
+                                console.log(newRes['data']['reviewList'][i]["isReviewHelpfulCountNo"],"hi-No")
+                                this.rawReviewsData.reviewList[i]["isReviewHelpfulCountYes"] = newRes['data']['reviewList'][i]["isReviewHelpfulCountYes"];
+                                this.rawReviewsData.reviewList[i]["isReviewHelpfulCountNo"] = newRes['data']['reviewList'][i]["isReviewHelpfulCountNo"];
+                            }
+                        });
+                        
+                        // this.rawReviewsData.reviewList[i]["isPost"] = true;
+                        // this.rawReviewsData.reviewList[i]["like"] = yes;
+                        // this.rawReviewsData.reviewList[i]["dislike"] = no;
 
-                        if (yes === "1" && this.alreadyLiked) {
-                            this.alreadyLiked = false;
-                            this.rawReviewsData.reviewList[i]["yes"] += 1;
-                        } else if (
-                            no === "1" &&
-                            this.rawReviewsData.reviewList[i]["no"] > 0 &&
-                            this.alreadyLiked
-                        ) {
-                            this.alreadyLiked = false;
-                            this.rawReviewsData.reviewList[i]["no"] -= 1;
-                        }
+                        // if (yes === "1" && this.alreadyLiked) {
+                        //     this.alreadyLiked = false;
+                        //     this.rawReviewsData.reviewList[i]["yes"] += 1;
+                        // } else if (
+                        //     no === "1" &&
+                        //     this.rawReviewsData.reviewList[i]["no"] > 0 &&
+                        //     this.alreadyLiked
+                        // ) {
+                        //     this.alreadyLiked = false;
+                        //     this.rawReviewsData.reviewList[i]["no"] -= 1;
+                        // }
+                        
                     }
                 });
             } else {
@@ -3194,7 +3212,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
     
     handlePostHelpful(args: Array<any>) {
-        this.postHelpful(args[0], args[1], args[2], args[3]);
+        this.postHelpful(args[0], args[1], args[2]);
     }
 
     async showYTVideo(link) {
@@ -3447,8 +3465,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 ? "http://schema.org/InStock"
                 : "http://schema.org/OutOfStock";
             let reviewCount =
-                this.rawReviewsData.summaryData.review_count > 0
-                    ? this.rawReviewsData.summaryData.review_count
+                this.rawReviewsData.summaryData.reviewCount > 0
+                    ? this.rawReviewsData.summaryData.reviewCount
                     : 1;
             let ratingValue =
                 this.rawReviewsData.summaryData.finalAverageRating > 0
@@ -4009,7 +4027,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         return reviewList.sort((a, b) =>
         {
-            return parseInt(b.date_unix) - parseInt(a.date_unix);
+            let objectDateA = new Date(a.updatedAt).getTime();
+            let objectDateB = new Date(b.updatedAt).getTime();
+            
+            return objectDateB - objectDateA;
         });
     }
 

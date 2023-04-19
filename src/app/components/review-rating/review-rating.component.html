@@ -18,8 +18,8 @@
                     <h3>{{ rawReviewsData?.summaryData?.finalAverageRating | number:'1.1-1' }}<i
                             class="icon-rating-star"></i>
                     </h3>
-                    <p class="small-txt">{{productStaticData.avg_rating_based_on}} {{ rawReviewsData?.summaryData?.final_rating }}
-                        {{productStaticData.ratings_and}} {{ rawReviewsData?.summaryData?.review_count }} {{productStaticData.reviews_small}}</p>
+                    <p class="small-txt">{{productStaticData.avg_rating_based_on}} {{ rawReviewsData?.summaryData?.finalRating }}
+                        {{productStaticData.ratings_and}} {{ rawReviewsData?.summaryData?.reviewCount }} {{productStaticData.reviews_small}}</p>
                 </div>
             </div>
             <div class="pwa-col-6">
@@ -106,12 +106,12 @@
                 <div class="pwa-col-6 align-right">
                   
                     <button class="suggstn-btn" [ngClass]="{'success-txt':review.like=='1'}"
-                        (click)="$event.stopPropagation();postHelpful(review,'1','0',i)">
+                        (click)="postHelpful(review,i,'yes')">
                         <span class="small-txt">{{ review?.isReviewHelpfulCountYes || 0 }}</span>
                         <i class="icon-like"></i>
                     </button>
                     <button class="suggstn-btn" [ngClass]="{'success-text':review.dislike=='1'}"
-                        (click)="$event.stopPropagation();postHelpful(review,'0','1',i)">
+                        (click)="$event.stopPropagation();postHelpful(review,i,'no')">
                         <span class="small-txt">{{review?.isReviewHelpfulCountNo|| 0 }}</span>
                         <i class="icon-dislike"></i>
                     </button>

@@ -16,7 +16,7 @@
     </div>
     <div class="pwa-row" *ngIf="overallRating > 0">
         <p>
-           {{productStaticData.customer_reviews}} : {{ productName}}
+          {{ productName}}
         </p>
     </div>
     <div class="pwa-row rating-sec" *ngIf="overallRating > 0">
@@ -24,8 +24,8 @@
             <div class="overall-rating">
                 <h3>{{ overallRating | number:'1.1-1' }}<i class="icon-rating-star"></i>
                 </h3>
-                <p class="small-txt">{{productStaticData.avg_rating_based_on}} {{ rawReviewsData?.summaryData?.final_rating }}
-                    {{productStaticData.ratings_and}} {{ rawReviewsData?.summaryData?.review_count }} {{productStaticData.reviews_small}}</p>
+                <p class="small-txt">{{productStaticData.avg_rating_based_on}} {{ rawReviewsData?.summaryData?.finalRating }}
+                    {{productStaticData.ratings_and}} {{ rawReviewsData?.summaryData?.reviewCount }} {{productStaticData.reviews_small}}</p>
             </div>
         </div>
         <div class="pwa-col-6">
@@ -77,11 +77,11 @@
         <div class="pwa-row innerRow">
             <div class="pwa-col-6 reviewRow-col">
                 <div class="small-stars">
-                    <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 0"></i>
                     <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 1"></i>
                     <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 2"></i>
                     <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 3"></i>
                     <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 4"></i>
+                    <i class="icon-rating-star" [class.yellow-txt]="review?.rating >= 5"></i>
                 </div>
                 <p class="customer-name">{{review?.userName}}</p>
                 <p class="small-txt grey-txt cust-date">
@@ -106,12 +106,12 @@
             </div>
             <div class="pwa-col-6 align-right">
                 <button class="suggstn-btn" [ngClass]="{'active':review.like == '1'}"
-                    (click)="$event.stopPropagation();postHelpful.emit([review,'1','0',i])">
+                    (click)="$event.stopPropagation();postHelpful.emit([review,i,'yes'])">
                     <span class="small-txt">{{review.isReviewHelpfulCountYes}}</span>
                     <i class="icon-like"></i>
                 </button>
                 <button class="suggstn-btn" [ngClass]="{'active':review.dislike=='1'}"
-                    (click)="$event.stopPropagation();postHelpful.emit([review,'0','1',i])">
+                    (click)="$event.stopPropagation();postHelpful.emit([review,i,'no'])">
                     <span class="small-txt">{{review.isReviewHelpfulCountNo}}</span>
                     <i class="icon-dislike"></i>
                 </button>

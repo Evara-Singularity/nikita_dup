@@ -108,6 +108,8 @@ export class ReviewRatingComponent {
                                 console.log(newRes['data']['reviewList'][i]["isReviewHelpfulCountNo"],"hi-No")
                                 this.rawReviewsData.reviewList[i]["isReviewHelpfulCountYes"] = newRes['data']['reviewList'][i]["isReviewHelpfulCountYes"];
                                 this.rawReviewsData.reviewList[i]["isReviewHelpfulCountNo"] = newRes['data']['reviewList'][i]["isReviewHelpfulCountNo"];
+                                this.rawReviewsData.reviewList[i]['like'] = reviewValue == 'yes' ? 1 : 0;
+                                this.rawReviewsData.reviewList[i]['dislike'] = reviewValue == 'no' ? 1 : 0;
                             }
                      });
                         // this.rawReviewsData.reviewList[i]['isPost'] = true;

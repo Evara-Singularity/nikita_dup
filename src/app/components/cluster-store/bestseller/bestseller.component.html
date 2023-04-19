@@ -41,11 +41,14 @@
     <div class="view-all-strip ">
         <h3 class="heading-3">{{data.title}}</h3>
     </div>
-    <product-card-vertical-container [numberOfItems]="ProductsData.length">
-        <ng-container *ngFor="let product of ProductsData">
-          <product-card-vertical-grid-view [moduleUsedIn]="'new arrival'"  [product]="product"> </product-card-vertical-grid-view >
-        </ng-container>
-      </product-card-vertical-container>
+    <div class="pl-15 pb-15">
+        <product-card-vertical-container [numberOfItems]="ProductsData.length">
+            <ng-container *ngFor="let product of ProductsData">
+                <product-card-vertical-grid-view [moduleUsedIn]="'new arrival'" [product]="product">
+                </product-card-vertical-grid-view>
+            </ng-container>
+        </product-card-vertical-container>
+    </div>
 </div>
 <!-- <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup"
     [headerType]="'pop-up-header1'"

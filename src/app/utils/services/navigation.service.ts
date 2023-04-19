@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
+import { ProductService } from './product.service';
 
 @Injectable({ providedIn: 'root' })
 export class NavigationService
@@ -12,10 +13,12 @@ export class NavigationService
   private history: string[] = [];
   moduleName = null;
   pdpBreadCrumbData = [];
+  popUpState: boolean = false;
 
-  constructor(private router: Router, private _localStorage: LocalStorageService)
+  constructor(private router: Router, private _localStorage: LocalStorageService, private productService: ProductService)
   {
     this.saveHistory(this.history);
+    this.productService.notifyImagePopupState.asObservable().subscribe(status => this.popUpState = status);
   }
 
   public startSaveHistory(): void
@@ -54,9 +57,12 @@ export class NavigationService
   }
 
   //in case of login flow no need to pop from history
-  public goBack(isRemove = false)
+  public goBack(isRemove = false, isBackBtnClicked = false)
   {
     const currentURL = this.router.url;
+    if(this.isPDPUrl(currentURL) && isBackBtnClicked) {
+      return;
+    }
     this.history = this.getHistory();
     if (!isRemove) { this.history.pop(); }
     this.saveHistory(this.history);

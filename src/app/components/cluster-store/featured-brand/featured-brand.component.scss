@@ -10,6 +10,8 @@
         overflow-x:scroll;
         width:auto;
         padding: 10px 5px;
+        margin-left: -2px;
+        @extend %hide-scrollbar;
     }
     .featrSlide{
         box-shadow: var(--cluster-store-shadow);

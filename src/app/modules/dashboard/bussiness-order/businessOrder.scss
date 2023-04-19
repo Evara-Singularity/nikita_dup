@@ -126,3 +126,13 @@
     border-radius: 50%;
     margin-right: 10px;
 }
+
+.view-details-container{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    span{
+        color: var(--primary);
+        font-size: $medium-font;
+        font-weight: bold;
+    }
+}

@@ -350,6 +350,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     dealsAnalytics: any;
     bestProductsRes: any;
     isBrandMsn = false;
+    pageUrl: string;
 
     
 
@@ -961,6 +962,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
         this.getFirstAttributeValue();
         this.setOutOfStockFlag();
+        this.pageUrl = this.router.url;
         this.checkForBulkPricesProduct();
 
         this.removeSimilarProductInstanceOOS();
@@ -1121,7 +1123,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
         if (this.recentProductsInstance) {
             this.recentProductsInstance = null;
-            this.recentProductsContainerRef.remove();
+            this.recentProductsContainerRef && this.recentProductsContainerRef.remove();
             this.onVisibleRecentProduct(null);
         }
   
@@ -2961,8 +2963,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
     updateBackHandling() {
-        window.history.replaceState('', '', null);
-        window.history.pushState('', '', this.router.url);
+        window.history.replaceState('', '', this.pageUrl);
+        window.history.pushState('', '', this.pageUrl);
     }
 
     async openPopUpcrousel(slideNumber: number = 0, oosProductIndex: number = -1)

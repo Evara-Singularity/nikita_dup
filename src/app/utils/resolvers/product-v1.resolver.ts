@@ -228,7 +228,7 @@ export class ProductV1Resolver implements Resolve<any> {
           return of(null);
         }));
 
-      const moglixInsightResponseObj = this.http.get(moglixInsightUrl).pipe(share(),
+      const moglixInsightResponseObj = this.http.get(moglixInsightUrl,requestOptions).pipe(share(),
         map(res => {
           const logInfo = this._commonService.getLoggerObj(moglixInsightUrl, 'GET', startTime)
           logInfo.endDateTime = new Date().getTime();

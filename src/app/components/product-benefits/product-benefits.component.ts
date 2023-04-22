@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angul
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @Component({
   selector: 'product-benefits',
@@ -42,6 +43,7 @@ export class ProductBenefitsComponent implements OnInit {
   declarations: [ProductBenefitsComponent],
   imports: [
     CommonModule,
+    LazyLoadImageModule
   ],
   exports: [
     ProductBenefitsComponent

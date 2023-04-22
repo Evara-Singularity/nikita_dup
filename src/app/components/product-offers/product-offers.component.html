@@ -18,7 +18,7 @@
         </div> -->
         <div class="pwa-row inline-list-item more-coupon-offers online-discount" *ngIf="couponForbrandCategory">
             <div class="inline-list-icon">
-                <img src="../../../assets/img/best_deals.png">
+                <img [lazyLoad]="imagePathAsset+'assets/img/best_deals.png'" >
             </div>
             <div class="inline-list-text coupon-list-text" *ngIf="couponForbrandCategory['absoluteDiscount']">
                 <span class="green-promo-code">

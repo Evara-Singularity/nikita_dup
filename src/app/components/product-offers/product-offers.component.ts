@@ -9,6 +9,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { MathCeilPipeModule } from '@pipes/math-ceil';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @Component({
     selector: 'app-product-offers',
@@ -83,6 +84,7 @@ export class ProductOffersComponent implements OnInit
     imports: [
         CommonModule,
         MathCeilPipeModule,
+        LazyLoadImageModule
     ],
     exports: [ProductOffersComponent]
 })

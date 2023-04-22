@@ -20,7 +20,7 @@
                 class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">
             </span>
             <span *ngIf="isAcceptLanguage" class="fixed_ico fixed_ico-img" (click)="translate()">
-                <img height="24" width="24"  src="../../../assets/img/translate.gif">
+                <img height="24" width="24" [src]="defaultImage" [lazyLoad]="baseImgPath + 'assets/img/translate.gif'" />
             </span>
         </div>
         <ng-container #productCrousel></ng-container>
@@ -34,7 +34,7 @@
                         (click)="$event.stopPropagation();sendProductImageClickTracking()"
                         style="transform-origin: 0% 0%;">
                         <ng-container *ngIf="productAllImages && productAllImages[0] && productAllImages[0]['xxlarge']" >
-                            <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['xxlarge'] }}"
+                            <img *ngIf="!isProductCrouselLoaded" fetchpriority="high" src="{{productAllImages[0]['xxlarge'] }}"
                                  alt="{{productName}}">
                             <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
                                 class="loader-image" />
@@ -64,7 +64,7 @@
             <div class="image_tag">
                 <div class="tag_container"
                     *ngFor="let tag of productTags | slice:0:1;let i = index;">
-                    <img src="{{tag.imageUrl}}" alt="{{tag.name}}">
+                    <img [lazyLoad]="tag.imageUrl" alt="{{tag.name}}">
                 </div>
             </div>
         </ng-container>

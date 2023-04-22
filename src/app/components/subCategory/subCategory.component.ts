@@ -31,6 +31,7 @@ export class SubCategoryComponent implements OnInit{
     public isAllListShow:boolean;
     moreLessCategoryText:string="SHOW MORE";
     defaultImage = environment.IMAGE_BASE_URL+'assets/img/home_card.webp';
+    showListFlag:boolean = false;
 
     constructor(@Inject(PLATFORM_ID) platformId, public categoryService: CategoryService, public router: Router, public commonService: CommonService) {
     };
@@ -55,9 +56,11 @@ export class SubCategoryComponent implements OnInit{
         this.isAllListShow = flag != undefined ? flag : !this.isAllListShow;
         if(this.isAllListShow)
         {
+            this.showListFlag = true;
             this.moreLessCategoryText="SHOW LESS";
         }
         else{
+            this.showListFlag = false;
             this.moreLessCategoryText="SHOW MORE";
         }
     }

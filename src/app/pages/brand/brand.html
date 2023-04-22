@@ -75,8 +75,8 @@
     
     <!-- Breadcrump of brand page -->
     <ul class="bread-head no-margin mar-b-15" [ngClass]="{'notFoundEl': !(API_RESPONSE['brand'][0]['active']) }">
-        <li [routerLink]="['/']" class="f-size-12">Home</li>
-        <li [routerLink]="['/brand-store']" class="item f-size-12">Brand</li>
+        <li [routerLink]="['/']" class="f-size-12"> <a [href]="baseDomain + '/'">Home</a></li>
+        <li [routerLink]="['/brand-store']" class="item f-size-12"><a [href]="baseDomain + '/brand-store'">Brand</a></li>
         <li class="item f-size-12">
             <a [routerLink]="['/brands/' + API_RESPONSE['brand'][0].friendlyUrl]" style="text-transform: capitalize">
                 {{API_RESPONSE['brand'][0].brandName}}</a>

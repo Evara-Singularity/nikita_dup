@@ -33,7 +33,6 @@ import FbtComponentModule from '@app/components/fbt/fbt.component';
 import { ProductDealsModule } from '@app/components/product-popular-deals/product-popular-deals.component';
 import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/product-oos-similar.module';
 import { ProductInfoModule } from '@app/modules/product-info/product-info.module';
-import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @NgModule({
   declarations: [ProductComponent],
@@ -83,8 +82,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
     MoglixInsightPdpModule,
     ProductOffersModule,
     FbtComponentModule,
-    ProductDealsModule,
-    LazyLoadImageModule,
+    ProductDealsModule
   ],
   exports: [],
   providers: [NgxSiemaService]

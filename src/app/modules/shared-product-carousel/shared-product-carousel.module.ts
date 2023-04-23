@@ -3,14 +3,12 @@ import { ComponentFactory, ComponentFactoryResolver, NgModule } from '@angular/c
 import { CommonModule } from '@angular/common';
 import { SharedProductCarouselComponent } from './shared-product-carousel.component';
 import { SwipeDirectiveModule } from '@app/utils/directives/swipe.directive';
-import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @NgModule({
   declarations: [SharedProductCarouselComponent],
   imports: [
     CommonModule,
-    SwipeDirectiveModule,
-    LazyLoadImageModule
+    SwipeDirectiveModule
   ],
   exports: [SharedProductCarouselComponent]
 })

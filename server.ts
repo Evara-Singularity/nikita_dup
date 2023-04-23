@@ -94,8 +94,8 @@ function shouldCompress (req, res) {
 }
 
 function appendImagePreloads(indexHtml, url) {
-  const regexImage = /<img.*?fetchpriority="high" src=".*?"/g
-  const regexImageSrc = /fetchpriority="high" src=".*?"/g
+  const regexImage = /<img.*?src=".*?"/g
+  const regexImageSrc = /src=".*?"/g
   // maxLimit is to make sure only images coming in first view ports are being preloaded.
   const maxLimit = 10;
   let urls = [];
@@ -104,7 +104,7 @@ function appendImagePreloads(indexHtml, url) {
       // extract image URL from extacted img tags
       if ((val.match(regexImageSrc) || val.match(regexImageSrc).length > 0) && index < maxLimit) {
       // if ((val.match(regexImageSrc) || val.match(regexImageSrc).length > 0)) {
-        return `<link rel="preload" as="image" href="${val.match(regexImageSrc)[0].replace('fetchpriority="high"', '').replace('src="', '').replace('"', '')}">
+        return `<link rel="preload" as="image" href="${val.match(regexImageSrc)[0].replace('src="', '').replace('"', '')}">
         `;
       } else {
         return "";

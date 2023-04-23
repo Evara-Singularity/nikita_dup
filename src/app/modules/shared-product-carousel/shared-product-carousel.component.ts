@@ -34,8 +34,6 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   @Output() loadProductCrousel$: EventEmitter<any> = new EventEmitter<any>();
   @Output() sendProductImageClickTracking$: EventEmitter<any> = new EventEmitter<any>();
   @Output() translate$: EventEmitter<any> = new EventEmitter<any>();
-  readonly baseImgPath = CONSTANTS.IMAGE_BASE_URL;
-  readonly defaultImage = CONSTANTS.IMAGE_BASE_URL + 'assets/img/home_card.webp';
 
   productCrouselInstance = null;
   @ViewChild("productCrousel", { read: ViewContainerRef })

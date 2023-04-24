@@ -1,5 +1,5 @@
-<ng-container *ngIf="wishListData.length == 0">
-    <app-bottom-menu>
+<ng-container *ngIf="wishListData.length == 0 && isDataFetched != null">
+    <app-bottom-menu (outData$)="closePopup()">
         <div content>
             <div class="pwa-row">
                 <div class="empty-wishlist-popup">
@@ -18,7 +18,7 @@
     </app-bottom-menu>
 </ng-container>
 <ng-container *ngIf="wishListData.length > 0">
-    <app-bottom-menu>
+    <app-bottom-menu (outData$)="closePopup()">
         <div content>
             <div class="empty-wishlist-popup block">
                 <div class="empty-wishlist">
@@ -39,3 +39,4 @@
         </div>
     </app-bottom-menu>
 </ng-container>
+<product-skeletons [type]="'RECENT'" [templateRefInstance]="isDataFetched"></product-skeletons>

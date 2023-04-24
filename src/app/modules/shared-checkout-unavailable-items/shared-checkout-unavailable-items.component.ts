@@ -82,15 +82,15 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit {
           if (response[0]["status"]) {
             this._tms.show({
               type: "success",
-              text: "Product added to wishlist.",
+              text: "Successfully added to wishlist.",
             });
-            this.closeModal();
+            this.removeUnavailableItems(this.data.removeUnavailableItems);
           } else {
             this._tms.show({
               type: "success",
               text: response[0]["errorMessage"],
             });
-            this.closeModal();
+            this.removeUnavailableItems(this.data.removeUnavailableItems);
           }
         },
         (error) => {

@@ -35,20 +35,16 @@ export class QuickOrderMiscellaneousCarouselComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("end ------------->");
     let count = 0;
     for(const i in this.data){
       count+=1;
-      // console.log("dddddddd======= inside>" , this.data[i].detailsOptim.categoryName);
-      // console.log("jjjjjjjjjjjjj=======>" , i);
        this.tabsArray.push({ 
           id: count,
           name: this.data[i].detailsOptim.categoryName,
-          data: (this.data[i].productList as any[]).map((item) => (this._productService.recentProductResponseToProductEntityV1(item))) || [],
+          data: (this.data[i].productList as any[]).map((item) => (this._productService.recentProductResponseToProductEntityV1(item))).filter(res=> (this._productService.isInStock(res) == true)) || [],
           isSelected: false,
         })
     }
-    console.log("this.tabsArray ===>" , this.tabsArray)
     if (this.tabsArray.length > 0) {
       this.tabsArray[0].isSelected = true;
     }
@@ -63,7 +59,6 @@ export class QuickOrderMiscellaneousCarouselComponent implements OnInit {
         this.tabsArray[index].isSelected = true;
       }
     });
-    //this.sendAnalyticsFilterTracking(tabName);
   }
 
 }

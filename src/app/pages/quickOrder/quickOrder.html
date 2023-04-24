@@ -9,11 +9,10 @@
                 (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"
                 ></quick-order-all-address>
             </ng-container>
-            
+            <prepaid-offer></prepaid-offer>
             <all-promocode-v1></all-promocode-v1>
             <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications>
-            <prepaid-offer></prepaid-offer>
-            <cart [moduleName]="'QUICKORDER'" ></cart>
+            <cart [moduleName]="'QUICKORDER'" (openWishList$)="openWishlistPopup()" (openSimillarList$)="openSimillarProductsPopUp($event)"></cart>
 
               <!--homeMiscellaneousCarousel ( Buy it again, Recently Viewed, wishlist & my RFQ section)-->
             <ng-container *ngIf="_localAuthService.isUserLoggedIn()">
@@ -46,4 +45,6 @@
             [data]="{ page: 'quickOrder', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } ">
         </shared-checkout-unavailable-items>
     </div>
+    <ng-container #wishlistPopup></ng-container>
+    <ng-container #simillarProductsPopup></ng-container>
 </div>

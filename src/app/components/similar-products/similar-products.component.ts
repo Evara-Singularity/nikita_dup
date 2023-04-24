@@ -74,7 +74,8 @@ export class SimilarProductsComponent implements OnInit {
         this.productService.getSimilarProducts(this.productName, this.categoryCode, this.partNumber, this.groupId).subscribe((response: any) => {
             let products = response['products'];
             if (products && (products as []).length > 0) {
-                this.similarProducts = (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));
+                this.similarProducts = this.isFromQuickOrderPage ? (products as any[]).map(product => this.productService.searchResponseToProductEntity(product)).filter(res=> (this.productService.isInStock(res) == true))
+                : (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));
                 this.similarDataLoaded$.emit(true);
                 this.isDataFetched = response;
             }else{

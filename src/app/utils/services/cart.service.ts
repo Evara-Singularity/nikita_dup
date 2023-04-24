@@ -72,6 +72,7 @@ export class CartService
     public isProductRemoved: BehaviorSubject<boolean> = new BehaviorSubject(false);
     private _shippingPriceChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
     private _shippingApiCall: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
+    public isAddedToCartSubject: Subject<any> = new Subject<any>();
 
     private previousUrl: string = null;
     private currentUrl: string = null;
@@ -2464,5 +2465,9 @@ export class CartService
         );
     }
 
+    removePurchaseList(data) {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RM_PCR_LIST;
+        return this._dataService.callRestful("POST", url, { body: data });
+    }
     
 }

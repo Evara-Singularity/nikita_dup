@@ -46,6 +46,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   @Input("rfqReponse") fbtResponse = null;
   @Input("analytics") analytics = null;
   @Input("headertext") headertext:string = "Your Activity";
+  @Input("isQuickOrder") isQuickOrder:boolean = false;
 
   tabsArray: { id: number, name: string, data: any[], isSelected: boolean }[] = [];
 
@@ -70,19 +71,27 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
       })
     }
     if(this.pastOrdersResponse && this.pastOrdersResponse['status'] && this.pastOrdersResponse['data'] && this.pastOrdersResponse['data'].length > 0){
+      let pastOrderListData = []
+      pastOrderListData = this.isQuickOrder ? (this.pastOrdersResponse['data'] as any []).map(product => this._productBrowserService.pastOrdersProductResponseToProductEntity(product)).filter(res=> (this._productService.isInStock(res) == true))
+      : (this.pastOrdersResponse['data'] as any []).slice(0, 10).map(product => this._productBrowserService.pastOrdersProductResponseToProductEntity(product));
+
       this.tabsArray.push({
         id: 2,
         name: this.PAST_ORDER_TAB_NAME,
-        data: (this.pastOrdersResponse['data'] as any[]).slice(0, 10).map(product => this._productBrowserService.pastOrdersProductResponseToProductEntity(product)) || [],
+        data: pastOrderListData,
         isSelected: false,
       })
     }
 
       if (this.purcahseListResponse && this.purcahseListResponse.length > 0) {
+        let purchaseListData = []
+        purchaseListData = this.isQuickOrder ? (this.purcahseListResponse as any []).map(product => this._productService.wishlistToProductEntity(product)).filter(res=> (this._productService.isInStock(res) == true))
+        : (this.purcahseListResponse as any []).map(product => this._productService.wishlistToProductEntity(product));
+
         this.tabsArray.push({
           id: 3,
           name: this.WISHLIST_TAB_NAME,
-          data: this.purcahseListResponse.map(product => this._productService.wishlistToProductEntity(product)),
+          data: purchaseListData,
           isSelected: false,
         })
       }
@@ -95,10 +104,14 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         })
       }
       if (this.fbtResponse && this.fbtResponse['data'] && this.fbtResponse['data'].length > 0) {
+        let fbtProductsData = []
+        fbtProductsData = this.isQuickOrder ? (this.fbtResponse['data'] as any []).map(product => this._productService.productEntityFromFBT(product)).filter(res=> (this._productService.isInStock(res) == true))
+        : (this.fbtResponse['data'] as any []).map(product => this._productService.productEntityFromFBT(product));
+
         this.tabsArray.push({
           id: 5,
           name: this.FBT_TAB_NAME,
-          data: (this.fbtResponse['data'] as any []).map(product => this._productService.productEntityFromFBT(product)),
+          data: fbtProductsData,
           isSelected: false,
         })
       }
@@ -149,7 +162,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   }
 
   setFullAddToCartButton(){
-    if(this.headertext == "You Maybe Intrested in"){ 
+    if(this.isQuickOrder){ 
       this.cardFeaturesConfig.enableFullAddToCart = true;
       this.cardFeaturesConfig.enableBuyNow = false;
       this.cardFeaturesConfig.enableAddToCart = false;

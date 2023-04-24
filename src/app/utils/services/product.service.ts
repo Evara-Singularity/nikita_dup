@@ -1238,6 +1238,14 @@ export class ProductService {
         return this._dataService.callRestful("GET",URL);
     }
 
+    isInStock(product) {
+        let isOutOfStockByQuantity = false;
+        let isOutOfStockByPrice = false;
+        isOutOfStockByQuantity = !product.quantityAvailable || product.outOfStock;
+        isOutOfStockByPrice = !product.salesPrice && !product.mrp;
+        const final = (isOutOfStockByPrice || isOutOfStockByQuantity) ? false :  true;
+        return final;
+    }
 
 
 }

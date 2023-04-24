@@ -75,6 +75,10 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	get displayCartInfo() { return this.isQuickorder && this.noOfCartItems }
 
+	toPaymentSummary(){
+		document.getElementById('payment_summary_section').scrollIntoView();
+	}
+
 	ngOnDestroy(): void
 	{
 		if (this.cartUpdatesSubscription) { this.cartUpdatesSubscription.unsubscribe(); }

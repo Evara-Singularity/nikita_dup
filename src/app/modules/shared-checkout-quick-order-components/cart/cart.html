@@ -2,7 +2,7 @@
     
     <div class="pwa-row items-center cart-items-info" *ngIf="isQuickorder">
         <h3 class="pad-0">{{_cartService.getGenericCartSession?.itemsList.length}} item(s) in your cart</h3>
-        <button class="btn quaternary-btn-2 add-from-wishlist-item" (click)="openWishlistPopup()">+ ADD FROM WISHLIST</button>
+        <button class="btn quaternary-btn-2 add-from-wishlist-item" (click)="openWishList()">+ ADD FROM WISHLIST</button>
     </div>
     <ng-container *ngFor="let item of _cartService.getGenericCartSession.itemsList; let itemIndex = index;">
         <div *ngIf="(!item.oos) && item['text1']" class="realTimePrice">
@@ -120,7 +120,7 @@
                         REMOVE
                     </span>
                 </div>
-                <div class="oos-text" *ngIf="isQuickorder" (click)="openSimillarProductsPopUp(item.msnid, item)">
+                <div class="oos-text" *ngIf="isQuickorder" (click)="openSimillarList(item.msnid, item)">
                     <h3 class="font-medium red-txt ">VIEW SIMILAR ITEMS</h3>
                 </div>
             </div>
@@ -210,5 +210,3 @@
 </app-bottom-menu>
 
 <ng-container #cartAddProductPopup></ng-container>
-<ng-container #wishlistPopup></ng-container>
-<ng-container #simillarProductsPopup></ng-container>

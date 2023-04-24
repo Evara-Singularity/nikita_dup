@@ -1,4 +1,4 @@
-<div class="pwa-row pad-tb-0" *ngIf="isCartFetched">
+<div class="pwa-row pad-tb-0" *ngIf="isCartFetched" id="payment_summary_section">
     <div class="pwa-col-12">
         <!-- <div class="apply-promo no-border">
             <custom-promo-code></custom-promo-code>
@@ -6,7 +6,7 @@
         </div>
         <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" *ngIf="showPromoOfferPopup">
         </promo-code-list> -->
-        <div class="payment_summary-conatiner ">
+        <div class="payment_summary-conatiner">
             <div class="pwa-row" *ngIf="_cartService.totalPrepaidSaving>0">
                 <p class="save-prise-txt">
                     Pay online & save EXTRA {{_cartService.totalPrepaidSaving| currency:'INR' : 'symbol' : '1.0-0'}} OFF

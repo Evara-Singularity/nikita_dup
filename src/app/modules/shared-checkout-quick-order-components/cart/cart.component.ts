@@ -2,7 +2,6 @@ import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, Out
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
-import { ENDPOINTS } from '@app/config/endpoints';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { ToastMessageService } from '@modules/toastMessage/toast-message.service';
@@ -35,6 +34,8 @@ export class CartComponent
     cartSession = null;
     noOfCartItems = 0;
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
+    @Output() openWishList$:EventEmitter<any> = new EventEmitter<any>();
+    @Output() openSimillarList$:EventEmitter<any> = new EventEmitter<any>();
     
     //cartAddproduct var
     cartAddProductPopupInstance = null;
@@ -43,16 +44,6 @@ export class CartComponent
     totalPayableAmountAfterPrepaid: number=0;
     totalPayableAmountWithoutPrepaid:number=0;
     cartUpdatesSubscription: Subscription = null;
-
-    // on demand loading of wishlistPopup
-    wishlistPopupInstance = null;
-    @ViewChild("wishlistPopup", { read: ViewContainerRef })
-    wishlistPopupContainerRef: ViewContainerRef;
-    wishListData: Array<object> = [];
-    // on demand loading of wishlistPopup
-    simillarProductsPopupInstance = null;
-    @ViewChild("simillarProductsPopup", { read: ViewContainerRef })
-    simillarProductsPopupContainerRef: ViewContainerRef;
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -77,19 +68,23 @@ export class CartComponent
             this.sendEmailGTMCall();
             //  this.shippingCallSubscribers();
         }
-        if(this._localAuthService.isUserLoggedIn()){ this.getWishlistData(); }
         // const cartSession = this._cartService.getCartSession();
         // this.noOfCartItems = (cartSession['itemsList'] as any[]).length || 0;
+        //this.addSubscribers();
     }
 
     ngOnDestroy() {
         if (this.cartSubscription) this.cartSubscription.unsubscribe();
         if (this.shippingSubscription) this.shippingSubscription.unsubscribe();
         if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
-        if(this.simillarProductsPopupInstance){
-           this.simillarProductsPopupInstance = null;
-           this.simillarProductsPopupContainerRef.remove();
-        }
+    }
+    
+    openWishList(){
+        this.openWishList$.emit(true);
+    }
+
+    openSimillarList(productId, item){
+        this.openSimillarList$.emit({productId: productId, item:item});
     }
 
     // Function to get and set the latest cart
@@ -170,6 +165,7 @@ export class CartComponent
         e.stopPropagation();
         this._globalLoaderService.setLoaderState(true);
         this.pushDataToDatalayerOnRemove(this.removableItem);
+        this._cartService.isAddedToCartSubject.next({});
         this._cartService.removeCartItemsByMsns([this.removableItem['productId']]);
         this.removableItem = null;
     }
@@ -574,50 +570,6 @@ export class CartComponent
 
     get isQuickorder() { return this.moduleName === "QUICKORDER" }
 
-    async openWishlistPopup(){
-        const userSession = this._localAuthService.getUserSession();
-        if(userSession['authenticated'] != "true"){
-            let navigationExtras: NavigationExtras = {
-                queryParams: { 'backurl': "quickorder" },
-              };
-            this._router.navigate(['/login'], navigationExtras);
-            return;
-        }
-        const { WishlistPopupComponent } = await import(
-            "../../../components/wishlist-popup/wishlist-popup.component"
-      ).finally();
-      const factory = this.cfr.resolveComponentFactory(WishlistPopupComponent);
-      this.wishlistPopupInstance =
-          this.wishlistPopupContainerRef.createComponent(
-              factory,
-              null,
-              this.injector
-          );
-      this.wishlistPopupInstance.instance["wishListData"] = this.wishListData;
-      (
-        this.wishlistPopupInstance.instance[
-        "closePopup$"
-        ] as EventEmitter<any>
-      ).subscribe(res=>{
-        this.wishlistPopupContainerRef.remove();
-        this.wishlistPopupInstance = null;
-      })
-    }
-    
-    private getWishlistData(){
-        const userSession = this._localAuthService.getUserSession();
-        const wishlistPayload = { idUser: userSession['userId'], userType: "business" };
-        const wishlistUrl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST ;
-        this.dataService.callRestful("GET", wishlistUrl, { params: wishlistPayload }).subscribe(response=>{
-          if(response && response['status']){
-            const wishListResponseData = response["data"];
-             this.wishListData = wishListResponseData.map(product => this._productService.wishlistToProductEntity(product))
-          }
-        },error=>{
-         this.wishListData = [];
-        }
-        );
-    }
 
     addToPurchaseList() {
         if (this._localAuthService.isUserLoggedIn()) {
@@ -636,16 +588,17 @@ export class CartComponent
             if (res["status"]) {
               this._tms.show({
                 type: "success",
-                text: "Data added successfully.",
+                text: "Successfully added to wishlist.",
               });
-              this.removableItem = null;
-              this.resetRemoveItemCart()
+              this._cartService.removeCartItemsByMsns([this.removableItem['productId']]);
+              this.resetRemoveItemCart();
+              this._cartService.isAddedToCartSubject.next({isAddedtowishList : true});
             } else {
               this._tms.show({
-                type: "success",
+                type: "error",
                 text: res["errorMessage"],
               });
-              this.removableItem = null;
+              this._cartService.removeCartItemsByMsns([this.removableItem['productId']]);
               this.resetRemoveItemCart();
             }
           });
@@ -655,29 +608,6 @@ export class CartComponent
               };
             this._router.navigate(['/login'], navigationExtras);
         }
-    }
-
-    async openSimillarProductsPopUp(msnid , data){
-        const { SimillarProductsPopupComponent } = await import(
-            "../../../components/simillar-products-popup/simillar-products-popup.component"
-      ).finally();
-      const factory = this.cfr.resolveComponentFactory(SimillarProductsPopupComponent);
-      this.simillarProductsPopupInstance =
-          this.simillarProductsPopupContainerRef.createComponent(
-              factory,
-              null,
-              this.injector
-          );
-      this.simillarProductsPopupInstance.instance["msnid"] = msnid; 
-      this.simillarProductsPopupInstance.instance["productName"] = data.productName;
-      (
-        this.simillarProductsPopupInstance.instance[
-        "closePopup$"
-        ] as EventEmitter<any>
-      ).subscribe(res=>{
-        this.simillarProductsPopupContainerRef.remove();
-        this.simillarProductsPopupInstance = null;
-      })
     }
 
 }

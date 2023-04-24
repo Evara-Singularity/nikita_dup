@@ -1,5 +1,5 @@
 <ng-container *ngIf="!isSimilarDataLoaded">
-    <app-bottom-menu>
+    <app-bottom-menu (outData$)="closePopup()">
         <div content>
             <div class="pwa-row">
                 <div class="empty-wishlist-popup">
@@ -20,7 +20,7 @@
     </app-bottom-menu>
 </ng-container>
 <ng-container *ngIf="isSimilarDataLoaded">
-    <app-bottom-menu>
+    <app-bottom-menu (outData$)="closePopup()">
         <div content>
             <div class="empty-wishlist-popup block">
                 <div class="empty-wishlist">

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
   selector: 'product-benefits',
@@ -15,6 +16,7 @@ export class ProductBenefitsComponent implements OnInit {
   @Input() isBrandMsn: boolean = false;
   @Input() moduleUsedIn = '';
   @Output() navigateToFAQ$: EventEmitter<any> = new EventEmitter<any>();
+  imagePathAsset = CONSTANTS.IMAGE_ASSET_URL
 
   constructor(
     public _localAuthService: LocalAuthService,

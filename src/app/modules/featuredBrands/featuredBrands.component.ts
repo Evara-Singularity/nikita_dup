@@ -14,6 +14,8 @@ export class FeaturedBrands {
 	@Input('featureBrandData') featureBrandData;
 	@Input('defaultImage') defaultImage;
 	imageBasePath=CONSTANTS.CDN_IMAGE_PATH;
+	readonly produrl=CONSTANTS.PROD;
+	
 	constructor(private _commonService: CommonService, private router:Router){}
 
 	setCookieFeatured(imageTitle, url) {

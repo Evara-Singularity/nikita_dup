@@ -9,13 +9,13 @@
         </category-card>
     </div>
     <div class="cluster-body">
-        <div>
+        <div class="cluster-skeleton-banner">
             <ng-container #BannerComponent></ng-container>
         </div>
-        <div>
+        <div *ngIf="this.data['all_categories']?.data.length > 0" class="cluster-skeleton-all-banner">
             <ng-container #AllCategoryComponent></ng-container>
         </div> 
-        <div>
+        <div class="skeleton-body">
             <ng-container #NewArrivalComponent></ng-container>
         </div>
         <div>

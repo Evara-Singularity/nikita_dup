@@ -7,8 +7,8 @@
     <p class="align-center socsharehead">Download the App</p>
 
     <ul class="app-promotion-img pb-10 clearfix">
-        <li (click)="openAppStore()"> <img [defaultImage]="defaultImage" [lazyLoad]="'../../../assets/img/App-promotion/app_store.png'" ></li>
-        <li (click)="openPlayStore()"><img [defaultImage]="defaultImage" [lazyLoad]="'../../../assets/img/App-promotion/play_store.png'"></li>
+        <li (click)="openAppStore()"> <img [defaultImage]="defaultImage" alt="app-promotion-image" [lazyLoad]="'../../../assets/img/App-promotion/app_store.png'" ></li>
+        <li (click)="openPlayStore()"><img [defaultImage]="defaultImage" alt="app-play-store-image" [lazyLoad]="'../../../assets/img/App-promotion/play_store.png'"></li>
     </ul>
     <p class="align-center socsharehead">Stay Connected</p>
 
@@ -52,7 +52,7 @@
         <p>MOGLI LABS (INDIA) PRIVATE LIMITED</p>
         <p>&copy; {{today | date:'yyyy' }} Moglix.com. All Rights Reserved.</p>
     </div>
-    <div class="footer-note lh-18">
+    <div class="footer-note lh-18" *ngIf="!isFaq.includes('faq')" >
         <h1 class="normal-txt mb-15 f-10">Moglix – Leading B2B e-Commerce for Industrial Products</h1>
         <p>To combat the negative impact of delays in sourcing to the production process, Moglix assists you in a
             hassle-free online buying process and create an easy way to handle the industrial product procurement

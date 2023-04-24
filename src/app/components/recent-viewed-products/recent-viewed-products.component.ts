@@ -20,6 +20,7 @@ export class RecentViewedProductsComponent implements OnInit {
   productStaticData = this._commonService.defaultLocaleValue;
   recentProductItems: ProductsEntity[] = null;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
+  @Input() recentProductList: ProductsEntity [] = [];
   @Output() noRecentlyViewed$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() outOfStock: boolean = false;
   @Input() analytics = null;
@@ -51,7 +52,11 @@ export class RecentViewedProductsComponent implements OnInit {
       redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
       redirectedSectionName: this.outOfStock ? 'recent_products_oos' : 'recent_productss'
     }
-    this.getRecents();
+    if(!this.recentProductList || this.recentProductList.length == 0){
+      this.getRecents();
+    }else{
+      this.recentProductItems = this.recentProductList;
+    }
     this.getStaticSubjectData();
   }
   getStaticSubjectData(){

@@ -53,7 +53,7 @@ export class ContactComponent {
         "@context": CONSTANTS.SCHEMA, "@type": "Organization",
         "name": "Moglix",
         "url": CONSTANTS.PROD,
-        "logo": `${this.imagePath}assets/img/moglix-logo.jpg`,
+        "logo": `${this.imagePath}assets/img/moglix_logo_red@3x.png`,
         "contactPoint":
           [{
             "@type": "ContactPoint",

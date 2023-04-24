@@ -120,7 +120,7 @@ export class ProductOosSimilarCardComponent {
   }
 
   getProductData() {
-    this._loader.setLoaderState(true);
+    // this._loader.setLoaderState(true);
     // Product API url
     forkJoin([
       this.productService.getProduct(this.productMsn),

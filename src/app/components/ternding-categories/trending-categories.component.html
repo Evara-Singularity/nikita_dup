@@ -1,13 +1,13 @@
 <section *ngIf="flyOutData" class="trending-container pad-tb-10">
     <div class="view-all-strip">
         <ng-container *ngIf="tocd" >
-            <h2>{{tocd}}</h2>
+            <h3 class="heading-2-16">{{tocd}}</h3>
         </ng-container>
     </div>
     <ul class="category-grid-container row-gutter-space">
         <li class="category-grid-card pwa-col-4" *ngFor="let item of flyOutData | slice:0:6;let i=index"> 
             <a (click)="setCookieLink('Trending_Categories',item.categoryCode, 'listing', item.link)">
-                <img src="{{item.imageUrl}}"  alt="trending-categories">
+                <img src="{{item.imageUrl}}"  alt="{{item.categoryName}}">
                 <p>{{(item.categoryName) + (item.categoryName.length > 15 ? " ":"")}}</p>
             </a>
         </li>

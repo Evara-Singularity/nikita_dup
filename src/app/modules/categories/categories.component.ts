@@ -36,6 +36,7 @@ export class Categories implements OnInit {
 	@Input('imagePath') imagePath;
 	@Input('recentProductList') recentProductList;
 	@Output('sendDataToPopUP') sendDataToPopUP = new EventEmitter();
+	readonly produrl=CONSTANTS.PROD;
 	readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {
 		// feature config
 		enableAddToCart: false,

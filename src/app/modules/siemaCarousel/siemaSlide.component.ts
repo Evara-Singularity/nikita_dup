@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
     encapsulation: ViewEncapsulation.None,
 })
 export class SiemaSlideComponent {
+    readonly produrl=CONSTANTS.PROD;
     @Input() options: any;
     @Input() item: any;
     @Input() imagePath: any;

@@ -25,7 +25,7 @@ import CONSTANTS from "@app/config/constants";
 import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import { ModalService } from "@app/modules/modal/modal.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
-import { ProductCardFeature } from "@app/utils/models/product.listing.search";
+import { ProductCardFeature, ProductsEntity } from "@app/utils/models/product.listing.search";
 import { ArrayFilterPipe } from "@app/utils/pipes/k-array-filter.pipe";
 import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
@@ -351,9 +351,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     bestProductsRes: any;
     isBrandMsn = false;
     pageUrl: string;
-
+    recentProductItems: ProductsEntity[] = null;
+    promoCodes: any[];
+    allofferData: any[];
+    couponForbrandCategory: any;
     
-
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);
@@ -452,8 +454,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
-            // this.getProductTag()
-            // this.onVisibleOffer();
+            this.getRecents();
         }
         
     }
@@ -582,7 +583,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.route.data.subscribe(
             (rawData) =>
             {
-                console.log(rawData["product"]);
+                // console.log(rawData["product"]);
                 if (!rawData["product"]["error"] && rawData["product"][0]["active"]==true) {
                     if (
                         rawData["product"][0]["productBO"] &&
@@ -605,7 +606,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         // console.log('originalProductBO log', this.originalProductBO);
                         // Load secondary APIs data from resolver only when product data is received
                        
-                        this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6], rawData['product'][7], rawData['product'][8]);
+                        this.getSecondaryApiData(rawData["product"][1], rawData["product"][2], rawData["product"][3], rawData["product"][4], rawData["product"][5], rawData["product"][6], rawData['product'][7], rawData['product'][8], rawData['product'][10], rawData['product'][11], rawData['product'][12]);
                         if (rawData["product"][9]['status'] = true && rawData["product"][9]['statusCode'] == 200 && rawData["product"][9]['data']) {
                             this.showMoglixInsight = true;
                             this.moglixInightData = rawData["product"][9]['data']
@@ -670,9 +671,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         reviewsDataApiData, breadcrumbApiData, 
         questAnsApiData, relatedLinkRes, 
         similarCategoryRes, categoryBucketRes, 
-        productTagRes, bestproductsRes) {
+        productTagRes, bestproductsRes,
+        promoCodeRes, mobikwikOffersRes,
+        couponForbrandCategoryRes) {
         // console.log({
-        //     reviewsDataApiData, breadcrumbApiData, questAnsApiData, relatedLinkRes, similarCategoryRes, categoryBucketRes
+        //     promoCodeRes, mobikwikOffersRes
         // });
         if (reviewsDataApiData && reviewsDataApiData["data"]) {
             const rawReviews = Object.assign({}, reviewsDataApiData["data"]);
@@ -702,7 +705,17 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.onVisiblePopularDeals();
             this.bestProductsRes = bestproductsRes;
         }
-        
+
+        if(promoCodeRes && promoCodeRes['statusCode'] == 200) {
+            this.promoCodes = (promoCodeRes.data.applicablePromoCodeList as any[]).map((item: any, index) => Object.assign({}, item, { index }));
+        }
+
+        if(mobikwikOffersRes && mobikwikOffersRes['statusCode'] == 200) {
+            this.allofferData = (mobikwikOffersRes.data as any[]).map((item: any, index) => Object.assign({}, item, { index }));
+        }
+        if (couponForbrandCategoryRes['statusCode'] == 200 && couponForbrandCategoryRes['data'] != null) {
+            this.couponForbrandCategory = couponForbrandCategoryRes['data'];
+        }
         this.relatedLinkRes = relatedLinkRes;
         this.categoryBucketRes = categoryBucketRes;
         this.similarCategoryRes = similarCategoryRes;
@@ -2319,13 +2332,24 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             };
         }
     }
+    
+    getRecents() {
+        let user = this.localStorageService.retrieve('user');
+        const userId = (user['userId']) ? user['userId'] : null;
+        this.productService.getrecentProduct(userId).subscribe(result => {
+          if (result['statusCode'] === 200) {
+            this.recentProductItems = (result['data'] as any[]).map(product => this.productService.recentProductResponseToProductEntity(product));
+           // if (this.recentProductItems.length === 0) { this.noRecentlyViewed$.emit(true);}
+          }
+        })
+      }
 
     // dynamically recent products section
     
     async onVisibleRecentProduct(htmlElement)
     {
         // console.log('onVisibleRecentProduct', htmlElement);
-        if (!this.recentProductsInstance) {
+        if (!this.recentProductsInstance && this.recentProductItems.length > 0) {
             const { RecentViewedProductsComponent } = await import(
                 "./../../components/recent-viewed-products/recent-viewed-products.component"
             );
@@ -2340,6 +2364,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 );
             this.recentProductsInstance.instance["outOfStock"] =
                 this.productOutOfStock;
+            this.recentProductsInstance.instance["recentProductList"] = this.recentProductItems;    
             const custData = this.commonService.custDataTracking;
             const orderData = this.orderTracking;
             const TAXONS = this.taxons;
@@ -2356,12 +2381,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 custData: custData,
                 order: orderData,
             };
-            (
-                this.recentProductsInstance.instance["noRecentlyViewed$"] as EventEmitter<any>).subscribe((flag) =>
-                {
-                    this.hasRecentlyView = false;
-                }
-            );
+            // (
+            //     this.recentProductsInstance.instance["noRecentlyViewed$"] as EventEmitter<any>).subscribe((flag) =>
+            //     {
+            //         this.hasRecentlyView = false;
+            //     }
+            // );
         }
     }
 
@@ -3413,17 +3438,23 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             else{
                 url = CONSTANTS.PROD + '/' + metaObj.productUrl;
             }
+            const baseUrl = this.isHindiUrl ? CONSTANTS.PROD + '/hi/' : '/'
             if (
-                !this.isCommonProduct ||
+                !this.isCommonProduct &&
                 !this.listOfGroupedCategoriesForCanonicalUrl.includes(
                     metaObj.productCategoryDetails["categoryCode"]
-                ) && !this.hindiUrl
+                )
             ) {
-                url = CONSTANTS.PROD + '/' + (
+                url = baseUrl + (
                     (this.rawProductData.productPartDetails[this.rawProductData["partNumber"]].canonicalUrl) ?
                         (this.rawProductData.productPartDetails[this.rawProductData["partNumber"]].canonicalUrl) :
                         metaObj["defaultCanonicalUrl"]
                 );
+            }
+            else{
+                if(!metaObj.productUrl){
+                    url = baseUrl + this.getProductURL();
+                }
             }
 
             if (url && url.substring(url.length - 2, url.length) == "-g") {
@@ -3464,7 +3495,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     {
                         qaSchema.push({
                             "@type": "Question",
-                            name: element["questionText"],
+                            name: 
+                            element["questionText"],
                             acceptedAnswer: {
                                 "@type": "Answer",
                                 text: element["answerText"],
@@ -3526,13 +3558,13 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     sku: this.productSubPartNumber,
                     mpn: this.productSubPartNumber,
                     brand: {
-                        "@type": "Thing",
+                        "@type": "Brand",
                         name: this.productBrandDetails["brandName"],
                     },
                     aggregateRating: {
                         "@type": "AggregateRating",
                         ratingValue: ratingValue,
-                        ratingCount: reviewCount,
+                        reviewCount: reviewCount,
                         bestRating: "5",
                         worstRating: "1",
                     },

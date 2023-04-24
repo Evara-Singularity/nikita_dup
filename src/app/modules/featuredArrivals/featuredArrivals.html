@@ -1,7 +1,7 @@
 <ng-container *ngIf="featureArrivalData && featureArrivalData.length > 0" >
     <section class="featr_arrival mt-15">
             <div class="view-all-strip">
-                <h2>Featured Arrivals</h2>
+                <h3 class="heading-2-16">Featured Arrivals</h3>
                 <a [routerLink]="['/deals/fresh-arrivals']" routerLinkActive="router-link-active"
                     class="btn quinary-btn">VIEW ALL
                 </a>
@@ -11,7 +11,7 @@
                     <a [routerLink]="item.image_link" (click)="setCookieFeatured(item.image_title)">
                      <div class ="product-card">
                         <div class="product-img">
-                            <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item.image_name" alt="product Image">
+                            <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item.image_name" alt="{{item.image_title}}">
                         </div>
                         <div class="product-description">
                             <p class="prod-name">

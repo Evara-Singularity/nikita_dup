@@ -1,8 +1,9 @@
 <ng-container *ngIf="relatedCatgoryList && relatedCatgoryList?.length > 0">
     <div id="subcCategoryTop" class="">
         <ul class="pwa-row pad-0">
-            <ng-container class="" *ngFor="let item of relatedCatgoryList; let i=index">
-                <li class="pad-10 pwa-col-6" *ngIf="i<4 || isAllListShow" >
+            <ng-container class="" *ngFor="let item of relatedCatgoryList |slice:0:4; let i=index">
+                <!-- *ngIf="i<4 || isAllListShow" -->
+                <li class="pad-10 pwa-col-6">
                     <div class="sub-cat-product">
                         <a  (click)="commonService.setSectionClickInformation('child_categories', 'listing')" [routerLink]="'/'+item?.categoryDetails?.categoryLink">
                             <div class="prod-image pad-10">
@@ -13,6 +14,20 @@
                     </div>
                 </li>
             </ng-container>
+            <ng-container class="" *ngFor="let item of relatedCatgoryList |slice:4; let i=index">
+                <!-- *ngIf="i<4 || isAllListShow" -->
+                <li [style.display]="showListFlag?'block':'none'" class="pad-10 pwa-col-6">
+                    <div class="sub-cat-product">
+                        <a  (click)="commonService.setSectionClickInformation('child_categories', 'listing')" [routerLink]="'/'+item?.categoryDetails?.categoryLink">
+                            <div class="prod-image pad-10">
+                                <img [alt]="item.categoryDetails.categoryName" [src]="defaultImage" lazyLoad="{{imageBasePath}}{{item?.categoryDetails?.mainImageLink}}" width="78" height="78">
+                            </div>
+                            <h4>{{item?.categoryDetails?.categoryName}}</h4>
+                        </a>
+                    </div>
+                </li>
+            </ng-container>
+            
         </ul>
         <div *ngIf="relatedCatgoryList!==null && relatedCatgoryList.length > 4">
             <a (click)="showList()" class="btn primary-full-btn show-more">

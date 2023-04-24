@@ -75,6 +75,11 @@
             text-transform: uppercase;
             padding-top: 15px;
         }
+        h3.slp-heading{
+            font-size: $large-font;
+            text-transform: uppercase;
+            padding-top: 15px;
+        }
         .safetyshopbywrap {
             background: #fff;
             padding: 15px;
@@ -235,6 +240,14 @@
                 color: #2A2A2A;
                 padding: 0;
                 text-transform: uppercase;
+            }
+            .custom-h4{
+                font-size: $medium-font;
+                font-weight: 500;
+                margin-bottom: 6px;
+                color: #2A2A2A;
+                padding: 0;
+                text-transform: uppercase; 
             }
             .shopbyimgwrap {
                 height: 151px;

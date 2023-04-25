@@ -135,6 +135,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   private addSubscribers() {
     this.addToCartSubscription =
       this._cartService.isAddedToCartSubject.subscribe((response) => {
+        console.log("response =====> - :" , response);
         const productId = (response && response["productId"]) || null;
         const filterdData = this.wishListData.filter(
           (res) => res["moglixPartNumber"] == productId
@@ -147,11 +148,11 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private refreshAllApis() {
-    this.quickOrderMiscellaneousCarouselInstance = null;
     this.quickOrderMiscellaneousCarouselContainerRef.remove();
-    this.homeMiscellaneousCarouselInstance = null;
-    this.homeMiscellaneousCarouselContainerRef.remove();
+    this.quickOrderMiscellaneousCarouselInstance = null;
     this.getAllCategoryByMsns();
+    this.homeMiscellaneousCarouselContainerRef.remove();
+    this.homeMiscellaneousCarouselInstance = null;
     this.callHomePageWidgetsApis();
   }
 
@@ -242,14 +243,15 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
   callHomePageWidgetsApis() {
+    const fbt_prodcutsURL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_FBT_PRODUCTS_BY_MSNS;
+    const pastOrderURL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAST_ORDERS}${this.userData["userId"]}`;
+    const wishlistUrl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST;
+    const fbtPostBody = this.getFbtPostBody();
+    if(this._localAuthService.isUserLoggedIn()){
     const wishlistPayload = {
       idUser: this.userData["userId"],
       userType: "business",
     };
-    const fbt_prodcuts =
-      CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_FBT_PRODUCTS_BY_MSNS;
-    const pastOrderURL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAST_ORDERS}${this.userData["userId"]}`;
-    const wishlistUrl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST;
     const pastOrderApi = this._dataService.callRestful("GET", pastOrderURL);
     const wishlistApi = this._dataService
       .callRestful("GET", wishlistUrl, { params: wishlistPayload })
@@ -270,9 +272,8 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         })
       );
-    const fbtPostBody = this.getFbtPostBody();
     const fbtListApi = this._dataService
-      .callRestful("POST", fbt_prodcuts, { body: fbtPostBody })
+      .callRestful("POST", fbt_prodcutsURL, { body: fbtPostBody })
       .pipe(
         map((res) => {
           return res;
@@ -287,6 +288,15 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.onVisiblePopularDeals([null, null, null]);
       }
     );
+    }else{
+      this._dataService
+      .callRestful("POST", fbt_prodcutsURL, { body: fbtPostBody })
+      .subscribe(response=>{
+        this.onVisiblePopularDeals([null, null, response]);
+      },(error)=>{
+        this.onVisiblePopularDeals([null, null, null]);
+      });
+    }
   }
 
   async onVisiblePopularDeals([

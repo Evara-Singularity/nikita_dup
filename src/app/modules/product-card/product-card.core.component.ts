@@ -358,6 +358,8 @@ export class ProductCardCoreComponent implements OnInit {
           this.showAddToCartToast('Product already added');
         }
       }
+    },(error)=>{
+      this._cartService.isAddedToCartSubject.next(productDetails);
     });
     this._commonService.enableNudge = false;
   }

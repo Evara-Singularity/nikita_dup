@@ -46,7 +46,6 @@ export class CartNoItemComponent implements OnInit, AfterViewInit, OnDestroy
         this._localAuthService.setBackURLTitle(queryParams.backurl, queryParams.title);
         let navigationExtras: NavigationExtras = { queryParams: queryParams };
         this._router.navigate(["/login"], navigationExtras);
-
     }
 
     get isLoggedIn() { return this._localAuthService.isUserLoggedIn()}

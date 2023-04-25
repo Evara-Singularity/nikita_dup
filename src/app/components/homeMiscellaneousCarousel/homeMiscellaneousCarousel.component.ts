@@ -75,12 +75,13 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
       pastOrderListData = this.isQuickOrder ? (this.pastOrdersResponse['data'] as any []).map(product => this._productBrowserService.pastOrdersProductResponseToProductEntity(product)).filter(res=> (this._productService.isInStock(res) == true))
       : (this.pastOrdersResponse['data'] as any []).slice(0, 10).map(product => this._productBrowserService.pastOrdersProductResponseToProductEntity(product));
 
-      this.tabsArray.push({
-        id: 2,
-        name: this.PAST_ORDER_TAB_NAME,
-        data: pastOrderListData,
-        isSelected: false,
-      })
+      this.pushDataIntoTabsArray(2, this.PAST_ORDER_TAB_NAME, pastOrderListData, false);
+      // this.tabsArray.push({
+      //   id: 2,
+      //   name: this.PAST_ORDER_TAB_NAME,
+      //   data: pastOrderListData,
+      //   isSelected: false,
+      // })
     }
 
       if (this.purcahseListResponse && this.purcahseListResponse.length > 0) {
@@ -88,12 +89,13 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         purchaseListData = this.isQuickOrder ? (this.purcahseListResponse as any []).map(product => this._productService.wishlistToProductEntity(product)).filter(res=> (this._productService.isInStock(res) == true))
         : (this.purcahseListResponse as any []).map(product => this._productService.wishlistToProductEntity(product));
 
-        this.tabsArray.push({
-          id: 3,
-          name: this.WISHLIST_TAB_NAME,
-          data: purchaseListData,
-          isSelected: false,
-        })
+        this.pushDataIntoTabsArray(3, this.WISHLIST_TAB_NAME, purchaseListData, false);
+        // this.tabsArray.push({
+        //   id: 3,
+        //   name: this.WISHLIST_TAB_NAME,
+        //   data: purchaseListData,
+        //   isSelected: false,
+        // })
       }
       if (this.rfqReponse && this.rfqReponse['data'] && this.rfqReponse['data'].length > 0) {
         this.tabsArray.push({
@@ -107,19 +109,30 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
         let fbtProductsData = []
         fbtProductsData = this.isQuickOrder ? (this.fbtResponse['data'] as any []).map(product => this._productService.productEntityFromFBT(product)).filter(res=> (this._productService.isInStock(res) == true))
         : (this.fbtResponse['data'] as any []).map(product => this._productService.productEntityFromFBT(product));
-
-        this.tabsArray.push({
-          id: 5,
-          name: this.FBT_TAB_NAME,
-          data: fbtProductsData,
-          isSelected: false,
-        })
+        
+        this.pushDataIntoTabsArray(5, this.FBT_TAB_NAME, fbtProductsData, false);
+        // this.tabsArray.push({
+        //   id: 5,
+        //   name: this.FBT_TAB_NAME,
+        //   data: fbtProductsData,
+        //   isSelected: false,
+        // })
       }
       if (this.tabsArray.length > 0) {
         this.tabsArray[0].isSelected = true;
       }
     }
 
+  pushDataIntoTabsArray(id:number, name:string, data:any, isSelected){
+    if(data.length > 0){
+     this.tabsArray.push({
+       id:id,
+       name:name,
+       data:data,
+       isSelected:isSelected
+     })
+    }
+  }  
   setProductTab(tabName) {
     this.tabsArray.forEach((element, index) => {
       this.tabsArray[index].isSelected = false;
@@ -144,6 +157,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     let order = {}
     this._globalAnalyticsService.sendAdobeCall({ page, custData, order }, "genericClick");
   }
+  
 
   tabshift() {
     let containerId = document.getElementsByClassName("pwa-tabs-container");

@@ -135,10 +135,6 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   private addSubscribers() {
     this.addToCartSubscription =
       this._cartService.isAddedToCartSubject.subscribe((response) => {
-        if (response && response["isAddedtowishList"] == true) {
-          this.getWishlistData();
-          return;
-        }
         const productId = (response && response["productId"]) || null;
         const filterdData = this.wishListData.filter(
           (res) => res["moglixPartNumber"] == productId

@@ -90,7 +90,6 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.getAllddressList();
       this.getWishlistData();
     }
-    this.addSubscribers();
   }
 
   ngAfterViewInit(): void {
@@ -105,10 +104,19 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
           cartSession.itemsList.length === 0
         ) {
           this.isCartNoItems = true;
+        if(this.homeMiscellaneousCarouselContainerRef){
+           this.homeMiscellaneousCarouselInstance = null;
+           this.homeMiscellaneousCarouselContainerRef.remove();
+        }
+          if(this.quickOrderMiscellaneousCarouselContainerRef){
+            this.quickOrderMiscellaneousCarouselInstance = null;
+            this.quickOrderMiscellaneousCarouselContainerRef.remove();
+          }
         } else {
           this.isCartNoItems = false;
         }
       });
+      this.addSubscribers();
   }
 
   ngOnDestroy() {
@@ -140,20 +148,27 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
         const filterdData = this.wishListData.filter(
           (res) => res["moglixPartNumber"] == productId
         );
+        console.log("productId ====>" , productId)
         if (filterdData && filterdData.length > 0) {
           this.removeItemFromPurchaseList(response);
+          return;
         }
         this.refreshAllApis();
       });
   }
 
   private refreshAllApis() {
-    this.quickOrderMiscellaneousCarouselContainerRef.remove();
-    this.quickOrderMiscellaneousCarouselInstance = null;
-    this.getAllCategoryByMsns();
-    this.homeMiscellaneousCarouselContainerRef.remove();
-    this.homeMiscellaneousCarouselInstance = null;
-    this.callHomePageWidgetsApis();
+    if(this.quickOrderMiscellaneousCarouselContainerRef != undefined){
+      this.quickOrderMiscellaneousCarouselContainerRef.remove();
+      this.quickOrderMiscellaneousCarouselInstance = null;
+      this.getAllCategoryByMsns();
+    }
+    if(this.homeMiscellaneousCarouselContainerRef != undefined){
+      this.homeMiscellaneousCarouselInstance
+      this.homeMiscellaneousCarouselContainerRef.remove();
+      this.homeMiscellaneousCarouselInstance = null;
+      this.callHomePageWidgetsApis();
+    }
   }
 
   navigateToCheckout() {

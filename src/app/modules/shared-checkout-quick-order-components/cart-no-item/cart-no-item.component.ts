@@ -56,4 +56,12 @@ export class CartNoItemComponent implements OnInit, AfterViewInit, OnDestroy
             this.flyOutDataSubscription.unsubscribe()
         }
     }
+
+    continueToShopping(){
+      this._router.navigate(['/']).catch(err=>{
+        console.log("router error =====>" , err);
+        //this._router.navigate(['/']);
+        window.location.href = "/";
+      });
+    }
 }

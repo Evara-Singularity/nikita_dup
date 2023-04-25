@@ -46,7 +46,7 @@
                 <div class="multiple-address multiple-address-checkout" *ngIf="address">
                     <div class="chk-txt">
                         <div class="heading-container">
-                            <h2> Deliver to : {{address.addressCustomerName | slice:0:60}}, {{address.phone}}
+                            <h2> Deliver to : {{address.addressCustomerName | slice:0:60}}, {{address.postCode}}
                             </h2>
                             <div class="persnName">{{address.addressCustomerName | slice:0:60}}, {{address |
                                 checkoutAddress}}, Mobile : {{address.phone}}</div>

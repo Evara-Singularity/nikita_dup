@@ -43,15 +43,14 @@
             <div class="fixed-bottom-cta">
                 <p class="total-mount">
                     <span class="payable-amnt">Amount&nbsp;Payable
-                        <i class="icon-information ml-5" (click)="expandPaymentSummary(false)"></i>
+                        <i class="icon-information ml-5" (click)="toPaymentSummary()"></i>
                     </span>
                     <span class="total-amt-txt">
-                        ₹8,392
+                        ₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathRound | number :'1.2-2'}}
                     </span>
                 </p>
                 <button class="btn primary-full-btn" (click)="navigateToCheckout()">{{
-                    _commonService?.userSession?.authenticated === 'true' ? 'PROCEED TO CHECKOUT' : 'SIGN IN TO
-                    CHECKOUT' }}</button>
+                    _commonService?.userSession?.authenticated === 'true' ? 'PROCEED TO CHECKOUT' : 'SIGN IN TO CHECKOUT' }}</button>
             </div>
         </div>
         <cart-no-item *ngIf="isCartNoItems" class="pwa-col-12"></cart-no-item>

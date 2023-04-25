@@ -237,6 +237,9 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   preventDefault(e) {
     e.preventDefault();
   }
+  toPaymentSummary(){
+		document.getElementById('payment_summary_section').scrollIntoView();
+	}
 
   callHomePageWidgetsApis() {
     const wishlistPayload = {

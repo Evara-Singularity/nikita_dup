@@ -19,6 +19,7 @@ import { PromoCodeModule } from "../../modules/shared-checkout-quick-order-compo
 import { AllPromocodeV1Module } from '@app/modules/shared-checkout-quick-order-components/all-promocode-v1/all-promocode-v1.module';
 import { HomePageSkeletonsModule } from "../../components/home-page-skeletons/home-page-skeletons.component";
 import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-visibility.directive';
+import { MathRoundPipeModule } from "../../utils/pipes/math-round";
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { ObserveVisibilityDirectiveModule } from '@app/utils/directives/observe-
         PromoCodeModule,
         AllPromocodeV1Module,
         HomePageSkeletonsModule,
-        ObserveVisibilityDirectiveModule
+        ObserveVisibilityDirectiveModule,
+        MathRoundPipeModule
     ]
 })
 

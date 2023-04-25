@@ -217,10 +217,14 @@
         display: flex;
         justify-content: space-between;
         padding-top: 0px !important;
+        
         .free-ship{
+            width: 100%;
+            // background-color: red;
             display: flex;
                 align-items: center;
                 margin-right: 25px;
+                justify-content: end;
             i{
                 font-size: $large-font;
                 margin-left: 5px;

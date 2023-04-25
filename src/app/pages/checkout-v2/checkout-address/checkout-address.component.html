@@ -12,17 +12,20 @@
                             <i class="icon-information"></i>
                         </span>
                     </span>
-                    <ng-container >
-                        <ng-container
-                            *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">
-                            ₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt +
-                            _cartService.getGenericCartSession.cart.shippingCharges) | mathRound | number : '1.2-2'}}</ng-container>
-                        <ng-container
-                            *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null">
-                            ₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt +
-                            _cartService.getGenericCartSession.cart.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer) |
-                            mathRound | number : '1.2-2'}}</ng-container>
-                    </ng-container>
+                    <span class="total-amt-txt">
+                        <ng-container >
+                            <ng-container
+                                *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">
+                                ₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt +
+                                _cartService.getGenericCartSession.cart.shippingCharges) | mathRound | number : '1.2-2'}}</ng-container>
+                            <ng-container
+                                *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null">
+                                ₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt +
+                                _cartService.getGenericCartSession.cart.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer) |
+                                mathRound | number : '1.2-2'}}</ng-container>
+                        </ng-container>
+                    </span>
+                   
                 </div>
                 <button [disabled]="!(hasCartItems)" class="btn primary-btn"
                     (click)="$event.stopPropagation();continueToPayment()">

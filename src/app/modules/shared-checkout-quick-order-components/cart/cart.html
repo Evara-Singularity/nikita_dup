@@ -153,7 +153,7 @@
                 </ul>
             </div>
             <div class="cart-btm pad-15 " *ngIf="(item.offer >0) || (item.shippingCharges >0) ">
-                <span class="coup-disc green-txt" *ngIf="item.offer > 0">Coupon discount - ₹{{(item.offer ? item.offer : 0) | mathRound | number :
+                <span class="coup-disc green-txt" *ngIf="item.offer > 0">Coupon&nbsp;discount&nbsp;-&nbsp;₹{{(item.offer ? item.offer : 0) | mathRound | number :
                     '1.2-2'}}</span>
                 <span class="free-ship green-txt" *ngIf="item.shippingCharges >0">Free Shipping <i class="icon-free_shipping"></i></span>
             </div>

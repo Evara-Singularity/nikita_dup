@@ -41,7 +41,7 @@ export class SearchComponent implements OnInit {
     private _renderer2: Renderer2,
     private _analytics: GlobalAnalyticsService,
     private _router: Router,
-    private globalAnalyticsService: GlobalAnalyticsService
+    private globalAnalyticsService: GlobalAnalyticsService,
   ) {
     this._commonService.isHomeHeader = false;
     this._commonService.isPLPHeader = true;
@@ -93,6 +93,10 @@ export class SearchComponent implements OnInit {
 
       //incase only product avaliable in search result
       if (this.API_RESULT['searchData'][0] && this.API_RESULT['searchData'][0]['productSearchResult'] && this.API_RESULT['searchData'][0]['productSearchResult']['products'].length == 1) {
+        const backUrl = localStorage.getItem('searchURL') || '/';
+        this._localStorageService.store("history", [])
+        window.history.replaceState('', '', backUrl);
+        window.history.pushState('', '', backUrl);
         this._router.navigateByUrl(this.API_RESULT['searchData'][0]['productSearchResult']['products'][0]['productUrl']);
         return;
       }

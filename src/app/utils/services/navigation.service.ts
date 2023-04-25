@@ -86,7 +86,11 @@ export class NavigationService
       this.navigate(defaultUrl);
     } else if (this.history.length > 0) {
       const length = this.history.length;
-      this.navigate(this.history[length - 1]);
+      if(this.history[length-1].includes('search_query=msn')) {
+        this.navigate(this.history[length - 2]);
+      } else {
+        this.navigate(this.history[length - 1]);
+      }
     } else {
       this.navigate(this.HOME_URL);
     }

@@ -10,6 +10,7 @@ import { environment } from 'environments/environment';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LocalAuthService } from './../../../utils/services/auth.service';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'cart-no-item',
@@ -24,7 +25,7 @@ export class CartNoItemComponent implements OnInit, AfterViewInit, OnDestroy
     flyOutData: CategoryData[] = [];
     flyOutDataSubscription: Subscription = null;
 
-    constructor(public cartService: CartService, private _dataService: DataService, private _localAuthService:LocalAuthService,private _router:Router) { }
+    constructor(public cartService: CartService, private _dataService: DataService, private _localAuthService:LocalAuthService,private _router:Router,private _commonService:CommonService) { }
 
 
     ngOnInit(): void {
@@ -38,6 +39,17 @@ export class CartNoItemComponent implements OnInit, AfterViewInit, OnDestroy
                 return [];
             })).subscribe((data) => this.flyOutData = data);
         }
+        this.addLottieScript();
+        this._commonService.callLottieScript();
+    }
+    
+    addLottieScript() {
+        this._commonService.addLottieScriptSubject.subscribe(lottieInstance => {
+        this._commonService.callLottieScript();
+        lottieInstance.next();
+        
+     });
+        
     }
 
     navigateToLogin()

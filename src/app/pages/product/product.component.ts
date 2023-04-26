@@ -3438,7 +3438,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             else{
                 url = CONSTANTS.PROD + '/' + metaObj.productUrl;
             }
-            const baseUrl = this.isHindiUrl ? CONSTANTS.PROD + '/hi/' : '/'
+            const baseUrl = this.isHindiUrl ? CONSTANTS.PROD + '/hi/' : CONSTANTS.PROD + '/'
             if (
                 !this.isCommonProduct &&
                 !this.listOfGroupedCategoriesForCanonicalUrl.includes(

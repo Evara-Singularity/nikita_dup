@@ -22,7 +22,7 @@
         [productDiscount]="productDiscount" [bulkPriceWithoutTax]="bulkPriceWithoutTax" [bulkDiscount]="bulkDiscount"
         [taxPercentage]="taxPercentage" [bulkSellingPrice]="bulkSellingPrice" [productOutOfStock]="productOutOfStock"
         [productMinimmumQuantity]="productMinimmumQuantity" [priceQuantityCountry]="priceQuantityCountry"
-        [starsCount]="starsCount" [rawReviewsData]="rawReviewsData" [rawProductCountMessage]="rawProductCountMessage">
+        [starsCount]="starsCount" [rawReviewsCount]="rawReviewsData?.reviewList?.length || 0" [rawProductCountMessage]="rawProductCountMessage">
     </product-description>
 
     <product-grouping-attributes [isCommonProduct]="isCommonProduct"

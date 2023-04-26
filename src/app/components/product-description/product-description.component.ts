@@ -29,7 +29,7 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() productMinimmumQuantity;
   @Input() priceQuantityCountry;
   @Input() starsCount;
-  @Input() rawReviewsData;
+  @Input() rawReviewsCount;
   @Input() rawProductCountMessage;
   @Input() qunatityFormControl;
   @Input() isBulkPricesProduct;

@@ -36,7 +36,7 @@ export class ArticleUtilService
                 "name": "Moglix",
                 "logo": {
                     "@type": "ImageObject",
-                    "url": CONSTANTS.MOGLIX_HAINA_LOGO
+                    "url": CONSTANTS.IMAGE_ASSET_URL+'assets/img/moglix_logo_red@3x.png'
                 }
             }
         }
@@ -50,7 +50,7 @@ export class ArticleUtilService
             "@type": "BreadcrumbList",
             "itemListElement": [
                 { "@type": "ListItem", "position": 0, "item": { "@id": CONSTANTS.PROD, "name": "Home" } },
-                { "@type": "ListItem", "position": 1, "item": { "@id": "#", "name": "Articles" } },
+                { "@type": "ListItem", "position": 1, "item": { "@id": CONSTANTS.PROD+'/articles', "name": "Articles" } },
                 { "@type": "ListItem", "position": 2, "item": { "@id": articleUrl, "name": title } }
             ]
         }

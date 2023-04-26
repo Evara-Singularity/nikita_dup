@@ -1,5 +1,6 @@
 @import '../../../scss/variables';
 .bannerBlock{
+    min-height:100px;
     img{
         width:$fullwidth;
         border-radius:$border-radius-8;

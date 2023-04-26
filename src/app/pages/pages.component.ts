@@ -89,18 +89,23 @@ export class PagesComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initialize();
-    this._commonService.getGoldMembershipPopup().subscribe(res=>{
+    if(this._commonService.isBrowser){
+      this.intiaizeV2();
+    }
+    this._commonService.getGoldMembershipPopup().subscribe(res => {
       this.showGoldMembershipPopUp();
-   })
+    })
   }
 
   ngOnInit()
   {
-    // console.log('requestServerIp', this.requestServerIp);
+  }
+
+  checkForSession() {
+    console.log('requestServerIp', this.requestServerIp);
     const queryParams = this._aRoute.snapshot.queryParams;
     const orderId = queryParams['orderId'];
     if (orderId) return;
-    this.intiaizeV2();
   }
 
   intiaizeV2(){
@@ -136,6 +141,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
       this.setEnvIdentiferCookie();
       this.setConnectionType();
       this.checkWebpSupport();
+      this.checkForSession();
     }
   }
 

@@ -43,17 +43,12 @@
         <app-product-offers [price]='productPrice' [gstPercentage]='taxPercentage'
             [productmsn]='productSubPartNumber || defaultPartNumber' [isHindiMode]='isHindiUrl'
             (viewPopUpHandler)='viewPopUpOpen($event)' (promoCodePopUpHandler)='promoCodePopUpOpen($event)'
-            [brandName]='rawProductData?.brandDetails?.brandName'
+            [brandName]='rawProductData?.brandDetails?.brandName' [couponForbrandCategory]='couponForbrandCategory'
             [categoryId]='rawProductData?.categoryDetails[0]?.categoryCode'
-            [categoryName]='rawProductData?.categoryDetails[0]?.categoryName'
-            (emaiComparePopUpHandler)='emiComparePopUpOpen($event)'>
+            [categoryName]='rawProductData?.categoryDetails[0]?.categoryName' [allofferData]='allofferData'
+            (emaiComparePopUpHandler)='emiComparePopUpOpen($event)' [promoCodes]='promoCodes'>
         </app-product-offers>
-        <!-- <ng-container #offerSection></ng-container>
-        <div [ngClass]="{ 'coupon-inner': !offerSectionInstance}" class="coupon-inner" *ngIf="!productOutOfStock" >
-            <product-skeletons [type]="'COUPON'" [templateRefInstance]="offerSectionInstance"></product-skeletons>
-        </div> -->
     </div>
-
     <!-- TODO: skeleton to be implemented -->
     <div data-observeVisibility class="pincode" [debounceTime]="100" (visible)="onVisiblePincodeSection($event)"
         *ngIf="!productOutOfStock">
@@ -90,8 +85,6 @@
     <!-- TODO: Check in case TYPE B & TYPE C products -->
     <div class="card" [class.fbtSection]='fbtFlag' *ngIf='fbtFlag'>
         <fbt [originalProductBO]='originalProductBO' [analytics]='fbtAnalytics'></fbt>
-        <!-- <ng-container #fbt></ng-container>
-        <product-skeletons [type]="'FBT'" [templateRefInstance]="fbtComponentInstance"></product-skeletons> -->
     </div>
 
     <app-product-review [productName]="productName" [reviewLength]="reviewLength" [overallRating]="overallRating"
@@ -119,11 +112,12 @@
         [productBrandDetails]="productBrandDetails" [productCategoryDetails]="productCategoryDetails"
         [productBrandCategoryUrl]="productBrandCategoryUrl">
     </product-more-widget>
+    
     <!-- removed sponsored products -->
-    <!-- <div id="sponseredProducts" [ngClass]="{'common-product': !sponseredProductsInstance}" *ngIf="!sponseredProductsInstance" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+    <div id="sponseredProducts" [ngClass]="{'common-product': !sponseredProductsInstance}" *ngIf="!sponseredProductsInstance" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
         <ng-container #sponseredProducts></ng-container>
         <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
-    </div> -->
+    </div>
 
     <section id="popularDeals" class="common-product" *ngIf="!productOutOfStock && bestProductsRes?.totalCount > 0">
         <product-popular-deals [outOfStock]='productOutOfStock' [apiResponse]='bestProductsRes'
@@ -167,6 +161,7 @@
     </ng-container>
 
     <div *ngIf="!productOutOfStock" class="pt-50"></div>
+    
     <!-- CTA Fixed position -->
     <floating-button-container [class.highIndex]="displayCardCta" *ngIf="!productOutOfStock">
         <floating-button [iconClass]="'icon-cart1'" [label]="productStaticData.add_to_cart" [type]="'WHITE'"

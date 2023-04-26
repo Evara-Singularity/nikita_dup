@@ -296,7 +296,7 @@ const routes: Routes = [
 				loadChildren: () =>
 					import('./articles/articles.module').then((m) => m.ArticlesModule),
 				data: {
-					footer: true,
+					footer: false,
 					logo: true,
 					moreOpt: true,
 					pageName: 'articles'

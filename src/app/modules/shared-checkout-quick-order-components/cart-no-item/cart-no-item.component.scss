@@ -14,12 +14,14 @@
                 width: 250px;
             }
             .emptycart-animation{
-                height: 200px;
-                width: 100%;
-                lottie-player{
-                    width: calc(100% - 30px);
-                    margin-left: 15px;
+                img{
+                    width: 250px;
                 }
+                width: 100%;
+                // lottie-player{
+                //     width: calc(100% - 30px);
+                //     margin-left: 15px;
+                // }
             }
             .noitems-txt{
                 font-size: $extra-large-font;
@@ -47,16 +49,16 @@
         }
     }
 }
-.emptycart-animation{
-    height: 200px;
-    width: 100%;
-    position: relative;
-    lottie-player{
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-}
+// .emptycart-animation{
+//     height: 200px;
+//     width: 100%;
+//     position: relative;
+//     lottie-player{
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//     }
+// }
 .dark-btn{
     background-color: var(--primary) !important;
     color: var(--white) !important;

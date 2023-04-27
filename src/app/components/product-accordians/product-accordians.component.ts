@@ -86,7 +86,9 @@ export class ProductAccordiansComponent {
   }
 
   sendAnalyticsInfo() {
-    this.globalAnalyticService.sendAdobeCall(this.analyticsInfo, 'genericClick');
+    if (this._commonService.isBrowser) {
+      this.globalAnalyticService.sendAdobeCall(this.analyticsInfo, 'genericClick');
+    }
   }
 
 }

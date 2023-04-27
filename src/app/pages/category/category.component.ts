@@ -168,6 +168,9 @@ export class CategoryComponent {
             if( this.API_RESPONSE.category[7]){
                 this.graphData = this.API_RESPONSE.category[7].data;
                 let categoryLevel = this.API_RESPONSE.category[7].categoryLevel;
+                if(!Array.isArray(this.graphData)) {
+                    this.graphData = [];
+                }
                 if(categoryLevel == 1){
                   this.graphData = [];
                 }

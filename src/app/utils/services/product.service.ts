@@ -957,7 +957,7 @@ export class ProductService {
                 ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['medium'])
                 : "",
             mainImageThumnailLink: productPartDetails['images']
-                ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['thumbnail'])
+                ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['default'])
                 : "",
             productTags: [],
             filterableAttributes: {},

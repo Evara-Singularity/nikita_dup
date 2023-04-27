@@ -15,6 +15,7 @@ import { NavigationExtras, Router } from "@angular/router";
 import CONSTANTS from "@app/config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
 import { QuickOrderAllAddressComponent } from "@app/modules/shared-checkout-address/all-address-core/quick-order-all-address/quick-order-all-address.component";
+import { ClientUtility } from "@app/utils/client.utility";
 import { AddressListModel } from "@app/utils/models/shared-checkout.models";
 import { AddressService } from "@app/utils/services/address.service";
 import { DataService } from "@app/utils/services/data.service";
@@ -104,16 +105,11 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
           cartSession.itemsList.length === 0
         ) {
           this.isCartNoItems = true;
-        if(this.homeMiscellaneousCarouselContainerRef){
-           this.homeMiscellaneousCarouselInstance = null;
-           this.homeMiscellaneousCarouselContainerRef.remove();
-        }
-          if(this.quickOrderMiscellaneousCarouselContainerRef){
-            this.quickOrderMiscellaneousCarouselInstance = null;
-            this.quickOrderMiscellaneousCarouselContainerRef.remove();
-          }
         } else {
           this.isCartNoItems = false;
+          if(this.homeMiscellaneousCarouselInstance == null){
+            this.callHomePageWidgetsApis();
+          }
         }
       });
       this.addSubscribers();
@@ -122,11 +118,11 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     if (this.cartSubscription) this.cartSubscription.unsubscribe();
     if (this.addToCartSubscription) this.addToCartSubscription.unsubscribe();
-    if (this.homeMiscellaneousCarouselInstance) {
+    if (this.homeMiscellaneousCarouselContainerRef) {
       this.homeMiscellaneousCarouselInstance = null;
       this.homeMiscellaneousCarouselContainerRef.remove();
     }
-    if (this.quickOrderMiscellaneousCarouselInstance) {
+    if (this.quickOrderMiscellaneousCarouselContainerRef) {
       this.quickOrderMiscellaneousCarouselInstance = null;
       this.quickOrderMiscellaneousCarouselContainerRef.remove();
     }
@@ -158,17 +154,20 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private refreshAllApis() {
-    if(this.quickOrderMiscellaneousCarouselContainerRef != undefined){
-      this.quickOrderMiscellaneousCarouselContainerRef.remove();
-      this.quickOrderMiscellaneousCarouselInstance = null;
-      this.getAllCategoryByMsns();
-    }
-    if(this.homeMiscellaneousCarouselContainerRef != undefined){
-      this.homeMiscellaneousCarouselInstance
-      this.homeMiscellaneousCarouselContainerRef.remove();
-      this.homeMiscellaneousCarouselInstance = null;
-      this.callHomePageWidgetsApis();
-    }
+    setTimeout(()=>{
+      if(this.homeMiscellaneousCarouselContainerRef != undefined){
+        this.homeMiscellaneousCarouselInstance
+        this.homeMiscellaneousCarouselContainerRef.remove();
+        this.homeMiscellaneousCarouselInstance = null;
+        this.callHomePageWidgetsApis();
+      }
+      if(this.quickOrderMiscellaneousCarouselContainerRef != undefined){
+        this.quickOrderMiscellaneousCarouselContainerRef.remove();
+        this.quickOrderMiscellaneousCarouselInstance = null;
+        this.getAllCategoryByMsns();
+      }
+    },2000)
+    this.getWishlistData();
   }
 
   navigateToCheckout() {
@@ -253,9 +252,16 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   preventDefault(e) {
     e.preventDefault();
   }
-  toPaymentSummary(){
-		document.getElementById('payment_summary_section').scrollIntoView();
-	}
+  
+  /**@description scrolls to payment summary section on click of info icon*/
+  scrollPaymentSummary()
+  {
+      if (document.getElementById('summary_common_id_')) {
+          let footerOffset = document.getElementById('summary_common_id_').offsetTop;
+          ClientUtility.scrollToTop(1000, footerOffset-30);
+          this.getAllCategoryByMsns();
+      }
+  }
 
   callHomePageWidgetsApis() {
     const fbt_prodcutsURL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_FBT_PRODUCTS_BY_MSNS;

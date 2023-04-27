@@ -5,5 +5,5 @@
         </span>
     <!-- <span class="right-content" *ngIf="displayCartInfo">Amount:&nbsp;&#8377;{{totalPayableAmount | mathCeil | number : '1.2-2'}}</span>
      -->
-     <span class="right-content" *ngIf="totalPayableAmount > 0">Amount:&nbsp;&#8377;{{totalPayableAmount | mathCeil | number : '1.2-2'}}  <i class="icon-information" (click)="toPaymentSummary()"></i></span>
+     <span class="right-content" *ngIf="totalPayableAmount > 0 && isQuickorder">Amount:&nbsp;&#8377;{{totalPayableAmount | mathCeil | number : '1.2-2'}}  <i class="icon-information" (click)="scrollPaymentSummary()"></i></span>
 </div>

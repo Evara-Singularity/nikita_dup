@@ -58,7 +58,7 @@ export class OrderSummaryComponent implements OnInit, AfterViewInit, OnDestroy
 
         this.promoSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode, totalOffer }) => {
             // no global changes triggered
-            this.showPromoSuccessPopup = isNewPromocode;
+            this.showPromoSuccessPopup = (isNewPromocode && promocode != undefined);
             this.totalOffer = totalOffer || 0;
             setTimeout(() => { this.showPromoSuccessPopup = false; }, 2000)
         })

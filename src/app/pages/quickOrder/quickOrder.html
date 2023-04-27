@@ -17,8 +17,7 @@
 
             <!--homeMiscellaneousCarousel ( Buy it again, Recently Viewed, wishlist & my RFQ section)-->
             <ng-container>
-                <section class="popular-Deals-section" id="popularDeals" data-observeVisibility [debounceTime]="100"
-                    (visible)="callHomePageWidgetsApis()">
+                <section class="popular-Deals-section" id="popularDeals">
                     <ng-container #homeMiscellaneousCarousel></ng-container>
                     <div class="mb-15">
                         <home-page-skeletons [type]="'SIMILAR'"
@@ -26,10 +25,11 @@
                     </div>
                 </section>
             </ng-container>
-
+            <div id="summary_common_id_">
             <gst-details></gst-details>
             <order-summary></order-summary>
             <generic-offers></generic-offers>
+            </div>
             <ng-container>
                 <section class="popular-Deals-section" data-observeVisibility [debounceTime]="100"
                     (visible)="getAllCategoryByMsns()">
@@ -43,7 +43,7 @@
             <div class="fixed-bottom-cta">
                 <p class="total-mount">
                     <span class="payable-amnt">Amount&nbsp;Payable
-                        <i class="icon-information ml-5" (click)="toPaymentSummary()"></i>
+                        <i class="icon-information ml-5" (click)="scrollPaymentSummary()"></i>
                     </span>
                     <span class="total-amt-txt">
                         ₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathRound | number :'1.2-2'}}

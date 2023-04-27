@@ -586,10 +586,10 @@ export class CartComponent
           };
           this._productService.addToPurchaseList(obj).subscribe((res) => {
             if (res["status"]) {
-              this._tms.show({
-                type: "success",
-                text: "Successfully added to wishlist.",
-              });
+            //   this._tms.show({
+            //     type: "success",
+            //     text: "Successfully added to wishlist.",
+            //   });
               this._cartService.removeCartItemsByMsns([this.removableItem['productId']]);
               this.resetRemoveItemCart();
               this._cartService.isAddedToCartSubject.next({isAddedtowishList : true});

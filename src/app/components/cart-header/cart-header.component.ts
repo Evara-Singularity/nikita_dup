@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { ClientUtility } from '@app/utils/client.utility';
 import { CommonService } from '@app/utils/services/common.service';
 import { NavigationService } from '@app/utils/services/navigation.service';
 import { Subscription } from 'rxjs';
@@ -75,8 +76,13 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	get displayCartInfo() { return this.isQuickorder && this.noOfCartItems }
 
-	toPaymentSummary(){
-		document.getElementById('payment_summary_section').scrollIntoView();
+	/**@description scrolls to payment summary section on click of info icon*/
+	scrollPaymentSummary()
+	{
+		if (document.getElementById('summary_common_id_')) {
+			let footerOffset = document.getElementById('summary_common_id_').offsetTop;
+			ClientUtility.scrollToTop(1000, footerOffset-30);
+		}
 	}
 
 	ngOnDestroy(): void

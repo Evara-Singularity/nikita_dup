@@ -1153,24 +1153,36 @@ export class CommonService
     }
 
 
-    get loginStatusTracking()
-    {
-        const user = this._localStorageService.retrieve("user");
-        return user && user["authenticated"] == "true"
-            ? "registered user"
-            : "guest";
+    get loginStatusTracking() {
+        if (this.isBrowser) {
+            const user = this._localStorageService.retrieve("user");
+            return user && user["authenticated"] == "true"
+                ? "registered user"
+                : "guest";
+        } else {
+            return '';
+        }
     }
 
-    get custDataTracking()
-    {
-        const user = this._localStorageService.retrieve("user");
-        return {
-            customerID: user && user["userId"] ? btoa(user["userId"]) : "",
-            emailID: user && user["email"] ? btoa(user["email"]) : "",
-            mobile: user && user["phone"] ? btoa(user["phone"]) : "",
-            customerType: user && user["userType"] ? user["userType"] : "",
-            customerCategory: user && user["customerCategory"]
-        };
+    get custDataTracking() {
+        if (this.isBrowser) {
+            const user = this._localStorageService.retrieve("user");
+            return {
+                customerID: user && user["userId"] ? btoa(user["userId"]) : "",
+                emailID: user && user["email"] ? btoa(user["email"]) : "",
+                mobile: user && user["phone"] ? btoa(user["phone"]) : "",
+                customerType: user && user["userType"] ? user["userType"] : "",
+                customerCategory: user && user["customerCategory"]
+            };
+        } else {
+            return {
+                customerID: "",
+                emailID: "",
+                mobile: "",
+                customerType: "",
+                customerCategory: ""
+            }
+        }
     }
 
 

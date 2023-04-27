@@ -39,39 +39,15 @@
 <div class="category-page-container" *ngIf="data['data'] && data['data'].length > 0">
     <div class="view-all-strip ">
         <h3>{{data.title}}</h3>
-        <a *ngIf="data['data'].length > 5" (click)="openPopup = true" class="quinary-btn">VIEW ALL</a>
-
+        <!-- <a *ngIf="data['data'].length > 5" (click)="openPopup = true" class="quinary-btn">VIEW ALL</a> -->
     </div>
 
-    <div class="pwa-row verticle-view-card">
-        <div class="pwa-col-12 newarrivals-section row-gutter-space">
-            <div class="outer-view-section" *ngFor="let product of data['data'] | slice:0:4; let i = index">
-
-                <a [routerLink]="['/'+product?.productlink]">
-                    <div class="pwa-image">
-                        <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
-                    </div>
-                    <div class="product-card-lower-inner">
-                        <div class="name">
-                            {{product.productName | slice:0:27 }}
-                            <span *ngIf="product.productName.length >27">...</span>
-                        </div>
-                        <div class="brand" *ngFor="let item of product.short_description | characterremove;let i=index">
-                            <span *ngIf="item.key=='Brand'">By: {{ item.value}}</span>
-                        </div>
-                        <div class="prod-price-row">
-                            <div class="price">
-                                <span class="prod-mrp">{{product.mrp | currency:'INR': 'symbol': '1.0-0'}}</span>
-                                <span class="prod-discount" *ngIf="product.discount_percentage > 0">{{product.discount_percentage}}% OFF</span>
-                            </div>
-                            <div class="prod-selling-price">
-                                {{product.sellingPrice | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
+    <div class="pl-15 pb-15">
+        <product-card-vertical-container  [numberOfItems]="newArrivalProducts.length">
+            <ng-container *ngFor="let product of newArrivalProducts">
+              <product-card-vertical-grid-view [moduleUsedIn]="'new arrival'"  [product]="product"> </product-card-vertical-grid-view >
+            </ng-container>
+          </product-card-vertical-container>
     </div>
 </div>
 
@@ -117,38 +93,18 @@
         </ul>
     </div>
 </app-pop-up> -->
-
+<!-- 
 <app-pop-up *ngIf="openPopup" (outData$)="outData($event)" class="bs-popup " [headerType]="'pop-up-header1'"
     [data]="{selector: 'openPopup'}">
     <div class="content-popup otherCategoryBlock grey_bg" content>
         <div class="pwa-row verticle-view-card mb-15">
             <div class="pwa-col-12 newarrivals-section row-gutter-space">
-                <div class="outer-view-section pwa-col-6" *ngFor="let product of data['data']; let i = index">
-                    <a [routerLink]="['/'+product?.productlink]">
-                        <div class="pwa-image">
-                            <img alt="{{product.productName}}" src="{{imagePath + product.imageLink_medium}}">
-                        </div>
-                        <div class="product-card-lower-inner">
-                            <div class="name">
-                                {{product.productName | slice:0:27 }}
-                                <span *ngIf="product.productName.length >27">...</span>
-                            </div>
-                            <div class="brand" *ngFor="let item of product.short_description | characterremove;let i=index">
-                                <span *ngIf="i<1">By: {{ item.value}}</span>
-                            </div>
-                            <div class="prod-price-row">
-                                <div class="price">
-                                    <span class="prod-mrp">{{product.mrp | currency:'INR': 'symbol': '1.0-0'}}</span>
-                                    <span class="prod-discount">{{product.discount_percentage}}% OFF</span>
-                                </div>
-                                <div class="prod-selling-price">
-                                    {{product.sellingPrice | mathCeil | currency: 'INR': 'symbol': '1.0-0'}}
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                <product-card-vertical-container [isScroll]="false" [numberOfItems]="5">
+                    <ng-container *ngFor="let product of newArrivalProducts">
+                      <product-card-vertical-grid-view [moduleUsedIn]="'new arrival'"  [product]="product"> </product-card-vertical-grid-view >
+                    </ng-container>
+                  </product-card-vertical-container>
             </div>
         </div>
     </div>
-</app-pop-up>
+</app-pop-up> -->

@@ -15,6 +15,10 @@
 .pad-10-15{
     padding: 10px 15px;
 }
+// padding-left
+.pl-15{
+    padding-left: 15px;
+}
 
 // padding-left-right
 .pad-lr-0 {
@@ -145,4 +149,9 @@ padding-bottom: 60px;
 }
 .ml-10{
     margin-left: 10px;
+}
+
+.mar-lr-sub-15{
+    margin-left: -15px !important;
+    margin-right: -15px !important;
 }

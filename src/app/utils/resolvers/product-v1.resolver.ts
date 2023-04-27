@@ -127,7 +127,7 @@ export class ProductV1Resolver implements Resolve<any> {
       ]);
     } else {
       const productUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_INFO + `?productId=${productMsnId}&fetchGroup=true`;
-      const productReviewUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_REVIEW;
+      const productReviewUrl = environment.BASE_URL_V2 + ENDPOINTS.PRODUCT_REVIEW;
       const ProductBreadcrumUrl = environment.BASE_URL + ENDPOINTS.BREADCRUMB + `?source=${productMsnId}&type=product`;
       const productQuesAnsUrl = environment.BASE_URL + ENDPOINTS.Q_AND_A + "?itemId=" + productMsnId.toUpperCase();
       const productRelatedLinkUrl = environment.BASE_URL + ENDPOINTS.GET_RELATED_LINKS + "?msn=" + productMsnId;
@@ -135,7 +135,8 @@ export class ProductV1Resolver implements Resolve<any> {
       const productCategoryBucketUrl = environment.BASE_URL + ENDPOINTS.GET_CATEGORY_BUCKET + "?msn=" + productMsnId;
       const productTagUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_TAGS + productMsnId.toUpperCase();
       const bestProductsUrl = environment.BASE_URL + ENDPOINTS.TAG_PRODUCTS + '?moglixPNumber=' + productMsnId.toUpperCase();
-      const reviewRequestBody = { review_type: 'PRODUCT_REVIEW', item_type: 'PRODUCT', item_id: productMsnId, user_id: " " };
+      // const reviewRequestBody = { review_type: 'PRODUCT_REVIEW', item_type: 'PRODUCT', item_id: productMsnId, user_id: " " };
+      const reviewRequestBody = { reviewType: 'PRODUCT_REVIEW', itemType: 'PRODUCT', itemId: productMsnId, userId: " " };
       const moglixInsightUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_WIDGET+"?msn=" + productMsnId;
       let promoCodesUrl = environment.BASE_URL + ENDPOINTS.GET_COUPON_CODE+"?msn=" + productMsnId + '&device=web';
       const mobikwikUrl = environment.BASE_URL + ENDPOINTS.GET_CategoryExtras + "mobikwikpdp";
@@ -258,7 +259,7 @@ export class ProductV1Resolver implements Resolve<any> {
           return of(null);
         }));
 
-      const moglixInsightResponseObj = this.http.get(moglixInsightUrl).pipe(share(),
+      const moglixInsightResponseObj = this.http.get(moglixInsightUrl,requestOptions).pipe(share(),
         map(res => {
           const logInfo = this._commonService.getLoggerObj(moglixInsightUrl, 'GET', startTime)
           logInfo.endDateTime = new Date().getTime();

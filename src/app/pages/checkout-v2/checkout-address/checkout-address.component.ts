@@ -180,8 +180,9 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const orderPlatform =CONSTANTS.DEVICE.device;
         const addressId = deliveryAddress && deliveryAddress['idAddress'];
         const cartId = this.cartSession['cart']['cartId'];
+        const userId = this.cartSession['cart']['userId'];
         this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode , isGstInvoice: isGstInvoice, 
-            orderPlatform: orderPlatform ,addressId :addressId ,cartId: cartId}).subscribe((response) =>
+            orderPlatform: orderPlatform ,addressId :addressId ,cartId: cartId , userId: userId}).subscribe((response) =>
         {
             if (!response) return;
             const AGGREGATES = CheckoutUtil.formatAggregateValues(response);

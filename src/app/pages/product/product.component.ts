@@ -49,6 +49,7 @@ import { TrackingService } from "@app/utils/services/tracking.service";
 import * as localization_en from '../../config/static-en';
 import * as localization_hi from '../../config/static-hi';
 import { product } from '../../config/static-hi';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 
 interface ProductDataArg
@@ -349,10 +350,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     dealsAnalytics: any;
     bestProductsRes: any;
     isBrandMsn = false;
+    pageUrl: string;
     recentProductItems: ProductsEntity[] = null;
     promoCodes: any[];
     allofferData: any[];
     couponForbrandCategory: any;
+    
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);
@@ -548,6 +551,16 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             {
                 this.nudgeOpened();
             })
+            // this.productService.notifyImagePopupState.pipe(distinctUntilChanged()).subscribe(status => {
+            //     if(!status && this.popupCrouselContainerRef) {
+            //         console.log('I am called');
+            //         this.clearImageCrouselPopup();
+            //         this.router.navigateByUrl(this.router.url);
+            //         // this.ngOnInit();
+            //         // this.ngOnInit();
+            //         // this.resetLazyComponents();
+            //     }
+            // })
 
         }
     }
@@ -760,7 +773,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         this.clearOfferInstance();
                     }else{
                         this.clearOfferInstance();
-                        this.onVisibleOffer();
+                        // this.onVisibleOffer();
                     }
                     this.showLoader = false;
                 }
@@ -799,20 +812,20 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 element["isPost"] = false;
                 element["yes"] = 0;
                 element["no"] = 0;
-                if (element.is_review_helpful_count_yes)
-                    element["yes"] = Number(element.is_review_helpful_count_yes["value"]);
-                if (element.is_review_helpful_count_no)
-                    element["no"] = Number(element.is_review_helpful_count_no["value"]);
+                if (element.isReviewHelpfulCountYes)
+                    element["yes"] = Number(element.isReviewHelpfulCountYes);
+                if (element.isReviewHelpfulCountNo)
+                    element["no"] = Number(element.isReviewHelpfulCountNo);
                 element["totalReview"] = element["yes"] + element["no"];
             });
         }
         this.sortReviewsList("date");
         if (
             this.rawReviewsData.summaryData &&
-            this.rawReviewsData.summaryData.hasOwnProperty("final_average_rating")
+            this.rawReviewsData.summaryData.hasOwnProperty("finalAverageRating")
         ) {
             this.setProductRating(
-                this.rawReviewsData.summaryData.final_average_rating
+                this.rawReviewsData.summaryData.finalAverageRating
             );
         }
     }
@@ -962,6 +975,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
         this.getFirstAttributeValue();
         this.setOutOfStockFlag();
+        this.pageUrl = this.router.url;
         this.checkForBulkPricesProduct();
 
         this.removeSimilarProductInstanceOOS();
@@ -1122,7 +1136,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
         if (this.recentProductsInstance) {
             this.recentProductsInstance = null;
-            this.recentProductsContainerRef.remove();
+            this.recentProductsContainerRef && this.recentProductsContainerRef.remove();
             this.onVisibleRecentProduct(null);
         }
   
@@ -2973,6 +2987,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         window.history.pushState('', '', this.router.url);
     }
 
+    updateBackHandling() {
+        window.history.replaceState('', '', this.pageUrl);
+        window.history.pushState('', '', this.pageUrl);
+    }
+
     async openPopUpcrousel(slideNumber: number = 0, oosProductIndex: number = -1)
     {
         if (!this.popupCrouselInstance) {
@@ -2984,6 +3003,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             });
             const factory = this.cfr.resolveComponentFactory(ProductCrouselPopupComponent);
             this.popupCrouselInstance = this.popupCrouselContainerRef.createComponent(factory, null, this.injector);
+            this.productService.notifyImagePopupState.next(true);
+            this.updateBackHandling();
             // sent anaytic call
             this.sendProductImageClickTracking(":oos:similar")
             const options = Object.assign({}, this.iOptions);
@@ -2995,7 +3016,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.popupCrouselInstance.instance["slideNumber"] = slideNumber;
             (this.popupCrouselInstance.instance["out"] as EventEmitter<boolean>).subscribe((status) =>
             {
-                this.clearImageCrouselPopup();
+                // this.productService.notifyImagePopupState.next(false);
+                this.clearImageCrouselPopup()
             });
             (this.popupCrouselInstance.instance["currentSlide"] as EventEmitter<boolean>).subscribe((slideData) =>
             {
@@ -3010,8 +3032,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     private clearImageCrouselPopup()
     {
         this.displayCardCta = false;
-        this.popupCrouselInstance = null;
-        this.popupCrouselContainerRef.remove();
+        if(this.popupCrouselInstance) {
+            this.popupCrouselInstance = null;
+            this.popupCrouselContainerRef.remove();
+        }
+        this.backUrlNavigationHandler();
+        this.commonService.setBodyScroll(null, true);
     }
 
     // async loadProductCrousel(slideIndex)
@@ -3165,40 +3191,67 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
 
-    postHelpful(item, yes, no, i) {
+    postHelpful(item,i,reviewValue) {
         if (this.localStorageService.retrieve("user")) {
             let user = this.localStorageService.retrieve("user");
             if (user.authenticated == "true") {
+                // let obj = {
+                //     review_type: "PRODUCT_REVIEW",
+                //     item_type: "PRODUCT",
+                //     item_id: item.item_id,
+                //     review_id: item.review_id.uuid,
+                //     user_id: user.userId,
+                //     is_review_helpful_count_no: no,
+                //     is_review_helpful_count_yes: yes,
+                // };
                 let obj = {
-                    review_type: "PRODUCT_REVIEW",
-                    item_type: "PRODUCT",
-                    item_id: item.item_id,
-                    review_id: item.review_id.uuid,
-                    user_id: user.userId,
-                    is_review_helpful_count_no: no,
-                    is_review_helpful_count_yes: yes,
-                };
+                    "id":item.id,
+                    "reviewType": "PRODUCT_REVIEW",
+                    "itemType": "PRODUCT",
+                    "msn": item.itemId,
+                    "reviewId": item.reviewId,
+                    "userId": user.userId,
+                    "isReviewHelpfulCountNo": (reviewValue == 'no'?1:0),
+                    "isReviewHelpfulCountYes": (reviewValue == 'yes'?1:0)
+                }
                 this.productService.postHelpful(obj).subscribe((res) => {
-                    if (res["code"] === "200") {
+                    if (res["code"] === 200) {
                         this._tms.show({
                             type: "success",
                             text: "Your feedback has been taken",
                         });
-                        this.rawReviewsData.reviewList[i]["isPost"] = true;
-                        this.rawReviewsData.reviewList[i]["like"] = yes;
-                        this.rawReviewsData.reviewList[i]["dislike"] = no;
+                        let reviewObj = {
+                            reviewType: "PRODUCT_REVIEW",
+                            itemType: "PRODUCT",
+                            itemId: item.itemId,
+                            userId: ""
+                          }
+                        this.productService.getReviewsRating(reviewObj).subscribe((newRes)=>{
+                            if(newRes["code"] === 200){
+                                this.sortedReviewsByDate(newRes['data']['reviewList']);
+                                this.rawReviewsData.reviewList[i]["isReviewHelpfulCountYes"] = newRes['data']['reviewList'][i]["isReviewHelpfulCountYes"];
+                                this.rawReviewsData.reviewList[i]['like'] = reviewValue == 'yes' ? 1 : 0;
+                                this.rawReviewsData.reviewList[i]['dislike'] = reviewValue == 'no' ? 1 : 0;
+                                this.rawReviewsData.reviewList[i]["isReviewHelpfulCountNo"] = newRes['data']['reviewList'][i]["isReviewHelpfulCountNo"];
+                            }
+                        });
+                        
+                        // this.rawReviewsData.reviewList[i]["isPost"] = true;
+                        // this.rawReviewsData.reviewList[i]["like"] = yes;
+                        // this.rawReviewsData.reviewList[i]["dislike"] = no;
 
-                        if (yes === "1" && this.alreadyLiked) {
-                            this.alreadyLiked = false;
-                            this.rawReviewsData.reviewList[i]["yes"] += 1;
-                        } else if (
-                            no === "1" &&
-                            this.rawReviewsData.reviewList[i]["no"] > 0 &&
-                            this.alreadyLiked
-                        ) {
-                            this.alreadyLiked = false;
-                            this.rawReviewsData.reviewList[i]["no"] -= 1;
-                        }
+                        // if (yes === "1" && this.alreadyLiked) {
+                        //     this.alreadyLiked = false;
+                        //     this.rawReviewsData.reviewList[i]["yes"] += 1;
+                        // } else if (
+                        //     no === "1" &&
+                        //     this.rawReviewsData.reviewList[i]["no"] > 0 &&
+                        //     this.alreadyLiked
+                        // ) {
+                        //     this.alreadyLiked = false;
+                        //     this.rawReviewsData.reviewList[i]["no"] -= 1;
+                        // }
+                        
                     }
                 });
             } else {
@@ -3210,7 +3263,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
     
     handlePostHelpful(args: Array<any>) {
-        this.postHelpful(args[0], args[1], args[2], args[3]);
+        this.postHelpful(args[0], args[1], args[2]);
     }
 
     async showYTVideo(link) {
@@ -3385,7 +3438,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             else{
                 url = CONSTANTS.PROD + '/' + metaObj.productUrl;
             }
-            const baseUrl = this.isHindiUrl ? CONSTANTS.PROD + '/hi/' : '/'
+            const baseUrl = this.isHindiUrl ? CONSTANTS.PROD + '/hi/' : CONSTANTS.PROD + '/'
             if (
                 !this.isCommonProduct &&
                 !this.listOfGroupedCategoriesForCanonicalUrl.includes(
@@ -3470,12 +3523,12 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 ? "http://schema.org/InStock"
                 : "http://schema.org/OutOfStock";
             let reviewCount =
-                this.rawReviewsData.summaryData.review_count > 0
-                    ? this.rawReviewsData.summaryData.review_count
+                this.rawReviewsData.summaryData.reviewCount > 0
+                    ? this.rawReviewsData.summaryData.reviewCount
                     : 1;
             let ratingValue =
-                this.rawReviewsData.summaryData.final_average_rating > 0
-                    ? this.rawReviewsData.summaryData.final_average_rating
+                this.rawReviewsData.summaryData.finalAverageRating > 0
+                    ? this.rawReviewsData.summaryData.finalAverageRating
                     : 3.5;
             let imageSchema = this.renderer2.createElement("script");
             imageSchema.type = "application/ld+json";
@@ -3561,7 +3614,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     delete schema["offers"]["availability"];
                 }
                 if (
-                    this.rawReviewsData?.summaryData?.final_average_rating === 0 ||
+                    this.rawReviewsData?.summaryData?.finalAverageRating === 0 ||
                     null ||
                     ""
                 ) {
@@ -4032,7 +4085,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         return reviewList.sort((a, b) =>
         {
-            return parseInt(b.date_unix) - parseInt(a.date_unix);
+            let objectDateA = new Date(a.updatedAt).getTime();
+            let objectDateB = new Date(b.updatedAt).getTime();
+            
+            return objectDateB - objectDateA;
         });
     }
 
@@ -4426,7 +4482,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     get overallRating()
     {
         if (this.rawReviewsData && this.rawReviewsData["summaryData"]) {
-            return this.rawReviewsData["summaryData"]["final_average_rating"];
+            return this.rawReviewsData["summaryData"]["finalAverageRating"];
         }
         return 0;
     }
@@ -4609,6 +4665,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.raiseRFQGetQuoteSubscription.unsubscribe();
         }
         this.resetLazyComponents();
+        // this.productService.notifyImagePopupState.unsubscribe();
+        // this.productService.notifyImagePopupState.next(false);
     }
 
     translate() {

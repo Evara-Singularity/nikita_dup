@@ -1,5 +1,5 @@
-
-<ng-container *ngIf="featureBrandData && featureBrandData.length > 0 " >
+<ng-container *ngIf="featureBrandData && featureBrandData.length > 0 ">
+    <div class="gray-bg-for-saperation mar-lr-sub-15"></div>
     <div class="view-all-strip">
         <h3 class="heading-2-16">Featured Brands</h3>
         <a [routerLink]="['/store/brands']" routerLinkActive="router-link-active" class="btn quinary-btn">VIEW ALL
@@ -7,17 +7,19 @@
     </div>
     <div class="pwa-banner">
         <div *ngFor="let brandBanner of featureBrandData | slice:0:1" class="full-banner">
-            <a  [href]="produrl +'/'+brandBanner?.image_link">
-                <img (click)="setCookieFeatured(brandBanner.image_title, brandBanner?.image_link)" [defaultImage]="defaultImage" [lazyLoad]="imageBasePath + brandBanner.image_name">
+            <a [href]="produrl +'/'+brandBanner?.image_link">
+                <img (click)="setCookieFeatured(brandBanner.image_title, brandBanner?.image_link)"
+                    [defaultImage]="defaultImage" [lazyLoad]="imageBasePath + brandBanner.image_name">
             </a>
-               
+
         </div>
         <div class="mutiple-banner mt-15">
             <div *ngFor="let brandBanner of featureBrandData | slice:1:3" class="half-banner">
                 <a [href]="produrl +'/'+brandBanner?.image_link">
-                    <img (click)="setCookieFeatured(brandBanner.image_title, brandBanner?.image_link)" [defaultImage]="defaultImage" [lazyLoad]="imageBasePath + brandBanner.image_name" >
+                    <img (click)="setCookieFeatured(brandBanner.image_title, brandBanner?.image_link)"
+                        [defaultImage]="defaultImage" [lazyLoad]="imageBasePath + brandBanner.image_name">
                 </a>
-           </div>
+            </div>
         </div>
     </div>
 </ng-container>

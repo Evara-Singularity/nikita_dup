@@ -5,7 +5,7 @@
     // margin-top: 170px;
     padding: 7px 10px;
     .list-num {
-        font-size: 10px;
+        font-size: $medium-font;
     }
     .list-name {
         padding: 5px 0px;
@@ -18,7 +18,7 @@
 .filter-wrapper {
     position: fixed;
     // bottom: -200px;
-    top: 52px;
+    top: 58px;
     z-index: 9;
     left: 0px;
     width: 100%;

@@ -89,4 +89,9 @@ fetchItemDetails(msn) {
     return this.dataService.callRestful('GET', url);
 }
 
+getIfscAndBankName(ifscCode){
+    const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.IFSC_CODE + ifscCode ;
+    return this.dataService.callRestful("GET",url);
+}
+
 }

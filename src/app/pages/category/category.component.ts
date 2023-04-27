@@ -86,7 +86,7 @@ export class CategoryComponent {
     }
 
     ngAfterViewInit(): void {
-        this.sharedProductList.getSponseredProducts();
+        // this.sharedProductList.getSponseredProducts();
         this.backUrlNavigationHandler();
         this.isFiltersApplied = Object.keys(this._commonService.selectedFilterData.filter).length ? true : false
     }
@@ -162,9 +162,9 @@ export class CategoryComponent {
                 }
             });
 
-            if (this.sharedProductList) {
-                this.sharedProductList.getSponseredProducts();
-            }
+            // if (this.sharedProductList) {
+            //     this.sharedProductList.getSponseredProducts();
+            // }
             if( this.API_RESPONSE.category[7]){
                 this.graphData = this.API_RESPONSE.category[7].data;
                 let categoryLevel = this.API_RESPONSE.category[7].categoryLevel;

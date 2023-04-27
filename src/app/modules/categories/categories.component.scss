@@ -8,20 +8,22 @@
     display:flex;
     justify-content:space-between;
     align-items:flex-start;
-    margin:-10px 0px 0px -10px;
+    margin:-10px 0px 0px -5px;
     background:var(--white);
-    overflow:auto;
+    padding-right: 10px;
+    // overflow:auto;
     padding-bottom: 10px;
     .circle-brand-block{
         font-size: 12px;
         text-align: center;
+        display: flex;
         padding: 5px;
-        width:25%;
-        margin:10px 0px 0px 10px;
+        width:24%;
+        margin:10px 0px 0px 0px;
         .circle-brand-img{
             width:70px;
             height:70px;
-            border:2px solid var(--border-red);
+            border:2px solid var(--ghost-white);
             border-radius:$half-width;
             margin-bottom: 10px;
             padding: 5px;
@@ -45,6 +47,7 @@
     }
     .view-all-strip{
         @extend %view-all-strip;
+        padding-top: 20px !important;
     }
 }
 
@@ -53,7 +56,7 @@
 .category-block-container{
     display: flex;
     justify-content: space-between;
-    padding: 15px 15px 0 0;
+    padding: 0px 15px 0 0;
     flex-wrap: wrap;
     .category-inner-block{
         width: 48%;

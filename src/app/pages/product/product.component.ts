@@ -1853,6 +1853,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                   toPincode:
                     response.addressDetails["shippingAddress"][0]["zipCode"],
                   price: this.productPrice,
+                  orderPlatform :CONSTANTS.DEVICE.device,
+                addressId : response.addressDetails["shippingAddress"][0]["idAddress"],
+                cartId : this.cartSession['cart']['cartId'],
+                userId : this.cartSession['cart']['userId'],
                 };
                 return this.productService
                   .getLogisticAvailability(postBody)

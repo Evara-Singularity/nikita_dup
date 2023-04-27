@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { catchError } from "rxjs/operators";
-import { Observable, of } from "rxjs";
+import { BehaviorSubject, Observable, of } from "rxjs";
 import { DataService } from "./data.service";
 import CONSTANTS from "../../config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
@@ -20,8 +20,9 @@ export class ProductService {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     private basePath = CONSTANTS.NEW_MOGLIX_API;
+    private basePath2 =  CONSTANTS.NEW_MOGLIX_API_V2;
     productCouponItem: any = null;
-
+    notifyImagePopupState: BehaviorSubject<any>  = new BehaviorSubject<any>(null);
     oosSimilarProductsData = {
         similarData: [],
     };
@@ -193,7 +194,7 @@ export class ProductService {
     }
 
     postReview(obj) {
-        const url = this.basePath + ENDPOINTS.SET_REVIEWS;
+        const url = this.basePath2 + ENDPOINTS.SET_REVIEWS;
         return this._dataService.callRestful("POST", url, { body: obj }).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({ data: [], code: res.status });
@@ -202,7 +203,7 @@ export class ProductService {
     }
 
     postHelpful(obj) {
-        const url = this.basePath + ENDPOINTS.IS_REVIEW_HELPFUL;
+        const url = this.basePath2 + ENDPOINTS.IS_REVIEW_HELPFUL;
         return this._dataService.callRestful("POST", url, { body: obj }).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({ data: [], code: res.status });
@@ -226,7 +227,7 @@ export class ProductService {
     }
 
     getReviewsRating(obj) {
-        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRODUCT_REVIEW;
+        const url = CONSTANTS.NEW_MOGLIX_API_V2 + ENDPOINTS.PRODUCT_REVIEW;
         return this._dataService.callRestful("POST", url, { body: obj }).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({ data: null, httpStatus: res.status });
@@ -760,7 +761,8 @@ export class ProductService {
         return productReturn;
     }
 
-    productLayoutJsonToProductEntity(product: any, brandId:any, brandName:any) {
+
+    productLayoutJsonToProductEntity(product: any, brandId?:any, brandName?:any) {
         // console.log('product ==>', product);
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
@@ -786,8 +788,8 @@ export class ProductService {
             mainImageMediumLink: product["imageLink_medium"]
                 ? this.getForLeadingSlash(product["imageLink_medium"])
                 : "",
-            mainImageThumnailLink: product["imageLink_small"]
-                ? this.getForLeadingSlash(product["imageLink_small"])
+            mainImageThumnailLink: product["imageLink_medium"]
+                ? this.getForLeadingSlash(product["imageLink_medium"])
                 : "",
             productTags: [],
             filterableAttributes: {},

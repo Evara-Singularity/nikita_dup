@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit, ViewChild, EventEmitter, Output, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
-import { map, takeUntil } from 'rxjs/operators';
+import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe, formatDate } from '@angular/common';
 import { Bank } from '../../../utils/validators/bank.validate';
@@ -207,13 +207,35 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.returnForm.setControl('bankDetail',
         this._formBuilder.group({
-          "bankName": [null, { validators: [Validators.required, Bank.bankNameorAccountHolder], updateOn: "blur" }],
-          "ifscCode": [null, { validators: [Validators.required, Bank.ifscValidate], updateOn: "blur" }],
-          "acountName": [null, { validators: [Validators.required, Bank.bankNameorAccountHolder], updateOn: "blur" }],
-          "acountNo": [null, { validators: [Validators.required, Bank.bankAccount], updateOn: "blur" }],
+          "bankName": [null, { validators: [Validators.required, Bank.bankNameorAccountHolder]}],
+          "ifscCode": [null, { validators: [Validators.required, Validators.pattern('^[A-Z]{4}0[A-Z0-9]{6}$')]}],
+          // "ifscCode": [null, { validators: [Validators.required, Validators.pattern('^[0-9]{6}$')]}],
+          "acountName": [null, { validators: [Validators.required, Bank.bankNameorAccountHolder]}],
+          "acountNo": [null, { validators: [Validators.required, Bank.bankAccount]}],
           "chequeUrl": [null]
         }))
+
+        this.returnForm.controls['bankDetail']['controls']['ifscCode'].valueChanges.pipe(debounceTime(300)).subscribe(res=>{
+          if ( this.returnForm.controls['bankDetail']['controls']['ifscCode'].value.length==11) {
+            this.getBankNameByIfscCode(res); 
+          }else{
+            this.returnForm.controls['bankDetail']['controls']['bankName'].reset();
+          }
+        })  
     }
+  }
+
+  getBankNameByIfscCode(ifscCode){
+    this._OrderService.getIfscAndBankName(ifscCode).subscribe(res=>{
+    if (res['status']) {
+      this.returnForm.controls['bankDetail']['controls']['bankName'].reset()
+      console.log("result",res)
+      const bankNameByIfscApi= res['data']['BANK'];
+      this.returnForm.controls['bankDetail']['controls']['bankName'].setValue(bankNameByIfscApi)
+    } else {
+      this.returnForm.controls['bankDetail']['controls']['bankName'].reset();      
+    }
+    })
   }
 
   get showError() {

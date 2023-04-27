@@ -53,8 +53,8 @@
                         [ngClass]="{'active': ( i==0 && !isProductCrouselLoaded ) || ( i==1 && isProductCrouselLoaded) }">
                     </li>
                     <li *ngIf="item['contentType'] == 'YOUTUBE_VIDEO'"
-                        (click)="$event.stopPropagation();loadProductCrousel(i)" class="pager_icon_dot">
-                        <em class="icon-youtube"></em>
+                        (click)="$event.stopPropagation();loadProductCrousel(i)" class="pager_icon_dot pager-vid">
+                        <em class="icon-video-thumbnail"></em>
                     </li>
                 </ng-container>
             </ng-container>
@@ -64,7 +64,7 @@
             <div class="image_tag">
                 <div class="tag_container"
                     *ngFor="let tag of productTags | slice:0:1;let i = index;">
-                    <img src="{{tag.imageUrl}}">
+                    <img src="{{tag.imageUrl}}" alt="{{tag.name}}">
                 </div>
             </div>
         </ng-container>

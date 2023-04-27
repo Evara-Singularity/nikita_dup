@@ -75,12 +75,13 @@ export function app() {
 }
 
 function writeLog(log) {
-  fs.appendFile(environment.LOG_FILE_PATH + 'pageLoadtimeLog.log', `${JSON.stringify(log)}\n`, function (err) {
-    if (err) {
-      console.log('PageLoadTimeLog', err);
-      // console.log(err);
-    }
-  });
+  console.log('log', log);
+  // fs.appendFile(environment.LOG_FILE_PATH + 'pageLoadtimeLog.log', `${JSON.stringify(log)}\n`, function (err) {
+  //   if (err) {
+  //     console.log('PageLoadTimeLog', err);
+  //     // console.log(err);
+  //   }
+  // });
 }
 
 function shouldCompress (req, res) {

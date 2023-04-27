@@ -86,7 +86,7 @@ export class CategoryComponent {
     }
 
     ngAfterViewInit(): void {
-        this.sharedProductList.getSponseredProducts();
+        // this.sharedProductList.getSponseredProducts();
         this.backUrlNavigationHandler();
         this.isFiltersApplied = Object.keys(this._commonService.selectedFilterData.filter).length ? true : false
     }
@@ -125,7 +125,7 @@ export class CategoryComponent {
             this.createCategorySchema(this.API_RESPONSE.category[1].productSearchResult['products']);
 
             // create FAQ section schema
-            this.setFaqSchema(this.API_RESPONSE.category[2]);
+            if(this._commonService.selectedFilterData.page < 2){ this.setFaqSchema(this.API_RESPONSE.category[2]); }
 
             //set youtube informative video data
             if (this.API_RESPONSE.category[8] && 
@@ -162,9 +162,9 @@ export class CategoryComponent {
                 }
             });
 
-            if (this.sharedProductList) {
-                this.sharedProductList.getSponseredProducts();
-            }
+            // if (this.sharedProductList) {
+            //     this.sharedProductList.getSponseredProducts();
+            // }
             if( this.API_RESPONSE.category[7]){
                 this.graphData = this.API_RESPONSE.category[7].data;
                 let categoryLevel = this.API_RESPONSE.category[7].categoryLevel;
@@ -454,6 +454,7 @@ export class CategoryComponent {
             'name': 'keywords',
             'content': this.API_RESPONSE.category[0].categoryDetails.categoryName + ', ' + this.API_RESPONSE.category[0].categoryDetails.categoryName + ' online, buy ' + this.API_RESPONSE.category[0].categoryDetails.categoryName + ', industrial ' + this.API_RESPONSE.category[0].categoryDetails.categoryName
         });
+        this.meta.addTag({ name: "og:image", content:  CONSTANTS.IMAGE_BASE_URL + this.API_RESPONSE.category[0].categoryDetails.mainImageLink });
 
         if (this.API_RESPONSE.category[1]['productSearchResult']['products'] && this.API_RESPONSE.category[1]['productSearchResult']['products'].length > 0) {
             this.meta.addTag({ 'name': 'robots', 'content': (this._activatedRoute.snapshot.queryParams["page"] && parseInt(this._activatedRoute.snapshot.queryParams["page"]) > 1) ? CONSTANTS.META.ROBOT1 : CONSTANTS.META.ROBOT });

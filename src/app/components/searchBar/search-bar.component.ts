@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation, Input, OnInit, ViewChild, ElementRef, NgModule, Renderer2, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Router, NavigationStart, RouterModule, ActivatedRoute } from '@angular/router';
+import { Router, NavigationStart, RouterModule, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { TypeAheadService } from '../../utils/services/typeAhead.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -297,6 +297,7 @@ export class SearchBarComponent implements OnInit, AfterViewInit {
         this.showSuggestionBlock = false;
         this._commonService.enableNudge = false;
         this._commonService.resetLimitTrendingCategoryNumber();
+        localStorage.setItem('searchURL', window.location.pathname)
     }
     
     resetSearchInput(){

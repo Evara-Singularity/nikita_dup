@@ -697,6 +697,7 @@ export const CONSTANTS = {
   },
   enableGenericPrepaid: false,
 
-  bulkRfqConstant:'BULK_RFQ_CONSTANT'
+  bulkRfqConstant:'BULK_RFQ_CONSTANT',
+  PDP_IMAGE_HASH:"pdpImageHash"
 };
 export default CONSTANTS;

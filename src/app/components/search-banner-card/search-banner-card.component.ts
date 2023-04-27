@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @Component({
   selector: 'search-banner-card',
@@ -46,7 +47,8 @@ export class SearchBannerCardComponent {
     SearchBannerCardComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    LazyLoadImageModule
   ],
   exports: [
     SearchBannerCardComponent

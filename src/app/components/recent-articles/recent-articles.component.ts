@@ -12,6 +12,7 @@ export class RecentArticles implements OnInit
 {
     constructor(private router: Router, private _productService:ProductService) { }
     
+    readonly prodUrl=CONSTANTS.PROD;
     @Input() recentArticles;
     @Input() title;
     imageBaseUrl = CONSTANTS.IMAGE_BASE_URL;
@@ -26,6 +27,10 @@ export class RecentArticles implements OnInit
     navigateToArticlePage(article)
     {
         this.router.navigateByUrl('/articles/' + article.friendlyUrl);
+    }
+
+    articleHref(article) {
+        return this.prodUrl + '/articles/' + article.friendlyUrl
     }
 
 }

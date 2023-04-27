@@ -133,10 +133,16 @@ export class HomeV1Component implements OnInit {
   }
 
   ngOnInit() {
+    //setting meta data
+    this.setMetaData();
+    //setting analytics
+    this.setAnalyticTags();
     
-
     this.isUserLoggedIn = this._localAuthService.getUserSession();
-
+    if(this.isUserLoggedIn && this.isUserLoggedIn.authenticated == 'false') {
+      this.onVisibleCarousel(null)
+    }
+    
     this._commonService.isHomeHeader = true;
 		this._commonService.isPLPHeader = false;
     this.loadSearchTerms();
@@ -154,10 +160,6 @@ export class HomeV1Component implements OnInit {
     this.route.queryParams.subscribe(res => {
       this.isRoutedBack = res && res.hasOwnProperty('back') ? true : false;
     })
-    //setting meta data
-    this.setMetaData();
-    //setting analytics
-    this.setAnalyticTags();
     this.checkForUser();
   }
 
@@ -490,6 +492,7 @@ export class HomeV1Component implements OnInit {
 			content:
 				'Moglix, industrial equipment, industrial tools, industrial products, industrial supplies',
 		});
+   
 		if (this.isServer) {
 			const links = this._renderer2.createElement('link');
 			this.webSiteSchema();
@@ -538,7 +541,7 @@ export class HomeV1Component implements OnInit {
 				"@type": "Organization",
 				"name": "Moglix",
 				"url": CONSTANTS.PROD,
-				"logo": `${this.imagePath}assets/img/moglix-logo.jpg`,
+				"logo": `${this.imagePath}assets/img/moglix_logo_red@3x.png`,
 				"contactPoint":
 					[{
 						"@type": "ContactPoint",

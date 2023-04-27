@@ -44,7 +44,7 @@
     
             <!-- category stores -->
             <div class="pwa-col-12 category-grid-container mb-15">
-                <h2>Category Stores</h2>
+                <h3 class="heading-2-16">Category Stores</h3>
                 <div class="pwa-row pwa-row-noPad pad-tb-0 row-gutter-space">
                     <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card pwa-col-4"
                         [routerLink]="item.category_url">
@@ -59,7 +59,7 @@
                         <a>
                             <img alt="View All Categories" src="{{clusterimagePath + 'img/cluster/all_categories.png'}}"
                                 width="97" height="65">
-                            <p class="category-text view-all-cate">View All Categories</p>
+                            <p class="category-text view-all-cate">View All<br> Categories</p>
                         </a>
                     </div>
                 </div>
@@ -74,10 +74,10 @@
 
         <!-- recently view Carousel -->
         <div class="pwa-col-12 recently-container"  *ngIf="!isUserLoggedIn">
-            <div data-observeVisibility [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
-                *ngIf="showRecentlyViewedCarousel" [debounceTime]="50" (visible)="onVisibleCarousel($event)">
+            <div [ngClass]="{'categories-container': !showRecentlyViewedCarousel}"
+                *ngIf="showRecentlyViewedCarousel">
                 <ng-container #RecentlyViewedCarouselComponent></ng-container>
-                <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="carouselInstance"></home-page-skeletons>
+                <!-- <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="carouselInstance"></home-page-skeletons> -->
             </div>
         </div>
 
@@ -103,7 +103,7 @@
         <bulk-rquest-form-popup-lazy></bulk-rquest-form-popup-lazy>
 
         <!-- home accordion  -->
-        <div class="pwa-col-12">
+        <div class="pwa-col-12 mt-10">
             <home-accordians [carouselData]="homePageCategoryCarouselData"></home-accordians>
         </div>
 

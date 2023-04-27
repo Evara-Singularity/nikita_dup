@@ -1,7 +1,7 @@
 @import "../../scss/variables";
 header {
     &.inner-pages {
-        @extend %box-shadow;
+        // @extend %box-shadow;
         border-bottom: 1px solid var(--ghost-white);
         position: fixed;
         top: 0;
@@ -9,6 +9,7 @@ header {
         z-index: 6;
         left:0;
         right:0;
+        box-shadow: 0px 12px 16px #455B631A;
     }
     .main-header {
         background: var(--white);

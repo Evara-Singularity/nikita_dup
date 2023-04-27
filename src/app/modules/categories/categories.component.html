@@ -10,14 +10,14 @@
         <div class="view-all-strip">
             <h2>{{ carouselData[category.dataKey]['layout_name'] | uppercase }}</h2>
             <!--layout_url-->
-            <a *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'" [href]="carouselData[category.dataKey]['layout_url']" class="btn quinary-btn">VIEW ALL</a>
+            <a *ngIf="carouselData[category.dataKey]['layout_name'] != 'Bestsellers'" [href]="produrl +'/'+carouselData[category.dataKey]['layout_url']" class="btn quinary-btn">VIEW ALL</a>
         </div>
 
         <ng-container *ngIf="carouselData[category.dataKey]['data'] && carouselData[category.dataKey]['data']['image_block'] && carouselData[category.dataKey]['data']['image_block'].length>=4">
         <div class="category-block-container">
             <div class="category-inner-block" *ngFor="let imageBlockItem of  carouselData[category.dataKey]['data']['image_block']|slice:0:4">
-               <a (click)="setCookieCluster('/'+imageBlockItem['image_link'], i)" href="{{imageBlockItem['image_link']}}">
-                <img [defaultImage]="defaultImage" [lazyLoad]="imageCdnPath + imageBlockItem['image_name']" alt="">
+                <a (click)="setCookieCluster('/'+imageBlockItem['image_link'], i)" [href]="produrl+ '/'+imageBlockItem['image_link']">
+                    <img [defaultImage]="defaultImage" [lazyLoad]="imageCdnPath + imageBlockItem['image_name']" alt="{{imageBlockItem.image_title}}">
             </a> 
             </div>
         </div>
@@ -41,7 +41,7 @@
                     (click)="setCategoryorBrandCookie(items['brandName'],'tbrand')">
                     <div class="circle-brand-img">
                         <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + items.brand_image"
-                        alt="category image" class="category-img" width="56" height="56">
+                        alt="{{items['brandName']}}" class="category-img" width="56" height="56">
                     </div>
                     <p>{{items['brandName']}}</p>
                 </a>

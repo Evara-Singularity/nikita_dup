@@ -69,9 +69,8 @@ export class BulkRquestFormPopupLazyComponent implements OnInit, AfterViewInit, 
   }
 
   deleteComponent() {
-    console.log('deleteComponent', )
     this.bulkRfqComponent = null;
-    this.bulkRfqFormContainerRef.remove();
+    this.bulkRfqFormContainerRef?.remove();
   }
 
   loadBulkRFQ(){

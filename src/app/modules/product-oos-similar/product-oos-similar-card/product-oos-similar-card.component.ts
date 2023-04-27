@@ -120,7 +120,7 @@ export class ProductOosSimilarCardComponent {
   }
 
   getProductData() {
-    this._loader.setLoaderState(true);
+    // this._loader.setLoaderState(true);
     // Product API url
     forkJoin([
       this.productService.getProduct(this.productMsn),
@@ -224,12 +224,19 @@ export class ProductOosSimilarCardComponent {
   }
 
   getReviewsAndRatings() {
+   
     if (!this.productService.oosSimilarProductsData.similarData[this.index].hasOwnProperty('reviewRatingApiData')) {
+      // let obj = {
+      //   review_type: "PRODUCT_REVIEW",
+      //   item_type: "PRODUCT",
+      //   item_id: (this.productService.oosSimilarProductsData.similarData[this.index]['defaultPartNumber']).toLowerCase(),
+      //   user_id: ""
+      // }
       let obj = {
-        review_type: "PRODUCT_REVIEW",
-        item_type: "PRODUCT",
-        item_id: (this.productService.oosSimilarProductsData.similarData[this.index]['defaultPartNumber']).toLowerCase(),
-        user_id: " "
+        reviewType: "PRODUCT_REVIEW",
+        itemType: "PRODUCT",
+        itemId: (this.productService.oosSimilarProductsData.similarData[this.index]['defaultPartNumber']).toLowerCase(),
+        userId: ""
       }
 
       this.productService.getReviewsRating(obj).subscribe(data => {

@@ -1,7 +1,7 @@
 
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { NgxSiemaModule, NgxSiemaOptions, NgxSiemaService } from 'ngx-siema';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '../../utils/pipes/math-floor';
@@ -14,6 +14,8 @@ import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import PinchZoom from 'pinch-zoom-js';
 import CONSTANTS from '@app/config/constants';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { ProductService } from '@app/utils/services/product.service';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-crousel-popup',
@@ -37,10 +39,19 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
     private ngxSiemaService: NgxSiemaService,
     private modalService: ModalService,
     private _analyticService: GlobalAnalyticsService,
+    private _router:Router,
+    private productService: ProductService
   ) { }
 
   ngOnInit(): void {
     this.setOptions();
+    let addSubscription = true;;
+    this.productService.notifyImagePopupState.pipe(distinctUntilChanged()).subscribe(status => {
+      if(!status && addSubscription) {
+        addSubscription = false;
+        this.outData(null);
+      }
+    })
   }
 
   ngAfterViewInit(){
@@ -86,7 +97,6 @@ export class ProductCrouselPopupComponent implements OnInit, AfterViewInit {
       this.currentSlide.emit(result);
     });
     this.out.emit(data);
-    
   }
 
   showYTVideo(link) {

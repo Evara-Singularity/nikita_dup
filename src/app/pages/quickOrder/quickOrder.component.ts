@@ -95,6 +95,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this._loaderService.setLoaderState(false);
+    let i = 0;
     this.cartSubscription = this._cartService
       .getCartUpdatesChanges()
       .pipe(delay(800))
@@ -107,8 +108,9 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
           this.isCartNoItems = true;
         } else {
           this.isCartNoItems = false;
-          if(this.homeMiscellaneousCarouselInstance == null){
+          if(this.homeMiscellaneousCarouselInstance == null && i == 0){
             this.callHomePageWidgetsApis();
+            i=i+1;
           }
         }
       });
@@ -167,7 +169,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.getAllCategoryByMsns();
       }
     },2000)
-    this.getWishlistData();
+    if(this._localAuthService.isUserLoggedIn()){ this.getWishlistData(); }
   }
 
   navigateToCheckout() {

@@ -590,7 +590,7 @@ export class CartComponent
             //     type: "success",
             //     text: "Successfully added to wishlist.",
             //   });
-              this._cartService.removeCartItemsByMsns([this.removableItem['productId']]);
+              this._cartService.removeCartItemsByMsns([this.removableItem['productId']], true);
               this.resetRemoveItemCart();
               this._cartService.isAddedToCartSubject.next({isAddedtowishList : true});
             } else {

@@ -131,7 +131,8 @@ export class ProductCardCoreComponent implements OnInit {
           this.addToCart(productDetails, buyNow)
         }
       } else {
-        this.showAddToCartToast('Product does not exist');
+        this.common_showAddToCartToast('Product does not exist');
+        //this.showAddToCartToast('Product does not exist');
       }
     }, error => {
       // console.log('buyNow ==>', error);
@@ -350,12 +351,14 @@ export class ProductCardCoreComponent implements OnInit {
           if (!buyNow) {
             this._cartService.setGenericCartSession(result);
             this._cartService.isAddedToCartSubject.next(productDetails);
-            this.showAddToCartToast();
+            //this.showAddToCartToast();
+            this.common_showAddToCartToast('Product added successfully');
           } else {
             this._router.navigateByUrl('/checkout', { state: buyNow ? { buyNow: buyNow } : {} });
           }
         } else {
-          this.showAddToCartToast('Product already added');
+          this.common_showAddToCartToast('Product already added');
+          //this.showAddToCartToast('Product already added');
         }
       }
     },(error)=>{
@@ -365,6 +368,11 @@ export class ProductCardCoreComponent implements OnInit {
   }
 
   remove(product) { this.remove$.emit(product)}
+
+  private common_showAddToCartToast(message){
+    const iscurrentUrl : boolean = this._router.url.includes("quickorder");
+    (iscurrentUrl ? this._toastMessageService.show({ type: 'success', text: message }) : this.showAddToCartToast(message));
+  }
 
   getRandomValue(arr, n) {
     var result = new Array(n),

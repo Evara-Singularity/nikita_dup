@@ -79,4 +79,9 @@ button.btn[disabled] {
         }
     }
 }
-
+.floating-promo{
+    position: fixed;
+    width: 100%;
+    z-index: 12;
+    bottom: 54px;
+}

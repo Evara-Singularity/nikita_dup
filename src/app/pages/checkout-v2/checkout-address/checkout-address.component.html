@@ -3,8 +3,10 @@
     <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
     <ng-container>
         <section>
-            <div class="fixed-bottom-cta pad-0">
+            <div class="floating-promo">
                 <prepaid-offer-checkout></prepaid-offer-checkout>
+            </div>
+            <div class="fixed-bottom-cta pad-0">
             <div *ngIf="isUserLoggedIn else hideContinue" class="payment-strip">
                 <div class="amount-left-section">
                     <span class="payable-amnt">Amount Payable

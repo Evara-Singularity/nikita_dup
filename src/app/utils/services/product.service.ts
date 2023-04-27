@@ -1004,12 +1004,12 @@ export class ProductService {
             rating: (overrideProductB0 && overrideProductB0.rating) ? overrideProductB0.rating : null,
             categoryCodes: productCategoryDetails['categoryCode'],
             taxonomy: productCategoryDetails['taxonomyCode'],
-            mainImageLink: (productPartDetails['images']) ? productPartDetails['images'][0]['links']['thumbnail'] : '',
+            mainImageLink: (productPartDetails['images']) ? productPartDetails['images'][0]['links']['default'] : '',
             mainImageMediumLink: productPartDetails['images']
             ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['medium'])
             : "",
             mainImageThumnailLink: productPartDetails['images']
-            ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['thumbnail'])
+            ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['default'])
             : "",
             productTags: [],
             filterableAttributes: {},

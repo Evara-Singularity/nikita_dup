@@ -17,7 +17,8 @@ button.btn[disabled] {
     background: var(--white) !important;
     button {
         margin-left: auto;
-        width: $half-width;
+        width: 100%;
+        margin-left: 20px;
     }
     .amount-left-section {
         padding-right: 10px;

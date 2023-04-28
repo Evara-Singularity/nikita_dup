@@ -108,13 +108,13 @@ export const CONSTANTS = {
         //   paymentId: 66,
         //   imgUrl: "freecharge-wallet.png"
         // },
-        walletMobikwik: {
-          mode: "WALLET",
-          type: "mobikwik",
-          bankcode: null,
-          paymentId: 67,
-          imgUrl: "mobikwik-wallet.png"
-        },
+        // walletMobikwik: {
+        //   mode: "WALLET",
+        //   type: "mobikwik",
+        //   bankcode: null,
+        //   paymentId: 67,
+        //   imgUrl: "mobikwik-wallet.png"
+        // },
         walletAirtel: {
           mode: "WALLET",
           type: "airtelmoney",

@@ -5,9 +5,11 @@
 
 
 .invoice-container {
+    background-color: red;
     background: var(--white);
     padding: 15px;
     margin-top: 10px;
+    margin-bottom: 5px !important;
     @extend %cards;
     .invoice-select {
         display: flex;

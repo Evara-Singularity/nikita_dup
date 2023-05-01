@@ -1626,4 +1626,15 @@ export class CommonService
         return this._dataService.callRestful("POST", url, { body: obj });
     }
 
+    adobe_tracking_proceed_to_checkout(trackingname){
+        const page = {
+            'linkPageName': "moglix:cart summary",
+            'linkName': trackingname,
+        }
+        let data = {}
+        data["page"] = page;
+        data["custData"] = this.custDataTracking;
+        this._analytics.sendAdobeCall(data, trackingname); 
+    }
+
 }

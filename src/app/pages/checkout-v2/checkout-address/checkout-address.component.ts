@@ -18,6 +18,7 @@ import { CartUtils } from './../../../utils/services/cart-utils';
 import { RetryPaymentService } from './../../../utils/services/retry-payment.service';
 import { QuickOrderAllAddressComponent } from '@app/modules/shared-checkout-address/all-address-core/quick-order-all-address/quick-order-all-address.component';
 import { AllAddressesComponent } from '@app/modules/shared-checkout-address/all-address-core/all-addresses/all-addresses.component';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'checkout-address',
@@ -52,7 +53,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     paymentMode: any;
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
-        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService)
+        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService, private _commonService: CommonService)
     {
         
     }
@@ -255,6 +256,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             return;
         }
         this.validateCart();
+        this._commonService.adobe_tracking_proceed_to_checkout('proceed_to_checkout');
     }
 
     /**@description calculates the total payable amount as per cart changes*/

@@ -593,6 +593,7 @@ export class CartComponent
               this._cartService.removeCartItemsByMsns([this.removableItem['productId']], true);
               this.resetRemoveItemCart();
               this._cartService.isAddedToCartSubject.next({isAddedtowishList : true});
+              this.sendAdobeAnalyticsData("move_to_wishlist");
             } else {
               this._tms.show({
                 type: "error",

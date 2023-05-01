@@ -4,7 +4,9 @@ import { CONSTANTS } from "@app/config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { CartService } from "@app/utils/services/cart.service";
+import { CommonService } from "@app/utils/services/common.service";
 import { DataService } from "@app/utils/services/data.service";
+import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 import { forkJoin, Subject } from "rxjs";
 import { map } from "rxjs/operators";
 import { ToastMessageService } from "../toastMessage/toast-message.service";
@@ -29,7 +31,9 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit {
     public _localAuthService: LocalAuthService,
     private _dataService: DataService,
     private _tms: ToastMessageService,
-    private _router: Router
+    private _router: Router,
+    private _commonService: CommonService,
+    private _globalAnalyticsService: GlobalAnalyticsService
   ) {}
 
   ngOnInit() {
@@ -84,6 +88,7 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit {
               type: "success",
               text: "Successfully added to wishlist.",
             });
+            this.sendAdobeAnalyticsData("move_to_wishlist");
             this.removeUnavailableItems(this.data.removeUnavailableItems);
           } else {
             this._tms.show({
@@ -107,6 +112,18 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit {
       };
       this._router.navigate(["/login"], navigationExtras);
     }
+  }
+
+  sendAdobeAnalyticsData(trackingname)
+  {
+    const page = {
+      'linkPageName': "moglix:cart summary",
+      'linkName': "move_to_wishlist",
+    }
+    let data = {}
+    data["page"] = page;
+    data["custData"] = this._commonService.custDataTracking;
+    this._globalAnalyticsService.sendAdobeCall(data, trackingname);             
   }
 
   ngOnDestroy() {

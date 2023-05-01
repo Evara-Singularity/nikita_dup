@@ -29,7 +29,7 @@
                 </div>
                 <product-card-vertical-container [numberOfItems]="wishListData.length">
                     <ng-container *ngFor="let product of wishListData;let pIndex = index">
-                        <product-card-vertical-grid-view [product]="product" [section]="'recently'"
+                        <product-card-vertical-grid-view [product]="product" [section]="'add_to_cart_wishlist_section'"
                             [cardFeaturesConfig]='cardFeaturesConfig' [moduleUsedIn]="'PRODUCT_RECENT_PRODUCT'"
                             [pIndex]="pIndex">
                         </product-card-vertical-grid-view>

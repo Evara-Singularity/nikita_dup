@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
 import { CommonService } from '../../utils/services/common.service';
 
 @Component({
@@ -12,11 +14,17 @@ export class ProductQaComponent {
   @Input('questionAnswerList') questionAnswerList;
   @Output('askQuestion') askQuestion = new EventEmitter();
   @Output('handleFaqListPopup') handleFaqListPopup = new EventEmitter();
-  constructor(private _commonService:CommonService){
+  constructor(private _commonService:CommonService,private _activatedRoute:ActivatedRoute){
   }
  
   ngOnInit(): void {
     this.getStaticSubjectData();
+
+    this._activatedRoute.fragment.subscribe((fragment: string)=>{
+      if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_QNA_HASH){
+        this.handleFaqListPopup.emit()
+      }
+    })
   }
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {

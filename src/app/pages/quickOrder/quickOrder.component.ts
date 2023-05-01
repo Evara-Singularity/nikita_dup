@@ -190,6 +190,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(["/checkout/login"], {
       queryParams: { title: "Continue to checkout" },
     });
+    this._commonService.adobe_tracking_proceed_to_checkout('proceed_to_checkout')
     this._commonService.updateUserSession();
   }
 

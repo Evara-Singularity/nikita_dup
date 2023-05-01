@@ -8,10 +8,11 @@
                     (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
                     (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></quick-order-all-address>
             </ng-container>
+            <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
             <prepaid-offer></prepaid-offer>
             <all-promocode-v1></all-promocode-v1>
-            <cart-notifications
-                (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications>
+            <!-- <cart-notifications
+                (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications> -->
             <cart [moduleName]="'QUICKORDER'" (openWishList$)="openWishlistPopup()"
                 (openSimillarList$)="openSimillarProductsPopUp($event)"></cart>
 

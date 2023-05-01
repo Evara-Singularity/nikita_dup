@@ -26,6 +26,7 @@ import { CartService } from "@services/cart.service";
 import { CommonService } from "@services/common.service";
 import { forkJoin, Subject, Subscription } from "rxjs";
 import { delay, map } from "rxjs/operators";
+import { CheckoutUtil } from "../checkout-v2/checkout-util";
 
 @Component({
   selector: "quick-order",
@@ -197,6 +198,50 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (types && types.length) this._cartService.viewUnavailableItems(types);
   }
 
+  /**
+  * @description to extract non-serviceable and COD msns
+  * @param postCode deliverable post code
+  */
+  verifyServiceablityAndCashOnDelivery(postCode, cartSession)
+  {
+    console.log("verifyServiceablityAndCashOnDelivery===>" , postCode, cartSession);
+      const cartItems: any[] =  cartSession['itemsList'] || [];
+      if ((!cartItems) || (cartItems.length === 0)) return;
+      const MSNS = cartItems.map(item => item.productId);
+      this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode }).subscribe((response) =>
+      {
+          if (!response) return;
+          const AGGREGATES = CheckoutUtil.formatAggregateValues(response);
+          const NON_SERVICEABLE_MSNS: any[] = CheckoutUtil.getNonServiceableMsns(AGGREGATES);
+          const NON_CASH_ON_DELIVERABLE_MSNS: any[] = CheckoutUtil.getNonCashOnDeliveryMsns(AGGREGATES);
+          this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
+          this.updateNonDeliverableItems(cartItems, NON_CASH_ON_DELIVERABLE_MSNS);
+      })
+  }
+  
+      /**
+      * @description to update the non serviceable items which are used in cart notfications
+      * @param contains items is cart
+      * @param nonServiceableMsns containes non serviceable msns
+      */
+      updateNonServiceableItems(cartItems: any[], nonServiceableMsns: any[])
+      {
+          if (nonServiceableMsns.length) {
+              const ITEMS = CheckoutUtil.filterCartItemsByMSNs(cartItems, nonServiceableMsns);
+              const NON_SERVICEABLE_ITEMS = CheckoutUtil.formatNonServiceableFromCartItems(ITEMS);
+              this._cartService.setUnserviceables(NON_SERVICEABLE_ITEMS);
+              return;
+          }
+          this._cartService.setUnserviceables([]);
+         // this.sendServiceableCriteo();
+      }
+  
+  /**@description updates global object to set in COD is available or not and used in payment section */
+  updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
+  {
+      this._cartService.updateNonDeliverableItems(cartItems, nonCashonDeliverableMsns);
+  }
+
   //Address Information
   handleDeliveryAddressEvent(address) {
     this.deliveryAddress = address;
@@ -206,6 +251,10 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.deliveryAddress
     );
     this._cartService.callShippingValueApi(this.cartSession);
+    const POST_CODE = this.deliveryAddress && this.deliveryAddress['postCode'];
+        if (!POST_CODE) return;
+        const cartSession = this._cartService.getCartSession();
+        this.verifyServiceablityAndCashOnDelivery(POST_CODE , cartSession);
   }
 
   handleBillingAddressEvent(address) {

@@ -122,7 +122,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 this._cartService.checkForUserAndCartSessionAndNotify(tempBuyNow['buyNow']).subscribe(status =>
                 {
                     if (status) {
-                        this._cartService.setCartUpdatesChanges(this.cartSession);
+                        this._cartService.setCartUpdatesChanges(this._cartService.getCartSession());
                     } else {
                         console.trace('cart refresh failed');
                     }

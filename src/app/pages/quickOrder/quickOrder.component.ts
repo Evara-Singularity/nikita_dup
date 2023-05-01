@@ -327,7 +327,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     wishlistResponse,
     fbtResponse,
   ]) {
-    if (!this.homeMiscellaneousCarouselInstance) {
+    if (!this.homeMiscellaneousCarouselInstance && this.homeMiscellaneousCarouselContainerRef != undefined) {
       const { HomeMiscellaneousCarouselComponent } = await import(
         "./../../components/homeMiscellaneousCarousel/homeMiscellaneousCarousel.component"
       );

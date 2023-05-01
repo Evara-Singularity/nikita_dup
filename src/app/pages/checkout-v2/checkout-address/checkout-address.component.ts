@@ -44,7 +44,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     billingAddress = null;
     moveSectionTo = null;
     cartSession = null;
-    addressCount:number = 0;
 
     orderSummarySubscription; Subscription = null;
     loginSubscription: Subscription = null;

@@ -19,12 +19,15 @@ export class ProductQaComponent {
  
   ngOnInit(): void {
     this.getStaticSubjectData();
-
-    this._activatedRoute.fragment.subscribe((fragment: string)=>{
-      if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_QNA_HASH){
-        this.handleFaqListPopup.emit()
-      }
-    })
+  }
+  ngAfterViewInit() {
+    if (this._commonService.isBrowser) {
+      this._activatedRoute.fragment.subscribe((fragment: string)=>{
+        if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_QNA_HASH){
+          this.handleFaqListPopup.emit()
+        }
+      })
+    }
   }
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {

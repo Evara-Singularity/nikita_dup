@@ -700,6 +700,7 @@ export const CONSTANTS = {
   bulkRfqConstant:'BULK_RFQ_CONSTANT',
   PDP_IMAGE_HASH:"pdpImageHash",
   PDP_QNA_HASH:"qna",
-  PDP_REVIEW_HASH:"review"
+  PDP_REVIEW_HASH:"review",
+  APP_OPEN_LINK:"https://moglix.page.link/appinstall"
 };
 export default CONSTANTS;

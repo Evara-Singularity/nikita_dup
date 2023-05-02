@@ -89,7 +89,7 @@
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
     <div class="card" [class.fbtSection]='fbtFlag' *ngIf='fbtFlag'>
-        <fbt [originalProductBO]='originalProductBO' [analytics]='fbtAnalytics'></fbt>
+        <fbt [originalProductBO]='originalProductBO'[productQuantity]='cartQunatityForProduct' [analytics]='fbtAnalytics'></fbt>
         <!-- <ng-container #fbt></ng-container>
         <product-skeletons [type]="'FBT'" [templateRefInstance]="fbtComponentInstance"></product-skeletons> -->
     </div>

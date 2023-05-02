@@ -590,7 +590,7 @@ export class CartComponent
             //     type: "success",
             //     text: "Successfully added to wishlist.",
             //   });
-              this._cartService.removeCartItemsByMsns([this.removableItem['productId']], true);
+              this._cartService.removeCartItemsByMsns([this.removableItem['productId']], true, 'Product moved to wishlist');
               this.resetRemoveItemCart();
               this._cartService.isAddedToCartSubject.next({isAddedtowishList : true});
               this.sendAdobeAnalyticsData("move_to_wishlist");
@@ -599,7 +599,7 @@ export class CartComponent
                 type: "error",
                 text: res["errorMessage"],
               });
-              this._cartService.removeCartItemsByMsns([this.removableItem['productId']]);
+              this._cartService.removeCartItemsByMsns([this.removableItem['productId']], true, res["errorMessage"]);
               this.resetRemoveItemCart();
             }
           });

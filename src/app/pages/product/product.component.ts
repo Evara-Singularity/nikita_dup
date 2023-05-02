@@ -1735,6 +1735,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         isModal: true,
                         backToCartFlow: this.addToCartFromModal.bind(this),
                         analytics: analytics,
+                        productQuantity :this.cartQunatityForProduct
                     },
                 },
                 component: FbtComponent,

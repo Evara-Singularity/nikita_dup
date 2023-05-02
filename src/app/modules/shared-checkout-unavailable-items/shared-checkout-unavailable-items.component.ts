@@ -23,7 +23,6 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit {
   @Input() showLink = true;
   private cDistroyed = new Subject();
   itemsList: [] = [];
-  isQuickOrder: boolean = false;
   wishListPostBody = [];
 
   constructor(
@@ -38,7 +37,6 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit {
 
   ngOnInit() {
     this.itemsList = this.data["items"];
-    this.isQuickOrder = this.data["page"] == "quickOrder" ? true : false;
     const userSession = this._localAuthService.getUserSession();
     this.itemsList.forEach((elememt) => {
       this.wishListPostBody.push({

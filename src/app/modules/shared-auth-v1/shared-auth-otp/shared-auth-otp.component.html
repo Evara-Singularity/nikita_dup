@@ -44,7 +44,7 @@
         <div class="otp-form-inputs">
             <ng-container>
                 <!--added class='pseudo' for focus purpose-->
-                <input type="number" autocomplete="on"  placeholder="——————" (paste)="onPasteV1($event)" data-numbersOnly pattern="\d*" [formControl]="otpFormV1"
+                <input type="tel" autocomplete="on"  placeholder="——————" (paste)="onPasteV1($event)" data-numbersOnly pattern="\d*" [formControl]="otpFormV1"
                     autofocus class="pseudo" maxlength="6" (keyup)="moveFocusV1($event, otpFormV1.valid)"
                     [readonly]="isOTPVerifiedV1">
             </ng-container>

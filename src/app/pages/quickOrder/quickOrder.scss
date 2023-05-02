@@ -29,7 +29,6 @@
     @include gridForCategory("3", "20");
     display: inline-block;
     float: none;
-
     i {
       width: 75px;
       height: 75px;
@@ -85,7 +84,6 @@
     }
   }
   button{
-    max-width: 250px;
     padding: 0 5px;
   }
 }

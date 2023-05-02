@@ -14,9 +14,7 @@ import {
 import { NavigationExtras, Router } from "@angular/router";
 import CONSTANTS from "@app/config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
-import { QuickOrderAllAddressComponent } from "@app/modules/shared-checkout-address/all-address-core/quick-order-all-address/quick-order-all-address.component";
 import { ClientUtility } from "@app/utils/client.utility";
-import { AddressListModel } from "@app/utils/models/shared-checkout.models";
 import { AddressService } from "@app/utils/services/address.service";
 import { DataService } from "@app/utils/services/data.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
@@ -26,6 +24,7 @@ import { CartService } from "@services/cart.service";
 import { CommonService } from "@services/common.service";
 import { forkJoin, Subject, Subscription } from "rxjs";
 import { delay, map } from "rxjs/operators";
+import { CheckoutUtil } from "../checkout-v2/checkout-util";
 
 @Component({
   selector: "quick-order",
@@ -49,9 +48,6 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   userData: any;
   addressCount: number = 0;
 
-  // ondemad loaded component for quickOrderAllAddress
-  @ViewChild(QuickOrderAllAddressComponent)
-  quickOrderAllAddressComponent: QuickOrderAllAddressComponent;
   // ondemad loaded component for homeMiscellaneousCarousel ( Buy it again, wishlist & FBT )
   homeMiscellaneousCarouselInstance = null;
   @ViewChild("homeMiscellaneousCarousel", { read: ViewContainerRef })
@@ -88,7 +84,6 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.userData = this._localAuthService.getUserSession();
     if (this._localAuthService.isUserLoggedIn()) {
-      this.getAllddressList();
       this.getWishlistData();
     }
   }
@@ -173,12 +168,11 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   navigateToCheckout() {
-    if (this.addressCount == 0 && this._localAuthService.isUserLoggedIn()) {
-      this.quickOrderAllAddressComponent.displayAddressFormPopup(
-        "Delivery",
-        null
-      );
-      return;
+    if (this._localAuthService.isUserLoggedIn()) {
+      if (!this.deliveryAddress) {
+        this.addDeliveryOrBilling.next("Delivery");
+        return;
+      }
     }
     const invalidIndex = this._cartService.findInvalidItem();
     if (invalidIndex > -1) return;
@@ -189,12 +183,57 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(["/checkout/login"], {
       queryParams: { title: "Continue to checkout" },
     });
+    this._commonService.adobe_tracking_proceed_to_checkout('proceed_to_checkout')
     this._commonService.updateUserSession();
   }
 
   /**@description triggers the unavailbel item pop-up from notfications */
   viewUnavailableItemsFromNotifacions(types: string[]) {
     if (types && types.length) this._cartService.viewUnavailableItems(types);
+  }
+
+  /**
+  * @description to extract non-serviceable and COD msns
+  * @param postCode deliverable post code
+  */
+  verifyServiceablityAndCashOnDelivery(postCode, cartSession)
+  {
+    console.log("verifyServiceablityAndCashOnDelivery===>" , postCode, cartSession);
+      const cartItems: any[] =  cartSession['itemsList'] || [];
+      if ((!cartItems) || (cartItems.length === 0)) return;
+      const MSNS = cartItems.map(item => item.productId);
+      this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode }).subscribe((response) =>
+      {
+          if (!response) return;
+          const AGGREGATES = CheckoutUtil.formatAggregateValues(response);
+          const NON_SERVICEABLE_MSNS: any[] = CheckoutUtil.getNonServiceableMsns(AGGREGATES);
+          const NON_CASH_ON_DELIVERABLE_MSNS: any[] = CheckoutUtil.getNonCashOnDeliveryMsns(AGGREGATES);
+          this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
+          this.updateNonDeliverableItems(cartItems, NON_CASH_ON_DELIVERABLE_MSNS);
+      })
+  }
+  
+      /**
+      * @description to update the non serviceable items which are used in cart notfications
+      * @param contains items is cart
+      * @param nonServiceableMsns containes non serviceable msns
+      */
+      updateNonServiceableItems(cartItems: any[], nonServiceableMsns: any[])
+      {
+          if (nonServiceableMsns.length) {
+              const ITEMS = CheckoutUtil.filterCartItemsByMSNs(cartItems, nonServiceableMsns);
+              const NON_SERVICEABLE_ITEMS = CheckoutUtil.formatNonServiceableFromCartItems(ITEMS);
+              this._cartService.setUnserviceables(NON_SERVICEABLE_ITEMS);
+              return;
+          }
+          this._cartService.setUnserviceables([]);
+         // this.sendServiceableCriteo();
+      }
+  
+  /**@description updates global object to set in COD is available or not and used in payment section */
+  updateNonDeliverableItems(cartItems: any[], nonCashonDeliverableMsns: any[])
+  {
+      this._cartService.updateNonDeliverableItems(cartItems, nonCashonDeliverableMsns);
   }
 
   //Address Information
@@ -206,6 +245,10 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.deliveryAddress
     );
     this._cartService.callShippingValueApi(this.cartSession);
+    const POST_CODE = this.deliveryAddress && this.deliveryAddress['postCode'];
+        if (!POST_CODE) return;
+        const cartSession = this._cartService.getCartSession();
+        this.verifyServiceablityAndCashOnDelivery(POST_CODE , cartSession);
   }
 
   handleBillingAddressEvent(address) {
@@ -267,15 +310,17 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   callHomePageWidgetsApis() {
     const fbt_prodcutsURL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_FBT_PRODUCTS_BY_MSNS;
-    const pastOrderURL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.GET_PAST_ORDERS}${this.userData["userId"]}`;
+    const pastOrderURL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_PAST_ORDERS + this.userData["userId"] || null;
     const wishlistUrl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRC_LIST;
-    const fbtPostBody = this.getFbtPostBody();
+    const recentViewedUrl = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RECENTLY_VIEWED + (this.userData && this.userData["userId"] || null);
+    const fbtPostBody = this.getFbtPostBody(); 
     if(this._localAuthService.isUserLoggedIn()){
     const wishlistPayload = {
       idUser: this.userData["userId"],
       userType: "business",
     };
     const pastOrderApi = this._dataService.callRestful("GET", pastOrderURL);
+    const recentViewedApi = this._dataService.callRestful('GET', recentViewedUrl);
     const wishlistApi = this._dataService
       .callRestful("GET", wishlistUrl, { params: wishlistPayload })
       .pipe(
@@ -302,23 +347,34 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
           return res;
         })
       );
-    forkJoin([pastOrderApi, wishlistApi, fbtListApi]).subscribe(
+    forkJoin([pastOrderApi, wishlistApi, fbtListApi,recentViewedApi]).subscribe(
       (response) => {
         this.onVisiblePopularDeals(response);
       },
       (error) => {
         console.log("error", error);
-        this.onVisiblePopularDeals([null, null, null]);
+        this.onVisiblePopularDeals([null, null, null,null]);
       }
     );
     }else{
-      this._dataService
+      const recentViewedApi = this._dataService.callRestful('GET', recentViewedUrl);
+      const fbtListApi = this._dataService
       .callRestful("POST", fbt_prodcutsURL, { body: fbtPostBody })
-      .subscribe(response=>{
-        this.onVisiblePopularDeals([null, null, response]);
-      },(error)=>{
-        this.onVisiblePopularDeals([null, null, null]);
-      });
+      .pipe(
+        map((res)=>{
+          return res;
+        })
+      );
+
+      forkJoin([fbtListApi,recentViewedApi]).subscribe(
+        (response) => {
+          this.onVisiblePopularDeals([null, null,...response]);
+        },
+        (error) => {
+          console.log("error", error);
+          this.onVisiblePopularDeals([null, null, null,null]);
+        }
+      );
     }
   }
 
@@ -326,8 +382,10 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     pastOrderResponse,
     wishlistResponse,
     fbtResponse,
+    recentViewedResponse
   ]) {
-    if (!this.homeMiscellaneousCarouselInstance) {
+    console.log("recentViewedResponse ===>" , recentViewedResponse)
+    if (!this.homeMiscellaneousCarouselInstance && this.homeMiscellaneousCarouselContainerRef != undefined) {
       const { HomeMiscellaneousCarouselComponent } = await import(
         "./../../components/homeMiscellaneousCarousel/homeMiscellaneousCarousel.component"
       );
@@ -345,6 +403,8 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.homeMiscellaneousCarouselInstance.instance["isQuickOrder"] = true; 
       this.homeMiscellaneousCarouselInstance.instance["pastOrdersResponse"] =
         pastOrderResponse;
+      this.homeMiscellaneousCarouselInstance.instance["recentResponse"] = 
+        recentViewedResponse;  
       this.homeMiscellaneousCarouselInstance.instance["purcahseListResponse"] =
         wishlistResponse;
       this.homeMiscellaneousCarouselInstance.instance["fbtResponse"] =
@@ -358,18 +418,6 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
       prodIdList: itemsList.map((res) => res.productId),
     };
     return postBody;
-  }
-
-  private getAllddressList() {
-    const params = { customerId: this.userData["userId"], invoiceType: "tax" };
-    this._addressService.getAddressList(params).subscribe(
-      (response: AddressListModel) => {
-        this.addressCount = response.deliveryAddressList.length || 0;
-      },
-      (err) => {
-        this.addressCount = 0;
-      }
-    );
   }
 
   private postBodyForAllCategoryByMsns() {

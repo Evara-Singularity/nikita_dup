@@ -35,7 +35,8 @@ export class CartNotificationsComponent implements OnInit,  OnDestroy
 
     viewUnavailableItems()
     {
-        const VIEW_ITEMS_TYPE = this.is_quickorder ? ['oos'] : ['oos', 'unserviceable'];
+        // const VIEW_ITEMS_TYPE = this.is_quickorder ? ['oos'] : ['oos', 'unserviceable'];
+        const VIEW_ITEMS_TYPE =  ['oos', 'unserviceable'];
         this.viewUnavailableItems$.emit(VIEW_ITEMS_TYPE);
     }
 

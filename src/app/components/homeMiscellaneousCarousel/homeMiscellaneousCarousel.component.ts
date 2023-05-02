@@ -63,12 +63,17 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   ngOnInit() {
     this.setFullAddToCartButton();
     if (this.recentResponse && (this.recentResponse['statusCode'] === 200) && this.recentResponse['data'] && this.recentResponse['data'].length > 0) {
-      this.tabsArray.push({
-        id: 1,
-        name: this.RECENT_TAB_NAME,
-        data: (this.recentResponse['data'] as any[]).map((item) => this._productService.recentProductResponseToProductEntity(item)) || [],
-        isSelected: false,
-      })
+      let recentResponseData = []
+      recentResponseData = this.isQuickOrder ? (this.recentResponse['data'] as any []).map(product => this._productService.recentProductResponseToProductEntity(product)).filter(res=> (this._productService.isInStock(res) == true))
+      : (this.recentResponse['data'] as any []).slice(0, 10).map(product => this._productService.recentProductResponseToProductEntity(product));
+
+      this.pushDataIntoTabsArray(1, this.RECENT_TAB_NAME, recentResponseData, false);
+      // this.tabsArray.push({
+      //   id: 1,
+      //   name: this.RECENT_TAB_NAME,
+      //   data: (this.recentResponse['data'] as any[]).map((item) => this._productService.recentProductResponseToProductEntity(item)) || [],
+      //   isSelected: false,
+      // })
     }
     if(this.pastOrdersResponse && this.pastOrdersResponse['status'] && this.pastOrdersResponse['data'] && this.pastOrdersResponse['data'].length > 0){
       let pastOrderListData = []

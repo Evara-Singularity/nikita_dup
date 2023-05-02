@@ -1703,7 +1703,7 @@ export class CartService
     }
 
     //Post processing
-    removeCartItemsByMsns(msns: string[], isWishlistProduct?: boolean)
+    removeCartItemsByMsns(msns: string[], isWishlistProduct?: boolean, message?: string)
     {
         const CART_SESSION = JSON.parse(JSON.stringify(this.cartSession));
         const EXISTING_ITEMS = (CART_SESSION['itemsList'] as any[]);
@@ -1714,7 +1714,7 @@ export class CartService
             NON_REMOVABLE_ITEMS.push(item);
         });
         this.removeNotificationsByMsns(msns).subscribe((response) => console.log("removed notfication by msns"));
-        this.updateCartAfterItemsDelete(CART_SESSION, NON_REMOVABLE_ITEMS, isWishlistProduct);
+        this.updateCartAfterItemsDelete(CART_SESSION, NON_REMOVABLE_ITEMS, isWishlistProduct, message);
     }
 
     verifyShippingCharges(cartSession)
@@ -1738,7 +1738,7 @@ export class CartService
         );
     }
 
-    updateCartAfterItemsDelete(cartSession, items: any[], isWishlistProduct?: boolean)
+    updateCartAfterItemsDelete(cartSession, items: any[], isWishlistProduct?: boolean, message?: string)
     {
         cartSession['itemsList'] = [];
         if (items.length) { cartSession['itemsList'] = items; }
@@ -1769,7 +1769,7 @@ export class CartService
             })).
             subscribe((response) =>
             {
-                this._toastService.show({ type: 'error', text: `${!isWishlistProduct ? "Product successfully removed from Cart" :"Product moved to wishlist!"}` });
+                this._toastService.show({ type: 'error', text: `${!isWishlistProduct ? "Product successfully removed from Cart" :`${message}!`}` });
                 const ITEM_LIST = tempCartSession['itemsList'];
                 
                 if (ITEM_LIST && ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {

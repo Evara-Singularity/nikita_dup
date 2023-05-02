@@ -1,11 +1,11 @@
 import { LocalStorageService } from 'ngx-webstorage';
-import { AfterViewInit, Compiler, Component, Injector, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
 import { ValidateDto } from '@app/utils/models/cart.initial';
-import { AddressListModel, CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
+import { CheckoutHeaderModel } from '@app/utils/models/shared-checkout.models';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
@@ -15,9 +15,8 @@ import { environment } from 'environments/environment';
 import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
 import { CartUtils } from './../../../utils/services/cart-utils';
-import { RetryPaymentService } from './../../../utils/services/retry-payment.service';
-import { QuickOrderAllAddressComponent } from '@app/modules/shared-checkout-address/all-address-core/quick-order-all-address/quick-order-all-address.component';
 import { AllAddressesComponent } from '@app/modules/shared-checkout-address/all-address-core/all-addresses/all-addresses.component';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'checkout-address',
@@ -44,7 +43,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     billingAddress = null;
     moveSectionTo = null;
     cartSession = null;
-    addressCount:number = 0;
 
     orderSummarySubscription; Subscription = null;
     loginSubscription: Subscription = null;
@@ -53,7 +51,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     paymentMode: any;
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
-        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService)
+        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService, private _commonService: CommonService)
     {
         
     }
@@ -93,7 +91,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     {
         this.addSubscriptions();
         setTimeout(()=>{
-        this.getAllddressList();
+            if (!this.deliveryAddress) {
+                this.addDeliveryOrBilling.next("Delivery");
+                return;
+            }
         },800)
     }
 
@@ -123,7 +124,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 this._cartService.checkForUserAndCartSessionAndNotify(tempBuyNow['buyNow']).subscribe(status =>
                 {
                     if (status) {
-                        this._cartService.setCartUpdatesChanges(this.cartSession);
+                        this._cartService.setCartUpdatesChanges(this._cartService.getCartSession());
                     } else {
                         console.trace('cart refresh failed');
                     }
@@ -256,6 +257,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             return;
         }
         this.validateCart();
+        this._commonService.adobe_tracking_proceed_to_checkout('proceed_to_checkout');
     }
 
     /**@description calculates the total payable amount as per cart changes*/
@@ -364,21 +366,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             /*End Criteo DataLayer Tags */
         }
     }
-
-    private getAllddressList() {
-        const userSession = this._localAuthService.getUserSession();
-        const params = { customerId: userSession["userId"], invoiceType: "tax" };
-        this._addressService.getAddressList(params).subscribe(
-          (response: AddressListModel) => {
-            if(response.deliveryAddressList.length == 0){
-              this.allAddressesComponent.displayAddressFormPopup(
-                "Delivery",
-                null
-              );
-            }
-          }
-        );
-      }
 
     ngOnDestroy()
     {

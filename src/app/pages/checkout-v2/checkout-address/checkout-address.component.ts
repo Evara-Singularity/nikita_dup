@@ -1,5 +1,5 @@
 import { LocalStorageService } from 'ngx-webstorage';
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -15,7 +15,6 @@ import { environment } from 'environments/environment';
 import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
 import { CartUtils } from './../../../utils/services/cart-utils';
-import { AllAddressesComponent } from '@app/modules/shared-checkout-address/all-address-core/all-addresses/all-addresses.component';
 import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
@@ -30,8 +29,6 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
 
     @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = new Subject();
-    @ViewChild(AllAddressesComponent)
-    allAddressesComponent: AllAddressesComponent;
 
     invoiceType = this.INVOICE_TYPES.RETAIL;
     payableAmount = 0;
@@ -82,7 +79,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             if (value) {
                 const POST_CODE = this.deliveryAddress && this.deliveryAddress['postCode'];
                 if (!POST_CODE) return;
-                this.verifyServiceablityAndCashOnDelivery(POST_CODE);
+                this.verifyServiceablityAndCashOnDelivery(POST_CODE,this.deliveryAddress);
             }
         })
     }
@@ -173,19 +170,26 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         if (invoiceType) { this._cartService.invoiceType = invoiceType; }
         const POST_CODE = deliveryAddress && deliveryAddress['postCode'];
         if (!POST_CODE) return;
-        this.verifyServiceablityAndCashOnDelivery(POST_CODE);
+        this.verifyServiceablityAndCashOnDelivery(POST_CODE,deliveryAddress);
     }
 
     /**
    * @description to extract non-serviceable and COD msns
    * @param postCode deliverable post code
    */
-    verifyServiceablityAndCashOnDelivery(postCode)
+    verifyServiceablityAndCashOnDelivery(postCode,deliveryAddress)
     {
         const cartItems: any[] = this.cartSession['itemsList'] || [];
         if ((!cartItems) || (cartItems.length === 0)) return;
         const MSNS = cartItems.map(item => item.productId);
-        this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode }).subscribe((response) =>
+        let invoiceType = this._cartService.invoiceType;
+        const isGstInvoice = invoiceType == this.INVOICE_TYPES.TAX ? true : false; 
+        const orderPlatform =CONSTANTS.DEVICE.device;
+        const addressId = deliveryAddress && deliveryAddress['idAddress'];
+        const cartId = this.cartSession['cart']['cartId'];
+        const userId = this.cartSession['cart']['userId'];
+        this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode , isGstInvoice: isGstInvoice, 
+            orderPlatform: orderPlatform ,addressId :addressId ,cartId: cartId , userId: userId}).subscribe((response) =>
         {
             if (!response) return;
             const AGGREGATES = CheckoutUtil.formatAggregateValues(response);

@@ -208,7 +208,8 @@ export class OrderDetailComponent implements OnInit {
       this.returnForm.setControl('bankDetail',
         this._formBuilder.group({
           "bankName": [null, { validators: [Validators.required, Bank.bankNameorAccountHolder]}],
-          "ifscCode": [null, { validators: [Validators.required, Bank.ifscValidate]}],
+          "ifscCode": [null, { validators: [Validators.required, Validators.pattern('^[A-Z]{4}0[A-Z0-9]{6}$')]}],
+          // "ifscCode": [null, { validators: [Validators.required, Validators.pattern('^[0-9]{6}$')]}],
           "acountName": [null, { validators: [Validators.required, Bank.bankNameorAccountHolder]}],
           "acountNo": [null, { validators: [Validators.required, Bank.bankAccount]}],
           "chequeUrl": [null]

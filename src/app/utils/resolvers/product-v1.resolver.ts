@@ -15,20 +15,25 @@ import { CommonService } from '../services/common.service';
 import { GlobalLoaderService } from '../services/global-loader.service';
 import { map } from 'rxjs/operators';
 import { LoggerService } from '../services/logger.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductV1Resolver implements Resolve<any> {
-
+  isBrowser: boolean;
+  isServer: boolean;
   constructor(
     @Inject(PLATFORM_ID) private platformId,
     private transferState: TransferState,
     private _commonService: CommonService,
     private http: HttpClient,
     private _loggerService: LoggerService,
+    private localStorageService: LocalStorageService
   ) {
+    this.isServer = _commonService.isServer;
+    this.isBrowser = _commonService.isBrowser;
   }
 
   resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
@@ -57,6 +62,9 @@ export class ProductV1Resolver implements Resolve<any> {
     const PRODUCT_TAG_KEY = makeStateKey<object>('product-tag-' + productMsnId);
     const BEST_PROQDUCTS_KEY = makeStateKey<object>('best-products-' + productMsnId);
     const MOGLIX_INSIGHT_KEY = makeStateKey<object>('moglix-insight');
+    const PROMO_CODES_KEY = makeStateKey<object>('promo-codes');
+    const PDP_MOBIKWIK_KEY = makeStateKey<object>('mobikwik-offer');
+    const BRAND_COUPON_KEY = makeStateKey<object>('pdp-brand-coupon');
 
     if (
       this.transferState.hasKey(PRODUCT_KEY) &&
@@ -68,7 +76,10 @@ export class ProductV1Resolver implements Resolve<any> {
       this.transferState.hasKey(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY)&&
       this.transferState.hasKey(PRODUCT_TAG_KEY) &&
       this.transferState.hasKey(BEST_PROQDUCTS_KEY) &&
-      this.transferState.hasKey(MOGLIX_INSIGHT_KEY) 
+      this.transferState.hasKey(MOGLIX_INSIGHT_KEY) &&
+      this.transferState.hasKey(PROMO_CODES_KEY) &&
+      this.transferState.hasKey(PDP_MOBIKWIK_KEY) &&
+      this.transferState.hasKey(BRAND_COUPON_KEY)
     ) {
       const PRODUCT_KEY_OBJ = this.transferState.get<{}>(PRODUCT_KEY, null);
       const PRODUCT_REVIEW_OBJ = this.transferState.get<{}>(PRODUCT_REVIEW_KEY, null);
@@ -78,8 +89,11 @@ export class ProductV1Resolver implements Resolve<any> {
       const PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_OBJ = this.transferState.get<{}>(PRODUCT_FOOTER_ACCORDIAN_DATA_SIMILAR_CATEGORY_KEY, null);
       const PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_OBJ = this.transferState.get<{}>(PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_KEY, null);
       const MOGLIX_INSIGHT_DATA = this.transferState.get<object>(MOGLIX_INSIGHT_KEY, {});
-      const PRODUCT_TAG_OBJ = this.transferState.get<{}>(PRODUCT_TAG_KEY, null)
-      const BEST_PRODUCTS_OBJ = this.transferState.get<{}>(BEST_PROQDUCTS_KEY, null)
+      const PRODUCT_TAG_OBJ = this.transferState.get<{}>(PRODUCT_TAG_KEY, null);
+      const BEST_PRODUCTS_OBJ = this.transferState.get<{}>(BEST_PROQDUCTS_KEY, null);
+      const PROMO_CODES_OBJ = this.transferState.get<{}>(PROMO_CODES_KEY, null);
+      const PDP_MOBIKWIK_OBJ = this.transferState.get<{}>(PDP_MOBIKWIK_KEY, null);
+      const BRAND_COUPON_OBJ = this.transferState.get<{}>(BRAND_COUPON_KEY, null);
 
       this.transferState.remove(PRODUCT_KEY);
       this.transferState.remove(PRODUCT_REVIEW_KEY);
@@ -91,6 +105,9 @@ export class ProductV1Resolver implements Resolve<any> {
       this.transferState.remove(PRODUCT_TAG_KEY);
       this.transferState.remove(BEST_PROQDUCTS_KEY);
       this.transferState.remove(MOGLIX_INSIGHT_KEY);
+      this.transferState.remove(PROMO_CODES_KEY);
+      this.transferState.remove(PDP_MOBIKWIK_KEY);
+      this.transferState.remove(BRAND_COUPON_KEY);
 
       // this.loaderService.setLoaderState(false);
       return of([
@@ -103,7 +120,10 @@ export class ProductV1Resolver implements Resolve<any> {
         PRODUCT_FOOTER_ACCORDIAN_DATA_GET_BUCKET_OBJ,
         PRODUCT_TAG_OBJ,
         BEST_PRODUCTS_OBJ,
-        MOGLIX_INSIGHT_DATA
+        MOGLIX_INSIGHT_DATA,
+        PROMO_CODES_OBJ,
+        PDP_MOBIKWIK_OBJ,
+        BRAND_COUPON_OBJ
       ]);
     } else {
       const productUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_INFO + `?productId=${productMsnId}&fetchGroup=true`;
@@ -118,6 +138,17 @@ export class ProductV1Resolver implements Resolve<any> {
       // const reviewRequestBody = { review_type: 'PRODUCT_REVIEW', item_type: 'PRODUCT', item_id: productMsnId, user_id: " " };
       const reviewRequestBody = { reviewType: 'PRODUCT_REVIEW', itemType: 'PRODUCT', itemId: productMsnId, userId: " " };
       const moglixInsightUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_WIDGET+"?msn=" + productMsnId;
+      let promoCodesUrl = environment.BASE_URL + ENDPOINTS.GET_COUPON_CODE+"?msn=" + productMsnId + '&device=web';
+      const mobikwikUrl = environment.BASE_URL + ENDPOINTS.GET_CategoryExtras + "mobikwikpdp";
+      const brandCouponUrl = environment.BASE_URL + ENDPOINTS.GET_COUPOUN_ON_BRAND_CATEGORY + "?msn=" + productMsnId;
+      
+      // appending userid in clientside to fetch the promo codes specific to logged in user
+      if(this.isBrowser) {
+        let user: any = this.localStorageService.retrieve('user');
+        if (user && user.authenticated == "true") {
+          promoCodesUrl += `&userId=${user.userId}`
+        }
+      }
 
       const productResponseObj = this.http.get(productUrl, requestOptions).pipe(share(),
         map(res => {
@@ -228,7 +259,7 @@ export class ProductV1Resolver implements Resolve<any> {
           return of(null);
         }));
 
-      const moglixInsightResponseObj = this.http.get(moglixInsightUrl).pipe(share(),
+      const moglixInsightResponseObj = this.http.get(moglixInsightUrl,requestOptions).pipe(share(),
         map(res => {
           const logInfo = this._commonService.getLoggerObj(moglixInsightUrl, 'GET', startTime)
           logInfo.endDateTime = new Date().getTime();
@@ -236,6 +267,33 @@ export class ProductV1Resolver implements Resolve<any> {
           this._loggerService.apiServerLog(logInfo);
           return res;
         }));
+      
+      const promoCodesResponseObj = this.http.get(promoCodesUrl, requestOptions).pipe(share(),
+      map(res => {
+        const logInfo = this._commonService.getLoggerObj(promoCodesUrl, 'GET', startTime)
+        logInfo.endDateTime = new Date().getTime();
+        logInfo.responseStatus = res["status"];
+        this._loggerService.apiServerLog(logInfo);
+        return res;
+      }));
+
+      const mobikwikResponseObj = this.http.get(mobikwikUrl, requestOptions).pipe(share(),
+      map(res => {
+        const logInfo = this._commonService.getLoggerObj(mobikwikUrl, 'GET', startTime)
+        logInfo.endDateTime = new Date().getTime();
+        logInfo.responseStatus = res["status"];
+        this._loggerService.apiServerLog(logInfo);
+        return res;
+      }));
+
+      const brandCouponResponseObj = this.http.get(brandCouponUrl, requestOptions).pipe(share(),
+      map(res => {
+        const logInfo = this._commonService.getLoggerObj(brandCouponUrl, 'GET', startTime)
+        logInfo.endDateTime = new Date().getTime();
+        logInfo.responseStatus = res["status"];
+        this._loggerService.apiServerLog(logInfo);
+        return res;
+      }));
 
       const apiList = [
         productResponseObj,
@@ -248,6 +306,9 @@ export class ProductV1Resolver implements Resolve<any> {
         productTagResponseObj,
         bestProductsResponseObj,
         moglixInsightResponseObj,
+        promoCodesResponseObj,
+        mobikwikResponseObj,
+        brandCouponResponseObj
       ];
 
       return forkJoin(apiList).pipe(
@@ -269,6 +330,9 @@ export class ProductV1Resolver implements Resolve<any> {
             this.transferState.set(PRODUCT_TAG_KEY, result[7]);
             this.transferState.set(BEST_PROQDUCTS_KEY, result[8]);
             this.transferState.set(MOGLIX_INSIGHT_KEY, result[9]);
+            this.transferState.set(PROMO_CODES_KEY, result[10]);
+            this.transferState.set(PDP_MOBIKWIK_KEY, result[11]);
+            this.transferState.set(BRAND_COUPON_KEY, result[12]);
           }
           // this.loaderService.setLoaderState(false);
         })

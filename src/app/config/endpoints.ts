@@ -136,5 +136,6 @@ export const ENDPOINTS = {
   PRODUCT_WIDGET:'/cmsApi/getProductWidget',
   SEARCH_CATEGORY_LIST:'/search/searchCategoryList?str=',
   GET_FBT_PRODUCTS_BY_MSNS :"/product/getFbtProductsByMsns",
-  GET_CATEGORY_INFO_BY_MSNS: "/search/getCategoryInfoByMsns"
+  GET_CATEGORY_INFO_BY_MSNS: "/search/getCategoryInfoByMsns",
+  IFSC_CODE:'/payment/getBankDetails?ifsc='
 };

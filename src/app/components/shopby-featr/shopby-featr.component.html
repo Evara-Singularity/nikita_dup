@@ -1,11 +1,11 @@
 <ng-container *ngIf="shopBy_Data">
 <section class="safetysh_sect1 clearfix" >            
 <div class="safetysh-shopby row">  
-    <h2 class="slp-heading">SHOP BY</h2>     
+    <h3 class="slp-heading">SHOP BY</h3>     
     <div class="clearfix shopbyrow">              
         <div class="shopbycol" *ngFor="let product of shopBy_Data">
             <div class="shopbywrap">
-                <h3>{{product.image_title}}</h3>
+                <h4 class="custom-h4" >{{product.image_title}}</h4 >
                 <div class="shopbyimgwrap">
                     <img [src]="defaultImage" lazyLoad="{{imagePath}}{{product.image_name}}" alt="Shop by {{product.image_title}}"></div>
                 <ul *ngIf="product && product.image_general && product.image_general.length"> 

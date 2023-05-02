@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, NgModule } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { ClientUtility } from "../../utils/client.utility";
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
@@ -15,18 +15,25 @@ import CONSTANTS from '@app/config/constants';
   templateUrl: './shared-footer.component.html',
   styleUrls: ['./shared-footer.component.scss']
 })
-export class SharedFooterComponent {
+export class SharedFooterComponent implements OnInit {
   footerVisible = false;
   today: number = Date.now();
   playStoreLink = "https://play.google.com/store/apps/details?id=com.moglix.online";
   appStoreLink = "https://apps.apple.com/in/app/moglix-best-industrial-app/id1493763517";
   defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
+  isFaq:string = ""; 
 
   constructor(
     private _analytics: GlobalAnalyticsService,
     private _localStorageService: LocalStorageService,
     public _commonService: CommonService,
   ) { }
+
+  ngOnInit(): void {
+    if(this._commonService.isBrowser){
+      this.isFaq = window.location.toString();
+    }
+  }
 
   clickFooter() {
     this.footerVisible = !this.footerVisible;

@@ -20,6 +20,7 @@ import { ProductService } from '@app/utils/services/product.service';
 })
 export class ArticlesComponent implements OnInit
 {
+    readonly prodUrl=CONSTANTS.PROD;
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly data = 'data';
     readonly URL = "/cmsApi/getArticlesListByCategory?&pageSize=10&categoryCode=all";
@@ -130,5 +131,9 @@ export class ArticlesComponent implements OnInit
         digitalData['custData'] = this._commonService.custDataTracking;
         setTimeout(() => this._analytics.sendAdobeCall(digitalData), 0);
         /*End Adobe Analytics Tags */
+    }
+
+    articleHref(article) {
+        return this.prodUrl + '/articles/' + article.friendlyUrl
     }
 }

@@ -690,7 +690,7 @@ export class ProductService {
             mainImageThumnailLink: this.getImageFromSearchProductResponse(
                 product["mainImageLink"],
                 "large",
-                "thumbnail"
+                "medium"
             ),
             mainImageMediumLink: this.getImageFromSearchProductResponse(
                 product["mainImageLink"],

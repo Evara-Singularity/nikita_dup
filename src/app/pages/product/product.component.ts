@@ -1008,6 +1008,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.rawProductData["productPartDetails"][partNumber]["images"]
         );
         this.setProductVideo(this.rawProductData["videosInfo"]);
+        console.log("nikkkkkkkkkkkkkkkk",this.rawProductData["videosInfo"])
         if (args.refreshCrousel) {
             this.refreshProductCrousel();
         }
@@ -1365,6 +1366,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             videoArr &&
             (videoArr as any[]).length > 0
         ) {
+            this.setVideoSeoSchema(videoArr);
             (videoArr as any[]).reverse().forEach((element) =>
             {
                 // append all video after first image and atleast has one image
@@ -3635,6 +3637,26 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
+    setVideoSeoSchema(videoArr)
+    {
+        if (this.isServer && this.rawProductData) {        
+            let firstVideoData=videoArr[0];
+            let videoSchema = this.renderer2.createElement("script");
+            videoSchema.type = "application/ld+json";
+            videoSchema.text = JSON.stringify({
+                "@context": CONSTANTS.SCHEMA,
+                "@type": "VideoObject",
+                name:(firstVideoData['title']) ? firstVideoData['title'] : null,
+                description:(firstVideoData['description']) ? firstVideoData['description'] : null,
+                thumbnailUrl:(firstVideoData['link']) ? firstVideoData['link'] : null,
+                uploadDate:(firstVideoData['uploadedBy']) ? firstVideoData['uploadedBy'] : null,
+                embedUrl:(firstVideoData['link']) ? firstVideoData['link'] : null
+               
+            });
+            this.renderer2.appendChild(this.document.head, videoSchema);        
+            }
+        
+    }
     // ANALYTIC CODE SECTION STARTS
     /**
      * Please place all functional code above this section

@@ -283,7 +283,7 @@ export class CategoryComponent {
     }
 
     private setFaqSchema(faqData) {
-        if (!this._commonService.isServer) {
+        if (this._commonService.isServer) {
             const data: any[] = (faqData['data'] as any[]);
             if (data.length > 0) {
                 const qaSchema = [];

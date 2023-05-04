@@ -55,9 +55,9 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit {
     this._cartService.showUnavailableItems = false;
   }
 
-  removeUnavailableItems(callback) {
+  removeUnavailableItems(callback, isWishlistProduct, message) {
     this.closeModal();
-    callback(this.itemsList);
+    callback(this.itemsList, isWishlistProduct, message);
   }
 
   closeModal() {
@@ -82,18 +82,10 @@ export class SharedCheckoutUnavailableItemsComponent implements OnInit {
       forkJoin(allApis).subscribe(
         (response) => {
           if (response[0]["status"]) {
-            this._tms.show({
-              type: "success",
-              text: "Successfully added to wishlist.",
-            });
             this.sendAdobeAnalyticsData("move_to_wishlist");
-            this.removeUnavailableItems(this.data.removeUnavailableItems);
+            this.removeUnavailableItems(this.data.removeUnavailableItems, true, 'Products moved to wishlist');
           } else {
-            this._tms.show({
-              type: "success",
-              text: response[0]["errorMessage"],
-            });
-            this.removeUnavailableItems(this.data.removeUnavailableItems);
+            this.removeUnavailableItems(this.data.removeUnavailableItems,true, 'Products already exist in wishlist');
           }
         },
         (error) => {

@@ -1697,9 +1697,9 @@ export class CartService
         this.showUnavailableItems = true;
     }
 
-    removeUnavailableItems(items: any[]) {
+    removeUnavailableItems(items: any[], isWishlistProduct?: boolean, message?: string) {
         const MSNS = items.map(item => item['productId']);
-        this.removeCartItemsByMsns(MSNS)//postprocessing
+        this.removeCartItemsByMsns(MSNS, isWishlistProduct, message)//postprocessing
         this.showUnavailableItems = false;
     }
 

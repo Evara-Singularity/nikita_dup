@@ -190,7 +190,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         event.preventDefault();
         let clipboardData = event.clipboardData || window['clipboardData'] || '';
         let pastedText:string = (clipboardData) ? clipboardData.getData('text') : '';
-        this.autoFillOTP(pastedText);
+        this.autoFillOTPV1(pastedText);
     }
 
     autoFillOTP(pastedText: any)  

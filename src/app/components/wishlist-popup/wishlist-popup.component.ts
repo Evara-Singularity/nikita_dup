@@ -58,7 +58,7 @@ export class WishlistPopupComponent {
   }
 
   ngOnInit(): void {
-    this.cartSubscription = this._cartService.isAddedToCartSubject.subscribe(
+    this.cartSubscription = this._cartService.wishListSubject.subscribe(
       (response) => {
         this.getWishlistData();
       }

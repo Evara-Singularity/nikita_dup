@@ -40,6 +40,7 @@ export class CartService
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public cartCountSubject: Subject<any> = new Subject<any>(); // cartCountSubject 
     public autoLoginSubject: Subject<any> = new Subject<any>(); // autoLoginSubject 
+    public wishListSubject: Subject<any> = new Subject<any>(); // autoLoginSubject 
     public codNotAvailableObj = {}; // cart.component
     public quickCheckoutCodMaxErrorMessage = null; 
     itemsValidationMessage = [];

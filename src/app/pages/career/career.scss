@@ -3,9 +3,9 @@
 @import '../../scss/layout/grid.scss';
 
 .cs-section {
-    background-image: url('/assets/img/revamp-career/moglixteam.jpg');
+    background-image: url('/assets/img/career-bg.jpeg');
     background-repeat: no-repeat;
-    height: 500px;
+    height: 600px;
     background-position: 50% 0%;
     width: $fullwidth;
     background-size: cover;
@@ -38,24 +38,11 @@
             }
         }
         h1 {
-            padding-top: 100px;
             line-height: $large-line-height;
             font-size: $extra-large-4-font;
             font-weight: $font-bold;
             color: var(--white);
         }
-    }
-}
-
-.page-header {
-    &:before {
-        content: '';
-        position: absolute;
-        background: rgba(0, 0, 0, 0.61);
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
     }
 }
 
@@ -209,6 +196,7 @@
                 width: $fullwidth;
                 height: auto;
                 margin: auto;
+                border-radius: 8px;
             }
             .text {
                 font-size: 16px;
@@ -243,15 +231,22 @@
             .hover {
                 position: absolute;
                 top: 0;
-                height: 100%;
                 opacity: 0;
                 transition: .5s ease;
                 transform: translate(0, 0);
                 left: 0;
                 right: 0;
-                margin: auto;
-                .text {
-                    height: 355px;
+                background: var(--white);
+                margin: 20px;
+                bottom: 0;
+                border-radius: $border-radius-8;
+                .hover-desc{
+                    padding: 15px;
+                    height: 75%;
+                    font-size: 14px;
+                    line-height: 20px;
+                    text-align: left;
+                    overflow-y: scroll;
                 }
             }
             &:hover {
@@ -267,11 +262,19 @@
                     opacity: 1;
                 }
             }
-            .hover {
-                background-color: rgba(0, 0, 0, 0.5);
-            }
         }
     }
+}
+.leader-text{
+    font-size: 16px;
+    line-height: 24px;
+
+}
+.leader-subtext{
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--text-color);
+    padding-bottom: 40px;
 }
 .cta-wrap {
     background: var(--ghost-white);
@@ -288,7 +291,7 @@
                 font-size: $extra-large-4-font;
                 color: var(--white);
                 padding-bottom: 20px;
-                line-height: 20px;
+                line-height: 30px;
             }
             p {
                 font-size: $extra-large-font;

@@ -81,8 +81,11 @@
             input {
                 border: none;
                 // text-align: center;
-                letter-spacing: 15px;
+                &.singleOtpfield{
+                    letter-spacing: 20px;
                 max-width: 200px;
+                margin-right: -20px;
+                }
 
             }
         }

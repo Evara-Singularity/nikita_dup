@@ -9,7 +9,7 @@
             <div class="fixed-bottom-cta pad-0">
             <div *ngIf="isUserLoggedIn else hideContinue" class="payment-strip">
                 <div class="amount-left-section">
-                    <span class="payable-amnt">Amount Payable
+                    <span class="payable-amnt">Amount&nbsp;Payable
                         <span (click)="scrollPaymentSummary();">
                             <i class="icon-information"></i>
                         </span>
@@ -31,7 +31,7 @@
                 </div>
                 <button [disabled]="!(hasCartItems)" class="btn primary-btn"
                     (click)="$event.stopPropagation();continueToPayment()">
-                    PROCEED TO CHECKOUT
+                    PROCEED TO PAY
                 </button>
             </div>
         </div>

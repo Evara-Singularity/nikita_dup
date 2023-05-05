@@ -40,6 +40,7 @@ export class CartService
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public cartCountSubject: Subject<any> = new Subject<any>(); // cartCountSubject 
     public autoLoginSubject: Subject<any> = new Subject<any>(); // autoLoginSubject 
+    public wishListSubject: Subject<any> = new Subject<any>(); // autoLoginSubject 
     public codNotAvailableObj = {}; // cart.component
     public quickCheckoutCodMaxErrorMessage = null; 
     itemsValidationMessage = [];
@@ -1696,9 +1697,9 @@ export class CartService
         this.showUnavailableItems = true;
     }
 
-    removeUnavailableItems(items: any[]) {
+    removeUnavailableItems(items: any[], isWishlistProduct?: boolean, message?: string) {
         const MSNS = items.map(item => item['productId']);
-        this.removeCartItemsByMsns(MSNS)//postprocessing
+        this.removeCartItemsByMsns(MSNS, isWishlistProduct, message)//postprocessing
         this.showUnavailableItems = false;
     }
 

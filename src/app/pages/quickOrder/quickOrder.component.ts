@@ -37,7 +37,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   cartSubscription: Subscription;
   addToCartSubscription: Subscription;
 
-  @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> =
+  @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<any> =
     new Subject();
   readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
   deliveryAddress = null;
@@ -93,7 +93,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     let i = 0;
     this.cartSubscription = this._cartService
       .getCartUpdatesChanges()
-      .pipe(delay(800))
+      .pipe(delay(100))
       .subscribe((cartSession) => {
         if (
           cartSession &&
@@ -170,7 +170,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   navigateToCheckout() {
     if (this._localAuthService.isUserLoggedIn()) {
       if (!this.deliveryAddress) {
-        this.addDeliveryOrBilling.next("Delivery");
+        this.addDeliveryOrBilling.next({addressType: "Delivery", redirectedTo:"checkout/address"});
         return;
       }
     }
@@ -560,6 +560,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     this._cartService.removePurchaseList(obj).subscribe(
       (res) => {
         if (res["status"]) {
+          this._cartService.wishListSubject.next(res);
           this.refreshAllApis();
         }
       },

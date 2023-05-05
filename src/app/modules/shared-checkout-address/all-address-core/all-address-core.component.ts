@@ -82,10 +82,18 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
   ngAfterViewInit(): void
   {
       if (this.addDeliveryOrBilling) {
-          this.triggerDeliveryOrBillingSubscription = this.addDeliveryOrBilling.subscribe((addressType: string) =>
+          this.triggerDeliveryOrBillingSubscription = this.addDeliveryOrBilling.subscribe((response: any) =>
           {
-              if (!addressType) return;
-              this.displayAddressFormPopup(addressType, null);
+            let addressType =  null;
+            let redirectedTo =  null;
+            if(typeof(response)=='string'){
+                addressType = response;
+            }else{
+                addressType = response.addressType || null;
+                redirectedTo = response.redirectedTo || null;
+            }
+            if (!addressType) return;
+            this.displayAddressFormPopup(addressType, null, redirectedTo);
           })
       }
   }
@@ -260,7 +268,7 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
    * @param addressType: Delivery or Billing
    * @param address: can be delivery or billing address or 'null' in case of addition
    */
-  async displayAddressFormPopup(addressType: string, address)
+  async displayAddressFormPopup(addressType: string, address, redirectedTo?:string)
   {
       if(this.isCheckoutModule) {this.sendAdobeAnalysis()};
       let factory = null;
@@ -283,6 +291,7 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
       this.createEditAddressInstance.instance['displayCreateEditPopup'] = true;
       this.createEditAddressInstance.instance['address'] = address;
       this.createEditAddressInstance.instance['countryList'] = this.countryList;
+      this.createEditAddressInstance.instance['redirectedTo'] = redirectedTo || null;
       this.createEditAddressSubscription = (this.createEditAddressInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((response: CreateEditAddressModel) =>
       {
           //Expected Actions: "Add or Edit or null", null implies no action to be taken

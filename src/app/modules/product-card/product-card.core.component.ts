@@ -370,7 +370,7 @@ export class ProductCardCoreComponent implements OnInit {
   remove(product) { this.remove$.emit(product)}
 
   private common_showAddToCartToast(message){
-    const iscurrentUrl : boolean = this._router.url.includes("quickorder");
+    const iscurrentUrl : boolean = this._router.url.includes("quickorder") || this._router.url.includes("checkout/address");
     (iscurrentUrl ? this._toastMessageService.show({ type: 'success', text: message }) : this.showAddToCartToast(message));
   }
 

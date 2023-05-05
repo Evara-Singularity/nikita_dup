@@ -93,7 +93,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     let i = 0;
     this.cartSubscription = this._cartService
       .getCartUpdatesChanges()
-      .pipe(delay(100))
+      .pipe(delay(250))
       .subscribe((cartSession) => {
         if (
           cartSession &&

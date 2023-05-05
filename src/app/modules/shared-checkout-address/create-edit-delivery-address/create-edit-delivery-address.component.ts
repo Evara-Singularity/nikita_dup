@@ -36,7 +36,6 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
     @Input("address") address = null;
     @Input("verifiedPhones") verifiedPhones: string[];
     @Input("countryList") countryList = [];
-    @Input("redirectedTo") redirectedTo: string = "";
     @Output("closeAddressPopUp$") closeAddressPopUp$: EventEmitter<any> = new EventEmitter<any>();
 
     addressForm: FormGroup = null;
@@ -196,7 +195,8 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             if (addressList.length) {
                 this._toastMessage.show({ type: "success", text: `${this.ADDRESS_TYPE} address saved successfully` });
                 this.closeAddressPopUp$.emit({ aType: A_TYPE, action: this.modeType, addresses: addressList });
-                if(this.redirectedTo === "checkout/address"){ this._router.navigate(['checkout/address']); }
+                const isQuickOrderurl = this._router.url.includes("/quickorder");
+                isQuickOrderurl ? this._router.navigate(['checkout/address']) : '';
             }
         });
     }

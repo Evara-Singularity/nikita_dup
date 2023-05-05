@@ -129,6 +129,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
                     this.timer = 0;
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this._globalLoader.setLoaderState(false);
+                    for (let i = 0; i < 6; i++) { this.otpFormArray.push(new FormControl(otpValue[i], [Validators.required])) }
                     this.otpEmitter.emit(otpValue);
                     if (!(this.withLabel)) { setTimeout(() => {  
                         this.otpSuccess$.emit();

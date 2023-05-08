@@ -17,7 +17,7 @@
                     <product-card-vertical-container [containerId]="'topDealsContainer'+tabIndex" [numberOfItems]="10">
                         <ng-container *ngFor="let product of tabsArray[tabIndex]['data']; let pIndex=index">
                             <product-card-vertical-grid-view [section]="sectionName + 'add_to_cart_'+item['name'].toLowerCase()" [product]="product"
-                                [moduleUsedIn]="'POPULAR_DEALS'" [cardFeaturesConfig]='cardFeaturesConfig'
+                                [moduleUsedIn]="moduleUsedIn" [cardFeaturesConfig]='cardFeaturesConfig'
                                 [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
                             </product-card-vertical-grid-view>
                         </ng-container>
@@ -27,7 +27,7 @@
                     <product-card-vertical-container [containerId]="'topDealsContainer'+tabIndex" [numberOfItems]="10">
                         <ng-container *ngFor="let product of tabsArray[tabIndex]['data']; let pIndex=index">
                             <rfq-product-card-vertical-grid-view [section]="sectionName + 'add_to_cart_'+item['name'].toLowerCase()" [product]="product"
-                                [moduleUsedIn]="'POPULAR_DEALS'" [cardFeaturesConfig]='cardFeaturesConfig'
+                                [moduleUsedIn]="moduleUsedIn" [cardFeaturesConfig]='cardFeaturesConfig'
                                 [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
                             </rfq-product-card-vertical-grid-view>
                         </ng-container>

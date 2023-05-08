@@ -50,6 +50,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
 
   tabsArray: { id: number, name: string, data: any[], isSelected: boolean }[] = [];
   sectionName: string = "Summary ";
+  moduleUsedIn: string = "POPULAR_DEALS_HOME"
 
   constructor(
     public localStorageService: LocalStorageService,
@@ -63,7 +64,8 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
 
   ngOnInit() {
     this.setFullAddToCartButton();
-    this.sectionName = this.isQuickOrder ? "Summary " : "HomePage "
+    this.sectionName = this.isQuickOrder ? "Summary " : "HomePage ";
+    this.moduleUsedIn = this.isQuickOrder ? "POPULAR_DEALS_QUICKORDER" : "POPULAR_DEALS_HOME"
     if (this.recentResponse && (this.recentResponse['statusCode'] === 200) && this.recentResponse['data'] && this.recentResponse['data'].length > 0) {
       let recentResponseData = []
       recentResponseData = this.isQuickOrder ? (this.recentResponse['data'] as any []).map(product => this._productService.recentProductResponseToProductEntity(product)).filter(res=> (this._productService.isInStock(res) == true))

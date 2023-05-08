@@ -1,5 +1,5 @@
 import { LocalStorageService } from 'ngx-webstorage';
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -30,6 +30,11 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = new Subject();
 
+    // on demand loading of simillarProductsList
+    simillarProductsPopupInstance = null;
+    @ViewChild("simillarProductsPopup", { read: ViewContainerRef })
+    simillarProductsPopupContainerRef: ViewContainerRef;
+
     invoiceType = this.INVOICE_TYPES.RETAIL;
     payableAmount = 0;
     isUserLoggedIn = false;
@@ -48,7 +53,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     paymentMode: any;
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
-        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService, private _commonService: CommonService)
+        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService, private _commonService: CommonService, private injector: Injector, private  cfr: ComponentFactoryResolver,)
     {
         
     }
@@ -371,12 +376,44 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         }
     }
 
+    async openSimillarProductsPopUp(event) {
+        const msnid = event["productId"];
+        const data = event["item"];
+        const { SimillarProductsPopupComponent } = await import(
+          "../../../components/simillar-products-popup/simillar-products-popup.component"
+        ).finally();
+        const factory = this.cfr.resolveComponentFactory(
+          SimillarProductsPopupComponent
+        );
+        this.simillarProductsPopupInstance =
+          this.simillarProductsPopupContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+          );
+        this.simillarProductsPopupInstance.instance["msnid"] = msnid;
+        this.simillarProductsPopupInstance.instance["productName"] =
+          data.productName;
+        (
+          this.simillarProductsPopupInstance.instance[
+            "closePopup$"
+          ] as EventEmitter<any>
+        ).subscribe((res) => {
+          this.simillarProductsPopupContainerRef.remove();
+          this.simillarProductsPopupInstance = null;
+        });
+    }
+    
     ngOnDestroy()
     {
         if (this.orderSummarySubscription) this.orderSummarySubscription.unsubscribe();
         if (this.loginSubscription) this.loginSubscription.unsubscribe();
         if (this.logoutSubscription) this.logoutSubscription.unsubscribe();
         if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
+        if (this.simillarProductsPopupInstance) {
+            this.simillarProductsPopupInstance = null;
+            this.simillarProductsPopupContainerRef.remove();
+        }
         this._cartService.showNotification = false;
     }
 }

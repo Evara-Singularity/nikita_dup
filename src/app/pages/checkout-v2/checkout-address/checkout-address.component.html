@@ -44,7 +44,7 @@
             (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
             (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
         <all-promocode-v1></all-promocode-v1>    
-        <cart [moduleName]="'CHECKOUT'"></cart>
+        <cart [moduleName]="'CHECKOUT'" (openSimillarList$)="openSimillarProductsPopUp($event)"></cart>
         <order-summary></order-summary>
         <generic-offers></generic-offers>
         <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems"
@@ -52,4 +52,5 @@
         </shared-checkout-unavailable-items>
     </ng-container>
 </div>
+<ng-container #simillarProductsPopup></ng-container>
 <ng-container #txnDeclined></ng-container>

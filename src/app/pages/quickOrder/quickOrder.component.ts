@@ -136,12 +136,10 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   private addSubscribers() {
     this.addToCartSubscription =
       this._cartService.isAddedToCartSubject.subscribe((response) => {
-        console.log("response =====> - :" , response);
         const productId = (response && response["productId"]) || null;
         const filterdData = this.wishListData.filter(
           (res) => res["moglixPartNumber"] == productId
         );
-        console.log("productId ====>" , productId)
         if (filterdData && filterdData.length > 0) {
           this.removeItemFromPurchaseList(response);
           return;
@@ -198,7 +196,6 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   */
   verifyServiceablityAndCashOnDelivery(postCode, cartSession)
   {
-    console.log("verifyServiceablityAndCashOnDelivery===>" , postCode, cartSession);
       const cartItems: any[] =  cartSession['itemsList'] || [];
       if ((!cartItems) || (cartItems.length === 0)) return;
       const MSNS = cartItems.map(item => item.productId);
@@ -384,7 +381,6 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     fbtResponse,
     recentViewedResponse
   ]) {
-    console.log("recentViewedResponse ===>" , recentViewedResponse)
     if (!this.homeMiscellaneousCarouselInstance && this.homeMiscellaneousCarouselContainerRef != undefined) {
       const { HomeMiscellaneousCarouselComponent } = await import(
         "./../../components/homeMiscellaneousCarousel/homeMiscellaneousCarousel.component"

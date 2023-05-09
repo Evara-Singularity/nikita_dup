@@ -701,6 +701,7 @@ export const CONSTANTS = {
   PDP_IMAGE_HASH:"pdpImageHash",
   PDP_QNA_HASH:"qna",
   PDP_REVIEW_HASH:"review",
+  PDP_WRITE_REVIEW_HASH:"write-review",
   APP_OPEN_LINK:"https://moglix.page.link/appinstall"
 };
 export default CONSTANTS;

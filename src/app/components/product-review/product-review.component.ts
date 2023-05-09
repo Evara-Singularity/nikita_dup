@@ -30,6 +30,9 @@ export class ProductReviewComponent {
         if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_REVIEW_HASH){
           this.reviewRatingPopup.emit()
         }
+        else if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_WRITE_REVIEW_HASH){
+          this.writeReview.emit(-1)
+        }
       })
     }
   }

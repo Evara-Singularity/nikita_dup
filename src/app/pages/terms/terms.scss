@@ -136,7 +136,7 @@
 
         td {
             border: 1px solid var(--onyx-black);
-            padding: 15px;
+            padding: .5rem;
             width: 50%;
             &:first-child{
                 font-weight: bold;
@@ -154,12 +154,12 @@
         th{
             border: 1px solid var(--onyx-black);
             // width: 25%;
-            padding: 15px;
+            padding: .5rem;
         }
 
         td {
             border: 1px solid var(--onyx-black);
-            padding: 15px;
+            padding: .5rem;
             &:first-child{
                 font-weight: bold;
             }

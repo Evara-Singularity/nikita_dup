@@ -89,19 +89,21 @@ export class CartComponent implements OnInit, AfterViewInit
         this.cartSubscription = this._cartService.getCartUpdatesChanges().pipe(
             map((cartSession: any) => {
                 if (cartSession.proxy) { return cartSession }
-                this.sendCritieoDataonView(cartSession);
-                this.sendAdobeAnalyticsData(this.pageEvent);
-                this.pageEvent = "genericClick";
+                if (!this.cartSession || (this.cartSession && JSON.stringify(cartSession) != JSON.stringify(this.cartSession))) {
+                    this.sendCritieoDataonView(cartSession);
+                    this.sendAdobeAnalyticsData(this.pageEvent);
+                    this.pageEvent = "genericClick";
+                }
                 return cartSession;
             }),
         ).subscribe((cartSession) => {
             if (!this.cartSession || (this.cartSession && JSON.stringify(cartSession) != JSON.stringify(this.cartSession))) {
-                console.log("🚀 ~ file: cart.component.ts:105 ~ ).subscribe ~ cartSession:", cartSession)
+                // console.log("🚀 ~ file: cart.component.ts:105 ~ ).subscribe ~ cartSession:", cartSession)
                 this.cartChangesUpdates(cartSession);
                 const userSession = this._localAuthService.getUserSession();
                 this._cartService.getPromoCodesByUserId(userSession['userId'], false);
             }else{
-                console.log('same cart loadCartDataFromAPI', cartSession, this.cartSession);
+                console.log('duplicate cart call ignored');
             }
             
         });

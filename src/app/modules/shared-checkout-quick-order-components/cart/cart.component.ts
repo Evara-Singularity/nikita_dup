@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
@@ -25,7 +25,7 @@ declare let dataLayer;
     styleUrls: ['./cart.scss'],
 })
 
-export class CartComponent
+export class CartComponent implements OnInit, AfterViewInit
 {
     removableItem = null;
     cartSubscription: Subscription;
@@ -58,19 +58,15 @@ export class CartComponent
 
     ) { }
 
-    ngOnInit()
-    {
-        // Get latest cart from API
-        this._commonService.updateUserSession();
-        this.loadCartDataFromAPI();
+    ngOnInit(){}
+
+    ngAfterViewInit(): void {
         if (this._commonService.isBrowser) {
-            this.sendCriteoPageLoad();
+            this._commonService.updateUserSession();
+            this.loadCartDataFromAPI();
+            // this.sendCriteoPageLoad();
             this.sendEmailGTMCall();
-            //  this.shippingCallSubscribers();
         }
-        // const cartSession = this._cartService.getCartSession();
-        // this.noOfCartItems = (cartSession['itemsList'] as any[]).length || 0;
-        //this.addSubscribers();
     }
 
     ngOnDestroy() {
@@ -98,46 +94,21 @@ export class CartComponent
                 this.pageEvent = "genericClick";
                 return cartSession;
             }),
-            // mergeMap((cartSession: any) => {
-            //     return this._cartService.getShippingAndUpdateCartSession(cartSession);
-            // }),
         ).subscribe((cartSession) => {
-            // console.log('loadCartDataFromAPI', cartSession);
-            this.cartChangesUpdates(cartSession);
-            const userSession = this._localAuthService.getUserSession();
-            this._cartService.getPromoCodesByUserId(userSession['userId'], false);
-            // if (!(cartSession && cartSession['offersList'] && cartSession['offersList'].length > 0)) {
-            //     const userSession = this._localAuthService.getUserSession();
-            //     this._cartService.getPromoCodesByUserId(userSession['userId'], false)
-            // } else {
-            //     if (this.moduleName == 'QUICKORDER') {
-            //         this._cartService.callShippingValueApi(cartSession)
-            //     }
-            // }
+            if (!this.cartSession || (this.cartSession && JSON.stringify(cartSession) != JSON.stringify(this.cartSession))) {
+                console.log("🚀 ~ file: cart.component.ts:105 ~ ).subscribe ~ cartSession:", cartSession)
+                this.cartChangesUpdates(cartSession);
+                const userSession = this._localAuthService.getUserSession();
+                this._cartService.getPromoCodesByUserId(userSession['userId'], false);
+            }else{
+                console.log('same cart loadCartDataFromAPI', cartSession, this.cartSession);
+            }
+            
         });
     }
 
-    // shippingCallSubscribers() {
-    //     this.shippingSubscription = this._cartService.shippingValueApiUpdates().subscribe((cartSessionWithShiping) => {
-    //         // console.log('shippingCallSubscribers', this.moduleName);
-    //         // this.shippingApiCall();
-    //         // new coded added to check promo codes
-    //         // const userSession = this._localAuthService.getUserSession();
-    //         // this._cartService.getPromoCodesByUserId(userSession['userId']);
-    //         // if (!(cartSessionWithShiping && cartSessionWithShiping['offersList'] && cartSessionWithShiping['offersList'].length > 0)) {
-    //         // }
-    //     })
-    // }
-
-
-    // shippingApiCall() {
-    //     this._cartService.getShippingAndUpdateCartSession(this.cartSession).subscribe(cartsession => {
-    //         console.log('shipping:: called from cart');
-    //         // this.cartChangesUpdates(cartsession);
-    //     })
-    // }
-
     cartChangesUpdates(cartSession) {
+        
         this.cartSession = cartSession;
         this.noOfCartItems = (cartSession['itemsList'] as any[]).length;
         if (this.noOfCartItems) {

@@ -3,30 +3,35 @@
     <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
     <ng-container>
         <section>
-            <div class="fixed-bottom-cta pad-0">
+            <div class="floating-promo">
                 <prepaid-offer-checkout></prepaid-offer-checkout>
+            </div>
+            <div class="fixed-bottom-cta pad-0">
             <div *ngIf="isUserLoggedIn else hideContinue" class="payment-strip">
                 <div class="amount-left-section">
-                    <span class="payable-amnt">Amount Payable
+                    <span class="payable-amnt">Amount&nbsp;Payable
                         <span (click)="scrollPaymentSummary();">
                             <i class="icon-information"></i>
                         </span>
                     </span>
-                    <ng-container >
-                        <ng-container
-                            *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">
-                            ₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt +
-                            _cartService.getGenericCartSession.cart.shippingCharges) | mathRound | number : '1.2-2'}}</ng-container>
-                        <ng-container
-                            *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null">
-                            ₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt +
-                            _cartService.getGenericCartSession.cart.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer) |
-                            mathRound | number : '1.2-2'}}</ng-container>
-                    </ng-container>
+                    <span class="total-amt-txt">
+                        <ng-container >
+                            <ng-container
+                                *ngIf="_cartService.getGenericCartSession.cart.totalOffer==0 || _cartService.getGenericCartSession.cart.totalOffer==null">
+                                ₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt +
+                                _cartService.getGenericCartSession.cart.shippingCharges) | mathRound | number : '1.2-2'}}</ng-container>
+                            <ng-container
+                                *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null">
+                                ₹{{ (_cartService.getGenericCartSession.cart.tawot + _cartService.getGenericCartSession.cart.tpt +
+                                _cartService.getGenericCartSession.cart.shippingCharges - _cartService.getGenericCartSession.cart.totalOffer) |
+                                mathRound | number : '1.2-2'}}</ng-container>
+                        </ng-container>
+                    </span>
+                   
                 </div>
                 <button [disabled]="!(hasCartItems)" class="btn primary-btn"
                     (click)="$event.stopPropagation();continueToPayment()">
-                    CONTINUE
+                    PROCEED TO PAY
                 </button>
             </div>
         </div>
@@ -38,7 +43,8 @@
             (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
             (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
             (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-        <cart [moduleName]="'CHECKOUT'"></cart>
+        <all-promocode-v1></all-promocode-v1>    
+        <cart [moduleName]="'CHECKOUT'" (openSimillarList$)="openSimillarProductsPopUp($event)"></cart>
         <order-summary></order-summary>
         <generic-offers></generic-offers>
         <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems"
@@ -46,4 +52,5 @@
         </shared-checkout-unavailable-items>
     </ng-container>
 </div>
+<ng-container #simillarProductsPopup></ng-container>
 <ng-container #txnDeclined></ng-container>

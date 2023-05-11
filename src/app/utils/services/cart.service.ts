@@ -40,6 +40,7 @@ export class CartService
     public prepaidDiscountSubject: Subject<any> = new Subject<any>(); // promo & payments
     public cartCountSubject: Subject<any> = new Subject<any>(); // cartCountSubject 
     public autoLoginSubject: Subject<any> = new Subject<any>(); // autoLoginSubject 
+    public wishListSubject: Subject<any> = new Subject<any>(); // autoLoginSubject 
     public codNotAvailableObj = {}; // cart.component
     public quickCheckoutCodMaxErrorMessage = null; 
     itemsValidationMessage = [];
@@ -72,6 +73,7 @@ export class CartService
     public isProductRemoved: BehaviorSubject<boolean> = new BehaviorSubject(false);
     private _shippingPriceChanges: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
     private _shippingApiCall: BehaviorSubject<any> = new BehaviorSubject(this.cartSession);
+    public isAddedToCartSubject: Subject<any> = new Subject<any>();
 
     private previousUrl: string = null;
     private currentUrl: string = null;
@@ -1695,14 +1697,14 @@ export class CartService
         this.showUnavailableItems = true;
     }
 
-    removeUnavailableItems(items: any[]) {
+    removeUnavailableItems(items: any[], isWishlistProduct?: boolean, message?: string) {
         const MSNS = items.map(item => item['productId']);
-        this.removeCartItemsByMsns(MSNS)//postprocessing
+        this.removeCartItemsByMsns(MSNS, isWishlistProduct, message)//postprocessing
         this.showUnavailableItems = false;
     }
 
     //Post processing
-    removeCartItemsByMsns(msns: string[])
+    removeCartItemsByMsns(msns: string[], isWishlistProduct?: boolean, message?: string)
     {
         const CART_SESSION = JSON.parse(JSON.stringify(this.cartSession));
         const EXISTING_ITEMS = (CART_SESSION['itemsList'] as any[]);
@@ -1713,7 +1715,7 @@ export class CartService
             NON_REMOVABLE_ITEMS.push(item);
         });
         this.removeNotificationsByMsns(msns).subscribe((response) => console.log("removed notfication by msns"));
-        this.updateCartAfterItemsDelete(CART_SESSION, NON_REMOVABLE_ITEMS);
+        this.updateCartAfterItemsDelete(CART_SESSION, NON_REMOVABLE_ITEMS, isWishlistProduct, message);
     }
 
     verifyShippingCharges(cartSession)
@@ -1737,7 +1739,7 @@ export class CartService
         );
     }
 
-    updateCartAfterItemsDelete(cartSession, items: any[])
+    updateCartAfterItemsDelete(cartSession, items: any[], isWishlistProduct?: boolean, message?: string)
     {
         cartSession['itemsList'] = [];
         if (items.length) { cartSession['itemsList'] = items; }
@@ -1759,11 +1761,16 @@ export class CartService
             switchMap((newCartSession) =>
             {
                 tempCartSession = newCartSession;
+                return this.updateCartSession(tempCartSession)
+            }),
+            switchMap((newCartSession) =>
+            {
+                tempCartSession = newCartSession;
                 return this.validateCartApi(tempCartSession)
             })).
             subscribe((response) =>
             {
-                this._toastService.show({ type: 'error', text: 'Product successfully removed from Cart' });
+                this._toastService.show({ type: 'error', text: `${!isWishlistProduct ? "Product successfully removed from Cart" :`${message}!`}` });
                 const ITEM_LIST = tempCartSession['itemsList'];
                 
                 if (ITEM_LIST && ITEM_LIST.length == 0 && this._router.url.indexOf('/checkout') != -1) {
@@ -2459,5 +2466,9 @@ export class CartService
         );
     }
 
+    removePurchaseList(data) {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RM_PCR_LIST;
+        return this._dataService.callRestful("POST", url, { body: data });
+    }
     
 }

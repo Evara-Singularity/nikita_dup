@@ -1,0 +1,56 @@
+@import '../../scss/layout/horizontalProductListing';
+@import '../../scss/components/tabs';
+
+.popularDeals {
+  background: var(--ghost-white) !important;
+  padding: 5px 0 0px;
+  margin-top: -35px;
+
+  .view-all-strip {
+    h3 {
+      font-size: $extra-large-font
+    }
+  }
+
+  .pwa-tabs-container {
+    padding: 5px 15px 15px;
+    .pwa-tab-variant2{
+      border-radius: 4px;
+      &.selectedTab{
+        background: var(--misty-rose);
+      }
+    }
+  }
+
+  .product-card-section {
+    padding-left: 15px;
+    min-height: 345px;
+  }
+}
+
+.no-result-found-container {
+  width: 100%;
+  min-height: 345px;
+  display: grid;
+  text-align: center;
+  align-items: center;
+  background: var(--white);
+  border-radius: 8px;
+  .not-found-section{
+    padding: 20px;
+    text-align: center;
+    .no-product{
+        width: 218px;
+        padding: 15px 0;
+    }
+    p{
+        font-size: $medium-font;
+        line-height: $small-line-height;
+        color: var(--spanish-gray);
+    }
+}
+img{
+    border-radius: 8px;
+    margin: 5px 0;
+}
+}

@@ -1,0 +1,42 @@
+<ng-container *ngIf="wishListData.length == 0 && isDataFetched != null">
+    <app-bottom-menu (outData$)="closePopup()">
+        <div content>
+            <div class="pwa-row">
+                <div class="empty-wishlist-popup">
+                    <div class="empty-wishlist">
+                        <div class="header-txt">
+                            <h3>Add From Wishlist</h3>
+                            <i class="icon-circle-delete" (click)="closePopup()"></i>
+                        </div>
+                        <img src="assets/img/empty-wishlist.svg" alt="">
+                        <h3 class="pad-0 mt-20">Your wishlist is empty!</h3>
+                        <p class="pad-0">No item available now</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-bottom-menu>
+</ng-container>
+<ng-container *ngIf="wishListData.length > 0">
+    <app-bottom-menu (outData$)="closePopup()">
+        <div content>
+            <div class="empty-wishlist-popup block">
+                <div class="empty-wishlist">
+                    <div class="header-txt">
+                        <h3>Add From Wishlist</h3>
+                        <i class="icon-circle-delete" (click)="closePopup()"></i>
+                    </div>
+                </div>
+                <product-card-vertical-container [numberOfItems]="wishListData.length">
+                    <ng-container *ngFor="let product of wishListData;let pIndex = index">
+                        <product-card-vertical-grid-view [product]="product" [section]="'add_to_cart_wishlist_section'"
+                            [cardFeaturesConfig]='cardFeaturesConfig' [moduleUsedIn]="'PRODUCT_RECENT_PRODUCT'"
+                            [pIndex]="pIndex">
+                        </product-card-vertical-grid-view>
+                    </ng-container>
+                </product-card-vertical-container>
+            </div>
+        </div>
+    </app-bottom-menu>
+</ng-container>
+<product-skeletons [type]="'RECENT'" [templateRefInstance]="isDataFetched"></product-skeletons>

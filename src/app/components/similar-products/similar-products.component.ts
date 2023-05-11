@@ -11,6 +11,7 @@ import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/ut
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
 import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
+import { ProductSkeletonsModule } from "../product-skeletons/product-skeletons.component";
 
 
 
@@ -23,12 +24,14 @@ export class SimilarProductsComponent implements OnInit {
     productStaticData = this.commonService.defaultLocaleValue;
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     similarProducts: ProductsEntity[] = null;
+    isDataFetched = null;
     @Input('outOfStock') outOfStock = false;
     @Input('partNumber') partNumber;
     @Input('groupId') groupId;
     @Input('productName') productName;
     @Input('categoryCode') categoryCode;
     @Input('analytics') analytics = null;
+    @Input('isFromQuickOrderPage') isFromQuickOrderPage: boolean = false;
     @Output('similarDataLoaded$') similarDataLoaded$ = new EventEmitter();
     readonly cardFeaturesConfig: ProductCardFeature = {
         // feature config
@@ -58,6 +61,7 @@ export class SimilarProductsComponent implements OnInit {
             redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
             redirectedSectionName: this.outOfStock ? 'similar_product_oos' : 'similar_products'
         }
+        this.setFullAddToCartButton();
     }
     getStaticSubjectData(){
         this.commonService.changeStaticJson.subscribe(staticJsonData => {
@@ -70,8 +74,10 @@ export class SimilarProductsComponent implements OnInit {
         this.productService.getSimilarProducts(this.productName, this.categoryCode, this.partNumber, this.groupId).subscribe((response: any) => {
             let products = response['products'];
             if (products && (products as []).length > 0) {
-                this.similarProducts = (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));
+                this.similarProducts = this.isFromQuickOrderPage ? (products as any[]).map(product => this.productService.searchResponseToProductEntity(product)).filter(res=> (this.productService.isInStock(res) == true))
+                : (products as any[]).map(product => this.productService.searchResponseToProductEntity(product));
                 this.similarDataLoaded$.emit(true);
+                this.isDataFetched = response;
             }else{
                 this.similarDataLoaded$.emit(false);
             }
@@ -86,10 +92,21 @@ export class SimilarProductsComponent implements OnInit {
         }
     }
 
+    setFullAddToCartButton(){
+        if(this.isFromQuickOrderPage === true){ 
+          this.cardFeaturesConfig.enableFullAddToCart = true;
+          this.cardFeaturesConfig.enableBuyNow = false;
+          this.cardFeaturesConfig.enableAddToCart = false;
+        }
+    }
+
 }
 
 @NgModule({
     declarations: [
+        SimilarProductsComponent
+    ],
+    exports: [
         SimilarProductsComponent
     ],
     imports: [
@@ -98,10 +115,8 @@ export class SimilarProductsComponent implements OnInit {
         MathCeilPipeModule,
         LazyLoadImageModule,
         ProductCardVerticalContainerModule,
-        ProductCardVerticalGridViewModule
-    ],
-    exports: [
-        SimilarProductsComponent
+        ProductCardVerticalGridViewModule,
+        ProductSkeletonsModule
     ]
 })
 export class SimilarProductModule { }

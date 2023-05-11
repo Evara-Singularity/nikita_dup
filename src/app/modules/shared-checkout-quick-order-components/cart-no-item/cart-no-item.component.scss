@@ -3,30 +3,69 @@
 
 .no-item-section{
     padding: 0 15px;
+    margin-top: -10px;
     .card{
         border: none;
-        padding: 25px 25px 15px;
+        padding: 30px 35px;
         margin-bottom: 10px;
         .emptycart-section{
             text-align: center;
             img{
-                width: 103px;
+                width: 250px;
+            }
+            .emptycart-animation{
+                img{
+                    width: 250px;
+                }
+                width: 100%;
+                // lottie-player{
+                //     width: calc(100% - 30px);
+                //     margin-left: 15px;
+                // }
             }
             .noitems-txt{
                 font-size: $extra-large-font;
                 font-weight: $font-bold;
+                line-height: 21px;
+                color: var(--onyx-black);
+                margin-top: 35px;
+            }
+            .add-item-txt{
+                font-size: $large-font;
+                line-height: 19px;
                 color: var(--dim-gray);
-                margin-top: 15px;
+
             }
             button{
                 width: 100%;
-                margin-top: 20px;
+                margin-top: 30px;
             }
             .small-txt{
-                font-size: $small-font;
+                font-size: $medium-font;
+                line-height: $small-line-height;
                 color: var(--dim-gray);
                 margin-top: 5px;
             }
         }
+    }
+}
+// .emptycart-animation{
+//     height: 200px;
+//     width: 100%;
+//     position: relative;
+//     lottie-player{
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//     }
+// }
+.dark-btn{
+    background-color: var(--primary) !important;
+    color: var(--white) !important;
+}
+::ng-deep{
+    .category-grid-card{
+        background-color: var(--white) !important;
+        border: 1px solid var(--ghost-white) !important;
     }
 }

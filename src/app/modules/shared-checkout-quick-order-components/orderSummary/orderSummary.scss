@@ -1,119 +1,227 @@
 @import '../../../scss/variables';
-.apply-promo{
+
+.apply-promo {
   @extend %white-card;
-  margin:0px;
-  padding:10px 0px;
+  margin: 0px;
+  padding: 10px 0px;
   margin-bottom: 10px;
-  .open-offers{
+
+  .open-offers {
     text-align: center;
     font-weight: 600;
-    color:var(--bleu-de-france);
+    color: var(--bleu-de-france);
     margin-top: 5px;
   }
 }
-.order-summary{
+
+.saved-amt {
   @extend %white-card;
-  margin:0px;
-  padding: 15px 0;
-  // font-size: $medium-font;
+  margin: 0px;
+  padding:  0 !important;
   display: block !important;
-  h3{
-    padding: 0 0 0 15px;
-    font-size: $large-font
-  }
-  li{
+  li {
     position: relative;
     padding: 8px 15px;
-    &:after{
-      content: ''; 
-      display: block; 
+    background-color: var(--mint-cream);
+    padding: 10px 15px;
+    border-radius: 0 0 8px 8px;
+
+    &:after {
+      content: '';
+      display: block;
       clear: both;
     }
-    .tag-value { 
+
+    .tag-value {
       position: absolute;
       right: 15px;
     }
-    &.border{
+  }
+
+}
+
+.order-summary {
+  @extend %white-card;
+  margin: 0px;
+  padding: 15px 0;
+  border-top: 1px solid var(--ghost-white);
+  border-bottom: 1px solid var(--ghost-white);
+  border-left: 1px solid var(--mint-cream);
+  // font-size: $medium-font;
+  display: block !important;
+
+  h3 {
+    padding: 0 0 0 15px;
+    font-size: $large-font
+  }
+
+  li {
+    position: relative;
+    padding: 8px 15px;
+
+    &:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    .tag-value {
+      position: absolute;
+      right: 15px;
+    }
+
+    &.border {
       border: solid var(--ghost-white);
       border-width: 1px 0 0px 0px;
       margin: 15px 0 0px 0;
-      span{
+
+      span {
         font-size: $large-font;
       }
     }
-    &.bold-txt{
+
+    &.bold-txt {
       font-weight: bold;
       font-size: $large-font;
-      padding:15px 15px 0 15px;
+      padding: 15px 15px 0 15px;
       border-top: 1px solid var(--ghost-white);
     }
+
+    // &.amt-payble{
+    //   padding: 15px;
+    // }
   }
-  .alert-box{
-        .content-area{
-            border-radius: 12px;
-            .info-area{
-                text-align: center;
-                padding: 30px;
-                i{
-                    font-size: 35px;
-                    color: var(--slimy-green);
-                    padding-bottom: 15px;
-                    display: block;
-                }
-                .applied-coupon{
-                    font-weight: 600;
-                    font-size: 14px;
-                    padding-bottom: 20px;
-                }
-                .saving-applid-coupon{
-                    font-size: 10px;
-                    line-height: 16px;
-                    display: grid;
-                    line-height: $large-line-height;
-                    padding-bottom: 15px;
-                    span{
-                        font-size: 28px;
-                        font-weight: 600;
-                    }
-                }
-                .green-text{
-                    font-size: 14px;
-                    color: var(--slimy-green);
-                    font-weight: 600;
-                }
-            }
+
+  .alert-box {
+    .content-area {
+      border-radius: 12px;
+
+      // .info-area {
+      //   text-align: center;
+      //   padding: 30px;
+
+      //   i {
+      //     font-size: 35px;
+      //     color: var(--slimy-green);
+      //     padding-bottom: 15px;
+      //     display: block;
+      //   }
+
+      //   .applied-coupon {
+      //     font-weight: 600;
+      //     font-size: 14px;
+      //     padding-bottom: 20px;
+      //   }
+
+      //   .saving-applid-coupon {
+      //     font-size: 10px;
+      //     line-height: 16px;
+      //     display: grid;
+      //     line-height: $large-line-height;
+      //     padding-bottom: 15px;
+
+      //     span {
+      //       font-size: 28px;
+      //       font-weight: 600;
+      //     }
+      //   }
+
+      //   .green-text {
+      //     font-size: 14px;
+      //     color: var(--slimy-green);
+      //     font-weight: 600;
+      //   }
+      // }
+      .info-area {
+        text-align: center;
+        position: relative;
+        .coupen-sec {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 80px;
+          height: 80px;
+          margin: auto;
+          margin-top: -65px;
+          border-radius: 50%;
+          border: 1px solid var(--ghost-white);
+          background-color: var(--white);
+  
+          i {
+            font-size: 45px;
+            color: var(--slimy-green);
+            display: block;
+          }
         }
+  
+        .applied-coupon {
+          margin-top: 30px;
+          font-weight: 600;
+          font-size: $large-font;
+          padding-bottom: 20px;
+        }
+  
+        .saving-applid-coupon {
+          font-size: $medium-font;
+          line-height: 16px;
+          display: grid;
+          line-height: $large-line-height;
+          padding-bottom: 15px;
+  
+          span {
+            font-size: 40px;
+            font-weight: 600;
+            padding-bottom: 15px;
+          }
+        }
+  
+        .green-text {
+          font-size: 25px;
+          color: var(--slimy-green);
+          font-weight: 600;
+        }
+        .coupen-animation{
+          position: absolute;
+          top: -50px;
+          left: 0;
+        }
+      }
     }
+  }
 
 }
-.shop-btn{
-  
+
+.shop-btn {
+
   background: var(--white);
   color: var(--blue);
- 
+
   border: solid var(--platinum);
   border-width: 1px 0 1px 0;
-  
+
 }
-.btn{
+
+.btn {
   width: 100%;
   height: 60px;
   font-size: $large-font;
   font-weight: 600;
   margin-top: 10px;
 }
-.heading{
+
+.heading {
   color: #9c9292;
   font-size: 13px;
   margin-top: 3px;
 
 }
 
-.payment_summary-conatiner{
+.payment_summary-conatiner {
   background-color: #F6FFF5;
   border-radius: 8px;
   border: 1px solid var(--ghost-white);
-  .save-prise-txt{
+
+  .save-prise-txt {
     color: var(--slimy-green);
     font-size: $medium-font;
     font-weight: $font-bold;

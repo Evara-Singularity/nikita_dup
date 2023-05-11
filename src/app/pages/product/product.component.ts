@@ -1134,7 +1134,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.onVisibleSponsered(null);
         }
 
-        if (this.recentProductsInstance) {
+        if (this.recentProductsInstance && this.recentProductsContainerRef !=undefined) {
             this.recentProductsInstance = null;
             this.recentProductsContainerRef && this.recentProductsContainerRef.remove();
             this.onVisibleRecentProduct(null);
@@ -1764,6 +1764,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                         isModal: true,
                         backToCartFlow: this.addToCartFromModal.bind(this),
                         analytics: analytics,
+                        productQuantity :this.cartQunatityForProduct
                     },
                 },
                 component: FbtComponent,

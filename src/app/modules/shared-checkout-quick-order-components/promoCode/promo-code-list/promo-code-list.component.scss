@@ -19,13 +19,15 @@
         border-bottom: 1px solid var(--silver);
     }
     .no-coupon-card-container{
-        padding-top: 50px;
+        padding-top: 30px;
+        
         .card{
+            border: 1px solid var(--ghost-white);
             padding:70px 15px;
             .inner-no-coupon-card{
                 text-align: center;
                 img{
-                    width: 100px;
+                    width: 118px;
                 }
                 p{
                     font-size: $large-font;
@@ -36,30 +38,47 @@
         }
     }
     .coupon-card-container {
-        padding: 20px 15px 15px;
+        padding: 5px 15px 15px;
         .pwa-text{
             padding-bottom: 10px;
             font-weight: $font-bold;
         }
         .card{
-            padding: 20px 15px;
+            padding:  0px;
             margin-bottom: 10px;
             .apply-coupon{
-                display: flex;
-                align-items: center;
+                // display: flex;
+                // align-items: center;
                 .inner-coupon{
-                    width:65%;
+                    padding: 15px;
+                    display: flex;
+                    i{
+                        font-size: 20px;
+                        color: var(--slimy-green);
+                        margin-right: 10px;
+                    }
                 }
                 h3{
+                    font-size: $extra-large-1-font;
                     padding: 0 0 5px;
                 }
                 .promo-description{
-                    font-size: $medium-font;
-                    line-height: $small-line-height;
+                    font-size: $large-font;
+                    line-height: $medium-line-height;
                 }
                 button{
                     margin-left:auto;
-                    align-self: self-start;
+                    border-radius: 0 0 8px 8px !important;
+                    width: 100%;
+                    background-color: var(--nyanza);
+                    color: var(--slimy-green);
+                    height: 35px;
+                    border: none;
+                    font-weight: bold;
+                    &.applied{
+                        background-color: var(--slimy-green);
+                        color: var(--white);
+                    }
                 }
             }
         }
@@ -105,3 +124,10 @@
     }
 }
 
+.coupen-card{
+    padding: 10px;
+    margin-bottom: 15px !important;
+    position: relative;
+    border: 2px dashed var(--slimy-green);
+    margin-bottom: 15px !important;
+}

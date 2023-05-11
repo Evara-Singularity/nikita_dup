@@ -10,6 +10,7 @@ import { environment } from 'environments/environment';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LocalAuthService } from './../../../utils/services/auth.service';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'cart-no-item',
@@ -24,7 +25,7 @@ export class CartNoItemComponent implements OnInit, AfterViewInit, OnDestroy
     flyOutData: CategoryData[] = [];
     flyOutDataSubscription: Subscription = null;
 
-    constructor(public cartService: CartService, private _dataService: DataService, private _localAuthService:LocalAuthService,private _router:Router) { }
+    constructor(public cartService: CartService, private _dataService: DataService, private _localAuthService:LocalAuthService,private _router:Router,private _commonService:CommonService) { }
 
 
     ngOnInit(): void {
@@ -38,6 +39,17 @@ export class CartNoItemComponent implements OnInit, AfterViewInit, OnDestroy
                 return [];
             })).subscribe((data) => this.flyOutData = data);
         }
+        this.addLottieScript();
+        this._commonService.callLottieScript();
+    }
+    
+    addLottieScript() {
+        this._commonService.addLottieScriptSubject.subscribe(lottieInstance => {
+        this._commonService.callLottieScript();
+        lottieInstance.next();
+        
+     });
+        
     }
 
     navigateToLogin()
@@ -46,7 +58,6 @@ export class CartNoItemComponent implements OnInit, AfterViewInit, OnDestroy
         this._localAuthService.setBackURLTitle(queryParams.backurl, queryParams.title);
         let navigationExtras: NavigationExtras = { queryParams: queryParams };
         this._router.navigate(["/login"], navigationExtras);
-
     }
 
     get isLoggedIn() { return this._localAuthService.isUserLoggedIn()}
@@ -56,5 +67,13 @@ export class CartNoItemComponent implements OnInit, AfterViewInit, OnDestroy
         if(this.flyOutDataSubscription){
             this.flyOutDataSubscription.unsubscribe()
         }
+    }
+
+    continueToShopping(){
+      this._router.navigate(['/']).catch(err=>{
+        console.log("router error =====>" , err);
+        //this._router.navigate(['/']);
+        window.location.href = "/";
+      });
     }
 }

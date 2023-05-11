@@ -1,0 +1,38 @@
+<ng-container *ngIf="!isSimilarDataLoaded">
+    <app-bottom-menu (outData$)="closePopup()">
+        <div content>
+            <div class="pwa-row">
+                <div class="empty-wishlist-popup">
+                    <div class="empty-wishlist">
+                        <div class="header-txt">
+                            <i class="icon-circle-delete" (click)="closePopup()"></i>
+                        </div>
+                        <div class="header-txt">
+                            <h3>Simillar Products</h3>
+                            <i class="icon-circle-delete" (click)="closePopup()"></i>
+                        </div>
+                        <img src="assets/img/empty-wishlist.svg" alt="">
+                        <p class="pad-0">No item available now</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-bottom-menu>
+</ng-container>
+<ng-container *ngIf="isSimilarDataLoaded">
+    <app-bottom-menu (outData$)="closePopup()">
+        <div content>
+            <div class="empty-wishlist-popup block">
+                <div class="empty-wishlist">
+                    <div class="header-txt">
+                        <h3>Similar Items</h3>
+                        <i class="icon-circle-delete" (click)="closePopup()"></i>
+                    </div>
+                </div>
+                <app-similar-products [partNumber]="msnid" [groupId]="''" [productName]="productName"
+                    [categoryCode]="''" [isFromQuickOrderPage]="true" (similarDataLoaded$)="similarDataLoaded($event)">
+                </app-similar-products>
+            </div>
+        </div>
+    </app-bottom-menu>
+</ng-container>

@@ -45,7 +45,7 @@ export class SharedForgotPasswordComponent implements OnInit, OnDestroy
         this.authFlow = this._localAuthService.getAuthFlow();
         if (!this.authFlow && !this.isCheckout) { this.navigateTo(this.LOGIN_URL); return; }
         if (!this.authFlow && this.isCheckout) {  this.navigateTo(this.CHECKOUT_LOGIN_URL); return; }
-        this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
+        //this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
     }
 
     updatePassword()

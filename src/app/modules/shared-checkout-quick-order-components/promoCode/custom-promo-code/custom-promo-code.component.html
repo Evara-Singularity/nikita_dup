@@ -1,16 +1,32 @@
-<form class="pwa-row applied-code material-form" (ngSubmit)="$event.stopPropagation();submitPromocode()" autocomplete="off">
-  <div class="pwa-col-12 apply-coupon">
-    <div class="outline-input-label">
-      <label [class.is-focus]="couponCode.value.length!=0">
-        <input #couponCode required name="appliedcart" type="text" [(ngModel)]="appliedPromocode" [readonly]="isPromcodeValid"/>
-        <i class="icon-circle-delete" *ngIf="isPromcodeValid" (click)="$event.stopPropagation();_cartService.genericRemovePromoCode()"></i>
-        <span  class="label">Enter Coupon Code</span>
-      </label>
+<ng-container *ngIf="isPromocodeList">
+  <form class="pwa-row applied-code material-form" (ngSubmit)="$event.stopPropagation();submitPromocode()"
+    autocomplete="off">
+    <div class="pwa-col-12 apply-coupon">
+      <div class="outline-input-label">
+        <label [class.is-focus]="couponCode.value.length!=0">
+          <input #couponCode required name="appliedcart" type="text" [(ngModel)]="appliedPromocode"
+            [readonly]="isPromcodeValid" />
+          <i class="icon-circle-delete" *ngIf="isPromcodeValid"
+            (click)="$event.stopPropagation();_cartService.genericRemovePromoCode()"></i>
+          <span class="label">Enter Coupon Code</span>
+        </label>
+      </div>
+      <button class="btn" *ngIf="!isPromcodeValid" [class]="canApplyCode?'secondry-btn':'disabled'" [disabled]="isPromcodeValid">APPLY</button>
+      <button class="btn" *ngIf="isPromcodeValid" [class]="canApplyCode?'secondry-btn':'disabled'" [disabled]="isPromcodeValid">APPLIED</button>
     </div>
-    <button class="btn" [class]="canApplyCode?'secondry-btn':'disabled'" [disabled]="isPromcodeValid">APPLY</button>
+  </form>
+</ng-container>
+<ng-container *ngIf="!isPromocodeList">
+  <div class="pwa-row">
+    <div class="coupen-strip">
+      <div class="coupen-icon">
+        <i class="icon-offer"></i>
+      </div>
+      <div class="coupen-text">
+        <span class="green-promo-code">{{appliedPromocode}}</span> <br />
+        <span class="green-promo-code-min">Coupon applied on your cart</span>
+      </div>
+      <i class="icon-circle-delete" (click)="$event.stopPropagation();_cartService.genericRemovePromoCode()"></i>
+    </div>
   </div>
-</form>
-
-
-
-
+</ng-container>

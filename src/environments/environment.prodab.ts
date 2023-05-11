@@ -14,7 +14,7 @@ export const environment = {
   CDN_IMAGE_URL: 'https://cdn.moglix.com/',
   GTM_ANALYTICS_CODE: 'GTM-PMPXQQ',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-fd00645b6c3b.min.js',
-  buildVersion: '23.4',
+  buildVersion: '23.6',
   LOG_FILE_PATH: "/var/log/moglix/online/pwa-ab/",
   SOCIAL_LOGIN: {
     "google": {

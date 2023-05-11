@@ -1,6 +1,6 @@
-import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
@@ -25,7 +25,7 @@ declare let dataLayer;
     styleUrls: ['./cart.scss'],
 })
 
-export class CartComponent
+export class CartComponent implements OnInit, AfterViewInit
 {
     removableItem = null;
     cartSubscription: Subscription;
@@ -34,6 +34,8 @@ export class CartComponent
     cartSession = null;
     noOfCartItems = 0;
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
+    @Output() openWishList$:EventEmitter<any> = new EventEmitter<any>();
+    @Output() openSimillarList$:EventEmitter<any> = new EventEmitter<any>();
     
     //cartAddproduct var
     cartAddProductPopupInstance = null;
@@ -56,24 +58,29 @@ export class CartComponent
 
     ) { }
 
-    ngOnInit()
-    {
-        // Get latest cart from API
-        this._commonService.updateUserSession();
-        this.loadCartDataFromAPI();
+    ngOnInit(){}
+
+    ngAfterViewInit(): void {
         if (this._commonService.isBrowser) {
-            this.sendCriteoPageLoad();
+            this._commonService.updateUserSession();
+            this.loadCartDataFromAPI();
+            // this.sendCriteoPageLoad();
             this.sendEmailGTMCall();
-            //  this.shippingCallSubscribers();
         }
-        // const cartSession = this._cartService.getCartSession();
-        // this.noOfCartItems = (cartSession['itemsList'] as any[]).length || 0;
     }
 
     ngOnDestroy() {
         if (this.cartSubscription) this.cartSubscription.unsubscribe();
         if (this.shippingSubscription) this.shippingSubscription.unsubscribe();
         if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
+    }
+    
+    openWishList(){
+        this.openWishList$.emit(true);
+    }
+
+    openSimillarList(productId, item){
+        this.openSimillarList$.emit({productId: productId, item:item});
     }
 
     // Function to get and set the latest cart
@@ -82,51 +89,28 @@ export class CartComponent
         this.cartSubscription = this._cartService.getCartUpdatesChanges().pipe(
             map((cartSession: any) => {
                 if (cartSession.proxy) { return cartSession }
-                this.sendCritieoDataonView(cartSession);
-                this.sendAdobeAnalyticsData(this.pageEvent);
-                this.pageEvent = "genericClick";
+                if (!this.cartSession || (this.cartSession && JSON.stringify(cartSession) != JSON.stringify(this.cartSession))) {
+                    this.sendCritieoDataonView(cartSession);
+                    this.sendAdobeAnalyticsData(this.pageEvent);
+                    this.pageEvent = "genericClick";
+                }
                 return cartSession;
             }),
-            // mergeMap((cartSession: any) => {
-            //     return this._cartService.getShippingAndUpdateCartSession(cartSession);
-            // }),
         ).subscribe((cartSession) => {
-            // console.log('loadCartDataFromAPI', cartSession);
-            this.cartChangesUpdates(cartSession);
-            const userSession = this._localAuthService.getUserSession();
-            this._cartService.getPromoCodesByUserId(userSession['userId'], false);
-            // if (!(cartSession && cartSession['offersList'] && cartSession['offersList'].length > 0)) {
-            //     const userSession = this._localAuthService.getUserSession();
-            //     this._cartService.getPromoCodesByUserId(userSession['userId'], false)
-            // } else {
-            //     if (this.moduleName == 'QUICKORDER') {
-            //         this._cartService.callShippingValueApi(cartSession)
-            //     }
-            // }
+            if (!this.cartSession || (this.cartSession && JSON.stringify(cartSession) != JSON.stringify(this.cartSession))) {
+                // console.log("🚀 ~ file: cart.component.ts:105 ~ ).subscribe ~ cartSession:", cartSession)
+                this.cartChangesUpdates(cartSession);
+                const userSession = this._localAuthService.getUserSession();
+                this._cartService.getPromoCodesByUserId(userSession['userId'], false);
+            }else{
+                console.log('duplicate cart call ignored');
+            }
+            
         });
     }
 
-    // shippingCallSubscribers() {
-    //     this.shippingSubscription = this._cartService.shippingValueApiUpdates().subscribe((cartSessionWithShiping) => {
-    //         // console.log('shippingCallSubscribers', this.moduleName);
-    //         // this.shippingApiCall();
-    //         // new coded added to check promo codes
-    //         // const userSession = this._localAuthService.getUserSession();
-    //         // this._cartService.getPromoCodesByUserId(userSession['userId']);
-    //         // if (!(cartSessionWithShiping && cartSessionWithShiping['offersList'] && cartSessionWithShiping['offersList'].length > 0)) {
-    //         // }
-    //     })
-    // }
-
-
-    // shippingApiCall() {
-    //     this._cartService.getShippingAndUpdateCartSession(this.cartSession).subscribe(cartsession => {
-    //         console.log('shipping:: called from cart');
-    //         // this.cartChangesUpdates(cartsession);
-    //     })
-    // }
-
     cartChangesUpdates(cartSession) {
+        
         this.cartSession = cartSession;
         this.noOfCartItems = (cartSession['itemsList'] as any[]).length;
         if (this.noOfCartItems) {
@@ -154,6 +138,7 @@ export class CartComponent
         e.stopPropagation();
         this._globalLoaderService.setLoaderState(true);
         this.pushDataToDatalayerOnRemove(this.removableItem);
+        this._cartService.isAddedToCartSubject.next({});
         this._cartService.removeCartItemsByMsns([this.removableItem['productId']]);
         this.removableItem = null;
     }
@@ -557,5 +542,38 @@ export class CartComponent
     get displayPage() { return this.noOfCartItems > 0 }
 
     get isQuickorder() { return this.moduleName === "QUICKORDER" }
+
+
+    addToPurchaseList() {
+        if (this._localAuthService.isUserLoggedIn()) {
+          let userSession = this._localAuthService.getUserSession();
+          let obj = {
+            idUser: userSession.userId,
+            userType: "business",
+            idProduct:
+              this.removableItem.productId || this.removableItem.defaultPartNumber,
+            productName: this.removableItem.productName,
+            description: this.removableItem.productDescripton,
+            brand: this.removableItem.brandName,
+            category: this.removableItem.categoryCode,
+          };
+          this._productService.addToPurchaseList(obj).subscribe((res) => {
+            if (res["status"]) {
+              this._cartService.removeCartItemsByMsns([this.removableItem['productId']], true, 'Product moved to wishlist');
+              this.resetRemoveItemCart();
+              this._cartService.isAddedToCartSubject.next({isAddedtowishList : true});
+              this.sendAdobeAnalyticsData("move_to_wishlist");
+            } else {
+              this._cartService.removeCartItemsByMsns([this.removableItem['productId']], true, 'Product already exist in wishlist');
+              this.resetRemoveItemCart();
+            }
+          });
+        }else{
+            const navigationExtras: NavigationExtras = {
+                queryParams: { 'backurl': "quickorder" },
+              };
+            this._router.navigate(['/login'], navigationExtras);
+        }
+    }
 
 }

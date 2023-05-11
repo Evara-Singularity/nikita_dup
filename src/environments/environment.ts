@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  enableServerLogs: false,
+  enableServerLitogs: false,
   PROD_NAME: 'https://www.moglix.com',
   BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2',
@@ -18,7 +18,7 @@ export const environment = {
   GTM_ANALYTICS_CODE: 'GTM-WW4R83Z',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js',
   LOG_FILE_PATH: "/var/log/moglix/online/pwa/",
-  buildVersion: '23.4',
+  buildVersion: '23.6',
   SOCIAL_LOGIN: {
     google: {
       clientId:

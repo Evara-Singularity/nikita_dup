@@ -8,6 +8,7 @@
     padding: 15px;
     margin-top: 15px;
     border: none;
+    margin-bottom: 5px;
     .invoice-select {
         display: flex;
         align-items: center;
@@ -55,6 +56,9 @@
         }
         &.billing-adress-container{
             // background-color: rebeccapurple;
+        }
+        &.mb-5{
+            margin-bottom: 5px !important;
         }
     }
     

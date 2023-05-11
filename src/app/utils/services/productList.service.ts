@@ -329,6 +329,12 @@ export class ProductListService {
       case "POPULAR_DEALS":
         str = "pdp:popular_deals";
         break;
+      case "POPULAR_DEALS_HOME":
+        str =  "homepage:popular_deals";
+        break;
+      case "POPULAR_DEALS_QUICKORDER":
+        str =  "quickorder:popular_deals";
+        break;  
       case "SPONSERED_ADS":
         str = "pdp:sponsored_ads";
         break;

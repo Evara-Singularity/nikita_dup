@@ -23,6 +23,8 @@ export class FbtComponent implements OnInit
     productStaticData = this._commonService.defaultLocaleValue;
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     @Input('addToCartFromModal') addToCartFromModal = null;
+    @Input('productQuantity') productQuantity: number = 1;
+    
     rootProduct;
     rootMSN;
     fbtProducts = [];
@@ -57,6 +59,9 @@ export class FbtComponent implements OnInit
     ngOnInit() { 
        this.intialize(); 
        this.getStaticSubjectData(); 
+       if(this.modalData && this.modalData.productQuantity > 1){
+        this.productQuantity = this.modalData.productQuantity;
+       }
     }
     getStaticSubjectData(){
         this._commonService.changeStaticJson.subscribe(staticJsonData => {
@@ -131,7 +136,7 @@ export class FbtComponent implements OnInit
         let partReference = product.partNumber;
         let productPartDetails = product['productPartDetails'];
         if (productPartDetails && productPartDetails[partReference]['productPriceQuantity'] && productPartDetails[partReference]['productPriceQuantity']['india']) {
-            const productObject = this.cartService.getAddToCartProductItemRequest({ productGroupData: product, buyNow: false, quantity: 1, isFbt: isFBT, originalProductBO: this.originalProductBO });
+            const productObject = this.cartService.getAddToCartProductItemRequest({ productGroupData: product, buyNow: false, quantity: this.productQuantity, isFbt: isFBT, originalProductBO: this.originalProductBO });
             returnObj = { mProduct: productObject, validation: true }
         }
         return returnObj;
@@ -152,8 +157,11 @@ export class FbtComponent implements OnInit
 
     handleCartSave(items: any[])
     {
+        console.log("item fbt ==>" , items);
         const LENGTH = items.length;
-        this.cartService.addToCart({ buyNow: false, productDetails: items[0] }).subscribe((response) =>//length=1
+        let firstProduct = items[0];
+        firstProduct.productQuantity = this.productQuantity;
+        this.cartService.addToCart({ buyNow: false, productDetails: firstProduct }).subscribe((response) =>//length=1
         {
             this.updateCart(response, items.length === 1);
             if (LENGTH > 1) {

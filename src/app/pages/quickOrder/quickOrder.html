@@ -1,19 +1,64 @@
 <div id="quickOrderPage" class="pwa-row pwa-row-noPad">
     <div class="pwa-col-12">
         <div *ngIf="_cartService.getGenericCartSession?.itemsList?.length > 0" class="mb-65">
-            <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications>
+            <!-- <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications> -->
+            <ng-container *ngIf="_localAuthService.isUserLoggedIn()">
+                <quick-order-all-address [addDeliveryOrBilling]="addDeliveryOrBilling"
+                    (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
+                    (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
+                    (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></quick-order-all-address>
+            </ng-container>
             <prepaid-offer></prepaid-offer>
-            <cart [moduleName]="'QUICKORDER'" ></cart>
+            <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
+            <all-promocode-v1></all-promocode-v1>
+            <!-- <cart-notifications
+                (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications> -->
+            <cart [moduleName]="'QUICKORDER'" (openWishList$)="openWishlistPopup()"
+                (openSimillarList$)="openSimillarProductsPopUp($event)"></cart>
+
+            <!--homeMiscellaneousCarousel ( Buy it again, Recently Viewed, wishlist & my RFQ section)-->
+            <ng-container>
+                <section class="popular-Deals-section" id="popularDeals">
+                    <ng-container #homeMiscellaneousCarousel></ng-container>
+                    <div class="mb-15">
+                        <home-page-skeletons [type]="'SIMILAR'"
+                            [templateRefInstance]="homeMiscellaneousCarouselInstance"></home-page-skeletons>
+                    </div>
+                </section>
+            </ng-container>
+            <div id="summary_common_id_">
+            <gst-details></gst-details>
             <order-summary></order-summary>
             <generic-offers></generic-offers>
+            </div>
+            <ng-container>
+                <section class="popular-Deals-section" data-observeVisibility [debounceTime]="100"
+                    (visible)="getAllCategoryByMsns()">
+                    <ng-container #quickOrderMiscellaneousCarousel></ng-container>
+                    <div class="mb-15">
+                        <home-page-skeletons [type]="'SIMILAR'"
+                            [templateRefInstance]="quickOrderMiscellaneousCarouselInstance"></home-page-skeletons>
+                    </div>
+                </section>
+            </ng-container>
             <div class="fixed-bottom-cta">
-                <button class="btn primary-full-btn" (click)="navigateToCheckout()" >{{ _commonService?.userSession?.authenticated === 'true' ? 'CONTINUE TO CHECKOUT' : 'SIGN IN TO CHECKOUT' }}</button>
+                <p class="total-mount">
+                    <span class="payable-amnt">Amount&nbsp;Payable
+                        <i class="icon-information ml-5" (click)="scrollPaymentSummary()"></i>
+                    </span>
+                    <span class="total-amt-txt">
+                        ₹{{ _cartService.totalDisplayPayableAmountWithOutPrepaid | mathRound | number :'1.2-2'}}
+                    </span>
+                </p>
+                <button class="btn primary-full-btn" (click)="navigateToCheckout()">{{
+                    _commonService?.userSession?.authenticated === 'true' ? 'PROCEED TO CHECKOUT' : 'SIGN IN TO CHECKOUT' }}</button>
             </div>
         </div>
         <cart-no-item *ngIf="isCartNoItems" class="pwa-col-12"></cart-no-item>
-        <shared-checkout-unavailable-items 
-            *ngIf="_cartService?.showUnavailableItems" 
-            [data]="{ page: 'all', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } ">
+        <shared-checkout-unavailable-items *ngIf="_cartService?.showUnavailableItems"
+            [data]="{ page: 'quickOrder', items: _cartService?.unavailableItemsList, removeUnavailableItems: _cartService?.removeUnavailableItems.bind(_cartService)  } ">
         </shared-checkout-unavailable-items>
     </div>
+    <ng-container #wishlistPopup></ng-container>
+    <ng-container #simillarProductsPopup></ng-container>
 </div>

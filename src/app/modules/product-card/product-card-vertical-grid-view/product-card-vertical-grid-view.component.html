@@ -65,8 +65,13 @@
                 </ng-container>
             </div>
             <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
-                <button class="btn tertiary-outline-cta tertiary-outline-cta-8" (click)="openRfqForm()">
+                <button class="btn tertiary-outline-cta tertiary-outline-cta-8 wishlistBtn" (click)="openRfqForm()">
                                 SEND QUERY
+                            </button>
+            </ng-container>
+            <ng-container *ngIf="cardFeaturesConfig.enableFullAddToCart && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
+                <button class="btn tertiary-btn wishlistBtn" (click)="buyNow()">
+                    <i class="icon-cart1"></i>&nbsp; ADD TO CART
                             </button>
             </ng-container>
         </div>

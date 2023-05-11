@@ -105,6 +105,7 @@ export interface ProductCardFeature {
     enableRating: Boolean,
     enableCard: Boolean,
     enableVideo: Boolean,
+    enableFullAddToCart?: Boolean
     verticalOrientation: Boolean,
     horizontalOrientation: Boolean,
     verticalOrientationV2?: Boolean,

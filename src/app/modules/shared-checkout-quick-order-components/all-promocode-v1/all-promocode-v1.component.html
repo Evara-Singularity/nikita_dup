@@ -1,0 +1,20 @@
+<div class="custom-promocode" *ngIf="appliedPromocode != undefined && appliedPromocode.length > 0" (click)="$event.stopPropagation();openPromoCodeList()">
+    <custom-promo-code [isPromocodeList]="false"></custom-promo-code>
+</div>
+<div class="promocode-list" *ngIf="appliedPromocode != undefined && appliedPromocode.length == 0">
+    <!-- <p class="open-offers" (click)="$event.stopPropagation();openPromoCodeList()">APPLY COUPON </p> -->
+
+    <div class="pwa-row pad-0 promo-strip">
+        <div class="coupen-strip" (click)="$event.stopPropagation();openPromoCodeList()">
+            <div class="coupen-icon">
+                <i class="icon-offer"></i>
+            </div>
+            <div class="coupen-text">
+                <h3>APPLY COUPON</h3>
+            </div>
+            <i class="icon-next"></i>
+        </div>
+    </div>
+</div>
+<promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" *ngIf="showPromoOfferPopup">
+</promo-code-list>

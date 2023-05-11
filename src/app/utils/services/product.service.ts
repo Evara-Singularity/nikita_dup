@@ -713,6 +713,60 @@ export class ProductService {
         } as ProductsEntity;
     }
 
+    searchResponseToProductEntityV1(product: any) {
+        const partNumber =
+            product["partNumber"] ||
+            product["defaultPartNumber"] ||
+            product["moglixPartNumber"];
+        const productMrp = product["mrp"];
+        const productPrice = product["salesPrice"];
+        const priceWithoutTax = product["priceWithoutTax"];
+        return {
+            moglixPartNumber: partNumber,
+            moglixProductNo: product["moglixProductNo"] || null,
+            mrp: productMrp,
+            salesPrice: productPrice,
+            priceWithoutTax: priceWithoutTax,
+            productName: product["productName"],
+            variantName: product["productName"],
+            productUrl: product["productUrl"],
+            shortDesc: product["shortDesc"],
+            brandId: product["brandId"],
+            brandName: product["brandName"],
+            quantityAvailable: product["quantityAvailable"],
+            discount: this._commonService.calculcateDiscount(product['discount'], productMrp, productPrice),
+            rating: product["rating"] || null,
+            categoryCodes: null,
+            taxonomy: product["taxonomy"],
+            mainImageLink: product["moglixImageNumber"]
+                ? product["mainImageLink"]
+                : "",
+            mainImageThumnailLink: this.getImageFromSearchProductResponse(
+                product["mainImageLink"],
+                "large",
+                "thumbnail"
+            ),
+            mainImageMediumLink: this.getImageFromSearchProductResponse(
+                product["mainImageLink"],
+                "large",
+                "medium"
+            ),
+            productTags: [],
+            filterableAttributes: {},
+            attributeValuesForPart: ((product['attributeValuesForPart']) ? product['attributeValuesForPart'] :
+            {}) || {}, 
+            avgRating: product.avgRating,
+            itemInPack: null,
+            ratingCount: product.ratingCount,
+            reviewCount: product.reviewCount,
+            uclid: product.uclid,
+            keyFeatures: product.keyFeatures || [],
+            internalProduct: product.hasOwnProperty("internalProduct")
+                ? false
+                : true, // if intenal product prop does not exist then it is internal product
+        } as ProductsEntity;
+    }
+
     recentProductResponseToProductEntity(product: any) {
         // console.log('product ==>', product);
         const partNumber =
@@ -761,8 +815,55 @@ export class ProductService {
         return productReturn;
     }
 
+    recentProductResponseToProductEntityV1(product: any) {
+        // console.log('product ==>', product);
+        const partNumber =
+            product["partNumber"] ||
+            product["defaultPartNumber"] ||
+            product["moglixPartNumber"];
+        const productMrp = product["mrp"];
+        const productPrice = product["salesPrice"];
+        const priceWithoutTax = product["priceWithoutTax"];
+        const productReturn = {
+            moglixPartNumber: partNumber,
+            moglixProductNo: product["moglixProductNo"] || null,
+            mrp: productMrp,
+            salesPrice: productPrice,
+            priceWithoutTax: priceWithoutTax,
+            productName: product["productName"],
+            variantName: product["productName"],
+            productUrl: product["productUrl"],
+            shortDesc: product["shortDesc"] || null,
+            brandId: product["brandId"] || null,
+            brandName: product["brandName"],
+            quantityAvailable: 1,
+            discount: this._commonService.calculcateDiscount(null, productMrp, productPrice),
+            rating: product["rating"] || null,
+            categoryCodes: null,
+            taxonomy: product["taxonomy"] || null,
+            mainImageLink: product["mainImageLink"] ? this.getForLeadingSlash(product["mainImageLink"]) : "",
+            mainImageMediumLink: product["mainImageLink"]
+                ? this.getForLeadingSlash(product["mainImageLink"])
+                : "",
+            mainImageThumnailLink: product["mainImageLink"]
+                ? this.getForLeadingSlash(product["mainImageLink"])
+                : "",
+            productTags: [],
+            filterableAttributes: {},
+            attributeValuesForPart: ((product['attributeValuesForPart']) ? product['attributeValuesForPart'] :
+             {}) || {}, 
+            avgRating: product.avgRating || 0,
+            itemInPack: null,
+            ratingCount: product.ratingCount || 0,
+            reviewCount: product.reviewCount || 0,
+            internalProduct: true,
+            outOfStock: product.outOfStock,
+        } as ProductsEntity;
+        // console.log('product ==>', productReturn);
+        return productReturn;
+    }
 
-    productLayoutJsonToProductEntity(product: any, brandId?:any, brandName?:any) {
+       productLayoutJsonToProductEntity(product: any, brandId?:any, brandName?:any) {
         // console.log('product ==>', product);
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
@@ -868,6 +969,58 @@ export class ProductService {
         };
 
         return productEntity;
+    }
+
+    productEntityFromFBT(productBO, overrideProductB0 = null) {
+        const partNumber = productBO['partNumber'] || productBO['defaultPartNumber'];
+        const isProductPriceValid = productBO['productPartDetails'][partNumber]['productPriceQuantity'] != null;
+        const productPartDetails = productBO['productPartDetails'][partNumber];
+        const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, productBO['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
+        const productMrp = (isProductPriceValid && priceQuantityCountry) ? priceQuantityCountry['mrp'] : null;
+        const productTax = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice']) && !isNaN(priceQuantityCountry['sellingPrice'])) ?
+            (Number(priceQuantityCountry['sellingPrice']) - Number(priceQuantityCountry['sellingPrice'])) : 0;
+        const productPrice = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice'])) ? Number(priceQuantityCountry['sellingPrice']) : 0;
+        const priceWithoutTax = (priceQuantityCountry) ? priceQuantityCountry['priceWithoutTax'] : null;
+        const productBrandDetails = productBO['brandDetails'];
+        const productCategoryDetails = productBO['categoryDetails'][0];
+        const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1
+        const productUrl = (productBO['defaultCanonicalUrl'] == null) ? productBO['productPartDetails'][partNumber]['productLinks']['canonical'] : productBO['defaultCanonicalUrl'];
+
+        const product: any = {
+            moglixPartNumber: partNumber,
+            moglixProductNo: null,
+            mrp: productMrp,
+            salesPrice: productPrice,
+            priceWithoutTax: priceWithoutTax,
+            productName: productBO['productName'],
+            variantName: productBO['productName'],
+            productUrl: productUrl,
+            shortDesc: productBO['shortDesc'],
+            brandId: productBrandDetails['idBrand'],
+            brandName: productBrandDetails['brandName'],
+            quantityAvailable: priceQuantityCountry['quantityAvailable'],
+            productMinimmumQuantity: productMinimmumQuantity,
+            discount: this._commonService.calculcateDiscount(priceQuantityCountry['discount'], productMrp, productPrice),
+            rating: (overrideProductB0 && overrideProductB0.rating) ? overrideProductB0.rating : null,
+            categoryCodes: productCategoryDetails['categoryCode'],
+            taxonomy: productCategoryDetails['taxonomyCode'],
+            mainImageLink: (productPartDetails['images']) ? productPartDetails['images'][0]['links']['default'] : '',
+            mainImageMediumLink: productPartDetails['images']
+            ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['medium'])
+            : "",
+            mainImageThumnailLink: productPartDetails['images']
+            ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['default'])
+            : "",
+            productTags: [],
+            filterableAttributes: {},
+            attributeValuesForPart: {}, 
+            avgRating: (overrideProductB0 && overrideProductB0.avgRating) ? overrideProductB0.avgRating : null, //this.product.avgRating,
+            itemInPack: null,
+            ratingCount: (overrideProductB0 && overrideProductB0.ratingCount) ? overrideProductB0.ratingCount : null, //this.product.ratingCount,
+            reviewCount: (overrideProductB0 && overrideProductB0.reviewCount) ? overrideProductB0.reviewCount : null, //this.product.reviewCount
+            bulkSellingPrice: (priceQuantityCountry) ? priceQuantityCountry['bulkSellingPrice'] : null
+        };
+        return product;
     }
 
     myRfqToProductEntity(product: any, overrideProductB0 = null) {
@@ -1085,6 +1238,14 @@ export class ProductService {
         return this._dataService.callRestful("GET",URL);
     }
 
+    isInStock(product) {
+        let isOutOfStockByQuantity = false;
+        let isOutOfStockByPrice = false;
+        isOutOfStockByQuantity = !product.quantityAvailable || product.outOfStock;
+        isOutOfStockByPrice = !product.salesPrice && !product.mrp;
+        const final = (isOutOfStockByPrice || isOutOfStockByQuantity) ? false :  true;
+        return final;
+    }
 
 
 }

@@ -5,14 +5,9 @@ import {OrderSummaryComponent} from './orderSummary.component';
 import {OrderSummaryService} from './orderSummary.service';
 import { PromoCodeModule } from '@app/modules/shared-checkout-quick-order-components/promoCode/promoCode.module';
 import { MathRoundPipeModule } from '@app/utils/pipes/math-round';
+import { MockLottiePlayerModule } from "../../../components/mock-lottie-player/mock-lottie-player.module";
 
 @NgModule({
-    imports: [
-        CommonModule,
-        MathRoundPipeModule,
-        RouterModule,
-        PromoCodeModule
-    ],
     declarations: [
         OrderSummaryComponent,
     ],
@@ -21,6 +16,13 @@ import { MathRoundPipeModule } from '@app/utils/pipes/math-round';
     ],
     providers: [
         OrderSummaryService
+    ],
+    imports: [
+        CommonModule,
+        MathRoundPipeModule,
+        RouterModule,
+        PromoCodeModule,
+        MockLottiePlayerModule
     ]
 })
 

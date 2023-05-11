@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormArray, FormControl } from '@angular/forms';
+import { FormArray, FormControl, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { AuthFlowType } from '@app/utils/models/auth.modals';
@@ -40,6 +40,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     incorrectOTP = null;
     authFlow: AuthFlowType;//important:gives information on OTP journey
     isOTPClean: boolean = true;
+    otpFormV1:FormControl; // 
     
 
     constructor(private _sharedAuthService: SharedAuthService, private _globalLoader: GlobalLoaderService, private _localAuthService: LocalAuthService,
@@ -47,6 +48,7 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
 
     ngOnInit(): void
     {
+        this.otpFormV1 = new FormControl("", Validators.minLength(6));
         this.authFlow = this._localAuthService.getAuthFlow();
         if (this.initiate) {
             this.initiateOTP();
@@ -67,6 +69,12 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this.OTP_INPUTS = (document.getElementsByClassName("pseudo") as HTMLCollectionOf<HTMLInputElement>);
         this.OTP_INPUTS[0].focus();
         this.enableWebOTP();
+
+        this.otpFormV1.valueChanges.subscribe((response: string)=>{
+            if(response && response.length == 6){
+                this.validateOTP(response)
+            }
+        })
     }
 
     @HostListener('window:beforeunload', ['$event'])
@@ -116,11 +124,12 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
             (response) =>
             {
                 if (response['status']) {
-                    this.verifiedOTP = otpValue;
+                    this.verifiedOTP = otpValue as string;
                     this.incorrectOTP = null;
                     this.timer = 0;
                     if (this.timerSubscriber) this.timerSubscriber.unsubscribe();
                     this._globalLoader.setLoaderState(false);
+                    for (let i = 0; i < 6; i++) { this.otpFormArray.push(new FormControl(otpValue[i], [Validators.required])) }
                     this.otpEmitter.emit(otpValue);
                     if (!(this.withLabel)) { setTimeout(() => {  
                         this.otpSuccess$.emit();
@@ -156,6 +165,18 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 
+    moveFocusV1($event, isValid){
+        this.isOTPClean = false;
+        $event.stopPropagation();
+        //$event.which = 8:means backspace pressed.
+        // if ((inputIndex >= 0) && (inputIndex - 1 > -1) && ($event.which === 8)) {
+        //     this.OTP_INPUTS[inputIndex - 1].focus();
+        // }
+        if (isValid) {
+           this.OTP_INPUTS[0].focus();
+        }
+    }
+
     onPaste(event: ClipboardEvent, inputIndex)
     {
         event.stopPropagation();
@@ -165,12 +186,28 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this.autoFillOTP(pastedText);
     }
 
+    onPasteV1(event: ClipboardEvent){
+        event.stopPropagation();
+        event.preventDefault();
+        let clipboardData = event.clipboardData || window['clipboardData'] || '';
+        let pastedText:string = (clipboardData) ? clipboardData.getData('text') : '';
+        this.autoFillOTPV1(pastedText);
+    }
+
     autoFillOTP(pastedText: any)  
     {
         const isPasteTextValid = pastedText && pastedText.length == 6 && !isNaN(pastedText);
         if (isPasteTextValid) {
             const OTPS:any[] = pastedText.split("");
             OTPS.forEach((value, index) => { this.otpFormArray.controls[index].patchValue(value)})
+        }
+    }
+
+    autoFillOTPV1(pastedText: any)  
+    {
+        const isPasteTextValid = pastedText && pastedText.length == 6 && !isNaN(pastedText);
+        if (isPasteTextValid) {
+            this.otpFormV1.patchValue(pastedText);
         }
     }
 
@@ -212,6 +249,14 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
         this.initiateOTP(true);
     }
 
+    resendOTPV1()
+    {
+        if (this.disableResend) return
+        //this.otpFormArray.controls.forEach((control: FormControl) => control.patchValue(""));
+        this.otpFormV1.patchValue('');
+        this.initiateOTP(true);
+    }
+
     //NOTE:Below method is to autofill OTP in andriod
     enableWebOTP()
     {
@@ -236,6 +281,12 @@ export class SharedAuthOtpComponent implements OnInit, AfterViewInit, OnDestroy
     get isOTPFormDisabled() { return (this.otpFormArray.invalid) || (this.incorrectOTP != null) }
     get isEmailLogin() { return this.authFlow && this.authFlow.identifier.includes("@") }
     get disableResend() { return this.timer > 0 || this.isOTPVerified }
+
+    get otpValueV1() { return (this.otpFormV1.value as string); }
+    get isOTPVerifiedV1() { return (this.otpValueV1.length > 0) && (this.verifiedOTP == this.otpValueV1); }
+    get isOTPFormDisabledNew() { return (this.otpFormV1.invalid) || (this.incorrectOTP != null) }
+    get isDisabledV1() { return this.otpFormV1.invalid || !(this.isOTPVerifiedV1) }
+
 
     ngOnDestroy(): void
     {

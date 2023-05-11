@@ -1,5 +1,17 @@
 @import '../../scss/common-header';
 
 
+.right-content{
+    display: flex;
+    i{
+        color: var(--blue);
+        margin: 0px 5px;
+        font-size: $large-font;
+        cursor: pointer;
+    }
+}
 
-
+.page-name{
+    font-weight: bold !important;
+    width: unset !important;
+}

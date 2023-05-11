@@ -124,6 +124,13 @@ export class BussinessPurchaseListComponent
     if (_satellite) {
       _satellite.track("genericPageLoad");
     }
+    this.addSubscribers();
+  }
+
+  private addSubscribers(){
+    this.cartService.isAddedToCartSubject.subscribe(response=>{
+      this.removeItemFromPurchaseList(response);
+    })
   }
 
   getPurcahseList()
@@ -787,7 +794,7 @@ export class BussinessPurchaseListComponent
     let obj = {
       idUser: userSession.userId,
       userType: "business",
-      idProduct: productObject.moglixPartNumber,
+      idProduct: productObject.moglixPartNumber || productObject.productId,
       productName: productObject.productName,
       description: productObject.description,
       brand: productObject.brandName,

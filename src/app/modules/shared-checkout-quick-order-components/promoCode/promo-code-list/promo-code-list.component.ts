@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import CONSTANTS from '@app/config/constants';
 import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { Subject, Subscription, timer } from 'rxjs';
 @Component({
     selector: 'promo-code-list',
@@ -18,7 +19,7 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
     selectedPromocode = null;
     readonly assetImgPath: string = CONSTANTS.IMAGE_ASSET_URL;
 
-    constructor(public _cartService: CartService, private _commonService: CommonService) { }
+    constructor(public _cartService: CartService, private _commonService: CommonService, private _analytics: GlobalAnalyticsService) { }
 
     ngOnInit()
     {
@@ -50,8 +51,19 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
     submitPromocode(e, promocode) {
         if (this.selectedPromocode === promocode) { return }
         this._cartService.genericApplyPromoCode(promocode);
+        this.adobeTracking('apply_coupon_cart');
     }
 
+    adobeTracking(trackingname){
+        const page = {
+            'linkPageName': "moglix:cart summary",
+            'linkName': trackingname,
+        }
+        let data = {}
+        data["page"] = page;
+        data["custData"] = this._commonService.custDataTracking;
+        this._analytics.sendAdobeCall(data, trackingname); 
+    }
     closePopup() {
         // this.isQuickCheckoutPopup ? this._commonService.setBodyScroll(null, false) : this._commonService.setBodyScroll(null, true);
         // document.querySelector('app-pop-up').classList.remove('open');

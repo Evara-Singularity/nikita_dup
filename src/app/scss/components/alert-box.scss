@@ -20,13 +20,14 @@
         @include translate(0, -50%);
         position: fixed;
         top: 50%;
-        left: 7.5%;
-        width: 85%;
+        left: 8%;
+        width: 84%;
         background: var(--white);
         z-index: 12;
         font-size: $large-font;
         @extend %border-radius;
         @extend %clear-fix;
+        border: 1px solid var(--ghost-white);
         .info-area {
             padding: 25px;
             .info {

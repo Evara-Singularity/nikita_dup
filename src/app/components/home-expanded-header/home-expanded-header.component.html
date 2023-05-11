@@ -6,8 +6,9 @@
             <a class="moglix-app-logo moglix-mr0" [routerLink]="['/']">
                 <img class="logo-2x" src="{{imgAssetPath}}assets/img/moglix_logo_red@3x.png" alt="logo-2x">
             </a>
-            <div *ngIf="_localAuthService.IsUserGoldMember()" class="logo-animation" >
-               <lottie-player src="/assets/json/gold1.json" background="transparent"  speed="1"  style="width:40px; height: 40px;" loop  autoplay></lottie-player>
+            <div *ngIf="_localAuthService.IsUserGoldMember()" class="logo-animation">
+                <lottie-player src="/assets/json/gold1.json" background="transparent" speed="1"
+                    style="width:40px; height: 40px;" loop autoplay></lottie-player>
             </div>
         </div>
         <div class="head-d-flex-inner logo-container">

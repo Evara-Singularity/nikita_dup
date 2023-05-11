@@ -1,0 +1,29 @@
+<section class="popularDeals pad-r-0" *ngIf="tabsArray.length > 0">
+    <section class="pwa-col-12">
+        <div class="view-all-strip pad-lr-15">
+            <h3>More Items To Explore </h3>
+        </div>
+        <div class="pwa-tabs-container" id="tabs">
+            <ng-container *ngFor="let item of tabsArray;let tabIndex = index">
+                <div class="pwa-tab pwa-tab-variant2" *ngIf="item['data'].length>0"
+                    [ngClass]="{'selectedTab': tabsArray[tabIndex]['isSelected'] }" (click)="setProductTab(item.id)">
+                    {{item['name']}}
+                </div>
+            </ng-container>
+        </div>
+        <ng-container *ngFor="let item of tabsArray;let tabIndex = index">
+            <div class="product-card-section" *ngIf="item['isSelected'] && tabsArray[tabIndex]['data'].length > 0">
+                <ng-container>
+                    <product-card-vertical-container [containerId]="'topDealsContainer'+tabIndex" [numberOfItems]="10">
+                        <ng-container *ngFor="let product of tabsArray[tabIndex]['data']; let pIndex=index">
+                            <product-card-vertical-grid-view [section]="'add_to_cart_itemtoexplore_section'" [product]="product"
+                                [moduleUsedIn]="'POPULAR_DEALS'" [cardFeaturesConfig]='cardFeaturesConfig'
+                                [pIndex]="pIndex" [enableTracking]="true">
+                            </product-card-vertical-grid-view>
+                        </ng-container>
+                    </product-card-vertical-container>
+                </ng-container>
+            </div>
+        </ng-container>
+    </section>
+</section>

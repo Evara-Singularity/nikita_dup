@@ -1,7 +1,7 @@
 <section class="popularDeals mt-10 pad-r-0" *ngIf="tabsArray.length > 0">
     <section class="pwa-col-12">
         <div class="view-all-strip pad-lr-15">
-            <h3>Your Activity</h3>
+            <h3>{{headertext}}</h3>
         </div>
         <div class="pwa-tabs-container" id="tabs">
             <ng-container *ngFor="let item of tabsArray;let tabIndex = index">
@@ -16,8 +16,8 @@
                 <ng-container *ngIf="(tabsArray[tabIndex]['id']!=4)">
                     <product-card-vertical-container [containerId]="'topDealsContainer'+tabIndex" [numberOfItems]="10">
                         <ng-container *ngFor="let product of tabsArray[tabIndex]['data']; let pIndex=index">
-                            <product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
-                                [moduleUsedIn]="'POPULAR_DEALS'" [cardFeaturesConfig]='cardFeaturesConfig'
+                            <product-card-vertical-grid-view [section]="sectionName + 'add_to_cart_'+item['name'].toLowerCase()" [product]="product"
+                                [moduleUsedIn]="moduleUsedIn" [cardFeaturesConfig]='cardFeaturesConfig'
                                 [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
                             </product-card-vertical-grid-view>
                         </ng-container>
@@ -26,8 +26,8 @@
                 <ng-container *ngIf="(tabsArray[tabIndex]['id']== 4)">
                     <product-card-vertical-container [containerId]="'topDealsContainer'+tabIndex" [numberOfItems]="10">
                         <ng-container *ngFor="let product of tabsArray[tabIndex]['data']; let pIndex=index">
-                            <rfq-product-card-vertical-grid-view [section]="'product-popular-deals'" [product]="product"
-                                [moduleUsedIn]="'POPULAR_DEALS'" [cardFeaturesConfig]='cardFeaturesConfig'
+                            <rfq-product-card-vertical-grid-view [section]="sectionName + 'add_to_cart_'+item['name'].toLowerCase()" [product]="product"
+                                [moduleUsedIn]="moduleUsedIn" [cardFeaturesConfig]='cardFeaturesConfig'
                                 [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
                             </rfq-product-card-vertical-grid-view>
                         </ng-container>

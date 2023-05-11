@@ -11,30 +11,34 @@ button.btn[disabled] {
 
 .payment-strip {
     display: flex;
+    width: 100%;
     padding: 5px;
+    align-items: center;
     background: var(--white) !important;
     button {
         margin-left: auto;
-        width: $half-width;
+        width: 100%;
+        margin-left: 20px;
     }
     .amount-left-section {
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 20px;
         padding-right: 10px;
         padding-left: 10px;
+        .total-amt-txt {
+            font-size: $extra-large-1-font;
+            font-weight: bold;
+            line-height: 24px;
+          }
         .payable-amnt {
             display: flex;
-            font-size: $medium-font;
+            font-size: $small-font;
             font-weight: 400;
             text-transform: capitalize;
             color: var(--dim-gray);
-            padding-bottom: 4px;
             align-items: center;
             span {
                 i {
                     margin-left: 5px;
-                    font-size: $large-font;
+                    font-size: $medium-font;
                     color: var(--bleu-de-france);
                 }
             }
@@ -76,4 +80,15 @@ button.btn[disabled] {
         }
     }
 }
+.floating-promo{
+    position: fixed;
+    width: 100%;
+    z-index: 12;
+    bottom: 54px;
+}
 
+::ng-deep{
+    .promo-strip{
+        margin-bottom: 15px !important;
+    }
+}

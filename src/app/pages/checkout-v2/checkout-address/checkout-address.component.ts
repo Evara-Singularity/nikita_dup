@@ -1,5 +1,5 @@
 import { LocalStorageService } from 'ngx-webstorage';
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -12,9 +12,10 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { AddressService } from '@services/address.service';
 import { CartService } from '@services/cart.service';
 import { environment } from 'environments/environment';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs'; 
 import { CheckoutUtil } from '../checkout-util';
 import { CartUtils } from './../../../utils/services/cart-utils';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'checkout-address',
@@ -28,6 +29,11 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
 
     @Input("addDeliveryOrBilling") addDeliveryOrBilling: Subject<string> = new Subject();
+
+    // on demand loading of simillarProductsList
+    simillarProductsPopupInstance = null;
+    @ViewChild("simillarProductsPopup", { read: ViewContainerRef })
+    simillarProductsPopupContainerRef: ViewContainerRef;
 
     invoiceType = this.INVOICE_TYPES.RETAIL;
     payableAmount = 0;
@@ -47,7 +53,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     paymentMode: any;
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
-        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService)
+        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService, private _commonService: CommonService, private injector: Injector, private  cfr: ComponentFactoryResolver,)
     {
         
     }
@@ -86,6 +92,12 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     ngAfterViewInit(): void
     {
         this.addSubscriptions();
+        setTimeout(()=>{
+            if (!this.deliveryAddress) {
+                this.addDeliveryOrBilling.next("Delivery");
+                return;
+            }
+        },800)
     }
 
     addSubscriptions(): void
@@ -114,7 +126,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 this._cartService.checkForUserAndCartSessionAndNotify(tempBuyNow['buyNow']).subscribe(status =>
                 {
                     if (status) {
-                        this._cartService.setCartUpdatesChanges(this.cartSession);
+                        this._cartService.setCartUpdatesChanges(this._cartService.getCartSession());
                     } else {
                         console.trace('cart refresh failed');
                     }
@@ -254,6 +266,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             return;
         }
         this.validateCart();
+        this._commonService.adobe_tracking_proceed_to_checkout('proceed_to_checkout');
     }
 
     /**@description calculates the total payable amount as per cart changes*/
@@ -363,12 +376,44 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         }
     }
 
+    async openSimillarProductsPopUp(event) {
+        const msnid = event["productId"];
+        const data = event["item"];
+        const { SimillarProductsPopupComponent } = await import(
+          "../../../components/simillar-products-popup/simillar-products-popup.component"
+        ).finally();
+        const factory = this.cfr.resolveComponentFactory(
+          SimillarProductsPopupComponent
+        );
+        this.simillarProductsPopupInstance =
+          this.simillarProductsPopupContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+          );
+        this.simillarProductsPopupInstance.instance["msnid"] = msnid;
+        this.simillarProductsPopupInstance.instance["productName"] =
+          data.productName;
+        (
+          this.simillarProductsPopupInstance.instance[
+            "closePopup$"
+          ] as EventEmitter<any>
+        ).subscribe((res) => {
+          this.simillarProductsPopupContainerRef.remove();
+          this.simillarProductsPopupInstance = null;
+        });
+    }
+    
     ngOnDestroy()
     {
         if (this.orderSummarySubscription) this.orderSummarySubscription.unsubscribe();
         if (this.loginSubscription) this.loginSubscription.unsubscribe();
         if (this.logoutSubscription) this.logoutSubscription.unsubscribe();
         if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
+        if (this.simillarProductsPopupInstance) {
+            this.simillarProductsPopupInstance = null;
+            this.simillarProductsPopupContainerRef.remove();
+        }
         this._cartService.showNotification = false;
     }
 }

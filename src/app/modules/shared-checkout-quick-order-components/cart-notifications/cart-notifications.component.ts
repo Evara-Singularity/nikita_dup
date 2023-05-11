@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, ComponentFactoryResolver, EventEmitter, Injector, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '@app/utils/services/cart.service';
 import { Subscription } from 'rxjs';
@@ -16,7 +16,12 @@ export class CartNotificationsComponent implements OnInit,  OnDestroy
     notfications = [];
     is_quickorder = true;
     @Output("viewUnavailableItems$") viewUnavailableItems$: EventEmitter<string[]> = new EventEmitter<string[]>();
-    constructor(public _cartService: CartService, private _router: Router) { }
+
+     
+    constructor(
+        public _cartService: CartService,
+        private _router: Router,
+        ) { }
     
     ngOnInit()
     {
@@ -25,11 +30,13 @@ export class CartNotificationsComponent implements OnInit,  OnDestroy
         {
             this.notfications = notifications || [];
         })
+
     }
 
     viewUnavailableItems()
     {
-        const VIEW_ITEMS_TYPE = this.is_quickorder ? ['oos'] : ['oos', 'unserviceable'];
+        // const VIEW_ITEMS_TYPE = this.is_quickorder ? ['oos'] : ['oos', 'unserviceable'];
+        const VIEW_ITEMS_TYPE =  ['oos', 'unserviceable'];
         this.viewUnavailableItems$.emit(VIEW_ITEMS_TYPE);
     }
 
@@ -42,4 +49,5 @@ export class CartNotificationsComponent implements OnInit,  OnDestroy
         this._cartService.clearNotifications();
         if (this.notificationSubscription) this.notificationSubscription.unsubscribe();
     }
+
 }

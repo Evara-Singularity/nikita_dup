@@ -10,6 +10,7 @@ export class CustomPromoCodeComponent
 {
     appliedPromocode: string = "";
     @Input("nextPromocode") nextPromocode: Subject<string> = null;
+    @Input("isPromocodeList") isPromocodeList: Boolean = false
     nextPromocodeSubscription: Subscription = null;
     appliedPromocodeSubscription: Subscription = null;
 

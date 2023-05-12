@@ -1,6 +1,6 @@
 <div class="product-horizontal-card" data-observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
     <!-- YOUTUBE FEATURE START -->
-    <div class="youtubeThumbnail-listing"
+    <!-- <div class="youtubeThumbnail-listing"
         *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0 && this.youtubeThumbnail">
         <a [title]="product['videoInfo'][0]['link']" (click)="stopNavigation($event)">
             <div class="thumbnail" [lazyLoad]="youtubeThumbnail" [defaultImage]="defaultImage">
@@ -9,7 +9,7 @@
                     src="/assets/img/video_icon.svg" alt="text">
             </div>
         </a>
-    </div>
+    </div> -->
     <!-- YOUTUBE FEATURE ENDS -->
     <!-- <a class="s-h-l" [attr.href]="prodUrl+'/'+this.product.productUrl">{{product.productName}}</a> -->
     <div class="card-container">
@@ -19,6 +19,14 @@
                     <div *ngFor="let tag of product['productTags'] | slice:0:1   ;let i = index;" class="tags">
                         <img [src]="tag['tagImageLink']" alt="" />
                     </div>
+                </ng-container>
+                <ng-container
+                    *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0 && this.youtubeThumbnail">
+                    <a [title]="product['videoInfo'][0]['link']" (click)="stopNavigation($event)">
+                        <div class="youtube-iconsection">
+                            <img src="/assets/img/video_icon.svg" alt="youtube_icon" (click)="showYTVideo(product['videoInfo'][0]['link']);$event.stopPropagation();">
+                        </div>
+                    </a>
                 </ng-container>
                 <ng-container *ngIf="isPDPImageLazyLoaded || !cardFeaturesConfig.lazyLoadImage">
                     <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}"
@@ -81,7 +89,8 @@
                     </div>
 
                 </div>
-                <div class="emi-container"  *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice >= easyEMILimit">
+                <div class="emi-container"
+                    *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice >= easyEMILimit">
                     <i class="icon-circle_check"></i>
                     <span>Easy EMI available</span>
                 </div>
@@ -92,14 +101,15 @@
             *ngIf="cardFeaturesConfig.enableFeatures && product['keyFeatures'] && product['keyFeatures'].length > 0
            && (product['attributeValuesForPart'] == null || (product['attributeValuesForPart'] | keyvalue).length == 0)">
             <ul class="round">
-                <li *ngFor="let features of product['keyFeatures'].slice(0,2)">{{features.split(" ").splice(0,20).join(" ")}}<span
-                        *ngIf="features.split(' ').length>20">...</span></li>
+                <li *ngFor="let features of product['keyFeatures'].slice(0,2)">{{features.split(" ").splice(0,20).join("
+                    ")}}<span *ngIf="features.split(' ').length>20">...</span></li>
             </ul>
         </div>
-        <div class="attribute-section" *ngIf="product['attributeValuesForPart'] != null && (product['attributeValuesForPart'] | keyvalue).length != 0">
+        <div class="attribute-section"
+            *ngIf="product['attributeValuesForPart'] != null && (product['attributeValuesForPart'] | keyvalue).length != 0">
             <div class="pwa-tabs-container">
                 <div class="pwa-tab" *ngFor="let item of modifiedFilterableAtrribute.slice(0,5)">
-                   {{item[0] | titlecase}}: {{item[1][0]}}
+                    {{item[0] | titlecase}}: {{item[1][0]}}
                 </div>
             </div>
         </div>
@@ -122,8 +132,7 @@
                 </span>
             </div>
             <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
-                <button class="btn secondry-btn-1" (click)="openRfqForm()"
-                    *ngIf="!isWishlist">
+                <button class="btn secondry-btn-1" (click)="openRfqForm()" *ngIf="!isWishlist">
                     SEND QUERY
                 </button>
             </ng-container>

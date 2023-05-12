@@ -77,7 +77,7 @@ export class ProductListService {
             this.getImageFromSearchProductResponse(
               product["mainImageLink"],
               "large",
-              "thumbnail"
+              "medium"
             );
           product["mainImageMediumLink"] =
             this.getImageFromSearchProductResponse(

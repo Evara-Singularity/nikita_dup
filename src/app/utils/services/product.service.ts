@@ -744,7 +744,7 @@ export class ProductService {
             mainImageThumnailLink: this.getImageFromSearchProductResponse(
                 product["mainImageLink"],
                 "large",
-                "thumbnail"
+                "medium"
             ),
             mainImageMediumLink: this.getImageFromSearchProductResponse(
                 product["mainImageLink"],
@@ -841,12 +841,12 @@ export class ProductService {
             rating: product["rating"] || null,
             categoryCodes: null,
             taxonomy: product["taxonomy"] || null,
-            mainImageLink: product["mainImageLink"] ? this.getForLeadingSlash(product["mainImageLink"]) : "",
+            mainImageLink: product["mainImageLink"] ? this.getForLeadingSlash(product["mainImageLink"]).replace('-large', '-medium') : "",
             mainImageMediumLink: product["mainImageLink"]
-                ? this.getForLeadingSlash(product["mainImageLink"])
+                ? this.getForLeadingSlash(product["mainImageLink"]).replace('-large', '-medium')
                 : "",
             mainImageThumnailLink: product["mainImageLink"]
-                ? this.getForLeadingSlash(product["mainImageLink"])
+                ? this.getForLeadingSlash(product["mainImageLink"]).replace('-large', '-medium')
                 : "",
             productTags: [],
             filterableAttributes: {},
@@ -1004,12 +1004,12 @@ export class ProductService {
             rating: (overrideProductB0 && overrideProductB0.rating) ? overrideProductB0.rating : null,
             categoryCodes: productCategoryDetails['categoryCode'],
             taxonomy: productCategoryDetails['taxonomyCode'],
-            mainImageLink: (productPartDetails['images']) ? productPartDetails['images'][0]['links']['default'] : '',
+            mainImageLink: (productPartDetails['images']) ? productPartDetails['images'][0]['links']['medium'] : '',
             mainImageMediumLink: productPartDetails['images']
             ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['medium'])
             : "",
             mainImageThumnailLink: productPartDetails['images']
-            ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['default'])
+            ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['medium'])
             : "",
             productTags: [],
             filterableAttributes: {},
@@ -1044,9 +1044,9 @@ export class ProductService {
             // rating?: null;
             // categoryCodes?: null;
             // taxonomy?: null;
-            mainImageLink: productItemLevel['imageUrl'],
-            mainImageThumnailLink: productItemLevel['imageUrl'],
-            mainImageMediumLink: productItemLevel['imageUrl'],
+            mainImageLink: productItemLevel['imageUrl'].replace('-xxlarge', '-medium'),
+            mainImageThumnailLink: productItemLevel['imageUrl'].replace('-xxlarge', '-medium'),
+            mainImageMediumLink: productItemLevel['imageUrl'].replace('-xxlarge', '-medium'),
             // productTags?: any ;
             filterableAttributes: null,
             itemInPack: null,
@@ -1218,7 +1218,7 @@ export class ProductService {
             //     ? this.getForLeadingSlash(productPartDetails['images'][0]['links']['medium'])
             //     : "",    
             mainImageThumnailLink: product['mainImageLink']
-                ? product['mainImageLink']
+                ? product['mainImageLink'].replace('-large', '-medium')
                 : "",
             productTags: product['productTags'] || [],
             filterableAttributes: product['filterableAttributes'] || {},

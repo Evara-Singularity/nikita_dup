@@ -1,0 +1,16 @@
+<section class="pwa-row mar-tb-15 br-8 similar-product pad-r-0" *ngIf="similarProducts && similarProducts.length>0">
+  <section class="pwa-col-12">
+      <div class="view-all-strip">
+          <h3 class="heading-1">Similar Products To Compare</h3>
+          <!-- <a class="btn quinary-btn">VIEW ALL</a> -->
+  </div>
+  <product-card-vertical-container [numberOfItems]="similarProducts.length || 0">
+      <ng-container *ngFor="let product of similarProducts;let pIndex=index">
+          <app-product-card-vertical-grid-view-product-price-compare [section]="'similar'" [product]="product" [cardMetaInfo]='cardMetaInfo'
+              [cardFeaturesConfig]='cardFeaturesConfig' [moduleUsedIn]="'PRODUCT_SIMILAR'" [pIndex]="pIndex" [enableTracking]="true"
+              [analytics]="analytics">
+          </app-product-card-vertical-grid-view-product-price-compare>
+      </ng-container>
+  </product-card-vertical-container>
+  </section>
+</section>

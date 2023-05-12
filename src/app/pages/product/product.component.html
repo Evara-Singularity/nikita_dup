@@ -89,6 +89,12 @@
         <product-skeletons [type]="'FBT'" [templateRefInstance]="fbtComponentInstance"></product-skeletons> -->
     </div>
 
+    <div *ngIf="!productOutOfStock" class="common-product" data-observeVisibility
+        [debounceTime]="100" (visible)="onVisibleproductPriceCompare($event)">
+        <ng-container #productPriceCompare></ng-container>
+        <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="productPriceCompareInstance"></product-skeletons>
+    </div>
+
     <app-product-review [productName]="productName" [reviewLength]="reviewLength" [overallRating]="overallRating"
         [rawReviewsData]="rawReviewsData" (writeReview)="writeReview($event)"
         (reviewRatingPopup)="handleReviewRatingPopup($event)" (postHelpful)="handlePostHelpful($event)">

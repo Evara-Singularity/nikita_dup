@@ -184,6 +184,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     similarProductInstance = null;
     @ViewChild("similarProduct", { read: ViewContainerRef })
     similarProductContainerRef: ViewContainerRef;
+    // ondemand loaded components for product price compare products
+    productPriceCompareInstance = null;
+    @ViewChild("productPriceCompare", { read: ViewContainerRef })
+    productPriceCompareContainerRef: ViewContainerRef;
     // similarProductInstanceOOS for out of stock
     similarProductInstanceOOS = null;
     @ViewChild("similarProductOOS", { read: ViewContainerRef })
@@ -1128,6 +1132,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.similarProductInstance = null;
             this.similarProductContainerRef.remove();
             this.onVisibleSimilar(null);
+        }
+        if (this.similarProductInstance) {
+            this.similarProductInstance = null;
+            this.productPriceCompareContainerRef.remove();
+            this.onVisibleproductPriceCompare(null);
         }
         if (this.similarProductInstanceOOS) {
             this.similarProductInstanceOOS = null;
@@ -2177,6 +2186,59 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 loginStatus: this.commonService.loginStatusTracking,
             };
             this.similarProductInstance.instance["analytics"] = {
+                page: page,
+                custData: custData,
+                order: orderData,
+            };
+        }
+        this.holdRFQForm = false;
+    }
+
+
+    async onVisibleproductPriceCompare(htmlElement)
+    {
+        if (!this.productPriceCompareInstance && !this.productOutOfStock) {
+            const { ProductPriceCompareComponent } = await import(
+                "./../../components/product-price-compare/product-price-compare.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(
+                ProductPriceCompareComponent
+            );
+            this.productPriceCompareInstance =
+                this.productPriceCompareContainerRef.createComponent(
+                    factory,
+                    null,
+                    this.injector
+                );
+
+            this.productPriceCompareInstance.instance["partNumber"] = this.rawProductData['partNumber'];
+            this.productPriceCompareInstance.instance["groupId"] = this.rawProductData['groupId'];
+            this.productPriceCompareInstance.instance["productName"] = this.productName;
+            this.productPriceCompareInstance.instance["categoryCode"] =
+                this.productCategoryDetails["categoryCode"];
+
+            this.productPriceCompareInstance.instance["outOfStock"] =
+                this.productOutOfStock;
+            (
+                this.productPriceCompareInstance.instance[
+                "similarDataLoaded$"
+                ] as EventEmitter<any>
+            ).subscribe((data) =>
+            {
+                // this.commonService.triggerAttachHotKeysScrollEvent('similar-products');
+            });
+            const custData = this.commonService.custDataTracking;
+            const orderData = this.orderTracking;
+            const TAXONS = this.taxons;
+            const page = {
+                pageName: null,
+                channel: "pdp",
+                subSection: "Similar Products",
+                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+                linkName: null,
+                loginStatus: this.commonService.loginStatusTracking,
+            };
+            this.productPriceCompareInstance.instance["analytics"] = {
                 page: page,
                 custData: custData,
                 order: orderData,

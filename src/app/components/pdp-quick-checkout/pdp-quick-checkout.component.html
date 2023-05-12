@@ -1,4 +1,4 @@
-<app-bottom-menu *ngIf="Isoverlay" (outData$)="onUpdate($event)">
+<app-bottom-menu *ngIf="Isoverlay" (outData$)="onUpdate($event); close(false)">
     <div class="quick-checkout" content *ngIf="isPopup">
         <div class="bottom-menu-header">
             <i class="icon-circle-delete delete-icon" (click)="close(false)"></i>
@@ -64,7 +64,7 @@
                                 </li>
                                 <li class="tag-item last-tag-item">
                                     <span class="tag-label">Amount Payable</span>
-                                    <span class="tag-value">₹{{totalPayableAmount | mathCeil | number : '1.2-2'}}</span>
+                                    <span class="tag-value">₹{{cartService.totalDisplayPayableAmountWithOutPrepaid | mathCeil | number :'1.2-2'}}</span>
                                 </li>
                             </ul>
                         </div>
@@ -132,7 +132,7 @@
                         <span class="payable-amnt">Amount Payable
                             <span><i class="icon-information" (click)="expandPaymentSummary(false)"></i></span>
                         </span>
-                        ₹{{totalPayableAmount | mathCeil | number : '1.2-2'}}
+                        ₹{{cartService.totalDisplayPayableAmountWithOutPrepaid | mathCeil | number : '1.2-2'}}
                     </p>
                     <button class="primary-full-btn" (click)="placeOrder()" >
                         PLACE ORDER
@@ -144,17 +144,17 @@
         <!--Promocode Section-->
         <div class="promocode white-card">
             <div class="apply-promo no-border">
-             <custom-promo-code></custom-promo-code>
-                <p class="open-offers" (click)="$event.stopPropagation();openOfferPopUp()">VIEW ALL OFFERS</p>
+                <all-promocode-v1></all-promocode-v1>
+                <!-- <p class="open-offers" (click)="$event.stopPropagation();openOfferPopUp()">VIEW ALL OFFERS</p> -->
             </div>
-            <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" [isQuickCheckoutPopup] ="true" *ngIf="showPromoOfferPopup"></promo-code-list>
+            <!-- <promo-code-list (closePromoOfferPopup)="closePromoListPopUp($event)" [isQuickCheckoutPopup] ="true" *ngIf="showPromoOfferPopup"></promo-code-list> -->
             <div class="alert-box" *ngIf="showPromoSuccessPopup">
                 <div class="overlay" (click)="$event.stopPropagation();closePromoSuccessPopUp()"></div>
                 <div class="content-area">
                     <div class="info-area">
                         <i class="icon-coupon-3-fill-1"></i>
                         <p class="applied-coupon">'{{cartService?.appliedPromoCode}}' applied</p>
-                        <p class="saving-applid-coupon"><span>&#8377;{{totalOffer}}</span> saving with this coupon</p>
+                        <p class="saving-applid-coupon"><span>&#8377;{{cartService.getGenericCartSession.cart.totalOffer | mathFloor | number : '1.2-2'}}</span> saving with this coupon</p>
                         <p class="green-text">YAY!</p>
                     </div>
                 </div>

@@ -1,0 +1,152 @@
+.product-comparison {
+    .border-bottom{
+        border-bottom: 1px solid var(--ghost-white);
+    }
+}
+
+.w-full {
+    width: 100%;
+}
+
+.seemore {
+    p {
+        color: var(--blue);
+        font-weight: bold;
+    }
+}
+
+.table-fixed-column-outter {
+    position: relative;
+
+    .table-fixed-column-inner {
+        overflow-x: scroll;
+        overflow-y: visible;
+        margin-left: 120px;
+        //width: 400px;
+
+        .table {
+            text-align: left;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+
+            &.table.table-fixed-column {
+                table-layout: fixed;
+                width: 100%
+            }
+            tr {
+                &.table-row-product-card {
+                    td {
+                        padding: 0px !important;
+                    }
+                }
+
+                &:nth-child(2n) {
+                    background-color: red;
+                    // background-color: var(--cultured);
+                }
+
+                td {
+                    width: 160px;
+                    // border-bottom: 1px solid var(--ghost-white);
+                    padding: 10px 15px;
+
+                    &:first-child {
+                        position: absolute;
+                        left: 0;
+                        width: 120px;
+                    }
+
+                    &:nth-child(2) {
+                        background-color: #FBE8E9;
+                        border-left: 1px solid var(--ghost-white);
+                        border-right: 1px solid var(--ghost-white);
+                    }
+
+                    .comparison-product-outer {
+                        &.currentProduct {
+                            background-color: #FBE8E9;
+                            border-radius: 8px 8px 0 0;
+                            width: 152px;
+                            border: 1px solid var(--ghost-white);
+                            border-bottom: none !important;
+
+                            .compared-product-card {
+                                border: none !important;
+                                width: 152px;
+                            }
+
+                            .prod-name {
+                                color: var(--onyx-black) !important;
+                            }
+                        }
+                        width: 152px;
+                        padding: 0 0px 10px 0;
+                        .compared-product-card {
+                            border: 1px solid var(--ghost-white);
+                            border-radius: 8px;
+                            padding: 10px;
+                            width: 152px;
+                            .prod-img {
+                                background-color: var(--white);
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+
+                                img {
+                                    width: 140px;
+                                }
+                            }
+
+                            .prod-name {
+                                font-size: 14px;
+                                line-height: 16px;
+                                color: var(--blue);
+                                margin-top: 10px;
+                                display: -webkit-box;
+                                height: 48px;
+                                -webkit-line-clamp: 3;
+                                -webkit-box-orient: vertical;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                            }
+
+                            .prodPrice {
+                                font-size: 18px;
+                                line-height: 20px;
+                                margin-top: 10px;
+                                padding: 0px;
+
+                            }
+
+                            .currentProduct {
+                                font-size: 10px;
+                                background-color: var(--spanish-gray);
+                                border-radius: 4px;
+                                line-height: 18px;
+                                color: var(--white);
+                                width: fit-content;
+                                padding: 0 10px;
+                                margin-top: 10px;
+                            }
+
+                            .card-btn-row {
+                                margin-top: 10px;
+                            }
+                        }
+                    }
+
+                    .avgrating {
+                        display: inline;
+                        background-color: var(--slimy-green);
+                        padding: 3px 5px;
+                        color: #fff;
+                        border-radius: 3px;
+                        font-size: 12px;
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+    }
+}

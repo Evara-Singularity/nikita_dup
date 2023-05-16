@@ -37,7 +37,6 @@ export class GlobalAnalyticsService {
     if (this.isBrowser && _satellite != undefined && _satellite.track) {
       digitalData = Object.assign({}, data);
       // console.log('digitalData', digitalData);
-      console.trace();
       _satellite.track(trackingname);
     }
   }

@@ -333,8 +333,11 @@ export class ProductListService {
         str =  "homepage:popular_deals";
         break;
       case "POPULAR_DEALS_QUICKORDER":
-        str =  "quickorder:popular_deals";
-        break;  
+        str =  "quickorder:you_may_interested_in";
+        break;
+      case "MORE_ITEMS_TO_EXPLORE":
+        str =  "quickorder:more_items_to_explore";
+        break;     
       case "SPONSERED_ADS":
         str = "pdp:sponsored_ads";
         break;

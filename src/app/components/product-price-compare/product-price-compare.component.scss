@@ -21,7 +21,7 @@
     .table-fixed-column-inner {
         overflow-x: scroll;
         overflow-y: visible;
-        margin-left: 120px;
+        // margin-left: 120px;
         //width: 400px;
 
         .table {
@@ -42,25 +42,32 @@
                 }
 
                 &:nth-child(2n) {
-                    background-color: red;
-                    // background-color: var(--cultured);
+                    background-color: var(--cultured);
                 }
 
                 td {
-                    width: 160px;
+                    width: 162px;
                     // border-bottom: 1px solid var(--ghost-white);
                     padding: 10px 15px;
+                    &.odd-child{
+                        background-color: #fff;
+                    }
+                    &.even-child{
+                        background-color: var(--cultured);
+                    }
 
                     &:first-child {
-                        position: absolute;
+                        position: sticky;
                         left: 0;
+                        z-index: 1;
                         width: 120px;
                     }
 
                     &:nth-child(2) {
-                        background-color: #FBE8E9;
-                        border-left: 1px solid var(--ghost-white);
-                        border-right: 1px solid var(--ghost-white);
+                        background-image: linear-gradient(to right, #FBE8E9 152px, transparent 10px);
+                        // background-color: #FBE8E9;
+                        // border-left: 1px solid var(--ghost-white);
+                        // border-right: 1px solid var(--ghost-white);
                     }
 
                     .comparison-product-outer {

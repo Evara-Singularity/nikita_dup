@@ -156,8 +156,8 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
 
   sendAnalyticsFilterTracking(pageName) {
     let page = {
-      channel: "homepage",
-      pageName: "homepage:widget:"+pageName,
+      channel: "quickorder",
+      pageName: "quickorder:widget:"+pageName,
       linkName: "",
       loginStatus: "",
     };

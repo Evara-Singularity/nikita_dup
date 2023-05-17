@@ -190,6 +190,7 @@ export class FbtComponent implements OnInit
 
     backToCartFlow()
     {
+        this._commonService.setBodyScroll(null, true);
         this.closePopup$.emit();
         this.addToCartFromModal(false);
     }

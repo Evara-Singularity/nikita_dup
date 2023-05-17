@@ -355,7 +355,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     promoCodes: any[];
     allofferData: any[];
     couponForbrandCategory: any;
-    
+    fragment = '';
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);
@@ -434,6 +434,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
         this.commonService.changeStaticJson.asObservable().subscribe(localization_content => {
             this.productStaticData = localization_content;
+        })
+        this.route.fragment.subscribe((fragment: string) => {
+            this.fragment = fragment;
+            console.log('/////////////////////// ' + this.fragment);
         })
     }
 
@@ -2973,7 +2977,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 });
             }
         } else {
-            this.goToLoginPage(this.productUrl);
+            console.log('login page')
+            this.goToLoginPage(this.productUrl + (this.fragment.length ? `#${this.fragment}` : ''));
         }
     }
 
@@ -4250,6 +4255,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     async handleFaqListPopup()
     {
+        console.log('I am in')
         this.showLoader = true;
         const { FaqListPopoupComponent } = await import(
             "./../../components/faq-list-popup/faq-list-popup.component"
@@ -4291,7 +4297,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.location.replaceState(this.mainProductURL);
             this.askQuestionPopup();
         } else {
-            this.goToLoginPage(this.productUrl, "Continue to ask question", "askQuestion");
+            this.goToLoginPage(this.productUrl + (this.fragment.length ? `#${this.fragment}` : ''), "Continue to ask question");
         }
     }
 

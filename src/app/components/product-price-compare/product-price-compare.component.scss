@@ -1,3 +1,4 @@
+@import "../../scss/variables";
 .product-comparison {
     .border-bottom {
         border-bottom: 1px solid var(--ghost-white);
@@ -37,13 +38,13 @@
 
             tr {
                 border-bottom: 1px solid var(--blue);
+               
 
                 &.table-row-product-card {
                     td {
                         padding: 0px !important;
                     }
                 }
-
                 &:nth-child(2n) {
                     background-color: var(--cultured);
                 }
@@ -51,7 +52,8 @@
                 td {
                     width: 162px;
                     border-bottom: 1px solid var(--ghost-white);
-                    padding: 10px;
+                    padding: 10px 15px;
+                    font-size: $large-font;
 
                     &.odd-child {
                         background-color: #fff;
@@ -66,18 +68,20 @@
                         left: 0;
                         z-index: 1;
                         width: 120px;
+                        font-size: $medium-font;
                     }
 
                     &:nth-child(2) {
                         background-image: linear-gradient(to right, #FBE8E9 152px, transparent 10px);
-                        // background-color: #FBE8E9;
-                        // border-left: 1px solid var(--ghost-white);
-                        // border-right: 1px solid var(--ghost-white);
+
                     }
 
                     .comparison-product-outer {
                         &.currentProduct {
                             border-bottom: none !important;
+                            border: 1px solid var(--ghost-white);
+                            border-radius: 8px 8px 0 0;
+                            background-color: #FBE8E9;
 
                             .compared-product-card {
                                 border: none !important;
@@ -111,11 +115,11 @@
 
                             .prod-name {
                                 font-size: 14px;
-                                line-height: 16px;
+                                line-height: 18px;
                                 color: var(--blue);
                                 margin-top: 10px;
                                 display: -webkit-box;
-                                height: 48px;
+                                height: 54px;
                                 -webkit-line-clamp: 3;
                                 -webkit-box-orient: vertical;
                                 overflow: hidden;
@@ -123,7 +127,7 @@
                             }
 
                             .prodPrice {
-                                font-size: 18px;
+                                font-size: $extra-large-2-font;
                                 margin-top: 10px;
                                 padding: 0px;
 
@@ -145,9 +149,14 @@
 
                             .card-btn-row {
                                 margin-top: 10px;
-
                                 button {
                                     height: 35px;
+                                    display: flex;
+                                    align-items: center;
+                                    i{
+                                        font-size: $extra-large-font;
+                                        margin-right: 5px;
+                                    }
                                 }
                             }
                         }
@@ -157,10 +166,17 @@
                         display: inline;
                         background-color: var(--slimy-green);
                         padding: 3px 5px;
-                        color: #fff;
+                        color: var(--white);
                         border-radius: 3px;
-                        font-size: 12px;
+                        font-size: $medium-font;
                         margin-right: 5px;
+                    }
+                }
+                &:first-child{
+                    td{
+                        &:nth-child(2){
+                            background-image: linear-gradient(to right, #ffffff 152px, #ffffff 10px) !important;
+                        }
                     }
                 }
             }

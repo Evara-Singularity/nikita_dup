@@ -1044,9 +1044,9 @@ export class ProductService {
             // rating?: null;
             // categoryCodes?: null;
             // taxonomy?: null;
-            mainImageLink: productItemLevel['imageUrl'].replace('-xxlarge', '-medium'),
-            mainImageThumnailLink: productItemLevel['imageUrl'].replace('-xxlarge', '-medium'),
-            mainImageMediumLink: productItemLevel['imageUrl'].replace('-xxlarge', '-medium'),
+            mainImageLink: (productItemLevel['imageUrl']) ? productItemLevel['imageUrl'].replace('-xxlarge', '-medium') : '',
+            mainImageThumnailLink: (productItemLevel['imageUrl']) ? productItemLevel['imageUrl'].replace('-xxlarge', '-medium') : '',
+            mainImageMediumLink: (productItemLevel['imageUrl']) ? productItemLevel['imageUrl'].replace('-xxlarge', '-medium') : '',
             // productTags?: any ;
             filterableAttributes: null,
             itemInPack: null,

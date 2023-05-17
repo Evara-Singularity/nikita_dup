@@ -48,7 +48,7 @@
                 }
 
                 td {
-                    width: 162px;
+                    width: 170px;
                     border-bottom: 1px solid var(--ghost-white);
                     padding: 10px 15px;
                     font-size: $large-font;
@@ -65,12 +65,12 @@
                         position: sticky;
                         left: 0;
                         z-index: 1;
-                        width: 120px;
+                        width: 90px;
                         font-size: $medium-font;
                     }
 
                     &:nth-child(2) {
-                        background-image: linear-gradient(to right, #FBE8E9 152px, transparent 10px);
+                        background-image: linear-gradient(to right, #FBE8E9 160px, transparent 10px);
 
                     }
 
@@ -83,7 +83,7 @@
 
                             .compared-product-card {
                                 border: none !important;
-                                width: 152px;
+                                width: 160px;
                             }
 
                             .prod-name {
@@ -91,14 +91,14 @@
                             }
                         }
 
-                        width: 152px;
+                        width: 160px;
                         padding: 0 0px 10px 0;
 
                         .compared-product-card {
                             border: 1px solid var(--ghost-white);
                             border-radius: 8px;
                             padding: 10px;
-                            width: 152px;
+                            width: 160px;
 
                             .prod-img {
                                 background-color: var(--white);
@@ -173,7 +173,7 @@
                 &:first-child{
                     td{
                         &:nth-child(2){
-                            background-image: linear-gradient(to right, #ffffff 152px, #ffffff 10px) !important;
+                            background-image: linear-gradient(to right, #ffffff 160px, #ffffff 10px) !important;
                         }
                     }
                 }

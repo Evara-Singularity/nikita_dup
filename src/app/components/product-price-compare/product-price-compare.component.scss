@@ -1,5 +1,5 @@
 .product-comparison {
-    .border-bottom{
+    .border-bottom {
         border-bottom: 1px solid var(--ghost-white);
     }
 }
@@ -34,7 +34,10 @@
                 table-layout: fixed;
                 width: 100%
             }
+
             tr {
+                border-bottom: 1px solid var(--blue);
+
                 &.table-row-product-card {
                     td {
                         padding: 0px !important;
@@ -47,12 +50,14 @@
 
                 td {
                     width: 162px;
-                    // border-bottom: 1px solid var(--ghost-white);
-                    padding: 10px 15px;
-                    &.odd-child{
+                    border-bottom: 1px solid var(--ghost-white);
+                    padding: 10px;
+
+                    &.odd-child {
                         background-color: #fff;
                     }
-                    &.even-child{
+
+                    &.even-child {
                         background-color: var(--cultured);
                     }
 
@@ -72,10 +77,6 @@
 
                     .comparison-product-outer {
                         &.currentProduct {
-                            background-color: #FBE8E9;
-                            border-radius: 8px 8px 0 0;
-                            width: 152px;
-                            border: 1px solid var(--ghost-white);
                             border-bottom: none !important;
 
                             .compared-product-card {
@@ -87,13 +88,16 @@
                                 color: var(--onyx-black) !important;
                             }
                         }
+
                         width: 152px;
                         padding: 0 0px 10px 0;
+
                         .compared-product-card {
                             border: 1px solid var(--ghost-white);
                             border-radius: 8px;
                             padding: 10px;
                             width: 152px;
+
                             .prod-img {
                                 background-color: var(--white);
                                 display: flex;
@@ -120,25 +124,31 @@
 
                             .prodPrice {
                                 font-size: 18px;
-                                line-height: 20px;
                                 margin-top: 10px;
                                 padding: 0px;
 
                             }
 
-                            .currentProduct {
-                                font-size: 10px;
-                                background-color: var(--spanish-gray);
-                                border-radius: 4px;
-                                line-height: 18px;
-                                color: var(--white);
-                                width: fit-content;
-                                padding: 0 10px;
+                            .currentProduct-info {
+                                height: 35px;
                                 margin-top: 10px;
+                                span {
+                                    font-size: 10px;
+                                    background-color: var(--spanish-gray);
+                                    border-radius: 4px;
+                                    line-height: 18px;
+                                    color: var(--white);
+                                    width: fit-content;
+                                    padding: 2px 10px;
+                                }
                             }
 
                             .card-btn-row {
                                 margin-top: 10px;
+
+                                button {
+                                    height: 35px;
+                                }
                             }
                         }
                     }

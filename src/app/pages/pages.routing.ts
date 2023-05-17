@@ -39,6 +39,16 @@ const routes: Routes = [
 				},
 			},
 			{
+				matcher: _routingMatcher.productV1Match,
+				loadChildren: () =>
+					import('./product-v1/product-v1.module').then((m) => m.ProductV1Module),
+				data: {
+					pageName: 'pdp',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT,
+					language: 'en'
+				},
+			},
+			{
 				matcher: _routingMatcher.productMatchTranslate,
 				loadChildren: () =>
 					import('./product/product.module').then((m) => m.ProductModule),

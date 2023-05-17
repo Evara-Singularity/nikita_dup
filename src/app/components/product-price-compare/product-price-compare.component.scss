@@ -22,8 +22,6 @@
     .table-fixed-column-inner {
         overflow-x: scroll;
         overflow-y: visible;
-        // margin-left: 120px;
-        //width: 400px;
 
         .table {
             text-align: left;
@@ -167,7 +165,7 @@
                         background-color: var(--slimy-green);
                         padding: 3px 5px;
                         color: var(--white);
-                        border-radius: 3px;
+                        border-radius: 4px;
                         font-size: $medium-font;
                         margin-right: 5px;
                     }

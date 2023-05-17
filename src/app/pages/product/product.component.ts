@@ -435,10 +435,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.commonService.changeStaticJson.asObservable().subscribe(localization_content => {
             this.productStaticData = localization_content;
         })
-        this.route.fragment.subscribe((fragment: string) => {
-            this.fragment = fragment;
-            console.log('/////////////////////// ' + this.fragment);
-        })
+        if (this.isBrowser) {
+            this.route.fragment.subscribe((fragment: string) => {
+                this.fragment = fragment;
+            })
+        }
     }
 
     scrollToTop()

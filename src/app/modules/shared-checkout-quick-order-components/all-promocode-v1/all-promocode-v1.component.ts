@@ -23,7 +23,6 @@ export class AllPromocodeV1Component implements OnInit {
       this._cartService.promoCodeSubject.subscribe(
         ({ promocode, isNewPromocode }) => {
           this.appliedPromocode = promocode || '';
-          console.log(this.appliedPromocode);
         }
       );
   }

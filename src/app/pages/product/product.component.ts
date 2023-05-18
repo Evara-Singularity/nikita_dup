@@ -2978,7 +2978,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 });
             }
         } else {
-            console.log('login page')
             this.goToLoginPage(this.productUrl + (this.fragment.length ? `#${this.fragment}` : ''));
         }
     }
@@ -4256,7 +4255,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     async handleFaqListPopup()
     {
-        console.log('I am in')
         this.showLoader = true;
         const { FaqListPopoupComponent } = await import(
             "./../../components/faq-list-popup/faq-list-popup.component"

@@ -24,6 +24,8 @@ export class RecentViewedProductsComponent implements OnInit {
   @Output() noRecentlyViewed$: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() outOfStock: boolean = false;
   @Input() analytics = null;
+  @Input('pageName') pageName = "pdp";
+  @Input('moduleUsedIn') moduleUsedIn = "PRODUCT_RECENT_PRODUCT";
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config

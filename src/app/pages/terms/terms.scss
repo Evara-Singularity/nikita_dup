@@ -13,7 +13,7 @@
         p {
             font-size: $medium-font;
             color: var(--text-color);
-            line-height: $large-line-height;
+            line-height: $medium-line-height;
             margin-top: 10px;
             font-weight: $font-bolder;
         }
@@ -36,7 +36,7 @@
         
         /* hierarchical ordering:  */
         ol {
-            padding-left: 16px;	
+            padding-left: 20px;	
             counter-reset: item
         }
         li {
@@ -79,10 +79,12 @@
 
 .notice-alignment {
     border-top: 1px dashed var(--onyx-black);
-    margin-top: 50px;
+    margin-top: 20px;
 
     h3 {
-        font-size: $extra-large-font;
+        font-size: $medium-font;
+        line-height: $medium-line-height;
+
     }
 
     .mt-30 {
@@ -112,10 +114,10 @@
         }
     }
     .part-2{
-        padding: 40px 0 20px;
+        padding: 20px 0 0;
         .dashed-line{
             width: 100%;
-            margin-top: 40px;
+            margin-top: 20px;
             height: 20px;
             border-top: 1px dashed var(--onyx-black);
         }
@@ -129,7 +131,7 @@
 }
 .part1-tbl {
     table {
-        padding: 20px 0;
+        padding: 20px 0 10px;
         border-collapse: separate;
         border-spacing: 0;
         width: 100%;
@@ -146,7 +148,7 @@
 }
 .part2-tbl{
     table {
-        padding: 20px 0;
+        padding: 20px 0 10px;
         border-collapse: separate;
         border-spacing: 0;
         width: 100%;

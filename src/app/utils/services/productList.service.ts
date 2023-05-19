@@ -344,6 +344,24 @@ export class ProductListService {
       case "PRODUCT_RECENT_PRODUCT":
         str = "pdp:product_recent_product";
         break;
+      case "PRODUCT_RECENT_PRODUCT_ALP":
+        str = "alp:product_recent_product";
+        break;
+      case "PRODUCT_RECENT_PRODUCT_BRAND":
+        str = "brand:product_recent_product";
+        break;
+      case "PRODUCT_RECENT_PRODUCT_SEARCH":
+        str = "search:product_recent_product";
+        break;
+      case "PRODUCT_RECENT_PRODUCT_CATEGORY":
+        str = "category:product_recent_product";
+        break;
+      case "PRODUCT_RECENT_PRODUCT_PLP_PAGE_NOT_FOUND":
+        str = "plp_notfound:product_recent_product";
+        break;
+      case "PRODUCT_RECENT_PRODUCT_PDP_PAGE_NOT_FOUND":
+        str = "pdp_notfound:product_recent_product";
+        break;  
       case "HOME_RECENT":
         str = "pdp:home_recent";
         break;

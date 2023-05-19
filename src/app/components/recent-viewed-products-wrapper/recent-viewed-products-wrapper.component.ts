@@ -29,6 +29,7 @@ export class RecentViewedProductsWrapperComponent implements OnInit {
   @ViewChild("recentProducts", { read: ViewContainerRef })
   recentProductsContainerRef: ViewContainerRef;
   @Input('pageName') pageName = 'pdp';
+  @Input('moduleUsedIn') moduleUsedIn = 'PRODUCT_RECENT_PRODUCT'
 
   constructor(
     private commonService: CommonService,
@@ -54,12 +55,14 @@ export class RecentViewedProductsWrapperComponent implements OnInit {
           this.injector
         );
       this.recentProductsInstance.instance["outOfStock"] = true;
+      this.recentProductsInstance.instance["moduleUsedIn"] = this.moduleUsedIn;
+      this.recentProductsInstance.instance["pageName"] = this.pageName;
       const custData = this.commonService.custDataTracking;
       // const orderData = this.orderTracking;
       //const TAXONS = this.taxons;
       const page = {
-        pageName: null,
-        channel: "pdp",
+        pageName: this.pageName,
+        channel: this.pageName,
         subSection: "Recently Viewed",
         //linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
         linkName: null,

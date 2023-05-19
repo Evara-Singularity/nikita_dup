@@ -2377,6 +2377,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.recentProductsInstance.instance["outOfStock"] =
                 this.productOutOfStock;
             this.recentProductsInstance.instance["recentProductList"] = this.recentProductItems;    
+            this.recentProductsInstance.instance["moduleUsedIn"] = this.productNotFound ? "PRODUCT_RECENT_PRODUCT_PDP_PAGE_NOT_FOUND" : "PRODUCT_RECENT_PRODUCT";
             const custData = this.commonService.custDataTracking;
             const orderData = this.orderTracking;
             const TAXONS = this.taxons;

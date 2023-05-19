@@ -57,6 +57,10 @@
 
         <app-accordian [accordiansDetails]="accordiansDetails"></app-accordian>
 
+        <div style="padding-top: 10px;">
+            <product-listing-app-promo></product-listing-app-promo>
+        </div>
+
         <!-- This is recently article section -->
         <div class="recent-article-container" *ngIf="(API_RESPONSE.category && API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []).length > 0">
             <recent-articles [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []"
@@ -70,7 +74,7 @@
         <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
     </ng-container>
     
-    <ng-container>
+    <ng-container *ngIf="_commonService.selectedFilterData.page > 1">
         <div style="padding-top: 10px;">
             <product-listing-app-promo></product-listing-app-promo>
         </div>

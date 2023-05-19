@@ -388,6 +388,7 @@ export class ProductListService {
   }
 
   analyticAddToCart(routerlink, productDetails, usedInModule = "PRODUCT") {
+    console.log("analyticAddToCart ======>" , usedInModule);
     const user = this._localStorageService.retrieve("user");
     const taxonomy = productDetails["taxonomyCode"];
     const pageName = this.pageName.toLowerCase();

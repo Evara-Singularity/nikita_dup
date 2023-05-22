@@ -1,6 +1,6 @@
 import { SharedProductCarouselModule } from './../../modules/shared-product-carousel/shared-product-carousel.module';
 import { EmiPlansModule } from './../../modules/emi-plans/emi-plans.module';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { WhatsAppToastModule } from '@app/components/whatsapp-toast/whatsapp-toast.component';
@@ -88,6 +88,6 @@ import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
     YTThumnailPipeModule
   ],
   exports: [],
-  providers: [NgxSiemaService]
+  providers: [NgxSiemaService, DatePipe]
 })
 export class ProductModule { }

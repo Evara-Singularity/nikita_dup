@@ -1016,7 +1016,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.rawProductData["productPartDetails"][partNumber]["images"]
         );
         this.setProductVideo(this.rawProductData["videosInfo"]);
-        console.log("nikkkkkkkkkkkkkkkk",this.rawProductData["videosInfo"])
         if (args.refreshCrousel) {
             this.refreshProductCrousel();
         }

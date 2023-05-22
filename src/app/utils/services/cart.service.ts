@@ -766,9 +766,11 @@ export class CartService
             {
                 // this will be called to update the discount of products when there is an applied promocode
                 if (cartSession && cartSession['offersList'] && cartSession['offersList'].length) {
-                    this.verifyAndApplyPromocode(cartSession, cartSession['offersList'][0]['offerId'][0], false).subscribe(({ cartSession, isUpdated }: any) => {
+                    const offerId = cartSession['offersList'][0]['offerId'];
+                    const promo = this.allPromoCodes.find(promo => promo.promoId === offerId);
+                    this.verifyAndApplyPromocode(cartSession, promo['promoCode'], false).subscribe(({ cartSession, isUpdated }: any) => {
                         if (isUpdated) {
-                            this.postProcessAfterPromocode(cartSession['offersList'][0]['offerId'][0], cartSession, true);
+                            this.postProcessAfterPromocode(promo['promoCode'], cartSession['promoCode'], true);
                             return;
                         }
                     })

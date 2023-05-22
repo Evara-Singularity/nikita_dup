@@ -1858,6 +1858,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             ),
             mergeMap((response) => {
               if (response) {
+                const cartSession = Object.assign({}, this.cartService.getCartSession())
                 const postBody = {
                   productId: [this.rawProductData["defaultPartNumber"]],
                   toPincode:
@@ -1865,8 +1866,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                   price: this.productPrice,
                   orderPlatform :CONSTANTS.DEVICE.device,
                 addressId : response.addressDetails["shippingAddress"][0]["idAddress"],
-                cartId : this.cartSession['cart']['cartId'],
-                userId : this.cartSession['cart']['userId'],
+                cartId : cartSession['cart']['cartId'],
+                userId : cartSession['cart']['userId'],
                 };
                 return this.productService
                   .getLogisticAvailability(postBody)

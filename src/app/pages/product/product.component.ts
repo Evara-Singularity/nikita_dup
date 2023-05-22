@@ -1,5 +1,5 @@
 import { NavigationService } from '@app/utils/services/navigation.service';
-import { DOCUMENT } from "@angular/common";
+import { DatePipe, DOCUMENT } from "@angular/common";
 import
 {
     AfterViewInit,
@@ -50,6 +50,7 @@ import * as localization_en from '../../config/static-en';
 import * as localization_hi from '../../config/static-hi';
 import { product } from '../../config/static-hi';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { YTThumbnailPipe } from '@app/utils/pipes/ytthumbnail.pipe';
 
 
 interface ProductDataArg
@@ -393,6 +394,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         private checkoutService: CheckoutService,
         private _trackingService: TrackingService,
         private _navigationService:NavigationService,
+        private _ytThumbnail: YTThumbnailPipe,
+        private datePipe: DatePipe,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any,
         private globalAnalyticsService: GlobalAnalyticsService
@@ -3646,7 +3649,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     setVideoSeoSchema(videoArr)
     {
-        if (this.isServer && this.rawProductData) {        
+        if (this.isServer && this.rawProductData && videoArr[0] && videoArr[0]['title'] && videoArr[0]['description'] && videoArr[0]['link'] && videoArr[0]['publishedDate']) {        
             let firstVideoData=videoArr[0];
             let videoSchema = this.renderer2.createElement("script");
             videoSchema.type = "application/ld+json";
@@ -3655,8 +3658,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 "@type": "VideoObject",
                 name:(firstVideoData['title']) ? firstVideoData['title'] : null,
                 description:(firstVideoData['description']) ? firstVideoData['description'] : null,
-                thumbnailUrl:(firstVideoData['link']) ? firstVideoData['link'] : null,
-                uploadDate:(firstVideoData['uploadedBy']) ? firstVideoData['uploadedBy'] : null,
+                thumbnailUrl:(firstVideoData['link']) ?  this._ytThumbnail.transform(firstVideoData['link'],'hqdefault') : null,
+                uploadDate:(firstVideoData['publishedDate']) ?  this.datePipe.transform(firstVideoData['publishedDate'], 'yyyy-MM-dd')  : null,
                 embedUrl:(firstVideoData['link']) ? firstVideoData['link'] : null
                
             });

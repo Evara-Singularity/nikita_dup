@@ -1,6 +1,6 @@
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductService } from '@app/utils/services/product.service';
-import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef, AfterViewInit, HostListener } from '@angular/core';
+import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef, AfterViewInit, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
@@ -8,7 +8,8 @@ import CONSTANTS from '@app/config/constants';
 @Component({
   selector: 'shared-product-carousel',
   templateUrl: './shared-product-carousel.component.html',
-  styleUrls: ['./shared-product-carousel.component.scss']
+  styleUrls: ['./shared-product-carousel.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 {

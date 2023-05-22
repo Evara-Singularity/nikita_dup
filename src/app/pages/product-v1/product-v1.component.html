@@ -1,10 +1,9 @@
-<h1>I am new</h1>
 <div *ngIf="!productNotFound">
     <!-- <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer"
         [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
     </app-oos-similar-section> -->
 
-    <shared-product-carousel (openPopUpcrousel$)="openPopUpcrousel()" [productAllImages]="apiResponse?.getProductGroup"
+    <shared-product-carousel (openPopUpcrousel$)="openPopUpcrousel()" [productAllImages]="productAllImages"
         [carouselInitialized]="carouselInitialized" (loadProductShare$)="loadProductShare()"
         [isPurcahseListProduct]="isPurcahseListProduct" [productName]="rawProductData.productName"
         (addToPurchaseList$)="addToPurchaseList()" [moveToSlide$]="moveToSlide$"
@@ -13,7 +12,7 @@
         (scrollToId$)="scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
         [imagePathAsset]="imagePathAsset" (openPopUpcrousel)="openPopUpcrousel(0)"
         (sendProductImageClickTracking)="sendProductImageClickTracking()"
-        [isProductCrouselLoaded]="isProductCrouselLoaded" [iOptions]="iOptions" [productTags]="productTags"
+        [iOptions]="iOptions" [productTags]="productTags"
         (translate$)="translate()" [isAcceptLanguage]="isAcceptLanguage"></shared-product-carousel>
     <!-- <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)"
         [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPrices"

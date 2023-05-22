@@ -4,6 +4,7 @@ import { DomSanitizer, Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import CONSTANTS from "@app/config/constants";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
+import { ClientUtility } from "@app/utils/client.utility";
 import { CommonService } from "@app/utils/services/common.service";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
@@ -22,6 +23,10 @@ import * as localization_hi from '../../config/static-hi';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
+    readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
+    readonly baseDomain = CONSTANTS.PROD;
+    readonly DOCUMENT_URL = CONSTANTS.DOCUMENT_URL;
+    readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     isServer: boolean;
     isBrowser: boolean;
     productNotFound:boolean;
@@ -43,6 +48,13 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     displayCardCta: boolean;
     pageUrl: string;
     backTrackIndex = -1;
+    productOutOfStock = false;
+    refreshSiemaItems$ = new Subject<{
+        items: Array<{}>;
+        type: string;
+        currentSlide: number;
+    }>();
+    productTags = [];
 
     // lazy loaded component refs
     productShareInstance = null;
@@ -52,6 +64,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     popupCrouselInstance = null;
     @ViewChild("popupCrousel", { read: ViewContainerRef })
     popupCrouselContainerRef: ViewContainerRef;
+    productDefaultImage: string;
+    productAllImages: any[];
+    productCartThumb: any;
+    productMediumImage: any;
 
 
 
@@ -110,8 +126,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     Object.values(this.rawProductData["productPartDetails"])[0]["images"] !== null
                 ) {
                     this.commonService.enableNudge = false;
-                    this.isAcceptLanguage = (rawData["product"]['data']['data']['getProductGroup']["acceptLanguage"] != null && rawData["product"][0]["acceptLanguage"] != undefined) ? true : false;
-                    this.rawProductData = rawData['product']
+                    this.isAcceptLanguage = (this.apiResponse.getProductGroup["acceptLanguage"] != null && rawData["product"][0]["acceptLanguage"] != undefined) ? true : false;
+                    this.setProductImages(this.rawProductData["productPartDetails"][this.rawProductData.partNumber]["images"])
                 } else {
                     this.setProductNotFound();
                 }
@@ -135,6 +151,53 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         else {
             const URL = '/hi' + this.getSanitizedUrl(this.router.url);
             this.router.navigate([URL]);
+        }
+    }
+
+    refreshProductCrousel()
+    {
+        this.refreshSiemaItems$.next({
+            items: this.productAllImages,
+            type: "refresh",
+            currentSlide: 0,
+        });
+    }
+    setProductImages(imagesArr: any[])
+    {
+        this.productDefaultImage =
+            imagesArr.length > 0
+                ? this.imagePath + "" + imagesArr[0]["links"]["default"]
+                : "";
+        this.productMediumImage =
+            imagesArr.length > 0 ? imagesArr[0]["links"]["medium"] : "";
+        this.productAllImages = [];
+        imagesArr.forEach((element) =>
+        {
+            this.productAllImages.push({
+                src: this.imagePath + "" + element.links.xlarge,
+                xlarge: this.imagePath + "" + element.links.xlarge,
+                large: this.imagePath + "" + element.links.large,
+                default: this.imagePath + "" + element.links.default,
+                caption: this.imagePath + "" + element.links.icon,
+                thumb: this.imagePath + "" + element.links.icon,
+                medium: this.imagePath + "" + element.links.medium,
+                small: this.imagePath + "" + element.links.small,
+                xxlarge: this.imagePath + "" + element.links.xxlarge,
+                video: "",
+                title: "",
+                contentType: "IMAGE",
+            });
+        });
+        if (this.productAllImages.length > 0) {
+            this.productCartThumb = this.productAllImages[0]["thumb"];
+        }
+    }
+    scrollToId(id: string)
+    {
+        // this.holdRFQForm = true;
+        if (document.getElementById(id)) {
+            let footerOffset = document.getElementById(id).offsetTop;
+            ClientUtility.scrollToTop(1000, footerOffset + 190);
         }
     }
 

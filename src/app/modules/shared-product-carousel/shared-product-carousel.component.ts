@@ -52,8 +52,6 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     ) { }
 
   ngOnInit(): void {
-    console.log(this.productAllImages.length);
-    console.log(this.iOptions)
     this.productStaticData = this.commonService.getLocalizationData(!this.isHindiUrl)
     // this.getStaticSubjectData();
   }
@@ -142,7 +140,6 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   }
 
   createFragment(){
-    console.log(1);
     this._activatedRoute.fragment.subscribe((fragment: string)=>{
       if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_IMAGE_HASH){
         return;

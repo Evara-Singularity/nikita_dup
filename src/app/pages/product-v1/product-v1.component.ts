@@ -56,15 +56,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         currentSlide: number;
     }>();
     productTags = [];
-
-    // lazy loaded component refs
-    productShareInstance = null;
-    @ViewChild("productShare", { read: ViewContainerRef })
-    productShareContainerRef: ViewContainerRef;
-
-    popupCrouselInstance = null;
-    @ViewChild("popupCrousel", { read: ViewContainerRef })
-    popupCrouselContainerRef: ViewContainerRef;
     productDefaultImage: string;
     productAllImages: any[] = [];
     productCartThumb: any;
@@ -90,6 +81,30 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     rawCartNotificationMessage: any;
 
 
+    // lazy loaded component refs
+    productShareInstance = null;
+    @ViewChild("productShare", { read: ViewContainerRef })
+    productShareContainerRef: ViewContainerRef;
+
+    popupCrouselInstance = null;
+    @ViewChild("popupCrousel", { read: ViewContainerRef })
+    popupCrouselContainerRef: ViewContainerRef;
+    // ondemad loaded components offer section
+    offerSectionInstance = null;
+    @ViewChild("offerSection", { read: ViewContainerRef })
+    offerSectionContainerRef: ViewContainerRef;
+    // ondemad loaded components offer section popup
+    offerPopupInstance = null;
+    @ViewChild("offerPopup", { read: ViewContainerRef })
+    offerPopupContainerRef: ViewContainerRef;
+    // ondemad loaded components promo more offer section popup
+    promoOfferPopupInstance = null;
+    @ViewChild("promoOfferPopup", { read: ViewContainerRef })
+    promoOfferPopupContainerRef: ViewContainerRef;
+    // ondemad loaded components offer compare section popup
+    offerComparePopupInstance = null;
+    @ViewChild("offerComparePopup", { read: ViewContainerRef })
+    offerComparePopupContainerRef: ViewContainerRef;
 
     set showLoader(value: boolean) {this.globalLoader.setLoaderState(value);}
 
@@ -139,6 +154,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if(!rawData["product"][0]["error"]) {
                 this.apiResponse = rawData.product[0].data.data;
+                console.log(this.apiResponse);
                 this.rawProductData = this.apiResponse.productGroup;
                 this.rawProductData['productPartDetails'] = {
                     "MSN2R9CFNAUWXD": {
@@ -925,6 +941,132 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.rawProductCountMessage = MSG;
             this.rawCartNotificationMessage = CART_NOTIFICATION_MSG;
         }
+
+        async viewPopUpOpen(data) {
+        if (!this.offerPopupInstance) {
+            this.showLoader = true;
+            const { ProductOfferPopupComponent } = await import(
+                "./../../components/product-offer-popup/product-offer-popup.component"
+            ).finally(() =>
+            {
+                this.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(
+                ProductOfferPopupComponent
+            );
+            this.offerPopupInstance = this.offerPopupContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.offerPopupInstance.instance["data"] = data["block_data"];
+            this.offerPopupInstance.instance["offerIndex"] = data["index"];
+            let gstPercentage = this.taxPercentage;
+            this.offerPopupInstance.instance['gstPercentage'] = gstPercentage;
+            this.offerPopupInstance.instance["openMobikwikPopup"] = true;
+            (
+                this.offerPopupInstance.instance["out"] as EventEmitter<boolean>
+            ).subscribe((data) =>
+            {
+                // create a new component after component is closed
+                // this is required, to refresh input data
+                this.offerPopupInstance = null;
+                this.offerPopupContainerRef.remove();
+            });
+            (
+                this.offerPopupInstance.instance[
+                "isLoading"
+                ] as EventEmitter<boolean>
+            ).subscribe((loaderStatus) =>
+            {
+                this.showLoader = loaderStatus;
+            });
+        }
+    }
+
+    async promoCodePopUpOpen(data){
+        if (!this.promoOfferPopupInstance) {
+            this.showLoader = true;
+            const { ProductMoreOffersComponent } = await import(
+                "./../../components/product-more-offers/product-more-offers.component"
+            ).finally(() =>
+            {
+                this.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(
+                ProductMoreOffersComponent
+            );
+            this.promoOfferPopupInstance = this.promoOfferPopupContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.promoOfferPopupInstance.instance["data"] = data;
+            (
+                this.promoOfferPopupInstance.instance["out"] as EventEmitter<boolean>
+            ).subscribe((data) =>
+            {
+                // create a new component after component is closed
+                // this is required, to refresh input data
+                this.promoOfferPopupInstance = null;
+                this.promoOfferPopupContainerRef.remove();
+            });
+            (
+                this.promoOfferPopupInstance.instance[
+                "isLoading"
+                ] as EventEmitter<boolean>
+            ).subscribe((loaderStatus) =>
+            {
+                this.showLoader = loaderStatus;
+            });
+        }
+    }
+
+    async emiComparePopUpOpen(status)
+    {
+        if (!this.offerComparePopupInstance && status) {
+            this.showLoader = true;
+            const quantity = this.cartQunatityForProduct;
+            const { EmiPlansComponent } = await import(
+                "./../../modules/emi-plans/emi-plans.component"
+            ).finally(() =>
+            {
+                this.showLoader = false;
+            });
+            const factory = this.cfr.resolveComponentFactory(EmiPlansComponent);
+            this.offerComparePopupInstance =
+                this.offerComparePopupContainerRef.createComponent(
+                    factory,
+                    null,
+                    this.injector
+                );
+            const productInfo = {};
+            productInfo["productName"] = this.rawProductData.productName;
+            productInfo["minimal_quantity"] = this.productMinimmumQuantity;
+            productInfo["priceWithoutTax"] = this.priceWithoutTax;
+            productInfo["productPrice"] = this.productPrice;
+            this.offerComparePopupInstance.instance["productInfo"] = productInfo;
+            this.offerComparePopupInstance.instance["quantity"] = quantity;
+            this.offerComparePopupInstance.instance["openEMIPopup"] = true;
+            (
+                this.offerComparePopupInstance.instance["out"] as EventEmitter<boolean>
+            ).subscribe((data) =>
+            {
+                // create a new component after component is closed
+                // this is required, to refresh input data
+                this.offerComparePopupInstance = null;
+                this.offerComparePopupContainerRef.detach();
+            });
+            (
+                this.offerComparePopupInstance.instance[
+                "isLoading"
+                ] as EventEmitter<boolean>
+            ).subscribe((loaderStatus) =>
+            {
+                this.showLoader = loaderStatus;
+            });
+        }
+    }
 
     ngOnDestroy() {}
 }

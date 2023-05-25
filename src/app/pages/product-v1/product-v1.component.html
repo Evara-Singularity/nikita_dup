@@ -21,7 +21,7 @@
         [productDiscount]="productDiscount" [bulkPriceWithoutTax]="bulkPriceWithoutTax"
         [taxPercentage]="taxPercentage" [productOutOfStock]="productOutOfStock"
         [productMinimmumQuantity]="productMinimmumQuantity" [priceQuantityCountry]="priceQuantityCountry"
-        [starsCount]="starsCount" [rawReviewsCount]="rawReviewsData?.reviewList?.length || 0" [rawProductCountMessage]="rawProductCountMessage">
+        [starsCount]="apiResponse?.productReviews?.startCount" [rawReviewsCount]="apiResponse?.productReviews?.summaryData?.reviewCount || 0" [rawProductCountMessage]="rawProductCountMessage">
     </product-description>
 
     <!-- <product-grouping-attributes [isCommonProduct]="isCommonProduct"
@@ -38,16 +38,16 @@
     </ng-container> -->
 
     <!-- TODO: skeleton to be implemented -->
-    <!-- <div class="coupon" *ngIf='!productOutOfStock && productMrp > 0'>
+    <div class="coupon" *ngIf='!productOutOfStock && productMrp > 0'>
         <app-product-offers [price]='productPrice' [gstPercentage]='taxPercentage'
-            [productmsn]='productSubPartNumber || defaultPartNumber' [isHindiMode]='isHindiUrl'
+            [productmsn]='rawProductData?.defaultPartNumber' [isHindiMode]='isHindiUrl'
             (viewPopUpHandler)='viewPopUpOpen($event)' (promoCodePopUpHandler)='promoCodePopUpOpen($event)'
-            [brandName]='rawProductData?.brandDetails?.brandName' [couponForbrandCategory]='couponForbrandCategory'
-            [categoryId]='rawProductData?.categoryDetails[0]?.categoryCode'
-            [categoryName]='rawProductData?.categoryDetails[0]?.categoryName' [allofferData]='allofferData'
-            (emaiComparePopUpHandler)='emiComparePopUpOpen($event)' [promoCodes]='promoCodes'>
+            [brandName]='rawProductData?.productBrandDetails?.brandName' [couponForbrandCategory]='apiResponse?.prepaidDiscount'
+            [categoryId]='rawProductData?.productCategoryDetails?.categoryCode'
+            [categoryName]='rawProductData?.productCategoryDetails?.categoryName' [allofferData]='apiResponse?.extraCategories'
+            (emaiComparePopUpHandler)='emiComparePopUpOpen($event)' [promoCodes]='apiResponse?.applicablePromo'>
         </app-product-offers>
-    </div> -->
+    </div>
     <!-- TODO: skeleton to be implemented -->
     <!-- <div data-observeVisibility class="pincode" [debounceTime]="100" (visible)="onVisiblePincodeSection($event)"
         *ngIf="!productOutOfStock">
@@ -189,9 +189,6 @@
     <ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
     <ng-container #productRFQUpdate></ng-container>
     <ng-container #rfqForm></ng-container>
-    <ng-container #offerPopup></ng-container>
-    <ng-container #offerComparePopup></ng-container>
-    <ng-container #promoOfferPopup></ng-container>
     <ng-container #writeReviewPopup></ng-container>
     <ng-container #alertBox></ng-container>
     <ng-container #globalToast></ng-container>
@@ -207,6 +204,9 @@
     <ng-container #quickOrder></ng-container>
     <ng-container #returnInfo></ng-container> -->
     <ng-container #popupCrousel></ng-container>
+    <ng-container #offerPopup></ng-container>
+    <ng-container #offerComparePopup></ng-container>
+    <ng-container #promoOfferPopup></ng-container>
 
 
     <!-- // TODO: product-rfq-thanks-popup should be lazy loaded -->

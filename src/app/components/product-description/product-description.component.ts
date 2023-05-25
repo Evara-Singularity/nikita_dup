@@ -32,6 +32,7 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() isBulkPricesProduct;
   @Input() productBulkPrices;
   @Input() selectedProductBulkPrice;
+  @Input() bulkSellingPrice;
   @Output() checkCartQuantityAndUpdate$: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private _tms: ToastMessageService,public _commonService:CommonService) {

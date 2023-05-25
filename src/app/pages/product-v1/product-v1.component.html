@@ -49,18 +49,19 @@
         </app-product-offers>
     </div>
     <!-- TODO: skeleton to be implemented -->
-    <!-- <div data-observeVisibility class="pincode" [debounceTime]="100" (visible)="onVisiblePincodeSection($event)"
+    <div data-observeVisibility class="pincode" [debounceTime]="100" (visible)="onVisiblePincodeSection($event)"
         *ngIf="!productOutOfStock">
         <ng-container #pincodeForm></ng-container>
         <product-skeletons [type]="'PINCODE'" [templateRefInstance]="pincodeFormInstance"></product-skeletons>
-    </div> -->
+    </div>
 
     <!-- //moglix insight -->
-    <!-- <moglix-insight-pdp *ngIf="showMoglixInsight" [data]="moglixInightData"></moglix-insight-pdp> -->
+    <!-- <moglix-insight-pdp *ngIf="moglixInightData" [data]="moglixInightData"></moglix-insight-pdp> -->
 
     <!-- product benifits and policy -->
-    <!-- <product-benefits [isProductReturnAble]="isProductReturnAble" [isBrandMsn]='isBrandMsn'
-        [productOutOfStock]="productOutOfStock" (navigateToFAQ$)="loadReturnInfo()"></product-benefits> -->
+    <!-- [isProductReturnAble]="rawProductData?.returnable" -->
+    <product-benefits [isProductReturnAble]="true" [isBrandMsn]='rawProductData?.productBrandDetails["brandTag"] == "Brand" ? true : false'
+        [productOutOfStock]="productOutOfStock" (navigateToFAQ$)="loadReturnInfo()"></product-benefits>
 
 
     <!-- <product-feature-details (showYTVideo$)="showYTVideo1($event)"
@@ -192,21 +193,22 @@
     <ng-container #writeReviewPopup></ng-container>
     <ng-container #alertBox></ng-container>
     <ng-container #globalToast></ng-container>
-    <ng-container #emiPlansPopup></ng-container>
     <ng-container #reviewRatingPopup></ng-container>
     <ng-container #questionAnswersPopup></ng-container>
     <ng-container #productInfoPopup></ng-container>
     <ng-container #faqListPopup></ng-container>
     <ng-container #askQuestionPopup></ng-container>
     <ng-container #faqSuccessPopup></ng-container>
-    <ng-container #productShare></ng-container>
     <ng-container #addToCartToast></ng-container>
     <ng-container #quickOrder></ng-container>
-    <ng-container #returnInfo></ng-container> -->
-    <ng-container #popupCrousel></ng-container>
-    <ng-container #offerPopup></ng-container>
-    <ng-container #offerComparePopup></ng-container>
-    <ng-container #promoOfferPopup></ng-container>
+-->
+<ng-container #productShare></ng-container>
+<ng-container #popupCrousel></ng-container>
+<ng-container #offerPopup></ng-container>
+<ng-container #offerComparePopup></ng-container>
+<ng-container #promoOfferPopup></ng-container>
+<ng-container #returnInfo></ng-container>
+<ng-container #emiPlansPopup></ng-container>
 
 
     <!-- // TODO: product-rfq-thanks-popup should be lazy loaded -->

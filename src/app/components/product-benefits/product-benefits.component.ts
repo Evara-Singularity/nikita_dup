@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
@@ -7,7 +7,8 @@ import CONSTANTS from '@app/config/constants';
 @Component({
   selector: 'product-benefits',
   templateUrl: './product-benefits.component.html',
-  styleUrls: ['./product-benefits.component.scss']
+  styleUrls: ['./product-benefits.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductBenefitsComponent implements OnInit {
   productStaticData = this._commonService.defaultLocaleValue;

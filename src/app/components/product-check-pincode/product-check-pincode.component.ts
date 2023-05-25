@@ -1,7 +1,7 @@
 import { CartService } from '@services/cart.service';
 import { CommonService } from './../../utils/services/common.service';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DoCheck, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ProductService } from '../../utils/services/product.service';
@@ -11,9 +11,10 @@ import CONSTANTS from '@app/config/constants';
 @Component({
     selector: 'product-check-pincode',
     templateUrl: './product-check-pincode.component.html',
-    styleUrls: ['./product-check-pincode.component.scss']
+    styleUrls: ['./product-check-pincode.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductCheckPincodeComponent implements OnInit
+export class ProductCheckPincodeComponent implements OnInit, DoCheck
 {
     productStaticData = this._commonService.defaultLocaleValue;
     readonly FALSE = false;
@@ -39,6 +40,7 @@ export class ProductCheckPincodeComponent implements OnInit
         private productService: ProductService,
         public _commonService: CommonService,
         private _cartService: CartService,
+        private cdr: ChangeDetectorRef
     ) { }
 
     ngOnInit(): void
@@ -216,6 +218,10 @@ export class ProductCheckPincodeComponent implements OnInit
             this.deliveryDays = days + ' day(s)';
             this.deliveryAnalytics = analytics;
         }
+    }
+
+    ngDoCheck() {
+        this.cdr.detectChanges();
     }
 
 }

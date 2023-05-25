@@ -105,6 +105,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     offerComparePopupInstance = null;
     @ViewChild("offerComparePopup", { read: ViewContainerRef })
     offerComparePopupContainerRef: ViewContainerRef;
+    // ondemad loaded components for pincode servicibility check
+    pincodeFormInstance = null;
+    @ViewChild("pincodeForm", { read: ViewContainerRef })
+    pincodeFormContainerRef: ViewContainerRef;
+
+    // ondemand loaded component for return info
+    returnInfoInstance = null;
+    @ViewChild("returnInfo", { read: ViewContainerRef })
+    returnInfoContainerRef: ViewContainerRef;
 
     set showLoader(value: boolean) {this.globalLoader.setLoaderState(value);}
 
@@ -1066,6 +1075,120 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.showLoader = loaderStatus;
             });
         }
+    }
+
+    async onVisiblePincodeSection($event)
+    {
+        this.showLoader = true;
+        const { ProductCheckPincodeComponent } = await import(
+            "./../../components/product-check-pincode/product-check-pincode.component"
+        ).finally(() =>
+        {
+            this.showLoader = false;
+        });
+        const factory = this.cfr.resolveComponentFactory(
+            ProductCheckPincodeComponent
+        );
+        this.pincodeFormInstance = this.pincodeFormContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        const quantity = this.cartQunatityForProduct;
+        const productInfo = {};
+        productInfo["partNumber"] =
+            this.productSubPartNumber || this.rawProductData.defaultPartNumber;
+        productInfo["estimatedDelivery"] =
+            this.priceQuantityCountry["estimatedDelivery"];
+        productInfo["categoryDetails"] = this.rawProductData.productCategoryDetails;
+        productInfo["productPrice"] = this.productPrice;
+        productInfo["quantity"] = quantity;
+        productInfo["isHindiMode"] = this.isHindiUrl;
+        this.pincodeFormInstance.instance["pageData"] = productInfo;
+        if (this.pincodeFormInstance) {
+            (
+                this.pincodeFormInstance.instance[
+                "sendAnalyticsCall"
+                ] as EventEmitter<any>
+            ).subscribe((data) =>
+            {
+                this.analyticPincodeAvaliabilty(data);
+            });
+        }
+        this.cdr.detectChanges();
+    }
+    analyticPincodeAvaliabilty(analytics)
+    {
+        const taxonomy = this.rawProductData.productCategoryDetails["taxonomy"];
+        let taxo1 = "";
+        let taxo2 = "";
+        let taxo3 = "";
+        if (this.rawProductData.productCategoryDetails["taxonomyCode"]) {
+            taxo1 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[0] || "";
+            taxo2 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[1] || "";
+            taxo3 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[2] || "";
+        }
+        const user = this.localStorageService.retrieve("user");
+        let page = {
+            linkPageName: "moglix: " + taxo1 + ":" + taxo2 + ":" + taxo3 + ": pdp",
+            linkName: "check now",
+            channel: "pdp",
+            loginStatus: user.userId ? "registered" : "guest",
+        };
+        let custData = this.commonService.custDataTracking;
+        let order = {
+            productID: this.productSubPartNumber,
+            productCategoryL1: taxo1,
+            productCategoryL2: taxo2,
+            productCategoryL3: taxo3,
+            brand: this.rawProductData.productBrandDetails["brandName"],
+            productPrice: this.productPrice,
+            serviceability: analytics.serviceability ? "yes" : "no",
+            codserviceability: analytics.codserviceability ? "yes" : "no",
+            pincode: analytics.pincode,
+            deliveryTAT: analytics.deliveryDays ? analytics.deliveryDays : "NA",
+            deliveryAnalytics: analytics.deliveryAnalytics,
+        };
+        this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
+    }
+
+    async loadReturnInfo()
+    {
+        if (!this.returnInfoInstance) {
+            const { ReturnInfoComponent } = await import(
+                "./../../components/return-info/return-info.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(ReturnInfoComponent);
+            this.returnInfoInstance = this.returnInfoContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.returnInfoInstance.instance['isBrandMsn'] = this.rawProductData.productBrandDetails.brandTag == 'Brandd' ? true : false; 
+            this.returnInfoInstance.instance['show'] = true;
+            (
+                this.returnInfoInstance.instance["removed"] as EventEmitter<boolean>
+            ).subscribe((status) =>
+            {
+                this.returnInfoInstance = null;
+                this.returnInfoContainerRef.detach();
+            });
+            (
+                this.returnInfoInstance.instance["navigateToFAQ$"] as EventEmitter<boolean>
+            ).subscribe((status) =>
+            {
+                this.navigateToFAQ();
+            });
+        } else {
+            //toggle side menu
+            this.returnInfoInstance.instance["show"] = true;
+        }
+        this.cdr.detectChanges();
+    }
+
+    navigateToFAQ()
+    {
+        this.router.navigate(["faq", { active: "CRP" }]);
     }
 
     ngOnDestroy() {}

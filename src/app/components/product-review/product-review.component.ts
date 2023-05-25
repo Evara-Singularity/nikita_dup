@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
+import { Component, Input, EventEmitter, NgModule, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonService } from '../../utils/services/common.service';
 
 @Component({
   selector: 'app-product-review',
   templateUrl: './product-review.component.html',
-  styleUrls: ['./product-review.component.scss']
+  styleUrls: ['./product-review.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductReviewComponent {
   productStaticData = this._commonService.defaultLocaleValue;
@@ -20,6 +21,7 @@ export class ProductReviewComponent {
 
   }
   ngOnInit(){
+    console.log(this.rawReviewsData)
     this.getStaticSubjectData();
   }
   getStaticSubjectData(){

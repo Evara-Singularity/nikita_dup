@@ -59,17 +59,16 @@
     <!-- <moglix-insight-pdp *ngIf="moglixInightData" [data]="moglixInightData"></moglix-insight-pdp> -->
 
     <!-- product benifits and policy -->
-    <!-- [isProductReturnAble]="rawProductData?.returnable" -->
-    <product-benefits [isProductReturnAble]="true" [isBrandMsn]='rawProductData?.productBrandDetails["brandTag"] == "Brand" ? true : false'
+    <product-benefits [isProductReturnAble]="rawProductData?.isProductReturnAble" [isBrandMsn]='rawProductData?.productBrandDetails["brandTag"] == "Brand" ? true : false'
         [productOutOfStock]="productOutOfStock" (navigateToFAQ$)="loadReturnInfo()"></product-benefits>
 
 
-    <!-- <product-feature-details (showYTVideo$)="showYTVideo1($event)"
-        (handleProductInfoPopup$)="handleProductInfoPopup1($event)" [productKeyFeatures]="productKeyFeatures"
-        [productAttributes]="productAttributes" [productDescripton]="productDescripton"
-        [productCategoryDetails]="productCategoryDetails" [productBrandDetails]="productBrandDetails"
-        [productName]="productName" [productVideos]="productVideos" [productDocumentInfo]="productDocumentInfo"
-        [productBrandCategoryUrl]="productBrandCategoryUrl"></product-feature-details> -->
+    <product-feature-details (showYTVideo$)="showYTVideo1($event)"
+        (handleProductInfoPopup$)="handleProductInfoPopup1($event)" [productKeyFeatures]="rawProductData?.productKeyFeatures"
+        [productAttributes]="rawProductData?.productAttributes" [productDescripton]="rawProductData?.productDescripton"
+        [productCategoryDetails]="rawProductData?.productCategoryDetails" [productBrandDetails]="rawProductData?.productBrandDetails"
+        [productName]="rawProductData?.productName" [productVideos]="rawProductData?.productVideos" [productDocumentInfo]="rawProductData?.productDocumentInfo"
+        [productBrandCategoryUrl]="rawProductData?.productBrandCategoryUrl"></product-feature-details>
 
 
 
@@ -87,10 +86,10 @@
         <fbt [originalProductBO]='originalProductBO' [productQuantity]='cartQunatityForProduct' [analytics]='fbtAnalytics'></fbt>
     </div> -->
 
-    <!-- <app-product-review [productName]="productName" [reviewLength]="reviewLength" [overallRating]="overallRating"
-        [rawReviewsData]="rawReviewsData" (writeReview)="writeReview($event)"
+    <app-product-review [productName]="rawProductData?.productName" [reviewLength]="apiResponse?.productReviews?.summaryData?.reviewCount" [overallRating]="apiResponse?.productReviews?.startCount"
+        [rawReviewsData]="apiResponse?.productReviews" (writeReview)="writeReview($event)"
         (reviewRatingPopup)="handleReviewRatingPopup($event)" (postHelpful)="handlePostHelpful($event)">
-    </app-product-review> -->
+    </app-product-review>
 
     <!-- TODO: skeleton to be implemented -->
     <!-- <product-qa [questionAnswerList]="questionAnswerList" (handleFaqListPopup)="handleFaqListPopup()"
@@ -190,15 +189,8 @@
     <ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
     <ng-container #productRFQUpdate></ng-container>
     <ng-container #rfqForm></ng-container>
-    <ng-container #writeReviewPopup></ng-container>
-    <ng-container #alertBox></ng-container>
     <ng-container #globalToast></ng-container>
-    <ng-container #reviewRatingPopup></ng-container>
-    <ng-container #questionAnswersPopup></ng-container>
-    <ng-container #productInfoPopup></ng-container>
-    <ng-container #faqListPopup></ng-container>
     <ng-container #askQuestionPopup></ng-container>
-    <ng-container #faqSuccessPopup></ng-container>
     <ng-container #addToCartToast></ng-container>
     <ng-container #quickOrder></ng-container>
 -->
@@ -209,6 +201,18 @@
 <ng-container #promoOfferPopup></ng-container>
 <ng-container #returnInfo></ng-container>
 <ng-container #emiPlansPopup></ng-container>
+<ng-container #productInfoPopup></ng-container>
+<ng-container #alertBox></ng-container>
+<ng-container #writeReviewPopup></ng-container>
+<ng-container #reviewRatingPopup></ng-container>
+<ng-container #questionAnswersPopup></ng-container>
+<ng-container #faqListPopup></ng-container>
+<ng-container #faqSuccessPopup></ng-container>
+
+
+
+
+
 
 
     <!-- // TODO: product-rfq-thanks-popup should be lazy loaded -->

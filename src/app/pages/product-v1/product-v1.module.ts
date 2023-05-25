@@ -3,7 +3,9 @@ import { NgModule } from "@angular/core";
 import { MoglixInsightPdpModule } from "@app/components/moglix-insight-pdp/moglix-insight-pdp.component";
 import { ProductBenefitsModule } from "@app/components/product-benefits/product-benefits.component";
 import ProductDescriptionModule from "@app/components/product-description/product-description.component";
+import { ProductFeatureDetailsModule } from "@app/components/product-feature-details/product-feature-details.component";
 import { ProductOffersModule } from "@app/components/product-offers/product-offers.component";
+import { ProductReviewModule } from "@app/components/product-review/product-review.component";
 import { ProductSkeletonsModule } from "@app/components/product-skeletons/product-skeletons.component";
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
 import { SharedProductCarouselModule } from "@app/modules/shared-product-carousel/shared-product-carousel.module";
@@ -25,7 +27,9 @@ import { ProductV1RoutingModule } from "./product-v1.routing.module";
         ProductOffersModule,
         ProductSkeletonsModule,
         MoglixInsightPdpModule,
-        ProductBenefitsModule
+        ProductBenefitsModule,
+        ProductFeatureDetailsModule,
+        ProductReviewModule
     ],
     exports: [],
     providers: [NgxSiemaService]

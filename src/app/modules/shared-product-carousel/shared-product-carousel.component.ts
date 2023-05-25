@@ -1,6 +1,6 @@
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductService } from '@app/utils/services/product.service';
-import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef, AfterViewInit, HostListener, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef, AfterViewInit, HostListener, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
@@ -47,10 +47,13 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     private injector: Injector, public productService: ProductService, 
     private router: Router,
     private commonService: CommonService,
-    private _activatedRoute:ActivatedRoute
+    private _activatedRoute:ActivatedRoute,
+    private cdr: ChangeDetectorRef
     ) { }
 
   ngOnInit(): void {
+    console.log(this.productAllImages.length);
+    console.log(this.iOptions)
     this.productStaticData = this.commonService.getLocalizationData(!this.isHindiUrl)
     // this.getStaticSubjectData();
   }
@@ -97,6 +100,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     } else {
       this.productCrouselInstance.instance["productOutOfStock"] = this.productOutOfStock;
     }
+    this.cdr.detectChanges();
   }
 
   clearPseudoImageCrousel()

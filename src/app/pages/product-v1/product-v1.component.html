@@ -14,16 +14,15 @@
         (sendProductImageClickTracking)="sendProductImageClickTracking()"
         [iOptions]="iOptions" [productTags]="productTags"
         (translate$)="translate()" [isAcceptLanguage]="isAcceptLanguage"></shared-product-carousel>
-    <!-- <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)"
+    <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)"
         [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPrices"
         [selectedProductBulkPrice]="selectedProductBulkPrice" [qunatityFormControl]="qunatityFormControl"
-        [productPrice]="productPrice" [productName]="productName" [productTags]="productTags"
-        [refinedProdTags]="refinedProdTags" [productMrp]="productMrp" [priceWithoutTax]="priceWithoutTax"
-        [productDiscount]="productDiscount" [bulkPriceWithoutTax]="bulkPriceWithoutTax" [bulkDiscount]="bulkDiscount"
-        [taxPercentage]="taxPercentage" [bulkSellingPrice]="bulkSellingPrice" [productOutOfStock]="productOutOfStock"
+        [productPrice]="productPrice" [productName]="rawProductData.productName" [productMrp]="productMrp" [priceWithoutTax]="priceWithoutTax"
+        [productDiscount]="productDiscount" [bulkPriceWithoutTax]="bulkPriceWithoutTax"
+        [taxPercentage]="taxPercentage" [productOutOfStock]="productOutOfStock"
         [productMinimmumQuantity]="productMinimmumQuantity" [priceQuantityCountry]="priceQuantityCountry"
         [starsCount]="starsCount" [rawReviewsCount]="rawReviewsData?.reviewList?.length || 0" [rawProductCountMessage]="rawProductCountMessage">
-    </product-description> -->
+    </product-description>
 
     <!-- <product-grouping-attributes [isCommonProduct]="isCommonProduct"
         [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)"
@@ -205,9 +204,9 @@
     <ng-container #faqSuccessPopup></ng-container>
     <ng-container #productShare></ng-container>
     <ng-container #addToCartToast></ng-container>
-    <ng-container #popupCrousel></ng-container>
     <ng-container #quickOrder></ng-container>
     <ng-container #returnInfo></ng-container> -->
+    <ng-container #popupCrousel></ng-container>
 
 
     <!-- // TODO: product-rfq-thanks-popup should be lazy loaded -->

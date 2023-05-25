@@ -1,5 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import ProductDescriptionModule from "@app/components/product-description/product-description.component";
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
 import { SharedProductCarouselModule } from "@app/modules/shared-product-carousel/shared-product-carousel.module";
 import { ObserveVisibilityDirectiveModule } from "@app/utils/directives/observe-visibility.directive";
@@ -15,7 +16,8 @@ import { ProductV1RoutingModule } from "./product-v1.routing.module";
         ProductV1RoutingModule,
         ObserveVisibilityDirectiveModule,
         NotFoundModule,
-        SharedProductCarouselModule
+        SharedProductCarouselModule,
+        ProductDescriptionModule
     ],
     exports: [],
     providers: [NgxSiemaService]

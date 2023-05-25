@@ -61,7 +61,7 @@ export class ProductResolver implements Resolve<any> {
         PRODUCT_KEY_OBJ,
       ]);
     } else {
-      const productUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_API + `?msn=${productMsnId}&cacheSource=redis`;
+      const productUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_API + `?msn=${productMsnId}`;
       const productResponseObj = this.http.get(productUrl, requestOptions).pipe(share(),
         map(res => {
           const logInfo = this._commonService.getLoggerObj(productUrl, 'GET', startTime)

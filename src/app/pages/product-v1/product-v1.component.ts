@@ -1,5 +1,6 @@
 import { DOCUMENT, Location } from "@angular/common";
-import { AfterViewInit, ChangeDetectionStrategy, Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, OnDestroy, OnInit, Optional, Renderer2, ViewChild, ViewContainerRef } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, OnDestroy, OnInit, Optional, Renderer2, ViewChild, ViewContainerRef } from "@angular/core";
+import { FormControl } from "@angular/forms";
 import { DomSanitizer, Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import CONSTANTS from "@app/config/constants";
@@ -65,9 +66,28 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild("popupCrousel", { read: ViewContainerRef })
     popupCrouselContainerRef: ViewContainerRef;
     productDefaultImage: string;
-    productAllImages: any[];
+    productAllImages: any[] = [];
     productCartThumb: any;
     productMediumImage: any;
+    qunatityFormControl: FormControl = new FormControl(1, []); // setting a default quantity to 1
+    isProductPriceValid: boolean;
+    priceQuantityCountry: any;
+    productMrp: any;
+    priceWithoutTax: any;
+    productPrice: number;
+    productDiscount: number;
+    taxPercentage: any;
+    productTax: number;
+    productMinimmumQuantity: any;
+    productBulkPrices: any;
+    isBulkPricesProduct: boolean;
+    selectedProductBulkPrice: any;
+    bulkPriceWithoutTax: any;
+    isHindiUrl: any;
+    ProductStatusCount: any;
+    rawProductCountData: any;
+    rawProductCountMessage: any;
+    rawCartNotificationMessage: any;
 
 
 
@@ -95,6 +115,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         private _trackingService: TrackingService,
         private location: Location,
         private sessionStorageService: SessionStorageService,
+        private cdr: ChangeDetectorRef,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any,
     ) {
@@ -112,21 +133,295 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.createSiemaOption();
         this.user = this.localStorageService.retrieve('user');
         this.pageUrl = this.router.url;
         this.route.data.subscribe((rawData) => {
-            console.log(rawData);
-            if(!rawData["product"][0]["error"] && rawData["product"][0]['data']['data']['getProductGroup']["active"]) {
+            // && rawData["product"][0]['data']['data']['productGroup']["active"]
+            if(!rawData["product"][0]["error"]) {
                 this.apiResponse = rawData.product[0].data.data;
-                this.rawProductData = this.apiResponse.getProductGroup.productBO;
-                console.log(this.rawProductData);
+                this.rawProductData = this.apiResponse.productGroup;
+                this.rawProductData['productPartDetails'] = {
+                    "MSN2R9CFNAUWXD": {
+                      "itemCode": "i-Flo",
+                      "images": [
+                        {
+                          "links": {
+                            "small": "p/YiqkejgQ5GTRr-small.jpg",
+                            "thumbnail": "p/YiqkejgQ5GTRr-thumbnail.jpg",
+                            "default": "p/YiqkejgQ5GTRr.jpg",
+                            "large": "p/YiqkejgQ5GTRr-large.jpg",
+                            "xlarge": "p/YiqkejgQ5GTRr-xlarge.jpg",
+                            "icon": "p/YiqkejgQ5GTRr-icon.jpg",
+                            "xxlarge": "p/YiqkejgQ5GTRr-xxlarge.jpg",
+                            "medium": "p/YiqkejgQ5GTRr-medium.jpg"
+                          },
+                          "moglixImageNumber": "YiqkejgQ5GTRr",
+                          "altTag": null,
+                          "position": 0
+                        },
+                        {
+                          "links": {
+                            "small": "p/05rho32V6PYLc-small.jpg",
+                            "thumbnail": "p/05rho32V6PYLc-thumbnail.jpg",
+                            "default": "p/05rho32V6PYLc.jpg",
+                            "large": "p/05rho32V6PYLc-large.jpg",
+                            "xlarge": "p/05rho32V6PYLc-xlarge.jpg",
+                            "icon": "p/05rho32V6PYLc-icon.jpg",
+                            "xxlarge": "p/05rho32V6PYLc-xxlarge.jpg",
+                            "medium": "p/05rho32V6PYLc-medium.jpg"
+                          },
+                          "moglixImageNumber": "05rho32V6PYLc",
+                          "altTag": null,
+                          "position": 1
+                        },
+                        {
+                          "links": {
+                            "small": "p/8YzIKOM2SeBzY-small.jpg",
+                            "thumbnail": "p/8YzIKOM2SeBzY-thumbnail.jpg",
+                            "default": "p/8YzIKOM2SeBzY.jpg",
+                            "large": "p/8YzIKOM2SeBzY-large.jpg",
+                            "xlarge": "p/8YzIKOM2SeBzY-xlarge.jpg",
+                            "icon": "p/8YzIKOM2SeBzY-icon.jpg",
+                            "xxlarge": "p/8YzIKOM2SeBzY-xxlarge.jpg",
+                            "medium": "p/8YzIKOM2SeBzY-medium.jpg"
+                          },
+                          "moglixImageNumber": "8YzIKOM2SeBzY",
+                          "altTag": null,
+                          "position": 2
+                        },
+                        {
+                          "links": {
+                            "small": "p/zFNcoO5tcrmhb-small.jpg",
+                            "thumbnail": "p/zFNcoO5tcrmhb-thumbnail.jpg",
+                            "default": "p/zFNcoO5tcrmhb.jpg",
+                            "large": "p/zFNcoO5tcrmhb-large.jpg",
+                            "xlarge": "p/zFNcoO5tcrmhb-xlarge.jpg",
+                            "icon": "p/zFNcoO5tcrmhb-icon.jpg",
+                            "xxlarge": "p/zFNcoO5tcrmhb-xxlarge.jpg",
+                            "medium": "p/zFNcoO5tcrmhb-medium.jpg"
+                          },
+                          "moglixImageNumber": "zFNcoO5tcrmhb",
+                          "altTag": null,
+                          "position": 3
+                        },
+                        {
+                          "links": {
+                            "small": "p/ATPcxJdbkDHZa-small.jpg",
+                            "thumbnail": "p/ATPcxJdbkDHZa-thumbnail.jpg",
+                            "default": "p/ATPcxJdbkDHZa.jpg",
+                            "large": "p/ATPcxJdbkDHZa-large.jpg",
+                            "xlarge": "p/ATPcxJdbkDHZa-xlarge.jpg",
+                            "icon": "p/ATPcxJdbkDHZa-icon.jpg",
+                            "xxlarge": "p/ATPcxJdbkDHZa-xxlarge.jpg",
+                            "medium": "p/ATPcxJdbkDHZa-medium.jpg"
+                          },
+                          "moglixImageNumber": "ATPcxJdbkDHZa",
+                          "altTag": null,
+                          "position": 4
+                        },
+                        {
+                          "links": {
+                            "small": "p/j3BpOjnvcCEOK-small.jpg",
+                            "thumbnail": "p/j3BpOjnvcCEOK-thumbnail.jpg",
+                            "default": "p/j3BpOjnvcCEOK.jpg",
+                            "large": "p/j3BpOjnvcCEOK-large.jpg",
+                            "xlarge": "p/j3BpOjnvcCEOK-xlarge.jpg",
+                            "icon": "p/j3BpOjnvcCEOK-icon.jpg",
+                            "xxlarge": "p/j3BpOjnvcCEOK-xxlarge.jpg",
+                            "medium": "p/j3BpOjnvcCEOK-medium.jpg"
+                          },
+                          "moglixImageNumber": "j3BpOjnvcCEOK",
+                          "altTag": null,
+                          "position": 5
+                        },
+                        {
+                          "links": {
+                            "small": "p/ejwpbXT1hit8F-small.jpg",
+                            "thumbnail": "p/ejwpbXT1hit8F-thumbnail.jpg",
+                            "default": "p/ejwpbXT1hit8F.jpg",
+                            "large": "p/ejwpbXT1hit8F-large.jpg",
+                            "xlarge": "p/ejwpbXT1hit8F-xlarge.jpg",
+                            "icon": "p/ejwpbXT1hit8F-icon.jpg",
+                            "xxlarge": "p/ejwpbXT1hit8F-xxlarge.jpg",
+                            "medium": "p/ejwpbXT1hit8F-medium.jpg"
+                          },
+                          "moglixImageNumber": "ejwpbXT1hit8F",
+                          "altTag": null,
+                          "position": 6
+                        }
+                      ],
+                      "qualityImage": true,
+                      "attributes": {
+                        "Delivery Size": [
+                          "25 mm"
+                        ],
+                        "Head Range": [
+                          "30-10 m"
+                        ],
+                        "Motor Power": [
+                          "1 HP"
+                        ],
+                        "Phase": [
+                          "Single Phase"
+                        ],
+                        "Power Rating": [
+                          "0.75 kW"
+                        ],
+                        "Suction Size": [
+                          "25 mm"
+                        ],
+                        "Body Material": [
+                          "Cast Iron"
+                        ],
+                        "Discharge Range": [
+                          "600-2400 lph"
+                        ],
+                        "Impeller Material": [
+                          "Brass"
+                        ],
+                        "Item Code": [
+                          "i-Flo"
+                        ],
+                        "Speed": [
+                          "2880 rpm"
+                        ],
+                        "Voltage": [
+                          "180-240 V"
+                        ],
+                        "Additional Details": [
+                          "Coating: Chrome Plated"
+                        ],
+                        "Applications": [
+                          "For Domestic & Industrial Use"
+                        ],
+                        "Colour": [
+                          "Blue"
+                        ],
+                        "Dimensions": [
+                          "315x190x250 mm"
+                        ],
+                        "Frequency": [
+                          "50 Hz"
+                        ],
+                        "Lifting Height": [
+                          "25 ft"
+                        ],
+                        "Motor Winding": [
+                          "CCA"
+                        ],
+                        "Standards": [
+                          "ISO 9001 Certified"
+                        ],
+                        "Warranty": [
+                          "1 Year Replacement Warranty against Manufacturing Defects (Accidental Damages, Dry Running Damage not Covered in Warranty)"
+                        ],
+                        "Weight": [
+                          "8.5 kg"
+                        ],
+                        "Country of origin": [
+                          "India"
+                        ]
+                      },
+                      "shipmentDetails": null,
+                      "countriesSellingIn": [
+                        "india"
+                      ],
+                      "productPriceQuantity": {
+                        "india": {
+                          "mrp": 4600,
+                          "offeredPriceWithoutTax": 2118,
+                          "offeredPriceWithTax": 2499,
+                          "moq": 1,
+                          "quantityAvailable": 100,
+                          "incrementUnit": 1,
+                          "packageUnit": "1 Piece",
+                          "sellingPrice": 2849,
+                          "taxRule": {
+                            "name": null,
+                            "storedName": null,
+                            "taxType": null,
+                            "taxPercentage": 18,
+                            "status": null,
+                            "deletedFlag": false,
+                            "createdOn": 1684946886566,
+                            "updatedOn": 1684946886566,
+                            "hsn": "84137010",
+                            "countryCode": 356,
+                            "createdBy": null,
+                            "updatedBy": null
+                          },
+                          "estimatedDelivery": "4-5 day",
+                          "priceQuantityRange": null,
+                          "outOfStockFlag": false,
+                          "priceWithoutTax": 2414,
+                          "discount": 38,
+                          "bulkPrices": {}
+                        }
+                      },
+                      "defaultCombination": false,
+                      "variantName": "Sameer 1 HP i-Flo Water Pump with 1 Year Warranty, Total Head: 100 ft",
+                      "productLinks": {
+                        "canonical": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty/mp/msn2r9cfnauwxd",
+                        "default": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty/mp/msn2r9cfnauwxd"
+                      },
+                      "productRating": null,
+                      "canonicalUrl": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty/mp/msn2r9cfnauwxd"
+                    }
+                  }
+                this.isProductPriceValid =
+            this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
+            "productPriceQuantity"
+            ] != null;
+        this.priceQuantityCountry = this.isProductPriceValid
+            ? Object.assign(
+                {},
+                this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
+                "productPriceQuantity"
+                ]["india"]
+            )
+            : null;
+        this.productMrp =
+            this.isProductPriceValid && this.priceQuantityCountry
+                ? this.priceQuantityCountry["mrp"]
+                : null;
+
+        if (this.priceQuantityCountry) {
+            this.priceQuantityCountry["bulkPricesIndia"] = this.isProductPriceValid
+                ? Object.assign(
+                    {},
+                    this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
+                    "productPriceQuantity"
+                    ]["india"]["bulkPrices"]
+                )
+                : null;
+            this.priceQuantityCountry["bulkPricesModified"] =
+                this.isProductPriceValid &&
+                    this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
+                    "productPriceQuantity"
+                    ]["india"]["bulkPrices"]["india"]
+                    ? [
+                        ...this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
+                        "productPriceQuantity"
+                        ]["india"]["bulkPrices"]["india"],
+                    ]
+                    : null;
+        }
+
+        this.priceWithoutTax = this.priceQuantityCountry ? this.priceQuantityCountry["priceWithoutTax"] : null;
+        this.productPrice = this.priceQuantityCountry && !isNaN(this.priceQuantityCountry["sellingPrice"]) ? Number(this.priceQuantityCountry["sellingPrice"]) : 0;
+        if (this.priceQuantityCountry && this.priceQuantityCountry["mrp"] > 0 && this.priceQuantityCountry["sellingPrice"] > 0) {
+            this.productDiscount = this.commonService.calculcateDiscount(this.priceQuantityCountry["discount"], this.priceQuantityCountry["mrp"], this.priceQuantityCountry["sellingPrice"]);
+        }
+        this.taxPercentage = this.priceQuantityCountry ? this.priceQuantityCountry["taxRule"]["taxPercentage"] : null;
+
+        this.productTax = this.priceQuantityCountry && !isNaN(this.priceQuantityCountry["sellingPrice"]) && !isNaN(this.priceQuantityCountry["sellingPrice"]) ? Number(this.priceQuantityCountry["sellingPrice"]) - Number(this.priceQuantityCountry["sellingPrice"]) : 0;
+        this.productMinimmumQuantity = this.priceQuantityCountry && this.priceQuantityCountry["moq"] ? this.priceQuantityCountry["moq"] : 1;
                 if (
-                    this.apiResponse['getProductGroup']["productBO"] &&
+                    this.apiResponse['productGroup'] &&
                     Object.values(this.rawProductData["productPartDetails"])[0]["images"] !== null
                 ) {
                     this.commonService.enableNudge = false;
-                    this.isAcceptLanguage = (this.apiResponse.getProductGroup["acceptLanguage"] != null && rawData["product"][0]["acceptLanguage"] != undefined) ? true : false;
+                    this.isAcceptLanguage = (this.apiResponse.productGroup["acceptLanguage"] != null && rawData["product"][0]["acceptLanguage"] != undefined) ? true : false;
                     this.setProductImages(this.rawProductData["productPartDetails"][this.rawProductData.partNumber]["images"])
                 } else {
                     this.setProductNotFound();
@@ -135,10 +430,12 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.setProductNotFound();
             }
         })
+        this.createSiemaOption();
     }
 
     ngAfterViewInit() {
         this.getPurchaseList();
+        this.productStatusCount();
     }
 
     translate() {
@@ -225,11 +522,11 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                             purchaseLists.forEach((element) =>
                             {
                                 if (
-                                    (element.productDetail.productBO &&
-                                        element.productDetail.productBO.partNumber ==
+                                    (element.productDetail &&
+                                        element.productDetail.partNumber ==
                                         this.defaultPartNumber) ||
-                                    (element.productDetail.productBO &&
-                                        element.productDetail.productBO.partNumber ==
+                                    (element.productDetail &&
+                                        element.productDetail.partNumber ==
                                         this.productSubPartNumber)
                                 ) {
                                     this.isPurcahseListProduct = true;
@@ -422,7 +719,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.popupCrouselInstance.instance["analyticProduct"] = this._trackingService.basicPDPTracking(this.rawProductData);
             this.popupCrouselInstance.instance["oosProductIndex"] = oosProductIndex;
             this.popupCrouselInstance.instance["options"] = options;
-            this.popupCrouselInstance.instance["productAllImages"] = oosProductIndex < 0 ? this.rawProductData : this.productService.oosSimilarProductsData.similarData[oosProductIndex].productAllImages;
+            this.popupCrouselInstance.instance["productAllImages"] = oosProductIndex < 0 ? this.productAllImages : this.productService.oosSimilarProductsData.similarData[oosProductIndex].productAllImages;
             this.popupCrouselInstance.instance["slideNumber"] = slideNumber;
             (this.popupCrouselInstance.instance["out"] as EventEmitter<boolean>).subscribe((status) =>
             {
@@ -437,6 +734,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             });
             this.backTrackIndex = oosProductIndex;
         }
+        this.cdr.detectChanges();
     }
     private clearImageCrouselPopup()
     {
@@ -484,6 +782,149 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         };
         this.analytics.sendAdobeCall({ page }, "genericPageLoad");
     }
+
+        // PDP Cart revamp : product quantity handle START HERE
+
+        get cartQunatityForProduct()
+        {
+            return parseInt(this.qunatityFormControl.value) || 1;
+        }
+    
+        onChangeCartQuanityValue()
+        {
+            this.checkCartQuantityAndUpdate(this.qunatityFormControl.value);
+        }
+    
+        checkCartQuantityAndUpdate(value): void
+        {
+            if (!value) {
+                this._tms.show({
+                    type: 'error',
+                    text: (value == 0) ? 'Minimum qty can be ordered is: 1' : 'Please enter a value quantity',
+                })
+                this.qunatityFormControl.setValue(this.productMinimmumQuantity);
+            } else {
+                if (parseInt(value) < parseInt(this.productMinimmumQuantity)) {
+                    this._tms.show({
+                        type: 'error',
+                        text: 'Minimum qty can be ordered is: ' + this.productMinimmumQuantity
+                    })
+                    this.qunatityFormControl.setValue(this.productMinimmumQuantity);
+                } else if (parseInt(value) > parseInt(this.priceQuantityCountry['quantityAvailable'])) {
+                    this._tms.show({
+                        type: 'error',
+                        text: 'Maximum qty can be ordered is: ' + this.priceQuantityCountry['quantityAvailable']
+                    })
+                    this.qunatityFormControl.setValue(this.priceQuantityCountry['quantityAvailable']);
+                } else if (isNaN(parseInt(value))) {
+                    this.qunatityFormControl.setValue(this.productMinimmumQuantity);
+                    this.checkBulkPriceMode();
+                } else {
+                    this.qunatityFormControl.setValue(value);
+                    this.checkBulkPriceMode();
+                }
+            }
+        }
+    
+        updateProductQunatity(type: 'INCREMENT' | 'DECREMENT')
+        {
+            switch (type) {
+                case 'DECREMENT':
+                    this.checkCartQuantityAndUpdate((this.cartQunatityForProduct - 1))
+                    break;
+                case 'INCREMENT':
+                    this.checkCartQuantityAndUpdate((this.cartQunatityForProduct + 1))
+                    break;
+                default:
+                    break;
+            }
+        }
+    
+        checkForBulkPricesProduct()
+        {
+            if (this.rawProductData['productPartDetails'][this.productSubPartNumber]['productPriceQuantity']) {
+                const productBulkPrices = this.rawProductData['productPartDetails'][this.productSubPartNumber]['productPriceQuantity']['india']['bulkPrices']['india'] || {};
+                this.productBulkPrices = (Object.keys(productBulkPrices).length > 0) ? Object.assign([], productBulkPrices) : null;
+                this.isBulkPricesProduct = this.productBulkPrices ? true : false;
+                if (this.isBulkPricesProduct) {
+                    this.productBulkPrices = this.productBulkPrices.map(priceMap =>
+                    {
+                        const discount = this.commonService.calculcateDiscount(null, this.productMrp, priceMap.bulkSellingPrice);
+                        return { ...priceMap, discount }
+                    })
+                    //filtering Data to show the 
+                    this.productBulkPrices = this.productBulkPrices.filter((bulkPrice) =>
+                    {
+                        return this.rawProductData['quantityAvailable'] >= bulkPrice['minQty'] && bulkPrice['minQty'] >= this.productMinimmumQuantity;
+    
+                    });
+                    this.checkBulkPriceMode();
+                }
+            }
+        }
+    
+        checkBulkPriceMode()
+        {
+            if (this.isBulkPricesProduct) {
+                const selectedProductBulkPrice = this.productBulkPrices.filter(prices => (this.cartQunatityForProduct >= prices.minQty && this.cartQunatityForProduct <= prices.maxQty));
+                this.selectedProductBulkPrice = (selectedProductBulkPrice.length > 0) ? selectedProductBulkPrice[0] : null;
+                if(this.selectedProductBulkPrice){
+                    this.bulkPriceWithoutTax = this.selectedProductBulkPrice['bulkSPWithoutTax'];
+                }
+            }
+        }
+    
+        selectProductBulkPrice(qunatity)
+        {
+            if (qunatity > this.priceQuantityCountry['quantityAvailable']) {
+                this._tms.show({
+                    type: 'error',
+                    text: 'Maximum qty can be ordered is: ' + this.priceQuantityCountry['quantityAvailable']
+                })
+                return;
+            }
+            this.checkBulkPriceMode();
+        }
+
+        productStatusCount()
+        {
+            if(this.isHindiUrl){
+            this.ProductStatusCount = this.productService.getProductStatusCount(this.defaultPartNumber,{ headerData: { 'language': 'hi' }})
+            }
+            else{ 
+                this.ProductStatusCount = this.productService.getProductStatusCount(this.defaultPartNumber)
+            }
+            this.ProductStatusCount.subscribe((productStatusCountResult) =>
+                {
+                    this.rawProductCountData = Object.assign({}, productStatusCountResult);
+                    this.remoteApiCallRecentlyBought();
+                });
+        }
+
+        remoteApiCallRecentlyBought()
+        {
+            let MSG = null;
+            let CART_NOTIFICATION_MSG = null;
+            if (
+                this.rawProductData &&
+                this.rawProductCountData &&
+                !this.productOutOfStock
+            ) {
+                if (
+                    this.rawProductCountData["status"] &&
+                    this.rawProductCountData["statusCode"] &&
+                    this.rawProductCountData["statusCode"] == 200 &&
+                    this.rawProductCountData["data"]
+                ) {
+                    MSG = this.rawProductCountData["data"]["message"] || null;
+                    CART_NOTIFICATION_MSG =
+                        this.rawProductCountData["data"]["toastMessage"] ||
+                        "Product added successfully";
+                }
+            }
+            this.rawProductCountMessage = MSG;
+            this.rawCartNotificationMessage = CART_NOTIFICATION_MSG;
+        }
 
     ngOnDestroy() {}
 }

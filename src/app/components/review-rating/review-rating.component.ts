@@ -1,6 +1,6 @@
 import { PopUpModule } from './../../modules/popUp/pop-up.module';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -11,7 +11,8 @@ import { CommonService } from '../../utils/services/common.service';
 @Component({
     selector: 'review-rating',
     templateUrl: './review-rating.component.html',
-    styleUrls: ['./review-rating.scss']
+    styleUrls: ['./review-rating.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReviewRatingComponent {
     productStaticData = this._commonService.defaultLocaleValue;

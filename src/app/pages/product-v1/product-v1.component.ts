@@ -1471,7 +1471,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 null,
                 this.injector
             );
-        this.apiResponse.productReviews.rawReviewsData.productName = this.rawProductData.productName;
+        this.apiResponse.productReviews['productName'] = this.rawProductData.productName;
         this.reviewRatingPopupInstance.instance["oosSimilarCardNumber"] = index;
         this.reviewRatingPopupInstance.instance["rawReviewsData"] =
             (index > -1) ? this.productService.oosSimilarProductsData.similarData[index].reviewRatingApiData : this.apiResponse.productReviews;
@@ -1492,6 +1492,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         ).subscribe((data) => {
             this.writeReview(data);
         });
+        this.cdr.detectChanges();
     }
 
     async handleQuestionAnswerPopup() {
@@ -1517,6 +1518,93 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.reviewRatingPopupContainerRef.remove();
         });
     }
+
+    sortedReviewsByDate(reviewList)
+    {
+        return reviewList.sort((a, b) =>
+        {
+            let objectDateA = new Date(a.updatedAt).getTime();
+            let objectDateB = new Date(b.updatedAt).getTime();
+            
+            return objectDateB - objectDateA;
+        });
+    }
+
+    postHelpful(item,i,reviewValue) {
+        if (this.localStorageService.retrieve("user")) {
+            let user = this.localStorageService.retrieve("user");
+            if (user.authenticated == "true") {
+                // let obj = {
+                //     review_type: "PRODUCT_REVIEW",
+                //     item_type: "PRODUCT",
+                //     item_id: item.item_id,
+                //     review_id: item.review_id.uuid,
+                //     user_id: user.userId,
+                //     is_review_helpful_count_no: no,
+                //     is_review_helpful_count_yes: yes,
+                // };
+                let obj = {
+                    "id":item.id,
+                    "reviewType": "PRODUCT_REVIEW",
+                    "itemType": "PRODUCT",
+                    "msn": item.itemId,
+                    "reviewId": item.reviewId,
+                    "userId": user.userId,
+                    "isReviewHelpfulCountNo": (reviewValue == 'no'?1:0),
+                    "isReviewHelpfulCountYes": (reviewValue == 'yes'?1:0)
+                }
+                this.productService.postHelpful(obj).subscribe((res) => {
+                    if (res["code"] === 200) {
+                        this._tms.show({
+                            type: "success",
+                            text: "Your feedback has been taken",
+                        });
+                        let reviewObj = {
+                            reviewType: "PRODUCT_REVIEW",
+                            itemType: "PRODUCT",
+                            itemId: item.itemId,
+                            userId: ""
+                          }
+                        this.productService.getReviewsRating(reviewObj).subscribe((newRes)=>{
+                            if(newRes["code"] === 200){
+                                this.sortedReviewsByDate(newRes['data']['reviewList']);
+                                this.apiResponse.proudctReviews.reviewList[i]["isReviewHelpfulCountYes"] = newRes['data']['reviewList'][i]["isReviewHelpfulCountYes"];
+                                this.apiResponse.proudctReviews.reviewList[i]['like'] = reviewValue == 'yes' ? 1 : 0;
+                                this.apiResponse.proudctReviews.reviewList[i]['dislike'] = reviewValue == 'no' ? 1 : 0;
+                                this.apiResponse.proudctReviews.reviewList[i]["isReviewHelpfulCountNo"] = newRes['data']['reviewList'][i]["isReviewHelpfulCountNo"];
+                            }
+                        });
+                        
+                        // this.rawReviewsData.reviewList[i]["isPost"] = true;
+                        // this.rawReviewsData.reviewList[i]["like"] = yes;
+                        // this.rawReviewsData.reviewList[i]["dislike"] = no;
+
+                        // if (yes === "1" && this.alreadyLiked) {
+                        //     this.alreadyLiked = false;
+                        //     this.rawReviewsData.reviewList[i]["yes"] += 1;
+                        // } else if (
+                        //     no === "1" &&
+                        //     this.rawReviewsData.reviewList[i]["no"] > 0 &&
+                        //     this.alreadyLiked
+                        // ) {
+                        //     this.alreadyLiked = false;
+                        //     this.rawReviewsData.reviewList[i]["no"] -= 1;
+                        // }
+                        
+                    }
+                });
+            } else {
+                this.goToLoginPage(this.rawProductData['defaultCanonicalUrl']);
+            }
+        } else {
+            this.goToLoginPage(this.rawProductData['defaultCanonicalUrl']);
+        }
+    }
+
+    handlePostHelpful(args: Array<any>) {
+        this.postHelpful(args[0], args[1], args[2]);
+    }
+
     // common functions
     goToLoginPage(link, title?, clickedFrom?: string) {
         const queryParams = { backurl: link };

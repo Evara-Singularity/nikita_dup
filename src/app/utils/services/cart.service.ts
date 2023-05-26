@@ -1044,8 +1044,8 @@ export class CartService
             (Number(priceQuantityCountry['sellingPrice']) - Number(priceQuantityCountry['sellingPrice'])) : 0;
         const productPrice = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice'])) ? Number(priceQuantityCountry['sellingPrice']) : 0;
         const priceWithoutTax = (priceQuantityCountry) ? priceQuantityCountry['priceWithoutTax'] : null;
-        const productBrandDetails = args.productGroupData['brandDetails'];
-        const productCategoryDetails = args.productGroupData['categoryDetails'][0];
+        const productBrandDetails = args.productGroupData['brandDetails'] || args.productGroupData.productBrandDetails;
+        const productCategoryDetails = args.productGroupData['categoryDetails'] ? args.productGroupData['categoryDetails'][0] : args.productGroupData.productCategoryDetails;
         const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
         const incrementUnit = (priceQuantityCountry && priceQuantityCountry['incrementUnit']) ? priceQuantityCountry['incrementUnit'] : 1;
         const productLinks = productPartDetails['productLinks'];

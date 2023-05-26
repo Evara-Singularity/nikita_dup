@@ -82,9 +82,9 @@
 
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
-    <!-- <div class="card" [class.fbtSection]='fbtFlag' *ngIf='fbtFlag'>
+    <div class="card" [class.fbtSection]='fbtFlag' *ngIf='fbtFlag'>
         <fbt [originalProductBO]='originalProductBO' [productQuantity]='cartQunatityForProduct' [analytics]='fbtAnalytics'></fbt>
-    </div> -->
+    </div>
 
     <app-product-review [productName]="rawProductData?.productName" [reviewLength]="apiResponse?.productReviews?.summaryData?.reviewCount" [overallRating]="apiResponse?.productReviews?.startCount"
         [rawReviewsData]="apiResponse?.productReviews" (writeReview)="writeReview($event)"
@@ -92,9 +92,9 @@
     </app-product-review>
 
     <!-- TODO: skeleton to be implemented -->
-    <!-- <product-qa [questionAnswerList]="questionAnswerList" (handleFaqListPopup)="handleFaqListPopup()"
+    <product-qa [questionAnswerList]="apiResponse?.questionAndAnswer" (handleFaqListPopup)="handleFaqListPopup()"
         (askQuestion)="askQuestion()">
-    </product-qa> -->
+    </product-qa>
 
     <!-- <product-get-quote (raiseRFQQuote$)="raiseRFQQuote()" [rfqQuoteRaised]="rfqQuoteRaised"
         [productOutOfStock]="productOutOfStock" [productMrp]="productMrp"
@@ -186,13 +186,7 @@
 
     <!-- <app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>
 
-    <ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
-    <ng-container #productRFQUpdate></ng-container>
-    <ng-container #rfqForm></ng-container>
-    <ng-container #globalToast></ng-container>
-    <ng-container #askQuestionPopup></ng-container>
-    <ng-container #addToCartToast></ng-container>
-    <ng-container #quickOrder></ng-container>
+
 -->
 <ng-container #productShare></ng-container>
 <ng-container #popupCrousel></ng-container>
@@ -208,6 +202,14 @@
 <ng-container #questionAnswersPopup></ng-container>
 <ng-container #faqListPopup></ng-container>
 <ng-container #faqSuccessPopup></ng-container>
+<ng-container #askQuestionPopup></ng-container>
+<ng-container *ngIf="!productOutOfStock" #productRFQ></ng-container>
+<ng-container #productRFQUpdate></ng-container>
+<ng-container #rfqForm></ng-container>
+<ng-container #globalToast></ng-container>
+<ng-container #addToCartToast></ng-container>
+<ng-container #quickOrder></ng-container>
+
 
 
 

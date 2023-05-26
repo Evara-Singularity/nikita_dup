@@ -10,10 +10,10 @@
             <div class="pwa-col-12">
                 <p class="display-qn">
                    {{productStaticData.displaying_questions}}
-                    <span>{{questionAnswerList?.data.qlist.length}}</span> {{productStaticData.of}}
-                    <span>{{questionAnswerList?.data.qlist.length}} </span>
+                    <span>{{questionAnswerList?.qlist.length}}</span> {{productStaticData.of}}
+                    <span>{{questionAnswerList?.qlist.length}} </span>
                 </p>
-                <div *ngFor="let item of questionAnswerList?.data.qlist; let i = index;">
+                <div *ngFor="let item of questionAnswerList?.qlist; let i = index;">
                     <div class="qna-block">
                         <div class="qn">
                             <span class="heading-3">Q{{i+1}}:</span>

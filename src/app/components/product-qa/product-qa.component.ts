@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
+import { Component, Input, EventEmitter, NgModule, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonService } from '../../utils/services/common.service';
 
 @Component({
   selector: 'product-qa',
   templateUrl: './product-qa.component.html',
-  styleUrls: ['./product-qa.component.scss']
+  styleUrls: ['./product-qa.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductQaComponent {
   productStaticData = this._commonService.defaultLocaleValue;
@@ -17,6 +18,7 @@ export class ProductQaComponent {
  
   ngOnInit(): void {
     this.getStaticSubjectData();
+    console.log(this.questionAnswerList)
   }
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {

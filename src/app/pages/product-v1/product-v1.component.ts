@@ -12,6 +12,7 @@ import { LocalAuthService } from "@app/utils/services/auth.service";
 import { CommonService } from "@app/utils/services/common.service";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
+import { ProductUtilsService } from "@app/utils/services/product-utils.service";
 import { ProductService } from "@app/utils/services/product.service";
 import { TrackingService } from "@app/utils/services/tracking.service";
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
@@ -82,6 +83,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     rawProductCountData: any;
     rawProductCountMessage: any;
     rawCartNotificationMessage: any;
+    originalProductBO = null;
 
 
     // lazy loaded component refs
@@ -138,6 +140,22 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     questionAnswerPopupInstance = null;
     @ViewChild("questionAnswersPopup", { read: ViewContainerRef })
     questionAnswerPopupContainerRef: ViewContainerRef;
+    // ondemad loaded components for FAQ listing
+    faqListPopupInstance = null;
+    @ViewChild("faqListPopup", { read: ViewContainerRef })
+    faqListPopupContainerRef: ViewContainerRef;
+    // ondemad loaded components to submit question
+    askQuestionPopupInstance = null;
+    @ViewChild("askQuestionPopup", { read: ViewContainerRef })
+    askQuestionPopupContainerRef: ViewContainerRef;
+    // ondemad loaded components for FAQ success popup
+    faqSuccessPopupInstance = null;
+    @ViewChild("faqSuccessPopup", { read: ViewContainerRef })
+    faqSuccessPopupContainerRef: ViewContainerRef;
+    
+    fbtFlag: boolean;
+    fbtAnalytics: { page: { pageName: string; channel: string; subSection: any; linkPageName: any; linkName: any; loginStatus: string; }; custData: { customerID: string; emailID: string; mobile: string; customerType: any; customerCategory: any; }; order: { productID: any; productCategoryL1: any; productCategoryL2: any; productCategoryL3: any; brand: any; price: number; stockStatus: string; tags: string; }; };
+    isAskQuestionPopupOpen: boolean;
 
 
     set showLoader(value: boolean) { this.globalLoader.setLoaderState(value); }
@@ -167,6 +185,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         private cdr: ChangeDetectorRef,
         private modalService: ModalService,
         private localAuthService: LocalAuthService,
+        private productUtil: ProductUtilsService,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any,
     ) {
@@ -192,6 +211,313 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.apiResponse = rawData.product[0].data.data;
                 console.log(this.apiResponse);
                 this.rawProductData = this.apiResponse.productGroup;
+                this.originalProductBO = {
+                    "filterAttributesList": null,
+                    "partNumber": "MSN2R9CFNAUWXD",
+                    "defaultPartNumber": "MSN2R9CFNAUWXD",
+                    "categoryDetails": [
+                      {
+                        "categoryCode": "128111100",
+                        "categoryName": "Centrifugal Pumps",
+                        "taxonomy": "Pumps & Motors/Water Pumps/Centrifugal Pumps",
+                        "taxonomyCode": "128000000/128110000/128111100",
+                        "categoryLink": "pumps-motors/pumps/centrifugal-pumps/128111100"
+                      }
+                    ],
+                    "productName": "Sameer 1 HP i-Flo Water Pump with 1 Year Warranty, Total Head: 100 ft",
+                    "desciption": "The Sameer 1 HP i-Flo Water Pump, is a Single Phase pump that is used for pumping water. This product works at a speed of 2880 rpm. The power rating of this pump is 0.5 kW. Its dimensions are 315x190x250 mm. This pump weighs 8.5 kg. It comes with a warranty of 1 year. With a discharge of 600-2400 LPH, this product can pump water up to 10-30 m head height. This pump has a suction capacity of 25ft. The material used in the motor body is cast iron. It is operated at the voltage of 180-240V single phase energy supply. This range of centrifugal pumps is ideally suited for the supply of water to domestic & industrial places.",
+                    "shortDesc": "Brand: Sameer||Item Code: i-Flo||Colour: Blue||Weight: 7 kg",
+                    "brandDetails": {
+                      "idBrand": "98753730-2bd1-488c-9c7b-74797e2c17b2",
+                      "brandName": "Sameer",
+                      "storedBrandName": "sameer",
+                      "friendlyUrl": "sameer",
+                      "brandTag": "Brand Label"
+                    },
+                    "seoDetails": {
+                      "metaDescription": null,
+                      "title": null,
+                      "metaKeywords": [
+                        ""
+                      ],
+                      "tags": [
+                        ""
+                      ]
+                    },
+                    "productPartDetails": {
+                      "MSN2R9CFNAUWXD": {
+                        "itemCode": "i-Flo",
+                        "images": [
+                          {
+                            "links": {
+                              "small": "p/YiqkejgQ5GTRr-small.jpg",
+                              "thumbnail": "p/YiqkejgQ5GTRr-thumbnail.jpg",
+                              "default": "p/YiqkejgQ5GTRr.jpg",
+                              "large": "p/YiqkejgQ5GTRr-large.jpg",
+                              "xlarge": "p/YiqkejgQ5GTRr-xlarge.jpg",
+                              "icon": "p/YiqkejgQ5GTRr-icon.jpg",
+                              "xxlarge": "p/YiqkejgQ5GTRr-xxlarge.jpg",
+                              "medium": "p/YiqkejgQ5GTRr-medium.jpg"
+                            },
+                            "moglixImageNumber": "YiqkejgQ5GTRr",
+                            "altTag": null,
+                            "position": 0
+                          },
+                          {
+                            "links": {
+                              "small": "p/05rho32V6PYLc-small.jpg",
+                              "thumbnail": "p/05rho32V6PYLc-thumbnail.jpg",
+                              "default": "p/05rho32V6PYLc.jpg",
+                              "large": "p/05rho32V6PYLc-large.jpg",
+                              "xlarge": "p/05rho32V6PYLc-xlarge.jpg",
+                              "icon": "p/05rho32V6PYLc-icon.jpg",
+                              "xxlarge": "p/05rho32V6PYLc-xxlarge.jpg",
+                              "medium": "p/05rho32V6PYLc-medium.jpg"
+                            },
+                            "moglixImageNumber": "05rho32V6PYLc",
+                            "altTag": null,
+                            "position": 1
+                          },
+                          {
+                            "links": {
+                              "small": "p/8YzIKOM2SeBzY-small.jpg",
+                              "thumbnail": "p/8YzIKOM2SeBzY-thumbnail.jpg",
+                              "default": "p/8YzIKOM2SeBzY.jpg",
+                              "large": "p/8YzIKOM2SeBzY-large.jpg",
+                              "xlarge": "p/8YzIKOM2SeBzY-xlarge.jpg",
+                              "icon": "p/8YzIKOM2SeBzY-icon.jpg",
+                              "xxlarge": "p/8YzIKOM2SeBzY-xxlarge.jpg",
+                              "medium": "p/8YzIKOM2SeBzY-medium.jpg"
+                            },
+                            "moglixImageNumber": "8YzIKOM2SeBzY",
+                            "altTag": null,
+                            "position": 2
+                          },
+                          {
+                            "links": {
+                              "small": "p/zFNcoO5tcrmhb-small.jpg",
+                              "thumbnail": "p/zFNcoO5tcrmhb-thumbnail.jpg",
+                              "default": "p/zFNcoO5tcrmhb.jpg",
+                              "large": "p/zFNcoO5tcrmhb-large.jpg",
+                              "xlarge": "p/zFNcoO5tcrmhb-xlarge.jpg",
+                              "icon": "p/zFNcoO5tcrmhb-icon.jpg",
+                              "xxlarge": "p/zFNcoO5tcrmhb-xxlarge.jpg",
+                              "medium": "p/zFNcoO5tcrmhb-medium.jpg"
+                            },
+                            "moglixImageNumber": "zFNcoO5tcrmhb",
+                            "altTag": null,
+                            "position": 3
+                          },
+                          {
+                            "links": {
+                              "small": "p/ATPcxJdbkDHZa-small.jpg",
+                              "thumbnail": "p/ATPcxJdbkDHZa-thumbnail.jpg",
+                              "default": "p/ATPcxJdbkDHZa.jpg",
+                              "large": "p/ATPcxJdbkDHZa-large.jpg",
+                              "xlarge": "p/ATPcxJdbkDHZa-xlarge.jpg",
+                              "icon": "p/ATPcxJdbkDHZa-icon.jpg",
+                              "xxlarge": "p/ATPcxJdbkDHZa-xxlarge.jpg",
+                              "medium": "p/ATPcxJdbkDHZa-medium.jpg"
+                            },
+                            "moglixImageNumber": "ATPcxJdbkDHZa",
+                            "altTag": null,
+                            "position": 4
+                          },
+                          {
+                            "links": {
+                              "small": "p/j3BpOjnvcCEOK-small.jpg",
+                              "thumbnail": "p/j3BpOjnvcCEOK-thumbnail.jpg",
+                              "default": "p/j3BpOjnvcCEOK.jpg",
+                              "large": "p/j3BpOjnvcCEOK-large.jpg",
+                              "xlarge": "p/j3BpOjnvcCEOK-xlarge.jpg",
+                              "icon": "p/j3BpOjnvcCEOK-icon.jpg",
+                              "xxlarge": "p/j3BpOjnvcCEOK-xxlarge.jpg",
+                              "medium": "p/j3BpOjnvcCEOK-medium.jpg"
+                            },
+                            "moglixImageNumber": "j3BpOjnvcCEOK",
+                            "altTag": null,
+                            "position": 5
+                          },
+                          {
+                            "links": {
+                              "small": "p/ejwpbXT1hit8F-small.jpg",
+                              "thumbnail": "p/ejwpbXT1hit8F-thumbnail.jpg",
+                              "default": "p/ejwpbXT1hit8F.jpg",
+                              "large": "p/ejwpbXT1hit8F-large.jpg",
+                              "xlarge": "p/ejwpbXT1hit8F-xlarge.jpg",
+                              "icon": "p/ejwpbXT1hit8F-icon.jpg",
+                              "xxlarge": "p/ejwpbXT1hit8F-xxlarge.jpg",
+                              "medium": "p/ejwpbXT1hit8F-medium.jpg"
+                            },
+                            "moglixImageNumber": "ejwpbXT1hit8F",
+                            "altTag": null,
+                            "position": 6
+                          }
+                        ],
+                        "qualityImage": true,
+                        "attributes": {
+                          "Delivery Size": [
+                            "25 mm"
+                          ],
+                          "Head Range": [
+                            "30-10 m"
+                          ],
+                          "Motor Power": [
+                            "1 HP"
+                          ],
+                          "Phase": [
+                            "Single Phase"
+                          ],
+                          "Power Rating": [
+                            "0.75 kW"
+                          ],
+                          "Suction Size": [
+                            "25 mm"
+                          ],
+                          "Body Material": [
+                            "Cast Iron"
+                          ],
+                          "Discharge Range": [
+                            "600-2400 lph"
+                          ],
+                          "Impeller Material": [
+                            "Brass"
+                          ],
+                          "Item Code": [
+                            "i-Flo"
+                          ],
+                          "Speed": [
+                            "2880 rpm"
+                          ],
+                          "Voltage": [
+                            "180-240 V"
+                          ],
+                          "Additional Details": [
+                            "Coating: Chrome Plated"
+                          ],
+                          "Applications": [
+                            "For Domestic & Industrial Use"
+                          ],
+                          "Colour": [
+                            "Blue"
+                          ],
+                          "Dimensions": [
+                            "315x190x250 mm"
+                          ],
+                          "Frequency": [
+                            "50 Hz"
+                          ],
+                          "Lifting Height": [
+                            "25 ft"
+                          ],
+                          "Motor Winding": [
+                            "CCA"
+                          ],
+                          "Standards": [
+                            "ISO 9001 Certified"
+                          ],
+                          "Warranty": [
+                            "1 Year Replacement Warranty against Manufacturing Defects (Accidental Damages, Dry Running Damage not Covered in Warranty)"
+                          ],
+                          "Weight": [
+                            "8.5 kg"
+                          ],
+                          "Country of origin": [
+                            "India"
+                          ]
+                        },
+                        "shipmentDetails": null,
+                        "countriesSellingIn": [
+                          "india"
+                        ],
+                        "productPriceQuantity": {
+                          "india": {
+                            "mrp": 4600,
+                            "offeredPriceWithoutTax": 2118,
+                            "offeredPriceWithTax": 2499,
+                            "moq": 1,
+                            "quantityAvailable": 99,
+                            "incrementUnit": 1,
+                            "packageUnit": "1 Piece",
+                            "sellingPrice": 2849,
+                            "taxRule": {
+                              "name": null,
+                              "storedName": null,
+                              "taxType": null,
+                              "taxPercentage": 18,
+                              "status": null,
+                              "deletedFlag": false,
+                              "createdOn": 1685081780173,
+                              "updatedOn": 1685081780173,
+                              "hsn": "84137010",
+                              "countryCode": 356,
+                              "createdBy": null,
+                              "updatedBy": null
+                            },
+                            "estimatedDelivery": "4-5 day",
+                            "priceQuantityRange": null,
+                            "outOfStockFlag": false,
+                            "priceWithoutTax": 2414,
+                            "discount": 38,
+                            "bulkPrices": {}
+                          }
+                        },
+                        "defaultCombination": false,
+                        "variantName": "Sameer 1 HP i-Flo Water Pump with 1 Year Warranty, Total Head: 100 ft",
+                        "productLinks": {
+                          "canonical": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty/mp/msn2r9cfnauwxd",
+                          "default": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty/mp/msn2r9cfnauwxd"
+                        },
+                        "productRating": null,
+                        "canonicalUrl": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty/mp/msn2r9cfnauwxd"
+                      }
+                    },
+                    "groupedAttributes": {},
+                    "keyFeatures": [
+                      "Power Saving F Class Insulation Motor",
+                      "Higher Suction Power & Give High Discharge in its Operating Range",
+                      "High Quality Mechanical Seal has Long Life & it Completely Seals & Prevents the Water Entering into the Motor Side also it Works for Longer Period with Lesser Wear & Tear",
+                      "High Grade Pump C.I Castings (FG-200 grade) Ensures Very Slow Rusting of Pump & Pump Life is Increases Due to Less Rusting",
+                      "The Motor is Protected by T.O.P, which Ensures the Motor Stops Automatically when the Temprature of Pump Reaches Beyond the Limit",
+                      "The Pumps is Self Primed, there is no Need to Add any Check Valve or Non Return Valve During Installation",
+                      "The Pump is Painted with High Grade Powder Coats which Ensures no Rusting on the Motor Body",
+                      "There are Plenty of Uses for this Water Pump Such as Residential Use to Transfer Water from Storage Tanks to Our Bathrooms, Kitchen etc, Agricultural Use to Transfer Water from Water Wells, Lakes, Rivers & Streams Towards Farm Lands & Animal Shelters or even Industrial Use to Handle Fire Accidents or to Ensure the Adequate Water Supply to Required Application Departments",
+                      "Energy Efficient Motor: Power Saving F Class Insulation Motor",
+                      "High Suction Lift: Higher Suction Power & Give High Discharge in Its Operating Range",
+                      "Leakage Proof: High Quality Mechanical Seal Has Long Life. it Completely Seals & Prevents the Water Entering Into the Motor Side. it Works for Longer Period with Lesser Wear & Tear",
+                      "Long Life: High Grade Pump C.I Castings (Fg-200 Grade) Ensures Very Slow Rusting of Pump & Pump Life is Increases Due to Less Rusting & Wear & Tear",
+                      "Thermal Overload Protector: the Motor is Protected By T.O.P, Which Ensures the Motor Stops Automatically When the Temprature of Pump Reaches Beyond the Limit",
+                      "Self Priming Pump: the Pumps is Self Primed, There is No Need to Add Any Check Valve Or Non Return Valve During Installation",
+                      "No Rusting: the Pump is Painted with High Grade Powder Coats, Which Ensures No Rusting on the Motor Body"
+                    ],
+                    "friendlyUrl": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty",
+                    "groupId": "MPN1675076889862",
+                    "rating": null,
+                    "quantityAvailable": 99,
+                    "outOfStock": false,
+                    "productTags": null,
+                    "defaultCanonicalUrl": null,
+                    "videosInfo": null,
+                    "documentInfo": null,
+                    "saleType": null,
+                    "packaging": "",
+                    "manufacturerDetails": null,
+                    "packerDetails": null,
+                    "importerDetails": null,
+                    "displayName": null,
+                    "bestBefore": null,
+                    "itemDimension": null,
+                    "itemWeight": null,
+                    "uom": "PCS",
+                    "quantityUom": 1,
+                    "weightInKg": null,
+                    "dimensionInCms": null,
+                    "weightSlabInKg": null,
+                    "categoryConfirmationNeed": null,
+                    "gmPercentOnline": null,
+                    "attributeValueUniverse": null,
+                    "returnable": null
+                  }
                 this.rawProductData['productPartDetails'] = {
                     "MSN2R9CFNAUWXD": {
                         "itemCode": "i-Flo",
@@ -488,6 +814,73 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit() {
         this.getPurchaseList();
         this.productStatusCount();
+        this.productFbtData();
+    }
+
+    // Frequently brought togther functions
+
+    productFbtData()
+    {
+        this.productService
+            .getFBTProducts(this.rawProductData.defaultPartNumber)
+            .subscribe((rawProductFbtData) =>
+            {
+                this.fetchFBTProducts(
+                    this.rawProductData,
+                    Object.assign({}, rawProductFbtData)
+                );
+            });
+    }
+
+    fetchFBTProducts(productBO, rawProductFbtData)
+    {
+        if (this.productOutOfStock) {
+            this.productUtil.resetFBTSource();
+        } else {
+            this.fbtFlag = false;
+            let rootvalidation = this.productUtil.validateProduct(productBO);
+            if (rootvalidation) {
+                this.processFBTResponse(productBO, rawProductFbtData);
+            }
+        }
+    }
+
+    processFBTResponse(productResponse, fbtResponse)
+    {
+        if (fbtResponse["status"] && fbtResponse["data"]) {
+            let validFbts: any[] = this.productUtil.validateFBTProducts(
+                fbtResponse["data"]
+            );
+            if (validFbts.length > 0) {
+                this.productUtil.changeFBTSource(productResponse, validFbts);
+                this.getFbtIntance(); 
+                this.fbtFlag = true;
+                this.cdr.detectChanges();
+            } else {
+                this.fbtFlag = false;
+            }
+        } else {
+            this.productUtil.resetFBTSource();
+        }
+        this.cdr.detectChanges();
+    }
+
+    getFbtIntance() {
+        const TAXONS = this.taxons;
+        let page = {
+            pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+            channel: "About This Product",
+            subSection: null,
+            linkPageName: null,
+            linkName: null,
+            loginStatus: this.commonService.loginStatusTracking,
+        };
+        this.fbtAnalytics = {
+            page: page,
+            custData: this.commonService.custDataTracking,
+            order: this.orderTracking,
+        };
+        this.cdr.detectChanges();
     }
 
     translate() {
@@ -905,10 +1298,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     productStatusCount() {
         if (this.isHindiUrl) {
-            this.ProductStatusCount = this.productService.getProductStatusCount(this.defaultPartNumber, { headerData: { 'language': 'hi' } })
+            this.ProductStatusCount = this.productService.getProductStatusCount(this.rawProductData.defaultPartNumber, { headerData: { 'language': 'hi' } })
         }
         else {
-            this.ProductStatusCount = this.productService.getProductStatusCount(this.defaultPartNumber)
+            this.ProductStatusCount = this.productService.getProductStatusCount(this.rawProductData.defaultPartNumber)
         }
         this.ProductStatusCount.subscribe((productStatusCountResult) => {
             this.rawProductCountData = Object.assign({}, productStatusCountResult);
@@ -1604,6 +1997,140 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     handlePostHelpful(args: Array<any>) {
         this.postHelpful(args[0], args[1], args[2]);
+    }
+
+    async handleFaqListPopup()
+    {
+        this.showLoader = true;
+        const { FaqListPopoupComponent } = await import(
+            "./../../components/faq-list-popup/faq-list-popup.component"
+        ).finally(() =>
+        {
+            this.showLoader = false;
+        });
+        const factory = this.cfr.resolveComponentFactory(FaqListPopoupComponent);
+        this.faqListPopupInstance =
+            this.faqListPopupContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+        this.faqListPopupInstance.instance["questionAnswerList"] = this.apiResponse.questionAndAnswer;
+        (
+            this.faqListPopupInstance.instance[
+            "closePopup$"
+            ] as EventEmitter<boolean>
+        ).subscribe(() =>
+        {
+            this.faqListPopupInstance = null;
+            this.faqListPopupContainerRef.remove();
+        });
+        (
+            this.faqListPopupInstance.instance[
+            "emitAskQuestinPopup$"
+            ] as EventEmitter<boolean>
+        ).subscribe(() =>
+        {
+            this.askQuestion();
+        });
+        this.cdr.detectChanges();
+    }
+
+    async askQuestion()
+    {
+        let user = this.localStorageService.retrieve("user");
+        if (user && user.authenticated == "true") {
+            this.location.replaceState(this.rawProductData.productUrl);
+            this.askQuestionPopup();
+        } else {
+            this.goToLoginPage(this.rawProductData.productUrl, "Continue to ask question", "askQuestion");
+        }
+        this.cdr.detectChanges();
+    }
+
+    async askQuestionPopup()
+    {
+        this.showLoader = true;
+        const { AskQuestionPopoupComponent } = await import(
+            "./../../components/ask-question-popup/ask-question-popup.component"
+        ).finally(() =>
+        {
+            this.showLoader = false;
+            this.isAskQuestionPopupOpen = true;
+        });
+        const factory = this.cfr.resolveComponentFactory(AskQuestionPopoupComponent);
+        this.askQuestionPopupInstance =
+            this.askQuestionPopupContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+        this.askQuestionPopupInstance.instance["productCategoryDetails"] = this.rawProductData.productCategoryDetails;
+        this.askQuestionPopupInstance.instance["productSubPartNumber"] = this.rawProductData.defaultPartNumber;
+        this.askQuestionPopupInstance.instance["defaultPartNumber"] = this.rawProductData.defaultPartNumber;
+        (
+            this.askQuestionPopupInstance.instance[
+            "closePopup$"
+            ] as EventEmitter<boolean>
+        ).subscribe(() =>
+        {
+            this.commonService.setBodyScroll(null, true);
+            this.askQuestionPopupInstance = null;
+            this.askQuestionPopupContainerRef.remove();
+            this.isAskQuestionPopupOpen = false;
+        });
+        (
+            this.askQuestionPopupInstance.instance[
+            "showSuccessPopup$"
+            ] as EventEmitter<boolean>
+        ).subscribe(() =>
+        {
+            this.handleFaqSuccessPopup();
+        });
+        (
+            this.askQuestionPopupInstance.instance[
+            "removed"
+            ] as EventEmitter<boolean>
+        ).subscribe((status) =>
+        {
+            this.askQuestionPopupContainerRef.detach();
+            this.askQuestionPopupInstance = null;
+        });
+        this.cdr.detectChanges();
+    }
+
+    async handleFaqSuccessPopup()
+    {
+        this.showLoader = true;
+        const { FaqSuccessPopoupComponent } = await import(
+            "./../../components/faq-success-popup/faq-success-popup.component"
+        ).finally(() =>
+        {
+            this.showLoader = false;
+        });
+        const factory = this.cfr.resolveComponentFactory(FaqSuccessPopoupComponent);
+        this.faqSuccessPopupInstance =
+            this.faqSuccessPopupContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+        this.faqSuccessPopupInstance.instance["rawReviewsData"] = this.apiResponse.questionAndAnswer;
+        (
+            this.faqSuccessPopupInstance.instance[
+            "closePopup$"
+            ] as EventEmitter<boolean>
+        ).subscribe((section) =>
+        {
+            this.faqSuccessPopupInstance = null;
+            this.faqSuccessPopupContainerRef.remove();
+            if (section === 'pdpPage') {
+                this.askQuestionPopupInstance = null;
+                this.askQuestionPopupContainerRef.remove();
+                this.commonService.scrollToTop()
+            }
+        });
+        this.cdr.detectChanges();
     }
 
     // common functions

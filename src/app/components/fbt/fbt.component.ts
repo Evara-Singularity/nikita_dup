@@ -1,6 +1,6 @@
 
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
@@ -16,7 +16,8 @@ import { ProductUtilsService } from '../../utils/services/product-utils.service'
 @Component({
     selector: 'fbt',
     templateUrl: './fbt.component.html',
-    styleUrls: ['./fbt.component.scss']
+    styleUrls: ['./fbt.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FbtComponent implements OnInit
 {
@@ -157,7 +158,6 @@ export class FbtComponent implements OnInit
 
     handleCartSave(items: any[])
     {
-        console.log("item fbt ==>" , items);
         const LENGTH = items.length;
         let firstProduct = items[0];
         firstProduct.productQuantity = this.productQuantity;

@@ -21,7 +21,6 @@ export class ProductReviewComponent {
 
   }
   ngOnInit(){
-    console.log(this.rawReviewsData)
     this.getStaticSubjectData();
   }
   getStaticSubjectData(){

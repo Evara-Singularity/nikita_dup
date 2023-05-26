@@ -130,7 +130,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   onUpdate(data) {
     this.commonService.setBodyScroll(null, true);
     if (data.popupClose) {
-      this.removeCartItem();
+      // this.removeCartItem();
       this.Isoverlay = false;
     }
   }

@@ -329,7 +329,7 @@
     }
 }
 
-::ng-deep {
+:host ::ng-deep {
     .apply-promo {
         margin: -10px 0px;
     }

@@ -130,7 +130,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   onUpdate(data) {
     this.commonService.setBodyScroll(null, true);
     if (data.popupClose) {
-      this.removeCartItem();
+      // this.removeCartItem();
       this.Isoverlay = false;
     }
   }
@@ -169,10 +169,12 @@ export class PdpQuickCheckoutComponent implements OnInit {
 
   ngAfterViewInit() {
     this.currUser = this.localAuthService.getUserSession();
-    this.cartService.getPromoCodesByUserId(this.currUser["userId"]);
     this.shippmentCharge = this.cartService.shippingCharges;
-    this.cartService.shippingAddress = this.shippingAddress
-    this.cartService.billingAddress = this.billingAddress
+    this.cartService.shippingAddress = this.shippingAddress;
+    this.cartService.billingAddress = this.billingAddress;
+    setTimeout(() => {
+      this.cartService.getPromoCodesByUserId(this.currUser["userId"]);
+    }, 200);
   }
 
   addTocart(productDetails, buyNow) {

@@ -56,7 +56,7 @@
     </div>
 
     <!-- //moglix insight -->
-    <!-- <moglix-insight-pdp *ngIf="moglixInightData" [data]="moglixInightData"></moglix-insight-pdp> -->
+    <moglix-insight-pdp *ngIf="apiResponse?.productWidget" [data]="apiResponse?.productWidget"></moglix-insight-pdp>
 
     <!-- product benifits and policy -->
     <product-benefits [isProductReturnAble]="rawProductData?.isProductReturnAble" [isBrandMsn]='rawProductData?.productBrandDetails["brandTag"] == "Brand" ? true : false'

@@ -1419,6 +1419,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.goToLoginPage(this.rawProductData["defaultCanonicalUrl"]);
         }
+        this.cdr.detectChanges();
     }
 
     async loadAlertBox(

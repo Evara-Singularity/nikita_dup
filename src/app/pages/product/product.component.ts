@@ -438,11 +438,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.commonService.changeStaticJson.asObservable().subscribe(localization_content => {
             this.productStaticData = localization_content;
         })
-        if (this.isBrowser) {
-            this.route.fragment.subscribe((fragment: string) => {
-                this.fragment = fragment;
-            })
-        }
     }
 
     scrollToTop()
@@ -463,6 +458,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
             this.getRecents();
+            this.route.fragment.subscribe((fragment: string) => {
+                this.fragment = fragment;
+            })
         }
         
     }
@@ -2982,7 +2980,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 });
             }
         } else {
-            this.goToLoginPage(this.productUrl + (this.fragment.length ? `#${this.fragment}` : ''));
+            this.goToLoginPage(this.productUrl + ((this.fragment && this.fragment.length) ? `#${this.fragment}` : ''));
         }
     }
 
@@ -4300,7 +4298,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.location.replaceState(this.mainProductURL);
             this.askQuestionPopup();
         } else {
-            this.goToLoginPage(this.productUrl + (this.fragment.length ? `#${this.fragment}` : ''), "Continue to ask question");
+            this.goToLoginPage(this.productUrl + ((this.fragment && this.fragment.length) ? `#${this.fragment}` : ''), "Continue to ask question");
         }
     }
 

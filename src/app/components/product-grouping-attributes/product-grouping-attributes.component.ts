@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
+import { Component, Input, EventEmitter, NgModule, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'product-grouping-attributes',
   templateUrl: './product-grouping-attributes.component.html',
-  styleUrls: ['./product-grouping-attributes.component.scss']
+  styleUrls: ['./product-grouping-attributes.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductGroupingAttributesComponent {
   @Input('isCommonProduct') isCommonProduct;

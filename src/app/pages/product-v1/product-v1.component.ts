@@ -18,6 +18,7 @@ import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.ser
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { ProductUtilsService } from "@app/utils/services/product-utils.service";
 import { ProductService } from "@app/utils/services/product.service";
+import { SiemaCrouselService } from "@app/utils/services/siema-crousel.service";
 import { TrackingService } from "@app/utils/services/tracking.service";
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
@@ -73,7 +74,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     isBulkPricesProduct: boolean;
     selectedProductBulkPrice: any;
     bulkPriceWithoutTax: any;
-    isHindiUrl: any;
     ProductStatusCount: any;
     rawProductCountData: any;
     rawProductCountMessage: any;
@@ -236,6 +236,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         private productUtil: ProductUtilsService,
         private cartService: CartService,
         private checkoutService: CheckoutService,
+        private siemaCrouselService: SiemaCrouselService,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any,
     ) {
@@ -254,347 +255,18 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         this.user = this.localStorageService.retrieve('user');
+        this.addSubcriber();
         this.pageUrl = this.router.url;
         this.route.data.subscribe((rawData) => {
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"]) {
                 this.apiResponse = rawData.product[0].data.data;
-                console.log(this.apiResponse);
                 this.rawProductData = this.apiResponse.productGroup;
+                console.log(this.rawProductData);
                 this.originalProductBO = {};
-                // this.apiResponse['productGroup']['productAllImages'] = this.rawProductData['productDefaultImage']
-                // this.originalProductBO = {
-                //     "filterAttributesList": null,
-                //     "partNumber": "MSN2R9CFNAUWXD",
-                //     "defaultPartNumber": "MSN2R9CFNAUWXD",
-                //     "categoryDetails": [
-                //         {
-                //             "categoryCode": "128111100",
-                //             "categoryName": "Centrifugal Pumps",
-                //             "taxonomy": "Pumps & Motors/Water Pumps/Centrifugal Pumps",
-                //             "taxonomyCode": "128000000/128110000/128111100",
-                //             "categoryLink": "pumps-motors/pumps/centrifugal-pumps/128111100"
-                //         }
-                //     ],
-                //     "productName": "Sameer 1 HP i-Flo Water Pump with 1 Year Warranty, Total Head: 100 ft",
-                //     "desciption": "The Sameer 1 HP i-Flo Water Pump, is a Single Phase pump that is used for pumping water. This product works at a speed of 2880 rpm. The power rating of this pump is 0.5 kW. Its dimensions are 315x190x250 mm. This pump weighs 8.5 kg. It comes with a warranty of 1 year. With a discharge of 600-2400 LPH, this product can pump water up to 10-30 m head height. This pump has a suction capacity of 25ft. The material used in the motor body is cast iron. It is operated at the voltage of 180-240V single phase energy supply. This range of centrifugal pumps is ideally suited for the supply of water to domestic & industrial places.",
-                //     "shortDesc": "Brand: Sameer||Item Code: i-Flo||Colour: Blue||Weight: 7 kg",
-                //     "brandDetails": {
-                //         "idBrand": "98753730-2bd1-488c-9c7b-74797e2c17b2",
-                //         "brandName": "Sameer",
-                //         "storedBrandName": "sameer",
-                //         "friendlyUrl": "sameer",
-                //         "brandTag": "Brand Label"
-                //     },
-                //     "seoDetails": {
-                //         "metaDescription": null,
-                //         "title": null,
-                //         "metaKeywords": [
-                //             ""
-                //         ],
-                //         "tags": [
-                //             ""
-                //         ]
-                //     },
-                //     "productPartDetails": {
-                //         "MSN2R9CFNAUWXD": {
-                //             "itemCode": "i-Flo",
-                //             "images": [
-                //                 {
-                //                     "links": {
-                //                         "small": "p/YiqkejgQ5GTRr-small.jpg",
-                //                         "thumbnail": "p/YiqkejgQ5GTRr-thumbnail.jpg",
-                //                         "default": "p/YiqkejgQ5GTRr.jpg",
-                //                         "large": "p/YiqkejgQ5GTRr-large.jpg",
-                //                         "xlarge": "p/YiqkejgQ5GTRr-xlarge.jpg",
-                //                         "icon": "p/YiqkejgQ5GTRr-icon.jpg",
-                //                         "xxlarge": "p/YiqkejgQ5GTRr-xxlarge.jpg",
-                //                         "medium": "p/YiqkejgQ5GTRr-medium.jpg"
-                //                     },
-                //                     "moglixImageNumber": "YiqkejgQ5GTRr",
-                //                     "altTag": null,
-                //                     "position": 0
-                //                 },
-                //                 {
-                //                     "links": {
-                //                         "small": "p/05rho32V6PYLc-small.jpg",
-                //                         "thumbnail": "p/05rho32V6PYLc-thumbnail.jpg",
-                //                         "default": "p/05rho32V6PYLc.jpg",
-                //                         "large": "p/05rho32V6PYLc-large.jpg",
-                //                         "xlarge": "p/05rho32V6PYLc-xlarge.jpg",
-                //                         "icon": "p/05rho32V6PYLc-icon.jpg",
-                //                         "xxlarge": "p/05rho32V6PYLc-xxlarge.jpg",
-                //                         "medium": "p/05rho32V6PYLc-medium.jpg"
-                //                     },
-                //                     "moglixImageNumber": "05rho32V6PYLc",
-                //                     "altTag": null,
-                //                     "position": 1
-                //                 },
-                //                 {
-                //                     "links": {
-                //                         "small": "p/8YzIKOM2SeBzY-small.jpg",
-                //                         "thumbnail": "p/8YzIKOM2SeBzY-thumbnail.jpg",
-                //                         "default": "p/8YzIKOM2SeBzY.jpg",
-                //                         "large": "p/8YzIKOM2SeBzY-large.jpg",
-                //                         "xlarge": "p/8YzIKOM2SeBzY-xlarge.jpg",
-                //                         "icon": "p/8YzIKOM2SeBzY-icon.jpg",
-                //                         "xxlarge": "p/8YzIKOM2SeBzY-xxlarge.jpg",
-                //                         "medium": "p/8YzIKOM2SeBzY-medium.jpg"
-                //                     },
-                //                     "moglixImageNumber": "8YzIKOM2SeBzY",
-                //                     "altTag": null,
-                //                     "position": 2
-                //                 },
-                //                 {
-                //                     "links": {
-                //                         "small": "p/zFNcoO5tcrmhb-small.jpg",
-                //                         "thumbnail": "p/zFNcoO5tcrmhb-thumbnail.jpg",
-                //                         "default": "p/zFNcoO5tcrmhb.jpg",
-                //                         "large": "p/zFNcoO5tcrmhb-large.jpg",
-                //                         "xlarge": "p/zFNcoO5tcrmhb-xlarge.jpg",
-                //                         "icon": "p/zFNcoO5tcrmhb-icon.jpg",
-                //                         "xxlarge": "p/zFNcoO5tcrmhb-xxlarge.jpg",
-                //                         "medium": "p/zFNcoO5tcrmhb-medium.jpg"
-                //                     },
-                //                     "moglixImageNumber": "zFNcoO5tcrmhb",
-                //                     "altTag": null,
-                //                     "position": 3
-                //                 },
-                //                 {
-                //                     "links": {
-                //                         "small": "p/ATPcxJdbkDHZa-small.jpg",
-                //                         "thumbnail": "p/ATPcxJdbkDHZa-thumbnail.jpg",
-                //                         "default": "p/ATPcxJdbkDHZa.jpg",
-                //                         "large": "p/ATPcxJdbkDHZa-large.jpg",
-                //                         "xlarge": "p/ATPcxJdbkDHZa-xlarge.jpg",
-                //                         "icon": "p/ATPcxJdbkDHZa-icon.jpg",
-                //                         "xxlarge": "p/ATPcxJdbkDHZa-xxlarge.jpg",
-                //                         "medium": "p/ATPcxJdbkDHZa-medium.jpg"
-                //                     },
-                //                     "moglixImageNumber": "ATPcxJdbkDHZa",
-                //                     "altTag": null,
-                //                     "position": 4
-                //                 },
-                //                 {
-                //                     "links": {
-                //                         "small": "p/j3BpOjnvcCEOK-small.jpg",
-                //                         "thumbnail": "p/j3BpOjnvcCEOK-thumbnail.jpg",
-                //                         "default": "p/j3BpOjnvcCEOK.jpg",
-                //                         "large": "p/j3BpOjnvcCEOK-large.jpg",
-                //                         "xlarge": "p/j3BpOjnvcCEOK-xlarge.jpg",
-                //                         "icon": "p/j3BpOjnvcCEOK-icon.jpg",
-                //                         "xxlarge": "p/j3BpOjnvcCEOK-xxlarge.jpg",
-                //                         "medium": "p/j3BpOjnvcCEOK-medium.jpg"
-                //                     },
-                //                     "moglixImageNumber": "j3BpOjnvcCEOK",
-                //                     "altTag": null,
-                //                     "position": 5
-                //                 },
-                //                 {
-                //                     "links": {
-                //                         "small": "p/ejwpbXT1hit8F-small.jpg",
-                //                         "thumbnail": "p/ejwpbXT1hit8F-thumbnail.jpg",
-                //                         "default": "p/ejwpbXT1hit8F.jpg",
-                //                         "large": "p/ejwpbXT1hit8F-large.jpg",
-                //                         "xlarge": "p/ejwpbXT1hit8F-xlarge.jpg",
-                //                         "icon": "p/ejwpbXT1hit8F-icon.jpg",
-                //                         "xxlarge": "p/ejwpbXT1hit8F-xxlarge.jpg",
-                //                         "medium": "p/ejwpbXT1hit8F-medium.jpg"
-                //                     },
-                //                     "moglixImageNumber": "ejwpbXT1hit8F",
-                //                     "altTag": null,
-                //                     "position": 6
-                //                 }
-                //             ],
-                //             "qualityImage": true,
-                //             "attributes": {
-                //                 "Delivery Size": [
-                //                     "25 mm"
-                //                 ],
-                //                 "Head Range": [
-                //                     "30-10 m"
-                //                 ],
-                //                 "Motor Power": [
-                //                     "1 HP"
-                //                 ],
-                //                 "Phase": [
-                //                     "Single Phase"
-                //                 ],
-                //                 "Power Rating": [
-                //                     "0.75 kW"
-                //                 ],
-                //                 "Suction Size": [
-                //                     "25 mm"
-                //                 ],
-                //                 "Body Material": [
-                //                     "Cast Iron"
-                //                 ],
-                //                 "Discharge Range": [
-                //                     "600-2400 lph"
-                //                 ],
-                //                 "Impeller Material": [
-                //                     "Brass"
-                //                 ],
-                //                 "Item Code": [
-                //                     "i-Flo"
-                //                 ],
-                //                 "Speed": [
-                //                     "2880 rpm"
-                //                 ],
-                //                 "Voltage": [
-                //                     "180-240 V"
-                //                 ],
-                //                 "Additional Details": [
-                //                     "Coating: Chrome Plated"
-                //                 ],
-                //                 "Applications": [
-                //                     "For Domestic & Industrial Use"
-                //                 ],
-                //                 "Colour": [
-                //                     "Blue"
-                //                 ],
-                //                 "Dimensions": [
-                //                     "315x190x250 mm"
-                //                 ],
-                //                 "Frequency": [
-                //                     "50 Hz"
-                //                 ],
-                //                 "Lifting Height": [
-                //                     "25 ft"
-                //                 ],
-                //                 "Motor Winding": [
-                //                     "CCA"
-                //                 ],
-                //                 "Standards": [
-                //                     "ISO 9001 Certified"
-                //                 ],
-                //                 "Warranty": [
-                //                     "1 Year Replacement Warranty against Manufacturing Defects (Accidental Damages, Dry Running Damage not Covered in Warranty)"
-                //                 ],
-                //                 "Weight": [
-                //                     "8.5 kg"
-                //                 ],
-                //                 "Country of origin": [
-                //                     "India"
-                //                 ]
-                //             },
-                //             "shipmentDetails": null,
-                //             "countriesSellingIn": [
-                //                 "india"
-                //             ],
-                //             "productPriceQuantity": {
-                //                 "india": {
-                //                     "mrp": 4600,
-                //                     "offeredPriceWithoutTax": 2118,
-                //                     "offeredPriceWithTax": 2499,
-                //                     "moq": 1,
-                //                     "quantityAvailable": 99,
-                //                     "incrementUnit": 1,
-                //                     "packageUnit": "1 Piece",
-                //                     "sellingPrice": 2849,
-                //                     "taxRule": {
-                //                         "name": null,
-                //                         "storedName": null,
-                //                         "taxType": null,
-                //                         "taxPercentage": 18,
-                //                         "status": null,
-                //                         "deletedFlag": false,
-                //                         "createdOn": 1685081780173,
-                //                         "updatedOn": 1685081780173,
-                //                         "hsn": "84137010",
-                //                         "countryCode": 356,
-                //                         "createdBy": null,
-                //                         "updatedBy": null
-                //                     },
-                //                     "estimatedDelivery": "4-5 day",
-                //                     "priceQuantityRange": null,
-                //                     "outOfStockFlag": false,
-                //                     "priceWithoutTax": 2414,
-                //                     "discount": 38,
-                //                     "bulkPrices": {}
-                //                 }
-                //             },
-                //             "defaultCombination": false,
-                //             "variantName": "Sameer 1 HP i-Flo Water Pump with 1 Year Warranty, Total Head: 100 ft",
-                //             "productLinks": {
-                //                 "canonical": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty/mp/msn2r9cfnauwxd",
-                //                 "default": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty/mp/msn2r9cfnauwxd"
-                //             },
-                //             "productRating": null,
-                //             "canonicalUrl": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty/mp/msn2r9cfnauwxd"
-                //         }
-                //     },
-                //     "groupedAttributes": {},
-                //     "keyFeatures": [
-                //         "Power Saving F Class Insulation Motor",
-                //         "Higher Suction Power & Give High Discharge in its Operating Range",
-                //         "High Quality Mechanical Seal has Long Life & it Completely Seals & Prevents the Water Entering into the Motor Side also it Works for Longer Period with Lesser Wear & Tear",
-                //         "High Grade Pump C.I Castings (FG-200 grade) Ensures Very Slow Rusting of Pump & Pump Life is Increases Due to Less Rusting",
-                //         "The Motor is Protected by T.O.P, which Ensures the Motor Stops Automatically when the Temprature of Pump Reaches Beyond the Limit",
-                //         "The Pumps is Self Primed, there is no Need to Add any Check Valve or Non Return Valve During Installation",
-                //         "The Pump is Painted with High Grade Powder Coats which Ensures no Rusting on the Motor Body",
-                //         "There are Plenty of Uses for this Water Pump Such as Residential Use to Transfer Water from Storage Tanks to Our Bathrooms, Kitchen etc, Agricultural Use to Transfer Water from Water Wells, Lakes, Rivers & Streams Towards Farm Lands & Animal Shelters or even Industrial Use to Handle Fire Accidents or to Ensure the Adequate Water Supply to Required Application Departments",
-                //         "Energy Efficient Motor: Power Saving F Class Insulation Motor",
-                //         "High Suction Lift: Higher Suction Power & Give High Discharge in Its Operating Range",
-                //         "Leakage Proof: High Quality Mechanical Seal Has Long Life. it Completely Seals & Prevents the Water Entering Into the Motor Side. it Works for Longer Period with Lesser Wear & Tear",
-                //         "Long Life: High Grade Pump C.I Castings (Fg-200 Grade) Ensures Very Slow Rusting of Pump & Pump Life is Increases Due to Less Rusting & Wear & Tear",
-                //         "Thermal Overload Protector: the Motor is Protected By T.O.P, Which Ensures the Motor Stops Automatically When the Temprature of Pump Reaches Beyond the Limit",
-                //         "Self Priming Pump: the Pumps is Self Primed, There is No Need to Add Any Check Valve Or Non Return Valve During Installation",
-                //         "No Rusting: the Pump is Painted with High Grade Powder Coats, Which Ensures No Rusting on the Motor Body"
-                //     ],
-                //     "friendlyUrl": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty",
-                //     "groupId": "MPN1675076889862",
-                //     "rating": null,
-                //     "quantityAvailable": 99,
-                //     "outOfStock": false,
-                //     "productTags": null,
-                //     "defaultCanonicalUrl": null,
-                //     "videosInfo": null,
-                //     "documentInfo": null,
-                //     "saleType": null,
-                //     "packaging": "",
-                //     "manufacturerDetails": null,
-                //     "packerDetails": null,
-                //     "importerDetails": null,
-                //     "displayName": null,
-                //     "bestBefore": null,
-                //     "itemDimension": null,
-                //     "itemWeight": null,
-                //     "uom": "PCS",
-                //     "quantityUom": 1,
-                //     "weightInKg": null,
-                //     "dimensionInCms": null,
-                //     "weightSlabInKg": null,
-                //     "categoryConfirmationNeed": null,
-                //     "gmPercentOnline": null,
-                //     "attributeValueUniverse": null,
-                //     "returnable": null
-                // }
                 if (this.apiResponse && this.apiResponse.tagProducts) {
                     this.onVisiblePopularDeals();
                 }
-
-                // if (this.rawProductData.priceQuantityCountry) {
-                //     this.rawProductData.priceQuantityCountry["bulkPricesIndia"] = this.isProductPriceValid
-                //         ? Object.assign(
-                //             {},
-                //             this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
-                //             "productPriceQuantity"
-                //             ]["india"]["bulkPrices"]
-                //         )
-                //         : null;
-                //     this.rawProductData.priceQuantityCountry["bulkPricesModified"] =
-                //         this.isProductPriceValid &&
-                //             this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
-                //             "productPriceQuantity"
-                //             ]["india"]["bulkPrices"]["india"]
-                //             ? [
-                //                 ...this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
-                //                 "productPriceQuantity"
-                //                 ]["india"]["bulkPrices"]["india"],
-                //             ]
-                //             : null;
-                // }
                 if (
                     this.apiResponse['productGroup'] &&
                     Object.values(this.rawProductData["productAllImages"]) !== null
@@ -602,6 +274,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     this.commonService.enableNudge = false;
                     this.isAcceptLanguage = (this.apiResponse.productGroup["acceptLanguage"] != null && rawData["product"][0]["acceptLanguage"] != undefined) ? true : false;
                     this.setProductImages(this.rawProductData["productAllImages"])
+                    this.setProductVideo(this.rawProductData["productVideos"]);
                 } else {
                     this.setProductNotFound();
                 }
@@ -609,8 +282,184 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.setProductNotFound();
             }
         })
+        this.showLoader = false;
+        this.globalLoader.setLoaderState(false); 
+        this.checkForRfqGetQuote();
+        this.checkForAskQuestion();
         this.createSiemaOption();
+        this.checkForBulkPricesProduct();
+        this.cdr.detectChanges();
     }
+
+    setProductVideo(videoArr)
+    {
+        if (
+            this.productAllImages.length > 0 &&
+            videoArr &&
+            (videoArr as any[]).length > 0
+        ) {
+            (videoArr as any[]).reverse().forEach((element) =>
+            {
+                // append all video after first image and atleast has one image
+                this.productAllImages.splice(1, 0, {
+                    src: "",
+                    default: "",
+                    caption: "",
+                    thumb: "",
+                    medium: "",
+                    xxlarge: "",
+                    title: element["title"],
+                    video: element["link"],
+                    contentType: "YOUTUBE_VIDEO",
+                });
+            });
+        }
+    }
+
+    checkForRfqGetQuote()
+    {
+        if (!this.rawProductData.productOutOfStock && this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'raiseRFQQuote') {
+            this.raiseRFQQuote();
+            setTimeout(() =>
+            {
+                this.scrollToResults('get-quote-section', -30);
+            }, 1000);
+        }
+    }
+
+    scrollToResults(id: string, offset)
+    {
+        if (document.getElementById(id)) {
+            let footerOffset = document.getElementById(id).offsetTop;
+            ClientUtility.scrollToTop(1000, footerOffset + offset);
+        }
+    }
+
+    checkForAskQuestion()
+    {
+        if (this.route.snapshot.queryParams.hasOwnProperty('state') && this.route.snapshot.queryParams['state'] === 'askQuestion') {
+            this.askQuestion();
+            setTimeout(() =>
+            {
+                this.scrollToResults('ask-question-section', 166);
+            }, 1000);
+        }
+    }
+
+    addSubcriber()
+    {
+        if (this.isBrowser) {
+            this.siemaCrouselService.getProductScrouselPopup().subscribe((result) =>
+            {
+                if (result.active) {
+                    this.openPopUpcrousel(
+                        result["slideNumber"],
+                        result["oosProductCardIndex"]
+                    );
+                }
+            });
+
+            this.commonService.searchNudgeClicked.asObservable().subscribe(status =>
+            {
+                this.nudgeOpenedClicked();
+            })
+
+            this.commonService.searchNudgeOpened.asObservable().subscribe(status =>
+            {
+                this.nudgeOpened();
+            })
+        }
+    }
+    getAdobeAnalyticsObjectData(identifier = 'pdp')
+    {
+
+        let taxo1 = "";
+        let taxo2 = "";
+        let taxo3 = "";
+        if (this.rawProductData.productCategoryDetails["taxonomyCode"]) {
+            taxo1 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[0] || "";
+            taxo2 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[1] || "";
+            taxo3 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[2] || "";
+        }
+
+        let ele = []; // product tags for adobe;
+        // this.productTags.forEach((element) =>
+        // {
+        //     ele.push(element.name);
+        // });
+        // this.productTags = this.commonService.sortProductTagsOnPriority(this.productTags);
+        const tagsForAdobe = ele.join("|");
+
+        let page = {
+            pageName: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + identifier,
+            channel: "pdp",
+            subSection: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":" + identifier + ":" + this.commonService.getSectionClick().toLowerCase(),
+            loginStatus: this.commonService.loginStatusTracking,
+        };
+        let custData = this.commonService.custDataTracking;
+
+        let order = {
+            productID: this.rawProductData.defaultPartNumber,
+            productCategoryL1: taxo1,
+            productCategoryL2: taxo2,
+            productCategoryL3: taxo3,
+            brand: this.rawProductData.productBrandDetails["brandName"],
+            price: this.rawProductData.productPrice,
+            stockStatus: this.rawProductData.productOutOfStock ? "Out of Stock" : "In Stock",
+            tags: tagsForAdobe,
+            pdpMessage: this.rawProductCountMessage || "",
+            pdpToastMessage: this.rawCartNotificationMessage || "",
+        };
+
+        return { page, custData, order }
+    }
+
+    nudgeOpened() {
+        this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData('search:nudge'), 'genericClick');
+    }
+
+    nudgeOpenedClicked() {
+        this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData('search:nudge:clicked'), 'genericClick');
+    }
+
+    updateAttr(productId)
+    {
+        this.removeRfqForm(); 
+        this.showLoader = true;
+        this.productService
+            .getGroupProductObj(productId)
+            .subscribe((productData) =>
+            {
+                if (productData["status"] == true && productData["active"] == true ) {
+                    // this.processProductData(
+                    //     {
+                    //         productBO: productData["productBO"],
+                    //         refreshCrousel: true,
+                    //         subGroupMsnId: productId,
+                    //     },
+                    //     productData
+                    // );
+                    this.productFbtData();
+                    if(this.rawProductData.productOutOfStock){
+                        this.clearOfferInstance();
+                    }else{
+                        this.clearOfferInstance();
+                        // this.onVisibleOffer();
+                    }
+                    this.showLoader = false;
+                }
+            });
+    }
+
+    private clearOfferInstance() {
+        if (this.offerSectionInstance) {
+            this.offerSectionInstance = null;
+            if (this.offerSectionContainerRef) {
+                this.offerSectionContainerRef.remove();
+            }
+        }
+    }
+
 
     ngAfterViewInit() {
         if (this.commonService.isBrowser) {
@@ -697,6 +546,25 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.globalToastInstance.instance["positionTop"] = true;
                 this.globalToastInstance.instance["productMsn"] = rawData.partNumber;
             }
+        }
+    }
+
+    removeSimilarProductInstanceOOS()
+    {
+        if (this.similarProductInstanceOOS) {
+            this.similarProductInstanceOOS = null;
+            this.similarProductInstanceOOSContainerRef.remove();
+        }
+    }
+
+    removeOosSimilarSection()
+    {
+        if (this.isBrowser) {
+            ClientUtility.scrollToTop(100);
+        }
+        if (this.similarProductInstanceOOS) {
+            this.similarProductInstanceOOS = null;
+            this.similarProductInstanceOOSContainerRef.remove();
         }
     }
 
@@ -913,8 +781,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     translate() {
         if ((this.router.url).toLowerCase().indexOf('/hi/') !== -1) {
             const URL = this.getSanitizedUrl(this.router.url).split("/hi/").join('/');
-            // console.log(this.commonService.defaultLocaleValue.language, URL);
-            // console.log("this.productUrl",this.productUrl)
             this.router.navigate([URL]);
         }
         else {
@@ -1280,9 +1146,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     checkForBulkPricesProduct() {
         if (this.rawProductData['productPrice']) {
-            const productBulkPrices = this.rawProductData['productPriceQuantity']['bulkPrices'] || {};
+            const productBulkPrices = this.rawProductData['priceQuantityCountry']['bulkPrices']['india'] || {};
             this.productBulkPrices = (Object.keys(productBulkPrices).length > 0) ? Object.assign([], productBulkPrices) : null;
             this.isBulkPricesProduct = this.productBulkPrices ? true : false;
+            console.log(this.isBulkPricesProduct)
             if (this.isBulkPricesProduct) {
                 this.productBulkPrices = this.productBulkPrices.map(priceMap => {
                     const discount = this.commonService.calculcateDiscount(null, this.rawProductData.product, priceMap.bulkSellingPrice);
@@ -1290,7 +1157,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 })
                 //filtering Data to show the 
                 this.productBulkPrices = this.productBulkPrices.filter((bulkPrice) => {
-                    return this.rawProductData['quantityAvailable'] >= bulkPrice['minQty'] && bulkPrice['minQty'] >= this.rawProductData.productMinimmumQuantity;
+                    return this.rawProductData['priceQuantityCountry']['quantityAvailable'] >= bulkPrice['minQty'] && bulkPrice['minQty'] >= this.rawProductData.productMinimmumQuantity;
 
                 });
                 this.checkBulkPriceMode();
@@ -1305,6 +1172,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             if (this.selectedProductBulkPrice) {
                 this.bulkPriceWithoutTax = this.selectedProductBulkPrice['bulkSPWithoutTax'];
             }
+            this.cdr.detectChanges();
         }
     }
 
@@ -1317,6 +1185,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             return;
         }
         this.checkBulkPriceMode();
+        this.cdr.detectChanges();
     }
 
     productStatusCount() {
@@ -2465,7 +2334,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     // dynamically recent products section
 
     async onVisibleRecentProduct(htmlElement) {
-        // console.log('onVisibleRecentProduct', htmlElement);
         if (!this.recentProductsInstance && this.recentProductItems.length > 0) {
             const { RecentViewedProductsComponent } = await import(
                 "./../../components/recent-viewed-products/recent-viewed-products.component"
@@ -2754,15 +2622,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 productName: this.rawProductData.productName,
                 pageTitleName: this.rawProductData.productName,
                 pwot: this.rawProductData.priceWithoutTax,
-                quantityAvailable: this.rawProductData.rawProductData["quantityAvailable"],
+                quantityAvailable: this.rawProductData.priceQuantityCountry["quantityAvailable"],
                 productPrice: this.rawProductData.productPrice,
                 productOutOfStock: this.rawProductData.productOutOfStock,
-                seoDetails: this.rawProductData.rawProductData["seoDetails"],
+                seoDetails: this.rawProductData["seoDetails"],
                 productBrandDetails: this.rawProductData.productBrandDetails,
                 productCategoryDetails: this.rawProductData.productCategoryDetails,
                 productDefaultImage: this.rawProductData.productDefaultImage,
                 productUrl: this.rawProductData.productUrl,
-                defaultCanonicalUrl: this.rawProductData.rawProductData["defaultCanonicalUrl"]
+                defaultCanonicalUrl: this.rawProductData["defaultCanonicalUrl"]
             };
         }
 
@@ -3195,7 +3063,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     addToCartFromModal(buyNow: boolean) {
-        // console.log('originalProductBO', this.originalProductBO);
         const cartAddToCartProductRequest = this.cartService.getAddToCartProductItemRequest({
             productGroupData: this.rawProductData,
             buyNow: buyNow,
@@ -3203,7 +3070,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             quantity: this.cartQunatityForProduct,
             languageMode: this.isHindiUrl,
             originalProductBO: this.originalProductBO,
-        });
+        }, true);
         this.cartService.addToCart({ buyNow, productDetails: cartAddToCartProductRequest }).subscribe(result => {
             // analytic events needs to called here
             this.analyticAddToCart(buyNow, this.cartQunatityForProduct, false);
@@ -3225,7 +3092,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     this.checkoutService.setCheckoutTabIndex(1);
                     if (!buyNow) {
                         this.cartService.setGenericCartSession(result);
-                        // console.log('cart session', result['noOfItems'] || result.itemsList.length );
                         this.cartService.cart.next({ count: result['noOfItems'] || result.itemsList.length, currentlyAdded: cartAddToCartProductRequest });
                         this.globalLoader.setLoaderState(false);
                         this.showAddToCartToast();
@@ -3429,6 +3295,11 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     getSanitizedUrl(url) {
         return (url).toLowerCase().split('#')[0].split('?')[0];
+    }
+
+
+    get isHindiUrl() {
+        return (this.router.url).toLowerCase().indexOf('/hi/') !== -1
     }
 
     ngOnDestroy() { }

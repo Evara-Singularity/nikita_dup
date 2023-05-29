@@ -1033,12 +1033,12 @@ export class CartService
         )
     }
 
-    getAddToCartProductItemRequest(args: { productGroupData, buyNow, selectPriceMap?, quantity?, isFbt?, languageMode?, originalProductBO?}): AddToCartProductSchema {
+    getAddToCartProductItemRequest(args: { productGroupData, buyNow, selectPriceMap?, quantity?, isFbt?, languageMode?, originalProductBO?, v1?}, v1 = false): AddToCartProductSchema {
         const userSession = this.localAuthService.getUserSession();
-        const partNumber = args.productGroupData['partNumber'] || args.productGroupData['defaultPartNumber'];
-        const isProductPriceValid = args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
-        const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
-        const productPartDetails = args.productGroupData['productPartDetails'][partNumber];
+        const partNumber = v1 ? args.productGroupData['defaultPartNumber'] : args.productGroupData['partNumber'] || args.productGroupData['defaultPartNumber'];
+        const isProductPriceValid = v1 ? args.productGroupData['isProductPriceValid'] : args.productGroupData['isProductPriceValid'] || args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
+        const priceQuantityCountry = (isProductPriceValid) ? v1 ? args.productGroupData['priceQuantityCountry'] : Object.assign({}, args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
+        const productPartDetails = !v1 ? args.productGroupData['productPartDetails'][partNumber] : args.productGroupData;
         const productMrp = (isProductPriceValid && priceQuantityCountry) ? priceQuantityCountry['mrp'] : null;
         const productTax = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice']) && !isNaN(priceQuantityCountry['sellingPrice'])) ?
             (Number(priceQuantityCountry['sellingPrice']) - Number(priceQuantityCountry['sellingPrice'])) : 0;
@@ -1048,8 +1048,8 @@ export class CartService
         const productCategoryDetails = args.productGroupData['categoryDetails'] ? args.productGroupData['categoryDetails'][0] : args.productGroupData.productCategoryDetails;
         const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
         const incrementUnit = (priceQuantityCountry && priceQuantityCountry['incrementUnit']) ? priceQuantityCountry['incrementUnit'] : 1;
-        const productLinks = productPartDetails['productLinks'];
-        const productURL = (args.languageMode) ? args.originalProductBO['defaultCanonicalUrl'] : (productPartDetails['canonicalUrl'] || productLinks['canonical'] || productLinks['default']);
+        // const productLinks = productPartDetails['productLinks'];
+        // const productURL = (args.languageMode) ? v1 ? args.productGroupData['productUrl'] : args.originalProductBO['defaultCanonicalUrl'] : (productPartDetails['canonicalUrl'] || productLinks['canonical'] || productLinks['default']);
         const product = {
             sessionId: userSession.sessionId,
             cartId: null,
@@ -1067,12 +1067,12 @@ export class CartService
             brandId: (productBrandDetails)?productBrandDetails['idBrand']:'',
             priceWithoutTax: priceWithoutTax,
             taxPercentage: priceQuantityCountry['taxRule']['taxPercentage'],
-            productImg: (productPartDetails['images']) ? `${this.imageCdnPath}${productPartDetails['images'][0]['links']['thumbnail']}` : '',
+            productImg: v1 ? `${this.imageCdnPath}${args.productGroupData['productAllImages'][0]['links']['thumbnail']}` : (productPartDetails['images']) ? `${this.imageCdnPath}${productPartDetails['images'][0]['links']['thumbnail']}` : '',
             isPersistant: true,
             productQuantity: (args.quantity && !isNaN(args.quantity) && +args.quantity > productMinimmumQuantity) ? args.quantity : productMinimmumQuantity,
             productUnitPrice: productPrice,
             expireAt: null,
-            productUrl: productURL,
+            productUrl: args.productGroupData['productUrl'],
             bulkPriceMap: priceQuantityCountry['bulkPrices'],
             bulkPrice: null,
             bulkPriceWithoutTax: null,
@@ -1085,8 +1085,8 @@ export class CartService
             isOutOfStock: this._setOutOfStockFlag(priceQuantityCountry),
             quantityAvailable: priceQuantityCountry['quantityAvailable'] || 0,
             productMRP: productMrp,
-            productSmallImage: CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.small,
-            productImage: CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.medium,
+            productSmallImage: v1 ? CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productAllImages[0].links.small : CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.small,
+            productImage: v1 ? CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productAllImages[0].links.medium : CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.medium,
             url: productPartDetails.canonicalUrl,
             isProductUpdate: 0,
             sellingPrice: productPrice,

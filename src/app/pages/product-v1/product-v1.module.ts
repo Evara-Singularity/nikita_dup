@@ -6,9 +6,11 @@ import { MoglixInsightPdpModule } from "@app/components/moglix-insight-pdp/mogli
 import { PastOrdersModule } from "@app/components/past-orders/past-orders.component";
 import ProductAccordiansModule from "@app/components/product-accordians/product-accordians.component";
 import { ProductBenefitsModule } from "@app/components/product-benefits/product-benefits.component";
+import { ProductBulkQuantityModule } from "@app/components/product-bulk-quantity/product-bulk-quantity.component";
 import ProductDescriptionModule from "@app/components/product-description/product-description.component";
 import { ProductFeatureDetailsModule } from "@app/components/product-feature-details/product-feature-details.component";
 import { ProductGetQuoteModule } from "@app/components/product-get-quote/product-get-quote.component";
+import { ProductGroupingAttributesModule } from "@app/components/product-grouping-attributes/product-grouping-attributes.component";
 import { ProductMoreWidgetModule } from "@app/components/product-more-widget/product-more-widget.component";
 import { ProductOffersModule } from "@app/components/product-offers/product-offers.component";
 import { ProductDealsModule } from "@app/components/product-popular-deals/product-popular-deals.component";
@@ -53,7 +55,9 @@ import { ProductV1RoutingModule } from "./product-v1.routing.module";
         ProductRfqThanksPopupModule,
         WhatsAppToastModule,
         AppInstallWidgetModule,
-        FloatingButtonContainerModule
+        FloatingButtonContainerModule,
+        ProductGroupingAttributesModule,
+        ProductBulkQuantityModule
     ],
     exports: [],
     providers: [NgxSiemaService]

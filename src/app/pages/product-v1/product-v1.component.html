@@ -28,18 +28,18 @@
         [rawProductCountMessage]="rawProductCountMessage">
     </product-description>
 
-    <!-- <product-grouping-attributes [isCommonProduct]="isCommonProduct"
-        [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)"
+    <product-grouping-attributes [isCommonProduct]="rawProductData?.productFilterAttributesList > 0"
+        [productFilterAttributesList]="rawProductData?.productFilterAttributesList" (updateAttr)="updateAttr($event)"
         (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
-    <ng-container *ngIf="productBulkPrices && productBulkPrices.length > 0">
+    <ng-container *ngIf="rawProductData?.priceQuantityCountry?.bulkPricesModified && rawProductData?.priceQuantityCountry?.bulkPricesModified?.length > 0">
         <product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()"
             (selectProductBulkPrice$)="selectProductBulkPrice($event)" [rawProductData]="rawProductData"
-            [productOutOfStock]="rawProductData?.productOutOfStock" [isCommonProduct]="isCommonProduct"
-            [priceQuantityCountry]="priceQuantityCountry" [productBulkPrices]="productBulkPrices"
+            [productOutOfStock]="rawProductData?.productOutOfStock" [isCommonProduct]="rawProductData?.productFilterAttributesList > 0"
+            [priceQuantityCountry]="rawProductData?.priceQuantityCountry" [productBulkPrices]="rawProductData?.priceQuantityCountry?.bulkPricesModified"
             [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl"
-            [productMinimmumQuantity]="productMinimmumQuantity">
+            [productMinimmumQuantity]="rawProductData?.productMinimmumQuantity">
         </product-bulk-quantity>
-    </ng-container> -->
+    </ng-container>
 
     <!-- TODO: skeleton to be implemented -->
     <div class="coupon" *ngIf='!rawProductData?.productOutOfStock && rawProductData?.priceQuantityCountry?.mrp > 0'>

@@ -1694,8 +1694,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     productFbtData()
     {
+        const msn = this.route.snapshot.params['msnid']
         this.productService
-            .getFBTProducts(this.defaultPartNumber)
+            .getFBTProducts(msn)
             .subscribe((rawProductFbtData) =>
             {
                 this.fetchFBTProducts(

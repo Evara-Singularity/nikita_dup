@@ -35,6 +35,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     isServer: boolean;
     isBrowser: boolean;
     productNotFound: boolean;
+
     apiResponse: any;
     productStaticData: any = this.commonService.defaultLocaleValue;
     isAcceptLanguage: boolean;
@@ -47,13 +48,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     iOptions: any = null;
     user: any;
     isPurcahseListProduct: boolean;
-    defaultPartNumber: string = null;
-    productSubPartNumber: any;
     moveToSlide$ = new Subject<number>();
     displayCardCta: boolean;
     pageUrl: string;
     backTrackIndex = -1;
-    productOutOfStock = false;
     refreshSiemaItems$ = new Subject<{
         items: Array<{}>;
         type: string;
@@ -62,18 +60,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     productTags = [];
     productDefaultImage: string;
     productAllImages: any[] = [];
+    productBulkPirces: any;
     productCartThumb: any;
     productMediumImage: any;
     qunatityFormControl: FormControl = new FormControl(1, []); // setting a default quantity to 1
-    isProductPriceValid: boolean;
-    priceQuantityCountry: any;
-    productMrp: any;
-    priceWithoutTax: any;
-    productPrice: number;
-    productDiscount: number;
-    taxPercentage: any;
-    productTax: number;
-    productMinimmumQuantity: any;
     productBulkPrices: any;
     isBulkPricesProduct: boolean;
     selectedProductBulkPrice: any;
@@ -162,7 +152,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     // get getWhatsText()
     // {
-    //     return `Hi, I want to buy ${this.productName} (${this.defaultPartNumber})`;
+    //     return `Hi, I want to buy ${this.productName} (${this.rawProductData.defaultPartNumber})`;
     // }
     constructor(
         private route: ActivatedRoute,
@@ -211,6 +201,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.apiResponse = rawData.product[0].data.data;
                 console.log(this.apiResponse);
                 this.rawProductData = this.apiResponse.productGroup;
+                this.apiResponse['productGroup']['productAllImages'] = this.rawProductData['productDefaultImage']
                 this.originalProductBO = {
                     "filterAttributesList": null,
                     "partNumber": "MSN2R9CFNAUWXD",
@@ -518,289 +509,35 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     "attributeValueUniverse": null,
                     "returnable": null
                   }
-                this.rawProductData['productPartDetails'] = {
-                    "MSN2R9CFNAUWXD": {
-                        "itemCode": "i-Flo",
-                        "images": [
-                            {
-                                "links": {
-                                    "small": "p/YiqkejgQ5GTRr-small.jpg",
-                                    "thumbnail": "p/YiqkejgQ5GTRr-thumbnail.jpg",
-                                    "default": "p/YiqkejgQ5GTRr.jpg",
-                                    "large": "p/YiqkejgQ5GTRr-large.jpg",
-                                    "xlarge": "p/YiqkejgQ5GTRr-xlarge.jpg",
-                                    "icon": "p/YiqkejgQ5GTRr-icon.jpg",
-                                    "xxlarge": "p/YiqkejgQ5GTRr-xxlarge.jpg",
-                                    "medium": "p/YiqkejgQ5GTRr-medium.jpg"
-                                },
-                                "moglixImageNumber": "YiqkejgQ5GTRr",
-                                "altTag": null,
-                                "position": 0
-                            },
-                            {
-                                "links": {
-                                    "small": "p/05rho32V6PYLc-small.jpg",
-                                    "thumbnail": "p/05rho32V6PYLc-thumbnail.jpg",
-                                    "default": "p/05rho32V6PYLc.jpg",
-                                    "large": "p/05rho32V6PYLc-large.jpg",
-                                    "xlarge": "p/05rho32V6PYLc-xlarge.jpg",
-                                    "icon": "p/05rho32V6PYLc-icon.jpg",
-                                    "xxlarge": "p/05rho32V6PYLc-xxlarge.jpg",
-                                    "medium": "p/05rho32V6PYLc-medium.jpg"
-                                },
-                                "moglixImageNumber": "05rho32V6PYLc",
-                                "altTag": null,
-                                "position": 1
-                            },
-                            {
-                                "links": {
-                                    "small": "p/8YzIKOM2SeBzY-small.jpg",
-                                    "thumbnail": "p/8YzIKOM2SeBzY-thumbnail.jpg",
-                                    "default": "p/8YzIKOM2SeBzY.jpg",
-                                    "large": "p/8YzIKOM2SeBzY-large.jpg",
-                                    "xlarge": "p/8YzIKOM2SeBzY-xlarge.jpg",
-                                    "icon": "p/8YzIKOM2SeBzY-icon.jpg",
-                                    "xxlarge": "p/8YzIKOM2SeBzY-xxlarge.jpg",
-                                    "medium": "p/8YzIKOM2SeBzY-medium.jpg"
-                                },
-                                "moglixImageNumber": "8YzIKOM2SeBzY",
-                                "altTag": null,
-                                "position": 2
-                            },
-                            {
-                                "links": {
-                                    "small": "p/zFNcoO5tcrmhb-small.jpg",
-                                    "thumbnail": "p/zFNcoO5tcrmhb-thumbnail.jpg",
-                                    "default": "p/zFNcoO5tcrmhb.jpg",
-                                    "large": "p/zFNcoO5tcrmhb-large.jpg",
-                                    "xlarge": "p/zFNcoO5tcrmhb-xlarge.jpg",
-                                    "icon": "p/zFNcoO5tcrmhb-icon.jpg",
-                                    "xxlarge": "p/zFNcoO5tcrmhb-xxlarge.jpg",
-                                    "medium": "p/zFNcoO5tcrmhb-medium.jpg"
-                                },
-                                "moglixImageNumber": "zFNcoO5tcrmhb",
-                                "altTag": null,
-                                "position": 3
-                            },
-                            {
-                                "links": {
-                                    "small": "p/ATPcxJdbkDHZa-small.jpg",
-                                    "thumbnail": "p/ATPcxJdbkDHZa-thumbnail.jpg",
-                                    "default": "p/ATPcxJdbkDHZa.jpg",
-                                    "large": "p/ATPcxJdbkDHZa-large.jpg",
-                                    "xlarge": "p/ATPcxJdbkDHZa-xlarge.jpg",
-                                    "icon": "p/ATPcxJdbkDHZa-icon.jpg",
-                                    "xxlarge": "p/ATPcxJdbkDHZa-xxlarge.jpg",
-                                    "medium": "p/ATPcxJdbkDHZa-medium.jpg"
-                                },
-                                "moglixImageNumber": "ATPcxJdbkDHZa",
-                                "altTag": null,
-                                "position": 4
-                            },
-                            {
-                                "links": {
-                                    "small": "p/j3BpOjnvcCEOK-small.jpg",
-                                    "thumbnail": "p/j3BpOjnvcCEOK-thumbnail.jpg",
-                                    "default": "p/j3BpOjnvcCEOK.jpg",
-                                    "large": "p/j3BpOjnvcCEOK-large.jpg",
-                                    "xlarge": "p/j3BpOjnvcCEOK-xlarge.jpg",
-                                    "icon": "p/j3BpOjnvcCEOK-icon.jpg",
-                                    "xxlarge": "p/j3BpOjnvcCEOK-xxlarge.jpg",
-                                    "medium": "p/j3BpOjnvcCEOK-medium.jpg"
-                                },
-                                "moglixImageNumber": "j3BpOjnvcCEOK",
-                                "altTag": null,
-                                "position": 5
-                            },
-                            {
-                                "links": {
-                                    "small": "p/ejwpbXT1hit8F-small.jpg",
-                                    "thumbnail": "p/ejwpbXT1hit8F-thumbnail.jpg",
-                                    "default": "p/ejwpbXT1hit8F.jpg",
-                                    "large": "p/ejwpbXT1hit8F-large.jpg",
-                                    "xlarge": "p/ejwpbXT1hit8F-xlarge.jpg",
-                                    "icon": "p/ejwpbXT1hit8F-icon.jpg",
-                                    "xxlarge": "p/ejwpbXT1hit8F-xxlarge.jpg",
-                                    "medium": "p/ejwpbXT1hit8F-medium.jpg"
-                                },
-                                "moglixImageNumber": "ejwpbXT1hit8F",
-                                "altTag": null,
-                                "position": 6
-                            }
-                        ],
-                        "qualityImage": true,
-                        "attributes": {
-                            "Delivery Size": [
-                                "25 mm"
-                            ],
-                            "Head Range": [
-                                "30-10 m"
-                            ],
-                            "Motor Power": [
-                                "1 HP"
-                            ],
-                            "Phase": [
-                                "Single Phase"
-                            ],
-                            "Power Rating": [
-                                "0.75 kW"
-                            ],
-                            "Suction Size": [
-                                "25 mm"
-                            ],
-                            "Body Material": [
-                                "Cast Iron"
-                            ],
-                            "Discharge Range": [
-                                "600-2400 lph"
-                            ],
-                            "Impeller Material": [
-                                "Brass"
-                            ],
-                            "Item Code": [
-                                "i-Flo"
-                            ],
-                            "Speed": [
-                                "2880 rpm"
-                            ],
-                            "Voltage": [
-                                "180-240 V"
-                            ],
-                            "Additional Details": [
-                                "Coating: Chrome Plated"
-                            ],
-                            "Applications": [
-                                "For Domestic & Industrial Use"
-                            ],
-                            "Colour": [
-                                "Blue"
-                            ],
-                            "Dimensions": [
-                                "315x190x250 mm"
-                            ],
-                            "Frequency": [
-                                "50 Hz"
-                            ],
-                            "Lifting Height": [
-                                "25 ft"
-                            ],
-                            "Motor Winding": [
-                                "CCA"
-                            ],
-                            "Standards": [
-                                "ISO 9001 Certified"
-                            ],
-                            "Warranty": [
-                                "1 Year Replacement Warranty against Manufacturing Defects (Accidental Damages, Dry Running Damage not Covered in Warranty)"
-                            ],
-                            "Weight": [
-                                "8.5 kg"
-                            ],
-                            "Country of origin": [
-                                "India"
-                            ]
-                        },
-                        "shipmentDetails": null,
-                        "countriesSellingIn": [
-                            "india"
-                        ],
-                        "productPriceQuantity": {
-                            "india": {
-                                "mrp": 4600,
-                                "offeredPriceWithoutTax": 2118,
-                                "offeredPriceWithTax": 2499,
-                                "moq": 1,
-                                "quantityAvailable": 100,
-                                "incrementUnit": 1,
-                                "packageUnit": "1 Piece",
-                                "sellingPrice": 2849,
-                                "taxRule": {
-                                    "name": null,
-                                    "storedName": null,
-                                    "taxType": null,
-                                    "taxPercentage": 18,
-                                    "status": null,
-                                    "deletedFlag": false,
-                                    "createdOn": 1684946886566,
-                                    "updatedOn": 1684946886566,
-                                    "hsn": "84137010",
-                                    "countryCode": 356,
-                                    "createdBy": null,
-                                    "updatedBy": null
-                                },
-                                "estimatedDelivery": "4-5 day",
-                                "priceQuantityRange": null,
-                                "outOfStockFlag": false,
-                                "priceWithoutTax": 2414,
-                                "discount": 38,
-                                "bulkPrices": {}
-                            }
-                        },
-                        "defaultCombination": false,
-                        "variantName": "Sameer 1 HP i-Flo Water Pump with 1 Year Warranty, Total Head: 100 ft",
-                        "productLinks": {
-                            "canonical": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty/mp/msn2r9cfnauwxd",
-                            "default": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty/mp/msn2r9cfnauwxd"
-                        },
-                        "productRating": null,
-                        "canonicalUrl": "sameer-1-hp-i-flo-water-pump-with-1-year-warranty/mp/msn2r9cfnauwxd"
-                    }
-                }
-                this.isProductPriceValid =
-                    this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
-                    "productPriceQuantity"
-                    ] != null;
-                this.priceQuantityCountry = this.isProductPriceValid
-                    ? Object.assign(
-                        {},
-                        this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
-                        "productPriceQuantity"
-                        ]["india"]
-                    )
-                    : null;
-                this.productMrp =
-                    this.isProductPriceValid && this.priceQuantityCountry
-                        ? this.priceQuantityCountry["mrp"]
-                        : null;
 
-                if (this.priceQuantityCountry) {
-                    this.priceQuantityCountry["bulkPricesIndia"] = this.isProductPriceValid
-                        ? Object.assign(
-                            {},
-                            this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
-                            "productPriceQuantity"
-                            ]["india"]["bulkPrices"]
-                        )
-                        : null;
-                    this.priceQuantityCountry["bulkPricesModified"] =
-                        this.isProductPriceValid &&
-                            this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
-                            "productPriceQuantity"
-                            ]["india"]["bulkPrices"]["india"]
-                            ? [
-                                ...this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
-                                "productPriceQuantity"
-                                ]["india"]["bulkPrices"]["india"],
-                            ]
-                            : null;
-                }
-
-                this.priceWithoutTax = this.priceQuantityCountry ? this.priceQuantityCountry["priceWithoutTax"] : null;
-                this.productPrice = this.priceQuantityCountry && !isNaN(this.priceQuantityCountry["sellingPrice"]) ? Number(this.priceQuantityCountry["sellingPrice"]) : 0;
-                if (this.priceQuantityCountry && this.priceQuantityCountry["mrp"] > 0 && this.priceQuantityCountry["sellingPrice"] > 0) {
-                    this.productDiscount = this.commonService.calculcateDiscount(this.priceQuantityCountry["discount"], this.priceQuantityCountry["mrp"], this.priceQuantityCountry["sellingPrice"]);
-                }
-                this.taxPercentage = this.priceQuantityCountry ? this.priceQuantityCountry["taxRule"]["taxPercentage"] : null;
-
-                this.productTax = this.priceQuantityCountry && !isNaN(this.priceQuantityCountry["sellingPrice"]) && !isNaN(this.priceQuantityCountry["sellingPrice"]) ? Number(this.priceQuantityCountry["sellingPrice"]) - Number(this.priceQuantityCountry["sellingPrice"]) : 0;
-                this.productMinimmumQuantity = this.priceQuantityCountry && this.priceQuantityCountry["moq"] ? this.priceQuantityCountry["moq"] : 1;
+                // if (this.rawProductData.priceQuantityCountry) {
+                //     this.rawProductData.priceQuantityCountry["bulkPricesIndia"] = this.isProductPriceValid
+                //         ? Object.assign(
+                //             {},
+                //             this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
+                //             "productPriceQuantity"
+                //             ]["india"]["bulkPrices"]
+                //         )
+                //         : null;
+                //     this.rawProductData.priceQuantityCountry["bulkPricesModified"] =
+                //         this.isProductPriceValid &&
+                //             this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
+                //             "productPriceQuantity"
+                //             ]["india"]["bulkPrices"]["india"]
+                //             ? [
+                //                 ...this.rawProductData["productPartDetails"][this.rawProductData.partNumber][
+                //                 "productPriceQuantity"
+                //                 ]["india"]["bulkPrices"]["india"],
+                //             ]
+                //             : null;
+                // }
                 if (
                     this.apiResponse['productGroup'] &&
-                    Object.values(this.rawProductData["productPartDetails"])[0]["images"] !== null
+                    Object.values(this.rawProductData["productAllImages"]) !== null
                 ) {
                     this.commonService.enableNudge = false;
                     this.isAcceptLanguage = (this.apiResponse.productGroup["acceptLanguage"] != null && rawData["product"][0]["acceptLanguage"] != undefined) ? true : false;
-                    this.setProductImages(this.rawProductData["productPartDetails"][this.rawProductData.partNumber]["images"])
+                    this.setProductImages(this.rawProductData["productAllImages"])
                 } else {
                     this.setProductNotFound();
                 }
@@ -834,7 +571,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     fetchFBTProducts(productBO, rawProductFbtData)
     {
-        if (this.productOutOfStock) {
+        if (this.rawProductData.productOutOfStock) {
             this.productUtil.resetFBTSource();
         } else {
             this.fbtFlag = false;
@@ -962,10 +699,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                             if (
                                 (element.productDetail &&
                                     element.productDetail.partNumber ==
-                                    this.defaultPartNumber) ||
+                                    this.rawProductData.defaultPartNumber) ||
                                 (element.productDetail &&
                                     element.productDetail.partNumber ==
-                                    this.productSubPartNumber)
+                                    this.rawProductData.defaultPartNumber)
                             ) {
                                 this.isPurcahseListProduct = true;
                             }
@@ -986,7 +723,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     let obj = {
                         idUser: this.user.userId,
                         userType: "business",
-                        idProduct: this.productSubPartNumber || this.defaultPartNumber,
+                        idProduct: this.rawProductData.defaultPartNumber || this.rawProductData.defaultPartNumber,
                         productName: this.rawProductData.productName,
                         description: this.rawProductData.desciption,
                         brand: this.rawProductData.brandDetails["brandName"],
@@ -1016,7 +753,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         let obj = {
             idUser: this.user.userId,
             userType: "business",
-            idProduct: this.productSubPartNumber || this.defaultPartNumber,
+            idProduct: this.rawProductData.defaultPartNumber || this.rawProductData.defaultPartNumber,
             productName: this.rawProductData.productName,
             description: this.rawProductData.productDescripton,
             brand: this.rawProductData.brandDetails["brandName"],
@@ -1218,22 +955,22 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 type: 'error',
                 text: (value == 0) ? 'Minimum qty can be ordered is: 1' : 'Please enter a value quantity',
             })
-            this.qunatityFormControl.setValue(this.productMinimmumQuantity);
+            this.qunatityFormControl.setValue(this.rawProductData.productMinimmumQuantity);
         } else {
-            if (parseInt(value) < parseInt(this.productMinimmumQuantity)) {
+            if (parseInt(value) < parseInt(this.rawProductData.productMinimmumQuantity)) {
                 this._tms.show({
                     type: 'error',
-                    text: 'Minimum qty can be ordered is: ' + this.productMinimmumQuantity
+                    text: 'Minimum qty can be ordered is: ' + this.rawProductData.productMinimmumQuantity
                 })
-                this.qunatityFormControl.setValue(this.productMinimmumQuantity);
-            } else if (parseInt(value) > parseInt(this.priceQuantityCountry['quantityAvailable'])) {
+                this.qunatityFormControl.setValue(this.rawProductData.productMinimmumQuantity);
+            } else if (parseInt(value) > parseInt(this.rawProductData.priceQuantityCountry['quantityAvailable'])) {
                 this._tms.show({
                     type: 'error',
-                    text: 'Maximum qty can be ordered is: ' + this.priceQuantityCountry['quantityAvailable']
+                    text: 'Maximum qty can be ordered is: ' + this.rawProductData.priceQuantityCountry['quantityAvailable']
                 })
-                this.qunatityFormControl.setValue(this.priceQuantityCountry['quantityAvailable']);
+                this.qunatityFormControl.setValue(this.rawProductData.priceQuantityCountry['quantityAvailable']);
             } else if (isNaN(parseInt(value))) {
-                this.qunatityFormControl.setValue(this.productMinimmumQuantity);
+                this.qunatityFormControl.setValue(this.rawProductData.productMinimmumQuantity);
                 this.checkBulkPriceMode();
             } else {
                 this.qunatityFormControl.setValue(value);
@@ -1256,18 +993,18 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     checkForBulkPricesProduct() {
-        if (this.rawProductData['productPartDetails'][this.productSubPartNumber]['productPriceQuantity']) {
-            const productBulkPrices = this.rawProductData['productPartDetails'][this.productSubPartNumber]['productPriceQuantity']['india']['bulkPrices']['india'] || {};
+        if (this.rawProductData['productPrice']) {
+            const productBulkPrices = this.rawProductData['productPriceQuantity']['bulkPrices'] || {};
             this.productBulkPrices = (Object.keys(productBulkPrices).length > 0) ? Object.assign([], productBulkPrices) : null;
             this.isBulkPricesProduct = this.productBulkPrices ? true : false;
             if (this.isBulkPricesProduct) {
                 this.productBulkPrices = this.productBulkPrices.map(priceMap => {
-                    const discount = this.commonService.calculcateDiscount(null, this.productMrp, priceMap.bulkSellingPrice);
+                    const discount = this.commonService.calculcateDiscount(null, this.rawProductData.product, priceMap.bulkSellingPrice);
                     return { ...priceMap, discount }
                 })
                 //filtering Data to show the 
                 this.productBulkPrices = this.productBulkPrices.filter((bulkPrice) => {
-                    return this.rawProductData['quantityAvailable'] >= bulkPrice['minQty'] && bulkPrice['minQty'] >= this.productMinimmumQuantity;
+                    return this.rawProductData['quantityAvailable'] >= bulkPrice['minQty'] && bulkPrice['minQty'] >= this.rawProductData.productMinimmumQuantity;
 
                 });
                 this.checkBulkPriceMode();
@@ -1286,10 +1023,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     selectProductBulkPrice(qunatity) {
-        if (qunatity > this.priceQuantityCountry['quantityAvailable']) {
+        if (qunatity > this.rawProductData.priceQuantityCountry['quantityAvailable']) {
             this._tms.show({
                 type: 'error',
-                text: 'Maximum qty can be ordered is: ' + this.priceQuantityCountry['quantityAvailable']
+                text: 'Maximum qty can be ordered is: ' + this.rawProductData.priceQuantityCountry['quantityAvailable']
             })
             return;
         }
@@ -1315,7 +1052,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         if (
             this.rawProductData &&
             this.rawProductCountData &&
-            !this.productOutOfStock
+            !this.rawProductData.productOutOfStock
         ) {
             if (
                 this.rawProductCountData["status"] &&
@@ -1351,7 +1088,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             );
             this.offerPopupInstance.instance["data"] = data["block_data"];
             this.offerPopupInstance.instance["offerIndex"] = data["index"];
-            let gstPercentage = this.taxPercentage;
+            let gstPercentage = this.rawProductData.taxPercentage;
             this.offerPopupInstance.instance['gstPercentage'] = gstPercentage;
             this.offerPopupInstance.instance["openMobikwikPopup"] = true;
             (
@@ -1425,9 +1162,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 );
             const productInfo = {};
             productInfo["productName"] = this.rawProductData.productName;
-            productInfo["minimal_quantity"] = this.productMinimmumQuantity;
-            productInfo["priceWithoutTax"] = this.priceWithoutTax;
-            productInfo["productPrice"] = this.productPrice;
+            productInfo["minimal_quantity"] = this.rawProductData.productMinimmumQuantity;
+            productInfo["priceWithoutTax"] = this.rawProductData.priceWithoutTax;
+            productInfo["productPrice"] = this.rawProductData.productPrice;
             this.offerComparePopupInstance.instance["productInfo"] = productInfo;
             this.offerComparePopupInstance.instance["quantity"] = quantity;
             this.offerComparePopupInstance.instance["openEMIPopup"] = true;
@@ -1467,11 +1204,11 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         const quantity = this.cartQunatityForProduct;
         const productInfo = {};
         productInfo["partNumber"] =
-            this.productSubPartNumber || this.rawProductData.defaultPartNumber;
+            this.rawProductData.defaultPartNumber || this.rawProductData.defaultPartNumber;
         productInfo["estimatedDelivery"] =
-            this.priceQuantityCountry["estimatedDelivery"];
+            this.rawProductData.priceQuantityCountry["estimatedDelivery"];
         productInfo["categoryDetails"] = this.rawProductData.productCategoryDetails;
-        productInfo["productPrice"] = this.productPrice;
+        productInfo["productPrice"] = this.rawProductData.productPrice;
         productInfo["quantity"] = quantity;
         productInfo["isHindiMode"] = this.isHindiUrl;
         this.pincodeFormInstance.instance["pageData"] = productInfo;
@@ -1505,12 +1242,12 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         };
         let custData = this.commonService.custDataTracking;
         let order = {
-            productID: this.productSubPartNumber,
+            productID: this.rawProductData.defaultPartNumber,
             productCategoryL1: taxo1,
             productCategoryL2: taxo2,
             productCategoryL3: taxo3,
             brand: this.rawProductData.productBrandDetails["brandName"],
-            productPrice: this.productPrice,
+            productPrice: this.rawProductData.productPrice,
             serviceability: analytics.serviceability ? "yes" : "no",
             codserviceability: analytics.codserviceability ? "yes" : "no",
             pincode: analytics.pincode,
@@ -1630,15 +1367,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             productName: this.rawProductData.productName,
             imgURL: this.productAllImages[0]["large"],
             brandName: this.rawProductData.productBrandDetails["brandName"],
-            productMrp: this.productMrp,
-            productDiscount: this.productDiscount,
+            productMrp: this.rawProductData.productMrp,
+            productDiscount: this.rawProductData.productDiscount,
             bulkPriceWithoutTax: this.bulkPriceWithoutTax,
-            priceWithoutTax: this.priceWithoutTax,
-            productPrice: this.productPrice,
+            priceWithoutTax: this.rawProductData.priceWithoutTax,
+            productPrice: this.rawProductData.productPrice,
             // bulkSellingPrice: this.bulkSellingPrice,
-            taxPercentage: this.taxPercentage,
+            taxPercentage: this.rawProductData.taxPercentage,
             // bulkDiscount: this.bulkDiscount,
-            productOutOfStock: this.productOutOfStock,
+            productOutOfStock: this.rawProductData.productOutOfStock,
         };
         let contentInfo = {};
         if (this.rawProductData.productKeyFeatures && this.rawProductData.productKeyFeatures.length) {
@@ -1705,13 +1442,13 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
         const tagsForAdobe = TAGS.join("|");
         return {
-            productID: this.productSubPartNumber,
+            productID: this.rawProductData.defaultPartNumber,
             productCategoryL1: TAXNONS[0],
             productCategoryL2: TAXNONS[1],
             productCategoryL3: TAXNONS[2],
             brand: this.rawProductData.productBrandDetails["brandName"],
-            price: this.productPrice,
-            stockStatus: this.productOutOfStock ? "Out of Stock" : "In Stock",
+            price: this.rawProductData.productPrice,
+            stockStatus: this.rawProductData.productOutOfStock ? "Out of Stock" : "In Stock",
             tags: tagsForAdobe,
         };
     }
@@ -1786,7 +1523,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 const productInfo = {};
                 productInfo["productName"] = (index > -1) ? this.productService.oosSimilarProductsData.similarData[index].productName : this.rawProductData.productName;
                 productInfo["partNumber"] =
-                    (index > -1) ? (this.productService.oosSimilarProductsData.similarData[index].productSubPartNumber || this.productService.oosSimilarProductsData.similarData[index].defaultPartNumber) : (this.productSubPartNumber || this.defaultPartNumber);
+                    (index > -1) ? (this.productService.oosSimilarProductsData.similarData[index].productSubPartNumber || this.productService.oosSimilarProductsData.similarData[index].defaultPartNumber) : (this.rawProductData.defaultPartNumber || this.rawProductData.defaultPartNumber);
 
                 this.writeReviewPopupInstance.instance["productInfo"] = productInfo;
                 (

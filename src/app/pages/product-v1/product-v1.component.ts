@@ -295,6 +295,121 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.checkForBulkPricesProduct();
     }
 
+    setProductSeoSchema()
+    {
+        if (this.isServer && this.rawProductData) {
+            let inStock = !this.rawProductData.productOutOfStock
+                ? "http://schema.org/InStock"
+                : "http://schema.org/OutOfStock";
+            let reviewCount =
+            this.apiResponse?.productReviews?.summaryData.reviewCount > 0
+                    ? this.apiResponse?.productReviews?.summaryData.reviewCount
+                    : 1;
+            let ratingValue =
+                this.apiResponse?.productReviews?.summaryData.finalAverageRating > 0
+                    ? this.apiResponse?.productReviews?.summaryData.finalAverageRating
+                    : 3.5;
+            let imageSchema = this.renderer2.createElement("script");
+            imageSchema.type = "application/ld+json";
+
+            imageSchema.text = JSON.stringify({
+                "@context": CONSTANTS.SCHEMA,
+                "@type": "ImageObject",
+                url: this.productDefaultImage,
+                name: this.rawProductData.productName,
+            });
+
+            this.renderer2.appendChild(this.document.head, imageSchema);
+
+            if (this.rawProductData.productPrice > 0) {
+                let s = this.renderer2.createElement("script");
+                s.type = "application/ld+json";
+                let desc = this.rawProductData.productDescripton;
+                if (!desc) {
+                    desc = `${this.rawProductData.productName} is a premium quality ${this.rawProductData.productCategoryDetails["categoryName"]} from ${this.rawProductData.productBrandDetails["brandName"]}. Moglix is a well-known ecommerce platform for qualitative range of ${this.rawProductData.productCategoryDetails["categoryName"]}. All ${this.rawProductData.productName} are manufactured by using quality assured material and advanced techniques, which make them up to the standard in this highly challenging field. The materials utilized to manufacture ${this.rawProductData.productName}, are sourced from the most reliable and official ${this.rawProductData.productCategoryDetails["categoryName"]} vendors, chosen after performing detailed market surveys. Thus, ${this.rawProductData.productBrandDetails["brandName"]} products are widely acknowledged in the market for their high quality. We are dedicatedly involved in providing an excellent quality array of ${this.rawProductData.productBrandDetails["brandName"]} ${this.rawProductData.productCategoryDetails["categoryName"]}.`;
+                }
+                let schema = {
+                    "@context": CONSTANTS.SCHEMA,
+                    "@type": "Product",
+                    name: this.rawProductData.productName,
+                    image: [this.productDefaultImage],
+                    description: desc,
+                    sku: this.rawProductData.defaultPartNumber,
+                    mpn: this.rawProductData.defaultPartNumber,
+                    brand: {
+                        "@type": "Brand",
+                        name: this.rawProductData.productBrandDetails["brandName"],
+                    },
+                    aggregateRating: {
+                        "@type": "AggregateRating",
+                        ratingValue: ratingValue,
+                        reviewCount: reviewCount,
+                        bestRating: "5",
+                        worstRating: "1",
+                    },
+                    offers: {
+                        "@type": "Offer",
+                        url: CONSTANTS.PROD + this.router.url,
+                        priceCurrency: "INR",
+                        price: (
+                            this.rawProductData.productPrice * this.rawProductData.productMinimmumQuantity
+                        ).toString(),
+                        itemCondition: CONSTANTS.SCHEMA + "/NewCondition",
+                        availability: inStock,
+                        seller: {
+                            "@type": "Organization",
+                            name: "Moglix",
+                        },
+                        acceptedPaymentMethod: [
+                            {
+                                "@type": "PaymentMethod",
+                                "@id": CONSTANTS.ByBankTransferInAdvance,
+                            },
+                            {
+                                "@type": "PaymentMethod",
+                                "@id": CONSTANTS.ByCOD,
+                            },
+                            {
+                                "@type": "PaymentMethod",
+                                "@id": CONSTANTS.ByPaymentMethodCreditCard,
+                            },
+                            {
+                                "@type": "PaymentMethod",
+                                "@id": CONSTANTS.ByMasterCard,
+                            },
+                            {
+                                "@type": "PaymentMethod",
+                                "@id": CONSTANTS.ByVISA,
+                            },
+                        ],
+                    },
+                };
+
+                if (!this.rawProductData.priceQuantityCountry) {
+                    delete schema["offers"]["availability"];
+                } else if (!this.rawProductData.priceQuantityCountry["quantityAvailable"]) {
+                    delete schema["offers"]["availability"];
+                } else if (this.rawProductData.priceQuantityCountry["quantityAvailable"] == 0) {
+                    delete schema["offers"]["availability"];
+                }
+                if (
+                    this.apiResponse.productReviews?.summaryData?.finalAverageRating === 0 ||
+                    null ||
+                    ""
+                ) {
+                    delete schema["aggregateRating"];
+                }
+
+                s.text = JSON.stringify(schema);
+                this.renderer2.appendChild(this.document.head, s);
+            } else {
+                console.log("product schema not created due to price zero");
+            }
+        } else {
+            console.log("product schema not created");
+        }
+    }
+
     setProductVideo(videoArr)
     {
         if (

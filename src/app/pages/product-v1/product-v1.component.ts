@@ -6,10 +6,11 @@ import { ActivatedRoute, NavigationExtras, Router } from "@angular/router";
 import { FbtComponent } from "@app/components/fbt/fbt.component";
 import { YoutubePlayerComponent } from "@app/components/youtube-player/youtube-player.component";
 import CONSTANTS from "@app/config/constants";
+import { GLOBAL_CONSTANT } from "@app/config/global.constant";
 import { ModalService } from "@app/modules/modal/modal.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { ClientUtility } from "@app/utils/client.utility";
-import { ProductsEntity } from "@app/utils/models/product.listing.search";
+import { ProductCardFeature, ProductsEntity } from "@app/utils/models/product.listing.search";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
@@ -79,13 +80,26 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     rawProductCountMessage: any;
     rawCartNotificationMessage: any;
     originalProductBO = null;
-
+    fbtFlag: boolean;
+    fbtAnalytics: { page: { pageName: string; channel: string; subSection: any; linkPageName: any; linkName: any; loginStatus: string; }; custData: { customerID: string; emailID: string; mobile: string; customerType: any; customerCategory: any; }; order: { productID: any; productCategoryL1: any; productCategoryL2: any; productCategoryL3: any; brand: any; price: number; stockStatus: string; tags: string; }; };
+    isAskQuestionPopupOpen: boolean;
+    isRFQSuccessfull: boolean;
+    rfqQuoteRaised: boolean;
+    hasGstin: any;
+    rfqTotalValue: number;
+    dealsAnalytics: { page: { pageName: any; channel: string; subSection: string; linkPageName: string; linkName: any; loginStatus: string; }; custData: { customerID: string; emailID: string; mobile: string; customerType: any; customerCategory: any; }; order: { productID: any; productCategoryL1: any; productCategoryL2: any; productCategoryL3: any; brand: any; price: any; stockStatus: string; tags: string; }; };
+    isCommonProduct: any;
+    listOfGroupedCategoriesForCanonicalUrl: any;
+    appPromoVisible: any;
+    recentProductItems: ProductsEntity[] = null;
+    similarProducts = [];
+    similarForOOSLoaded = true;
+    similarForOOSContainer = [];
 
     // lazy loaded component refs
     productShareInstance = null;
     @ViewChild("productShare", { read: ViewContainerRef })
     productShareContainerRef: ViewContainerRef;
-
     popupCrouselInstance = null;
     @ViewChild("popupCrousel", { read: ViewContainerRef })
     popupCrouselContainerRef: ViewContainerRef;
@@ -109,7 +123,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     pincodeFormInstance = null;
     @ViewChild("pincodeForm", { read: ViewContainerRef })
     pincodeFormContainerRef: ViewContainerRef;
-
     // ondemand loaded component for return info
     returnInfoInstance = null;
     @ViewChild("returnInfo", { read: ViewContainerRef })
@@ -193,19 +206,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     globalToastInstance = null;
     @ViewChild("globalToast", { read: ViewContainerRef })
     globalToastContainerRef: ViewContainerRef;
-    fbtFlag: boolean;
-    fbtAnalytics: { page: { pageName: string; channel: string; subSection: any; linkPageName: any; linkName: any; loginStatus: string; }; custData: { customerID: string; emailID: string; mobile: string; customerType: any; customerCategory: any; }; order: { productID: any; productCategoryL1: any; productCategoryL2: any; productCategoryL3: any; brand: any; price: number; stockStatus: string; tags: string; }; };
-    isAskQuestionPopupOpen: boolean;
-    isRFQSuccessfull: boolean;
-    rfqQuoteRaised: boolean;
-    hasGstin: any;
-    rfqTotalValue: number;
-    dealsAnalytics: { page: { pageName: any; channel: string; subSection: string; linkPageName: string; linkName: any; loginStatus: string; }; custData: { customerID: string; emailID: string; mobile: string; customerType: any; customerCategory: any; }; order: { productID: any; productCategoryL1: any; productCategoryL2: any; productCategoryL3: any; brand: any; price: any; stockStatus: string; tags: string; }; };
-    isCommonProduct: any;
-    listOfGroupedCategoriesForCanonicalUrl: any;
-    appPromoVisible: any;
-    recentProductItems: ProductsEntity[] = null;
-    similarProducts = [];
 
     set showLoader(value: boolean) { this.globalLoader.setLoaderState(value); }
 
@@ -262,7 +262,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             if (!rawData["product"][0]["error"]) {
                 this.apiResponse = rawData.product[0].data.data;
                 this.rawProductData = this.apiResponse.productGroup;
-                console.log(this.rawProductData);
                 this.originalProductBO = {};
                 if (this.apiResponse && this.apiResponse.tagProducts) {
                     this.onVisiblePopularDeals();
@@ -282,13 +281,18 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.setProductNotFound();
             }
         })
+        if (this.rawProductData.productOutOfStock) {
+            this.productService.resetOOOSimilarProductsData();
+            this.similarForOOSLoaded = true;
+            this.similarForOOSContainer = new Array<any>(GLOBAL_CONSTANT.oosSimilarCardCountTop).fill(true);
+            this.setSimilarProducts(this.rawProductData.productName, this.rawProductData.productCategoryDetails["categoryCode"], this.rawProductData['partNumber'], this.rawProductData['groupId']);
+        }
         this.showLoader = false;
         this.globalLoader.setLoaderState(false); 
         this.checkForRfqGetQuote();
         this.checkForAskQuestion();
         this.createSiemaOption();
         this.checkForBulkPricesProduct();
-        this.cdr.detectChanges();
     }
 
     setProductVideo(videoArr)
@@ -700,7 +704,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                             // this.commonService.triggerAttachHotKeysScrollEvent('consider-these-products');
                         }
                     }
-                    this.rawProductData.similarForOOSLoaded = false;
+                    this.similarForOOSLoaded = false;
                 });
         }
     }
@@ -1163,6 +1167,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.checkBulkPriceMode();
             }
         }
+        this.cdr.detectChanges();
     }
 
     checkBulkPriceMode() {
@@ -2495,6 +2500,20 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             custData: this.commonService.custDataTracking,
             order: this.orderTracking,
         };
+    }
+
+    readonly oosSimilarcardFeaturesConfig: ProductCardFeature = {
+        // feature config
+        enableAddToCart: true,
+        enableBuyNow: true,
+        enableFeatures: false,
+        enableRating: true,
+        enableVideo: false,
+        // design config
+        enableCard: true,
+        verticalOrientation: false,
+        horizontalOrientation: true,
+        lazyLoadImage: true
     }
 
     oosCardIndex = -1;

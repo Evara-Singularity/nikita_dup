@@ -1,5 +1,5 @@
 import { NavigationService } from '@app/utils/services/navigation.service';
-import { DOCUMENT } from "@angular/common";
+import { DatePipe, DOCUMENT } from "@angular/common";
 import
 {
     AfterViewInit,
@@ -50,6 +50,7 @@ import * as localization_en from '../../config/static-en';
 import * as localization_hi from '../../config/static-hi';
 import { product } from '../../config/static-hi';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { YTThumbnailPipe } from '@app/utils/pipes/ytthumbnail.pipe';
 
 
 interface ProductDataArg
@@ -355,7 +356,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     promoCodes: any[];
     allofferData: any[];
     couponForbrandCategory: any;
-    
+    fragment = '';
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);
@@ -393,6 +394,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         private checkoutService: CheckoutService,
         private _trackingService: TrackingService,
         private _navigationService:NavigationService,
+        private _ytThumbnail: YTThumbnailPipe,
+        private datePipe: DatePipe,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any,
         private globalAnalyticsService: GlobalAnalyticsService
@@ -455,6 +458,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
             this.getRecents();
+            this.route.fragment.subscribe((fragment: string) => {
+                this.fragment = fragment;
+            })
         }
         
     }
@@ -1365,6 +1371,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             videoArr &&
             (videoArr as any[]).length > 0
         ) {
+            this.setVideoSeoSchema(videoArr);
             (videoArr as any[]).reverse().forEach((element) =>
             {
                 // append all video after first image and atleast has one image
@@ -1687,8 +1694,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     productFbtData()
     {
+        const msn = this.route.snapshot.params['msnid']
         this.productService
-            .getFBTProducts(this.defaultPartNumber)
+            .getFBTProducts(msn)
             .subscribe((rawProductFbtData) =>
             {
                 this.fetchFBTProducts(
@@ -1849,11 +1857,16 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             ),
             mergeMap((response) => {
               if (response) {
+                const cartSession = Object.assign({}, this.cartService.getCartSession())
                 const postBody = {
                   productId: [this.rawProductData["defaultPartNumber"]],
                   toPincode:
                     response.addressDetails["shippingAddress"][0]["zipCode"],
                   price: this.productPrice,
+                  orderPlatform :CONSTANTS.DEVICE.device,
+                addressId : response.addressDetails["shippingAddress"][0]["idAddress"],
+                cartId : cartSession['cart']['cartId'],
+                userId : cartSession['cart']['userId'],
                 };
                 return this.productService
                   .getLogisticAvailability(postBody)
@@ -2366,6 +2379,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.recentProductsInstance.instance["outOfStock"] =
                 this.productOutOfStock;
             this.recentProductsInstance.instance["recentProductList"] = this.recentProductItems;    
+            this.recentProductsInstance.instance["moduleUsedIn"] = this.productNotFound ? "PRODUCT_RECENT_PRODUCT_PDP_PAGE_NOT_FOUND" : "PRODUCT_RECENT_PRODUCT";
             const custData = this.commonService.custDataTracking;
             const orderData = this.orderTracking;
             const TAXONS = this.taxons;
@@ -2967,7 +2981,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 });
             }
         } else {
-            this.goToLoginPage(this.productUrl);
+            this.goToLoginPage(this.productUrl + ((this.fragment && this.fragment.length) ? `#${this.fragment}` : ''));
         }
     }
 
@@ -3632,6 +3646,26 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         }
     }
 
+    setVideoSeoSchema(videoArr)
+    {
+        if (this.isServer && this.rawProductData && videoArr[0] && videoArr[0]['title'] && videoArr[0]['description'] && videoArr[0]['link'] && videoArr[0]['publishedDate']) {        
+            let firstVideoData=videoArr[0];
+            let videoSchema = this.renderer2.createElement("script");
+            videoSchema.type = "application/ld+json";
+            videoSchema.text = JSON.stringify({
+                "@context": CONSTANTS.SCHEMA,
+                "@type": "VideoObject",
+                name:(firstVideoData['title']) ? firstVideoData['title'] : null,
+                description:(firstVideoData['description']) ? firstVideoData['description'] : null,
+                thumbnailUrl:(firstVideoData['link']) ?  this._ytThumbnail.transform(firstVideoData['link'],'hqdefault') : null,
+                uploadDate:(firstVideoData['publishedDate']) ?  this.datePipe.transform(firstVideoData['publishedDate'], 'yyyy-MM-dd')  : null,
+                embedUrl:(firstVideoData['link']) ? firstVideoData['link'] : null
+               
+            });
+            this.renderer2.appendChild(this.document.head, videoSchema);        
+            }
+        
+    }
     // ANALYTIC CODE SECTION STARTS
     /**
      * Please place all functional code above this section
@@ -4265,7 +4299,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.location.replaceState(this.mainProductURL);
             this.askQuestionPopup();
         } else {
-            this.goToLoginPage(this.productUrl, "Continue to ask question", "askQuestion");
+            this.goToLoginPage(this.productUrl + ((this.fragment && this.fragment.length) ? `#${this.fragment}` : ''), "Continue to ask question");
         }
     }
 

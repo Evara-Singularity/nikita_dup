@@ -87,8 +87,8 @@
                                                 emi.value.emiBankInterest + '%' :
                                                 '0 %' }} p.a.</span>
                                     </div>
-                                    <span class="emi-total-payable">₹{{(emi.value.transactionAmount -
-                                        (emi.value.transactionAmount % 1))}}</span>
+                                    <span class="emi-total-payable">₹{{(emi.value.transactionAmountV1 -
+                                        (emi.value.transactionAmountV1 % 1))}}</span>
                                 </label>
                             </ng-container>
                         </div>

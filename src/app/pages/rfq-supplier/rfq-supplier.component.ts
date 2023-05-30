@@ -178,7 +178,6 @@ export class RfqSupplierComponent implements OnInit {
     this._rfqSupplierService.getRfqList(this.paramsOfRfqList).subscribe(res => {
       this._loader.setLoaderState(false);
       if (res['status'] && res['statusCode'] == 200 && res['data']['totalCount'] > 0) {
-        // console.log("nikkkkkkk", this.rfqItemListCount)
         this.totalNumberOfListRFq = res['data']['totalCount'];
         if (pagination) {
           this.paginationUpdated.next({ itemCount: res['data']['totalCount'] });
@@ -202,8 +201,6 @@ export class RfqSupplierComponent implements OnInit {
       } else if (res['status'] && res['statusCode'] == 200 && res['data']['totalCount'] == 0) {
         this.showLoadMore = false;
         this.rfqItemListCount = this.rfqItemList.length;
-        // this.rfqItemListCount = 0
-        // console.log("nikkkkkkk", this.rfqItemListCount)
       }
 
     })

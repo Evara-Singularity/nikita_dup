@@ -195,7 +195,7 @@ export class EmiComponent {
                     ele.value['emi_value'] = (payableAmount) / 6;
                     ele.value['emi_interest_paid'] = 0;
                 } else {
-                    ele.value['transactionAmount'] = ele.value['transactionAmount'] + ele.value['emi_interest_paid'];
+                    ele.value['transactionAmountV1'] = ele.value['transactionAmount'] + ele.value['emi_interest_paid'];
                 }
             });
         });

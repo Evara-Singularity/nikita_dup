@@ -24,7 +24,7 @@
                         <a href="#" [routerLink]="['../order-detail',order.orderId, detail.item_id]">
                             <div class="card-upper">
                                 <div class="card-img">
-                                    <img alt="" src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
+                                    <img alt="" src="{{(detail.productImg && detail.productImg.length > 2) ? detail.productImg.replace('-thumbnail','-medium') : imagePath+'web/dist/assets/img/placeholder.svg'}}">
                                 </div>
                                 <div class="card-desc">
                                     <p>

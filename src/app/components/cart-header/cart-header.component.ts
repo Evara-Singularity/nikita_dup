@@ -28,7 +28,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	constructor(
 		public _commonService: CommonService,
-		private _cartService: CartService,
+		public _cartService: CartService,
 		private _naviagtionService: NavigationService,
 		private _router:Router
 	) { }
@@ -40,7 +40,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		{
 			//front end created dummy cart session;
 			if (cartSession['proxy']) return;
-			this.totalPayableAmount = this._cartService.getTotalPayableAmount(cartSession['cart']);
+			this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithOutPrepaid;
 			if ((this.isCheckout || this.isPayment) && (cartSession['itemsList'] as any[]).length === 0) {
 				this._naviagtionService.handleCartWithZeroItems();
 			}

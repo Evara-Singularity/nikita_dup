@@ -38,13 +38,13 @@ export const GLOBAL_CONSTANT = {
         paymentId: 66,
         imgUrl: "freecharge-wallet.png",
       },
-      walletMobikwik: {
-        mode: "WALLET",
-        type: "mobikwik",
-        bankcode: null,
-        paymentId: 67,
-        imgUrl: "mobikwik-wallet.png",
-      },
+      // walletMobikwik: {
+      //   mode: "WALLET",
+      //   type: "mobikwik",
+      //   bankcode: null,
+      //   paymentId: 67,
+      //   imgUrl: "mobikwik-wallet.png",
+      // },
       walletAirtel: {
         mode: "WALLET",
         type: "airtelmoney",
@@ -96,13 +96,13 @@ export const GLOBAL_CONSTANT = {
         paymentId: 59,
         imgUrl: "freecharge-wallet.png",
       },
-      walletMobikwik: {
-        mode: "MOBIKWIK",
-        type: "MOBIKWIK",
-        bankcode: null,
-        paymentId: 52,
-        imgUrl: "mobikwik-wallet.png",
-      },
+      // walletMobikwik: {
+      //   mode: "MOBIKWIK",
+      //   type: "MOBIKWIK",
+      //   bankcode: null,
+      //   paymentId: 52,
+      //   imgUrl: "mobikwik-wallet.png",
+      // },
       walletAirtel: {
         mode: "AIRTEL",
         type: "AIRTEL",

@@ -24,18 +24,26 @@ export class ProductReviewComponent {
   ngOnInit(){
     this.getStaticSubjectData();
   }
+  
   ngAfterViewInit() {
     if (this._commonService.isBrowser) {
-      this._activatedRoute.fragment.subscribe((fragment: string)=>{
-        if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_REVIEW_HASH){
-          this.reviewRatingPopup.emit()
-        }
-        else if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_WRITE_REVIEW_HASH){
-          this.writeReview.emit(-1)
-        }
-      })
+     setTimeout(() => {
+      this.checkForFragment()
+     }, 600);
     }
   }
+
+  checkForFragment(){
+    this._activatedRoute.fragment.subscribe((fragment: string)=>{
+      if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_REVIEW_HASH){
+        this.reviewRatingPopup.emit()
+      }
+      else if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_WRITE_REVIEW_HASH){
+        this.writeReview.emit(-1)
+      }
+    })
+  }
+
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;

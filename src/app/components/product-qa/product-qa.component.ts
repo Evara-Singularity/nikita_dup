@@ -22,13 +22,21 @@ export class ProductQaComponent {
   }
   ngAfterViewInit() {
     if (this._commonService.isBrowser) {
+      setTimeout(() => {
+        this.checkForFragment()
+      }, 600);
+    }
+  }
+    
+    checkForFragment(){
       this._activatedRoute.fragment.subscribe((fragment: string)=>{
         if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_QNA_HASH){
           this.handleFaqListPopup.emit()
         }
       })
     }
-  }
+
+
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;

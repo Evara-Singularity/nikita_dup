@@ -47,7 +47,6 @@ export class ProductPopularDealsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.apiResponse);
     this.getProductPopularDeals(this.apiResponse);
     this.cardMetaInfo = {
       redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
@@ -64,11 +63,7 @@ export class ProductPopularDealsComponent implements OnInit {
   }
   
   getProductPopularDeals(response: any) {
-    this.resultArray = Object.keys(response["taggedProducts"])
-      .map((index) => {
-        return response["taggedProducts"][index];
-      })
-      .filter((item) => item.productList.length !== 0); // removing Tags with 0 products
+    this.resultArray = response;
     this.setProductList(0, this.resultArray[0]);        // to set first default value
   }
 

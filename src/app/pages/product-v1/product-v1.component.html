@@ -134,7 +134,7 @@
     </div>
 
     <section id="popularDeals" class="common-product"
-        *ngIf="!rawProductData?.productOutOfStock && apiResponse?.tagProducts && apiResponse?.tagProducts?.totalCount > 0">
+        *ngIf="!rawProductData?.productOutOfStock && apiResponse?.tagProducts && apiResponse?.tagProducts?.length > 0">
         <product-popular-deals [outOfStock]='rawProductData?.productOutOfStock' [apiResponse]='apiResponse?.tagProducts'
             [analytics]='dealsAnalytics'></product-popular-deals>
     </section>

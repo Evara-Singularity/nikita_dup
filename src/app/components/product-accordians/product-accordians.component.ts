@@ -49,8 +49,8 @@ export class ProductAccordiansComponent {
 
   setAccordianData(relatedLinkRes, categoryBucketRes, similarCategoryRes) {
 
-    if (relatedLinkRes && relatedLinkRes['data']) {
-      this.ACCORDIAN_DATA[0] = relatedLinkRes['data'];
+    if (relatedLinkRes && relatedLinkRes.length) {
+      this.ACCORDIAN_DATA[0] = relatedLinkRes;
       // accordian data
       if (this.ACCORDIAN_DATA[0]?.length > 0) {
         this.accordiansDetails.push({
@@ -60,15 +60,18 @@ export class ProductAccordiansComponent {
         });
       }
     }
-    if (categoryBucketRes && categoryBucketRes.hasOwnProperty('categoryLinkList') && categoryBucketRes['categoryLinkList']) {
-      this.ACCORDIAN_DATA[1] = categoryBucketRes['categoryLinkList'];
+    if (categoryBucketRes && categoryBucketRes.length) {
+      categoryBucketRes.map(each => {
+        each['link'] = each['categoryLink']
+      });
+      this.ACCORDIAN_DATA[1] = categoryBucketRes;
 
       // accordian data
       // console.log(this.accordiansDetails['name']);
       this.accordiansDetails.push({
         name: this.productStaticData.accordian_list2_label,
         extra: this.categoryBrandDetails.brand.brandName,
-        data: Object.entries(this.ACCORDIAN_DATA[1]).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+        data: this.categoryBucketRes,
         icon: 'icon-brand_store'
       });
     }

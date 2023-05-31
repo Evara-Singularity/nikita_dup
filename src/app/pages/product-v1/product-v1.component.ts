@@ -54,7 +54,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     carouselInitialized: boolean = false;
     iOptions: any = null;
     user: any;
-    isPurcahseListProduct: boolean;
+    isPurcahseListProduct: boolean = false;
     moveToSlide$ = new Subject<number>();
     displayCardCta: boolean;
     pageUrl: string;
@@ -262,7 +262,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             if (!rawData["product"][0]["error"]) {
                 this.apiResponse = rawData.product[0].data.data;
                 this.rawProductData = this.apiResponse.productGroup;
-                console.log(this.rawProductData);
+                console.log(this.apiResponse);
                 this.originalProductBO = this.rawProductData;
                 if (this.apiResponse && this.apiResponse.tagProducts) {
                     this.onVisiblePopularDeals();
@@ -957,6 +957,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             return;
         }
         this.isPurcahseListProduct = false;
+        this.cdr.detectChanges();
         if (this.user) {
             if (this.user.authenticated == "true") {
                 const request = { idUser: this.user.userId, userType: "business" };
@@ -969,13 +970,14 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                         purchaseLists.forEach((element) => {
                             if (
                                 (element.productDetail &&
-                                    element.productDetail.partNumber ==
+                                    element.productDetail.productBO.partNumber ==
                                     this.rawProductData.defaultPartNumber) ||
                                 (element.productDetail &&
                                     element.productDetail.partNumber ==
                                     this.rawProductData.defaultPartNumber)
                             ) {
                                 this.isPurcahseListProduct = true;
+                                this.cdr.detectChanges();
                             }
                         });
                     }
@@ -997,8 +999,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                         idProduct: this.rawProductData.defaultPartNumber || this.rawProductData.defaultPartNumber,
                         productName: this.rawProductData.productName,
                         description: this.rawProductData.desciption,
-                        brand: this.rawProductData.brandDetails["brandName"],
-                        category: this.rawProductData.categoryDetails["categoryCode"],
+                        brand: this.rawProductData.productBrandDetails["brandName"],
+                        category: this.rawProductData.productCategoryDetails["categoryCode"],
                     };
                     this.showLoader = true;
                     this.productService.addToPurchaseList(obj).subscribe((res) => {
@@ -1008,13 +1010,14 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                                 type: "success",
                                 text: this.productStaticData.successfully_added_to_wishlist,
                             });
+                            this.cdr.detectChanges();
                         }
                     });
                 } else {
-                    // this.goToLoginPage(this.productUrl);
+                    this.goToLoginPage(this.rawProductData.productUrl);
                 }
             } else {
-                // this.goToLoginPage(this.productUrl);
+                this.goToLoginPage(this.rawProductData.productUrl);
             }
         }
     }
@@ -1027,8 +1030,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             idProduct: this.rawProductData.defaultPartNumber || this.rawProductData.defaultPartNumber,
             productName: this.rawProductData.productName,
             description: this.rawProductData.productDescripton,
-            brand: this.rawProductData.brandDetails["brandName"],
-            category: this.rawProductData.categoryDetails[0]["categoryCode"],
+            brand: this.rawProductData.productBrandDetails["brandName"],
+            category: this.rawProductData.productCategoryDetails["categoryCode"],
         };
 
         this.productService.removePurchaseList(obj).subscribe(
@@ -1181,8 +1184,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         // make sure no browser history is present
         if (this.location.getState() && this.location.getState()['navigationId'] == 1) {
             this.sessionStorageService.store('NO_HISTROY_PDP', 'NO_HISTROY_PDP');
-            if (this.rawProductData.categoryDetails && this.rawProductData.categoryDetails['categoryLink']) {
-                window.history.replaceState('', '', this.rawProductData.categoryDetails['categoryLink'] + '?back=1');
+            if (this.rawProductData.productCategoryDetails && this.rawProductData.productCategoryDetails['categoryLink']) {
+                window.history.replaceState('', '', this.rawProductData.productCategoryDetails['categoryLink'] + '?back=1');
                 window.history.pushState('', '', this.router.url);
             }
         }
@@ -1268,7 +1271,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             const productBulkPrices = this.rawProductData['priceQuantityCountry']['bulkPrices']['india'] || {};
             this.productBulkPrices = (Object.keys(productBulkPrices).length > 0) ? Object.assign([], productBulkPrices) : null;
             this.isBulkPricesProduct = this.productBulkPrices ? true : false;
-            console.log(this.isBulkPricesProduct)
             if (this.isBulkPricesProduct) {
                 this.productBulkPrices = this.productBulkPrices.map(priceMap => {
                     const discount = this.commonService.calculcateDiscount(null, this.rawProductData.product, priceMap.bulkSellingPrice);
@@ -2193,7 +2195,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             msn: this.rawProductData.defaultPartNumber,
             productName: (this.isHindiUrl) ? this.originalProductBO['productName'] : this.rawProductData.productName,
             moq: this.rawProductData.productMinimmumQuantity,
-            brand: (this.isHindiUrl) ? this.originalProductBO['brandDetails']['brandName'] : this.rawProductData.productBrandDetails["brandName"],
+            brand: this.rawProductData.productBrandDetails["brandName"],
             taxonomyCode: this.rawProductData.productCategoryDetails["taxonomy"],
             adobeTags: "",
         };

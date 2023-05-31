@@ -3290,6 +3290,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.addToCartToastContainerRef.detach();
             });
         }
+        this.cdr.detectChanges();
     }
 
     intialAddtoCartSocketAnalyticEvent(buynow: boolean) {

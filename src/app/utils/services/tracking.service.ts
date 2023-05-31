@@ -110,7 +110,7 @@ export class TrackingService
         let productPriceQuantity = productBo['priceQuantityCountry'] || null;
         PRODUCT['quantity'] = productBo['quantityAvailable'];
         PRODUCT['brand'] = productBo['productBrandDetails'] ? productBo['productBrandDetails']['brandName'] : "";
-        PRODUCT['productTags'] = productBo['productTags'];
+        PRODUCT['productTags'] = [];
         PRODUCT['categoryDetails'] = (productBo['productCategoryDetails']) ? productBo['productCategoryDetails'] : null;
         PRODUCT['price'] = null;
         if (productPriceQuantity && productPriceQuantity['sellingPrice']) {

@@ -12,7 +12,7 @@
         (scrollToId$)="scrollToId(!rawProductData?.productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
         [imagePathAsset]="imagePathAsset" (openPopUpcrousel)="openPopUpcrousel(0)"
         (sendProductImageClickTracking)="sendProductImageClickTracking()" [iOptions]="iOptions"
-        [productTags]="apiResponse?.tags" (translate$)="translate()" [isAcceptLanguage]="rawProductData?.isAcceptLanguage">
+        [productTags]="apiResponse?.tags" (translate$)="translate()" [isAcceptLanguage]="true">
     </shared-product-carousel>
     <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)"
         [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPirces"

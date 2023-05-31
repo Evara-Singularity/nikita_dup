@@ -23,6 +23,8 @@ import { WhatsAppToastModule } from "@app/components/whatsapp-toast/whatsapp-toa
 import { BreadcrumbNavModule } from "@app/modules/breadcrumb-nav/breadcrumb-nav.module";
 import { EmiPlansModule } from "@app/modules/emi-plans/emi-plans.module";
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
+import { ProductInfoModule } from "@app/modules/product-info/product-info.module";
+import { ProductOosSimilarModule } from "@app/modules/product-oos-similar/product-oos-similar.module";
 import { SharedProductCarouselModule } from "@app/modules/shared-product-carousel/shared-product-carousel.module";
 import { FloatingButtonContainerModule } from "@app/modules/ui/floating-button-container/floating-button-container.module";
 import { ObserveVisibilityDirectiveModule } from "@app/utils/directives/observe-visibility.directive";
@@ -61,7 +63,9 @@ import { ProductV1RoutingModule } from "./product-v1.routing.module";
         ProductGroupingAttributesModule,
         ProductBulkQuantityModule,
         OosSimilarSectionModule,
-        EmiPlansModule
+        EmiPlansModule,
+        ProductOosSimilarModule,
+        ProductInfoModule
     ],
     exports: [],
     providers: [NgxSiemaService]

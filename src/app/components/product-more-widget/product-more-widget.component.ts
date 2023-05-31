@@ -23,7 +23,6 @@ export class ProductMoreWidgetComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
   }
 
 

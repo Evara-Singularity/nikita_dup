@@ -14,7 +14,7 @@ import CONSTANTS from '@app/config/constants';
     styleUrls: ['./product-check-pincode.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductCheckPincodeComponent implements OnInit, DoCheck
+export class ProductCheckPincodeComponent implements OnInit
 {
     productStaticData = this._commonService.defaultLocaleValue;
     readonly FALSE = false;
@@ -150,6 +150,7 @@ export class ProductCheckPincodeComponent implements OnInit, DoCheck
                 }
             )
         }
+        this.cdr.detectChanges();
     }
 
     get getCodAvailable(): boolean {
@@ -194,6 +195,7 @@ export class ProductCheckPincodeComponent implements OnInit, DoCheck
         } else if (avgPlatformEstimated) {
             this.setAvgDeliveryInfo(avgPlatformEstimated, NO);
         }
+        this.cdr.detectChanges();
     }
 
     checkPinocdeKey(event)
@@ -218,10 +220,6 @@ export class ProductCheckPincodeComponent implements OnInit, DoCheck
             this.deliveryDays = days + ' day(s)';
             this.deliveryAnalytics = analytics;
         }
-    }
-
-    ngDoCheck() {
-        this.cdr.detectChanges();
     }
 
 }

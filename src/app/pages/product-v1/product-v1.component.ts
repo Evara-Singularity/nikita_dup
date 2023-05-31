@@ -262,6 +262,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             if (!rawData["product"][0]["error"]) {
                 this.apiResponse = rawData.product[0].data.data;
                 this.rawProductData = this.apiResponse.productGroup;
+                console.log(this.rawProductData);
                 this.originalProductBO = {};
                 if (this.apiResponse && this.apiResponse.tagProducts) {
                     this.onVisiblePopularDeals();
@@ -282,10 +283,13 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             }
         })
         if (this.rawProductData.productOutOfStock) {
+            this.commonService.enableAppPromoInHeader = true;
             this.productService.resetOOOSimilarProductsData();
             this.similarForOOSLoaded = true;
             this.similarForOOSContainer = new Array<any>(GLOBAL_CONSTANT.oosSimilarCardCountTop).fill(true);
             this.setSimilarProducts(this.rawProductData.productName, this.rawProductData.productCategoryDetails["categoryCode"], this.rawProductData['partNumber'], this.rawProductData['groupId']);
+        } else {
+            this.commonService.enableAppPromoInHeader = false;
         }
         this.showLoader = false;
         this.globalLoader.setLoaderState(false); 
@@ -563,7 +567,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                         this.clearOfferInstance();
                     }else{
                         this.clearOfferInstance();
-                        // this.onVisibleOffer();
                     }
                     this.showLoader = false;
                 }
@@ -793,8 +796,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    setSimilarProducts(productName, categoryCode, productId, groupId)
-    {
+    setSimilarProducts(productName, categoryCode, productId, groupId) {
         this.similarProducts = [];
         if (this.isBrowser) {
             this.productService
@@ -815,11 +817,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                         } else {
                             this.similarProducts = products;
                         }
-                        if (this.rawProductData.productOutOfStock) {
-                            // this.commonService.triggerAttachHotKeysScrollEvent('consider-these-products');
-                        }
                     }
                     this.similarForOOSLoaded = false;
+                    this.cdr.detectChanges();
                 });
         }
     }
@@ -1343,6 +1343,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
         this.rawProductCountMessage = MSG;
         this.rawCartNotificationMessage = CART_NOTIFICATION_MSG;
+        this.cdr.detectChanges();
+    }
+
+    fetchCategoryExtras() {
+        this.productService.getAllOffers().subscribe((resp: any) => {
+            if(resp && resp.status && resp.data && resp.data.length) {
+                this.viewPopUpOpen(resp.data[0])
+            }
+        })
     }
 
     async viewPopUpOpen(data) {
@@ -1362,7 +1371,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.injector
             );
             this.offerPopupInstance.instance["data"] = data["block_data"];
-            this.offerPopupInstance.instance["offerIndex"] = data["index"];
+            this.offerPopupInstance.instance["offerIndex"] = 0;
             let gstPercentage = this.rawProductData.taxPercentage;
             this.offerPopupInstance.instance['gstPercentage'] = gstPercentage;
             this.offerPopupInstance.instance["openMobikwikPopup"] = true;
@@ -1381,7 +1390,21 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             ).subscribe((loaderStatus) => {
                 this.showLoader = loaderStatus;
             });
+            this.cdr.detectChanges();
         }
+    }
+
+    fetchPromoCodes() {
+        this.showLoader = true;
+        let url = '?msn=' + this.rawProductData.defaultPartNumber;
+        if(this.user && this.user['authenticated'] == 'true') {
+            url += `&userId=${this.user.userId}`
+        }
+        this.productService.getAllPromoCodeOffers(url).subscribe((resp: any) => {
+            if(resp && resp.status) {
+                this.promoCodePopUpOpen(resp.data.applicablePromoCodeList);
+            }
+        })
     }
 
     async promoCodePopUpOpen(data) {
@@ -1416,6 +1439,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             ).subscribe((loaderStatus) => {
                 this.showLoader = loaderStatus;
             });
+            this.cdr.detectChanges();
         }
     }
 
@@ -2647,7 +2671,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     null,
                     this.injector
                 );
-            this.similarProductInstanceOOS.instance["productBaseUrl"] = this.rawProductData["defaultCanonicalUrl"];
+            this.similarProductInstanceOOS.instance["productBaseUrl"] = this.rawProductData["canonicalUrl"];
             if (this.similarProductInstanceOOS) {
                 // Image cick Event Handler
                 (

@@ -12,7 +12,7 @@
         (scrollToId$)="scrollToId(!rawProductData?.productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
         [imagePathAsset]="imagePathAsset" (openPopUpcrousel)="openPopUpcrousel(0)"
         (sendProductImageClickTracking)="sendProductImageClickTracking()" [iOptions]="iOptions"
-        [productTags]="productTags" (translate$)="translate()" [isAcceptLanguage]="rawProductData?.isAcceptLanguage">
+        [productTags]="apiResponse?.tags" (translate$)="translate()" [isAcceptLanguage]="rawProductData?.isAcceptLanguage">
     </shared-product-carousel>
     <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)"
         [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPirces"
@@ -45,7 +45,7 @@
     <div class="coupon" *ngIf='!rawProductData?.productOutOfStock && rawProductData?.priceQuantityCountry?.mrp > 0'>
         <app-product-offers [price]='rawProductData?.productPrice' [gstPercentage]='rawProductData?.taxPercentage'
             [productmsn]='rawProductData?.defaultPartNumber' [isHindiMode]='isHindiUrl'
-            (viewPopUpHandler)='viewPopUpOpen($event)' (promoCodePopUpHandler)='promoCodePopUpOpen($event)'
+            (viewPopUpHandler)='fetchCategoryExtras()' (promoCodePopUpHandler)='fetchPromoCodes()'
             [brandName]='rawProductData?.productBrandDetails?.brandName'
             [couponForbrandCategory]='apiResponse?.prepaidDiscount'
             [categoryId]='rawProductData?.productCategoryDetails?.categoryCode'
@@ -83,11 +83,11 @@
 
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
-    <!-- <div *ngIf="rawProductData?.productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" data-observeVisibility
+    <div *ngIf="rawProductData?.productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" data-observeVisibility
         [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
         <ng-container #productRFQ></ng-container>
         <product-skeletons [type]="'RFQ'" [templateRefInstance]="pincodeFormInstance"></product-skeletons>
-    </div> -->
+    </div>
 
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
@@ -111,7 +111,7 @@
     <product-get-quote (raiseRFQQuote$)="raiseRFQQuote()" [rfqQuoteRaised]="rfqQuoteRaised"
         [productOutOfStock]="rawProductData?.productOutOfStock" [productMrp]="rawProductData?.priceQuantityCountry?.mrp"
         [productCategoryDetails]="rawProductData?.productCategoryDetails" [productName]="rawProductData?.productName"
-        [productAllImages]="rawProductData?.productAllImages"></product-get-quote>
+        [productAllImages]="productAllImages"></product-get-quote>
 
     <div *ngIf="!rawProductData?.productOutOfStock" id="similarProducts" class="common-product" data-observeVisibility
         [debounceTime]="100" (visible)="onVisibleSimilar($event)">

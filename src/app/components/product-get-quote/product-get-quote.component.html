@@ -7,7 +7,7 @@
             <p class="heading-4"><i class="icon-check-active"></i>&nbsp; {{productStaticData.get_rfq_text_2}}</p>
         </div>
         <div class="bn-right">
-            <img [attr.src]="productAllImages[0]['small']" width="50" height="50">
+            <img [attr.src]="productAllImages && productAllImages?.length && productAllImages[0]['small']" width="50" height="50">
         </div>
     </div>
     <div class="button-sec shimmer">

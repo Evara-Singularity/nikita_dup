@@ -1,14 +1,15 @@
 import { LocalStorageService } from 'ngx-webstorage';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, Inject, Input, NgModule, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, NgModule, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { DOCUMENT } from "@angular/common";
 @Component({
 	selector: 'product-get-quote',
 	templateUrl: './product-get-quote.component.html',
-	styleUrls: ['./product-get-quote.component.scss']
+	styleUrls: ['./product-get-quote.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductGetQuoteComponent implements OnInit, AfterViewInit
 {
@@ -32,6 +33,7 @@ export class ProductGetQuoteComponent implements OnInit, AfterViewInit
 	ngOnInit(): void
 	{
 		this.getStaticSubjectData();
+		console.log(this.productAllImages);
 	}
 	getStaticSubjectData(){
 		this.commonService.changeStaticJson.subscribe(staticJsonData => {

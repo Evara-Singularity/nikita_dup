@@ -21,6 +21,7 @@ import { ProductRfqThanksPopupModule } from "@app/components/product-rfq-thanks-
 import { ProductSkeletonsModule } from "@app/components/product-skeletons/product-skeletons.component";
 import { WhatsAppToastModule } from "@app/components/whatsapp-toast/whatsapp-toast.component";
 import { BreadcrumbNavModule } from "@app/modules/breadcrumb-nav/breadcrumb-nav.module";
+import { EmiPlansModule } from "@app/modules/emi-plans/emi-plans.module";
 import { NotFoundModule } from "@app/modules/not-found/not-found.module";
 import { SharedProductCarouselModule } from "@app/modules/shared-product-carousel/shared-product-carousel.module";
 import { FloatingButtonContainerModule } from "@app/modules/ui/floating-button-container/floating-button-container.module";
@@ -59,7 +60,8 @@ import { ProductV1RoutingModule } from "./product-v1.routing.module";
         FloatingButtonContainerModule,
         ProductGroupingAttributesModule,
         ProductBulkQuantityModule,
-        OosSimilarSectionModule
+        OosSimilarSectionModule,
+        EmiPlansModule
     ],
     exports: [],
     providers: [NgxSiemaService]

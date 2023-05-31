@@ -263,7 +263,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.apiResponse = rawData.product[0].data.data;
                 this.rawProductData = this.apiResponse.productGroup;
                 console.log(this.rawProductData);
-                this.originalProductBO = {};
+                this.originalProductBO = this.rawProductData;
                 if (this.apiResponse && this.apiResponse.tagProducts) {
                     this.onVisiblePopularDeals();
                 }
@@ -853,7 +853,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.productUtil.resetFBTSource();
         } else {
             this.fbtFlag = false;
-            let rootvalidation = this.productUtil.validateProduct(productBO);
+            let rootvalidation = this.productUtil.validateProductV1(productBO);
             if (rootvalidation) {
                 this.processFBTResponse(productBO, rawProductFbtData);
             }

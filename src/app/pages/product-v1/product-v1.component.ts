@@ -1150,7 +1150,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.sendProductImageClickTracking(":oos:similar")
             const options = Object.assign({}, this.iOptions);
             options.pager = false;
-            this.popupCrouselInstance.instance["analyticProduct"] = this._trackingService.basicPDPTracking(this.rawProductData);
+            this.popupCrouselInstance.instance["analyticProduct"] = this._trackingService.basicPDPTrackingV1(this.rawProductData);
             this.popupCrouselInstance.instance["oosProductIndex"] = oosProductIndex;
             this.popupCrouselInstance.instance["options"] = options;
             this.popupCrouselInstance.instance["productAllImages"] = oosProductIndex < 0 ? this.productAllImages : this.productService.oosSimilarProductsData.similarData[oosProductIndex].productAllImages;
@@ -1613,7 +1613,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.injector
             );
         this.productInfoPopupInstance.instance["oosProductIndex"] = oosProductIndex;
-        this.productInfoPopupInstance.instance["analyticProduct"] = this._trackingService.basicPDPTracking(this.rawProductData);
+        this.productInfoPopupInstance.instance["analyticProduct"] = this._trackingService.basicPDPTrackingV1(this.rawProductData);
         this.productInfoPopupInstance.instance["modalData"] =
             oosProductIndex > -1
                 ? this.productService.getProductInfo(infoType, oosProductIndex)
@@ -1788,7 +1788,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     async showYTVideo(link) {
         if (!this.youtubeModalInstance) {
-            const PRODUCT = this._trackingService.basicPDPTracking(this.rawProductData);
+            const PRODUCT = this._trackingService.basicPDPTrackingV1(this.rawProductData);
             let analyticsDetails = this._trackingService.getCommonTrackingObject(PRODUCT, "pdp");
             let ytParams = "?autoplay=1&rel=0&controls=1&loop&enablejsapi=1";
             let videoDetails = { url: link, params: ytParams };
@@ -1995,11 +1995,13 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                         }
                         this.productService.getReviewsRating(reviewObj).subscribe((newRes) => {
                             if (newRes["code"] === 200) {
-                                this.sortedReviewsByDate(newRes['data']['reviewList']);
-                                this.apiResponse.proudctReviews.reviewList[i]["isReviewHelpfulCountYes"] = newRes['data']['reviewList'][i]["isReviewHelpfulCountYes"];
-                                this.apiResponse.proudctReviews.reviewList[i]['like'] = reviewValue == 'yes' ? 1 : 0;
-                                this.apiResponse.proudctReviews.reviewList[i]['dislike'] = reviewValue == 'no' ? 1 : 0;
-                                this.apiResponse.proudctReviews.reviewList[i]["isReviewHelpfulCountNo"] = newRes['data']['reviewList'][i]["isReviewHelpfulCountNo"];
+                                const filteredObj = newRes['data']['reviewList'].find(each => each.id == this.apiResponse.productReviews.reviewList[i].id);
+                                this.apiResponse.productReviews.reviewList[i]["yes"] = filteredObj["isReviewHelpfulCountYes"];
+                                this.apiResponse.productReviews.reviewList[i]['like'] = reviewValue == 'yes' ? 1 : 0;
+                                this.apiResponse.productReviews.reviewList[i]['dislike'] = reviewValue == 'no' ? 1 : 0;
+                                this.apiResponse.productReviews.reviewList[i]["no"] = filteredObj["isReviewHelpfulCountNo"];
+                                this.apiResponse.productReviews.reviewList[i] = JSON.parse(JSON.stringify(this.apiResponse.productReviews.reviewList[i]));
+                                this.cdr.detectChanges();
                             }
                         });
 

@@ -1,18 +1,33 @@
-<div class="custom-promocode" *ngIf="appliedPromocode != undefined && appliedPromocode.length > 0" (click)="$event.stopPropagation();openPromoCodeList()">
+<div class="custom-promocode" *ngIf="appliedPromocode != undefined && appliedPromocode.length > 0"
+    (click)="$event.stopPropagation();openPromoCodeList()">
     <custom-promo-code [isPromocodeList]="false"></custom-promo-code>
 </div>
 <div class="promocode-list" *ngIf="appliedPromocode != undefined && appliedPromocode.length == 0">
     <!-- <p class="open-offers" (click)="$event.stopPropagation();openPromoCodeList()">APPLY COUPON </p> -->
 
     <div class="pwa-row pad-0 promo-strip">
-        <div class="coupen-strip" (click)="$event.stopPropagation();openPromoCodeList()">
-            <div class="coupen-icon">
-                <i class="icon-offer"></i>
+        <div class="coupen-strip-section">
+            <!-- <div class="coupen-card"> -->
+            <div class="apply-coupon">
+                <div class="inner-coupon">
+                    <i class="icon-offer"></i>
+                    <div class="coupen-code">
+                        <h3>MAR75</h3>
+                        <p class="promo-description">Flat Rs.75 Off, min cart value Rs 1700</p>
+                    </div>
+                </div>
+                <button class="btn">APPLY</button>
             </div>
-            <div class="coupen-text">
-                <h3>APPLY COUPON</h3>
+            <!-- </div> -->
+            <div class="coupen-strip" (click)="$event.stopPropagation();openPromoCodeList()">
+                <div class="coupen-icon">
+                    <i class="icon-offer"></i>
+                </div>
+                <div class="coupen-text">
+                    <h3>APPLY COUPON</h3>
+                </div>
+                <i class="icon-next"></i>
             </div>
-            <i class="icon-next"></i>
         </div>
     </div>
 </div>

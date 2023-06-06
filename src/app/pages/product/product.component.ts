@@ -188,10 +188,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     similarProductInstanceOOS = null;
     @ViewChild("similarProductOOS", { read: ViewContainerRef })
     similarProductInstanceOOSContainerRef: ViewContainerRef;
-    // ondemand loaded components for sponsered products
-    sponseredProductsInstance = null;
-    @ViewChild("sponseredProducts", { read: ViewContainerRef })
-    sponseredProductsContainerRef: ViewContainerRef;
     // ondemand loaded components for recents products
     recentProductsInstance = null;
     @ViewChild("recentProducts", { read: ViewContainerRef })
@@ -557,16 +553,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             {
                 this.nudgeOpened();
             })
-            // this.productService.notifyImagePopupState.pipe(distinctUntilChanged()).subscribe(status => {
-            //     if(!status && this.popupCrouselContainerRef) {
-            //         console.log('I am called');
-            //         this.clearImageCrouselPopup();
-            //         this.router.navigateByUrl(this.router.url);
-            //         // this.ngOnInit();
-            //         // this.ngOnInit();
-            //         // this.resetLazyComponents();
-            //     }
-            // })
 
         }
     }
@@ -1133,11 +1119,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.similarProductInstanceOOS = null;
             this.similarProductInstanceOOSContainerRef.remove();
             this.onVisibleSimilarOOS(null);
-        }
-        if (this.sponseredProductsInstance) {
-            this.sponseredProductsInstance = null;
-            if (this.sponseredProductsContainerRef) { this.sponseredProductsContainerRef.remove();}
-            this.onVisibleSponsered(null);
         }
 
         if (this.recentProductsInstance && this.recentProductsContainerRef !=undefined) {
@@ -2297,55 +2278,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     {
         this.setMetatag(index);
     }
-
-    // dynamically load similar section
-    async onVisibleSponsered(htmlElement)
-    {
-        if (!this.sponseredProductsInstance) {
-            const { ProductSponsoredListComponent } = await import(
-                "./../../components/product-sponsored-list/product-sponsored-list.component"
-            );
-            const factory = this.cfr.resolveComponentFactory(
-                ProductSponsoredListComponent
-            );
-            this.sponseredProductsInstance =
-                this.sponseredProductsContainerRef.createComponent(
-                    factory,
-                    null,
-                    this.injector
-                );
-            this.sponseredProductsInstance.instance["productName"] = this.productName;
-            this.sponseredProductsInstance.instance["productId"] =
-                this.defaultPartNumber;
-            this.sponseredProductsInstance.instance["categoryCode"] =
-                this.productCategoryDetails["categoryCode"];
-            this.sponseredProductsInstance.instance["outOfStock"] =
-                this.productOutOfStock;
-            (this.sponseredProductsInstance.instance[
-                "sponseredDataLoaded$"
-            ] as EventEmitter<any>
-            ).subscribe((data) =>
-            {
-                // this.commonService.triggerAttachHotKeysScrollEvent('sponsered-products');
-            });
-            const custData = this.commonService.custDataTracking;
-            const orderData = this.orderTracking;
-            const TAXONS = this.taxons;
-            const page = {
-                pageName: null,
-                channel: "pdp",
-                subSection: "You May Also Like",
-                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-                linkName: null,
-                loginStatus: this.commonService.loginStatusTracking,
-            };
-            this.sponseredProductsInstance.instance["analytics"] = {
-                page: page,
-                custData: custData,
-                order: orderData,
-            };
-        }
-    }
     
     getRecents() {
         let user = this.localStorageService.retrieve('user');
@@ -2461,8 +2393,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         
     }
 
-    async onVisibleProductRFQ(htmlElement)
+    async onVisibleProductRFQ(htmlElement, isFromScroll = false)
     {
+        isFromScroll && this.onVisibleSimilarOOS(null);
         if (this.holdRFQForm) return
         this.removeRfqForm();
         if (!this.productRFQInstance) {

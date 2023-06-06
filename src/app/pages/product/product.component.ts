@@ -1751,37 +1751,37 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     async showFBT()
     {
-        if (this.fbtFlag) {
-            const TAXONS = this.taxons;
-            let page = {
-                pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-                channel: "About This Product",
-                subSection: null,
-                linkPageName: null,
-                linkName: null,
-                loginStatus: this.commonService.loginStatusTracking,
-            };
-            let analytics = {
-                page: page,
-                custData: this.commonService.custDataTracking,
-                order: this.orderTracking,
-            };
-            this.modalService.show({
-                inputs: {
-                    modalData: {
-                        isModal: true,
-                        backToCartFlow: this.addToCartFromModal.bind(this),
-                        analytics: analytics,
-                        productQuantity :this.cartQunatityForProduct
-                    },
-                },
-                component: FbtComponent,
-                outputs: {},
-                mConfig: { className: "ex" },
-            });
-        } else {
+        // if (this.fbtFlag) {
+        //     const TAXONS = this.taxons;
+        //     let page = {
+        //         pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+        //         channel: "About This Product",
+        //         subSection: null,
+        //         linkPageName: null,
+        //         linkName: null,
+        //         loginStatus: this.commonService.loginStatusTracking,
+        //     };
+        //     let analytics = {
+        //         page: page,
+        //         custData: this.commonService.custDataTracking,
+        //         order: this.orderTracking,
+        //     };
+        //     this.modalService.show({
+        //         inputs: {
+        //             modalData: {
+        //                 isModal: true,
+        //                 backToCartFlow: this.addToCartFromModal.bind(this),
+        //                 analytics: analytics,
+        //                 productQuantity :this.cartQunatityForProduct
+        //             },
+        //         },
+        //         component: FbtComponent,
+        //         outputs: {},
+        //         mConfig: { className: "ex" },
+        //     });
+        // } else {
             this.addToCart(false);
-        }
+        // }
     }
 
     // cart methods 

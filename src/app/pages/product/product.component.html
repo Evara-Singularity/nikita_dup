@@ -76,7 +76,7 @@
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
     <div *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" data-observeVisibility
-        [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
+        [debounceTime]="100" (visible)="onVisibleProductRFQ($event, true)">
         <ng-container #productRFQ></ng-container>
         <product-skeletons [type]="'RFQ'" [templateRefInstance]="pincodeFormInstance"></product-skeletons>
     </div>
@@ -116,10 +116,10 @@
     </product-more-widget>
     
     <!-- removed sponsored products -->
-    <div id="sponseredProducts" [ngClass]="{'common-product': !sponseredProductsInstance}" *ngIf="!sponseredProductsInstance" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+    <!-- <div id="sponseredProducts" [ngClass]="{'common-product': !sponseredProductsInstance}" *ngIf="!sponseredProductsInstance" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
         <ng-container #sponseredProducts></ng-container>
         <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
-    </div>
+    </div> -->
 
     <section id="popularDeals" class="common-product" *ngIf="!productOutOfStock && bestProductsRes?.totalCount > 0">
         <product-popular-deals [outOfStock]='productOutOfStock' [apiResponse]='bestProductsRes'

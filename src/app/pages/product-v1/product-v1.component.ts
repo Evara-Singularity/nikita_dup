@@ -254,6 +254,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.user = this.localStorageService.retrieve('user');
         this.addSubcriber();
         this.pageUrl = this.router.url;
@@ -261,27 +262,33 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"]) {
                 this.apiResponse = rawData.product[0].data.data;
-                this.rawProductData = this.apiResponse.productGroup;
-                console.log(this.apiResponse);
-                this.originalProductBO = this.rawProductData;
+                this.processProductData(this.apiResponse.productGroup);
                 if (this.apiResponse && this.apiResponse.tagProducts) {
                     this.onVisiblePopularDeals();
                 }
-                if (
-                    this.apiResponse['productGroup'] &&
-                    Object.values(this.rawProductData["productAllImages"]) !== null
-                ) {
-                    this.commonService.enableNudge = false;
-                    this.isAcceptLanguage = (this.apiResponse.productGroup["acceptLanguage"] != null && rawData["product"][0]["acceptLanguage"] != undefined) ? true : false;
-                    this.setProductImages(this.rawProductData["productAllImages"])
-                    this.setProductVideo(this.rawProductData["productVideos"]);
-                } else {
-                    this.setProductNotFound();
-                }
+
             } else {
                 this.setProductNotFound();
             }
         })
+        this.initializeLocalization()
+    }
+
+    processProductData(productGroup) {
+        this.rawProductData = productGroup;
+        console.log(this.apiResponse);
+        this.originalProductBO = this.rawProductData;
+        if (
+            this.rawProductData && 
+            Object.values(this.rawProductData["productAllImages"]) !== null
+        ) {
+            this.commonService.enableNudge = false;
+            this.isAcceptLanguage = (this.rawProductData["acceptLanguage"] != null && this.rawProductData["acceptLanguage"] != undefined) ? true : false;
+            this.setProductImages(this.rawProductData["productAllImages"])
+            this.setProductVideo(this.rawProductData["productVideos"]);
+        } else {
+            this.setProductNotFound();
+        }
         if (this.rawProductData.productOutOfStock) {
             this.commonService.enableAppPromoInHeader = true;
             this.productService.resetOOOSimilarProductsData();
@@ -292,7 +299,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.commonService.enableAppPromoInHeader = false;
         }
         this.showLoader = false;
-        this.globalLoader.setLoaderState(false); 
         this.checkForRfqGetQuote();
         this.checkForAskQuestion();
         this.createSiemaOption();
@@ -550,18 +556,11 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.removeRfqForm(); 
         this.showLoader = true;
         this.productService
-            .getGroupProductObj(productId)
+            .getSanitisedProductObj(productId)
             .subscribe((productData) =>
             {
-                if (productData["status"] == true && productData["active"] == true ) {
-                    // this.processProductData(
-                    //     {
-                    //         productBO: productData["productBO"],
-                    //         refreshCrousel: true,
-                    //         subGroupMsnId: productId,
-                    //     },
-                    //     productData
-                    // );
+                if (productData["active"] == true ) {
+                    this.processProductData(productData);
                     this.productFbtData();
                     if(this.rawProductData.productOutOfStock){
                         this.clearOfferInstance();
@@ -1075,7 +1074,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
         this.commonService.changeStaticJson.asObservable().subscribe(localization_content => {
             this.productStaticData = localization_content;
+            this.cdr.detectChanges();
         })
+        this.cdr.detectChanges();
     }
 
     createSiemaOption() {

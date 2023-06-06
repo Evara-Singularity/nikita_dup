@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, EventEmitter, NgModule, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, EventEmitter, NgModule, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonService } from '../../utils/services/common.service';
 
 @Component({
@@ -13,16 +13,16 @@ export class ProductQaComponent {
   @Input('questionAnswerList') questionAnswerList;
   @Output('askQuestion') askQuestion = new EventEmitter();
   @Output('handleFaqListPopup') handleFaqListPopup = new EventEmitter();
-  constructor(private _commonService:CommonService){
+  constructor(private _commonService:CommonService, private cdr: ChangeDetectorRef){
   }
  
   ngOnInit(): void {
     this.getStaticSubjectData();
-    console.log(this.questionAnswerList)
   }
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
+      this.cdr.detectChanges();
     });
   }
 }

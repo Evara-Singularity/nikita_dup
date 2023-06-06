@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, NgModule, OnInit, Output, EventEmitter, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, NgModule, OnInit, Output, EventEmitter, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ProductService } from '../../utils/services/product.service';
 import { forkJoin} from 'rxjs';
@@ -40,12 +40,14 @@ export class ProductOffersComponent implements OnInit
     constructor(
         public localStorageService: LocalStorageService,
         private common: CommonService,
+        private cdr: ChangeDetectorRef
     ) { }
 
     ngOnInit(): void {
       this.common.changeStaticJson.subscribe(staticJsonData => {
         this.common.defaultLocaleValue = staticJsonData;
         this.productStaticData = staticJsonData;
+        this.cdr.detectChanges();
       });
     }
 

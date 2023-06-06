@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
@@ -21,7 +21,8 @@ export class ProductBenefitsComponent implements OnInit {
 
   constructor(
     public _localAuthService: LocalAuthService,
-    private _commonService:CommonService
+    private _commonService:CommonService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -30,6 +31,7 @@ export class ProductBenefitsComponent implements OnInit {
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
+      this.cdr.detectChanges();
     });
   }
 

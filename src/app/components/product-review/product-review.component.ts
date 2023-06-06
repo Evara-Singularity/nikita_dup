@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, EventEmitter, NgModule, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, EventEmitter, NgModule, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonService } from '../../utils/services/common.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class ProductReviewComponent {
   @Output('postHelpful') postHelpful = new EventEmitter();
   @Output('writeReview') writeReview = new EventEmitter();
   @Output('reviewRatingPopup') reviewRatingPopup = new EventEmitter();
-  constructor(private _commonService:CommonService){
+  constructor(private _commonService:CommonService, private cdr: ChangeDetectorRef){
 
   }
   ngOnInit(){
@@ -26,6 +26,7 @@ export class ProductReviewComponent {
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
+      this.cdr.detectChanges();
     });
   }
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit, HostListener } from '@angular/core';
+import { Component, Input, NgModule, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
 import { ProductService } from '../../utils/services/product.service';
 import { CommonService } from '../../utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
@@ -41,7 +41,8 @@ export class ProductPopularDealsComponent implements OnInit {
 
   constructor(
     public commonService: CommonService,
-    private productService: ProductService
+    private productService: ProductService,
+    private cdr: ChangeDetectorRef
   ) {
     this.isBrowser = commonService.isBrowser;
   }
@@ -59,6 +60,7 @@ export class ProductPopularDealsComponent implements OnInit {
     this.commonService.changeStaticJson.subscribe(staticJsonData => {
       this.commonService.defaultLocaleValue = staticJsonData;
       this.productStaticData = staticJsonData;
+      this.cdr.detectChanges();
     });
   }
   

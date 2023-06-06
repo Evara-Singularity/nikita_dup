@@ -61,10 +61,6 @@ export class ProductAccordiansComponent {
       }
     }
     if (categoryBucketRes && categoryBucketRes.length) {
-      // map will be removed once node deployed
-      categoryBucketRes.map(each => {
-        each['link'] = each['categoryLink']
-      });
       this.ACCORDIAN_DATA[1] = categoryBucketRes;
 
       // accordian data

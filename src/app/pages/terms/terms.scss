@@ -13,7 +13,7 @@
         p {
             font-size: $medium-font;
             color: var(--text-color);
-            line-height: $large-line-height;
+            line-height: $medium-line-height;
             margin-top: 10px;
             font-weight: $font-bolder;
         }
@@ -36,7 +36,7 @@
         
         /* hierarchical ordering:  */
         ol {
-            padding-left: 16px;	
+            padding-left: 20px;	
             counter-reset: item
         }
         li {
@@ -75,4 +75,96 @@
     a:link {
         color:var(--bleu-de-france);
       }
+}
+
+.notice-alignment {
+    border-top: 1px dashed var(--onyx-black);
+    margin-top: 20px;
+
+    h3 {
+        font-size: $medium-font;
+        line-height: $medium-line-height;
+
+    }
+
+    .mt-30 {
+        margin-top: 30px;
+    }
+    .nt-text{
+        line-height: 20px;
+    }
+    .underline {
+        text-decoration: underline;
+    }
+
+    p {
+        font-weight: normal !important;
+    }
+
+    .decl-txt-sec {
+        margin-top: 10px !important;
+        display: flex;
+
+        .decl-num {
+            width: 20px;
+        }
+
+        .decl-txt {
+            width: calc(100% - 20px);
+        }
+    }
+    .part-2{
+        padding: 20px 0 0;
+        .dashed-line{
+            width: 100%;
+            margin-top: 20px;
+            height: 20px;
+            border-top: 1px dashed var(--onyx-black);
+        }
+        .dashed-line-half{
+            width: 45%;
+            height: 20px;
+            margin-top: 10px;
+            border-top: 1px dashed var(--onyx-black);
+        }
+    }
+}
+.part1-tbl {
+    table {
+        padding: 20px 0 10px;
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+
+        td {
+            border: 1px solid var(--onyx-black);
+            padding: .5rem;
+            width: 50%;
+            &:first-child{
+                font-weight: bold;
+            }
+        }
+    }
+}
+.part2-tbl{
+    table {
+        padding: 20px 0 10px;
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        text-align: left;
+        th{
+            border: 1px solid var(--onyx-black);
+            // width: 25%;
+            padding: .5rem;
+        }
+
+        td {
+            border: 1px solid var(--onyx-black);
+            padding: .5rem;
+            &:first-child{
+                font-weight: bold;
+            }
+        }
+    }
 }

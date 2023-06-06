@@ -29,6 +29,7 @@ export class SearchComponent implements OnInit {
   public headerNameBasedOnCondition;
   @ViewChild('sharedProductList') sharedProductList: SharedProductListingComponent;
   accordiansDetails: AccordiansDetails[] = [];
+  moduleUsedIn: string = "PRODUCT_RECENT_PRODUCT_SEARCH";
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -59,6 +60,7 @@ export class SearchComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
+    this.moduleUsedIn = (this._productListService?.productListingData?.products != undefined && this._productListService?.productListingData?.products?.length==0) ? "PRODUCT_RECENT_PRODUCT_PLP_PAGE_NOT_FOUND" : "PRODUCT_RECENT_PRODUCT_SEARCH"
     // this.sharedProductList.getSponseredProducts();
   }
 

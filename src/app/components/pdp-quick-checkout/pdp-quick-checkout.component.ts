@@ -18,6 +18,7 @@ import { ProductService } from "@app/utils/services/product.service";
 import { CartService } from "@app/utils/services/cart.service";
 import {
   catchError,
+  delay,
   map,
   switchMap,
 } from "rxjs/operators";
@@ -30,6 +31,7 @@ import { QuickCodService } from "@app/utils/services/quick-cod.service";
 import { InitiateQuickCod } from "@app/utils/models/cart.initial";
 import { BottomMenuComponent } from "@app/modules/bottomMenu/bottom-menu.component";
 import { product}  from '../../config/static-en';
+import { AllPromocodeV1Module } from "@app/modules/shared-checkout-quick-order-components/all-promocode-v1/all-promocode-v1.module";
 
 @Component({
   selector: "pdp-quick-checkout",
@@ -128,7 +130,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   onUpdate(data) {
     this.commonService.setBodyScroll(null, true);
     if (data.popupClose) {
-      this.removeCartItem();
+      // this.removeCartItem();
       this.Isoverlay = false;
     }
   }
@@ -157,8 +159,8 @@ export class PdpQuickCheckoutComponent implements OnInit {
     this.promoSubscription = this.cartService.promoCodeSubject.subscribe(
       ({ promocode, isNewPromocode }) => {
         this.showPromoSuccessPopup = isNewPromocode;
-        this.getUpdatedCart();
         setTimeout(() => {
+          this.getUpdatedCart();
           this.showPromoSuccessPopup = false;
         }, 800);
       }
@@ -167,10 +169,12 @@ export class PdpQuickCheckoutComponent implements OnInit {
 
   ngAfterViewInit() {
     this.currUser = this.localAuthService.getUserSession();
-    this.cartService.getPromoCodesByUserId(this.currUser["userId"]);
     this.shippmentCharge = this.cartService.shippingCharges;
-    this.cartService.shippingAddress = this.shippingAddress
-    this.cartService.billingAddress = this.billingAddress
+    this.cartService.shippingAddress = this.shippingAddress;
+    this.cartService.billingAddress = this.billingAddress;
+    setTimeout(() => {
+      this.cartService.getPromoCodesByUserId(this.currUser["userId"]);
+    }, 200);
   }
 
   addTocart(productDetails, buyNow) {
@@ -186,8 +190,10 @@ export class PdpQuickCheckoutComponent implements OnInit {
   getUpdatedCart() {
     this.cartSubscription = this.cartService
       .getCartUpdatesChanges()
+      .pipe(delay(250))
       .subscribe((cartSession) => {
         if (cartSession && cartSession.itemsList) {
+          console.log(cartSession)
           this.item = cartSession.itemsList[0];
           this.productQuantity =
             cartSession.itemsList[0]["productQuantity"] || 0;
@@ -476,6 +482,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     PromoCodeModule,
     MathFloorPipeModule,
     MathCeilPipeModule,
+    AllPromocodeV1Module
   ],
   exports: [PdpQuickCheckoutComponent],
 })

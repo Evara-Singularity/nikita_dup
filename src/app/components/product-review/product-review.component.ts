@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, EventEmitter, NgModule, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
 import { CommonService } from '../../utils/services/common.service';
 
 @Component({
@@ -17,12 +19,32 @@ export class ProductReviewComponent {
   @Output('postHelpful') postHelpful = new EventEmitter();
   @Output('writeReview') writeReview = new EventEmitter();
   @Output('reviewRatingPopup') reviewRatingPopup = new EventEmitter();
-  constructor(private _commonService:CommonService, private cdr: ChangeDetectorRef){
+  constructor(private _commonService:CommonService,private _activatedRoute:ActivatedRoute, private cdr: ChangeDetectorRef){
 
   }
   ngOnInit(){
     this.getStaticSubjectData();
   }
+  
+  ngAfterViewInit() {
+    if (this._commonService.isBrowser) {
+     setTimeout(() => {
+      this.checkForFragment()
+     }, 600);
+    }
+  }
+
+  checkForFragment(){
+    this._activatedRoute.fragment.subscribe((fragment: string)=>{
+      if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_REVIEW_HASH){
+        this.reviewRatingPopup.emit()
+      }
+      else if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_WRITE_REVIEW_HASH){
+        this.writeReview.emit(-1)
+      }
+    })
+  }
+
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;

@@ -14,18 +14,12 @@ export class AppPromoComponent implements OnInit {
 
   readonly assetImgPath: string = CONSTANTS.IMAGE_ASSET_URL;
   readonly key: string = 'user-app-promo-status';
-  readonly MOBILE_ENVS = {
-    IOS: 'iOS',
-    WINDOWS: 'Windows Phone',
-    ANDROID: 'Android',
-    OTHERS: 'unknown',
-  }
-  playStoreLink = "https://play.google.com/store/apps/details?id=com.moglix.online";
-  appStoreLink = "https://apps.apple.com/in/app/moglix-best-industrial-app/id1493763517";
   scrolledViewPort = 0;
   windowOldScroll = 0;
   showPromo: boolean = true;
   listener;
+  appOpenLink=CONSTANTS.APP_OPEN_LINK;
+ 
  
 
   @Input() productData: any;
@@ -38,7 +32,6 @@ export class AppPromoComponent implements OnInit {
   productStaticData = this._commonService.defaultLocaleValue;
 
   public appPromoStatus: boolean = true;
-  public mobile_os = null;
   public isUserAuthenticated: boolean = true;
   public isAppInstalled: boolean = false;
 
@@ -58,8 +51,6 @@ export class AppPromoComponent implements OnInit {
     this.readStatusFromLocalStorage();
     this.getUserAuthenticationStatus();
     this.getUserAuthenticationStatusChange();
-    this.mobile_os = this.getMobileOperatingSystem();
-    this.createPlayStoreLink();
   }
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
@@ -92,37 +83,16 @@ export class AppPromoComponent implements OnInit {
     this.windowOldScroll = this.scrolledViewPort;
   }
 
-  createPlayStoreLink() {
-    const homepageaLink = "https://play.google.com/store/apps/details?id=com.moglix.online&referrer=utm_source%3DPWA%26utm_medium%3Dhomepage%26utm_campaign%3Dapp_download_nudge";
-    const pdpLink = "https://play.google.com/store/apps/details?id=com.moglix.online&referrer=utm_source%3DPWA%26utm_medium%3Dproductpage%26utm_campaign%3Dapp_download_nudge"
-    this.playStoreLink = (this.isOverlayMode) ? homepageaLink : pdpLink
-  }
 
-  get productDeepLink() {
-    return 'moglix://' + this.productMsn;
-  }
+ openStore() {
+  this.openLink();
+}
 
-  openDeepLink() {
-    window.open(this.productDeepLink, '_blank');
-  }
+openLink() {
+  this.callAnalytics();
+  window.open(this.appOpenLink, '_blank');
+}
 
-  openPlayStore() {
-    this.callAnalytics();
-    window.open(this.playStoreLink, '_blank');
-  }
-
-  openAppStore() {
-    this.callAnalytics();
-    window.open(this.appStoreLink, '_blank');
-  }
-
-  openStore() {
-    if(this.mobile_os == this.MOBILE_ENVS.ANDROID){
-      this.openPlayStore();
-    }else if(this.mobile_os == this.MOBILE_ENVS.IOS){
-      this.openAppStore();
-    }
-  }
 
   callAnalytics() {
     const user = this._localStorageService.retrieve('user');
@@ -188,24 +158,6 @@ export class AppPromoComponent implements OnInit {
     });
   }
 
-  getMobileOperatingSystem(): string {
-    if (this._commonService.isBrowser) {
-      var userAgent = navigator.userAgent || navigator.vendor || window['opera'];
-      // Windows Phone must come first because its UA also contains "Android"
-      if (/windows phone/i.test(userAgent)) {
-        return this.MOBILE_ENVS.WINDOWS;
-      }
-      if (/android/i.test(userAgent)) {
-        return this.MOBILE_ENVS.ANDROID;
-      }
-      // iOS detection from: http://stackoverflow.com/a/9039885/177710
-      if (/iPad|iPhone|iPod/.test(userAgent) && !window['MSStream']) {
-        return this.MOBILE_ENVS.IOS;
-      }
-    }
-
-    return this.MOBILE_ENVS.OTHERS;
-  }
 
   get isAppPromoVisible() {
     switch (this.page) {

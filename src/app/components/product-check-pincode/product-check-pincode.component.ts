@@ -31,8 +31,12 @@ export class ProductCheckPincodeComponent implements OnInit
     deliveryDays = null;
     deliveryAnalytics = null;
     itemShippingAmount = 0;
+    addressId = '';
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
     isSubmitted: boolean = false;
+    cartSession = null;
+    cartId = '';
+    user = null;
     
 
     constructor(
@@ -47,13 +51,16 @@ export class ProductCheckPincodeComponent implements OnInit
     {
         this.getStaticSubjectData();
         this.checkShippingCharges();
-        const user = this.localStorageService.retrieve('user');
-        if (user && user.authenticated == "true") {
-            let params = { customerId: user.userId, invoiceType: "retail" };
+        this.user = this.localStorageService.retrieve('user');
+        this.cartSession = this._cartService.getCartSession();
+        this.cartId = this.cartSession && this.cartSession['cart']['cartId']
+        if (this.user && this.user.authenticated == "true") {
+            let params = { customerId: this.user.userId, invoiceType: "retail" };
             this._commonService.getAddressList(params).subscribe((res) =>
             {
                 if (res["statusCode"] == 200 && res["addressList"] && res["addressList"].length > 0) {
                     this.pincode.setValue(res["addressList"][0].postCode);
+                    this.addressId = res["addressList"][0].idAddress;
                     this.checkAvailblityOnPinCode();
                 }
                 else if (res["statusCode"] == 200 && res["addressList"] && res["addressList"].length == 0) {
@@ -102,12 +109,14 @@ export class ProductCheckPincodeComponent implements OnInit
         if (this.pincode.valid) {
             let pincode: number = this.pincode.value || null;
             this.isServiceable = this.FALSE;
-            this.isCashOnDelivery = this.FALSE;
+            this.isCashOnDelivery = this.FALSE;   
+            const orderPlatform =CONSTANTS.DEVICE.device;
             const msnArr = [];
             msnArr.push(PARTNUMBER);
             this.isLoading.emit(true);
             this.checkShippingCharges( pincode);
-            this.productService.getLogisticAvailability({ productId: msnArr, toPincode: pincode, price: this.pageData['productPrice'] }).subscribe(
+            this.productService.getLogisticAvailability({ productId: msnArr, toPincode: pincode, price: this.pageData['productPrice']
+            ,addressId : this.addressId, userId :this.user.userId, orderPlatform : orderPlatform, cartId :this.cartId }).subscribe(
                 (response: any) =>
                 {
                     this.isLoading.emit(false);

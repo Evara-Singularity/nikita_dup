@@ -24,10 +24,10 @@ export class PromoCodeListComponent implements OnInit, OnDestroy
     ngOnInit()
     {
         this.getStaticSubjectData();
-        this.selectedPromocode = this._cartService.appliedPromoCode;
+        this.selectedPromocode = this._cartService.appliedPromoCode || '';
         this.appliedPromocodeSubscription = this._cartService.promoCodeSubject.subscribe(({ promocode, isNewPromocode }) =>
         {
-            this.selectedPromocode = promocode;
+            this.selectedPromocode = promocode || '';
             if (promocode) {
                 this.closePromoOfferPopup.emit(false);
             }

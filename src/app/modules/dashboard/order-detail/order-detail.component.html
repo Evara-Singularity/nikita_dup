@@ -20,7 +20,7 @@
         <div class="card-upper">
             <div class="card-img">
                 <img alt=""
-                    src="{{(detail?.productImg && detail?.productImg.length > 2) ? detail?.productImg : imagePath+'web/dist/assets/img/placeholder.svg'}}">
+                    src="{{(detail?.productImg && detail?.productImg.length > 2) ? detail?.productImg.replace('-thumbnail','-medium') : imagePath+'web/dist/assets/img/placeholder.svg'}}">
             </div>
             <div class="card-desc">
                 <p (click)="trackAndNavigateToProductPage(detail?.productUrl, detail?.product_msn, $event)">

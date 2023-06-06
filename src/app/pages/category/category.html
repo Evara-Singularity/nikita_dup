@@ -35,7 +35,7 @@
         </shared-product-listing>
     </div>
 
-    <recent-viewed-products-wrapper [pageName]="'category'"></recent-viewed-products-wrapper>
+    <recent-viewed-products-wrapper [pageName]="'category'" [moduleUsedIn]="'PRODUCT_RECENT_PRODUCT_CATEGORY'"></recent-viewed-products-wrapper>
     
     <!-- This is sub category section -->
     <div class="pwa-row" [class.visibility]="_commonService.selectedFilterData.page > 1" [class.category-list]="_commonService.selectedFilterData.page > 1"
@@ -57,6 +57,10 @@
 
         <app-accordian [accordiansDetails]="accordiansDetails"></app-accordian>
 
+        <div style="padding-top: 10px;">
+            <product-listing-app-promo></product-listing-app-promo>
+        </div>
+
         <!-- This is recently article section -->
         <div class="recent-article-container" *ngIf="(API_RESPONSE.category && API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []).length > 0">
             <recent-articles [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []"
@@ -70,7 +74,7 @@
         <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
     </ng-container>
     
-    <ng-container *ngIf="_commonService.selectedFilterData.page >= 2">
+    <ng-container *ngIf="_commonService.selectedFilterData.page > 1">
         <div style="padding-top: 10px;">
             <product-listing-app-promo></product-listing-app-promo>
         </div>

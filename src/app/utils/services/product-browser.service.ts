@@ -39,7 +39,7 @@ export class ProductBrowserService
         const productMrp = product["mrp"];
         const productPrice = product["sellingPrice"];
         const priceWithoutTax = product["priceWithoutTax"];
-        const img = product["productImage"] ? product["productImage"] : "";
+        const img = product["productImage"] ? product["productImage"].replace('-thumbnail','-medium') : "";
         return {
             moglixPartNumber: partNumber,
             moglixProductNo: product["moglixProductNo"] || null,

@@ -77,9 +77,11 @@ export class CartComponent implements OnInit, AfterViewInit
     
     openWishList(){
         this.openWishList$.emit(true);
+        this.sendAdobeAnalyticsData("add_to_cart_wishlist_cart ");
     }
 
     openSimillarList(productId, item){
+        this.sendAdobeAnalyticsData("add_to_cart_simillarList_cart ");
         this.openSimillarList$.emit({productId: productId, item:item});
     }
 
@@ -91,7 +93,7 @@ export class CartComponent implements OnInit, AfterViewInit
                 if (cartSession.proxy) { return cartSession }
                 if (!this.cartSession || (this.cartSession && JSON.stringify(cartSession) != JSON.stringify(this.cartSession))) {
                     this.sendCritieoDataonView(cartSession);
-                    this.sendAdobeAnalyticsData(this.pageEvent);
+                    // this.sendAdobeAnalyticsData(this.pageEvent);
                     this.pageEvent = "genericClick";
                 }
                 return cartSession;
@@ -492,6 +494,7 @@ export class CartComponent implements OnInit, AfterViewInit
             }
             this._globalAnalyticsService.sendToClicstreamViaSocket(trackData);
         }
+        this.sendAdobeAnalyticsData(this.pageEvent);
     }
 
     similarProduct(productName, categoryId, BrandName, msn?) {

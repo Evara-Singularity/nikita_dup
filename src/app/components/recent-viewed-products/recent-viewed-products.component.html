@@ -8,7 +8,7 @@
                 <ng-container *ngFor="let product of recentProductItems;let pIndex = index">
                     <product-card-vertical-grid-view [product]="product" [cardMetaInfo]='cardMetaInfo'
                         [section]="'recently'" [cardFeaturesConfig]='cardFeaturesConfig'
-                        [moduleUsedIn]="'PRODUCT_RECENT_PRODUCT'" [pIndex]="pIndex" [enableTracking]="true"
+                        [moduleUsedIn]="moduleUsedIn" [pageName]="pageName" [pIndex]="pIndex" [enableTracking]="true"
                         [analytics]="analytics">
                     </product-card-vertical-grid-view>
                 </ng-container>

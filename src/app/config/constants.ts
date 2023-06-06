@@ -108,13 +108,13 @@ export const CONSTANTS = {
         //   paymentId: 66,
         //   imgUrl: "freecharge-wallet.png"
         // },
-        walletMobikwik: {
-          mode: "WALLET",
-          type: "mobikwik",
-          bankcode: null,
-          paymentId: 67,
-          imgUrl: "mobikwik-wallet.png"
-        },
+        // walletMobikwik: {
+        //   mode: "WALLET",
+        //   type: "mobikwik",
+        //   bankcode: null,
+        //   paymentId: 67,
+        //   imgUrl: "mobikwik-wallet.png"
+        // },
         walletAirtel: {
           mode: "WALLET",
           type: "airtelmoney",
@@ -166,13 +166,13 @@ export const CONSTANTS = {
         //   paymentId: 59,
         //   imgUrl: "freecharge-wallet.png"
         // },
-        walletMobikwik: {
-          mode: "MOBIKWIK",
-          type: "MOBIKWIK",
-          bankcode: null,
-          paymentId: 52,
-          imgUrl: "mobikwik-wallet.png"
-        },
+        // walletMobikwik: {
+        //   mode: "MOBIKWIK",
+        //   type: "MOBIKWIK",
+        //   bankcode: null,
+        //   paymentId: 52,
+        //   imgUrl: "mobikwik-wallet.png"
+        // },
         walletAirtel: {
           mode: "AIRTEL",
           type: "AIRTEL",
@@ -698,6 +698,10 @@ export const CONSTANTS = {
   enableGenericPrepaid: false,
 
   bulkRfqConstant:'BULK_RFQ_CONSTANT',
-  PDP_IMAGE_HASH:"pdpImageHash"
+  PDP_IMAGE_HASH:"pdpImageHash",
+  PDP_QNA_HASH:"qna",
+  PDP_REVIEW_HASH:"review",
+  PDP_WRITE_REVIEW_HASH:"write-review",
+  APP_OPEN_LINK:"https://moglix.page.link/appinstall"
 };
 export default CONSTANTS;

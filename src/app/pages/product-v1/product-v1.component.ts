@@ -303,6 +303,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.checkForAskQuestion();
         this.createSiemaOption();
         this.checkForBulkPricesProduct();
+        this.setProductSeoSchema();
     }
 
     setProductSeoSchema()

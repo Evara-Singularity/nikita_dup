@@ -16,12 +16,21 @@
                 color: #3c3c3c;
                 font-weight: bold;
             }
+            span{
+                a{
+                    color: var(--bleu-de-france);
+                }
+            }
             a {
-                color: #278bed;
+                span{
+                    strong{
+                        color: var(--bleu-de-france);
+                    }
+                }
             }
         }
         a {
-            color: #278bed;
+            color: var(--bleu-de-france);
         }
         li {
             color: #7b7b7b;

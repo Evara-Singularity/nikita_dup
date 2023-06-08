@@ -36,6 +36,7 @@
             color: #7b7b7b;
             &::before {
                 content: "> ";
+                color: var(--onyx-black);
             }
         }
         hr {

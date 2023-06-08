@@ -2,7 +2,7 @@
 .text-article {
     margin: 0px;
     font-size: $large-font;
-    padding: 0px 15px;
+    // padding: 0px 15px;
     h1 {
         color: var(--onyx-black);
         font-size: $extra-large-2-font;
@@ -29,6 +29,7 @@
         line-height: $medium-line-height;
         a {
             font-size: $large-font;
+            color: var(--bleu-de-france);
         }
     }
     ul, ol, dl {

@@ -89,7 +89,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     rfqTotalValue: number;
     dealsAnalytics: { page: { pageName: any; channel: string; subSection: string; linkPageName: string; linkName: any; loginStatus: string; }; custData: { customerID: string; emailID: string; mobile: string; customerType: any; customerCategory: any; }; order: { productID: any; productCategoryL1: any; productCategoryL2: any; productCategoryL3: any; brand: any; price: any; stockStatus: string; tags: string; }; };
     isCommonProduct: any;
-    listOfGroupedCategoriesForCanonicalUrl: any;
+    listOfGroupedCategoriesForCanonicalUrl = ["116111700"];
     appPromoVisible: any;
     recentProductItems: ProductsEntity[] = null;
     similarProducts = [];
@@ -304,6 +304,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.createSiemaOption();
         this.checkForBulkPricesProduct();
         this.setProductSeoSchema();
+        this.setMetatag();
     }
 
     setProductSeoSchema()
@@ -1671,7 +1672,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             imgURL: this.productAllImages[0]["large"],
             brandName: this.rawProductData.productBrandDetails["brandName"],
             productMrp: this.rawProductData.productMrp,
-            productDiscount: this.rawProductData.productDiscount,
+            productDiscount: this.rawProductData.priceQuantityCountry.productDiscount,
             bulkPriceWithoutTax: this.bulkPriceWithoutTax,
             priceWithoutTax: this.rawProductData.priceWithoutTax,
             productPrice: this.rawProductData.productPrice,
@@ -2905,8 +2906,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 )
             ) {
                 url = baseUrl + (
-                    (this.rawProductData.productPartDetails[this.rawProductData["partNumber"]].canonicalUrl) ?
-                        (this.rawProductData.productPartDetails[this.rawProductData["partNumber"]].canonicalUrl) :
+                    (this.rawProductData.canonicalUrl) ?
+                        (this.rawProductData.canonicalUrl) :
                         metaObj["defaultCanonicalUrl"]
                 );
             }
@@ -2920,7 +2921,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 url = url.substring(0, url.length - 2);
             }
             links.href = url;
-            if (this.commonService.isServer && this.isAcceptLanguage) {
+            if (this.isServer && this.isAcceptLanguage) {
                 const languagelink = this.renderer2.createElement("link");
                 languagelink.rel = "alternate";
                 languagelink.href = CONSTANTS.PROD + this.hindiUrl;
@@ -2934,7 +2935,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.renderer2.appendChild(this.document.head, elanguagelink);
 
             }
-            if (this.commonService.isServer) {
+            if (this.isServer) {
                 this.renderer2.appendChild(this.document.head, links);
             }
             if (this.commonService.isBrowser) {

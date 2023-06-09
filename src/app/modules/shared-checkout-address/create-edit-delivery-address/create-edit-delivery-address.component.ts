@@ -93,7 +93,8 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             'alternatePhone': [(address && address.alternatePhone) ? address.alternatePhone : this.userSesssion['alternatePhone'], [Validators.pattern("[0-9]{10}")]],
             'postCode': [(address && address.postCode) ? address.postCode : null, [Validators.required, Step.validatePostCode]],
             'landmark': [(address && address.landmark) ? address.landmark : null, [Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
-            'addressLine': [(address && address.addressLine) ? address.addressLine : null, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
+            'addressLineFirst': [this.separateAddressLineByPipe(address).addressLineFirst, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
+            'addressLine': [this.separateAddressLineByPipe(address).addressLine, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
             'city': [(address && address.city) ? address.city : null, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\#\-\,\/\.\(\)]*)+')]],
             'idCountry': [{ value: null, disabled: true }, [Validators.required]],
             'idState': [{ value: null, disabled: true }, [Validators.required]],
@@ -104,6 +105,27 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
         if (this.postCode.value) { this.isPostcodeValid = true; }
         this.city.disable();
         this.idState.disable();
+    }
+
+    separateAddressLineByPipe(address: any) {
+        if (address && address.addressLine) {
+            const addressArray = address.addressLine.trim().split('|')
+            if (addressArray.length > 1) {
+                return {
+                    addressLine: addressArray[1].trim(),
+                    addressLineFirst: addressArray[0].trim(),
+                }
+            } else {
+                return {
+                    addressLine: addressArray[0].trim(),
+                    addressLineFirst: null,
+                }
+            }
+        }
+        return {
+            addressLine: null,
+            addressLineFirst: null,
+        }
     }
 
     fetchStateList(countryId)
@@ -199,9 +221,14 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
         });
     }
 
+
     getRequestData(address)
     {
         let aRquest = { idCustomer: this.userSesssion['userId'], idAddressType: 1, active: true, invoiceType: this.invoiceType };
+        if(address && address.addressLine && address.addressLineFirst){
+            address.addressLine = address.addressLine + ' | ' + address.addressLineFirst;
+            delete address.addressLineFirst;
+        }
         let request = { ...address, ...aRquest };
         return request;
     }
@@ -220,6 +247,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
     get postCode() { return this.addressForm.get('postCode'); };
     get landmark() { return this.addressForm.get('landmark'); };
     get addressLine() { return this.addressForm.get('addressLine'); };
+    get addressLineFirst() { return this.addressForm.get('addressLineFirst'); };
     get city() { return this.addressForm.get('city'); };
     get idCountry() { return this.addressForm.get('idCountry'); };
     get idState() { return this.addressForm.get('idState'); };

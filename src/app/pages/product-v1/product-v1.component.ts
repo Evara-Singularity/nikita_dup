@@ -45,7 +45,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     showScrollToTopButton: boolean = false;
     apiResponse: any;
     productStaticData: any = this.commonService.defaultLocaleValue;
-    isAcceptLanguage: boolean;
+    isAcceptLanguage: boolean = true;
     productFound: boolean;
     englishUrl: string;
     hindiUrl: string;

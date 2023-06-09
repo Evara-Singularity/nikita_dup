@@ -283,7 +283,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             Object.values(this.rawProductData["productAllImages"]) !== null
         ) {
             this.commonService.enableNudge = false;
-            this.isAcceptLanguage = (this.rawProductData["acceptLanguage"] != null && this.rawProductData["acceptLanguage"] != undefined) ? true : false;
+            this.isAcceptLanguage = this.rawProductData.isAcceptLanguage;
             this.setProductImages(this.rawProductData["productAllImages"])
             this.setProductVideo(this.rawProductData["productVideos"]);
         } else {

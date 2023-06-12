@@ -33,7 +33,6 @@ export class ProductGetQuoteComponent implements OnInit, AfterViewInit
 	ngOnInit(): void
 	{
 		this.getStaticSubjectData();
-		console.log(this.productAllImages);
 	}
 	getStaticSubjectData(){
 		this.commonService.changeStaticJson.subscribe(staticJsonData => {

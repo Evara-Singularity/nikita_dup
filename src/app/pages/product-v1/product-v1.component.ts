@@ -276,7 +276,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     processProductData(productGroup) {
         this.rawProductData = productGroup;
-        console.log(this.apiResponse);
         this.originalProductBO = this.rawProductData;
         if (
             this.rawProductData && 
@@ -587,28 +586,107 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit() {
         if (this.commonService.isBrowser) {
             this.resetLazyComponents();
-            this.getPurchaseList();
-            this.productFbtData();
-            this.productStatusCount();
-            this.checkDuplicateProduct();
+            // this.getPurchaseList();
+            // this.productFbtData();
+            // this.productStatusCount();
+            // this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
-            this.getRecents();
+            this.callAPIs();
+            // this.getRecents();
+
         }
     }
 
-    checkDuplicateProduct()
-    {
-        const userSession = this.localStorageService.retrieve("user");
-        if (userSession && userSession.authenticated == "true") {
-            this.productService
-                .getUserDuplicateOrder(this.rawProductData.defaultPartNumber, userSession["userId"])
-                .subscribe((duplicateProductResult) =>
-                {
-                    this.duplicateOrderCheck(duplicateProductResult);
-                });
+    callAPIs() {
+        const resObj = {};
+
+        this.productService.getProductStatusCount(this.rawProductData.defaultPartNumber, this.isHindiUrl ? { headerData: { 'language': 'hi' } } : null).pipe(
+            mergeMap(productCountRes => {
+                if(productCountRes && productCountRes['status']) {
+                    resObj['productCountRes'] = productCountRes;
+                } else {
+                    resObj['productCountRes'] = null;
+                }
+                return this.productService.getFBTProducts(this.rawProductData.defaultPartNumber);
+            }),
+            mergeMap(fbtRes => {
+                if(fbtRes && fbtRes['status']) {
+                    resObj['fbtRes'] = fbtRes;
+                } else {
+                    resObj['fbtRes'] = null;
+                }
+                return this.productService.getrecentProduct((this.user && this.user.userId) ? this.user.userId : null);
+            }),
+            mergeMap(recentProductsRes => {
+                if(recentProductsRes && recentProductsRes['status']) {
+                    resObj['recentProductsRes'] = recentProductsRes;
+                } else {
+                    resObj['recentProductsRes'] = null;
+                }
+                if(this.user && this.user.userId) {
+                    return this.productService.getPurchaseList({ idUser: this.user.userId, userType: "business" })
+                } else {
+                    return of({status: false});
+                }
+            }),
+            mergeMap(getPurchaseListRes => {
+                if(getPurchaseListRes && getPurchaseListRes['status']) {
+                    resObj['getPurchaseListRes'] = getPurchaseListRes;
+                } else {
+                    resObj['getPurchaseListRes'] = null;
+                }
+                if(this.user && this.user.userId) {
+                    return this.productService.getUserDuplicateOrder(this.rawProductData.defaultPartNumber, this.user.userId || null)
+                } else {
+                    return of({status: false});
+                }  
+            }),
+        ).subscribe(duplicateOrderRes => {
+            if(duplicateOrderRes && duplicateOrderRes['status']) {
+                resObj['duplicateOrderRes'] = duplicateOrderRes;
+            } else {
+                resObj['duplicateOrderRes'] = null;
+            }
+            console.log(resObj);
+            this.processClinetResponse(resObj);
+        });
+    }
+
+    processClinetResponse(res) {
+        if(res['productCountRes']) {
+            this.rawProductCountData = Object.assign({}, res['productCountRes']);
+            this.remoteApiCallRecentlyBought();
+        };
+        if(res['duplicateOrderRes']) {
+            this.duplicateOrderCheck(res['duplicateOrderRes']);
+        };
+        if(res['getPurchaseListRes']) {
+            this.processPurchaseListData(res['getPurchaseListRes'])
+        };
+        if(res['fbtRes']) {
+            this.fetchFBTProducts(
+                this.rawProductData,
+                Object.assign({}, res['fbtRes'])
+            );
+        };
+        if(res['recentProductsRes']) {
+            this.recentProductItems = (res['recentProductsRes']['data'] as any[]).map(product => this.productService.recentProductResponseToProductEntity(product));
         }
     }
+
+    // checkDuplicateProduct()
+    // {
+    //     const userSession = this.localStorageService.retrieve("user");
+    //     if (userSession && userSession.authenticated == "true") {
+    //         this.productService
+    //             .getUserDuplicateOrder(this.rawProductData.defaultPartNumber, userSession["userId"])
+    //             .subscribe((duplicateProductResult) =>
+    //             {
+    //                 this.duplicateOrderCheck(duplicateProductResult);
+    //             });
+    //     }
+    // }
 
     private duplicateOrderCheck(duplicateRawResponse)
     {
@@ -965,25 +1043,29 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
                 this.productService.getPurchaseList(request).subscribe((res) => {
                     this.showLoader = false;
-                    if (res["status"] && res["statusCode"] == 200) {
-                        let purchaseLists: Array<any> = [];
-                        purchaseLists = res["data"];
-                        purchaseLists.forEach((element) => {
-                            if (
-                                (element.productDetail &&
-                                    element.productDetail.productBO.partNumber ==
-                                    this.rawProductData.defaultPartNumber) ||
-                                (element.productDetail &&
-                                    element.productDetail.partNumber ==
-                                    this.rawProductData.defaultPartNumber)
-                            ) {
-                                this.isPurcahseListProduct = true;
-                                this.cdr.detectChanges();
-                            }
-                        });
-                    }
+                    this.processPurchaseListData(res);
                 });
             }
+        }
+    }
+
+    processPurchaseListData(res) {
+        if (res["status"] && res["statusCode"] == 200) {
+            let purchaseLists: Array<any> = [];
+            purchaseLists = res["data"];
+            purchaseLists.forEach((element) => {
+                if (
+                    (element.productDetail &&
+                        element.productDetail.productBO.partNumber ==
+                        this.rawProductData.defaultPartNumber) ||
+                    (element.productDetail &&
+                        element.productDetail.partNumber ==
+                        this.rawProductData.defaultPartNumber)
+                ) {
+                    this.isPurcahseListProduct = true;
+                    this.cdr.detectChanges();
+                }
+            });
         }
     }
 
@@ -1313,18 +1395,18 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.cdr.detectChanges();
     }
 
-    productStatusCount() {
-        if (this.isHindiUrl) {
-            this.ProductStatusCount = this.productService.getProductStatusCount(this.rawProductData.defaultPartNumber, { headerData: { 'language': 'hi' } })
-        }
-        else {
-            this.ProductStatusCount = this.productService.getProductStatusCount(this.rawProductData.defaultPartNumber)
-        }
-        this.ProductStatusCount.subscribe((productStatusCountResult) => {
-            this.rawProductCountData = Object.assign({}, productStatusCountResult);
-            this.remoteApiCallRecentlyBought();
-        });
-    }
+    // productStatusCount() {
+    //     if (this.isHindiUrl) {
+    //         this.ProductStatusCount = this.productService.getProductStatusCount(this.rawProductData.defaultPartNumber, { headerData: { 'language': 'hi' } })
+    //     }
+    //     else {
+    //         this.ProductStatusCount = this.productService.getProductStatusCount(this.rawProductData.defaultPartNumber)
+    //     }
+    //     this.ProductStatusCount.subscribe((productStatusCountResult) => {
+    //         this.rawProductCountData = Object.assign({}, productStatusCountResult);
+    //         this.remoteApiCallRecentlyBought();
+    //     });
+    // }
 
     remoteApiCallRecentlyBought() {
         let MSG = null;

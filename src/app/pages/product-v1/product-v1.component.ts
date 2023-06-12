@@ -24,7 +24,7 @@ import { TrackingService } from "@app/utils/services/tracking.service";
 import { RESPONSE } from "@nguniversal/express-engine/tokens";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import { Observable, of, Subject, Subscription } from "rxjs";
-import { catchError, map, mergeMap } from "rxjs/operators";
+import { catchError, map, mergeMap, take } from "rxjs/operators";
 import * as localization_en from '../../config/static-en';
 import * as localization_hi from '../../config/static-hi';
 
@@ -212,6 +212,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     get getWhatsText() {
         return `Hi, I want to buy ${this.rawProductData.productName} (${this.rawProductData.defaultPartNumber})`;
     }
+    cartSubscription: Subscription;
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -585,6 +586,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         if (this.commonService.isBrowser) {
+            this.addSessionSubscriber();
             this.resetLazyComponents();
             // this.getPurchaseList();
             // this.productFbtData();
@@ -592,10 +594,19 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             // this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
-            this.callAPIs();
+            // this.callAPIs();
             // this.getRecents();
 
         }
+    }
+
+    addSessionSubscriber() {
+        console.log('anil');
+        this.cartSubscription = this.cartService.getCartUpdatesChanges().pipe(take(2)).subscribe((data) =>{
+            if(data && data['cart'] && data['cart']['sessionId']) {
+                this.callAPIs();
+            }
+        });
     }
 
     callAPIs() {
@@ -3550,5 +3561,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         return (this.router.url).toLowerCase().indexOf('/hi/') !== -1
     }
 
-    ngOnDestroy() { }
+    ngOnDestroy() {
+        if(this.cartSubscription) this.cartSubscription.unsubscribe();
+     }
 }

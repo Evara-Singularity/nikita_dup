@@ -333,6 +333,28 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
           const billingAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.billingAddressList, this._cartService.billingAddress);
           this.updateDeliveryOrBillingAddress(IS_DELIVERY, billingAddress);
       }
+
+      if (IS_DELIVERY && !isEditMode) {
+        this._cartService.shippingAddress = this.deliveryAddressList[0];
+        const deliveryAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(
+          this.deliveryAddressList,
+          this._cartService.shippingAddress
+        );
+        this.updateDeliveryOrBillingAddress(IS_DELIVERY, deliveryAddress);
+        return;
+      }
+
+      if (!IS_DELIVERY && !isEditMode) {
+        this._cartService.billingAddress = this.billingAddressList[0];
+        const billingAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(
+          this.billingAddressList,
+          this._cartService.billingAddress
+        );
+        this.updateDeliveryOrBillingAddress(IS_DELIVERY, billingAddress);
+        return;
+      }
+
+
   }
 
   /**

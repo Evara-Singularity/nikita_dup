@@ -10,12 +10,19 @@
             text-align: center;
             color: var(--text-color);
         }
-        p {
+        h2{
             font-size: $medium-font;
             color: var(--text-color);
             line-height: $medium-line-height;
             margin-top: 10px;
             font-weight: $font-bolder;
+        }
+        p{
+            font-size: $medium-font;
+            color: var(--text-color);
+            line-height: $medium-line-height;
+            margin-top: 10px;
+            font-weight: 400;
         }
         ol li{
             color: var(--text-color);

@@ -32,16 +32,13 @@ export class AllPromocodeV1Component implements OnInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      if (
-        this._cartService?.allPromoCodes[0]?.promoCode &&
-        this._cartService?.allPromoCodes[0]?.isApplicable &&
-        this._cartService.getCartBySession
-      ) {
-        this._cartService.genericApplyPromoCode(
-          this._cartService?.allPromoCodes[0]?.promoCode
-        );
+
+      if (this._cartService?.allPromoCodes[0]?.promoCode && this._cartService?.allPromoCodes[0]?.isApplicable && this._cartService.getCartBySession ) {
+        // console.log('nikkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk   isApplicable',this._cartService.getCartBySession())
+        this._cartService.genericApplyPromoCode(this._cartService?.allPromoCodes[0]?.promoCode);
       }
-    }, 3000);
+      
+    },3000);
   }
 
   openPromoCodeList() {
@@ -58,27 +55,27 @@ export class AllPromocodeV1Component implements OnInit {
     document
       .getElementById("body")
       .removeEventListener("touchmove", this.preventDefault);
-    this.showPromoOfferPopup = flag;
-  }
-
-  submitPromocode(e, promocode) {
-    // if (this.selectedPromocode === promocode) { return }
-    this._cartService.genericApplyPromoCode(promocode);
-    this.adobeTracking("apply_coupon_cart");
-  }
-
-  adobeTracking(trackingname) {
-    const page = {
-      linkPageName: "moglix:cart summary",
-      linkName: trackingname,
-    };
-    let data = {};
-    data["page"] = page;
-    data["custData"] = this._commonService.custDataTracking;
-    this._analytics.sendAdobeCall(data, trackingname);
+    this.showPromoOfferPopup = flag;    
   }
 
   preventDefault(e) {
     e.preventDefault();
   }
+
+  submitPromocode(e, promocode) {
+    // if (this.selectedPromocode === promocode) { return }
+    this._cartService.genericApplyPromoCode(promocode);
+    this.adobeTracking('apply_coupon_cart');
+}
+
+adobeTracking(trackingname){
+  const page = {
+      'linkPageName': "moglix:cart summary",
+      'linkName': trackingname,
+  }
+  let data = {}
+  data["page"] = page;
+  data["custData"] = this._commonService.custDataTracking;
+  this._analytics.sendAdobeCall(data, trackingname); 
+}
 }

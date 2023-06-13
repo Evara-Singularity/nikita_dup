@@ -25,28 +25,24 @@ export class AllPromocodeV1Component implements OnInit {
     this.appliedPromocodeSubscription =
       this._cartService.promoCodeSubject.subscribe(
         ({ promocode, isNewPromocode }) => {
-          this.appliedPromocode = promocode || '';
+          this.appliedPromocode = promocode || "";
         }
       );
-
-    // if (this._cartService?.allPromoCodes[0]?.promoCode) {
-    //     console.log('nik')
-    //     // this.selectedPromocode == this._cartService?.allPromoCodes[0]?.promoCode
-    //     this.submitPromocode(null, this._cartService?.allPromoCodes[0]?.promoCode)
-    // }
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
-
-      if (this._cartService?.allPromoCodes[0]?.promoCode && this._cartService?.allPromoCodes[0]?.isApplicable && this._cartService.getCartBySession ) {
-        // console.log('nikkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk   isApplicable',this._cartService.getCartBySession())
-        this._cartService.genericApplyPromoCode(this._cartService?.allPromoCodes[0]?.promoCode);
+      if (
+        this._cartService?.allPromoCodes[0]?.promoCode &&
+        this._cartService?.allPromoCodes[0]?.isApplicable &&
+        this._cartService.getCartBySession
+      ) {
+        this._cartService.genericApplyPromoCode(
+          this._cartService?.allPromoCodes[0]?.promoCode
+        );
       }
-      
-    },3000);
+    }, 3000);
   }
-
 
   openPromoCodeList() {
     this.showPromoOfferPopup = true;
@@ -62,25 +58,25 @@ export class AllPromocodeV1Component implements OnInit {
     document
       .getElementById("body")
       .removeEventListener("touchmove", this.preventDefault);
-    this.showPromoOfferPopup = flag;    
+    this.showPromoOfferPopup = flag;
   }
 
   submitPromocode(e, promocode) {
     // if (this.selectedPromocode === promocode) { return }
     this._cartService.genericApplyPromoCode(promocode);
-    this.adobeTracking('apply_coupon_cart');
-}
-
-adobeTracking(trackingname){
-  const page = {
-      'linkPageName': "moglix:cart summary",
-      'linkName': trackingname,
+    this.adobeTracking("apply_coupon_cart");
   }
-  let data = {}
-  data["page"] = page;
-  data["custData"] = this._commonService.custDataTracking;
-  this._analytics.sendAdobeCall(data, trackingname); 
-}
+
+  adobeTracking(trackingname) {
+    const page = {
+      linkPageName: "moglix:cart summary",
+      linkName: trackingname,
+    };
+    let data = {};
+    data["page"] = page;
+    data["custData"] = this._commonService.custDataTracking;
+    this._analytics.sendAdobeCall(data, trackingname);
+  }
 
   preventDefault(e) {
     e.preventDefault();

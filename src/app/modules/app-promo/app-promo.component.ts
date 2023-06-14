@@ -108,10 +108,10 @@ openLink() {
       let taxo1 = '';
       let taxo2 = '';
       let taxo3 = '';
-      if (this.productData?.['categoryDetails'][0]['taxonomyCode']) {
-        taxo1 = this.productData['categoryDetails'][0]['taxonomyCode'].split("/")[0] || '';
-        taxo2 = this.productData['categoryDetails'][0]['taxonomyCode'].split("/")[1] || '';
-        taxo3 = this.productData['categoryDetails'][0]['taxonomyCode'].split("/")[2] || '';
+      if (this.productData?.['productCategoryDetails']['taxonomyCode']) {
+        taxo1 = this.productData['productCategoryDetails']['taxonomyCode'].split("/")[0] || '';
+        taxo2 = this.productData['productCategoryDetails']['taxonomyCode'].split("/")[1] || '';
+        taxo3 = this.productData['productCategoryDetails']['taxonomyCode'].split("/")[2] || '';
       }
 
       digitalData['page']['linkPageName'] = "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp";
@@ -120,7 +120,7 @@ openLink() {
         'productCategoryL1': taxo1,        
         'productCategoryL2': taxo2,        
         'productCategoryL3': taxo3,
-        'brand': this.productData?.['brandDetails']['brandName']
+        'brand': this.productData?.['productBrandDetails']['brandName']
       };
 
 

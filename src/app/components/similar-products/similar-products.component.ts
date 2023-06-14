@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, NgModule, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService } from '../../utils/services/product.service';
 import { MathCeilPipeModule } from '../../utils/pipes/math-ceil';
@@ -52,9 +52,11 @@ export class SimilarProductsComponent implements OnInit {
         public commonService: CommonService,
         private router: Router,
         private productService: ProductService,
+        private cdr: ChangeDetectorRef
     ) { }
 
     ngOnInit(): void {
+        console.log('i am called')
         this.getStaticSubjectData()
         this.getProductSimilar();
         this.cardMetaInfo = {

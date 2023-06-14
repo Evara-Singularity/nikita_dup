@@ -91,7 +91,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     isCommonProduct: any;
     listOfGroupedCategoriesForCanonicalUrl = ["116111700"];
     appPromoVisible: any;
-    recentProductItems: ProductsEntity[] = null;
+    recentProductItems: ProductsEntity[] = [];
     similarProducts = [];
     similarForOOSLoaded = true;
     similarForOOSContainer = [];
@@ -1665,7 +1665,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 null,
                 this.injector
             );
-            this.returnInfoInstance.instance['isBrandMsn'] = this.rawProductData.productBrandDetails.brandTag == 'Brandd' ? true : false;
+            this.returnInfoInstance.instance['isBrandMsn'] = this.rawProductData.productBrandDetails.brandTag == 'Brand' ? true : false;
             this.returnInfoInstance.instance['show'] = true;
             (
                 this.returnInfoInstance.instance["removed"] as EventEmitter<boolean>
@@ -1790,9 +1790,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 secondaryAttributes: this.getSecondaryAttributes()
             };
         }
-        // if (this.productVideos && this.productVideos.length) {
-        //     contentInfo["videos"] = this.productVideos;
-        // }
+        if (this.rawProductData.productVideos && this.rawProductData.productVideos.length) {
+            contentInfo["videos"] = this.rawProductData.productVideos;
+        }
         const details = {
             description: this.rawProductData.productDescripton,
             category: this.rawProductData.productCategoryDetails,
@@ -2530,6 +2530,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 "similarDataLoaded$"
                 ] as EventEmitter<any>
             ).subscribe((data) => {
+                this.cdr.detectChanges();
                 // this.commonService.triggerAttachHotKeysScrollEvent('similar-products');
             });
             const custData = this.commonService.custDataTracking;
@@ -2617,6 +2618,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             //     }
             // );
         }
+        this.cdr.detectChanges();
     }
 
     // dynamically load similar section

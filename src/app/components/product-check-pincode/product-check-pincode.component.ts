@@ -98,6 +98,7 @@ export class ProductCheckPincodeComponent implements OnInit
                 this.itemShippingAmount = response['data']['totalShippingAmount'];
             }
         });
+        this.cdr.detectChanges();
     }
 
     checkAvailblityOnPinCode()
@@ -229,6 +230,7 @@ export class ProductCheckPincodeComponent implements OnInit
             this.deliveryDays = days + ' day(s)';
             this.deliveryAnalytics = analytics;
         }
+        this.cdr.detectChanges();
     }
 
 }

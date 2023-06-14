@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, EventEmitter, NgModule, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, EventEmitter, NgModule, Output, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'product-grouping-attributes',

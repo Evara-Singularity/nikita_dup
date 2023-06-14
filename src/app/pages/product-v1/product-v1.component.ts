@@ -286,6 +286,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.rawProductData && 
             Object.values(this.rawProductData["productAllImages"]) !== null
         ) {
+            this.qunatityFormControl.patchValue(this.rawProductData.productMinimmumQuantity || 1)
             this.commonService.enableNudge = false;
             this.isAcceptLanguage = this.rawProductData.isAcceptLanguage;
             this.setProductImages(this.rawProductData["productAllImages"])

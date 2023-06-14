@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, EventEmitter, HostBinding, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, HostBinding, Injector, Input, OnInit, Optional, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { YoutubePlayerComponent } from '@app/components/youtube-player/youtube-player.component';
 import CONSTANTS from '@app/config/constants';
@@ -93,6 +93,7 @@ export class ProductCardCoreComponent implements OnInit {
     public _analytics: GlobalAnalyticsService,
     public _toastMessageService: ToastMessageService,
     public _productService: ProductService,
+    public cdr: ChangeDetectorRef
   ) {
   }
 
@@ -162,6 +163,7 @@ export class ProductCardCoreComponent implements OnInit {
         this.variantPopupInstance.instance['productGroupData'] = productRequest;
         this.variantPopupInstance.instance['product'] = product;
         this.variantPopupInstance.instance['isSelectedVariantOOO'] = outOfStockCheck;
+        this.cdr.detectChanges();
       }
     }, error => {
       console.log('changeVariant ==>', error);
@@ -255,6 +257,7 @@ export class ProductCardCoreComponent implements OnInit {
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
       });
+      this.cdr.detectChanges();
     }
   }
 
@@ -282,6 +285,7 @@ export class ProductCardCoreComponent implements OnInit {
       let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this._router.url, title: 'Continue to raise RFQ' } };
       this._router.navigate(['/login'], navigationExtras);
     }
+    this.cdr.detectChanges();
   }
 
   async intiateRFQQuote(product) {

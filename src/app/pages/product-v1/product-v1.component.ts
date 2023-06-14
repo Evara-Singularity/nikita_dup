@@ -95,6 +95,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     similarProducts = [];
     similarForOOSLoaded = true;
     similarForOOSContainer = [];
+    fragment = '';
 
     // lazy loaded component refs
     productShareInstance = null;
@@ -272,7 +273,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.setProductNotFound();
             }
         })
-        this.initializeLocalization()
+        this.initializeLocalization();
+        this.route.fragment.subscribe((fragment: string) => {
+            this.fragment = fragment;
+        })
     }
 
     processProductData(productGroup) {
@@ -1944,7 +1948,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 });
             }
         } else {
-            this.goToLoginPage(this.rawProductData["defaultCanonicalUrl"]);
+            this.goToLoginPage(this.rawProductData.productUrl + (this.fragment.length ? `#${this.fragment}` : ''));
         }
         this.cdr.detectChanges();
     }
@@ -2172,7 +2176,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.location.replaceState(this.rawProductData.productUrl);
             this.askQuestionPopup();
         } else {
-            this.goToLoginPage(this.rawProductData.productUrl, "Continue to ask question", "askQuestion");
+            this.goToLoginPage(this.rawProductData.productUrl + (this.fragment.length ? `#${this.fragment}` : ''), "Continue to ask question");
         }
         this.cdr.detectChanges();
     }

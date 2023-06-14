@@ -1986,6 +1986,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.alertBoxInstance = null;
                 this.alertBoxContainerRef.detach();
             }, 2000);
+            this.cdr.detectChanges();
         }
     }
     async handleReviewRatingPopup(index = -1) {

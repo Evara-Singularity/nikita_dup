@@ -275,7 +275,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         })
         this.initializeLocalization();
         this.route.fragment.subscribe((fragment: string) => {
-            this.fragment = fragment;
+            this.fragment = fragment || '';
         })
     }
 
@@ -1948,7 +1948,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 });
             }
         } else {
-            this.goToLoginPage(this.rawProductData.productUrl + (this.fragment.length ? `#${this.fragment}` : ''));
+            this.goToLoginPage(this.rawProductData.productUrl + ((this.fragment && this.fragment.length) ? `#${this.fragment}` : ''));
         }
         this.cdr.detectChanges();
     }

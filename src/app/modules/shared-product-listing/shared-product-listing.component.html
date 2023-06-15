@@ -28,6 +28,11 @@
         <span class="skeleton-inner"></span>
     </button>
 </div>
+<app-plp-inline-top-banner></app-plp-inline-top-banner>
+<app-plp-leaderboard-banner></app-plp-leaderboard-banner>
+<app-promoted-brands-unit></app-promoted-brands-unit>
+<app-inline-rectangle-banner></app-inline-rectangle-banner>
+
 <div class="filter_chips" *ngIf="filterChipsArray?.length > 0">
     <div class="overflow_wrapper_chip">
         <ng-container *ngFor="let filterChip of Object.keys(_commonService.selectedFilterData.filterChip)">

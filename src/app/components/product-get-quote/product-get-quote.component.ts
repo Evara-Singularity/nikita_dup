@@ -1,7 +1,7 @@
 import { LocalStorageService } from 'ngx-webstorage';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Inject, Input, NgModule, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, NgModule, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { DOCUMENT } from "@angular/common";
@@ -26,13 +26,30 @@ export class ProductGetQuoteComponent implements OnInit, AfterViewInit
 	mouseIsDown;
 	sliderBackground: HTMLDivElement = null;
 	animateSlider: HTMLDivElement = null;
+	isUserLogin: boolean;
+	userSession: any;
+	loginSub: any;
+	logoutSub: any;
 
-	constructor(public commonService: CommonService, @Inject(DOCUMENT) private _document,
+	constructor(public commonService: CommonService, @Inject(DOCUMENT) private _document, private _cdr: ChangeDetectorRef,
 		private _localAuthService: LocalAuthService, public _localStorageService:LocalStorageService) { }
 
 	ngOnInit(): void
 	{
 		this.getStaticSubjectData();
+		this.updateUserStatus();
+		this.addSubscribers();
+	}
+
+	updateUserStatus() {
+		this.isUserLogin = this._localAuthService.isUserLoggedIn();
+		this.userSession = this._localAuthService.getUserSession();
+		this._cdr.detectChanges();
+	}
+	
+	addSubscribers() {
+		this._localAuthService.login$.subscribe((data) => { this.updateUserStatus(); });
+        this._localAuthService.logout$.subscribe((data) => { this.updateUserStatus(); });
 	}
 	getStaticSubjectData(){
 		this.commonService.changeStaticJson.subscribe(staticJsonData => {

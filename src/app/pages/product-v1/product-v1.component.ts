@@ -96,6 +96,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     similarForOOSLoaded = true;
     similarForOOSContainer = [];
     fragment = '';
+    productFilterAttributesList: any;
 
     // lazy loaded component refs
     productShareInstance = null;
@@ -306,10 +307,28 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.showLoader = false;
         this.checkForRfqGetQuote();
         this.checkForAskQuestion();
+        this.filterAttributes();
         this.createSiemaOption();
         this.checkForBulkPricesProduct();
         this.setProductSeoSchema();
         this.setMetatag();
+    }
+
+    filterAttributes() {
+        this.productFilterAttributesList = this.rawProductData.productFilterAttributesList;
+        if(this.productFilterAttributesList && this.productFilterAttributesList.length) {
+          this.productFilterAttributesList.forEach((element, index) => {
+              this.productFilterAttributesList[index]['items'] = this.filterAttr(index)
+          });
+          this.cdr.detectChanges();
+        }
+    }
+
+    filterAttr(index) {
+        const items = this.productFilterAttributesList[index]['items'];
+        if(items && items.length) {
+            return items.filter(obj => obj.selected).concat(items.filter(obj => !obj.selected));
+        }
     }
 
     setProductSeoSchema()
@@ -1770,13 +1789,13 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             imgURL: this.productAllImages[0]["large"],
             brandName: this.rawProductData.productBrandDetails["brandName"],
             productMrp: this.rawProductData.productMrp,
-            productDiscount: this.rawProductData.priceQuantityCountry.productDiscount,
+            productDiscount: this.rawProductData.priceQuantityCountry.discount,
             bulkPriceWithoutTax: this.bulkPriceWithoutTax,
             priceWithoutTax: this.rawProductData.priceWithoutTax,
             productPrice: this.rawProductData.productPrice,
             // bulkSellingPrice: this.bulkSellingPrice,
             taxPercentage: this.rawProductData.taxPercentage,
-            // bulkDiscount: this.bulkDiscount,
+            bulkDiscount: null,
             productOutOfStock: this.rawProductData.productOutOfStock,
         };
         let contentInfo = {};

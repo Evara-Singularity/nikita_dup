@@ -29,7 +29,7 @@
     </product-description>
 
     <product-grouping-attributes [isCommonProduct]="rawProductData?.productFilterAttributesList > 0"
-        [productFilterAttributesList]="rawProductData?.productFilterAttributesList" (updateAttr)="updateAttr($event)"
+        [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)"
         (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
     <ng-container *ngIf="rawProductData?.priceQuantityCountry?.bulkPricesModified && rawProductData?.priceQuantityCountry?.bulkPricesModified?.length > 0">
         <product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()"

@@ -1,4 +1,4 @@
-<section class="pwa-row product-section-detail" *ngIf="productBulkPrices && productBulkPrices.length>1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && priceQuantityCountry?.quantityAvailable >1">
+<section class="pwa-row product-section-detail" *ngIf="productBulkPrices && productBulkPrices.length>1 && priceQuantityCountry && !productOutOfStock && priceQuantityCountry['bulkPricesModified'] && priceQuantityCountry['bulkPricesModified'].length > 0 && priceQuantityCountry?.quantityAvailable > productMinimmumQuantity">
     <div  class="pwa-col-12">
         <div class="pdp-subdetail" [class.no-pad]="productOutOfStock && isCommonProduct">
             <div class="bulk-qty">

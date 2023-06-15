@@ -280,15 +280,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     processProductData(productGroup) {
-        this.rawProductData = productGroup;
-        this.originalProductBO = this.rawProductData;
+        this.rawProductData = JSON.parse(JSON.stringify(productGroup));
+        this.originalProductBO = JSON.parse(JSON.stringify(productGroup));
         if (
             this.rawProductData && 
             Object.values(this.rawProductData["productAllImages"]) !== null
         ) {
             this.qunatityFormControl.patchValue(this.rawProductData.productMinimmumQuantity || 1)
             this.commonService.enableNudge = false;
-            this.isAcceptLanguage = this.rawProductData.isAcceptLanguage;
+            // this.isAcceptLanguage = this.rawProductData.isAcceptLanguage;
             this.setProductImages(this.rawProductData["productAllImages"])
             this.setProductVideo(this.rawProductData["productVideos"]);
         } else {
@@ -914,6 +914,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                         }
                     }
                     this.similarForOOSLoaded = false;
+                    this.commonService.similarProductsLoaded.next(true);
                     this.cdr.detectChanges();
                 });
         }
@@ -1039,7 +1040,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
     }
     scrollToId(id: string) {
-        // this.holdRFQForm = true;
+        this.holdRFQForm = true;
         if (document.getElementById(id)) {
             let footerOffset = document.getElementById(id).offsetTop;
             ClientUtility.scrollToTop(1000, footerOffset + 190);
@@ -1369,12 +1370,11 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     checkForBulkPricesProduct() {
         if (this.rawProductData['productPrice']) {
-            const productBulkPrices = this.rawProductData['priceQuantityCountry']['bulkPrices']['india'] || {};
-            this.productBulkPrices = (Object.keys(productBulkPrices).length > 0) ? Object.assign([], productBulkPrices) : null;
+            this.productBulkPrices = this.rawProductData['priceQuantityCountry']['bulkPricesModified'];
             this.isBulkPricesProduct = this.productBulkPrices ? true : false;
             if (this.isBulkPricesProduct) {
                 this.productBulkPrices = this.productBulkPrices.map(priceMap => {
-                    const discount = this.commonService.calculcateDiscount(null, this.rawProductData.product, priceMap.bulkSellingPrice);
+                    const discount = this.commonService.calculcateDiscount(null, this.rawProductData.productMrp, priceMap.bulkSellingPrice);
                     return { ...priceMap, discount }
                 })
                 //filtering Data to show the 
@@ -2349,6 +2349,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             }, err => {
                 this.rfqQuoteRaised = false;
             });
+            this.cdr.detectChanges();
         });
     }
 
@@ -2371,12 +2372,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.productRFQUpdateInstance.instance["isLoading"] as EventEmitter<boolean>
         ).subscribe((loaderStatus) => {
             this.showLoader = loaderStatus;
+            this.cdr.detectChanges();
         });
         (
             this.productRFQUpdateInstance.instance["onRFQUpdateSuccess"] as EventEmitter<string>
         ).subscribe((status) => {
             this.isRFQSuccessfull = true;
+            this.cdr.detectChanges();
         });
+        this.cdr.detectChanges();
     }
 
     analyticRFQ(isSubmitted: boolean = false) {
@@ -2825,6 +2829,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     ] as EventEmitter<any>
                 ).subscribe((data) => {
                     this.showScrollToTopButton = data;
+                    this.cdr.detectChanges();
                 });
             }
         }
@@ -2888,7 +2893,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 productName: this.rawProductData.productName,
                 pageTitleName: this.rawProductData.productName,
                 pwot: this.rawProductData.priceWithoutTax,
-                quantityAvailable: this.rawProductData.priceQuantityCountry["quantityAvailable"],
+                quantityAvailable: this.rawProductData.priceQuantityCountry ? this.rawProductData.priceQuantityCountry["quantityAvailable"] : 0,
                 productPrice: this.rawProductData.productPrice,
                 productOutOfStock: this.rawProductData.productOutOfStock,
                 seoDetails: this.rawProductData["seoDetails"],
@@ -3549,9 +3554,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     navigateToCategory() {
-        if (this.apiResponse.breadcrumb) {
-            let lastElement = this.apiResponse.breadcrumb.length - 2;
-            let category = this.apiResponse.breadcrumb[lastElement]["categoryLink"];
+        if (this.apiResponse.breadCrumb) {
+            let lastElement = this.apiResponse.breadCrumb.length - 2;
+            let category = this.apiResponse.breadCrumb[lastElement]["categoryLink"];
             this.navigateToUrl(category);
         }
     }

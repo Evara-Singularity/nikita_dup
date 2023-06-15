@@ -1037,7 +1037,7 @@ export class CartService
 
     getAddToCartProductItemRequest(args: { productGroupData, buyNow, selectPriceMap?, quantity?, isFbt?, languageMode?, originalProductBO?, v1?}, v1 = false): AddToCartProductSchema {
         const userSession = this.localAuthService.getUserSession();
-        const partNumber = v1 ? args.productGroupData['defaultPartNumber'] : args.productGroupData['partNumber'] || args.productGroupData['defaultPartNumber'];
+        const partNumber = v1 ? args.productGroupData['msn'] : args.productGroupData['partNumber'] || args.productGroupData['defaultPartNumber'];
         const isProductPriceValid = v1 ? args.productGroupData['isProductPriceValid'] : args.productGroupData['isProductPriceValid'] || args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
         const priceQuantityCountry = (isProductPriceValid) ? v1 ? args.productGroupData['priceQuantityCountry'] : Object.assign({}, args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
         const productPartDetails = !v1 ? args.productGroupData['productPartDetails'][partNumber] : args.productGroupData;
@@ -1050,8 +1050,8 @@ export class CartService
         const productCategoryDetails = args.productGroupData['categoryDetails'] ? args.productGroupData['categoryDetails'][0] : args.productGroupData.productCategoryDetails;
         const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
         const incrementUnit = (priceQuantityCountry && priceQuantityCountry['incrementUnit']) ? priceQuantityCountry['incrementUnit'] : 1;
-        // const productLinks = productPartDetails['productLinks'];
-        // const productURL = (args.languageMode) ? v1 ? args.productGroupData['productUrl'] : args.originalProductBO['defaultCanonicalUrl'] : (productPartDetails['canonicalUrl'] || productLinks['canonical'] || productLinks['default']);
+        const productLinks = productPartDetails['productLinks'];
+        const productURL = (args.languageMode) ? v1 ? args.productGroupData['productUrl'] : args.originalProductBO['defaultCanonicalUrl'] : (productPartDetails['canonicalUrl'] || productLinks['canonical'] || productLinks['default']);
         const product = {
             sessionId: userSession.sessionId,
             cartId: null,
@@ -1074,7 +1074,7 @@ export class CartService
             productQuantity: (args.quantity && !isNaN(args.quantity) && +args.quantity > productMinimmumQuantity) ? args.quantity : productMinimmumQuantity,
             productUnitPrice: productPrice,
             expireAt: null,
-            productUrl: args.productGroupData['productUrl'],
+            productUrl: productLinks ? productLinks.canonical : productURL,
             bulkPriceMap: priceQuantityCountry['bulkPrices'],
             bulkPrice: null,
             bulkPriceWithoutTax: null,

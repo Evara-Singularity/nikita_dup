@@ -9,6 +9,7 @@ import {
   ViewChild,
   ViewContainerRef,
   Output,
+  ChangeDetectorRef,
 } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { NavigationExtras, Router } from "@angular/router";
@@ -94,7 +95,7 @@ export class ProductOosSimilarCardComponent {
     private _toastMessageService: ToastMessageService,
     private _router: Router,
     private _analytic: GlobalAnalyticsService,
-    
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -412,6 +413,7 @@ export class ProductOosSimilarCardComponent {
         this.addToCartToastInstance = null;
         this.addToCartToastContainerRef.detach();
       });
+      this.cdr.detectChanges();
     }
   }
 
@@ -451,6 +453,7 @@ export class ProductOosSimilarCardComponent {
         this.commonService.enableNudge = false;
         // this.commonService.resetSearchNudgeTimer();
       });
+      this.cdr.detectChanges()
     }
   }
 
@@ -472,12 +475,14 @@ export class ProductOosSimilarCardComponent {
         this.variantPopupInstance.instance['productGroupData'] = productRequest;
         this.variantPopupInstance.instance['product'] = product;
         this.variantPopupInstance.instance['isSelectedVariantOOO'] = outOfStockCheck;
+        this.cdr.detectChanges()
       }
     }, error => {
       console.log('changeVariant ==>', error);
     }, () => {
       this._loader.setLoaderState(false);
     })
+    this.cdr.detectChanges()
   }
 
   // handle RFQ form is variant is out of stock
@@ -501,6 +506,7 @@ export class ProductOosSimilarCardComponent {
       let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this._router.url } };
       this._router.navigate(['/login'], navigationExtras);
     }
+    this.cdr.detectChanges();
   }
 
   async intiateRFQQuote(product) {
@@ -522,6 +528,7 @@ export class ProductOosSimilarCardComponent {
       this.loadAlertBox(headerText, subHeaderText, null);
       this._productListService.analyticRFQ(true, product);
     });
+    this.cdr.detectChanges();
   }
 
 
@@ -547,6 +554,7 @@ export class ProductOosSimilarCardComponent {
         this.alertBoxContainerRef.detach();
       }, 2000);
     }
+    this.cdr.detectChanges();
   }
 
   getBrandLink(brandDetails: {}) {

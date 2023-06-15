@@ -164,7 +164,7 @@
                     <div class="outline-input-label" *ngIf="isBusinessCustomer.value">
                         <label>
                             <input type="text" name="phone-no" formControlName="tin" maxlength="15" placeholder="Enter GSTIN*"
-                                (click)="isOutOfStock?initiateLogin():false" (keyup)="$event.stopPropagation();gstinError=null">
+                                (click)="isOutOfStock?initiateLogin():false; updateField()" (keyup)="$event.stopPropagation();gstinError=null">
                             <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (tin.touched || tin.dirty)">
                                 <p class="error-txt" *ngIf="tin.hasError('required')">Kindly enter GSTIN.</p>
                                 <p class="error-txt" *ngIf="tin.hasError('pattern')">Kindly enter valid GSTIN.</p>

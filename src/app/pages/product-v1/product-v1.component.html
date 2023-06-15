@@ -35,7 +35,7 @@
         <product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()"
             (selectProductBulkPrice$)="selectProductBulkPrice($event)" [rawProductData]="rawProductData"
             [productOutOfStock]="rawProductData?.productOutOfStock" [isCommonProduct]="rawProductData?.productFilterAttributesList > 0"
-            [priceQuantityCountry]="rawProductData?.priceQuantityCountry" [productBulkPrices]="rawProductData?.priceQuantityCountry?.bulkPricesModified"
+            [priceQuantityCountry]="rawProductData?.priceQuantityCountry" [productBulkPrices]="productBulkPrices"
             [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl"
             [productMinimmumQuantity]="rawProductData?.productMinimmumQuantity">
         </product-bulk-quantity>

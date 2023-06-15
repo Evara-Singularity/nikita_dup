@@ -52,7 +52,8 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     ) { }
 
   ngOnInit(): void {
-    this.productStaticData = this.commonService.getLocalizationData(!this.isHindiUrl)
+    this.productStaticData = this.commonService.getLocalizationData(!this.isHindiUrl);
+    this.commonService.similarProductsLoaded.subscribe(value => value && this.cdr.detectChanges())
     // this.getStaticSubjectData();
   }
 
@@ -64,9 +65,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 
   ngAfterViewInit(): void
   {
-   
   }
-
   async loadProductCrousel(slideIndex)
   {
     if (!this.productCrouselInstance) {

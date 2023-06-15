@@ -81,6 +81,7 @@ export class CommonService
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
     public initiateLoginPopUp: Subject<string> = new Subject<string>();
     public _initiateBulkRfq: Subject<boolean> = new Subject<boolean>();
+    public similarProductsLoaded: Subject<boolean> = new Subject<boolean>();
 
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
     public addLottieScriptSubject: Subject<any> = new Subject<any>();

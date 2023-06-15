@@ -80,7 +80,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
 
     constructor(private localStorageService: LocalStorageService, private productService: ProductService, private productUtil: ProductUtilsService, private tms: ToastMessageService,
-        private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, private cd: ChangeDetectorRef, public _commonService: CommonService) {
+        private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, public cdr: ChangeDetectorRef, public _commonService: CommonService) {
         this.stateList = stateList['dataList'];
         this.isBrowser = _commonService.isBrowser;
     }
@@ -98,7 +98,11 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
 
     ngAfterViewInit() { this.addSubscribers(); }
 
-    ngAfterViewChecked() { this.cd.detectChanges(); }
+    ngAfterViewChecked() { this.cdr.detectChanges(); }
+
+    updateField() {
+        this.cdr.detectChanges();
+    }
 
     addSubscribers() {
         this.loginSubscriber = this.localAuthService.login$.subscribe((value) => {
@@ -146,6 +150,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         this.getPincodeSubscriber = this._commonService.getAddressList(params).subscribe((res) => {
             if (res["statusCode"] == 200 && res["addressList"] && res["addressList"].length > 1) {
                 this.pincode.setValue(res["addressList"][0].postCode);
+                this.cdr.detectChanges();
             }
         });
     }
@@ -265,6 +270,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
                     this.stateList.forEach(element => {
                         if (element.idState == parseInt(dataList['state'])) {
                             this.state.setValue(element.name);
+                            this.cdr.detectChanges();
                         }
                     })
                 } else {

@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentFactoryResolver, Injector, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalService } from '@app/modules/modal/modal.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -36,6 +36,7 @@ export class ProductCardHorizontalListViewComponent extends ProductCardCoreCompo
     public _toastMessageService: ToastMessageService,
     public _productService: ProductService,
     private _ytThumbnail: YTThumbnailPipe,
+    private _cdr: ChangeDetectorRef
   ) {
     super(
       _cartService,
@@ -49,7 +50,8 @@ export class ProductCardHorizontalListViewComponent extends ProductCardCoreCompo
       _commonService,
       _analytics,
       _toastMessageService,
-      _productService
+      _productService,
+      _cdr
     );
   }
 

@@ -203,6 +203,7 @@ export class ProductCardCoreComponent implements OnInit {
         this.addToCartToastInstance = null;
         this.addToCartToastContainerRef.detach();
       });
+      this.cdr.detectChanges();
     }
   }
 

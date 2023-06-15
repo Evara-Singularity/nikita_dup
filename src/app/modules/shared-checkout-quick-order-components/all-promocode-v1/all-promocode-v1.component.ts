@@ -30,17 +30,6 @@ export class AllPromocodeV1Component implements OnInit {
       );
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-
-      if (this._cartService?.allPromoCodes[0]?.promoCode && this._cartService?.allPromoCodes[0]?.isApplicable && this._cartService.getCartBySession ) {
-        // console.log('nikkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk   isApplicable',this._cartService.getCartBySession())
-        this._cartService.genericApplyPromoCode(this._cartService?.allPromoCodes[0]?.promoCode);
-      }
-      
-    },3000);
-  }
-
   openPromoCodeList() {
     this.showPromoOfferPopup = true;
     if (this._commonService.isBrowser && document.querySelector("app-pop-up")) {

@@ -3667,8 +3667,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             category_id: this.productCategoryDetails["categoryCode"],
             category_name: this.productCategoryDetails["categoryName"],
             id_brand: this.productBrandDetails["idBrand"],
-            brand_name: this.productBrandDetails["brandName"],
-            product_name: this.productName,
+            brand_name: (this.isHindiUrl) ? this.originalProductBO['brandDetails']['brandName'] : this.productBrandDetails['brandName'],
+            // brand_name: this.productBrandDetails["brandName"],
+            // product_name:  (this.isHindiUrl) ?this.productName,
+            product_name:(this.isHindiUrl) ?this.originalProductBO['productName']:this.productName,
             user_id: this.localStorageService.retrieve("user")
                 ? this.localStorageService.retrieve("user").userId
                 : null,
@@ -3677,6 +3679,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             status: this.rawProductData["status"],
             product_url: this.productUrl,
         };
+        console.log(clickStreamData.product_name,"ppp");
         //TODO:Yogender for click stream to set selling price
         if (this.priceQuantityCountry != null) {
             clickStreamData["mrp"] = this.productMrp;

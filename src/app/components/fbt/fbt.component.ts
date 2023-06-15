@@ -136,10 +136,13 @@ export class FbtComponent implements OnInit
         let partReference = product.partNumber;
         let productPartDetails = product['productPartDetails'];
         if (productPartDetails && productPartDetails[partReference]['productPriceQuantity'] && productPartDetails[partReference]['productPriceQuantity']['india']) {
-            const productObject = this.cartService.getAddToCartProductItemRequest({ productGroupData: product, buyNow: false, quantity: this.productQuantity, isFbt: isFBT, originalProductBO: this.originalProductBO });
+            const productObject = this.cartService.getAddToCartProductItemRequest({ productGroupData: product, buyNow: false, quantity: this.productQuantity, isFbt: isFBT, originalProductBO: this.originalProductBO,languageMode: this.isHindiUrl });
             returnObj = { mProduct: productObject, validation: true }
         }
         return returnObj;
+    }
+    get isHindiUrl() {
+        return (this.router.url).toLowerCase().indexOf('/hi/') !== -1
     }
 
     initiateAddToCart()

@@ -1,162 +1,54 @@
-<!-- *ngIf="similarProducts && similarProducts.length>0" -->
 <section class="pwa-row mar-tb-15 br-8 similar-product pad-0 product-comparison mt-10">
     <section class="pwa-col-12">
         <div class="view-all-strip pad-0">
             <h3 class="heading-1 border-bottom mb-10 pad-15">Similar Products To Compare</h3>
-            <!-- <a class="btn quinary-btn">VIEW ALL</a> -->
         </div>
         <div class="">
-            <!-- <product-card-vertical-container [numberOfItems]="similarProducts.length || 0">
-            <ng-container *ngFor="let product of similarProducts;let pIndex=index">
-                <app-product-card-vertical-grid-view-product-price-compare [section]="'similar'"
-                    [product]="product" [cardMetaInfo]='cardMetaInfo' [cardFeaturesConfig]='cardFeaturesConfig'
-                    [moduleUsedIn]="'PRODUCT_SIMILAR'" [pIndex]="pIndex" [enableTracking]="true"
-                    [analytics]="analytics">
-                </app-product-card-vertical-grid-view-product-price-compare>
-            </ng-container>
-        </product-card-vertical-container> -->
-
             <div class="table-fixed-column-outter">
                 <div class="table-fixed-column-inner">
                     <table class="table-fixed-column table-fixed-column table table-bordered table-striped">
                         <tr class="table-row-product-card">
                             <td class="odd-child"></td>
-                            <td>
-                                <div class="comparison-product-outer currentProduct">
+                            <td *ngFor="let msn of msnList; let i = index;">
+                                <div class="comparison-product-outer" [ngClass]="{'currentProduct':i == 0}">
                                     <div class="compared-product-card pad-10">
-                                        <div class="prod-img">
-                                            <img src="assets/img/pump-img.png" alt="">
+                                        <div class="prod-img" (click)="navigateTo(msnMasterData[msn]['productUrl'])">
+                                            <img [src]="imagePath + msnMasterData[msn]['mainImageLink']"
+                                                [alt]="msnMasterData[msn]['productName']">
                                         </div>
-                                        <p class="prod-name">NEOSafe A5022 Brawn Sporty Look Steel Toe Leather Brown
-                                            Safety Shoes,
-                                            Size: 7</p>
-                                        <h3 class="prodPrice">₹546</h3>
-                                        <p class="currentProduct-info">
-                                            <span>Current Product</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="comparison-product-outer ">
-                                    <div class="compared-product-card pad-10">
-                                        <div class="prod-img">
-                                            <img src="assets/img/pump-img.png" alt="">
-                                        </div>
-                                        <p class="prod-name">NEOSafe A5022 Brawn Sporty Look Steel Toe Leather Brown
-                                            Safety Shoes,
-                                            Size: 7</p>
-                                        <h3 class="prodPrice">₹546</h3>
-                                        <div class="card-btn-row w-full">
-                                            <button class="btn tertiary-btn w-full"><i class="icon-cart1"></i> ADD TO
-                                                CART</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="comparison-product-outer ">
-                                    <div class="compared-product-card pad-10">
-                                        <div class="prod-img">
-                                            <img src="assets/img/pump-img.png" alt="">
-                                        </div>
-                                        <p class="prod-name">NEOSafe A5022 Brawn Sporty Look Steel Toe Leather Brown
-                                            Safety Shoes,
-                                            Size: 7</p>
-                                        <h3 class="prodPrice">₹546</h3>
-                                        <div class="card-btn-row w-full">
-                                            <button class="btn tertiary-btn w-full"><i class="icon-cart1"></i> ADD TO
-                                                CART</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="comparison-product-outer ">
-                                    <div class="compared-product-card pad-10">
-                                        <div class="prod-img">
-                                            <img src="assets/img/pump-img.png" alt="">
-                                        </div>
-                                        <p class="prod-name">NEOSafe A5022 Brawn Sporty Look Steel Toe Leather Brown
-                                            Safety Shoes,
-                                            Size: 7</p>
-                                        <h3 class="prodPrice">₹546</h3>
-                                        <div class="card-btn-row w-full">
-                                            <button class="btn tertiary-btn w-full"><i class="icon-cart1"></i> ADD TO
-                                                CART</button>
-                                        </div>
+                                        <p class="prod-name" (click)="navigateTo(msnMasterData[msn]['productUrl'])">
+                                            {{msnMasterData[msn]['productName']}}</p>
+                                        <h3 class="prodPrice">₹ {{msnMasterData[msn]['priceWithoutTax'] | mathRound |
+                                            number : '1.2-2'}}</h3>
+                                        <add-to-cart [isOutOfStock]="msnMasterData[msn]['isOutOfStock']"
+                                            [moglixPartNumber]="msn" [product]="msnMasterData[msn]">
+                                        </add-to-cart>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="even-child">Rating</td>
-                            <td>
-                                <div class="avgrating">4.1 <i class="icon-rating-star"></i></div>
-                            </td>
-                            <td>
-                                <div class="avgrating">4.1 <i class="icon-rating-star"></i></div>
-                            </td>
-                            <td>
-                                <div class="avgrating">4.1 <i class="icon-rating-star"></i></div>
-                            </td>
-                            <td>
-                                <div class="avgrating">4.1 <i class="icon-rating-star"></i></div>
+                            <td *ngFor="let msn of msnList">
+                                <div class="avgrating" *ngIf="msnMasterData[msn]['avgRating'] > 0">{{msnMasterData[msn]['avgRating'] | number : '1.1-1'}} <i
+                                        class="icon-rating-star"></i></div>
                             </td>
                         </tr>
                         <tr>
                             <td class="odd-child">Brand</td>
-                            <td>Neosafe</td>
-                            <td>Timberwood</td>
-                            <td>Timberwood</td>
-                            <td>JK Steel</td>
+                            <td *ngFor="let msn of msnList">
+                                {{msnMasterData[msn]['brandName']}}
+                            </td>
                         </tr>
-                        <tr>
-                            <td class="even-child">Antiskid</td>
-                            <td>1</td>
-                            <td>Some Val 3</td>
-                            <td>Some Val 4</td>
-                            <td>Some Val 5</td>
-                        </tr>
-                        <tr>
-                            <td class="odd-child">Upper Matrial</td>
-                            <td>3</td>
-                            <td>Some Val 3</td>
-                            <td>Some Val 4</td>
-                            <td>Some Val 5</td>
-                        </tr>
-                        <tr>
-                            <td class="even-child">Toe Type</td>
-                            <td>Some Val 2</td>
-                            <td>Some Val 3</td>
-                            <td>Some Val 4</td>
-                            <td>Some Val 5</td>
-                        </tr>
-                        <tr>
-                            <td class="odd-child">Electric Resistant</td>
-                            <td>Some Val 2</td>
-                            <td>Some Val 3</td>
-                            <td>Some Val 4</td>
-                            <td>Some Val 5</td>
+                        <tr *ngFor="let specificationKey of attributeToCompareKeys">
+                            <td class="odd-child">{{specificationKey | uppercase}}</td>
+                            <td class="even-child" *ngFor="let msn of msnList">
+                                {{msnMasterData[msn]['attributeToCompareValues'][specificationKey]}}
+                            </td>
                         </tr>
                     </table>
                 </div>
             </div>
-
-
-
-
-            <div class="seemore pad-15">
-                <p class="blue-text">READ MORE</p>
-            </div>
         </div>
-        <!-- <product-card-vertical-container [numberOfItems]="similarProducts.length || 0">
-      <ng-container *ngFor="let product of similarProducts;let pIndex=index">
-          <app-product-card-vertical-grid-view-product-price-compare [section]="'similar'" [product]="product" [cardMetaInfo]='cardMetaInfo'
-              [cardFeaturesConfig]='cardFeaturesConfig' [moduleUsedIn]="'PRODUCT_SIMILAR'" [pIndex]="pIndex" [enableTracking]="true"
-              [analytics]="analytics">
-          </app-product-card-vertical-grid-view-product-price-compare>
-      </ng-container>
-  </product-card-vertical-container> -->
     </section>
 </section>

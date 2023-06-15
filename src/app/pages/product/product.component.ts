@@ -172,6 +172,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     //recently view
     hasRecentlyView = true;
     msn:string;
+    compareProductsData:Array<object> = [];
 
     productShareInstance = null;
     @ViewChild("productShare", { read: ViewContainerRef })
@@ -462,6 +463,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
             this.getRecents();
+            if(!this.productOutOfStock && this.defaultPartNumber != null){ this.getCompareProductsData(this.defaultPartNumber);}
             this.route.fragment.subscribe((fragment: string) => {
                 this.fragment = fragment;
             })
@@ -2197,7 +2199,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     async onVisibleproductPriceCompare(htmlElement)
     {
-        if (!this.productPriceCompareInstance && !this.productOutOfStock) {
+        if (!this.productPriceCompareInstance && !this.productOutOfStock && this.compareProductsData.length > 0) {
             const { ProductPriceCompareComponent } = await import(
                 "./../../components/product-price-compare/product-price-compare.component"
             );
@@ -2211,40 +2213,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                     this.injector
                 );
 
-            this.productPriceCompareInstance.instance["partNumber"] = this.rawProductData['partNumber'];
-            this.productPriceCompareInstance.instance["groupId"] = this.rawProductData['groupId'];
-            this.productPriceCompareInstance.instance["productName"] = this.productName;
-            this.productPriceCompareInstance.instance["categoryCode"] =
-                this.productCategoryDetails["categoryCode"];
-
-            this.productPriceCompareInstance.instance["outOfStock"] =
-                this.productOutOfStock;
-            (
-                this.productPriceCompareInstance.instance[
-                "similarDataLoaded$"
-                ] as EventEmitter<any>
-            ).subscribe((data) =>
-            {
-                // this.commonService.triggerAttachHotKeysScrollEvent('similar-products');
-            });
-            const custData = this.commonService.custDataTracking;
-            const orderData = this.orderTracking;
-            const TAXONS = this.taxons;
-            const page = {
-                pageName: null,
-                channel: "pdp",
-                subSection: "Similar Products",
-                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-                linkName: null,
-                loginStatus: this.commonService.loginStatusTracking,
-            };
-            this.productPriceCompareInstance.instance["analytics"] = {
-                page: page,
-                custData: custData,
-                order: orderData,
-            };
+            this.productPriceCompareInstance.instance["compareProductsData"] = this.compareProductsData;
+            
+           
         }
-        this.holdRFQForm = false;
     }
 
 
@@ -4786,6 +4758,16 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     get isHindiUrl() {
         return (this.router.url).toLowerCase().indexOf('/hi/') !== -1
+    }
+
+    getCompareProductsData(msn: string) {
+        this.productService.getCompareProducts(msn).subscribe(result=>{
+            if(result && result['totalCount'] && result['totalCount'] > 0 && result['products']){
+                this.compareProductsData = result['products'];
+            }
+        },(error)=>{
+            this.compareProductsData = [];
+        })
     }
 
 }

@@ -628,7 +628,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     addSessionSubscriber() {
-        console.log('anil');
         this.cartSubscription = this.cartService.getCartUpdatesChanges().pipe(take(2)).subscribe((data) =>{
             if(data && data['cart'] && data['cart']['sessionId'] && !this.blockAPICalls) {
                 this.blockAPICalls = true;
@@ -687,7 +686,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 resObj['duplicateOrderRes'] = null;
             }
-            console.log(resObj);
             this.processClinetResponse(resObj);
         });
     }

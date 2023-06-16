@@ -266,6 +266,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"]) {
                 this.apiResponse = rawData.product[0].data.data;
+                this.isAcceptLanguage = this.apiResponse['acceptLanguage'] && this.apiResponse['acceptLanguage'].length ? true : false; 
                 this.processProductData(this.apiResponse.productGroup);
                 if (this.apiResponse && this.apiResponse.tagProducts) {
                     this.onVisiblePopularDeals();
@@ -290,7 +291,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         ) {
             this.qunatityFormControl.patchValue(this.rawProductData.productMinimmumQuantity || 1)
             this.commonService.enableNudge = false;
-            // this.isAcceptLanguage = this.rawProductData.isAcceptLanguage;
             this.setProductImages(this.rawProductData["productAllImages"])
             this.setProductVideo(this.rawProductData["productVideos"]);
         } else {
@@ -2089,15 +2089,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         if (this.localStorageService.retrieve("user")) {
             let user = this.localStorageService.retrieve("user");
             if (user.authenticated == "true") {
-                // let obj = {
-                //     review_type: "PRODUCT_REVIEW",
-                //     item_type: "PRODUCT",
-                //     item_id: item.item_id,
-                //     review_id: item.review_id.uuid,
-                //     user_id: user.userId,
-                //     is_review_helpful_count_no: no,
-                //     is_review_helpful_count_yes: yes,
-                // };
                 let obj = {
                     "id": item.id,
                     "reviewType": "PRODUCT_REVIEW",
@@ -2128,26 +2119,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                                 this.apiResponse.productReviews.reviewList[i]['dislike'] = reviewValue == 'no' ? 1 : 0;
                                 this.apiResponse.productReviews.reviewList[i]["no"] = filteredObj["isReviewHelpfulCountNo"];
                                 this.apiResponse.productReviews.reviewList[i] = JSON.parse(JSON.stringify(this.apiResponse.productReviews.reviewList[i]));
+                                this.commonService.feedBackPosted.next(true);
                                 this.cdr.detectChanges();
                             }
                         });
-
-                        // this.rawReviewsData.reviewList[i]["isPost"] = true;
-                        // this.rawReviewsData.reviewList[i]["like"] = yes;
-                        // this.rawReviewsData.reviewList[i]["dislike"] = no;
-
-                        // if (yes === "1" && this.alreadyLiked) {
-                        //     this.alreadyLiked = false;
-                        //     this.rawReviewsData.reviewList[i]["yes"] += 1;
-                        // } else if (
-                        //     no === "1" &&
-                        //     this.rawReviewsData.reviewList[i]["no"] > 0 &&
-                        //     this.alreadyLiked
-                        // ) {
-                        //     this.alreadyLiked = false;
-                        //     this.rawReviewsData.reviewList[i]["no"] -= 1;
-                        // }
-
                     }
                 });
             } else {

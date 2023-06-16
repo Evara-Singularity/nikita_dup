@@ -23,6 +23,13 @@ export class ProductMoreWidgetComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getStaticSubjectData();
+  }
+
+  getStaticSubjectData(){
+    this.commonService.changeStaticJson.subscribe(staticJsonData => {
+      this.productStaticData = staticJsonData;
+    });
   }
 
 

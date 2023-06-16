@@ -50,6 +50,11 @@ export class ProductReviewComponent {
       this.productStaticData = staticJsonData;
       this.cdr.detectChanges();
     });
+    this._commonService.feedBackPosted.subscribe(value => {
+      if(value) {
+        this.cdr.detectChanges();
+      }
+    })
   }
 }
 

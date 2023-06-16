@@ -40,7 +40,7 @@
                 </div>
                 <div class="bulk-block bulk-container-single-grp" *ngFor="let items of productBulkPrices; let last=last; let index = index;" (click)="selectProductBulkPrice(items.minQty)" [ngClass]="{'selected': (cartQunatityForProduct >= items.minQty && cartQunatityForProduct <= items.maxQty)}">
                     <div *ngIf="priceQuantityCountry['quantityAvailable']>=items.minQty">
-                        <h3>Buy <span *ngIf="last!==true && !(priceQuantityCountry['quantityAvailable']>=items.minQty && priceQuantityCountry['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
+                        <h3>{{productStaticData.buy}} <span *ngIf="last!==true && !(priceQuantityCountry['quantityAvailable']>=items.minQty && priceQuantityCountry['quantityAvailable'] <=items.maxQty)">{{items.minQty}}
                                 {{items.minQty!==items.maxQty ?
                                 -items.maxQty:'' }}</span>
                             <span *ngIf="last==true || (priceQuantityCountry['quantityAvailable']>=items.minQty && priceQuantityCountry['quantityAvailable'] <=items.maxQty)">{{items.minQty}}</span> Qty

@@ -166,6 +166,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         this.isGSTINVerified = false;
         this.verifiedGSTINValue = '';
         this.gstinError = message;
+        this.cdr.detectChanges();
     }
 
     handleBussinessCustomer() {
@@ -256,6 +257,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
                     this.isGSTINVerified = false;
                     this.verifiedGSTINValue = '';
                 }
+                this.cdr.detectChanges();
             }
         })
     }

@@ -56,10 +56,11 @@
                 </span>
             </div>
             <div class="inline-list-link">
-                <div class="copy-coupon-container active">
+                <div class="copy-coupon-container cursor" id="couponText" [ngClass]="{'active' :isCouponCopied }" (click)="copyCouponTextArea()">
                     {{promoCodes[0].promoCode}}
                 </div>
-                <span class="copy-text">Copy to Apply Coupon</span>
+                <span class="copy-text" *ngIf="!isCouponCopied">Copy to Apply Coupon</span>
+                <span class="copy-text" *ngIf="isCouponCopied">Coupon Copied</span>
             </div>
         </div>
         <div *ngIf="promoCodes && promoCodes.length > 1" class="pwa-row inline-list-item" [ngClass]="{'more-coupon-offers-border': promoCodes && promoCodes.length < 2}">

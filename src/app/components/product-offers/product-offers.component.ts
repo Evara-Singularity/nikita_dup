@@ -35,6 +35,7 @@ export class ProductOffersComponent implements OnInit
     @Input() couponForbrandCategory:any=null;
     minimumRequiredPriceforCoupon: any;
     couponForbrandCategoryDiscount: any;
+    isCouponCopied=false;
 
     constructor(
         public localStorageService: LocalStorageService,
@@ -75,6 +76,20 @@ export class ProductOffersComponent implements OnInit
 
     seeMoreOffers(){
         this.promoCodePopUpHandler.emit(this.promoCodes);
+    }
+
+    copyCouponTextArea(){
+      this.isCouponCopied=true
+      const copiedCouponText = document.getElementById('couponText');
+      this.copyToClipboard(copiedCouponText.innerText);
+    }
+    copyToClipboard(text:any) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
     }
 
 }

@@ -1,5 +1,9 @@
 <div *ngIf="!productNotFound">
-    <app-floating-coupon-widget></app-floating-coupon-widget>
+    <app-floating-coupon-widget *ngIf="showproductDiscInfoComponent && iscloseproductDiscInfoComponent" (closeproductDiscInfoComponent$)="closeproductDiscInfoComponent()" [isBulkPricesProduct]="isBulkPricesProduct"
+        [selectedProductBulkPrice]="selectedProductBulkPrice" [productPrice]="productPrice"
+        [productDiscount]="productDiscount" [productName]="productName" [priceWithoutTax]="priceWithoutTax"
+        [gstPercentage]='taxPercentage' [promoCodes]='promoCodes'></app-floating-coupon-widget>
+    
     <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer"
         [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
     </app-oos-similar-section>
@@ -231,8 +235,8 @@
     </ng-container>
 </div>
 
-<ng-container *ngIf="!productOutOfStock">
+<!-- <ng-container *ngIf="!productOutOfStock">
     <appInstallWidget></appInstallWidget>
-</ng-container>
+</ng-container> -->
 
 <app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>

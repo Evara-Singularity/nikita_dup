@@ -19,10 +19,11 @@
                             item.minCartValue | currency:'INR': 'symbol': '1.0-0'}}</span>
                     </div>
                     <div class="inline-list-link">
-                        <div class="copy-coupon-container">
+                        <div id="copiedCouponText" class="copy-coupon-container" [ngClass]="{'active' :isCouponCopied }" (click)="copyCouponTextArea()">
                             {{item.promoCode}}
                         </div>
-                        <span class="copy-text">Copy to Apply Coupon</span>
+                        <span class="copy-text" *ngIf="!isCouponCopied">Copy to Apply Coupon</span>
+                        <span class="copy-text" *ngIf="isCouponCopied">Coupon Copied</span>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 <div *ngIf="!productNotFound">
-    <app-floating-coupon-widget *ngIf="showproductDiscInfoComponent && iscloseproductDiscInfoComponent" (closeproductDiscInfoComponent$)="closeproductDiscInfoComponent()" [isBulkPricesProduct]="isBulkPricesProduct"
+    <app-floating-coupon-widget *ngIf="showproductDiscInfoComponent && iscloseproductDiscInfoComponent && promoCodes.length>0 && !productOutOfStock" (closeproductDiscInfoComponent$)="closeproductDiscInfoComponent()" [isBulkPricesProduct]="isBulkPricesProduct"
         [selectedProductBulkPrice]="selectedProductBulkPrice" [productPrice]="productPrice"
         [productDiscount]="productDiscount" [productName]="productName" [priceWithoutTax]="priceWithoutTax"
         [gstPercentage]='taxPercentage' [promoCodes]='promoCodes'></app-floating-coupon-widget>

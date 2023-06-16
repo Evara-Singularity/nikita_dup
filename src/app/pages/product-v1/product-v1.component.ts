@@ -301,7 +301,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.productService.resetOOOSimilarProductsData();
             this.similarForOOSLoaded = true;
             this.similarForOOSContainer = new Array<any>(GLOBAL_CONSTANT.oosSimilarCardCountTop).fill(true);
-            this.setSimilarProducts(this.rawProductData.productName, this.rawProductData.productCategoryDetails["categoryCode"], this.rawProductData['partNumber'], this.rawProductData['groupId']);
+            this.setSimilarProducts(this.rawProductData.productName, this.rawProductData.productCategoryDetails["categoryCode"], this.rawProductData['msn'], this.rawProductData['groupId']);
         } else {
             this.commonService.enableAppPromoInHeader = false;
         }

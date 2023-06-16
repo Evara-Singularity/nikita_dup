@@ -311,6 +311,7 @@ export class ProductCardCoreComponent implements OnInit {
       this.loadRFQThankyouPopup(hasGstin, rfqValue);
       this._productListService.analyticRFQ(true, product);
     });
+    this.cdr.detectChanges();
   }
 
 
@@ -333,6 +334,7 @@ export class ProductCardCoreComponent implements OnInit {
         this.rfqThankyouInstance = null;
         this.rfqThankyouContainerRef.detach();
       });
+      this.cdr.detectChanges();
     }
   }
 

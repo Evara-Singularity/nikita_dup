@@ -215,6 +215,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         return `Hi, I want to buy ${this.rawProductData.productName} (${this.rawProductData.defaultPartNumber})`;
     }
     cartSubscription: Subscription;
+    blockAPICalls: boolean = false;
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -311,6 +312,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.createSiemaOption();
         this.checkForBulkPricesProduct();
         this.setProductSeoSchema();
+        // analytics calls moved to this function incase PDP is redirecte to PDP
+        this.callAnalyticForVisit();
         this.setMetatag();
     }
 
@@ -627,7 +630,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     addSessionSubscriber() {
         console.log('anil');
         this.cartSubscription = this.cartService.getCartUpdatesChanges().pipe(take(2)).subscribe((data) =>{
-            if(data && data['cart'] && data['cart']['sessionId']) {
+            if(data && data['cart'] && data['cart']['sessionId'] && !this.blockAPICalls) {
+                this.blockAPICalls = true;
                 this.callAPIs();
             }
         });
@@ -3591,6 +3595,164 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     get isHindiUrl() {
         return (this.router.url).toLowerCase().indexOf('/hi/') !== -1
+    }
+
+    callAnalyticForVisit()
+    {
+        if (this.isBrowser && this.rawProductData) {
+            this.setSessionForClickSection();
+            this.productVisitAdobe();
+            this.productVisitGTM();
+            this.productVisitViaSocket();
+            this.productVisitViaAPI();
+        }
+    }
+
+    productVisitAdobe()
+    {
+        this.analytics.sendAdobeCall(this.getAdobeAnalyticsObjectData());
+    }
+
+    setSessionForClickSection()
+    {
+        if (this.isBrowser && sessionStorage.getItem("pdp-page")) {
+            this.commonService.setSectionClick(sessionStorage.getItem("pdp-page"));
+        }
+    }
+
+    productVisitViaSocket()
+    {
+        const dataTracking = {
+            active_tags: null,
+            event_type: "page_load",
+            label: "view",
+            rating: this.rawProductData.productRating,
+            product_name: this.rawProductData.productName,
+            msn: this.rawProductData.msn,
+            brand: this.rawProductData.productBrandDetails["brandName"],
+            category_l1: this.rawProductData.productCategoryDetails["taxonomy"]?.split("/")[0]
+                ? this.rawProductData.productCategoryDetails["taxonomy"].split("/")[0]
+                : null,
+            category_l2: this.rawProductData.productCategoryDetails["taxonomy"]?.split("/")[1]
+                ? this.rawProductData.productCategoryDetails["taxonomy"].split("/")[1]
+                : null,
+            category_l3: this.rawProductData.productCategoryDetails["taxonomy"]?.split("/")[2]
+                ? this.rawProductData.productCategoryDetails["taxonomy"].split("/")[2]
+                : null,
+            oos: this.rawProductData.productOutOfStock.toString(),
+            channel: "PDP",
+            search_query: null,
+            active_promo_codes: "",
+            url_complete_load_time: null,
+            time_to_interactive: null,
+            page_type: "product page",
+        };
+        if (this.rawProductData.priceQuantityCountry != null) {
+            dataTracking["price"] = this.rawProductData.priceQuantityCountry.sellingPrice;
+        }
+        this.analytics.sendToClicstreamViaSocket(dataTracking);
+    }
+
+    productVisitViaAPI()
+    {
+        var clickStreamData = {
+            msn: this.rawProductData.defaultPartNumber,
+            url_link: this.rawProductData.productUrl,
+            availability_for_order: !this.rawProductData.productOutOfStock == true ? 1 : 0,
+            session_id: this.localStorageService.retrieve("user")
+                ? this.localStorageService.retrieve("user").sessionId
+                : "",
+            created_by_source: "Mobile",
+            category_id: this.rawProductData.productCategoryDetails["categoryCode"],
+            category_name: this.rawProductData.productCategoryDetails["categoryName"],
+            id_brand: this.rawProductData.productBrandDetails["idBrand"],
+            brand_name: this.rawProductData.productBrandDetails["brandName"],
+            product_name: this.rawProductData.productName,
+            user_id: this.localStorageService.retrieve("user")
+                ? this.localStorageService.retrieve("user").userId
+                : null,
+            // this data is  used for recently viewed API and we use medium image for same
+            product_image: this.productMediumImage,
+            status: this.rawProductData["status"],
+            product_url: this.rawProductData.productUrl,
+        };
+        //TODO:Yogender for click stream to set selling price
+        if (this.rawProductData.priceQuantityCountry != null) {
+            clickStreamData["mrp"] = this.rawProductData.productMrp;
+            clickStreamData["price_without_tax"] = this.rawProductData.priceWithoutTax;
+            clickStreamData["price_with_tax"] = this.rawProductData.productPrice;
+            clickStreamData["out_of_stock"] = this.rawProductData.productOutOfStock;
+        }
+        // console.log('clickStreamData ==>', clickStreamData);
+        this.analytics.sendToClicstreamViaAPI(clickStreamData);
+    }
+
+    productVisitGTM()
+    {
+        let gtmDataObj = [];
+        const gaGtmData = this.localStorageService.retrieve("gaGtmData");
+        if (this.rawProductData.productOutOfStock) {
+            gtmDataObj.push({
+                event: "rqnProductPage",
+                ecommerce: {
+                    rqn_product_name: this.rawProductData.productName,
+                },
+            });
+        }
+        gtmDataObj.push({
+            event: "productView",
+            ecommerce: {
+                detail: {
+                    actionField: {
+                        list: gaGtmData && gaGtmData["list"] ? gaGtmData["list"] : "",
+                    },
+                    products: [
+                        {
+                            name: this.rawProductData.productName,
+                            id: this.rawProductData.defaultPartNumber,
+                            price: this.rawProductData.productPrice,
+                            brand: this.rawProductData.productBrandDetails["brandName"],
+                            category:
+                                gaGtmData && gaGtmData["category"]
+                                    ? gaGtmData["category"]
+                                    : this.rawProductData.productCategoryDetails["categoryName"],
+                            variant: "",
+                            stockStatus: this.rawProductData.productOutOfStock ? "Out of Stock" : "In Stock",
+                        },
+                    ],
+                },
+            },
+        });
+        const google_tag_params = {
+            ecomm_prodid: this.rawProductData.defaultPartNumber,
+            ecomm_pagetype: "product",
+            ecomm_totalvalue: this.rawProductData.productPrice,
+        };
+        gtmDataObj.push({
+            event: "dyn_remk",
+            ecomm_prodid: google_tag_params.ecomm_prodid,
+            ecomm_pagetype: google_tag_params.ecomm_pagetype,
+            ecomm_totalvalue: google_tag_params.ecomm_totalvalue,
+            google_tag_params: google_tag_params,
+        });
+        const user = this.localStorageService.retrieve("user");
+
+        gtmDataObj.push({
+            event: "viewItem",
+            email: user && user["email"] ? user["email"] : "",
+            ProductID: this.rawProductData.defaultPartNumber,
+            Category: this.rawProductData.productCategoryDetails["taxonomy"],
+            CatID: this.rawProductData.productCategoryDetails["taxonomyCode"],
+            MRP: this.rawProductData.productMrp,
+            brandId: this.rawProductData.productBrandDetails["idBrand"],
+            Discount: Math.floor(this.rawProductData.priceQuantityCountry.discount),
+            ImageURL: this.productDefaultImage,
+        });
+
+        gtmDataObj.forEach((data) =>
+        {
+            this.analytics.sendGTMCall(data);
+        });
     }
 
     ngOnDestroy() {

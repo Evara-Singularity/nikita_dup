@@ -69,7 +69,7 @@ export class ProductAccordiansComponent {
       // accordian data
       // console.log(this.accordiansDetails['name']);
       this.accordiansDetails.push({
-        name: this.productStaticData.accordian_list2_label,
+        name: this.productStaticData.accordian_list3_label,
         extra: this.categoryBrandDetails.brand.brandName,
         data: this.categoryBucketRes,
         icon: 'icon-brand_store'
@@ -80,7 +80,7 @@ export class ProductAccordiansComponent {
       // accordian data
       if (this.ACCORDIAN_DATA[2]?.length > 0) {
         this.accordiansDetails.push({
-          name: this.productStaticData.accordian_list3_label,
+          name: this.productStaticData.accordian_list2_label,
           data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
           icon: 'icon-categories'
         });

@@ -41,31 +41,38 @@ export class ProductPriceCompareComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.compareProductsData && this.compareProductsData.length > 0) {
+      this.compareProductsData.reverse();
       this.restructureData();
     }
   }
 
-  restructureData() {
-    this.msnList = this.compareProductsData.map(
-      (msnInfo) => msnInfo["moglixPartNumber"]
-    );
-    this.compareProductsData.forEach((ele) => {
-      const isOOS = this.isProductOutOfStock(ele);
-      this.msnMasterData[ele["moglixPartNumber"]] = {
-        moglixPartNumber: ele["moglixPartNumber"],
-        productName: ele["productName"],
-        priceWithoutTax: ele["priceWithoutTax"],
-        avgRating: ele["avgRating"],
-        brandName: ele["brandName"],
-        mainImageLink: ele["mainImageLink"],
-        productUrl: ele["productUrl"],
-        isOutOfStock: isOOS,
-        attributeToCompareValues: ele["attributeToCompare"],
-      };
-    });
-    let attributeToCompareKeys =
-      this.compareProductsData[0]["attributeToCompare"];
-    this.attributeToCompareKeys = Object.keys(attributeToCompareKeys);
+  async restructureData() {
+    try{
+        this.msnList = this.compareProductsData.map(
+            (msnInfo) => msnInfo["moglixPartNumber"]
+          );
+          this.compareProductsData.forEach((ele) => {
+            const isOOS = this.isProductOutOfStock(ele);
+            this.msnMasterData[ele["moglixPartNumber"]] = {
+              moglixPartNumber: ele["moglixPartNumber"],
+              productName: ele["productName"],
+              priceWithoutTax: ele["priceWithoutTax"],
+              avgRating: ele["avgRating"],
+              brandName: ele["brandName"],
+              mainImageLink: ele["mainImageLink"],
+              productUrl: ele["productUrl"],
+              isOutOfStock: isOOS,
+              attributeToCompareValues: ele["attributeToCompare"],
+            };
+          });
+          let attributeToCompareKeys =
+            this.compareProductsData[0]["attributeToCompare"];
+          this.attributeToCompareKeys = Object.keys(attributeToCompareKeys);
+    }catch(err){
+      console.log("Error in restructuring data :" , err);
+        this.msnList = [];
+        this.msnMasterData = [];
+    }
   }
 
   navigateTo(url) {

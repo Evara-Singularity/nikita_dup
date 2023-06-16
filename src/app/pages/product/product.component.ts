@@ -4763,7 +4763,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     getCompareProductsData(msn: string) {
         this.productService.getCompareProducts(msn).subscribe(result=>{
             if(result && result['totalCount'] && result['totalCount'] > 0 && result['products']){
-                this.compareProductsData = result['products'];
+                this.compareProductsData = result['products'] as Array<object>;
             }
         },(error)=>{
             this.compareProductsData = [];

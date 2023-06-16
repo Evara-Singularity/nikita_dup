@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AccordianModule } from "@app/modules/accordian/accordian.module";
 import { CommonService } from '@app/utils/services/common.service';
@@ -25,30 +25,33 @@ export class ProductAccordiansComponent {
   isServer: boolean;
   isBrowser: boolean;
   categoryId: any;
-  productStaticData = this._commonService.defaultLocaleValue;
+  productStaticData: any;
 
   constructor(
     public _commonService: CommonService,
     private globalAnalyticService: GlobalAnalyticsService,
+    private cdr: ChangeDetectorRef
   ) {
     this.isServer = this._commonService.isServer;
     this.isBrowser = this._commonService.isBrowser;
   }
 
   ngOnInit() {
-    this.setAccordianData(this.relatedLinkRes, this.categoryBucketRes, this.similarCategoryRes);
+    this.productStaticData = this._commonService.getLocalizationData(!this.isHindiMode);
+    console.log(this.productStaticData)
     this.getStaticSubjectData();
+    this.setAccordianData(this.relatedLinkRes, this.categoryBucketRes, this.similarCategoryRes);
   }
 
 
   getStaticSubjectData() {
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
+      this.cdr.detectChanges();
     });
   }
 
   setAccordianData(relatedLinkRes, categoryBucketRes, similarCategoryRes) {
-
     if (relatedLinkRes && relatedLinkRes.length) {
       this.ACCORDIAN_DATA[0] = relatedLinkRes;
       // accordian data
@@ -83,6 +86,7 @@ export class ProductAccordiansComponent {
         });
       }
     }
+    this.cdr.detectChanges();
   }
 
   sendAnalyticsInfo() {

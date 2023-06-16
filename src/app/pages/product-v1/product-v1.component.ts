@@ -1577,6 +1577,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 "./../../modules/emi-plans/emi-plans.component"
             ).finally(() => {
                 this.showLoader = false;
+                this.cdr.detectChanges();
             });
             const factory = this.cfr.resolveComponentFactory(EmiPlansComponent);
             this.offerComparePopupInstance =
@@ -1608,6 +1609,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             ).subscribe((loaderStatus) => {
                 this.showLoader = loaderStatus;
             });
+            this.cdr.detectChanges();
         }
     }
 
@@ -1730,6 +1732,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             "./../../modules/product-info/product-info.component"
         ).finally(() => {
             this.showLoader = false;
+            this.cdr.detectChanges();
         });
         const factory = this.cfr.resolveComponentFactory(ProductInfoComponent);
         this.productInfoPopupInstance =
@@ -1754,6 +1757,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.handleRestoreRoutingForPopups();
         });
         this.backTrackIndex = oosProductIndex;
+        this.cdr.detectChanges();
     }
     private closeProductInfoPopup() {
         this.holdRFQForm = false;

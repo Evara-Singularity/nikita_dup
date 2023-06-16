@@ -3720,7 +3720,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             CatID: this.rawProductData.productCategoryDetails["taxonomyCode"],
             MRP: this.rawProductData.productMrp,
             brandId: this.rawProductData.productBrandDetails["idBrand"],
-            Discount: Math.floor(this.rawProductData.priceQuantityCountry.discount),
+            Discount: Math.floor(this.rawProductData.priceQuantityCountry && this.rawProductData.priceQuantityCountry.discount),
             ImageURL: this.productDefaultImage,
         });
 

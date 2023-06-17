@@ -1795,7 +1795,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             imgURL: this.productAllImages[0]["large"],
             brandName: this.rawProductData.productBrandDetails["brandName"],
             productMrp: this.rawProductData.productMrp,
-            productDiscount: this.rawProductData.priceQuantityCountry.discount,
+            productDiscount: this.rawProductData.priceQuantityCountry && this.rawProductData.priceQuantityCountry.discount,
             bulkPriceWithoutTax: this.bulkPriceWithoutTax,
             priceWithoutTax: this.rawProductData.priceWithoutTax,
             productPrice: this.rawProductData.productPrice,

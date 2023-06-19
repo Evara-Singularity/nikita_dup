@@ -81,7 +81,7 @@
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
     <div *ngIf="productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" data-observeVisibility
-        [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
+        [debounceTime]="100" (visible)="onVisibleProductRFQ($event, true)">
         <ng-container #productRFQ></ng-container>
         <product-skeletons [type]="'RFQ'" [templateRefInstance]="pincodeFormInstance"></product-skeletons>
     </div>
@@ -92,6 +92,12 @@
         <fbt [originalProductBO]='originalProductBO' [productQuantity]='cartQunatityForProduct' [analytics]='fbtAnalytics'></fbt>
         <!-- <ng-container #fbt></ng-container>
         <product-skeletons [type]="'FBT'" [templateRefInstance]="fbtComponentInstance"></product-skeletons> -->
+    </div>
+
+    <div *ngIf="compareProductsData.length > 0" class="common-product" data-observeVisibility
+        [debounceTime]="100" (visible)="onVisibleproductPriceCompare($event)">
+        <ng-container #productPriceCompare></ng-container>
+        <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="productPriceCompareInstance"></product-skeletons>
     </div>
 
     <app-product-review [productName]="productName" [reviewLength]="reviewLength" [overallRating]="overallRating"
@@ -121,10 +127,10 @@
     </product-more-widget>
     
     <!-- removed sponsored products -->
-    <div id="sponseredProducts" [ngClass]="{'common-product': !sponseredProductsInstance}" *ngIf="!sponseredProductsInstance" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
+    <!-- <div id="sponseredProducts" [ngClass]="{'common-product': !sponseredProductsInstance}" *ngIf="!sponseredProductsInstance" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
         <ng-container #sponseredProducts></ng-container>
         <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
-    </div>
+    </div> -->
 
     <section id="popularDeals" class="common-product" *ngIf="!productOutOfStock && bestProductsRes?.totalCount > 0">
         <product-popular-deals [outOfStock]='productOutOfStock' [apiResponse]='bestProductsRes'

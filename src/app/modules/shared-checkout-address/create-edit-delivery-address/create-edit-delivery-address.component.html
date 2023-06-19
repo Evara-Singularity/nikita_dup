@@ -58,13 +58,27 @@
                     </p>
                 </div>
                 <div class="outline-input-label">
+                    <label [class.is-focus]="displayFocus('addressLineFirst')" >
+                        <input type="text" formControlName="addressLineFirst" placeholder="" maxlength="150">
+                        <span class="label">Flat, House no., Building, Company*</span>
+                    </label>
+                    <ng-container *ngIf="addressLineFirst.touched || addressLineFirst.dirty">
+                        <p *ngIf="addressLineFirst.hasError('required')" class="error-txt">
+                            Kindly enter your Flat, House no., Building, Company
+                        </p>
+                        <p *ngIf="addressLineFirst.hasError('pattern')" class="error-txt">
+                            Special characters are not allowed in address.
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="outline-input-label">
                     <label [class.is-focus]="displayFocus('addressLine')">
                         <input formControlName="addressLine" type="text" placeholder="" maxlength="150">
                         <span class="label">Address*</span>
                     </label>
                     <ng-container *ngIf="addressLine.touched || addressLine.dirty">
                         <p *ngIf="addressLine.hasError('required')" class="error-txt">
-                            Kindly enter your address
+                            Kindly enter your Area, Street, Sector, Village
                         </p>
                         <p *ngIf="addressLine.hasError('pattern')" class="error-txt">
                             Special characters are not allowed in address.

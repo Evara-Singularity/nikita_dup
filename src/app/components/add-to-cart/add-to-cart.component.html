@@ -1,0 +1,13 @@
+<div class="card-btn-row w-full" *ngIf="!isOutOfStock">
+    <button class="btn tertiary-btn w-full" (click)="buyNow(false)"><i class="icon-cart1"></i> ADD TO
+        CART</button>
+</div>
+<div *ngIf="isOutOfStock">
+    <button class="btn tertiary-outline-cta tertiary-outline-cta-8 wishlistBtn" (click)="openRfqForm()">Send
+        Query</button>
+</div>
+<ng-container #variantPopup></ng-container>
+<ng-container #rfqThankyou></ng-container>
+<ng-container #addToCartToast></ng-container>
+<ng-container #productRFQ></ng-container>
+<ng-container #alertBox></ng-container>

@@ -305,6 +305,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
                     (error) => { this.resetGSTINVarification(''); this.isLoading.emit(false); }
                 )
             } else {
+                console.log("this.rfqForm.valid =============>" , this.rfqForm.valid);
                 this.saveRFQ(rfqDetails);
             }
         }

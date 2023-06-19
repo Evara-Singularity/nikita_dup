@@ -172,6 +172,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     //recently view
     hasRecentlyView = true;
     msn:string;
+    compareProductsData:Array<object> = [];
 
     productShareInstance = null;
     @ViewChild("productShare", { read: ViewContainerRef })
@@ -184,14 +185,14 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     similarProductInstance = null;
     @ViewChild("similarProduct", { read: ViewContainerRef })
     similarProductContainerRef: ViewContainerRef;
+    // ondemand loaded components for product price compare products
+    productPriceCompareInstance = null;
+    @ViewChild("productPriceCompare", { read: ViewContainerRef })
+    productPriceCompareContainerRef: ViewContainerRef;
     // similarProductInstanceOOS for out of stock
     similarProductInstanceOOS = null;
     @ViewChild("similarProductOOS", { read: ViewContainerRef })
     similarProductInstanceOOSContainerRef: ViewContainerRef;
-    // ondemand loaded components for sponsered products
-    sponseredProductsInstance = null;
-    @ViewChild("sponseredProducts", { read: ViewContainerRef })
-    sponseredProductsContainerRef: ViewContainerRef;
     // ondemand loaded components for recents products
     recentProductsInstance = null;
     @ViewChild("recentProducts", { read: ViewContainerRef })
@@ -471,6 +472,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
             this.getRecents();
+            if(!this.productOutOfStock && this.defaultPartNumber != null){ this.getCompareProductsData(this.defaultPartNumber);}
             this.route.fragment.subscribe((fragment: string) => {
                 this.fragment = fragment;
             })
@@ -570,16 +572,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             {
                 this.nudgeOpened();
             })
-            // this.productService.notifyImagePopupState.pipe(distinctUntilChanged()).subscribe(status => {
-            //     if(!status && this.popupCrouselContainerRef) {
-            //         console.log('I am called');
-            //         this.clearImageCrouselPopup();
-            //         this.router.navigateByUrl(this.router.url);
-            //         // this.ngOnInit();
-            //         // this.ngOnInit();
-            //         // this.resetLazyComponents();
-            //     }
-            // })
 
         }
     }
@@ -1142,15 +1134,15 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.similarProductContainerRef.remove();
             this.onVisibleSimilar(null);
         }
+        if (this.similarProductInstance) {
+            this.similarProductInstance = null;
+            this.productPriceCompareContainerRef.remove();
+            this.onVisibleproductPriceCompare(null);
+        }
         if (this.similarProductInstanceOOS) {
             this.similarProductInstanceOOS = null;
             this.similarProductInstanceOOSContainerRef.remove();
             this.onVisibleSimilarOOS(null);
-        }
-        if (this.sponseredProductsInstance) {
-            this.sponseredProductsInstance = null;
-            if (this.sponseredProductsContainerRef) { this.sponseredProductsContainerRef.remove();}
-            this.onVisibleSponsered(null);
         }
 
         if (this.recentProductsInstance && this.recentProductsContainerRef !=undefined) {
@@ -1764,37 +1756,37 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     async showFBT()
     {
-        if (this.fbtFlag) {
-            const TAXONS = this.taxons;
-            let page = {
-                pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-                channel: "About This Product",
-                subSection: null,
-                linkPageName: null,
-                linkName: null,
-                loginStatus: this.commonService.loginStatusTracking,
-            };
-            let analytics = {
-                page: page,
-                custData: this.commonService.custDataTracking,
-                order: this.orderTracking,
-            };
-            this.modalService.show({
-                inputs: {
-                    modalData: {
-                        isModal: true,
-                        backToCartFlow: this.addToCartFromModal.bind(this),
-                        analytics: analytics,
-                        productQuantity :this.cartQunatityForProduct
-                    },
-                },
-                component: FbtComponent,
-                outputs: {},
-                mConfig: { className: "ex" },
-            });
-        } else {
+        // if (this.fbtFlag) {
+        //     const TAXONS = this.taxons;
+        //     let page = {
+        //         pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+        //         channel: "About This Product",
+        //         subSection: null,
+        //         linkPageName: null,
+        //         linkName: null,
+        //         loginStatus: this.commonService.loginStatusTracking,
+        //     };
+        //     let analytics = {
+        //         page: page,
+        //         custData: this.commonService.custDataTracking,
+        //         order: this.orderTracking,
+        //     };
+        //     this.modalService.show({
+        //         inputs: {
+        //             modalData: {
+        //                 isModal: true,
+        //                 backToCartFlow: this.addToCartFromModal.bind(this),
+        //                 analytics: analytics,
+        //                 productQuantity :this.cartQunatityForProduct
+        //             },
+        //         },
+        //         component: FbtComponent,
+        //         outputs: {},
+        //         mConfig: { className: "ex" },
+        //     });
+        // } else {
             this.addToCart(false);
-        }
+        // }
     }
 
     // cart methods 
@@ -2199,6 +2191,29 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     }
 
 
+    async onVisibleproductPriceCompare(htmlElement)
+    {
+        if (!this.productPriceCompareInstance && !this.productOutOfStock && this.compareProductsData.length > 0) {
+            const { ProductPriceCompareComponent } = await import(
+                "./../../components/product-price-compare/product-price-compare.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(
+                ProductPriceCompareComponent
+            );
+            this.productPriceCompareInstance =
+                this.productPriceCompareContainerRef.createComponent(
+                    factory,
+                    null,
+                    this.injector
+                );
+
+            this.productPriceCompareInstance.instance["compareProductsData"] = this.compareProductsData;
+            
+           
+        }
+    }
+
+
     async onVisiblePopularDeals() {
             const custData = this.commonService.custDataTracking;
             const orderData = this.orderTracking;
@@ -2309,55 +2324,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     handlemetaUpdateEvent(index)
     {
         this.setMetatag(index);
-    }
-
-    // dynamically load similar section
-    async onVisibleSponsered(htmlElement)
-    {
-        if (!this.sponseredProductsInstance) {
-            const { ProductSponsoredListComponent } = await import(
-                "./../../components/product-sponsored-list/product-sponsored-list.component"
-            );
-            const factory = this.cfr.resolveComponentFactory(
-                ProductSponsoredListComponent
-            );
-            this.sponseredProductsInstance =
-                this.sponseredProductsContainerRef.createComponent(
-                    factory,
-                    null,
-                    this.injector
-                );
-            this.sponseredProductsInstance.instance["productName"] = this.productName;
-            this.sponseredProductsInstance.instance["productId"] =
-                this.defaultPartNumber;
-            this.sponseredProductsInstance.instance["categoryCode"] =
-                this.productCategoryDetails["categoryCode"];
-            this.sponseredProductsInstance.instance["outOfStock"] =
-                this.productOutOfStock;
-            (this.sponseredProductsInstance.instance[
-                "sponseredDataLoaded$"
-            ] as EventEmitter<any>
-            ).subscribe((data) =>
-            {
-                // this.commonService.triggerAttachHotKeysScrollEvent('sponsered-products');
-            });
-            const custData = this.commonService.custDataTracking;
-            const orderData = this.orderTracking;
-            const TAXONS = this.taxons;
-            const page = {
-                pageName: null,
-                channel: "pdp",
-                subSection: "You May Also Like",
-                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-                linkName: null,
-                loginStatus: this.commonService.loginStatusTracking,
-            };
-            this.sponseredProductsInstance.instance["analytics"] = {
-                page: page,
-                custData: custData,
-                order: orderData,
-            };
-        }
     }
     
     getRecents() {
@@ -2474,8 +2440,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         
     }
 
-    async onVisibleProductRFQ(htmlElement)
+    async onVisibleProductRFQ(htmlElement, isFromScroll = false)
     {
+        isFromScroll && this.onVisibleSimilarOOS(null);
         if (this.holdRFQForm) return
         this.removeRfqForm();
         if (!this.productRFQInstance) {
@@ -3747,8 +3714,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             category_id: this.productCategoryDetails["categoryCode"],
             category_name: this.productCategoryDetails["categoryName"],
             id_brand: this.productBrandDetails["idBrand"],
-            brand_name: this.productBrandDetails["brandName"],
-            product_name: this.productName,
+            brand_name: (this.isHindiUrl) ? this.originalProductBO['brandDetails']['brandName'] : this.productBrandDetails['brandName'],
+            // brand_name: this.productBrandDetails["brandName"],
+            // product_name:  (this.isHindiUrl) ?this.productName,
+            product_name:(this.isHindiUrl) ?this.originalProductBO['productName']:this.productName,
             user_id: this.localStorageService.retrieve("user")
                 ? this.localStorageService.retrieve("user").userId
                 : null,
@@ -3757,6 +3726,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             status: this.rawProductData["status"],
             product_url: this.productUrl,
         };
+        console.log(clickStreamData.product_name,"ppp");
         //TODO:Yogender for click stream to set selling price
         if (this.priceQuantityCountry != null) {
             clickStreamData["mrp"] = this.productMrp;
@@ -4743,4 +4713,14 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         this.iscloseproductDiscInfoComponent=false
     }
     
+    getCompareProductsData(msn: string) {
+        this.productService.getCompareProducts(msn).subscribe(result=>{
+            if(result && result['totalCount'] && result['totalCount'] > 0 && result['products']){
+                this.compareProductsData = result['products'] as Array<object>;
+            }
+        },(error)=>{
+            this.compareProductsData = [];
+        })
+    }
+
 }

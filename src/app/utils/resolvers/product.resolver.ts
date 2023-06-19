@@ -61,7 +61,13 @@ export class ProductResolver implements Resolve<any> {
         PRODUCT_KEY_OBJ,
       ]);
     } else {
-      const productUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_API + `?msn=${productMsnId}`;
+      let productUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_API + `?msn=${productMsnId}`;
+      if(this.isBrowser) {
+        let user: any = this.localStorageService.retrieve('user');
+        if (user && user.authenticated == "true") {
+          productUrl += `&userId=${user.userId}`
+        }
+      }
       const productResponseObj = this.http.get(productUrl, requestOptions).pipe(share(),
         map(res => {
           const logInfo = this._commonService.getLoggerObj(productUrl, 'GET', startTime)

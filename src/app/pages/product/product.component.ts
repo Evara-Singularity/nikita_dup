@@ -172,6 +172,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     //recently view
     hasRecentlyView = true;
     msn:string;
+    compareProductsData:Array<object> = [];
 
     productShareInstance = null;
     @ViewChild("productShare", { read: ViewContainerRef })
@@ -184,6 +185,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     similarProductInstance = null;
     @ViewChild("similarProduct", { read: ViewContainerRef })
     similarProductContainerRef: ViewContainerRef;
+    // ondemand loaded components for product price compare products
+    productPriceCompareInstance = null;
+    @ViewChild("productPriceCompare", { read: ViewContainerRef })
+    productPriceCompareContainerRef: ViewContainerRef;
     // similarProductInstanceOOS for out of stock
     similarProductInstanceOOS = null;
     @ViewChild("similarProductOOS", { read: ViewContainerRef })
@@ -454,6 +459,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
             this.getRecents();
+            if(!this.productOutOfStock && this.defaultPartNumber != null){ this.getCompareProductsData(this.defaultPartNumber);}
             this.route.fragment.subscribe((fragment: string) => {
                 this.fragment = fragment;
             })
@@ -1114,6 +1120,11 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.similarProductInstance = null;
             this.similarProductContainerRef.remove();
             this.onVisibleSimilar(null);
+        }
+        if (this.similarProductInstance) {
+            this.similarProductInstance = null;
+            this.productPriceCompareContainerRef.remove();
+            this.onVisibleproductPriceCompare(null);
         }
         if (this.similarProductInstanceOOS) {
             this.similarProductInstanceOOS = null;
@@ -2164,6 +2175,29 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             };
         }
         this.holdRFQForm = false;
+    }
+
+
+    async onVisibleproductPriceCompare(htmlElement)
+    {
+        if (!this.productPriceCompareInstance && !this.productOutOfStock && this.compareProductsData.length > 0) {
+            const { ProductPriceCompareComponent } = await import(
+                "./../../components/product-price-compare/product-price-compare.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(
+                ProductPriceCompareComponent
+            );
+            this.productPriceCompareInstance =
+                this.productPriceCompareContainerRef.createComponent(
+                    factory,
+                    null,
+                    this.injector
+                );
+
+            this.productPriceCompareInstance.instance["compareProductsData"] = this.compareProductsData;
+            
+           
+        }
     }
 
 
@@ -4660,6 +4694,16 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     get isHindiUrl() {
         return (this.router.url).toLowerCase().indexOf('/hi/') !== -1
+    }
+
+    getCompareProductsData(msn: string) {
+        this.productService.getCompareProducts(msn).subscribe(result=>{
+            if(result && result['totalCount'] && result['totalCount'] > 0 && result['products']){
+                this.compareProductsData = result['products'] as Array<object>;
+            }
+        },(error)=>{
+            this.compareProductsData = [];
+        })
     }
 
 }

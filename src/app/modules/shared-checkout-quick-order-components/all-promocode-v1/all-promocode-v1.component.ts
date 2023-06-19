@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { CartService } from "@app/utils/services/cart.service";
 import { CommonService } from "@app/utils/services/common.service";
+import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 import { Subscription } from "rxjs";
+import { setTimeout } from "timers";
 
 @Component({
   selector: "all-promocode-v1",
@@ -15,14 +17,15 @@ export class AllPromocodeV1Component implements OnInit {
 
   constructor(
     private _commonService: CommonService,
-    private _cartService: CartService
+    public _cartService: CartService,
+    private _analytics: GlobalAnalyticsService
   ) {}
 
   ngOnInit(): void {
     this.appliedPromocodeSubscription =
       this._cartService.promoCodeSubject.subscribe(
         ({ promocode, isNewPromocode }) => {
-          this.appliedPromocode = promocode || '';
+          this.appliedPromocode = promocode || "";
         }
       );
   }
@@ -41,10 +44,27 @@ export class AllPromocodeV1Component implements OnInit {
     document
       .getElementById("body")
       .removeEventListener("touchmove", this.preventDefault);
-    this.showPromoOfferPopup = flag;
+    this.showPromoOfferPopup = flag;    
   }
 
   preventDefault(e) {
     e.preventDefault();
   }
+
+  submitPromocode(e, promocode) {
+    // if (this.selectedPromocode === promocode) { return }
+    this._cartService.genericApplyPromoCode(promocode);
+    this.adobeTracking('apply_coupon_cart');
+}
+
+adobeTracking(trackingname){
+  const page = {
+      'linkPageName': "moglix:cart summary",
+      'linkName': trackingname,
+  }
+  let data = {}
+  data["page"] = page;
+  data["custData"] = this._commonService.custDataTracking;
+  this._analytics.sendAdobeCall(data, trackingname); 
+}
 }

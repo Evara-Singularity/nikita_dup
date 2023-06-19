@@ -307,6 +307,19 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     @ViewChild("returnInfo", { read: ViewContainerRef })
     returnInfoContainerRef: ViewContainerRef;
 
+    iscloseproductDiscInfoComponent:boolean=true;
+    showproductDiscInfoComponent: boolean=false;
+    @HostListener('window:scroll', ['$event'])
+    onScroll(event: Event) {
+      const scrollPosition = window.pageYOffset;
+      const renderCondition = scrollPosition > 600;
+      if (renderCondition) {
+        this.showproductDiscInfoComponent=true
+      } else {
+        this.showproductDiscInfoComponent=false
+      }
+    }
+
     iOptions: any = null;
     isAcceptLanguage:boolean = false;
     
@@ -4696,6 +4709,10 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         return (this.router.url).toLowerCase().indexOf('/hi/') !== -1
     }
 
+    closeproductDiscInfoComponent(){
+        this.iscloseproductDiscInfoComponent=false
+    }
+    
     getCompareProductsData(msn: string) {
         this.productService.getCompareProducts(msn).subscribe(result=>{
             if(result && result['totalCount'] && result['totalCount'] > 0 && result['products']){

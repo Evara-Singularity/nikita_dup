@@ -1,18 +1,33 @@
-<div class="custom-promocode" *ngIf="appliedPromocode != undefined && appliedPromocode.length > 0" (click)="$event.stopPropagation();openPromoCodeList()">
+<div class="custom-promocode" *ngIf="appliedPromocode != undefined && appliedPromocode.length > 0"
+    (click)="$event.stopPropagation();openPromoCodeList()">
     <custom-promo-code [isPromocodeList]="false"></custom-promo-code>
 </div>
 <div class="promocode-list" *ngIf="appliedPromocode != undefined && appliedPromocode.length == 0">
     <!-- <p class="open-offers" (click)="$event.stopPropagation();openPromoCodeList()">APPLY COUPON </p> -->
 
     <div class="pwa-row pad-0 promo-strip">
-        <div class="coupen-strip" (click)="$event.stopPropagation();openPromoCodeList()">
-            <div class="coupen-icon">
-                <i class="icon-offer"></i>
+        <div class="coupen-strip-section">
+            <!-- <div class="coupen-card"> -->
+            <div class="apply-coupon" *ngIf="_cartService?.allPromoCodes[0]?.promoCode">
+                <div class="inner-coupon">
+                    <i class="icon-offer"></i>
+                    <div class="coupen-code">
+                        <h3>{{_cartService?.allPromoCodes[0]?.promoCode}}</h3>
+                        <p class="promo-description">{{_cartService?.allPromoCodes[0]?.promoDescription}}</p>
+                    </div>
+                </div>
+                <button class="btn" (click)="$event.stopPropagation();submitPromocode($event, _cartService?.allPromoCodes[0]?.promoCode)">APPLY</button>
             </div>
-            <div class="coupen-text">
-                <h3>APPLY COUPON</h3>
+            <!-- </div> -->
+            <div class="coupen-strip" (click)="$event.stopPropagation();openPromoCodeList()">
+                <div class="coupen-icon">
+                    <i class="icon-offer"></i>
+                </div>
+                <div class="coupen-text">
+                    <h3>VIEW MORE COUPONS</h3>
+                </div>
+                <i class="icon-next"></i>
             </div>
-            <i class="icon-next"></i>
         </div>
     </div>
 </div>

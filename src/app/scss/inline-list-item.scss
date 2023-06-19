@@ -113,3 +113,39 @@
     padding: 15px 15px 0px;
     border-bottom: 1px solid var(--platinum);
 }
+
+.copy-coupon-offer-section{
+    width: 100%;
+    .coupon-offer-text{
+      width: 55%;
+    }
+    .inline-list-link{
+      width: 30%;
+      text-align: center;
+      .copy-coupon-container{
+        border: 2px dashed var(--slimy-green);
+        padding: 5px 10px;
+        border-radius: $border-radius-4;
+        background: #E0FDDF;
+        color: var(--slimy-green);
+        font-weight: bold;
+        font-size: $large-font;
+        margin-bottom: 2px;
+        &.active{
+            background: var(--slimy-green);
+            color: var(--white);
+        }
+      }
+      .copy-text{
+        font-size: $small-font;
+        color: var(--dim-gray);
+      }
+    }
+  }
+
+  .border-b-green{
+    border-bottom: 1px solid var(--slimy-green);
+    &:last-child{
+        border-bottom: none;
+    }
+  }

@@ -16,7 +16,6 @@ export class ProductMoreOffersComponent implements OnInit {
   @Output() out: EventEmitter<any> = new EventEmitter<any>();
   @Output() isLoading : EventEmitter<any> = new EventEmitter<any>();
   promoCodeOffers: any;
-  isCouponCopied=false
   activeIndex: any;
 
   constructor(private _commonService:CommonService) { }
@@ -39,7 +38,6 @@ export class ProductMoreOffersComponent implements OnInit {
   
   copyCouponTextArea(text,activeIndex){
     this.activeIndex=activeIndex
-    this.isCouponCopied=true
     this.copyToClipboard(text);
   }
   copyToClipboard(text:any) {

@@ -22,8 +22,7 @@
                         <div id="copiedCouponText" class="copy-coupon-container" [ngClass]="{'active' : (i==activeIndex) }" (click)="copyCouponTextArea(item.promoCode,i)">
                             {{item.promoCode}}
                         </div>
-                        <span class="copy-text" *ngIf="!isCouponCopied">Copy to Apply Coupon</span>
-                        <span class="copy-text" *ngIf="isCouponCopied">Coupon Copied</span>
+                        <span class="copy-text">{{(i==activeIndex)?'Coupon Copied':'Copy to Apply Coupon'}}</span>
                     </div>
                 </div>
             </div>

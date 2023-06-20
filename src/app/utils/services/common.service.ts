@@ -81,6 +81,7 @@ export class CommonService
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
     public initiateLoginPopUp: Subject<string> = new Subject<string>();
     public _initiateBulkRfq: Subject<boolean> = new Subject<boolean>();
+    public similarProductsLoaded: Subject<boolean> = new Subject<boolean>();
 
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
     public addLottieScriptSubject: Subject<any> = new Subject<any>();
@@ -95,7 +96,7 @@ export class CommonService
     public previousUrl: string = "/";
     public currentUrl: string = null;
     public enableAppPromoInHeader = false;
-    
+    feedBackPosted = new Subject()
     goldMemberPopupOpened = new Subject();
     public defaultLocaleValue = localization_en.product;
     constructor(

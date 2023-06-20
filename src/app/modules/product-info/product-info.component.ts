@@ -2,6 +2,7 @@ import { Observable, of } from 'rxjs';
 import { DOCUMENT } from "@angular/common";
 import
     {
+        ChangeDetectorRef,
         Component,
         EventEmitter,
         HostListener,
@@ -87,7 +88,8 @@ export class ProductInfoComponent implements OnInit
         private ngxSiemaService: NgxSiemaService,
         @Inject(DOCUMENT) private _document,
         private _localAuthService: LocalAuthService,
-        private router: Router 
+        private router: Router,
+        private cdr: ChangeDetectorRef
     ) { }
 
     ngOnInit()
@@ -174,6 +176,7 @@ export class ProductInfoComponent implements OnInit
         if(this.siemaTab && this.slides)
         {
             this.siemaTab.style.height = `${this.slides[currentSlide].clientHeight+30}px`;
+            this.cdr.detectChanges();
             
         }
     }
@@ -205,6 +208,7 @@ export class ProductInfoComponent implements OnInit
                 })
             }
         }
+        this.cdr.detectChanges();
     }
 
     sendTracking(subSection: string)

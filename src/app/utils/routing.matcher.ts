@@ -5,11 +5,26 @@ import { UrlSegment } from "@angular/router";
     providedIn: 'root'
 })
 export default class RoutingMatcher {
+    
+    productV1Match(url: UrlSegment[]): any {
+        const urlLength = url.length;
+        if (urlLength == 4) {
+            const secondURLStrig = url[2].toString();
+            const firstURLString = url[0].toString();
+            if (secondURLStrig === 'mp' && firstURLString == 'v1') {
+                console.log(secondURLStrig, firstURLString)
+                return { consumed: url, posParams: { msnid: url[3] } };
+            }
+        }
+    }
+
     productMatch(url: UrlSegment[]): any {
         const urlLength = url.length;
         if (urlLength > 2) {
             const secondURLStrig = url[1].toString();
-            if (secondURLStrig === 'mp') {
+            const firstURLString = url[0].toString();
+            if (secondURLStrig === 'mp' && firstURLString !='v1') {
+                console.log(secondURLStrig, firstURLString)
                 return { consumed: url, posParams: { msnid: url[2] } };
             }
         }

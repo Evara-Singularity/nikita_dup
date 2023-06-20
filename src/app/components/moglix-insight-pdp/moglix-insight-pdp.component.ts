@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, NgModule, OnInit } from '@angular/core';
 // import { ProductService } from '@app/utils/services/product.service';
 
 @Component({
   selector: 'moglix-insight-pdp',
   templateUrl: './moglix-insight-pdp.component.html',
-  styleUrls: ['./moglix-insight-pdp.component.scss']
+  styleUrls: ['./moglix-insight-pdp.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MoglixInsightPdpComponent implements OnInit {
   @Input() data: any;

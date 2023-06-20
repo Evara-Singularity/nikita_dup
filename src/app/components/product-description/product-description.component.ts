@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -10,21 +10,18 @@ import { CommonService } from '../../utils/services/common.service';
 @Component({
   selector: 'product-description',
   templateUrl: './product-description.component.html',
-  styleUrls: ['./product-description.component.scss']
+  styleUrls: ['./product-description.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductDescriptionComponent implements OnInit {
   productStaticData = this._commonService.defaultLocaleValue;
   @Input() productName;
   @Input() productPrice;
-  @Input() productTags;
-  @Input() refinedProdTags;
   @Input() productMrp;
   @Input() priceWithoutTax;
   @Input() productDiscount;
   @Input() bulkPriceWithoutTax;
-  @Input() bulkDiscount;
   @Input() taxPercentage;
-  @Input() bulkSellingPrice;
   @Input() productOutOfStock;
   @Input() productMinimmumQuantity;
   @Input() priceQuantityCountry;
@@ -35,6 +32,7 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() isBulkPricesProduct;
   @Input() productBulkPrices;
   @Input() selectedProductBulkPrice;
+  @Input() bulkSellingPrice;
   @Output() checkCartQuantityAndUpdate$: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private _tms: ToastMessageService,public _commonService:CommonService) {

@@ -102,6 +102,23 @@ export class TrackingService
         return PRODUCT;
     }
 
+    basicPDPTrackingV1(productBo)
+    {
+        if (!productBo) return null;
+        const PRODUCT = {};
+        PRODUCT['productID'] = productBo['defaultPartNumber'];
+        let productPriceQuantity = productBo['priceQuantityCountry'] || null;
+        PRODUCT['quantity'] = productBo['quantityAvailable'];
+        PRODUCT['brand'] = productBo['productBrandDetails'] ? productBo['productBrandDetails']['brandName'] : "";
+        PRODUCT['productTags'] = [];
+        PRODUCT['categoryDetails'] = (productBo['productCategoryDetails']) ? productBo['productCategoryDetails'] : null;
+        PRODUCT['price'] = null;
+        if (productPriceQuantity && productPriceQuantity['sellingPrice']) {
+            PRODUCT['price'] = productPriceQuantity['sellingPrice'];
+        }
+        return PRODUCT;
+    }
+
     basicPLPTracking(product)
     {
         if (!product) return null;

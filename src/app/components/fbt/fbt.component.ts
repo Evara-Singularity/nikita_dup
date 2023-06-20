@@ -1,6 +1,6 @@
 
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
@@ -16,7 +16,8 @@ import { ProductUtilsService } from '../../utils/services/product-utils.service'
 @Component({
     selector: 'fbt',
     templateUrl: './fbt.component.html',
-    styleUrls: ['./fbt.component.scss']
+    styleUrls: ['./fbt.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FbtComponent implements OnInit
 {
@@ -90,7 +91,7 @@ export class FbtComponent implements OnInit
             if (fbtSource['rootProduct'] && fbtSource['fbtProducts']) {
                 this.rootProduct = JSON.parse(JSON.stringify(fbtSource['rootProduct']));
                 this.fbtProducts = JSON.parse(JSON.stringify(fbtSource['fbtProducts']));
-                this.rootMSN = this.rootProduct['partNumber'];
+                this.rootMSN = this.rootProduct['defaultPartNumber'];
                 this.startProcess();
             } else {
                 this.fbtProducts = [];
@@ -106,7 +107,7 @@ export class FbtComponent implements OnInit
     /**@description  checks main product in cart, merges main product with fbt products list*/
     startProcess()
     {
-        let mainValidation = this.modifyProduct(this.rootProduct, false);
+        let mainValidation = this.modifyRootProduct(this.rootProduct, false);
         this.mFBTProducts = [];
         this.fbtMSNPrices = {};
         if (mainValidation.validation) {
@@ -142,6 +143,16 @@ export class FbtComponent implements OnInit
         return returnObj;
     }
 
+    modifyRootProduct(product, isFBT)
+    {
+        let returnObj = { mProduct: product, validation: false }
+        if (product && product['priceQuantityCountry'] && product['priceQuantityCountry']) {
+            const productObject = this.cartService.getAddToCartProductItemRequest({ productGroupData: product, buyNow: false, quantity: this.productQuantity, isFbt: isFBT, originalProductBO: this.originalProductBO }, true);
+            returnObj = { mProduct: productObject, validation: true }
+        }
+        return returnObj;
+    }
+
     initiateAddToCart()
     {
         this.setCTAType();
@@ -157,7 +168,6 @@ export class FbtComponent implements OnInit
 
     handleCartSave(items: any[])
     {
-        console.log("item fbt ==>" , items);
         const LENGTH = items.length;
         let firstProduct = items[0];
         firstProduct.productQuantity = this.productQuantity;

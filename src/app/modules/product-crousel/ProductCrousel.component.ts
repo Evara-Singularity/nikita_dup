@@ -14,6 +14,7 @@ import {
   ViewContainerRef,
   NgModule,
   OnInit,
+  ChangeDetectionStrategy,
 } from "@angular/core";
 import {
   isPlatformServer,
@@ -37,6 +38,7 @@ import { CommonService } from "@app/utils/services/common.service";
   selector: "ProductCrousel",
   templateUrl: "./ProductCrousel.component.html",
   styleUrls: ["./ProductCrousel.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductCrouselComponent implements OnInit {
   image_Path = CONSTANTS.IMAGE_BASE_URL;
@@ -297,6 +299,7 @@ export class ProductCrouselComponent implements OnInit {
         if (data && typeof data.currentSlide !== "undefined") {
           this.currentIndex = data.currentSlide;
           this.lazyLoadImage(this.currentIndex);
+          this._cdr.detectChanges();
         }
       });
     this.imageChange$.next();

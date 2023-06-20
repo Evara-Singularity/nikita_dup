@@ -20,6 +20,7 @@ import { ShopbyFeatrModule } from '@app/components/shopby-featr/shopby-featr.com
 import { CmsModule } from '@app/modules/cms/cms.module';
 import { SubCategoryModule } from '@app/components/subCategory/subCategory.component';
 import RecentViewedProductsWrapperModule from '@app/components/recent-viewed-products-wrapper/recent-viewed-products-wrapper.component';
+import { PlpRelatedVideosModule } from '@app/components/plp-related-videos/plp-related-videos.component';
 
 @NgModule({
     imports: [
@@ -42,7 +43,8 @@ import RecentViewedProductsWrapperModule from '@app/components/recent-viewed-pro
         ShopbyFeatrModule,
         CmsModule,
         SubCategoryModule,
-        RecentViewedProductsWrapperModule
+        RecentViewedProductsWrapperModule,
+        PlpRelatedVideosModule
     ],
     declarations: [
         CategoryComponent,

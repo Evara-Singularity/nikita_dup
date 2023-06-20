@@ -29,7 +29,7 @@ export class SpecificationsComponent implements OnInit
     constructor(public _commonService: CommonService,private _localAuthService : LocalAuthService,private cdr : ChangeDetectorRef) { }
 
     ngOnInit() {
-        console.log('specifications', this.specifications);
+        //console.log('specifications', this.specifications);
         this.checkSecondaryAttributes();
         if (BrandLinkMapping.hasOwnProperty(this.specifications["brand"]["brandId"])) {
             this.showNavToStorePage=true;

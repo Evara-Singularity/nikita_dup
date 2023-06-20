@@ -56,7 +56,7 @@ export class SimilarProductsComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        console.log('i am called')
+        //console.log('i am called')
         this.getStaticSubjectData()
         this.getProductSimilar();
         this.cardMetaInfo = {

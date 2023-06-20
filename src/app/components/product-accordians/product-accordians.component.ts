@@ -38,7 +38,7 @@ export class ProductAccordiansComponent {
 
   ngOnInit() {
     this.productStaticData = this._commonService.getLocalizationData(!this.isHindiMode);
-    console.log(this.productStaticData)
+    // console.log(this.productStaticData)
     this.getStaticSubjectData();
     this.setAccordianData(this.relatedLinkRes, this.categoryBucketRes, this.similarCategoryRes);
   }

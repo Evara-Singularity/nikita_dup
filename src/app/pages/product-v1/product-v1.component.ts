@@ -3195,6 +3195,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 "../../components/pdp-quick-checkout/pdp-quick-checkout.component"
             ).finally(() => {
                 this.globalLoader.setLoaderState(false);
+                this.cdr.detectChanges();
             });
             const factory = this.cfr.resolveComponentFactory(PdpQuickCheckoutComponent);
             this.quickOrderInstance = this.quickOrderContainerRef.createComponent(
@@ -3214,6 +3215,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.router.navigate(["/checkout"]);
             });
             this.quickOrderInstance = null;
+            this.cdr.detectChanges();
         }
     }
 

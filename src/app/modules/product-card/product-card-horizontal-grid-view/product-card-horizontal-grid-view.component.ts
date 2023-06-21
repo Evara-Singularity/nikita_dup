@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Injector } from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentFactoryResolver, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalService } from '@app/modules/modal/modal.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -31,6 +31,7 @@ export class ProductCardHorizontalGridViewComponent extends ProductCardCoreCompo
     public _analytics: GlobalAnalyticsService,
     public _toastMessageService: ToastMessageService,
     public _productService: ProductService,
+    public _cdr: ChangeDetectorRef
   ) {
     super(
       _cartService,
@@ -44,7 +45,8 @@ export class ProductCardHorizontalGridViewComponent extends ProductCardCoreCompo
       _commonService,
       _analytics,
       _toastMessageService,
-      _productService
+      _productService,
+      _cdr
     );
   }
 

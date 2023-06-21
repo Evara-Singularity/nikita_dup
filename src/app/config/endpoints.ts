@@ -1,5 +1,6 @@
 export const ENDPOINTS = {
   PRODUCT_INFO: "/product/getProductGroup",
+  SANITISED_PRODUCT_INFO: '/product/getProductGroupV2',
   PRODUCT_REVIEW: "/review/getReview",
   PRODUCT_FBT: "/product/getProductFbtDetails",
   BREADCRUMB: "/homepage/getbreadcrumb",
@@ -138,5 +139,6 @@ export const ENDPOINTS = {
   GET_FBT_PRODUCTS_BY_MSNS :"/product/getFbtProductsByMsns",
   GET_CATEGORY_INFO_BY_MSNS: "/search/getCategoryInfoByMsns",
   IFSC_CODE:'/payment/getBankDetails?ifsc=',
-  GET_COMPARE_PRODUCTS:"/search/compareProducts?productId="
+  GET_COMPARE_PRODUCTS:"/search/compareProducts?productId=",
+  PRODUCT_API: '/aggregate/pdpDetails'
 };

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AccordianModule } from "@app/modules/accordian/accordian.module";
 import { CommonService } from '@app/utils/services/common.service';
@@ -25,32 +25,35 @@ export class ProductAccordiansComponent {
   isServer: boolean;
   isBrowser: boolean;
   categoryId: any;
-  productStaticData = this._commonService.defaultLocaleValue;
+  productStaticData: any;
 
   constructor(
     public _commonService: CommonService,
     private globalAnalyticService: GlobalAnalyticsService,
+    private cdr: ChangeDetectorRef
   ) {
     this.isServer = this._commonService.isServer;
     this.isBrowser = this._commonService.isBrowser;
   }
 
   ngOnInit() {
-    this.setAccordianData(this.relatedLinkRes, this.categoryBucketRes, this.similarCategoryRes);
+    this.productStaticData = this._commonService.getLocalizationData(!this.isHindiMode);
+    // console.log(this.productStaticData)
     this.getStaticSubjectData();
+    this.setAccordianData(this.relatedLinkRes, this.categoryBucketRes, this.similarCategoryRes);
   }
 
 
   getStaticSubjectData() {
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
+      this.cdr.detectChanges();
     });
   }
 
   setAccordianData(relatedLinkRes, categoryBucketRes, similarCategoryRes) {
-
-    if (relatedLinkRes && relatedLinkRes['data']) {
-      this.ACCORDIAN_DATA[0] = relatedLinkRes['data'];
+    if (relatedLinkRes && relatedLinkRes.length) {
+      this.ACCORDIAN_DATA[0] = relatedLinkRes;
       // accordian data
       if (this.ACCORDIAN_DATA[0]?.length > 0) {
         this.accordiansDetails.push({
@@ -60,15 +63,15 @@ export class ProductAccordiansComponent {
         });
       }
     }
-    if (categoryBucketRes && categoryBucketRes.hasOwnProperty('categoryLinkList') && categoryBucketRes['categoryLinkList']) {
-      this.ACCORDIAN_DATA[1] = categoryBucketRes['categoryLinkList'];
+    if (categoryBucketRes && categoryBucketRes.length) {
+      this.ACCORDIAN_DATA[1] = categoryBucketRes;
 
       // accordian data
       // console.log(this.accordiansDetails['name']);
       this.accordiansDetails.push({
-        name: this.productStaticData.accordian_list2_label,
+        name: this.productStaticData.accordian_list3_label,
         extra: this.categoryBrandDetails.brand.brandName,
-        data: Object.entries(this.ACCORDIAN_DATA[1]).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+        data: this.categoryBucketRes,
         icon: 'icon-brand_store'
       });
     }
@@ -77,12 +80,13 @@ export class ProductAccordiansComponent {
       // accordian data
       if (this.ACCORDIAN_DATA[2]?.length > 0) {
         this.accordiansDetails.push({
-          name: this.productStaticData.accordian_list3_label,
+          name: this.productStaticData.accordian_list2_label,
           data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
           icon: 'icon-categories'
         });
       }
     }
+    this.cdr.detectChanges();
   }
 
   sendAnalyticsInfo() {

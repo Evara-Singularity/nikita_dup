@@ -107,12 +107,12 @@
                   
                     <button class="suggstn-btn" [ngClass]="{'success-txt':review.like=='1'}"
                         (click)="postHelpful(review,i,'yes')">
-                        <span class="small-txt">{{ review?.isReviewHelpfulCountYes || 0 }}</span>
+                        <span class="small-txt">{{ review?.yes || 0 }}</span>
                         <i class="icon-like"></i>
                     </button>
                     <button class="suggstn-btn" [ngClass]="{'success-text':review.dislike=='1'}"
                         (click)="$event.stopPropagation();postHelpful(review,i,'no')">
-                        <span class="small-txt">{{review?.isReviewHelpfulCountNo|| 0 }}</span>
+                        <span class="small-txt">{{review?.no|| 0 }}</span>
                         <i class="icon-dislike"></i>
                     </button>
                 </div>

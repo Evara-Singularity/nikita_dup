@@ -1,6 +1,6 @@
 import { PopUpModule } from './../../modules/popUp/pop-up.module';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -11,7 +11,8 @@ import { CommonService } from '../../utils/services/common.service';
 @Component({
     selector: 'review-rating',
     templateUrl: './review-rating.component.html',
-    styleUrls: ['./review-rating.scss']
+    styleUrls: ['./review-rating.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReviewRatingComponent {
     productStaticData = this._commonService.defaultLocaleValue;
@@ -27,7 +28,8 @@ export class ReviewRatingComponent {
         public localStorageService: LocalStorageService,
         private productService: ProductService,
         private _tms: ToastMessageService,
-        private _commonService:CommonService
+        private _commonService:CommonService,
+        private cdr: ChangeDetectorRef
     ) { }
     ngOnInit(){
         this.getStaticSubjectData();
@@ -103,13 +105,13 @@ export class ReviewRatingComponent {
                         this.productService.getReviewsRating(reviewObj).subscribe((newRes)=>{
                             if(newRes["code"] === 200){
                                 this.sortedReviewsByDate(newRes['data']['reviewList']);
-                                console.log("newRes",newRes['data']['reviewList'][i]);
-                                console.log(newRes['data']['reviewList'][i]["isReviewHelpfulCountYes"],"hi")
-                                console.log(newRes['data']['reviewList'][i]["isReviewHelpfulCountNo"],"hi-No")
-                                this.rawReviewsData.reviewList[i]["isReviewHelpfulCountYes"] = newRes['data']['reviewList'][i]["isReviewHelpfulCountYes"];
-                                this.rawReviewsData.reviewList[i]["isReviewHelpfulCountNo"] = newRes['data']['reviewList'][i]["isReviewHelpfulCountNo"];
+                                const filteredObj = newRes['data']['reviewList'].find(each => each.id == this.rawReviewsData.reviewList[i].id);
+                                this.rawReviewsData.reviewList[i]["yes"] = filteredObj["isReviewHelpfulCountYes"];
                                 this.rawReviewsData.reviewList[i]['like'] = reviewValue == 'yes' ? 1 : 0;
                                 this.rawReviewsData.reviewList[i]['dislike'] = reviewValue == 'no' ? 1 : 0;
+                                this.rawReviewsData.reviewList[i]["no"] = filteredObj["isReviewHelpfulCountNo"];
+                                this.rawReviewsData.reviewList[i] = JSON.parse(JSON.stringify(this.rawReviewsData.reviewList[i]));
+                                this.cdr.detectChanges();
                             }
                      });
                         // this.rawReviewsData.reviewList[i]['isPost'] = true;

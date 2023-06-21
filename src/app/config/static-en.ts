@@ -124,5 +124,6 @@ export const product = {
     of:'/',
     emis_availaible:'EMIs Available ',
     brand_store_text:'___brand___ Store',
-    missing: 'Missing'
+    missing: 'Missing',
+    buy: 'Buy'
 }

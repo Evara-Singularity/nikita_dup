@@ -1,80 +1,59 @@
 @import '../../scss/variables';
 @import '../../scss/root';
 
-.terms-container{
+.terms-container {
     background: var(--white);
+
     .terms_wrap {
         padding: 15px;
-        h1{
+
+        h1 {
             font-size: $extra-large-font;
             text-align: center;
             color: var(--text-color);
         }
-        p {
+
+        h2 {
             font-size: $medium-font;
             color: var(--text-color);
             line-height: $medium-line-height;
             margin-top: 10px;
             font-weight: $font-bolder;
         }
-        ol li{
+
+        p {
+            font-size: $medium-font;
             color: var(--text-color);
             line-height: $medium-line-height;
-            ol li{
-                color: var(--text-color);  
+            margin-top: 10px;
+            font-weight: 400;
+        }
+
+        ul {
+            padding-left: 25px;
+
+            li {
+                list-style: upper-roman;
+                font-size: 12px;
+                color: var(--text-color);
+                line-height: 20px;
+                margin-top: 10px;
+                font-weight: 400;
             }
         }
-        li:not(:last-child) {
-            padding-bottom: 12px;
+
+        .information-list {
+            padding-left: 15px !important;
+
+            li {
+                list-style: disc;
+            }
         }
-        ol ol > li:first-child {
-            padding-top: 12px;
-        }
-        ol ol li span{
-            font-weight: $font-bolder;
-        }
-        
-        /* hierarchical ordering:  */
-        ol {
-            padding-left: 20px;	
-            counter-reset: item
-        }
-        li {
-          display: block
-        }
-        li:before {
-          content: counters(item, ".");
-          counter-increment: item
-        }
-        section > ol li:before {
-            position: relative;
-            left:-4px;
-        }
-    
-        section > ol li ol li:before {
-            display: none;
-            
-        }
-        /* hard coding section numbers to avoid risks on bad browsers */
-        .sec1 > ol > li::before  { content: "1." counter(item) ".";font-weight: $font-bolder; }
-        .sec2 > ol > li::before  { content: "2." counter(item) ".";font-weight: $font-bolder; }
-        .sec3 > ol > li::before  { content: "3." counter(item) ".";font-weight: $font-bolder; }
-        .sec4 > ol > li::before  { content: "4." counter(item) ".";font-weight: $font-bolder; }
-        .sec5 > ol > li::before  { content: "5." counter(item) ".";font-weight: $font-bolder; }
-        .sec6 > ol > li::before  { content: "6." counter(item) ".";font-weight: $font-bolder; }
-        .sec7 > ol > li::before  { content: "7." counter(item) ".";font-weight: $font-bolder; }
-        .sec8 > ol > li::before  { content: "8." counter(item) ".";font-weight: $font-bolder; }
-        .sec9 > ol > li::before  { content: "9." counter(item) ".";font-weight: $font-bolder; }
-        .sec10 > ol > li::before  { content: "10." counter(item) ".";font-weight: $font-bolder; }
-        .sec11 > ol > li::before  { content: "11." counter(item) ".";font-weight: $font-bolder; }
-        .sec12 > ol > li::before  { content: "12." counter(item) ".";font-weight: $font-bolder; }
-        .sec13 > ol > li::before  { content: "13." counter(item) ".";font-weight: $font-bolder; }
-        .sec14 > ol > li::before  { content: "14." counter(item) ".";font-weight: $font-bolder;}
     }
 
     a:link {
-        color:var(--bleu-de-france);
-      }
+        color: var(--bleu-de-france);
+    }
 }
 
 .notice-alignment {
@@ -84,15 +63,17 @@
     h3 {
         font-size: $medium-font;
         line-height: $medium-line-height;
-
     }
 
     .mt-30 {
         margin-top: 30px;
     }
-    .nt-text{
+
+    .nt-text {
         line-height: 20px;
+        text-align: center;
     }
+
     .underline {
         text-decoration: underline;
     }
@@ -113,15 +94,18 @@
             width: calc(100% - 20px);
         }
     }
-    .part-2{
+
+    .part-2 {
         padding: 20px 0 0;
-        .dashed-line{
+
+        .dashed-line {
             width: 100%;
             margin-top: 20px;
             height: 20px;
             border-top: 1px dashed var(--onyx-black);
         }
-        .dashed-line-half{
+
+        .dashed-line-half {
             width: 45%;
             height: 20px;
             margin-top: 10px;
@@ -129,6 +113,7 @@
         }
     }
 }
+
 .part1-tbl {
     table {
         padding: 20px 0 10px;
@@ -140,29 +125,34 @@
             border: 1px solid var(--onyx-black);
             padding: .5rem;
             width: 50%;
-            &:first-child{
+
+            &:first-child {
                 font-weight: bold;
             }
         }
     }
 }
-.part2-tbl{
+.underline {
+    text-decoration: underline;
+}
+.part2-tbl {
     table {
         padding: 20px 0 10px;
         border-collapse: separate;
         border-spacing: 0;
         width: 100%;
         text-align: left;
-        th{
+
+        th {
             border: 1px solid var(--onyx-black);
-            // width: 25%;
             padding: .5rem;
         }
 
         td {
             border: 1px solid var(--onyx-black);
             padding: .5rem;
-            &:first-child{
+
+            &:first-child {
                 font-weight: bold;
             }
         }

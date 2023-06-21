@@ -56,6 +56,7 @@ export class AskQuestionPopoupComponent {
                     res => {
                         if (res['code'] == "200") {
                             this.showSuccessPopup$.emit();
+                            this.outData(null);
                             this.questionText = ''
                         } else {
                             this._tms.show({ type: 'success', text: 'Currently unable to post question' });

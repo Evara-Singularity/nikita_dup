@@ -8,6 +8,7 @@ import {
   ViewContainerRef,
   EventEmitter,
   Input,
+  ChangeDetectorRef,
 } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { LocalAuthService } from "@app/utils/services/auth.service";
@@ -34,7 +35,8 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
     private cfr: ComponentFactoryResolver,
     private injector: Injector,
     private _loader: GlobalLoaderService,
-    private _localAuthService: LocalAuthService
+    private _localAuthService: LocalAuthService,
+    private _cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {}
@@ -113,8 +115,10 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
       ).subscribe((data) => {
         this.authInstance = null;
         this.authInstanceref.remove();
+        this._cdr.detectChanges();
         // this._router.navigate([]);
       });
+      this._cdr.detectChanges();
     }, 100);
   }
 

@@ -1083,7 +1083,7 @@ export class CartService
             buyNow: args.buyNow,
             filterAttributesList: args.productGroupData['filterAttributesList'] || null,
             discount: this.calculcateDiscount(priceQuantityCountry['discount'], productMrp, productPrice),
-            category: (args.languageMode) ? args.originalProductBO['categoryDetails'][0]['taxonomy'] : productCategoryDetails['taxonomy'],
+            category: (args.languageMode) ? v1 ? args.originalProductBO['categoryDetails']['taxonomy'] : args.originalProductBO['categoryDetails'][0]['taxonomy'] : productCategoryDetails['taxonomy'],
             isOutOfStock: this._setOutOfStockFlag(priceQuantityCountry),
             quantityAvailable: priceQuantityCountry['quantityAvailable'] || 0,
             productMRP: productMrp,

@@ -1,4 +1,4 @@
-import { DOCUMENT, Location } from "@angular/common";
+import { DatePipe, DOCUMENT, Location } from "@angular/common";
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, OnDestroy, OnInit, Optional, Renderer2, ViewChild, ViewContainerRef } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { DomSanitizer, Meta, Title } from "@angular/platform-browser";
@@ -11,6 +11,7 @@ import { ModalService } from "@app/modules/modal/modal.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { ClientUtility } from "@app/utils/client.utility";
 import { ProductCardFeature, ProductsEntity } from "@app/utils/models/product.listing.search";
+import { YTThumbnailPipe } from "@app/utils/pipes/ytthumbnail.pipe";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
@@ -241,6 +242,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         private cartService: CartService,
         private checkoutService: CheckoutService,
         private siemaCrouselService: SiemaCrouselService,
+        private _ytThumbnail: YTThumbnailPipe,
+        private datePipe: DatePipe,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any,
     ) {
@@ -284,7 +287,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     processProductData(productGroup) {
         this.rawProductData = JSON.parse(JSON.stringify(productGroup));
-        this.originalProductBO = JSON.parse(JSON.stringify(productGroup));
+        this.originalProductBO = JSON.parse(JSON.stringify(productGroup.originalProductBO));
         if (
             this.rawProductData && 
             Object.values(this.rawProductData["productAllImages"]) !== null
@@ -373,8 +376,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     name: this.rawProductData.productName,
                     image: [this.productDefaultImage],
                     description: desc,
-                    sku: this.rawProductData.defaultPartNumber,
-                    mpn: this.rawProductData.defaultPartNumber,
+                    sku: this.rawProductData.msn,
+                    mpn: this.rawProductData.msn,
                     brand: {
                         "@type": "Brand",
                         name: this.rawProductData.productBrandDetails["brandName"],
@@ -456,6 +459,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             videoArr &&
             (videoArr as any[]).length > 0
         ) {
+            this.setVideoSeoSchema(videoArr);
             (videoArr as any[]).reverse().forEach((element) =>
             {
                 // append all video after first image and atleast has one image
@@ -615,15 +619,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         if (this.commonService.isBrowser) {
             this.addSessionSubscriber();
             this.resetLazyComponents();
-            // this.getPurchaseList();
-            // this.productFbtData();
-            // this.productStatusCount();
-            // this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
-            // this.callAPIs();
-            // this.getRecents();
-
         }
     }
 
@@ -3732,6 +3729,27 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         {
             this.analytics.sendGTMCall(data);
         });
+    }
+
+    setVideoSeoSchema(videoArr)
+    {
+        if (this.isServer && this.rawProductData && videoArr[0] && videoArr[0]['title'] && videoArr[0]['description'] && videoArr[0]['link'] && videoArr[0]['publishedDate']) {        
+            let firstVideoData=videoArr[0];
+            let videoSchema = this.renderer2.createElement("script");
+            videoSchema.type = "application/ld+json";
+            videoSchema.text = JSON.stringify({
+                "@context": CONSTANTS.SCHEMA,
+                "@type": "VideoObject",
+                name:(firstVideoData['title']) ? firstVideoData['title'] : null,
+                description:(firstVideoData['description']) ? firstVideoData['description'] : null,
+                thumbnailUrl:(firstVideoData['link']) ?  this._ytThumbnail.transform(firstVideoData['link'],'hqdefault') : null,
+                uploadDate:(firstVideoData['publishedDate']) ?  this.datePipe.transform(firstVideoData['publishedDate'], 'yyyy-MM-dd')  : null,
+                embedUrl:(firstVideoData['link']) ? firstVideoData['link'] : null
+               
+            });
+            this.renderer2.appendChild(this.document.head, videoSchema);        
+            }
+        
     }
 
     ngOnDestroy() {

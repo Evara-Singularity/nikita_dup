@@ -92,12 +92,12 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     ngAfterViewInit(): void
     {
         this.addSubscriptions();
-        setTimeout(()=>{
-            if (!this.deliveryAddress) {
-                this.addDeliveryOrBilling.next("Delivery");
-                return;
-            }
-        },800)
+        // setTimeout(()=>{
+        //     if (!this.deliveryAddress) {
+        //         this.addDeliveryOrBilling.next("Delivery");
+        //         return;
+        //     }
+        // },800)
     }
 
     addSubscriptions(): void

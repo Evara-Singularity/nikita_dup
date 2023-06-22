@@ -176,6 +176,7 @@
         .pwa-tabs-container{
             display: inline-flex;
             .pwa-tab{
+                display: inline-block;
                 border-color:var(--silver);
                 color: var(--onyx-black);
                 font-weight: 400;

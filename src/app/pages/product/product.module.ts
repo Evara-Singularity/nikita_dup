@@ -35,6 +35,7 @@ import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/produc
 import { ProductInfoModule } from '@app/modules/product-info/product-info.module';
 import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { FloatingCouponWidgetModule } from '../../components/floating-coupon-widget/floating-coupon-widget.module';
+import { ProductThreeSixtyViewModule } from '../../components/product-three-sixty-view/product-three-sixty-view.module';
 
 
 @NgModule({
@@ -87,7 +88,8 @@ import { FloatingCouponWidgetModule } from '../../components/floating-coupon-wid
     FbtComponentModule,
     ProductDealsModule,
     YTThumnailPipeModule,
-    FloatingCouponWidgetModule
+    FloatingCouponWidgetModule,
+    ProductThreeSixtyViewModule
   ],
   exports: [],
   providers: [NgxSiemaService, DatePipe]

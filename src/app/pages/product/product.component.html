@@ -1,13 +1,13 @@
 <div *ngIf="!productNotFound">
+    <product-three-sixty-view></product-three-sixty-view>
     <app-floating-coupon-widget *ngIf="showproductDiscInfoComponent && iscloseproductDiscInfoComponent && promoCodes.length>0 && !productOutOfStock" (closeproductDiscInfoComponent$)="closeproductDiscInfoComponent()" [isBulkPricesProduct]="isBulkPricesProduct"
         [selectedProductBulkPrice]="selectedProductBulkPrice" [productPrice]="productPrice"
         [productDiscount]="productDiscount" [productName]="productName" [priceWithoutTax]="priceWithoutTax"
         [gstPercentage]='taxPercentage' [promoCodes]='promoCodes'></app-floating-coupon-widget>
-    
+        <product-three-sixty-view></product-three-sixty-view>
     <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer"
         [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
     </app-oos-similar-section>
-
     <shared-product-carousel (openPopUpcrousel$)="openPopUpcrousel()" [productAllImages]="productAllImages"
         [carouselInitialized]="carouselInitialized" (loadProductShare$)="loadProductShare()"
         [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName"
@@ -29,7 +29,6 @@
         [productMinimmumQuantity]="productMinimmumQuantity" [priceQuantityCountry]="priceQuantityCountry"
         [starsCount]="starsCount" [rawReviewsCount]="rawReviewsData?.reviewList?.length || 0" [rawProductCountMessage]="rawProductCountMessage">
     </product-description> -->
-
     <product-grouping-attributes [isCommonProduct]="isCommonProduct"
         [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)"
         (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
@@ -240,7 +239,6 @@
         </div>
     </ng-container>
 </div>
-
 <!-- <ng-container *ngIf="!productOutOfStock">
     <appInstallWidget></appInstallWidget>
 </ng-container> -->

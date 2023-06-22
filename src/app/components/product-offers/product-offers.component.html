@@ -50,14 +50,14 @@
                 <i class="icon-coupon-3-fill-1"></i>
             </div>
             <div class="inline-list-text coupon-offer-text">
-                <span>{{productStaticData.and_get}} {{promoCodes[0].promoDescription}}</span><br/>
-                <span class="green-promo-code-min" *ngIf="promoCodes[0].minCartValue > 0">
-                    {{productStaticData.min_cart_value.replace('___count___', promoCodes[0].minCartValue | currency:'INR': 'symbol': '1.0-0')}}
+                <span>{{productStaticData.and_get}} {{promoCodes.promoDescription}}</span><br/>
+                <span class="green-promo-code-min" *ngIf="promoCodes.minCartValue > 0">
+                    {{productStaticData.min_cart_value.replace('___count___', promoCodes.minCartValue | currency:'INR': 'symbol': '1.0-0')}}
                 </span>
             </div>
             <div class="inline-list-link">
                 <div class="copy-coupon-container cursor" id="couponText" [ngClass]="{'active' :isCouponCopied }" (click)="copyCouponTextArea()">
-                    {{promoCodes[0].promoCode}}
+                    {{promoCodes.promoCode}}
                 </div>
                 <span class="copy-text" *ngIf="!isCouponCopied">Copy to Apply Coupon</span>
                 <span class="copy-text" *ngIf="isCouponCopied">Coupon Copied</span>

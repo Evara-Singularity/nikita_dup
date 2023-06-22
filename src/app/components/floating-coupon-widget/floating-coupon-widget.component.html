@@ -50,10 +50,10 @@
             </div>
         </ng-container>
 
-        <div class="coupon-section">
+        <div class="coupon-section" *ngIf="promoCodes">
             <div class="copy-coupon-container" [ngClass]="{'active' :isCouponCopied }" id="coupon-text"
                 (click)="copyCouponTextArea()">
-                {{promoCodes['0']['promoCode']}}
+                {{promoCodes['promoCode']}}
             </div>
             <span class="copy-text" *ngIf="!isCouponCopied">Copy to Apply Coupon</span>
             <span class="copy-text" *ngIf="isCouponCopied">Coupon Copied</span>

@@ -77,6 +77,7 @@ export class CommonService
     private networkSpeedState: Subject<number> = new Subject<number>();
     private webpSupportState: Subject<number> = new Subject<number>();
     private _loadSearchPopup: Subject<string> = new Subject<string>();
+    private _copiedCoupon: Subject<string> = new Subject<string>();
     public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
     public initiateLoginPopUp: Subject<string> = new Subject<string>();
@@ -237,6 +238,14 @@ export class CommonService
     getSearchPopupStatus()
     {
         return this._loadSearchPopup.asObservable();
+    }
+
+    updateCopiedCoupon(coupon) {
+        this._copiedCoupon.next(coupon);
+    }
+
+    getCopiedCoupon() {
+        return this._copiedCoupon.asObservable();
     }
 
     initiateBulkRfq(status: boolean)

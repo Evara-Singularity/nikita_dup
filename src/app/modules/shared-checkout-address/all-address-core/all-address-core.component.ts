@@ -196,6 +196,7 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
           //Expected Actions from Address List component are : ADD or EDIT or SELECTED;
           //Below code is to handle "Add or Edit".
           if (actionInfo.action === "ADD" || actionInfo.action === "EDIT") {
+              this.closeAddressListPopup();
               this.displayAddressFormPopup(addressType, actionInfo.address);
               return;
           }
@@ -246,6 +247,7 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
           //Expected Actions from Address List component are : ADD or EDIT or SELECTED;
           //Below code is to handle "Add or Edit".
           if (actionInfo.action === "ADD" || actionInfo.action === "EDIT") {
+              this.closeAddressListBillingPopup();
               this.displayAddressFormPopup(addressType, actionInfo.address);
               return;
           }

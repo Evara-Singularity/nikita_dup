@@ -1,5 +1,5 @@
 import { DatePipe, DOCUMENT, Location } from "@angular/common";
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, OnDestroy, OnInit, Optional, Renderer2, ViewChild, ViewContainerRef } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, HostListener, Inject, Injector, OnDestroy, OnInit, Optional, Renderer2, ViewChild, ViewContainerRef } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { DomSanitizer, Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, NavigationExtras, Router } from "@angular/router";
@@ -98,6 +98,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     similarForOOSContainer = [];
     fragment = '';
     productFilterAttributesList: any;
+    iscloseproductDiscInfoComponent:boolean=true;
+    showproductDiscInfoComponent: boolean=false;
 
     // lazy loaded component refs
     productShareInstance = null;
@@ -283,6 +285,21 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.route.fragment.subscribe((fragment: string) => {
             this.fragment = fragment || '';
         })
+    }
+
+    @HostListener('window:scroll', ['$event'])
+    onScroll(event: Event) {
+      const scrollPosition = window.pageYOffset;
+      const renderCondition = scrollPosition > 600;
+      if (renderCondition) {
+        this.showproductDiscInfoComponent=true
+      } else {
+        this.showproductDiscInfoComponent=false
+      }
+    }
+
+    closeproductDiscInfoComponent(){
+        this.iscloseproductDiscInfoComponent=false
     }
 
     processProductData(productGroup) {

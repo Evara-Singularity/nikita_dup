@@ -1448,11 +1448,21 @@ export class CartService
         const cartSession = this.getCartSession();
         const offerId = (cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
         if (userId) {
-            this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId']).subscribe(res => {
+            this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId']).pipe(map(res=>{
+                if (res && res['data']) {
+                    (res['data'] as []).sort((a, b) => a['isApplicable'] - b['isApplicable'])
+                }
+                return res;
+            })).subscribe(res => {
                 this.processPromoData(res, offerId, isUpdatePromoCode);
             });
         } else {
-            this.getAllPromoCodes(cartSession['cart']['cartId']).subscribe(res => {
+            this.getAllPromoCodes(cartSession['cart']['cartId']).pipe(map(res=>{
+                if (res && res['data']) {
+                    (res['data'] as []).sort((a, b) => a['isApplicable'] - b['isApplicable'])
+                }
+                return res;
+            })).subscribe(res => {
                 this.processPromoData(res, offerId, isUpdatePromoCode);
             })
         }

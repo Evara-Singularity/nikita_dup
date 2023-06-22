@@ -156,15 +156,15 @@ export class PdpQuickCheckoutComponent implements OnInit {
     }); 
     this.setAddress(this.address, true);
     this.cartService.appliedPromoCode = "";
-    this.promoSubscription = this.cartService.promoCodeSubject.subscribe(
-      ({ promocode, isNewPromocode }) => {
-        this.showPromoSuccessPopup = isNewPromocode;
-        setTimeout(() => {
-          this.getUpdatedCart();
-          this.showPromoSuccessPopup = false;
-        }, 800);
-      }
-    );
+    // this.promoSubscription = this.cartService.promoCodeSubject.subscribe(
+    //   ({ promocode, isNewPromocode }) => {
+    //     this.showPromoSuccessPopup = isNewPromocode;
+    //     setTimeout(() => {
+    //       this.getUpdatedCart();
+    //       this.showPromoSuccessPopup = false;
+    //     }, 800);
+    //   }
+    // );
   }
 
   ngAfterViewInit() {
@@ -470,7 +470,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
 
   ngOnDestroy(): void {
     if (this.cartSubscription) this.cartSubscription.unsubscribe();
-    if (this.promoSubscription) this.promoSubscription.unsubscribe();
+    // if (this.promoSubscription) this.promoSubscription.unsubscribe();
   }
 }
 

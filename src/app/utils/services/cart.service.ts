@@ -1450,7 +1450,7 @@ export class CartService
         if (userId) {
             this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId']).pipe(map(res=>{
                 if (res && res['data']) {
-                    (res['data'] as []).sort((a, b) => a['isApplicable'] - b['isApplicable'])
+                    (res['data'] as []).sort((a, b) => b['isApplicable'] - a['isApplicable'])
                 }
                 return res;
             })).subscribe(res => {
@@ -1459,7 +1459,7 @@ export class CartService
         } else {
             this.getAllPromoCodes(cartSession['cart']['cartId']).pipe(map(res=>{
                 if (res && res['data']) {
-                    (res['data'] as []).sort((a, b) => a['isApplicable'] - b['isApplicable'])
+                    (res['data'] as []).sort((a, b) => b['isApplicable'] - a['isApplicable'])
                 }
                 return res;
             })).subscribe(res => {

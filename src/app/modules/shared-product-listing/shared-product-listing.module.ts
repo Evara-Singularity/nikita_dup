@@ -11,10 +11,7 @@ import { ProductCardSkeletonModule } from '../ui/skeletons/product-card-skeleton
 import { AnalyticsWidgetWrapperModule } from '@app/components/analytics-widget-wrapper/analytics-widget-wrapper.module';
 import { Informative_videoModule } from '@app/components/informative_video/informative_video.component';
 import { BulkRquestFormPopupLazyModule } from '../bulk-rquest-form-popup-lazy/bulk-rquest-form-popup-lazy.module';
-import { PlpInlineBannerModule } from '../../components/plp-inline-banner/plp-inline-top-banner.component';
-import { PromotedBrandsUnitModule } from '@app/components/promoted-brands-unit/promoted-brands-unit.component';
-import { PlpLeaderboardBannerModule } from '@app/components/plp-leaderboard-banner/plp-leaderboard-banner.component';
-import { InlineRectangleBannerModule } from '@app/components/plp-inline-rectangle-banner/inline-rectangle-banner.component';
+import { AdsenseModule } from '../adsense/adsense.module';
 
 @NgModule({
   declarations: [SharedProductListingComponent],
@@ -30,10 +27,7 @@ import { InlineRectangleBannerModule } from '@app/components/plp-inline-rectangl
     AnalyticsWidgetWrapperModule,
     Informative_videoModule,
     BulkRquestFormPopupLazyModule,
-    PlpInlineBannerModule,
-    PromotedBrandsUnitModule,
-    PlpLeaderboardBannerModule,
-    InlineRectangleBannerModule
+    AdsenseModule,
   ],
   exports: [
     SharedProductListingComponent

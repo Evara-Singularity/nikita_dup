@@ -7,9 +7,10 @@
     right: 0;
     background: var(--ghost-white);
     z-index: 6;
-    border: 1px solid var(--silver);
+    border: 1px solid #C4C4C4;
     border-radius: 16px 16px 0 0;
     padding: 15px;
+    border-bottom: none;
     box-shadow: 0px -6px 6px rgba(0, 0, 0, .2);
 
     .floating-product-container {
@@ -17,13 +18,17 @@
         justify-content: space-between;
 
         .product-name {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: $font-bold;
-            padding-right: 25px;
+            padding-right: 15px;
+            -webkit-line-clamp: 2;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         i {
-            font-size: 20px;
+            font-size: 16px;
         }
     }
 
@@ -31,49 +36,65 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+
         .price-section {
             .actual-price {
                 font-size: $medium-font;
                 color: var(--dim-gray);
-                padding-top: 5px;
+                padding-top: 8px;
             }
-            .main-price{
+
+            .main-price {
                 padding-top: 3px;
-                strong{
-                    .price{
+
+                strong {
+                    .price {
                         font-size: 20px;
                     }
-                    .gst-price{
-                        font-size: 10px;
+
+                    .gst-price {
+                        font-size: 12px;
                         font-weight: normal;
+                        color: var(--dim-gray);
                     }
                 }
             }
-            .mrp-price{
+
+            .mrp-price {
                 font-size: 12px;
                 color: var(--dim-gray);
                 padding-top: 3px;
+
+                .actual-mrp {
+                    text-decoration: line-through;
+                }
             }
         }
-        .coupon-section{
-            .copy-coupon-container{
+
+        .coupon-section {
+            text-align: center;
+
+            .copy-coupon-container {
                 border: 2px dashed var(--slimy-green);
-                padding: 5px 30px;
+                padding: 4px 30px;
                 border-radius: $border-radius-4;
                 background: #E0FDDF;
                 color: var(--slimy-green);
                 font-weight: bold;
-                font-size: $large-font;
+                font-size: 12px;
                 margin-bottom: 2px;
-                &.active{
+                line-height: 21px;
+
+                &.active {
                     background: var(--slimy-green);
                     color: var(--white);
                 }
-              }
-              .copy-text{
+            }
+
+            .copy-text {
                 font-size: $small-font;
                 color: var(--dim-gray);
-              }
+            }
         }
     }
 }

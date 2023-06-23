@@ -10,7 +10,7 @@
             <!-- <div class="coupen-card"> -->
             <div class="apply-coupon" *ngIf="_cartService?.allPromoCodes[0]?.promoCode">
                 <div class="inner-coupon">
-                    <i class="icon-offer"></i>
+                    <i class="icon-coupon-3-fill-1"></i>
                     <div class="coupen-code">
                         <h3>{{_cartService?.allPromoCodes[0]?.promoCode}}</h3>
                         <p class="promo-description">{{_cartService?.allPromoCodes[0]?.promoDescription}}</p>
@@ -21,7 +21,7 @@
             <!-- </div> -->
             <div class="coupen-strip" (click)="$event.stopPropagation();openPromoCodeList()">
                 <div class="coupen-icon">
-                    <i class="icon-offer"></i>
+                    <i class="icon-coupon-3-fill-1"></i>
                 </div>
                 <div class="coupen-text">
                     <h3>VIEW MORE COUPONS</h3>

@@ -19,8 +19,8 @@
                     </strong>
                 </div>
                 <div class="mrp-price">
-                    <span>MRP&nbsp;{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}} <span class="green-txt"><b> {{
-                                productDiscount | number:'1.0-0'}}% OFF</b></span></span>
+                    <span >MRP&nbsp;<span class="actual-mrp">{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</span></span> <span class="green-txt"><b> {{
+                                productDiscount | number:'1.0-0'}}% OFF</b></span>
                 </div>
             </div>
         </ng-container>
@@ -55,7 +55,7 @@
                 (click)="copyCouponTextArea()">
                 {{promoCodes['promoCode']}}
             </div>
-            <span class="copy-text" *ngIf="!isCouponCopied">Copy to Apply Coupon</span>
+            <span class="copy-text" *ngIf="!isCouponCopied">Tap to Copy</span>
             <span class="copy-text" *ngIf="isCouponCopied">Coupon Copied</span>
         </div>
     </div>

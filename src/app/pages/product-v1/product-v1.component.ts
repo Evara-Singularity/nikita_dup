@@ -100,6 +100,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     productFilterAttributesList: any;
     iscloseproductDiscInfoComponent:boolean=true;
     showproductDiscInfoComponent: boolean=false;
+    compareProductsData:Array<object> = [];
 
     // lazy loaded component refs
     productShareInstance = null;
@@ -176,6 +177,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     similarProductInstance = null;
     @ViewChild("similarProduct", { read: ViewContainerRef })
     similarProductContainerRef: ViewContainerRef;
+    // ondemand loaded components for product price compare products
+    productPriceCompareInstance = null;
+    @ViewChild("productPriceCompare", { read: ViewContainerRef })
+    productPriceCompareContainerRef: ViewContainerRef;
     // ondemand loaded components for sponsered products
     sponseredProductsInstance = null;
     @ViewChild("sponseredProducts", { read: ViewContainerRef })
@@ -335,6 +340,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         // analytics calls moved to this function incase PDP is redirecte to PDP
         this.callAnalyticForVisit();
         this.setMetatag();
+        if(!this.rawProductData?.productOutOfStock && this.rawProductData?.defaultPartNumber != null){ this.getCompareProductsData(this.rawProductData?.defaultPartNumber);}
     }
 
     filterAttributes() {
@@ -2578,6 +2584,28 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.cdr.detectChanges();
     }
 
+    async onVisibleproductPriceCompare()
+    {
+        if (!this.productPriceCompareInstance && this.compareProductsData.length > 0) {
+            const { ProductPriceCompareComponent } = await import(
+                "./../../components/product-price-compare/product-price-compare.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(
+                ProductPriceCompareComponent
+            );
+            this.productPriceCompareInstance =
+                this.productPriceCompareContainerRef.createComponent(
+                    factory,
+                    null,
+                    this.injector
+                );
+
+            this.productPriceCompareInstance.instance["compareProductsData"] = this.compareProductsData;
+            
+           
+        }
+    }
+
     async onVisibleAppPromo(event) {
         const { ProductAppPromoComponent } = await import("../../components/product-app-promo/product-app-promo.component");
         const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
@@ -3767,6 +3795,16 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.renderer2.appendChild(this.document.head, videoSchema);        
             }
         
+    }
+
+    getCompareProductsData(msn: string) {
+        this.productService.getCompareProducts(msn).subscribe(result=>{
+            if(result && result['totalCount'] && result['totalCount'] > 0 && result['products']){
+                this.compareProductsData = result['products'] as Array<object>;
+            }
+        },(error)=>{
+            this.compareProductsData = [];
+        })
     }
 
     ngOnDestroy() {

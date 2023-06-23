@@ -63,7 +63,13 @@ export class ProductCardHorizontalListViewComponent extends ProductCardCoreCompo
   getFilterableAttribute(){
     if(this.product['attributeValuesForPart'] != null && (Object.keys(this.product['attributeValuesForPart'])).length != 0){
       this.modifiedFilterableAtrribute=[];
-      this.modifiedFilterableAtrribute=Object.entries(this.product['attributeValuesForPart']) 
+      const attributeValuesForPart = Object.entries(this.product['attributeValuesForPart']);
+      attributeValuesForPart.forEach(ele=>{
+        if(ele[1][0] != null && ele[1][0] != undefined &&  ele[1][0].length < 50){
+          this.modifiedFilterableAtrribute.push(ele);
+        }
+      })
+     // this.modifiedFilterableAtrribute= Object.entries(this.product['attributeValuesForPart']) 
     }
   }
   

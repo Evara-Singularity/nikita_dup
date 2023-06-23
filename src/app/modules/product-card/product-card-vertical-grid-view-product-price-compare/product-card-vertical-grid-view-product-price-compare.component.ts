@@ -1,11 +1,11 @@
-import { Component, ComponentFactoryResolver, Injector, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentFactoryResolver, Injector, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalService } from '@app/modules/modal/modal.service';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ProductCardFeature } from '@app/utils/models/product.listing.search';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
-import { CommonService } from '@app/utils/services/common.service';
+import { CommonService } from '@app/utils/services/common.service'; 
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { ProductService } from '@app/utils/services/product.service';
@@ -47,6 +47,7 @@ export class ProductCardVerticalGridViewProductPriceCompareComponent  extends Pr
     public _analytics: GlobalAnalyticsService,
     public _toastMessageService: ToastMessageService,
     public _productService: ProductService,
+    public _cdr: ChangeDetectorRef
   ) {
     super(
       _cartService,
@@ -60,7 +61,8 @@ export class ProductCardVerticalGridViewProductPriceCompareComponent  extends Pr
       _commonService,
       _analytics,
       _toastMessageService,
-      _productService
+      _productService,
+      _cdr
     );
   }
 

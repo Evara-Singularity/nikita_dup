@@ -103,6 +103,12 @@
             [analytics]='fbtAnalytics'></fbt>
     </div>
 
+    <div *ngIf="compareProductsData.length > 0" class="common-product" data-observeVisibility
+        [debounceTime]="100" (visible)="onVisibleproductPriceCompare()">
+        <ng-container #productPriceCompare></ng-container>
+        <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="productPriceCompareInstance"></product-skeletons>
+    </div>
+
     <app-product-review [productName]="rawProductData?.productName"
         [reviewLength]="apiResponse?.productReviews?.summaryData?.reviewCount"
         [overallRating]="apiResponse?.productReviews?.startCount" [rawReviewsData]="apiResponse?.productReviews"

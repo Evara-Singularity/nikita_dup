@@ -11,7 +11,8 @@ import { ProductCardSkeletonModule } from '../ui/skeletons/product-card-skeleton
 import { AnalyticsWidgetWrapperModule } from '@app/components/analytics-widget-wrapper/analytics-widget-wrapper.module';
 import { Informative_videoModule } from '@app/components/informative_video/informative_video.component';
 import { BulkRquestFormPopupLazyModule } from '../bulk-rquest-form-popup-lazy/bulk-rquest-form-popup-lazy.module';
-import { AdsenseModule } from '../adsense/adsense.module';
+import { AdsenseLeaderboardBannerModule } from '../adsense/adsense-leaderboard-banner.module';
+import { AdsenseRectangleBannerModule } from '../adsense/adsense-inline-rectangle-banner.module';
 
 @NgModule({
   declarations: [SharedProductListingComponent],
@@ -27,7 +28,8 @@ import { AdsenseModule } from '../adsense/adsense.module';
     AnalyticsWidgetWrapperModule,
     Informative_videoModule,
     BulkRquestFormPopupLazyModule,
-    AdsenseModule,
+    AdsenseLeaderboardBannerModule,
+    AdsenseRectangleBannerModule
   ],
   exports: [
     SharedProductListingComponent

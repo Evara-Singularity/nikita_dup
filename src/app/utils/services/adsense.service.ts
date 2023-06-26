@@ -6,7 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs-compat';
-import { BannerAdUnit, PromotedBrandAd, VideoAdUnit } from '../models/Adsense.model';
+import { BannerAdUnit, PromotedBrandAd, VideoAdUnit } from '../models/adsense.model';
 
 @Injectable()
 export class AdsenseService {

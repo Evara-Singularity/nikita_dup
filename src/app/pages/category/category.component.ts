@@ -51,6 +51,7 @@ export class CategoryComponent {
     lastLevelCategory:Boolean = false;
     isL2CategoryCheck:Boolean = false;
     informativeVideosData:any;
+    adsenseData: any = null;
    
 
     constructor(
@@ -96,9 +97,7 @@ export class CategoryComponent {
             this.API_RESPONSE['category'][0]['categoryDetails'] &&
             this.API_RESPONSE['category'][0]['categoryDetails']['categoryId']) {
             const categoryId = this.API_RESPONSE['category'][0]['categoryDetails']['categoryId'];
-            this._adsenseService.getAdsense(categoryId).subscribe(adsenseData => {
-                console.log("🚀 ~ file: category.component.ts:102 ~ CategoryComponent ~ this._adsenseService.getAdsense ~ adsenseData:", adsenseData);
-            })
+            this._adsenseService.getAdsense(categoryId).subscribe(adsenseData => this.adsenseData = adsenseData )
         }
     }
 

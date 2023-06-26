@@ -1,4 +1,4 @@
-import { Component, NgModule, OnInit } from '@angular/core';
+import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'adsense-main-banner',
@@ -7,9 +7,12 @@ import { CommonModule } from '@angular/common';
 })
 export class MainAdsenseBannerComponent implements OnInit {
 
+  @Input() data: any = null;
+
   constructor() { }
 
   ngOnInit(): void {
+    console.log('data', this.data);
   }
 
 }

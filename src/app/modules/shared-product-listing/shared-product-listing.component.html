@@ -40,11 +40,6 @@
         </ng-container>
     </div>
 </div>
-<ng-container *ngIf="_commonService.selectedFilterData.page < 2">
-    <ng-container>
-        <adsense-main-banner></adsense-main-banner>
-    </ng-container>
-</ng-container>
 <div class="list-heading" *ngIf="productsListingData?.products?.length>0" [class.list-heading-search]="pageName === 'SEARCH' || 'ALP'">
     <ng-container>
         <h1 class="list-name">

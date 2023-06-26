@@ -118,6 +118,35 @@ export class ProductListService {
     }
   }
 
+  getSerachProductList(productSearchResult) {
+    return [...productSearchResult].map(
+      (product) => {
+        product["mainImageThumnailLink"] =
+          this.getImageFromSearchProductResponse(
+            product["mainImageLink"],
+            "large",
+            "medium"
+          );
+        product["mainImageMediumLink"] =
+          this.getImageFromSearchProductResponse(
+            product["mainImageLink"],
+            "large",
+            "medium"
+          );
+        product['productTags'] = this._commonService.sortProductTagsOnPriority(product['productTags']);
+        product["internalProduct"] = product.hasOwnProperty("internalProduct")
+          ? false
+          : true, // if intenal product prop does not exist then it is internal product
+          product["discount"] = this._commonService.calculcateDiscount(
+            product["discount"],
+            product["mrp"],
+            product["salesPrice"]
+          );
+        return product;
+      }
+    );
+  }
+
   getProductTag(product) {
 
     if (product && product["productTags"] && product["productTags"].length > 1) {

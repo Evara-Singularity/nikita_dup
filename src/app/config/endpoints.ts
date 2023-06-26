@@ -138,5 +138,6 @@ export const ENDPOINTS = {
   GET_FBT_PRODUCTS_BY_MSNS :"/product/getFbtProductsByMsns",
   GET_CATEGORY_INFO_BY_MSNS: "/search/getCategoryInfoByMsns",
   IFSC_CODE:'/payment/getBankDetails?ifsc=',
-  ADSENSE: '/adsense/getCampaign'
+  ADSENSE: '/adsense/getCampaign',
+  GET_MSN_BY_LIST: '/search/searchByListOfMsn',
 };

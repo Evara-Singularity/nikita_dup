@@ -42,7 +42,7 @@
         </shared-product-listing>
     </div>
 
-    <ng-container *ngIf="adsenseData && adsenseData['VIDEOS_ADS']">
+    <ng-container *ngIf="_commonService.selectedFilterData.page < 2 && adsenseData && adsenseData['VIDEOS_ADS']">
         <adsense-related-videos [data]="adsenseData['VIDEOS_ADS']"></adsense-related-videos>
     </ng-container>
 

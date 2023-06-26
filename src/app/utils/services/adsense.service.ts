@@ -21,9 +21,9 @@ export class AdsenseService {
     let url =
       CONSTANTS.NEW_MOGLIX_API +
       ENDPOINTS.ADSENSE +
-      "?platform=PWA&category=" +
-      categoryId;
-    url = (brandName) ? (url + '&brand = ' + brandName) : url;
+      "?platform=PWA";
+    url = (categoryId) ? (url + '&category=' + categoryId) : url;
+    url = (brandName) ? (url + '&brandName=' + brandName) : url;
     return this._dataService.callRestful("GET", url).pipe(
       catchError((res: HttpErrorResponse) => {
         return of({ active: false, httpStatus: res.status });

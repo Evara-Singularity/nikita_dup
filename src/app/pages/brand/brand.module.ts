@@ -12,6 +12,10 @@ import { AccordianModule } from "@app/modules/accordian/accordian.module";
 import { AppPromoModule } from '@app/modules/app-promo/app-promo.module';
 import { MathCeilPipeModule } from '@pipes/math-ceil';
 import RecentViewedProductsWrapperModule from '@app/components/recent-viewed-products-wrapper/recent-viewed-products-wrapper.component';
+import { AdsenseService } from '@app/utils/services/adsense.service';
+import { AdsenseMainBannerModule } from '@app/modules/adsense/adsense-main-banner.module';
+import { AdsensePromotedBrandsUnitModule } from '@app/modules/adsense/adsense-promoted-brands-unit.module';
+import { AdsenseRelatedVideosModule } from '@app/modules/adsense/adsense-related-videos.module';
 
 
 @NgModule({
@@ -31,7 +35,11 @@ import RecentViewedProductsWrapperModule from '@app/components/recent-viewed-pro
         AppPromoModule,
         MathCeilPipeModule,
         RecentViewedProductsWrapperModule,
-    ]
+        AdsenseMainBannerModule,
+        AdsensePromotedBrandsUnitModule,
+        AdsenseRelatedVideosModule,
+    ],
+    providers: [AdsenseService]
 })
 
-export  class BrandModule {}
+export class BrandModule { }

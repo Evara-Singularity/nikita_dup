@@ -1,4 +1,4 @@
-import { Component, Inject, Optional, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, Optional, Renderer2 } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
@@ -13,6 +13,7 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
+import { AdsenseService } from '@app/utils/services/adsense.service';
 
 let digitalData = {
     page: {},
@@ -26,7 +27,7 @@ let digitalData = {
     styleUrls: ['./brand.scss', '../category/category.scss', './../../components/homefooter-accordian/homefooter-accordian.component.scss'],
 })
 
-export class BrandComponent {
+export class BrandComponent implements OnInit, AfterViewInit {
     encodeURI = encodeURI;
     public productListingData: ProductListingDataEntity;
     public cmsData: any[] = [];
@@ -38,6 +39,7 @@ export class BrandComponent {
     popularCategories = [];
     couponForbrandCategory: Object= null;
     informativeVideosData:any;    
+    public adsenseData: any = null
     constructor(
         public _activatedRoute: ActivatedRoute,
         public _router: Router,
@@ -53,7 +55,8 @@ export class BrandComponent {
         public _productListService: ProductListService,
         private _globalLoader: GlobalLoaderService,
         @Optional() @Inject(RESPONSE) private _response,
-        private globalAnalyticsService: GlobalAnalyticsService
+        private globalAnalyticsService: GlobalAnalyticsService,
+        private _adsenseService: AdsenseService,
     ) {
         this._commonService.isHomeHeader = false;
         this._commonService.isPLPHeader = true;
@@ -579,6 +582,22 @@ export class BrandComponent {
 
     ngAfterViewInit() {
         this.couponOnBrandCategory();
+        this.getAdsenseData();
+    }
+
+    private getAdsenseData() {
+        if (
+            this.API_RESPONSE &&
+            this.API_RESPONSE['brand'] &&
+            this.API_RESPONSE['brand'][0] &&
+            this.API_RESPONSE['brand'][0]['friendlyUrl']
+        ) {
+            // const categoryId = this._activatedRoute.snapshot.params['category'] || null;
+            // const brandUrl = this._activatedRoute.snapshot.params['brand'] || null;
+            const categoryId = '211521600'; // test data
+            const brandUrl = null;
+            this._adsenseService.getAdsense(categoryId, brandUrl).subscribe(adsenseData => this.adsenseData = adsenseData)
+        }
     }
 
     couponOnBrandCategory() {

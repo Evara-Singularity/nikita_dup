@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { VideoAdUnit } from '@app/utils/models/adsense.model';
 
 @Component({
   selector: 'adsense-related-videos',
@@ -7,7 +8,7 @@ import { Component, Input } from '@angular/core';
 })
 export class RelatedVideosComponent {
 
-  @Input() data: any = null;
+  @Input() data: VideoAdUnit[] | null = null;
 
   constructor() { }
 

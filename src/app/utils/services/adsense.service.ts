@@ -112,8 +112,9 @@ export class AdsenseService {
             pictureUrl: ads.pictureUrl
           } as BannerAdUnit
         });
-      BANNERS['TOP_BANNERS'] = TOP_BANNERS;
-
+      if(TOP_BANNERS &&TOP_BANNERS.length > 0){
+        BANNERS['TOP_BANNERS'] = TOP_BANNERS;
+      }
       (campaignData['bannerAdUnit']['banners'] as BannerAdUnit[])
         .filter(ads => !ads.bannerType.startsWith("TOP_BANNER_POSITION"))
         .forEach((ads: BannerAdUnit) => {

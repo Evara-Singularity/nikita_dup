@@ -1,5 +1,6 @@
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxSiemaOptions } from 'ngx-siema';
 @Component({
   selector: 'adsense-main-banner',
   templateUrl: './main-banner.component.html',

@@ -1,11 +1,10 @@
-import { Component, ComponentFactoryResolver, HostBinding, Inject, Injector, Optional, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, HostBinding, Inject, Optional, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
-import { CategoryService } from '@app/utils/services/category.service';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { FooterService } from '@app/utils/services/footer.service';
 import { Meta, Title } from '@angular/platform-browser';
@@ -16,9 +15,9 @@ import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 import { ENDPOINTS } from '@app/config/endpoints';
-import { environment } from 'environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
+import { AdsenseService } from '@app/utils/services/adsense.service';
 
 let digitalData = {
     page: {},
@@ -56,7 +55,6 @@ export class CategoryComponent {
 
     constructor(
         public _router: Router,
-        private injector: Injector,
         private _renderer2: Renderer2,
         @Inject(DOCUMENT) private _document,
         public _footerService: FooterService,
@@ -68,11 +66,9 @@ export class CategoryComponent {
         public _commonService: CommonService,
         private _activatedRoute: ActivatedRoute,
         private meta: Meta,
-        private _categoryService: CategoryService,
         public _productListService: ProductListService,
-        private _componentFactoryResolver: ComponentFactoryResolver,
         private globalAnalyticsService: GlobalAnalyticsService,
-        private _dataService: DataService
+        private _adsenseService: AdsenseService,
     ) {
         this._commonService.isHomeHeader = false;
         this._commonService.isPLPHeader = true;
@@ -88,7 +84,22 @@ export class CategoryComponent {
     ngAfterViewInit(): void {
         // this.sharedProductList.getSponseredProducts();
         this.backUrlNavigationHandler();
-        this.isFiltersApplied = Object.keys(this._commonService.selectedFilterData.filter).length ? true : false
+        this.isFiltersApplied = Object.keys(this._commonService.selectedFilterData.filter).length ? true : false;
+        this.getAdsenseData();
+    }
+
+    private getAdsenseData() {
+        if (
+            this.API_RESPONSE &&
+            this.API_RESPONSE['category'] &&
+            this.API_RESPONSE['category'][0] &&
+            this.API_RESPONSE['category'][0]['categoryDetails'] &&
+            this.API_RESPONSE['category'][0]['categoryDetails']['categoryId']) {
+            const categoryId = this.API_RESPONSE['category'][0]['categoryDetails']['categoryId'];
+            this._adsenseService.getAdsense(categoryId).subscribe(adsenseData => {
+                console.log("🚀 ~ file: category.component.ts:102 ~ CategoryComponent ~ this._adsenseService.getAdsense ~ adsenseData:", adsenseData)
+            })
+        }
     }
 
     backUrlNavigationHandler() {
@@ -745,5 +756,6 @@ export class CategoryComponent {
         } 
         this._analytics.sendAdobeCall({ page,custData,order }, "genericClick");
     }
+
 }
 

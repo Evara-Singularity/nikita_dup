@@ -20,6 +20,7 @@ import { ShopbyFeatrModule } from '@app/components/shopby-featr/shopby-featr.com
 import { CmsModule } from '@app/modules/cms/cms.module';
 import { SubCategoryModule } from '@app/components/subCategory/subCategory.component';
 import RecentViewedProductsWrapperModule from '@app/components/recent-viewed-products-wrapper/recent-viewed-products-wrapper.component';
+import { AdsenseService } from '@app/utils/services/adsense.service';
 
 @NgModule({
     imports: [
@@ -47,6 +48,9 @@ import RecentViewedProductsWrapperModule from '@app/components/recent-viewed-pro
     declarations: [
         CategoryComponent,
     ],
+    providers: [
+        AdsenseService
+    ]
 })
 
 export class CategoryModule { }

@@ -71,7 +71,15 @@
         [productName]="productName" [productVideos]="productVideos" [productDocumentInfo]="productDocumentInfo"
         [productBrandCategoryUrl]="productBrandCategoryUrl"></product-feature-details>
 
-
+    <ng-container *ngIf="adsenseData">
+        <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_1']">
+            <adsense-leaderboard-banner
+                [data]="adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_1']"></adsense-leaderboard-banner>
+        </ng-container>
+        <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PLP_POSITION_1']">
+            <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PLP_POSITION_1']"></adsense-rectangle-banner>
+        </ng-container>
+    </ng-container>
 
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
@@ -114,6 +122,14 @@
         [productBrandDetails]="productBrandDetails" [productCategoryDetails]="productCategoryDetails"
         [productBrandCategoryUrl]="productBrandCategoryUrl">
     </product-more-widget>
+
+    <ng-container *ngIf="adsenseData && adsenseData['FEATURED_PRODUCT_ADS']" >
+        <adsense-feature-products-unit [data]="adsenseData['FEATURED_PRODUCT_ADS']" ></adsense-feature-products-unit>
+    </ng-container>
+    
+    <ng-container *ngIf="adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']" >
+        <adsense-promoted-brands-unit [data]="adsenseData['PROMOTOTED_BRAND_ADS']" ></adsense-promoted-brands-unit>
+    </ng-container>
     
     <!-- removed sponsored products -->
     <!-- <div id="sponseredProducts" [ngClass]="{'common-product': !sponseredProductsInstance}" *ngIf="!sponseredProductsInstance" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">

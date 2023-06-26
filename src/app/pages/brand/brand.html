@@ -42,6 +42,9 @@
     <ng-container *ngIf="adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']" >
         <adsense-promoted-brands-unit [data]="adsenseData['PROMOTOTED_BRAND_ADS']" ></adsense-promoted-brands-unit>
     </ng-container>
+    <ng-container *ngIf="adsenseData && adsenseData['FEATURED_PRODUCT_ADS']" >
+        <adsense-feature-products-unit [data]="adsenseData['FEATURED_PRODUCT_ADS']" ></adsense-feature-products-unit>
+    </ng-container>
 
     <div class="pwa-row cate-container"
         *ngIf="API_RESPONSE['brand'][1][0].categoryName && _commonService.selectedFilterData.page < 2">

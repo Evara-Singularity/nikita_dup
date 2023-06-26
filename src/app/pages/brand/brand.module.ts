@@ -16,6 +16,7 @@ import { AdsenseService } from '@app/utils/services/adsense.service';
 import { AdsenseMainBannerModule } from '@app/modules/adsense/adsense-main-banner.module';
 import { AdsensePromotedBrandsUnitModule } from '@app/modules/adsense/adsense-promoted-brands-unit.module';
 import { AdsenseRelatedVideosModule } from '@app/modules/adsense/adsense-related-videos.module';
+import { AdsenseFeatureProductsUnitModule } from '@app/modules/adsense/adsense-feature-products-unit.module';
 
 
 @NgModule({
@@ -36,8 +37,9 @@ import { AdsenseRelatedVideosModule } from '@app/modules/adsense/adsense-related
         MathCeilPipeModule,
         RecentViewedProductsWrapperModule,
         AdsenseMainBannerModule,
-        AdsensePromotedBrandsUnitModule,
         AdsenseRelatedVideosModule,
+        AdsensePromotedBrandsUnitModule,
+        AdsenseFeatureProductsUnitModule
     ],
     providers: [AdsenseService]
 })

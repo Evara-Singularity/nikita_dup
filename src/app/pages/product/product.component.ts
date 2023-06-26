@@ -51,6 +51,7 @@ import * as localization_hi from '../../config/static-hi';
 import { product } from '../../config/static-hi';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { YTThumbnailPipe } from '@app/utils/pipes/ytthumbnail.pipe';
+import { AdsenseService } from '@app/utils/services/adsense.service';
 
 
 interface ProductDataArg
@@ -353,6 +354,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     allofferData: any[];
     couponForbrandCategory: any;
     fragment = '';
+    adsenseData: any = null;
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);
@@ -394,7 +396,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         private datePipe: DatePipe,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any,
-        private globalAnalyticsService: GlobalAnalyticsService
+        private globalAnalyticsService: GlobalAnalyticsService,
+        private _adsenseService: AdsenseService,
     )
     {
         this.isServer = commonService.isServer;
@@ -454,11 +457,24 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
             this.getRecents();
+            this.getAdsenseData();
             this.route.fragment.subscribe((fragment: string) => {
                 this.fragment = fragment;
             })
         }
         
+    }
+
+    private getAdsenseData() {
+        if (
+            this.msn
+        ) {
+            // const categoryId = this._activatedRoute.snapshot.params['category'] || null;
+            // const brandUrl = this._activatedRoute.snapshot.params['brand'] || null;
+            const categoryId = '211521600'; // test data
+            const brandUrl = null;
+            this._adsenseService.getAdsense(categoryId, brandUrl).subscribe(adsenseData => this.adsenseData = adsenseData)
+        }
     }
 
     getProductTag(){

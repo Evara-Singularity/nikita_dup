@@ -6,15 +6,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs-compat';
+import { BannerAdUnit, PromotedBrandAd, VideoAdUnit } from '../models/Adsense.model';
 
 @Injectable()
 export class AdsenseService {
 
   readonly STATUS_RUNNING = 'RUNNING';
-  readonly FEATURE_PRODUCT_KEY = 'featuredProductUnit';
-  readonly BANNER_ADS_UNIT_KEY = 'bannerAdUnit';
-  readonly PROMOTED_BRNAD_UNIT_KEY = 'promotedBrandUnit';
-  readonly VIDEO_UINT_KEY
 
   constructor(
     private _dataService: DataService
@@ -46,33 +43,90 @@ export class AdsenseService {
 
   private _mapResponse(response) {
     if (response && response['data'] && response['data']['status'] == this.STATUS_RUNNING) {
-      return {
-        featuredProducts: this._mapfeaturedProductUnit(response),
-        topBanners: this._bannerAdUnitUnit(response),
-        promotedBrands: this._promotedBrandUnit(response),
-        videos: this._videoUnit(response),
-      };
+      const campaignData = response['data']
+      const promotedBrandUnit = this._promotedBrandUnit(campaignData);
+      const featuredProductUnit = this._mapfeaturedProductUnit(campaignData);
+      const videoUnit = this._videoUnit(campaignData);
+      const banners = this._bannerAdUnits(campaignData)
+      return { ...featuredProductUnit, ...promotedBrandUnit, ...videoUnit, ...banners };
     } else {
       console.log('adsense data', 'status is not running');
       return null;
     }
-    return response;
   }
 
-  private _mapfeaturedProductUnit(response) {
-    return response;
+  private _mapfeaturedProductUnit(campaignData): { FEATURED_PRODUCT_ADS?: any } {
+    if (
+      campaignData['featuredProductUnit'] &&
+      campaignData['featuredProductUnit']['msns'] &&
+      campaignData['featuredProductUnit']['msns'].length > 0) {
+      return { FEATURED_PRODUCT_ADS: campaignData['featuredProductUnit']['msns'] };
+    }
+    return {}
   }
 
-  private _bannerAdUnitUnit(response) {
-    return response;
+  private _promotedBrandUnit(campaignData) {
+    if (campaignData['promotedBrandUnit'] && campaignData['promotedBrandUnit']['banners'] && campaignData['promotedBrandUnit']['banners'].length > 0) {
+      const PROMOTOTED_BRAND_ADS = (campaignData['promotedBrandUnit']['banners'] as PromotedBrandAd[]).map(ads => {
+        return {
+          id: ads['id'],
+          pictureUrl: ads['pictureUrl'],
+          landingPageUrl: ads['landingPageUrl'],
+          categoryName: ads['categoryName'],
+        } as PromotedBrandAd
+      });
+      return { PROMOTOTED_BRAND_ADS };
+    }
+    return {}
   }
 
-  private _promotedBrandUnit(response) {
-    return response;
+  private _videoUnit(campaignData) {
+    if (campaignData['videoUnit'] && campaignData['videoUnit']['banners'] && campaignData['videoUnit']['banners'].length > 0) {
+      const VIDEOS_ADS = (campaignData['videoUnit']['banners'] as VideoAdUnit[]).map(ads => {
+        return {
+          id: ads['id'],
+          externalVideoLink: ads['externalVideoLink'],
+          videoName: ads['videoName'],
+          videoUrl: ads['videoUrl']
+        } as VideoAdUnit
+      })
+      return { VIDEOS_ADS };
+    }
+    return {}
   }
 
-  private _videoUnit(response) {
-    return response;
+  private _bannerAdUnits(campaignData) {
+    if (campaignData &&
+      campaignData['bannerAdUnit'] &&
+      campaignData['bannerAdUnit']['banners'] &&
+      campaignData['bannerAdUnit']['banners'].length > 0
+    ) {
+      const BANNERS = {}
+      const TOP_BANNERS = (campaignData['bannerAdUnit']['banners'] as BannerAdUnit[])
+        .filter(ads => ads.bannerType.startsWith("TOP_BANNER_POSITION"))
+        .map(ads => {
+          return {
+            bannerType: ads.bannerType,
+            id: ads.id,
+            landingPageUrl: ads.landingPageUrl,
+            pictureUrl: ads.pictureUrl
+          } as BannerAdUnit
+        });
+      BANNERS['TOP_BANNERS'] = TOP_BANNERS;
+
+      (campaignData['bannerAdUnit']['banners'] as BannerAdUnit[])
+        .filter(ads => !ads.bannerType.startsWith("TOP_BANNER_POSITION"))
+        .forEach((ads: BannerAdUnit) => {
+          BANNERS[ads.bannerType] = {
+            bannerType: ads.bannerType,
+            id: ads.id,
+            landingPageUrl: ads.landingPageUrl,
+            pictureUrl: ads.pictureUrl
+          } as BannerAdUnit
+        });
+      return BANNERS;
+    }
+    return {}
   }
 
 }

@@ -56,7 +56,7 @@ export class ProductPriceCompareComponent implements OnInit {
             this.msnMasterData[ele["moglixPartNumber"]] = {
               moglixPartNumber: ele["moglixPartNumber"],
               productName: ele["productName"],
-              priceWithoutTax: ele["priceWithoutTax"],
+              salesPrice: ele["salesPrice"],
               avgRating: ele["avgRating"],
               brandName: ele["brandName"],
               mainImageLink: ele["mainImageLink"],

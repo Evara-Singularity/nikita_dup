@@ -13,27 +13,29 @@ import { Informative_videoModule } from '@app/components/informative_video/infor
 import { BulkRquestFormPopupLazyModule } from '../bulk-rquest-form-popup-lazy/bulk-rquest-form-popup-lazy.module';
 import { AdsenseLeaderboardBannerModule } from '../adsense/adsense-leaderboard-banner.module';
 import { AdsenseRectangleBannerModule } from '../adsense/adsense-inline-rectangle-banner.module';
+import { AdsenseMainBannerModule } from "../adsense/adsense-main-banner.module";
 
 @NgModule({
-  declarations: [SharedProductListingComponent],
-  imports: [
-    CommonModule,
-    ProductCardHorizontalListViewModule,
-    ProductCardSkeletonModule,
-    FilterMidPlpModule,
-    AddFilterSymbolPipeModule,
-    NgxPaginationModule,
-    ObserveVisibilityDirectiveModule,
-    NotFoundModule,
-    AnalyticsWidgetWrapperModule,
-    Informative_videoModule,
-    BulkRquestFormPopupLazyModule,
-    AdsenseLeaderboardBannerModule,
-    AdsenseRectangleBannerModule
-  ],
-  exports: [
-    SharedProductListingComponent
-  ]
+    declarations: [SharedProductListingComponent],
+    exports: [
+        SharedProductListingComponent
+    ],
+    imports: [
+        CommonModule,
+        ProductCardHorizontalListViewModule,
+        ProductCardSkeletonModule,
+        FilterMidPlpModule,
+        AddFilterSymbolPipeModule,
+        NgxPaginationModule,
+        ObserveVisibilityDirectiveModule,
+        NotFoundModule,
+        AnalyticsWidgetWrapperModule,
+        Informative_videoModule,
+        BulkRquestFormPopupLazyModule,
+        AdsenseLeaderboardBannerModule,
+        AdsenseRectangleBannerModule,
+        AdsenseMainBannerModule
+    ]
 })
 
 export class SharedProductListingModule { }

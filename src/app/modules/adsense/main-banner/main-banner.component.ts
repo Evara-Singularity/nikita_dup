@@ -1,6 +1,6 @@
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, NgModule, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxSiemaOptions } from 'ngx-siema';
+import Siema from 'siema';
 @Component({
   selector: 'adsense-main-banner',
   templateUrl: './main-banner.component.html',
@@ -9,9 +9,8 @@ import { NgxSiemaOptions } from 'ngx-siema';
 export class MainAdsenseBannerComponent {
 
   @Input() data: any = null;
-  carouselOptions = {};
-  ngxSiemaOptions: NgxSiemaOptions;
-
+  @ViewChild('siemaContainer') siemaContainer: ElementRef;
+  siemaOptions = {};
   slides = [
     { imageUrl: '../../../assets/img/banner-3.png' },
     { imageUrl: '../../../assets/img/banner-3.png' },
@@ -20,5 +19,17 @@ export class MainAdsenseBannerComponent {
 
   constructor() { }
 
+  ngAfterViewInit() {
+    const siema = new Siema({
+      selector: this.siemaContainer.nativeElement,
+      loop: true,
+      duration: 500,
+      easing: 'ease-out'
+      // Add any other Siema options you want to customize
+    });
+    setInterval(() => {
+      siema.next();
+    }, 3000); 
+  }
 }
 

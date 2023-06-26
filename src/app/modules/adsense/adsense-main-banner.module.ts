@@ -10,7 +10,7 @@ import { NgxSiemaModule } from 'ngx-siema';
   ],
   imports: [
     CommonModule,
-    NgxSiemaModule,
+    NgxSiemaModule.forRoot(),
   ],
   exports: [
     MainAdsenseBannerComponent

@@ -18,7 +18,7 @@
                                         </div>
                                         <p class="prod-name" (click)="navigateTo(msnMasterData[msn]['productUrl'])">
                                             {{msnMasterData[msn]['productName']}}</p>
-                                        <h3 class="prodPrice">₹ {{msnMasterData[msn]['priceWithoutTax'] | mathRound |
+                                        <h3 class="prodPrice">₹ {{msnMasterData[msn]['salesPrice'] | mathRound |
                                             number : '1.2-2'}}</h3>
                                         <add-to-cart [isOutOfStock]="msnMasterData[msn]['isOutOfStock']"
                                             [moglixPartNumber]="msn" [product]="msnMasterData[msn]">

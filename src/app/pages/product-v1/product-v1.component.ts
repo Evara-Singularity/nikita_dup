@@ -340,7 +340,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         // analytics calls moved to this function incase PDP is redirecte to PDP
         this.callAnalyticForVisit();
         this.setMetatag();
-        if(!this.rawProductData?.productOutOfStock && this.rawProductData?.defaultPartNumber != null){ this.getCompareProductsData(this.rawProductData?.defaultPartNumber);}
+        if(!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null){ this.getCompareProductsData(this.rawProductData?.msn);}
     }
 
     filterAttributes() {
@@ -3799,7 +3799,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     getCompareProductsData(msn: string) {
+        alert("ok")
         this.productService.getCompareProducts(msn).subscribe(result=>{
+            console.log("result ==>" , result);
             if(result && result['totalCount'] && result['totalCount'] > 0 && result['products']){
                 this.compareProductsData = result['products'] as Array<object>;
             }

@@ -1,7 +1,7 @@
 export interface CompareProductsList {
     moglixPartNumber: string;
     productName: string;
-    priceWithoutTax:  null;
+    salesPrice:  null;
     avgRating: number;
     brandName: string;
     mainImageLink: string;

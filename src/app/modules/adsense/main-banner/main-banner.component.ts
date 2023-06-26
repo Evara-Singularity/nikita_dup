@@ -10,12 +10,6 @@ export class MainAdsenseBannerComponent {
 
   @Input() data: any = null;
   @ViewChild('siemaContainer') siemaContainer: ElementRef;
-  siemaOptions = {};
-  slides = [
-    { imageUrl: '../../../assets/img/banner-3.png' },
-    { imageUrl: '../../../assets/img/banner-3.png' },
-    { imageUrl: '../../../assets/img/banner-3.png' }
-  ];
 
   constructor() { }
 

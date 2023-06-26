@@ -1,7 +1,7 @@
 <div class="plp-banner-container mb-10">
     <div #siemaContainer >
-        <div *ngFor="let slide of slides">
-          <img [src]="slide.imageUrl" alt="Slide Image">
+        <div *ngFor="let slide of data; let i=index">
+          <img [src]="slide.pictureUrl" alt="Slide Image">
         </div>
       </div>
 </div>

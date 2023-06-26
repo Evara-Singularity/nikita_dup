@@ -41,9 +41,9 @@
                                 {{msnMasterData[msn]['brandName']}}
                             </td>
                         </tr>
-                        <tr *ngFor="let specificationKey of attributeToCompareKeys">
-                            <td class="odd-child">{{specificationKey | uppercase}}</td>
-                            <td class="even-child" *ngFor="let msn of msnList">
+                        <tr *ngFor="let specificationKey of attributeToCompareKeys;let j = index;">
+                            <td [ngClass]="j%2 == 0 ? 'even-child' :'odd-child'">{{specificationKey | uppercase}}</td>
+                            <td *ngFor="let msn of msnList">
                                 {{msnMasterData[msn]['attributeToCompareValues'][specificationKey]}}
                             </td>
                         </tr>

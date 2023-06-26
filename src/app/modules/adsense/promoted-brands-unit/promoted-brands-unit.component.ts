@@ -1,15 +1,14 @@
-import { Component, OnInit , NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { PromotedBrandAd } from '@app/utils/models/adsense.model';
 @Component({
   selector: 'adsense-promoted-brands-unit',
   templateUrl: './promoted-brands-unit.component.html',
   styleUrls: ['./promoted-brands-unit.component.scss']
 })
-export class PromotedBrandsUnitComponent implements OnInit {
+export class PromotedBrandsUnitComponent {
+
+  @Input() data: PromotedBrandAd[] | null = null;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

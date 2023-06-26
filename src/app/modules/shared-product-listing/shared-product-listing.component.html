@@ -76,11 +76,28 @@
           </ng-container>
        </div>
    </ng-container>
-    <ng-container *ngIf="(i === 4 || i === 8 || i === 12)">
-        <adsense-leaderboard-banner></adsense-leaderboard-banner>
-    </ng-container>
-    <ng-container *ngIf="(i === 9)">
-        <adsense-rectangle-banner></adsense-rectangle-banner>
+    <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
+        <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_1'] && (i === 4)">
+            <adsense-leaderboard-banner
+                [data]="adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_1']"></adsense-leaderboard-banner>
+        </ng-container>
+        <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_2'] && (i === 8)">
+            <adsense-leaderboard-banner
+                [data]="adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_2']"></adsense-leaderboard-banner>
+        </ng-container>
+        <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_3'] && (i === 12)">
+            <adsense-leaderboard-banner
+                [data]="adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_3']"></adsense-leaderboard-banner>
+        </ng-container>
+        <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PLP_POSITION_1'] && (i === 4)">
+            <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PLP_POSITION_1']"></adsense-rectangle-banner>
+        </ng-container>
+        <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PLP_POSITION_2'] && (i === 8)">
+            <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PLP_POSITION_2']"></adsense-rectangle-banner>
+        </ng-container>
+        <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PLP_POSITION_3'] && (i === 12)">
+            <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PLP_POSITION_3']"></adsense-rectangle-banner>
+        </ng-container>
     </ng-container>
     <filter-mid-plp (categoryClicked)="categoryClicked.emit($event)"
         [categoryMidPlpFilterData]="categoryMidPlpFilterData" [pageName]="pageName" [position]="i"

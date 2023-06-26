@@ -1,31 +1,14 @@
-<div class="promoted-brand-container mb-10">
-    <h1>Printer Brands</h1>
-    <div class="promoted-brand-outer-section">
-        <div class="promoted-brand-inner-section">
-            <img src="../../../assets/img/banner_3.png">
-            <p class="brand-name">Samsung Printers</p>
-            <p class="explore-btn">EXPLORE NOW</p>
-        </div>
-        <div class="promoted-brand-inner-section">
-            <img src="../../../assets/img/banner_3.png">
-            <p class="brand-name">Samsung Printers</p>
-            <p class="explore-btn">EXPLORE NOW</p>
-        </div>
-        <div class="promoted-brand-inner-section">
-            <img src="../../../assets/img/banner_3.png">
-            <p class="brand-name">Samsung Printers</p>
-            <p class="explore-btn">EXPLORE NOW</p>
-        </div>
-        <div class="promoted-brand-inner-section">
-            <img src="../../../assets/img/banner_3.png">
-            <p class="brand-name">Samsung Printers</p>
-            <p class="explore-btn">EXPLORE NOW</p>
-        </div>
-        <div class="promoted-brand-inner-section">
-            <img src="../../../assets/img/banner_3.png">
-            <p class="brand-name">Samsung Printers</p>
-            <p class="explore-btn">EXPLORE NOW</p>
+<ng-container *ngIf="data && data.length > 0">
+    <div class="promoted-brand-container mb-10">
+        <h1>Printer Brands</h1>
+        <div class="promoted-brand-outer-section">
+            <div class="promoted-brand-inner-section" *ngFor="let ad of data">
+                <img src="{{ad['pictureUrl']}}">
+                <p class="brand-name">{{ad['categoryName']}}</p>
+                <p class="explore-btn">
+                    <a target="_blank" href="{{ad['landingPageUrl']}}">EXPLORE NOW</a>
+                </p>
+            </div>
         </div>
     </div>
-</div>
-
+</ng-container>

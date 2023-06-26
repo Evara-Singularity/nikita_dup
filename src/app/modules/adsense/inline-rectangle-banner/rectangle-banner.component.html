@@ -1,3 +1,7 @@
-<div class="inline-rectangle-container mb-10">
-    <img src="../../../assets/img/thumbnail2.png">
-</div>
+<ng-container *ngIf="data && data.pictureUrl && data.landingPageUrl">
+    <a target="_blank" href="{{data.landingPageUrl}}">
+        <div class="inline-rectangle-container mb-10">
+            <img src="{{data.pictureUrl}}">
+        </div>
+    </a>
+</ng-container>

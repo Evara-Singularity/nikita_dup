@@ -20,7 +20,9 @@
     <ng-container *ngIf="adsenseData && adsenseData['TOP_BANNERS']" >
         <adsense-main-banner [data]="adsenseData['TOP_BANNERS']" ></adsense-main-banner>
     </ng-container>
-    <adsense-promoted-brands-unit></adsense-promoted-brands-unit>
+    <ng-container *ngIf="adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']" >
+        <adsense-promoted-brands-unit [data]="adsenseData['PROMOTOTED_BRAND_ADS']" ></adsense-promoted-brands-unit>
+    </ng-container>
     <div class="container-fluid category" *ngIf="!isFiltersApplied">
         <div class="row">
             <data-cms *ngIf="this.API_RESPONSE.category[4]" [cmsData] ="API_RESPONSE.category[4]" [background] = "'bg-trans'"></data-cms>
@@ -29,6 +31,7 @@
     
     <div id="category-cards-section">
         <shared-product-listing #sharedProductList
+            [adsenseData]="adsenseData"
             [headerName]="API_RESPONSE?.category[0]['categoryDetails'] ? API_RESPONSE.category[0]['categoryDetails'].categoryName : ''"
             [pageName]="'CATEGORY'" [categoryId]="API_RESPONSE['category'][0]['categoryDetails']['categoryId']"
             [categoryName]="API_RESPONSE['category'][0]['categoryDetails']['categoryName']"
@@ -38,6 +41,10 @@
         *ngIf="API_RESPONSE?.category[0] && _productListService &&_productListService.productListingData" [graphData]="graphData"  [isL2CategoryCheck]="isL2CategoryCheck">
         </shared-product-listing>
     </div>
+
+    <ng-container *ngIf="adsenseData && adsenseData['VIDEOS_ADS']">
+        <adsense-related-videos [data]="adsenseData['VIDEOS_ADS']"></adsense-related-videos>
+    </ng-container>
 
     <recent-viewed-products-wrapper [pageName]="'category'" [moduleUsedIn]="'PRODUCT_RECENT_PRODUCT_CATEGORY'"></recent-viewed-products-wrapper>
     
@@ -75,6 +82,7 @@
     
         <!-- This is footer section -->
         <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
+
     </ng-container>
     
     <ng-container *ngIf="_commonService.selectedFilterData.page > 1">

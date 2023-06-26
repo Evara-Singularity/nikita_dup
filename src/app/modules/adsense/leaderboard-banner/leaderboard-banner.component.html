@@ -1,3 +1,7 @@
-<div class="leadership-banner-container mb-10">
-    <img src="../../../assets/img/leadership-banner.png">
-</div>
+<ng-container *ngIf="data && data.pictureUrl && data.landingPageUrl">
+    <div class="leadership-banner-container mb-10">
+        <a target="_blank" href="{{data.landingPageUrl}}">
+            <img src="{{data.pictureUrl}}">
+        </a>
+    </div>
+</ng-container>

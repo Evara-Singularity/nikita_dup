@@ -1,3 +1,9 @@
+<h1>main bannner components renders</h1>
+
 <div class="plp-banner-container mb-10">
-    <img src="../../../assets/img/banner-3.png">
+    <ngx-siema [options]="ngxSiemaOptions">
+        <div *ngFor="let slide of slides">
+            <img [src]="slide.imageUrl" alt="Slide Image">
+        </div>
+    </ngx-siema>
 </div>

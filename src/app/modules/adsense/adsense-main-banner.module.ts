@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainAdsenseBannerComponent } from './main-banner/main-banner.component';
-
+import { NgxSiemaModule } from 'ngx-siema';
 
 
 @NgModule({
@@ -9,7 +9,8 @@ import { MainAdsenseBannerComponent } from './main-banner/main-banner.component'
     MainAdsenseBannerComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    NgxSiemaModule,
   ],
   exports: [
     MainAdsenseBannerComponent

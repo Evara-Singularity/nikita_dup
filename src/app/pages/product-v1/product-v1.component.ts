@@ -276,6 +276,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"]) {
                 this.apiResponse = rawData.product[0].data.data;
+                this.setQuestionAnswerSchema();
                 this.isAcceptLanguage = this.apiResponse['acceptLanguage'] && this.apiResponse['acceptLanguage'].length ? true : false; 
                 this.processProductData(this.apiResponse.productGroup);
                 if (this.apiResponse && this.apiResponse.tagProducts) {
@@ -357,6 +358,38 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         const items = this.productFilterAttributesList[index]['items'];
         if(items && items.length) {
             return items.filter(obj => obj.selected).concat(items.filter(obj => !obj.selected));
+        }
+    }
+
+    setQuestionAnswerSchema()
+    {
+        if (this.isServer && this.rawProductData) {
+            const qaSchema: Array<any> = [];
+            if (this.isServer) {
+                const questionAnswerList = this.apiResponse.questionAndAnswer;
+                if (questionAnswerList["totalCount"] > 0) {
+                    (questionAnswerList["qlist"] as []).forEach((element, index) =>
+                    {
+                        qaSchema.push({
+                            "@type": "Question",
+                            name: 
+                            element["questionText"],
+                            acceptedAnswer: {
+                                "@type": "Answer",
+                                text: element["answerText"],
+                            },
+                        });
+                    });
+                    let qna = this.renderer2.createElement("script");
+                    qna.type = "application/ld+json";
+                    qna.text = JSON.stringify({
+                        "@context": CONSTANTS.SCHEMA,
+                        "@type": "FAQPage",
+                        mainEntity: qaSchema,
+                    });
+                    this.renderer2.appendChild(this.document.head, qna);
+                }
+            }
         }
     }
 

@@ -5,7 +5,6 @@
     </div>
   </div>
   <div class="carousal-dot-container">
-    <span class="active"></span>
-    <span *ngFor="let i of [1,2,3,4,5]"></span>
+    <span *ngFor="let slide of data; let i = index" [ngClass] = "{'active': (i == activeIndex) }" [class.active]="i === activeIndex" (click)="goToSlide(i)"></span>
   </div>
 </div>

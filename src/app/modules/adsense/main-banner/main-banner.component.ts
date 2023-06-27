@@ -10,6 +10,7 @@ export class MainAdsenseBannerComponent {
 
   @Input() data: any = null;
   @ViewChild('siemaContainer') siemaContainer: ElementRef;
+  activeIndex = 0;
 
   constructor() { }
 
@@ -18,12 +19,21 @@ export class MainAdsenseBannerComponent {
       selector: this.siemaContainer.nativeElement,
       loop: true,
       duration: 500,
-      easing: 'ease-out'
-      // Add any other Siema options you want to customize
+      easing: 'ease-out',
+      onChange: () => {
+        this.activeIndex = siema.currentSlide;
+      }
     });
+
     setInterval(() => {
       siema.next();
     }, 3000); 
+  }
+
+  goToSlide(index: number) {
+    const siema = Siema.getInstance(this.siemaContainer.nativeElement);
+    siema.goTo(index);
+    this.activeIndex = index;
   }
 }
 

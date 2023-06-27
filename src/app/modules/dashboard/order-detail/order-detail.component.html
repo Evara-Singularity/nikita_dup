@@ -225,7 +225,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
             <div class="adressbox-inner">
                 <!-- <span class="address-type">Default</span> -->
                 <span class="order-name mt-10">{{detail?.address.shipping_address.firstname}}</span>
-                <span>{{detail?.address.shipping_address.address}}, {{detail?.address.shipping_address.address2}},
+                <span>{{detail?.address.shipping_address.address}}, {{(detail?.address.shipping_address.address2)?detail?.address.shipping_address.address2+',':''}}
                     {{detail?.address.shipping_address.city}}, {{detail?.address.shipping_address.pincode}},
                     {{detail?.address.shipping_address.state}}</span>
                 <span>Mobile: {{detail?.address.shipping_address.phone}}</span>

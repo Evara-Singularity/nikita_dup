@@ -17,13 +17,14 @@ export class AdsenseService {
     private _dataService: DataService
   ) { }
 
-  private _getAdsenseCall(categoryId: string, brandName: string = null) {
+  private _getAdsenseCall(categoryId: string, brandName: string = null,msn:string=null) {
     let url =
       CONSTANTS.NEW_MOGLIX_API +
       ENDPOINTS.ADSENSE +
       "?platform=PWA";
     url = (categoryId) ? (url + '&category=' + categoryId) : url;
-    url = (brandName) ? (url + '&brandName=' + brandName) : url;
+    url = (brandName) ? (url + '&brand=' + brandName) : url;
+    url = (msn) ? (url + '&msn=' + msn) : url;
     return this._dataService.callRestful("GET", url).pipe(
       catchError((res: HttpErrorResponse) => {
         return of({ active: false, httpStatus: res.status });
@@ -31,8 +32,8 @@ export class AdsenseService {
     );
   }
 
-  getAdsense(categoryId: string, brandName: string = null): Observable<any> {
-    return this._getAdsenseCall(categoryId, brandName).pipe(map(response => {
+  getAdsense(categoryId: string, brandName: string = null ,msn:string=null): Observable<any> {
+    return this._getAdsenseCall(categoryId, brandName,msn).pipe(map(response => {
       if (response && response['status'] == true) {
         return this._mapResponse(response);
       } else {

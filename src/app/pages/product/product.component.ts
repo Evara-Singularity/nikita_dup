@@ -467,13 +467,18 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     private getAdsenseData() {
         if (
-            this.msn
+          this.msn &&
+          this.productCategoryDetails &&
+          this.productBrandDetails &&
+          this.productCategoryDetails["categoryCode"] &&
+          this.productBrandDetails["idBrand"]
         ) {
-            // const categoryId = this._activatedRoute.snapshot.params['category'] || null;
-            // const brandUrl = this._activatedRoute.snapshot.params['brand'] || null;
-            const categoryId = '211521600'; // test data
-            const brandUrl = null;
-            this._adsenseService.getAdsense(categoryId, brandUrl).subscribe(adsenseData => this.adsenseData = adsenseData)
+          const categoryId = this.productCategoryDetails["categoryCode"];
+          const brandUrl = this.productBrandDetails["idBrand"];
+          const msn = this.msn;
+          this._adsenseService
+            .getAdsense(categoryId, brandUrl, msn)
+            .subscribe((adsenseData) => (this.adsenseData = adsenseData));
         }
     }
 

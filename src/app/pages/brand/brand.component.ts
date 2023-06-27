@@ -592,11 +592,9 @@ export class BrandComponent implements OnInit, AfterViewInit {
             this.API_RESPONSE['brand'][0] &&
             this.API_RESPONSE['brand'][0]['friendlyUrl']
         ) {
-            // const categoryId = this._activatedRoute.snapshot.params['category'] || null;
-            // const brandUrl = this._activatedRoute.snapshot.params['brand'] || null;
-            const categoryId = '211521600'; // test data
-            const brandUrl = null;
-            this._adsenseService.getAdsense(categoryId, brandUrl).subscribe(adsenseData => this.adsenseData = adsenseData)
+            const categoryId = this._activatedRoute.snapshot.params['category'] || null;
+            const brandId = this.API_RESPONSE['brand'][0].idBrand || null;
+            this._adsenseService.getAdsense(categoryId, brandId).subscribe(adsenseData => this.adsenseData = adsenseData)
         }
     }
 

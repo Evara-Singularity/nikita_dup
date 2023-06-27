@@ -18,13 +18,15 @@
 
             .video-inner-container {
                 position: relative;
+
                 img {
                     width: 330px;
                     min-width: 330px;
                     border-radius: 8px;
 
                 }
-                .youtube-icon{
+
+                .youtube-icon {
                     position: absolute;
                     top: 50%;
                     left: 50%;
@@ -34,7 +36,7 @@
                 }
             }
 
-            p {
+            a {
                 font-size: 14px;
                 line-height: 20px;
                 color: var(--onyx-black);

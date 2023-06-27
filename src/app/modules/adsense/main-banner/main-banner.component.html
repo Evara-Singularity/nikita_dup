@@ -1,10 +1,11 @@
 <div class="plp-banner-container mb-10">
-    <div #siemaContainer >
-        <div *ngFor="let slide of data; let i=index">
-          <img [src]="slide.pictureUrl" alt="Slide Image">
-        </div>
-      </div>
+  <div #siemaContainer>
+    <div *ngFor="let slide of data; let i=index">
+      <img [src]="slide.pictureUrl" alt="Slide Image">
+    </div>
+  </div>
+  <div class="carousal-dot-container">
+    <span class="active"></span>
+    <span *ngFor="let i of [1,2,3,4,5]"></span>
+  </div>
 </div>
-
-
-  

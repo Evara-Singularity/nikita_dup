@@ -80,7 +80,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             }
         );
         this.phoneSubscription = this.phone.valueChanges.subscribe(
-            (phone: string) => { if (phone.length === 10) { this.verifyPhone(phone); } }
+            (phone: string) => { if (phone.length === 10) { this.verifyPhone(phone); } else { this.phoneVerified.patchValue(false) } }
         );
     }
 

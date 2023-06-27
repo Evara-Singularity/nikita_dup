@@ -18,7 +18,7 @@
                         </span>
                     </strong>
                 </div>
-                <div class="mrp-price">
+                <div class="mrp-price" *ngIf="(productMrp > productPrice) && (productDiscount != undefined && productDiscount>0 && productMrp > 0)">
                     <span >MRP&nbsp;<span class="actual-mrp">{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</span></span> <span class="green-txt"><b> {{
                                 productDiscount | number:'1.0-0'}}% OFF</b></span>
                 </div>
@@ -42,7 +42,7 @@
                         </span>
                     </strong>
                 </div>
-                <div class="mrp-price">
+                <div class="mrp-price" *ngIf="(productMrp > selectedProductBulkPrice['bulkSellingPrice'])">
                     <span>MRP {{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}} <span
                             class="green-txt"><b>{{selectedProductBulkPrice['discount'] | mathFloor | number:'1.0-0'}}%
                                 OFF</b></span></span>

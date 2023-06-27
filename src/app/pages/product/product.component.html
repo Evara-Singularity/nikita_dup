@@ -1,10 +1,8 @@
 <div *ngIf="!productNotFound">
-    <product-three-sixty-view></product-three-sixty-view>
     <app-floating-coupon-widget *ngIf="showproductDiscInfoComponent && iscloseproductDiscInfoComponent && promoCodes.length>0 && !productOutOfStock" (closeproductDiscInfoComponent$)="closeproductDiscInfoComponent()" [isBulkPricesProduct]="isBulkPricesProduct"
         [selectedProductBulkPrice]="selectedProductBulkPrice" [productPrice]="productPrice"
         [productDiscount]="productDiscount" [productName]="productName" [priceWithoutTax]="priceWithoutTax"
         [gstPercentage]='taxPercentage' [promoCodes]='promoCodes'></app-floating-coupon-widget>
-        <product-three-sixty-view></product-three-sixty-view>
     <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer"
         [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
     </app-oos-similar-section>

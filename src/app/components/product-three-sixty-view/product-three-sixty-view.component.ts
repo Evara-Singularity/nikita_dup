@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { from, Observable, of } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { from, of } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 declare var jQuery: any;
-// import {product360_initialize} from 'assets/product360.js'
-
+declare var product360_initialize:Function;
 
 
 @Component({
@@ -11,27 +10,27 @@ declare var jQuery: any;
   templateUrl: './product-three-sixty-view.component.html',
   styleUrls: ['./product-three-sixty-view.component.scss']
 })
-export class ProductThreeSixtyViewComponent implements OnInit, AfterViewInit {
+export class ProductThreeSixtyViewComponent implements OnInit {
   scriptUrls = [
     'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.153.0/three.min.js',
     'https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js',
-    '../../../assets/product360.js'
+    'assets/product360.js'
   ];
-  constructor() { }
-  ngOnInit(): void {
-      
-  }
-  ngAfterViewInit(){
+  constructor() {
     this.load3dPlayerScript();
   }
+
+  ngOnInit(){
+    console.log("OnInIt");
+  }
+  
 
   load3dPlayerScript(){
     from(this.scriptUrls)
     .pipe(
       concatMap((url) => {
         if (!this.isScriptLoaded(url)) {
-          console.log("chal ja");
           return this.loadScript(url);
         } else {
           return of(undefined); // Skip loading the script

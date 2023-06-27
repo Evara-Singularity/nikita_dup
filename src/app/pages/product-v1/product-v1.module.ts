@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import AppInstallWidgetModule from "@app/components/appInstallWidget/appInstallWidget.component";
 import FbtComponentModule from "@app/components/fbt/fbt.component";
 import { MoglixInsightPdpModule } from "@app/components/moglix-insight-pdp/moglix-insight-pdp.component";
@@ -68,6 +68,7 @@ import { ProductV1RoutingModule } from "./product-v1.routing.module";
         ProductInfoModule
     ],
     exports: [],
-    providers: [NgxSiemaService]
+    providers: [NgxSiemaService],
+    schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ProductV1Module { }

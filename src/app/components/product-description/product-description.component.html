@@ -102,7 +102,6 @@
                 </p>
             </div>
         </div>
-   
         <!--recently bought product section -->
         <div class="pwa-inline-tooltip" *ngIf="rawProductCountMessage">
             <i class="icon-trending"></i>
@@ -111,8 +110,10 @@
     </div>
 </div>
 
-<app-pop-up (outData$)="outData($event)" *ngIf="show360popupFlag"  [headerType]="'pop-up-header1'" [data]="{headerText: 'Show Content'}">
+<app-pop-up *ngIf="show360popupFlag" (outData$)="outData($event)" [headerType]="'pop-up-header1'" [data]="{headerText: ''}">
     <div class="content-popup" content>
-      <product-three-sixty-view></product-three-sixty-view>
+        <div [debounceTime]="100" data-observeVisibility (visible)="load360ViewComponent()">
+            <ng-container #product3dContainerRef></ng-container>
+        </div>
     </div>
 </app-pop-up>

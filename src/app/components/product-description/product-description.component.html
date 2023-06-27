@@ -1,12 +1,12 @@
 <div class="pwa-row prod-description ">
     <div class="pwa-col-12">
         <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
+        <button *ngIf="showPocMsn" class="tertiary-outline-cta" (click)="show360popup()">View 360</button>
         <div class="pdp-price-qty-block">
             <div class="price-block" *ngIf="productMrp > 0">
                 <ng-container *ngIf="productMrp > 0">
                     <!-- NON BULK PRICE BLOCK STARTS -->
                     <ng-container *ngIf="selectedProductBulkPrice==null">
-                        
                         <p class="actual-price" *ngIf="productPrice > 0">
                             <small *ngIf="(+(productPrice-priceWithoutTax) > 0)">
                                 <ng-container *ngIf="+productMrp == +productPrice" >MRP&nbsp;</ng-container>
@@ -110,3 +110,9 @@
         </div>
     </div>
 </div>
+
+<app-pop-up (outData$)="outData($event)" *ngIf="show360popupFlag"  [headerType]="'pop-up-header1'" [data]="{headerText: 'Show Content'}">
+    <div class="content-popup" content>
+      <product-three-sixty-view></product-three-sixty-view>
+    </div>
+</app-pop-up>

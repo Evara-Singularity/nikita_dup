@@ -14,6 +14,7 @@
         (sendProductImageClickTracking)="sendProductImageClickTracking()" [iOptions]="iOptions"
         [productTags]="apiResponse?.tags" (translate$)="translate()" [isAcceptLanguage]="isAcceptLanguage">
     </shared-product-carousel>
+   
     <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)"
         [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPirces"
         [selectedProductBulkPrice]="selectedProductBulkPrice" [qunatityFormControl]="qunatityFormControl"
@@ -25,7 +26,7 @@
         [priceQuantityCountry]="rawProductData?.priceQuantityCountry"
         [starsCount]="apiResponse?.productReviews?.startCount"
         [rawReviewsCount]="apiResponse?.productReviews?.summaryData?.reviewCount || 0"
-        [rawProductCountMessage]="rawProductCountMessage">
+        [rawProductCountMessage]="rawProductCountMessage" [msnId]="rawProductData?.msn">
     </product-description>
 
     <product-grouping-attributes [isCommonProduct]="rawProductData?.productFilterAttributesList > 0"

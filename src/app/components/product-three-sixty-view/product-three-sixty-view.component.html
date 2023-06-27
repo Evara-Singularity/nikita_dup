@@ -1,1 +1,21 @@
-<p>this works</p>
+<div class="model-view-css-fix" style="text-align: center; margin: auto;padding: 10px;">
+    <!-- HIGH DEFINITION PRE LOADER -->
+    <div id="hd-loading" style="text-align: center;" class="hd-loading"> HighDefinition Loading :
+        <span
+    id="loadingval">0</span>%</div>
+    <!-- HIGH DEFINITION PRE LOADER ENDS -->
+
+    <!-- 3D Viewer -->
+    <model-viewer loading="eager" style="display:none;" id="viewer"
+        src="../../../assets/img/MSN2VVROZZFFC9/ASSET.glb" auto-rotate camera-controls poster="poster.webp"shadow-intensity="1">
+        <div class="progress-bar">
+        <div class="update-bar"></div>
+        </div>
+    </model-viewer>
+    <!-- 360 Viewer -->
+    <div id="product360" class="turntable">
+        <ul id="product360ul">
+        </ul>
+    </div>
+    <!-- 360 Viewer ENDS -->
+</div>

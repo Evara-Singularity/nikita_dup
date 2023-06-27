@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductThreeSixtyViewComponent } from './product-three-sixty-view.component';
 
@@ -11,6 +11,7 @@ import { ProductThreeSixtyViewComponent } from './product-three-sixty-view.compo
   ],
   exports:[
     ProductThreeSixtyViewComponent
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ProductThreeSixtyViewModule { }

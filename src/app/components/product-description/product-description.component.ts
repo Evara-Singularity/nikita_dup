@@ -6,6 +6,10 @@ import { ClientUtility } from '@app/utils/client.utility';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { CommonService } from '../../utils/services/common.service';
+import { PopUpModule } from '../../modules/popUp/pop-up.module';
+import { ProductThreeSixtyViewModule } from '../product-three-sixty-view/product-three-sixty-view.module';
+import { constants } from 'buffer';
+import CONSTANTS from '../../config/constants';
 
 @Component({
   selector: 'product-description',
@@ -15,6 +19,8 @@ import { CommonService } from '../../utils/services/common.service';
 })
 export class ProductDescriptionComponent implements OnInit {
   productStaticData = this._commonService.defaultLocaleValue;
+  show360popupFlag:boolean = false;
+  showPocMsn:boolean = false;
   @Input() productName;
   @Input() productPrice;
   @Input() productMrp;
@@ -33,15 +39,20 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() productBulkPrices;
   @Input() selectedProductBulkPrice;
   @Input() bulkSellingPrice;
+  @Input() msnId;
   @Output() checkCartQuantityAndUpdate$: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private _tms: ToastMessageService,public _commonService:CommonService) {
-  
    }
 
   ngOnInit(): void {
+    console.log(this.msnId,"productId")
+    if(this.msnId === CONSTANTS.POC_MSN){
+      this.showPocMsn = true;
+    }
    this.getStaticSubjectData();
   }
+  
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
@@ -78,6 +89,12 @@ export class ProductDescriptionComponent implements OnInit {
       ClientUtility.scrollToTop(1000, footerOffset + offset);
     }
   }
+  show360popup(){
+    this.show360popupFlag = true;
+  }
+  outData(e){
+    this.show360popupFlag = false;
+  }
 }
 
 @NgModule({
@@ -85,7 +102,9 @@ export class ProductDescriptionComponent implements OnInit {
   imports: [ReactiveFormsModule,
     NumberDirectiveModule,
     MathFloorPipeModule,
-    CommonModule
+    CommonModule,
+    PopUpModule,
+    ProductThreeSixtyViewModule
   ],
   exports: [ProductDescriptionComponent]
 })

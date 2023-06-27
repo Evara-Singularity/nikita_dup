@@ -41,7 +41,6 @@ export class FeatureProductsUnitComponent implements AfterViewInit {
   }
 
   getAllProducts() {
-
     if (this.data && this.data.length > 0) {
       this._productService.getProductList(this.data).subscribe(result => {
         if (result && result['searchProductList'] && result['searchProductList'].length > 0) {

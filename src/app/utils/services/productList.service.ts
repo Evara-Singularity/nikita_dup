@@ -133,7 +133,7 @@ export class ProductListService {
             "large",
             "medium"
           );
-        product['productTags'] = this._commonService.sortProductTagsOnPriority(product['productTags']);
+        product['productTags'] = (product['productTags'] && product['productTags'].length > 0)?[this._commonService.sortProductTagsOnPriority(product['productTags'])[0]]:'';
         product["internalProduct"] = product.hasOwnProperty("internalProduct")
           ? false
           : true, // if intenal product prop does not exist then it is internal product

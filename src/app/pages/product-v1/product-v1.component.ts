@@ -1,5 +1,5 @@
 import { DatePipe, DOCUMENT, Location } from "@angular/common";
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, HostListener, Inject, Injector, OnDestroy, OnInit, Optional, Renderer2, ViewChild, ViewContainerRef } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, EventEmitter, HostListener, Inject, Injector, OnDestroy, OnInit, Optional, Renderer2, ViewChild, ViewContainerRef } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { DomSanitizer, Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, NavigationExtras, Router } from "@angular/router";
@@ -99,7 +99,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     fragment = '';
     productFilterAttributesList: any;
     iscloseproductDiscInfoComponent:boolean=true;
-    showproductDiscInfoComponent: boolean=false;
     compareProductsData:Array<object> = [];
 
     // lazy loaded component refs
@@ -216,6 +215,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     globalToastInstance = null;
     @ViewChild("globalToast", { read: ViewContainerRef })
     globalToastContainerRef: ViewContainerRef;
+    //floating container reference
+    @ViewChild('similarProductsRef', {static: false}) private similarProductsElementRef: ElementRef<HTMLDivElement>;
+    similarProductsScrolledIntoView: boolean;
 
     set showLoader(value: boolean) { this.globalLoader.setLoaderState(value); }
 
@@ -294,14 +296,17 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     @HostListener('window:scroll', ['$event'])
-    onScroll(event: Event) {
-      const scrollPosition = window.pageYOffset;
-      const renderCondition = scrollPosition > 600;
-      if (renderCondition) {
-        this.showproductDiscInfoComponent=true
-      } else {
-        this.showproductDiscInfoComponent=false
-      }
+    isScrolledIntoView() {
+        if (this.similarProductsElementRef) {
+            const rect = this.similarProductsElementRef.nativeElement.getBoundingClientRect();
+            const topShown = rect.top >= 0;
+            const bottomShown = rect.bottom <= window.innerHeight;
+            if((topShown && bottomShown) || (!topShown && bottomShown) ){
+                this.similarProductsScrolledIntoView = true;
+            }else{
+                this.similarProductsScrolledIntoView = false;
+            }
+        }
     }
 
     closeproductDiscInfoComponent(){

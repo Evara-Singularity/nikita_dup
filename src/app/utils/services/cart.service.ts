@@ -48,6 +48,7 @@ export class CartService
     notifications = [];
     appliedPromoCode = null;
     allPromoCodes: Array<any> = [];
+    topMatchedPromoCode: object = {};
     shippingCharges: number = 0;
     isPromoCodeValid: boolean = false;
     showNotification: boolean = false;
@@ -1471,6 +1472,7 @@ export class CartService
     processPromoData(res, offerId, isUpdatePromoCode = false) {
         if (res['statusCode'] === 200) {
             this.allPromoCodes = res['data'];
+            this.topMatchedPromoCode = this.allPromoCodes.find(res=> res.isApplicable === true)
             const promo = this.allPromoCodes.find(promo => promo.promoId === offerId);
             if (promo) {
                 this.appliedPromoCode = promo['promoCode'];

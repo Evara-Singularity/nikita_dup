@@ -1,6 +1,6 @@
 <div *ngIf="!productNotFound">
 
-    <app-floating-coupon-widget *ngIf="showproductDiscInfoComponent && iscloseproductDiscInfoComponent && !rawProductData?.productOutOfStock" (closeproductDiscInfoComponent$)="closeproductDiscInfoComponent()"
+    <app-floating-coupon-widget *ngIf="similarProductsScrolledIntoView && iscloseproductDiscInfoComponent && !rawProductData?.productOutOfStock" (closeproductDiscInfoComponent$)="closeproductDiscInfoComponent()"
         [isBulkPricesProduct]="isBulkPricesProduct" [productMrp]="rawProductData?.priceQuantityCountry?.mrp"
         [selectedProductBulkPrice]="selectedProductBulkPrice" [productPrice]="rawProductData?.productPrice"
         [productDiscount]="rawProductData?.priceQuantityCountry?.discount" [productName]="rawProductData.productName" [priceWithoutTax]="rawProductData?.priceWithoutTax"
@@ -76,6 +76,8 @@
         [isBrandMsn]='rawProductData?.productBrandDetails["brandTag"] == "Brand" ? true : false'
         [productOutOfStock]="rawProductData?.productOutOfStock" (navigateToFAQ$)="loadReturnInfo()"></product-benefits>
 
+    <!-- floating container ref -->
+    <div #similarProductsRef></div>
 
     <product-feature-details (showYTVideo$)="showYTVideo1($event)"
         (handleProductInfoPopup$)="handleProductInfoPopup1($event)"

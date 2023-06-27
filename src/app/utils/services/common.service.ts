@@ -100,6 +100,8 @@ export class CommonService
     feedBackPosted = new Subject()
     goldMemberPopupOpened = new Subject();
     public defaultLocaleValue = localization_en.product;
+    private copiedCouponInternal: string = '';
+
     constructor(
         @Inject(PLATFORM_ID) platformId,
         private checkoutService: CheckoutService,
@@ -241,11 +243,16 @@ export class CommonService
     }
 
     updateCopiedCoupon(coupon) {
+        this.copiedCouponInternal = coupon;
         this._copiedCoupon.next(coupon);
     }
 
     getCopiedCoupon() {
         return this._copiedCoupon.asObservable();
+    }
+
+    get copiedCoupon(): string{
+        return this.copiedCouponInternal;
     }
 
     initiateBulkRfq(status: boolean)

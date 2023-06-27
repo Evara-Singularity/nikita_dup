@@ -51,12 +51,12 @@
         </ng-container>
 
         <div class="coupon-section" *ngIf="promoCodes">
-            <div class="copy-coupon-container" [ngClass]="{'active' :isCouponCopied }" id="coupon-text"
+            <div class="copy-coupon-container" [ngClass]="{'active' :isCouponCopied  || (copiedCoupon==promoCodes['promoCode'])}" id="coupon-text"
                 (click)="copyCouponTextArea()">
                 {{promoCodes['promoCode']}}
             </div>
-            <span class="copy-text" *ngIf="!isCouponCopied">Tap to Copy</span>
-            <span class="copy-text" *ngIf="isCouponCopied">Coupon Copied</span>
+            <span class="copy-text" *ngIf="!isCouponCopied && !(copiedCoupon==promoCodes['promoCode'])">Tap to Copy</span>
+            <span class="copy-text" *ngIf="isCouponCopied || (copiedCoupon==promoCodes['promoCode'])">Coupon Copied</span>
         </div>
     </div>
 

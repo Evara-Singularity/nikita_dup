@@ -23,6 +23,7 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
   @Output() closeproductDiscInfoComponent$: EventEmitter<boolean> = new EventEmitter<boolean>();
   isCouponCopied=false;
   copiedCouponSubscription: Subscription; 
+  copiedCoupon: string = '';
 
   constructor(
     public _cartService: CartService,
@@ -33,9 +34,12 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    if(this._commonService.copiedCoupon){
+      this.copiedCoupon = this._commonService.copiedCoupon;
+    }
     if (this._commonService.isBrowser) {
       this.copiedCouponSubscription = this._commonService.getCopiedCoupon().subscribe(coupon => {
-        if (this.promoCodes.promoCode && (this.promoCodes.promoCode == coupon)) {
+        if (this.promoCodes.promoCode && (this.promoCodes.promoCode ==  this.copiedCoupon)) {
           this.isCouponCopied = true
         } else {
           this.isCouponCopied = false

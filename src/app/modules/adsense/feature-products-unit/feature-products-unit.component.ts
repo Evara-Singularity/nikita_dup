@@ -6,7 +6,7 @@ import { ProductListService } from '@app/utils/services/productList.service';
 @Component({
   selector: 'adsense-feature-products-unit',
   templateUrl: './feature-products-unit.component.html',
-  styleUrls: ['./feature-products-unit.component.css']
+  styleUrls: ['./feature-products-unit.component.scss']
 })
 export class FeatureProductsUnitComponent implements AfterViewInit {
 

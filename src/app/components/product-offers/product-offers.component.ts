@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, NgModule, OnInit, Output, EventEmitter, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ProductService } from '../../utils/services/product.service';
-import { forkJoin} from 'rxjs';
+import { Subscribable, Subscription, forkJoin} from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute, NavigationEnd, NavigationExtras, NavigationStart, Router } from "@angular/router";
 import { CommonService } from '@app/utils/services/common.service';
@@ -36,6 +36,8 @@ export class ProductOffersComponent implements OnInit
     @Input() couponForbrandCategory:any=null;
     minimumRequiredPriceforCoupon: any;
     couponForbrandCategoryDiscount: any;
+    isCouponCopied=false;
+    copiedCouponSubscription: Subscription 
 
     constructor(
         public localStorageService: LocalStorageService,
@@ -53,6 +55,16 @@ export class ProductOffersComponent implements OnInit
 
   ngAfterViewInit() {
     this.couponOnPDPBrandCategory(this.couponForbrandCategory);
+    if (this.common.isBrowser) {
+      this.copiedCouponSubscription = this.common.getCopiedCoupon().subscribe(coupon => {
+        if (this.promoCodes.promoCode && (this.promoCodes.promoCode == coupon)) {
+          this.isCouponCopied = true
+        } else {
+          this.isCouponCopied = false
+        }
+        this.cdr.detectChanges();
+      })
+    }
   }
 
   couponOnPDPBrandCategory(response) {
@@ -78,6 +90,21 @@ export class ProductOffersComponent implements OnInit
 
     seeMoreOffers(){
         this.promoCodePopUpHandler.emit(this.promoCodes);
+    }
+
+    copyCouponTextArea(){
+      this.isCouponCopied=true
+      const copiedCouponText = document.getElementById('couponText');
+      this.copyToClipboard(copiedCouponText.innerText);
+    }
+    copyToClipboard(text:any) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      this.common.updateCopiedCoupon(text);
     }
 
 }

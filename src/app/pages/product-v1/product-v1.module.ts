@@ -2,6 +2,7 @@ import { CommonModule, DatePipe } from "@angular/common";
 import { NgModule } from "@angular/core";
 import AppInstallWidgetModule from "@app/components/appInstallWidget/appInstallWidget.component";
 import FbtComponentModule from "@app/components/fbt/fbt.component";
+import { FloatingCouponWidgetModule } from "@app/components/floating-coupon-widget/floating-coupon-widget.module";
 import { MoglixInsightPdpModule } from "@app/components/moglix-insight-pdp/moglix-insight-pdp.component";
 import { OosSimilarSectionModule } from "@app/components/oos-similar-section/oos-similar-section.module";
 import { PastOrdersModule } from "@app/components/past-orders/past-orders.component";
@@ -32,6 +33,7 @@ import { ObjectToArrayPipeModule } from "@app/utils/pipes/object-to-array.pipe";
 import { NgxSiemaService } from "ngx-siema";
 import { ProductV1Component } from "./product-v1.component";
 import { ProductV1RoutingModule } from "./product-v1.routing.module";
+
 
 @NgModule({
     declarations: [ProductV1Component],
@@ -65,7 +67,8 @@ import { ProductV1RoutingModule } from "./product-v1.routing.module";
         OosSimilarSectionModule,
         EmiPlansModule,
         ProductOosSimilarModule,
-        ProductInfoModule
+        ProductInfoModule,
+        FloatingCouponWidgetModule
     ],
     exports: [],
     providers: [NgxSiemaService, DatePipe]

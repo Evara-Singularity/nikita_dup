@@ -48,6 +48,7 @@ export class CartService
     notifications = [];
     appliedPromoCode = null;
     allPromoCodes: Array<any> = [];
+    topMatchedPromoCode: object = {};
     shippingCharges: number = 0;
     isPromoCodeValid: boolean = false;
     showNotification: boolean = false;
@@ -1448,11 +1449,21 @@ export class CartService
         const cartSession = this.getCartSession();
         const offerId = (cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
         if (userId) {
-            this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId']).subscribe(res => {
+            this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId']).pipe(map(res=>{
+                if (res && res['data']) {
+                    (res['data'] as []).sort((a, b) => b['isApplicable'] - a['isApplicable'])
+                }
+                return res;
+            })).subscribe(res => {
                 this.processPromoData(res, offerId, isUpdatePromoCode);
             });
         } else {
-            this.getAllPromoCodes(cartSession['cart']['cartId']).subscribe(res => {
+            this.getAllPromoCodes(cartSession['cart']['cartId']).pipe(map(res=>{
+                if (res && res['data']) {
+                    (res['data'] as []).sort((a, b) => b['isApplicable'] - a['isApplicable'])
+                }
+                return res;
+            })).subscribe(res => {
                 this.processPromoData(res, offerId, isUpdatePromoCode);
             })
         }
@@ -1461,6 +1472,7 @@ export class CartService
     processPromoData(res, offerId, isUpdatePromoCode = false) {
         if (res['statusCode'] === 200) {
             this.allPromoCodes = res['data'];
+            this.topMatchedPromoCode = this.allPromoCodes.find(res=> res.isApplicable === true)
             const promo = this.allPromoCodes.find(promo => promo.promoId === offerId);
             if (promo) {
                 this.appliedPromoCode = promo['promoCode'];

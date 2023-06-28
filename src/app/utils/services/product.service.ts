@@ -1252,6 +1252,11 @@ export class ProductService {
         return this._dataService.callRestful("GET",URL);
     }
 
+    getCompareProducts(msn) {
+        const URL=CONSTANTS.NEW_MOGLIX_API+ENDPOINTS.GET_COMPARE_PRODUCTS + msn;
+        return this._dataService.callRestful("GET",URL);
+    }
+
     isInStock(product) {
         let isOutOfStockByQuantity = false;
         let isOutOfStockByPrice = false;

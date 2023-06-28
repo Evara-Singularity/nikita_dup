@@ -1,0 +1,201 @@
+@import "../../scss/variables";
+.product-comparison {
+  .border-bottom {
+    border-bottom: 1px solid var(--ghost-white);
+  }
+}
+
+.w-full {
+  width: 100%;
+}
+
+.seemore {
+  p {
+    color: var(--blue);
+    font-weight: bold;
+  }
+}
+
+.table-fixed-column-outter {
+  position: relative;
+
+  .table-fixed-column-inner {
+    overflow-x: scroll;
+    overflow-y: visible;
+
+    .table {
+      text-align: left;
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+
+      &.table.table-fixed-column {
+        table-layout: fixed;
+        width: 100%;
+      }
+
+      tr {
+        border-bottom: 1px solid var(--blue);
+
+        &.table-row-product-card {
+          td {
+            padding: 0px !important;
+          }
+        }
+        &:nth-child(2n) {
+          background-color: var(--cultured);
+        }
+
+        td {
+          width: 170px;
+          border-bottom: 1px solid var(--ghost-white);
+          padding: 10px 15px;
+          font-size: $large-font;
+
+          &.odd-child {
+            background-color: #fff;
+          }
+
+          &.even-child {
+            background-color: var(--cultured);
+          }
+
+          &:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 1;
+            width: 90px;
+            font-size: $medium-font;
+          }
+
+          &:nth-child(2) {
+            background-image: linear-gradient(
+              to right,
+              #fbe8e9 160px,
+              transparent 10px
+            );
+          }
+
+          .comparison-product-outer {
+            &.currentProduct {
+              border-bottom: none !important;
+              border: 1px solid var(--ghost-white);
+              border-radius: 8px 8px 0 0;
+              background-color: #fbe8e9;
+
+              .compared-product-card {
+                border: none !important;
+                width: 160px;
+              }
+
+              .prod-name {
+                color: var(--onyx-black) !important;
+              }
+            }
+
+            width: 160px;
+            padding: 0 0px 10px 0;
+
+            .compared-product-card {
+              border: 1px solid var(--ghost-white);
+              border-radius: 8px;
+              padding: 10px;
+              width: 160px;
+
+              .prod-img {
+                background-color: var(--white);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 135px;
+                position: relative;
+
+                img {
+                  width: 140px;
+                }
+                .current-prod-text{
+                  position: absolute;
+                  top: 6px;
+                  left: 6px;
+                  font-size: 10px;
+                  background-color: var(--spanish-gray);
+                  border-radius: 4px;
+                  color: var(--white);
+                  width: fit-content;
+                  padding: 4px 10px;
+              }
+              }
+
+              .prod-name {
+                font-size: 14px;
+                line-height: 18px;
+                color: var(--blue);
+                margin-top: 10px;
+                display: -webkit-box;
+                height: 54px;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+
+              .prodPrice {
+                font-size: $extra-large-2-font;
+                margin-top: 10px;
+                padding: 0px;
+              }
+
+              .currentProduct-info {
+                height: 35px;
+                margin-top: 10px;
+                span {
+                  font-size: 10px;
+                  background-color: var(--spanish-gray);
+                  border-radius: 4px;
+                  line-height: 18px;
+                  color: var(--white);
+                  width: fit-content;
+                  padding: 4px 10px;
+                }
+              }
+
+              .card-btn-row {
+                margin-top: 10px;
+                button {
+                  height: 35px;
+                  display: flex;
+                  align-items: center;
+                  i {
+                    font-size: $extra-large-font;
+                    margin-right: 5px;
+                  }
+                }
+              }
+            }
+          }
+
+          .avgrating {
+            display: inline;
+            background-color: var(--slimy-green);
+            padding: 3px 5px;
+            color: var(--white);
+            border-radius: 4px;
+            font-size: $medium-font;
+            margin-right: 5px;
+          }
+        }
+        &:first-child {
+          td {
+            &:nth-child(2) {
+              background-image: linear-gradient(
+                to right,
+                #ffffff 160px,
+                #ffffff 10px
+              ) !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}

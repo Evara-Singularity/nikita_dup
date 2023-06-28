@@ -45,7 +45,7 @@ export const environment = {
     CAT_F: "cm933249",
     CAT_G: "cm416640",
     CAT_H: "cm814985",
-    FEATURE_ARRIVAL: "cm977811",
+    FEATURE_ARRIVAL: "cm976581",
     SECONDARY_CAROUSEL_DATA:"cm336308"
   },
   logger: true

@@ -1,0 +1,63 @@
+<div class="floating-widget-container">
+    <div class="floating-product-container">
+        <p class="product-name">{{productName}}</p>
+        <i class="icon-circle-delete" (click)="closeproductDiscInfoComponent$.emit(false)"></i>
+    </div>
+    <div class="price-container">
+
+        <ng-container *ngIf="selectedProductBulkPrice==null">
+            <div class="price-section">
+                <div class="actual-price">
+                    {{productPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp; (Incl. of all taxes)
+                </div>
+                <div class="main-price">
+                    <strong>
+                        <span class="price">{{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
+                        <span class="gst-price">
+                            + {{ (productPrice-priceWithoutTax) | currency: 'INR' : 'symbol' : '1.0-0'}} GST
+                        </span>
+                    </strong>
+                </div>
+                <div class="mrp-price" *ngIf="(productMrp > productPrice) && (productDiscount != undefined && productDiscount>0 && productMrp > 0)">
+                    <span >MRP&nbsp;<span class="actual-mrp">{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</span></span> <span class="green-txt"><b> {{
+                                productDiscount | number:'1.0-0'}}% OFF</b></span>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="selectedProductBulkPrice!=null">
+            <div class="price-section">
+                <div class="actual-price" *ngIf="selectedProductBulkPrice['bulkSellingPrice'] > 0">
+                    {{selectedProductBulkPrice['bulkSellingPrice'] | mathFloor | currency: 'INR' : 'symbol' :
+                    '1.0-0'}}&nbsp; (Incl. of all taxes)
+                </div>
+                <div class="main-price">
+                    <strong>
+                        <span class="price">{{selectedProductBulkPrice['bulkSPWithoutTax'] | currency: 'INR' : 'symbol'
+                            : '1.0-0'}}</span>
+                        <span class="gst-price">
+                            +promoCouponvalue{{
+                            (selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax'])
+                            | currency: 'INR' : 'symbol' : '1.0-0' }} GST
+                        </span>
+                    </strong>
+                </div>
+                <div class="mrp-price" *ngIf="(productMrp > selectedProductBulkPrice['bulkSellingPrice'])">
+                    <span>MRP {{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}} <span
+                            class="green-txt"><b>{{selectedProductBulkPrice['discount'] | mathFloor | number:'1.0-0'}}%
+                                OFF</b></span></span>
+                </div>
+            </div>
+        </ng-container>
+
+        <div class="coupon-section" *ngIf="promoCodes">
+            <div class="copy-coupon-container" [ngClass]="{'active' :isCouponCopied  || (copiedCoupon==promoCodes['promoCode'])}" id="coupon-text"
+                (click)="copyCouponTextArea()">
+                {{promoCodes['promoCode']}}
+            </div>
+            <span class="copy-text" *ngIf="!isCouponCopied && !(copiedCoupon==promoCodes['promoCode'])">Tap to Copy</span>
+            <span class="copy-text" *ngIf="isCouponCopied || (copiedCoupon==promoCodes['promoCode'])">Coupon Copied</span>
+        </div>
+    </div>
+
+</div>

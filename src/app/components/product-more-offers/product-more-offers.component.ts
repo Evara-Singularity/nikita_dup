@@ -1,21 +1,24 @@
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PopUpModule } from '../../modules/popUp/pop-up.module';
 import { ModalModule } from '../../modules/modal/modal.module';
 import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { CommonService } from '../../utils/services/common.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-more-offers',
   templateUrl: './product-more-offers.component.html',
   styleUrls: ['./product-more-offers.component.scss']
 })
-export class ProductMoreOffersComponent implements OnInit {
+export class ProductMoreOffersComponent implements OnInit, AfterViewInit {
   productStaticData = this._commonService.defaultLocaleValue;
   @Input() data: any ;
   @Output() out: EventEmitter<any> = new EventEmitter<any>();
   @Output() isLoading : EventEmitter<any> = new EventEmitter<any>();
   promoCodeOffers: any;
+  activeIndex: any;
+  copiedCouponSubscription: Subscription; 
 
   constructor(private _commonService:CommonService) { }
 
@@ -24,6 +27,12 @@ export class ProductMoreOffersComponent implements OnInit {
     this.promoCodeOffers= promos.splice(1);
     this.isLoading.emit(false);
   }
+
+  ngAfterViewInit(): void {
+    if (this._commonService.isBrowser) {
+    }
+  }
+
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this._commonService.defaultLocaleValue = staticJsonData;
@@ -33,6 +42,21 @@ export class ProductMoreOffersComponent implements OnInit {
 
   outData(data) {
     this.out.emit(data);
+  }
+  
+  copyCouponTextArea(text,activeIndex){
+    this.activeIndex=activeIndex
+    this.copyToClipboard(text);
+  }
+
+  copyToClipboard(text:any) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    this._commonService.updateCopiedCoupon(text);
   }
 }
 

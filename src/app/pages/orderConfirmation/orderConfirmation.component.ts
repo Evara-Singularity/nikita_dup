@@ -80,24 +80,55 @@ export class OrderConfirmationComponent implements OnInit {
         this.routeUrl = this._router.url;
         this.queryParams = this._activatedRoute.snapshot.queryParams;
         this.mode = this.queryParams["mode"];
-        this.orderId = this.queryParams["orderId"];
+        this.orderId = (this.queryParams && this.queryParams["orderId"]) ? this.queryParams["orderId"] : null;
         this.amount = this.queryParams["transactionAmount"];
         const log = `OrderId:${this.orderId}, Mode:${this.mode}, Amount:${this.amount}`;
         // console.log("ngOnInit")
         // console.log(log);
-        if (this.isBrowser) {
-            this.analyticCallUsingAPI(userSession, { orderStatus: "success", index: "order_confirmation_1" });
-            this.utmBasedTracking(utm_medium, {
-                orderId: this.queryParams["orderId"],
-                transactionAmount: this.queryParams["transactionAmount"],
-            });
-            this.getCartSessionAnalyticsCallUpdated(this.orderId,utm_medium,userSession);
-            this.getCartSessionAnalyticsCall(userSession, utm_medium);
-            this.footerService.setFooterObj({ footerData: false });
-            this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
-            this._orderConfrimationService.getOrderbyUserid(userSession.userId, 0, this.orderId).subscribe((order)=>{
-                this.processedItems = order? order.numberOfItem : 0;
-            });
+        this.checkUserSessionAndValidateOrder(userSession, utm_medium);
+    }
+
+    checkUserSessionAndValidateOrder(userSession, utm_medium){
+        if(userSession && userSession['authenticated'] == "true" && this.orderId != null){
+            const orderIdsList = userSession['orderIdsList'] ? userSession['orderIdsList'] : null;
+            if(orderIdsList == null){
+                userSession['orderIdsList'] = [this.orderId];
+                const userSessionObject = Object.assign({}, userSession);
+                this._localAuthService.setUserSession(userSessionObject);
+                this.callAnalyticsAndUserSessionAPI(userSessionObject, utm_medium);
+            }else{
+                if(orderIdsList && orderIdsList.length > 0){
+                    const isExits = orderIdsList.findIndex(res=> res == this.orderId);
+                    if(isExits == -1){
+                        orderIdsList.push(this.orderId);
+                        userSession['orderIdsList'] = orderIdsList;
+                        const userSessionObject = Object.assign({}, userSession);
+                        this._localAuthService.setUserSession(userSessionObject);
+                        this.callAnalyticsAndUserSessionAPI(userSessionObject, utm_medium);
+                    }
+                }
+            }
+        }
+    }
+
+    async callAnalyticsAndUserSessionAPI(userSession, utm_medium){
+        try{
+            if (this.isBrowser) {
+                this.analyticCallUsingAPI(userSession, { orderStatus: "success", index: "order_confirmation_1" });
+                this.utmBasedTracking(utm_medium, {
+                    orderId: this.queryParams["orderId"],
+                    transactionAmount: this.queryParams["transactionAmount"],
+                });
+                this.getCartSessionAnalyticsCallUpdated(this.orderId,utm_medium,userSession);
+                this.getCartSessionAnalyticsCall(userSession, utm_medium);
+                this.footerService.setFooterObj({ footerData: false });
+                this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
+                this._orderConfrimationService.getOrderbyUserid(userSession.userId, 0, this.orderId).subscribe((order)=>{
+                    this.processedItems = order? order.numberOfItem : 0;
+                });
+            }
+        }catch(err){
+            console.log("Error in callAnalyticsAndUserSessionAPI function :" , err);
         }
     }
 
@@ -119,7 +150,6 @@ export class OrderConfirmationComponent implements OnInit {
     }
 
     private getCartSessionAnalyticsCall(userSession: any, utm_medium: any) {
-        // console.log("---getCartSessionAnalyticsCall---");
         if (userSession && userSession.authenticated && userSession.authenticated == "true") {
             let buyNow = false;
             const FLASHDATA = this.localStorageService.retrieve("flashData");

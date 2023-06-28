@@ -1,44 +1,103 @@
 @import '../../../scss/variables';
-.promocode-list{
+
+.promocode-list {
     // padding: 10px;
     // background-color: gray;
     // border: 0ch;
 }
+
 // .custom-promocode{
 //     background-color: aquamarine;
 // }
-.coupen-strip {
-    display: flex;
+.coupen-strip-section {
     background-color: var(--white);
     border-radius: 8px;
     padding: 15px;
+    width: 100%;
+
+    .apply-coupon {
+
+        margin-bottom: 15px !important;
+        border: 2px dashed var(--slimy-green);
+        margin-bottom: 15px !important;
+        border-radius: 8px;
+        .inner-coupon {
+            padding: 15px;
+            display: flex;
+
+            i {
+                font-size: 20px;
+                color: var(--slimy-green);
+                margin-right: 10px;
+            }
+        }
+
+        h3 {
+            font-size: $extra-large-1-font;
+            padding: 0 0 5px;
+        }
+
+        .promo-description {
+            font-size: $large-font;
+            line-height: $medium-line-height;
+        }
+
+        button {
+            margin-left: auto;
+            border-radius: 0 0 8px 8px !important;
+            width: 100%;
+            background-color: var(--nyanza);
+            color: var(--slimy-green);
+            height: 35px;
+            border: none;
+            font-weight: bold;
+
+            &.applied {
+                background-color: var(--slimy-green);
+                color: var(--white);
+            }
+        }
+    }
+}
+
+.coupen-strip {
+    display: flex;
+
     align-items: center;
     justify-content: unset;
     width: 100%;
+
     .coupen-icon {
         padding-right: 10px;
+
         i {
             font-size: $extra-large-3-font;
             color: var(--slimy-green);
         }
     }
+
     h3 {
         padding: 0px !important;
     }
+
     .coupen-text {
         max-width: 78%;
         font-size: $large-font;
+
         .green-promo-code {
             color: var(--slimy-green);
             font-weight: $font-bold;
         }
+
         .green-promo-code-min {
             font-size: x-small;
             color: var(--dim-gray);
         }
     }
-    i{
+
+    i {
         margin-left: auto;
+
         &.icon-delete {
             background: #c4c4c4;
             padding: 4px;
@@ -48,11 +107,13 @@
             cursor: pointer;
         }
     }
-    
+
 }
-.items-center{
+
+.items-center {
     align-items: center;
 }
-.promo-strip{
+
+.promo-strip {
     margin: 15px 15px 10px;
 }

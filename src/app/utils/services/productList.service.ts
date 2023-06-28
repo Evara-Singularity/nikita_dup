@@ -350,6 +350,9 @@ export class ProductListService {
       case "PRODUCT_RECENT_PRODUCT_BRAND":
         str = "brand:product_recent_product";
         break;
+      case "PRODUCT_RECENT_PRODUCT_BRAND_CATEGORY":
+        str = "category_brand:product_recent_product";
+        break;
       case "PRODUCT_RECENT_PRODUCT_SEARCH":
         str = "search:product_recent_product";
         break;
@@ -400,6 +403,8 @@ export class ProductListService {
       taxo2 = productDetails["taxonomyCode"].split("/")[1] || "";
       taxo3 = productDetails["taxonomyCode"].split("/")[2] || "";
     }
+
+    console.log('usedInModule', usedInModule);
 
     let ele = [];
     const tagsForAdobe = ele.join("|");

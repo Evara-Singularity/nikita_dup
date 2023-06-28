@@ -138,7 +138,7 @@ export class FbtComponent implements OnInit
         let partReference = product.partNumber;
         let productPartDetails = product['productPartDetails'];
         if (productPartDetails && productPartDetails[partReference]['productPriceQuantity'] && productPartDetails[partReference]['productPriceQuantity']['india']) {
-            const productObject = this.cartService.getAddToCartProductItemRequest({ productGroupData: product, buyNow: false, quantity: this.productQuantity, isFbt: isFBT,languageMode: this.isHindiUrl, originalProductBO: this.originalProductBO });
+            const productObject = this.cartService.getAddToCartProductItemRequest({ productGroupData: product, buyNow: false, quantity: this.productQuantity, isFbt: isFBT, originalProductBO: this.originalProductBO,languageMode: this.isHindiUrl });
             returnObj = { mProduct: productObject, validation: true }
         }
         return returnObj;
@@ -183,10 +183,16 @@ export class FbtComponent implements OnInit
                 this.cartService.addToCart({ buyNow: false, productDetails: items[1] }).subscribe((response) =>//length=2
                 {
                     this.updateCart(response, items.length === 2);
-                    if (LENGTH === 3) {
+                    if (LENGTH > 3) {
                         this.cartService.addToCart({ buyNow: false, productDetails: items[2] }).subscribe((response) =>//length=3
                         {
                             this.updateCart(response, items.length === 3);
+                            if (LENGTH === 4) {
+                                this.cartService.addToCart({ buyNow: false, productDetails: items[3] }).subscribe((response) =>//length=4
+                                {
+                                    this.updateCart(response, items.length === 4);
+                                });
+                            }
                         });
                     }
                 });

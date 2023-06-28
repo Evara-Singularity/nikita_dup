@@ -32,8 +32,10 @@ export class ProductOosSimilarComponent {
   }
 
   ngAfterViewInit() {
-    this.attachScrollHandler();
-    this.getStaticSubjectData();
+    if (this._commonService.isBrowser) {
+      this.attachScrollHandler();
+      this.getStaticSubjectData();
+    }
   }
   
   getStaticSubjectData(){
@@ -82,7 +84,6 @@ export class ProductOosSimilarComponent {
       }
       this.productCardCurrentyInViewPort = -1;
     }
-    this.updateUrl();
   }
 
   checkWhichElementIsInViewport() {
@@ -96,6 +97,9 @@ export class ProductOosSimilarComponent {
         const scrollHeight = window.pageYOffset;
         if (scrollHeight > cardHeight) {
           this.productCardCurrentyInViewPort = i;
+          setTimeout(() => {
+            this.updateUrl();
+          }, 5);
           break;
         }
       }

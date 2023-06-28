@@ -8,4 +8,5 @@ export interface CompareProductsList {
     productUrl: string;
     isOutOfStock: boolean;
     attributeToCompareValues: object;
+    reviewCount: number;
 }

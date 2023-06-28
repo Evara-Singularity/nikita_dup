@@ -11,6 +11,7 @@ declare var product360_initialize:Function;
   styleUrls: ['./product-three-sixty-view.component.scss']
 })
 export class ProductThreeSixtyViewComponent implements OnInit {
+  showModelViewer:boolean = false;
   scriptUrls = [
     'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.153.0/three.min.js',
@@ -18,11 +19,11 @@ export class ProductThreeSixtyViewComponent implements OnInit {
     'assets/product360.js'
   ];
   constructor() {
-    this.load3dPlayerScript();
+    
   }
 
   ngOnInit(){
-    console.log("OnInIt");
+    this.load3dPlayerScript();
   }
   
 
@@ -46,6 +47,7 @@ export class ProductThreeSixtyViewComponent implements OnInit {
       },
       () => {
         // all scripts are loaded, so this code will get invoked
+        this.showModelViewer= true;
         var basePath = "../../../assets/img/MSN2VVROZZFFC9";
         product360_initialize(basePath);
       }

@@ -101,10 +101,11 @@ export class ProductDescriptionComponent implements OnInit {
     }
   }
   show360popup(){
-    this.show360popupFlag = true;
+   
   }
 
   async load360ViewComponent(){
+    this.show360popupFlag = true;
       const { ProductThreeSixtyViewComponent } = await import('../product-three-sixty-view/product-three-sixty-view.component');
       const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponent);
       this.product3dInstance = this.product3dContainerRef.createComponent(
@@ -125,7 +126,7 @@ export class ProductDescriptionComponent implements OnInit {
   resetLazyComponent(){
     if(this.product3dInstance) {
       this.product3dInstance = null;
-      this.product3dContainerRef.remove;
+      this.product3dContainerRef = null;
     }
   }
 }
@@ -140,6 +141,7 @@ export class ProductDescriptionComponent implements OnInit {
     ObserveVisibilityDirectiveModule
   ],
   exports: [ProductDescriptionComponent],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
   
 })
 

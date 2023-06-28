@@ -1,7 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductThreeSixtyViewComponent } from './product-three-sixty-view.component';
-
+import  * as modelViewer from '@google/model-viewer';
 @NgModule({
   declarations: [
     ProductThreeSixtyViewComponent

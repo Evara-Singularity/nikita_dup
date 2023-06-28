@@ -6,12 +6,15 @@
     <!-- HIGH DEFINITION PRE LOADER ENDS -->
 
     <!-- 3D Viewer -->
-    <model-viewer loading="eager" style="display:none;" id="viewer"
-        src="assets/img/MSN2VVROZZFFC9/ASSET.glb" auto-rotate camera-controls poster="poster.webp"shadow-intensity="1">
-        <div class="progress-bar">
-        <div class="update-bar"></div>
-        </div>
-    </model-viewer>
+    <div *ngIf="showModelViewer">
+        <model-viewer  loading="eager" style="display:none;" id="viewer"
+            src="assets/img/MSN2VVROZZFFC9/ASSET.glb" auto-rotate camera-controls poster="poster.webp"shadow-intensity="1">
+            <div class="progress-bar">
+            <div class="update-bar"></div>
+            </div>
+        </model-viewer>
+    </div>
+    
     <!-- 360 Viewer -->
     <div id="product360" class="turntable">
         <ul id="product360ul">

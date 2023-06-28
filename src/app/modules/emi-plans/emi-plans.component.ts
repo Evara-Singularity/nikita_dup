@@ -92,7 +92,7 @@ export class EmiPlansComponent implements OnInit
                     innerElement.value['emi_value'] = price / 6;
                     innerElement.value['emi_interest_paid'] = 0;
                 } else {
-                    innerElement.value['transactionAmount'] = innerElement.value['transactionAmount'] + innerElement.value['emi_interest_paid'];
+                    innerElement.value['transactionAmountV1'] = innerElement.value['transactionAmount'] + innerElement.value['emi_interest_paid'];
                 }
             });
         });

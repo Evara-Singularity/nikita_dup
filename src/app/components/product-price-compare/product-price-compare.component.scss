@@ -107,10 +107,23 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                height: 135px;
+                position: relative;
 
                 img {
                   width: 140px;
                 }
+                .current-prod-text{
+                  position: absolute;
+                  top: 6px;
+                  left: 6px;
+                  font-size: 10px;
+                  background-color: var(--spanish-gray);
+                  border-radius: 4px;
+                  color: var(--white);
+                  width: fit-content;
+                  padding: 4px 10px;
+              }
               }
 
               .prod-name {

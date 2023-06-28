@@ -124,13 +124,14 @@
       text-align: center;
       .copy-coupon-container{
         border: 2px dashed var(--slimy-green);
-        padding: 5px 10px;
+        padding: 4px 10px;
         border-radius: $border-radius-4;
         background: #E0FDDF;
         color: var(--slimy-green);
         font-weight: bold;
-        font-size: $large-font;
+        font-size: 12px;
         margin-bottom: 2px;
+        line-height: 21px;
         &.active{
             background: var(--slimy-green);
             color: var(--white);

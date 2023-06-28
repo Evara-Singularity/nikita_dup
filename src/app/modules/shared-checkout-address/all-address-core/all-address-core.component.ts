@@ -336,6 +336,7 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
 
       if (IS_DELIVERY && !isEditMode) {
         this._cartService.shippingAddress = this.deliveryAddressList[0];
+        this.deliveryAddressList = this.swapAddressPosstion(this.deliveryAddressList);
         const deliveryAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(
           this.deliveryAddressList,
           this._cartService.shippingAddress
@@ -346,6 +347,7 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
 
       if (!IS_DELIVERY && !isEditMode) {
         this._cartService.billingAddress = this.billingAddressList[0];
+        this.billingAddressList = this.swapAddressPosstion(this.billingAddressList);
         const billingAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(
           this.billingAddressList,
           this._cartService.billingAddress
@@ -356,6 +358,16 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
 
 
   }
+
+    swapAddressPosstion(addressList: any[]) {
+        if (addressList.length > 1) {
+            const temp = addressList[1] // new address added
+            addressList[1] = addressList[0];
+            addressList[0] = temp;
+            return addressList;
+        }
+        return addressList;
+    }
 
   /**
    * @description decides which event to be updated

@@ -56,13 +56,14 @@ export class ProductPriceCompareComponent implements OnInit {
             this.msnMasterData[ele["moglixPartNumber"]] = {
               moglixPartNumber: ele["moglixPartNumber"],
               productName: ele["productName"],
-              priceWithoutTax: ele["priceWithoutTax"],
+              salesPrice: ele["salesPrice"],
               avgRating: ele["avgRating"],
               brandName: ele["brandName"],
               mainImageLink: ele["mainImageLink"],
               productUrl: ele["productUrl"],
               isOutOfStock: isOOS,
               attributeToCompareValues: ele["attributeToCompare"],
+              reviewCount : ele["reviewCount"]
             };
           });
           let attributeToCompareKeys =

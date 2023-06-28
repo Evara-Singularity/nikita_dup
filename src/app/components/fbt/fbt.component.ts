@@ -25,6 +25,7 @@ export class FbtComponent implements OnInit
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     @Input('addToCartFromModal') addToCartFromModal = null;
     @Input('productQuantity') productQuantity: number = 1;
+    @Input('isHindiUrl') isHindiUrl: boolean = false;
     
     rootProduct;
     rootMSN;
@@ -137,7 +138,7 @@ export class FbtComponent implements OnInit
         let partReference = product.partNumber;
         let productPartDetails = product['productPartDetails'];
         if (productPartDetails && productPartDetails[partReference]['productPriceQuantity'] && productPartDetails[partReference]['productPriceQuantity']['india']) {
-            const productObject = this.cartService.getAddToCartProductItemRequest({ productGroupData: product, buyNow: false, quantity: this.productQuantity, isFbt: isFBT, originalProductBO: this.originalProductBO });
+            const productObject = this.cartService.getAddToCartProductItemRequest({ productGroupData: product, buyNow: false, quantity: this.productQuantity, isFbt: isFBT,languageMode: this.isHindiUrl, originalProductBO: this.originalProductBO });
             returnObj = { mProduct: productObject, validation: true }
         }
         return returnObj;
@@ -171,6 +172,10 @@ export class FbtComponent implements OnInit
         const LENGTH = items.length;
         let firstProduct = items[0];
         firstProduct.productQuantity = this.productQuantity;
+        if(this.isHindiUrl) {
+            firstProduct.productName = this.originalProductBO.productName;
+            firstProduct.brandName = this.originalProductBO.brandDetails.brandName
+        }
         this.cartService.addToCart({ buyNow: false, productDetails: firstProduct }).subscribe((response) =>//length=1
         {
             this.updateCart(response, items.length === 1);

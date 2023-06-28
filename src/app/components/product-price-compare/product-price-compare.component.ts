@@ -63,6 +63,7 @@ export class ProductPriceCompareComponent implements OnInit {
               productUrl: ele["productUrl"],
               isOutOfStock: isOOS,
               attributeToCompareValues: ele["attributeToCompare"],
+              reviewCount : ele["reviewCount"]
             };
           });
           let attributeToCompareKeys =

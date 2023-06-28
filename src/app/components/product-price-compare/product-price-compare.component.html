@@ -20,7 +20,7 @@
                                         <p class="prod-name" (click)="navigateTo(msnMasterData[msn]['productUrl'])">
                                             {{msnMasterData[msn]['productName']}}</p>
                                         <h3 class="prodPrice">₹ {{msnMasterData[msn]['salesPrice'] | mathRound |
-                                            number : '1.2-2'}}</h3>
+                                            number : '1.0-0'}}</h3>
                                         <add-to-cart [isOutOfStock]="msnMasterData[msn]['isOutOfStock']"
                                             [moglixPartNumber]="msn" [product]="msnMasterData[msn]">
                                         </add-to-cart>
@@ -33,6 +33,9 @@
                             <td *ngFor="let msn of msnList">
                                 <div class="avgrating" *ngIf="msnMasterData[msn]['avgRating'] > 0">{{msnMasterData[msn]['avgRating'] | number : '1.1-1'}} <i
                                         class="icon-rating-star"></i></div>
+                                <small class="review" *ngIf="msnMasterData[msn]['reviewCount'] > 0">
+                                    ({{msnMasterData[msn]['reviewCount']}} Reviews)
+                                </small>        
                             </td>
                         </tr>
                         <tr>

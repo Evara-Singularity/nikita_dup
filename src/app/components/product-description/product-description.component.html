@@ -1,7 +1,7 @@
 <div class="pwa-row prod-description ">
     <div class="pwa-col-12">
         <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
-        <button class="tertiary-outline-cta" (click)="show360popup()">View 360</button>
+        <button class="tertiary-outline-cta" *ngIf='showPocMsn' (click)="show360popup()">View 360</button>
         <div class="pdp-price-qty-block">
             <div class="price-block" *ngIf="productMrp > 0">
                 <ng-container *ngIf="productMrp > 0">

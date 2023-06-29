@@ -8,19 +8,19 @@
         <ng-container *ngIf="selectedProductBulkPrice==null">
             <div class="price-section">
                 <div class="actual-price">
-                    {{productPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp; (Incl. of all taxes)
+                    {{productPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'}}&nbsp; ({{productStaticData.incl_of_taxes}})
                 </div>
                 <div class="main-price">
                     <strong>
                         <span class="price">{{priceWithoutTax | currency: 'INR' : 'symbol' : '1.0-0'}}</span>
                         <span class="gst-price">
-                            + {{ (productPrice-priceWithoutTax) | currency: 'INR' : 'symbol' : '1.0-0'}} GST
+                            + {{ (productPrice-priceWithoutTax) | currency: 'INR' : 'symbol' : '1.0-0'}} {{productStaticData.gst}}
                         </span>
                     </strong>
                 </div>
                 <div class="mrp-price" *ngIf="(productMrp > productPrice) && (productDiscount != undefined && productDiscount>0 && productMrp > 0)">
                     <span >MRP&nbsp;<span class="actual-mrp">{{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}}</span></span> <span class="green-txt"><b> {{
-                                productDiscount | number:'1.0-0'}}% OFF</b></span>
+                                productDiscount | number:'1.0-0'}}% {{productStaticData.off}}</b></span>
                 </div>
             </div>
         </ng-container>
@@ -29,7 +29,7 @@
             <div class="price-section">
                 <div class="actual-price" *ngIf="selectedProductBulkPrice['bulkSellingPrice'] > 0">
                     {{selectedProductBulkPrice['bulkSellingPrice'] | mathFloor | currency: 'INR' : 'symbol' :
-                    '1.0-0'}}&nbsp; (Incl. of all taxes)
+                    '1.0-0'}}&nbsp; ({{productStaticData.incl_of_taxes}})
                 </div>
                 <div class="main-price">
                     <strong>
@@ -38,14 +38,14 @@
                         <span class="gst-price">
                             +promoCouponvalue{{
                             (selectedProductBulkPrice['bulkSellingPrice']-selectedProductBulkPrice['bulkSPWithoutTax'])
-                            | currency: 'INR' : 'symbol' : '1.0-0' }} GST
+                            | currency: 'INR' : 'symbol' : '1.0-0' }} {{productStaticData.gst}}
                         </span>
                     </strong>
                 </div>
                 <div class="mrp-price" *ngIf="(productMrp > selectedProductBulkPrice['bulkSellingPrice'])">
                     <span>MRP {{productMrp | currency: 'INR' : 'symbol' : '1.0-0'}} <span
                             class="green-txt"><b>{{selectedProductBulkPrice['discount'] | mathFloor | number:'1.0-0'}}%
-                                OFF</b></span></span>
+                                {{productStaticData.off}}</b></span></span>
                 </div>
             </div>
         </ng-container>

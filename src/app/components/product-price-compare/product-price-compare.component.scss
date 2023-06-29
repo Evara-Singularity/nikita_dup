@@ -64,8 +64,9 @@
             position: sticky;
             left: 0;
             z-index: 1;
-            width: 90px;
+            width: 140px;
             font-size: $medium-font;
+            text-transform: capitalize;
           }
 
           &:nth-child(2) {

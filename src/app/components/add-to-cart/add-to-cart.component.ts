@@ -276,6 +276,7 @@ export class AddToCartComponent implements OnDestroy {
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
       });
+      this.cdr.detectChanges();
     }
   }
 
@@ -303,6 +304,7 @@ export class AddToCartComponent implements OnDestroy {
         this.addToCartToastInstance = null;
         this.addToCartToastContainerRef.detach();
       });
+      this.cdr.detectChanges();
     }
   }
 

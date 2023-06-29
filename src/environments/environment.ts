@@ -3,7 +3,7 @@ export const environment = {
   enableServerLitogs: false,
   PROD_NAME: 'https://www.moglix.com',
   BASE_URL: 'https://apinew-vpn.moglix.com/nodeApi/v1',
-  BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2',
+  BASE_URL_V2: 'https://apinew-vpn.moglix.com/nodeApi/v2',
   APP_BASE_URL: 'https://api.moglix.com',
   // BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   // BASE_URL_V2: 'https://nodeapiqa.moglilabs.com/nodeApi/v2',

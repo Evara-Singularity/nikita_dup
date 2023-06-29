@@ -101,7 +101,22 @@ export class ProductDescriptionComponent implements OnInit {
     }
   }
   show360popup(){
-   
+   if(this.showPocMsn) {
+     this.load360ViewComponent();
+   } else {
+     this.load360View();
+   }
+  }
+
+  async load360View(){
+    this.show360popupFlag = true;
+      const { ProductThreeSixtyViewComponentV1 } = await import('../product-three-sixty-view-v1/product-three-sixty-view-v1.component');
+      const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponentV1);
+      this.product3dInstance = this.product3dContainerRef.createComponent(
+        factory, 
+        null, 
+        this.injector
+    );
   }
 
   async load360ViewComponent(){

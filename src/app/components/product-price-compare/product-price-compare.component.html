@@ -15,11 +15,12 @@
                                         <div class="prod-img" (click)="navigateTo(msnMasterData[msn]['productUrl'])">
                                             <img [src]="imagePath + msnMasterData[msn]['mainImageLink']"
                                                 [alt]="msnMasterData[msn]['productName']">
+                                                <span class="current-prod-text" *ngIf="i ==0">Current Product</span>
                                         </div>
                                         <p class="prod-name" (click)="navigateTo(msnMasterData[msn]['productUrl'])">
                                             {{msnMasterData[msn]['productName']}}</p>
-                                        <h3 class="prodPrice">₹ {{msnMasterData[msn]['priceWithoutTax'] | mathRound |
-                                            number : '1.2-2'}}</h3>
+                                        <h3 class="prodPrice">₹ {{msnMasterData[msn]['salesPrice'] | mathRound |
+                                            number : '1.0-0'}}</h3>
                                         <add-to-cart [isOutOfStock]="msnMasterData[msn]['isOutOfStock']"
                                             [moglixPartNumber]="msn" [product]="msnMasterData[msn]">
                                         </add-to-cart>
@@ -32,6 +33,9 @@
                             <td *ngFor="let msn of msnList">
                                 <div class="avgrating" *ngIf="msnMasterData[msn]['avgRating'] > 0">{{msnMasterData[msn]['avgRating'] | number : '1.1-1'}} <i
                                         class="icon-rating-star"></i></div>
+                                <small class="review" *ngIf="msnMasterData[msn]['reviewCount'] > 0">
+                                    ({{msnMasterData[msn]['reviewCount']}} Reviews)
+                                </small>        
                             </td>
                         </tr>
                         <tr>
@@ -40,9 +44,9 @@
                                 {{msnMasterData[msn]['brandName']}}
                             </td>
                         </tr>
-                        <tr *ngFor="let specificationKey of attributeToCompareKeys">
-                            <td class="odd-child">{{specificationKey | uppercase}}</td>
-                            <td class="even-child" *ngFor="let msn of msnList">
+                        <tr *ngFor="let specificationKey of attributeToCompareKeys;let j = index;">
+                            <td [ngClass]="j%2 == 0 ? 'even-child' :'odd-child'">{{specificationKey | uppercase}}</td>
+                            <td *ngFor="let msn of msnList">
                                 {{msnMasterData[msn]['attributeToCompareValues'][specificationKey]}}
                             </td>
                         </tr>

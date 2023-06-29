@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProductResolver } from '@app/utils/resolvers/product.resolver';
 import { ProductV1Component } from './product-v1.component';
 
+
 const routes: Routes = [
   {
     path: '',

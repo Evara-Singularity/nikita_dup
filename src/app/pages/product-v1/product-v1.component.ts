@@ -1,5 +1,5 @@
-import { DOCUMENT, Location } from "@angular/common";
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, Injector, OnDestroy, OnInit, Optional, Renderer2, ViewChild, ViewContainerRef } from "@angular/core";
+import { DatePipe, DOCUMENT, Location } from "@angular/common";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, EventEmitter, HostListener, Inject, Injector, OnDestroy, OnInit, Optional, Renderer2, ViewChild, ViewContainerRef } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { DomSanitizer, Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, NavigationExtras, Router } from "@angular/router";
@@ -11,6 +11,7 @@ import { ModalService } from "@app/modules/modal/modal.service";
 import { ToastMessageService } from "@app/modules/toastMessage/toast-message.service";
 import { ClientUtility } from "@app/utils/client.utility";
 import { ProductCardFeature, ProductsEntity } from "@app/utils/models/product.listing.search";
+import { YTThumbnailPipe } from "@app/utils/pipes/ytthumbnail.pipe";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
@@ -97,6 +98,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     similarForOOSContainer = [];
     fragment = '';
     productFilterAttributesList: any;
+    iscloseproductDiscInfoComponent:boolean=true;
+    compareProductsData:Array<object> = [];
 
     // lazy loaded component refs
     productShareInstance = null;
@@ -173,6 +176,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     similarProductInstance = null;
     @ViewChild("similarProduct", { read: ViewContainerRef })
     similarProductContainerRef: ViewContainerRef;
+    // ondemand loaded components for product price compare products
+    productPriceCompareInstance = null;
+    @ViewChild("productPriceCompare", { read: ViewContainerRef })
+    productPriceCompareContainerRef: ViewContainerRef;
     // ondemand loaded components for sponsered products
     sponseredProductsInstance = null;
     @ViewChild("sponseredProducts", { read: ViewContainerRef })
@@ -208,6 +215,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     globalToastInstance = null;
     @ViewChild("globalToast", { read: ViewContainerRef })
     globalToastContainerRef: ViewContainerRef;
+    //floating container reference
+    @ViewChild('similarProductsRef', {static: false}) private similarProductsElementRef: ElementRef<HTMLDivElement>;
+    similarProductsScrolledIntoView: boolean;
 
     set showLoader(value: boolean) { this.globalLoader.setLoaderState(value); }
 
@@ -241,6 +251,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         private cartService: CartService,
         private checkoutService: CheckoutService,
         private siemaCrouselService: SiemaCrouselService,
+        private _ytThumbnail: YTThumbnailPipe,
+        private datePipe: DatePipe,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any,
     ) {
@@ -266,6 +278,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"]) {
                 this.apiResponse = rawData.product[0].data.data;
+                this.setQuestionAnswerSchema();
                 this.isAcceptLanguage = this.apiResponse['acceptLanguage'] && this.apiResponse['acceptLanguage'].length ? true : false; 
                 this.processProductData(this.apiResponse.productGroup);
                 if (this.apiResponse && this.apiResponse.tagProducts) {
@@ -282,9 +295,27 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         })
     }
 
+    @HostListener('window:scroll', ['$event'])
+    isScrolledIntoView() {
+        if (this.similarProductsElementRef) {
+            const rect = this.similarProductsElementRef.nativeElement.getBoundingClientRect();
+            const topShown = rect.top >= 0;
+            const bottomShown = rect.bottom <= window.innerHeight;
+            if((topShown && bottomShown) || (!topShown && bottomShown) ){
+                this.similarProductsScrolledIntoView = true;
+            }else{
+                this.similarProductsScrolledIntoView = false;
+            }
+        }
+    }
+
+    closeproductDiscInfoComponent(){
+        this.iscloseproductDiscInfoComponent=false
+    }
+
     processProductData(productGroup) {
         this.rawProductData = JSON.parse(JSON.stringify(productGroup));
-        this.originalProductBO = JSON.parse(JSON.stringify(productGroup));
+        this.originalProductBO = JSON.parse(JSON.stringify(productGroup.originalProductBO));
         if (
             this.rawProductData && 
             Object.values(this.rawProductData["productAllImages"]) !== null
@@ -315,6 +346,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         // analytics calls moved to this function incase PDP is redirecte to PDP
         this.callAnalyticForVisit();
         this.setMetatag();
+        if(!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null){ this.getCompareProductsData(this.rawProductData?.msn);}
     }
 
     filterAttributes() {
@@ -331,6 +363,38 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         const items = this.productFilterAttributesList[index]['items'];
         if(items && items.length) {
             return items.filter(obj => obj.selected).concat(items.filter(obj => !obj.selected));
+        }
+    }
+
+    setQuestionAnswerSchema()
+    {
+        if (this.isServer && this.rawProductData) {
+            const qaSchema: Array<any> = [];
+            if (this.isServer) {
+                const questionAnswerList = this.apiResponse.questionAndAnswer;
+                if (questionAnswerList["totalCount"] > 0) {
+                    (questionAnswerList["qlist"] as []).forEach((element, index) =>
+                    {
+                        qaSchema.push({
+                            "@type": "Question",
+                            name: 
+                            element["questionText"],
+                            acceptedAnswer: {
+                                "@type": "Answer",
+                                text: element["answerText"],
+                            },
+                        });
+                    });
+                    let qna = this.renderer2.createElement("script");
+                    qna.type = "application/ld+json";
+                    qna.text = JSON.stringify({
+                        "@context": CONSTANTS.SCHEMA,
+                        "@type": "FAQPage",
+                        mainEntity: qaSchema,
+                    });
+                    this.renderer2.appendChild(this.document.head, qna);
+                }
+            }
         }
     }
 
@@ -373,8 +437,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     name: this.rawProductData.productName,
                     image: [this.productDefaultImage],
                     description: desc,
-                    sku: this.rawProductData.defaultPartNumber,
-                    mpn: this.rawProductData.defaultPartNumber,
+                    sku: this.rawProductData.msn,
+                    mpn: this.rawProductData.msn,
                     brand: {
                         "@type": "Brand",
                         name: this.rawProductData.productBrandDetails["brandName"],
@@ -456,6 +520,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             videoArr &&
             (videoArr as any[]).length > 0
         ) {
+            this.setVideoSeoSchema(videoArr);
             (videoArr as any[]).reverse().forEach((element) =>
             {
                 // append all video after first image and atleast has one image
@@ -615,15 +680,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         if (this.commonService.isBrowser) {
             this.addSessionSubscriber();
             this.resetLazyComponents();
-            // this.getPurchaseList();
-            // this.productFbtData();
-            // this.productStatusCount();
-            // this.checkDuplicateProduct();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
-            // this.callAPIs();
-            // this.getRecents();
-
         }
     }
 
@@ -2564,6 +2622,28 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.cdr.detectChanges();
     }
 
+    async onVisibleproductPriceCompare()
+    {
+        if (!this.productPriceCompareInstance && this.compareProductsData.length > 0) {
+            const { ProductPriceCompareComponent } = await import(
+                "./../../components/product-price-compare/product-price-compare.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(
+                ProductPriceCompareComponent
+            );
+            this.productPriceCompareInstance =
+                this.productPriceCompareContainerRef.createComponent(
+                    factory,
+                    null,
+                    this.injector
+                );
+
+            this.productPriceCompareInstance.instance["compareProductsData"] = this.compareProductsData;
+            
+           
+        }
+    }
+
     async onVisibleAppPromo(event) {
         const { ProductAppPromoComponent } = await import("../../components/product-app-promo/product-app-promo.component");
         const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
@@ -3052,37 +3132,38 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     // Add to cart methods
     async showFBT() {
-        if (this.fbtFlag) {
-            const TAXONS = this.taxons;
-            let page = {
-                pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-                channel: "About This Product",
-                subSection: null,
-                linkPageName: null,
-                linkName: null,
-                loginStatus: this.commonService.loginStatusTracking,
-            };
-            let analytics = {
-                page: page,
-                custData: this.commonService.custDataTracking,
-                order: this.orderTracking,
-            };
-            this.modalService.show({
-                inputs: {
-                    modalData: {
-                        isModal: true,
-                        backToCartFlow: this.addToCartFromModal.bind(this),
-                        analytics: analytics,
-                        productQuantity: this.cartQunatityForProduct
-                    },
-                },
-                component: FbtComponent,
-                outputs: {},
-                mConfig: { className: "ex" },
-            });
-        } else {
-            this.addToCart(false);
-        }
+        this.addToCart(false);
+        // if (this.fbtFlag) {
+        //     const TAXONS = this.taxons;
+        //     let page = {
+        //         pageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+        //         channel: "About This Product",
+        //         subSection: null,
+        //         linkPageName: null,
+        //         linkName: null,
+        //         loginStatus: this.commonService.loginStatusTracking,
+        //     };
+        //     let analytics = {
+        //         page: page,
+        //         custData: this.commonService.custDataTracking,
+        //         order: this.orderTracking,
+        //     };
+        //     this.modalService.show({
+        //         inputs: {
+        //             modalData: {
+        //                 isModal: true,
+        //                 backToCartFlow: this.addToCartFromModal.bind(this),
+        //                 analytics: analytics,
+        //                 productQuantity: this.cartQunatityForProduct
+        //             },
+        //         },
+        //         component: FbtComponent,
+        //         outputs: {},
+        //         mConfig: { className: "ex" },
+        //     });
+        // } else {
+        //     this.addToCart(false);
+        // }
     }
 
     // cart methods 
@@ -3732,6 +3813,37 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         {
             this.analytics.sendGTMCall(data);
         });
+    }
+
+    setVideoSeoSchema(videoArr)
+    {
+        if (this.isServer && this.rawProductData && videoArr[0] && videoArr[0]['title'] && videoArr[0]['description'] && videoArr[0]['link'] && videoArr[0]['publishedDate']) {        
+            let firstVideoData=videoArr[0];
+            let videoSchema = this.renderer2.createElement("script");
+            videoSchema.type = "application/ld+json";
+            videoSchema.text = JSON.stringify({
+                "@context": CONSTANTS.SCHEMA,
+                "@type": "VideoObject",
+                name:(firstVideoData['title']) ? firstVideoData['title'] : null,
+                description:(firstVideoData['description']) ? firstVideoData['description'] : null,
+                thumbnailUrl:(firstVideoData['link']) ?  this._ytThumbnail.transform(firstVideoData['link'],'hqdefault') : null,
+                uploadDate:(firstVideoData['publishedDate']) ?  this.datePipe.transform(firstVideoData['publishedDate'], 'yyyy-MM-dd')  : null,
+                embedUrl:(firstVideoData['link']) ? firstVideoData['link'] : null
+               
+            });
+            this.renderer2.appendChild(this.document.head, videoSchema);        
+            }
+        
+    }
+
+    getCompareProductsData(msn: string) {
+        this.productService.getCompareProducts(msn).subscribe(result=>{
+            if(result && result['totalCount'] && result['totalCount'] > 0 && result['products']){
+                this.compareProductsData = result['products'] as Array<object>;
+            }
+        },(error)=>{
+            this.compareProductsData = [];
+        })
     }
 
     ngOnDestroy() {

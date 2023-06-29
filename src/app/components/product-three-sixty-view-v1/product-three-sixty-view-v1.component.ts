@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input, NgModule, OnInit } from '@angular/core';
 
 
 @Component({
@@ -7,24 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./product-three-sixty-view-v1.component.scss']
 })
 export class ProductThreeSixtyViewComponentV1 implements OnInit {
-  threeDImages = [
-    'https://m.media-amazon.com/images/I/51B2K6u14-L._SP539,464,0|51XJMbkgyvL.jpg,51ZuOYwnVkL.jpg,51TcO0J4DqL.jpg,51v+nwWeTaL.jpg,51q495TvNgL.jpg_.jpg',
-    'https://m.media-amazon.com/images/I/41Dd%2BAYMBoL._SP539,464,0|51JacZqLDlL.jpg,51N+NSD6F-L.jpg,41LE5BZRogL.jpg,51Y4EGgx7PL.jpg,51uUky3eLML.jpg_.jpg',
-    'https://m.media-amazon.com/images/I/41fANkX1C6L._SP539,464,0|51QgfWnageL.jpg,51Zx7aPAPvL.jpg,418lQfFZUPL.jpg,51Bnxf-fWmL.jpg,51jWtFrjsfL.jpg_.jpg',
-    'https://m.media-amazon.com/images/I/51EPOHUXdbL._SP539,464,0|511khDo56lL.jpg,51rn74aUybL.jpg,51a7w6KWIRL.jpg,51uw5PJFBaL.jpg,51cCBuTESmL.jpg_.jpg',
-    'https://m.media-amazon.com/images/I/4119L2Wd2oL._SP539,464,0|51AbB19tKKL.jpg,518qrx9eOTL.jpg,41lB8wf35tL.jpg,519I6gHHXIL.jpg,51-kx-yk9TL.jpg_.jpg',
-    'https://m.media-amazon.com/images/I/51%2BIbk%2BvYuL._SP539,464,0|51DFtHYRC0L.jpg,51vPSmKXTvL.jpg,51Vzer-GGNL.jpg,51SjwUEyafL.jpg,51fc2+XqA0L.jpg_.jpg',
-    'https://m.media-amazon.com/images/I/51oyqSg%2BIxL._SP539,464,0|51wUxUrzuuL.jpg,5136H+EKg2L.jpg,51CymUq4BeL.jpg,51RG911wj5L.jpg,510kS-6zpTL.jpg_.jpg',
-    'https://m.media-amazon.com/images/I/41IHcc5egvL._SP539,464,0|51UXcz0XP8L.jpg,51hIgSvvLoL.jpg,41mFo8PY7aL.jpg,51r-Bd-1kQL.jpg,51+Xhj+ky8L.jpg_.jpg',
-    'https://m.media-amazon.com/images/I/41cueAtXNeL._SP539,464,0|51jMkGDuKYL.jpg,51ztapFcItL.jpg,41L2eMJROBL.jpg,51C9D7Ax1WL.jpg,51Zovc9hzsL.jpg_.jpg',
-    'https://m.media-amazon.com/images/I/5184Gu75KtL._SP539,464,0|51YpgXKUeUL.jpg,51n7Daa8dHL.jpg,41KVqn7cuZL.jpg,51nT0e86vQL.jpg,51Pb01J0-ZL.jpg_.jpg',
-    'https://m.media-amazon.com/images/I/41L7qsSRRNL._SP539,464,0|51gm58eYqcL.jpg,51saWhDZcIL.jpg,41eCEIHX+yL.jpg,51YHqS7ytkL.jpg,51iZ195TUwL.jpg_.jpg',
-    'https://m.media-amazon.com/images/I/51sdM3RsCEL._SP539,464,0|51mPMGDbYVL.jpg,51N3kWQCWlL.jpg,51fgep5hvqL.jpg,51JXDObqvML.jpg,51h4UTsBWCL.jpg_.jpg'
-  ]
+  @Input() threeDImages = [];
   constructor() {
   }
 
   ngOnInit(){
+    console.log(this.threeDImages);
     this.load3dViewer();
   }
 
@@ -114,5 +103,18 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
   
 }
 
+
+@NgModule({
+  imports: [
+    CommonModule
+  ],
+  declarations: [
+    ProductThreeSixtyViewComponentV1
+  ],
+  exports:[
+    ProductThreeSixtyViewComponentV1
+  ],
+})
+export default class ProductThreeSixtyViewV1Module { }
  
 

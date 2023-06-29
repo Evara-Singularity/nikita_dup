@@ -26,7 +26,7 @@ export class ProductDescriptionComponent implements OnInit {
   productStaticData = this._commonService.defaultLocaleValue;
   show360popupFlag:boolean = false;
   showPocMsn:boolean = false;
-
+  // show360CTA: boolean = false;
   
   @Input() productName;
   @Input() productPrice;
@@ -47,6 +47,7 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() selectedProductBulkPrice;
   @Input() bulkSellingPrice;
   @Input() msnId;
+  @Input() threeDImages = [];
   @Output() checkCartQuantityAndUpdate$: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
@@ -58,7 +59,7 @@ export class ProductDescriptionComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    if(this.msnId === CONSTANTS.POC_MSN){
+    if(this.msnId === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length)){
       this.showPocMsn = true;
     }
    this.getStaticSubjectData();
@@ -101,7 +102,7 @@ export class ProductDescriptionComponent implements OnInit {
     }
   }
   show360popup(){
-   if(this.showPocMsn) {
+   if(this.showPocMsn && this.msnId === CONSTANTS.POC_MSN) {
      this.load360ViewComponent();
    } else {
      this.load360View();
@@ -117,17 +118,20 @@ export class ProductDescriptionComponent implements OnInit {
         null, 
         this.injector
     );
+    this.product3dInstance.instance['threeDImages'] = this.threeDImages || [];
   }
 
   async load360ViewComponent(){
-    this.show360popupFlag = true;
-      const { ProductThreeSixtyViewComponent } = await import('../product-three-sixty-view/product-three-sixty-view.component');
-      const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponent);
-      this.product3dInstance = this.product3dContainerRef.createComponent(
-        factory, 
-        null, 
-        this.injector
-    );
+    if(this.msnId === CONSTANTS.POC_MSN) {
+      this.show360popupFlag = true;
+        const { ProductThreeSixtyViewComponent } = await import('../product-three-sixty-view/product-three-sixty-view.component');
+        const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponent);
+        this.product3dInstance = this.product3dContainerRef.createComponent(
+          factory, 
+          null, 
+          this.injector
+      );
+    }
   }
   
   outData(e){

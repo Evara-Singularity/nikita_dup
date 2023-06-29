@@ -33,7 +33,8 @@
         [priceQuantityCountry]="rawProductData?.priceQuantityCountry"
         [starsCount]="apiResponse?.productReviews?.startCount"
         [rawReviewsCount]="apiResponse?.productReviews?.summaryData?.reviewCount || 0"
-        [rawProductCountMessage]="rawProductCountMessage" [msnId]="rawProductData?.msn">
+        [rawProductCountMessage]="rawProductCountMessage" [msnId]="rawProductData?.msn"
+        [threeDImages]='rawProductData?.product3dImages'>
     </product-description>
 
     <product-grouping-attributes [isCommonProduct]="rawProductData?.productFilterAttributesList > 0"

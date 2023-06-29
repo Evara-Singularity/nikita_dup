@@ -11,9 +11,9 @@
     </div>
     <div (touchstart)="$event.stopPropagation();" class="thumbnailImageSlider">
         <div class ="thumbnailImageSlider-wrap">
-            <button (click)="load360ViewComponent()">
-                Load 360 viewer
-            </button>
+            <div class="rotation-conatiner active">
+                <img src="../../../../assets/img/rotation-icon.svg">
+            </div>
            <div *ngFor="let image of images;let imgIndex=index;">
             <img src="{{image.medium}}"
                 [class.activeImgSlide]="imgIndex === currentImageIndex"

@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./floating-coupon-widget.component.scss']
 })
 export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
-
+  productStaticData = this._commonService.defaultLocaleValue;
   @Input() isBulkPricesProduct
   @Input() selectedProductBulkPrice
   @Input() productMrp;
@@ -31,6 +31,13 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
+    this.getStaticSubjectData();
+  }
+  
+  getStaticSubjectData(){
+    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+      this.productStaticData = staticJsonData;
+    });
   }
 
   ngAfterViewInit(): void {

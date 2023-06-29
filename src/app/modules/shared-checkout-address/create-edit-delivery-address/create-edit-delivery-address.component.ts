@@ -112,8 +112,8 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             const addressArray = address.addressLine.trim().split('|')
             if (addressArray.length > 1) {
                 return {
-                    addressLine: addressArray[0].trim(),
-                    addressLineFirst: addressArray[1].trim(),
+                    addressLine: addressArray[1].trim(),
+                    addressLineFirst: addressArray[0].trim(),
                 }
             } else {
                 return {
@@ -226,7 +226,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
     {
         let aRquest = { idCustomer: this.userSesssion['userId'], idAddressType: 1, active: true, invoiceType: this.invoiceType };
         if(address && address.addressLine && address.addressLineFirst){
-            address.addressLine = address.addressLine + ' | ' + address.addressLineFirst;
+            address.addressLine = address.addressLineFirst + ' | ' + address.addressLine ;
             delete address.addressLineFirst;
         }
         let request = { ...address, ...aRquest };

@@ -1694,16 +1694,21 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     productFbtData()
     {
-        const msn = this.route.snapshot.params['msnid']
-        this.productService
-            .getFBTProducts(msn)
-            .subscribe((rawProductFbtData) =>
-            {
-                this.fetchFBTProducts(
-                    this.rawProductData,
-                    Object.assign({}, rawProductFbtData)
-                );
-            });
+        let msn: string = this.route.snapshot.params['msnid'] || '';
+        if(msn == null || msn.length == 0 || msn == undefined) {
+            msn = this.msn; // takes the msn from the API response if router snapshot is not present
+        }
+        if(msn && msn.length) {
+            this.productService
+                .getFBTProducts(msn)
+                .subscribe((rawProductFbtData) =>
+                {
+                    this.fetchFBTProducts(
+                        this.rawProductData,
+                        Object.assign({}, rawProductFbtData)
+                    );
+                });
+        }
     }
 
     fetchFBTProducts(productBO, rawProductFbtData)

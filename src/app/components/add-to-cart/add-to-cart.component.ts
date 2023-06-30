@@ -253,7 +253,7 @@ export class AddToCartComponent implements OnDestroy {
           "selectedVariantOOO$"
         ] as EventEmitter<boolean>
       ).subscribe((msnId) => {
-        // this.openRfqFormCore(msnId);
+        this.openRfqFormCore(msnId);
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
         this._commonService.enableNudge = false;
@@ -407,18 +407,11 @@ export class AddToCartComponent implements OnDestroy {
           });
         });
     } else {
-      this._localAuthService.setBackURLTitle(
-        this._router.url,
-        "Continue to raise RFQ"
-      );
-      let navigationExtras: NavigationExtras = {
-        queryParams: {
-          backurl: this._router.url,
-          title: "Continue to raise RFQ",
-        },
-      };
-      this._router.navigate(["/login"], navigationExtras);
+      this._localAuthService.setBackURLTitle(this._router.url, "Continue to raise RFQ");
+      let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this._router.url, title: 'Continue to raise RFQ' } };
+      this._router.navigate(['/login'], navigationExtras);
     }
+    this.cdr.detectChanges(); 
   }
 
   variantAddToCart(data) {
@@ -431,7 +424,6 @@ export class AddToCartComponent implements OnDestroy {
 
   openRfqForm() {
     const productMsnId = this.product["moglixPartNumber"];
-    alert(productMsnId);
     this.openRfqFormCore(productMsnId);
   }
 

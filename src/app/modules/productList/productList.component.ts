@@ -85,13 +85,16 @@ export class ProductListComponent{
         this._commonService.setSectionClickInformation(defaultParams['pageName'], 'pdp');
         let searchResultsTrackingData = this._commonService.getSearchResultsTrackingData();
         if(defaultParams['pageName'] == "SEARCH"){
-            this.analytics.sendGTMCall({
-                'event':'search-results-click',
-                'search-query':searchResultsTrackingData['search-query'],
-                'search-results':searchResultsTrackingData['search-results'],
-                'click-result':product.productName,
-                'search-click-category':'pdp'
-            });
+            // Gtm validation
+            if(product && product.productName) {
+                this.analytics.sendGTMCall({
+                    'event':'search-results-click',
+                    'search-query':searchResultsTrackingData['search-query'],
+                    'search-results':searchResultsTrackingData['search-results'],
+                    'click-result':product.productName,
+                    'search-click-category':'pdp'
+                });
+            }
         }
 
         let cr: any = this._router.url.replace(/\//,' ').replace(/-/g,' ');
@@ -113,27 +116,28 @@ export class ProductListComponent{
 
         let gaGtmData = this._commonService.getGaGtmData();
         this._commonService.setGaGtmData({category: cr});
-
-
-        this.analytics.sendGTMCall({
-            'event': 'productClick',
-            'ecommerce': {
-                'click': {
-                    'actionField': {
-                        'list': (gaGtmData && gaGtmData["list"]) ? gaGtmData["list"] : ""
-                    },
-                    'products': [{
-                        'name': product.productName,       // Name or ID of the product is required.
-                        'id': product.moglixPartNumber,
-                        'price': product.salesPrice,
-                        'brand': product.brandName,
-                        'category': cr,
-                        'variant': '',
-                        'position': index+1
-                    }]
-                }
-            },
-        });
+        // Gtm Validation
+        if(product && product.productName && product.moglixPartNumber && product.salesPrice && product.brandName) {
+            this.analytics.sendGTMCall({
+                'event': 'productClick',
+                'ecommerce': {
+                    'click': {
+                        'actionField': {
+                            'list': (gaGtmData && gaGtmData["list"]) ? gaGtmData["list"] : ""
+                        },
+                        'products': [{
+                            'name': product.productName,       // Name or ID of the product is required.
+                            'id': product.moglixPartNumber,
+                            'price': product.salesPrice,
+                            'brand': product.brandName,
+                            'category': cr,
+                            'variant': '',
+                            'position': index+1
+                        }]
+                    }
+                },
+            });
+        }
 
         this._router.navigate(['/' + product.productUrl]);
     }

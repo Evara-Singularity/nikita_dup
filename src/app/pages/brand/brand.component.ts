@@ -455,12 +455,13 @@ export class BrandComponent {
                 digitalData["page"]["trendingSearch"] = 'no';
                 digitalData["page"]["suggestionClicked"] = 'yes';
             }
-
-            this._analytics.sendGTMCall({
-                'event': 'viewBrand',
-                'brandName': this._activatedRoute.snapshot.params.brand,
-                'brandUrl': window.location.origin + window.location.pathname
-            });
+            if(this._activatedRoute.snapshot.params.brand) {
+                this._analytics.sendGTMCall({
+                    'event': 'viewBrand',
+                    'brandName': this._activatedRoute.snapshot.params.brand,
+                    'brandUrl': window.location.origin + window.location.pathname
+                });
+            }
 
             this._analytics.sendAdobeCall(digitalData);
             /*End Adobe Analytics Tags */

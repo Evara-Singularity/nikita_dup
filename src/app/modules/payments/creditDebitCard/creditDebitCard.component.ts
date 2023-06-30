@@ -214,12 +214,15 @@ export class CreditDebitCardComponent implements OnInit {
     }
 
     private paymentInitiatedAnalyticCall(shippingInformation: { shippingCost: any; couponUsed: any; GST: string; }, addressList: {}, data: any) {
-        this._analytics.sendGTMCall({
-            'event': 'checkoutStarted',
-            'shipping_Information': shippingInformation,
-            'city': addressList["city"],
-            'paymentMode': data.mode
-        });
+        //Gtm validation
+        if (shippingInformation['shippingCost'] && data && data.mode) {
+            this._analytics.sendGTMCall({
+                'event': 'checkoutStarted',
+                'shipping_Information': shippingInformation,
+                'city': addressList["city"],
+                'paymentMode': data.mode
+            });
+        }
     }
 
     /**

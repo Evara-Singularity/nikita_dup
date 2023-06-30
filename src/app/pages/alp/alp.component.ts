@@ -240,13 +240,16 @@ export class AlpComponent implements OnInit {
             if (this.localStorageService.retrieve('user')) {
                 user = this.localStorageService.retrieve('user');
             }
-            this.analytics.sendGTMCall({
-                'event': 'pr-impressions',
-                'ecommerce': {
-                    'currencyCode': 'INR',                       // Local currency is optional.
-                    'impressions': dlp,
-                },
-            });
+            // Gtm validation
+            if(dlp && dlp.length) {          
+                this.analytics.sendGTMCall({
+                    'event': 'pr-impressions',
+                    'ecommerce': {
+                        'currencyCode': 'INR',                       // Local currency is optional.
+                        'impressions': dlp,
+                    },
+                });
+            }
 
             const google_tag_params = {
                 ecomm_prodid: '',
@@ -263,14 +266,15 @@ export class AlpComponent implements OnInit {
             });
 
             /*Start Criteo DataLayer Tags */
-
-            this.analytics.sendGTMCall({
-                'event': 'viewList',
-                'email': (user && user.email) ? user.email : '',
-                'ProductIDList': criteoItem,
-                'CategoryId': this.alpCategoryCodeData.categoryDetails.taxonomy,
-                'CategoryName': this.alpCategoryCodeData.categoryDetails.canonicalURL
-            });
+            if(criteoItem && criteoItem.length) {
+                this.analytics.sendGTMCall({
+                    'event': 'viewList',
+                    'email': (user && user.email) ? user.email : '',
+                    'ProductIDList': criteoItem,
+                    'CategoryId': this.alpCategoryCodeData.categoryDetails.taxonomy,
+                    'CategoryName': this.alpCategoryCodeData.categoryDetails.canonicalURL
+                });
+            }
 
             /*End Criteo DataLayer Tags */
 

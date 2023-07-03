@@ -549,6 +549,7 @@ export class CartService
                 cardNumber: extra.ccnum.slice(0, 6)
             }
             obj["shoppingCartDto"]["bankOffer"]  = bankOffer;
+            obj["shoppingCartDto"]["prepaidDiscounts"]=[]; 
         }
         if (cart["buyNow"]) {
             obj["shoppingCartDto"]["cart"]["buyNow"] = cart["buyNow"];

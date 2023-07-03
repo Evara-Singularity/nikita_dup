@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, NgModule, OnInit } from '@angular/core';
 
 
 @Component({
@@ -9,7 +9,7 @@ import { Component, Input, NgModule, OnInit } from '@angular/core';
 })
 export class ProductThreeSixtyViewComponentV1 implements OnInit {
   @Input() threeDImages = [];
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(){
@@ -99,6 +99,7 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
           }
         spinImg.style.transform = `translate3d(${pageX}px, ${pageY}px, 0px)`;
         index = swipingRight ? index - 1 : index + 1;
+        this.cdr.detectChanges();
       }
     }
   }

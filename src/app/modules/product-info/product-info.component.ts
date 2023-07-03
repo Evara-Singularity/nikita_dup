@@ -90,6 +90,7 @@ export class ProductInfoComponent implements OnInit
     showHindiContent:boolean;
     open360Popup:boolean;
     showPocMsn:boolean = false;
+    for3dPopup: boolean = false;
 
 
     constructor(
@@ -277,6 +278,11 @@ export class ProductInfoComponent implements OnInit
         if (this.msnId.toLowerCase() === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length)) {
             this.showPocMsn = true;
         }
+        if(this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {
+            this.for3dPopup = false;
+          } else {
+            this.for3dPopup = true;
+          }
         this._commonService.open360popup$.subscribe(val => {
             this.open360Popup = true;
             setTimeout(() => this.show360popup(), 100)

@@ -88,7 +88,7 @@ export const product = {
     store:"स्टोर",
     product_specifications:"प्रोडक्ट स्पेसिफिकेशंस",
     available_coupons:"उपलब्ध कूपन",
-    and_get:"और प्राप्त करें",
+    and_get:"प्राप्त करें",
     //product info key
     "specifications":"स्पेसिफिकेशंस",
     "images":"तस्वीरें",

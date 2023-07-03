@@ -1415,12 +1415,14 @@ export class CartService
 
     getAllPromoCodes(cartId = null)
     {
+        console.trace();
         const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?cartId=' + cartId;
         return this._dataService.callRestful('GET', url);
     }
 
     getAllPromoCodesByUserId(userID = null,cartId = null)
     {
+        console.trace();
         const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?userId=' + userID + '&cartId=' + cartId + '&buyNow='+ (this._buyNow || 'false');
         return this._dataService.callRestful('GET', url);
     }

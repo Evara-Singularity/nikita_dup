@@ -25,6 +25,7 @@ export class FbtComponent implements OnInit
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     @Input('addToCartFromModal') addToCartFromModal = null;
     @Input('productQuantity') productQuantity: number = 1;
+    @Input('isHindiUrl') isHindiUrl: boolean = false;
     
     rootProduct;
     rootMSN;
@@ -142,9 +143,6 @@ export class FbtComponent implements OnInit
         }
         return returnObj;
     }
-    get isHindiUrl() {
-        return (this.router.url).toLowerCase().indexOf('/hi/') !== -1
-    }
 
     modifyRootProduct(product, isFBT)
     {
@@ -174,6 +172,10 @@ export class FbtComponent implements OnInit
         const LENGTH = items.length;
         let firstProduct = items[0];
         firstProduct.productQuantity = this.productQuantity;
+        if(this.isHindiUrl) {
+            firstProduct.productName = this.originalProductBO.productName;
+            firstProduct.brandName = this.originalProductBO.brandDetails.brandName
+        }
         this.cartService.addToCart({ buyNow: false, productDetails: firstProduct }).subscribe((response) =>//length=1
         {
             this.updateCart(response, items.length === 1);

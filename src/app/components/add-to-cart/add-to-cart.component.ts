@@ -1,5 +1,6 @@
 import { CommonModule } from "@angular/common";
 import {
+  ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
   EventEmitter,
@@ -63,7 +64,8 @@ export class AddToCartComponent implements OnDestroy {
     private _commonService: CommonService,
     private _cfr: ComponentFactoryResolver,
     private _injector: Injector,
-    private _localAuthService: LocalAuthService
+    private _localAuthService: LocalAuthService,
+    public cdr: ChangeDetectorRef
   ) {}
 
   ngOnDestroy() {
@@ -187,6 +189,35 @@ export class AddToCartComponent implements OnDestroy {
     this._commonService.enableNudge = false;
   }
 
+  changeVariant(data) {
+    this._loader.setLoaderState(true);
+    this._productService.getProductGroupDetails(data.msn).pipe(
+      map(productRawData => {
+        if (productRawData['productBO']) {
+          return productRawData['productBO'];
+        } else {
+          return Error('Valid token not returned');
+        }
+      })
+    ).subscribe((productBO) => {
+      // productDetails will always have variants as it can be called by variant popup only
+      if (this.variantPopupInstance) {
+        const productRequest = this._cartService.getAddToCartProductItemRequest({ productGroupData: productBO, buyNow: data.buyNow });
+        const product = this._productService.productEntityFromProductBO(productBO, { rating: this.product['rating'], ratingCount: this.product['ratingCount'], });
+        const outOfStockCheck: boolean = (productBO && productBO['outOfStock'] == true) ? true : false;
+
+        this.variantPopupInstance.instance['productGroupData'] = productRequest;
+        this.variantPopupInstance.instance['product'] = product;
+        this.variantPopupInstance.instance['isSelectedVariantOOO'] = outOfStockCheck;
+        this.cdr.detectChanges();
+      }
+    }, error => {
+      console.log('changeVariant ==>', error);
+    }, () => {
+      this._loader.setLoaderState(false);
+    })
+  }
+
   async loadVariantPop(product, productGroupData, buyNow = false) {
     if (!this.variantPopupInstance) {
       this._loader.setLoaderState(true);
@@ -214,7 +245,7 @@ export class AddToCartComponent implements OnDestroy {
           "selectedVariant$"
         ] as EventEmitter<boolean>
       ).subscribe((data) => {
-        // this.changeVariant(data);
+         this.changeVariant(data);
         this._commonService.enableNudge = false;
       });
       (
@@ -222,7 +253,7 @@ export class AddToCartComponent implements OnDestroy {
           "selectedVariantOOO$"
         ] as EventEmitter<boolean>
       ).subscribe((msnId) => {
-        // this.openRfqFormCore(msnId);
+        this.openRfqFormCore(msnId);
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
         this._commonService.enableNudge = false;
@@ -245,6 +276,7 @@ export class AddToCartComponent implements OnDestroy {
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
       });
+      this.cdr.detectChanges();
     }
   }
 
@@ -272,6 +304,7 @@ export class AddToCartComponent implements OnDestroy {
         this.addToCartToastInstance = null;
         this.addToCartToastContainerRef.detach();
       });
+      this.cdr.detectChanges();
     }
   }
 
@@ -374,18 +407,11 @@ export class AddToCartComponent implements OnDestroy {
           });
         });
     } else {
-      this._localAuthService.setBackURLTitle(
-        this._router.url,
-        "Continue to raise RFQ"
-      );
-      let navigationExtras: NavigationExtras = {
-        queryParams: {
-          backurl: this._router.url,
-          title: "Continue to raise RFQ",
-        },
-      };
-      this._router.navigate(["/login"], navigationExtras);
+      this._localAuthService.setBackURLTitle(this._router.url, "Continue to raise RFQ");
+      let navigationExtras: NavigationExtras = { queryParams: { 'backurl': this._router.url, title: 'Continue to raise RFQ' } };
+      this._router.navigate(['/login'], navigationExtras);
     }
+    this.cdr.detectChanges(); 
   }
 
   variantAddToCart(data) {
@@ -398,7 +424,6 @@ export class AddToCartComponent implements OnDestroy {
 
   openRfqForm() {
     const productMsnId = this.product["moglixPartNumber"];
-    alert(productMsnId);
     this.openRfqFormCore(productMsnId);
   }
 

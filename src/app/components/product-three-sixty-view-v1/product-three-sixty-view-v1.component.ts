@@ -42,6 +42,7 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
     document.addEventListener('touchmove', handleMouseMove);
 
     function handleMouseDown(e: MouseEvent | TouchEvent) {
+      console.log(e);
       clicked = true;
       counter = 1;
       return false;
@@ -52,14 +53,15 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
       counter = 0;
     }
 
-    function handleMouseMove(e) {
+    function handleMouseMove(e: MouseEvent | TouchEvent) {
+      console.log(e)
       if (clicked) {
         let currentX;
-        if (e.clientX) {
+        if (e instanceof MouseEvent) {
           // Mouse event
           currentX = e.clientX;
-        } else if (e.touches && e.touches.length > 0) {
-          // Touch e
+        } else if (e instanceof TouchEvent && e.touches.length > 0) {
+          // Touch event
           currentX = e.touches[0].clientX;
         } else {
           // No coordinates available

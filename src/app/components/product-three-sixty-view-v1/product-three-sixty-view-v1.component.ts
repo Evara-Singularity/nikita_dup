@@ -99,9 +99,9 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
           }
         spinImg.style.transform = `translate3d(${pageX}px, ${pageY}px, 0px)`;
         index = swipingRight ? index - 1 : index + 1;
-        this.cdr.detectChanges();
       }
     }
+    this.cdr.detectChanges();
   }
   
 }

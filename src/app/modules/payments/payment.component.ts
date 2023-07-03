@@ -4,10 +4,11 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { CartUtils } from "@app/utils/services/cart-utils";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 import { RetryPaymentService } from "@app/utils/services/retry-payment.service";
-import { forkJoin } from "rxjs";
+import { forkJoin,Subscription } from "rxjs";
 import CONSTANTS from "../../config/constants";
 import { LocalAuthService } from "../../utils/services/auth.service";
 import { CartService } from "../../utils/services/cart.service";
+import { PopupService } from "@app/utils/services/popup.service";
 import { CommonService } from "../../utils/services/common.service";
 import { DataService } from "../../utils/services/data.service";
 import { GlobalLoaderService } from "../../utils/services/global-loader.service";
@@ -32,6 +33,7 @@ export class PaymentComponent implements OnInit
   globalConstants: any = CONSTANTS.GLOBAL;
   isSavedCardExist: boolean = false;
   savedCardsData: any;
+  payUOffersData: any ={};
   updateTabIndex: EventEmitter<number> = new EventEmitter();
   spp: boolean; // spp: Show Payment Popup
   invoiceType: string;
@@ -42,6 +44,7 @@ export class PaymentComponent implements OnInit
   messageBnpl: string;
   disableCod: boolean;
   showPopup: boolean = false;
+  payUOfferPopup : boolean = false ;
   unAvailableMsnList: Array<any> = [];
   paymentForm: FormGroup;
   isPaymentSelected: boolean = false;
@@ -57,12 +60,17 @@ export class PaymentComponent implements OnInit
   txnDeclinedContainerRef: ViewContainerRef;
   isSavedCardChecked: any;
   hasPhoneNumber : boolean;
+  isPayUOffersAvailable : boolean = false;
+  payUOfferPopupData : any ={};
+  payUOfferPopUpSubscription: Subscription;
+  payUOfferPopUpDataSubscription: Subscription;
   
 
   constructor(
     public _dataService: DataService,
     private _loaderService: GlobalLoaderService,
     public _cartService: CartService,
+    public _popupService:PopupService,
     private _paymentService: PaymentService,
     private _localAuthService: LocalAuthService,
     public _commonService: CommonService,
@@ -76,7 +84,6 @@ export class PaymentComponent implements OnInit
   )
   {
     this.isShowLoader = true;
-    
   }
   
 
@@ -84,6 +91,17 @@ export class PaymentComponent implements OnInit
   {
     const queryParams = this._activatedRoute.snapshot.queryParams;
     this.orderId = queryParams['orderId'] || queryParams['txnId'];
+
+    this.payUOfferPopUpSubscription = this._popupService.payUOfferPopUp$.subscribe(data => {
+      console.log("consumed 1")
+      this.payUOfferPopup = data;
+    });
+   
+   this.payUOfferPopUpDataSubscription= this._popupService.payUOfferPopUpData$.subscribe(data => {
+    console.log("consumed 2")
+        this.payUOfferPopupData = data;
+      });
+
     //CASE-1: Valid OrderId from backend
     if (this.orderId) {
       this.isRetryPayment = true;
@@ -315,11 +333,13 @@ export class PaymentComponent implements OnInit
     };
     const savedCards = this._paymentService.getSavedCards(data, this.invoiceType)
     const paymentsMethodData = this._paymentService.getPaymentsMethodData(this.invoiceType);
+    const payUOffersData =this._paymentService.getPayUOffers(this.invoiceType);
 
-    forkJoin([paymentsMethodData, savedCards]).subscribe((responses) => {
+    forkJoin([paymentsMethodData, savedCards,payUOffersData]).subscribe((responses) => {
       this.isShowLoader = false;
       this.handlePaymentsData(responses[0]);
       this.handleSavedCards(responses[1]);
+      this.handlePayUOffersData(responses[2]);
     })
   }
 
@@ -342,6 +362,26 @@ export class PaymentComponent implements OnInit
   {
     if (response["status"]) {
       this.successPercentageRawData = response["data"] || null;
+    }
+  }
+
+  handlePayUOffersData(response)
+  {
+    if (response["status"] && response["data"] != null) {
+      let responseData = response["data"];
+      let offers =responseData['result']['payUOfferDetails']
+     
+      //this.isPayUOffersAvailable = true;
+
+      var offersArray = [];
+       
+      if(offers)
+      {
+          offers.forEach(function(item) {
+      offersArray.push(item['description']);
+            });
+      }
+      this.payUOffersData['offers'] = offersArray;
     }
   }
 
@@ -423,5 +463,24 @@ export class PaymentComponent implements OnInit
 
   navigateToQuickorder() { 
     this._router.navigateByUrl('/quickorder', this.REPLACE_URL); 
+  }
+
+  togglePayOfferPopup(mode: boolean) {
+    if (mode) {
+      this.payUOfferPopup = true
+      this._commonService.setBodyScroll(null, false);
+    } else {
+      this.payUOfferPopup= false
+      this._commonService.setBodyScroll(null, true);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.payUOfferPopUpSubscription) {
+      this.payUOfferPopUpSubscription.unsubscribe();
+    }
+    if (this.payUOfferPopUpDataSubscription) {
+      this.payUOfferPopUpDataSubscription.unsubscribe();
+    }
   }
 }

@@ -6,23 +6,26 @@
 @import "../../scss/product-card";
 @import "../../scss/components/payment-accordion";
 
-.payment_accordion_item{
-    .payment-accordion_header{
-        img{
+.payment_accordion_item {
+    .payment-accordion_header {
+        img {
             width: 20px;
         }
     }
 }
+
 .payment-options {
-    & > div {
+    &>div {
         @extend %cards;
         margin-top: 0;
         padding: 0;
-        & > a {
+
+        &>a {
             padding: 20px 5px;
         }
     }
 }
+
 ::ng-deep {
     .wp-50 {
         width: 50%;
@@ -41,12 +44,14 @@
 .other-strip {
     display: block;
     @extend %container;
+
     h3 {
         float: left;
         font-size: $extra-large-font;
         font-weight: 400;
         line-height: 30px;
     }
+
     i {
         float: right;
         font-size: 17px;
@@ -54,14 +59,17 @@
         padding: 10px 0;
         top: 0 !important;
     }
+
     @extend %clear-fix;
 }
 
 .other-strip {
     @extend %clear-fix;
+
     &.other-strip-payment {
         display: block;
         position: relative;
+
         i {
             position: absolute;
             right: 0px;
@@ -69,10 +77,12 @@
             top: 0;
             bottom: 0;
             margin: auto;
+
             &.icon-down {
                 top: 0;
             }
         }
+
         h3 {
             font-size: $extra-large-font;
             display: block;
@@ -80,8 +90,10 @@
             line-height: 20px;
             float: none;
             padding: 0px 0px 0px 15px;
+
             small {
                 display: block;
+
                 &.emierror {
                     display: inline-block;
                     margin-left: 10px;
@@ -91,6 +103,7 @@
                     width: 62%;
                     line-height: 19px;
                 }
+
                 &.coderror {
                     display: inline-block;
                     margin-left: 10px;
@@ -100,6 +113,7 @@
                     width: 55%;
                     line-height: 19px;
                 }
+
                 &.nefterror {
                     display: inline-block;
                     margin-left: 10px;
@@ -116,13 +130,17 @@
 
 .disableCod {
     pointer-events: none;
-    & > div {
+
+    &>div {
         background: #b1a0a0 !important;
     }
+
     position: relative;
+
     a {
         color: #e4d0d0;
     }
+
     .learn-more {
         position: absolute;
         pointer-events: auto;
@@ -145,6 +163,7 @@ label.payment-radio-btn {
     padding: 0px !important;
     border: none !important;
     @extend %custom-radio-checkout;
+
     label {
         @extend %custom-check-box;
     }
@@ -153,6 +172,7 @@ label.payment-radio-btn {
 .payment-content {
     float: right;
     width: calc(100% - 30px);
+
     .payment-popup {
         padding-top: 20px;
     }
@@ -162,6 +182,7 @@ label.payment-radio-btn {
     p {
         line-height: 20px;
     }
+
     .payable-amnt {
         display: block;
         font-size: $large-font;
@@ -169,6 +190,7 @@ label.payment-radio-btn {
         text-transform: capitalize;
         color: var(--dim-gray);
         padding-bottom: 4px;
+
         img {
             vertical-align: middle;
         }
@@ -179,8 +201,10 @@ label.payment-radio-btn {
     margin-bottom: 90px;
     padding-top: 0px;
 }
+
 .note-section {
     padding: 15px 0px;
+
     p {
         border-top: 1px solid var(--platinum);
         color: #606060;
@@ -196,24 +220,134 @@ label.payment-radio-btn {
         padding: 0;
         width: 100%;
     }
+
     label {
         padding: 20px 15px;
         border-bottom: 1px solid var(--spanish-gray);
+
         &:last-child {
             border-bottom: 0;
         }
     }
+
+    .payment-mode-section {
+        font-size: $medium-font;
+        font-weight: bold;
+        color: var(--text-color);
+        margin-bottom: 10px;
+    }
 }
+
 .cod-Popup {
     position: relative;
+
     &.product-card {
         margin-top: 10px;
     }
 }
+
 ::ng-deep .bottom-important-notifications {
     padding: 10px 0px !important;
 }
-.cod-txt{
+
+.cod-txt {
     width: 50%;
-    padding-right:10px;
+    padding-right: 10px;
+}
+
+.payment-offer-container {
+    padding: 10px 0px 0;
+
+    .payment-offer-text {
+        font-size: $medium-font;
+        font-weight: bold;
+        color: var(--text-color);
+        margin-bottom: 10px;
+        padding: 0 15px;
+    }
+
+    .payment-offer-outer-section {
+        border: 1px solid var(--slimy-green);
+        padding: 15px;
+        background: #F6FFF5;
+        border-radius: $border-radius-8;
+        margin: 0 15px;
+
+        .offer-icon {
+            display: flex;
+            width: 100%;
+            padding-bottom: 10px;
+            align-items: center;
+            &:last-child{
+                padding-bottom: 0;
+            }
+            i {
+                font-size: 24px;
+                color: var(--slimy-green);
+            }
+            .offer-text {
+                font-size: $medium-font;
+                color: var(--text-color);
+                padding-left: 10px;
+                line-height: 16px;
+            }
+        }
+
+        
+    }
+}
+
+.payment-offer-popup-container {
+    .offer-header {
+        padding: 15px;
+        background: #F7F7FA;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        p {
+            font-size: $extra-large-font;
+            font-weight: $font-bold;
+        }
+
+        i {
+            font-size: 20px;
+        }
+    }
+
+    .offer-detail {
+        border: 1px solid var(--slimy-green);
+        background: #F6FFF5;
+        border-radius: $border-radius-8;
+        padding: 10px;
+
+        p {
+            font-size: $medium-font;
+            color: var(--slimy-green);
+            font-weight: $font-bold;
+        }
+    }
+
+    .discount-wrap {
+        padding: 0 15px 15px 15px;
+
+        .discount-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: $large-font;
+            color: var(--text-color);
+            margin-bottom: 15px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .total-amount {
+            padding-top: 15px;
+            border-top: 1px solid var(--ghost-white);
+            padding-bottom: 15px;
+        }
+    }
 }

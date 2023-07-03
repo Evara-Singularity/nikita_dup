@@ -2,6 +2,8 @@ import { Component, Input, OnInit, ComponentFactoryResolver, Injector, ViewConta
 import { CommonModule } from '@angular/common';
 import { ObserveVisibilityDirectiveModule } from '../../../utils/directives/observe-visibility.directive';
 import { PopUpVariant2Module } from '../../pop-up-variant2/pop-up-variant2.module';
+import { Subject } from 'rxjs';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
     selector: 'images',
@@ -10,16 +12,15 @@ import { PopUpVariant2Module } from '../../pop-up-variant2/pop-up-variant2.modul
 })
 export class ImagesComponent implements OnInit
 {
-    product3dInstance = null;
-    @ViewChild("product3dContainerRef", { read: ViewContainerRef })
-    product3dContainerRef: ViewContainerRef;
     show360popupFlag:boolean = false;
     @Input("images") images: any[] = null;
     currentImageIndex = -1;
+   
 
     constructor(
         private _componentFactoryResolver:ComponentFactoryResolver,
-        private injector:Injector
+        private injector:Injector,
+        private _commonService:CommonService
     ) {
      }
 
@@ -30,18 +31,9 @@ export class ImagesComponent implements OnInit
 
     updateImageIndex(index) { this.currentImageIndex = index; }
 
-    async load360ViewComponent(){
-        this.show360popupFlag = true;
-            const { ProductThreeSixtyViewComponent } = await import('../../../components/product-three-sixty-view/product-three-sixty-view.component');
-            const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponent);
-            this.product3dInstance = this.product3dContainerRef.createComponent(
-            factory, 
-            null, 
-            this.injector
-        );
-    } 
-    outData(e){
-
+    
+    open36popup(){
+     this._commonService.open360popup$.next(true);
     }
 }
 

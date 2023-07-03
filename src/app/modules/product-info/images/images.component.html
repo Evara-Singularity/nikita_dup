@@ -1,17 +1,10 @@
 <ng-container *ngIf="images.length">
     <div class="mainImageLarge">
         <img src="{{images[currentImageIndex].large}}">
-        <app-pop-up-variant2 class="openMobikwikPopup" *ngIf="show360popupFlag" (outData$)="outData($event)" [headerType]="'pop-up-header1'" [data]="{headerText: ''}">
-            <div class="content-popup" content>
-                <div [debounceTime]="100" data-observeVisibility (visible)="load360ViewComponent()">
-                    <ng-container #product3dContainerRef></ng-container>
-                </div>
-            </div>
-        </app-pop-up-variant2>
     </div>
     <div (touchstart)="$event.stopPropagation();" class="thumbnailImageSlider">
         <div class ="thumbnailImageSlider-wrap">
-            <div class="rotation-conatiner active">
+            <div (click)="open36popup()" class="rotation-conatiner active">
                 <img src="../../../../assets/img/rotation-icon.svg">
             </div>
            <div *ngFor="let image of images;let imgIndex=index;">

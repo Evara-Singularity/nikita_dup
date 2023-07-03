@@ -4,13 +4,17 @@ import
     {
         ChangeDetectorRef,
         Component,
+        ComponentFactoryResolver,
         EventEmitter,
         HostListener,
         Inject,
+        Injector,
         Input,
         OnDestroy,
         OnInit,
         Output,
+        ViewChild,
+        ViewContainerRef,
     } from "@angular/core";
 import { CommonService } from "@app/utils/services/common.service";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
@@ -27,6 +31,9 @@ import { Router } from '@angular/router';
 })
 export class ProductInfoComponent implements OnInit
 {
+    product3dInstance = null;
+    @ViewChild("product3dContainerRef", { read: ViewContainerRef })
+    product3dContainerRef: ViewContainerRef;
     productStaticData = this._commonService.defaultLocaleValue;
     @Input("openProductInfo") openProductInfo = false;
     @Input("modalData") modalData = null;
@@ -78,6 +85,7 @@ export class ProductInfoComponent implements OnInit
     slides:HTMLCollection;
     siemaTab:HTMLDivElement;
     showHindiContent:boolean;
+    open360Popup:boolean;
 
 
     constructor(
@@ -89,7 +97,9 @@ export class ProductInfoComponent implements OnInit
         @Inject(DOCUMENT) private _document,
         private _localAuthService: LocalAuthService,
         private router: Router,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private _componentFactoryResolver:ComponentFactoryResolver,
+        private injector : Injector
     ) { }
 
     ngOnInit()
@@ -124,6 +134,7 @@ export class ProductInfoComponent implements OnInit
             return;
         }
         this.updateTabContentHeight(this.selectedIndex);
+        this.get360poup();
     }
 
     processMainInfo(mainInfo)
@@ -253,5 +264,29 @@ export class ProductInfoComponent implements OnInit
     }
     get isHindiUrl() {
         return (this.router.url).toLowerCase().indexOf('/hi') !== -1
+    }
+    get360poup(){
+        console.log("tell me");
+     this._commonService.open360popup$.subscribe(val=>{
+       this.load360ViewComponent();
+       this.open360Popup = true
+     });
+    }
+    async load360ViewComponent(){
+        if(!this.product3dInstance){
+            const { ProductThreeSixtyViewComponent } = await import('../../components/product-three-sixty-view/product-three-sixty-view.component');
+            const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponent);
+            this.product3dInstance = this.product3dContainerRef.createComponent(
+            factory, 
+            null, 
+            this.injector
+            );
+        } 
+    }
+    ngOnDestroy(){
+        if(this.product3dInstance){
+            this.product3dInstance = null;
+            this.product3dContainerRef = null;
+        }
     }
 }

@@ -101,6 +101,7 @@ export class CommonService
     goldMemberPopupOpened = new Subject();
     public defaultLocaleValue = localization_en.product;
     private copiedCouponInternal: string = '';
+    public open360popup$: Subject<any> = new Subject<any>();
 
     constructor(
         @Inject(PLATFORM_ID) platformId,

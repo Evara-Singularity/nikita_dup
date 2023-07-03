@@ -42,7 +42,7 @@
                         <p *ngIf="phone.hasError('required')" class="error-txt">
                             Kindly enter your 10 digit contact number
                         </p>
-                        <p *ngIf="phone.hasError('invalidPhone') && phone.value.length>0" class="error-txt">
+                        <p *ngIf="(phone.hasError('invalidPhone') && phone.value.length>0) || phone.hasError('minlength')" class="error-txt">
                             Kindly enter your 10 digit contact no.
                         </p>
                     </ng-container>
@@ -83,7 +83,7 @@
                         <p *ngIf="addressLine.hasError('required')" class="error-txt">
                             Kindly enter your Area, Street, Sector, Village
                         </p>
-                        <p *ngIf="!addressLine.hasError('required') && (addressLine.hasError('minlength') || addressLine.hasError('whitespace'))" class="error-txt">
+                        <p *ngIf="(addressLine['value'].length > 0) && (addressLine.hasError('minlength') || addressLine.hasError('whitespace'))" class="error-txt">
                             Kindly enter valid Area, Street, Sector, Village
                         </p>
                         <p *ngIf="addressLine.hasError('pattern')" class="error-txt">

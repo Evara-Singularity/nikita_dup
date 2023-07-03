@@ -89,12 +89,14 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
         this.addressForm = this._formBuilder.group({
             'idAddress': address && address.idAddress ? address.idAddress : null,
             'addressCustomerName': [(address && address.addressCustomerName) ? address.addressCustomerName : (this.userSesssion['userName'] && (this.userSesssion['userName']!=CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER )? this.userSesssion['userName']:""), [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
-            'phone': [(address && address.phone) ? address.phone : this.userSesssion['phone'], [Validators.required, Step.validatePhone]],
+            'phone': [(address && address.phone) ? address.phone : this.userSesssion['phone'], [Validators.required, Step.validatePhone, Validators.minLength(10)]],
             'alternatePhone': [(address && address.alternatePhone) ? address.alternatePhone : this.userSesssion['alternatePhone'], [Validators.pattern("[0-9]{10}")]],
             'postCode': [(address && address.postCode) ? address.postCode : null, [Validators.required, Step.validatePostCode]],
             'landmark': [(address && address.landmark) ? address.landmark : null, [Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
             'addressLineFirst': [this.separateAddressLineByPipe(address).addressLineFirst, [Validators.required, Validators.minLength(4), Step.noWhitespaceValidator, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
+
             'addressLine': [this.separateAddressLineByPipe(address).addressLine, [Validators.minLength(4), Step.noWhitespaceValidator, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
+
             'city': [(address && address.city) ? address.city : null, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\#\-\,\/\.\(\)]*)+')]],
             'idCountry': [{ value: null, disabled: true }, [Validators.required]],
             'idState': [{ value: null, disabled: true }, [Validators.required]],
@@ -112,13 +114,13 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             const addressArray = address.addressLine.trim().split('|')
             if (addressArray.length > 1) {
                 return {
-                    addressLine: addressArray[1].trim(),
                     addressLineFirst: addressArray[0].trim(),
+                    addressLine: addressArray[1].trim(),
                 }
             } else {
                 return {
-                    addressLine: addressArray[0].trim(),
-                    addressLineFirst: null,
+                    addressLineFirst: addressArray[0].trim(),
+                    addressLine: null,
                 }
             }
         }

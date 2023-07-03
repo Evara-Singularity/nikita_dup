@@ -14,6 +14,7 @@ export class ImagesComponent implements OnInit
 {
     show360popupFlag:boolean = false;
     @Input("images") images: any[] = null;
+    @Input() showPocMsn: boolean = false;
     currentImageIndex = -1;
    
 

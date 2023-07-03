@@ -59,7 +59,7 @@ export class ProductDescriptionComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    if(this.msnId === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length)){
+    if (this.msnId === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length)) {
       this.showPocMsn = true;
     }
    this.getStaticSubjectData();
@@ -101,16 +101,18 @@ export class ProductDescriptionComponent implements OnInit {
       ClientUtility.scrollToTop(1000, footerOffset + offset);
     }
   }
-  show360popup(){
-   if(this.showPocMsn && this.msnId === CONSTANTS.POC_MSN) {
-     this.load360ViewComponent();
-   } else {
-     this.load360View();
-   }
+  show360popup() {
+    this.show360popupFlag = true;
+    setTimeout(() => {
+      if (this.showPocMsn && this.msnId === CONSTANTS.POC_MSN) {
+        this.load360ViewComponent();
+      } else {
+        this.load360View();
+      }
+    }, 100)
   }
 
   async load360View(){
-    this.show360popupFlag = true;
       const { ProductThreeSixtyViewComponentV1 } = await import('../product-three-sixty-view-v1/product-three-sixty-view-v1.component');
       const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponentV1);
       this.product3dInstance = this.product3dContainerRef.createComponent(
@@ -123,7 +125,6 @@ export class ProductDescriptionComponent implements OnInit {
 
   async load360ViewComponent(){
     if(this.msnId === CONSTANTS.POC_MSN) {
-      this.show360popupFlag = true;
         const { ProductThreeSixtyViewComponent } = await import('../product-three-sixty-view/product-three-sixty-view.component');
         const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponent);
         this.product3dInstance = this.product3dContainerRef.createComponent(

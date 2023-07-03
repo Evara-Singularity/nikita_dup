@@ -23,6 +23,7 @@ import { NgxSiemaOptions, NgxSiemaService } from "ngx-siema";
 import { LocalStorageService } from "ngx-webstorage";
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { Router } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: "product-info",
@@ -39,6 +40,8 @@ export class ProductInfoComponent implements OnInit
     @Input("modalData") modalData = null;
     @Input("oosProductIndex") oosProductIndex = -1;
     @Input('analyticProduct') analyticProduct = null;
+    @Input() msnId;
+    @Input() threeDImages = [];
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     defaultInfo = "";
     selectedIndex = 0;
@@ -86,6 +89,7 @@ export class ProductInfoComponent implements OnInit
     siemaTab:HTMLDivElement;
     showHindiContent:boolean;
     open360Popup:boolean;
+    showPocMsn:boolean = false;
 
 
     constructor(
@@ -117,6 +121,7 @@ export class ProductInfoComponent implements OnInit
         this.loginStatus =
             user && user["authenticated"] == "true" ? "registered user" : "guest";
         this.getStaticSubjectData();  
+        this.get360poup();
     }
     getStaticSubjectData(){
         this._commonService.changeStaticJson.subscribe(staticJsonData => {
@@ -134,7 +139,6 @@ export class ProductInfoComponent implements OnInit
             return;
         }
         this.updateTabContentHeight(this.selectedIndex);
-        this.get360poup();
     }
 
     processMainInfo(mainInfo)
@@ -244,6 +248,10 @@ export class ProductInfoComponent implements OnInit
 
     closeProducInfo($event)
     {
+        if(!this.open360Popup) {
+            this.open360Popup = false;
+            return;
+        }
         this.openProductInfo = false;
         this.closePopup$.emit();
     }
@@ -265,13 +273,35 @@ export class ProductInfoComponent implements OnInit
     get isHindiUrl() {
         return (this.router.url).toLowerCase().indexOf('/hi') !== -1
     }
-    get360poup(){
-        console.log("tell me");
-     this._commonService.open360popup$.subscribe(val=>{
-       this.load360ViewComponent();
-       this.open360Popup = true
-     });
+    get360poup() {
+        if (this.msnId === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length)) {
+            this.showPocMsn = true;
+        }
+        this._commonService.open360popup$.subscribe(val => {
+            this.open360Popup = true;
+            setTimeout(() => this.show360popup(), 100)
+        });
     }
+
+    show360popup() {
+        if (this.showPocMsn && this.msnId === CONSTANTS.POC_MSN) {
+            this.load360ViewComponent();
+        } else {
+            this.load360View();
+        }
+    }
+
+    async load360View(){
+          const { ProductThreeSixtyViewComponentV1 } = await import('../../components/product-three-sixty-view-v1/product-three-sixty-view-v1.component');
+          const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponentV1);
+          this.product3dInstance = this.product3dContainerRef.createComponent(
+            factory, 
+            null, 
+            this.injector
+        );
+        this.product3dInstance.instance['threeDImages'] = this.threeDImages || [];
+      }
+
     async load360ViewComponent(){
         if(!this.product3dInstance){
             const { ProductThreeSixtyViewComponent } = await import('../../components/product-three-sixty-view/product-three-sixty-view.component');

@@ -23,6 +23,9 @@ export class ProductThreeSixtyViewComponent implements OnInit {
   }
 
   ngOnInit(){
+    
+  }
+  ngAfterViewInit(){
     this.load3dPlayerScript();
   }
   

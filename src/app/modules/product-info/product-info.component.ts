@@ -250,6 +250,7 @@ export class ProductInfoComponent implements OnInit
     {
         if(!this.open360Popup) {
             this.open360Popup = false;
+            this.closePopup$.emit();
             return;
         }
         this.openProductInfo = false;
@@ -285,9 +286,11 @@ export class ProductInfoComponent implements OnInit
 
     show360popup() {
         if (this.showPocMsn && this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {
+            console.log("if")
             this.load360ViewComponent();
         } else {
             this.load360View();
+            console.log("else")
         }
     }
 
@@ -303,7 +306,7 @@ export class ProductInfoComponent implements OnInit
       }
 
     async load360ViewComponent(){
-        if(!this.product3dInstance){
+        
             const { ProductThreeSixtyViewComponent } = await import('../../components/product-three-sixty-view/product-three-sixty-view.component');
             const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponent);
             this.product3dInstance = this.product3dContainerRef.createComponent(
@@ -311,7 +314,7 @@ export class ProductInfoComponent implements OnInit
             null, 
             this.injector
             );
-        } 
+        
     }
     ngOnDestroy(){
         if(this.product3dInstance){

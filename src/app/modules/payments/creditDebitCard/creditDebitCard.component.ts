@@ -156,7 +156,7 @@ export class CreditDebitCardComponent implements OnInit {
        
         let data ={};
         data['description'] = response['description'];
-        data['totalCartValue'] = this.totalPayableAmount;
+        data['totalCartValue'] = this._cartService.totalDisplayPayableAmountWithOutPrepaid
         data['minTxnAmount'] = response['minTxnAmount']
         data['maxTxnAmount'] = response['maxTxnAmount']
         data['maxDiscount'] = response['discountDetail']['maxDiscount']
@@ -172,7 +172,7 @@ export class CreditDebitCardComponent implements OnInit {
 
     resetBankDiscountAmount(){
         this.offerKey = null;
-        this.totalPayableAmount = this.totalPayableAmount+ this.bankDiscountAmount
+        this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid
         this.bankDiscountAmount = 0;
         }
 

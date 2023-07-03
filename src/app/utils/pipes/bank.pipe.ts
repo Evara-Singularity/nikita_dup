@@ -56,7 +56,7 @@ export class BankNamePipe implements PipeTransform
             return "Axis Bank";
         }
         else if (value == "ONEC") {
-            return "ONE CARD";
+            return "ONECARD";
         }
         else if (value == "YESB") {
             return "Yes Bank";

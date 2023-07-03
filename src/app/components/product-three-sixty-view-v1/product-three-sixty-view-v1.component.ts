@@ -13,7 +13,6 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
   }
 
   ngOnInit(){
-    console.log(this.threeDImages);
     this.load3dViewer();
   }
 
@@ -42,7 +41,6 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
     document.addEventListener('touchmove', handleMouseMove);
 
     function handleMouseDown(e: MouseEvent | TouchEvent) {
-      console.log(e);
       clicked = true;
       counter = 1;
       return false;
@@ -54,7 +52,6 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
     }
 
     function handleMouseMove(e: MouseEvent | TouchEvent) {
-      console.log(e)
       if (clicked) {
         let currentX;
         if (e instanceof MouseEvent) {

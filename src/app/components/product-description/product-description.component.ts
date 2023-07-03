@@ -59,7 +59,7 @@ export class ProductDescriptionComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    if (this.msnId === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length)) {
+    if (this.msnId.toLowerCase() === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length)) {
       this.showPocMsn = true;
     }
    this.getStaticSubjectData();
@@ -104,7 +104,7 @@ export class ProductDescriptionComponent implements OnInit {
   show360popup() {
     this.show360popupFlag = true;
     setTimeout(() => {
-      if (this.showPocMsn && this.msnId === CONSTANTS.POC_MSN) {
+      if (this.showPocMsn && this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {
         this.load360ViewComponent();
       } else {
         this.load360View();
@@ -124,7 +124,7 @@ export class ProductDescriptionComponent implements OnInit {
   }
 
   async load360ViewComponent(){
-    if(this.msnId === CONSTANTS.POC_MSN) {
+    if(this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {
         const { ProductThreeSixtyViewComponent } = await import('../product-three-sixty-view/product-three-sixty-view.component');
         const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponent);
         this.product3dInstance = this.product3dContainerRef.createComponent(

@@ -1,7 +1,7 @@
 <div class="pwa-row prod-description ">
     <div class="pwa-col-12">
         <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
-        <span (click)="show360popup()" class="image-rotate-section">
+        <span (click)="show360popup()" class="image-rotate-section" *ngIf='showPocMsn'>
             <p>view</p>
             <img src="../../../assets/img/rotation-icon.svg">
         </span>

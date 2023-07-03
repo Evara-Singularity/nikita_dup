@@ -1799,7 +1799,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             );
         this.productInfoPopupInstance.instance["oosProductIndex"] = oosProductIndex;
         this.productInfoPopupInstance.instance["analyticProduct"] = this._trackingService.basicPDPTrackingV1(this.rawProductData);
-        this.productInfoPopupInstance.instance['msnId'] = this.rawProductData.msnId;
+        this.productInfoPopupInstance.instance['msnId'] = this.rawProductData.msn;
         this.productInfoPopupInstance.instance['threeDImages'] = this.rawProductData.product3dImages;
         this.productInfoPopupInstance.instance["modalData"] =
             oosProductIndex > -1

@@ -274,7 +274,7 @@ export class ProductInfoComponent implements OnInit
         return (this.router.url).toLowerCase().indexOf('/hi') !== -1
     }
     get360poup() {
-        if (this.msnId === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length)) {
+        if (this.msnId.toLowerCase() === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length)) {
             this.showPocMsn = true;
         }
         this._commonService.open360popup$.subscribe(val => {
@@ -284,7 +284,7 @@ export class ProductInfoComponent implements OnInit
     }
 
     show360popup() {
-        if (this.showPocMsn && this.msnId === CONSTANTS.POC_MSN) {
+        if (this.showPocMsn && this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {
             this.load360ViewComponent();
         } else {
             this.load360View();

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, NgModule, OnInit, Output, ComponentFactoryResolver, ViewContainerRef, ViewChild, Injector, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, NgModule, OnInit, Output, ComponentFactoryResolver, ViewContainerRef, ViewChild, Injector, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { ClientUtility } from '@app/utils/client.utility';
@@ -54,7 +54,8 @@ export class ProductDescriptionComponent implements OnInit {
     private _tms: ToastMessageService,
     public _commonService:CommonService,
     private _componentFactoryResolver:ComponentFactoryResolver,
-    private injector: Injector
+    private injector: Injector,
+    private _cdr: ChangeDetectorRef
     ) {
    }
 
@@ -109,6 +110,7 @@ export class ProductDescriptionComponent implements OnInit {
       } else {
         this.load360View();
       }
+      this._cdr.detectChanges();
     }, 100)
   }
 
@@ -121,6 +123,7 @@ export class ProductDescriptionComponent implements OnInit {
         this.injector
     );
     this.product3dInstance.instance['threeDImages'] = this.threeDImages || [];
+    this._cdr.detectChanges();
   }
 
   async load360ViewComponent(){
@@ -133,6 +136,7 @@ export class ProductDescriptionComponent implements OnInit {
           this.injector
       );
     }
+    this._cdr.detectChanges();
   }
   
   outData(e){

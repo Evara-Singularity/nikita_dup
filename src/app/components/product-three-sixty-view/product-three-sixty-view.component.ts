@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { from, of } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 declare var jQuery: any;
@@ -18,7 +18,7 @@ export class ProductThreeSixtyViewComponent implements OnInit {
     'https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js',
     'assets/product360.js'
   ];
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     
   }
 
@@ -59,6 +59,7 @@ export class ProductThreeSixtyViewComponent implements OnInit {
         </div>
         </model-viewer>`
         product360_initialize(basePath);
+        this.cdr.detectChanges();
       }
     );
  }

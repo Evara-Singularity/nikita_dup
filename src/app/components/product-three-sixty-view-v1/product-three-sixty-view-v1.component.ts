@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, NgModule, OnInit } from '@angular/core';
 
 
 @Component({
@@ -9,11 +9,10 @@ import { Component, Input, NgModule, OnInit } from '@angular/core';
 })
 export class ProductThreeSixtyViewComponentV1 implements OnInit {
   @Input() threeDImages = [];
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(){
-    console.log(this.threeDImages);
     this.load3dViewer();
   }
 
@@ -42,7 +41,6 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
     document.addEventListener('touchmove', handleMouseMove);
 
     function handleMouseDown(e: MouseEvent | TouchEvent) {
-      console.log(e);
       clicked = true;
       counter = 1;
       return false;
@@ -54,7 +52,6 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
     }
 
     function handleMouseMove(e: MouseEvent | TouchEvent) {
-      console.log(e)
       if (clicked) {
         let currentX;
         if (e instanceof MouseEvent) {
@@ -101,6 +98,7 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
         index = swipingRight ? index - 1 : index + 1;
       }
     }
+    this.cdr.detectChanges();
   }
   
 }

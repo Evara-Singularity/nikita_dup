@@ -103,7 +103,7 @@ export class OrderDetailComponent implements OnInit {
   @ViewChild("returnInfo", { read: ViewContainerRef })
   returnInfoContainerRef: ViewContainerRef;
 
-  readonly validBuyAgainStatus = ['DELIVERED', 'RETURN REQUESTED', 'RETURN REJECTED', 'RETURN APPROVED', 'RETURN PICKED', 'RETURN DONE', 'EXCHANGE REQUESTED', 'EXCHANGE REJECTED', 'EXCHANGE APPROVED', 'EXCHANGE PICKED'];
+  readonly validBuyAgainStatus = ['SHIPPED','DELIVERED', 'RETURN REQUESTED', 'RETURN REJECTED', 'RETURN APPROVED', 'RETURN PICKED', 'RETURN DONE', 'EXCHANGE REQUESTED', 'EXCHANGE REJECTED', 'EXCHANGE APPROVED', 'EXCHANGE PICKED'];
   readonly validTrackingStatus = ['SHIPPED', 'DELIVERED'];
   readonly trackingMessage = 'Tracking information from courier partner is not available at the moment.';
   readonly imageAssetURL = CONSTANTS.IMAGE_ASSET_URL;

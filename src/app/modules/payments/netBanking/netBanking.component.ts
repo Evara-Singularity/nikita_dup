@@ -199,12 +199,15 @@ export class NetBankingComponent implements OnInit {
     }
 
     private initPaymentStartAnalytics(shippingInformation: { shippingCost: any; couponUsed: any; GST: string; }, addressList: {}) {
-        this._analytics.sendGTMCall({
-            'event': 'checkoutStarted',
-            'shipping_Information': shippingInformation,
-            'city': addressList["city"],
-            'paymentMode': 'NB'
-        })
+        //Gtm validation
+        if (shippingInformation['shippingCost'] && addressList["city"]) {
+            this._analytics.sendGTMCall({
+                'event': 'checkoutStarted',
+                'shipping_Information': shippingInformation,
+                'city': addressList["city"],
+                'paymentMode': 'NB'
+            })
+        }
     }
 
     /**

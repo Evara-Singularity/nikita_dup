@@ -40,6 +40,7 @@ export class CartComponent implements OnInit, AfterViewInit
     //cartAddproduct var
     cartAddProductPopupInstance = null;
     @ViewChild('cartAddProductPopup', { read: ViewContainerRef }) cartAddProductPopupContainerRef: ViewContainerRef;
+    cartUpdateCount: number = 0;
 
     totalPayableAmountAfterPrepaid: number=0;
     totalPayableAmountWithoutPrepaid:number=0;
@@ -95,6 +96,7 @@ export class CartComponent implements OnInit, AfterViewInit
                     this.sendCritieoDataonView(cartSession);
                     // this.sendAdobeAnalyticsData(this.pageEvent);
                     this.pageEvent = "genericClick";
+                    this.cartUpdateCount = this.cartUpdateCount + 1;
                 }
                 return cartSession;
             }),
@@ -333,48 +335,61 @@ export class CartComponent implements OnInit, AfterViewInit
     }
     //end of checkout v1
 
-    sendCritieoDataonView(cartSession)
-    {
+    sendCritieoDataonView(cartSession) {
         if (this._router.url !== '/quickorder') { return }
-        let eventData = { 'prodId': '', 'prodPrice': 0, 'prodQuantity': 0, 'prodImage': '', 'prodName': '', 'prodURL': '' };
-        let criteoItem = [];
-        let taxo1 = '', taxo2 = '', taxo3 = '', productList = '', brandList = '', productPriceList = '', shippingList = '', couponDiscountList = '', quantityList = '', totalDiscount = 0, totalQuantity = 0, totalPrice = 0, totalShipping = 0;
-        for (let p = 0; p < cartSession["itemsList"].length; p++) {
-            let price = cartSession["itemsList"][p]['productUnitPrice'];
-            if (cartSession["itemsList"][p]['bulkPrice'] != '' && cartSession["itemsList"][p]['bulkPrice'] != null) {
-                price = cartSession["itemsList"][p]['bulkPrice'];
+        console.log('cartUpdateCount ==>', this.cartUpdateCount)
+        if (this.cartUpdateCount == 0) {
+            console.log('cartUpdateCount if ==>', this.cartUpdateCount)
+            let eventData = { 'prodId': '', 'prodPrice': 0, 'prodQuantity': 0, 'prodImage': '', 'prodName': '', 'prodURL': '' };
+            let criteoItem = [];
+            let taxo1 = '', taxo2 = '', taxo3 = '', productList = '', brandList = '', productPriceList = '', shippingList = '', couponDiscountList = '', quantityList = '', totalDiscount = 0, totalQuantity = 0, totalPrice = 0, totalShipping = 0;
+            for (let p = 0; p < cartSession["itemsList"].length; p++) {
+                let price = cartSession["itemsList"][p]['productUnitPrice'];
+                if (cartSession["itemsList"][p]['bulkPrice'] != '' && cartSession["itemsList"][p]['bulkPrice'] != null) {
+                    price = cartSession["itemsList"][p]['bulkPrice'];
+                }
+                criteoItem.push({
+                    name: cartSession["itemsList"][p]['productName'],
+                    id: cartSession["itemsList"][p]['productId'],
+                    price: cartSession["itemsList"][p]['productUnitPrice'],
+                    quantity: cartSession["itemsList"][p]['productQuantity'],
+                    image: cartSession["itemsList"][p]['productImg'],
+                    url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl']
+                });
+                eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
+                eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
+                eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
+                eventData['prodImage'] = cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
+                eventData['prodName'] = cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
+                eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+                taxo1 = cartSession["itemsList"][p]['taxonomyCode'].split("/")[0] + '|' + taxo1;
+                taxo2 = cartSession["itemsList"][p]['taxonomyCode'].split("/")[1] + '|' + taxo2;
+                taxo3 = cartSession["itemsList"][p]['taxonomyCode'].split("/")[2] + '|' + taxo3;
+                productList = cartSession["itemsList"][p]['productId'] + '|' + productList;
+                brandList = cartSession["itemsList"][p]['brandName'] ? cartSession["itemsList"][p]['brandName'] + '|' + brandList : '';
+                productPriceList = price + '|' + productPriceList;
+                shippingList = cartSession["itemsList"][p]['shippingCharges'] + '|' + shippingList;
+                couponDiscountList = cartSession["itemsList"][p]['offer'] ? cartSession["itemsList"][p]['offer'] + '|' + couponDiscountList : '';
+                quantityList = cartSession["itemsList"][p]['productQuantity'] + '|' + quantityList;
+                totalDiscount = cartSession["itemsList"][p]['offer'] + totalDiscount;
+                totalQuantity = cartSession["itemsList"][p]['productQuantity'] + totalQuantity;
+                totalPrice = (price * cartSession["itemsList"][p]['productQuantity']) + totalPrice;
+                totalShipping = cartSession["itemsList"][p]['shippingCharges'] + totalShipping;
             }
-            criteoItem.push({ name: cartSession["itemsList"][p]['productName'], id: cartSession["itemsList"][p]['productId'], price: cartSession["itemsList"][p]['productUnitPrice'], quantity: cartSession["itemsList"][p]['productQuantity'], image: cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] });
-            eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
-            eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
-            eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
-            eventData['prodImage'] = cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
-            eventData['prodName'] = cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
-            eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
-            taxo1 = cartSession["itemsList"][p]['taxonomyCode'].split("/")[0] + '|' + taxo1;
-            taxo2 = cartSession["itemsList"][p]['taxonomyCode'].split("/")[1] + '|' + taxo2;
-            taxo3 = cartSession["itemsList"][p]['taxonomyCode'].split("/")[2] + '|' + taxo3;
-            productList = cartSession["itemsList"][p]['productId'] + '|' + productList;
-            brandList = cartSession["itemsList"][p]['brandName'] ? cartSession["itemsList"][p]['brandName'] + '|' + brandList : '';
-            productPriceList = price + '|' + productPriceList;
-            shippingList = cartSession["itemsList"][p]['shippingCharges'] + '|' + shippingList;
-            couponDiscountList = cartSession["itemsList"][p]['offer'] ? cartSession["itemsList"][p]['offer'] + '|' + couponDiscountList : '';
-            quantityList = cartSession["itemsList"][p]['productQuantity'] + '|' + quantityList;
-            totalDiscount = cartSession["itemsList"][p]['offer'] + totalDiscount;
-            totalQuantity = cartSession["itemsList"][p]['productQuantity'] + totalQuantity;
-            totalPrice = (price * cartSession["itemsList"][p]['productQuantity']) + totalPrice;
-            totalShipping = cartSession["itemsList"][p]['shippingCharges'] + totalShipping;
+            let user = this.localStorageService.retrieve('user');
+            let data = {
+                'event': 'viewBasket',
+                'email': (user && user.email) ? user.email : '',
+                'currency': 'INR',
+                'productBasketProducts': criteoItem,
+                'eventData': eventData
+            }
+            // Gtm Validation
+            if(criteoItem && criteoItem.length) {
+                this._globalAnalyticsService.sendGTMCall(data);
+            }
+            /*End Criteo DataLayer Tags */
         }
-        let user = this.localStorageService.retrieve('user');
-        let data = {
-            'event': 'viewBasket',
-            'email': (user && user.email) ? user.email : '',
-            'currency': 'INR',
-            'productBasketProducts': criteoItem,
-            'eventData': eventData
-        }
-        this._globalAnalyticsService.sendGTMCall(data);
-        /*End Criteo DataLayer Tags */
     }
 
     sendAdobeAnalyticsData(trackingname)

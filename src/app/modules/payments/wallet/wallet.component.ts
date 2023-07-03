@@ -128,8 +128,10 @@ export class WalletComponent {
             // alert("No Wallet selected");
             return;
         }
-
-        this._commonService.isBrowser && this._analytics.sendGTMCall({ 'event': "paymentButtonClick", 'payment': walletName });
+        // Gtm Validation
+        if(walletName) {
+            this._commonService.isBrowser && this._analytics.sendGTMCall({ 'event': "paymentButtonClick", 'payment': walletName });
+        }
 
         if (this.type == "tax") {
             newdata["paymentGateway"] = "razorpay";
@@ -219,13 +221,15 @@ export class WalletComponent {
             'couponUsed': cartSession['cart']['totalOffer'],
             'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
         };
-
-        this._analytics.sendGTMCall({
-            'event': 'checkoutStarted',
-            'shipping_Information': shippingInformation,
-            'city': addressList["city"],
-            'paymentMode': 'PAYTM'
-        });
+        // Gtm Validation
+        if(shippingInformation && addressList && addressList['city']) {
+            this._analytics.sendGTMCall({
+                'event': 'checkoutStarted',
+                'shipping_Information': shippingInformation,
+                'city': addressList["city"],
+                'paymentMode': 'PAYTM'
+            });
+        }
 
         let extra = {
             mode: mode,

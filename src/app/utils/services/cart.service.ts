@@ -2365,7 +2365,9 @@ export class CartService
                     }
                 }
             }
-            this._globalAnalyticsService.sendGTMCall(data);
+            if(dlp && dlp.length) {
+                this._globalAnalyticsService.sendGTMCall(data);
+            }
         }, 3000);
     }
 
@@ -2409,7 +2411,9 @@ export class CartService
             'productBasketProducts': criteoItem,
             'eventData': eventData
         }
-        this._globalAnalyticsService.sendGTMCall(data);
+        if(criteoItem && criteoItem.length) {
+            this._globalAnalyticsService.sendGTMCall(data);
+        }
     }
 
     sendAdobeAnalyticsData(trackingname)

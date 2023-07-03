@@ -394,13 +394,15 @@ export class EmiComponent {
             'couponUsed': cartSession['cart']['totalOffer'] || 0,
             'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
         };
-
-        this._analytics.sendGTMCall({
-            'event': 'checkoutStarted',
-            'shipping_Information': shippingInformation,
-            'city': addressList["city"],
-            'paymentMode': data.mode
-        });
+        //Gtm validation
+        if (shippingInformation['shippingCost'] && data && data.mode) {
+            this._analytics.sendGTMCall({
+                'event': 'checkoutStarted',
+                'shipping_Information': shippingInformation,
+                'city': addressList["city"],
+                'paymentMode': data.mode
+            });
+        }
 
         let extra = {
             "mode": data.mode,

@@ -261,13 +261,15 @@ createBnplData(paymentId, mode, bankcode) {
         'couponUsed': cartSession['cart']['totalOffer'],
         'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
     };
-
-    this._analytics.sendGTMCall({
-        'event': 'checkoutStarted',
-        'shipping_Information': shippingInformation,
-        'city': addressList["city"],
-        'paymentMode': 'BNPL'
-    });
+    //Gtm validation
+    if(shippingInformation['shippingCost']) {
+        this._analytics.sendGTMCall({
+            'event': 'checkoutStarted',
+            'shipping_Information': shippingInformation,
+            'city': addressList["city"],
+            'paymentMode': 'BNPL'
+        });
+    }
 
     let extra = {
         mode: mode,

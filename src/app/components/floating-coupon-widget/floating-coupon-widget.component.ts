@@ -46,7 +46,7 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
     }
     if (this._commonService.isBrowser) {
       this.copiedCouponSubscription = this._commonService.getCopiedCoupon().subscribe(coupon => {
-        if (this.promoCodes.promoCode && (this.promoCodes.promoCode ==  this.copiedCoupon)) {
+        if (this.promoCodes.promoCode && (this.promoCodes.promoCode ==  coupon)) {
           this.isCouponCopied = true
         } else {
           this.isCouponCopied = false

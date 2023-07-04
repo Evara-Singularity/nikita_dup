@@ -256,7 +256,8 @@ export class CreditDebitCardComponent implements OnInit {
             addressList: addressList,
             "bankOffer" : this.bankDiscountAmount == 0 ? null : this.bankDiscountAmount,
             "ccnum": ccnum,
-            "offerKey":this.offerKey
+            "offerKey":this.offerKey,
+            "paymentMode":"creditCard"
         };
 
         if (this.type == 'tax') {

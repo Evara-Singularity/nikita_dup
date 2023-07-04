@@ -459,7 +459,8 @@ export class EmiComponent {
             "totalPayableAmount" : this.totalPayableAmount.toFixed(2),
             "bankOffer" : this.bankDiscountAmount == 0 ? null : this.bankDiscountAmount,
             "ccnum": ccnum,
-            "offerKey":this.offerKey
+            "offerKey":this.offerKey,
+            "paymentMode":"emi"
         };
 
         let newdata = {

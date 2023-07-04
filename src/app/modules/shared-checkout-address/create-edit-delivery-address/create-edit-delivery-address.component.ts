@@ -93,20 +93,32 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             'alternatePhone': [(address && address.alternatePhone) ? address.alternatePhone : this.userSesssion['alternatePhone'], [Validators.pattern("[0-9]{10}")]],
             'postCode': [(address && address.postCode) ? address.postCode : null, [Validators.required, Step.validatePostCode]],
             'landmark': [(address && address.landmark) ? address.landmark : null, [Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
-            'addressLineFirst': [this.separateAddressLineByPipe(address).addressLineFirst, [Validators.required, Validators.minLength(4), Step.noWhitespaceValidator, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
+            'addressLineFirst': [this.separateAddressLineByPipe(address).addressLineFirst, [Validators.required, Validators.minLength(3), Step.noWhitespaceValidator, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
 
-            'addressLine': [this.separateAddressLineByPipe(address).addressLine, [Validators.minLength(4), Step.noWhitespaceValidator, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
+            'addressLine': [this.separateAddressLineByPipe(address).addressLine, [Step.noWhitespaceValidator, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
 
             'city': [(address && address.city) ? address.city : null, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\#\-\,\/\.\(\)]*)+')]],
             'idCountry': [{ value: null, disabled: true }, [Validators.required]],
             'idState': [{ value: null, disabled: true }, [Validators.required]],
             'email': [address ? address.email : this.userSesssion['email'], [Validators.required,Step.validateEmail]],
             'phoneVerified': [(address && address.phoneVerified) ? address.phoneVerified : false]
-        });
+        }, { validators: this.combineFieldsValidator });
         if (this.phone.value) { this.verifyPhone(this.phone.value); }
         if (this.postCode.value) { this.isPostcodeValid = true; }
         this.city.disable();
         this.idState.disable();
+    }
+
+    combineFieldsValidator(control) {
+        const address1Value = control.get('addressLineFirst').value || '';
+        const address2Value = control.get('addressLine').value || '';
+        const combinedValue = `${address1Value} ${address2Value}`;
+
+        const words = combinedValue.trim().split(/\s+/);
+        if (words.length < 3) {
+            return { insufficientWords: true };
+        }
+        return null;
     }
 
     separateAddressLineByPipe(address: any) {
@@ -184,7 +196,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             if (response['statusCode'] === 200) {
                 this.displayOTPPopup(this.phone.value);
             } else {
-                this._toastMessage.show({ type: 'error', text: response['message'] });
+                this._toastMessage.show({ type: 'error', text: response['message'] || response['statusMessage'] });
             }
         })
     }

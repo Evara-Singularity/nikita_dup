@@ -1,0 +1,8 @@
+<app-pop-up *ngIf="bm" (outData$)="onUpdate($event)">
+    <div class="rbi-bottom-popup" content>
+        <div class="rbi-guidlines-txt">
+            <h4>Offer Terms & Conditions : <i (click)="resetBottomOpt()" class="icon-circle-delete del-ico" style="float: right;"></i></h4>
+            <p>{{bankOfferData['tnc']}}</p>
+        </div>
+    </div>
+</app-pop-up>

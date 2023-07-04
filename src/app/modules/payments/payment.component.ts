@@ -1,4 +1,4 @@
-import { Compiler, Component, ComponentRef, ElementRef, EventEmitter, Injector, NgModuleRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { Compiler, Component,ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, Injector, NgModuleRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CartUtils } from "@app/utils/services/cart-utils";
@@ -64,6 +64,10 @@ export class PaymentComponent implements OnInit
   payUOfferPopupData : any ={};
   payUOfferPopUpSubscription: Subscription;
   payUOfferPopUpDataSubscription: Subscription;
+
+  bankOfferBottomSheetInstance = null;
+  @ViewChild('bankOfferBottomSheet', { read: ViewContainerRef })
+  bankOfferBottomSheetRef: ViewContainerRef;
   
 
   constructor(
@@ -81,6 +85,8 @@ export class PaymentComponent implements OnInit
     private _compiler: Compiler,
     private _injector: Injector,
     private _retryPaymentService: RetryPaymentService,
+    private cfr: ComponentFactoryResolver,
+    private injector: Injector
   )
   {
     this.isShowLoader = true;
@@ -378,10 +384,30 @@ export class PaymentComponent implements OnInit
       if(offers)
       {
           offers.forEach(function(item) {
-      offersArray.push(item['description']);
+      offersArray.push({"description":item['description'],"tnc":item['tnc']});
             });
       }
       this.payUOffersData['offers'] = offersArray;
+    }
+  }
+
+  async initiateBankOfferGuidlinesPopUp(offerData) {
+    if (!this.bankOfferBottomSheetInstance) {
+      const { BankOfferGuildlinesComponent } = await import(
+        '../../components/bank-offer-guildlines/bank-offer-guildlines.component'
+      );
+      const factory = this.cfr.resolveComponentFactory(BankOfferGuildlinesComponent);
+      this.bankOfferBottomSheetInstance = this.bankOfferBottomSheetRef.createComponent(
+        factory,
+        null,
+        this.injector
+      );
+      this.bankOfferBottomSheetInstance.instance['bm'] = true;
+      this.bankOfferBottomSheetInstance.instance['bankOfferData'] = offerData;
+    } else {
+      //toggle
+      this.bankOfferBottomSheetInstance.instance['bankOfferData'] = offerData;
+      this.bankOfferBottomSheetInstance.instance['bm'] = !(this.bankOfferBottomSheetInstance.instance['bm']);
     }
   }
 

@@ -1,9 +1,9 @@
 <div class="payment-offer-container" *ngIf="invoiceType=='retail' && payUOffersData['offers'] && payUOffersData['offers'].length > 0">
     <p class="payment-offer-text" >Payment Offers</p>
     <div class="payment-offer-outer-section" >
-        <div class="offer-icon" *ngFor="let item of payUOffersData['offers']">
+        <div class="offer-icon"  (click)="initiateBankOfferGuidlinesPopUp(item)" *ngFor="let item of payUOffersData['offers']">
             <i class="icon-coupon-3-fill-1"></i>
-            <p class="offer-text">{{item}}</p>
+            <p class="offer-text">{{item.description}}</p>
         </div>
     </div>
     </div>
@@ -234,4 +234,5 @@
         </div>
     </app-bottom-menu>
 
+    <ng-container #bankOfferBottomSheet></ng-container>
     <ng-container #txnDeclined></ng-container>

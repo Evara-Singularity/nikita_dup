@@ -76,6 +76,7 @@ export class EmiComponent {
     bankDiscountAmount: number = 0;
     ccNameSubscription: Subscription = null;
     offerKey: string = null;
+    cartSession: any = null;
 
     set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
@@ -115,6 +116,7 @@ export class EmiComponent {
        
         const cartSession = this._cartService.getCartSession();
         const cart = cartSession["cart"];
+        this.cartSession = cart;
         cartSession['nocostEmi'] = 0;
         this.type = this._cartService.invoiceType;
         const payableAmount = amount ? amount :this._cartService.totalDisplayPayableAmountWithPrepaid;
@@ -214,7 +216,7 @@ export class EmiComponent {
         }
     }
 
-    private processRawResponse(data: any, cart: any, amount?) {
+    private processRawResponse(data: any, cart: any, amount?, resetEmiSelected = false) {
         const cardTypeResponse = data;
         this.emiResponse = cardTypeResponse;
     
@@ -303,7 +305,7 @@ export class EmiComponent {
             return 0;
         });
 
-        if(amount == null)
+        if(amount == null && !resetEmiSelected)
         {
         this.selectedBankCode = this.dataEmi[0]["key"];
         this.selectedBank = "0";
@@ -645,7 +647,7 @@ export class EmiComponent {
     }
 
     onBankChange(value, emiValues) {
-        //console.log("value ==>", value, emiValues);
+        // console.log("value ==>", value, emiValues);
         if (value == "0") {
             this.step = 0;
         } else {
@@ -690,7 +692,13 @@ export class EmiComponent {
     selectedBankChange(data) {
         // console.log('selectedBankChange data ==>', data);
         if (data) {
-            this.emiResponse = this.paymentMethod == this.CARD_TYPES.debitCard ? this.emiResponseMaster[this.CARD_TYPES.debitCard] : this.emiResponseMaster[this.CARD_TYPES.creditCard];
+            //this.emiResponse = this.paymentMethod == this.CARD_TYPES.debitCard ? this.emiResponseMaster[this.CARD_TYPES.debitCard] : this.emiResponseMaster[this.CARD_TYPES.creditCard];
+            this.emiRawDebitCardResponse = this.emiResponseMaster[this.CARD_TYPES.debitCard];
+            this.emiRawCreditCardResponse = this.emiResponseMaster[this.CARD_TYPES.creditCard];
+            this.processRawResponse(
+                (this.paymentMethod == this.CARD_TYPES.debitCard) ? this.emiRawDebitCardResponse : this.emiRawCreditCardResponse,
+                this.cartSession, null, true
+            );
             this.selectedBank = data.key;
             this.selectedBankName = data.bankname;
             data.value = this.emiResponse[this.selectedBank];
@@ -699,7 +707,7 @@ export class EmiComponent {
             this.selectedYear = null;
             let emiResponseData = this._objectToArray.transform(this.emiResponse[this.selectedBank]);
             emiResponseData = (emiResponseData as Array<any>).map(emidata=>{
-                emidata.tenure = parseInt(emidata.tenure.replace('months', '')) || 0;
+                emidata.tenure = parseInt(((emidata.tenure)?emidata.tenure.replace('months', ''):0)) || 0;
                 return emidata
             }); 
             emiResponseData.sort((a,b)=> a.tenure - b.tenure);
@@ -747,14 +755,21 @@ export class EmiComponent {
     resetBankDiscountAmount(){
         this.offerKey = null;
         this.bankDiscountAmount = 0;
-        this.emiResponse = this.paymentMethod == this.CARD_TYPES.debitCard ? this.emiResponseMaster[this.CARD_TYPES.debitCard] : this.emiResponseMaster[this.CARD_TYPES.creditCard];
+        // this.emiResponse = this.paymentMethod == this.CARD_TYPES.debitCard ? this.emiResponseMaster[this.CARD_TYPES.debitCard] : this.emiResponseMaster[this.CARD_TYPES.creditCard];
+        this.emiRawDebitCardResponse = this.emiResponseMaster[this.CARD_TYPES.debitCard];
+        this.emiRawCreditCardResponse = this.emiResponseMaster[this.CARD_TYPES.creditCard];
+        this.processRawResponse(
+            (this.paymentMethod == this.CARD_TYPES.debitCard) ? this.emiRawDebitCardResponse : this.emiRawCreditCardResponse,
+            this.cartSession, null, true
+        );
+        // console.log(this.emiResponse, this.selectedBank);
         let emi = this.emiResponse[this.selectedBank];
         let rate = emi[this.selectedEMIKey].emiBankInterest ;
         this.getEmiDiscount(this.getEmiMonths(this.selectedEMIKey), rate ? (parseInt(rate) / 1200) : null, emi[this.selectedEMIKey].transactionAmount)
     }
 
     changeCardType(card) {
-        this.emiResponse = this.emiResponseMaster;
+        // this.emiResponse = (this.paymentMethod == this.CARD_TYPES.debitCard) ? this.emiResponseMaster[this.CARD_TYPES.debitCard] : this.emiResponseMaster[this.CARD_TYPES.creditCard];
         let cartSession = this._cartService.getGenericCartSession;
         cartSession['nocostEmi'] = 0;
         let cart = cartSession["cart"];
@@ -763,7 +778,7 @@ export class EmiComponent {
         this.selectedMonth = null;
         this.selectedYear = null;
         this.processRawResponse(
-            (card == this.CARD_TYPES.debitCard) ? this.emiResponse[this.CARD_TYPES.debitCard]: this.emiResponse[this.CARD_TYPES.creditCard],
+            (card == this.CARD_TYPES.debitCard) ? this.emiResponseMaster[this.CARD_TYPES.debitCard]: this.emiResponseMaster[this.CARD_TYPES.creditCard],
             cart
         );
         this.paymentMethod = card;

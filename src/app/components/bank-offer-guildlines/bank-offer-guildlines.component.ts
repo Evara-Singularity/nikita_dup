@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
-import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 
 @Component({
   selector: 'bank-offer-guildlines',
@@ -10,13 +9,13 @@ import { PopUpModule } from '@app/modules/popUp/pop-up.module';
   styleUrls: ['./bank-offer-guildlines.component.scss']
 })
 export class BankOfferGuildlinesComponent implements OnInit {
+
   @Input() bm: boolean = true;
-  @Input() bankOfferData : {};
+  @Input() bankOfferData: any = null;
+  
+  constructor( ) { }
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   resetBottomOpt() {
     this.bm = false;
@@ -28,7 +27,7 @@ export class BankOfferGuildlinesComponent implements OnInit {
     e.preventDefault();
   }
   enableScroll() {
-    document.body.removeEventListener('touchmove', this.preventDefault);
+      document.body.removeEventListener('touchmove', this.preventDefault);
   }
 
   onUpdate(data) {
@@ -41,15 +40,13 @@ export class BankOfferGuildlinesComponent implements OnInit {
 
 
 @NgModule({
+  imports: [
+    CommonModule,
+    BottomMenuModule,
+    RouterModule
+  ],
   declarations: [
     BankOfferGuildlinesComponent
-  ],
-  imports: [
-      CommonModule,
-      BottomMenuModule,
-      RouterModule,
-      PopUpModule
   ]
 })
-export class NavBottomSheetModule { }
-
+export class BankOfferGuildlinesModule { }

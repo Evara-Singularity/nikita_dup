@@ -99,14 +99,14 @@ export class PaymentComponent implements OnInit
     this.orderId = queryParams['orderId'] || queryParams['txnId'];
 
     this.payUOfferPopUpSubscription = this._popupService.payUOfferPopUp$.subscribe(data => {
-      console.log("consumed 1")
+      //console.log("consumed 1")
       this.payUOfferPopup = data;
     });
-   
-   this.payUOfferPopUpDataSubscription= this._popupService.payUOfferPopUpData$.subscribe(data => {
-    console.log("consumed 2")
-        this.payUOfferPopupData = data;
-      });
+
+    this.payUOfferPopUpDataSubscription = this._popupService.payUOfferPopUpData$.subscribe(data => {
+      // console.log("consumed 2")
+      this.payUOfferPopupData = data;
+    });
 
     //CASE-1: Valid OrderId from backend
     if (this.orderId) {

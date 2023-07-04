@@ -32,6 +32,7 @@
                         <span *ngIf="queryParams['mode'] == 'UPI'" >UPI [Tez]</span>
                         <span *ngIf="queryParams['mode'] == 'CASH'" >PayU Wallet</span>
                         <span *ngIf="queryParams['mode'] == 'RAZORPAY'">RazorPay</span>
+                        <span *ngIf="queryParams['mode'] == 'EMI'">EMI</span>
                         <span>&nbsp;.&nbsp;₹{{amount}}</span>
                     </span>
                 </li>

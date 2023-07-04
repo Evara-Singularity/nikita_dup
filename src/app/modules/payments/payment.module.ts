@@ -17,6 +17,7 @@ import { PaymentComponent } from './payment.component';
 import { GenericOffersModule } from '../ui/generic-offers/generic-offers.component';
 import { PrepaidOfferCheckoutModule } from '../prepaid-offer-checkout/prepaid-offer-checkout.component';
 import { BnplModule } from './bnpl/bnpl.module';
+import { BottomMenuModule } from '../bottomMenu/bottom-menu.module';
 
 @NgModule({
     imports: [
@@ -36,7 +37,8 @@ import { BnplModule } from './bnpl/bnpl.module';
         PaytmUpiModule,
         PopUpModule,
         PrepaidOfferCheckoutModule,
-        BnplModule
+        BnplModule,
+        BottomMenuModule
     ],
     declarations: [
         PaymentComponent

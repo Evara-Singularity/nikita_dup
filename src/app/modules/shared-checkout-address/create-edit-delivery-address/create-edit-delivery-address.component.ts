@@ -196,7 +196,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             if (response['statusCode'] === 200) {
                 this.displayOTPPopup(this.phone.value);
             } else {
-                this._toastMessage.show({ type: 'error', text: response['message'] });
+                this._toastMessage.show({ type: 'error', text: response['message'] || response['statusMessage'] });
             }
         })
     }

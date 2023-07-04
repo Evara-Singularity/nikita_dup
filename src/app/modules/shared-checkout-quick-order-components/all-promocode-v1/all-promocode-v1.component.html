@@ -8,7 +8,7 @@
     <div class="pwa-row pad-0 promo-strip">
         <div class="coupen-strip-section">
             <!-- <div class="coupen-card"> -->
-            <div class="apply-coupon" *ngIf="_cartService?.topMatchedPromoCode?.promoCode">
+            <div class="apply-coupon" *ngIf="_cartService?.topMatchedPromoCode?.promoCode && moduleUsedIn != 'quick-checkout'">
                 <div class="inner-coupon">
                     <i class="icon-coupon-3-fill-1"></i>
                     <div class="coupen-code"> 

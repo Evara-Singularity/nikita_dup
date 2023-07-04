@@ -102,11 +102,23 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             'idState': [{ value: null, disabled: true }, [Validators.required]],
             'email': [address ? address.email : this.userSesssion['email'], [Validators.required,Step.validateEmail]],
             'phoneVerified': [(address && address.phoneVerified) ? address.phoneVerified : false]
-        });
+        }, { validators: this.combineFieldsValidator });
         if (this.phone.value) { this.verifyPhone(this.phone.value); }
         if (this.postCode.value) { this.isPostcodeValid = true; }
         this.city.disable();
         this.idState.disable();
+    }
+
+    combineFieldsValidator(control) {
+        const address1Value = control.get('addressLineFirst').value || '';
+        const address2Value = control.get('addressLine').value || '';
+        const combinedValue = `${address1Value} ${address2Value}`;
+
+        const words = combinedValue.trim().split(/\s+/);
+        if (words.length < 3) {
+            return { insufficientWords: true };
+        }
+        return null;
     }
 
     separateAddressLineByPipe(address: any) {

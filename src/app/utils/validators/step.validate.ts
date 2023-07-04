@@ -110,8 +110,7 @@ export class Step {
     }
 
     static noWhitespaceValidator(control: FormControl) {
-        console.log(control.value)
-        if(control && (control.value == null || (control.value && control.value.length == 0))){
+        if(control && (control.value == null || control.value == '' || (control.value && control.value.length == 0))){
             return null;  
         } else {
             return (control.value || '').trim().length ? null : { 'whitespace': true };

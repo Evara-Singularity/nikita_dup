@@ -1,19 +1,24 @@
-<div class="payment-offer-container" *ngIf="invoiceType=='retail' && payUOffersData['offers'] && payUOffersData['offers'].length > 0">
-    <p class="payment-offer-text" >Payment Offers</p>
-    <div class="payment-offer-outer-section" >
-        <div class="offer-icon"  (click)="initiateBankOfferGuidlinesPopUp(item)" *ngFor="let item of payUOffersData['offers']">
+<div class="payment-offer-container"
+    *ngIf="invoiceType=='retail' && payUOffersData['offers'] && payUOffersData['offers'].length > 0">
+    <p class="payment-offer-text">Payment Offers</p>
+    <div class="payment-offer-outer-section">
+        <div class="offer-icon" (click)="initiateBankOfferGuidlinesPopUp(item)"
+            *ngFor="let item of payUOffersData['offers']">
             <i class="icon-coupon-3-fill-1"></i>
             <p class="offer-text">{{item.description}}</p>
             <i class="icon-next next-arrow"></i>
         </div>
     </div>
+</div>
+<section *ngIf="isSavedCardExist" class="payment-container payment-modal-bottom pwa-row mt-10"
+    style="padding-bottom: 0px; margin-bottom: 0px;">
+    <div class="card-30">
+        <saved-card *ngIf="isSavedCardExist" [savedCardsData]="savedCardsData" [type]="invoiceType"
+            (cartSelected$)="cardSelected($event)" (removeTab$)="removeTab($event)"></saved-card>
     </div>
+</section>
     <section class="payment-container payment-modal-bottom pwa-row mt-10">
-        <p class="payment-mode-section">Payment Mode</p>
-        <div class="card-30">
-            <saved-card *ngIf="isSavedCardExist" [savedCardsData]="savedCardsData" [type]="invoiceType"
-                (cartSelected$)="cardSelected($event)" (removeTab$)="removeTab($event)"></saved-card>
-        </div>
+        <p class="payment-mode-section">Payment Modes</p>
         <div class="pwa-col-12">
             <section class="payment_accordion">
                 <div id="upiSection" class="payment_accordion_item pwa-row pad-0">

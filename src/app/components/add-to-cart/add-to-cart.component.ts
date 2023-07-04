@@ -348,6 +348,7 @@ export class AddToCartComponent implements OnDestroy {
       this.loadRFQThankyouPopup(hasGstin, rfqValue);
       this._productListService.analyticRFQ(true, product);
     });
+    this.cdr.detectChanges();
   }
 
   async loadRFQThankyouPopup(hasGstin, rfqValue) {

@@ -1413,17 +1413,17 @@ export class CartService
         return item;
     }
 
-    getAllPromoCodes(cartId = null)
+    getAllPromoCodes(cartId = null, totalPayableAmount = null)
     {
-        console.trace();
-        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?cartId=' + cartId;
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?cartId=' + cartId;
+        url = (totalPayableAmount) ? url + `&totalCartAmount=${totalPayableAmount}` : url;
         return this._dataService.callRestful('GET', url);
     }
 
-    getAllPromoCodesByUserId(userID = null,cartId = null)
-    {
-        console.trace();
-        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?userId=' + userID + '&cartId=' + cartId + '&buyNow='+ (this._buyNow || 'false');
+    getAllPromoCodesByUserId(userID = null, cartId = null, totalPayableAmount = null) {
+        // console.trace();
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?userId=' + userID + '&cartId=' + cartId + '&buyNow=' + (this._buyNow || 'false');
+        url = (totalPayableAmount) ? url + `&totalCartAmount=${totalPayableAmount}` : url;
         return this._dataService.callRestful('GET', url);
     }
 
@@ -1449,9 +1449,11 @@ export class CartService
     getPromoCodesByUserId(userId = null, isUpdatePromoCode = true) {
         this._loaderService.setLoaderState(true);
         const cartSession = this.getCartSession();
+        const shipingValueRequest = this.getShippingObj(cartSession);
+        // console.log('shipingValueRequest', shipingValueRequest);
         const offerId = (cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
         if (userId) {
-            this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId']).pipe(map(res=>{
+            this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId'],(shipingValueRequest['totalPayableAmount'] || null)).pipe(map(res=>{
                 if (res && res['data']) {
                     (res['data'] as []).sort((a, b) => b['isApplicable'] - a['isApplicable'])
                 }
@@ -1460,7 +1462,7 @@ export class CartService
                 this.processPromoData(res, offerId, isUpdatePromoCode);
             });
         } else {
-            this.getAllPromoCodes(cartSession['cart']['cartId']).pipe(map(res=>{
+            this.getAllPromoCodes(cartSession['cart']['cartId'], (shipingValueRequest['totalPayableAmount'] || null)).pipe(map(res=>{
                 if (res && res['data']) {
                     (res['data'] as []).sort((a, b) => b['isApplicable'] - a['isApplicable'])
                 }

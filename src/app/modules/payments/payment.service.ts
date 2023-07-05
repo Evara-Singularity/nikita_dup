@@ -51,6 +51,18 @@ export class PaymentService{
         }));
     }
 
+    getPayUOffers(type)
+    {
+        const url = `${CONSTANTS.NEW_MOGLIX_API}/payment/getPayuOffer`;
+        const data ={
+
+        }
+        return this._dataService.callRestful('POST', url,{body:data}).pipe(map((response) =>
+        {
+            return response['status'] ? response : { status: false }
+        }));  
+    }
+
     updatePaymentMsns(data)
     {
         this._sessionStorage.store(this.PAYMENT_MSNS, data)

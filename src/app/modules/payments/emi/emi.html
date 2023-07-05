@@ -99,9 +99,10 @@
                     <h3 class="heading-3">Please enter your card details</h3>
                     <div class="material-form material-form-boxed">
                         <div class="outline-input-label">
+                            <!-- (input)="onCardNumberChange($event.target.value)" -->
                             <label [class.is-focus]="ccNumber.value.length!=0">
                                 <input type="text" id="cc-number" formControlName="ccnum" type="tel" #ccNumber
-                                kpAutocompleteOff>
+                                kpAutocompleteOff >
                                 <span class="label">
                                     Card Number
                                 </span>
@@ -189,7 +190,7 @@
     </div>
 
     <div style="margin-bottom: 15px" >
-        <prepaid-offer-checkout [displayMode]="'LABEL'" [displayName]="'EMI payment'" ></prepaid-offer-checkout>
+        <prepaid-offer-checkout [displayMode]="'LABEL'" [bankDiscountAmount]="bankDiscountAmount" [displayName]="'EMI payment'"></prepaid-offer-checkout>
     </div>
 
     <!-- <p class="emi-note-text">

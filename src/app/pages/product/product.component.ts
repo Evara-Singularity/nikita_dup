@@ -3733,7 +3733,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             status: this.rawProductData["status"],
             product_url: this.productUrl,
         };
-        console.log(clickStreamData.product_name,"ppp");
+        //console.log(clickStreamData.product_name,"ppp");
         //TODO:Yogender for click stream to set selling price
         if (this.priceQuantityCountry != null) {
             clickStreamData["mrp"] = this.productMrp;

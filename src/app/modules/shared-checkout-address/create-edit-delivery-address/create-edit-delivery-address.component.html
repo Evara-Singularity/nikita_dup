@@ -66,11 +66,14 @@
                         <p *ngIf="addressLineFirst.hasError('required')" class="error-txt">
                             Kindly enter your Flat, House no., Building, Company
                         </p>
-                        <p *ngIf="!addressLineFirst.hasError('required') && (addressForm.hasError('insufficientWords') || addressLineFirst.hasError('minlength') || addressLineFirst.hasError('whitespace'))" class="error-txt">
+                        <p *ngIf="!addressLineFirst.hasError('required') && (addressLineFirst.hasError('whitespace'))" class="error-txt">
                             Kindly enter valid Flat, House No., Building, Company
                         </p>
-                        <p *ngIf="addressLineFirst.hasError('pattern')" class="error-txt">
+                        <p *ngIf="!addressLineFirst.hasError('required') && addressLineFirst.hasError('pattern')" class="error-txt">
                             Special characters are not allowed in address.
+                        </p>
+                        <p *ngIf="!addressLineFirst.hasError('whitespace') && !addressLineFirst.hasError('required') && (addressForm.hasError('insufficientWords'))" class="error-txt">
+                            Address fields must have atleast 3 words.
                         </p>
                     </ng-container>
                 </div>
@@ -83,12 +86,15 @@
                         <p *ngIf="addressLine.hasError('required')" class="error-txt">
                             Kindly enter your Area, Street, Sector, Village
                         </p>
-                        <p *ngIf="(addressLine['value'].length > 0) && (addressForm.hasError('insufficientWords') || addressLine.hasError('minlength') || addressLine.hasError('whitespace'))" class="error-txt">
+                        <p *ngIf="(addressLine.hasError('whitespace'))" class="error-txt">
                             Kindly enter valid Area, Street, Sector, Village
                         </p>
                         <p *ngIf="addressLine.hasError('pattern')" class="error-txt">
                             Special characters are not allowed in address.
                         </p>
+                        <!-- <p *ngIf="!addressLine.hasError('whitespace') && (addressForm.hasError('insufficientWords'))" class="error-txt">
+                            Address fields must have atleast 3 words.
+                        </p> -->
                     </ng-container>
                 </div>
                 <div class="multiple-form-field">

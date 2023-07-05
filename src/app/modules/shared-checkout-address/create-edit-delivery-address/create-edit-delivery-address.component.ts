@@ -93,8 +93,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
             'alternatePhone': [(address && address.alternatePhone) ? address.alternatePhone : this.userSesssion['alternatePhone'], [Validators.pattern("[0-9]{10}")]],
             'postCode': [(address && address.postCode) ? address.postCode : null, [Validators.required, Step.validatePostCode]],
             'landmark': [(address && address.landmark) ? address.landmark : null, [Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
-            'addressLineFirst': [this.separateAddressLineByPipe(address).addressLineFirst, [Validators.required, Validators.minLength(3), Step.noWhitespaceValidator, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
-
+            'addressLineFirst': [this.separateAddressLineByPipe(address).addressLineFirst, [Validators.required, Step.noWhitespaceValidator, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
             'addressLine': [this.separateAddressLineByPipe(address).addressLine, [Step.noWhitespaceValidator, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\-\,\/\.\(\)]*)+')]],
 
             'city': [(address && address.city) ? address.city : null, [Validators.required, Validators.pattern('^([a-zA-Z0-9_]*[ \t\r\n\f]*[\#\-\,\/\.\(\)]*)+')]],
@@ -241,6 +240,10 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
         let aRquest = { idCustomer: this.userSesssion['userId'], idAddressType: 1, active: true, invoiceType: this.invoiceType };
         if(address && address.addressLine && address.addressLineFirst){
             address.addressLine = address.addressLineFirst + ' | ' + address.addressLine ;
+            delete address.addressLineFirst;
+        }
+        if(address && address.addressLineFirst && !address.addressLine ){
+            address.addressLine = address.addressLineFirst;
             delete address.addressLineFirst;
         }
         let request = { ...address, ...aRquest };

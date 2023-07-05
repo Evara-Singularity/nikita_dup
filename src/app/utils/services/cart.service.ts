@@ -48,6 +48,7 @@ export class CartService
     notifications = [];
     appliedPromoCode = null;
     allPromoCodes: Array<any> = [];
+    topMatchedPromoCode: object = {};
     shippingCharges: number = 0;
     isPromoCodeValid: boolean = false;
     showNotification: boolean = false;
@@ -1422,15 +1423,17 @@ export class CartService
         return item;
     }
 
-    getAllPromoCodes(cartId = null)
+    getAllPromoCodes(cartId = null, totalPayableAmount = null)
     {
-        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?cartId=' + cartId;
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?cartId=' + cartId;
+        url = (totalPayableAmount) ? url + `&totalCartAmount=${totalPayableAmount}` : url;
         return this._dataService.callRestful('GET', url);
     }
 
-    getAllPromoCodesByUserId(userID = null,cartId = null)
-    {
-        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?userId=' + userID + '&cartId=' + cartId + '&buyNow='+ (this._buyNow || 'false');
+    getAllPromoCodesByUserId(userID = null, cartId = null, totalPayableAmount = null) {
+        // console.trace();
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?userId=' + userID + '&cartId=' + cartId + '&buyNow=' + (this._buyNow || 'false');
+        url = (totalPayableAmount) ? url + `&totalCartAmount=${totalPayableAmount}` : url;
         return this._dataService.callRestful('GET', url);
     }
 
@@ -1456,13 +1459,25 @@ export class CartService
     getPromoCodesByUserId(userId = null, isUpdatePromoCode = true) {
         this._loaderService.setLoaderState(true);
         const cartSession = this.getCartSession();
+        const shipingValueRequest = this.getShippingObj(cartSession);
+        // console.log('shipingValueRequest', shipingValueRequest);
         const offerId = (cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
         if (userId) {
-            this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId']).subscribe(res => {
+            this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId'],(shipingValueRequest['totalPayableAmount'] || null)).pipe(map(res=>{
+                if (res && res['data']) {
+                    (res['data'] as []).sort((a, b) => b['isApplicable'] - a['isApplicable'])
+                }
+                return res;
+            })).subscribe(res => {
                 this.processPromoData(res, offerId, isUpdatePromoCode);
             });
         } else {
-            this.getAllPromoCodes(cartSession['cart']['cartId']).subscribe(res => {
+            this.getAllPromoCodes(cartSession['cart']['cartId'], (shipingValueRequest['totalPayableAmount'] || null)).pipe(map(res=>{
+                if (res && res['data']) {
+                    (res['data'] as []).sort((a, b) => b['isApplicable'] - a['isApplicable'])
+                }
+                return res;
+            })).subscribe(res => {
                 this.processPromoData(res, offerId, isUpdatePromoCode);
             })
         }
@@ -1471,6 +1486,7 @@ export class CartService
     processPromoData(res, offerId, isUpdatePromoCode = false) {
         if (res['statusCode'] === 200) {
             this.allPromoCodes = res['data'];
+            this.topMatchedPromoCode = this.allPromoCodes.find(res=> res.isApplicable === true)
             const promo = this.allPromoCodes.find(promo => promo.promoId === offerId);
             if (promo) {
                 this.appliedPromoCode = promo['promoCode'];

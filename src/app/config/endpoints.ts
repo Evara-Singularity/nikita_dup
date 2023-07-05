@@ -141,5 +141,6 @@ export const ENDPOINTS = {
   GET_FBT_PRODUCTS_BY_MSNS :"/product/getFbtProductsByMsns",
   GET_CATEGORY_INFO_BY_MSNS: "/search/getCategoryInfoByMsns",
   IFSC_CODE:'/payment/getBankDetails?ifsc=',
+  GET_COMPARE_PRODUCTS:"/search/compareProducts?productId=",
   PRODUCT_API: '/aggregate/pdpDetails'
 };

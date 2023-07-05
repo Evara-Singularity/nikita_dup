@@ -296,6 +296,7 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
       this.createEditAddressInstance.instance['redirectedTo'] = redirectedTo || null;
       this.createEditAddressSubscription = (this.createEditAddressInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((response: CreateEditAddressModel) =>
       {
+          // console.log('response ==>', response);
           //Expected Actions: "Add or Edit or null", null implies no action to be taken
           if (response.action) {
               const isEditMode = response.action === "Edit";
@@ -325,6 +326,8 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
           this.addressListInstance.instance['addresses'] = IS_DELIVERY ? this.deliveryAddressList : this.billingAddressList;
       }
       if (IS_DELIVERY && (canUpdateDelivery || isEditMode)) {
+         // console.log('IS_DELIVERY', this._cartService.shippingAddress); 
+            this._cartService.shippingAddress = this.deliveryAddressList[0];
           const deliveryAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
           this.updateDeliveryOrBillingAddress(IS_DELIVERY, deliveryAddress);
           return;
@@ -333,7 +336,41 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
           const billingAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.billingAddressList, this._cartService.billingAddress);
           this.updateDeliveryOrBillingAddress(IS_DELIVERY, billingAddress);
       }
+
+      if (IS_DELIVERY && !isEditMode) {
+        this._cartService.shippingAddress = this.deliveryAddressList[0];
+        this.deliveryAddressList = this.swapAddressPosstion(this.deliveryAddressList);
+        const deliveryAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(
+          this.deliveryAddressList,
+          this._cartService.shippingAddress
+        );
+        this.updateDeliveryOrBillingAddress(IS_DELIVERY, deliveryAddress);
+        return;
+      }
+
+      if (!IS_DELIVERY && !isEditMode) {
+        this._cartService.billingAddress = this.billingAddressList[0];
+        this.billingAddressList = this.swapAddressPosstion(this.billingAddressList);
+        const billingAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(
+          this.billingAddressList,
+          this._cartService.billingAddress
+        );
+        this.updateDeliveryOrBillingAddress(IS_DELIVERY, billingAddress);
+        return;
+      }
+
+
   }
+
+    swapAddressPosstion(addressList: any[]) {
+        if (addressList.length > 1) {
+            const temp = addressList[1] // new address added
+            addressList[1] = addressList[0];
+            addressList[0] = temp;
+            return addressList;
+        }
+        return addressList;
+    }
 
   /**
    * @description decides which event to be updated

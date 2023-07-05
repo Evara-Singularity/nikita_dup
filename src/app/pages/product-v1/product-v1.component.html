@@ -1,4 +1,11 @@
 <div *ngIf="!productNotFound">
+
+    <app-floating-coupon-widget *ngIf="similarProductsScrolledIntoView && iscloseproductDiscInfoComponent && !rawProductData?.productOutOfStock" (closeproductDiscInfoComponent$)="closeproductDiscInfoComponent()"
+        [isBulkPricesProduct]="isBulkPricesProduct" [productMrp]="rawProductData?.priceQuantityCountry?.mrp"
+        [selectedProductBulkPrice]="selectedProductBulkPrice" [productPrice]="rawProductData?.productPrice"
+        [productDiscount]="rawProductData?.priceQuantityCountry?.discount" [productName]="rawProductData.productName" [priceWithoutTax]="rawProductData?.priceWithoutTax"
+        [gstPercentage]='rawProductData?.taxPercentage' [promoCodes]='apiResponse?.applicablePromo'></app-floating-coupon-widget>
+
     <app-oos-similar-section [productOutOfStock]="rawProductData?.productOutOfStock" [similarForOOSContainer]="similarForOOSContainer"
         [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
     </app-oos-similar-section>
@@ -69,6 +76,8 @@
         [isBrandMsn]='rawProductData?.productBrandDetails["brandTag"] == "Brand" ? true : false'
         [productOutOfStock]="rawProductData?.productOutOfStock" (navigateToFAQ$)="loadReturnInfo()"></product-benefits>
 
+    <!-- floating container ref -->
+    <div #similarProductsRef></div>
 
     <product-feature-details (showYTVideo$)="showYTVideo1($event)"
         (handleProductInfoPopup$)="handleProductInfoPopup1($event)"
@@ -92,8 +101,14 @@
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
     <div class="card" [class.fbtSection]='fbtFlag' *ngIf='fbtFlag'>
-        <fbt [originalProductBO]='originalProductBO' [productQuantity]='cartQunatityForProduct'
+        <fbt [originalProductBO]='originalProductBO' [isHindiUrl]='isHindiUrl' [productQuantity]='cartQunatityForProduct'
             [analytics]='fbtAnalytics'></fbt>
+    </div>
+
+    <div *ngIf="compareProductsData.length > 0" class="common-product" data-observeVisibility
+        [debounceTime]="100" (visible)="onVisibleproductPriceCompare()">
+        <ng-container #productPriceCompare></ng-container>
+        <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="productPriceCompareInstance"></product-skeletons>
     </div>
 
     <app-product-review [productName]="rawProductData?.productName"

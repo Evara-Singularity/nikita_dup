@@ -88,7 +88,7 @@ export const product = {
     store:"स्टोर",
     product_specifications:"प्रोडक्ट स्पेसिफिकेशंस",
     available_coupons:"उपलब्ध कूपन",
-    and_get:"और प्राप्त करें",
+    and_get:"प्राप्त करें",
     //product info key
     "specifications":"स्पेसिफिकेशंस",
     "images":"तस्वीरें",
@@ -116,7 +116,7 @@ export const product = {
     min_cart_value: '___count___ रुपये के न्यूनतम कार्ट मूल्य पर',
     see_more_coupons: '___promoCodes___ और कूपन देखें',
     prepaid_discount_text: `ऑनलाइन भुगतान करें और प्राप्त करें, 
-    ___brandName___ ___categoryName___ में ___minimumCartValue___ के न्यूनतम मूल्य पर यूपीआई, ईएमआई, क्रेडिट / डेबिट कार्ड, नेट बैंकिंग, वॉलेट का उपयोग करके भुगतान करते समय लागू`,
+    ___brandName___ ___categoryName___ में ___minimumCartValue___ के न्यूनतम कार्ट मूल्य पर यूपीआई, ईएमआई, क्रेडिट / डेबिट कार्ड, नेट बैंकिंग, वॉलेट का उपयोग करके भुगतान करते समय लागू`,
     get_rfq_text_1: 'बड़ी मात्रा में सामान खरीदें',
     get_rfq_text_2: 'अपने व्यवसाय के लिए सर्वोत्तम मूल्य प्राप्त करें',
     get_rfq_text_3: 'हम आपसे संपर्क करेंगे : ',

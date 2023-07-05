@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit, HostListener } from '@angular/core';
+import { Component, Input, NgModule, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
 import { ProductService } from '../../utils/services/product.service';
 import { CommonService } from '../../utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
@@ -41,13 +41,13 @@ export class ProductPopularDealsComponent implements OnInit {
 
   constructor(
     public commonService: CommonService,
-    private productService: ProductService
+    private productService: ProductService,
+    private cdr: ChangeDetectorRef
   ) {
     this.isBrowser = commonService.isBrowser;
   }
 
   ngOnInit(): void {
-    console.log(this.apiResponse);
     this.getProductPopularDeals(this.apiResponse);
     this.cardMetaInfo = {
       redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
@@ -60,15 +60,12 @@ export class ProductPopularDealsComponent implements OnInit {
     this.commonService.changeStaticJson.subscribe(staticJsonData => {
       this.commonService.defaultLocaleValue = staticJsonData;
       this.productStaticData = staticJsonData;
+      this.cdr.detectChanges();
     });
   }
   
   getProductPopularDeals(response: any) {
-    this.resultArray = Object.keys(response["taggedProducts"])
-      .map((index) => {
-        return response["taggedProducts"][index];
-      })
-      .filter((item) => item.productList.length !== 0); // removing Tags with 0 products
+    this.resultArray = response;
     this.setProductList(0, this.resultArray[0]);        // to set first default value
   }
 

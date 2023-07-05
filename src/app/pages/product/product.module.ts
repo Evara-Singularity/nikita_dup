@@ -34,6 +34,7 @@ import { ProductDealsModule } from '@app/components/product-popular-deals/produc
 import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/product-oos-similar.module';
 import { ProductInfoModule } from '@app/modules/product-info/product-info.module';
 import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
+import { FloatingCouponWidgetModule } from '../../components/floating-coupon-widget/floating-coupon-widget.module';
 import { AdsensePromotedBrandsUnitModule } from '@app/modules/adsense/adsense-promoted-brands-unit.module';
 import { AdsenseFeatureProductsUnitModule } from '@app/modules/adsense/adsense-feature-products-unit.module';
 import { AdsenseLeaderboardBannerModule } from '@app/modules/adsense/adsense-leaderboard-banner.module';
@@ -91,6 +92,7 @@ import { AdsenseService } from '@app/utils/services/adsense.service';
     FbtComponentModule,
     ProductDealsModule,
     YTThumnailPipeModule,
+    FloatingCouponWidgetModule,
     AdsensePromotedBrandsUnitModule,
     AdsenseFeatureProductsUnitModule,
     AdsenseLeaderboardBannerModule,

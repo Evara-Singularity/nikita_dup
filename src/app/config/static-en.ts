@@ -87,7 +87,7 @@ export const product = {
     store:"Store",
     product_specifications:"Product Specifications",
     available_coupons:"Available Coupons",
-    and_get:"and get",
+    and_get:"Get",
      //product info key
     "specifications":"specifications",
     "images":"images",
@@ -124,5 +124,6 @@ export const product = {
     of:'/',
     emis_availaible:'EMIs Available ',
     brand_store_text:'___brand___ Store',
-    missing: 'Missing'
+    missing: 'Missing',
+    buy: 'Buy'
 }

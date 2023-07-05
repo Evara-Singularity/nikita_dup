@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
+import { Component, Input, EventEmitter, NgModule, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '../../utils/services/common.service';
@@ -7,7 +7,8 @@ import { CommonService } from '../../utils/services/common.service';
 @Component({
   selector: 'app-product-review',
   templateUrl: './product-review.component.html',
-  styleUrls: ['./product-review.component.scss']
+  styleUrls: ['./product-review.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductReviewComponent {
   productStaticData = this._commonService.defaultLocaleValue;
@@ -18,7 +19,7 @@ export class ProductReviewComponent {
   @Output('postHelpful') postHelpful = new EventEmitter();
   @Output('writeReview') writeReview = new EventEmitter();
   @Output('reviewRatingPopup') reviewRatingPopup = new EventEmitter();
-  constructor(private _commonService:CommonService,private _activatedRoute:ActivatedRoute){
+  constructor(private _commonService:CommonService,private _activatedRoute:ActivatedRoute, private cdr: ChangeDetectorRef){
 
   }
   ngOnInit(){
@@ -47,7 +48,13 @@ export class ProductReviewComponent {
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
+      this.cdr.detectChanges();
     });
+    this._commonService.feedBackPosted.subscribe(value => {
+      if(value) {
+        this.cdr.detectChanges();
+      }
+    })
   }
 }
 

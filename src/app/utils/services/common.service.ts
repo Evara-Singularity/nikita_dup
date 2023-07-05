@@ -77,10 +77,12 @@ export class CommonService
     private networkSpeedState: Subject<number> = new Subject<number>();
     private webpSupportState: Subject<number> = new Subject<number>();
     private _loadSearchPopup: Subject<string> = new Subject<string>();
+    private _copiedCoupon: Subject<string> = new Subject<string>();
     public searchNudgeOpened: Subject<boolean> = new Subject<boolean>();
     public searchNudgeClicked: Subject<boolean> = new Subject<boolean>();
     public initiateLoginPopUp: Subject<string> = new Subject<string>();
     public _initiateBulkRfq: Subject<boolean> = new Subject<boolean>();
+    public similarProductsLoaded: Subject<boolean> = new Subject<boolean>();
 
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
     public addLottieScriptSubject: Subject<any> = new Subject<any>();
@@ -95,9 +97,11 @@ export class CommonService
     public previousUrl: string = "/";
     public currentUrl: string = null;
     public enableAppPromoInHeader = false;
-    
+    feedBackPosted = new Subject()
     goldMemberPopupOpened = new Subject();
     public defaultLocaleValue = localization_en.product;
+    private copiedCouponInternal: string = '';
+
     constructor(
         @Inject(PLATFORM_ID) platformId,
         private checkoutService: CheckoutService,
@@ -236,6 +240,19 @@ export class CommonService
     getSearchPopupStatus()
     {
         return this._loadSearchPopup.asObservable();
+    }
+
+    updateCopiedCoupon(coupon) {
+        this.copiedCouponInternal = coupon;
+        this._copiedCoupon.next(coupon);
+    }
+
+    getCopiedCoupon() {
+        return this._copiedCoupon.asObservable();
+    }
+
+    get copiedCoupon(): string{
+        return this.copiedCouponInternal;
     }
 
     initiateBulkRfq(status: boolean)

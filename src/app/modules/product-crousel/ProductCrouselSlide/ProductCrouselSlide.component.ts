@@ -22,6 +22,7 @@ import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.ser
 import { LocalStorageService } from "ngx-webstorage";
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonService } from "@app/utils/services/common.service";
+import { TrackingService } from "@app/utils/services/tracking.service";
 
 @Component({
   selector: "ProductCrouselSlide",
@@ -75,6 +76,7 @@ export class ProductCrouselSlideComponent {
     private _siemaCrouselService: SiemaCrouselService,
     private ngxSiemaService: NgxSiemaService,
     private _analytics: GlobalAnalyticsService,
+    private trackingService: TrackingService,
     private _activatedRoute:ActivatedRoute
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -154,7 +156,7 @@ export class ProductCrouselSlideComponent {
     let analyticsDetails = null;
     if(this.productBo)
     {
-        const PRODUCT = this._analytics.basicPDPTracking(this.productBo);
+        const PRODUCT = this.trackingService.basicPDPTrackingV1(this.productBo);
         analyticsDetails = this._analytics.getCommonTrackingObject(PRODUCT, "pdp");
     }
     let videoDetails = { url: link, params: this.ytParams };

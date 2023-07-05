@@ -57,7 +57,7 @@ export class ProductUtilsService{
     {
         this.fbtSource.next({ rootProduct: rootProduct, fbtProducts: fbtProducts });
         if (rootProduct && fbtProducts) {
-            this.checkRootItemInCart(rootProduct['partNumber']);
+            this.checkRootItemInCart(rootProduct['defaultPartNumber']);
         }
     }
 
@@ -217,6 +217,22 @@ export class ProductUtilsService{
         if (productPartDetails && productPartDetails[partReference]['productPriceQuantity'] && productPartDetails[partReference]['productPriceQuantity']['india']) {
             let priceQuantityCountry = productPartDetails[partReference]['productPriceQuantity']['india'];
             let oosFlag = priceQuantityCountry['outOfStockFlag']
+            let mrp = parseInt(priceQuantityCountry['mrp']);
+            let sp = parseInt(priceQuantityCountry['sellingPrice']);
+            if (oosFlag == false && mrp > 0 && sp > 0) {
+                isValid = true;
+            }
+        }
+        return isValid;
+    }
+
+    validateProductV1(item) {
+        let isValid = false;
+        if (!item) return isValid;
+        let productPartDetails = item;
+        if (productPartDetails && productPartDetails['priceQuantityCountry'] && productPartDetails['priceQuantityCountry']) {
+            let priceQuantityCountry = productPartDetails['priceQuantityCountry'];
+            let oosFlag = item.productOutOfStock;
             let mrp = parseInt(priceQuantityCountry['mrp']);
             let sp = parseInt(priceQuantityCountry['sellingPrice']);
             if (oosFlag == false && mrp > 0 && sp > 0) {

@@ -92,12 +92,12 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     ngAfterViewInit(): void
     {
         this.addSubscriptions();
-        setTimeout(()=>{
-            if (!this.deliveryAddress) {
-                this.addDeliveryOrBilling.next("Delivery");
-                return;
-            }
-        },800)
+        // setTimeout(()=>{
+        //     if (!this.deliveryAddress) {
+        //         this.addDeliveryOrBilling.next("Delivery");
+        //         return;
+        //     }
+        // },800)
     }
 
     addSubscriptions(): void
@@ -309,24 +309,26 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                     eventData['prodURL'] = _cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
                 }
                 /*Start Criteo DataLayer Tags */
-                this._analytics.sendGTMCall({
-                    'event': 'viewBasket',
-                    'email': (userSession && userSession.email) ? userSession.email : '',
-                    'currency': 'INR',
-                    'productBasketProducts': criteoItem,
-                    'eventData': eventData
-                });
-                /*End Criteo DataLayer Tags */
+                if (criteoItem && criteoItem.length) {
+                    this._analytics.sendGTMCall({
+                        'event': 'viewBasket',
+                        'email': (userSession && userSession.email) ? userSession.email : '',
+                        'currency': 'INR',
+                        'productBasketProducts': criteoItem,
+                        'eventData': eventData
+                    });
 
-                this._analytics.sendGTMCall({
-                    'event': 'checkout',
-                    'ecommerce': {
-                        'checkout': {
-                            'actionField': { 'step': "address", 'option': 'payment' },
-                            'products': criteoItem
-                        }
-                    },
-                });
+                    /*End Criteo DataLayer Tags */
+                    this._analytics.sendGTMCall({
+                        'event': 'checkout',
+                        'ecommerce': {
+                            'checkout': {
+                                'actionField': { 'step': "address", 'option': 'payment' },
+                                'products': criteoItem
+                            }
+                        },
+                    });
+                }
                 this._cartService.lastPaymentMode = null;
                 this._cartService.lastParentOrderId = null;
                 this._router.navigate(['/checkout/payment']);
@@ -356,15 +358,17 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             };
             dlp.push(product);
         }
-        this._analytics.sendGTMCall({
-            'event': 'checkout',
-            'ecommerce': {
-                'checkout': {
-                    'actionField': { 'step': 3, 'option': 'address' },
-                    'products': dlp
-                }
-            },
-        });
+        if(dlp && dlp.length) {
+            this._analytics.sendGTMCall({
+                'event': 'checkout',
+                'ecommerce': {
+                    'checkout': {
+                        'actionField': { 'step': 3, 'option': 'address' },
+                        'products': dlp
+                    }
+                },
+            });
+        }
         let userSession = this._localAuthService.getUserSession();
         if (userSession && userSession.authenticated && userSession.authenticated == "true") {
             /*Start Criteo DataLayer Tags */

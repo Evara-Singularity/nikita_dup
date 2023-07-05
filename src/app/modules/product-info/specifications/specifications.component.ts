@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output,EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output,EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '@app/utils/services/common.service';
@@ -26,10 +26,10 @@ export class SpecificationsComponent implements OnInit
     user: any;
     showNavToStorePage:boolean=false;
     
-    constructor(public _commonService: CommonService,private _localAuthService : LocalAuthService,private router : Router) { }
+    constructor(public _commonService: CommonService,private _localAuthService : LocalAuthService,private cdr : ChangeDetectorRef) { }
 
     ngOnInit() {
-        console.log('specifications', this.specifications);
+        //console.log('specifications', this.specifications);
         this.checkSecondaryAttributes();
         if (BrandLinkMapping.hasOwnProperty(this.specifications["brand"]["brandId"])) {
             this.showNavToStorePage=true;
@@ -63,6 +63,7 @@ export class SpecificationsComponent implements OnInit
             this.openLoginPopUp.emit()
             this._localAuthService.login$.subscribe((data) => {
                 this.toggleShowMore();
+                this.cdr.detectChanges();
             })
         }
     }

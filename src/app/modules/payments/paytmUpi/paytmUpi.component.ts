@@ -117,13 +117,15 @@ export class PaytmUpiComponent {
             'couponUsed': cartSession['cart']['totalOffer'],
             'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
         };
-
-        this._commonService.isBrowser && this._analytics.sendGTMCall({
-            'event': 'checkoutStarted',
-            'shipping_Information': shippingInformation,
-            'city': addressList["city"],
-            'paymentMode': 'PAYTMUPI'
-        })
+        //Gtm validation
+        if(shippingInformation['shippingCost'] && addressList && addressList["city"]) {
+            this._commonService.isBrowser && this._analytics.sendGTMCall({
+                'event': 'checkoutStarted',
+                'shipping_Information': shippingInformation,
+                'city': addressList["city"],
+                'paymentMode': 'PAYTMUPI'
+            })
+        }
 
         let extra = {
             mode: "PAYTM",

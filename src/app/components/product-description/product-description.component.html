@@ -89,7 +89,7 @@
         </div>
 
         <div class="prod-inner-desc">
-            <span class="rating-box" *ngIf="starsCount > 0">{{starsCount | number : '1.1-1'}}
+            <span class="rating-box" *ngIf="starsCount > 0" (click)="scrollToResults('reviewSection',-30)">{{starsCount | number : '1.1-1'}}
 
                 <i class="icon-rating-star"></i>
             </span>

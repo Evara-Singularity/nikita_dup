@@ -1,0 +1,58 @@
+<section class="pwa-row mar-tb-15 br-8 similar-product pad-0 product-comparison mt-10">
+    <section class="pwa-col-12">
+        <div class="view-all-strip pad-0">
+            <h3 class="heading-1 border-bottom mb-10 pad-15">Similar Products To Compare</h3>
+        </div>
+        <div class="">
+            <div class="table-fixed-column-outter">
+                <div class="table-fixed-column-inner">
+                    <table class="table-fixed-column table-fixed-column table table-bordered table-striped">
+                        <tr class="table-row-product-card">
+                            <td class="odd-child"></td>
+                            <td *ngFor="let msn of msnList; let i = index;">
+                                <div class="comparison-product-outer" [ngClass]="{'currentProduct':i == 0}">
+                                    <div class="compared-product-card pad-10">
+                                        <div class="prod-img" (click)="navigateTo(msnMasterData[msn]['productUrl'])">
+                                            <img [src]="imagePath + msnMasterData[msn]['mainImageLink']"
+                                                [alt]="msnMasterData[msn]['productName']">
+                                                <span class="current-prod-text" *ngIf="i ==0">Current Product</span>
+                                        </div>
+                                        <p class="prod-name" (click)="navigateTo(msnMasterData[msn]['productUrl'])">
+                                            {{msnMasterData[msn]['productName']}}</p>
+                                        <h3 class="prodPrice">₹ {{msnMasterData[msn]['salesPrice'] | mathRound |
+                                            number : '1.0-0'}}</h3>
+                                        <add-to-cart [isOutOfStock]="msnMasterData[msn]['isOutOfStock']"
+                                            [moglixPartNumber]="msn" [product]="msnMasterData[msn]">
+                                        </add-to-cart>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="even-child">Rating</td>
+                            <td *ngFor="let msn of msnList">
+                                <div class="avgrating" *ngIf="msnMasterData[msn]['avgRating'] > 0">{{msnMasterData[msn]['avgRating'] | number : '1.1-1'}} <i
+                                        class="icon-rating-star"></i></div>
+                                <small class="review" *ngIf="msnMasterData[msn]['reviewCount'] > 0">
+                                    ({{msnMasterData[msn]['reviewCount']}} Reviews)
+                                </small>        
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="odd-child">Brand</td>
+                            <td *ngFor="let msn of msnList">
+                                {{msnMasterData[msn]['brandName']}}
+                            </td>
+                        </tr>
+                        <tr *ngFor="let specificationKey of attributeToCompareKeys;let j = index;">
+                            <td [ngClass]="j%2 == 0 ? 'even-child' :'odd-child'">{{specificationKey }}</td>
+                            <td *ngFor="let msn of msnList">
+                                {{msnMasterData[msn]['attributeToCompareValues'][specificationKey]}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

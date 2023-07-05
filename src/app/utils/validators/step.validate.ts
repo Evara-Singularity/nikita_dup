@@ -108,4 +108,13 @@ export class Step {
         //console.log(error);
         return error;
     }
+
+    static noWhitespaceValidator(control: FormControl) {
+        if(control && (control.value == null || control.value == '' || (control.value && control.value.length == 0))){
+            return null;  
+        } else {
+            return (control.value || '').trim().length ? null : { 'whitespace': true };
+        }
+    }
+    
 }

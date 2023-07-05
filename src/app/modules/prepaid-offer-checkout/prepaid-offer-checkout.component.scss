@@ -28,3 +28,11 @@
     color: var(--slimy-green);
     font-weight: $font-bold;
 }
+.offer-info-section{
+    display: flex;
+    align-items: center;
+}
+.info-icon{
+    color: var(--bleu-de-france);
+    margin-left: 5px;
+}

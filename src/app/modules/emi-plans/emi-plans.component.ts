@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { BankNamePipe } from '@app/utils/pipes/bank.pipe';
@@ -44,6 +44,7 @@ export class EmiPlansComponent implements OnInit
         private cfr: ComponentFactoryResolver,
         private _dataService: DataService,
         private injector: Injector,
+        private cdr: ChangeDetectorRef
     ) { }
 
     ngOnInit() { this.intialLoad(); }
@@ -91,7 +92,7 @@ export class EmiPlansComponent implements OnInit
                     innerElement.value['emi_value'] = price / 6;
                     innerElement.value['emi_interest_paid'] = 0;
                 } else {
-                    innerElement.value['transactionAmount'] = innerElement.value['transactionAmount'] + innerElement.value['emi_interest_paid'];
+                    innerElement.value['transactionAmountV1'] = innerElement.value['transactionAmount'] + innerElement.value['emi_interest_paid'];
                 }
             });
         });
@@ -155,6 +156,7 @@ export class EmiPlansComponent implements OnInit
             this.selectedBank = data.key;
             this.selectedBankName = data.bankname;
             if (this.selectedBank === "BAJFIN") { this.minOrderPlaced = 4500; }
+            this.cdr.detectChanges();
         }
     }
 

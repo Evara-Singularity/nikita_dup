@@ -1,11 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ProductService } from '@app/utils/services/product.service';
 import { CommonService } from '../../utils/services/common.service';
 
 @Component({
   selector: 'app-oos-similar-section',
   templateUrl: './oos-similar-section.component.html',
-  styleUrls: ['./oos-similar-section.component.scss']
+  styleUrls: ['./oos-similar-section.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OosSimilarSectionComponent {
   productStaticData = this._commonService.defaultLocaleValue;

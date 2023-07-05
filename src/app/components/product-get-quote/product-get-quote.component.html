@@ -1,4 +1,4 @@
-<div id="get-quote-section" class="buy-nowsec mt-10" *ngIf="commonService.isBrowser && commonService.userSession && commonService.userSession.authenticated === 'true' && this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+<div id="get-quote-section" class="buy-nowsec mt-10" *ngIf="commonService.isBrowser && userSession && isUserLogin && userSession.phone && !productOutOfStock && productMrp > 0">
     <h4 class="heading-3">{{productStaticData.looking_for_category.replace('___categoryName___',productCategoryDetails["categoryName"])}}</h4>
     <p class="small-txt prodct-name"> {{ productName }} </p>
     <div class="buynow-flex">
@@ -7,17 +7,17 @@
             <p class="heading-4"><i class="icon-check-active"></i>&nbsp; {{productStaticData.get_rfq_text_2}}</p>
         </div>
         <div class="bn-right">
-            <img [attr.src]="productAllImages[0]['small']" width="50" height="50">
+            <img [attr.src]="productAllImages && productAllImages?.length && productAllImages[0]['small']" width="50" height="50">
         </div>
     </div>
     <div class="button-sec shimmer">
         <ng-container *ngIf="rfqQuoteRaised; then raisedTemplate else nonRaisedTemplate"></ng-container>
         <ng-template #nonRaisedTemplate>
             <p class="small-txt">{{productStaticData.get_rfq_text_3}}<br>
-                <ng-container *ngIf="commonService?.userSession?.authenticated === 'true'">
-                    {{ '+91-' + commonService?.userSession?.phone }}
-                    <ng-container *ngIf="commonService?.userSession?.email">
-                        {{ ' | ' +commonService?.userSession?.email }}
+                <ng-container *ngIf="isUserLogin">
+                    {{ '+91-' + userSession?.phone }}
+                    <ng-container *ngIf="userSession?.email">
+                        {{ ' | ' +userSession?.email }}
                     </ng-container>
                 </ng-container>
             </p>
@@ -42,7 +42,7 @@
 </div>
 
 
-<div class="pwa-row inline-list-item-variant1 mt-10" *ngIf="commonService.isBrowser && commonService.userSession && !this.commonService.userSession.phone && !productOutOfStock && productMrp > 0">
+<div class="pwa-row inline-list-item-variant1 mt-10" *ngIf="commonService.isBrowser && userSession && !this.userSession.phone && !productOutOfStock && productMrp > 0">
     <div class="inline-list-icon">
         <i class="icon-dropbox-fill"></i>
     </div>

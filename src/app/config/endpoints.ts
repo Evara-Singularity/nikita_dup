@@ -1,5 +1,6 @@
 export const ENDPOINTS = {
   PRODUCT_INFO: "/product/getProductGroup",
+  SANITISED_PRODUCT_INFO: '/product/getProductGroupV2',
   PRODUCT_REVIEW: "/review/getReview",
   PRODUCT_FBT: "/product/getProductFbtDetails",
   BREADCRUMB: "/homepage/getbreadcrumb",
@@ -63,6 +64,8 @@ export const ENDPOINTS = {
   GET_COUPON_CODE : "/promoCode/productApplicablepromo",
   GET_CLUSTER_EMI_VAL: "/payment/getClusterEmiValues",
   PAYMENT: "/payment/pay",
+  PAYMENT_PAYU_OFFER:"/payment/getPayuOffer",
+  PAYMENT_PAYU_OFFER_USER:"/payment/getPayuOfferForUser",
   GET_ALL_PAYMENT: "/payment/getAll",
   VALIDATE_VPA: "/payment/validateVPA?vpa=",
   CARD: {
@@ -138,6 +141,6 @@ export const ENDPOINTS = {
   GET_FBT_PRODUCTS_BY_MSNS :"/product/getFbtProductsByMsns",
   GET_CATEGORY_INFO_BY_MSNS: "/search/getCategoryInfoByMsns",
   IFSC_CODE:'/payment/getBankDetails?ifsc=',
-  ADSENSE: '/adsense/getCampaign',
-  GET_MSN_BY_LIST: '/search/searchByListOfMsn',
+  GET_COMPARE_PRODUCTS:"/search/compareProducts?productId=",
+  PRODUCT_API: '/aggregate/pdpDetails'
 };

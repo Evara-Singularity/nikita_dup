@@ -1,4 +1,9 @@
 <div *ngIf="!productNotFound">
+    <app-floating-coupon-widget *ngIf="showproductDiscInfoComponent && iscloseproductDiscInfoComponent && promoCodes.length>0 && !productOutOfStock" (closeproductDiscInfoComponent$)="closeproductDiscInfoComponent()" [isBulkPricesProduct]="isBulkPricesProduct"
+        [selectedProductBulkPrice]="selectedProductBulkPrice" [productPrice]="productPrice"
+        [productDiscount]="productDiscount" [productName]="productName" [priceWithoutTax]="priceWithoutTax"
+        [gstPercentage]='taxPercentage' [promoCodes]='promoCodes'></app-floating-coupon-widget>
+    
     <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer"
         [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
     </app-oos-similar-section>
@@ -14,7 +19,7 @@
         (sendProductImageClickTracking)="sendProductImageClickTracking()"
         [isProductCrouselLoaded]="isProductCrouselLoaded" [iOptions]="iOptions" [productTags]="productTags"
         (translate$)="translate()" [isAcceptLanguage]="isAcceptLanguage"></shared-product-carousel>
-    <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)"
+    <!-- <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)"
         [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPrices"
         [selectedProductBulkPrice]="selectedProductBulkPrice" [qunatityFormControl]="qunatityFormControl"
         [productPrice]="productPrice" [productName]="productName" [productTags]="productTags"
@@ -23,7 +28,7 @@
         [taxPercentage]="taxPercentage" [bulkSellingPrice]="bulkSellingPrice" [productOutOfStock]="productOutOfStock"
         [productMinimmumQuantity]="productMinimmumQuantity" [priceQuantityCountry]="priceQuantityCountry"
         [starsCount]="starsCount" [rawReviewsCount]="rawReviewsData?.reviewList?.length || 0" [rawProductCountMessage]="rawProductCountMessage">
-    </product-description>
+    </product-description> -->
 
     <product-grouping-attributes [isCommonProduct]="isCommonProduct"
         [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)"
@@ -95,6 +100,12 @@
         <fbt [originalProductBO]='originalProductBO' [productQuantity]='cartQunatityForProduct' [analytics]='fbtAnalytics'></fbt>
         <!-- <ng-container #fbt></ng-container>
         <product-skeletons [type]="'FBT'" [templateRefInstance]="fbtComponentInstance"></product-skeletons> -->
+    </div>
+
+    <div *ngIf="compareProductsData.length > 0" class="common-product" data-observeVisibility
+        [debounceTime]="100" (visible)="onVisibleproductPriceCompare($event)">
+        <ng-container #productPriceCompare></ng-container>
+        <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="productPriceCompareInstance"></product-skeletons>
     </div>
 
     <app-product-review [productName]="productName" [reviewLength]="reviewLength" [overallRating]="overallRating"
@@ -246,8 +257,8 @@
     </ng-container>
 </div>
 
-<ng-container *ngIf="!productOutOfStock">
+<!-- <ng-container *ngIf="!productOutOfStock">
     <appInstallWidget></appInstallWidget>
-</ng-container>
+</ng-container> -->
 
 <app-page-not-delivered *ngIf="productNotFound"></app-page-not-delivered>

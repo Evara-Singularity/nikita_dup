@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LocalStorageService } from 'ngx-webstorage';
 import { PopUpModule } from '../../modules/popUp/pop-up.module';
@@ -23,7 +23,8 @@ export class PostProductReviewPopupComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private localStorageService: LocalStorageService,
-    private productService: ProductService
+    private productService: ProductService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -77,6 +78,7 @@ export class PostProductReviewPopupComponent implements OnInit {
             // console.log('review not submitted', res);
             this.isFormSubmitted = true;
           }
+          this.cdr.detectChanges();
         }
       );
     }

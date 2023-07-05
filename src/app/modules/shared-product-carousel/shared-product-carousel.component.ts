@@ -1,6 +1,6 @@
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductService } from '@app/utils/services/product.service';
-import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef, AfterViewInit, HostListener } from '@angular/core';
+import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild, ViewContainerRef, AfterViewInit, HostListener, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
@@ -8,7 +8,8 @@ import CONSTANTS from '@app/config/constants';
 @Component({
   selector: 'shared-product-carousel',
   templateUrl: './shared-product-carousel.component.html',
-  styleUrls: ['./shared-product-carousel.component.scss']
+  styleUrls: ['./shared-product-carousel.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 {
@@ -46,11 +47,13 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     private injector: Injector, public productService: ProductService, 
     private router: Router,
     private commonService: CommonService,
-    private _activatedRoute:ActivatedRoute
+    private _activatedRoute:ActivatedRoute,
+    private cdr: ChangeDetectorRef
     ) { }
 
   ngOnInit(): void {
-    this.productStaticData = this.commonService.getLocalizationData(!this.isHindiUrl)
+    this.productStaticData = this.commonService.getLocalizationData(!this.isHindiUrl);
+    this.commonService.similarProductsLoaded.subscribe(value => value && this.cdr.detectChanges())
     // this.getStaticSubjectData();
   }
 
@@ -62,9 +65,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 
   ngAfterViewInit(): void
   {
-   
   }
-
   async loadProductCrousel(slideIndex)
   {
     if (!this.productCrouselInstance) {
@@ -96,6 +97,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     } else {
       this.productCrouselInstance.instance["productOutOfStock"] = this.productOutOfStock;
     }
+    this.cdr.detectChanges();
   }
 
   clearPseudoImageCrousel()
@@ -137,7 +139,6 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   }
 
   createFragment(){
-    console.log(1);
     this._activatedRoute.fragment.subscribe((fragment: string)=>{
       if(this._activatedRoute.snapshot.fragment == CONSTANTS.PDP_IMAGE_HASH){
         return;

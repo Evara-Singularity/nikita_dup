@@ -2,8 +2,8 @@ export const environment = {
   production: true,
   enableServerLogs: true,
   PROD_NAME: 'https://m-vpn.moglilabs.com/',
-  BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
-  BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2',
+  BASE_URL: 'https://apinew-vpn.moglix.com/nodeApi/v1',
+  BASE_URL_V2: 'https://apinew-vpn.moglix.com/nodeApi/v2',
   //BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   APP_BASE_URL: 'https://api.moglix.com',
   IMAGE_ASSET_URL: 'https://cdn.moglix.com/online/vpn/pwa/bundles/',
@@ -13,7 +13,7 @@ export const environment = {
   CDN_IMAGE_URL: 'https://cdn.moglix.com/',
   GTM_ANALYTICS_CODE: 'GTM-WW4R83Z',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js',
-  buildVersion: '24.0',
+  buildVersion: '24.6',
   LOG_FILE_PATH: "/var/log/moglix/online/pwa-vpn/",
   SOCIAL_LOGIN: {
     "google": {

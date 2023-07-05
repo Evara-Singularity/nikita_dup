@@ -6,6 +6,7 @@ import {
   Output,
   Input,
   ViewChild,
+  ChangeDetectorRef,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { BottomMenuModule } from "@app/modules/bottomMenu/bottom-menu.module";
@@ -84,6 +85,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     private quickCodService: QuickCodService,
     public checkoutService: CheckoutService,
     private _tms: ToastMessageService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   close(isClose: boolean) {
@@ -156,15 +158,15 @@ export class PdpQuickCheckoutComponent implements OnInit {
     }); 
     this.setAddress(this.address, true);
     this.cartService.appliedPromoCode = "";
-    this.promoSubscription = this.cartService.promoCodeSubject.subscribe(
-      ({ promocode, isNewPromocode }) => {
-        this.showPromoSuccessPopup = isNewPromocode;
-        setTimeout(() => {
-          this.getUpdatedCart();
-          this.showPromoSuccessPopup = false;
-        }, 800);
-      }
-    );
+    // this.promoSubscription = this.cartService.promoCodeSubject.subscribe(
+    //   ({ promocode, isNewPromocode }) => {
+    //     this.showPromoSuccessPopup = isNewPromocode;
+    //     setTimeout(() => {
+    //       this.getUpdatedCart();
+    //       this.showPromoSuccessPopup = false;
+    //     }, 800);
+    //   }
+    // );
   }
 
   ngAfterViewInit() {
@@ -174,6 +176,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
     this.cartService.billingAddress = this.billingAddress;
     setTimeout(() => {
       this.cartService.getPromoCodesByUserId(this.currUser["userId"]);
+      this.cdr.detectChanges();
     }, 200);
   }
 
@@ -205,6 +208,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
             cartSession["cart"]
           );
         }
+        this.cdr.detectChanges();
       });
   }
 
@@ -215,7 +219,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
         buyNow: true,
         selectPriceMap: this.selectedProductBulkPrice,
         quantity: this.cartQunatityForProduct,
-      })
+      }, true)
     );
   }
 
@@ -470,7 +474,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
 
   ngOnDestroy(): void {
     if (this.cartSubscription) this.cartSubscription.unsubscribe();
-    if (this.promoSubscription) this.promoSubscription.unsubscribe();
+    // if (this.promoSubscription) this.promoSubscription.unsubscribe();
   }
 }
 

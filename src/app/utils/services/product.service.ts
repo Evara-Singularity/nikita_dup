@@ -206,6 +206,20 @@ export class ProductService {
         );
     }
 
+    getSanitisedProductObj(productID) {
+        const url =
+        this.basePath +
+        ENDPOINTS.SANITISED_PRODUCT_INFO +
+        "?productId=" +
+        productID +
+        "&fetchGroup=true";
+    return this._dataService.callRestful("GET", url).pipe(
+        catchError((res: HttpErrorResponse) => {
+            return of({ active: false, httpStatus: res.status });
+        })
+    );
+    }
+
     postReview(obj) {
         const url = this.basePath2 + ENDPOINTS.SET_REVIEWS;
         return this._dataService.callRestful("POST", url, { body: obj }).pipe(
@@ -1248,6 +1262,11 @@ export class ProductService {
 
     getProductTag(msn) {
         const URL=CONSTANTS.NEW_MOGLIX_API+ENDPOINTS.PRODUCT_TAGS + msn
+        return this._dataService.callRestful("GET",URL);
+    }
+
+    getCompareProducts(msn) {
+        const URL=CONSTANTS.NEW_MOGLIX_API+ENDPOINTS.GET_COMPARE_PRODUCTS + msn;
         return this._dataService.callRestful("GET",URL);
     }
 

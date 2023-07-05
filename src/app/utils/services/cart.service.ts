@@ -48,6 +48,7 @@ export class CartService
     notifications = [];
     appliedPromoCode = null;
     allPromoCodes: Array<any> = [];
+    topMatchedPromoCode: object = {};
     shippingCharges: number = 0;
     isPromoCodeValid: boolean = false;
     showNotification: boolean = false;
@@ -515,7 +516,7 @@ export class CartService
                     isGift: cart["gift"] == null ? false : cart["gift"],
                     giftMessage: cart["giftMessage"],
                     giftPackingCharges: cart["giftPackingCharges"] == null ? 0 : cart["giftPackingCharges"],
-                    totalPayableAmount: cart["totalAmount"] == null ? 0 : cart["totalAmount"],
+                    totalPayableAmount: extra.paymentId == 14 ? extra.totalPayableAmount :  (cart["totalAmount"] == null ? 0 : cart["totalAmount"] ),
                     noCostEmiDiscount: extra.noCostEmiDiscount == 0 ? 0 : extra.noCostEmiDiscount,
                 },
                 itemsList: this.getItemsList(cartItems),
@@ -536,12 +537,22 @@ export class CartService
                     deliveryMethodId: 77,
                     type: "kjhlh",
                 },
-                prepaidDiscounts: (extra.mode == 'COD') ? null : ((this.getCartSession().prepaidDiscountList) ? this.getCartSession().prepaidDiscountList : null),
+                prepaidDiscounts: (extra.mode == 'COD' || extra.bankOffer) ? null : ((this.getCartSession().prepaidDiscountList) ? this.getCartSession().prepaidDiscountList : null),
                 offersList: offersList != undefined && offersList.length > 0 ? offersList : null,
                 extraOffer: this.cartSession["extraOffer"] ? this.cartSession["extraOffer"] : null,
                 device: CONSTANTS.DEVICE.device,
             },
         };
+        if(extra.bankOffer)
+        {
+            let bankOffer = {
+                bankOffer:extra.bankOffer ? extra.bankOffer : null,
+                cardNumber: extra.ccnum.slice(0, 6),
+                paymentMode: extra.paymentMode
+            }
+            obj["shoppingCartDto"]["bankOffer"]  = bankOffer;
+            obj["shoppingCartDto"]["prepaidDiscounts"]=[]; 
+        }
         if (cart["buyNow"]) {
             obj["shoppingCartDto"]["cart"]["buyNow"] = cart["buyNow"];
         }
@@ -1035,23 +1046,23 @@ export class CartService
         )
     }
 
-    getAddToCartProductItemRequest(args: { productGroupData, buyNow, selectPriceMap?, quantity?, isFbt?, languageMode?, originalProductBO?}): AddToCartProductSchema {
+    getAddToCartProductItemRequest(args: { productGroupData, buyNow, selectPriceMap?, quantity?, isFbt?, languageMode?, originalProductBO?, v1?}, v1 = false): AddToCartProductSchema {
         const userSession = this.localAuthService.getUserSession();
-        const partNumber = args.productGroupData['partNumber'] || args.productGroupData['defaultPartNumber'];
-        const isProductPriceValid = args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
-        const priceQuantityCountry = (isProductPriceValid) ? Object.assign({}, args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
-        const productPartDetails = args.productGroupData['productPartDetails'][partNumber];
+        const partNumber = v1 ? args.productGroupData['msn'] : args.productGroupData['partNumber'] || args.productGroupData['defaultPartNumber'];
+        const isProductPriceValid = v1 ? args.productGroupData['isProductPriceValid'] : args.productGroupData['isProductPriceValid'] || args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
+        const priceQuantityCountry = (isProductPriceValid) ? v1 ? args.productGroupData['priceQuantityCountry'] : Object.assign({}, args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity']['india']) : null;
+        const productPartDetails = !v1 ? args.productGroupData['productPartDetails'][partNumber] : args.productGroupData;
         const productMrp = (isProductPriceValid && priceQuantityCountry) ? priceQuantityCountry['mrp'] : null;
         const productTax = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice']) && !isNaN(priceQuantityCountry['sellingPrice'])) ?
             (Number(priceQuantityCountry['sellingPrice']) - Number(priceQuantityCountry['sellingPrice'])) : 0;
         const productPrice = (priceQuantityCountry && !isNaN(priceQuantityCountry['sellingPrice'])) ? Number(priceQuantityCountry['sellingPrice']) : 0;
         const priceWithoutTax = (priceQuantityCountry) ? priceQuantityCountry['priceWithoutTax'] : null;
-        const productBrandDetails = args.productGroupData['brandDetails'];
-        const productCategoryDetails = args.productGroupData['categoryDetails'][0];
+        const productBrandDetails = args.productGroupData['brandDetails'] || args.productGroupData.productBrandDetails;
+        const productCategoryDetails = args.productGroupData['categoryDetails'] ? args.productGroupData['categoryDetails'][0] : args.productGroupData.productCategoryDetails;
         const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
         const incrementUnit = (priceQuantityCountry && priceQuantityCountry['incrementUnit']) ? priceQuantityCountry['incrementUnit'] : 1;
         const productLinks = productPartDetails['productLinks'];
-        const productURL = (args.languageMode) ? args.originalProductBO['defaultCanonicalUrl'] : (productPartDetails['canonicalUrl'] || productLinks['canonical'] || productLinks['default']);
+        const productURL = (args.languageMode) ? v1 ? args.productGroupData['productUrl'] : args.originalProductBO['defaultCanonicalUrl'] : (productPartDetails['canonicalUrl'] || productLinks['canonical'] || productLinks['default']);
         const product = {
             sessionId: userSession.sessionId,
             cartId: null,
@@ -1069,12 +1080,12 @@ export class CartService
             brandId: (productBrandDetails)?productBrandDetails['idBrand']:'',
             priceWithoutTax: priceWithoutTax,
             taxPercentage: priceQuantityCountry['taxRule']['taxPercentage'],
-            productImg: (productPartDetails['images']) ? `${this.imageCdnPath}${productPartDetails['images'][0]['links']['thumbnail']}` : '',
+            productImg: v1 ? `${this.imageCdnPath}${args.productGroupData['productAllImages'][0]['links']['thumbnail']}` : (productPartDetails['images']) ? `${this.imageCdnPath}${productPartDetails['images'][0]['links']['thumbnail']}` : '',
             isPersistant: true,
             productQuantity: (args.quantity && !isNaN(args.quantity) && +args.quantity > productMinimmumQuantity) ? args.quantity : productMinimmumQuantity,
             productUnitPrice: productPrice,
             expireAt: null,
-            productUrl: productURL,
+            productUrl: productLinks ? productLinks.canonical : productURL,
             bulkPriceMap: priceQuantityCountry['bulkPrices'],
             bulkPrice: null,
             bulkPriceWithoutTax: null,
@@ -1083,12 +1094,12 @@ export class CartService
             buyNow: args.buyNow,
             filterAttributesList: args.productGroupData['filterAttributesList'] || null,
             discount: this.calculcateDiscount(priceQuantityCountry['discount'], productMrp, productPrice),
-            category: (args.languageMode) ? args.originalProductBO['categoryDetails'][0]['taxonomy'] : productCategoryDetails['taxonomy'],
+            category: (args.languageMode) ? v1 ? args.originalProductBO['categoryDetails']['taxonomy'] : args.originalProductBO['categoryDetails'][0]['taxonomy'] : productCategoryDetails['taxonomy'],
             isOutOfStock: this._setOutOfStockFlag(priceQuantityCountry),
             quantityAvailable: priceQuantityCountry['quantityAvailable'] || 0,
             productMRP: productMrp,
-            productSmallImage: CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.small,
-            productImage: CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.medium,
+            productSmallImage: v1 ? CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productAllImages[0].links.small : CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.small,
+            productImage: v1 ? CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productAllImages[0].links.medium : CONSTANTS.IMAGE_BASE_URL + args.productGroupData.productPartDetails[partNumber].images[0].links.medium,
             url: productPartDetails.canonicalUrl,
             isProductUpdate: 0,
             sellingPrice: productPrice,
@@ -1412,15 +1423,17 @@ export class CartService
         return item;
     }
 
-    getAllPromoCodes(cartId = null)
+    getAllPromoCodes(cartId = null, totalPayableAmount = null)
     {
-        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?cartId=' + cartId;
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?cartId=' + cartId;
+        url = (totalPayableAmount) ? url + `&totalCartAmount=${totalPayableAmount}` : url;
         return this._dataService.callRestful('GET', url);
     }
 
-    getAllPromoCodesByUserId(userID = null,cartId = null)
-    {
-        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?userId=' + userID + '&cartId=' + cartId + '&buyNow='+ (this._buyNow || 'false');
+    getAllPromoCodesByUserId(userID = null, cartId = null, totalPayableAmount = null) {
+        // console.trace();
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?userId=' + userID + '&cartId=' + cartId + '&buyNow=' + (this._buyNow || 'false');
+        url = (totalPayableAmount) ? url + `&totalCartAmount=${totalPayableAmount}` : url;
         return this._dataService.callRestful('GET', url);
     }
 
@@ -1446,13 +1459,25 @@ export class CartService
     getPromoCodesByUserId(userId = null, isUpdatePromoCode = true) {
         this._loaderService.setLoaderState(true);
         const cartSession = this.getCartSession();
+        const shipingValueRequest = this.getShippingObj(cartSession);
+        // console.log('shipingValueRequest', shipingValueRequest);
         const offerId = (cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
         if (userId) {
-            this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId']).subscribe(res => {
+            this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId'],(shipingValueRequest['totalPayableAmount'] || null)).pipe(map(res=>{
+                if (res && res['data']) {
+                    (res['data'] as []).sort((a, b) => b['isApplicable'] - a['isApplicable'])
+                }
+                return res;
+            })).subscribe(res => {
                 this.processPromoData(res, offerId, isUpdatePromoCode);
             });
         } else {
-            this.getAllPromoCodes(cartSession['cart']['cartId']).subscribe(res => {
+            this.getAllPromoCodes(cartSession['cart']['cartId'], (shipingValueRequest['totalPayableAmount'] || null)).pipe(map(res=>{
+                if (res && res['data']) {
+                    (res['data'] as []).sort((a, b) => b['isApplicable'] - a['isApplicable'])
+                }
+                return res;
+            })).subscribe(res => {
                 this.processPromoData(res, offerId, isUpdatePromoCode);
             })
         }
@@ -1461,6 +1486,7 @@ export class CartService
     processPromoData(res, offerId, isUpdatePromoCode = false) {
         if (res['statusCode'] === 200) {
             this.allPromoCodes = res['data'];
+            this.topMatchedPromoCode = this.allPromoCodes.find(res=> res.isApplicable === true)
             const promo = this.allPromoCodes.find(promo => promo.promoId === offerId);
             if (promo) {
                 this.appliedPromoCode = promo['promoCode'];
@@ -2365,7 +2391,9 @@ export class CartService
                     }
                 }
             }
-            this._globalAnalyticsService.sendGTMCall(data);
+            if(dlp && dlp.length) {
+                this._globalAnalyticsService.sendGTMCall(data);
+            }
         }, 3000);
     }
 
@@ -2409,7 +2437,9 @@ export class CartService
             'productBasketProducts': criteoItem,
             'eventData': eventData
         }
-        this._globalAnalyticsService.sendGTMCall(data);
+        if(criteoItem && criteoItem.length) {
+            this._globalAnalyticsService.sendGTMCall(data);
+        }
     }
 
     sendAdobeAnalyticsData(trackingname)

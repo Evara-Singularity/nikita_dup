@@ -15,7 +15,7 @@ export const environment = {
   CDN_IMAGE_URL: 'https://cdn.moglix.com/',
   GTM_ANALYTICS_CODE: 'GTM-WW4R83Z',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js',
-  buildVersion: '24.0',
+  buildVersion: '24.6',
   LOG_FILE_PATH: "/var/log/moglix/online/pwa-qa/",
   SOCIAL_LOGIN: {
     "google": {
@@ -45,7 +45,7 @@ export const environment = {
     CAT_F: "cm933249",
     CAT_G: "cm416640",
     CAT_H: "cm814985",
-    FEATURE_ARRIVAL: "cm977811",
+    FEATURE_ARRIVAL: "cm976581",
     SECONDARY_CAROUSEL_DATA:"cm336308"
   },
   logger: true

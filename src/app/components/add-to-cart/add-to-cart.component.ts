@@ -383,6 +383,7 @@ export class AddToCartComponent implements OnDestroy {
         this.rfqThankyouInstance = null;
         this.rfqThankyouContainerRef.detach();
       });
+      this.cdr.detectChanges();
     }
   }
 

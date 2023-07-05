@@ -49,10 +49,10 @@ export class AdsenseService {
       const featuredProductUnit = this._mapfeaturedProductUnit(campaignData);
       const videoUnit = this._videoUnit(campaignData);
       const banners = this._bannerAdUnits(campaignData)
-      console.log('adsense data', { ...featuredProductUnit, ...promotedBrandUnit, ...videoUnit, ...banners });
+      // console.log('adsense data', { ...featuredProductUnit, ...promotedBrandUnit, ...videoUnit, ...banners });
       return { ...featuredProductUnit, ...promotedBrandUnit, ...videoUnit, ...banners };
     } else {
-      console.log('adsense data', 'status is not running');
+      // console.log('adsense data', 'status is not running');
       return null;
     }
   }

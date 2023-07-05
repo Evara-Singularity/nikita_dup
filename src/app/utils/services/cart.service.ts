@@ -515,7 +515,7 @@ export class CartService
                     isGift: cart["gift"] == null ? false : cart["gift"],
                     giftMessage: cart["giftMessage"],
                     giftPackingCharges: cart["giftPackingCharges"] == null ? 0 : cart["giftPackingCharges"],
-                    totalPayableAmount: cart["totalAmount"] == null ? 0 : cart["totalAmount"],
+                    totalPayableAmount: extra.paymentId == 14 ? extra.totalPayableAmount :  (cart["totalAmount"] == null ? 0 : cart["totalAmount"] ),
                     noCostEmiDiscount: extra.noCostEmiDiscount == 0 ? 0 : extra.noCostEmiDiscount,
                 },
                 itemsList: this.getItemsList(cartItems),
@@ -536,12 +536,22 @@ export class CartService
                     deliveryMethodId: 77,
                     type: "kjhlh",
                 },
-                prepaidDiscounts: (extra.mode == 'COD') ? null : ((this.getCartSession().prepaidDiscountList) ? this.getCartSession().prepaidDiscountList : null),
+                prepaidDiscounts: (extra.mode == 'COD' || extra.bankOffer) ? null : ((this.getCartSession().prepaidDiscountList) ? this.getCartSession().prepaidDiscountList : null),
                 offersList: offersList != undefined && offersList.length > 0 ? offersList : null,
                 extraOffer: this.cartSession["extraOffer"] ? this.cartSession["extraOffer"] : null,
                 device: CONSTANTS.DEVICE.device,
             },
         };
+        if(extra.bankOffer)
+        {
+            let bankOffer = {
+                bankOffer:extra.bankOffer ? extra.bankOffer : null,
+                cardNumber: extra.ccnum.slice(0, 6),
+                paymentMode: extra.paymentMode
+            }
+            obj["shoppingCartDto"]["bankOffer"]  = bankOffer;
+            obj["shoppingCartDto"]["prepaidDiscounts"]=[]; 
+        }
         if (cart["buyNow"]) {
             obj["shoppingCartDto"]["cart"]["buyNow"] = cart["buyNow"];
         }

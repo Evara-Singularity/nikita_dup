@@ -3,8 +3,8 @@ import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms"
 import { CreditCardValidator } from "ng2-cc-library";
 import { LocalStorageService } from 'ngx-webstorage';
 import CONSTANTS from '../../../config/constants';
-import { CheckoutService } from '../../../utils/services/checkout.service';
 import { CartService } from '../../../utils/services/cart.service';
+import { PopupService } from '@app/utils/services/popup.service';
 import { LocalAuthService } from '../../../utils/services/auth.service';
 import { ObjectToArray } from '../../../utils/pipes/object-to-array.pipe';
 import { CommonService } from '../../../utils/services/common.service';
@@ -12,10 +12,10 @@ import { Bajaj_CCNumValidator } from '../../../utils/bajajCCNum';
 import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
 import { BankNamePipe } from '@app/utils/pipes/bank.pipe';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { catchError } from 'rxjs/operators';
+import { catchError, debounce, debounceTime } from 'rxjs/operators';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { HttpErrorResponse } from '@angular/common/http';
-import { of } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { DataService } from '@app/utils/services/data.service';
 import { SortByEMIMonthsPipe } from '@app/utils/pipes/emiSort.pipe';
 
@@ -35,6 +35,7 @@ export class EmiComponent {
     }
 
     @Input() type: any;
+    
 
     isMob: boolean;
     API: any = CONSTANTS;
@@ -43,6 +44,8 @@ export class EmiComponent {
     selectedBank: string;
     emiForm: FormGroup;
     emiResponse: {};//Object Data
+    emiResponseMaster :{};
+
     emiRawDebitCardResponse = null;
     emiRawCreditCardResponse = null;
     expYrs: Array<any> = [];
@@ -55,6 +58,7 @@ export class EmiComponent {
     blockIndex: number = 1;
     totalPayableAmount: number = 0;
     nocostEmiDiscount: number = 0;
+    payUOfferDiscount: number = 0;
     step: number = 0;
     disableInterest;
     bajajFinservField
@@ -68,6 +72,11 @@ export class EmiComponent {
     yearSelectPopupStatus: boolean = false;
     selectedYear: string = null;
     selectedEMIKey = null;
+    showPayUOffer: boolean = false;
+    bankDiscountAmount: number = 0;
+    ccNameSubscription: Subscription = null;
+    offerKey: string = null;
+    cartSession: any = null;
 
     set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
@@ -79,6 +88,7 @@ export class EmiComponent {
         private _commonService: CommonService, 
         private _localAuthService: LocalAuthService, 
         public _cartService: CartService, 
+        public _popupService: PopupService,
         private _formBuilder: FormBuilder, 
         private _objectToArray: ObjectToArray,
         private _sortByEMIMonths: SortByEMIMonthsPipe,
@@ -89,7 +99,7 @@ export class EmiComponent {
         private _dataService: DataService,
     ) {
         this.initForm();
-        this.fetchIntialEmiData();
+        this.fetchInitialEmiData();
         this.createYrsOptions();
     }
 
@@ -102,12 +112,16 @@ export class EmiComponent {
         }
     }
 
-    private fetchIntialEmiData() {
+    private fetchInitialEmiData(amount?) {
+       
         const cartSession = this._cartService.getCartSession();
         const cart = cartSession["cart"];
+        this.cartSession = cart;
         cartSession['nocostEmi'] = 0;
         this.type = this._cartService.invoiceType;
-        const payableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
+        const payableAmount = amount ? amount :this._cartService.totalDisplayPayableAmountWithPrepaid;
+        
+          
         if (payableAmount < CONSTANTS.EMI_MINIMUM_AMOUNT) {
             this.message = `EMI not available below Rs. ${CONSTANTS.EMI_MINIMUM_AMOUNT}`;
             this.isEmiEnable = false;
@@ -124,13 +138,17 @@ export class EmiComponent {
                     return;
                 }
                 let data = res["data"];
+
+                if(!amount)
+                this.emiResponseMaster = data.emiResponse;
+
                 this.emiRawDebitCardResponse = data.emiResponse[this.CARD_TYPES.debitCard];
                 this.emiRawCreditCardResponse = data.emiResponse[this.CARD_TYPES.creditCard];
                 this.processRawResponse(
                     (this.paymentMethod == this.CARD_TYPES.debitCard) ? this.emiRawDebitCardResponse : this.emiRawCreditCardResponse,
-                    cart
+                    cart ,amount
                 );
-                this.selectDefaultEMI();
+                this.selectDefaultEMI(amount , this.selectedBank);
             });
         }
     }
@@ -148,38 +166,63 @@ export class EmiComponent {
                 "ccvv": [null, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(4)]]
             }),
         });
+        this.ccNameSubscription = this.emiForm.get('requestParams.ccnum').valueChanges.pipe(debounceTime(300)).subscribe(str => {
+            if (str && this.type =='retail') {
+                // check for offer
+                this.onCardNumberChange(str);
+            } else {
+                this.resetBankDiscountAmount()
+            }
+        })
     }
 
-    selectDefaultEMI() {
-        if (this.dataEmi && this.dataEmi.length > 0) {
-            const data = this.dataEmi[0];
-            const emiArr: [] = this._objectToArray.transform(this.dataEmi[0]['value'], "associative");
+
+    selectDefaultEMI(amount?,selectedBank?) {
+        if (this.dataEmi && this.dataEmi.length > 0 && this.emiResponse!=null) {
+          
+            let selectedEmi =[];
+            const data = (amount == null || selectedBank == null ) ? this.dataEmi[0] :this._objectToArray.transform(this.emiResponse[this.selectedBank],"associative");
+           
+            const emiArr: [] = this._objectToArray.transform(amount == null ? this.dataEmi[0]['value'] :  this.emiResponse[this.selectedBank], "associative");
             // // console.log('data ==>', data, emiFirst);
-            this.selectedBank = data.key;
-            this.selectedBankName = data.bankname;
+            this.selectedBank = amount == null ? data.key : selectedBank;
+            this.selectedBankName = amount == null ? data.bankname : this._bankNamePipe.transform(selectedBank);
             const noCostEMI = emiArr.filter(item => item['value']['emi_interest_paid'] === 0)
             const withCostEMI = emiArr.filter(item => item['value']['emi_interest_paid'] !== 0)
+
+            if(amount!=null)
+             selectedEmi = emiArr.filter(item => item['key'] == this.selectedEMIKey)
+            
             // console.log('noCostEMI ==>', noCostEMI, withCostEMI);
+            if(amount==null)
+            {
             if (noCostEMI.length > 0) {
                 this._sortByEMIMonths.transform(noCostEMI);
                 this.selectedEMIKey = noCostEMI[0]['key'];
-                this.selectEmI(this.getEmiMonths(data.key), noCostEMI[0]['value']['emiBankInterest'], noCostEMI[0]['value']['transactionAmount'])
+                this.selectEmI(this.getEmiMonths(amount == null ? data.key : this.selectedBank), noCostEMI[0]['value']['emiBankInterest'], noCostEMI[0]['value']['transactionAmount'])
             } else {
                 this._sortByEMIMonths.transform(withCostEMI);
                 this.selectedEMIKey = withCostEMI[0]['key'];
-                this.selectEmI(this.getEmiMonths(data.key), withCostEMI[0]['value']['emiBankInterest'], withCostEMI[0]['value']['transactionAmount'])
+                this.selectEmI(this.getEmiMonths(amount == null ? data.key : this.selectedBank), withCostEMI[0]['value']['emiBankInterest'], withCostEMI[0]['value']['transactionAmount'])
+            }
+            }
+            else{
+                this.selectEmI(this.getEmiMonths(amount == null ? data.key : selectedEmi[0]['key']), selectedEmi[0]['value']['emiBankInterest'], selectedEmi[0]['value']['transactionAmount'])
             }
             // console.log("selectedEMIKey ==>", this.selectedEMIKey);
             this.emiForm.get('requestParams.bankcode').setValue(this.selectedEMIKey);
             // console.log("selectedEMIKey ==>", this.emiForm.get('requestParams.bankcode').value);
+            console.log(this.totalPayableAmount);
         }
     }
 
-    private processRawResponse(data: any, cart: any) {
+    private processRawResponse(data: any, cart: any, amount?, resetEmiSelected = false) {
         const cardTypeResponse = data;
         this.emiResponse = cardTypeResponse;
+    
+
         this.dataEmi = this._objectToArray.transform(cardTypeResponse, "associative");
-        const payableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
+        const payableAmount = amount? amount : this._cartService.totalDisplayPayableAmountWithPrepaid;
 
         this.dataEmi.forEach((element, index) => {
             if (this.bankMap.hasOwnProperty(element.key)) {
@@ -262,8 +305,11 @@ export class EmiComponent {
             return 0;
         });
 
+        if(amount == null && !resetEmiSelected)
+        {
         this.selectedBankCode = this.dataEmi[0]["key"];
         this.selectedBank = "0";
+        }
         this.parseResponse();
     }
 
@@ -394,15 +440,13 @@ export class EmiComponent {
             'couponUsed': cartSession['cart']['totalOffer'] || 0,
             'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
         };
-        //Gtm validation
-        if (shippingInformation['shippingCost'] && data && data.mode) {
-            this._analytics.sendGTMCall({
-                'event': 'checkoutStarted',
-                'shipping_Information': shippingInformation,
-                'city': addressList["city"],
-                'paymentMode': data.mode
-            });
-        }
+
+        this._analytics.sendGTMCall({
+            'event': 'checkoutStarted',
+            'shipping_Information': shippingInformation,
+            'city': addressList["city"],
+            'paymentMode': data.mode
+        });
 
         let extra = {
             "mode": data.mode,
@@ -413,7 +457,12 @@ export class EmiComponent {
             "emitenure": emitenureFlag,
             "emiFlag": 1,
             "noCostEmiDiscount": Math.round(this.nocostEmiDiscount * 100) / 100,
-            "gateway": this.type == "tax" ? "razorpay" : ""
+            "gateway": this.type == "tax" ? "razorpay" : "",
+            "totalPayableAmount" : this.totalPayableAmount.toFixed(2),
+            "bankOffer" : this.bankDiscountAmount == 0 ? null : this.bankDiscountAmount,
+            "ccnum": ccnum,
+            "offerKey":this.offerKey,
+            "paymentMode":"emi"
         };
 
         let newdata = {
@@ -438,7 +487,8 @@ export class EmiComponent {
                 "user_id": userSession["userId"],
                 "store_card": data.store_card == true ? "true" : "false"
             },
-            "validatorRequest": this._cartService.createValidatorRequest(extra)
+            "validatorRequest": this._cartService.createValidatorRequest(extra),
+            "offerKey": this.offerKey
         };
 
         if (this.type == "tax") {
@@ -545,12 +595,13 @@ export class EmiComponent {
         return itemsList;
     }
 
-    getEmiDiscount(month, rate, amount) {
+    getEmiDiscount(month, rate, amount, offeramount=null) {
         // console.log('getEmiDiscount ==>', month, rate, amount);
         this.isShowLoader = true;
         let cartSession = this._cartService.getGenericCartSession;
         let cart = cartSession["cart"];
-        const payableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
+        offeramount = offeramount ? offeramount + this.bankDiscountAmount : this.bankDiscountAmount;
+        const payableAmount = (offeramount) ?  this._cartService.totalDisplayPayableAmountWithOutPrepaid - offeramount :  this._cartService.totalDisplayPayableAmountWithPrepaid;
         this.nocostEmiDiscount = 0;
         if (month == 3 || month == 6) {
             // ODP-359
@@ -572,12 +623,36 @@ export class EmiComponent {
         this.isShowLoader = false;
     }
 
+    setPayUOfferDiscount(response)
+    {
+     
+        if(response)
+        {
+        this.offerKey =response['offerKey']
+       
+        let data ={};
+        data['description'] = response['description'];
+        data['totalCartValue'] = this.totalPayableAmount +response['discountDetail']['discount'];
+        data['minTxnAmount'] = response['minTxnAmount']
+        data['maxTxnAmount'] = response['maxTxnAmount']
+        data['maxDiscount'] = response['discountDetail']['maxDiscount']
+        data['discount'] = response['discountDetail']['discount']
+        data['totalPayable']=  response['discountDetail']['discountedAmount'];
+
+        this._popupService.setPayUOfferPopUpData(data);
+
+        this.totalPayableAmount = response['discountDetail']['discountedAmount'];
+        
+        }
+    }
+
     onBankChange(value, emiValues) {
-        //console.log("value ==>", value, emiValues);
+        // console.log("value ==>", value, emiValues);
         if (value == "0") {
             this.step = 0;
         } else {
             this.step = 1;
+            
             this._sortByEMIMonths.transform(emiValues);
             const emiKey = emiValues[0]['key']; // select first key by default
             this.selectedEMIKey = emiKey;
@@ -597,16 +672,12 @@ export class EmiComponent {
             }
             else {
                 this.bajajFinservField = false;
-                this.emiForm.setControl('requestParams',
-                    this._formBuilder.group({
-                        "ccexpyr": ['', [Validators.required]],
-                        "ccnum": [null, [<any>CreditCardValidator.validateCCNumber]],
-                        "ccexpmon": ['', [Validators.required]],
-                        "ccname": [null, [Validators.required, Validators.pattern('[a-zA-Z ]+')]],
-                        "bankcode": [emiKey, [Validators.required]],
-                        "ccvv": [null, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(4)]]
-                    }),
-                )
+                this.emiForm.get('requestParams.ccnum').setValue(null);
+                this.emiForm.get('requestParams.ccexpyr').setValue('');
+                this.emiForm.get('requestParams.ccexpmon').setValue('');
+                this.emiForm.get('requestParams.ccname').setValue(null);
+                this.emiForm.get('requestParams.bankcode').setValue(emiKey);
+                this.emiForm.get('requestParams.ccvv').setValue(null);
             }
         }
         let cartSession = this._cartService.getGenericCartSession;
@@ -621,14 +692,22 @@ export class EmiComponent {
     selectedBankChange(data) {
         // console.log('selectedBankChange data ==>', data);
         if (data) {
+            //this.emiResponse = this.paymentMethod == this.CARD_TYPES.debitCard ? this.emiResponseMaster[this.CARD_TYPES.debitCard] : this.emiResponseMaster[this.CARD_TYPES.creditCard];
+            this.emiRawDebitCardResponse = this.emiResponseMaster[this.CARD_TYPES.debitCard];
+            this.emiRawCreditCardResponse = this.emiResponseMaster[this.CARD_TYPES.creditCard];
+            this.processRawResponse(
+                (this.paymentMethod == this.CARD_TYPES.debitCard) ? this.emiRawDebitCardResponse : this.emiRawCreditCardResponse,
+                this.cartSession, null, true
+            );
             this.selectedBank = data.key;
             this.selectedBankName = data.bankname;
+            data.value = this.emiResponse[this.selectedBank];
             this.onBankChange(this.selectedBank, this._objectToArray.transform(data.value, "associative"));
             this.selectedMonth = null;
             this.selectedYear = null;
             let emiResponseData = this._objectToArray.transform(this.emiResponse[this.selectedBank]);
             emiResponseData = (emiResponseData as Array<any>).map(emidata=>{
-                emidata.tenure = parseInt(emidata.tenure.replace('months', '')) || 0;
+                emidata.tenure = parseInt(((emidata.tenure)?emidata.tenure.replace('months', ''):0)) || 0;
                 return emidata
             }); 
             emiResponseData.sort((a,b)=> a.tenure - b.tenure);
@@ -636,10 +715,61 @@ export class EmiComponent {
             // const tenure = parseInt(emiResponseData[0].tenure.replace('months', ''));
             this.selectEmI(emiResponseData[0].tenure, emiResponseData[0].emiBankInterest, emiResponseData[0].transactionAmount)
         }
+        this.resetBankDiscountAmount();
         this.bankSelectPopUp = false;
+     
+    }
+
+    onCardNumberChange(cardNumber) {
+        let response = null;
+        if (cardNumber && cardNumber.length === 16) {
+            this.isShowLoader = true;
+            this.getPayUOfferForUserCall(cardNumber).subscribe((res): void => {
+                this.isShowLoader = false;
+                if (res["status"] != true) {
+                    this.resetBankDiscountAmount();
+                    return;
+                }
+                response = res['data'];
+                if (response['result'] && response['result']['offers'] && response['result']['offers'].length > 0) {
+                    this.bankDiscountAmount = response['result']['offers'][0]['discountDetail']['discount'];
+                    this.fetchInitialEmiData(response['result']['offers'][0]['discountDetail']['discountedAmount']);
+                    this.setPayUOfferDiscount(response['result']['offers'][0]);
+
+                }else{
+                    this.resetBankDiscountAmount();
+                }
+            },error=>{
+                console.log('onCardNumberChange', error);
+                this.resetBankDiscountAmount();
+                this.isShowLoader = false;
+            })
+            
+        }
+        else {
+            this.resetBankDiscountAmount();
+        }
+      
+    }
+
+    resetBankDiscountAmount(){
+        this.offerKey = null;
+        this.bankDiscountAmount = 0;
+        // this.emiResponse = this.paymentMethod == this.CARD_TYPES.debitCard ? this.emiResponseMaster[this.CARD_TYPES.debitCard] : this.emiResponseMaster[this.CARD_TYPES.creditCard];
+        this.emiRawDebitCardResponse = this.emiResponseMaster[this.CARD_TYPES.debitCard];
+        this.emiRawCreditCardResponse = this.emiResponseMaster[this.CARD_TYPES.creditCard];
+        this.processRawResponse(
+            (this.paymentMethod == this.CARD_TYPES.debitCard) ? this.emiRawDebitCardResponse : this.emiRawCreditCardResponse,
+            this.cartSession, null, true
+        );
+        // console.log(this.emiResponse, this.selectedBank);
+        let emi = this.emiResponse[this.selectedBank];
+        let rate = emi[this.selectedEMIKey].emiBankInterest ;
+        this.getEmiDiscount(this.getEmiMonths(this.selectedEMIKey), rate ? (parseInt(rate) / 1200) : null, emi[this.selectedEMIKey].transactionAmount)
     }
 
     changeCardType(card) {
+        // this.emiResponse = (this.paymentMethod == this.CARD_TYPES.debitCard) ? this.emiResponseMaster[this.CARD_TYPES.debitCard] : this.emiResponseMaster[this.CARD_TYPES.creditCard];
         let cartSession = this._cartService.getGenericCartSession;
         cartSession['nocostEmi'] = 0;
         let cart = cartSession["cart"];
@@ -648,7 +778,7 @@ export class EmiComponent {
         this.selectedMonth = null;
         this.selectedYear = null;
         this.processRawResponse(
-            (card == this.CARD_TYPES.debitCard) ? this.emiRawDebitCardResponse : this.emiRawCreditCardResponse,
+            (card == this.CARD_TYPES.debitCard) ? this.emiResponseMaster[this.CARD_TYPES.debitCard]: this.emiResponseMaster[this.CARD_TYPES.creditCard],
             cart
         );
         this.paymentMethod = card;
@@ -691,15 +821,34 @@ export class EmiComponent {
         let cartSession = this._cartService.getGenericCartSession;
         cartSession["nocostEmi"] = 0;
         this._cartService.orderSummary.next(cartSession);
+        if(this.ccNameSubscription){this.ccNameSubscription.unsubscribe()}
     }
 
     getEmiValuesCall(data){
-        return this._dataService.callRestful('GET', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CLUSTER_EMI_VAL, {params:data}).pipe(
+        return this._dataService.callRestful('GET',CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CLUSTER_EMI_VAL, {params:data}).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({status: false, statusCode: res.status});
             })
         );
     }
+
+    getPayUOfferForUserCall(cardNumber){
+        const data = {
+            "var1": 1,
+            "var2": cardNumber.slice(0, 6),
+           //"var2": 512345,
+            "var5": 1,
+            "paymentMode": "emi",
+            "amount": this._cartService.totalDisplayPayableAmountWithOutPrepaid
+            }
+
+         return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT_PAYU_OFFER_USER,{body:data}).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({status: false, statusCode: res.status});
+            })
+        );
+    }
+
 }
 
 

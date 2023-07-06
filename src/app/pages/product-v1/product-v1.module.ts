@@ -33,10 +33,17 @@ import { ObjectToArrayPipeModule } from "@app/utils/pipes/object-to-array.pipe";
 import { NgxSiemaService } from "ngx-siema";
 import { ProductV1Component } from "./product-v1.component";
 import { ProductV1RoutingModule } from "./product-v1.routing.module";
+import { AdsenseFeatureProductsUnitModule } from "../../modules/adsense/adsense-feature-products-unit.module";
+import { AdsensePromotedBrandsUnitModule } from "../../modules/adsense/adsense-promoted-brands-unit.module";
+import { AdsenseLeaderboardBannerModule } from "../../modules/adsense/adsense-leaderboard-banner.module";
+import { AdsenseRectangleBannerModule } from "../../modules/adsense/adsense-inline-rectangle-banner.module";
+import { AdsenseService } from "@app/utils/services/adsense.service";
 
 
 @NgModule({
     declarations: [ProductV1Component],
+    exports: [],
+    providers: [NgxSiemaService, DatePipe,AdsenseService],
     imports: [
         CommonModule,
         ProductV1RoutingModule,
@@ -68,9 +75,11 @@ import { ProductV1RoutingModule } from "./product-v1.routing.module";
         EmiPlansModule,
         ProductOosSimilarModule,
         ProductInfoModule,
-        FloatingCouponWidgetModule
-    ],
-    exports: [],
-    providers: [NgxSiemaService, DatePipe]
+        FloatingCouponWidgetModule,
+        AdsenseFeatureProductsUnitModule,
+        AdsensePromotedBrandsUnitModule,
+        AdsenseLeaderboardBannerModule,
+        AdsenseRectangleBannerModule
+    ]
 })
 export class ProductV1Module { }

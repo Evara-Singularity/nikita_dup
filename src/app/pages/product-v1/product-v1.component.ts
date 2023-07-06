@@ -12,6 +12,7 @@ import { ToastMessageService } from "@app/modules/toastMessage/toast-message.ser
 import { ClientUtility } from "@app/utils/client.utility";
 import { ProductCardFeature, ProductsEntity } from "@app/utils/models/product.listing.search";
 import { YTThumbnailPipe } from "@app/utils/pipes/ytthumbnail.pipe";
+import { AdsenseService } from "@app/utils/services/adsense.service";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
@@ -100,6 +101,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     productFilterAttributesList: any;
     iscloseproductDiscInfoComponent:boolean=true;
     compareProductsData:Array<object> = [];
+    adsenseData: any = null;
 
     // lazy loaded component refs
     productShareInstance = null;
@@ -253,6 +255,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         private siemaCrouselService: SiemaCrouselService,
         private _ytThumbnail: YTThumbnailPipe,
         private datePipe: DatePipe,
+        private _adsenseService: AdsenseService,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any,
     ) {
@@ -682,7 +685,27 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.resetLazyComponents();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
+            this.getAdsenseData();
         }
+    }
+
+    private getAdsenseData() {
+        if (
+          this.rawProductData &&
+          this.rawProductData.msn &&
+          this.rawProductData.productCategoryDetails &&
+          this.rawProductData.productBrandDetails &&
+          this.rawProductData.productCategoryDetails["categoryCode"] &&
+          this.rawProductData.productBrandDetails["idBrand"]
+        ) {
+          const categoryId =
+            this.rawProductData.productCategoryDetails["categoryCode"];
+          const brandUrl = this.rawProductData.productBrandDetails["idBrand"];
+          const msn = this.rawProductData.msn;
+            this._adsenseService
+              .getAdsense(categoryId, brandUrl, msn)
+              .subscribe((adsenseData) => (this.adsenseData = adsenseData));
+        }        
     }
 
     addSessionSubscriber() {

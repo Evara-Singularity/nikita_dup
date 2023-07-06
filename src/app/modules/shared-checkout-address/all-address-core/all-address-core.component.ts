@@ -296,6 +296,7 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
       this.createEditAddressInstance.instance['redirectedTo'] = redirectedTo || null;
       this.createEditAddressSubscription = (this.createEditAddressInstance.instance["closeAddressPopUp$"] as EventEmitter<any>).subscribe((response: CreateEditAddressModel) =>
       {
+          // console.log('response ==>', response);
           //Expected Actions: "Add or Edit or null", null implies no action to be taken
           if (response.action) {
               const isEditMode = response.action === "Edit";
@@ -325,6 +326,8 @@ export class AllAddressCoreComponent implements OnInit, AfterViewInit, OnDestroy
           this.addressListInstance.instance['addresses'] = IS_DELIVERY ? this.deliveryAddressList : this.billingAddressList;
       }
       if (IS_DELIVERY && (canUpdateDelivery || isEditMode)) {
+         // console.log('IS_DELIVERY', this._cartService.shippingAddress); 
+            this._cartService.shippingAddress = this.deliveryAddressList[0];
           const deliveryAddress = SharedCheckoutAddressUtil.verifyCheckoutAddress(this.deliveryAddressList, this._cartService.shippingAddress);
           this.updateDeliveryOrBillingAddress(IS_DELIVERY, deliveryAddress);
           return;

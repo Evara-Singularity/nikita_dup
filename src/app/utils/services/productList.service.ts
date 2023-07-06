@@ -14,6 +14,7 @@ import { CartService } from "./cart.service";
 import { DataService } from "./data.service";
 import { GlobalAnalyticsService } from "./global-analytics.service";
 import { Observable, of } from "rxjs";
+import { product } from "@app/config/static-en";
 
 @Injectable({
   providedIn: "root",
@@ -252,7 +253,7 @@ export class ProductListService {
       event: !product.outOfStock ? "rfq_instock" : "rfq_oos",
     });
 
-    if (isSubmitted) {
+    if (isSubmitted && product && product.productName && product['brand']) {
       this._analytics.sendGTMCall({
         event: !product.outOfStock ? "instockformSubmit" : "oosformSubmit",
         customerInfo: {
@@ -436,36 +437,41 @@ export class ProductListService {
     };
 
     this._analytics.sendAdobeCall({ page, custData, order }, "genericClick");
-
-    this._analytics.sendGTMCall({
-      event: "addToCart",
-      ecommerce: {
-        currencyCode: "INR",
-        add: {
-          products: [
-            {
-              name: productDetails.productName, // Name or ID of the product is required.
-              id: productDetails.productId, // todo: partnumber
-              price: productDetails.productUnitPrice,
-              brand: productDetails["brandName"],
-              category: productDetails["category"]
-                ? productDetails["category"]
-                : "",
-              variant: "",
-              quantity: productDetails["productQuantity"],
-              productImg: productDetails.productImg,
-              brandId: productDetails["brandId"],
-              CatId: productDetails["taxonomyCode"],
-              MRP: productDetails["amount"],
-              Discount:
-                productDetails["discount"] && !isNaN(productDetails["discount"])
-                  ? parseInt(productDetails["discount"])
-                  : null,
-            },
-          ],
+    if(
+      product && productDetails.productName && 
+      productDetails.productId && productDetails.productUnitPrice && 
+      productDetails["brandName"] && productDetails["category"])
+    {
+      this._analytics.sendGTMCall({
+        event: "addToCart",
+        ecommerce: {
+          currencyCode: "INR",
+          add: {
+            products: [
+              {
+                name: productDetails.productName, // Name or ID of the product is required.
+                id: productDetails.productId, // todo: partnumber
+                price: productDetails.productUnitPrice,
+                brand: productDetails["brandName"],
+                category: productDetails["category"]
+                  ? productDetails["category"]
+                  : "",
+                variant: "",
+                quantity: productDetails["productQuantity"],
+                productImg: productDetails.productImg,
+                brandId: productDetails["brandId"],
+                CatId: productDetails["taxonomyCode"],
+                MRP: productDetails["amount"],
+                Discount:
+                  productDetails["discount"] && !isNaN(productDetails["discount"])
+                    ? parseInt(productDetails["discount"])
+                    : null,
+              },
+            ],
+          },
         },
-      },
-    });
+      });
+    }
 
     let trackingData = {
       event_type: "click",
@@ -546,7 +552,9 @@ export class ProductListService {
       productBasketProducts: criteoItem,
       eventData: eventData,
     };
-    this._analytics.sendGTMCall(dataLayerObj);
+    if(criteoItem && criteoItem.length) {
+      this._analytics.sendGTMCall(dataLayerObj);
+    }
     this.globalAnalyticsService.sendMessage(dataLayerObj);
   }
 }

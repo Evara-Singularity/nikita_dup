@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { CartService } from "@app/utils/services/cart.service";
 import { CommonService } from "@app/utils/services/common.service";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
@@ -14,6 +14,7 @@ export class AllPromocodeV1Component implements OnInit {
   showPromoOfferPopup: boolean = false;
   appliedPromocodeSubscription: Subscription;
   appliedPromocode: string = "";
+  @Input() moduleUsedIn = '';
 
   constructor(
     private _commonService: CommonService,

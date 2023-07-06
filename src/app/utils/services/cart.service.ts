@@ -516,7 +516,7 @@ export class CartService
                     isGift: cart["gift"] == null ? false : cart["gift"],
                     giftMessage: cart["giftMessage"],
                     giftPackingCharges: cart["giftPackingCharges"] == null ? 0 : cart["giftPackingCharges"],
-                    totalPayableAmount: cart["totalAmount"] == null ? 0 : cart["totalAmount"],
+                    totalPayableAmount: extra.paymentId == 14 ? extra.totalPayableAmount :  (cart["totalAmount"] == null ? 0 : cart["totalAmount"] ),
                     noCostEmiDiscount: extra.noCostEmiDiscount == 0 ? 0 : extra.noCostEmiDiscount,
                 },
                 itemsList: this.getItemsList(cartItems),
@@ -537,12 +537,22 @@ export class CartService
                     deliveryMethodId: 77,
                     type: "kjhlh",
                 },
-                prepaidDiscounts: (extra.mode == 'COD') ? null : ((this.getCartSession().prepaidDiscountList) ? this.getCartSession().prepaidDiscountList : null),
+                prepaidDiscounts: (extra.mode == 'COD' || extra.bankOffer) ? null : ((this.getCartSession().prepaidDiscountList) ? this.getCartSession().prepaidDiscountList : null),
                 offersList: offersList != undefined && offersList.length > 0 ? offersList : null,
                 extraOffer: this.cartSession["extraOffer"] ? this.cartSession["extraOffer"] : null,
                 device: CONSTANTS.DEVICE.device,
             },
         };
+        if(extra.bankOffer)
+        {
+            let bankOffer = {
+                bankOffer:extra.bankOffer ? extra.bankOffer : null,
+                cardNumber: extra.ccnum.slice(0, 6),
+                paymentMode: extra.paymentMode
+            }
+            obj["shoppingCartDto"]["bankOffer"]  = bankOffer;
+            obj["shoppingCartDto"]["prepaidDiscounts"]=[]; 
+        }
         if (cart["buyNow"]) {
             obj["shoppingCartDto"]["cart"]["buyNow"] = cart["buyNow"];
         }
@@ -1413,17 +1423,17 @@ export class CartService
         return item;
     }
 
-    getAllPromoCodes(cartId = null)
+    getAllPromoCodes(cartId = null, totalPayableAmount = null)
     {
-        console.trace();
-        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?cartId=' + cartId;
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?cartId=' + cartId;
+        url = (totalPayableAmount) ? url + `&totalCartAmount=${totalPayableAmount}` : url;
         return this._dataService.callRestful('GET', url);
     }
 
-    getAllPromoCodesByUserId(userID = null,cartId = null)
-    {
-        console.trace();
-        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?userId=' + userID + '&cartId=' + cartId + '&buyNow='+ (this._buyNow || 'false');
+    getAllPromoCodesByUserId(userID = null, cartId = null, totalPayableAmount = null) {
+        // console.trace();
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getAllActivePromoCodes + '?userId=' + userID + '&cartId=' + cartId + '&buyNow=' + (this._buyNow || 'false');
+        url = (totalPayableAmount) ? url + `&totalCartAmount=${totalPayableAmount}` : url;
         return this._dataService.callRestful('GET', url);
     }
 
@@ -1449,9 +1459,11 @@ export class CartService
     getPromoCodesByUserId(userId = null, isUpdatePromoCode = true) {
         this._loaderService.setLoaderState(true);
         const cartSession = this.getCartSession();
+        const shipingValueRequest = this.getShippingObj(cartSession);
+        // console.log('shipingValueRequest', shipingValueRequest);
         const offerId = (cartSession['offersList'][0] && cartSession['offersList'][0]['offerId']) ? cartSession['offersList'][0]['offerId'] : "";
         if (userId) {
-            this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId']).pipe(map(res=>{
+            this.getAllPromoCodesByUserId(userId,cartSession['cart']['cartId'],(shipingValueRequest['totalPayableAmount'] || null)).pipe(map(res=>{
                 if (res && res['data']) {
                     (res['data'] as []).sort((a, b) => b['isApplicable'] - a['isApplicable'])
                 }
@@ -1460,7 +1472,7 @@ export class CartService
                 this.processPromoData(res, offerId, isUpdatePromoCode);
             });
         } else {
-            this.getAllPromoCodes(cartSession['cart']['cartId']).pipe(map(res=>{
+            this.getAllPromoCodes(cartSession['cart']['cartId'], (shipingValueRequest['totalPayableAmount'] || null)).pipe(map(res=>{
                 if (res && res['data']) {
                     (res['data'] as []).sort((a, b) => b['isApplicable'] - a['isApplicable'])
                 }
@@ -2379,7 +2391,9 @@ export class CartService
                     }
                 }
             }
-            this._globalAnalyticsService.sendGTMCall(data);
+            if(dlp && dlp.length) {
+                this._globalAnalyticsService.sendGTMCall(data);
+            }
         }, 3000);
     }
 
@@ -2423,7 +2437,9 @@ export class CartService
             'productBasketProducts': criteoItem,
             'eventData': eventData
         }
-        this._globalAnalyticsService.sendGTMCall(data);
+        if(criteoItem && criteoItem.length) {
+            this._globalAnalyticsService.sendGTMCall(data);
+        }
     }
 
     sendAdobeAnalyticsData(trackingname)

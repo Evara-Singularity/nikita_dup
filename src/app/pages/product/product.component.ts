@@ -1699,16 +1699,21 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
 
     productFbtData()
     {
-        const msn = this.route.snapshot.params['msnid']
-        this.productService
-            .getFBTProducts(msn)
-            .subscribe((rawProductFbtData) =>
-            {
-                this.fetchFBTProducts(
-                    this.rawProductData,
-                    Object.assign({}, rawProductFbtData)
-                );
-            });
+        let msn: string = this.route.snapshot.params['msnid'] || '';
+        if(msn == null || msn.length == 0 || msn == undefined) {
+            msn = this.msn; // takes the msn from the API response if router snapshot is not present
+        }
+        if(msn && msn.length) {
+            this.productService
+                .getFBTProducts(msn)
+                .subscribe((rawProductFbtData) =>
+                {
+                    this.fetchFBTProducts(
+                        this.rawProductData,
+                        Object.assign({}, rawProductFbtData)
+                    );
+                });
+        }
     }
 
     fetchFBTProducts(productBO, rawProductFbtData)
@@ -2116,7 +2121,9 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 productBasketProducts: criteoItem,
                 eventData: eventData,
             };
-            this.analytics.sendGTMCall(dataLayerObj);
+            if(criteoItem && criteoItem.length) {
+                this.analytics.sendGTMCall(dataLayerObj);
+            }
             this.globalAnalyticsService.sendMessage(dataLayerObj);
         }
     }
@@ -3726,7 +3733,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             status: this.rawProductData["status"],
             product_url: this.productUrl,
         };
-        console.log(clickStreamData.product_name,"ppp");
+        //console.log(clickStreamData.product_name,"ppp");
         //TODO:Yogender for click stream to set selling price
         if (this.priceQuantityCountry != null) {
             clickStreamData["mrp"] = this.productMrp;
@@ -3743,37 +3750,41 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         let gtmDataObj = [];
         const gaGtmData = this.localStorageService.retrieve("gaGtmData");
         if (this.productOutOfStock) {
+            if(this.productName) {
+                gtmDataObj.push({
+                    event: "rqnProductPage",
+                    ecommerce: {
+                        rqn_product_name: this.productName,
+                    },
+                });
+            }
+        }
+        if(this.productName && this.productSubPartNumber && this.productPrice) {
             gtmDataObj.push({
-                event: "rqnProductPage",
+                event: "productView",
                 ecommerce: {
-                    rqn_product_name: this.productName,
+                    detail: {
+                        actionField: {
+                            list: gaGtmData && gaGtmData["list"] ? gaGtmData["list"] : "",
+                        },
+                        products: [
+                            {
+                                name: this.productName,
+                                id: this.productSubPartNumber,
+                                price: this.productPrice,
+                                brand: this.productBrandDetails["brandName"],
+                                category:
+                                    gaGtmData && gaGtmData["category"]
+                                        ? gaGtmData["category"]
+                                        : this.productCategoryDetails["categoryName"],
+                                variant: "",
+                                stockStatus: this.productOutOfStock ? "Out of Stock" : "In Stock",
+                            },
+                        ],
+                    },
                 },
             });
-        }
-        gtmDataObj.push({
-            event: "productView",
-            ecommerce: {
-                detail: {
-                    actionField: {
-                        list: gaGtmData && gaGtmData["list"] ? gaGtmData["list"] : "",
-                    },
-                    products: [
-                        {
-                            name: this.productName,
-                            id: this.productSubPartNumber,
-                            price: this.productPrice,
-                            brand: this.productBrandDetails["brandName"],
-                            category:
-                                gaGtmData && gaGtmData["category"]
-                                    ? gaGtmData["category"]
-                                    : this.productCategoryDetails["categoryName"],
-                            variant: "",
-                            stockStatus: this.productOutOfStock ? "Out of Stock" : "In Stock",
-                        },
-                    ],
-                },
-            },
-        });
+        } 
         const google_tag_params = {
             ecomm_prodid: this.productSubPartNumber,
             ecomm_pagetype: "product",
@@ -3787,18 +3798,22 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             google_tag_params: google_tag_params,
         });
         const user = this.localStorageService.retrieve("user");
-
-        gtmDataObj.push({
-            event: "viewItem",
-            email: user && user["email"] ? user["email"] : "",
-            ProductID: this.productSubPartNumber,
-            Category: this.productCategoryDetails["taxonomy"],
-            CatID: this.productCategoryDetails["taxonomyCode"],
-            MRP: this.productMrp,
-            brandId: this.productBrandDetails["idBrand"],
-            Discount: Math.floor(this.productDiscount),
-            ImageURL: this.productDefaultImage,
-        });
+        if(this.productSubPartNumber && this.productCategoryDetails["taxonomy"] && 
+            this.productCategoryDetails["taxonomyCode"] && this.productMrp && 
+            this.productBrandDetails["idBrand"]) 
+        {
+            gtmDataObj.push({
+                event: "viewItem",
+                email: user && user["email"] ? user["email"] : "",
+                ProductID: this.productSubPartNumber,
+                Category: this.productCategoryDetails["taxonomy"],
+                CatID: this.productCategoryDetails["taxonomyCode"],
+                MRP: this.productMrp,
+                brandId: this.productBrandDetails["idBrand"],
+                Discount: Math.floor(this.productDiscount),
+                ImageURL: this.productDefaultImage,
+            });
+        }
 
         gtmDataObj.forEach((data) =>
         {
@@ -3912,7 +3927,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         };
 
         this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
-
         const digitalData = {
             event: "addToCart",
             ecommerce: {
@@ -3941,7 +3955,13 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
                 },
             },
         };
-        this.analytics.sendGTMCall(digitalData);
+        if(
+            this.productName && this.productSubPartNumber && 
+            this.productBrandDetails['brandName'] && this.productPrice &&
+            this.productCategoryDetails["taxonomyCode"] ) 
+            {
+                this.analytics.sendGTMCall(digitalData);
+            }
     }
 
     analyticRFQ(isSubmitted: boolean = false)
@@ -3966,7 +3986,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             event: !this.productOutOfStock ? "rfq_instock" : "rfq_oos",
         });
 
-        if (isSubmitted) {
+        if (isSubmitted && this.productName && this.productBrandDetails['brandName']) {
             this.analytics.sendGTMCall({
                 event: !this.productOutOfStock ? "instockformSubmit" : "oosformSubmit",
                 customerInfo: {

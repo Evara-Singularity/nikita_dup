@@ -348,7 +348,14 @@ export class CartComponent implements OnInit, AfterViewInit
                 if (cartSession["itemsList"][p]['bulkPrice'] != '' && cartSession["itemsList"][p]['bulkPrice'] != null) {
                     price = cartSession["itemsList"][p]['bulkPrice'];
                 }
-                criteoItem.push({ name: cartSession["itemsList"][p]['productName'], id: cartSession["itemsList"][p]['productId'], price: cartSession["itemsList"][p]['productUnitPrice'], quantity: cartSession["itemsList"][p]['productQuantity'], image: cartSession["itemsList"][p]['productImg'], url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] });
+                criteoItem.push({
+                    name: cartSession["itemsList"][p]['productName'],
+                    id: cartSession["itemsList"][p]['productId'],
+                    price: cartSession["itemsList"][p]['productUnitPrice'],
+                    quantity: cartSession["itemsList"][p]['productQuantity'],
+                    image: cartSession["itemsList"][p]['productImg'],
+                    url: CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl']
+                });
                 eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
                 eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
                 eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
@@ -377,7 +384,10 @@ export class CartComponent implements OnInit, AfterViewInit
                 'productBasketProducts': criteoItem,
                 'eventData': eventData
             }
-            this._globalAnalyticsService.sendGTMCall(data);
+            // Gtm Validation
+            if(criteoItem && criteoItem.length) {
+                this._globalAnalyticsService.sendGTMCall(data);
+            }
             /*End Criteo DataLayer Tags */
         }
     }

@@ -1,12 +1,16 @@
-<p *ngIf="_cartService.totalPrepaidSaving>0 && this.displayMode == 'FLOATING'" class="discount-offer">
-    <span class="large-text" >
+<p *ngIf="_cartService.totalPrepaidSaving>0 && displayMode == 'FLOATING' && !bankDiscountAmount" class="discount-offer">
+    <span class="large-text">
         Pay online & save EXTRA {{_cartService.totalPrepaidSaving | currency:'INR' : 'symbol' : '1.0-0'}} OFF
     </span>
-    <br/>
-    <span class="small-text" >
+    <br />
+    <span class="small-text">
         via UPI, EMI, Credit/Debit Card, Net Banking, Wallets
-    </span>   
+    </span>
 </p>
-<p class="small-text-v2" *ngIf="_cartService.totalPrepaidSaving>0 && this.displayMode == 'LABEL'" >
+<p class="small-text-v2" *ngIf="_cartService.totalPrepaidSaving>0 && displayMode == 'LABEL' && !bankDiscountAmount ">
     You are saving {{_cartService.totalPrepaidSaving | currency:'INR' : 'symbol' : '1.0-0'}} with {{displayText}}.
+</p>
+<p *ngIf="displayMode == 'LABEL' &&  bankDiscountAmount" class="small-text-v2 offer-info-section">
+    You are eligible for ₹{{bankDiscountAmount}} instant discount. <i class="icon-information info-icon"
+        (click)="showPayUOfferPopUp()"></i>
 </p>

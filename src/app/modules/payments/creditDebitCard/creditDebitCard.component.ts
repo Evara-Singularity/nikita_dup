@@ -1,17 +1,21 @@
 import { Component, ComponentFactoryResolver, Injector, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import CONSTANTS from '@app/config/constants';
 import { CartService } from '@app/utils/services/cart.service';
+import { PopupService } from '@app/utils/services/popup.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CreditCardValidator } from 'ng2-cc-library';
+import { catchError,debounceTime } from 'rxjs/operators';
 import * as creditCardType from 'credit-card-type';
 import { GlobalLoaderService } from '../../../utils/services/global-loader.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { DataService } from '@app/utils/services/data.service';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { CommonService } from '@app/utils/services/common.service';
+import { HttpErrorResponse } from '@angular/common/http';
+
 
 @Component({
     selector: 'credit-debit-card',
@@ -39,6 +43,9 @@ export class CreditDebitCardComponent implements OnInit {
     selectedMonth: string = null;
     yearSelectPopupStatus: boolean = false;
     selectedYear: string = null;
+    bankDiscountAmount: number = 0;
+    ccNameSubscription: Subscription = null;
+    offerKey: string = null;
     
     bottomSheetInstance = null;
     @ViewChild('bottomSheet', { read: ViewContainerRef })
@@ -48,6 +55,7 @@ export class CreditDebitCardComponent implements OnInit {
         private _localStorageService: LocalStorageService,
         private _localAuthService: LocalAuthService,
         public _cartService: CartService,
+        public _popupService :PopupService,
         private _loaderService: GlobalLoaderService,
         private _analytics: GlobalAnalyticsService,
         private _commonService: CommonService,
@@ -81,6 +89,15 @@ export class CreditDebitCardComponent implements OnInit {
                 "ccvv": [null, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(4)]]
             }),
         });
+
+        this.ccNameSubscription = this.creditDebitCardForm.get('requestParams.ccnum').valueChanges.pipe(debounceTime(300)).subscribe(str => {
+            if (str && this.type == 'retail') {
+                // check for offer
+                this.onCardNumberChange(str,this.creditDebitCardForm.get('mode'));
+            } else {
+                this.resetBankDiscountAmount()
+            }
+        })
     }
 
     set isShowLoader(value) {
@@ -98,6 +115,66 @@ export class CreditDebitCardComponent implements OnInit {
             this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid;
         }
     }
+
+    onCardNumberChange(cardNumber,mode) {
+        let response = null;
+        if (cardNumber && cardNumber.length === 16 &&  mode.value == "CC") {
+            this.isShowLoader = true;
+            this.getPayUOfferForUserCall(cardNumber).subscribe((res): void => {
+                this.isShowLoader = false;
+                if (res["status"] != true) {
+                    this.resetBankDiscountAmount();
+                    return;
+                }
+                response = res['data'];
+                if (response['result'] && response['result']['offers'] && response['result']['offers'].length > 0) {
+                    this.bankDiscountAmount = response['result']['offers'][0]['discountDetail']['discount'];
+                    this.setPayUOfferDiscount(response['result']['offers'][0]);
+
+                }else{
+                    this.resetBankDiscountAmount();
+                }
+            },error=>{
+                console.log('onCardNumberChange', error);
+                this.resetBankDiscountAmount();
+                this.isShowLoader = false;
+            })
+            
+        }
+        else {
+            this.resetBankDiscountAmount();
+        }
+      
+    }
+
+    setPayUOfferDiscount(response)
+    {
+     
+        if(response)
+        {
+        this.offerKey =response['offerKey']
+       
+        let data ={};
+        data['description'] = response['description'];
+        data['totalCartValue'] = this._cartService.totalDisplayPayableAmountWithOutPrepaid
+        data['minTxnAmount'] = response['minTxnAmount']
+        data['maxTxnAmount'] = response['maxTxnAmount']
+        data['maxDiscount'] = response['discountDetail']['maxDiscount']
+        data['discount'] = response['discountDetail']['discount']
+        data['totalPayable']=  response['discountDetail']['discountedAmount']
+
+        this._popupService.setPayUOfferPopUpData(data);
+
+        this.totalPayableAmount = response['discountDetail']['discountedAmount'];
+        
+        }
+    }
+
+    resetBankDiscountAmount(){
+        this.offerKey = null;
+        this.totalPayableAmount = this._cartService.totalDisplayPayableAmountWithPrepaid
+        this.bankDiscountAmount = 0;
+        }
 
 
     pay(data, valid) {
@@ -176,7 +253,11 @@ export class CreditDebitCardComponent implements OnInit {
         const extra = {
             "mode": data.mode,
             "paymentId": data.mode == 'CC' ? 9 : 2,
-            addressList: addressList
+            addressList: addressList,
+            "bankOffer" : this.bankDiscountAmount == 0 ? null : this.bankDiscountAmount,
+            "ccnum": ccnum,
+            "offerKey":this.offerKey,
+            "paymentMode":"creditCard"
         };
 
         if (this.type == 'tax') {
@@ -202,7 +283,8 @@ export class CreditDebitCardComponent implements OnInit {
                 "user_id": userSession["userId"],
                 "store_card": data.store_card == true ? "true" : "false",
             },
-            "validatorRequest": this._cartService.createValidatorRequest(extra)
+            "validatorRequest": this._cartService.createValidatorRequest(extra),
+            "offerKey": this.offerKey
         };
 
         if (this.type == "tax") {
@@ -240,6 +322,9 @@ export class CreditDebitCardComponent implements OnInit {
         (this.creditDebitCardForm.get('requestParams') as FormControl).reset();
         this.selectedMonth = null;
         this.selectedYear = null;
+
+        this.resetBankDiscountAmount();
+
         if(CONSTANTS.enableGenericPrepaid){
             this.isShowLoader = true;
             this._cartService.validatePaymentsDiscount(mode, (mode == 'CC' ? 9 : 2)).subscribe(response => {
@@ -304,6 +389,23 @@ export class CreditDebitCardComponent implements OnInit {
         return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT, { body: data });
     }
 
+    getPayUOfferForUserCall(cardNumber){
+        const data = {
+            "var1": 1,
+            "var2": cardNumber.slice(0, 6),
+           //"var2": 512345,
+            "var5": 1,
+            "paymentMode": "creditCard",
+            "amount": this._cartService.totalDisplayPayableAmountWithOutPrepaid
+            }
+
+         return this._dataService.callRestful('POST',CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT_PAYU_OFFER_USER,{body:data}).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({status: false, statusCode: res.status});
+            })
+        );
+    }
+
     async initiateRbiGuidlinesPopUp()
     {
         if (!this.bottomSheetInstance) {
@@ -323,5 +425,6 @@ export class CreditDebitCardComponent implements OnInit {
             this.bottomSheetInstance.instance['bm'] = !(this.bottomSheetInstance.instance['bm']);
         }
     }
+
 
 }

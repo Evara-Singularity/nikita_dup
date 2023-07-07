@@ -1,6 +1,6 @@
 .plp-banner-container{
     position: relative;
-    min-height: 227px;
+    min-height: 183px;
     .carousal-dot-container{
         position: absolute;
         bottom: 15px;
@@ -20,7 +20,7 @@
                 margin-right: 0;
             }
             &.active{
-                background: red;
+                background: #fff;
                 width: 23px;
                 height: 6px;
             }

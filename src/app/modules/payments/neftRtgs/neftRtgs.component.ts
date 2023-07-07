@@ -63,13 +63,15 @@ export class NeftRtgsComponent {
             'couponUsed': cartSession['cart']['totalOffer'],
             'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
         };
-
-        this._commonService.isBrowser && this._analytics.sendGTMCall({
-            'event': 'checkoutStarted',
-            'shipping_Information': shippingInformation,
-            'city': addressList["city"],
-            'paymentMode': 'NEFT'
-        });
+        //Gtm validation
+        if (shippingInformation['shippingCost'] && addressList && addressList['city']) {
+            this._commonService.isBrowser && this._analytics.sendGTMCall({
+                'event': 'checkoutStarted',
+                'shipping_Information': shippingInformation,
+                'city': addressList["city"],
+                'paymentMode': 'NEFT'
+            });
+        }
 
         let extra = {
             "mode": "NEFT",

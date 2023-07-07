@@ -363,13 +363,15 @@ export class CategoryComponent {
         if (this._localStorageService.retrieve('user')) {
             user = this._localStorageService.retrieve('user');
         }
-        this._analytics.sendGTMCall({
-            'event': 'pr-impressions',
-            'ecommerce': {
-                'currencyCode': 'INR', // Local currency is optional.
-                'impressions': dlp,
-            },
-        });
+        if(dlp && dlp.length) {
+            this._analytics.sendGTMCall({
+                'event': 'pr-impressions',
+                'ecommerce': {
+                    'currencyCode': 'INR', // Local currency is optional.
+                    'impressions': dlp,
+                },
+            });
+        }
 
         const google_tag_params = {
             ecomm_prodid: '',
@@ -386,14 +388,16 @@ export class CategoryComponent {
         });
 
         /*Start Criteo DataLayer Tags */
-
-        this._analytics.sendGTMCall({
-            'event': 'viewList',
-            'email': (user && user.email) ? user.email : '',
-            'ProductIDList': criteoItem,
-            'CategoryId': this.API_RESPONSE.category[0].categoryDetails.taxonomy,
-            'CategoryName': this.API_RESPONSE.category[0].categoryDetails.canonicalURL
-        });
+        // Gtm validation
+        if(criteoItem && criteoItem.length) {
+            this._analytics.sendGTMCall({
+                'event': 'viewList',
+                'email': (user && user.email) ? user.email : '',
+                'ProductIDList': criteoItem,
+                'CategoryId': this.API_RESPONSE.category[0].categoryDetails.taxonomy,
+                'CategoryName': this.API_RESPONSE.category[0].categoryDetails.canonicalURL
+            });
+        }
 
         /*End Criteo DataLayer Tags */
 

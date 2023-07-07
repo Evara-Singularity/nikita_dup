@@ -55,6 +55,9 @@ export class BankNamePipe implements PipeTransform
         else if (value == "UTIB") {
             return "Axis Bank";
         }
+        else if (value == "ONEC") {
+            return "ONECARD";
+        }
         else if (value == "YESB") {
             return "Yes Bank";
         }
@@ -78,6 +81,9 @@ export class BankNamePipe implements PipeTransform
         }
         else if (value == "FEDED") {
             return "Federal Bank Debit Card";
+        }
+        else if (value == "KOTAKD") {
+            return "Kotak Bank Debit Card";
         }
         else if (value == "HDFC_DC") {
             return "HDFC Bank Debit Card";

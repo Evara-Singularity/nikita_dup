@@ -26,6 +26,7 @@ export class ProductDescriptionComponent implements OnInit {
   productStaticData = this._commonService.defaultLocaleValue;
   show360popupFlag:boolean = false;
   showPocMsn:boolean = false;
+  for3dPopup = false;
   // show360CTA: boolean = false;
   
   @Input() productName;
@@ -63,6 +64,12 @@ export class ProductDescriptionComponent implements OnInit {
     if (this.msnId.toLowerCase() === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length)) {
       this.showPocMsn = true;
     }
+    if(this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {
+      this.for3dPopup = false;
+    } else {
+      this.for3dPopup = true;
+    }
+    console.log(this.for3dPopup);
    this.getStaticSubjectData();
   }
   

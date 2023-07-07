@@ -171,13 +171,15 @@ export class SavedCardComponent {
             'couponUsed': cartSession['cart']['totalOffer'],
             'GST': addressList["isGstInvoice"] != null ? 'Yes' : 'No',
         };
-
-        this._analytics.sendGTMCall({
-            'event': 'checkoutStarted',
-            'shipping_Information': shippingInformation,
-            'city': addressList["city"],
-            'paymentMode': this.savedCards[this.selectedCardIndex]['card_mode']
-        });
+        //Gtm validation
+        if(shippingInformation['shippingCost'] && addressList && addressList['city'] && this.savedCards && this.savedCards.length) {
+            this._analytics.sendGTMCall({
+                'event': 'checkoutStarted',
+                'shipping_Information': shippingInformation,
+                'city': addressList["city"],
+                'paymentMode': this.savedCards[this.selectedCardIndex]['card_mode']
+            });
+        }
 
         const extra = {
             mode: this.savedCards[this.selectedCardIndex]['card_mode'],

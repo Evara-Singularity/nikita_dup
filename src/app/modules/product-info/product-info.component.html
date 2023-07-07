@@ -81,7 +81,7 @@
         </div>
     </div>
 </app-pop-up>
-<app-pop-up-variant2 [headerType]="'pop-up-header'" [for3dPopup]="true" (outData$)="open360Popup = false" *ngIf="open360Popup">
+<app-pop-up-variant2 [headerType]="'pop-up-header'" [for3dPopup]="for3dPopup" (outData$)="open360Popup = false" *ngIf="open360Popup">
     <div class="content-popup" content>
         <div [debounceTime]="100" data-observeVisibility (visible)="load360ViewComponent()">
             <ng-container #product3dContainerRef></ng-container>

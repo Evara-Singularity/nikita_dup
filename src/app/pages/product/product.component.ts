@@ -1030,13 +1030,6 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         // analytics calls moved to this function incase PDP is redirecte to PDP
         this.callAnalyticForVisit();
         this.setMetatag();
-        if(this.defaultPartNumber.toLowerCase() == CONSTANTS.POC_MSN){
-            let url ="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js";
-            const script = document.createElement('script');
-            script.src = url;
-            script.type = 'module';
-            document.head.appendChild(script);
-        }
     }
 
     getCategoryBrandDetails(){

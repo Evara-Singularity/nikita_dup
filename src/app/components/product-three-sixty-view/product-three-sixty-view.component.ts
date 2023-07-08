@@ -57,7 +57,9 @@ export class ProductThreeSixtyViewComponent implements OnInit {
         </div>
         </model-viewer>`
         product360_initialize(basePath);
-        this.cdr.detectChanges();
+        setTimeout(() => {
+          this.cdr.detectChanges();
+        }, 200)
       }
     );
  }

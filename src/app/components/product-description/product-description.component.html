@@ -115,7 +115,7 @@
 
 <app-pop-up *ngIf="show360popupFlag" (outData$)="outData($event)" [for3dPopup]="for3dPopup" [headerType]="'pop-up-header1'" [data]="{headerText: ''}">
     <div class="content-popup" content>
-        <div [debounceTime]="100" data-observeVisibility (visible)="load360ViewComponent()">
+        <div>
             <ng-container #product3dContainerRef></ng-container>
         </div>
     </div>

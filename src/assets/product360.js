@@ -165,9 +165,11 @@ function product360_initialize(basepath) {
 
 
   modelViewer.addEventListener('load', () => {
+    setTimeout(() => {
    $('#viewer').show();
     $('#product360').hide();
     $('#hd-loading').hide();
+   },1000)
   });
 
 }

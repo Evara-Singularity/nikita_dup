@@ -14,8 +14,6 @@ export class ProductThreeSixtyViewComponent implements OnInit {
   showModelViewer:boolean = false;
   scriptUrls = [
     'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.153.0/three.min.js',
-    'https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js',
     'assets/product360.js'
   ];
   constructor(private cdr: ChangeDetectorRef) {
@@ -23,6 +21,9 @@ export class ProductThreeSixtyViewComponent implements OnInit {
   }
 
   ngOnInit(){
+    
+  }
+  ngAfterViewInit(){
     this.load3dPlayerScript();
   }
   

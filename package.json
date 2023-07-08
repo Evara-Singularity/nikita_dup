@@ -70,7 +70,6 @@
         "pinch-zoom-js": "2.3.4",
         "rxjs": "6.6.7",
         "rxjs-compat": "6.3.3",
-        "three": "^0.153.0",
         "tslib": "2.0.0",
         "uuid": "^9.0.0",
         "zone.js": "0.10.3"

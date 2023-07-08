@@ -50,6 +50,7 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() msnId;
   @Input() threeDImages = [];
   @Output() checkCartQuantityAndUpdate$: EventEmitter<any> = new EventEmitter<any>();
+  show360btn: boolean;
 
   constructor(
     private _tms: ToastMessageService,
@@ -61,16 +62,8 @@ export class ProductDescriptionComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    if (this.msnId.toLowerCase() === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length)) {
-      this.showPocMsn = true;
-    }
-    if(this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {
-      this.for3dPopup = false;
-    } else {
-      this.for3dPopup = true;
-    }
-    console.log(this.for3dPopup);
    this.getStaticSubjectData();
+   this.get360poup();
   }
   
   getStaticSubjectData(){
@@ -103,12 +96,32 @@ export class ProductDescriptionComponent implements OnInit {
     this.checkCartQuantityAndUpdate(this.qunatityFormControl.value);
   }
 
+
   scrollToResults(id: string, offset) {
     if (document.getElementById(id)) {
       let footerOffset = document.getElementById(id).offsetTop;
       ClientUtility.scrollToTop(1000, footerOffset + offset);
     }
   }
+
+  get360poup() {
+    if (this.msnId.toLowerCase() === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length)) {
+      this.showPocMsn = true;
+    }
+    if (this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {
+      this.for3dPopup = false;
+    } else {
+      this.for3dPopup = true;
+    }
+    this._commonService.open360popup$.subscribe(val => {
+      setTimeout(() => this.show360popup(), 100)
+    });
+    this._commonService.isProductCrouselLoaded.subscribe(val => {
+      this.show360btn = val;
+      this._cdr.detectChanges();
+    })
+  }
+
   show360popup() {
     this.show360popupFlag = true;
     setTimeout(() => {

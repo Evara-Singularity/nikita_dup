@@ -1,7 +1,7 @@
 import { LocalStorageService } from "ngx-webstorage";
 import { filter, map } from "rxjs/operators";
 import { mergeMap } from "rxjs/operators";
-import { Observer, of } from "rxjs";
+import { BehaviorSubject, Observer, of } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { NavigationEnd, NavigationExtras, NavigationStart, Router } from "@angular/router";
@@ -57,6 +57,7 @@ export class CommonService
     public oosSimilarCard$: Subject<any> = new Subject<any>();
     private loginPerformed$: Subject<any> = new Subject<any>();
     public attachScrollEvent$: Subject<any> = new Subject<any>();
+    isProductCrouselLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     showWhatsappToolTip=true
     isHomeHeader = false;
     isPLPHeader = false;

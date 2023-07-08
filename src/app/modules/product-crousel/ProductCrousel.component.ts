@@ -77,6 +77,7 @@ export class ProductCrouselComponent implements OnInit {
   splitUrlByCommaAlt;
   pz_instance: any = [];
   private cDistryoyed = new Subject();
+  showPocMsn: boolean = false;
 
   constructor(
     private injector: Injector,
@@ -197,11 +198,15 @@ export class ProductCrouselComponent implements OnInit {
     setTimeout(() => {
       this.scrollInitialize();
     }, 1000);
+    if (this.productBo && this.productBo.defaultPartNumber.toLowerCase() === CONSTANTS.POC_MSN || (this.productBo.product3dImages && this.productBo.product3dImages.length)) {
+      this.showPocMsn = true;
+    }
+    this._commonService.isProductCrouselLoaded.next(true)
   }
-
   ngOnDestroy() {
     this.cDistryoyed.next();
     this.cDistryoyed.unsubscribe();
+    this._commonService.isProductCrouselLoaded.next(false);
   }
 
   udpateSiema(items) {
@@ -333,6 +338,10 @@ export class ProductCrouselComponent implements OnInit {
       this.startBannerInterval();
     }
   }
+
+  open36popup(){
+    this._commonService.open360popup$.next(true);
+   }
 
   startBannerInterval() {
     if (this.bannerInterval) {

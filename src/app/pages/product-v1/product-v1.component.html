@@ -149,13 +149,13 @@
         [productBrandCategoryUrl]="rawProductData?.productBrandCategoryUrl">
     </product-more-widget>
 
-    <!-- adsense PDP -->
-    <ng-container *ngIf="adsenseData && adsenseData['FEATURED_PRODUCT_ADS']">
-        <adsense-feature-products-unit [data]="adsenseData['FEATURED_PRODUCT_ADS']"></adsense-feature-products-unit>
-    </ng-container>
-    
+    <!-- adsense PDP -->    
     <ng-container *ngIf="adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']">
         <adsense-promoted-brands-unit [data]="adsenseData['PROMOTOTED_BRAND_ADS']"></adsense-promoted-brands-unit>
+    </ng-container>
+
+    <ng-container *ngIf="adsenseData && adsenseData['FEATURED_PRODUCT_ADS']">
+        <adsense-feature-products-unit [data]="adsenseData['FEATURED_PRODUCT_ADS']"></adsense-feature-products-unit>
     </ng-container>
 
     <!-- removed sponsored products -->

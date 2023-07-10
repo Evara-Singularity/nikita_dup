@@ -69,6 +69,19 @@ const routes: Routes = [
 				},
 			},
 			{
+				matcher: _routingMatcher.categoriesMatcherTranslater,
+				loadChildren: () =>
+					import('./category/category.module').then((m) => m.CategoryModule),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					pageName: 'listing',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE,
+					language: 'hi'
+				},
+			},
+			{
 				matcher: _routingMatcher.categoriesMatcher,
 				loadChildren: () =>
 					import('./category/category.module').then((m) => m.CategoryModule),
@@ -77,7 +90,8 @@ const routes: Routes = [
 					logo: true,
 					moreOpt: true,
 					pageName: 'listing',
-					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE,
+					language: 'en'
 				},
 			},
 			// {

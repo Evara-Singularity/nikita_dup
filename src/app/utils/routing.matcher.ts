@@ -12,7 +12,6 @@ export default class RoutingMatcher {
             const secondURLStrig = url[2].toString();
             const firstURLString = url[0].toString();
             if (secondURLStrig === 'mp' && firstURLString == 'v1') {
-                console.log(secondURLStrig, firstURLString)
                 return { consumed: url, posParams: { msnid: url[3] } };
             }
         }
@@ -24,7 +23,6 @@ export default class RoutingMatcher {
             const secondURLStrig = url[1].toString();
             const firstURLString = url[0].toString();
             if (secondURLStrig === 'mp' && firstURLString !='v1') {
-                console.log(secondURLStrig, firstURLString)
                 return { consumed: url, posParams: { msnid: url[2] } };
             }
         }
@@ -32,9 +30,10 @@ export default class RoutingMatcher {
 
     productMatchTranslate(url: UrlSegment[]): any {
         const urlLength = url.length;
-        if (urlLength > 2) {
+        if (urlLength > 3) {
             const firstURLString = url[0].toString();
-            if (firstURLString === 'hi') {
+            const secondURLStrig = url[2].toString();
+            if (firstURLString === 'hi' && secondURLStrig === 'mp') {
                 return { consumed: url, posParams: { msnid: url[3] } };
             }
         }
@@ -46,6 +45,18 @@ export default class RoutingMatcher {
             const lastParam = url[urlLength - 1].toString();
             const brandParam = url[0].toString();
             if (lastParam.match(/^\d{9}$/) && brandParam !== 'brands') {
+                return { consumed: url, posParams: { id: url[urlLength - 1] } };
+            }
+        }
+    }
+
+    categoriesMatcherTranslater(url: UrlSegment[]): any {
+        const urlLength = url.length;
+        if (urlLength > 0) {
+            const lastParam = url[urlLength - 1].toString();
+            const brandParam = url[1].toString();
+            const firstParam = url[0].toString();
+            if (firstParam === 'hi' && lastParam.match(/^\d{9}$/) && brandParam !== 'brands') {
                 return { consumed: url, posParams: { id: url[urlLength - 1] } };
             }
         }

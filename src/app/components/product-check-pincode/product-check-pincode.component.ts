@@ -54,12 +54,27 @@ export class ProductCheckPincodeComponent implements OnInit
         this.user = this.localStorageService.retrieve('user');
         this.cartSession = this._cartService.getCartSession();
         this.cartId = this.cartSession && this.cartSession['cart']['cartId']
+        this.isPincodeExist();
+    }
+
+    private isPincodeExist(){
+        const pincode = this.localStorageService.retrieve('postCode');
+        if(pincode && pincode.value != null && pincode.value !=''){
+            this.pincode.setValue(pincode.value);
+            this.checkAvailblityOnPinCode();
+        }else{
+            this.callAddressApiAndSetPincode();
+        }
+    }
+
+    private callAddressApiAndSetPincode(){
         if (this.user && this.user.authenticated == "true") {
             let params = { customerId: this.user.userId, invoiceType: "retail" };
             this._commonService.getAddressList(params).subscribe((res) =>
             {
                 if (res["statusCode"] == 200 && res["addressList"] && res["addressList"].length > 0) {
                     this.pincode.setValue(res["addressList"][0].postCode);
+                    this.localStorageService.store("postCode", res["addressList"][0].postCode as any);
                     this.addressId = res["addressList"][0].idAddress;
                     this.checkAvailblityOnPinCode();
                 }
@@ -75,7 +90,7 @@ export class ProductCheckPincodeComponent implements OnInit
           this._commonService.defaultLocaleValue = staticJsonData;
           this.productStaticData = staticJsonData;
         });
-      }
+    }
 
     checkShippingCharges(pincode = null)
     {
@@ -130,6 +145,7 @@ export class ProductCheckPincodeComponent implements OnInit
                     this.deliveryDays = null;
                     this.deliveryAnalytics = 'NA';
                     if (response.data !== null) {
+                        this.localStorageService.store("postCode",this.pincode)
                         let pincodeResponse = response.data[PARTNUMBER];
                         this.isCashOnDelivery = (pincodeResponse.aggregate.codAvailable) || this.FALSE;
                         this.isServiceable = (pincodeResponse.aggregate.serviceable) || this.FALSE;

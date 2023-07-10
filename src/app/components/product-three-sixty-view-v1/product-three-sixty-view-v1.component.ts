@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, Input, NgModule, OnInit } from '@angular/core';
+import { Component, Input, NgModule, OnInit } from '@angular/core';
 
 
 @Component({
@@ -9,7 +9,7 @@ import { ChangeDetectorRef, Component, Input, NgModule, OnInit } from '@angular/
 })
 export class ProductThreeSixtyViewComponentV1 implements OnInit {
   @Input() threeDImages = [];
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor() {
   }
 
   ngOnInit(){
@@ -83,7 +83,6 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
       clicked = false;
       e.target.releasePointerCapture(e.pointerId);
     }
-    this.cdr.detectChanges();
   }  
 }
 

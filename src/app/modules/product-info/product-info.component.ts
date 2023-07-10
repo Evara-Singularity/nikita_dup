@@ -286,13 +286,14 @@ export class ProductInfoComponent implements OnInit
           } else {
             this.for3dPopup = true;
           }
-        this._commonService.open360popup$.subscribe(val => {
+        this._commonService.open360popup1$.subscribe(val => {
             setTimeout(() => this.show360popup(), 100)
         });
     }
 
     show360popup() {
         this.open360Popup = true;
+        this.cdr.detectChanges();
        setTimeout(() => {
       if (this.showPocMsn && this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {
         this.load360ViewComponent();
@@ -303,27 +304,28 @@ export class ProductInfoComponent implements OnInit
     }, 100)
  }
 
-    async load360View(){
-        console.log(this.threeDImages,"this.threeDImages");
-          const { ProductThreeSixtyViewComponentV1 } = await import('../../components/product-three-sixty-view-v1/product-three-sixty-view-v1.component');
-          const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponentV1);
-          this.product3dInstance = this.product3dContainerRef.createComponent(
-            factory, 
-            null, 
+    async load360View() {
+        console.log(this.threeDImages, "this.threeDImages");
+        const { ProductThreeSixtyViewComponentV1 } = await import('../../components/product-three-sixty-view-v1/product-three-sixty-view-v1.component');
+        const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponentV1);
+        this.product3dInstance = this.product3dContainerRef.createComponent(
+            factory,
+            null,
             this.injector
         );
         this.product3dInstance.instance['threeDImages'] = this.threeDImages || [];
-      }
+        this.cdr.detectChanges();
+    }
 
-    async load360ViewComponent(){
-            const { ProductThreeSixtyViewComponent } = await import('../../components/product-three-sixty-view/product-three-sixty-view.component');
-            const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponent);
-            this.product3dInstance = this.product3dContainerRef.createComponent(
-            factory, 
-            null, 
+    async load360ViewComponent() {
+        const { ProductThreeSixtyViewComponent } = await import('../../components/product-three-sixty-view/product-three-sixty-view.component');
+        const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponent);
+        this.product3dInstance = this.product3dContainerRef.createComponent(
+            factory,
+            null,
             this.injector
-            );
-        
+        );
+        this.cdr.detectChanges();
     }
     ngOnDestroy(){
         if(this.product3dInstance){

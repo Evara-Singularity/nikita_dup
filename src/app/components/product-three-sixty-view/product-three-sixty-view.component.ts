@@ -51,7 +51,7 @@ export class ProductThreeSixtyViewComponent implements OnInit {
         this.showModelViewer= true;
         var basePath = "../../../assets/img/MSN2VVROZZFFC9";
         document.getElementById('model').innerHTML = `<model-viewer  loading="eager" style="display:none;" id="viewer"
-        src="assets/img/MSN2VVROZZFFC9/ASSET.glb" auto-rotate camera-controls poster="poster.webp"shadow-intensity="1">
+        src="assets/img/MSN2VVROZZFFC9/ASSET-new.glb" auto-rotate camera-controls poster="poster.webp"shadow-intensity="1">
         <div class="progress-bar">
         <div class="update-bar"></div>
         </div>

@@ -1,7 +1,7 @@
 <ng-container *ngIf="data && data.length > 0">
     <div class="promoted-brand-container mb-10 mt-10">
-        <h1 class="pad-lr-pdp">Featured Brand Categories</h1>
-        <div class="promoted-brand-outer-section pad-l-pdp">
+        <h1 class="pad-lr-pdp" [ngClass]="{'pad-lr-pdp' :isPdpPage}">Featured Brand Categories</h1>
+        <div class="promoted-brand-outer-section" [ngClass]="{'pad-l-pdp' :isPdpPage}">
             <div class="promoted-brand-inner-section" *ngFor="let ad of data">
                 <img src="{{ad['pictureUrl']}}">
                 <p class="brand-name">{{ad['categoryName']}}</p>

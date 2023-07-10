@@ -8,7 +8,7 @@ import { PromotedBrandAd } from '@app/utils/models/adsense.model';
 export class PromotedBrandsUnitComponent {
 
   @Input() data: PromotedBrandAd[] | null = null;
-
+  @Input() isPdpPage:boolean= false
   constructor() { }
 
 }

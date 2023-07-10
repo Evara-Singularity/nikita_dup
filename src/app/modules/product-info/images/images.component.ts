@@ -34,7 +34,7 @@ export class ImagesComponent implements OnInit
 
     
     open36popup(){
-     this._commonService.open360popup$.next(true);
+     this._commonService.open360popup1$.next(true);
     }
 }
 

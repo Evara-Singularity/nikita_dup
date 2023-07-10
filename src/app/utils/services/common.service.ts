@@ -103,6 +103,7 @@ export class CommonService
     public defaultLocaleValue = localization_en.product;
     private copiedCouponInternal: string = '';
     public open360popup$: Subject<any> = new Subject<any>();
+    public open360popup1$: Subject<any> = new Subject<any>();
 
     constructor(
         @Inject(PLATFORM_ID) platformId,

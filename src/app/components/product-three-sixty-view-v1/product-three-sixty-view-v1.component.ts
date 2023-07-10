@@ -83,8 +83,8 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
       clicked = false;
       e.target.releasePointerCapture(e.pointerId);
     }
+    this.cdr.detectChanges();
   }  
-  
 }
 
 

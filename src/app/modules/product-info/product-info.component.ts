@@ -88,7 +88,7 @@ export class ProductInfoComponent implements OnInit
     slides:HTMLCollection;
     siemaTab:HTMLDivElement;
     showHindiContent:boolean;
-    open360Popup:boolean;
+    open360Popup:boolean = false;
     showPocMsn:boolean = false;
     for3dPopup: boolean = false;
 
@@ -104,7 +104,8 @@ export class ProductInfoComponent implements OnInit
         private router: Router,
         private cdr: ChangeDetectorRef,
         private _componentFactoryResolver:ComponentFactoryResolver,
-        private injector : Injector
+        private injector : Injector,
+        
     ) { }
 
     ngOnInit()
@@ -249,6 +250,7 @@ export class ProductInfoComponent implements OnInit
 
     closeProducInfo($event)
     {
+        console.log("seq 2");
         if(!this.open360Popup) {
             this.open360Popup = false;
             this.closePopup$.emit();
@@ -285,22 +287,24 @@ export class ProductInfoComponent implements OnInit
             this.for3dPopup = true;
           }
         this._commonService.open360popup$.subscribe(val => {
-            this.open360Popup = true;
             setTimeout(() => this.show360popup(), 100)
         });
     }
 
     show360popup() {
-        if (this.showPocMsn && this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {
-            console.log("if")
-            this.load360ViewComponent();
-        } else {
-            this.load360View();
-            console.log("else")
-        }
-    }
+        this.open360Popup = true;
+       setTimeout(() => {
+      if (this.showPocMsn && this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {
+        this.load360ViewComponent();
+      } else {
+        this.load360View();
+      }
+      this.cdr.detectChanges();
+    }, 100)
+ }
 
     async load360View(){
+        console.log(this.threeDImages,"this.threeDImages");
           const { ProductThreeSixtyViewComponentV1 } = await import('../../components/product-three-sixty-view-v1/product-three-sixty-view-v1.component');
           const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponentV1);
           this.product3dInstance = this.product3dContainerRef.createComponent(
@@ -312,7 +316,6 @@ export class ProductInfoComponent implements OnInit
       }
 
     async load360ViewComponent(){
-        
             const { ProductThreeSixtyViewComponent } = await import('../../components/product-three-sixty-view/product-three-sixty-view.component');
             const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponent);
             this.product3dInstance = this.product3dContainerRef.createComponent(

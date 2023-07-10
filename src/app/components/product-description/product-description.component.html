@@ -1,8 +1,8 @@
 <div class="pwa-row prod-description ">
     <div class="pwa-col-12">
         <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
-        <span (click)="show360popup()" class="image-rotate-section" *ngIf='showPocMsn'>
-            <p>view</p>
+        <span (click)="show360popup()" class="image-rotate-section" *ngIf='showPocMsn && !show360btn'>
+            <p>VIEW</p>
             <img src="../../../assets/img/rotation-icon.svg">
         </span>
         <div class="pdp-price-qty-block">
@@ -115,7 +115,7 @@
 
 <app-pop-up *ngIf="show360popupFlag" (outData$)="outData($event)" [for3dPopup]="for3dPopup" [headerType]="'pop-up-header1'" [data]="{headerText: ''}">
     <div class="content-popup" content>
-        <div [debounceTime]="100" data-observeVisibility (visible)="load360ViewComponent()">
+        <div>
             <ng-container #product3dContainerRef></ng-container>
         </div>
     </div>

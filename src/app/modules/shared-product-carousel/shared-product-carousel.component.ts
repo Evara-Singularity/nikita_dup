@@ -35,12 +35,13 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   @Output() loadProductCrousel$: EventEmitter<any> = new EventEmitter<any>();
   @Output() sendProductImageClickTracking$: EventEmitter<any> = new EventEmitter<any>();
   @Output() translate$: EventEmitter<any> = new EventEmitter<any>();
-
+  @Input('productBo') productBo: any;
   productCrouselInstance = null;
   @ViewChild("productCrousel", { read: ViewContainerRef })
   productCrouselContainerRef: ViewContainerRef;
   @ViewChild("productCrouselPseudo", { read: ElementRef })
   productCrouselPseudoContainerRef: ElementRef;
+  showPocMsn: boolean = false;
 
   constructor(
     private cfr: ComponentFactoryResolver, 
@@ -48,12 +49,18 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     private router: Router,
     private commonService: CommonService,
     private _activatedRoute:ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private _commonService:CommonService
     ) { }
 
   ngOnInit(): void {
+    console.log(this.productBo,"this.productBo");
     this.productStaticData = this.commonService.getLocalizationData(!this.isHindiUrl);
     this.commonService.similarProductsLoaded.subscribe(value => value && this.cdr.detectChanges())
+    if (this.rawProductData && this.rawProductData.defaultPartNumber.toLowerCase() === CONSTANTS.POC_MSN || (this.rawProductData.product3dImages && this.rawProductData.product3dImages.length)) {
+      this.showPocMsn = true;
+    }
+    this._commonService.isProductCrouselLoaded.next(true)
     // this.getStaticSubjectData();
   }
 
@@ -156,4 +163,10 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   get isHindiUrl() {
     return (this.router.url).toLowerCase().indexOf('/hi') !== -1
   }
+  open36popup(){
+    this._commonService.open360popup$.next(true);
+   }
+   ngOnDestroy(){
+    this._commonService.isProductCrouselLoaded.next(false);
+   }
 }

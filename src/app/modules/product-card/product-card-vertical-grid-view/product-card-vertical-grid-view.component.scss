@@ -50,8 +50,9 @@
         }
 
         .prod-price-row {
-            margin-bottom: 4px;
-
+            .price{
+                margin-top: 5px;
+            }
             .prod-mrp {
                 color: var(--dim-gray);
                 text-decoration: line-through;

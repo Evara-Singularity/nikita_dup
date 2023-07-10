@@ -278,7 +278,7 @@ export class ProductInfoComponent implements OnInit
         return (this.router.url).toLowerCase().indexOf('/hi') !== -1
     }
     get360poup() {
-        if (this.msnId.toLowerCase() === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length)) {
+        if (this.oosProductIndex < 1 && (this.msnId.toLowerCase() === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length))) {
             this.showPocMsn = true;
         }
         if(this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {

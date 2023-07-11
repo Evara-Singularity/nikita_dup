@@ -142,7 +142,8 @@ export class CategoryComponent {
 
             // shared product listing data update
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results');
-            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'CATEGORY').subscribe(res => {
+            const isHindiUrl = this._router.url && (this._router.url).toLowerCase().indexOf('/hi/') !== -1 ? true : false;
+            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'CATEGORY', '', isHindiUrl).subscribe(res => {
                 if (res.hasOwnProperty('buckets')) {
                     this.API_RESPONSE.category[1].buckets = JSON.parse(JSON.stringify(res['buckets']));
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results', true);

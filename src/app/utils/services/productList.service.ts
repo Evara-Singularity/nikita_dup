@@ -15,6 +15,7 @@ import { DataService } from "./data.service";
 import { GlobalAnalyticsService } from "./global-analytics.service";
 import { Observable, of } from "rxjs";
 import { product } from "@app/config/static-en";
+import { HttpHeaders } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
@@ -31,7 +32,7 @@ export class ProductListService {
     private _activatedRoute: ActivatedRoute,
     private _cartService: CartService,
     public _localStorageService: LocalStorageService,
-    private globalAnalyticsService: GlobalAnalyticsService
+    private globalAnalyticsService: GlobalAnalyticsService,
   ) {}
 
   showMidPlpFilterLoader: boolean = true;
@@ -130,10 +131,13 @@ export class ProductListService {
     return [];
   }
 
-  getFilterBucket(categoryId, pageName, brandName?: string) {
+  getFilterBucket(categoryId, pageName, brandName?: string, isHindiUrl?: boolean) {
     if (this._commonService.isBrowser) {
       this.showMidPlpFilterLoader = true;
-
+      const headerData = {}
+      if (isHindiUrl) {
+        headerData['language'] = 'hi'
+      }
       let filter_url =
         environment.BASE_URL +
         "/" +
@@ -164,6 +168,7 @@ export class ProductListService {
       }
       return this._dataService.callRestful("GET", filter_url, {
         params: actualParams,
+        headerData: headerData
       });
     } else {
       return of({});

@@ -6,8 +6,9 @@ import { ProductListService } from '@app/utils/services/productList.service';
 import { CartService } from '@app/utils/services/cart.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { ProductService } from '@app/utils/services/product.service';
-import { ActivatedRoute } from '@angular/router';
-import { DataService } from '@app/utils/services/data.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import * as localization_en from '../../config/static-en';
+import * as localization_hi from '../../config/static-hi';
 
 @Component({
   selector: 'shared-product-listing',
@@ -54,27 +55,43 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   isHomeHeader: boolean = true;
   public appliedFilterCount: number = 0;
   showSortBy: boolean = true;
-
+  productStaticData: any = this._commonService.defaultLocaleValue;
   taxonomyCodesArray: Array<any> = [];
   
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
-    private _viewContainerReference:ViewContainerRef,
     private _injector: Injector,
     private _cartService: CartService,
     public _productListService: ProductListService,
     public _productService: ProductService,
     private _localAuthService: LocalAuthService,
     private _activatedRoute: ActivatedRoute,
-    private dataService:DataService,
+    private router: Router,
     public _commonService: CommonService) {
   }
 
   ngOnInit() {
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
+    this.initializeLocalization();
     // console.log("in shared listing ",this.informativeVideosData)
   }
+
+  initializeLocalization() {
+    if ((this.router.url).includes("/hi/")) {
+        this._commonService.defaultLocaleValue = localization_hi.product;
+        this.productStaticData = localization_hi.product;
+        this._commonService.changeStaticJson.next(this.productStaticData);
+    } else {
+        this._commonService.defaultLocaleValue = localization_en.product;
+        this.productStaticData = localization_en.product;
+        this._commonService.changeStaticJson.next(this.productStaticData);
+    }
+    this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+        this.productStaticData = localization_content;
+    });
+    console.log(this.productStaticData.successfully_added_to_wishlist)
+}
   
  
 

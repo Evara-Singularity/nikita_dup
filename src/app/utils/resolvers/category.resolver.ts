@@ -39,6 +39,7 @@ export class CategoryResolver implements Resolve<any> {
     const requestOptions = {                                                                                                                                                                                 
       headers: new HttpHeaders((_activatedRouteSnapshot.data['language'] == 'hi')?languageHeader:{}), 
     };
+    console.log(requestOptions);
     const categoryId = _activatedRouteSnapshot.params.id;
     const source = _activatedRouteSnapshot['_routerState']['url'].split('#')[0].split('?')[0];
 

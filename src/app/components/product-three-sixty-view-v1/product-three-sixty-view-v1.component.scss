@@ -18,6 +18,7 @@
     overflow: hidden;
     cursor: pointer;
     user-select: none;
+    // touch-action: none;
 }
 
 #spinImg {
@@ -29,4 +30,6 @@
     visibility: hidden;
     border: none;
     max-width: initial;
+    transform: translate3d(0,0,0);
+    touch-action: none;
 }

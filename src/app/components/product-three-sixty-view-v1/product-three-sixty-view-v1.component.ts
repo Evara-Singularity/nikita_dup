@@ -43,7 +43,7 @@ export class ProductThreeSixtyViewComponentV1 implements OnInit {
     
     function handlePointerMove(e) {
       if (clicked) {
-        let currentX = e.clientX || e.touches[0].clientX;
+        let currentX = e.clientX || e.touches && e.touches.length && e.touches[0].clientX;
         if (prevX !== null) {
           if (currentX > prevX) {
             swipingRight = true;

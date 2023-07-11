@@ -20,6 +20,7 @@ import { ProductQaModule } from "@app/components/product-qa/product-qa.component
 import { ProductReviewModule } from "@app/components/product-review/product-review.component";
 import { ProductRfqThanksPopupModule } from "@app/components/product-rfq-thanks-popup/product-rfq-thanks-popup.component";
 import { ProductSkeletonsModule } from "@app/components/product-skeletons/product-skeletons.component";
+import { ShopByBrandsModule } from "@app/components/shop-by-brands/shop-by-brands.component";
 import { WhatsAppToastModule } from "@app/components/whatsapp-toast/whatsapp-toast.component";
 import { BreadcrumbNavModule } from "@app/modules/breadcrumb-nav/breadcrumb-nav.module";
 import { EmiPlansModule } from "@app/modules/emi-plans/emi-plans.module";
@@ -68,7 +69,8 @@ import { ProductV1RoutingModule } from "./product-v1.routing.module";
         EmiPlansModule,
         ProductOosSimilarModule,
         ProductInfoModule,
-        FloatingCouponWidgetModule
+        FloatingCouponWidgetModule,
+        ShopByBrandsModule
     ],
     exports: [],
     providers: [NgxSiemaService, DatePipe]

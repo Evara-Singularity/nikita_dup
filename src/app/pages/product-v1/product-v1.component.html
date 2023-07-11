@@ -134,6 +134,10 @@
         <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="similarProductInstance"></product-skeletons>
     </div>
 
+    <section id="popularDeals" class="common-product" style="margin-top: 25px;">
+        <shop-by-brands></shop-by-brands>
+    </section>
+
     <product-more-widget [taxons]="taxons" [baseDomain]="baseDomain" [orderTracking]="orderTracking"
         [productBrandDetails]="rawProductData?.productBrandDetails"
         [productCategoryDetails]="rawProductData?.productCategoryDetails"

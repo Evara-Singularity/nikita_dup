@@ -115,7 +115,7 @@
 
 <app-pop-up *ngIf="show360popupFlag" (outData$)="outData($event)" [for3dPopup]="for3dPopup" [headerType]="'pop-up-header1'" [data]="{headerText: ''}">
     <div class="content-popup" content>
-        <div>
+        <div class="pad-10">
             <ng-container #product3dContainerRef></ng-container>
         </div>
     </div>

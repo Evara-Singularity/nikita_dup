@@ -35,7 +35,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   @Output() loadProductCrousel$: EventEmitter<any> = new EventEmitter<any>();
   @Output() sendProductImageClickTracking$: EventEmitter<any> = new EventEmitter<any>();
   @Output() translate$: EventEmitter<any> = new EventEmitter<any>();
-
+  openPopup: boolean;
   productCrouselInstance = null;
   @ViewChild("productCrousel", { read: ViewContainerRef })
   productCrouselContainerRef: ViewContainerRef;

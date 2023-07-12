@@ -26,7 +26,8 @@
                         <div class="youtube-iconsection">
                         </div>
                         <div class="youtube1">
-                            <img src="/assets/img/video_icon.svg" alt="youtube_icon" (click)="showYTVideo(product['videoInfo'][0]['link']);$event.stopPropagation();">
+                            <img src="/assets/img/video_icon.svg" alt="youtube_icon"
+                                (click)="showYTVideo(product['videoInfo'][0]['link']);$event.stopPropagation();">
                         </div>
                     </a>
                 </ng-container>
@@ -95,6 +96,11 @@
                     *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice >= easyEMILimit">
                     <i class="icon-circle_check"></i>
                     <span>Easy EMI available</span>
+                </div>
+                <div class="emi-container coupon-conatiner"
+                    *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice >= easyEMILimit">
+                    <i class="icon-offer"></i>
+                    <span><b>Flat ₹500 OFF</b> with coupon</span>
                 </div>
             </div>
         </div>

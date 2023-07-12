@@ -159,6 +159,9 @@
                     span{
                         font-size: $medium-font;
                     }
+                    &.coupon-conatiner{
+                        color: var(--slimy-green);
+                    }
                 }
             }
             .card-btn-row {

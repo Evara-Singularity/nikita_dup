@@ -1257,6 +1257,11 @@ export class ProductService {
         return this._dataService.callRestful("GET",URL);
     }
 
+    getDifferentBrandProducts(msn) {
+        const URL=CONSTANTS.NEW_MOGLIX_API+ENDPOINTS.GET_DIFFRENT_BRANDS_PRODUCT + msn;
+        return this._dataService.callRestful("GET",URL);
+    }
+
     isInStock(product) {
         let isOutOfStockByQuantity = false;
         let isOutOfStockByPrice = false;

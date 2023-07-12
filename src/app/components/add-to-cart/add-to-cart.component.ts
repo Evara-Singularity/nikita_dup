@@ -34,6 +34,7 @@ export class AddToCartComponent implements OnDestroy {
   @Input("isOutOfStock") isOutOfStock: false;
   @Input("moglixPartNumber") moglixPartNumber: string = null;
   @Input("product") product: object = null;
+  @Input("moduleUsedIn") moduleUsedIn: string = null;
   isAddedToCartSubscription: Subscription;
 
   // ondemad loaded components for select variant popup
@@ -147,7 +148,7 @@ export class AddToCartComponent implements OnDestroy {
           this._productListService.analyticAddToCart(
             buyNow ? "/checkout" : "/quickorder",
             productDetails,
-            "PDP"
+            this.moduleUsedIn
           );
           this._localAuthService.setBackURLTitle(
             this._router.url,
@@ -166,7 +167,7 @@ export class AddToCartComponent implements OnDestroy {
             this._productListService.analyticAddToCart(
               buyNow ? "/checkout" : "/quickorder",
               productDetails,
-              "PDP"
+              this.moduleUsedIn
             );
             if (!buyNow) {
               this._cartService.setGenericCartSession(result);

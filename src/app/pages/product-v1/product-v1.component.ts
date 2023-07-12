@@ -2979,7 +2979,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 seoDetails: this.rawProductData["seoDetails"],
                 productBrandDetails: this.rawProductData.productBrandDetails,
                 productCategoryDetails: this.rawProductData.productCategoryDetails,
-                productDefaultImage: this.rawProductData.productDefaultImage,
+                productDefaultImage: this.productDefaultImage,
                 productUrl: this.rawProductData.productUrl,
                 defaultCanonicalUrl: this.rawProductData["defaultCanonicalUrl"]
             };

@@ -1665,5 +1665,4 @@ export class CommonService
         data["custData"] = this.custDataTracking;
         this._analytics.sendAdobeCall(data, trackingname); 
     }
-
 }

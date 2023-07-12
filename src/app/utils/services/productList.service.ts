@@ -384,6 +384,9 @@ export class ProductListService {
       case "CART-ADD-SIMILAR-PRODUCT":
         str = "pdp:widget:cart:similar";
         break;
+      case "CART-ADD-COMPARE-PRODUCT":
+        str = "pdp:widget:compare_products";
+        break;
       default:
         str = "pdp-extra";
         break;

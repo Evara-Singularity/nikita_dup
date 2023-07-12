@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -27,7 +28,8 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
 
   constructor(
     public _cartService: CartService,
-    public _commonService: CommonService
+    public _commonService: CommonService,
+    private _analytics: GlobalAnalyticsService
   ) { }
 
   ngOnInit(): void {
@@ -56,9 +58,10 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
   }
 
 
-  copyCouponTextArea(){
-    this.isCouponCopied=true
-  const copiedCouponText = document.getElementById('coupon-text');
+  copyCouponTextArea() {
+    this.isCouponCopied = true
+    const copiedCouponText = document.getElementById('coupon-text');
+    this._analytics.sendAdobeCall({ channel: 'pdp', pageName: 'moglix:pdp:floating_coupon_widget', linkName: 'coupon:' + copiedCouponText.innerText }, "genericClick")
     this.copyToClipboard(copiedCouponText.innerText);
   }
 

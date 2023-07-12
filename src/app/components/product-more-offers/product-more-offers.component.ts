@@ -5,6 +5,7 @@ import { ModalModule } from '../../modules/modal/modal.module';
 import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { CommonService } from '../../utils/services/common.service';
 import { Subscription } from 'rxjs';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 @Component({
   selector: 'app-product-more-offers',
@@ -20,7 +21,7 @@ export class ProductMoreOffersComponent implements OnInit, AfterViewInit {
   activeIndex: any;
   copiedCouponSubscription: Subscription; 
 
-  constructor(private _commonService:CommonService) { }
+  constructor(private _commonService:CommonService, private _analytics: GlobalAnalyticsService) { }
 
   ngOnInit(): void {
     const promos = [...this.data];
@@ -50,6 +51,7 @@ export class ProductMoreOffersComponent implements OnInit, AfterViewInit {
   }
 
   copyToClipboard(text:any) {
+    this._analytics.sendAdobeCall({ channel: 'pdp', pageName: 'moglix:pdp:product_more_offers', linkName: 'coupon:' + text }, "genericClick")
     const textarea = document.createElement('textarea');
     textarea.value = text;
     document.body.appendChild(textarea);

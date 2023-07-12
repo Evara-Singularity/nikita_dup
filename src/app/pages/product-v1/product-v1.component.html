@@ -89,7 +89,7 @@
         [productBrandCategoryUrl]="rawProductData?.productBrandCategoryUrl"></product-feature-details>
 
             <!-- adsense PDP -->
-            <ng-container *ngIf="adsenseData">
+            <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData">
                 <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PDP']">
                     <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PDP']">
                     </adsense-leaderboard-banner>
@@ -150,11 +150,11 @@
     </product-more-widget>
 
     <!-- adsense PDP -->    
-    <ng-container *ngIf="adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']">
+    <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']">
         <adsense-promoted-brands-unit [isPdpPage]="true" [data]="adsenseData['PROMOTOTED_BRAND_ADS']"></adsense-promoted-brands-unit>
     </ng-container>
 
-    <ng-container *ngIf="adsenseData && adsenseData['FEATURED_PRODUCT_ADS']">
+    <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData && adsenseData['FEATURED_PRODUCT_ADS']">
         <adsense-feature-products-unit  [data]="adsenseData['FEATURED_PRODUCT_ADS']"></adsense-feature-products-unit>
     </ng-container>
 

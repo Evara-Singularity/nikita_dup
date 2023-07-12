@@ -4,6 +4,8 @@ import { ObserveVisibilityDirectiveModule } from '../../../utils/directives/obse
 import { PopUpVariant2Module } from '../../pop-up-variant2/pop-up-variant2.module';
 import { Subject } from 'rxjs';
 import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'images',
@@ -21,7 +23,9 @@ export class ImagesComponent implements OnInit
     constructor(
         private _componentFactoryResolver:ComponentFactoryResolver,
         private injector:Injector,
-        private _commonService:CommonService
+        private _commonService:CommonService,
+        private _analyticsService:GlobalAnalyticsService,
+        private router:Router
     ) {
      }
 
@@ -35,7 +39,18 @@ export class ImagesComponent implements OnInit
     
     open36popup(){
      this._commonService.open360popup1$.next(true);
+     this.setAdobeDataTracking();
     }
+    setAdobeDataTracking(){
+        if(this.showPocMsn){
+          this._analyticsService.sendAdobeCall(
+            { channel: 'pdp', 
+              pageName: this.showPocMsn ? 'moglix:pdp:360_poc_2':'moglix:pdp:360_poc_1',
+              linkName:  "moglix:" + this.router.url
+            }, 
+            "genericClick")
+        }
+      }
 }
 
     

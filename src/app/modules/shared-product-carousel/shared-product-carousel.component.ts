@@ -4,6 +4,7 @@ import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Injector
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 @Component({
   selector: 'shared-product-carousel',
@@ -50,7 +51,8 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     private commonService: CommonService,
     private _activatedRoute:ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private _commonService:CommonService
+    private _commonService:CommonService,
+    private _analyticsService:GlobalAnalyticsService
     ) { }
 
   ngOnInit(): void {
@@ -165,7 +167,20 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   }
   open36popup(){
     this._commonService.open360popup$.next(true);
-   }
+    this.setAdobeDataTracking();
+  }
+
+   setAdobeDataTracking(){
+    if(this.showPocMsn){
+      this._analyticsService.sendAdobeCall(
+        { channel: 'pdp', 
+          pageName: this.showPocMsn ? 'moglix:pdp:360_poc_2':'moglix:pdp:360_poc_1',
+          linkName:  "moglix:" + this.router.url
+        }, 
+        "genericClick")
+    }
+  }
+   
    ngOnDestroy(){
     this._commonService.isProductCrouselLoaded.next(false);
    }

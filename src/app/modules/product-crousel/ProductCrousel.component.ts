@@ -33,6 +33,8 @@ import { ProductCrouselSlideComponent } from "./ProductCrouselSlide/ProductCrous
 import { MathCeilPipeModule } from "@app/utils/pipes/math-ceil";
 import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { CommonService } from "@app/utils/services/common.service";
+import { GlobalAnalyticsService } from '../../utils/services/global-analytics.service';
+import { Router } from "@angular/router";
 
 @Component({
   selector: "ProductCrousel",
@@ -80,12 +82,14 @@ export class ProductCrouselComponent implements OnInit {
   showPocMsn: boolean = false;
 
   constructor(
+    private _router: Router,
     private injector: Injector,
     private _commonService: CommonService,
     private _cfr: ComponentFactoryResolver,
     private _cdr: ChangeDetectorRef,
     private ngxSiemaService: NgxSiemaService,
     private _siemaCrouselService: SiemaCrouselService,
+    private _analyticsService:GlobalAnalyticsService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isServer = isPlatformServer(platformId);
@@ -341,7 +345,18 @@ export class ProductCrouselComponent implements OnInit {
 
   open36popup(){
     this._commonService.open360popup$.next(true);
-   }
+    this.setAdobeDataTracking();
+  }
+  setAdobeDataTracking(){
+    if(this.showPocMsn){
+      this._analyticsService.sendAdobeCall(
+        { channel: 'pdp', 
+          pageName: this.showPocMsn ? 'moglix:pdp:360_poc_2':'moglix:pdp:360_poc_1',
+          linkName:  "moglix:" + this._router.url
+        }, 
+        "genericClick")
+    }
+  }
 
   startBannerInterval() {
     if (this.bannerInterval) {

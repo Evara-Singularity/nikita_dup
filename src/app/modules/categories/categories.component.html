@@ -18,6 +18,8 @@
             <div class="category-inner-block" *ngFor="let imageBlockItem of  carouselData[category.dataKey]['data']['image_block']|slice:0:4">
                 <a (click)="setCookieCluster('/'+imageBlockItem['image_link'], i)" [href]="produrl+ '/'+imageBlockItem['image_link']">
                     <img [defaultImage]="defaultImage" [lazyLoad]="imageCdnPath + imageBlockItem['image_name']" alt="{{imageBlockItem.image_title}}">
+                    <p>{{imageBlockItem.image_title}}</p>
+                    <span>Explore Now</span>
             </a> 
             </div>
         </div>

@@ -1,7 +1,7 @@
 <div *ngIf="!productNotFound">
 
     <app-floating-coupon-widget *ngIf="similarProductsScrolledIntoView && iscloseproductDiscInfoComponent && !rawProductData?.productOutOfStock" (closeproductDiscInfoComponent$)="closeproductDiscInfoComponent()"
-        [isBulkPricesProduct]="isBulkPricesProduct" [productMrp]="rawProductData?.priceQuantityCountry?.mrp"
+        [isBulkPricesProduct]="isBulkPricesProduct" [pageLinkName]="pageLinkName" [productMrp]="rawProductData?.priceQuantityCountry?.mrp"
         [selectedProductBulkPrice]="selectedProductBulkPrice" [productPrice]="rawProductData?.productPrice"
         [productDiscount]="rawProductData?.priceQuantityCountry?.discount" [productName]="rawProductData.productName" [priceWithoutTax]="rawProductData?.priceWithoutTax"
         [gstPercentage]='rawProductData?.taxPercentage' [promoCodes]='apiResponse?.applicablePromo'></app-floating-coupon-widget>
@@ -50,7 +50,7 @@
 
     <!-- TODO: skeleton to be implemented -->
     <div class="coupon" *ngIf='!rawProductData?.productOutOfStock && rawProductData?.priceQuantityCountry?.mrp > 0'>
-        <app-product-offers [price]='rawProductData?.productPrice' [gstPercentage]='rawProductData?.taxPercentage'
+        <app-product-offers [pageLinkName]="pageLinkName" [price]='rawProductData?.productPrice' [gstPercentage]='rawProductData?.taxPercentage'
             [productmsn]='rawProductData?.defaultPartNumber' [isHindiMode]='isHindiUrl'
             (viewPopUpHandler)='fetchCategoryExtras()' (promoCodePopUpHandler)='fetchPromoCodes()'
             [brandName]='rawProductData?.productBrandDetails?.brandName'

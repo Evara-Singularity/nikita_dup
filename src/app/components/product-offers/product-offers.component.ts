@@ -35,6 +35,7 @@ export class ProductOffersComponent implements OnInit
     disableEMIView = false;
     @Input() promoCodes: any = null;
     @Input() couponForbrandCategory:any=null;
+    @Input() pageLinkName;
     minimumRequiredPriceforCoupon: any;
     couponForbrandCategoryDiscount: any;
     isCouponCopied=false;
@@ -97,7 +98,7 @@ export class ProductOffersComponent implements OnInit
     copyCouponTextArea(){
       this.isCouponCopied=true
       const copiedCouponText = document.getElementById('couponText');
-      this._analytics.sendAdobeCall({ channel: 'pdp', pageName: 'moglix:pdp:product_offer', linkName: 'coupon:' + copiedCouponText.innerText }, "genericClick")
+      this._analytics.sendAdobeCall({ page: { channel: 'pdp', linkPageName: this.pageLinkName, linkName: 'main:coupon:' + copiedCouponText.innerText } }, 'genericClick')
       this.copyToClipboard(copiedCouponText.innerText);
     }
 

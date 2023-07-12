@@ -1606,6 +1606,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.injector
             );
             this.promoOfferPopupInstance.instance["data"] = data;
+            this.promoOfferPopupInstance.instance["pageLinkName"] = this.pageLinkName;
             (
                 this.promoOfferPopupInstance.instance["out"] as EventEmitter<boolean>
             ).subscribe((data) => {
@@ -2941,6 +2942,24 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.productService.oosSimilarProductsData.similarData[index].productOutOfStock = true;
             }
         }
+    }
+
+    get pageLinkName() {
+        let taxo1 = "";
+        let taxo2 = "";
+        let taxo3 = "";
+        if (this.rawProductData.productCategoryDetails["taxonomyCode"]) {
+            taxo1 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[0] || "";
+            taxo2 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[1] || "";
+            taxo3 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[2] || "";
+        }
+
+        let ele = []; // product tags for adobe;
+        this.productTags.forEach((element) => {
+            ele.push(element.name);
+        });
+
+        return "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp";
     }
 
     setMetatag(index: number = -1) {

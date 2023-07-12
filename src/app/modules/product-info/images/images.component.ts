@@ -42,14 +42,13 @@ export class ImagesComponent implements OnInit
      this.setAdobeDataTracking();
     }
     setAdobeDataTracking(){
-        if(this.showPocMsn){
           this._analyticsService.sendAdobeCall(
             { channel: 'pdp', 
               pageName: this.showPocMsn ? 'moglix:pdp:360_poc_2':'moglix:pdp:360_poc_1',
               linkName:  "moglix:" + this.router.url
             }, 
             "genericClick")
-        }
+        
       }
 }
 

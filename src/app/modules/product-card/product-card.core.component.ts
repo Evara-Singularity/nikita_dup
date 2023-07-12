@@ -79,7 +79,8 @@ export class ProductCardCoreComponent implements OnInit {
   variantPopupInstance = null;
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   productReviewCount: string;
-
+  productStaticData = this._commonService.defaultLocaleValue;
+  
   constructor(
     public _cartService: CartService,
     public _productListService: ProductListService,
@@ -105,7 +106,14 @@ export class ProductCardCoreComponent implements OnInit {
     this.isAd = !this.product.internalProduct
     this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
     this.prodUrl = CONSTANTS.PROD;
+    this.getLocalization();
     // console.log('product 22==>', this.product);
+  }
+
+  getLocalization() {
+    this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+      this.productStaticData = localization_content;
+    });
   }
 
   buyNow(buyNow = false) {
@@ -194,7 +202,7 @@ export class ProductCardCoreComponent implements OnInit {
       const { GlobalToastComponent } = await import('../../components/global-toast/global-toast.component');
       const factory = this._cfr.resolveComponentFactory(GlobalToastComponent);
       this.addToCartToastInstance = this.addToCartToastContainerRef.createComponent(factory, null, this._injector);
-      this.addToCartToastInstance.instance['text'] = message || 'Product added successfully';
+      this.addToCartToastInstance.instance['text'] = message || this.productStaticData.product_added_successfully;
       this.addToCartToastInstance.instance['btnText'] = 'VIEW CART';
       this.addToCartToastInstance.instance['btnLink'] = '/quickorder';
       this.addToCartToastInstance.instance['showTime'] = 4000;

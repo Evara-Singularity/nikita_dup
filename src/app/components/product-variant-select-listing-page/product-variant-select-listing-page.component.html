@@ -2,7 +2,7 @@
     <div content class="">
         <div class="verifyPopup">
             <div class="top-header-bottom-menu">
-                <h3 class="heading-3">Select Variant</h3>
+                <h3 class="heading-3">{{ productStaticData?.select_variant }}</h3>
                 <i class="icon-circle-delete" (click)="hide()"></i>
             </div>
             <div class="select-container" *ngIf="productGroupData">
@@ -16,21 +16,21 @@
                                 {{avgRating | number : '1.1-1'}}
                                 <img style="height: 10px; width: 10px;" src="{{imagePathAsset}}assets/img/star_image.png" />
                             </span>
-                            <span class="ratingCount" *ngIf="reviewCount">({{reviewCount}} Reviews)</span>
+                            <span class="ratingCount" *ngIf="reviewCount">({{reviewCount}} {{ productStaticData?.reviews}})</span>
                         </div>
                         <p class="description-txt">{{product.productName | slice:0:60 }} <span
                             *ngIf="product.productName.length>60">...</span></p>
-                        <p class="brand">By : {{product.brandName}}</p>
+                        <p class="brand">{{ productStaticData?.by}} : {{product.brandName}}</p>
                         <div class="price">
                             <span class="before-discount">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' :
                                 '1.0-0' }}</span>
-                            <span class="discount">{{product.discount}}% OFF</span>
+                            <span class="discount">{{product.discount}}% {{ productStaticData?.off}}</span>
                             <span class="after-discount">{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' :
                                 '1.0-0' }}</span>
                         </div>
                         <div class="oos-listing-section" *ngIf="product.salesPrice == 0">
                             <div class="out-of-stock-text">
-                                <p>Available on Request</p>
+                                <p>{{ productStaticData?.available_request }}</p>
                                 <span class="after-discount">{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' :
                                     '1.0-0' }}</span>
                             </div>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="select-warp" *ngFor="let variants of productGroupData.filterAttributesList">
-                    <h3 class="heading-3">Select {{variants['name']}}</h3>
+                    <h3 class="heading-3">{{ productStaticData?.select }} {{variants['name']}}</h3>
                     <ul>
                         <ng-container *ngFor="let item of variants['items']">
                             <li *ngIf="item.active" [ngClass]="{'selected': item.selected}"
@@ -52,11 +52,11 @@
             <div class="fixed-bottom-cta">
                 <button *ngIf="!isSelectedVariantOOO && product.priceWithoutTax != 0" class="btn primary-full-btn"
                     (click)="continueToCart()">
-                    CONTINUE
+                    {{ productStaticData?.continue }}
                 </button>
                 <button *ngIf="isSelectedVariantOOO || product.priceWithoutTax == 0" class="btn primary-full-btn"
                     (click)="continueToSendQuery()">
-                    SEND QUERY
+                    {{ productStaticData?.send_query }}
                 </button>
             </div>
         </div>

@@ -33,6 +33,8 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   brandDataWithoutProcessing;
   attributeDataWithoutProcessing;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+  productStaticData = this.commonService.defaultLocaleValue;
+
 
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
@@ -44,6 +46,13 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
 
   ngOnInit(): void {
     this.getData();
+    this.getLocalization();
+  }
+
+  getLocalization() {
+    this.commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+      this.productStaticData = localization_content;
+    });
   }
 
   getData() {

@@ -289,6 +289,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       this.filterInstance.instance['isBrandPage'] = this.pageName === 'BRAND';
       this.filterInstance.instance['brandName'] = this.brandName;
       this.filterInstance.instance['brandUrl'] = this.brandUrl;
+      this.filterInstance.instance['productStaticData'] = this.productStaticData;
       (this.filterInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
         this.filterInstance = null;
         this.filterContainerRef.remove()
@@ -315,6 +316,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
       const { SortByComponent } = await import('@app/components/sortBy/sortBy.component');
       const factory = this._componentFactoryResolver.resolveComponentFactory(SortByComponent);
       this.sortByInstance = this.sortByContainerRef.createComponent(factory, null, this._injector);
+      this.sortByInstance.instance['productStaticData'] = this.productStaticData;
       (this.sortByInstance.instance['toggleFilter'] as EventEmitter<any>).subscribe(data => {
         if (!data) {
           this.sortByInstance = null;

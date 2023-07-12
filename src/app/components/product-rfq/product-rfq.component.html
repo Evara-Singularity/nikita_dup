@@ -3,12 +3,12 @@
     <section class="fgkj">
     <div class="bulk-rfq-header">
         <div class="header-container">
-            <p>Interested To Buy In Bulk</p>
+            <p>{{ productStaticData?.interested_to_buy_in_bulk }}</p>
             <i class="icon-circle-delete" (click)="isPopup = false; _commonService.oosSimilarCard$.next(false);" ></i>
         </div>
         <div class="desc-section">
             <p>{{product.productName}}</p>
-            <span>By : {{product.brand}} </span>
+            <span>{{ productStaticData?.by }} : {{product.brand}} </span>
         </div>
     </div>
     <form class="rfqForm" [formGroup]="rfqForm">
@@ -28,7 +28,7 @@
             <div class="pwa-row rfq-container pad-lr-0">
                 <div class="pwa col-12">
                     <div class="req-qty">
-                        <label>Enter the required quantity</label>
+                        <label>{{ productStaticData?.enter_the_req_qty }}</label>
                         <div class="quantity-block">
                             <button class="add-qty qty-btn"
                                 (click)="$event.stopPropagation();decreaseQuantity()">&#8722;</button>
@@ -37,13 +37,12 @@
                             <button class="remove-qty qty-btn"
                                 (click)="$event.stopPropagation();increaseQuantity()">&#43;</button>
                             <ng-container *ngIf="isUserLoggedIn && isRFQSubmitted && (quantity.touched || quantity.dirty)">
-                                <p class="error-txt break-line" *ngIf="quantity.hasError('required')">Kindly enter valid
-                                    quantity.</p>
+                                <p class="error-txt break-line" *ngIf="quantity.hasError('required')">{{ productStaticData?.kindly_enter_valid_qty }}.</p>
                                 <p class="error-txt break-line" *ngIf="quantity.hasError('pattern')">
-                                    Quantity should contain only digits.
+                                    {{ productStaticData?.qty_should_contain_digits }}
                                 </p>
                                 <p class="error-txt break-line" *ngIf="quantity.hasError('min')">
-                                    RFQ Quantity should be greater than {{productMOQ}}.</p>
+                                    {{ productStaticData?.rfq_qty_should_be_greate_than }} {{productMOQ}}.</p>
                             </ng-container>
                         </div>
                     </div>
@@ -53,11 +52,11 @@
                                 maxlength="30"  (click)="isOutOfStock?initiateLogin():false"
                                 name="firstName" #firstName>
                             <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (this.rfqForm.controls.firstName.touched || this.rfqForm.controls.firstName.dirty)">
-                                <p class="error-txt" *ngIf="this.rfqForm.controls.firstName.hasError('required')">Kindly enter your full name.</p>
-                                <p class="error-txt" *ngIf="this.rfqForm.controls.firstName.hasError('pattern')">Special characters are not allowed.
+                                <p class="error-txt" *ngIf="this.rfqForm.controls.firstName.hasError('required')">{{ productStaticData?.kindly_enter_full_name }}</p>
+                                <p class="error-txt" *ngIf="this.rfqForm.controls.firstName.hasError('pattern')">{{ productStaticData?.special_chars_not_allowed }}
                                 </p>
                             </ng-container>
-                            <span class="label">Full Name*</span>
+                            <span class="label">{{ productStaticData?.full_name }}*</span>
                         </label>
                     </div>
                     <div class="outline-input-label">
@@ -65,11 +64,11 @@
                             <input type="email" name="email" formControlName="email"  maxlength="150"
                                 (click)="isOutOfStock?initiateLogin():false" #email>
                             <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (this.rfqForm.controls.email.touched || this.rfqForm.controls.email.dirty)">
-                                <p class="error-txt" *ngIf="this.rfqForm.controls.email.hasError('required')">Kindly enter your email id.</p>
-                                <p class="error-txt" *ngIf="this.rfqForm.controls.email.hasError('invalidEmail')">Kindly enter valid email id.
+                                <p class="error-txt" *ngIf="this.rfqForm.controls.email.hasError('required')">{{ productStaticData?.kindly_enter_your_email }}</p>
+                                <p class="error-txt" *ngIf="this.rfqForm.controls.email.hasError('invalidEmail')">{{ productStaticData?.kindly_enter_valid_email_id }}
                                 </p>
                             </ng-container>
-                            <span class="label">Email</span>
+                            <span class="label">{{ productStaticData?.email }}</span>
                         </label>
                     </div>
                     <div class="outline-input-label">
@@ -77,13 +76,13 @@
                             <input type="text" name="phone-no"  type="text" formControlName="mobile"
                                 maxlength="10" (click)="isOutOfStock?initiateLogin():false" #mobile>
                             <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (this.rfqForm.controls.mobile.touched || this.rfqForm.controls.mobile.dirty)">
-                                <p class="error-txt" *ngIf="this.rfqForm.controls.mobile.hasError('required')">Kindly enter your mobile no.</p>
-                                <p class="error-txt" *ngIf="this.rfqForm.controls.mobile.hasError('pattern')">Mobile should contain only digits.
+                                <p class="error-txt" *ngIf="this.rfqForm.controls.mobile.hasError('required')">{{ productStaticData?.kindly_enter_your_mobile_no }}</p>
+                                <p class="error-txt" *ngIf="this.rfqForm.controls.mobile.hasError('pattern')">{{ productStaticData?.mobile_should_contain_digits }}
                                 </p>
                                 <p class="error-txt" *ngIf="!this.rfqForm.controls.mobile.hasError('pattern') && this.rfqForm.controls.mobile.hasError('minlength')">
-                                    Mobile should contain 10 digits.</p>
+                                    {{ productStaticData?.mobile_10_digits }}</p>
                             </ng-container>
-                            <span class="label">Mobile*</span>
+                            <span class="label">{{ productStaticData?.mobile }}*</span>
                         </label>
                     </div>
                    
@@ -96,17 +95,17 @@
                                     (click)="isOutOfStock?initiateLogin():false" [attr.disabled]="isPincodeBoxChecked?true:null" data-numbersOnly #pincode>
                                 <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (this.rfqForm.controls.pincode.touched || this.rfqForm.controls.pincode.dirty)">
                                     <!-- <p class="error-txt" *ngIf="pincode.hasError('required')">Kindly enter your pincode.</p> -->
-                                    <p class="error-txt" *ngIf="this.rfqForm.controls.pincode.hasError('pattern')">Pincode should contain only digits.
+                                    <p class="error-txt" *ngIf="this.rfqForm.controls.pincode.hasError('pattern')">{{ productStaticData?.pincode_should_contain_digits }}
                                     </p>
                                     <p class="error-txt"
                                         *ngIf="this.rfqForm.controls.pincode.hasError('minlength') && !(this.rfqForm.controls.pincode.hasError('pattern'))">
-                                        Pincode should contain 6 digits.
+                                        {{ productStaticData?.pincode_6_digits }}
                                     </p>
                                 </ng-container>
                                 <p class="error-txt" *ngIf="isRFQSubmitted && this.rfqForm.controls.pincode.valid && isInvalidPincode && this.rfqForm.controls.pincode.value.length != 0 ">
-                                    Invalid pincode
+                                    {{ productStaticData?.invalid_pincode }}
                                 </p>
-                                <span class="label">Pincode</span>
+                                <span class="label">{{ productStaticData?.pincode }}</span>
                             </label>
                         </div>
                         <div class="outline-input-label">
@@ -116,15 +115,15 @@
                                     (paste)="$event.preventDefault()" [ngClass]="{'disable-input-field':!(isPincodeBoxChecked)}" [attr.disabled]="!isPincodeBoxChecked?true:null" data-alphabetsOnly #city>
                                 <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (pincode.touched ||  city.dirty)">
                                     <p class="error-txt" *ngIf="isPincodeUnKnown.value && this.rfqForm.controls.city.hasError('required')">
-                                        Kindly enter your city name.</p>
+                                        {{ productStaticData?.kindly_enter_your_city_name }}</p>
                                     <p class="error-txt" *ngIf="isPincodeUnKnown.value && this.rfqForm.controls.city.hasError('pattern')">
-                                        Kindly enter your valid city name.</p>
+                                        {{ productStaticData?.kindly_enter_valid_city_name }}</p>
                                     <p class="error-txt"
                                         *ngIf="isPincodeUnKnown.value && this.rfqForm.controls.city.hasError('maxlength') && !(this.rfqForm.controls.city.hasError('pattern'))">
-                                        City should contain 30 characters.
+                                        {{ productStaticData?.city_30_digits }}
                                     </p>
                                 </ng-container>
-                                <span class="label">City</span>
+                                <span class="label"> {{ productStaticData?.city }} </span>
                             </label>
                         </div>
                     </div>
@@ -135,18 +134,17 @@
                             <span class="custom-box icon-box"></span>
                         </label>
                         <div class="chk-txt">
-                            <span class="heading">I don't know my pincode</span>
+                            <span class="heading">{{ productStaticData?.i_dont_know_my_pincode }}</span>
                         </div>
                     </div>
                     <div class="outline-input-label ">
                         <label>
-                            <textarea name="desc " placeholder="Mention details that you'd like to share..."
+                            <textarea name="desc " [placeholder]="productStaticData?.mention_details_you_like_to_share"
                                 formControlName="description" maxlength="300"
                                 (click)="isOutOfStock?initiateLogin():false"></textarea>
                             <ng-container
                                 *ngIf="isUserLoggedIn &&  isRFQSubmitted && (description.touched || description.dirty)">
-                                <p class="error-txt" *ngIf="description.hasError('pattern')">Description should contain only
-                                    characters.</p>
+                                <p class="error-txt" *ngIf="description.hasError('pattern')">{{ productStaticData?.description_should_contain_chars }}</p>
                             </ng-container>
                         </label>
                     </div>
@@ -157,8 +155,8 @@
                             <span class="custom-box icon-box mar-t-5"></span>
                         </label>
                         <div class="chk-txt">
-                            <span class="heading">Business Purchase</span>
-                            <p class="txt">Add GSTIN for verification</p>
+                            <span class="heading">{{ productStaticData?.business_purchase }}</span>
+                            <p class="txt">{{ productStaticData?.add_gstin_for_verification }}</p>
                         </div>
                     </div>
                     <div class="outline-input-label" *ngIf="isBusinessCustomer.value">
@@ -166,8 +164,8 @@
                             <input type="text" name="phone-no" formControlName="tin" maxlength="15" placeholder="Enter GSTIN*"
                                 (click)="isOutOfStock?initiateLogin():false; updateField()" (keyup)="$event.stopPropagation();gstinError=null">
                             <ng-container *ngIf="isUserLoggedIn &&  isRFQSubmitted && (tin.touched || tin.dirty)">
-                                <p class="error-txt" *ngIf="tin.hasError('required')">Kindly enter GSTIN.</p>
-                                <p class="error-txt" *ngIf="tin.hasError('pattern')">Kindly enter valid GSTIN.</p>
+                                <p class="error-txt" *ngIf="tin.hasError('required')">{{ productStaticData?.kindly_enter_gstin }}</p>
+                                <p class="error-txt" *ngIf="tin.hasError('pattern')">{{ productStaticData?.kindly_enter_valid_gstin }}</p>
                             </ng-container>
                             <p class="error-txt" *ngIf="isRFQSubmitted && tin.errors ==null && gstinError">{{gstinError}}</p>
                         </label>
@@ -179,7 +177,7 @@
     </form>
     <!-- [class.fixed-bottom-cta]="isOutOfStock" [class.mt-60]="!isOutOfStock" -->
     <div class="fixed-bottom-cta">
-        <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="btn primary-full-btn">SUBMIT YOUR REQUIREMENT</button>
+        <button (click)="$event.stopPropagation();processRFQ(rfqForm.value)" class="btn primary-full-btn">{{ productStaticData?.submit_your_requirement }}</button>
     </div>
 </section>
 </ng-template>

@@ -1,18 +1,18 @@
 <div class="filter-wrapper" *ngIf="productsListingData?.products?.length>0 || filterChipsArray?.length > 0" [class.translateHeader]="!_commonService.isScrolledHeader">
     <button type="button" (click)="toggleSortBy()">
-        <i class="icon-short icon-sort-by" aria-hidden="true"></i> <span class="txt"> Sort By
+        <i class="icon-short icon-sort-by" aria-hidden="true"></i> <span class="txt"> {{ productStaticData?.sort_by }}
             <span class="red-txt" [ngSwitch]="_commonService.selectedFilterData['sortBy']">
                 <ng-container *ngSwitchCase="'popularity'">
-                    Popularity
+                    {{ productStaticData?.popularity }}
                 </ng-container>
                 <ng-container *ngSwitchCase="'lowPrice'">
-                    Low Price
+                    {{ productStaticData?.low_price }}
                 </ng-container>
                 <ng-container *ngSwitchCase="'highPrice'">
-                    High Price
+                    {{ productStaticData?.high_price }}
                 </ng-container>
                 <ng-container *ngSwitchDefault>
-                    Popularity
+                    {{ productStaticData?.popularity }}
                 </ng-container>
             </span>
         </span>
@@ -20,7 +20,7 @@
     <button *ngIf="productsListingData?.filterData && productsListingData?.filterData?.length > 0" type="button"
         (click)="filterUp()">
         <i class="icon-filter-3-fill" aria-hidden="true"></i>
-        <span class="txt">Filters</span>
+        <span class="txt">{{ productStaticData?.filters }}</span>
         <span class="filter_count" *ngIf="appliedFilterCount > 0">{{ appliedFilterCount }}</span>
     </button>
     <button *ngIf="!productsListingData?.filterData || productsListingData?.filterData?.length === 0"
@@ -46,9 +46,9 @@
             {{ headerName }}
         </h1>
         <div class="list-num" *ngIf="productsListingData?.products">
-            Showing {{ productsListingData?.products.length }} out of {{ (productsListingData?.totalCount >
+            {{ productStaticData?.showing }} {{ productsListingData?.products.length }} {{ productStaticData?.showing }} {{ (productsListingData?.totalCount >
             (productsListingData?.products.length) ? productsListingData?.totalCount :(
-            productsListingData?.products.length) ) }} products
+            productsListingData?.products.length) ) }} {{ productStaticData?.products }}
         </div>
         
         <div class="right titleDescription"
@@ -76,7 +76,7 @@
           </ng-container>
        </div>
    </ng-container>
-    <filter-mid-plp (categoryClicked)="categoryClicked.emit($event)"
+    <filter-mid-plp [productStaticData]='productStaticData' (categoryClicked)="categoryClicked.emit($event)"
         [categoryMidPlpFilterData]="categoryMidPlpFilterData" [pageName]="pageName" [position]="i"
         [filterData]="productsListingData?.filterData" *ngIf="(i === 5 || i === 10 || i === 15 || i === 20)">
     </filter-mid-plp>

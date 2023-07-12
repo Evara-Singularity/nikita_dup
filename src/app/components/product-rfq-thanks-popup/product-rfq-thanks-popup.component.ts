@@ -24,7 +24,7 @@ export class ProductRfqThanksPopupComponent implements OnInit {
   @Output() closeRFQAlert$: EventEmitter<any> = new EventEmitter<any>();
   @Output() scrollToId$: EventEmitter<any> = new EventEmitter<any>();
   @Output() navigateToCategory$: EventEmitter<any> = new EventEmitter<any>();
-
+  productStaticData = this._commonService.defaultLocaleValue;
 
   constructor(
     private _commonService: CommonService
@@ -34,6 +34,13 @@ export class ProductRfqThanksPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getLocalization();
+  }
+
+  getLocalization() {
+    this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+      this.productStaticData = localization_content;
+    });
   }
 
   closeRFQAlert() {

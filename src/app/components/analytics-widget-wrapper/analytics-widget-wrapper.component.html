@@ -4,9 +4,9 @@
             <ng-container *ngIf="priceDataWithoutProcessing && priceDataWithoutProcessing.length > 0">
                 <div class="inner-widget-section">
                     <div class="widget-heading">
-                        <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
-                        <p *ngIf="!isL2CategoryCheck" class="heading-txt">Top {{priceDataWithoutProcessing.length}} price range of {{categoryName}}</p>
-                        <p *ngIf="isL2CategoryCheck"class="heading-txt">Top {{priceDataWithoutProcessing.length}} categories of {{categoryName}}</p>
+                        <p><img src="{{imagePathAsset}}assets/img/insight.svg"> {{ productStaticData?.moglix_insight }}</p>
+                        <p *ngIf="!isL2CategoryCheck" class="heading-txt">{{ productStaticData?.top }} {{priceDataWithoutProcessing.length}} {{ productStaticData?.price_range_of }} {{categoryName}}</p>
+                        <p *ngIf="isL2CategoryCheck"class="heading-txt">{{ productStaticData?.top }} {{priceDataWithoutProcessing.length}} {{ productStaticData?.categories_of }} {{categoryName}}</p>
                     </div>
                     <div class="single-widget-container pad-lr-0">
                         <div [debounceTime]="100" data-observeVisibility (visible)="loadPriceWidget()">
@@ -17,14 +17,14 @@
                                 *ngFor="let price of priceDataWithoutProcessing" class="card">
                                 <p class="dots"></p>
                                 <p *ngIf="price.interval.toLowerCase() !== 'others' && !isL2CategoryCheck">
-                                    {{price.orderPercentage}}% of users prefer {{categoryName}} in price range of
+                                    {{price.orderPercentage}}% {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.in_price_range }}
                                     {{formatPrice(price.interval,true)}}
                                 </p>
                                 <p *ngIf="price.interval.toLowerCase() !== 'others' && isL2CategoryCheck">
-                                    {{price.orderPercentage}}% of users prefer {{price.categoryName}} 
+                                    {{price.orderPercentage}}% {{ productStaticData?.of_users_prefer }} {{price.categoryName}} 
                                 </p>
                                 <p *ngIf="price.interval.toLowerCase() === 'others'">
-                                    {{price.orderPercentage}}% of users prefer {{categoryName}} in other price range.
+                                    {{price.orderPercentage}}% {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.in_other_price_range }}.
                                 </p>
                             </div>
                         </div>
@@ -40,8 +40,8 @@
         <div class="single-widget">
         <div class="inner-widget-section">
             <div class="widget-heading">
-                <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
-                <p class="heading-txt">Top {{brandDataWithoutProcessing.length}} brands of {{categoryName}}</p>
+                <p><img src="{{imagePathAsset}}assets/img/insight.svg"> {{ productStaticData?.moglix_insight }}</p>
+                <p class="heading-txt">{{ productStaticData?.top }} {{brandDataWithoutProcessing.length}} {{ productStaticData?.brands_of }} {{categoryName}}</p>
             </div>
             <div class="single-widget-container pad-lr-0">
                 <div [debounceTime]="100"  data-observeVisibility (visible)="loadBrandWidget()">
@@ -53,10 +53,10 @@
                      <div (click)="callBrandUrl(brand)" 
                         *ngFor="let brand of brandDataWithoutProcessing" class="card">
                         <p *ngIf="brand.brandName !== 'others'">
-                            {{brand.orderPercentage}}% of users prefer {{categoryName}} of <b>{{brand.brandName}}</b> brand
+                            {{brand.orderPercentage}}% {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.of1 }} <b>{{brand.brandName}}</b> {{productStaticData?.brand1}}
                         </p>
                         <p *ngIf="brand.brandName.toLowerCase() === 'others'">
-                            {{brand.orderPercentage}}% of users prefer {{categoryName}} of other brands
+                            {{brand.orderPercentage}}% {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.of_other_brands }}
                         </p>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                 <ng-container *ngIf="commonService.isServer">
                     <div *ngFor="let attribute of attributeDataWithoutProcessing;let i = index" (click)="generateFragmentUrl(attribute.attributeName,getMaxValue(attribute.attributePercentange,'percent'))" class="card">
                         <p>
-                            {{getMaxValue(attribute.attributePercentange)}}% of users buy {{categoryName}} in {{getMaxValue(attribute.attributePercentange,'percent')}} {{attribute.attributeName | titlecase}}
+                            {{getMaxValue(attribute.attributePercentange)}}% {{ productStaticData?.of_users_buy }} {{categoryName}} {{ productStaticData?.in }} {{getMaxValue(attribute.attributePercentange,'percent')}} {{attribute.attributeName | titlecase}}
                         </p>
                     </div>
                 </ng-container>

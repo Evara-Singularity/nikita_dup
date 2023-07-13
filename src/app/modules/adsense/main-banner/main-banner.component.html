@@ -4,7 +4,7 @@
       <img [src]="slide.pictureUrl" alt="Slide Image">
     </div>
   </div>
-  <div class="carousal-dot-container">
+  <div class="carousal-dot-container" *ngIf="data.length > 1">
     <span *ngFor="let slide of data; let i = index" [ngClass] = "{'active': (i == activeIndex) }" [class.active]="i === activeIndex" (click)="goToSlide(i)"></span>
   </div>
 </div>

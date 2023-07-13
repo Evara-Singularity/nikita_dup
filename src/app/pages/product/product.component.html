@@ -3,11 +3,9 @@
         [selectedProductBulkPrice]="selectedProductBulkPrice" [productPrice]="productPrice"
         [productDiscount]="productDiscount" [productName]="productName" [priceWithoutTax]="priceWithoutTax"
         [gstPercentage]='taxPercentage' [promoCodes]='promoCodes'></app-floating-coupon-widget>
-    
     <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer"
         [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
     </app-oos-similar-section>
-
     <shared-product-carousel (openPopUpcrousel$)="openPopUpcrousel()" [productAllImages]="productAllImages"
         [carouselInitialized]="carouselInitialized" (loadProductShare$)="loadProductShare()"
         [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName"
@@ -29,7 +27,6 @@
         [productMinimmumQuantity]="productMinimmumQuantity" [priceQuantityCountry]="priceQuantityCountry"
         [starsCount]="starsCount" [rawReviewsCount]="rawReviewsData?.reviewList?.length || 0" [rawProductCountMessage]="rawProductCountMessage">
     </product-description> -->
-
     <product-grouping-attributes [isCommonProduct]="isCommonProduct"
         [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)"
         (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
@@ -256,7 +253,6 @@
         </div>
     </ng-container>
 </div>
-
 <!-- <ng-container *ngIf="!productOutOfStock">
     <appInstallWidget></appInstallWidget>
 </ng-container> -->

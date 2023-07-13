@@ -2,6 +2,7 @@ export const environment = {
   production: false,
   enableServerLitogs: false,
   PROD_NAME: 'https://www.moglix.com',
+  
   // BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   // BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2', 
   // APP_BASE_URL: 'https://api.moglix.com',
@@ -9,7 +10,6 @@ export const environment = {
   BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   BASE_URL_V2: 'https://nodeapiqa.moglilabs.com/nodeApi/v2',
   APP_BASE_URL: 'https://apiqa.moglilabs.com',
-
 
   IMAGE_ASSET_URL: '/',
   SOCKET_URL: "https://socketqa.moglilabs.com",  

@@ -13,6 +13,8 @@ import { YTThumnailPipeModule } from '@app/utils/pipes/ytthumbnail.pipe';
 import { ObjectToArrayPipeModule } from '@app/utils/pipes/object-to-array.pipe';
 import { NgxSiemaModule } from 'ngx-siema';
 import { LoginPopupModule } from '../login-popup/login-popup.module';
+import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
+import { PopUpVariant2Module } from '../pop-up-variant2/pop-up-variant2.module';
 
 
 
@@ -26,7 +28,9 @@ import { LoginPopupModule } from '../login-popup/login-popup.module';
         ObjectToArrayPipeModule,
         MathFloorPipeModule,
         NgxSiemaModule,
-        LoginPopupModule
+        LoginPopupModule,
+        ObserveVisibilityDirectiveModule,
+        PopUpVariant2Module
     ],
     exports: [ProductInfoComponent, KeyFeaturesComponent, SpecificationsComponent, VideosComponent, DetailsComponent, ImagesComponent]
 })

@@ -1,0 +1,35 @@
+.wrapped-container {
+    position: relative;
+    background: #fff;
+    height: 464px;
+    width: 100%;
+}
+
+#swipe-container {
+    position: absolute;
+    margin: auto;
+    bottom: 0;
+    left: 0px;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 464px;
+    text-align: center;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+    touch-action: none;
+}
+
+#spinImg {
+    position: absolute;
+    left: -75px;
+    top: 0;
+    width: 2316px;
+    height: 281px;
+    visibility: hidden;
+    border: none;
+    max-width: initial;
+    // transform: translate3d(0,0,0);
+    touch-action: none;
+}

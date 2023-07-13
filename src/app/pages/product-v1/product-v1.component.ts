@@ -350,6 +350,13 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.callAnalyticForVisit();
         this.setMetatag();
         if(!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null){ this.getCompareProductsData(this.rawProductData?.msn);}
+        if(this.rawProductData.defaultPartNumber.toLowerCase() == CONSTANTS.POC_MSN){
+            let url ="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js";
+            const script = document.createElement('script');
+            script.src = url;
+            script.type = 'module';
+            document.head.appendChild(script);
+        }
     }
 
     filterAttributes() {
@@ -1823,6 +1830,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             );
         this.productInfoPopupInstance.instance["oosProductIndex"] = oosProductIndex;
         this.productInfoPopupInstance.instance["analyticProduct"] = this._trackingService.basicPDPTrackingV1(this.rawProductData);
+        this.productInfoPopupInstance.instance['msnId'] = this.rawProductData.msn;
+        this.productInfoPopupInstance.instance['threeDImages'] = this.rawProductData.product3dImages;
         this.productInfoPopupInstance.instance["modalData"] =
             oosProductIndex > -1
                 ? this.productService.getProductInfo(infoType, oosProductIndex)

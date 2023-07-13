@@ -28,7 +28,6 @@ export class FeatureProductsUnitComponent implements AfterViewInit {
     horizontalOrientation: false,
     lazyLoadImage: false,
   }
-  cardMetaInfo: ProductCardMetaInfo = null;
 
   constructor(
     private _productService: ProductService,

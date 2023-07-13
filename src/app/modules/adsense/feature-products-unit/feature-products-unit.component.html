@@ -6,7 +6,7 @@
         <div class="pb-5">
             <product-card-vertical-container [numberOfItems]="msnListData.length">
                 <ng-container *ngFor="let product of msnListData;let pIndex = index">
-                    <product-card-vertical-grid-view [product]="product" [cardMetaInfo]='cardMetaInfo'
+                    <product-card-vertical-grid-view [product]="product"
                         [section]="'recently'" [cardFeaturesConfig]='cardFeaturesConfig' [moduleUsedIn]="'search'"
                         [pageName]="pageName" [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
                     </product-card-vertical-grid-view>

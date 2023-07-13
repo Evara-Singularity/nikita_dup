@@ -2,14 +2,18 @@ export const environment = {
   production: false,
   enableServerLitogs: false,
   PROD_NAME: 'https://www.moglix.com',
+
   BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2', 
   APP_BASE_URL: 'https://api.moglix.com',
+  
+  // BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
+  // BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2', 
+  // APP_BASE_URL: 'https://api.moglix.com',
 
   // BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   // BASE_URL_V2: 'https://nodeapiqa.moglilabs.com/nodeApi/v2',
   // APP_BASE_URL: 'https://apiqa.moglilabs.com',
-
 
   IMAGE_ASSET_URL: '/',
   SOCKET_URL: "https://socketqa.moglilabs.com",  
@@ -20,7 +24,7 @@ export const environment = {
   GTM_ANALYTICS_CODE: 'GTM-WW4R83Z',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js',
   LOG_FILE_PATH: "/var/log/moglix/online/pwa/",
-  buildVersion: '25.0',
+  buildVersion: '25.1',
   SOCIAL_LOGIN: {
     google: {
       clientId:

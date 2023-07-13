@@ -1,7 +1,7 @@
 import { LocalStorageService } from "ngx-webstorage";
 import { filter, map } from "rxjs/operators";
 import { mergeMap } from "rxjs/operators";
-import { Observer, of } from "rxjs";
+import { BehaviorSubject, Observer, of } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import { NavigationEnd, NavigationExtras, NavigationStart, Router } from "@angular/router";
@@ -57,6 +57,7 @@ export class CommonService
     public oosSimilarCard$: Subject<any> = new Subject<any>();
     private loginPerformed$: Subject<any> = new Subject<any>();
     public attachScrollEvent$: Subject<any> = new Subject<any>();
+    isProductCrouselLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     showWhatsappToolTip=true
     isHomeHeader = false;
     isPLPHeader = false;
@@ -101,6 +102,8 @@ export class CommonService
     goldMemberPopupOpened = new Subject();
     public defaultLocaleValue = localization_en.product;
     private copiedCouponInternal: string = '';
+    public open360popup$: Subject<any> = new Subject<any>();
+    public open360popup1$: Subject<any> = new Subject<any>();
 
     constructor(
         @Inject(PLATFORM_ID) platformId,
@@ -1665,5 +1668,4 @@ export class CommonService
         data["custData"] = this.custDataTracking;
         this._analytics.sendAdobeCall(data, trackingname); 
     }
-
 }

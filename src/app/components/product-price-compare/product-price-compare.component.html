@@ -21,7 +21,7 @@
                                             {{msnMasterData[msn]['productName']}}</p>
                                         <h3 class="prodPrice">₹{{msnMasterData[msn]['salesPrice'] | mathRound |
                                             number : '1.0-0'}}</h3>
-                                        <add-to-cart [isOutOfStock]="msnMasterData[msn]['isOutOfStock']"
+                                        <add-to-cart [moduleUsedIn]="'CART-ADD-SIMILAR-PRODUCT'" [isOutOfStock]="msnMasterData[msn]['isOutOfStock']"
                                             [moglixPartNumber]="msn" [product]="msnMasterData[msn]">
                                         </add-to-cart>
                                     </div>

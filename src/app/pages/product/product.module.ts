@@ -40,6 +40,7 @@ import { AdsenseFeatureProductsUnitModule } from '@app/modules/adsense/adsense-f
 import { AdsenseLeaderboardBannerModule } from '@app/modules/adsense/adsense-leaderboard-banner.module';
 import { AdsenseRectangleBannerModule } from '@app/modules/adsense/adsense-inline-rectangle-banner.module';
 import { AdsenseService } from '@app/utils/services/adsense.service';
+import { ProductThreeSixtyViewModule } from '../../components/product-three-sixty-view/product-three-sixty-view.module';
 
 
 @NgModule({
@@ -96,7 +97,8 @@ import { AdsenseService } from '@app/utils/services/adsense.service';
     AdsensePromotedBrandsUnitModule,
     AdsenseFeatureProductsUnitModule,
     AdsenseLeaderboardBannerModule,
-    AdsenseRectangleBannerModule
+    AdsenseRectangleBannerModule,
+    ProductThreeSixtyViewModule
   ],
   exports: [],
   providers: [NgxSiemaService, DatePipe, AdsenseService]

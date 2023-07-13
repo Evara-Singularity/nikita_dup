@@ -703,6 +703,7 @@ export const CONSTANTS = {
   PDP_QNA_HASH:"qna",
   PDP_REVIEW_HASH:"review",
   PDP_WRITE_REVIEW_HASH:"write-review",
-  APP_OPEN_LINK:"https://moglix.page.link/appinstall"
+  APP_OPEN_LINK:"https://moglix.page.link/appinstall",
+  POC_MSN : 'msn2vvrozzffc9'
 };
 export default CONSTANTS;

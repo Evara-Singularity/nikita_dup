@@ -4,13 +4,17 @@ import
     {
         ChangeDetectorRef,
         Component,
+        ComponentFactoryResolver,
         EventEmitter,
         HostListener,
         Inject,
+        Injector,
         Input,
         OnDestroy,
         OnInit,
         Output,
+        ViewChild,
+        ViewContainerRef,
     } from "@angular/core";
 import { CommonService } from "@app/utils/services/common.service";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
@@ -19,6 +23,7 @@ import { NgxSiemaOptions, NgxSiemaService } from "ngx-siema";
 import { LocalStorageService } from "ngx-webstorage";
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { Router } from '@angular/router';
+import CONSTANTS from '@app/config/constants';
 
 @Component({
     selector: "product-info",
@@ -27,11 +32,16 @@ import { Router } from '@angular/router';
 })
 export class ProductInfoComponent implements OnInit
 {
+    product3dInstance = null;
+    @ViewChild("product3dContainerRef", { read: ViewContainerRef })
+    product3dContainerRef: ViewContainerRef;
     productStaticData = this._commonService.defaultLocaleValue;
     @Input("openProductInfo") openProductInfo = false;
     @Input("modalData") modalData = null;
     @Input("oosProductIndex") oosProductIndex = -1;
     @Input('analyticProduct') analyticProduct = null;
+    @Input() msnId;
+    @Input() threeDImages = [];
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     defaultInfo = "";
     selectedIndex = 0;
@@ -78,6 +88,9 @@ export class ProductInfoComponent implements OnInit
     slides:HTMLCollection;
     siemaTab:HTMLDivElement;
     showHindiContent:boolean;
+    open360Popup:boolean = false;
+    showPocMsn:boolean = false;
+    for3dPopup: boolean = false;
 
 
     constructor(
@@ -89,7 +102,10 @@ export class ProductInfoComponent implements OnInit
         @Inject(DOCUMENT) private _document,
         private _localAuthService: LocalAuthService,
         private router: Router,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private _componentFactoryResolver:ComponentFactoryResolver,
+        private injector : Injector,
+        
     ) { }
 
     ngOnInit()
@@ -107,6 +123,7 @@ export class ProductInfoComponent implements OnInit
         this.loginStatus =
             user && user["authenticated"] == "true" ? "registered user" : "guest";
         this.getStaticSubjectData();  
+        this.get360poup();
     }
     getStaticSubjectData(){
         this._commonService.changeStaticJson.subscribe(staticJsonData => {
@@ -233,6 +250,12 @@ export class ProductInfoComponent implements OnInit
 
     closeProducInfo($event)
     {
+        console.log("seq 2");
+        if(!this.open360Popup) {
+            this.open360Popup = false;
+            this.closePopup$.emit();
+            return;
+        }
         this.openProductInfo = false;
         this.closePopup$.emit();
     }
@@ -253,5 +276,61 @@ export class ProductInfoComponent implements OnInit
     }
     get isHindiUrl() {
         return (this.router.url).toLowerCase().indexOf('/hi') !== -1
+    }
+    get360poup() {
+        if (this.oosProductIndex < 1 && (this.msnId.toLowerCase() === CONSTANTS.POC_MSN || (this.threeDImages && this.threeDImages.length))) {
+            this.showPocMsn = true;
+        }
+        if(this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {
+            this.for3dPopup = false;
+          } else {
+            this.for3dPopup = true;
+          }
+        this._commonService.open360popup1$.subscribe(val => {
+            setTimeout(() => this.show360popup(), 100)
+        });
+    }
+
+    show360popup() {
+        this.open360Popup = true;
+        this.cdr.detectChanges();
+       setTimeout(() => {
+      if (this.showPocMsn && this.msnId.toLowerCase() === CONSTANTS.POC_MSN) {
+        this.load360ViewComponent();
+      } else {
+        this.load360View();
+      }
+      this.cdr.detectChanges();
+    }, 100)
+ }
+
+    async load360View() {
+        console.log(this.threeDImages, "this.threeDImages");
+        const { ProductThreeSixtyViewComponentV1 } = await import('../../components/product-three-sixty-view-v1/product-three-sixty-view-v1.component');
+        const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponentV1);
+        this.product3dInstance = this.product3dContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.product3dInstance.instance['threeDImages'] = this.threeDImages || [];
+        this.cdr.detectChanges();
+    }
+
+    async load360ViewComponent() {
+        const { ProductThreeSixtyViewComponent } = await import('../../components/product-three-sixty-view/product-three-sixty-view.component');
+        const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponent);
+        this.product3dInstance = this.product3dContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.cdr.detectChanges();
+    }
+    ngOnDestroy(){
+        if(this.product3dInstance){
+            this.product3dInstance = null;
+            this.product3dContainerRef = null;
+        }
     }
 }

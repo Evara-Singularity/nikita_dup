@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from "@angular/common";
-import { NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import AppInstallWidgetModule from "@app/components/appInstallWidget/appInstallWidget.component";
 import FbtComponentModule from "@app/components/fbt/fbt.component";
 import { FloatingCouponWidgetModule } from "@app/components/floating-coupon-widget/floating-coupon-widget.module";
@@ -42,8 +42,6 @@ import { AdsenseService } from "@app/utils/services/adsense.service";
 
 @NgModule({
     declarations: [ProductV1Component],
-    exports: [],
-    providers: [NgxSiemaService, DatePipe,AdsenseService],
     imports: [
         CommonModule,
         ProductV1RoutingModule,
@@ -80,6 +78,9 @@ import { AdsenseService } from "@app/utils/services/adsense.service";
         AdsensePromotedBrandsUnitModule,
         AdsenseLeaderboardBannerModule,
         AdsenseRectangleBannerModule
-    ]
+    ],
+    exports: [],
+    providers: [NgxSiemaService, DatePipe,AdsenseService],
+    schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ProductV1Module { }

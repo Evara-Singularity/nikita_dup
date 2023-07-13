@@ -1,0 +1,10 @@
+<div class="plp-banner-container mb-10">
+  <div #siemaContainer>
+    <div *ngFor="let slide of data; let i=index">
+      <img [src]="slide.pictureUrl" alt="Slide Image">
+    </div>
+  </div>
+  <div class="carousal-dot-container">
+    <span *ngFor="let slide of data; let i = index" [ngClass] = "{'active': (i == activeIndex) }" [class.active]="i === activeIndex" (click)="goToSlide(i)"></span>
+  </div>
+</div>

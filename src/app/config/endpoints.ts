@@ -142,5 +142,7 @@ export const ENDPOINTS = {
   GET_CATEGORY_INFO_BY_MSNS: "/search/getCategoryInfoByMsns",
   IFSC_CODE:'/payment/getBankDetails?ifsc=',
   GET_COMPARE_PRODUCTS:"/search/compareProducts?productId=",
-  PRODUCT_API: '/aggregate/pdpDetails'
+  PRODUCT_API: '/aggregate/pdpDetails',
+  ADSENSE: '/adsense/getCampaign',
+  GET_MSN_BY_LIST: '/search/searchByListOfMsn',
 };

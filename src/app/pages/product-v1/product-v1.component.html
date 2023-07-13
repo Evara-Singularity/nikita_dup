@@ -88,7 +88,16 @@
         [productVideos]="rawProductData?.productVideos" [productDocumentInfo]="rawProductData?.productDocumentInfo"
         [productBrandCategoryUrl]="rawProductData?.productBrandCategoryUrl"></product-feature-details>
 
-
+            <!-- adsense PDP -->
+            <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData">
+                <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PDP']">
+                    <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PDP']">
+                    </adsense-leaderboard-banner>
+                </ng-container>
+                <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PDP']">
+                    <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PDP']"></adsense-rectangle-banner>
+                </ng-container>
+            </ng-container>
 
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
@@ -139,6 +148,15 @@
         [productCategoryDetails]="rawProductData?.productCategoryDetails"
         [productBrandCategoryUrl]="rawProductData?.productBrandCategoryUrl">
     </product-more-widget>
+
+    <!-- adsense PDP -->    
+    <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']">
+        <adsense-promoted-brands-unit [isPdpPage]="true" [data]="adsenseData['PROMOTOTED_BRAND_ADS']"></adsense-promoted-brands-unit>
+    </ng-container>
+
+    <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData && adsenseData['FEATURED_PRODUCT_ADS']">
+        <adsense-feature-products-unit  [data]="adsenseData['FEATURED_PRODUCT_ADS']"></adsense-feature-products-unit>
+    </ng-container>
 
     <!-- removed sponsored products -->
     <div id="sponseredProducts" [ngClass]="{'common-product': !sponseredProductsInstance}"

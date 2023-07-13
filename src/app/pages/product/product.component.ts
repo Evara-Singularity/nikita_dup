@@ -51,6 +51,7 @@ import * as localization_hi from '../../config/static-hi';
 import { product } from '../../config/static-hi';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { YTThumbnailPipe } from '@app/utils/pipes/ytthumbnail.pipe';
+import { AdsenseService } from '@app/utils/services/adsense.service';
 
 
 interface ProductDataArg
@@ -371,6 +372,7 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
     allofferData: any[];
     couponForbrandCategory: any;
     fragment = '';
+    adsenseData: any = null;
     set showLoader(value: boolean)
     {
     this.globalLoader.setLoaderState(value);
@@ -412,7 +414,8 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
         private datePipe: DatePipe,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any,
-        private globalAnalyticsService: GlobalAnalyticsService
+        private globalAnalyticsService: GlobalAnalyticsService,
+        private _adsenseService: AdsenseService,
     )
     {
         this.isServer = commonService.isServer;
@@ -473,11 +476,29 @@ export class ProductComponent implements OnInit, AfterViewInit,AfterViewInit
             this.attachBackClickHandler();
             this.getRecents();
             if(!this.productOutOfStock && this.defaultPartNumber != null){ this.getCompareProductsData(this.defaultPartNumber);}
+            this.getAdsenseData();
             this.route.fragment.subscribe((fragment: string) => {
                 this.fragment = fragment;
             })
         }
         
+    }
+
+    private getAdsenseData() {
+        if (
+          this.msn &&
+          this.productCategoryDetails &&
+          this.productBrandDetails &&
+          this.productCategoryDetails["categoryCode"] &&
+          this.productBrandDetails["idBrand"]
+        ) {
+          const categoryId = this.productCategoryDetails["categoryCode"];
+          const brandUrl = this.productBrandDetails["idBrand"];
+          const msn = this.msn;
+          this._adsenseService
+            .getAdsense(categoryId, brandUrl, msn)
+            .subscribe((adsenseData) => (this.adsenseData = adsenseData));
+        }
     }
 
     getProductTag(){

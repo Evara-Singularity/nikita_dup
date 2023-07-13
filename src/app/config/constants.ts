@@ -21,6 +21,7 @@ export const CONSTANTS = {
   CDN_IMAGE_PATH: environment.CDN_IMAGE_URL,
   LANGUAGE_EN: 'ENGLISH',
   LANGUAGE_HI: 'HINDI',
+  COUNTRY_NAME: 'india',
   BROWSER_AGENT_TOKEN: new InjectionToken<string>('browserName'),
   LOG_TOKEN_SERVER: new InjectionToken<string>('logTokenServer'),
   LOG_TOKEN_MAIN: new InjectionToken<string>('logTokenMain'),

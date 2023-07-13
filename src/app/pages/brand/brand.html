@@ -35,16 +35,18 @@
             </div>
         </div>
     </ng-container>
+    <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
+        <ng-container *ngIf="adsenseData && adsenseData['TOP_BANNERS']">
+            <adsense-main-banner [data]="adsenseData['TOP_BANNERS']"></adsense-main-banner>
+        </ng-container>
+        <ng-container *ngIf="adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']">
+            <adsense-promoted-brands-unit [data]="adsenseData['PROMOTOTED_BRAND_ADS']"></adsense-promoted-brands-unit>
+        </ng-container>
+        <ng-container *ngIf="adsenseData && adsenseData['FEATURED_PRODUCT_ADS']">
+            <adsense-feature-products-unit [data]="adsenseData['FEATURED_PRODUCT_ADS']"></adsense-feature-products-unit>
+        </ng-container>
+    </ng-container>
 
-    <ng-container *ngIf="adsenseData && adsenseData['TOP_BANNERS']" >
-        <adsense-main-banner [data]="adsenseData['TOP_BANNERS']" ></adsense-main-banner>
-    </ng-container>
-    <ng-container *ngIf="adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']" >
-        <adsense-promoted-brands-unit [data]="adsenseData['PROMOTOTED_BRAND_ADS']" ></adsense-promoted-brands-unit>
-    </ng-container>
-    <ng-container *ngIf="adsenseData && adsenseData['FEATURED_PRODUCT_ADS']" >
-        <adsense-feature-products-unit [data]="adsenseData['FEATURED_PRODUCT_ADS']" ></adsense-feature-products-unit>
-    </ng-container>
 
     <div class="pwa-row cate-container"
         *ngIf="API_RESPONSE['brand'][1][0].categoryName && _commonService.selectedFilterData.page < 2">
@@ -74,12 +76,12 @@
         [categoryName]="API_RESPONSE['brand'][1][0].categoryName">      
     </shared-product-listing>
 
+    <recent-viewed-products-wrapper [pageName]="'brand'" [moduleUsedIn]="(API_RESPONSE['brand'][1][0].categoryName)?'PRODUCT_RECENT_PRODUCT_BRAND_CATEGORY':'PRODUCT_RECENT_PRODUCT_BRAND'"></recent-viewed-products-wrapper>
+
     <ng-container *ngIf="_commonService.selectedFilterData.page < 2 && adsenseData && adsenseData['VIDEOS_ADS']">
         <adsense-related-videos [data]="adsenseData['VIDEOS_ADS']"></adsense-related-videos>
     </ng-container>
     
-    <recent-viewed-products-wrapper [pageName]="'brand'" [moduleUsedIn]="(API_RESPONSE['brand'][1][0].categoryName)?'PRODUCT_RECENT_PRODUCT_BRAND_CATEGORY':'PRODUCT_RECENT_PRODUCT_BRAND'"></recent-viewed-products-wrapper>
-
     <app-accordian [accordiansDetails]="accordiansDetails"></app-accordian>
     
     <div class ="promo-container">

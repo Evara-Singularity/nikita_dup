@@ -134,6 +134,7 @@ export class ProductListService {
             "large",
             "medium"
           );
+        product['productUrl']=product['productUrl'];
         product['productTags'] = (product['productTags'] && product['productTags'].length > 0)?[this._commonService.sortProductTagsOnPriority(product['productTags'])[0]]:'';
         product["internalProduct"] = product.hasOwnProperty("internalProduct")
           ? false

@@ -1,4 +1,4 @@
-<div class="related-video-container mt-10">
+<div class="related-video-container mt-10" data-observeVisibility [debounceTime]="200" (visible)="onVisisble($event)">
     <h1>Featured Videos</h1>
     <div class="related-video-section">
         <div class="video-outer-section" *ngFor="let video of data">

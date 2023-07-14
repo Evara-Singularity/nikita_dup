@@ -37,13 +37,18 @@
     </ng-container>
     <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
         <ng-container *ngIf="adsenseData && adsenseData['TOP_BANNERS']">
-            <adsense-main-banner [data]="adsenseData['TOP_BANNERS']"></adsense-main-banner>
+            <adsense-main-banner [data]="adsenseData['TOP_BANNERS']"
+                [analyticsIdentifier]="'TOP_BANNERS_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-main-banner>
         </ng-container>
         <ng-container *ngIf="adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']">
-            <adsense-promoted-brands-unit [data]="adsenseData['PROMOTOTED_BRAND_ADS']"></adsense-promoted-brands-unit>
+            <adsense-promoted-brands-unit [data]="adsenseData['PROMOTOTED_BRAND_ADS']"
+                [analyticsIdentifier]="'PROMOTOTED_BRAND_ADS_'+adsenseData['ANALYTIC_IDENTIFIER']">
+            </adsense-promoted-brands-unit>
         </ng-container>
         <ng-container *ngIf="adsenseData && adsenseData['FEATURED_PRODUCT_ADS']">
-            <adsense-feature-products-unit [data]="adsenseData['FEATURED_PRODUCT_ADS']"></adsense-feature-products-unit>
+            <adsense-feature-products-unit [data]="adsenseData['FEATURED_PRODUCT_ADS']"
+                [analyticsIdentifier]="'FEATURED_PRODUCT_ADS_'+adsenseData['ANALYTIC_IDENTIFIER']">
+            </adsense-feature-products-unit>
         </ng-container>
     </ng-container>
 
@@ -79,7 +84,7 @@
     <recent-viewed-products-wrapper [pageName]="'brand'" [moduleUsedIn]="(API_RESPONSE['brand'][1][0].categoryName)?'PRODUCT_RECENT_PRODUCT_BRAND_CATEGORY':'PRODUCT_RECENT_PRODUCT_BRAND'"></recent-viewed-products-wrapper>
 
     <ng-container *ngIf="_commonService.selectedFilterData.page < 2 && adsenseData && adsenseData['VIDEOS_ADS']">
-        <adsense-related-videos [data]="adsenseData['VIDEOS_ADS']"></adsense-related-videos>
+        <adsense-related-videos [data]="adsenseData['VIDEOS_ADS']" [analyticsIdentifier]="'VIDEOS_ADS_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-related-videos>
     </ng-container>
     
     <app-accordian [accordiansDetails]="accordiansDetails"></app-accordian>

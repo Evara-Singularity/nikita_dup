@@ -1,4 +1,5 @@
-<section *ngIf="msnListData && msnListData.length>0" class="pwa-row recent-viewed mt-10 pad-r-0">
+<section *ngIf="msnListData && msnListData.length>0" class="pwa-row recent-viewed mt-10 pad-r-0" data-observeVisibility
+    [debounceTime]="200" (visible)="onVisisble($event)">
     <div class="pwa-col-12">
         <div class="view-all-strip">
             <h3 class="heading-3">{{'Featured Products'}}</h3>
@@ -6,9 +7,9 @@
         <div class="pb-5">
             <product-card-vertical-container [numberOfItems]="msnListData.length">
                 <ng-container *ngFor="let product of msnListData;let pIndex = index">
-                    <product-card-vertical-grid-view [product]="product"
-                        [section]="'recently'" [cardFeaturesConfig]='cardFeaturesConfig' [moduleUsedIn]="'search'"
-                        [pageName]="pageName" [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
+                    <product-card-vertical-grid-view [product]="product" [section]="'recently'"
+                        [cardFeaturesConfig]='cardFeaturesConfig' [moduleUsedIn]="'search'" [pageName]="pageName"
+                        [pIndex]="pIndex" [enableTracking]="true" [analytics]="analytics">
                     </product-card-vertical-grid-view>
                 </ng-container>
             </product-card-vertical-container>

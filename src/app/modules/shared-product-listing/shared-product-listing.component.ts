@@ -43,6 +43,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   @Input() graphData:any = null;
   @Input() isL2CategoryCheck;
   @Input() informativeVideosData:any;
+  @Input() adsenseData:any = null;
   @Output('categoryClicked') categoryClicked: EventEmitter<string> = new EventEmitter<string>();
   Object = Object;
   imagePath = CONSTANTS.IMAGE_BASE_URL;

@@ -21,6 +21,7 @@ export const CONSTANTS = {
   CDN_IMAGE_PATH: environment.CDN_IMAGE_URL,
   LANGUAGE_EN: 'ENGLISH',
   LANGUAGE_HI: 'HINDI',
+  COUNTRY_NAME: 'india',
   BROWSER_AGENT_TOKEN: new InjectionToken<string>('browserName'),
   LOG_TOKEN_SERVER: new InjectionToken<string>('logTokenServer'),
   LOG_TOKEN_MAIN: new InjectionToken<string>('logTokenMain'),
@@ -702,6 +703,7 @@ export const CONSTANTS = {
   PDP_QNA_HASH:"qna",
   PDP_REVIEW_HASH:"review",
   PDP_WRITE_REVIEW_HASH:"write-review",
-  APP_OPEN_LINK:"https://moglix.page.link/appinstall"
+  APP_OPEN_LINK:"https://moglix.page.link/appinstall",
+  POC_MSN : 'msn2vvrozzffc9'
 };
 export default CONSTANTS;

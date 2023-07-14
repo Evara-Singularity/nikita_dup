@@ -12,7 +12,7 @@ export default class RoutingMatcher {
             const secondURLStrig = url[2].toString();
             const firstURLString = url[0].toString();
             if (secondURLStrig === 'mp' && firstURLString == 'v1') {
-                console.log(secondURLStrig, firstURLString)
+                //console.log(secondURLStrig, firstURLString)
                 return { consumed: url, posParams: { msnid: url[3] } };
             }
         }
@@ -24,7 +24,7 @@ export default class RoutingMatcher {
             const secondURLStrig = url[1].toString();
             const firstURLString = url[0].toString();
             if (secondURLStrig === 'mp' && firstURLString !='v1') {
-                console.log(secondURLStrig, firstURLString)
+                //console.log(secondURLStrig, firstURLString)
                 return { consumed: url, posParams: { msnid: url[2] } };
             }
         }

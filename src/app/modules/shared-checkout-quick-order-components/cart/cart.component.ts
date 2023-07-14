@@ -337,9 +337,9 @@ export class CartComponent implements OnInit, AfterViewInit
 
     sendCritieoDataonView(cartSession) {
         if (this._router.url !== '/quickorder') { return }
-        console.log('cartUpdateCount ==>', this.cartUpdateCount)
+        // console.log('cartUpdateCount ==>', this.cartUpdateCount)
         if (this.cartUpdateCount == 0) {
-            console.log('cartUpdateCount if ==>', this.cartUpdateCount)
+            // console.log('cartUpdateCount if ==>', this.cartUpdateCount)
             let eventData = { 'prodId': '', 'prodPrice': 0, 'prodQuantity': 0, 'prodImage': '', 'prodName': '', 'prodURL': '' };
             let criteoItem = [];
             let taxo1 = '', taxo2 = '', taxo3 = '', productList = '', brandList = '', productPriceList = '', shippingList = '', couponDiscountList = '', quantityList = '', totalDiscount = 0, totalQuantity = 0, totalPrice = 0, totalShipping = 0;

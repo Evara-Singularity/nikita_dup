@@ -86,6 +86,7 @@ export class OrderConfirmationComponent implements OnInit {
         // console.log("ngOnInit")
         // console.log(log);
         this.checkUserSessionAndValidateOrder(userSession, utm_medium);
+        this.getItemsCount(userSession);
     }
 
     checkUserSessionAndValidateOrder(userSession, utm_medium){
@@ -123,9 +124,6 @@ export class OrderConfirmationComponent implements OnInit {
                 this.getCartSessionAnalyticsCall(userSession, utm_medium);
                 this.footerService.setFooterObj({ footerData: false });
                 this.footerService.footerChangeSubject.next(this.footerService.getFooterObj());
-                this._orderConfrimationService.getOrderbyUserid(userSession.userId, 0, this.orderId).subscribe((order)=>{
-                    this.processedItems = order? order.numberOfItem : 0;
-                });
             }
         }catch(err){
             console.log("Error in callAnalyticsAndUserSessionAPI function :" , err);
@@ -183,6 +181,11 @@ export class OrderConfirmationComponent implements OnInit {
         }
     }
 
+    private getItemsCount(userSession){
+        this._orderConfrimationService.getOrderbyUserid(userSession.userId, 0, this.orderId).subscribe((order)=>{
+            this.processedItems = order? order.numberOfItem : 0;
+        });
+    }
 
     private setVars(cartSession: Object) {
         this.couponCodeData = "";

@@ -65,7 +65,7 @@ export class FeatureProductsUnitComponent implements AfterViewInit {
       const monet = {
         adType: "impression_" + this.analyticsIdentifier,
       };
-      this._analytic.sendAdobeCall(monet, "genericClick");
+      this._analytic.sendAdobeCall({monet}, "genericClick");
     }
   }
 

@@ -47,7 +47,7 @@ export class RelatedVideosComponent {
       };
       // console.log(monet);
       this._analytic.sendAdobeCall(
-        monet,
+        {monet},
         isClick ? "genericClick" : "genericPageLoad"
       );
     }

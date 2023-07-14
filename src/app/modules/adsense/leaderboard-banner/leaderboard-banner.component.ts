@@ -28,7 +28,7 @@ export class LeaderboardBannerComponent {
         monet
       );
       this._analytic.sendAdobeCall(
-        monet,
+        {monet},
         isClick ? "genericClick" : "genericPageLoad"
       );
     }

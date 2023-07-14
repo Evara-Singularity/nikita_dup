@@ -41,7 +41,7 @@ export class ProductThreeSixtyViewComponent implements OnInit {
     )
     .subscribe(
       () => {
-        console.log('Script loaded successfully');
+        // console.log('Script loaded successfully');
       },
       (error) => {
         console.error('Failed to load script:', error);

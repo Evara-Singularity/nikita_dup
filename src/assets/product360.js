@@ -154,7 +154,7 @@ function product360_initialize(basepath) {
   var modelViewer = document.getElementById("viewer");
   modelViewer.addEventListener('progress', () => {
     var prog = Math.trunc(event.detail.totalProgress * 100);
-    console.log(prog);
+    // console.log(prog);
     $('#loadingval').html(prog);
   });
 

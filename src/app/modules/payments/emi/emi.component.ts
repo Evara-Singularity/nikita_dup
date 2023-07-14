@@ -212,7 +212,7 @@ export class EmiComponent {
             // console.log("selectedEMIKey ==>", this.selectedEMIKey);
             this.emiForm.get('requestParams.bankcode').setValue(this.selectedEMIKey);
             // console.log("selectedEMIKey ==>", this.emiForm.get('requestParams.bankcode').value);
-            console.log(this.totalPayableAmount);
+            // console.log(this.totalPayableAmount);
         }
     }
 

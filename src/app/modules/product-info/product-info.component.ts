@@ -250,7 +250,7 @@ export class ProductInfoComponent implements OnInit
 
     closeProducInfo($event)
     {
-        console.log("seq 2");
+        // console.log("seq 2");
         if(!this.open360Popup) {
             this.open360Popup = false;
             this.closePopup$.emit();
@@ -305,7 +305,7 @@ export class ProductInfoComponent implements OnInit
  }
 
     async load360View() {
-        console.log(this.threeDImages, "this.threeDImages");
+        // console.log(this.threeDImages, "this.threeDImages");
         const { ProductThreeSixtyViewComponentV1 } = await import('../../components/product-three-sixty-view-v1/product-three-sixty-view-v1.component');
         const factory = this._componentFactoryResolver.resolveComponentFactory(ProductThreeSixtyViewComponentV1);
         this.product3dInstance = this.product3dContainerRef.createComponent(

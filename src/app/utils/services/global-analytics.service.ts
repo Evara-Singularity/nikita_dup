@@ -37,7 +37,7 @@ export class GlobalAnalyticsService {
     // console.log("sendAdobeCall   :: data =====>", data);
     if (this.isBrowser && _satellite != undefined && _satellite.track) {
       digitalData = Object.assign({}, data);
-      console.log('digitalData', digitalData);
+      // console.log('digitalData', digitalData);
       _satellite.track(trackingname);
     }
   }

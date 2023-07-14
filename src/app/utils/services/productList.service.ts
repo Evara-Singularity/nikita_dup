@@ -424,7 +424,7 @@ export class ProductListService {
   }
 
   analyticAddToCart(routerlink, productDetails, usedInModule = "PRODUCT") {
-    console.log("analyticAddToCart ======>" , usedInModule);
+    // console.log("analyticAddToCart ======>" , usedInModule);
     const user = this._localStorageService.retrieve("user");
     const taxonomy = productDetails["taxonomyCode"];
     const pageName = this.pageName.toLowerCase();
@@ -437,7 +437,7 @@ export class ProductListService {
       taxo3 = productDetails["taxonomyCode"].split("/")[2] || "";
     }
 
-    console.log('usedInModule', usedInModule);
+    // console.log('usedInModule', usedInModule);
 
     let ele = [];
     const tagsForAdobe = ele.join("|");

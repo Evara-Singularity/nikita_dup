@@ -70,7 +70,7 @@ export class ProductPriceCompareComponent implements OnInit {
             this.compareProductsData[0]["attributeToCompare"];
           this.attributeToCompareKeys = Object.keys(attributeToCompareKeys);
     }catch(err){
-      console.log("Error in restructuring data :" , err);
+      // console.log("Error in restructuring data :" , err);
         this.msnList = [];
         this.msnMasterData = [];
     }

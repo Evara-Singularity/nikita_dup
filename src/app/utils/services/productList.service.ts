@@ -337,6 +337,12 @@ export class ProductListService {
 
   getModuleString(module) {
     let str = "listing";
+    let adCampaignName =''
+    if(module.startsWith('ADS_FEATURE')){
+      adCampaignName = module.replace('ADS_FEATURE_','')
+      module = 'ADS_FEATURE';
+      // console.log('module ==>', module, adCampaignName);
+    }
     switch (module) {
       case "PRODUCT":
         str = "pdp";
@@ -415,6 +421,9 @@ export class ProductListService {
         break;
       case "CART-ADD-COMPARE-PRODUCT":
         str = "pdp:widget:compare_products";
+        break;
+      case "ADS_FEATURE":
+        str = "pdp:widget:" + adCampaignName;
         break;
       default:
         str = "pdp-extra";

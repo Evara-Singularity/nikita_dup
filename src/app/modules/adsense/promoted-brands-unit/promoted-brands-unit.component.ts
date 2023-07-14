@@ -23,7 +23,7 @@ export class PromotedBrandsUnitComponent {
       const monet = {
         adType: "impression_" + this.analyticsIdentifier,
       };
-      this._analytic.sendAdobeCall(monet);
+      this._analytic.sendAdobeCall({monet});
     }
   }
 

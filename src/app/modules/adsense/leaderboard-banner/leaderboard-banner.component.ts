@@ -22,11 +22,11 @@ export class LeaderboardBannerComponent {
       const monet = {
         adType: type + this.analyticsIdentifier,
       };
-      console.log(
-        "analyticsImpresssion ==>",
-        isClick ? "genericClick" : "genericPageLoad",
-        monet
-      );
+      // console.log(
+      //   "analyticsImpresssion ==>",
+      //   isClick ? "genericClick" : "genericPageLoad",
+      //   monet
+      // );
       this._analytic.sendAdobeCall(
         {monet},
         isClick ? "genericClick" : "genericPageLoad"

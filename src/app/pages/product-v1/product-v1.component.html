@@ -93,11 +93,11 @@
             <!-- adsense PDP -->
             <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData">
                 <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PDP']">
-                    <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PDP']" [analyticsIdentifier]="'MOBILE_LEADERBOARD_PDP'+adsenseData['ANALYTIC_IDENTIFIER']">
+                    <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PDP']" [analyticsIdentifier]="'MOBILE_LEADERBOARD_PDP_'+adsenseData['ANALYTIC_IDENTIFIER']">
                     </adsense-leaderboard-banner>
                 </ng-container>
                 <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PDP']">
-                    <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PDP']" [analyticsIdentifier]="'INLINE_RECTANGLE_PDP'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-rectangle-banner>
+                    <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PDP']" [analyticsIdentifier]="'INLINE_RECTANGLE_PDP_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-rectangle-banner>
                 </ng-container>
             </ng-container>
 

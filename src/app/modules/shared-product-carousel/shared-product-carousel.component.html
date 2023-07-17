@@ -19,7 +19,7 @@
                 (click)="$event.stopPropagation();scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
                 class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">
             </span>
-            <span *ngIf="isAcceptLanguage" class="fixed_ico fixed_ico-img" (click)="openPopup=true">
+            <span *ngIf="isAcceptLanguage" class="fixed_ico fixed_ico-img" (click)="translate()">
                 <img height="24" width="24" src="../../../assets/img/translate.gif">
             </span>
         </div>
@@ -70,7 +70,7 @@
     </div>
 </div>
 
-<div class="alert-box" *ngIf="openPopup">
+<div class="alert-box" *ngIf="isHindiUrl == false && languagePrefrence == null">
     <div class="overlay"></div>
     <div class="content-area">
         <div class="info-area">
@@ -79,11 +79,11 @@
                     <img src="{{imagePathAsset}}assets/img/vernacular-icon.svg">
                     <b>Language to Translate into</b>
                 </p>
-                <i class="icon-circle-delete"></i>
+                <i class="icon-circle-delete" (click)="closeLanguagePopup('hi')" ></i>
             </div>
             <div class="popup-body-section">
                 <ul>
-                    <li  ><a class="selected">English</a></li>
+                    <li  ><a class="selected" (click)="closeLanguagePopup('en')">English</a></li>
                     <li (click)="translate()"><a>हिंदी</a></li>
                 </ul>
                 <p>You choose <b>‘English’</b> as your preferred language</p>

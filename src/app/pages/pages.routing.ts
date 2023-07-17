@@ -69,7 +69,7 @@ const routes: Routes = [
 				},
 			},
 			{
-				matcher: _routingMatcher.categoriesMatcherTranslater,
+				matcher: _routingMatcher.categoriesMatchTranslater,
 				loadChildren: () =>
 					import('./category/category.module').then((m) => m.CategoryModule),
 				data: {
@@ -150,7 +150,34 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					language: 'en',
 					pageName: 'listing:brand',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
+				},
+			},
+			{
+				path: 'hi/brands/:brand',
+				loadChildren: () =>
+					import('./brand/brand.module').then((m) => m.BrandModule),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					language: 'hi',
+					pageName: 'listing:brand',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
+				},
+			},
+			{
+				matcher: _routingMatcher.brandCategoriesMatchTranslater,
+				loadChildren: () =>
+					import('./brand/brand.module').then((m) => m.BrandModule),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					pageName: 'listing:brandCategory',
+					language: 'hi',
 					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
 				},
 			},
@@ -163,6 +190,7 @@ const routes: Routes = [
 					logo: true,
 					moreOpt: true,
 					pageName: 'listing:brandCategory',
+					language: 'en',
 					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
 				},
 			},

@@ -1,5 +1,5 @@
 import { isPlatformServer } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import {
@@ -33,6 +33,13 @@ export class BrandResolver implements Resolve<any> {
 
   resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     this.loaderService.setLoaderState(true);
+    const languageHeader = {
+      'language': 'hi'
+    };
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders((_activatedRouteSnapshot.data['language'] == 'hi')?languageHeader:{}), 
+    };
+    console.log(requestOptions);
 
     const BRAND_DESC_KEY = makeStateKey<object>('brand-desc-and-other-details');
     const BRAND_LIST_KEY = makeStateKey<object>('brand-lists-pwa' + _activatedRouteSnapshot.fragment);
@@ -94,7 +101,7 @@ export class BrandResolver implements Resolve<any> {
 
       this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 
-      const isBrandCategoryObs = this.http.get(GET_BRAND_NAME_API_URL).pipe(
+      const isBrandCategoryObs = this.http.get(GET_BRAND_NAME_API_URL, requestOptions).pipe(
         map((res) => {
           const logInfo =  this._commonService.getLoggerObj(GET_BRAND_NAME_API_URL,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();
@@ -114,8 +121,7 @@ export class BrandResolver implements Resolve<any> {
         })
       );
 
-      const similarBrandObs = this.http.get(SIMILAR_BRAND_URL).pipe(catchError((e)=>{
-        // console.log("similar brand api error--",SIMILAR_BRAND_URL,e)
+      const similarBrandObs = this.http.get(SIMILAR_BRAND_URL, requestOptions).pipe(catchError((e)=>{
         return of(null) ;
       }), 
       map((res) => {
@@ -158,7 +164,7 @@ export class BrandResolver implements Resolve<any> {
         actualParams['brand'] = data['brandName'];
         actualParams['bucketReq'] = 'n';
         return forkJoin([
-          this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams }).pipe(
+          this.http.get(GET_BRAND_LIST_API_URL, { params: actualParams, headers: requestOptions['headers']}).pipe(
             map((res) => {
               const logInfo =  this._commonService.getLoggerObj(GET_BRAND_LIST_API_URL,'GET',startTime)
               logInfo.endDateTime = new Date().getTime();

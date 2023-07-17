@@ -38,6 +38,7 @@ export class BrandComponent {
     popularCategories = [];
     couponForbrandCategory: Object= null;
     informativeVideosData:any;    
+    productStaticData = this._commonService.defaultLocaleValue;
     constructor(
         public _activatedRoute: ActivatedRoute,
         public _router: Router,
@@ -73,6 +74,13 @@ export class BrandComponent {
         }
 
         this.setDataFromResolver();
+        this.getLocalization();
+    }
+
+    getLocalization() {
+        this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+            this.productStaticData = localization_content;
+        });
     }
 
     setDataFromResolver() {
@@ -87,14 +95,22 @@ export class BrandComponent {
 
             // create data for shared listing component
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results');
-            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'BRAND', this.API_RESPONSE.brand[1][0].brandName).subscribe(res => {
+            const isHindiUrl = this._router.url && (this._router.url).toLowerCase().indexOf('/hi/') !== -1 ? true : false;
+            let brandName = this.API_RESPONSE.brand[1][0].brandName;
+            console.log(this.API_RESPONSE['brand'][1][0]['productSearchResult']);
+            if(isHindiUrl) {
+                if(this.API_RESPONSE['brand'][1][0]['productSearchResult'] && this.API_RESPONSE['brand'][1][0]['productSearchResult']['totalCount'] > 0) {
+                    brandName = this.API_RESPONSE['brand'][1][0]['productSearchResult']['products'][0]['brandName']
+                }
+            }
+            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'BRAND', brandName, isHindiUrl).subscribe(res => {
                 if (res.hasOwnProperty('buckets')) {
                     this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
                     this.API_RESPONSE.brand[1][0].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results', true);
 
                     const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
-                    if (!this._activatedRoute.snapshot.params.category && category.hasOwnProperty('terms')) {
+                    if (!this._activatedRoute.snapshot.params.category && category && category.hasOwnProperty('terms')) {
                         this.setPopularCategories(category.terms);
                     }
 

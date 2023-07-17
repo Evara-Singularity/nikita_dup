@@ -90,7 +90,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
         this.productStaticData = localization_content;
     });
-    console.log(this.productStaticData.successfully_added_to_wishlist)
 }
   
  

@@ -8,7 +8,7 @@ import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { CommonService } from '../services/common.service';
 import CONSTANTS from '@app/config/constants';
 import { ENDPOINTS } from '@app/config/endpoints';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoggerService } from '../services/logger.service';
 
 @Injectable({
@@ -96,6 +96,12 @@ export class AlpResolver implements Resolve<object> {
     {
         
         this._commonService.showLoader = true;
+        const languageHeader = {
+            'language': 'hi'
+          };
+          const requestOptions = {                                                                                                                                                                                 
+            headers: new HttpHeaders((_activatedRouteSnapshot.data['language'] == 'hi')?languageHeader:{}), 
+          };
         const GET_CIMS_ATTRIBUTE_LISTING: any = makeStateKey<{}>('get_cims_attribute-' + _activatedRouteSnapshot.params['attribute'] + Math.random());
         const CATEGORY_CODE: any = makeStateKey<{}>('alp_category_code' + _activatedRouteSnapshot.params['attribute'] + Math.random());
         const BREADCRUMP: any = makeStateKey<{}>('breadcrump-' + _activatedRouteSnapshot.params['attribute']);
@@ -115,14 +121,14 @@ export class AlpResolver implements Resolve<object> {
             const get_category_code_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY_BY_ID + '?catId=';
             const breadcrump_url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.BREADCRUMB + "?type=category";
 
-            const otherDataObj = this.http.get(cims_attribute_url).pipe(share(), mergeMap((_cimsResponse) =>
+            const otherDataObj = this.http.get(cims_attribute_url, requestOptions).pipe(share(), mergeMap((_cimsResponse) =>
             {
                 const CIMS_DATA = _cimsResponse['data'];
                 if (CIMS_DATA && CIMS_DATA['defaultParams']['category']) {
                     const CATEGORY = CIMS_DATA['defaultParams']['category'];
                     const request = forkJoin([of(_cimsResponse),
 
-                    this.http.get(get_category_code_url + CATEGORY)
+                    this.http.get(get_category_code_url + CATEGORY, requestOptions)
                     .pipe(map(res => {
                         const logInfo =  this._commonService.getLoggerObj(get_category_code_url + CATEGORY,'GET',startTime)
                         logInfo.endDateTime = new Date().getTime();
@@ -131,7 +137,7 @@ export class AlpResolver implements Resolve<object> {
                         return res;
                     })),
 
-                    this.http.get(get_category_code_url + CATEGORY).pipe(mergeMap(catData => this.http.get(breadcrump_url + '&pagetitle=' + CIMS_DATA['attributesListing']['title'] + '&source=' + catData['categoryDetails']['categoryLink']))),
+                    this.http.get(get_category_code_url + CATEGORY, requestOptions).pipe(mergeMap(catData => this.http.get(breadcrump_url + '&pagetitle=' + CIMS_DATA['attributesListing']['title'] + '&source=' + catData['categoryDetails']['categoryLink']))),
                     this.refreshProducts(CIMS_DATA['defaultParams'], _activatedRouteSnapshot.queryParams, _activatedRouteSnapshot.fragment)
                     .pipe(map(res => {
                         const logInfo =  this._commonService.getLoggerObj(get_category_code_url + CATEGORY,'GET',startTime)

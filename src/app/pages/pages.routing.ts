@@ -105,6 +105,18 @@ const routes: Routes = [
 			// 	},
 			// },
 			{
+				path: 'hi/alp/:attribute',
+				loadChildren: () => import('./alp/alp.module').then(m => m.AlpModule),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					pageName: 'listing:alp',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE,
+					language: 'hi'
+				}
+			},
+			{
 				path: 'alp/:attribute',
 				loadChildren: () => import('./alp/alp.module').then(m => m.AlpModule),
 				data: {
@@ -112,7 +124,8 @@ const routes: Routes = [
 					logo: true,
 					moreOpt: true,
 					pageName: 'listing:alp',
-					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE,
+					language: 'en'
 				}
 			},
 			{

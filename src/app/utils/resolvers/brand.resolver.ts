@@ -39,7 +39,6 @@ export class BrandResolver implements Resolve<any> {
     const requestOptions = {                                                                                                                                                                                 
       headers: new HttpHeaders((_activatedRouteSnapshot.data['language'] == 'hi')?languageHeader:{}), 
     };
-    console.log(requestOptions);
 
     const BRAND_DESC_KEY = makeStateKey<object>('brand-desc-and-other-details');
     const BRAND_LIST_KEY = makeStateKey<object>('brand-lists-pwa' + _activatedRouteSnapshot.fragment);

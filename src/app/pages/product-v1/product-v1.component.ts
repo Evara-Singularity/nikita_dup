@@ -317,8 +317,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             }
             if((topShown_v2 && bottomShown_v2) || (!topShown_v2 && bottomShown_v2) ){
                 this.similarProductsScrolledIntoView = false;
-            }else{
-                this.similarProductsScrolledIntoView = true;
             }
         }
     }

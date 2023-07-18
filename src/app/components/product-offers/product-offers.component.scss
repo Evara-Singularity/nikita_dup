@@ -5,11 +5,6 @@
 .online-discount{
   padding: 15px;
   border-bottom: 1px solid var(--platinum);
-  .inline-list-icon{
-    img{
-      width: 24px;
-    }
-  }
   .discount-txt{
     font-size: 12px;
     display: block;
@@ -109,5 +104,9 @@
 }
 .cursor{
   cursor: pointer;
+}
+
+.link-text{
+  font-weight: bold;
 }
 

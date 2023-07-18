@@ -4,7 +4,6 @@ import { Component, ComponentFactoryResolver, ElementRef, EventEmitter, Injector
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
-import { LocalAuthService } from '@app/utils/services/auth.service';
 
 @Component({
   selector: 'shared-product-carousel',
@@ -41,7 +40,6 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   productCrouselContainerRef: ViewContainerRef;
   @ViewChild("productCrouselPseudo", { read: ElementRef })
   productCrouselPseudoContainerRef: ElementRef;
-  languagePrefrence: any = null;
 
   constructor(
     private cfr: ComponentFactoryResolver, 
@@ -49,19 +47,12 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     private router: Router,
     private commonService: CommonService,
     private _activatedRoute:ActivatedRoute,
-    private cdr: ChangeDetectorRef,
-    private localAuthService:LocalAuthService
+    private cdr: ChangeDetectorRef
     ) { }
 
   ngOnInit(): void {
     this.productStaticData = this.commonService.getLocalizationData(!this.isHindiUrl);
     this.commonService.similarProductsLoaded.subscribe(value => value && this.cdr.detectChanges())
-    this.languagePrefrence = sessionStorage.getItem("languagePrefrence");
-    const userSession = this.localAuthService.getUserSession();
-    //&& this.languagePrefrence != userSession['languagePrefrence']
-    if(userSession && userSession['authenticated'] == "true" && this.languagePrefrence != null){
-      this.updateUserLanguagePrefrence(userSession);
-    }
     // this.getStaticSubjectData();
   }
 
@@ -165,19 +156,4 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     return (this.router.url).toLowerCase().indexOf('/hi') !== -1
   }
 
-
-  closeLanguagePopup(language){
-    sessionStorage.setItem("languagePrefrence", language);
-    this.languagePrefrence = language;
-  }
-
-  updateUserLanguagePrefrence(userSession){
-    const params = "customerId=" + userSession['userId'] + "&languageCode=" + this.languagePrefrence;
-    this.commonService.postUserLanguagePrefrence(params).subscribe(result=>{
-      if(result && result["status"]){
-        console.log("user data updated :: ------------==>" , result);
-      }
-    })
-
-  }
 }

@@ -69,25 +69,8 @@
         </ng-container>
     </div>
 </div>
-
-<div class="alert-box" *ngIf="isHindiUrl == false && languagePrefrence == null">
-    <div class="overlay"></div>
-    <div class="content-area">
-        <div class="info-area">
-            <div class="popup-header">
-                <p>
-                    <img src="{{imagePathAsset}}assets/img/vernacular-icon.svg">
-                    <b>Language to Translate into</b>
-                </p>
-                <i class="icon-circle-delete" (click)="closeLanguagePopup('hi')" ></i>
-            </div>
-            <div class="popup-body-section">
-                <ul>
-                    <li  ><a class="selected" (click)="closeLanguagePopup('en')">English</a></li>
-                    <li (click)="translate()"><a>हिंदी</a></li>
-                </ul>
-                <p>You choose <b>‘English’</b> as your preferred language</p>
-            </div>
-        </div>
-    </div>
-</div>
+<select-language
+ [isHindiUrl]="isHindiUrl" 
+ [imagePathAsset]="imagePathAsset" 
+ (translate$)="translate()"
+></select-language>

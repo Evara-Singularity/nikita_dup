@@ -259,7 +259,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.isServer = commonService.isServer;
         this.isBrowser = commonService.isBrowser;
         const languagePrefrence = sessionStorage.getItem("languagePrefrence");
-        console.log("languagePrefrence ==========>" , languagePrefrence)
          if(languagePrefrence == "hi"){
             if (!((this.router.url).toLowerCase().indexOf('/hi/') !== -1)) {
                 const URL = '/hi' + this.getSanitizedUrl(this.router.url);

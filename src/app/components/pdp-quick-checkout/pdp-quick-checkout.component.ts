@@ -196,7 +196,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
       .pipe(delay(250))
       .subscribe((cartSession) => {
         if (cartSession && cartSession.itemsList) {
-          console.log(cartSession)
+          // console.log(cartSession)
           this.item = cartSession.itemsList[0];
           this.productQuantity =
             cartSession.itemsList[0]["productQuantity"] || 0;

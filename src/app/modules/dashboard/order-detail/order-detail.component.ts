@@ -229,7 +229,7 @@ export class OrderDetailComponent implements OnInit {
     this._OrderService.getIfscAndBankName(ifscCode).subscribe(res=>{
     if (res['status']) {
       this.returnForm.controls['bankDetail']['controls']['bankName'].reset()
-      console.log("result",res)
+      // console.log("result",res)
       const bankNameByIfscApi= res['data']['BANK'];
       this.returnForm.controls['bankDetail']['controls']['bankName'].setValue(bankNameByIfscApi)
     } else {

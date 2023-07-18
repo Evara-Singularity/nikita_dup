@@ -1,7 +1,7 @@
 <div *ngIf="!productNotFound">
 
     <app-floating-coupon-widget *ngIf="similarProductsScrolledIntoView && iscloseproductDiscInfoComponent && !rawProductData?.productOutOfStock" (closeproductDiscInfoComponent$)="closeproductDiscInfoComponent()"
-        [isBulkPricesProduct]="isBulkPricesProduct" [productMrp]="rawProductData?.priceQuantityCountry?.mrp"
+        [isBulkPricesProduct]="isBulkPricesProduct" [pageLinkName]="pageLinkName" [productMrp]="rawProductData?.priceQuantityCountry?.mrp"
         [selectedProductBulkPrice]="selectedProductBulkPrice" [productPrice]="rawProductData?.productPrice"
         [productDiscount]="rawProductData?.priceQuantityCountry?.discount" [productName]="rawProductData.productName" [priceWithoutTax]="rawProductData?.priceWithoutTax"
         [gstPercentage]='rawProductData?.taxPercentage' [promoCodes]='apiResponse?.applicablePromo'></app-floating-coupon-widget>
@@ -21,6 +21,7 @@
         (sendProductImageClickTracking)="sendProductImageClickTracking()" [iOptions]="iOptions"
         [productTags]="apiResponse?.tags" (translate$)="translate()" [isAcceptLanguage]="isAcceptLanguage">
     </shared-product-carousel>
+   
     <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)"
         [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPirces"
         [selectedProductBulkPrice]="selectedProductBulkPrice" [qunatityFormControl]="qunatityFormControl"
@@ -32,7 +33,8 @@
         [priceQuantityCountry]="rawProductData?.priceQuantityCountry"
         [starsCount]="apiResponse?.productReviews?.startCount"
         [rawReviewsCount]="apiResponse?.productReviews?.summaryData?.reviewCount || 0"
-        [rawProductCountMessage]="rawProductCountMessage">
+        [rawProductCountMessage]="rawProductCountMessage" [msnId]="rawProductData?.msn"
+        [threeDImages]='rawProductData?.product3dImages'>
     </product-description>
 
     <product-grouping-attributes [isCommonProduct]="rawProductData?.productFilterAttributesList > 0"
@@ -50,7 +52,7 @@
 
     <!-- TODO: skeleton to be implemented -->
     <div class="coupon" *ngIf='!rawProductData?.productOutOfStock && rawProductData?.priceQuantityCountry?.mrp > 0'>
-        <app-product-offers [price]='rawProductData?.productPrice' [gstPercentage]='rawProductData?.taxPercentage'
+        <app-product-offers [pageLinkName]="pageLinkName" [price]='rawProductData?.productPrice' [gstPercentage]='rawProductData?.taxPercentage'
             [productmsn]='rawProductData?.defaultPartNumber' [isHindiMode]='isHindiUrl'
             (viewPopUpHandler)='fetchCategoryExtras()' (promoCodePopUpHandler)='fetchPromoCodes()'
             [brandName]='rawProductData?.productBrandDetails?.brandName'
@@ -88,7 +90,16 @@
         [productVideos]="rawProductData?.productVideos" [productDocumentInfo]="rawProductData?.productDocumentInfo"
         [productBrandCategoryUrl]="rawProductData?.productBrandCategoryUrl"></product-feature-details>
 
-
+            <!-- adsense PDP -->
+            <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData">
+                <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PDP']">
+                    <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PDP']" [analyticsIdentifier]="'MOBILE_LEADERBOARD_PDP_'+adsenseData['ANALYTIC_IDENTIFIER']">
+                    </adsense-leaderboard-banner>
+                </ng-container>
+                <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PDP']">
+                    <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PDP']" [analyticsIdentifier]="'INLINE_RECTANGLE_PDP_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-rectangle-banner>
+                </ng-container>
+            </ng-container>
 
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
@@ -145,6 +156,15 @@
         [productCategoryDetails]="rawProductData?.productCategoryDetails"
         [productBrandCategoryUrl]="rawProductData?.productBrandCategoryUrl">
     </product-more-widget>
+
+    <!-- adsense PDP -->    
+    <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']">
+        <adsense-promoted-brands-unit [isPdpPage]="true" [data]="adsenseData['PROMOTOTED_BRAND_ADS']" [analyticsIdentifier]="'PROMOTOTED_BRAND_ADS_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-promoted-brands-unit>
+    </ng-container>
+
+    <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData && adsenseData['FEATURED_PRODUCT_ADS']">
+        <adsense-feature-products-unit  [data]="adsenseData['FEATURED_PRODUCT_ADS']"  [analyticsIdentifier]="'FEATURED_PRODUCT_ADS_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-feature-products-unit>
+    </ng-container>
 
     <!-- removed sponsored products -->
     <div id="sponseredProducts" [ngClass]="{'common-product': !sponseredProductsInstance}"

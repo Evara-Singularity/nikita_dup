@@ -45,7 +45,7 @@ export class CartAddProductComponent implements OnInit, AfterViewInit {
   }
 
   close(data) {
-    console.log("close at cartaAddProduct component");
+    // console.log("close at cartaAddProduct component");
     this.closePopup.emit(data);
   }
 

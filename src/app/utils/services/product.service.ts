@@ -134,6 +134,19 @@ export class ProductService {
         );
     }
 
+    getProductList(msnList: string[]) {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_MSN_BY_LIST;
+        const body = {
+            msnList: [...msnList],
+            country: CONSTANTS.COUNTRY_NAME
+        }
+        return this._dataService.callRestful("POST", url, { body }).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ lastOrderDetails: [], httpStatus: res.status });
+            })
+        )
+    }
+
     getGSTINDetails(gstin) {
         return this._dataService.callRestful(
             "GET",

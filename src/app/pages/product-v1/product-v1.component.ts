@@ -2032,7 +2032,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 });
             }
         } else {
-            this.goToLoginPage(this.rawProductData.productUrl + ((this.fragment && this.fragment.length) ? `#${this.fragment}` : ''));
+            this.goToLoginPage(this.rawProductData.productUrl + ((this.fragment && this.fragment.length) ? `#${this.fragment}` : ''),"Make your opinion count. Login to rate and review.");
         }
         this.cdr.detectChanges();
     }

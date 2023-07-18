@@ -1,12 +1,15 @@
 <div class="pwa-row prod-description ">
     <div class="pwa-col-12">
         <h1 class="prod-name heading" *ngIf="productName">{{productName}}</h1>
+        <!-- <span (click)="show360popup()" class="image-rotate-section" *ngIf='showPocMsn && !show360btn'>
+            <p>VIEW</p>
+            <img src="../../../assets/img/rotation-icon.svg">
+        </span> -->
         <div class="pdp-price-qty-block">
             <div class="price-block" *ngIf="productMrp > 0">
                 <ng-container *ngIf="productMrp > 0">
                     <!-- NON BULK PRICE BLOCK STARTS -->
                     <ng-container *ngIf="selectedProductBulkPrice==null">
-                        
                         <p class="actual-price" *ngIf="productPrice > 0">
                             <small *ngIf="(+(productPrice-priceWithoutTax) > 0)">
                                 <ng-container *ngIf="+productMrp == +productPrice" >MRP&nbsp;</ng-container>
@@ -102,7 +105,6 @@
                 </p>
             </div>
         </div>
-   
         <!--recently bought product section -->
         <div class="pwa-inline-tooltip" *ngIf="rawProductCountMessage">
             <i class="icon-trending"></i>
@@ -110,3 +112,11 @@
         </div>
     </div>
 </div>
+
+<app-pop-up *ngIf="show360popupFlag" (outData$)="outData($event)" [for3dPopup]="for3dPopup" [headerType]="'pop-up-header1'" [data]="{headerText: ''}">
+    <div class="content-popup" content>
+        <div class="pad-10">
+            <ng-container #product3dContainerRef></ng-container>
+        </div>
+    </div>
+</app-pop-up>

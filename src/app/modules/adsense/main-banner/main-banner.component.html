@@ -1,0 +1,14 @@
+<div class="plp-banner-container mb-10" data-observeVisibility [debounceTime]="200" (visible)="onVisisble($event)"
+  style="max-height: 185px; overflow: hidden;">
+  <div #siemaContainer>
+    <div *ngFor="let slide of data; let i=index">
+      <a href="{{slide.landingPageUrl}}" (click)="$event.stopPropagation();onVisisble($event, true);">
+        <img [src]="slide.pictureUrl" alt="Slide Image">
+      </a>
+    </div>
+  </div>
+  <div class="carousal-dot-container" *ngIf="data.length > 1">
+    <span *ngFor="let slide of data; let i = index" [ngClass]="{'active': (i == activeIndex) }"
+      [class.active]="i === activeIndex" (click)="goToSlide(i)"></span>
+  </div>
+</div>

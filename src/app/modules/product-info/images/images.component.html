@@ -4,6 +4,9 @@
     </div>
     <div (touchstart)="$event.stopPropagation();" class="thumbnailImageSlider">
         <div class ="thumbnailImageSlider-wrap">
+            <div (click)="open36popup()" class="rotation-conatiner active" *ngIf='showPocMsn'>
+                <img src="assets/img/rotation-icon.svg">
+            </div>
            <div *ngFor="let image of images;let imgIndex=index;">
             <img src="{{image.medium}}"
                 [class.activeImgSlide]="imgIndex === currentImageIndex"

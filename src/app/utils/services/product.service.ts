@@ -134,6 +134,19 @@ export class ProductService {
         );
     }
 
+    getProductList(msnList: string[]) {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_MSN_BY_LIST;
+        const body = {
+            msnList: [...msnList],
+            country: CONSTANTS.COUNTRY_NAME
+        }
+        return this._dataService.callRestful("POST", url, { body }).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ lastOrderDetails: [], httpStatus: res.status });
+            })
+        )
+    }
+
     getGSTINDetails(gstin) {
         return this._dataService.callRestful(
             "GET",
@@ -1254,6 +1267,11 @@ export class ProductService {
 
     getCompareProducts(msn) {
         const URL=CONSTANTS.NEW_MOGLIX_API+ENDPOINTS.GET_COMPARE_PRODUCTS + msn;
+        return this._dataService.callRestful("GET",URL);
+    }
+
+    getDifferentBrandProducts(msn) {
+        const URL=CONSTANTS.NEW_MOGLIX_API+ENDPOINTS.GET_DIFFRENT_BRANDS_PRODUCT + msn;
         return this._dataService.callRestful("GET",URL);
     }
 

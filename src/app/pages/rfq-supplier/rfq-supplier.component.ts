@@ -250,7 +250,7 @@ export class RfqSupplierComponent implements OnInit {
 
   callSupplyInternal(item, index, refreshMode = false) {
     const user = this._localAuthService.getUserSession();
-    console.log('callSupplyInternal', 'called', item, user);
+    // console.log('callSupplyInternal', 'called', item, user);
     const request = {
       "rfqId": item.rfqId,
       "rfqItemId": item.rfqItemId || null,
@@ -266,7 +266,7 @@ export class RfqSupplierComponent implements OnInit {
       "brand": item.brand,
       "category": item.categoryName
     }
-    console.log('item', item, index, this.rfqItemList);
+    // console.log('item', item, index, this.rfqItemList);
     this._loader.setLoaderState(true);
     this._rfqSupplierService.captureInterestApi(request).subscribe(response => {
       this._loader.setLoaderState(false);

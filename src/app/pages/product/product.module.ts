@@ -35,6 +35,12 @@ import { ProductOosSimilarModule } from '@app/modules/product-oos-similar/produc
 import { ProductInfoModule } from '@app/modules/product-info/product-info.module';
 import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { FloatingCouponWidgetModule } from '../../components/floating-coupon-widget/floating-coupon-widget.module';
+import { AdsensePromotedBrandsUnitModule } from '@app/modules/adsense/adsense-promoted-brands-unit.module';
+import { AdsenseFeatureProductsUnitModule } from '@app/modules/adsense/adsense-feature-products-unit.module';
+import { AdsenseLeaderboardBannerModule } from '@app/modules/adsense/adsense-leaderboard-banner.module';
+import { AdsenseRectangleBannerModule } from '@app/modules/adsense/adsense-inline-rectangle-banner.module';
+import { AdsenseService } from '@app/utils/services/adsense.service';
+import { ProductThreeSixtyViewModule } from '../../components/product-three-sixty-view/product-three-sixty-view.module';
 
 
 @NgModule({
@@ -87,9 +93,14 @@ import { FloatingCouponWidgetModule } from '../../components/floating-coupon-wid
     FbtComponentModule,
     ProductDealsModule,
     YTThumnailPipeModule,
-    FloatingCouponWidgetModule
+    FloatingCouponWidgetModule,
+    AdsensePromotedBrandsUnitModule,
+    AdsenseFeatureProductsUnitModule,
+    AdsenseLeaderboardBannerModule,
+    AdsenseRectangleBannerModule,
+    ProductThreeSixtyViewModule
   ],
   exports: [],
-  providers: [NgxSiemaService, DatePipe]
+  providers: [NgxSiemaService, DatePipe, AdsenseService]
 })
 export class ProductModule { }

@@ -35,7 +35,7 @@ export class TrackOrderComponent implements OnInit {
       this.shipmentDetail = this.itemDetails["shipment_detail"];
     }
     this.deliveredInfo = this.itemDetails["dates"]["delivered"];
-    console.log(this.itemDetails["lastOutForDelivery"]);
+    //console.log(this.itemDetails["lastOutForDelivery"]);
   }
 
   buildShippedDates(dates) {

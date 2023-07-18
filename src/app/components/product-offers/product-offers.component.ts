@@ -9,6 +9,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { DataService } from '@app/utils/services/data.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { MathCeilPipeModule } from '@pipes/math-ceil';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 @Component({
     selector: 'app-product-offers',
@@ -34,6 +35,7 @@ export class ProductOffersComponent implements OnInit
     disableEMIView = false;
     @Input() promoCodes: any = null;
     @Input() couponForbrandCategory:any=null;
+    @Input() pageLinkName;
     minimumRequiredPriceforCoupon: any;
     couponForbrandCategoryDiscount: any;
     isCouponCopied=false;
@@ -42,7 +44,8 @@ export class ProductOffersComponent implements OnInit
     constructor(
         public localStorageService: LocalStorageService,
         private common: CommonService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private _analytics: GlobalAnalyticsService,
     ) { }
 
     ngOnInit(): void {
@@ -95,8 +98,10 @@ export class ProductOffersComponent implements OnInit
     copyCouponTextArea(){
       this.isCouponCopied=true
       const copiedCouponText = document.getElementById('couponText');
+      this._analytics.sendAdobeCall({ page: { channel: 'pdp', linkPageName: this.pageLinkName, linkName: 'main:coupon:' + copiedCouponText.innerText } }, 'genericClick')
       this.copyToClipboard(copiedCouponText.innerText);
     }
+
     copyToClipboard(text:any) {
       const textarea = document.createElement('textarea');
       textarea.value = text;
@@ -106,6 +111,7 @@ export class ProductOffersComponent implements OnInit
       document.body.removeChild(textarea);
       this.common.updateCopiedCoupon(text);
     }
+
 
 }
 @NgModule({

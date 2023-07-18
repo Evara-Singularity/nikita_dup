@@ -55,7 +55,7 @@ export class AllPromocodeV1Component implements OnInit {
   submitPromocode(e, promocode) {
     // if (this.selectedPromocode === promocode) { return }
     this._cartService.genericApplyPromoCode(promocode);
-    this.adobeTracking('apply_coupon_cart');
+    this.adobeTracking('apply_coupon_cart_top');
 }
 
 adobeTracking(trackingname){

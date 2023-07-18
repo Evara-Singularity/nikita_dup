@@ -12,6 +12,7 @@ import { ToastMessageService } from "@app/modules/toastMessage/toast-message.ser
 import { ClientUtility } from "@app/utils/client.utility";
 import { ProductCardFeature, ProductsEntity } from "@app/utils/models/product.listing.search";
 import { YTThumbnailPipe } from "@app/utils/pipes/ytthumbnail.pipe";
+import { AdsenseService } from "@app/utils/services/adsense.service";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { CartService } from "@app/utils/services/cart.service";
 import { CheckoutService } from "@app/utils/services/checkout.service";
@@ -100,6 +101,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     productFilterAttributesList: any;
     iscloseproductDiscInfoComponent:boolean=true;
     compareProductsData:Array<object> = [];
+    shopByDifferentBrands: object = {};
+    adsenseData: any = null;
 
     // lazy loaded component refs
     productShareInstance = null;
@@ -180,6 +183,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     productPriceCompareInstance = null;
     @ViewChild("productPriceCompare", { read: ViewContainerRef })
     productPriceCompareContainerRef: ViewContainerRef;
+    // ondemand loaded components for shop by brands products
+    shopByBrandsInstance = null;
+    @ViewChild("shopByBrands", { read: ViewContainerRef })
+    shopByBrandsContainerRef: ViewContainerRef;
     // ondemand loaded components for sponsered products
     sponseredProductsInstance = null;
     @ViewChild("sponseredProducts", { read: ViewContainerRef })
@@ -253,6 +260,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         private siemaCrouselService: SiemaCrouselService,
         private _ytThumbnail: YTThumbnailPipe,
         private datePipe: DatePipe,
+        private _adsenseService: AdsenseService,
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any,
     ) {
@@ -346,7 +354,18 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         // analytics calls moved to this function incase PDP is redirecte to PDP
         this.callAnalyticForVisit();
         this.setMetatag();
-        if(!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null){ this.getCompareProductsData(this.rawProductData?.msn);}
+        if (!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null) {
+            this.getCompareProductsData(this.rawProductData?.msn);
+            this.getShopByDifferentBrandsData(this.rawProductData?.msn);
+        }
+        if (!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null) { this.getCompareProductsData(this.rawProductData?.msn); }
+        if (this.rawProductData.defaultPartNumber.toLowerCase() == CONSTANTS.POC_MSN) {
+            let url = CONSTANTS.MODEL_JS_CDN_PATH;
+            const script = document.createElement('script');
+            script.src = url;
+            script.type = 'module';
+            document.head.appendChild(script);
+        }
     }
 
     filterAttributes() {
@@ -682,7 +701,27 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.resetLazyComponents();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
+            this.getAdsenseData();
         }
+    }
+
+    private getAdsenseData() {
+        if (
+          this.rawProductData &&
+          this.rawProductData.msn &&
+          this.rawProductData.productCategoryDetails &&
+          this.rawProductData.productBrandDetails &&
+          this.rawProductData.productCategoryDetails["categoryCode"] &&
+          this.rawProductData.productBrandDetails["idBrand"]
+        ) {
+          const categoryId =
+            this.rawProductData.productCategoryDetails["categoryCode"];
+          const brandUrl = this.rawProductData.productBrandDetails["idBrand"];
+          const msn = this.rawProductData.msn;
+            this._adsenseService
+              .getAdsense(categoryId, brandUrl, msn)
+              .subscribe((adsenseData) => (this.adsenseData = adsenseData));
+        }        
     }
 
     addSessionSubscriber() {
@@ -1606,6 +1645,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.injector
             );
             this.promoOfferPopupInstance.instance["data"] = data;
+            this.promoOfferPopupInstance.instance["pageLinkName"] = this.pageLinkName;
             (
                 this.promoOfferPopupInstance.instance["out"] as EventEmitter<boolean>
             ).subscribe((data) => {
@@ -1799,6 +1839,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             );
         this.productInfoPopupInstance.instance["oosProductIndex"] = oosProductIndex;
         this.productInfoPopupInstance.instance["analyticProduct"] = this._trackingService.basicPDPTrackingV1(this.rawProductData);
+        this.productInfoPopupInstance.instance['msnId'] = this.rawProductData.msn;
+        this.productInfoPopupInstance.instance['threeDImages'] = this.rawProductData.product3dImages;
         this.productInfoPopupInstance.instance["modalData"] =
             oosProductIndex > -1
                 ? this.productService.getProductInfo(infoType, oosProductIndex)
@@ -2032,7 +2074,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 });
             }
         } else {
-            this.goToLoginPage(this.rawProductData.productUrl + ((this.fragment && this.fragment.length) ? `#${this.fragment}` : ''));
+            this.goToLoginPage(this.rawProductData.productUrl + ((this.fragment && this.fragment.length) ? `#${this.fragment}` : ''),"Make your opinion count. Login to rate and review.");
         }
         this.cdr.detectChanges();
     }
@@ -2644,6 +2686,26 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    async onVisibleShopByBrands()
+    {
+        const objectLen =  Object.keys(this.shopByDifferentBrands);
+        if (!this.shopByBrandsInstance && objectLen.length > 0) {
+            const { ShopByBrandsComponent } = await import(
+                "./../../components/shop-by-brands/shop-by-brands.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(
+                ShopByBrandsComponent
+            );
+            this.shopByBrandsInstance =
+                this.shopByBrandsContainerRef.createComponent(
+                    factory,
+                    null,
+                    this.injector
+                );
+            this.shopByBrandsInstance.instance["data"] = this.shopByDifferentBrands;
+        }
+    }
+
     async onVisibleAppPromo(event) {
         const { ProductAppPromoComponent } = await import("../../components/product-app-promo/product-app-promo.component");
         const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
@@ -2943,6 +3005,24 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    get pageLinkName() {
+        let taxo1 = "";
+        let taxo2 = "";
+        let taxo3 = "";
+        if (this.rawProductData.productCategoryDetails["taxonomyCode"]) {
+            taxo1 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[0] || "";
+            taxo2 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[1] || "";
+            taxo3 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[2] || "";
+        }
+
+        let ele = []; // product tags for adobe;
+        this.productTags.forEach((element) => {
+            ele.push(element.name);
+        });
+
+        return "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp";
+    }
+
     setMetatag(index: number = -1) {
         if (!this.rawProductData) {
             return;
@@ -2979,7 +3059,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 seoDetails: this.rawProductData["seoDetails"],
                 productBrandDetails: this.rawProductData.productBrandDetails,
                 productCategoryDetails: this.rawProductData.productCategoryDetails,
-                productDefaultImage: this.rawProductData.productDefaultImage,
+                productDefaultImage: this.productDefaultImage,
                 productUrl: this.rawProductData.productUrl,
                 defaultCanonicalUrl: this.rawProductData["defaultCanonicalUrl"]
             };
@@ -3843,6 +3923,17 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             }
         },(error)=>{
             this.compareProductsData = [];
+        })
+    }
+
+    getShopByDifferentBrandsData(msn: string) {
+        this.productService.getDifferentBrandProducts(msn).subscribe(result=>{
+            if(result){
+                
+                this.shopByDifferentBrands = result;
+            }
+        },(error)=>{
+            this.shopByDifferentBrands = [];
         })
     }
 

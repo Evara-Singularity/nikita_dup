@@ -3,11 +3,9 @@
         [selectedProductBulkPrice]="selectedProductBulkPrice" [productPrice]="productPrice"
         [productDiscount]="productDiscount" [productName]="productName" [priceWithoutTax]="priceWithoutTax"
         [gstPercentage]='taxPercentage' [promoCodes]='promoCodes'></app-floating-coupon-widget>
-    
     <app-oos-similar-section [productOutOfStock]="productOutOfStock" [similarForOOSContainer]="similarForOOSContainer"
         [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
     </app-oos-similar-section>
-
     <shared-product-carousel (openPopUpcrousel$)="openPopUpcrousel()" [productAllImages]="productAllImages"
         [carouselInitialized]="carouselInitialized" (loadProductShare$)="loadProductShare()"
         [isPurcahseListProduct]="isPurcahseListProduct" [productName]="productName"
@@ -29,7 +27,6 @@
         [productMinimmumQuantity]="productMinimmumQuantity" [priceQuantityCountry]="priceQuantityCountry"
         [starsCount]="starsCount" [rawReviewsCount]="rawReviewsData?.reviewList?.length || 0" [rawProductCountMessage]="rawProductCountMessage">
     </product-description> -->
-
     <product-grouping-attributes [isCommonProduct]="isCommonProduct"
         [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)"
         (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
@@ -76,7 +73,15 @@
         [productName]="productName" [productVideos]="productVideos" [productDocumentInfo]="productDocumentInfo"
         [productBrandCategoryUrl]="productBrandCategoryUrl"></product-feature-details>
 
-
+    <ng-container *ngIf="adsenseData">
+        <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_1']">
+            <adsense-leaderboard-banner
+                [data]="adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_1']"></adsense-leaderboard-banner>
+        </ng-container>
+        <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PLP_POSITION_1']">
+            <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PLP_POSITION_1']"></adsense-rectangle-banner>
+        </ng-container>
+    </ng-container>
 
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
@@ -125,6 +130,14 @@
         [productBrandDetails]="productBrandDetails" [productCategoryDetails]="productCategoryDetails"
         [productBrandCategoryUrl]="productBrandCategoryUrl">
     </product-more-widget>
+
+    <ng-container *ngIf="adsenseData && adsenseData['FEATURED_PRODUCT_ADS']" >
+        <adsense-feature-products-unit [data]="adsenseData['FEATURED_PRODUCT_ADS']"  [analyticsIdentifier]="'FEATURED_PRODUCT_ADS_'+adsenseData['ANALYTIC_IDENTIFIER']" ></adsense-feature-products-unit>
+    </ng-container>
+    
+    <ng-container *ngIf="adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']" >
+        <adsense-promoted-brands-unit [data]="adsenseData['PROMOTOTED_BRAND_ADS']" [analyticsIdentifier]="'PROMOTOTED_BRAND_ADS_'+adsenseData['ANALYTIC_IDENTIFIER']" ></adsense-promoted-brands-unit>
+    </ng-container>
     
     <!-- removed sponsored products -->
     <!-- <div id="sponseredProducts" [ngClass]="{'common-product': !sponseredProductsInstance}" *ngIf="!sponseredProductsInstance" data-observeVisibility [debounceTime]="100" (visible)="onVisibleSponsered($event)">
@@ -240,7 +253,6 @@
         </div>
     </ng-container>
 </div>
-
 <!-- <ng-container *ngIf="!productOutOfStock">
     <appInstallWidget></appInstallWidget>
 </ng-container> -->

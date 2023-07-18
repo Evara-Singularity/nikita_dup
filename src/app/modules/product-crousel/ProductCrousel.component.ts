@@ -33,6 +33,8 @@ import { ProductCrouselSlideComponent } from "./ProductCrouselSlide/ProductCrous
 import { MathCeilPipeModule } from "@app/utils/pipes/math-ceil";
 import { MathFloorPipeModule } from "@app/utils/pipes/math-floor";
 import { CommonService } from "@app/utils/services/common.service";
+import { GlobalAnalyticsService } from '../../utils/services/global-analytics.service';
+import { Router } from "@angular/router";
 
 @Component({
   selector: "ProductCrousel",
@@ -77,14 +79,17 @@ export class ProductCrouselComponent implements OnInit {
   splitUrlByCommaAlt;
   pz_instance: any = [];
   private cDistryoyed = new Subject();
+  showPocMsn: boolean = false;
 
   constructor(
+    private _router: Router,
     private injector: Injector,
     private _commonService: CommonService,
     private _cfr: ComponentFactoryResolver,
     private _cdr: ChangeDetectorRef,
     private ngxSiemaService: NgxSiemaService,
     private _siemaCrouselService: SiemaCrouselService,
+    private _analyticsService:GlobalAnalyticsService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isServer = isPlatformServer(platformId);
@@ -197,11 +202,15 @@ export class ProductCrouselComponent implements OnInit {
     setTimeout(() => {
       this.scrollInitialize();
     }, 1000);
+    if (this.productBo && this.productBo.defaultPartNumber.toLowerCase() === CONSTANTS.POC_MSN || (this.productBo.product3dImages && this.productBo.product3dImages.length)) {
+      this.showPocMsn = true;
+    }
+    this._commonService.isProductCrouselLoaded.next(true)
   }
-
   ngOnDestroy() {
     this.cDistryoyed.next();
     this.cDistryoyed.unsubscribe();
+    this._commonService.isProductCrouselLoaded.next(false);
   }
 
   udpateSiema(items) {
@@ -332,6 +341,19 @@ export class ProductCrouselComponent implements OnInit {
     if (this.options.autoPlay) {
       this.startBannerInterval();
     }
+  }
+
+  open36popup(){
+    this._commonService.open360popup$.next(true);
+    this.setAdobeDataTracking();
+  }
+  setAdobeDataTracking(){
+      this._analyticsService.sendAdobeCall(
+        { channel: 'pdp', 
+          pageName: this.showPocMsn ? 'moglix:pdp:360_poc_2':'moglix:pdp:360_poc_1',
+          linkName:  "moglix:" + this._router.url
+        }, 
+        "genericClick")
   }
 
   startBannerInterval() {

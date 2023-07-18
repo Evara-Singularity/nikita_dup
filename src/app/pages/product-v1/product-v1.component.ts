@@ -100,6 +100,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     productFilterAttributesList: any;
     iscloseproductDiscInfoComponent:boolean=true;
     compareProductsData:Array<object> = [];
+    shopByDifferentBrands: object = {};
 
     // lazy loaded component refs
     productShareInstance = null;
@@ -180,6 +181,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     productPriceCompareInstance = null;
     @ViewChild("productPriceCompare", { read: ViewContainerRef })
     productPriceCompareContainerRef: ViewContainerRef;
+    // ondemand loaded components for shop by brands products
+    shopByBrandsInstance = null;
+    @ViewChild("shopByBrands", { read: ViewContainerRef })
+    shopByBrandsContainerRef: ViewContainerRef;
     // ondemand loaded components for sponsered products
     sponseredProductsInstance = null;
     @ViewChild("sponseredProducts", { read: ViewContainerRef })
@@ -346,7 +351,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         // analytics calls moved to this function incase PDP is redirecte to PDP
         this.callAnalyticForVisit();
         this.setMetatag();
-        if(!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null){ this.getCompareProductsData(this.rawProductData?.msn);}
+        if(!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null){
+            this.getCompareProductsData(this.rawProductData?.msn);
+            this.getShopByDifferentBrandsData(this.rawProductData?.msn);
+        }
     }
 
     filterAttributes() {
@@ -2644,6 +2652,26 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    async onVisibleShopByBrands()
+    {
+        const objectLen =  Object.keys(this.shopByDifferentBrands);
+        if (!this.shopByBrandsInstance && objectLen.length > 0) {
+            const { ShopByBrandsComponent } = await import(
+                "./../../components/shop-by-brands/shop-by-brands.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(
+                ShopByBrandsComponent
+            );
+            this.shopByBrandsInstance =
+                this.shopByBrandsContainerRef.createComponent(
+                    factory,
+                    null,
+                    this.injector
+                );
+            this.shopByBrandsInstance.instance["data"] = this.shopByDifferentBrands;
+        }
+    }
+
     async onVisibleAppPromo(event) {
         const { ProductAppPromoComponent } = await import("../../components/product-app-promo/product-app-promo.component");
         const factory = this.cfr.resolveComponentFactory(ProductAppPromoComponent);
@@ -3843,6 +3871,17 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             }
         },(error)=>{
             this.compareProductsData = [];
+        })
+    }
+
+    getShopByDifferentBrandsData(msn: string) {
+        this.productService.getDifferentBrandProducts(msn).subscribe(result=>{
+            if(result){
+                
+                this.shopByDifferentBrands = result;
+            }
+        },(error)=>{
+            this.shopByDifferentBrands = [];
         })
     }
 

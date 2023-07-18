@@ -68,7 +68,7 @@ import { ProductV1RoutingModule } from "./product-v1.routing.module";
         EmiPlansModule,
         ProductOosSimilarModule,
         ProductInfoModule,
-        FloatingCouponWidgetModule
+        FloatingCouponWidgetModule,
     ],
     exports: [],
     providers: [NgxSiemaService, DatePipe]

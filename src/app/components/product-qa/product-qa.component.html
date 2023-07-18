@@ -24,8 +24,8 @@
                     </div>
                 </div>
             </div>
-            <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup.emit()">
-                <p class="small-txt">{{productStaticData.view_more_faq}}<i class="icon-arrow-right-s-line small-txt"></i></p>
+            <div class="show-all-strip" (click)="$event.stopPropagation();handleFaqListPopup.emit()">
+                <span>{{productStaticData.view_more_faq}}</span><span><i class="icon-next"></i></span>
             </div>
         </ng-container>
     </div>

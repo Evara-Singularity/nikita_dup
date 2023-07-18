@@ -1,10 +1,10 @@
 <div id="get-quote-section" class="buy-nowsec mt-10" *ngIf="commonService.isBrowser && userSession && isUserLogin && userSession.phone && !productOutOfStock && productMrp > 0">
-    <h4 class="heading-3">{{productStaticData.looking_for_category.replace('___categoryName___',productCategoryDetails["categoryName"])}}</h4>
-    <p class="small-txt prodct-name"> {{ productName }} </p>
+    <h4 class="heading-2 pad-tb-10">{{productStaticData.looking_for_category.replace('___categoryName___',productCategoryDetails["categoryName"])}}</h4>
+    <p class="prodct-name"> {{ productName }} </p>
     <div class="buynow-flex">
         <div class="bn-left">
-            <p class="heading-4"><i class="icon-check-active"></i>&nbsp; {{productStaticData.get_rfq_text_1}}</p>
-            <p class="heading-4"><i class="icon-check-active"></i>&nbsp; {{productStaticData.get_rfq_text_2}}</p>
+            <p class="heading-3"><i class="icon-check-active"></i>&nbsp; {{productStaticData.get_rfq_text_1}}</p>
+            <p class="heading-3"><i class="icon-check-active"></i>&nbsp; {{productStaticData.get_rfq_text_2}}</p>
         </div>
         <div class="bn-right">
             <img [attr.src]="productAllImages && productAllImages?.length && productAllImages[0]['small']" width="50" height="50">

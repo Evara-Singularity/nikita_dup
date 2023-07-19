@@ -19,6 +19,7 @@ interface ProductDataArg {
 export class ProductService {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+    readonly promoCodeDescription_off_key = "Off";
     private basePath = CONSTANTS.NEW_MOGLIX_API;
     private basePath2 =  CONSTANTS.NEW_MOGLIX_API_V2;
     productCouponItem: any = null;
@@ -877,7 +878,7 @@ export class ProductService {
         return productReturn;
     }
 
-       productLayoutJsonToProductEntity(product: any, brandId?:any, brandName?:any) {
+    productLayoutJsonToProductEntity(product: any, brandId?:any, brandName?:any) {
         // console.log('product ==>', product);
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
@@ -915,7 +916,7 @@ export class ProductService {
             reviewCount: product.reviewCount || 0,
             internalProduct: true,
             outOfStock: product.outOfStock,
-            promoCodeDescription: (product.promoCodeDescription) ? product.promoCodeDescription : null
+            promoCodeDescription: (product.promoCodeDescription) ? this.getPromoCodeDescription(product.promoCodeDescription) : null
         };
         // console.log('productEntity ==>', productEntity);
         return productEntity;
@@ -981,7 +982,7 @@ export class ProductService {
             itemInPack: null,
             ratingCount: (overrideProductB0 && overrideProductB0.ratingCount) ? overrideProductB0.ratingCount : null, //this.product.ratingCount,
             reviewCount: (overrideProductB0 && overrideProductB0.reviewCount) ? overrideProductB0.reviewCount : null, //this.product.reviewCount
-            promoCodeDescription: (product.promoCodeDescription) ? product.promoCodeDescription : null
+            promoCodeDescription: (product.promoCodeDescription) ? this.getPromoCodeDescription(product.promoCodeDescription) : null
         };
 
         return productEntity;
@@ -1244,7 +1245,7 @@ export class ProductService {
             itemInPack: product['itemInPack'],
             ratingCount: (product.ratingCount) ? product.ratingCount : null, //this.product.ratingCount,
             reviewCount: (product.reviewCount) ? product.reviewCount : null, //this.product.reviewCount
-            promoCodeDescription: (product.promoCodeDescription) ? product.promoCodeDescription : null
+            promoCodeDescription: (product.promoCodeDescription) ? this.getPromoCodeDescription(product.promoCodeDescription) : null
         };
 
         return productEntity;
@@ -1269,5 +1270,13 @@ export class ProductService {
         return final;
     }
 
+    getPromoCodeDescription (promoCodeDescription){
+        const pcode = promoCodeDescription.split(this.promoCodeDescription_off_key);
+        if(typeof pcode != 'string' && pcode.length > 0){
+            return pcode[0] as string;
+        }else{
+            return null;
+        }
+    }
 
 }

@@ -79,7 +79,6 @@ export class ProductCardCoreComponent implements OnInit {
   variantPopupInstance = null;
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   productReviewCount: string;
-  promoCodeDescription: string = "";
 
   constructor(
     public _cartService: CartService,
@@ -106,17 +105,7 @@ export class ProductCardCoreComponent implements OnInit {
     this.isAd = !this.product.internalProduct
     this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
     this.prodUrl = CONSTANTS.PROD;
-    this.getPromoCodeDescription();
     // console.log('product 22==>', this.product);
-  }
-
-  getPromoCodeDescription (){
-    if(this.product.promoCodeDescription != null){
-      const pcode = this.product.promoCodeDescription.split("Off");
-      if(pcode.length > 0){
-        this.promoCodeDescription = pcode[0];
-      }
-    }
   }
 
   buyNow(buyNow = false) {

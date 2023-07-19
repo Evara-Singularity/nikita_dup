@@ -234,4 +234,8 @@ export const product = {
     brand_desc4: 'Moglix is one stop solution if you are looking online for best deals and offers on',
     brand_desc5: 'products. We also offer the option of bulk buying or wholesale prices on these products. Having a pan India presence including major cities like Delhi NCR, Mumbai, Chennai, Bengaluru, Kolkata, Chennai, Pune, Jaipur, Hyderabad, and Ahmedabad, Moglix provides timely doorstep delivery nation-wide.',
     products_by: 'product by',
+    popular_categories: 'Popular Categories',
+    similar_category: 'Similar Category',
+    related_brands: 'Related Brands',
+    related_category: 'Related Category'
 }

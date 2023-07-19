@@ -152,28 +152,28 @@ export class BrandComponent implements OnInit, AfterViewInit {
     private createFooterAccordianData() {
         this.accordiansDetails = [];
         this.accordiansDetails.push({
-            name: 'Popular Brand Categories',
+            name: this.productStaticData.accordian_list2_label,
             extra: this.API_RESPONSE['brand'][0].brandName,
             data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: this.API_RESPONSE['brand'][0].brandName+' '+x[0], link: x[1] }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
         this.accordiansDetails.push({
-            name: 'Popular Categories',
+            name: this.productStaticData.popular_categories,
             data: this.popularCategories?.map(e => ({ name: e.name, link: e.link }) as AccordianDataItem),
             icon:'icon-categories'
         });
         this.accordiansDetails.push({
-            name: 'Similar Category',
+            name: this.productStaticData.similar_category,
             data: this.API_RESPONSE.brand[2]?.mostSoledSiblingCategories?.map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
             icon:'icon-categories'
         });
         this.accordiansDetails.push({
-            name: 'Related Searches',
+            name: this.productStaticData.accordian_list1_label,
             data: this.API_RESPONSE.brand[5]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
             icon:'icon-attribute'
         });
         this.accordiansDetails.push({
-            name: 'Related Brands',
+            name: this.productStaticData.related_brands,
             isNotVisible:!!this._activatedRoute.snapshot.params.category,
             data: this.API_RESPONSE.brand[3]?.searchBrandInfoList?.map(e => ({ name: e.brandName, link: e.brandLink }) as AccordianDataItem),
             icon:'icon-brand_store'

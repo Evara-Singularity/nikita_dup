@@ -52,6 +52,7 @@ export class CategoryComponent {
     isL2CategoryCheck:Boolean = false;
     informativeVideosData:any;
     adsenseData: any = null;
+    productStaticData = this._commonService.defaultLocaleValue;
    
 
     constructor(
@@ -79,7 +80,14 @@ export class CategoryComponent {
         this.setDataFromResolver();
         if (this._commonService.isBrowser) {
             this._footerService.setMobileFoooters();
+            this.getLocalization();
         }
+    }
+
+    getLocalization() {
+        this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+            this.productStaticData = localization_content;
+        });
     }
 
     ngAfterViewInit(): void {
@@ -205,18 +213,18 @@ export class CategoryComponent {
     private createFooterAccordianData() {
         this.accordiansDetails = [];
         this.accordiansDetails.push({
-            name: 'Popular Brand Category',
+            name: this.productStaticData.accordian_list2_label,
             data: Object.entries(this.API_RESPONSE.category[1].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
         this.accordiansDetails.push({
-            name: 'Related Searches',
+            name: this.productStaticData.accordian_list1_label,
             data: this.API_RESPONSE.category[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
             icon:'icon-attribute'
         });
         if(!this.API_RESPONSE.category[0].children){
             this.accordiansDetails.push({
-                name: 'Related Category',
+                name: this.productStaticData.related_category,
                 data: this.API_RESPONSE.category[0].sibling?.map(x => ({ name: x.categoryDetails.categoryName, link: x.categoryDetails.categoryLink }) as AccordianDataItem),
                 icon:'icon-brand_store'
             });

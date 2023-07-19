@@ -191,7 +191,7 @@ export class Categories implements OnInit {
             itemInPack: null,
             ratingCount:  null, //this.product.ratingCount,
             reviewCount:  null, //this.product.reviewCount
-			promoCodeDescription: (product.promoCodeDescription) ? product.promoCodeDescription : null
+			promoCodeDescription: (product.promoCodeDescription) ? this._productService.getPromoCodeDescription(product.promoCodeDescription) : null
         };
         return productInfo;
 	}

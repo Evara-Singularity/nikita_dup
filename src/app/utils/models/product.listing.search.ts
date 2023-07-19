@@ -63,7 +63,7 @@ export interface ProductsEntity {
     homePageRFQ?:boolean;
     HomePageRFQstatus?:HomePageRFQstatus;
     attributeValuesForPart?: any;
-    promoCodeDescription: string;
+    promoCodeDescription?: string;
 }
 
 export interface FilterableAttributes {

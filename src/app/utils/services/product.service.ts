@@ -981,8 +981,7 @@ export class ProductService {
             avgRating: (overrideProductB0 && overrideProductB0.avgRating) ? overrideProductB0.avgRating : null, //this.product.avgRating,
             itemInPack: null,
             ratingCount: (overrideProductB0 && overrideProductB0.ratingCount) ? overrideProductB0.ratingCount : null, //this.product.ratingCount,
-            reviewCount: (overrideProductB0 && overrideProductB0.reviewCount) ? overrideProductB0.reviewCount : null, //this.product.reviewCount
-            promoCodeDescription: (product.promoCodeDescription) ? this.getPromoCodeDescription(product.promoCodeDescription) : null
+            reviewCount: (overrideProductB0 && overrideProductB0.reviewCount) ? overrideProductB0.reviewCount : null //this.product.reviewCount
         };
 
         return productEntity;

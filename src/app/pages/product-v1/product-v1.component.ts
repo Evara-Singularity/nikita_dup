@@ -102,6 +102,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     iscloseproductDiscInfoComponent:boolean=true;
     compareProductsData:Array<object> = [];
     shopByDifferentBrands: object = {};
+    isShopByDifferentBrands: boolean = false;
     adsenseData: any = null;
 
     // lazy loaded component refs
@@ -3931,6 +3932,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             if(result){
                 
                 this.shopByDifferentBrands = result;
+                this.isShopByDifferentBrands = (Object.keys(result).length > 0) ? true : false;
             }
         },(error)=>{
             this.shopByDifferentBrands = [];

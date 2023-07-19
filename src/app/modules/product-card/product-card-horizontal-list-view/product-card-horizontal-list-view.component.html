@@ -98,9 +98,9 @@
                     <span>Easy EMI available</span>
                 </div>
                 <div class="emi-container coupon-conatiner"
-                    *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice >= easyEMILimit">
+                    *ngIf="product.promoCodeDescription != null && promoCodeDescription.length > 0">
                     <i class="icon-offer"></i>
-                    <span><b>Flat ₹500 OFF</b> with coupon</span>
+                    <span><b>{{promoCodeDescription}} OFF</b> with coupon</span>
                 </div>
             </div>
         </div>

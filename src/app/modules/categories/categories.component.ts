@@ -190,7 +190,8 @@ export class Categories implements OnInit {
             avgRating:null, //this.product.avgRating,
             itemInPack: null,
             ratingCount:  null, //this.product.ratingCount,
-            reviewCount:  null //this.product.reviewCount
+            reviewCount:  null, //this.product.reviewCount
+			promoCodeDescription: (product.promoCodeDescription) ? product.promoCodeDescription : null
         };
         return productInfo;
 	}

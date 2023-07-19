@@ -915,6 +915,7 @@ export class ProductService {
             reviewCount: product.reviewCount || 0,
             internalProduct: true,
             outOfStock: product.outOfStock,
+            promoCodeDescription: (product.promoCodeDescription) ? product.promoCodeDescription : null
         };
         // console.log('productEntity ==>', productEntity);
         return productEntity;
@@ -979,7 +980,8 @@ export class ProductService {
             avgRating: (overrideProductB0 && overrideProductB0.avgRating) ? overrideProductB0.avgRating : null, //this.product.avgRating,
             itemInPack: null,
             ratingCount: (overrideProductB0 && overrideProductB0.ratingCount) ? overrideProductB0.ratingCount : null, //this.product.ratingCount,
-            reviewCount: (overrideProductB0 && overrideProductB0.reviewCount) ? overrideProductB0.reviewCount : null //this.product.reviewCount
+            reviewCount: (overrideProductB0 && overrideProductB0.reviewCount) ? overrideProductB0.reviewCount : null, //this.product.reviewCount
+            promoCodeDescription: (product.promoCodeDescription) ? product.promoCodeDescription : null
         };
 
         return productEntity;
@@ -1241,7 +1243,8 @@ export class ProductService {
             avgRating: (product.avgRating) ? product.avgRating : null, //this.product.avgRating,
             itemInPack: product['itemInPack'],
             ratingCount: (product.ratingCount) ? product.ratingCount : null, //this.product.ratingCount,
-            reviewCount: (product.reviewCount) ? product.reviewCount : null //this.product.reviewCount
+            reviewCount: (product.reviewCount) ? product.reviewCount : null, //this.product.reviewCount
+            promoCodeDescription: (product.promoCodeDescription) ? product.promoCodeDescription : null
         };
 
         return productEntity;

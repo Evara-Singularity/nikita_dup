@@ -216,6 +216,7 @@
     <div
         [class.mb-60]="rawProductData?.productOutOfStock && productService.oosSimilarProductsData.similarData.length < 3">
     </div>
+    <div #recentProductsRef></div>
     <ng-container
         *ngIf="apiResponse?.breadCrumb && apiResponse?.breadCrumb.length > 0 && !rawProductData?.productOutOfStock">
         <breadcrumb-nav [breadcrumb]="apiResponse?.breadCrumb" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>

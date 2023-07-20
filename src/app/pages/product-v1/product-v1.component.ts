@@ -226,6 +226,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     //floating container reference
     @ViewChild('similarProductsRef', {static: false}) private similarProductsElementRef: ElementRef<HTMLDivElement>;
     similarProductsScrolledIntoView: boolean;
+    @ViewChild('recentProductsRef', {static: false}) private recentProductElementRef: ElementRef<HTMLDivElement>;
+    recentProductScrolledIntoView: boolean;
+    
 
     set showLoader(value: boolean) { this.globalLoader.setLoaderState(value); }
 
@@ -310,9 +313,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             const rect = this.similarProductsElementRef.nativeElement.getBoundingClientRect();
             const topShown = rect.top >= 0;
             const bottomShown = rect.bottom <= window.innerHeight;
+            const rect_v2 = this.recentProductElementRef.nativeElement.getBoundingClientRect();
+            const topShown_v2 = rect_v2.top >= 0;
+            const bottomShown_v2 = rect_v2.bottom <= window.innerHeight;
             if((topShown && bottomShown) || (!topShown && bottomShown) ){
                 this.similarProductsScrolledIntoView = true;
             }else{
+                this.similarProductsScrolledIntoView = false;
+            }
+            if((topShown_v2 && bottomShown_v2) || (!topShown_v2 && bottomShown_v2) ){
                 this.similarProductsScrolledIntoView = false;
             }
         }

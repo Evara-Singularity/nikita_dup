@@ -61,12 +61,10 @@
     .category-inner-block{
         width: 48%;
         margin-bottom: 10px;
-        background: brown;
         padding: 8px;
         border-radius: 8px;
         a{
-            
-            color: #fff;
+            color: var(--onyx-black);
             img{
                 border-radius: 8px;
             }

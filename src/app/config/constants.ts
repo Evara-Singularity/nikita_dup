@@ -702,6 +702,14 @@ export const CONSTANTS = {
   PDP_QNA_HASH:"qna",
   PDP_REVIEW_HASH:"review",
   PDP_WRITE_REVIEW_HASH:"write-review",
-  APP_OPEN_LINK:"https://moglix.page.link/appinstall"
+  APP_OPEN_LINK:"https://moglix.page.link/appinstall",
+  HOME_CATEGORY_COLOR1:'#FFEDCB',
+  HOME_CATEGORY_COLOR2:'#E6EBC7',
+  HOME_CATEGORY_COLOR3:'#FFE5D8',
+  HOME_CATEGORY_COLOR4:'#DBEDFF',
+  HOME_CATEGORY_COLOR5:'#EBD8EA',
+  HOME_CATEGORY_COLOR6:'#E4D8D5',
+  HOME_CATEGORY_COLOR7:'#D2DDDF'
+
 };
 export default CONSTANTS;

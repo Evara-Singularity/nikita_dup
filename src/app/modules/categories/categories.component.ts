@@ -210,6 +210,19 @@ export class Categories implements OnInit {
 		const analytices = { page: page, custData: this._commonService.custDataTracking, order: {} }
 		return analytices;
 	}
+	dataKeyColors: { [key: string]: string } = {
+		powerData: CONSTANTS.HOME_CATEGORY_COLOR1,
+		pumpData: CONSTANTS.HOME_CATEGORY_COLOR2,
+		electricalData: CONSTANTS.HOME_CATEGORY_COLOR3,
+		officeData: CONSTANTS.HOME_CATEGORY_COLOR4,
+		medicalData: CONSTANTS.HOME_CATEGORY_COLOR5,
+		electricalsData: CONSTANTS.HOME_CATEGORY_COLOR6,
+		homeAppliancesData: CONSTANTS.HOME_CATEGORY_COLOR7
+	  }
+
+	  getBackgroundColor(dataKey: string): string {
+		return this.dataKeyColors[dataKey] || 'gray'; // Set a default color for other data keys not in the map.
+	  }
 
 
 }

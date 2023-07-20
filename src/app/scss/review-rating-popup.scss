@@ -32,7 +32,7 @@
         .rating-bar {
             position: relative;
             height: 10px;
-            background: var(--ghost-white);
+            background: #EDEDED;
             border-radius: $border-radius-2;
             width: 90%;
             span.bar {
@@ -76,7 +76,7 @@
             padding: 10px 0 5px;
         }
         .content{
-            font-size: 13px;
+            font-size: 14px;
         }
         .innerRow {
             border-top: 1px dashed var(--silver);
@@ -96,7 +96,7 @@
             }
         }
         .small-stars i {
-            color: var(--ghost-white);
+            color: var(--silver);
             font-size: $medium-font;
             padding-right: 5px;
         }
@@ -136,6 +136,7 @@
         padding: 20px 0 10px;
         justify-content: space-between;
         display: flex;
+        font-size: 14px;
     }
     .review-btn{
         margin-bottom: 20px;

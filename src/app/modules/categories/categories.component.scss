@@ -60,7 +60,27 @@
     flex-wrap: wrap;
     .category-inner-block{
         width: 48%;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
+        padding: 8px;
+        border-radius: 8px;
+        a{
+            color: var(--onyx-black);
+            img{
+                border-radius: 8px;
+            }
+            p{
+                padding-top: 3px;
+                font-size: 12px;
+                font-weight: bold;
+                text-align: center;
+            }
+            span{
+                font-size: 12px;
+                text-align: center;
+                display: block;
+                padding-top: 2px;
+            }
+        }
     }
 }
 

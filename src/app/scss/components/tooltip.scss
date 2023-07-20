@@ -1,21 +1,30 @@
 @import '../variables';
 .pwa-inline-tooltip {
     display:flex;
-    background: var(--light-cyan);
+    background: var(--white);
     border-radius:$border-radius-4;
     padding:var(--base-inner-padding);
     margin:0px;
     align-items: center;
     position: relative;
-    color: var(--persian-green);
+    color: #02796E;
+    border: 1px solid #00A293;
     &:after {
         content:"";
         position: absolute;
-        bottom: 99%;
+        // bottom: 99%;
+        // left: 4%;
+        // border-width: 5px;
+        // border-style: solid;
+        // border-color: transparent transparent var(--light-cyan) transparent;
+        bottom: 89%;
         left: 4%;
-        border-width: 5px;
-        border-style: solid;
-        border-color: transparent transparent var(--light-cyan) transparent;
+        width: 5px;
+        height: 5px;
+        border-right: 1px solid #00A293;
+        border-bottom: 1px solid #00A293;
+        transform: rotate(-133deg);
+        background: var(--white);
     }
     i {
       font-size:$medium-font;

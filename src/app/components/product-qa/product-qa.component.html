@@ -24,8 +24,9 @@
                     </div>
                 </div>
             </div>
-            <div class="view-more-faq-strip" (click)="$event.stopPropagation();handleFaqListPopup.emit()" *ngIf="questionAnswerList?.qlist?.length > 2">
-                <p class="small-txt">{{productStaticData.viewMore}} {{ (questionAnswerList?.qlist?.length) - 2 }} {{productStaticData.view_more_faq}}<i class="icon-arrow-right-s-line small-txt"></i></p>
+          
+            <div class="show-all-strip" (click)="$event.stopPropagation();handleFaqListPopup.emit()" *ngIf="questionAnswerList?.qlist?.length > 2">
+                <span>{{productStaticData.viewMore}} {{ (questionAnswerList?.qlist?.length) - 2 }} {{productStaticData.view_more_faq}}}</span><span><i class="icon-next"></i></span>
             </div>
         </ng-container>
     </div>

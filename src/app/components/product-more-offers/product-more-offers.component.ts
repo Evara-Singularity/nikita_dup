@@ -17,6 +17,7 @@ export class ProductMoreOffersComponent implements OnInit, AfterViewInit {
   @Input() data: any ;
   @Output() out: EventEmitter<any> = new EventEmitter<any>();
   @Output() isLoading : EventEmitter<any> = new EventEmitter<any>();
+  @Input() pageLinkName;
   promoCodeOffers: any;
   activeIndex: any;
   copiedCouponSubscription: Subscription; 
@@ -51,7 +52,7 @@ export class ProductMoreOffersComponent implements OnInit, AfterViewInit {
   }
 
   copyToClipboard(text:any) {
-    this._analytics.sendAdobeCall({ channel: 'pdp', pageName: 'moglix:pdp:product_more_offers', linkName: 'coupon:' + text }, "genericClick")
+    this._analytics.sendAdobeCall({page: { channel: 'pdp', linkPageName: this.pageLinkName, linkName: 'popup:coupon:' + text }}, "genericClick")
     const textarea = document.createElement('textarea');
     textarea.value = text;
     document.body.appendChild(textarea);

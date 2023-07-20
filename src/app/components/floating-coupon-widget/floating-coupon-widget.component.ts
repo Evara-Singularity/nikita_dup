@@ -21,6 +21,7 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
   @Input() productName
   @Input() priceWithoutTax
   @Input() productDiscount
+  @Input() pageLinkName;
   @Output() closeproductDiscInfoComponent$: EventEmitter<boolean> = new EventEmitter<boolean>();
   isCouponCopied=false;
   copiedCouponSubscription: Subscription; 
@@ -61,7 +62,7 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
   copyCouponTextArea() {
     this.isCouponCopied = true
     const copiedCouponText = document.getElementById('coupon-text');
-    this._analytics.sendAdobeCall({ channel: 'pdp', pageName: 'moglix:pdp:floating_coupon_widget', linkName: 'coupon:' + copiedCouponText.innerText }, "genericClick")
+    this._analytics.sendAdobeCall({page: { channel: 'pdp', linkPageName: this.pageLinkName, linkName: 'floating:coupon:' + this.copiedCoupon }}, "genericClick")
     this.copyToClipboard(copiedCouponText.innerText);
   }
 

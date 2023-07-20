@@ -21,12 +21,14 @@ export const CONSTANTS = {
   CDN_IMAGE_PATH: environment.CDN_IMAGE_URL,
   LANGUAGE_EN: 'ENGLISH',
   LANGUAGE_HI: 'HINDI',
+  COUNTRY_NAME: 'india',
   BROWSER_AGENT_TOKEN: new InjectionToken<string>('browserName'),
   LOG_TOKEN_SERVER: new InjectionToken<string>('logTokenServer'),
   LOG_TOKEN_MAIN: new InjectionToken<string>('logTokenMain'),
   SERVER_CLIENT_IP: new InjectionToken<string>('serverClientIp'),
   SPEED_TEST_IMAGE: 'https://cdn.moglix.com/cms/flyout/Images_2021-09-15_15-45-36_Images_2020-06-03_16-42-50_SafetyImage-min.png', // ~500 KB image
   CDN_LOTTIE_PATH:'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
+  MODEL_JS_CDN_PATH: "https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js",
   pwaImages: {
     imgFolder: 'b/I/P/B/d'
   },
@@ -709,7 +711,7 @@ export const CONSTANTS = {
   HOME_CATEGORY_COLOR4:'#DBEDFF',
   HOME_CATEGORY_COLOR5:'#EBD8EA',
   HOME_CATEGORY_COLOR6:'#E4D8D5',
-  HOME_CATEGORY_COLOR7:'#D2DDDF'
-
+  HOME_CATEGORY_COLOR7:'#D2DDDF',
+  POC_MSN : 'msn2vvrozzffc9'
 };
 export default CONSTANTS;

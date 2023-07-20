@@ -1,10 +1,33 @@
 @import './../../scss/components/carousel.scss';
+ //product-description.scss
+ @import "../../scss/variables";
+ @import "../../scss/quantity.scss";
+ @import "../../scss/components/tooltip.scss";
+ @import "../../scss/product-description.scss";
+ 
+
+.image-rotate-section{
+    border: 1px solid var(--bleu-de-france);
+    padding: 3px 8px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
+    p{
+        font-size: 14px;
+        font-weight: bold;
+        color: var(--bleu-de-france);
+        margin-right: 6px;
+        line-height: 17px;
+    }
+}
+
 .icon-video-thumbnail{
     font-size: 16px !important;
 }
 .pager-vid{
     margin-top: 3px !important;
 }
+
 // .product_block {
 //     div {
 //         h4.lh-18 {

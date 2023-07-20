@@ -93,7 +93,7 @@ export class ReviewRatingComponent {
                     "isReviewHelpfulCountYes": (reviewValue == 'yes'?1:0)
                 }
                 this.productService.postHelpful(obj).subscribe((res) => {
-                    console.log("res",res);
+                    // console.log("res",res);
                     if (res['code'] == 200) {
                         this._tms.show({ type: 'success', text: 'Your feedback has been taken' });
                         let reviewObj = {

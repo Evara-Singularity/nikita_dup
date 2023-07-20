@@ -159,6 +159,10 @@
                     span{
                         font-size: $medium-font;
                     }
+                    &.coupon-conatiner{
+                        color: var(--slimy-green);
+                        align-items: flex-start;
+                    }
                 }
             }
             .card-btn-row {
@@ -174,7 +178,6 @@
     .attribute-section{
         margin-top: 15px;
         .pwa-tabs-container{
-            display: inline-flex;
             .pwa-tab{
                 border-color:var(--silver);
                 color: var(--onyx-black);

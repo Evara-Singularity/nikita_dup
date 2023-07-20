@@ -94,9 +94,9 @@
         <div class="attribute-section"
             *ngIf="product['attributeValuesForPart'] != null && (product['attributeValuesForPart'] | keyvalue).length != 0">
             <div class="pwa-tabs-container">
-                <span class="pwa-tab" *ngFor="let item of modifiedFilterableAtrribute.slice(0,5)">
+                <div class="pwa-tab" *ngFor="let item of modifiedFilterableAtrribute.slice(0,5)">
                     {{item[0] | titlecase}}: {{item[1][0]}}
-                </span>
+                </div>
             </div>
         </div>
         <div class="btn-container">

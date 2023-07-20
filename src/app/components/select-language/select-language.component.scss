@@ -1,0 +1,79 @@
+@import "../../scss/variables";
+// to be moved in crousel css components
+@import "../../scss/components/carousel";
+@import "../../scss/tags";
+
+.alert-box {
+  .overlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .content-area {
+    border-radius: 12px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+
+    .info-area {
+      padding: 0;
+
+      .popup-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        border-bottom: 1px solid var(--spanish-gray);
+
+        p {
+          display: flex;
+          align-items: center;
+
+          img {
+            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+          }
+        }
+      }
+
+      .popup-body-section {
+        padding: 15px;
+
+        ul {
+          display: flex;
+          overflow-x: scroll;
+          white-space: nowrap;
+          scrollbar-width: none;
+
+          li {
+            margin: 0px 10px 15px 0px;
+
+            a {
+              display: inline-block;
+              padding: 8px 12px;
+              font-size: 14px;
+              font-weight: $font-bold;
+              color: var(--onyx-black);
+              width: 86px;
+              text-align: center;
+              border: 1px solid var(--spanish-gray);
+              border-radius: $border-radius-8;
+              line-height: 16px;
+
+              &.selected {
+                background: var(--border-red);
+                color: var(--primary);
+                border: 1px solid var(--primary);
+              }
+
+              &.inactive {
+                opacity: 0.5;
+                pointer-events: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

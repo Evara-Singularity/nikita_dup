@@ -1668,4 +1668,11 @@ export class CommonService
         data["custData"] = this.custDataTracking;
         this._analytics.sendAdobeCall(data, trackingname); 
     }
+
+    postUserLanguagePrefrence(params){
+        return this._dataService.callRestful(
+            "POST",
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.UPDATE_CUSTOMER_LANGUAGE_PREFRENCE + params
+        );
+    }
 }

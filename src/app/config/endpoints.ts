@@ -143,6 +143,7 @@ export const ENDPOINTS = {
   IFSC_CODE:'/payment/getBankDetails?ifsc=',
   GET_COMPARE_PRODUCTS:"/search/compareProducts?productId=",
   PRODUCT_API: '/aggregate/pdpDetails',
+  GET_DIFFRENT_BRANDS_PRODUCT: '/search/shopByBrands?product=',
   ADSENSE: '/adsense/getCampaign',
   GET_MSN_BY_LIST: '/search/searchByListOfMsn',
 };

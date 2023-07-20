@@ -159,6 +159,10 @@
                     span{
                         font-size: $medium-font;
                     }
+                    &.coupon-conatiner{
+                        color: var(--slimy-green);
+                        align-items: flex-start;
+                    }
                 }
             }
             .card-btn-row {

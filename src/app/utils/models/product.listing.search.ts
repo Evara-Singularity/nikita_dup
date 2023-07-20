@@ -61,8 +61,9 @@ export interface ProductsEntity {
     description?:string;
     short_description?: null;
     homePageRFQ?:boolean;
-    HomePageRFQstatus?:HomePageRFQstatus
+    HomePageRFQstatus?:HomePageRFQstatus;
     attributeValuesForPart?: any;
+    promoCodeDescription?: string;
 }
 
 export interface FilterableAttributes {

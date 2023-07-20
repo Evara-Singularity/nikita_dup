@@ -34,8 +34,8 @@ export class SelectLanguageComponent implements OnInit {
     if (
       userSession &&
       userSession["authenticated"] == "true" &&
-      this.languagePrefrence != null // &&
-    //  this.languagePrefrence != userSession["languagePrefrence"]
+      this.languagePrefrence != null  &&
+      this.languagePrefrence != userSession["languagePrefrence"]
     ) {
       this.updateUserLanguagePrefrence(userSession);
     }

@@ -239,5 +239,8 @@ export const product = {
     popular_categories: 'लोकप्रिय श्रेणियाँ',
     similar_category: 'इसी तरह की कैटेगरी',
     related_brands: 'संबंधित ब्रांड्स',
-    related_category: 'संबंधित वर्ग'
+    related_category: 'संबंधित वर्ग',
+    buy_online: 'सर्वोत्तम मूल्य पर उत्पाद ऑनलाइन',
+    shop_online: 'सर्वोत्तम मूल्य पर उत्पाद ऑनलाइन',
+    brand_title: 'मोगलिक्स में उत्पाद. भारत भर में मुफ्त वितरण और सीओडी विकल्प।',
 }  

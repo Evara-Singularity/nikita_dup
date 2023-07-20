@@ -14,6 +14,8 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { AdsenseService } from '@app/utils/services/adsense.service';
+import * as localization_en from '../../config/static-en';
+import * as localization_hi from '../../config/static-hi';
 
 let digitalData = {
     page: {},
@@ -65,8 +67,8 @@ export class BrandComponent implements OnInit, AfterViewInit {
 
 
     ngOnInit(): void {
+        this.initializeLocalization();
         if (this._commonService.isBrowser) {
-
             // set some extra meta tags if brand is a category page
             if (this._activatedRoute.snapshot.queryParams['category']) {
                 this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
@@ -77,10 +79,18 @@ export class BrandComponent implements OnInit, AfterViewInit {
         }
 
         this.setDataFromResolver();
-        this.getLocalization();
     }
 
-    getLocalization() {
+    initializeLocalization() {
+        if ((this._router.url).includes("/hi/")) {
+            this._commonService.defaultLocaleValue = localization_hi.product;
+            this.productStaticData = localization_hi.product;
+            this._commonService.changeStaticJson.next(this.productStaticData);
+        } else {
+            this._commonService.defaultLocaleValue = localization_en.product;
+            this.productStaticData = localization_en.product;
+            this._commonService.changeStaticJson.next(this.productStaticData);
+        }
         this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
             this.productStaticData = localization_content;
         });
@@ -201,11 +211,11 @@ export class BrandComponent implements OnInit, AfterViewInit {
         let itemsList = [];
         //for null seo in brand only
         if(!this.API_RESPONSE.brand[0].seoDetails && (!this.API_RESPONSE['brand'][1][0].categoryName)){
-            let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
+            let title = this.productStaticData.buy + ' ' + this.API_RESPONSE.brand[1][0]["brandName"] + ' ' + this.productStaticData.buy_online +" - Moglix.com";
             this.title.setTitle(title);
             this.meta.addTag({ "name": "og:title", "content": title }); 
             
-            let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
+            let metaDescription = this.productStaticData.buy + " " + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.shop_online +' ' + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.brand_title;
             this.meta.addTag({ "name": "description", "content": metaDescription });
             this.meta.addTag({ "name": "og:description", "content": metaDescription });
         }
@@ -214,7 +224,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
             this.title.setTitle(this.API_RESPONSE.brand[0].seoDetails.title);
             this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[0].seoDetails.title });
         } else if(this.API_RESPONSE.brand[0].seoDetails && !this.API_RESPONSE.brand[0].seoDetails.title && (!this.API_RESPONSE['brand'][1][0].categoryName) ) {
-            let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
+            let title = this.productStaticData.buy + ' ' + this.API_RESPONSE.brand[1][0]["brandName"] + ' ' + this.productStaticData.buy_online +" - Moglix.com";
             this.title.setTitle(title);
             this.meta.addTag({ "name": "og:title", "content": title });
         }
@@ -223,7 +233,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
             this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
             this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
         } else if(this.API_RESPONSE.brand[0].seoDetails && !this.API_RESPONSE.brand[0].seoDetails.metaDescription && (!this.API_RESPONSE['brand'][1][0].categoryName) ){
-            let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
+            let metaDescription = this.productStaticData.buy + " " + this.API_RESPONSE.brand[1][0]["brandName"] + this.productStaticData.shop_online + " " + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.brand_title;
             this.meta.addTag({ "name": "description", "content": metaDescription });
             this.meta.addTag({ "name": "og:description", "content": metaDescription });
         }
@@ -240,11 +250,11 @@ export class BrandComponent implements OnInit, AfterViewInit {
         if (this.API_RESPONSE['brand'][1][0].categoryName && !this.API_RESPONSE.brand[1][0].metaDesciption) {
 
             if(!this.API_RESPONSE.brand[0].seoDetails){
-                let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
+                let title = this.productStaticData.buy + " " + this.API_RESPONSE.brand[1][0]["brandName"] + ' ' + this.productStaticData.buy_online +" - Moglix.com";
                 this.title.setTitle(title);
                 this.meta.addTag({ "name": "og:title", "content": title }); 
                 
-                let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
+                let metaDescription = this.productStaticData.buy + " " + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.shop_online +' ' + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.brand_title;
                 this.meta.addTag({ "name": "description", "content": metaDescription });
                 this.meta.addTag({ "name": "og:description", "content": metaDescription });
             }
@@ -252,7 +262,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                 this.title.setTitle(this.API_RESPONSE.brand[0].seoDetails.title);
                 this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[0].seoDetails.title });
             } else {
-                let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
+                let title = this.productStaticData.buy + " " + this.API_RESPONSE.brand[1][0]["brandName"] + ' ' + this.productStaticData.buy_online +" - Moglix.com";
                 this.title.setTitle(title);
                 this.meta.addTag({ "name": "og:title", "content": title });
             }
@@ -261,7 +271,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                 this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
                 this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
             } else {
-                let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
+                let metaDescription = this.productStaticData.buy + " " + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.shop_online +' ' + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.brand_title;
                 this.meta.addTag({ "name": "description", "content": metaDescription });
                 this.meta.addTag({ "name": "og:description", "content": metaDescription });
             }

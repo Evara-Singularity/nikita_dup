@@ -237,5 +237,8 @@ export const product = {
     popular_categories: 'Popular Categories',
     similar_category: 'Similar Category',
     related_brands: 'Related Brands',
-    related_category: 'Related Category'
+    related_category: 'Related Category',
+    buy_online: 'Products Online at Best Price',
+    shop_online: 'products at best prices in India. Shop online for',
+    brand_title: 'products at Moglix. Free Delivery & COD options across India.',
 }

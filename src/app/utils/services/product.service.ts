@@ -19,6 +19,7 @@ interface ProductDataArg {
 export class ProductService {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+    readonly promoCodeDescription_off_key = "Off";
     private basePath = CONSTANTS.NEW_MOGLIX_API;
     private basePath2 =  CONSTANTS.NEW_MOGLIX_API_V2;
     productCouponItem: any = null;
@@ -132,6 +133,19 @@ export class ProductService {
             "GET",
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RECENTLY_VIEWED + user_id
         );
+    }
+
+    getProductList(msnList: string[]) {
+        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_MSN_BY_LIST;
+        const body = {
+            msnList: [...msnList],
+            country: CONSTANTS.COUNTRY_NAME
+        }
+        return this._dataService.callRestful("POST", url, { body }).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ lastOrderDetails: [], httpStatus: res.status });
+            })
+        )
     }
 
     getGSTINDetails(gstin) {
@@ -877,7 +891,7 @@ export class ProductService {
         return productReturn;
     }
 
-       productLayoutJsonToProductEntity(product: any, brandId?:any, brandName?:any) {
+    productLayoutJsonToProductEntity(product: any, brandId?:any, brandName?:any) {
         // console.log('product ==>', product);
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
@@ -915,6 +929,7 @@ export class ProductService {
             reviewCount: product.reviewCount || 0,
             internalProduct: true,
             outOfStock: product.outOfStock,
+            promoCodeDescription: (product.promoCodeDescription) ? this.getPromoCodeDescription(product.promoCodeDescription) : null
         };
         // console.log('productEntity ==>', productEntity);
         return productEntity;
@@ -1241,7 +1256,8 @@ export class ProductService {
             avgRating: (product.avgRating) ? product.avgRating : null, //this.product.avgRating,
             itemInPack: product['itemInPack'],
             ratingCount: (product.ratingCount) ? product.ratingCount : null, //this.product.ratingCount,
-            reviewCount: (product.reviewCount) ? product.reviewCount : null //this.product.reviewCount
+            reviewCount: (product.reviewCount) ? product.reviewCount : null, //this.product.reviewCount
+            promoCodeDescription: (product.promoCodeDescription) ? this.getPromoCodeDescription(product.promoCodeDescription) : null
         };
 
         return productEntity;
@@ -1257,6 +1273,11 @@ export class ProductService {
         return this._dataService.callRestful("GET",URL);
     }
 
+    getDifferentBrandProducts(msn) {
+        const URL=CONSTANTS.NEW_MOGLIX_API+ENDPOINTS.GET_DIFFRENT_BRANDS_PRODUCT + msn;
+        return this._dataService.callRestful("GET",URL);
+    }
+
     isInStock(product) {
         let isOutOfStockByQuantity = false;
         let isOutOfStockByPrice = false;
@@ -1266,5 +1287,13 @@ export class ProductService {
         return final;
     }
 
+    getPromoCodeDescription (promoCodeDescription){
+        const pcode = promoCodeDescription.split(this.promoCodeDescription_off_key);
+        if(typeof pcode != 'string' && pcode.length > 0){
+            return pcode[0] as string;
+        }else{
+            return null;
+        }
+    }
 
 }

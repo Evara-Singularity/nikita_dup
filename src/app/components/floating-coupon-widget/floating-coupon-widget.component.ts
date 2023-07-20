@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CartService } from '@app/utils/services/cart.service';
 import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -20,6 +21,7 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
   @Input() productName
   @Input() priceWithoutTax
   @Input() productDiscount
+  @Input() pageLinkName;
   @Output() closeproductDiscInfoComponent$: EventEmitter<boolean> = new EventEmitter<boolean>();
   isCouponCopied=false;
   copiedCouponSubscription: Subscription; 
@@ -27,7 +29,8 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
 
   constructor(
     public _cartService: CartService,
-    public _commonService: CommonService
+    public _commonService: CommonService,
+    private _analytics: GlobalAnalyticsService
   ) { }
 
   ngOnInit(): void {
@@ -56,9 +59,10 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
   }
 
 
-  copyCouponTextArea(){
-    this.isCouponCopied=true
-  const copiedCouponText = document.getElementById('coupon-text');
+  copyCouponTextArea() {
+    this.isCouponCopied = true
+    const copiedCouponText = document.getElementById('coupon-text');
+    this._analytics.sendAdobeCall({page: { channel: 'pdp', linkPageName: this.pageLinkName, linkName: 'floating:coupon:' + this.copiedCoupon }}, "genericClick")
     this.copyToClipboard(copiedCouponText.innerText);
   }
 

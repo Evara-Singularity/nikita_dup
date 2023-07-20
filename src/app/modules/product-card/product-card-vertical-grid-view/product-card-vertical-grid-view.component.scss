@@ -17,9 +17,19 @@
         text-align: center;
         position: relative;
         .pwa-image{
+            position: relative;
             img{
                 width:132px;
                 height: 124px;
+            }
+            .tags{
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100px;
+                img{
+                    height: 20px;
+                }
             }
       }
     }

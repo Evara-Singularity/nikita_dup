@@ -1,0 +1,49 @@
+@import '../../../scss/variables';
+.promoted-brand-container{
+    background: var(--white);
+    padding: 10px 0;
+    min-height: 200px;
+    h1{
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 20px;
+        padding: 0 10px 10px;
+    }
+    .promoted-brand-outer-section{
+        display: flex;
+        overflow: auto;
+        margin-left: 10px;
+        @extend %hide-scrollbar;
+        .promoted-brand-inner-section{
+            text-align: center;
+            margin-right: 10px;
+            img{
+                width: 125px;
+                min-width: 125px;
+                height: 105px;
+                border-radius: 4px;
+                border: 1px solid var(--silver);
+            }
+            .brand-name{
+                padding-top: 5px;
+                font-size: 14px;
+                color: var(--onyx-black);
+            }
+            .explore-btn{
+                font-size: 12px;
+                font-weight: bold;
+                color: var(--bleu-de-france);
+                padding-top: 5px;
+                a{
+                    color: var(--bleu-de-france);
+                }
+            }
+        }
+    }
+}
+.pad-lr-pdp{
+    padding: 0 15px 10px !important;
+}
+.pad-l-pdp{
+    padding-left: 15px !important;
+}

@@ -36,6 +36,7 @@ export class ProductListService {
 
   showMidPlpFilterLoader: boolean = true;
   excludeAttributes: string[] = [];
+  readonly promoCodeDescription_off_key = "Off";
 
   filterBuckets(buckets: any[]) {
     if (this.excludeAttributes.length > 0) {
@@ -45,6 +46,15 @@ export class ProductListService {
     }
     return buckets;
   }
+
+  getPromoCodeDescription (promoCodeDescription: string){
+    const pcode = promoCodeDescription.split(this.promoCodeDescription_off_key);
+    if(typeof pcode != 'string' && pcode.length > 0){
+        return pcode[0] as string;
+    }else{
+        return null;
+    }
+}
 
   createAndProvideDataToSharedListingComponent(
     rawSearchData: SearchResponse,
@@ -95,6 +105,7 @@ export class ProductListService {
             product["mrp"],
             product["salesPrice"]
           );
+          product['promoCodeDescription'] = product.promoCodeDescription ? this.getPromoCodeDescription(product.promoCodeDescription) : null
           return product;
         }
       ),
@@ -117,6 +128,35 @@ export class ProductListService {
         );
       this.initializeSortBy();
     }
+  }
+
+  getSerachProductList(productSearchResult) {
+    return [...productSearchResult].map(
+      (product) => {
+        product["mainImageThumnailLink"] =
+          this.getImageFromSearchProductResponse(
+            product["mainImageLink"],
+            "large",
+            "medium"
+          );
+        product["mainImageMediumLink"] =
+          this.getImageFromSearchProductResponse(
+            product["mainImageLink"],
+            "large",
+            "medium"
+          );
+        product['productTags'] = (product['productTags'] && product['productTags'].length > 0)?[this._commonService.sortProductTagsOnPriority(product['productTags'])[0]]:'';
+        product["internalProduct"] = product.hasOwnProperty("internalProduct")
+          ? false
+          : true, // if intenal product prop does not exist then it is internal product
+          product["discount"] = this._commonService.calculcateDiscount(
+            product["discount"],
+            product["mrp"],
+            product["salesPrice"]
+          );
+        return product;
+      }
+    );
   }
 
   getProductTag(product) {
@@ -308,6 +348,12 @@ export class ProductListService {
 
   getModuleString(module) {
     let str = "listing";
+    let adCampaignName =''
+    if(module.startsWith('ADS_FEATURE')){
+      adCampaignName = module.replace('ADS_FEATURE_','')
+      module = 'ADS_FEATURE';
+      // console.log('module ==>', module, adCampaignName);
+    }
     switch (module) {
       case "PRODUCT":
         str = "pdp";
@@ -384,6 +430,12 @@ export class ProductListService {
       case "CART-ADD-SIMILAR-PRODUCT":
         str = "pdp:widget:cart:similar";
         break;
+      case "CART-ADD-COMPARE-PRODUCT":
+        str = "pdp:widget:compare_products";
+        break;
+      case "ADS_FEATURE":
+        str = "pdp:widget:" + adCampaignName;
+        break;
       default:
         str = "pdp-extra";
         break;
@@ -392,7 +444,7 @@ export class ProductListService {
   }
 
   analyticAddToCart(routerlink, productDetails, usedInModule = "PRODUCT") {
-    console.log("analyticAddToCart ======>" , usedInModule);
+    // console.log("analyticAddToCart ======>" , usedInModule);
     const user = this._localStorageService.retrieve("user");
     const taxonomy = productDetails["taxonomyCode"];
     const pageName = this.pageName.toLowerCase();
@@ -405,7 +457,7 @@ export class ProductListService {
       taxo3 = productDetails["taxonomyCode"].split("/")[2] || "";
     }
 
-    console.log('usedInModule', usedInModule);
+    // console.log('usedInModule', usedInModule);
 
     let ele = [];
     const tagsForAdobe = ele.join("|");

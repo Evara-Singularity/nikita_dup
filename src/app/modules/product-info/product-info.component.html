@@ -1,5 +1,5 @@
 <login-popup [isRouteBased]="false" ></login-popup>
-<app-pop-up  *ngIf="openProductInfo" (outData$)="closeProducInfo($event)" [headerType]="'pop-up-header1'" [class.open1]="openProductInfo"
+<app-pop-up  *ngIf="openProductInfo" (outData$)="closeProducInfo($event)" [headerType]="'pop-up-header1'" [class.open]='!open360Popup' [class.open1]="openProductInfo"
     [data]="{class: 'payment-popup addAddressPopup', headerText: productStaticData.about_this_product}">
     <!-- <div class="head-sec header_add_edit" header>
         <div class="container">
@@ -52,7 +52,7 @@
                             {{tab | titlecase}}
                         </ng-container>
                         <ng-container *ngIf="isHindiUrl">
-                              {{productStaticData[tab]}}
+                                {{productStaticData[tab]}}
                         </ng-container>
                     </li>
                 </ng-container>
@@ -75,9 +75,16 @@
                     <product-details [details]="contentInfo['product details']"></product-details>
                 </ngx-siema-slide>
                 <ngx-siema-slide *ngIf="displaySlide('images')">
-                    <images [images]="contentInfo['images']"></images>
+                    <images [showPocMsn]='showPocMsn' [images]="contentInfo['images']"></images>
                 </ngx-siema-slide>
             </ngx-siema>
         </div>
     </div>
 </app-pop-up>
+<app-pop-up-variant2 [headerType]="'pop-up-header'" [for3dPopup]="for3dPopup" (outData$)="open360Popup = false" *ngIf="open360Popup">
+    <div class="content-popup" content>
+        <div class="pad-10">
+            <ng-container #product3dContainerRef></ng-container>
+        </div>
+    </div>
+</app-pop-up-variant2>

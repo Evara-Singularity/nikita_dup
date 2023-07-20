@@ -20,7 +20,7 @@
                 class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">
             </span>
             <span *ngIf="isAcceptLanguage" class="fixed_ico fixed_ico-img" (click)="translate()">
-                <img height="24" width="24"  src="../../../assets/img/translate.gif">
+                <img height="24" width="24"  src="assets/img/translate.gif">
             </span>
         </div>
         <ng-container #productCrousel></ng-container>
@@ -57,6 +57,12 @@
                         <em class="icon-video-thumbnail"></em>
                     </li>
                 </ng-container>
+                <li class="mt-0 mb-0">
+                    <div class="image-rotate-section" (click)="open36popup()" *ngIf='showPocMsn'>
+                        <p>VIEW</p>
+                        <img src="../../../assets/img/rotation-icon.svg">
+                    </div>
+                  </li>
             </ng-container>
         </ul>
         <!-- TODO: check how this section is used in PQA -->

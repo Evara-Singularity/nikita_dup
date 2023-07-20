@@ -20,6 +20,11 @@ import { ShopbyFeatrModule } from '@app/components/shopby-featr/shopby-featr.com
 import { CmsModule } from '@app/modules/cms/cms.module';
 import { SubCategoryModule } from '@app/components/subCategory/subCategory.component';
 import RecentViewedProductsWrapperModule from '@app/components/recent-viewed-products-wrapper/recent-viewed-products-wrapper.component';
+import { AdsenseService } from '@app/utils/services/adsense.service';
+import { AdsenseMainBannerModule } from '@app/modules/adsense/adsense-main-banner.module';
+import { AdsensePromotedBrandsUnitModule } from '@app/modules/adsense/adsense-promoted-brands-unit.module';
+import { AdsenseRelatedVideosModule } from '@app/modules/adsense/adsense-related-videos.module';
+import { AdsenseFeatureProductsUnitModule } from '@app/modules/adsense/adsense-feature-products-unit.module';
 
 @NgModule({
     imports: [
@@ -42,11 +47,18 @@ import RecentViewedProductsWrapperModule from '@app/components/recent-viewed-pro
         ShopbyFeatrModule,
         CmsModule,
         SubCategoryModule,
-        RecentViewedProductsWrapperModule
+        RecentViewedProductsWrapperModule,
+        AdsenseMainBannerModule,
+        AdsensePromotedBrandsUnitModule,
+        AdsenseRelatedVideosModule,
+        AdsenseFeatureProductsUnitModule
     ],
     declarations: [
         CategoryComponent,
     ],
+    providers: [
+        AdsenseService
+    ]
 })
 
 export class CategoryModule { }

@@ -11,25 +11,31 @@ import { ProductCardSkeletonModule } from '../ui/skeletons/product-card-skeleton
 import { AnalyticsWidgetWrapperModule } from '@app/components/analytics-widget-wrapper/analytics-widget-wrapper.module';
 import { Informative_videoModule } from '@app/components/informative_video/informative_video.component';
 import { BulkRquestFormPopupLazyModule } from '../bulk-rquest-form-popup-lazy/bulk-rquest-form-popup-lazy.module';
+import { AdsenseLeaderboardBannerModule } from '../adsense/adsense-leaderboard-banner.module';
+import { AdsenseRectangleBannerModule } from '../adsense/adsense-inline-rectangle-banner.module';
+import { AdsenseMainBannerModule } from "../adsense/adsense-main-banner.module";
 
 @NgModule({
-  declarations: [SharedProductListingComponent],
-  imports: [
-    CommonModule,
-    ProductCardHorizontalListViewModule,
-    ProductCardSkeletonModule,
-    FilterMidPlpModule,
-    AddFilterSymbolPipeModule,
-    NgxPaginationModule,
-    ObserveVisibilityDirectiveModule,
-    NotFoundModule,
-    AnalyticsWidgetWrapperModule,
-    Informative_videoModule,
-    BulkRquestFormPopupLazyModule
-  ],
-  exports: [
-    SharedProductListingComponent
-  ]
+    declarations: [SharedProductListingComponent],
+    exports: [
+        SharedProductListingComponent
+    ],
+    imports: [
+        CommonModule,
+        ProductCardHorizontalListViewModule,
+        ProductCardSkeletonModule,
+        FilterMidPlpModule,
+        AddFilterSymbolPipeModule,
+        NgxPaginationModule,
+        ObserveVisibilityDirectiveModule,
+        NotFoundModule,
+        AnalyticsWidgetWrapperModule,
+        Informative_videoModule,
+        BulkRquestFormPopupLazyModule,
+        AdsenseLeaderboardBannerModule,
+        AdsenseRectangleBannerModule,
+        AdsenseMainBannerModule
+    ]
 })
 
 export class SharedProductListingModule { }

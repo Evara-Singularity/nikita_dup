@@ -105,7 +105,9 @@ export class SharedPhoneVerificationComponent implements OnInit, OnDestroy
 
 	checkNumeric(event) { return event.charCode >= 48 && event.charCode <= 57; }
 
-	togglePopUp(){console.log("")}
+	togglePopUp(){
+		//console.log("")
+	}
 
 	ngOnDestroy()
 	{

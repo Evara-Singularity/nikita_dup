@@ -1,34 +1,57 @@
 @import '../../../scss/variables';
+
 .mainImageLarge {
     img {
         width: $fullwidth;
-        height:360px;
-    }
-}
-.thumbnailImageSlider{
-    width: $fullwidth;
-    .thumbnailImageSlider-wrap{
-       display:flex;
-       overflow-x:auto;
-       background: var(--ghost-white);
-       padding:15px;
-       @extend %hide-scrollbar;
-       &>div{
-        margin-right:15px;
-        .activeImgSlide{
-          border: 1px solid var(--primary);
-          border-radius:$border-radius-8;
-        }
-        &:last-child{
-            margin-right:0px;
-        }
-         img{
-             width:100px;
-             height:100px;
-             max-width:100px;
-             border-radius:$border-radius-8;
-         }
-     }
+        height: 360px;
     }
 }
 
+.thumbnailImageSlider {
+    width: $fullwidth;
+
+    .thumbnailImageSlider-wrap {
+        display: flex;
+        overflow-x: auto;
+        background: var(--ghost-white);
+        padding: 15px;
+        @extend %hide-scrollbar;
+
+        .rotation-conatiner {
+            background: var(--white);
+            display: grid;
+            place-items: center;
+            border-radius: 8px;
+
+            img {
+                width: 100px;
+                padding: 10px;
+            }
+
+            .active {
+                border: 1px solid var(--primary);
+                border-radius: $border-radius-8;
+            }
+        }
+
+        &>div {
+            margin-right: 15px;
+
+            .activeImgSlide {
+                border: 1px solid var(--primary);
+                border-radius: $border-radius-8;
+            }
+
+            &:last-child {
+                margin-right: 0px;
+            }
+
+            img {
+                width: 100px;
+                height: 100px;
+                max-width: 100px;
+                border-radius: $border-radius-8;
+            }
+        }
+    }
+}

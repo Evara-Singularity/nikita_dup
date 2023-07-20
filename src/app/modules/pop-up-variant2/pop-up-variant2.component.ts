@@ -14,6 +14,7 @@ export class PopUpVariant2Component implements OnInit, AfterViewInit, OnDestroy 
   @Input() data;
   @Input('headerType') headerType: string;
   @Output() outData$: EventEmitter<any> = new EventEmitter<any>();
+  @Input() for3dPopup: boolean = false;
   // closeClass: any = "icon-circle-delete";
   // paraClass: any = "txt";
   isServer: boolean;
@@ -42,9 +43,11 @@ export class PopUpVariant2Component implements OnInit, AfterViewInit, OnDestroy 
           (<HTMLElement>document.getElementById('body')).classList.add('stop-scroll');
           this.disableScroll();
         }
-        const className = document.getElementsByClassName('content-popup');
-        for (let i = 0; i < className.length; i++) {
-          className[i].addEventListener('touchmove', this.propagation, false);
+        if(!this.for3dPopup) {
+          const className = document.getElementsByClassName('content-popup');
+          for (let i = 0; i < className.length; i++) {
+            className[i].addEventListener('touchmove', this.propagation, false);
+          }
         }
       }, 0);
     }

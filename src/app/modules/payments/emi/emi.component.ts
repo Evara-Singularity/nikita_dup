@@ -155,7 +155,7 @@ export class EmiComponent {
 
     private initForm() {
         this.emiForm = this._formBuilder.group({
-            "store_card": [false],
+            "store_card": [true],
             "mode": ['EMI', []],
             "requestParams": this._formBuilder.group({
                 "ccexpyr": ['', [Validators.required]],
@@ -212,7 +212,7 @@ export class EmiComponent {
             // console.log("selectedEMIKey ==>", this.selectedEMIKey);
             this.emiForm.get('requestParams.bankcode').setValue(this.selectedEMIKey);
             // console.log("selectedEMIKey ==>", this.emiForm.get('requestParams.bankcode').value);
-            console.log(this.totalPayableAmount);
+            // console.log(this.totalPayableAmount);
         }
     }
 

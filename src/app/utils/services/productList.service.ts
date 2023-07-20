@@ -421,6 +421,9 @@ export class ProductListService {
       case "PRODUCT_SIMILAR":
         str = "pdp:product_similar";
         break;
+      case "SHOP_BY_BRANDS":
+        str = "pdp:shop_by_brands";  
+        break;
       case "HOME_PRODUCT":
         str = "pdp:home_product";
         break;

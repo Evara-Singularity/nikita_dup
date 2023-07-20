@@ -45,6 +45,7 @@ export class ShopByBrandsComponent implements OnInit {
         isSelected: false,
       });
     }
+    this.tabsArray.reverse();
     if (this.tabsArray.length > 0) {
       this.tabsArray[0].isSelected = true;
     }

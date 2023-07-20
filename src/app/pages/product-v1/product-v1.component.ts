@@ -2698,8 +2698,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     async onVisibleShopByBrands()
     {
-        const objectLen =  Object.keys(this.shopByDifferentBrands);
-        if (!this.shopByBrandsInstance && objectLen.length > 0) {
+        if (!this.shopByBrandsInstance && this.isShopByDifferentBrands) {
             const { ShopByBrandsComponent } = await import(
                 "./../../components/shop-by-brands/shop-by-brands.component"
             );
@@ -3938,8 +3937,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     getShopByDifferentBrandsData(msn: string) {
         this.productService.getDifferentBrandProducts(msn).subscribe(result=>{
-            if(result){
-                
+            if(result && result['status'] != "error"){
                 this.shopByDifferentBrands = result;
                 this.isShopByDifferentBrands = (Object.keys(result).length > 0) ? true : false;
             }

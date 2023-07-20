@@ -30,7 +30,7 @@
                     <ng-container *ngIf="suggestionList.length > 0">
                         <h3 class="search_heading">Suggestions</h3>
                         <ul class="plan-list">
-                            <ng-container *ngFor="let prod of suggestionList | slice:0:4; let i = index;">
+                            <ng-container *ngFor="let prod of suggestionList | slice:0:5; let i = index;">
                                 <li *ngIf="prod.productCount" class="ac_even" type="suggestionList"
                                     (click)="navigateTo('SEARCH', prod.term,null,prod.categoryIdList.join(','),prod.attributes, prod['brandName'] )"
                                     [attr.data-index]="i">

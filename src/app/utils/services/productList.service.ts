@@ -37,6 +37,7 @@ export class ProductListService {
 
   showMidPlpFilterLoader: boolean = true;
   excludeAttributes: string[] = [];
+  readonly promoCodeDescription_off_key = "Off";
 
   filterBuckets(buckets: any[]) {
     if (this.excludeAttributes.length > 0) {
@@ -46,6 +47,15 @@ export class ProductListService {
     }
     return buckets;
   }
+
+  getPromoCodeDescription (promoCodeDescription: string){
+    const pcode = promoCodeDescription.split(this.promoCodeDescription_off_key);
+    if(typeof pcode != 'string' && pcode.length > 0){
+        return pcode[0] as string;
+    }else{
+        return null;
+    }
+}
 
   createAndProvideDataToSharedListingComponent(
     rawSearchData: SearchResponse,
@@ -96,6 +106,7 @@ export class ProductListService {
             product["mrp"],
             product["salesPrice"]
           );
+          product['promoCodeDescription'] = product.promoCodeDescription ? this.getPromoCodeDescription(product.promoCodeDescription) : null
           return product;
         }
       ),
@@ -414,6 +425,9 @@ export class ProductListService {
         break;
       case "PRODUCT_SIMILAR":
         str = "pdp:product_similar";
+        break;
+      case "SHOP_BY_BRANDS":
+        str = "pdp:shop_by_brands";  
         break;
       case "HOME_PRODUCT":
         str = "pdp:home_product";

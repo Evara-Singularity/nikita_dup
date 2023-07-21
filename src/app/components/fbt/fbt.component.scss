@@ -56,6 +56,12 @@
             }
           }
         }
+        .add-text{
+          font-size: 10px;
+          color: var(--dim-gray);
+          margin-top: 22px;
+          display: block;
+        }
       }
       .static-card-container {
         width: calc(100% - 50px);

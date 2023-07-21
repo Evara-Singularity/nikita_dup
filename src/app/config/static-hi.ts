@@ -35,7 +35,7 @@ export const product = {
     emi_gst_text_part2:"तक की बचत करें।",
     write_review:"समीक्षा लिखें",
     recently_viewed:"हाल ही में देखे गए प्रोडक्ट",
-    view_more_faq:"अधिक बार पूछे जाने वाले प्रश्न देखें",
+    view_more_faq:"अधिक बार पूछे जाने वाले प्रश्न",  
     show_all_key_features:"सभी प्रमुख विशेषताएं दिखाएं",
     show_all_specifination: "सभी स्पेसिफिकेशंस दिखाएं",
     free_details:"",
@@ -243,4 +243,5 @@ export const product = {
     buy_online: 'सर्वोत्तम मूल्य पर उत्पाद ऑनलाइन',
     shop_online: 'सर्वोत्तम मूल्य पर उत्पाद ऑनलाइन',
     brand_title: 'मोगलिक्स में उत्पाद. भारत भर में मुफ्त वितरण और सीओडी विकल्प।',
+    viewMore:"देखें और",
 }  

@@ -16,8 +16,8 @@
                 <ng-container>
                     <product-card-vertical-container [containerId]="'topDealsContainer'+tabIndex" [numberOfItems]="10">
                         <ng-container *ngFor="let product of tabsArray[tabIndex]['data']; let pIndex=index">
-                            <product-card-vertical-grid-view [section]="'add_to_cart_itemtoexplore_section'"
-                                [product]="product" [moduleUsedIn]="'MORE_ITEMS_TO_EXPLORE'"
+                            <product-card-vertical-grid-view [section]="'shop_by_brands_section'"
+                                [product]="product" [moduleUsedIn]="'SHOP_BY_BRANDS'"
                                 [cardFeaturesConfig]='cardFeaturesConfig' [pIndex]="pIndex" [enableTracking]="true">
                             </product-card-vertical-grid-view>
                         </ng-container>

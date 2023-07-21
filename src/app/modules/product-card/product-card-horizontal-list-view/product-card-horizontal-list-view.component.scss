@@ -127,7 +127,7 @@
                             }
                             .prod-discount {
                                 font-weight: bold;
-                                color: #3b9e26;
+                                color: var(--slimy-green);
                             }
                         }
                         .prod-selling-price {
@@ -158,6 +158,10 @@
                     }
                     span{
                         font-size: $medium-font;
+                    }
+                    &.coupon-conatiner{
+                        color: var(--slimy-green);
+                        align-items: flex-start;
                     }
                 }
             }

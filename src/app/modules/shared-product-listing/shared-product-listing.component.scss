@@ -109,37 +109,61 @@
             width: 20px;
             position: relative;
         }
-        &:hover{
-            .select-language{
-                display: block;
-                position: absolute;
-                right: -5px;
-                p{
-                    background-color: var(--onyx-black);
-                    color: var(--white);
-                    border-radius: 6px;
-                    padding: 6px;
-                    align-items: center;
-                    position: relative;
-                    margin-right: 15px;
-                    font-size: 10px;
-                    width: fit-content;
-                    margin-top: 5px;
-                    font-size: 12px;
-                    &::after{
-                        content: "";
-                        position: absolute;
-                        top: -10px;
-                        left: 82%;
-                        margin-top: 0;
-                        border: 5px solid transparent;
-                        border-bottom: 5px solid var(--onyx-black);
-                    }
+        // &:hover{
+        //     .select-language{
+        //         display: block;
+        //         position: absolute;
+        //         right: -5px;
+        //         p{
+        //             background-color: var(--onyx-black);
+        //             color: var(--white);
+        //             border-radius: 6px;
+        //             padding: 6px;
+        //             align-items: center;
+        //             position: relative;
+        //             margin-right: 15px;
+        //             font-size: 10px;
+        //             width: fit-content;
+        //             margin-top: 5px;
+        //             font-size: 12px;
+        //             &::after{
+        //                 content: "";
+        //                 position: absolute;
+        //                 top: -10px;
+        //                 left: 82%;
+        //                 margin-top: 0;
+        //                 border: 5px solid transparent;
+        //                 border-bottom: 5px solid var(--onyx-black);
+        //             }
+        //         }
+        //     }
+        // }
+        .select-language{
+            display: block;
+            position: absolute;
+            right: -5px;
+            p{
+                background-color: var(--onyx-black);
+                color: var(--white);
+                border-radius: 6px;
+                padding: 6px;
+                align-items: center;
+                position: relative;
+                margin-right: 15px;
+                font-size: 10px;
+                width: fit-content;
+                margin-top: 5px;
+                font-size: 12px;
+                &::after{
+                    content: "";
+                    position: absolute;
+                    top: -10px;
+                    left: 82%;
+                    margin-top: 0;
+                    border: 5px solid transparent;
+                    border-bottom: 5px solid var(--onyx-black);
                 }
             }
-        }
-        .select-language{
-            display: none;
         }
     }
     

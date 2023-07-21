@@ -145,12 +145,6 @@
         <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="similarProductInstance"></product-skeletons>
     </div>
 
-    <div class="common-product" data-observeVisibility 
-        [debounceTime]="100" (visible)="onVisibleShopByBrands()">
-        <ng-container #shopByBrands></ng-container>
-        <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="shopByBrandsInstance"></product-skeletons>
-    </div>
-
     <product-more-widget [taxons]="taxons" [baseDomain]="baseDomain" [orderTracking]="orderTracking"
         [productBrandDetails]="rawProductData?.productBrandDetails"
         [productCategoryDetails]="rawProductData?.productCategoryDetails"
@@ -172,6 +166,12 @@
         (visible)="onVisibleSponsered($event)">
         <ng-container #sponseredProducts></ng-container>
         <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
+    </div>
+
+    <div class="common-product" data-observeVisibility *ngIf="isShopByDifferentBrands"
+    [debounceTime]="100" (visible)="onVisibleShopByBrands()">
+    <ng-container #shopByBrands></ng-container>
+    <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="shopByBrandsInstance"></product-skeletons>
     </div>
 
     <section id="popularDeals" class="common-product"
@@ -216,6 +216,7 @@
     <div
         [class.mb-60]="rawProductData?.productOutOfStock && productService.oosSimilarProductsData.similarData.length < 3">
     </div>
+    <div #recentProductsRef></div>
     <ng-container
         *ngIf="apiResponse?.breadCrumb && apiResponse?.breadCrumb.length > 0 && !rawProductData?.productOutOfStock">
         <breadcrumb-nav [breadcrumb]="apiResponse?.breadCrumb" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>

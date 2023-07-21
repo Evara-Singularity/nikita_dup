@@ -31,31 +31,32 @@ export class SelectLanguageComponent implements OnInit {
     this.languagePrefrence = sessionStorage.getItem("languagePrefrence");
     this.isPopUp = sessionStorage.getItem("isPopUp");
     const userSession = this.localAuthService.getUserSession();
+    this.updateUserLanguagePrefrence();
+  }
+
+  private updateUserLanguagePrefrence() {
+    const userSession = this.localAuthService.getUserSession();
     if (
       userSession &&
       userSession["authenticated"] == "true" &&
       this.languagePrefrence != null  &&
-      this.languagePrefrence != userSession["languagePrefrence"]
+      this.languagePrefrence != userSession["preferredLanguage"]
     ) {
-      this.updateUserLanguagePrefrence(userSession);
+      const params = "customerId=" + userSession["userId"] + "&languageCode=" + this.languagePrefrence;
+      this.commonService.postUserLanguagePrefrence(params).subscribe();
     }
-  }
-
-  private updateUserLanguagePrefrence(userSession) {
-    const params = "customerId=" + userSession["userId"] + "&languageCode=" + this.languagePrefrence;
-    this.commonService.postUserLanguagePrefrence(params).subscribe((result) => {
-      if (result && result["status"]) {
-        console.log("user data updated :: ------------==>", result);
-      }
-    });
   }
 
   closeLanguagePopup(language) {
     sessionStorage.setItem("languagePrefrence", language);
     this.languagePrefrence = language;
+    this.updateUserLanguagePrefrence();
   }
 
   translate() {
+    sessionStorage.setItem("languagePrefrence", "hi");
+    this.languagePrefrence = "hi";
+    this.updateUserLanguagePrefrence();
     this.translate$.emit();
   }
 

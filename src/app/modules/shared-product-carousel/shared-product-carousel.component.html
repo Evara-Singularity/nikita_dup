@@ -75,7 +75,7 @@
         </ng-container>
     </div>
 </div>
-<select-language
+<select-language *ngIf="isAcceptLanguage"
  [isHindiUrl]="isHindiUrl" 
  [imagePathAsset]="imagePathAsset" 
  (translate$)="translate()"

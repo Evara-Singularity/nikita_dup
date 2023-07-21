@@ -26,6 +26,8 @@
     border-top: 1px solid var(--ghost-white);
     background: var(--white);
     @extend %box-shadow;
+    display: flex;
+    align-items: center;
     &.translateHeader {
         transform: translateY(60px);
         transition-timing-function: ease-in-out;
@@ -34,22 +36,28 @@
     &.slide-up {
         bottom: 0;
     }
-    button {
-        width: 50%;
-        height: 54px;
-        border: none;
-        background: transparent;
-        float: left;
-        font-size: $large-font;
-        text-align: left;
-        padding: 0 12px;
-        .txt {
-            display: inline-block;
-            vertical-align: middle;
-            line-height: 16px;
-        }
-        &:first-of-type {
+    .fliter-container{
+        width: calc(100% - 50px);
+        position: relative;
+        button {
+            // width: 50%;
+            height: 54px;
+            border: none;
+            background: transparent;
+            float: left;
+            font-size: $large-font;
+            text-align: left;
+            padding: 0 12px;
             position: relative;
+            .txt {
+                display: inline-block;
+                vertical-align: middle;
+                line-height: 16px;
+            }
+            // &:first-of-type {
+            //     position: relative;
+    
+            // }
             &:after {
                 content: "";
                 position: absolute;
@@ -58,22 +66,50 @@
                 right: 0px;
                 top: 15px;
             }
+            &:last-child{
+                &::after{
+                    content: none;
+                }
+            }
+            i {
+                padding-right: 10px;
+                font-size: 20px;
+                vertical-align: middle;
+            }
+            .filter_count {
+                color: #D9232D;
+                background: #f9cece;
+                border-radius: 4px;
+                padding: 2px 5px;
+                margin-left: 10px;
+                font-size: 11px;
+                vertical-align: middle;
+            }
         }
-        i {
-            padding-right: 10px;
-            font-size: 20px;
-            vertical-align: middle;
+        &:after {
+            content: "";
+            position: absolute;
+            height: 25px;
+            border-right: 1px solid #ddd;
+            right: 0px;
+            top: 15px;
         }
-        .filter_count {
-            color: #D9232D;
-            background: #f9cece;
-            border-radius: 4px;
-            padding: 2px 5px;
-            margin-left: 10px;
-            font-size: 11px;
-            vertical-align: middle;
+        &:last-child{
+            &::after{
+                content: none;
+            }
         }
     }
+    .translator-container{
+        width: 50px;
+        text-align: end;
+        padding: 0 12px;
+        position: relative;
+        img{
+            width: 20px;
+        }
+    }
+    
 }
 
 .filter_chips {

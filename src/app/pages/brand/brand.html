@@ -76,6 +76,7 @@
         [headerName]="productStaticData?.shop + ' ' + (API_RESPONSE['brand'][1][0]?.heading ? (API_RESPONSE['brand'][1][0]?.heading | removeHTML) : API_RESPONSE['brand'][0].brandName) + (API_RESPONSE['brand'][1][0].categoryName ? ' ' + productStaticData?.online : ' ' + productStaticData?.products)"
         [productsListingData]="_productListService?.productListingData"
         [informativeVideosData]="informativeVideosData"
+        [isAcceptLanguage] = 'isAcceptLanguage'
         [categoryName]="API_RESPONSE['brand'][1][0].categoryName">      
     </shared-product-listing>
 

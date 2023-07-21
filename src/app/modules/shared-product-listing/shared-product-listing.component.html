@@ -32,13 +32,13 @@
             <span class="skeleton-inner"></span>
         </button>
     </div>
-    <div class="translator-container">
-        <img src="/assets/img/vernacular-icon.svg">
+    <div class="translator-container" *ngIf='isAcceptLanguage'>
+        <img src="/assets/img/vernacular-icon.svg" (click)='translate()'>
         <div class="select-language">
             <p>Select Language</p>
         </div>
     </div>
-
+    
 </div>
 <div class="filter_chips" *ngIf="filterChipsArray?.length > 0">
     <div class="overflow_wrapper_chip">

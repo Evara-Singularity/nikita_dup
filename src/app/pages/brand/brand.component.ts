@@ -43,6 +43,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
     informativeVideosData:any;    
     productStaticData = this._commonService.defaultLocaleValue;
     public adsenseData: any = null
+    isAcceptLanguage = false;
     constructor(
         public _activatedRoute: ActivatedRoute,
         public _router: Router,
@@ -110,7 +111,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results');
             const isHindiUrl = this._router.url && (this._router.url).toLowerCase().indexOf('/hi/') !== -1 ? true : false;
             let brandName = this.API_RESPONSE.brand[1][0].brandName;
-            console.log(this.API_RESPONSE['brand'][1][0]['productSearchResult']);
+            this.isAcceptLanguage = this.API_RESPONSE['brand'][1][0]['acceptLanguage'] && this.API_RESPONSE['brand'][1][0]['acceptLanguage'].length ? true : false;
             if(isHindiUrl) {
                 if(this.API_RESPONSE['brand'][1][0]['productSearchResult'] && this.API_RESPONSE['brand'][1][0]['productSearchResult']['totalCount'] > 0) {
                     brandName = this.API_RESPONSE['brand'][1][0]['productSearchResult']['products'][0]['brandName']

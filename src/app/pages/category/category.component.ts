@@ -4,19 +4,14 @@ import { CONSTANTS } from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { FooterService } from '@app/utils/services/footer.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { DataService } from '@app/utils/services/data.service';
 import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
-import { ENDPOINTS } from '@app/config/endpoints';
-import { HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
 import { AdsenseService } from '@app/utils/services/adsense.service';
 
 let digitalData = {
@@ -53,6 +48,7 @@ export class CategoryComponent {
     informativeVideosData:any;
     adsenseData: any = null;
     productStaticData = this._commonService.defaultLocaleValue;
+    isAcceptLanguage: boolean;
    
 
     constructor(
@@ -157,7 +153,7 @@ export class CategoryComponent {
 
             // Update total product account
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE['category'][1].productSearchResult.totalCount;
-
+            this.isAcceptLanguage = this.API_RESPONSE['category'][1]['acceptLanguage'] && this.API_RESPONSE['category'][1]['acceptLanguage'].length ? true : false;
             // shared product listing data update
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results');
             const isHindiUrl = this._router.url && (this._router.url).toLowerCase().indexOf('/hi/') !== -1 ? true : false;

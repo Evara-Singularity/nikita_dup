@@ -104,7 +104,7 @@ export class ProductCardCoreComponent implements OnInit {
     // randomize product feature
     this.product['keyFeatures'] = this.getRandomValue(this.product['keyFeatures'] || [], 2)
     this.isAd = !this.product.internalProduct
-    this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
+    this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' ' + this.productStaticData.reviews : this.product.ratingCount + ' ' + this.productStaticData.review;
     this.prodUrl = CONSTANTS.PROD;
     this.getLocalization();
     // console.log('product 22==>', this.product);

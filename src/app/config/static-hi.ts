@@ -51,6 +51,7 @@ export const product = {
     gst:"जीएसटी",
     off:"छूट",
     reviews:"समीक्षा",
+    review:"समीक्षा",
     offers_coupons:"ऑफर्स और कूपन्स",
     emi_available:"ईएमआई उपलब्ध",
     brand:"ब्रांड",

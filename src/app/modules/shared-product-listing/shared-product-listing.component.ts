@@ -24,6 +24,9 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
   private sortByInstance = null;
   @ViewChild('sortBy', { read: ViewContainerRef }) sortByContainerRef: ViewContainerRef;
 
+  private selectLangInstace = null;
+  @ViewChild('selectLang', { read: ViewContainerRef }) selectLangContainerRef: ViewContainerRef;
+
   private paginationInstance = null;
   @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
 
@@ -71,6 +74,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     private _activatedRoute: ActivatedRoute,
     private router: Router,
     public _commonService: CommonService) {
+      this.updateUserLang();
   }
 
   ngOnInit() {
@@ -84,10 +88,33 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     if(this.showNudge) {
       setTimeout(() => this.showNudge = false, 3000);
     }
+    if(this.isAcceptLanguage) {
+      this.loadSelectLangPopup();
+    }
   }
 
-  initializeLocalization() {
-    if ((this.router.url).includes("/hi/")) {
+  updateUserLang() {
+    let userPreference = null;
+    userPreference = sessionStorage.getItem('languagePrefrence');
+    const userSession = this._localAuthService.getUserSession();
+    if (
+      userSession &&
+      userSession["authenticated"] == "true" &&
+      userPreference != null  &&
+      userPreference != userSession["preferredLanguage"]
+    ) {
+      userPreference = userSession['preferredLanguage'];
+    }
+    // this.initializeLocalization(userPreference && userPreference == 'hi' ? true : false);
+    console.log(this.isHindiUrl, userPreference)
+    if(!this.isHindiUrl && userPreference == 'hi') {
+      const URL = '/hi' + this.getSanitizedUrl(this.router.url);
+      this.router.navigateByUrl(URL);
+    } 
+  }
+
+  initializeLocalization(isHindi = this.isHindiUrl) {
+    if (isHindi) {
         this._commonService.defaultLocaleValue = localization_hi.product;
         this.productStaticData = localization_hi.product;
         this._commonService.changeStaticJson.next(this.productStaticData);
@@ -99,9 +126,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
         this.productStaticData = localization_content;
     });
-}
-  
- 
+  }
 
   get isAdsEnable() {
     return this.pageName == 'CATEGORY' || this.pageName == 'SEARCH'
@@ -371,7 +396,26 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     ? this.taxonomyCodesArray 
     :''
   }
+
+  async loadSelectLangPopup() {
+    if (!this.selectLangInstace) {
+      const { SelectLanguageComponent } = await import('@app/components/select-language/select-language.component');
+      const factory = this._componentFactoryResolver.resolveComponentFactory(SelectLanguageComponent);
+      this.selectLangInstace = this.selectLangContainerRef.createComponent(factory, null, this._injector);
+      this.selectLangInstace.instance['imagePathAsset'] = CONSTANTS.IMAGE_ASSET_URL;
+      this.selectLangInstace.instance['isHindiUrl'] = this.isHindiUrl;
+      (this.selectLangInstace.instance['translate$'] as EventEmitter<any>).subscribe(data => {
+          this.translate();
+          this.selectLangInstace = null;
+          this.selectLangContainerRef.remove();
+      });
+    }
+  }
   
+  get isHindiUrl() {
+    return (this.router.url).toLowerCase().indexOf('/hi') !== -1
+  }
+
   ngOnDestroy() {
     this.resetLazyComponents();
   }

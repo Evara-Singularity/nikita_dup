@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { ProductCardVerticalGridViewModule } from '../product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
+import { ProductCardVerticalContainerComponent } from '../ui/product-card-vertical-container/product-card-vertical-container.component';
+import { ProductCardVerticalContainerModule } from '../ui/product-card-vertical-container/product-card-vertical-container.module';
 
 @Component({
 	selector: 'home-feature-arrivals',
@@ -29,7 +32,7 @@ export class FeaturedArrivals {
 
 @NgModule({
 	declarations: [FeaturedArrivals],
-	imports: [CommonModule, RouterModule, LazyLoadImageModule],
+	imports: [CommonModule, RouterModule, LazyLoadImageModule,ProductCardVerticalGridViewModule,ProductCardVerticalContainerModule],
 	exports:[FeaturedArrivals]
 })
 export class FeaturedArrivalModule {}

@@ -135,13 +135,14 @@
                 padding-left: 10px;
 
                 h4 {
-                    font-size: 12px;
+                    font-size: 14px;
                     padding: 5px 0px;
                 }
                 span {
                     display: block;
-                    font-size: 10px;
-                    color: #008aff;
+                    font-size: 12px;
+                    color: var(--bleu-de-france);
+                    font-weight: bold;
                 }
             }
         }

@@ -102,6 +102,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     iscloseproductDiscInfoComponent:boolean=true;
     compareProductsData:Array<object> = [];
     shopByDifferentBrands: object = {};
+    isShopByDifferentBrands: boolean = false;
     adsenseData: any = null;
 
     // lazy loaded component refs
@@ -225,6 +226,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     //floating container reference
     @ViewChild('similarProductsRef', {static: false}) private similarProductsElementRef: ElementRef<HTMLDivElement>;
     similarProductsScrolledIntoView: boolean;
+    @ViewChild('recentProductsRef', {static: false}) private recentProductElementRef: ElementRef<HTMLDivElement>;
+    recentProductScrolledIntoView: boolean;
+    
 
     set showLoader(value: boolean) { this.globalLoader.setLoaderState(value); }
 
@@ -309,9 +313,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             const rect = this.similarProductsElementRef.nativeElement.getBoundingClientRect();
             const topShown = rect.top >= 0;
             const bottomShown = rect.bottom <= window.innerHeight;
+            const rect_v2 = this.recentProductElementRef.nativeElement.getBoundingClientRect();
+            const topShown_v2 = rect_v2.top >= 0;
+            const bottomShown_v2 = rect_v2.bottom <= window.innerHeight;
             if((topShown && bottomShown) || (!topShown && bottomShown) ){
                 this.similarProductsScrolledIntoView = true;
             }else{
+                this.similarProductsScrolledIntoView = false;
+            }
+            if((topShown_v2 && bottomShown_v2) || (!topShown_v2 && bottomShown_v2) ){
                 this.similarProductsScrolledIntoView = false;
             }
         }
@@ -2688,8 +2698,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     async onVisibleShopByBrands()
     {
-        const objectLen =  Object.keys(this.shopByDifferentBrands);
-        if (!this.shopByBrandsInstance && objectLen.length > 0) {
+        if (!this.shopByBrandsInstance && this.isShopByDifferentBrands) {
             const { ShopByBrandsComponent } = await import(
                 "./../../components/shop-by-brands/shop-by-brands.component"
             );
@@ -3928,9 +3937,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     getShopByDifferentBrandsData(msn: string) {
         this.productService.getDifferentBrandProducts(msn).subscribe(result=>{
-            if(result){
-                
+            if(result && result['status'] != "error"){
                 this.shopByDifferentBrands = result;
+                this.isShopByDifferentBrands = (Object.keys(result).length > 0) ? true : false;
             }
         },(error)=>{
             this.shopByDifferentBrands = [];

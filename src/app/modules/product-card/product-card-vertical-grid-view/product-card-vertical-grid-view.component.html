@@ -38,14 +38,14 @@
                 <span>By: {{splitBrandName(product.short_description)}}</span>
             </div>
             <div class="prod-price-row" (click)="navigateToPDP()">
+                <div class="prod-selling-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
+                    <span>{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
+                                }}</span>
+                </div>
                 <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.discount > 0">
                     <span class="prod-mrp">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
                                 }}</span>
                     <span class="prod-discount">{{product.discount}}% OFF</span>
-                </div>
-                <div class="prod-selling-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
-                    <span>{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
-                                }}</span>
                 </div>
                 <div class="out-of-stock-text" *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
                     <span>Available on Request</span>

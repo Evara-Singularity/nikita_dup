@@ -26,7 +26,6 @@ export class CreateEnquiryComponent {
   showThanksPopup = false;
   isFormSubmitted: boolean= false;
   staticCountryData = StaticCountryText;
-  startWithZeroValidation: boolean = false;
   isFromUAE:boolean;
   mobileMaxLength = 10;
 
@@ -106,7 +105,7 @@ export class CreateEnquiryComponent {
 
   submit(){
     this.isFormSubmitted = true;
-    if(this.bulkEnquiryForm.valid && !this.startWithZeroValidation){
+    if(this.bulkEnquiryForm.valid){
       this.sendBulkEnquiry();
     }
   }
@@ -200,16 +199,7 @@ export class CreateEnquiryComponent {
   }
   
   ngAfterViewInit(){
-    this.bulkEnquiryForm.controls['phoneno'].valueChanges.subscribe(
-      (selectedValue) => {
-        if (selectedValue && selectedValue.slice(0, 1) == 0) {
-              this.startWithZeroValidation = true;
-          }
-          else {
-              this.startWithZeroValidation = false;
-          }
-      }
-  );  
+ 
   }
 
 

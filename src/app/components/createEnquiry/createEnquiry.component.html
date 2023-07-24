@@ -39,12 +39,11 @@
                     </div> -->
                     <ng-container *ngIf="isFormSubmitted && (this.bulkEnquiryForm.controls.phoneno.touched || this.bulkEnquiryForm.controls.phoneno.dirty)">
                         <p class="error-txt" *ngIf="this.bulkEnquiryForm.controls.phoneno.hasError('required')">Kindly enter valid mobile number.</p>
-                        <p class="error-txt" *ngIf="startWithZeroValidation === false && this.bulkEnquiryForm.controls.phoneno.hasError('pattern')">Mobile number should contain only digits.
+                        <p class="error-txt" *ngIf="this.bulkEnquiryForm.controls.phoneno.hasError('pattern')">Mobile number should contain only digits.
                         </p>
-                        <p class="error-txt" *ngIf="startWithZeroValidation === false && !this.bulkEnquiryForm.controls.phoneno.hasError('pattern') && this.bulkEnquiryForm.controls.phoneno.hasError('minlength')">
+                        <p class="error-txt" *ngIf="!this.bulkEnquiryForm.controls.phoneno.hasError('pattern') && this.bulkEnquiryForm.controls.phoneno.hasError('minlength')">
                            Kindly enter valid {{mobileMaxLength}} digit mobile number.</p>
                         <p class="error-txt" *ngIf="this.bulkEnquiryForm.controls.phoneno.hasError('invalidPhone') && phoneFC.value.length>0">Kindly enter valid mobile number.</p>
-                        <p class="error-txt" *ngIf="startWithZeroValidation === true && !this.bulkEnquiryForm.controls.phoneno.hasError('required')">Mobile number should not start with 0</p>
                     </ng-container>
 
                     <span class="label">Mobile No*</span>

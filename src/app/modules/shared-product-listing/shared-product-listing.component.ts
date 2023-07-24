@@ -15,7 +15,7 @@ import * as localization_hi from '../../config/static-hi';
   templateUrl: './shared-product-listing.component.html',
   styleUrls: ['./shared-product-listing.component.scss']
 })
-export class SharedProductListingComponent implements OnInit, OnDestroy {
+export class SharedProductListingComponent implements OnInit, OnDestroy, AfterViewInit {
 
   readonly sponseredProductPosition = [4, 5, 10, 19, 24];
   private filterInstance = null;
@@ -59,6 +59,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   productStaticData: any = this._commonService.defaultLocaleValue;
   taxonomyCodesArray: Array<any> = [];
   @Input() isAcceptLanguage = false;
+  showNudge = true;
   
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
@@ -77,6 +78,12 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     this.getUpdatedSession();
     this.initializeLocalization();
     // console.log("in shared listing ",this.informativeVideosData)
+  }
+
+  ngAfterViewInit() {
+    if(this.showNudge) {
+      setTimeout(() => this.showNudge = false, 3000);
+    }
   }
 
   initializeLocalization() {

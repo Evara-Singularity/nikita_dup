@@ -34,7 +34,7 @@
     </div>
     <div class="translator-container" *ngIf='isAcceptLanguage'>
         <img src="/assets/img/vernacular-icon.svg" (click)='translate()'>
-        <div class="select-language">
+        <div class="select-language" *ngIf='showNudge'>
             <p>Select Language</p>
         </div>
     </div>

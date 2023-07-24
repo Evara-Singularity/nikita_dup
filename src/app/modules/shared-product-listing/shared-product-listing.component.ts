@@ -188,20 +188,19 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
   }
 
   translate() {
-    console.log('I am in')
     if ((this.router.url).toLowerCase().indexOf('/hi/') !== -1) {
-        const URL = this.getSanitizedUrl(this.router.url).split("/hi/").join('/');
-        this.router.navigate([URL]);
+      const URL = this.getSanitizedUrl(this.router.url).split("/hi/").join('/');
+      this.router.navigate([URL]);
     }
     else {
-        const URL = '/hi' + this.getSanitizedUrl(this.router.url);
-        this.router.navigate([URL]);
+      const URL = '/hi' + this.getSanitizedUrl(this.router.url);
+      this.router.navigate([URL]);
     }
-}
+  }
 
   getSanitizedUrl(url) {
     return (url).toLowerCase().split('#')[0].split('?')[0];
-}
+  }
 
   getUpdatedSession() {
     // incase redirection from checkout with buynow updated count of product should be displayed in header cart icon

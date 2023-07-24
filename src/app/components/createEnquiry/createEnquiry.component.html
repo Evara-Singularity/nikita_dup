@@ -1,10 +1,8 @@
-
-
 <div id="create_rfq">
     <div class="rfq">
         <div class="bannerBlock">
             <p>Buying for Your Business?</p>
-            <p>Get the Best Quotes. 100+ Products at Bargain Deals + GST Benefit</p>
+            <p>{{staticCountryData.rfqPage.gstText}}</p>
         </div>
         <div class="pwa-row ">
             <div class="pwa-col-12 card">
@@ -14,36 +12,46 @@
                         <span>All of this within 30 min.</span>
                     </p>
                 </div>
-                <div class="material-form">
+                <div [formGroup]="bulkEnquiryForm" class="material-form">
                     <div class="outline-input-label">
                         <label [class.is-focus]="nameFC.value.length!=0">
                             <input type="text" formControlName='name'>
                             <div class="error-txt" *ngIf="isFormSubmitted && nameFC.invalid" #rfq>
-                                Kindly enter your fullname
+                                Kindly enter your full name.
                             </div>
                             <span class="label">Full Name*</span>
                         </label>
                     </div>
                     <div class="outline-input-label">
-                        <label>
+                        <label [class.is-focus]="emailFC.value.length!=0">
                             <input type="text" formControlName='email'>
                             <div class="error-txt" *ngIf="isFormSubmitted && emailFC.invalid" >
-                                Kindly enter valid email
+                                Kindly enter valid email id.
                             </div>
                             <span class="label">Email ID*</span>
                       </label>
                   </div>
                 <div class="outline-input-label">
-                  <label>
-                    <input type="text" data-numbersOnly formControlName='phoneno'>
-                    <div class="error-txt" *ngIf="isFormSubmitted && phoneFC.invalid" >
+                  <label [class.is-focus]="phoneFC.value.length!=0">
+                    <input type="text" formControlName='phoneno' [maxlength]="mobileMaxLength">
+                    <!-- <div class="error-txt" *ngIf="isFormSubmitted && phoneFC.invalid" >
                         Kindly enter valid mobile number
-                    </div>
+                    </div> -->
+                    <ng-container *ngIf="isFormSubmitted && (this.bulkEnquiryForm.controls.phoneno.touched || this.bulkEnquiryForm.controls.phoneno.dirty)">
+                        <p class="error-txt" *ngIf="this.bulkEnquiryForm.controls.phoneno.hasError('required')">Kindly enter valid mobile number.</p>
+                        <p class="error-txt" *ngIf="startWithZeroValidation === false && this.bulkEnquiryForm.controls.phoneno.hasError('pattern')">Mobile number should contain only digits.
+                        </p>
+                        <p class="error-txt" *ngIf="startWithZeroValidation === false && !this.bulkEnquiryForm.controls.phoneno.hasError('pattern') && this.bulkEnquiryForm.controls.phoneno.hasError('minlength')">
+                           Kindly enter valid {{mobileMaxLength}} digit mobile number.</p>
+                        <p class="error-txt" *ngIf="this.bulkEnquiryForm.controls.phoneno.hasError('invalidPhone') && phoneFC.value.length>0">Kindly enter valid mobile number.</p>
+                        <p class="error-txt" *ngIf="startWithZeroValidation === true && !this.bulkEnquiryForm.controls.phoneno.hasError('required')">Mobile number should not start with 0</p>
+                    </ng-container>
+
                     <span class="label">Mobile No*</span>
                   </label>
                 </div>
                 <div class="outline-input-label">
-                    <label>
+                    <label [class.is-focus]="companyFC.value.length!=0">
                     <input type="text" formControlName='company_name' placeholder="">
                     <span class="label">Company (Optional)</span>
                     </label>
@@ -54,6 +62,7 @@
         </div>  
     </div>
 </div>
+
 <!-- success popup -->
 <app-bottom-menu *ngIf="showThanksPopup" (outData$)="togglePopUp()">
     <div content>

@@ -95,7 +95,7 @@
                 <div class="shop-more-container">
                     <p class="shop-more-text">Spend {{_cartService.prepaidDataMapping[item.productId]['amount']|
                         currency:'INR' : 'symbol' : '1.0-0'}} or more & get <span
-                            class="prepaid-discount-txt"><strong>{{_cartService.prepaidDataMapping[item.productId]['discountIn']|
+                            class="green-txt"><strong>{{_cartService.prepaidDataMapping[item.productId]['discountIn']|
                                 currency:'INR' : 'symbol' : '1.0-0'}} OFF with online payment.</strong></span></p>
                     <p class="add-products-btn"
                         (click)="similarProduct(item.productName,item.categoryCode,item.brandName,item.productId)">ADD

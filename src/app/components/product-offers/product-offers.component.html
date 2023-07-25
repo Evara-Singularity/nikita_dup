@@ -28,8 +28,8 @@
                 </span>
                 <span class="discount-txt"  >
                     {{productStaticData.prepaid_discount_text.replace('___minimumCartValue___', couponForbrandCategory['minimumCartValue']).replace('___brandName___', brandName).replace('___categoryName___', categoryName)}}
-                    <span><br>*No coupon needed</span>
                 </span>
+                <span class="discount-txt grey-txt">*No coupon needed</span>
             </div>
             <div class="inline-list-text coupon-list-text" *ngIf="couponForbrandCategory['percentageDiscount']">
                 <span class="green-promo-code">

@@ -86,8 +86,9 @@
     align-items: center;
 
     .discount-icon {
-        img {
-            width: 24px;
+        i {
+            font-size: 20px;
+            color: var(--slimy-green);
         }
     }
 

@@ -87,9 +87,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     if(this.showNudge) {
       setTimeout(() => this.showNudge = false, 3000);
     }
-    if(this.isAcceptLanguage) {
-      this.loadSelectLangPopup();
-    }
   }
 
   updateUserLang() {
@@ -209,6 +206,15 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     const queryParamsKeys = Object.keys(queryParams);
     const queryParamConditionOne = (!queryParamsKeys.includes('orderby') && !queryParamsKeys.includes('orderway') && !queryParamsKeys.includes('orderBy') && !queryParamsKeys.includes('orderWay')) || (queryParamsKeys.includes('orderby') && queryParamsKeys.includes('orderway') && !queryParamsKeys.includes('orderBy') && !queryParamsKeys.includes('orderWay'))
     return filterKeys.length == 0 && (queryParamsKeys.length == 0 || (queryParamsKeys.length > 0 && queryParamConditionOne))
+  }
+
+  pageTranslation(){
+    const isPopUp = sessionStorage.getItem("isPopUp");
+    if(isPopUp == null){
+      this.loadSelectLangPopup();
+    }else{
+      this.translate();
+    }
   }
 
   translate() {

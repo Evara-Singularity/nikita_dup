@@ -5,6 +5,8 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { ProductCardVerticalGridViewModule } from '../product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
 import { ProductCardVerticalContainerComponent } from '../ui/product-card-vertical-container/product-card-vertical-container.component';
 import { ProductCardVerticalContainerModule } from '../ui/product-card-vertical-container/product-card-vertical-container.module';
+import { ProductCardFeature } from '@app/utils/models/product.listing.search';
+import { ProductService } from '@app/utils/services/product.service';
 
 @Component({
 	selector: 'home-feature-arrivals',
@@ -12,6 +14,23 @@ import { ProductCardVerticalContainerModule } from '../ui/product-card-vertical-
 	styleUrls: ['./featuredArrivals.scss'],
 })
 export class FeaturedArrivals {
+	constructor(private _productService:ProductService){
+
+	}
+	readonly cardFeaturesConfig: ProductCardFeature = {
+		// feature config
+		enableAddToCart: true,
+		enableBuyNow: true,
+		enableFeatures: false,
+		enableRating: true,
+		enableVideo: false,
+		// design config
+		enableCard: true,
+		verticalOrientation: true,
+		horizontalOrientation: false,
+		verticalOrientationV2: true,
+		lazyLoadImage: false
+	}
 	@Input('featureArrivalData') featureArrivalData;
 	@Input('defaultImage') defaultImage;
 	@Input('imagePath') imagePath;
@@ -27,6 +46,11 @@ export class FeaturedArrivals {
 			'; expires=' +
 			date.toUTCString() +
 			';path=/';
+	}
+	ngOnInit(){
+		console.log(this.featureArrivalData,"this.featureArrivalData")
+		this.featureArrivalData = (this.featureArrivalData).map((item) => this._productService.productLayoutJsonToProductEntity(item));
+
 	}
 }
 

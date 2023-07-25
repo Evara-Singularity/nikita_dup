@@ -533,7 +533,10 @@ export class EmiComponent {
                     ccexpmon: data.ccexpmon,
                     ccexpyr: data.ccexpyr,
                     store_card: data.store_card,
-                    user_credentials: data.user_credentials
+                    user_credentials: data.user_credentials,
+                    offer_key : data.offer_key,
+                    api_version : data.api_version,
+                    offer_auto_apply: data.offer_auto_apply
                 };
 
                 this.payuData = payuData;
@@ -628,24 +631,23 @@ export class EmiComponent {
      
         if(response)
         {
-        this.offerKey =response['offerKey']
        
         let data ={};
-        data['description'] = response['description'];
-        data['totalCartValue'] = this.totalPayableAmount +response['discountDetail']['discount'];
-        data['minTxnAmount'] = response['minTxnAmount']
-        data['maxTxnAmount'] = response['maxTxnAmount']
-        data['maxDiscount'] = response['discountDetail']['maxDiscount']
-        data['discount'] = response['discountDetail']['discount']
-        data['totalPayable']=  response['discountDetail']['discountedAmount'];
+        data['description'] = response['offers'][0]['description'];
+        data['totalCartValue'] = this.totalPayableAmount +response['offerDiscount']['discount'];
+        data['minTxnAmount'] = response['offers'][0]['minTxnAmount']
+        data['maxTxnAmount'] = response['offers'][0]['maxTxnAmount']
+        data['maxDiscount'] = response['offers'][0]['maxDiscountPerTxn']
+        data['discount'] = response['offerDiscount']['discount']
+        data['totalPayable']=  response['offerDiscount']['discountedAmount'];
 
         this._popupService.setPayUOfferPopUpData(data);
 
-        this.totalPayableAmount = response['discountDetail']['discountedAmount'];
+        this.totalPayableAmount = response['offerDiscount']['discountedAmount'];
         
         }
     }
-
+    
     onBankChange(value, emiValues) {
         // console.log("value ==>", value, emiValues);
         if (value == "0") {
@@ -724,17 +726,19 @@ export class EmiComponent {
         let response = null;
         if (cardNumber && cardNumber.length === 16) {
             this.isShowLoader = true;
-            this.getPayUOfferForUserCall(cardNumber).subscribe((res): void => {
+            let paymnetCode = this.selectedEMIKey;
+            this.getPayUOfferForUserCall(cardNumber,paymnetCode).subscribe((res): void => {
                 this.isShowLoader = false;
                 if (res["status"] != true) {
                     this.resetBankDiscountAmount();
                     return;
                 }
                 response = res['data'];
-                if (response['result'] && response['result']['offers'] && response['result']['offers'].length > 0) {
-                    this.bankDiscountAmount = response['result']['offers'][0]['discountDetail']['discount'];
-                    this.fetchInitialEmiData(response['result']['offers'][0]['discountDetail']['discountedAmount']);
-                    this.setPayUOfferDiscount(response['result']['offers'][0]);
+                if (response['result'] && response['result']['offerDiscount'] ) {
+                    this.bankDiscountAmount = response['result']['offerDiscount']['discount'];
+                    this.fetchInitialEmiData(response['result']['offerDiscount']['discountedAmount']);
+                    this.offerKey =response['requestOfferKey'];
+                    this.setPayUOfferDiscount(response['result']);
 
                 }else{
                     this.resetBankDiscountAmount();
@@ -744,7 +748,6 @@ export class EmiComponent {
                 this.resetBankDiscountAmount();
                 this.isShowLoader = false;
             })
-            
         }
         else {
             this.resetBankDiscountAmount();

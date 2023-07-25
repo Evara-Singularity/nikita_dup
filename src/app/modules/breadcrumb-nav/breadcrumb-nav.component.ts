@@ -14,6 +14,7 @@ export class BreadcrumbNavComponent implements OnInit {
   @Input() breadcrumb: [] = null;
   @Input('analytics') analytics = null;
   readonly baseDomain = CONSTANTS.PROD;
+  @Input() productStaticData = this._commonService.defaultLocaleValue;
 
   constructor(
     private renderer2: Renderer2,

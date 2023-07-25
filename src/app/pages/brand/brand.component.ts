@@ -207,6 +207,10 @@ export class BrandComponent implements OnInit, AfterViewInit {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
+    get isHindiUrl() {
+        return (this._router.url).toLowerCase().indexOf('/hi') !== -1
+    }
+
     setLinks() {
         let qp = this._activatedRoute.snapshot.queryParams;
         let itemsList = [];
@@ -365,6 +369,32 @@ export class BrandComponent implements OnInit, AfterViewInit {
             s.type = "application/ld+json";
             s.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "BreadcrumbList", "itemListElement": itemsList });
             this._renderer2.appendChild(this._document.head, s);
+        }
+        if(this.isAcceptLanguage) {
+            const currentRoute = this._router.url.split('?')[0].split('#')[0];
+            const languagelink = this._renderer2.createElement("link");
+            languagelink.rel = "alternate";
+            if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
+                languagelink.href = this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD +  '/hi' + currentRoute.toLowerCase();
+            } else {
+                languagelink.href = this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + '/hi' + currentRoute.toLowerCase(); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
+            }
+            // languagelink.href = CONSTANTS.PROD + this.isHindiUrl ? CONSTANTS.PROD + this._router.url : '/hi/' + this._router.url;
+            languagelink.hreflang = 'hi-in';
+            this._renderer2.appendChild(this._document.head, languagelink);
+    
+            const elanguagelink = this._renderer2.createElement("link");
+            elanguagelink.rel = "alternate";
+            if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
+                elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', '');
+            } else {
+                elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', ''); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
+            }
+            elanguagelink.hreflang = 'en'
+            this._renderer2.appendChild(this._document.head, elanguagelink);
+            if (this._commonService.isBrowser) {
+                this.isHindiUrl ? document.documentElement.setAttribute("lang", 'hi') : document.documentElement.setAttribute("lang", 'en');
+            }
         }
         let currentQueryParams = this._activatedRoute.snapshot.queryParams;
         let currentRoute = this._commonService.getCurrentRoute(this._router.url);

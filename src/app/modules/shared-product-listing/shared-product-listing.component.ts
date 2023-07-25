@@ -74,7 +74,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     private _activatedRoute: ActivatedRoute,
     private router: Router,
     public _commonService: CommonService) {
-      this.updateUserLang();
   }
 
   ngOnInit() {

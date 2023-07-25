@@ -55,6 +55,8 @@ export class AlpComponent implements OnInit {
     alpProductListingData = null;
     showPageNotFound: boolean;
     alpPriceListData = [];
+    isAcceptLanguage: boolean = false;
+    productStaticData: any;
 
     constructor(
         @Optional() @Inject(RESPONSE) private _response,
@@ -75,11 +77,19 @@ export class AlpComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.getLocalization();
         this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
             ClientUtility.scrollToTop(100);
         }
     }
+
+    getLocalization() {
+        this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+            this.productStaticData = localization_content;
+        });
+    }
+
 
     setCategoryDataFromResolver() {
         this._commonService.showLoader = true;
@@ -125,6 +135,7 @@ export class AlpComponent implements OnInit {
         this._commonService.showLoader = false;
         const ict = this.alpCategoryCodeData["categoryDetails"]['active'];
         const PRODUCT_COUNT = this.alpProductListingData['productSearchResult']['totalCount'];
+        this.isAcceptLanguage = this.alpProductListingData['acceptLanguage'] && this.alpProductListingData['acceptLanguage'].length ? true : false;
         if (!ict || PRODUCT_COUNT === 0) {
             //TODO 1704 :NO PRODUCTS FOUND SHOULD COME HERE
             if (this._commonService.isServer) {
@@ -434,6 +445,31 @@ export class AlpComponent implements OnInit {
             // JIRA: ODP-1371
             // this.setAmpTag('alp');
         }
+        if(this.isAcceptLanguage) {
+            const languagelink = this._renderer2.createElement("link");
+            languagelink.rel = "alternate";
+            if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
+                languagelink.href = this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD +  '/hi' + currentRoute.toLowerCase();
+            } else {
+                languagelink.href = this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + '/hi' + currentRoute.toLowerCase(); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
+            }
+            // languagelink.href = CONSTANTS.PROD + this.isHindiUrl ? CONSTANTS.PROD + this._router.url : '/hi/' + this._router.url;
+            languagelink.hreflang = 'hi-in';
+            this._renderer2.appendChild(this._document.head, languagelink);
+    
+            const elanguagelink = this._renderer2.createElement("link");
+            elanguagelink.rel = "alternate";
+            if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
+                elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', '');
+            } else {
+                elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', ''); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
+            }
+            elanguagelink.hreflang = 'en'
+            this._renderer2.appendChild(this._document.head, elanguagelink);
+            if (this._commonService.isBrowser) {
+                this.isHindiUrl ? document.documentElement.setAttribute("lang", 'hi') : document.documentElement.setAttribute("lang", 'en');
+            }
+        }
 
         // Start Canonical URL
         const currentQueryParams = this._activatedRoute.snapshot.queryParams;
@@ -467,6 +503,10 @@ export class AlpComponent implements OnInit {
             links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
             this._renderer2.appendChild(this._document.head, links);
         }
+    }
+
+    get isHindiUrl() {
+        return (this._router.url).toLowerCase().indexOf('/hi') !== -1
     }
 
     getExtraCategoryData(data): Observable<{}> {

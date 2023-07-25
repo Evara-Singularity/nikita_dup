@@ -26,6 +26,8 @@
     border-top: 1px solid var(--ghost-white);
     background: var(--white);
     @extend %box-shadow;
+    display: flex;
+    align-items: center;
     &.translateHeader {
         transform: translateY(60px);
         transition-timing-function: ease-in-out;
@@ -34,22 +36,28 @@
     &.slide-up {
         bottom: 0;
     }
-    button {
-        width: 50%;
-        height: 54px;
-        border: none;
-        background: transparent;
-        float: left;
-        font-size: $large-font;
-        text-align: left;
-        padding: 0 12px;
-        .txt {
-            display: inline-block;
-            vertical-align: middle;
-            line-height: 16px;
-        }
-        &:first-of-type {
+    .fliter-container{
+        width: 100%;
+        position: relative;
+        button {
+            // width: 50%;
+            height: 54px;
+            border: none;
+            background: transparent;
+            float: left;
+            font-size: $large-font;
+            text-align: left;
+            padding: 0 12px;
             position: relative;
+            .txt {
+                display: inline-block;
+                vertical-align: middle;
+                line-height: 16px;
+            }
+            // &:first-of-type {
+            //     position: relative;
+    
+            // }
             &:after {
                 content: "";
                 position: absolute;
@@ -58,22 +66,107 @@
                 right: 0px;
                 top: 15px;
             }
+            &:last-child{
+                &::after{
+                    content: none;
+                }
+            }
+            i {
+                padding-right: 10px;
+                font-size: 20px;
+                vertical-align: middle;
+            }
+            .filter_count {
+                color: #D9232D;
+                background: #f9cece;
+                border-radius: 4px;
+                padding: 2px 5px;
+                margin-left: 10px;
+                font-size: 11px;
+                vertical-align: middle;
+            }
         }
-        i {
-            padding-right: 10px;
-            font-size: 20px;
-            vertical-align: middle;
+        &:after {
+            content: "";
+            position: absolute;
+            height: 25px;
+            border-right: 1px solid #ddd;
+            right: 0px;
+            top: 15px;
         }
-        .filter_count {
-            color: #D9232D;
-            background: #f9cece;
-            border-radius: 4px;
-            padding: 2px 5px;
-            margin-left: 10px;
-            font-size: 11px;
-            vertical-align: middle;
+        &:last-child{
+            &::after{
+                content: none;
+            }
         }
     }
+    .translator-container{
+        width: 60px;
+        margin-left: auto;
+        padding: 0 12px 0 20px;
+
+        img{
+            width: 20px;
+            position: relative;
+        }
+        // &:hover{
+        //     .select-language{
+        //         display: block;
+        //         position: absolute;
+        //         right: -5px;
+        //         p{
+        //             background-color: var(--onyx-black);
+        //             color: var(--white);
+        //             border-radius: 6px;
+        //             padding: 6px;
+        //             align-items: center;
+        //             position: relative;
+        //             margin-right: 15px;
+        //             font-size: 10px;
+        //             width: fit-content;
+        //             margin-top: 5px;
+        //             font-size: 12px;
+        //             &::after{
+        //                 content: "";
+        //                 position: absolute;
+        //                 top: -10px;
+        //                 left: 82%;
+        //                 margin-top: 0;
+        //                 border: 5px solid transparent;
+        //                 border-bottom: 5px solid var(--onyx-black);
+        //             }
+        //         }
+        //     }
+        // }
+        .select-language{
+            display: block;
+            position: absolute;
+            right: -5px;
+            p{
+                background-color: var(--onyx-black);
+                color: var(--white);
+                border-radius: 6px;
+                padding: 6px;
+                align-items: center;
+                position: relative;
+                margin-right: 15px;
+                font-size: 10px;
+                width: fit-content;
+                margin-top: 5px;
+                font-size: 12px;
+                &::after{
+                    content: "";
+                    position: absolute;
+                    top: -10px;
+                    left: 82%;
+                    margin-top: 0;
+                    border: 5px solid transparent;
+                    border-bottom: 5px solid var(--onyx-black);
+                }
+            }
+        }
+    }
+    
 }
 
 .filter_chips {

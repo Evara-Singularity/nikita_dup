@@ -15,7 +15,7 @@ import * as localization_hi from '../../config/static-hi';
   templateUrl: './shared-product-listing.component.html',
   styleUrls: ['./shared-product-listing.component.scss']
 })
-export class SharedProductListingComponent implements OnInit, OnDestroy {
+export class SharedProductListingComponent implements OnInit, OnDestroy, AfterViewInit {
 
   readonly sponseredProductPosition = [4, 5, 10, 19, 24];
   private filterInstance = null;
@@ -23,6 +23,9 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
 
   private sortByInstance = null;
   @ViewChild('sortBy', { read: ViewContainerRef }) sortByContainerRef: ViewContainerRef;
+
+  private selectLangInstace = null;
+  @ViewChild('selectLang', { read: ViewContainerRef }) selectLangContainerRef: ViewContainerRef;
 
   private paginationInstance = null;
   @ViewChild('pagination', { read: ViewContainerRef }) paginationContainerRef: ViewContainerRef;
@@ -58,6 +61,8 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
   showSortBy: boolean = true;
   productStaticData: any = this._commonService.defaultLocaleValue;
   taxonomyCodesArray: Array<any> = [];
+  @Input() isAcceptLanguage = false;
+  showNudge = true;
   
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
@@ -78,8 +83,37 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     // console.log("in shared listing ",this.informativeVideosData)
   }
 
-  initializeLocalization() {
-    if ((this.router.url).includes("/hi/")) {
+  ngAfterViewInit() {
+    if(this.showNudge) {
+      setTimeout(() => this.showNudge = false, 3000);
+    }
+    if(this.isAcceptLanguage) {
+      this.loadSelectLangPopup();
+    }
+  }
+
+  updateUserLang() {
+    let userPreference = null;
+    userPreference = sessionStorage.getItem('languagePrefrence');
+    const userSession = this._localAuthService.getUserSession();
+    if (
+      userSession &&
+      userSession["authenticated"] == "true" &&
+      userPreference != null  &&
+      userPreference != userSession["preferredLanguage"]
+    ) {
+      userPreference = userSession['preferredLanguage'];
+    }
+    // this.initializeLocalization(userPreference && userPreference == 'hi' ? true : false);
+    console.log(this.isHindiUrl, userPreference)
+    if(!this.isHindiUrl && userPreference == 'hi') {
+      const URL = '/hi' + this.getSanitizedUrl(this.router.url);
+      this.router.navigateByUrl(URL);
+    } 
+  }
+
+  initializeLocalization(isHindi = this.isHindiUrl) {
+    if (isHindi) {
         this._commonService.defaultLocaleValue = localization_hi.product;
         this.productStaticData = localization_hi.product;
         this._commonService.changeStaticJson.next(this.productStaticData);
@@ -91,9 +125,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
         this.productStaticData = localization_content;
     });
-}
-  
- 
+  }
 
   get isAdsEnable() {
     return this.pageName == 'CATEGORY' || this.pageName == 'SEARCH'
@@ -177,6 +209,21 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     const queryParamsKeys = Object.keys(queryParams);
     const queryParamConditionOne = (!queryParamsKeys.includes('orderby') && !queryParamsKeys.includes('orderway') && !queryParamsKeys.includes('orderBy') && !queryParamsKeys.includes('orderWay')) || (queryParamsKeys.includes('orderby') && queryParamsKeys.includes('orderway') && !queryParamsKeys.includes('orderBy') && !queryParamsKeys.includes('orderWay'))
     return filterKeys.length == 0 && (queryParamsKeys.length == 0 || (queryParamsKeys.length > 0 && queryParamConditionOne))
+  }
+
+  translate() {
+    if ((this.router.url).toLowerCase().indexOf('/hi/') !== -1) {
+      const URL = this.getSanitizedUrl(this.router.url).split("/hi/").join('/');
+      this.router.navigate([URL]);
+    }
+    else {
+      const URL = '/hi' + this.getSanitizedUrl(this.router.url);
+      this.router.navigate([URL]);
+    }
+  }
+
+  getSanitizedUrl(url) {
+    return (url).toLowerCase().split('#')[0].split('?')[0];
   }
 
   getUpdatedSession() {
@@ -348,7 +395,26 @@ export class SharedProductListingComponent implements OnInit, OnDestroy {
     ? this.taxonomyCodesArray 
     :''
   }
+
+  async loadSelectLangPopup() {
+    if (!this.selectLangInstace) {
+      const { SelectLanguageComponent } = await import('@app/components/select-language/select-language.component');
+      const factory = this._componentFactoryResolver.resolveComponentFactory(SelectLanguageComponent);
+      this.selectLangInstace = this.selectLangContainerRef.createComponent(factory, null, this._injector);
+      this.selectLangInstace.instance['imagePathAsset'] = CONSTANTS.IMAGE_ASSET_URL;
+      this.selectLangInstace.instance['isHindiUrl'] = this.isHindiUrl;
+      (this.selectLangInstace.instance['translate$'] as EventEmitter<any>).subscribe(data => {
+          this.translate();
+          this.selectLangInstace = null;
+          this.selectLangContainerRef.remove();
+      });
+    }
+  }
   
+  get isHindiUrl() {
+    return (this.router.url).toLowerCase().indexOf('/hi') !== -1
+  }
+
   ngOnDestroy() {
     this.resetLazyComponents();
   }

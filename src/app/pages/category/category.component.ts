@@ -4,19 +4,14 @@ import { CONSTANTS } from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { FooterService } from '@app/utils/services/footer.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { DataService } from '@app/utils/services/data.service';
 import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
-import { ENDPOINTS } from '@app/config/endpoints';
-import { HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
 import { AdsenseService } from '@app/utils/services/adsense.service';
 
 let digitalData = {
@@ -53,6 +48,7 @@ export class CategoryComponent {
     informativeVideosData:any;
     adsenseData: any = null;
     productStaticData = this._commonService.defaultLocaleValue;
+    isAcceptLanguage: boolean;
    
 
     constructor(
@@ -77,10 +73,10 @@ export class CategoryComponent {
     }
 
     ngOnInit(): void {
+        this.getLocalization();
         this.setDataFromResolver();
         if (this._commonService.isBrowser) {
             this._footerService.setMobileFoooters();
-            this.getLocalization();
         }
     }
 
@@ -157,7 +153,7 @@ export class CategoryComponent {
 
             // Update total product account
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE['category'][1].productSearchResult.totalCount;
-
+            this.isAcceptLanguage = this.API_RESPONSE['category'][1]['acceptLanguage'] && this.API_RESPONSE['category'][1]['acceptLanguage'].length ? true : false;
             // shared product listing data update
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results');
             const isHindiUrl = this._router.url && (this._router.url).toLowerCase().indexOf('/hi/') !== -1 ? true : false;
@@ -208,6 +204,10 @@ export class CategoryComponent {
            
         });
     }
+
+    get isHindiUrl() {
+        return (this._router.url).toLowerCase().indexOf('/hi') !== -1
+      }
  
 
     private createFooterAccordianData() {
@@ -235,7 +235,6 @@ export class CategoryComponent {
 
     private setCanonicalUrls() {
         const currentRoute = this._router.url.split('?')[0].split('#')[0];
-
         if (!this._commonService.isServer) {
             const links = this._renderer2.createElement('link');
             links.rel = 'canonical';
@@ -245,6 +244,31 @@ export class CategoryComponent {
                 links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this._activatedRoute.snapshot.queryParams.page;
             }
             this._renderer2.appendChild(this._document.head, links);
+            if(this.isAcceptLanguage) {
+                const languagelink = this._renderer2.createElement("link");
+                languagelink.rel = "alternate";
+                if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
+                    languagelink.href = this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD +  '/hi' + currentRoute.toLowerCase();
+                } else {
+                    languagelink.href = this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + '/hi' + currentRoute.toLowerCase(); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
+                }
+                // languagelink.href = CONSTANTS.PROD + this.isHindiUrl ? CONSTANTS.PROD + this._router.url : '/hi/' + this._router.url;
+                languagelink.hreflang = 'hi-in';
+                this._renderer2.appendChild(this._document.head, languagelink);
+        
+                const elanguagelink = this._renderer2.createElement("link");
+                elanguagelink.rel = "alternate";
+                if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
+                    elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', '');
+                } else {
+                    elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', ''); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
+                }
+                elanguagelink.hreflang = 'en'
+                this._renderer2.appendChild(this._document.head, elanguagelink);
+                if (this._commonService.isBrowser) {
+                    this.isHindiUrl ? document.documentElement.setAttribute("lang", 'hi') : document.documentElement.setAttribute("lang", 'en');
+                }
+            }
         }
 
         const currentQueryParams = this._activatedRoute.snapshot.queryParams;

@@ -51,6 +51,7 @@ export const product = {
     gst:"GST",
     off:"OFF",
     reviews:"Reviews",
+    review:"Review",
     offers_coupons:"Offers and Coupons",
     emi_available:"EMI's Available",
     brand_store:"Brand Store",

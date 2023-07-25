@@ -105,7 +105,12 @@
 {{ detail.requestType !='return' && detail.requestType !='exchange' | json }}
 {{ showReturn | json }}
 {{ detail.show_return_exchange | json }} -->
-
+    <div class="mar-15">
+        <div class="need-help-strip return-request-text" *ngIf="detail.status && detail.status === 'RETURN REQUESTED'">
+            <p>Your return request is getting reviewed. Our representative will get back to you in the next 48-72 hours.</p>
+        </div>
+        <p class="return-note-msg" *ngIf="detail.status && detail.status === 'RETURN REQUESTED'"><b>Note:</b> Please return the package in the same condition as received</p>
+    </div>
     <div class="need-help-parent"
         *ngIf="detail && detail.status==='DELIVERED' && detail.requestType !='return' && detail.requestType !='exchange' && showReturn && detail.show_return_exchange ">
         <div class="need-help-strip">

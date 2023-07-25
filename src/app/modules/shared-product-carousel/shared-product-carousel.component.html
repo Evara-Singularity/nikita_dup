@@ -19,7 +19,7 @@
                 (click)="$event.stopPropagation();scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
                 class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">
             </span>
-            <span *ngIf="isAcceptLanguage" class="fixed_ico fixed_ico-img" (click)="translate()">
+            <span *ngIf="isAcceptLanguage" class="fixed_ico fixed_ico-img" (click)="pageTranslation()">
                 <img height="24" width="24"  src="assets/img/translate.gif">
             </span>
         </div>
@@ -75,8 +75,4 @@
         </ng-container>
     </div>
 </div>
-<select-language *ngIf="isAcceptLanguage"
- [isHindiUrl]="isHindiUrl" 
- [imagePathAsset]="imagePathAsset" 
- (translate$)="translate()"
-></select-language>
+<ng-container *ngIf="isAcceptLanguage" #selectLangauge></ng-container>

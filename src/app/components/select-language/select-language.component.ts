@@ -30,7 +30,6 @@ export class SelectLanguageComponent implements OnInit {
   ngOnInit(): void {
     this.languagePrefrence = sessionStorage.getItem("languagePrefrence");
     this.isPopUp = sessionStorage.getItem("isPopUp");
-    const userSession = this.localAuthService.getUserSession();
     this.updateUserLanguagePrefrence();
   }
 
@@ -50,12 +49,16 @@ export class SelectLanguageComponent implements OnInit {
   closeLanguagePopup(language) {
     sessionStorage.setItem("languagePrefrence", language);
     this.languagePrefrence = language;
+    sessionStorage.setItem("isPopUp", "true");
+    this.isPopUp = "true";
     this.updateUserLanguagePrefrence();
   }
 
   translate() {
     sessionStorage.setItem("languagePrefrence", "hi");
     this.languagePrefrence = "hi";
+    sessionStorage.setItem("isPopUp", "true");
+    this.isPopUp = "true";
     this.updateUserLanguagePrefrence();
     this.translate$.emit();
   }

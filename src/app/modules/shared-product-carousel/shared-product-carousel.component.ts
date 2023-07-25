@@ -43,6 +43,9 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   @ViewChild("productCrouselPseudo", { read: ElementRef })
   productCrouselPseudoContainerRef: ElementRef;
   showPocMsn: boolean = false;
+  selectLangaugeInstance = null;
+  @ViewChild("selectLangauge", { read: ViewContainerRef })
+  selectLangaugeContainerRef: ViewContainerRef;
 
   constructor(
     private cfr: ComponentFactoryResolver, 
@@ -178,6 +181,35 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
         }, 
         "genericClick")
     
+  }
+
+  pageTranslation(){
+    const isPopUp = sessionStorage.getItem("isPopUp");
+    if(isPopUp == null){
+      this.loadSelectLanguagePopUp();
+    }else{
+      this.translate();
+    }
+  }
+
+  async loadSelectLanguagePopUp() {
+      const { SelectLanguageComponent } = await import('../../components/select-language/select-language.component');
+      const factory = this.cfr.resolveComponentFactory(SelectLanguageComponent);
+      this.selectLangaugeInstance = this.selectLangaugeContainerRef.createComponent(
+        factory,
+        null,
+        this.injector
+      );
+      this.selectLangaugeInstance.instance["isHindiUrl"] = this.isHindiUrl;
+       // translate Event Handler
+      (
+        this.selectLangaugeInstance.instance[
+        "translate$"
+        ] as EventEmitter<any>
+    ).subscribe((data) =>
+    {
+        this.translate();
+    });
   }
    
    ngOnDestroy(){

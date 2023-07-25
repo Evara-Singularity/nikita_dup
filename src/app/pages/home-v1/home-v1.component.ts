@@ -223,17 +223,14 @@ export class HomeV1Component implements OnInit {
           break;
 
         case environment.NEW_CMS_IDS.FEATURE_ARRIVAL:
-          this.featureArrivalData = block.block_data.image_block;
+          this.featureArrivalData = block.block_data.product_data;
           break;
         case environment.NEW_CMS_IDS.SECONDARY_CAROUSEL_DATA:
           this.homeSecondaryCarouselData = block.block_data.image_block;
           break;
-
         default:
           break;
       }
-
-
     });
   }
 

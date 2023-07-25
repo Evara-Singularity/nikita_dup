@@ -26,11 +26,10 @@
                     </a>
                 </li>
             </ul> -->
-            <!-- <product-card-vertical-container  [numberOfItems]="featureArrivalData.length">
-                <ng-container *ngFor="let item of featureArrivalData">
-                    {{item | json}}
-                  <product-card-vertical-grid-view [moduleUsedIn]="'feature arrival'"  [product]="item"> </product-card-vertical-grid-view >
+            <product-card-vertical-container  [numberOfItems]="featureArrivalData.length">
+                <ng-container *ngFor="let product of featureArrivalData">
+                  <product-card-vertical-grid-view [moduleUsedIn]="'HOME-FEATURED-ARRIVALS'" [isPDPImageLazyLoaded]="false" [cardFeaturesConfig]="cardFeaturesConfig"  [product]="product"> </product-card-vertical-grid-view >
                 </ng-container>
-            </product-card-vertical-container> -->
+            </product-card-vertical-container>
     </section>
 </ng-container>

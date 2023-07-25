@@ -835,14 +835,20 @@ export class EmiComponent {
         );
     }
 
-    getPayUOfferForUserCall(cardNumber){
+    getPayUOfferForUserCall(cardNumber,paymentCode){
+        let cartSession = this._cartService.getGenericCartSession;
+
+
         const data = {
             "var1": 1,
             "var2": cardNumber.slice(0, 6),
            //"var2": 512345,
             "var5": 1,
             "paymentMode": "emi",
-            "amount": this._cartService.totalDisplayPayableAmountWithOutPrepaid
+            "amount": this._cartService.totalDisplayPayableAmountWithOutPrepaid,
+            "paymentCode": paymentCode,
+            "userToken": cartSession['cart']['userId'],
+            "cardNumber": cardNumber
             }
 
          return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT_PAYU_OFFER_USER,{body:data}).pipe(

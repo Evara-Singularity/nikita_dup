@@ -1,4 +1,4 @@
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Component, NgModule, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -26,6 +26,7 @@ export class RecentViewedProductsComponent implements OnInit {
   @Input() analytics = null;
   @Input('pageName') pageName = "pdp";
   @Input('moduleUsedIn') moduleUsedIn = "PRODUCT_RECENT_PRODUCT";
+  @Input() isPdp=false;
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config
@@ -46,7 +47,8 @@ export class RecentViewedProductsComponent implements OnInit {
     private productService: ProductService,
     public _router: Router,
     private localStorageService: LocalStorageService,
-    private _commonService:CommonService
+    private _commonService:CommonService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -57,7 +59,11 @@ export class RecentViewedProductsComponent implements OnInit {
     if(!this.recentProductList || this.recentProductList.length == 0){
       this.getRecents();
     }else{
-      this.recentProductItems = this.recentProductList;
+      let currentProductMsn = this.route.snapshot.params['msnid']
+      this.recentProductItems = this.recentProductList.filter(
+        (item) =>
+          item.moglixPartNumber.toLowerCase() !=currentProductMsn.toLowerCase()
+      );
     }
     this.getStaticSubjectData();
   }

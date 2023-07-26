@@ -2755,6 +2755,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 );
             this.recentProductsInstance.instance["outOfStock"] =
                 this.rawProductData.productOutOfStock;
+            this.recentProductsInstance.instance["isPdp"] =
+                true;    
             this.recentProductsInstance.instance["recentProductList"] = this.recentProductItems;
             const custData = this.commonService.custDataTracking;
             const orderData = this.orderTracking;

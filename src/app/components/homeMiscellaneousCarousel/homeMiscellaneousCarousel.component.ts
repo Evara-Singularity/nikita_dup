@@ -10,6 +10,7 @@ import { ProductBrowserService } from '@app/utils/services/product-browser.servi
 import { RfqProductCardVerticalGridViewModule } from '@app/modules/product-card/rfq-product-card-vertical-grid-view/rfq-product-card-vertical-grid-view.module';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { CartService } from '@app/utils/services/cart.service';
 @Component({
   selector: 'app-homeMiscellaneousCarousel',
   templateUrl: './homeMiscellaneousCarousel.component.html',
@@ -47,6 +48,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   @Input("analytics") analytics = null;
   @Input("headertext") headertext:string = "Your Activity";
   @Input("isQuickOrder") isQuickOrder:boolean = false;
+  msnListatQuickOrder=[]
 
   tabsArray: { id: number, name: string, data: any[], isSelected: boolean }[] = [];
   sectionName: string = "Summary ";
@@ -58,17 +60,21 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     private _productService: ProductService,
     private _productBrowserService: ProductBrowserService,
     public _loaderService: GlobalLoaderService,
-    private _globalAnalyticsService: GlobalAnalyticsService
+    private _globalAnalyticsService: GlobalAnalyticsService,
+    public _cartService: CartService,
   ) {
   }
 
   ngOnInit() {
+    if (this.isQuickOrder) {
+      this.msnListatQuickOrder=(this._cartService.getGenericCartSession.itemsList).map(item => item.productId);      
+    }
     this.setFullAddToCartButton();
     this.sectionName = this.isQuickOrder ? "Summary " : "HomePage ";
     this.moduleUsedIn = this.isQuickOrder ? "POPULAR_DEALS_QUICKORDER" : "POPULAR_DEALS_HOME"
     if (this.recentResponse && (this.recentResponse['statusCode'] === 200) && this.recentResponse['data'] && this.recentResponse['data'].length > 0) {
       let recentResponseData = []
-      recentResponseData = this.isQuickOrder ? (this.recentResponse['data'] as any []).map(product => this._productService.recentProductResponseToProductEntity(product)).filter(res=> (this._productService.isInStock(res) == true))
+      recentResponseData = this.isQuickOrder ? (this.recentResponse['data'] as any []).map(product => this._productService.recentProductResponseToProductEntity(product)).filter(res=> (this._productService.isInStock(res) == true && !this.msnListatQuickOrder.includes(res.moglixPartNumber)))
       : (this.recentResponse['data'] as any []).slice(0, 10).map(product => this._productService.recentProductResponseToProductEntity(product));
 
       this.pushDataIntoTabsArray(1, this.RECENT_TAB_NAME, recentResponseData, false);

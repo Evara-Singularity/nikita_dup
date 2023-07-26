@@ -176,10 +176,6 @@ export class EmiComponent {
                 this.resetBankDiscountAmount()
             }
         })
-
-        this.bankCodeSubscription = this.emiForm.get('requestParams.bankcode').valueChanges.subscribe((value) => {
-                this.resetBankDiscountAmount()
-        })
     }
 
 

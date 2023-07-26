@@ -1,4 +1,4 @@
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Component, NgModule, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -26,8 +26,7 @@ export class RecentViewedProductsComponent implements OnInit {
   @Input() analytics = null;
   @Input('pageName') pageName = "pdp";
   @Input('moduleUsedIn') moduleUsedIn = "PRODUCT_RECENT_PRODUCT";
-  @Input() isPdp=false;
-  @Input() currentProductMsn
+  @Input() currentProductMsn=''
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config
@@ -49,7 +48,6 @@ export class RecentViewedProductsComponent implements OnInit {
     public _router: Router,
     private localStorageService: LocalStorageService,
     private _commonService:CommonService,
-    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {

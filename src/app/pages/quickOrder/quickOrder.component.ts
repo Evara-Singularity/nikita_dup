@@ -397,6 +397,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.homeMiscellaneousCarouselInstance.instance["headertext"] =
         "You Maybe Interested In";
       this.homeMiscellaneousCarouselInstance.instance["isQuickOrder"] = true; 
+      this.homeMiscellaneousCarouselInstance.instance["msnListatQuickOrder"] = (this._cartService.getGenericCartSession.itemsList).map(item => item.productId);; 
       this.homeMiscellaneousCarouselInstance.instance["pastOrdersResponse"] =
         pastOrderResponse;
       this.homeMiscellaneousCarouselInstance.instance["recentResponse"] = 

@@ -48,7 +48,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   @Input("analytics") analytics = null;
   @Input("headertext") headertext:string = "Your Activity";
   @Input("isQuickOrder") isQuickOrder:boolean = false;
-  msnListatQuickOrder=[]
+  @Input() msnListatQuickOrder=[]
 
   tabsArray: { id: number, name: string, data: any[], isSelected: boolean }[] = [];
   sectionName: string = "Summary ";
@@ -66,9 +66,6 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.isQuickOrder) {
-      this.msnListatQuickOrder=(this._cartService.getGenericCartSession.itemsList).map(item => item.productId);      
-    }
     this.setFullAddToCartButton();
     this.sectionName = this.isQuickOrder ? "Summary " : "HomePage ";
     this.moduleUsedIn = this.isQuickOrder ? "POPULAR_DEALS_QUICKORDER" : "POPULAR_DEALS_HOME"

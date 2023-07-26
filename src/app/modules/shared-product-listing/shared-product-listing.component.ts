@@ -423,5 +423,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
 
   ngOnDestroy() {
     this.resetLazyComponents();
+    this._commonService.defaultLocaleValue = localization_en.product;
   }
 }

@@ -3950,5 +3950,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnDestroy() {
         if(this.cartSubscription) this.cartSubscription.unsubscribe();
+        this.commonService.defaultLocaleValue = localization_en.product;
      }
 }

@@ -64,6 +64,7 @@ export interface ProductsEntity {
     HomePageRFQstatus?:HomePageRFQstatus;
     attributeValuesForPart?: any;
     promoCodeDescription?: string;
+    acceptLanguage?: any;
 }
 
 export interface FilterableAttributes {

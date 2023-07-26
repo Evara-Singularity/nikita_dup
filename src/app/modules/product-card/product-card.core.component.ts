@@ -99,6 +99,7 @@ export class ProductCardCoreComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getLocalization();
     this.isOutOfStockByQuantity = !this.product.quantityAvailable || this.product.outOfStock;
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
     // randomize product feature
@@ -106,8 +107,14 @@ export class ProductCardCoreComponent implements OnInit {
     this.isAd = !this.product.internalProduct
     this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' ' + this.productStaticData.reviews : this.product.ratingCount + ' ' + this.productStaticData.review;
     this.prodUrl = CONSTANTS.PROD;
-    this.getLocalization();
+    if(this.isHindiUrl && this.product && this.product.acceptLanguage && this.product.acceptLanguage.length) {
+      this.product.productUrl = 'hi/' + this.product.productUrl;
+    }
     // console.log('product 22==>', this.product);
+  }
+
+  get isHindiUrl() {
+    return (this._router.url).toLowerCase().indexOf('/hi') !== -1
   }
 
   getLocalization() {

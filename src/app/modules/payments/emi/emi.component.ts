@@ -406,6 +406,7 @@ export class EmiComponent {
         if (emiObj) {
             this.selectedEMIKey = emiObj['key']
         }
+        console.log("clearBankDiscount")
         if(clearBankDiscount)
          {
             this.offerKey = null;
@@ -771,6 +772,9 @@ export class EmiComponent {
     }
 
     resetBankDiscountAmount(){
+        
+        console.log("reset bank dscount called")
+
         this.offerKey = null;
         this.bankDiscountAmount = 0;
         // this.emiResponse = this.paymentMethod == this.CARD_TYPES.debitCard ? this.emiResponseMaster[this.CARD_TYPES.debitCard] : this.emiResponseMaster[this.CARD_TYPES.creditCard];

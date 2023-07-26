@@ -10,7 +10,6 @@ import { ProductBrowserService } from '@app/utils/services/product-browser.servi
 import { RfqProductCardVerticalGridViewModule } from '@app/modules/product-card/rfq-product-card-vertical-grid-view/rfq-product-card-vertical-grid-view.module';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { CartService } from '@app/utils/services/cart.service';
 @Component({
   selector: 'app-homeMiscellaneousCarousel',
   templateUrl: './homeMiscellaneousCarousel.component.html',
@@ -61,7 +60,6 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     private _productBrowserService: ProductBrowserService,
     public _loaderService: GlobalLoaderService,
     private _globalAnalyticsService: GlobalAnalyticsService,
-    public _cartService: CartService,
   ) {
   }
 

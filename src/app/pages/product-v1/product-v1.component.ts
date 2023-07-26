@@ -271,25 +271,14 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.isServer = commonService.isServer;
         this.isBrowser = commonService.isBrowser;
         const languagePrefrence = sessionStorage.getItem("languagePrefrence");
-         if(languagePrefrence == "hi"){
-            if (!((this.router.url).toLowerCase().indexOf('/hi/') !== -1)) {
-                const URL = '/hi' + this.getSanitizedUrl(this.router.url);
-                this.router.navigate([URL]);
-                this.englishUrl = this.router.url.toLowerCase().split("/hi/").join('/');;
-                this.hindiUrl = this.router.url;
-
-            }
-         }else{
-            if (((this.router.url).toLowerCase().indexOf('/hi/') !== -1)) {
-                console.log("inside hindi page ==>")
-                this.englishUrl = this.router.url.toLowerCase().split("/hi/").join('/');;
-                this.hindiUrl = this.router.url;
-            }
-            else {
-                this.hindiUrl = "/hi" + this.router.url;
-                this.englishUrl = (this.router.url).toLowerCase().split("/hi/").join('/');
-            }
-         }
+        if (((this.router.url).toLowerCase().indexOf('/hi/') !== -1)) {
+            this.englishUrl = this.router.url.toLowerCase().split("/hi/").join('/');;
+            this.hindiUrl = this.router.url;
+        }
+        else {
+            this.hindiUrl = "/hi" + this.router.url;
+            this.englishUrl = (this.router.url).toLowerCase().split("/hi/").join('/');
+        }
         this.isLanguageHindi = ((this.router.url).toLowerCase().indexOf('/hi/') !== -1) || false;
        
     }

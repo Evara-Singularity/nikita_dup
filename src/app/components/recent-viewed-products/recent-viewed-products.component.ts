@@ -27,6 +27,7 @@ export class RecentViewedProductsComponent implements OnInit {
   @Input('pageName') pageName = "pdp";
   @Input('moduleUsedIn') moduleUsedIn = "PRODUCT_RECENT_PRODUCT";
   @Input() isPdp=false;
+  @Input() currentProductMsn
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config
@@ -59,10 +60,9 @@ export class RecentViewedProductsComponent implements OnInit {
     if(!this.recentProductList || this.recentProductList.length == 0){
       this.getRecents();
     }else{
-      let currentProductMsn = this.route.snapshot.params['msnid']
       this.recentProductItems = this.recentProductList.filter(
         (item) =>
-          item.moglixPartNumber.toLowerCase() !=currentProductMsn.toLowerCase()
+          item.moglixPartNumber.toLowerCase() !=this.currentProductMsn.toLowerCase()
       );
     }
     this.getStaticSubjectData();

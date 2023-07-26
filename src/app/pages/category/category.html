@@ -65,7 +65,7 @@
                         Categories)</span>
                 </p>
             </div>
-            <sub-category *ngIf="API_RESPONSE.category[0].children" [relatedCatgoryList]="API_RESPONSE.category[0].children"></sub-category>
+            <sub-category [productStaticData]='productStaticData' *ngIf="API_RESPONSE.category[0].children" [relatedCatgoryList]="API_RESPONSE.category[0].children"></sub-category>
         </div>
     </div>
 

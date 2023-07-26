@@ -26,7 +26,7 @@ export class RecentViewedProductsComponent implements OnInit {
   @Input() analytics = null;
   @Input('pageName') pageName = "pdp";
   @Input('moduleUsedIn') moduleUsedIn = "PRODUCT_RECENT_PRODUCT";
-  @Input() currentProductMsn=''
+  @Input() currentProductMsn: string[]= []
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config
@@ -55,16 +55,17 @@ export class RecentViewedProductsComponent implements OnInit {
       redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
       redirectedSectionName: this.outOfStock ? 'recent_products_oos' : 'recent_productss'
     }
-    if(!this.recentProductList || this.recentProductList.length == 0){
+    if (!this.recentProductList || this.recentProductList.length == 0) {
       this.getRecents();
-    }else{
+    } else {
       this.recentProductItems = this.recentProductList.filter(
         (item) =>
-          item.moglixPartNumber.toLowerCase() !=this.currentProductMsn.toLowerCase()
+          !this.currentProductMsn.includes(item.moglixPartNumber.toLowerCase())
       );
     }
     this.getStaticSubjectData();
   }
+  
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;

@@ -75,8 +75,10 @@ export class EmiComponent {
     showPayUOffer: boolean = false;
     bankDiscountAmount: number = 0;
     ccNameSubscription: Subscription = null;
+    bankCodeSubscription: Subscription = null;
     offerKey: string = null;
     cartSession: any = null;
+    clearBankDiscount: boolean = true;
 
     set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
@@ -173,6 +175,10 @@ export class EmiComponent {
             } else {
                 this.resetBankDiscountAmount()
             }
+        })
+
+        this.bankCodeSubscription = this.emiForm.get('requestParams.bankcode').valueChanges.subscribe((value) => {
+                this.resetBankDiscountAmount()
         })
     }
 
@@ -395,7 +401,12 @@ export class EmiComponent {
         return parseInt(emiKey.replace(/^\D+/g, ''), 10);
     }
 
-    selectEmI(month, rate, amount, emiObj?) {
+    selectEmI(month, rate, amount, emiObj?,clearBankDiscount?) {
+         if(clearBankDiscount)
+         {
+            this.resetBankDiscountAmount();
+         }
+
         if (emiObj) {
             this.selectedEMIKey = emiObj['key']
         }
@@ -464,6 +475,7 @@ export class EmiComponent {
             "offerKey":this.offerKey,
             "paymentMode":"emi",
             "paymentCode":this.selectedEMIKey
+           
         };
 
         let newdata = {
@@ -826,6 +838,8 @@ export class EmiComponent {
         cartSession["nocostEmi"] = 0;
         this._cartService.orderSummary.next(cartSession);
         if(this.ccNameSubscription){this.ccNameSubscription.unsubscribe()}
+        if(this.bankCodeSubscription){this.bankCodeSubscription.unsubscribe()}
+        
     }
 
     getEmiValuesCall(data){

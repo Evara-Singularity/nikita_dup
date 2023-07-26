@@ -402,14 +402,16 @@ export class EmiComponent {
     }
 
     selectEmI(month, rate, amount, emiObj?,clearBankDiscount?) {
-         if(clearBankDiscount)
-         {
-            this.resetBankDiscountAmount();
-         }
-
+        
         if (emiObj) {
             this.selectedEMIKey = emiObj['key']
         }
+        if(clearBankDiscount)
+         {
+            this.offerKey = null;
+            this.bankDiscountAmount = 0;
+            this.onCardNumberChange(this.emiForm.get('requestParams.ccnum').value);
+         }
         this.getEmiDiscount(
             month,
             (rate) ? (parseInt(rate) / 1200) : null,
@@ -737,7 +739,7 @@ export class EmiComponent {
 
     onCardNumberChange(cardNumber) {
         let response = null;
-        if (cardNumber && cardNumber.length === 16) {
+        if (cardNumber && cardNumber.length === 16 && this.selectedBank == 'ONEC') {
             this.isShowLoader = true;
             let paymnetCode = this.selectedEMIKey;
             this.getPayUOfferForUserCall(cardNumber,paymnetCode).subscribe((res): void => {

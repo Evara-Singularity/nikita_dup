@@ -44,8 +44,8 @@
                         </p>
                         <p class="prepaid-discount-txt"
                             *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && _cartService.prepaidDataMapping[item.productId]['applicable'] && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue'])">
-                            You get {{_cartService.prepaidDataMapping[item.productId]['amount'] | currency:'INR' :
-                            'symbol' : '1.0-0'}} prepaid discount</p>
+                            Save {{_cartService.prepaidDataMapping[item.productId]['amount'] | currency:'INR' :
+                            'symbol' : '1.0-0'}} with online payment</p>
                     </div>
 
                 </div>
@@ -93,11 +93,10 @@
             <div class="pwa-row pad-t-0"
                 *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && !(_cartService.prepaidDataMapping[item.productId]['applicable']) && (_cartService.prepaidDataMapping[item.productId]['amount']) && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue'])">
                 <div class="shop-more-container">
-                    <p class="shop-more-text">Shop more for {{_cartService.prepaidDataMapping[item.productId]['amount']|
-                        currency:'INR' : 'symbol' : '1.0-0'}} & get <span
-                            class="prepaid-discount-txt"><strong>{{_cartService.prepaidDataMapping[item.productId]['discountIn']|
-                                currency:'INR' : 'symbol' : '1.0-0'}} prepaid discount</strong></span> in the same
-                        category.</p>
+                    <p class="shop-more-text">Spend {{_cartService.prepaidDataMapping[item.productId]['amount']|
+                        currency:'INR' : 'symbol' : '1.0-0'}} or more & get <span
+                            class="green-txt"><strong>{{_cartService.prepaidDataMapping[item.productId]['discountIn']|
+                                currency:'INR' : 'symbol' : '1.0-0'}} OFF with online payment.</strong></span></p>
                     <p class="add-products-btn"
                         (click)="similarProduct(item.productName,item.categoryCode,item.brandName,item.productId)">ADD
                         PRODUCTS</p>
@@ -108,9 +107,9 @@
             && (_cartService.prepaidDataMapping[item.productId]['amount'])
             && (_cartService.prepaidDataMapping[item.productId]['discountIn'])">
                 <div class="shop-more-container sigle-line-txt">
-                    <p><span class="prepaid-discount-txt"><strong>Extra
-                                {{_cartService.prepaidDataMapping[item.productId]['discountIn']}} OFF</strong></span>
-                        while you make online payment.</p>
+                    <p><span class="prepaid-discount-txt"><strong>Save instantly
+                                {{_cartService.prepaidDataMapping[item.productId]['discountIn']}} with online payment</strong></span>
+                    </p>
                 </div>
             </div>
             <div *ngIf="item.oos" class="oos-item-block">

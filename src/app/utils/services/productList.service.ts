@@ -439,6 +439,9 @@ export class ProductListService {
       case "ADS_FEATURE":
         str = "pdp:widget:" + adCampaignName;
         break;
+      case "HOME-FEATURED-ARRIVALS":
+        str = "pdp:widget:" + adCampaignName;
+      break;
       default:
         str = "pdp-extra";
         break;

@@ -298,3 +298,36 @@ ul.pager {
     top: 50%;
     left: 50%;
 }
+// .customer-review {
+    siema-carousel {
+        ngx-siema {
+            ngx-siema-slide{
+                siema-slide{
+                    .inner-container {
+                        padding:0  20px 0 !important;
+                        div {
+                            .comp-name {
+                                img {
+                                    width: 44px !important;
+                                }
+                            }
+                            .cust-name{
+                                font-size: 14px;
+                                margin-bottom: 20px;
+                            }
+                            .revw-txt{
+                                font-size: 14px;
+                                line-height: 20px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    .rfq-section{
+        display: flex;
+        align-items: center;
+        min-height: 67px;
+    }

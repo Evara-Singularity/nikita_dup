@@ -1,7 +1,6 @@
 <div class="product-vertical-grid-card" data-observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
     <!-- <a class="s-h-l" [attr.href]="prodUrl+'/'+this.product.productUrl">{{product.productName}}</a> -->
     <div class="product-card-upper " (click)="navigateToPDP()">
-
         <div class="pwa-image">
             <ng-container *ngIf="isPDPImageLazyLoaded || !cardFeaturesConfig.lazyLoadImage">
                 <img alt="{{product.productName}}" src="{{imageCdnPath + product.mainImageThumnailLink}}" height="125" width="125" (click)="$event.stopPropagation();sendTracking('image');this.navigateToPDP();" />
@@ -38,14 +37,14 @@
                 <span>By: {{splitBrandName(product.short_description)}}</span>
             </div>
             <div class="prod-price-row" (click)="navigateToPDP()">
+                <div class="prod-selling-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
+                    <span>{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
+                                }}</span>
+                </div>
                 <div class="price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.discount > 0">
                     <span class="prod-mrp">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
                                 }}</span>
                     <span class="prod-discount">{{product.discount}}% OFF</span>
-                </div>
-                <div class="prod-selling-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
-                    <span>{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
-                                }}</span>
                 </div>
                 <div class="out-of-stock-text" *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
                     <span>Available on Request</span>
@@ -76,7 +75,6 @@
                             </button>
             </ng-container>
         </div>
-
     </div>
     <ng-container #variantPopup></ng-container>
     <ng-container #rfqThankyou></ng-container>

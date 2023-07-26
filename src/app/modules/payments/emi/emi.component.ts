@@ -406,7 +406,7 @@ export class EmiComponent {
         if (emiObj) {
             this.selectedEMIKey = emiObj['key']
         }
-        console.log("clearBankDiscount")
+        console.log("clearBankDiscount =>"+clearBankDiscount)
         if(clearBankDiscount)
          {
             this.offerKey = null;
@@ -772,6 +772,8 @@ export class EmiComponent {
     }
 
     resetBankDiscountAmount(){
+
+        console.trace();
         
         console.log("reset bank dscount called")
 

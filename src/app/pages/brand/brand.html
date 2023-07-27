@@ -12,26 +12,28 @@
         *ngIf="API_RESPONSE['brand'][1][0].categoryName && couponForbrandCategory && API_RESPONSE['brand'][0].brandName">
         <div class="instant-discount-container">
             <div class="discount-icon">
-                <img src="../../../assets/img/best_deals.png" *ngIf="couponForbrandCategory && couponForbrandCategory['percentageDiscount']" >
-                <img src="../../../assets/img/best_deals.png" style="width: 50px"  *ngIf="couponForbrandCategory && couponForbrandCategory['absoluteDiscount']" >
+                <i class="icon-offer" *ngIf="couponForbrandCategory && couponForbrandCategory['percentageDiscount']"></i>
+                <i class="icon-offer" *ngIf="couponForbrandCategory && couponForbrandCategory['absoluteDiscount']" ></i>
             </div>
             <div class="discount-text" *ngIf="couponForbrandCategory && couponForbrandCategory['absoluteDiscount']">
                 <p class="green-txt">
-                    {{ productStaticData?.pay_online_get_extra }} {{couponForbrandCategory['absoluteDiscount'] | currency:'INR' : 'symbol' : '1.0-0'}} {{ productStaticData?.off }}
+                    Save {{couponForbrandCategory['absoluteDiscount'] | currency:'INR' : 'symbol' : '1.0-0'}} instantly with online payment.
                 </p>
                 <p>
-                    {{ productStaticData?.using }} <b>{{ productStaticData?.wallets }}</b> {{ productStaticData?.on_min_cart_value }}
-                    {{couponForbrandCategory['minimumCartValue'] | mathCeil | currency: 'INR' : 'symbol' :'1.0-0'}} {{productStaticData?.in}} {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}}
+                    via <b>UPI, EMI, Credit/Debit Card, Net Banking, Wallets</b> on min. cart value of
+                    {{couponForbrandCategory['minimumCartValue'] | mathCeil | currency: 'INR' : 'symbol' :'1.0-0'}} in {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}}
+                    <span><br>*No coupon needed</span>
                 </p>
             </div>
             <div class="discount-text" *ngIf="couponForbrandCategory && couponForbrandCategory['percentageDiscount']">
                 <p class="green-txt">
-                    {{ productStaticData?.pay_online_get_extra }} {{couponForbrandCategory['percentageDiscount']}}% {{ productStaticData?.off }} {{ productStaticData?.on }} {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}}
+                    Save instantly {{couponForbrandCategory['percentageDiscount']}}% with online payment.
                 </p>
                 <p *ngIf="couponForbrandCategory['minimumCartValue']">
-                    {{ productStaticData?.using }} <b>{{ productStaticData?.wallets }}</b> {{ productStaticData?.on_min_cart_value }}
-                    {{couponForbrandCategory['minimumCartValue'] | mathCeil | currency: 'INR' : 'symbol' :'1.0-0'}} in {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}}
+                    via <b>UPI, EMI, Credit/Debit Card, Net Banking, Wallets</b> on min. cart value of
+                    {{couponForbrandCategory['minimumCartValue'] | mathCeil | currency: 'INR' : 'symbol' :'1.0-0'}} in {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}}   
                 </p>
+                <span><br>*No coupon needed</span>
             </div>
         </div>
     </ng-container>

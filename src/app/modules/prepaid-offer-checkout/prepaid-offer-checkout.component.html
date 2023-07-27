@@ -1,6 +1,6 @@
 <p *ngIf="_cartService.totalPrepaidSaving>0 && displayMode == 'FLOATING' && !bankDiscountAmount" class="discount-offer">
     <span class="large-text">
-        Pay online & save EXTRA {{_cartService.totalPrepaidSaving | currency:'INR' : 'symbol' : '1.0-0'}} OFF
+        Save {{_cartService.totalPrepaidSaving | currency:'INR' : 'symbol' : '1.0-0'}}  instantly with online payment.
     </span>
     <br />
     <span class="small-text">

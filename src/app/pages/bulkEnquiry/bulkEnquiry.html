@@ -19,12 +19,12 @@
                                 </div>
                                 <div class="txt-blk clearfix">
                                     <i class="icon-call"></i>
-                                    <p>Or <i class="icon-whatsapp"></i> +91-9599975784
+                                    <p>Or <i class="icon-whatsapp"></i>{{staticCountryData.rfqPage.howItWorksNumber}}
                                     </p>
                                 </div>
                                 <div class="txt-blk clearfix">
                                     <i class="icon-mail"></i>
-                                    <p>business@moglix.com</p>
+                                    <p>{{staticCountryData.rfqPage.howItWorksEmail}}</p>
                                 </div>
                                 <div class="txt-blk clearfix">
                                     <i class="icon-support"></i>
@@ -49,7 +49,7 @@
                                 <i class="icon-rfq-confirmation"></i>
                             </div>
                             <div class="steps-container">
-                                <p>Place your order once you receive the quotations</p>
+                                <p>Place your order once you receive the quotations.</p>
                             </div>
                         </div>
                         <i class="step-arrow icon-arrow-d"></i>
@@ -135,10 +135,11 @@
                                     preferred. Note that MOQ will vary depending on the product type.
 
                                 </p>
-                                <p class="panelAns">
+                                <p class="panelAns" >
                                     6. Make sure you provide your company’s GSTIN and PAN No. correctly.
 
                                 </p>
+                               
                             </div>
                         </div>
                         <div class="faq-panel">
@@ -190,5 +191,4 @@
             <siema-carousel [options]="options" [items]="brandCarousel"></siema-carousel>
         </ng-container>
     </div>
-
 </div>

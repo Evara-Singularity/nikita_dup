@@ -66,8 +66,21 @@ export class ProductFeatureDetailsComponent implements OnInit {
     if (brandDetails == undefined) {
       return [];
     }
+    let baseUrl = '/brands/';
+    if(this.commonService.isHindiPage(brandDetails)) {
+      baseUrl = '/hi' + baseUrl;
+    }
     let d = brandDetails["friendlyUrl"];
-    return ["/brands/" + d.toLowerCase()];
+    return [baseUrl + d.toLowerCase()];
+  }
+
+  getCategoryLink(categoryDetails = null) {
+    console.log(categoryDetails)
+    if(categoryDetails == undefined || categoryDetails == null) { return ''};
+      if(categoryDetails && categoryDetails['acceptLanguage'] && categoryDetails['acceptLanguage'].length) {
+        return 'hi/' + categoryDetails['storeLink'];
+      }
+      return categoryDetails['storeLink'];
   }
 
 

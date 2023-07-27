@@ -1882,11 +1882,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     getBrandLink(brandDetails: {}) {
         if (brandDetails == undefined) {
-            return [];
+          return [];
+        }
+        let baseUrl = '/brands/';
+        if(this.commonService.isHindiPage(brandDetails)) {
+          baseUrl = '/hi' + baseUrl;
         }
         let d = brandDetails["friendlyUrl"];
-        return ["/brands/" + d.toLowerCase()];
-    }
+        return [baseUrl + d.toLowerCase()];
+      }
 
     private getSecondaryAttributes() {
         return {
@@ -1934,6 +1938,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
         if (this.rawProductData.productVideos && this.rawProductData.productVideos.length) {
             contentInfo["videos"] = this.rawProductData.productVideos;
+        }
+        if(this.commonService.isHindiPage(this.rawProductData.productBrandDetails) && this.commonService.isHindiPage(this.rawProductData.productCategoryDetails)) {
+            this.rawProductData.productBrandCategoryUrl = 'hi/' + this.rawProductData.productBrandCategoryUrl;
         }
         const details = {
             description: this.rawProductData.productDescripton,

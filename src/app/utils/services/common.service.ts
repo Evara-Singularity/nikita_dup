@@ -1675,4 +1675,20 @@ export class CommonService
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.UPDATE_CUSTOMER_LANGUAGE_PREFRENCE + params
         );
     }
+
+    get isHindiUrl() {
+        return (this._router.url).toLowerCase().indexOf('/hi') !== -1
+    }
+
+    isHindiPage(detailsObj) {
+        let userLangPreference = sessionStorage.getItem("languagePrefrence") || 'en';
+        let hindiPageAvailable = false;
+        if ( this.userSession && this.userSession["authenticated"] == "true" ) {
+            userLangPreference = this.userSession["preferredLanguage"];
+        }
+        if(detailsObj && detailsObj.acceptLanguage && detailsObj.acceptLanguage.length) {
+            hindiPageAvailable = true;
+        }
+        return ((userLangPreference == 'hi' && hindiPageAvailable) || (this.isHindiUrl && hindiPageAvailable)) ? true : false;
+    }
 }

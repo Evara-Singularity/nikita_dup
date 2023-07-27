@@ -185,7 +185,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 
   pageTranslation(){
     const isPopUp = sessionStorage.getItem("isPopUp");
-    if(isPopUp == null){
+    if(isPopUp == null && !this.isHindiUrl){
       this.loadSelectLanguagePopUp();
     }else{
       this.translate();

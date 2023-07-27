@@ -210,7 +210,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
 
   pageTranslation(){
     const isPopUp = sessionStorage.getItem("isPopUp");
-    if(isPopUp == null){
+    if(isPopUp == null && !this.isHindiUrl){
       this.loadSelectLangPopup();
     }else{
       this.translate();

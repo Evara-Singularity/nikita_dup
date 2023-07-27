@@ -58,7 +58,7 @@ export class ProductAccordiansComponent {
       if (this.ACCORDIAN_DATA[0]?.length > 0) {
         this.accordiansDetails.push({
           name: this.productStaticData.accordian_list1_label,
-          data: (this.ACCORDIAN_DATA[0]).map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
+          data: (this.ACCORDIAN_DATA[0]).map(e => ({ name: e.title, link: this._commonService.isHindiPage(e) ? 'hi/' + e.friendlyUrl : e.friendlyUrl }) as AccordianDataItem),
           icon: 'icon-attribute'
         });
       }
@@ -81,7 +81,7 @@ export class ProductAccordiansComponent {
       if (this.ACCORDIAN_DATA[2]?.length > 0) {
         this.accordiansDetails.push({
           name: this.productStaticData.accordian_list2_label,
-          data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
+          data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: this._commonService.isHindiPage(e) ? 'hi/' + e.categoryLink : e.categoryLink }) as AccordianDataItem),
           icon: 'icon-categories'
         });
       }

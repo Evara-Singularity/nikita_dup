@@ -26,10 +26,12 @@ export class BreadcrumbNavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.breadCrumpCategorySchema();
   }
 
   ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.breadCrumpCategorySchema();
+    },100)
   }
 
 
@@ -41,7 +43,7 @@ export class BreadcrumbNavComponent implements OnInit {
         "item":
         {
           "@id": CONSTANTS.PROD,
-          "name": "Home"
+          "name": this.productStaticData.home
         }
       }];
       this.breadcrumb.forEach((element, index) => {
@@ -50,7 +52,7 @@ export class BreadcrumbNavComponent implements OnInit {
           "position": index + 1,
           "item":
           {
-            "@id": CONSTANTS.PROD + '/' + element['categoryLink'],
+            "@id": CONSTANTS.PROD + (this._commonService.isHindiUrl ? '/hi/' : '/') + element['categoryLink'],
             "name": element['categoryName']
           }
         })

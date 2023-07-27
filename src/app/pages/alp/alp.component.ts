@@ -402,7 +402,7 @@ export class AlpComponent implements OnInit {
                     productList.push({
                         "@type": "ListItem",
                         "position": index + 1,
-                        "url": !this.isHindiUrl ? CONSTANTS.PROD + '/' + product.productUrl : CONSTANTS.PROD + '/hi/' + product.productUrl,
+                        "url": !this.isHindiUrl ? CONSTANTS.PROD + '/' + product.productUrl : product.productUrl.includes('hi/') ? CONSTANTS.PROD + '/' + product.productUrl : CONSTANTS.PROD + '/hi/' + product.productUrl,
                         "name": product.productName,
                         "image": CONSTANTS.IMAGE_BASE_URL + product.mainImagePath
                     })

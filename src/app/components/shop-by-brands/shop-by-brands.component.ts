@@ -12,6 +12,7 @@ import { ProductService } from "@app/utils/services/product.service";
 })
 export class ShopByBrandsComponent implements OnInit {
   @Input("data") data: any;
+  @Input("categoryName") categoryName;
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config

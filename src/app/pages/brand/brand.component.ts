@@ -342,7 +342,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                         "item":
                         {
                             "@id": CONSTANTS.PROD,
-                            "name": "Home"
+                            "name": this.productStaticData.home
                         }
                     },
                     {

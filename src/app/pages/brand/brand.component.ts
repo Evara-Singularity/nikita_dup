@@ -165,28 +165,28 @@ export class BrandComponent implements OnInit, AfterViewInit {
         this.accordiansDetails.push({
             name: this.productStaticData.accordian_list2_label,
             extra: this.API_RESPONSE['brand'][0].brandName,
-            data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: this.API_RESPONSE['brand'][0].brandName+' '+x[0], link: x[1] }) as AccordianDataItem),
+            data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: this.API_RESPONSE['brand'][0].brandName+' '+x[0], link: this._commonService.isHindiPage(x) ? 'hi/' + x[1] : x[1] }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
         this.accordiansDetails.push({
             name: this.productStaticData.popular_categories,
-            data: this.popularCategories?.map(e => ({ name: e.name, link: e.link }) as AccordianDataItem),
+            data: this.popularCategories?.map(e => ({ name: e.name, link: this._commonService.isHindiPage(e) ? 'hi/' + e.link : e.link }) as AccordianDataItem),
             icon:'icon-categories'
         });
         this.accordiansDetails.push({
             name: this.productStaticData.similar_category,
-            data: this.API_RESPONSE.brand[2]?.mostSoledSiblingCategories?.map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
+            data: this.API_RESPONSE.brand[2]?.mostSoledSiblingCategories?.map(e => ({ name: e.categoryName, link: this._commonService.isHindiPage(e) ? 'hi/' + e.categoryLink : e.categoryLink }) as AccordianDataItem),
             icon:'icon-categories'
         });
         this.accordiansDetails.push({
             name: this.productStaticData.accordian_list1_label,
-            data: this.API_RESPONSE.brand[5]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
+            data: this.API_RESPONSE.brand[5]?.data?.map(e => ({ name: e.title, link: this._commonService.isHindiPage(e) ? 'hi/' + e.friendlyUrl : e.friendlyUrl }) as AccordianDataItem),
             icon:'icon-attribute'
         });
         this.accordiansDetails.push({
             name: this.productStaticData.related_brands,
             isNotVisible:!!this._activatedRoute.snapshot.params.category,
-            data: this.API_RESPONSE.brand[3]?.searchBrandInfoList?.map(e => ({ name: e.brandName, link: e.brandLink }) as AccordianDataItem),
+            data: this.API_RESPONSE.brand[3]?.searchBrandInfoList?.map(e => ({ name: e.brandName, link: this._commonService.isHindiPage(e) ? 'hi/' + e.brandLink : e.brandLink }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
     }

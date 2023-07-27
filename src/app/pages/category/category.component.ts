@@ -212,20 +212,21 @@ export class CategoryComponent {
 
     private createFooterAccordianData() {
         this.accordiansDetails = [];
+        console.log(this.API_RESPONSE.category[1].categoryLinkList);
         this.accordiansDetails.push({
             name: this.productStaticData.accordian_list2_label,
-            data: Object.entries(this.API_RESPONSE.category[1].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+            data: Object.entries(this.API_RESPONSE.category[1].categoryLinkList).map(x => ({ name: x[0], link: this._commonService.isHindiPage(x) ? 'hi/' + x[1] : x[1] }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
         this.accordiansDetails.push({
             name: this.productStaticData.accordian_list1_label,
-            data: this.API_RESPONSE.category[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
+            data: this.API_RESPONSE.category[4]?.data?.map(e => ({ name: e.title, link: this._commonService.isHindiPage(e) ? 'hi/' + e.friendlyUrl : e.friendlyUrl }) as AccordianDataItem),
             icon:'icon-attribute'
         });
         if(!this.API_RESPONSE.category[0].children){
             this.accordiansDetails.push({
                 name: this.productStaticData.related_category,
-                data: this.API_RESPONSE.category[0].sibling?.map(x => ({ name: x.categoryDetails.categoryName, link: x.categoryDetails.categoryLink }) as AccordianDataItem),
+                data: this.API_RESPONSE.category[0].sibling?.map(x => ({ name: x.categoryDetails.categoryName, link: this._commonService.isHindiPage(x.categoryDetails) ? 'hi/' + x.categoryDetails.categoryLink : x.categoryDetails.categoryLink }) as AccordianDataItem),
                 icon:'icon-brand_store'
             });
 

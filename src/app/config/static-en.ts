@@ -243,5 +243,7 @@ export const product = {
     buy_online: 'Products Online at Best Price',
     shop_online: 'products at best prices in India. Shop online for',
     brand_title: 'products at Moglix. Free Delivery & COD options across India.',
-    select_language: 'Select Language'
+    select_language: 'Select Language',
+    choose_right: 'Choose right',
+    for_you: 'for you'
 }

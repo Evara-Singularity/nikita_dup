@@ -245,5 +245,7 @@ export const product = {
     shop_online: 'सर्वोत्तम मूल्य पर उत्पाद ऑनलाइन',
     brand_title: 'मोगलिक्स में उत्पाद. भारत भर में मुफ्त वितरण और सीओडी विकल्प।',
     viewMore:"देखें और",
-    select_language: 'भाषा चुनें'
+    select_language: 'भाषा चुनें',
+    choose_right: 'सही चुनें',
+    for_you: 'आपके लिए'
 }  

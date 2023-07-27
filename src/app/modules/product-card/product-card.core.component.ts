@@ -108,7 +108,7 @@ export class ProductCardCoreComponent implements OnInit {
     this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' ' + this.productStaticData.reviews : this.product.ratingCount + ' ' + this.productStaticData.review;
     this.prodUrl = CONSTANTS.PROD;
     if(this._commonService.isHindiPage(this.product)) {
-      this.product.productUrl = 'hi/' + this.product.productUrl;
+      this.product.productUrl = this.product.productUrl.includes('hi/') ? this.product.productUrl : 'hi/' + this.product.productUrl;
     }
     // console.log('product 22==>', this.product);
   }

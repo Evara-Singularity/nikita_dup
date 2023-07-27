@@ -35,7 +35,7 @@
            [ngClass]="{'hide': !(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0)}">
             <div class="pwa-row pad-tb-5">
             <h3  class="heading-2 faq-accordian" [appKpToggle]="{idName: 'openFaq', iconMode : true}" (click)="_commonService.scrollTo($event);"> 
-                <span>Frequently Asked Questions about {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}</span>
+                <span>{{ productStaticData?.faq_category.replace('___category___', categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName) }}</span>
                 <span class="iconaccordian">
                     <i class="icon-down"></i>
                 </span>

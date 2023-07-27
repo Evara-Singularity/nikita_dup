@@ -13,6 +13,7 @@ export class CatStaticComponent {
 
   @Input('static_data') static_data;
   @Input('page_title') page_title ;
+  @Input() productStaticData;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
 
   scrollToResults(){

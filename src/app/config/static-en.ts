@@ -244,12 +244,14 @@ export const product = {
     shop_online: 'products at best prices in India. Shop online for',
     brand_title: 'products at Moglix. Free Delivery & COD options across India.',
     select_language: 'Select Language',
-    choose_right: 'Choose right',
-    for_you: 'for you',
+    choose_right_for_you: 'Choose right ___name___ for you',
     save: 'बचत',
     instantly: 'तुरंत',
     with_online_payment: 'with online payment',
     via: 'via',
     payment_methods: 'UPI, EMI, Credit/Debit Card, Net Banking, Wallets',
-    no_coupon_needed: 'No coupon needed'
+    no_coupon_needed: 'No coupon needed',
+    faq_category: 'Frequently Asked Questions about ___category___',
+    categories: 'Categories',
+    view_all_products: 'View All Products'
 }

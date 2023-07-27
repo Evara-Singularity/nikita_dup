@@ -746,7 +746,7 @@ export class EmiComponent {
                     return;
                 }
                 response = res['data'];
-                if (response['result'] && response['result']['offerDiscount'] ) {
+                if (response['result'] && response['result']['offerDiscount'] && response['result']['offerDiscount'] > 0 ) {
                     this.bankDiscountAmount = response['result']['offerDiscount']['discount'];
                     this.fetchInitialEmiData(response['result']['offerDiscount']['discountedAmount']);
                     this.offerKey =response['requestOfferKey'];

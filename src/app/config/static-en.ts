@@ -245,5 +245,11 @@ export const product = {
     brand_title: 'products at Moglix. Free Delivery & COD options across India.',
     select_language: 'Select Language',
     choose_right: 'Choose right',
-    for_you: 'for you'
+    for_you: 'for you',
+    save: 'बचत',
+    instantly: 'तुरंत',
+    with_online_payment: 'with online payment',
+    via: 'via',
+    payment_methods: 'UPI, EMI, Credit/Debit Card, Net Banking, Wallets',
+    no_coupon_needed: 'No coupon needed'
 }

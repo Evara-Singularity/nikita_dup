@@ -17,23 +17,23 @@
             </div>
             <div class="discount-text" *ngIf="couponForbrandCategory && couponForbrandCategory['absoluteDiscount']">
                 <p class="green-txt">
-                    Save {{couponForbrandCategory['absoluteDiscount'] | currency:'INR' : 'symbol' : '1.0-0'}} instantly with online payment.
+                    {{ productStaticData?.save }} {{couponForbrandCategory['absoluteDiscount'] | currency:'INR' : 'symbol' : '1.0-0'}} {{ productStaticData?.instantly}} {{ productStaticData?.with_online_payment }}.
                 </p>
                 <p>
-                    via <b>UPI, EMI, Credit/Debit Card, Net Banking, Wallets</b> on min. cart value of
+                    {{ productStaticData?.via }} <b>{{ productStaticData?.payment_methods }}</b> {{ productStaticData?.on_min_cart_value }}
                     {{couponForbrandCategory['minimumCartValue'] | mathCeil | currency: 'INR' : 'symbol' :'1.0-0'}} in {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}}
-                    <span><br>*No coupon needed</span>
+                    <span><br>*{{ productStaticData?.no_coupon_needed }}</span>
                 </p>
             </div>
             <div class="discount-text" *ngIf="couponForbrandCategory && couponForbrandCategory['percentageDiscount']">
                 <p class="green-txt">
-                    Save instantly {{couponForbrandCategory['percentageDiscount']}}% with online payment.
+                    {{ productStaticData?.save }} {{ productStaticData?.instantly}} {{couponForbrandCategory['percentageDiscount']}}% {{ productStaticData?.with_online_payment }}.
                 </p>
                 <p *ngIf="couponForbrandCategory['minimumCartValue']">
-                    via <b>UPI, EMI, Credit/Debit Card, Net Banking, Wallets</b> on min. cart value of
+                    via <b>{{ productStaticData?.payment_methods }}</b> {{ productStaticData?.on_min_cart_value }}
                     {{couponForbrandCategory['minimumCartValue'] | mathCeil | currency: 'INR' : 'symbol' :'1.0-0'}} in {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}}   
                 </p>
-                <span><br>*No coupon needed</span>
+                <span><br>*{{ productStaticData?.no_coupon_needed }}</span>
             </div>
         </div>
     </ng-container>

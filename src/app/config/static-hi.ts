@@ -247,5 +247,11 @@ export const product = {
     viewMore:"देखें और",
     select_language: 'भाषा चुनें',
     choose_right: 'सही चुनें',
-    for_you: 'आपके लिए'
+    for_you: 'आपके लिए',
+    save: 'बचत',
+    instantly: 'तुरंत',
+    with_online_payment: 'ऑनलाइन पेमेंट के साथ',
+    via: 'वाया',
+    payment_methods: 'यूपीआई, ईएमआई, क्रेडिट/डेबिट कार्ड, नेट बैंकिंग, वॉलेट',
+    no_coupon_needed: 'कूपन की जरूरत नहीं'
 }  

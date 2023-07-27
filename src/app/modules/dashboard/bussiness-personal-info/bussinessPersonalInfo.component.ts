@@ -30,6 +30,8 @@ export class BussinessInfoComponent {
     this.loaderService.setLoaderState(value);
   }
   imgAssetPath: string = environment.IMAGE_ASSET_URL
+  selectLanguagePopUp: boolean = false;
+  selectedLanguage: string;
 
   constructor(
     private _state: GlobalState,
@@ -70,7 +72,7 @@ export class BussinessInfoComponent {
   ngOnInit() {
     let obj = {};
     obj["userId"] = this.localStorageService.retrieve("user").userId;
-
+    this.selectedLanguage = this.user['preferredLanguage'] || 'en';
     this._dashboardService.getPersonalInfo(obj).subscribe((res) => {
       this.userInfo = res;
       this.showLoader = false;
@@ -139,6 +141,31 @@ export class BussinessInfoComponent {
     if (!this.userInfo){return ""};
     const pname = this.userInfo['pname'] || "";
     return `${pname}`;
+  }
+
+  loadSelectLanguagePopUp() {
+    this.selectLanguagePopUp = true;
+  }
+
+  updateLanguage(language){
+    if(language == null){
+      this.selectLanguagePopUp = false;
+      return;
+    }
+    const params = "customerId=" + this.user["userId"] + "&languageCode=" + language;
+    this._commonService.postUserLanguagePrefrence(params).subscribe(result=>{
+      if(result && result['status'] == true){
+        this.selectedLanguage = result['data'] && result['data']['languageCode'];
+        const userSession = this._localAuthService.getUserSession();
+        const newUserSession = Object.assign({},userSession);
+        newUserSession.preferredLanguage = this.selectedLanguage;
+        this._localAuthService.setUserSession(newUserSession);
+        this.selectLanguagePopUp = false;
+      }else{
+        this._tms.show({type: "error", text: result['statusDescription']});
+        this.selectLanguagePopUp = false;
+      }
+    })
   }
 
 }

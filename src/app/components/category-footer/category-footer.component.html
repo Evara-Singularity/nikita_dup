@@ -54,7 +54,7 @@
         [heading]="categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName"
         [priceListData]="categoryFooterData.productSearchResultSEO">
     </app-price-list-table>
-    <app-price-range-table *ngIf="categoryFooterData?.PRTA?.length>0 && categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName"
+    <app-price-range-table [productStaticData]='productStaticData' *ngIf="categoryFooterData?.PRTA?.length>0 && categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName"
         [heading]="categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName"
         [priceRangeData]="categoryFooterData">
     </app-price-range-table>

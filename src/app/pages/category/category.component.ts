@@ -70,10 +70,10 @@ export class CategoryComponent {
     ) {
         this._commonService.isHomeHeader = false;
         this._commonService.isPLPHeader = true;
+        this.getLocalization();
     }
 
     ngOnInit(): void {
-        this.getLocalization();
         this.setDataFromResolver();
         if (this._commonService.isBrowser) {
             this._footerService.setMobileFoooters();

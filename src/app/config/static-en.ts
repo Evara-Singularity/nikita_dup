@@ -253,5 +253,8 @@ export const product = {
     no_coupon_needed: 'No coupon needed',
     faq_category: 'Frequently Asked Questions about ___category___',
     categories: 'Categories',
-    view_all_products: 'View All Products'
+    view_all_products: 'View All Products',
+    max_price: 'Max Price',
+    min_price: 'Min Price',
+    price_range: 'Price Range'
 }

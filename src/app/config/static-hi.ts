@@ -255,5 +255,8 @@ export const product = {
     no_coupon_needed: 'कूपन की जरूरत नहीं',
     faq_category: '___category___ के बारे में अक्सर पूछे जाने वाले प्रश्न',
     categories: 'कैटेगरीज',
-    view_all_products: 'सभी उत्पादों को देखें'
+    view_all_products: 'सभी उत्पादों को देखें',
+    max_price: 'अधिकतम मूल्य',
+    min_price: 'न्यूनतम मूल्य',
+    price_range: 'प्राइस रेंज'
 }  

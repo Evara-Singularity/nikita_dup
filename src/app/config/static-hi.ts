@@ -209,7 +209,7 @@ export const product = {
     of_users_buy: 'यूजर्स की खरीददारी',
     in: 'इसमें',
     shop_by: 'शॉप बाय',
-    range: 'रेंज',
+    range: ' रेंज',
     are_you_looking_for: 'क्या आप ढूंढ रहे हैं',
     shop: 'शॉप',
     online: 'ऑनलाइन',
@@ -263,5 +263,6 @@ export const product = {
     quick_links: 'त्वरित सम्पक',
     shop_by_brand: 'ब्रांड द्वारा खरीदारी',
     best_sellers: 'बेस्टसेलर्स',
-    articles_heading: 'संबंधित ___title___ लेख'
+    articles_heading: 'संबंधित ___title___ लेख',
+    mid_plp_heading: '___filter___ द्वारा खरीदारी करें'
 }  

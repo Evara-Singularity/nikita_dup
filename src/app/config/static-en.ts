@@ -208,7 +208,7 @@ export const product = {
     of_users_buy: 'of users buy',
     in: 'in',
     shop_by: 'Shop by',
-    range: 'Range',
+    range: ' Range',
     are_you_looking_for: 'Are you looking for',
     shop: 'Shop',
     online: 'Online',
@@ -261,5 +261,6 @@ export const product = {
     quick_links: 'Quick Links',
     shop_by_brand: 'Shop By Brand',
     best_sellers: 'BestSellers',
-    articles_heading: 'Related ___title___ Articles'
+    articles_heading: 'Related ___title___ Articles',
+    mid_plp_heading: 'Shop by ___filter___'
 }

@@ -31,6 +31,12 @@
     </label>
     </div>
 </form>
+<div class="profile-card profile-bottom-card" (click)="loadSelectLanguagePopUp()">
+  <div class="profile-card-inner profile-bottom-card-inner popup-header translate_section">
+    <img src="assets/img/vernacular-icon.svg">
+      <span class="profile-card-inner-2">Select Language</span>
+  </div>
+</div>
 <div class="profile-card profile-bottom-card" [routerLink]="['/dashboard/address']">
   <div class="profile-card-inner profile-bottom-card-inner">
       <i class="icon-map-pin-fill"></i>
@@ -38,17 +44,10 @@
   </div>
   <span><i class="icon-next"></i></span>
 </div>
-<div class="profile-card profile-bottom-card" (click)="loadSelectLanguagePopUp()">
-  <div class="profile-card-inner profile-bottom-card-inner popup-header">
-    <img src="assets/img/vernacular-icon.svg">
-      <span>Select Language</span>
-  </div>
-  <span><i class="icon-next"></i></span>
-</div>
 <div class="profile-card profile-bottom-card " (click)="toPasswordPage()">
     <div class="profile-card-inner profile-bottom-card-inner">
         <i class="icon-change_password"></i>
-        <span class="profile-card-inner-2 ">Change Password</span>
+        <span class="profile-card-inner-2 ">Change Password</span> 
     </div>
     <span><i class="icon-next"></i></span>
 </div>

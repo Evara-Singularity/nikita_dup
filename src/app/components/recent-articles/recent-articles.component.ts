@@ -15,6 +15,7 @@ export class RecentArticles implements OnInit
     readonly prodUrl=CONSTANTS.PROD;
     @Input() recentArticles;
     @Input() title;
+    @Input() productStaticData;
     imageBaseUrl = CONSTANTS.IMAGE_BASE_URL;
     defaultImage = this.imageBaseUrl + CONSTANTS.ASSET_IMG;
     

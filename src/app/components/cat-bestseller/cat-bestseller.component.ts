@@ -20,7 +20,7 @@ export class CatBestsellerComponent {
   descArr;
   openPopup: boolean;
   @ViewChild(PopUpComponent) _popupComponent: PopUpComponent;
-
+  @Input('productStaticData') productStaticData;
 
   constructor() {
     this.openPopup = false;

@@ -136,7 +136,7 @@ export const product = {
     high_price: 'किमी कीमट',
     filters: 'फिल्टर',
     showing: 'दिखा रहा है',
-    out_of: 'से बाहर',
+    out_of: 'में से',
     products: 'प्रॉडक्ट्स',
     clear_all: 'साफ करें सभी',
     apply: 'अप्लाई करें',
@@ -240,7 +240,7 @@ export const product = {
     popular_categories: 'लोकप्रिय कैटेगरीज',
     similar_category: 'इसी तरह की कैटेगरी',
     related_brands: 'संबंधित ब्रांड्स',
-    related_category: 'संबंधित वर्ग',
+    related_category: 'संबंधित कैटेगरी',
     buy_online: 'सर्वोत्तम मूल्य पर उत्पाद ऑनलाइन',
     shop_online: 'सर्वोत्तम मूल्य पर उत्पाद ऑनलाइन',
     brand_title: 'मोगलिक्स में उत्पाद. भारत भर में मुफ्त वितरण और सीओडी विकल्प।',
@@ -256,7 +256,12 @@ export const product = {
     faq_category: '___category___ के बारे में अक्सर पूछे जाने वाले प्रश्न',
     categories: 'कैटेगरीज',
     view_all_products: 'सभी उत्पादों को देखें',
+    view_all: 'सभी देखें',
     max_price: 'अधिकतम मूल्य',
     min_price: 'न्यूनतम मूल्य',
-    price_range: 'प्राइस रेंज'
+    price_range: 'प्राइस रेंज',
+    quick_links: 'त्वरित सम्पक',
+    shop_by_brand: 'ब्रांड द्वारा खरीदारी',
+    best_sellers: 'बेस्टसेलर्स',
+    articles_heading: 'संबंधित ___title___ लेख'
 }  

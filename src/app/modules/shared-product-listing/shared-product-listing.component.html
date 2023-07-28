@@ -58,11 +58,14 @@
         <h1 class="list-name">
             {{ headerName }}
         </h1>
-        <div class="list-num" *ngIf="productsListingData?.products">
-            {{ productStaticData?.showing }} {{ productsListingData?.products.length }} {{ productStaticData?.showing }}
-            {{ (productsListingData?.totalCount >
-            (productsListingData?.products.length) ? productsListingData?.totalCount :(
-            productsListingData?.products.length) ) }} {{ productStaticData?.products }}
+        <div class="list-num" *ngIf="productsListingData?.products && !isHindiUrl">
+            {{ productStaticData?.showing }} {{ productsListingData?.products.length }} {{ productStaticData?.out_of }}
+            {{ (productsListingData?.totalCount > (productsListingData?.products.length) ? productsListingData?.totalCount : (productsListingData?.products.length) ) }} 
+            {{ productStaticData?.products }}
+        </div>
+        <div class="list-num" *ngIf="productsListingData?.products && isHindiUrl">
+            {{ productStaticData?.showing }} {{ (productsListingData?.totalCount > (productsListingData?.products.length) ? productsListingData?.totalCount : (productsListingData?.products.length) ) }}
+            {{ productStaticData?.out_of }} {{ productsListingData?.products.length }} {{ productStaticData?.products }}
         </div>
 
         <div class="right titleDescription"

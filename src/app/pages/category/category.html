@@ -8,10 +8,10 @@
                 <cat-static [productStaticData]='productStaticData' [page_title]="page_title" [static_data]="catStaticData"></cat-static>
                 <slp-sub-category *ngIf="API_RESPONSE?.category[0]?.children && layoutType == 2"
                     [sub_category_Data]=" API_RESPONSE.category[0].children"></slp-sub-category>
-                <shopby-brand [brand_Data]="shopByBrandData"></shopby-brand>
-                <cat-bestseller [bestSeller_Data]="catBestsellerData"></cat-bestseller>
+                <shopby-brand [productStaticData]='productStaticData' [brand_Data]="shopByBrandData"></shopby-brand>
+                <cat-bestseller [productStaticData]='productStaticData' [bestSeller_Data]="catBestsellerData"></cat-bestseller>
                 <div class="container-fluid safetyshshopbytype">
-                    <shopby-featr [shopBy_Data]="shopbyFeatrData"></shopby-featr>
+                    <shopby-featr [productStaticData]='productStaticData' [shopBy_Data]="shopbyFeatrData"></shopby-featr>
                 </div>
             </div>
         </div>
@@ -83,7 +83,7 @@
 
         <!-- This is recently article section -->
         <div class="recent-article-container" *ngIf="(API_RESPONSE.category && API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []).length > 0">
-            <recent-articles [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []"
+            <recent-articles [productStaticData]='productStaticData' [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []"
                 [title]="API_RESPONSE.category[0]?.categoryDetails?.categoryName"></recent-articles>
         </div>
         <!-- <div class="promo-container">

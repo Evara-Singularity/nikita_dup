@@ -212,7 +212,6 @@ export class CategoryComponent {
 
     private createFooterAccordianData() {
         this.accordiansDetails = [];
-        console.log(this.API_RESPONSE.category[1].categoryLinkList);
         this.accordiansDetails.push({
             name: this.productStaticData.accordian_list2_label,
             data: Object.entries(this.API_RESPONSE.category[1].categoryLinkList).map(x => ({ name: x[0], link: this._commonService.isHindiPage(x) ? 'hi/' + x[1] : x[1] }) as AccordianDataItem),
@@ -730,7 +729,6 @@ export class CategoryComponent {
         if (data['data'][0].block_data.image_block) {
             this.shopbyFeatrData = data['data'][0].block_data.image_block;
         }
-        
         if (data['data'][0].block_data.general_block) {
             this.catStaticData = data['data'][0].block_data.general_block;
         }

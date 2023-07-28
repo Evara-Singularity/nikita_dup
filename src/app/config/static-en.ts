@@ -254,7 +254,12 @@ export const product = {
     faq_category: 'Frequently Asked Questions about ___category___',
     categories: 'Categories',
     view_all_products: 'View All Products',
+    view_all: 'VIEW ALL',
     max_price: 'Max Price',
     min_price: 'Min Price',
-    price_range: 'Price Range'
+    price_range: 'Price Range',
+    quick_links: 'Quick Links',
+    shop_by_brand: 'Shop By Brand',
+    best_sellers: 'BestSellers',
+    articles_heading: 'Related ___title___ Articles'
 }

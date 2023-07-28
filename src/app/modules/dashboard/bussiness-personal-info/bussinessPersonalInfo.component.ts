@@ -161,6 +161,11 @@ export class BussinessInfoComponent {
         newUserSession.preferredLanguage = this.selectedLanguage;
         this._localAuthService.setUserSession(newUserSession);
         this.selectLanguagePopUp = false;
+        if(this.selectedLanguage == 'en'){
+          this._tms.show({type: "success", text: "You choose ‘English’ as your preferred language"});
+        }else{
+          this._tms.show({type: "success", text: "आपने अपनी पसंदीदा भाषा के रूप में ’हिंदी’ को चुना हैं"});
+        }
       }else{
         this._tms.show({type: "error", text: result['statusDescription']});
         this.selectLanguagePopUp = false;

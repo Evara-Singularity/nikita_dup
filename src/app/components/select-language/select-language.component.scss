@@ -59,6 +59,7 @@
               border: 1px solid var(--spanish-gray);
               border-radius: $border-radius-8;
               line-height: 16px;
+              cursor: pointer;
 
               &.selected {
                 background: var(--border-red);

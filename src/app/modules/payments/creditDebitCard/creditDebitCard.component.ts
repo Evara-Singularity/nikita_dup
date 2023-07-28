@@ -127,9 +127,9 @@ export class CreditDebitCardComponent implements OnInit {
                     return;
                 }
                 response = res['data'];
-                if (response['result'] && response['result']['offers'] && response['result']['offers'].length > 0) {
-                    this.bankDiscountAmount = response['result']['offers'][0]['discountDetail']['discount'];
-                    this.setPayUOfferDiscount(response['result']['offers'][0]);
+                if (response['result'] && response['result']['offerDiscount'] && response['result']['offerDiscount'] > 0 ) {
+                    this.bankDiscountAmount = response['result']['offerDiscount']['discount'];
+                    this.setPayUOfferDiscount(response['result']);
 
                 }else{
                     this.resetBankDiscountAmount();
@@ -152,20 +152,20 @@ export class CreditDebitCardComponent implements OnInit {
      
         if(response)
         {
-        this.offerKey =response['offerKey']
+        this.offerKey =response['offers'][0]['offerKey']
        
         let data ={};
-        data['description'] = response['description'];
+        data['description'] = response['offers'][0]['description'];
         data['totalCartValue'] = this._cartService.totalDisplayPayableAmountWithOutPrepaid
-        data['minTxnAmount'] = response['minTxnAmount']
-        data['maxTxnAmount'] = response['maxTxnAmount']
-        data['maxDiscount'] = response['discountDetail']['maxDiscount']
-        data['discount'] = response['discountDetail']['discount']
-        data['totalPayable']=  response['discountDetail']['discountedAmount']
+        data['minTxnAmount'] = response['offers'][0]['minTxnAmount']
+        data['maxTxnAmount'] = response['offers'][0]['maxTxnAmount']
+        data['maxDiscount'] = response['offers'][0]['maxDiscountPerTxn']
+        data['discount'] = response['offerDiscount']['discount']
+        data['totalPayable']=  response['offerDiscount']['discountedAmount'];
 
         this._popupService.setPayUOfferPopUpData(data);
 
-        this.totalPayableAmount = response['discountDetail']['discountedAmount'];
+        this.totalPayableAmount = response['offerDiscount']['discountedAmount'];
         
         }
     }
@@ -222,7 +222,10 @@ export class CreditDebitCardComponent implements OnInit {
                     ccexpmon: data.ccexpmon,
                     ccexpyr: data.ccexpyr,
                     store_card: data.store_card,
-                    user_credentials: data.user_credentials
+                    user_credentials: data.user_credentials,
+                    offer_key : data.offer_key,
+                    api_version : data.api_version,
+                    offer_auto_apply: data.offer_auto_apply
                 };
             } else {
                 payuData = data;
@@ -390,20 +393,23 @@ export class CreditDebitCardComponent implements OnInit {
     }
 
     getPayUOfferForUserCall(cardNumber){
+
+        let cartSession = this._cartService.getGenericCartSession;
         const data = {
             "var1": 1,
             "var2": cardNumber.slice(0, 6),
-           //"var2": 512345,
             "var5": 1,
             "paymentMode": "creditCard",
-            "amount": this._cartService.totalDisplayPayableAmountWithOutPrepaid
+            "amount": this._cartService.totalDisplayPayableAmountWithOutPrepaid,
+            "userToken": cartSession['cart']['userId'],
+            "cardNumber": cardNumber
             }
 
-         return this._dataService.callRestful('POST',CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT_PAYU_OFFER_USER,{body:data}).pipe(
-            catchError((res: HttpErrorResponse) => {
-                return of({status: false, statusCode: res.status});
-            })
-        );
+            return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PAYMENT_PAYU_OFFER_USER,{body:data}).pipe(
+                catchError((res: HttpErrorResponse) => {
+                    return of({status: false, statusCode: res.status});
+                })
+            );
     }
 
     async initiateRbiGuidlinesPopUp()

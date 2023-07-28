@@ -65,7 +65,7 @@ export const ENDPOINTS = {
   GET_CLUSTER_EMI_VAL: "/payment/getClusterEmiValues",
   PAYMENT: "/payment/pay",
   PAYMENT_PAYU_OFFER:"/payment/getPayuOffer",
-  PAYMENT_PAYU_OFFER_USER:"/payment/getPayuOfferForUser",
+  PAYMENT_PAYU_OFFER_USER:"/payment/validatePayuOffer", 
   GET_ALL_PAYMENT: "/payment/getAll",
   VALIDATE_VPA: "/payment/validateVPA?vpa=",
   CARD: {

@@ -90,7 +90,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
 
             // create data for shared listing component
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results');
-            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'BRAND', this.API_RESPONSE.brand[1][0].brandName).subscribe(res => {
+            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.category, 'BRAND', this.API_RESPONSE.brand[1][0].brandName).subscribe(res => {
                 if (res.hasOwnProperty('buckets')) {
                     this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
                     this.API_RESPONSE.brand[1][0].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
@@ -106,6 +106,9 @@ export class BrandComponent implements OnInit, AfterViewInit {
                         this.API_RESPONSE.brand[1][0].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
                         // genrate popular links data
                         this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList || {});
+                    }
+                    if (res.hasOwnProperty('brandCategoryLinkList')) {
+                        this.API_RESPONSE.brand[1][0].brandCategoryLinkList = JSON.parse(JSON.stringify(res['brandCategoryLinkList']));
                     }
                     // create accordians data
                     this.createFooterAccordianData();
@@ -160,6 +163,12 @@ export class BrandComponent implements OnInit, AfterViewInit {
             name: 'Related Brands',
             isNotVisible:!!this._activatedRoute.snapshot.params.category,
             data: this.API_RESPONSE.brand[3]?.searchBrandInfoList?.map(e => ({ name: e.brandName, link: e.brandLink }) as AccordianDataItem),
+            icon:'icon-brand_store'
+        });
+        this.accordiansDetails.push({
+            name: 'Related Brand Categories',
+            //extra: this.API_RESPONSE['brand'][0].brandName,
+            data: Object.entries(this.API_RESPONSE.brand[1][0].brandCategoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
     }

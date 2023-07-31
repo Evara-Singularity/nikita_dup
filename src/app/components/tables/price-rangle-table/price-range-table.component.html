@@ -25,9 +25,8 @@
                 <tbody>
                     <ng-container *ngFor="let PRTA of priceRangeData?.PRTA | slice:0:100, let i=index">
                         <tr *ngIf="PRTA.minPrice>0 && PRTA.maxPrice!==0">
-                            <td>
-                                <!-- [routerLink]="[PRTA?.categoryLink ? '/' + PRTA?.categoryLink : './']" -->
-                                {{PRTA.newName}}
+                            <td [routerLink]="[PRTA?.categoryLink ? '/' + PRTA?.categoryLink : './']">
+                                {{PRTA.newName}} 
                             </td>
                             <td>₹{{PRTA.minPrice}}</td>
                             <td>₹{{PRTA.maxPrice}}</td>

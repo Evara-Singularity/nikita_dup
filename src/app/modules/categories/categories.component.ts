@@ -213,12 +213,9 @@ export class Categories implements OnInit {
 	}
 	dataKeyColors: { [key: string]: string } = {
 		powerData: CONSTANTS.HOME_CATEGORY_COLOR1,
-		pumpData: CONSTANTS.HOME_CATEGORY_COLOR2,
+		safetyData: CONSTANTS.HOME_CATEGORY_COLOR2,
 		electricalData: CONSTANTS.HOME_CATEGORY_COLOR3,
-		officeData: CONSTANTS.HOME_CATEGORY_COLOR4,
-		medicalData: CONSTANTS.HOME_CATEGORY_COLOR5,
-		electricalsData: CONSTANTS.HOME_CATEGORY_COLOR6,
-		homeAppliancesData: CONSTANTS.HOME_CATEGORY_COLOR7
+		pumpData: CONSTANTS.HOME_CATEGORY_COLOR4
 	  }
 
 	  getBackgroundColor(dataKey: string): string {

@@ -2,6 +2,7 @@
 @import '../payment-continue-btn.scss';
 @import '../../../scss/components/radio';
 @import '../../../scss/layout/forms.scss';
+@import '../../../scss/components/checkbox';
 
 .emi-container {
     h3 {
@@ -159,6 +160,47 @@ p {
 .emiTabInner{
     .outline-input-label{
         margin-bottom:20px;
+    }
+}
+.save_faster_label {
+    display: flex;
+    align-items: center;
+    label{
+        width: 20px;
+        @extend %custom-check-box-checkout;
+    }
+    .chk-txt {
+        font-size:$medium-font;
+        color:var(--onyx-black);
+        padding-left:10px;
+    }
+}
+.custom_select_input{
+    span{
+        color: var(--dim-gray);
+    }
+}
+.know-more-btn{
+    margin-left: 30px;
+    font-size: 10px;
+    color: var(--bleu-de-france);
+    font-weight: $font-bold;
+    padding-bottom: 15px;
+}
+.radio-with-label-container {
+    display: flex;
+    margin: 10px 0px;
+    label.radio-with-label {
+        display: inline-flex;
+        @extend %pwa-universal-radio;
+        width: 45%;
+        align-items: center;
+        .custom-box {
+            margin-right: 10px;
+        }
+        .radio-text {
+            font-size: $medium-font;
+        }
     }
 }
   

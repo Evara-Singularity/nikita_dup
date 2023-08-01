@@ -22,6 +22,9 @@
     <input *ngIf="data['store_card'] != undefined" type="hidden" name="store_card" [value]="data['store_card']" />
     <input *ngIf="data['cardToken'] != undefined" type="hidden" name="store_card_token" [value]="data['cardToken']" />
     <input *ngIf="data['user_credentials'] != undefined" type="hidden" name="user_credentials" [value]="data['user_credentials']" />
+    <input *ngIf="data['offer_key'] != undefined" type="hidden" name="offer_key" [value]="data['offer_key']" />
+    <input *ngIf="data['api_version'] != undefined" type="hidden" name="api_version" [value]="data['api_version']" />
+    <input *ngIf="data['offer_auto_apply'] != undefined" type="hidden" name="offer_auto_apply" [value]="data['offer_auto_apply']" />
 </form>
 
 <!--<button type="button" (click)="doPayment()"></button>-->

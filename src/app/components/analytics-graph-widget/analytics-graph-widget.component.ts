@@ -377,6 +377,9 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
                 if(componentContext.isL2CategoryCheck === true){
                   componentContext.callRouter(this.options.link);
                 }
+                else{
+                  componentContext.generateFragmentUrl('price',componentContext.removeRupeeSymbol(this.options.name))
+               }
               }
             }
           }
@@ -453,5 +456,8 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
    callRouter(link){
      this.router.navigateByUrl(link);
    }
+   removeRupeeSymbol(inputString) {
+    return inputString.replace(/₹/g, '');
   }
+}
 

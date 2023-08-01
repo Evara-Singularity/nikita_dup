@@ -2712,6 +2712,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     this.injector
                 );
             this.shopByBrandsInstance.instance["data"] = this.shopByDifferentBrands;
+            this.shopByBrandsInstance.instance["categoryName"] = this.rawProductData.productCategoryDetails["categoryName"];
         }
     }
 
@@ -2754,7 +2755,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     this.injector
                 );
             this.recentProductsInstance.instance["outOfStock"] =
-                this.rawProductData.productOutOfStock;
+                this.rawProductData.productOutOfStock;   
+            this.recentProductsInstance.instance["currentProductMsn"] = [this.rawProductData['msn']]; 
             this.recentProductsInstance.instance["recentProductList"] = this.recentProductItems;
             const custData = this.commonService.custDataTracking;
             const orderData = this.orderTracking;

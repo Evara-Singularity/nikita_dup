@@ -12,12 +12,13 @@ import { ProductService } from "@app/utils/services/product.service";
 })
 export class ShopByBrandsComponent implements OnInit {
   @Input("data") data: any;
+  @Input("categoryName") categoryName;
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config
-    enableAddToCart: false,
-    enableBuyNow: false,
-    enableFullAddToCart: true,
+    enableAddToCart: true,
+    enableBuyNow: true,
+    enableFullAddToCart: false,
     enableFeatures: false,
     enableRating: true,
     enableVideo: false,
@@ -41,7 +42,7 @@ export class ShopByBrandsComponent implements OnInit {
         name: i,
         data: (this.data[i] as any[]).map((item) =>
           this._productService.recentProductResponseToProductEntityV1(item)
-        ),
+        ).filter(res=> (this._productService.isInStock(res) == true)) || [],
         isSelected: false,
       });
     }

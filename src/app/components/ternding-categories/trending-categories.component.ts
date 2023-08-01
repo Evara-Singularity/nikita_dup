@@ -16,8 +16,8 @@ export class TrendingCategoriesComponent {
     constructor(private _commonService: CommonService, private router: Router) {}
 
     setCookieLink(catName,categoryCodeorBannerName, type, url){
-        const isAbsoluteUrl = this._commonService.isAbsoluteUrl(url);
-        isAbsoluteUrl ? window.open(url, '_blank') : this.router.navigateByUrl('/'+url);
+        // const isAbsoluteUrl = this._commonService.isAbsoluteUrl(url);
+        // isAbsoluteUrl ? window.open(url, '_blank') : this.router.navigateByUrl('/'+url);
         this._commonService.setSectionClickInformation('homepage', type);
         this._commonService.resetSelectedFilterData();
         var date = new Date();

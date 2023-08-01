@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { PopUpModule } from "@modules/popUp/pop-up.module";
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
   selector: 'cat-bestseller',
@@ -22,7 +23,7 @@ export class CatBestsellerComponent {
   @ViewChild(PopUpComponent) _popupComponent: PopUpComponent;
   @Input('productStaticData') productStaticData;
 
-  constructor() {
+  constructor( public commonService: CommonService) {
     this.openPopup = false;
   }
 

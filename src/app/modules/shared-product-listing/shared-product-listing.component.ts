@@ -190,24 +190,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     return request;
   }
 
-  private getParamsUsedInModules() {
-    const params = {
-      filter: this._commonService.updateSelectedFilterDataFilterFromFragment(this._activatedRoute.snapshot.fragment),
-      queryParams: this._activatedRoute.snapshot.queryParams,
-      pageName: this.pageName
-    };
-    return params;
-  }
-
-  private isCallSponseredApi(formatParamsObj: any): boolean {
-    const filter = formatParamsObj.filter || {};
-    const queryParams = formatParamsObj.queryParams || {};
-    const filterKeys = Object.keys(filter)
-    const queryParamsKeys = Object.keys(queryParams);
-    const queryParamConditionOne = (!queryParamsKeys.includes('orderby') && !queryParamsKeys.includes('orderway') && !queryParamsKeys.includes('orderBy') && !queryParamsKeys.includes('orderWay')) || (queryParamsKeys.includes('orderby') && queryParamsKeys.includes('orderway') && !queryParamsKeys.includes('orderBy') && !queryParamsKeys.includes('orderWay'))
-    return filterKeys.length == 0 && (queryParamsKeys.length == 0 || (queryParamsKeys.length > 0 && queryParamConditionOne))
-  }
-
   pageTranslation(){
     const isPopUp = sessionStorage.getItem("isPopUp");
     if(isPopUp == null && !this.isHindiUrl){
@@ -418,7 +400,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
   }
   
   get isHindiUrl() {
-    return (this.router.url).toLowerCase().indexOf('/hi') !== -1
+    return (this.router.url).toLowerCase().indexOf('/hi/') !== -1
   }
 
   ngOnDestroy() {

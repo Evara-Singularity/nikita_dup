@@ -20,7 +20,7 @@ export class BreadcrumbNavComponent implements OnInit {
     private renderer2: Renderer2,
     @Inject(DOCUMENT) private document,
     private router: Router,
-    private _commonService: CommonService,
+    public _commonService: CommonService,
     private globalAnalyticService: GlobalAnalyticsService,
   ) {
   }
@@ -52,7 +52,7 @@ export class BreadcrumbNavComponent implements OnInit {
           "position": index + 1,
           "item":
           {
-            "@id": CONSTANTS.PROD + (this._commonService.isHindiUrl ? '/hi/' : '/') + element['categoryLink'],
+            "@id": CONSTANTS.PROD + (this._commonService.isHindiPage(element) ? '/hi/' : '/') + element['categoryLink'],
             "name": element['categoryName']
           }
         })

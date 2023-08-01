@@ -13,6 +13,8 @@ import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 import { AdsenseService } from '@app/utils/services/adsense.service';
+import * as localization_en from '../../config/static-en';
+import * as localization_hi from '../../config/static-hi';
 
 let digitalData = {
     page: {},
@@ -71,7 +73,7 @@ export class CategoryComponent {
     ) {
         this._commonService.isHomeHeader = false;
         this._commonService.isPLPHeader = true;
-        this.getLocalization();
+        this.initializeLocalization();
     }
 
     ngOnInit(): void {
@@ -81,11 +83,20 @@ export class CategoryComponent {
         }
     }
 
-    getLocalization() {
+    initializeLocalization(isHindi = this.isHindiUrl) {
+        if (isHindi) {
+            this._commonService.defaultLocaleValue = localization_hi.product;
+            this.productStaticData = localization_hi.product;
+            this._commonService.changeStaticJson.next(this.productStaticData);
+        } else {
+            this._commonService.defaultLocaleValue = localization_en.product;
+            this.productStaticData = localization_en.product;
+            this._commonService.changeStaticJson.next(this.productStaticData);
+        }
         this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
             this.productStaticData = localization_content;
         });
-    }
+      }
 
     ngAfterViewInit(): void {
         // this.sharedProductList.getSponseredProducts();

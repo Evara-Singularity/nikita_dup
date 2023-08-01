@@ -547,8 +547,11 @@ export class CartService
         {
             let bankOffer = {
                 bankOffer:extra.bankOffer ? extra.bankOffer : null,
-                cardNumber: extra.ccnum.slice(0, 6),
-                paymentMode: extra.paymentMode
+                bin: extra.ccnum.slice(0, 6),
+                paymentMode: extra.paymentMode,
+                cardNumber : extra.ccnum,
+                paymentCode : extra.paymentMode == 'emi' ? extra.paymentCode : null,
+                userToken : userSession["userId"]
             }
             obj["shoppingCartDto"]["bankOffer"]  = bankOffer;
             obj["shoppingCartDto"]["prepaidDiscounts"]=[]; 

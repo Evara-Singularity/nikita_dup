@@ -109,15 +109,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
 
             // create data for shared listing component
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results');
-            const isHindiUrl = this._router.url && (this._router.url).toLowerCase().indexOf('/hi/') !== -1 ? true : false;
-            let brandName = this.API_RESPONSE.brand[1][0].brandName;
-            this.isAcceptLanguage = this.API_RESPONSE['brand'][1][0]['acceptLanguage'] && this.API_RESPONSE['brand'][1][0]['acceptLanguage'].length ? true : false;
-            if(isHindiUrl) {
-                if(this.API_RESPONSE['brand'][1][0]['productSearchResult'] && this.API_RESPONSE['brand'][1][0]['productSearchResult']['totalCount'] > 0) {
-                    brandName = this.API_RESPONSE['brand'][1][0]['productSearchResult']['products'][0]['brandName']
-                }
-            }
-            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'BRAND', brandName, isHindiUrl).subscribe(res => {
+            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.category, 'BRAND', this.API_RESPONSE.brand[1][0].brandName).subscribe(res => {
                 if (res.hasOwnProperty('buckets')) {
                     this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
                     this.API_RESPONSE.brand[1][0].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
@@ -133,6 +125,9 @@ export class BrandComponent implements OnInit, AfterViewInit {
                         this.API_RESPONSE.brand[1][0].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
                         // genrate popular links data
                         this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList || {});
+                    }
+                    if (res.hasOwnProperty('brandCategoryLinkList')) {
+                        this.API_RESPONSE.brand[1][0].brandCategoryLinkList = JSON.parse(JSON.stringify(res['brandCategoryLinkList']));
                     }
                     // create accordians data
                     this.createFooterAccordianData();
@@ -187,6 +182,12 @@ export class BrandComponent implements OnInit, AfterViewInit {
             name: this.productStaticData.related_brands,
             isNotVisible:!!this._activatedRoute.snapshot.params.category,
             data: this.API_RESPONSE.brand[3]?.searchBrandInfoList?.map(e => ({ name: e.brandName, link: this._commonService.isHindiPage(e) ? 'hi/' + e.brandLink : e.brandLink }) as AccordianDataItem),
+            icon:'icon-brand_store'
+        });
+        this.accordiansDetails.push({
+            name: 'Related Brand Categories',
+            //extra: this.API_RESPONSE['brand'][0].brandName,
+            data: Object.entries(this.API_RESPONSE.brand[1][0].brandCategoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
     }

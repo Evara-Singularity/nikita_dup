@@ -2721,6 +2721,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     this.injector
                 );
             this.shopByBrandsInstance.instance["data"] = this.shopByDifferentBrands;
+            this.shopByBrandsInstance.instance["categoryName"] = this.rawProductData.productCategoryDetails["categoryName"];
         }
     }
 

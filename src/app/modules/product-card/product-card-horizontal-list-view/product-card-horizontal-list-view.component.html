@@ -87,6 +87,12 @@
                     <i class="icon-offer"></i>
                     <span><b>{{product.promoCodeDescription}} OFF</b> with coupon</span>
                 </div>
+                <div class="emi-container"
+                    *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice >= easyEMILimit">
+                    <i class="icon-circle_check"></i>
+                    <span>No-Cost EMI Available</span>
+                </div>
+                
             </div>
         </div>
         <!-- -- {{ product['attributeValuesForPart'] | json }} -- -->

@@ -49,7 +49,7 @@
                                     <label class="payment-radio-btn">
                                         <input formControlName="bankcode" [checked]="selectedEMIKey == emi.key"
                                             type="radio" [value]="emi.key"
-                                            (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount, emi)"
+                                            (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount, emi, clearBankDiscount)"
                                             [id]="emi.key">
                                         <span class="custom-box"></span>
                                     </label>
@@ -76,7 +76,7 @@
 
                                         <input formControlName="bankcode" type="radio"
                                             [checked]="selectedEMIKey == emi.key" [value]="emi.key"
-                                            (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount, emi)"
+                                            (click)="selectEmI(getEmiMonths(emi.key), emi.value.emiBankInterest, emi.value.transactionAmount, emi,clearBankDiscount)"
                                             [value]="emi.key" [id]="emi.key">
                                         <span class="custom-box"></span>
                                     </label>

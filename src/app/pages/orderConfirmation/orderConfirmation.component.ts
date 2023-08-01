@@ -36,6 +36,7 @@ export class OrderConfirmationComponent implements OnInit {
     isBrowser: boolean;
     imagePath = CONSTANTS.IMAGE_BASE_URL;
     amount: any;
+    netDebitAmount: any;
     parentCate;
     productCategoryCode: Array<any> = [];
     userType;
@@ -82,6 +83,7 @@ export class OrderConfirmationComponent implements OnInit {
         this.mode = this.queryParams["mode"];
         this.orderId = (this.queryParams && this.queryParams["orderId"]) ? this.queryParams["orderId"] : null;
         this.amount = this.queryParams["transactionAmount"];
+        this.netDebitAmount= this.queryParams["netDebitAmount"];
         const log = `OrderId:${this.orderId}, Mode:${this.mode}, Amount:${this.amount}`;
         // console.log("ngOnInit")
         // console.log(log);

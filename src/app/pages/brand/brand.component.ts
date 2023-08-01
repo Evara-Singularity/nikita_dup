@@ -110,6 +110,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
             // create data for shared listing component
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results');
             let brandName = this.API_RESPONSE.brand[1][0].brandName;
+            this.isAcceptLanguage = this.API_RESPONSE['brand'][1][0]['acceptLanguage'] && this.API_RESPONSE['brand'][1][0]['acceptLanguage'].length ? true : false;
             if(this.isHindiUrl) {
                 if(this.API_RESPONSE['brand'][1][0]['productSearchResult'] && this.API_RESPONSE['brand'][1][0]['productSearchResult']['totalCount'] > 0) {
                     brandName = this.API_RESPONSE['brand'][1][0]['productSearchResult']['products'][0]['brandName']

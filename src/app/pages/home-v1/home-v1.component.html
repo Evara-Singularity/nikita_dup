@@ -46,9 +46,8 @@
             <div class="pwa-col-12 category-grid-container mb-15">
                 <h3 class="heading-2-16">Category Stores</h3>
                 <div class="pwa-row pwa-row-noPad pad-tb-0 row-gutter-space">
-                    <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card pwa-col-4"
-                        [routerLink]="item.category_url">
-                        <a>
+                    <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card pwa-col-4">
+                        <a href="{{item.category_url}}">
                             <img alt={{item.CategoryName}}
                             [defaultImage]="defaultImage" [lazyLoad]="clusterimagePath + 'img/cluster/'+item.category_image"
                              width="97" height="65">

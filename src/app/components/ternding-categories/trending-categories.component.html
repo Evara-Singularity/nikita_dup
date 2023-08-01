@@ -6,7 +6,7 @@
     </div>
     <ul class="category-grid-container row-gutter-space">
         <li class="category-grid-card pwa-col-4" *ngFor="let item of flyOutData | slice:0:9;let i=index"> 
-            <a (click)="setCookieLink('Trending_Categories',item.categoryCode, 'listing', item.link)">
+            <a href="{{item.link}}" (click)="$event.stopPropagation();setCookieLink('Trending_Categories',item.categoryCode, 'listing', item.link)">
                 <img src="{{item.imageUrl}}"  alt="{{item.categoryName}}">
                 <p>{{(item.categoryName) + (item.categoryName.length > 15 ? " ":"")}}</p>
             </a>

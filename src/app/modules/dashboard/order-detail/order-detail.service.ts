@@ -94,4 +94,15 @@ getIfscAndBankName(ifscCode){
     return this.dataService.callRestful("GET",url);
 }
 
+getSavedCardDetails(userId){
+    const url = "https://nodeapiqa.moglilabs.com/nodeApi/v1/address/getCustomerBankDetails?userId="+ userId;
+    return this.dataService.callRestful("GET",url);
+}
+
+deleteSavedCardDetails(id,userId){
+    const url="https://addressqa.moglilabs.com/address/customer_bank_details/{id}?userId={userId}"
+    return this.dataService.callRestful("DELETE",url);
+
+}
+
 }

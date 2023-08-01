@@ -103,6 +103,10 @@ export class OrderDetailComponent implements OnInit {
   @ViewChild("returnInfo", { read: ViewContainerRef })
   returnInfoContainerRef: ViewContainerRef;
 
+  savedBankDetailInfo;
+  bankDetailInfoForm: FormGroup;
+  showConfirmOnDirectSub=false
+
   readonly validBuyAgainStatus = ['SHIPPED','DELIVERED', 'RETURN REQUESTED', 'RETURN REJECTED', 'RETURN APPROVED', 'RETURN PICKED', 'RETURN DONE', 'EXCHANGE REQUESTED', 'EXCHANGE REJECTED', 'EXCHANGE APPROVED', 'EXCHANGE PICKED'];
   readonly validTrackingStatus = ['SHIPPED', 'DELIVERED'];
   readonly trackingMessage = 'Tracking information from courier partner is not available at the moment.';
@@ -145,6 +149,14 @@ export class OrderDetailComponent implements OnInit {
         this.cancelReasons = cancelReasons;
       }
     });
+    this.returnForm.controls['bankDetail']['controls']['ifscCode'].valueChanges.pipe(debounceTime(300)).subscribe(res=>{
+      if ( this.returnForm.controls['bankDetail']['controls']['ifscCode'].value.length==11) {
+        this.getBankNameByIfscCode(res); 
+      }else{
+        console.log('in eleseeeeeeeeeeeeee')
+        this.returnForm.controls['bankDetail']['controls']['bankName'].reset();
+      }
+    })  
   }
 
   showReturnHandler(deliveryDate) {
@@ -212,6 +224,8 @@ export class OrderDetailComponent implements OnInit {
           // "ifscCode": [null, { validators: [Validators.required, Validators.pattern('^[0-9]{6}$')]}],
           "acountName": [null, { validators: [Validators.required, Bank.bankNameorAccountHolder]}],
           "acountNo": [null, { validators: [Validators.required, Bank.bankAccount]}],
+          "userId":[this.user["userId"]],
+          "id":[null],
           "chequeUrl": [null]
         }))
 
@@ -225,6 +239,63 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
+  savedCardBankDetail(){
+    if (this.user['userId']) {
+      this._OrderService.getSavedCardDetails(this.user['userId']).subscribe(res=>{
+        if (res['status']) {
+          let data=res['data']
+          this.savedBankDetailInfo=data  
+        }
+      })      
+    }
+  }
+
+  onSavedBankDetailSelecion(data){
+    const nestedbankDetailForm = this.returnForm.get('bankDetail') as FormGroup;
+    this.returnForm.controls['bankDetail']['controls']['bankName'].setValue(data.bankName);
+    this.returnForm.controls['bankDetail']['controls']['ifscCode'].setValue(data.ifscCode);
+    this.returnForm.controls['bankDetail']['controls']['acountName'].setValue(data.username);
+    this.returnForm.controls['bankDetail']['controls']['acountNo'].setValue(data.accountNumber);
+    // this.returnForm.controls['bankDetail']['controls']['id'].setValue(data.id)
+    nestedbankDetailForm.removeControl('id');
+    this.showConfirmOnDirectSub=true;
+  }
+
+  addAnotherBankDetail(){
+    if (this.returnForm.controls['quantity'].valid && this.returnForm.controls['reason'].valid && this.returnForm.controls['requestType'].valid && this.itemImages.length>0 ) {
+      this.step=2;      
+    } else {
+      this._tms.show({ type: 'error', text: 'Please Enter the above madetory fields'});
+    }
+  }
+
+  onEditBankDetailSelecion(data){
+
+    if (this.returnForm.controls['quantity'].valid && this.returnForm.controls['reason'].valid && this.returnForm.controls['requestType'].valid && this.itemImages.length>0 ) {
+      this.returnForm.controls['bankDetail']['controls']['bankName'].setValue(data.bankName);
+      this.returnForm.controls['bankDetail']['controls']['ifscCode'].setValue(data.ifscCode);
+      this.returnForm.controls['bankDetail']['controls']['acountName'].setValue(data.username);
+      this.returnForm.controls['bankDetail']['controls']['acountNo'].setValue(data.accountNumber);
+      this.returnForm.controls['bankDetail']['controls']['id'].setValue(data.id)
+      this.step=2; 
+    } else {
+      this._tms.show({ type: 'error', text: 'Please Enter the above madetory fields'});
+    }
+  }
+
+  deleteBankDetailSelecion(data){
+    if (this.user['userId']) {
+      this._OrderService.deleteSavedCardDetails(data.id,this.user['userId']).subscribe(res=>{
+        if (res['status'] && res['statusDescription']=='Deleted') {
+          this._tms.show({ type: 'success', text: 'saved Bank detail deleted successfully'});
+        }
+        else
+        this._tms.show({ type: 'error', text: 'Failed to delete bank details'});
+      })      
+    }
+
+  }
+  
   getBankNameByIfscCode(ifscCode){
     this._OrderService.getIfscAndBankName(ifscCode).subscribe(res=>{
     if (res['status']) {
@@ -436,6 +507,7 @@ export class OrderDetailComponent implements OnInit {
     // console.log('returnProduct', rData, valid);
     // return; 
 
+    this.showConfirmOnDirectSub=false;
     rData.itemId = this.detail.item_id;
     rData.msn = this.detail.product_msn;
 

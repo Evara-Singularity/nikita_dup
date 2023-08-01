@@ -116,7 +116,7 @@
         <div class="need-help-strip">
             <div>
                 <span class="cncl-item"
-                    (click)="openPopup='return' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status); ">RETURN</span>
+                    (click)="openPopup='return' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status);savedCardBankDetail() ">RETURN</span>
                 <span class="cncl-item"
                     (click)="openPopup='return' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status); ">EXCHANGE</span>
             </div>
@@ -497,40 +497,43 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                 </p>
     
                             </div>
-                            <div class="order_return-bank-detail">
+                            <div class="order_return-bank-detail" *ngIf="savedBankDetailInfo?.length>0 && returnForm.controls['requestType'].value == 'return'">
                                 <h3 >Refund in My Bank</h3>
                                 <p>Share your bank details for refund of your COD payment.</p>
-                                <form class="active-multiple-address">
+                            <form>
+                                <div class="selection-bank-detail-form active-multiple-address"
+                                    *ngFor="let data of savedBankDetailInfo, let i=index">
                                     <div class="multiple-address ">
                                         <label>
                                             <span class="chk-txt">
-                                                <input type="radio" >
+                                                <input type="radio" name="bankDetail" (click)="onSavedBankDetailSelecion(data)">
                                                 <span class="custom-box icon-box"></span>
                                             </span>
                                             <span class="right-text">
-                                                <span>Account Holder Name : Anu Thakur</span>
-                                                <span>Account Number : 10000008976543</span>
-                                                <span>Bank Name : AXIS</span>
-                                                <span>IFSC Code : AXIS0003749</span>
+                                                <span>Account Holder Name : {{data.username}}</span>
+                                                <span>Account Number : {{data.accountNumber}}</span>
+                                                <span>Bank Name : {{data.bankName}}</span>
+                                                <span>IFSC Code : {{data.ifscCode}}</span>
                                             </span>
                                         </label>
                                         <span class="address-btn-section">
-                                            <span class="small-btn edit">EDIT</span>
-                                            <span class="small-btn delete">
+                                            <span class="small-btn edit" (click)="onEditBankDetailSelecion(data)">EDIT</span>
+                                            <span class="small-btn delete" (click)="deleteBankDetailSelecion(data)">
                                                 DELETE
                                             </span>
                                         </span>
                                     </div>
-                                </form>
+                                </div>
+                            </form>
                             </div>
-                            <button class="btn secondry-full-btn">+ ADD ANOTHER BANK DETAIL</button>
+                            <button class="btn secondry-full-btn" *ngIf="savedBankDetailInfo?.length>0 && returnForm.controls['requestType'].value == 'return'"  (click)="addAnotherBankDetail()">+ ADD ANOTHER BANK DETAIL</button>
 
                         </section>
 
                         <!-- {{returnForm.controls['quantity'].valid}} -->
                         <div class="fixed-bottom-cta" *ngIf='!showError'>
                             <button class="primary-full-btn confirmbtn btn"
-                                *ngIf="step==1 && (!returnForm.controls['requestType'].value || returnForm.controls['requestType'].value == 'return') && (returnForm.controls['quantity'].value != 'exchange')"
+                                *ngIf="step==1 && (!returnForm.controls['requestType'].value || returnForm.controls['requestType'].value == 'return') && (returnForm.controls['quantity'].value != 'exchange') && showConfirmOnDirectSub==false"
                                 [disabled]="!returnForm.controls['quantity'].valid || !returnForm.controls['reason'].valid || !returnForm.controls['requestType'].valid || this.itemImages.length == 0"
                                 (click)="returnForm.controls['quantity'].valid && returnForm.controls['reason'].valid && returnForm.controls['requestType'].valid && this.itemImages.length>0 ? step = 2 : ''">NEXT</button>
 
@@ -673,8 +676,8 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                 <button class="btn primary-full-btn" (click)="navigateTo('/')">CONTINUE</button>
             </div>
             <div class="fixed-bottom-cta"
-                [ngClass]="{'show': step == 2 || !returnForm['controls']['bankDetail'], 'hide': step !== 2}"
-                *ngIf="step==2">
+                [ngClass]="{'show': step == 2 || !returnForm['controls']['bankDetail'] || showConfirmOnDirectSub==true, 'hide': step !== 2}"
+                *ngIf="step==2 || showConfirmOnDirectSub==true">
                 <div class="fixed-bottom-cta-items">
                     <i class="icon-back" (click)="step = 1" id="icon-profile"></i>
                     <button type="submit" [style.width.%]="!returnForm['controls']['bankDetail'] ? 100 : 85"

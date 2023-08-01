@@ -9,8 +9,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import CONSTANTS from './config/constants';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
+// import { ServiceWorkerModule } from '@angular/service-worker';
+// import { environment } from '../environments/environment';
 // import { SpeedTestModule } from 'ng-speed-test';
 
 
@@ -23,12 +23,12 @@ import { environment } from '../environments/environment';
     BrowserTransferStateModule,
     HttpClientModule,
     NgxWebstorageModule.forRoot(),
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the app is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    }),
+    // ServiceWorkerModule.register('ngsw-worker.js', {
+    //   enabled: environment.production,
+    //   // Register the ServiceWorker as soon as the app is stable
+    //   // or after 30 seconds (whichever comes first).
+    //   registrationStrategy: 'registerWhenStable:30000'
+    // }),
     // SpeedTestModule,
     // ErrorHandlerModule
   ],

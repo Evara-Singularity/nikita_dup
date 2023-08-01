@@ -153,7 +153,6 @@ export class OrderDetailComponent implements OnInit {
       if ( this.returnForm.controls['bankDetail']['controls']['ifscCode'].value.length==11) {
         this.getBankNameByIfscCode(res); 
       }else{
-        console.log('in eleseeeeeeeeeeeeee')
         this.returnForm.controls['bankDetail']['controls']['bankName'].reset();
       }
     })  

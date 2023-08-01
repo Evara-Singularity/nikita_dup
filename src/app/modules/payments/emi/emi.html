@@ -162,6 +162,18 @@
                 </section>
 
             </ng-container>
+            <div class="custom-cbox ">
+                <div class="save_faster_label">
+                    <label>
+                        <input type="checkbox" formControlName="store_card" #storeCerd>
+                        <span class="custom-box"></span>
+                    </label>
+                    <span class="chk-txt">Secure my card as per RBI guidelines.   {{storeCerd.value}}</span>
+                    
+                </div>
+               
+                <p (click)="$event.preventDefault();initiateRbiGuidlinesPopUp()" class="know-more-btn">KNOW MORE</p>
+            </div>
 
             <div class="continue-button">
                 <!-- <prepaid-offer-checkout ></prepaid-offer-checkout>  -->
@@ -200,6 +212,6 @@
 
 
 </section>
-
+<ng-container #bottomSheet></ng-container>
 <payu-form *ngIf="isValid&&type=='retail'" [data]="payuData"></payu-form>
 <razor-pay *ngIf="isValid&&type=='tax'" [data]="payuData"></razor-pay>

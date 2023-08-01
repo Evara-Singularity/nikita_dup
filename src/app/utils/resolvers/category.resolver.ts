@@ -122,7 +122,7 @@ export class CategoryResolver implements Resolve<any> {
           return res;
         }));
 
-        const getFAQObs = this.http.get(faq_url).pipe(share(), 
+        const getFAQObs = this.http.get(faq_url, requestOptions).pipe(share(), 
         map(res=>{
           const logInfo =  this._commonService.getLoggerObj(faq_url,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();

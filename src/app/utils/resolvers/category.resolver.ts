@@ -140,7 +140,7 @@ export class CategoryResolver implements Resolve<any> {
           return res;
         }));
 
-        const getBreadCrump = this.http.get(breadcrump_url).pipe(share(), 
+        const getBreadCrump = this.http.get(breadcrump_url, requestOptions).pipe(share(), 
         map(res=>{
           const logInfo =  this._commonService.getLoggerObj(breadcrump_url,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();
@@ -176,7 +176,7 @@ export class CategoryResolver implements Resolve<any> {
           return res;
         }));
 
-        const getcategoryextra = this.http.get(category_extra_url).pipe(share(), 
+        const getcategoryextra = this.http.get(category_extra_url, requestOptions).pipe(share(), 
         map(res=>{
           const logInfo =  this._commonService.getLoggerObj(category_extra_url,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();

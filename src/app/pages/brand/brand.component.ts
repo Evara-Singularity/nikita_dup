@@ -116,7 +116,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                     brandName = this.API_RESPONSE['brand'][1][0]['productSearchResult']['products'][0]['brandName']
                 }
             }
-            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.category, 'BRAND', brandName).subscribe(res => {
+            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.category, 'BRAND', brandName, this.isHindiUrl).subscribe(res => {
                 if (res.hasOwnProperty('buckets')) {
                     this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
                     this.API_RESPONSE.brand[1][0].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));

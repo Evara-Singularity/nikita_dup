@@ -9,6 +9,7 @@ import {
   ViewContainerRef,
   ComponentFactoryResolver,
   Injector,
+  OnDestroy,
 } from "@angular/core";
 import { debounceTime, map, takeUntil } from "rxjs/operators";
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
@@ -36,7 +37,7 @@ declare let _satellite;
     "../bussiness-order/businessOrder.scss",
   ],
 })
-export class OrderDetailComponent implements OnInit {
+export class OrderDetailComponent implements OnInit, OnDestroy {
   @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild(PopUpComponent) _popupComponent: PopUpComponent;
   cancelReasons: Array<{}>;

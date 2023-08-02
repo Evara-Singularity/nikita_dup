@@ -1,16 +1,19 @@
-<ng-container *ngIf="featureArrivalData && featureArrivalData.length > 0" >
+<ng-container *ngIf="featureArrivalData && featureArrivalData.length > 0">
     <section class="featr_arrival mt-15">
-            <div class="view-all-strip">
-                <h3 class="heading-2-16">Featured Arrivals</h3>
-                <a [routerLink]="['/deals/fresh-arrivals']" routerLinkActive="router-link-active"
-                    class="btn quinary-btn">VIEW ALL
-                </a>
-            </div>
-
-            <product-card-vertical-container  [numberOfItems]="featureArrivalData.length">
+        <div class="view-all-strip pad-lr-15">
+            <h3 class="heading-2-16">Featured Arrivals</h3>
+            <button [routerLink]="['/deals/fresh-arrivals']" routerLinkActive="router-link-active"
+                class="btn quinary-btn">VIEW ALL
+            </button>
+        </div>
+        <div class="pl-15">
+            <product-card-vertical-container [numberOfItems]="featureArrivalData.length">
                 <ng-container *ngFor="let product of featureArrivalData">
-                  <product-card-vertical-grid-view [moduleUsedIn]="'HOME-FEATURED-ARRIVALS'" [isPDPImageLazyLoaded]="false" [cardFeaturesConfig]="cardFeaturesConfig"  [product]="product"> </product-card-vertical-grid-view >
+                    <product-card-vertical-grid-view [moduleUsedIn]="'HOME-FEATURED-ARRIVALS'"
+                        [isPDPImageLazyLoaded]="false" [cardFeaturesConfig]="cardFeaturesConfig" [product]="product">
+                    </product-card-vertical-grid-view>
                 </ng-container>
             </product-card-vertical-container>
+        </div>
     </section>
 </ng-container>

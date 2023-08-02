@@ -287,6 +287,7 @@ export class OrderDetailComponent implements OnInit {
       this._OrderService.deleteSavedCardDetails(data.id,this.user['userId']).subscribe(res=>{
         if (res['status'] && res['statusDescription']=='Deleted') {
           this._tms.show({ type: 'success', text: 'saved Bank detail deleted successfully'});
+          this.savedCardBankDetail();
         }
         else
         this._tms.show({ type: 'error', text: 'Failed to delete bank details'});

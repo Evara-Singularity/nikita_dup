@@ -95,14 +95,14 @@ getIfscAndBankName(ifscCode){
 }
 
 getSavedCardDetails(userId){
-    const url = "https://nodeapiqa.moglilabs.com/nodeApi/v1/address/getCustomerBankDetails?userId="+ userId;
+    const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CUSTOMER_BANK_DETAILS + userId;
     return this.dataService.callRestful("GET",url);
 }
 
 deleteSavedCardDetails(id,userId){
-    const url="https://addressqa.moglilabs.com/address/customer_bank_details/{id}?userId={userId}"
+    console.log('nikkk',id,userId)
+    const url=CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.DELETE_BANK_DETAILS+id+"?userId="+userId
     return this.dataService.callRestful("DELETE",url);
-
 }
 
 }

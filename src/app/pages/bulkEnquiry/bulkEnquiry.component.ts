@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Inject, Renderer2 } from '@angular/core';
+import { Component, ViewEncapsulation, Inject, Renderer2, AfterViewInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { CommonService } from '@app/utils/services/common.service';
   styleUrls: ['./bulkEnquiry.scss'],
   
 })
-export class BulkEnquiryComponent {
+export class BulkEnquiryComponent implements AfterViewInit{
 
   isServer: boolean;
   isBrowser: boolean;
@@ -128,6 +128,10 @@ export class BulkEnquiryComponent {
         });
       }
     }
+  }
+
+  ngAfterViewInit() {
+    this._commonService.loadFreshChat();
   }
 }
 

@@ -1668,4 +1668,14 @@ export class CommonService
         data["custData"] = this.custDataTracking;
         this._analytics.sendAdobeCall(data, trackingname); 
     }
+
+    loadFreshChat(time = 1000) {
+        if(this.isBrowser) {
+            setTimeout(async () => {            
+                const { FreshChat } = await import('../../modules/fresh-chat/fresh-chat.component');
+                const freshchat = new FreshChat();
+                freshchat.ngAfterViewInit();
+            }, time);
+        }
+    }
 }

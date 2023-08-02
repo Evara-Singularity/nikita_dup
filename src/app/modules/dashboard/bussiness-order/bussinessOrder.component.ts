@@ -143,6 +143,10 @@ export class BussinessOrderComponent {
     }
   }
 
+  ngAfterViewInit() {
+    this._commonService.loadFreshChat();
+  }
+
   initializePageParams(page) {
     if (!page) {
       this.getAllOrders(page);

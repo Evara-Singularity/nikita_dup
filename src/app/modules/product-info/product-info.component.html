@@ -20,7 +20,10 @@
 
                     <p class="brand"><span>By :</span>  {{brandName}}</p>
 
-                    <p class="price" *ngIf="productMrp > productPrice">   
+                    <p class="price" *ngIf="productMrp > productPrice">  
+                        <span class="after-discount" *ngIf="productPrice > 0 && bulkSellingPrice==null">
+                            {{productPrice | currency: 'INR' : 'symbol' : '1.0-0'}}
+                        </span> 
                         <span class="before-discount" >{{productMrp | currency: 'INR' : 'symbol' :
                             '1.0-0'}}
                         </span>
@@ -33,9 +36,7 @@
                             </span>
                         </ng-container>
 
-                        <span class="after-discount" *ngIf="productPrice > 0 && bulkSellingPrice==null">
-                            {{productPrice | currency: 'INR' : 'symbol' : '1.0-0'}}
-                        </span>
+
                         <span class="after-discount" *ngIf="bulkSellingPrice!==null">
                             {{bulkSellingPrice | currency: 'INR' : 'symbol' : '1.0-0'}}
                         </span>

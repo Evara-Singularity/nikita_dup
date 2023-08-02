@@ -1,17 +1,28 @@
 @import "../variables";
+
 .static-card-container {
     display: flex;
     justify-content: space-between;
+
     .product-img {
         width: 100px;
         height: 100px;
     }
+
     .product-description {
         width: calc(100% - 115px);
+
         .description-txt {
             font-size: $large-font;
             line-height: $medium-line-height;
+            display: -webkit-box;
+            height: 2.8em;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
+
         .brand {
             font-size: $small-font;
             line-height: $small-line-height;
@@ -19,26 +30,31 @@
             font-weight: bold;
             margin-top: 5px;
         }
+
         .price {
             margin: 5px 0 0;
             font-size: $medium-font;
+
             .after-discount {
                 display: block;
                 margin: 4px 0 2px 0;
                 font-size: $extra-large-font;
                 font-weight: $font-bold;
             }
+
             .before-discount {
                 text-decoration: line-through;
                 margin: 0 6px 0 0;
                 // opacity: 0.5;
                 color: var(--dim-gray);
             }
+
             .discount {
                 color: var(--slimy-green);
                 font-weight: $font-bold;
             }
         }
+
         .product-qty {
             font-size: $small-font;
             line-height: $small-line-height;

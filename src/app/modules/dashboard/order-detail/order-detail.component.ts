@@ -150,6 +150,7 @@ export class OrderDetailComponent implements OnInit {
       }
     });
     this.returnForm.controls['bankDetail']['controls']['ifscCode'].valueChanges.pipe(debounceTime(300)).subscribe(res=>{
+      console.log('nikkkkkkkkkkkkkk')
       if ( this.returnForm.controls['bankDetail']['controls']['ifscCode'].value.length==11) {
         this.getBankNameByIfscCode(res); 
       }else{
@@ -262,9 +263,13 @@ export class OrderDetailComponent implements OnInit {
 
   addAnotherBankDetail(){
     if (this.returnForm.controls['quantity'].valid && this.returnForm.controls['reason'].valid && this.returnForm.controls['requestType'].valid && this.itemImages.length>0 ) {
+    this.returnForm.controls['bankDetail']['controls']['bankName'].setValue('');
+    this.returnForm.controls['bankDetail']['controls']['ifscCode'].setValue('');
+    this.returnForm.controls['bankDetail']['controls']['acountName'].setValue('');
+    this.returnForm.controls['bankDetail']['controls']['acountNo'].setValue('');
       this.step=2;      
     } else {
-      this._tms.show({ type: 'error', text: 'Please Enter the above madetory fields'});
+      this._tms.show({ type: 'error', text: 'Please Enter the above mandatory field'});
     }
   }
 
@@ -278,7 +283,7 @@ export class OrderDetailComponent implements OnInit {
       this.returnForm.controls['bankDetail']['controls']['id'].setValue(data.id)
       this.step=2; 
     } else {
-      this._tms.show({ type: 'error', text: 'Please Enter the above madetory fields'});
+      this._tms.show({ type: 'error', text: 'Please Enter the above mandatory field'});
     }
   }
 

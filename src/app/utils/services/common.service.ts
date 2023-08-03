@@ -1673,7 +1673,7 @@ export class CommonService
         if(this.isBrowser) {
             setTimeout(async () => {            
                 const { FreshChat } = await import('../../modules/fresh-chat/fresh-chat.component');
-                const freshchat = new FreshChat(this._router);
+                const freshchat = new FreshChat(this._router, this._localStorageService);
                 freshchat.ngAfterViewInit();
             }, time);
         }

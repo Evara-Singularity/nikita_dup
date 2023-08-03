@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, NgModule, OnDestroy } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
+import { LocalStorageService } from 'ngx-webstorage';
 import { from, Subscription } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 
@@ -15,7 +16,8 @@ declare global {
 })
 export class FreshChat implements AfterViewInit, OnDestroy {
   private routerSubscription: Subscription;
-	constructor(private router: Router) {};
+  user = this._localStorageService.retrieve("user");
+	constructor(private router: Router, private _localStorageService: LocalStorageService) {};
     text = `window.prechatTemplate = {
         "SubmitLabel": "Start Chat",
         "fields": {
@@ -55,7 +57,7 @@ export class FreshChat implements AfterViewInit, OnDestroy {
         },
         "host": "https://moglicustomerservice.freshchat.com",
         "token": "d6cabf88-e82c-4c68-ac49-c51203aa34a1",
-        "externalId": "{{localstorage userId mobile}}",
+        "externalId": ${this.user.userId || undefined},
         "onInit": function () {
           window.fcPreChatform.fcWidgetInit(window.prechatTemplate);
           if( (window.location.href.indexOf('quickorder') != -1) || (window.location.href.indexOf('checkout') != -1 ) || (window.location.href.indexOf('/mp/') != -1) || (window.location.href.indexOf('login') != -1 )){
@@ -69,6 +71,7 @@ export class FreshChat implements AfterViewInit, OnDestroy {
         'https://moglicustomerservice.freshchat.com/js/widget.js',
     ]
     ngAfterViewInit() {
+        console.log(this.user)
         if(!this.isScriptLoaded(this.scriptUrls[1])) {
             this.loadFreshChatScripts();
         }

@@ -1678,4 +1678,15 @@ export class CommonService
             }, time);
         }
     }
+
+    isScriptLoaded(url: string): boolean {
+        const scripts = document.getElementsByTagName('script');
+        for (let i = 0; i < scripts.length; i++) {
+            if (scripts[i].src === url) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

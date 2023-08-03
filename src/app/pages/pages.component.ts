@@ -142,46 +142,8 @@ export class PagesComponent implements OnInit, AfterViewInit {
       this.setConnectionType();
       this.checkWebpSupport();
       this.checkForSession();
-      setTimeout(() => this.intializedGTM(window, document, 'script', 'dataLayer', environment.GTM_ANALYTICS_CODE), 100)
     }
   }
-
-  intializedGTM(w, d, s, l, i) {
-        const src = `https://www.googletagmanager.com/gtm.js?id=${environment.GTM_ANALYTICS_CODE}`;
-        if(!this._commonService.isScriptLoaded(src)) {
-        w[l] = w[l] || [];
-        w[l].push({
-            'gtm.start': new Date().getTime(),
-            event: 'gtm.js'
-        });
-        var f = d.getElementsByTagName(s)[0],
-            j = d.createElement(s),
-            dl = l != 'dataLayer' ? '&l=' + l : '';
-        j.defer = true;
-        j.src =
-            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-        j.onload = () => {
-            console.log('GTAG Loaded after Angular loaded', new Date().getTime());
-        }
-        setTimeout(() => {
-            f.parentNode.insertBefore(j, f)
-        }, 0);
-    };
-  }
-
-  // initializeGTM() {
-  //   const src = `https://www.googletagmanager.com/gtm.js?id=${environment.GTM_ANALYTICS_CODE}`;
-  //   if(!this._commonService.isScriptLoaded(src)) {
-  //     const script = document.createElement('script');
-  //     script.src = src;
-  //     script.type = 'text/javascript';
-  //     script.onload = () => {
-  //       // The script has finished loading and can be executed now
-  //       console.log('Script loaded and executed successfully');
-  //     };
-  //     document.head.appendChild(script);
-  //   }
-  // }
 
   enableBodyScoll()
   {

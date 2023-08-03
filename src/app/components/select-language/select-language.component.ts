@@ -42,7 +42,14 @@ export class SelectLanguageComponent implements OnInit {
       this.languagePrefrence != userSession["preferredLanguage"]
     ) {
       const params = "customerId=" + userSession["userId"] + "&languageCode=" + this.languagePrefrence;
-      this.commonService.postUserLanguagePrefrence(params).subscribe();
+      this.commonService.postUserLanguagePrefrence(params).subscribe(result=>{
+        if(result && result['status'] == true){
+          const selectedLanguage = result['data'] && result['data']['languageCode'];
+          const newUserSession = Object.assign({}, this.localAuthService.getUserSession());
+          newUserSession.preferredLanguage = selectedLanguage;
+          this.localAuthService.setUserSession(newUserSession);
+        }
+      });
     }
   }
 

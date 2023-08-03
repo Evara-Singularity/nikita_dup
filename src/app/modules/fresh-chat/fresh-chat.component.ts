@@ -71,7 +71,6 @@ export class FreshChat implements AfterViewInit, OnDestroy {
         'https://moglicustomerservice.freshchat.com/js/widget.js',
     ]
     ngAfterViewInit() {
-        console.log(this.user)
         if(!this.isScriptLoaded(this.scriptUrls[1])) {
             this.loadFreshChatScripts();
         }

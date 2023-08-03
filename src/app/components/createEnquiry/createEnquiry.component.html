@@ -19,6 +19,9 @@
                             <div class="error-txt" *ngIf="isFormSubmitted && nameFC.invalid" #rfq>
                                 Kindly enter your full name.
                             </div>
+                            <div class="error-txt" *ngIf="isFormSubmitted && nameFC.hasError('minLength')" #rfq>
+                                Name must contain 3 digit.
+                            </div>
                             <span class="label">Full Name*</span>
                         </label>
                     </div>

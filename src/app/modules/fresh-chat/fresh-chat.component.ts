@@ -1,15 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, NgModule, OnInit } from '@angular/core';
-import { from } from 'rxjs';
+import { AfterViewInit, Component, NgModule, OnDestroy } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
+import { from, Subscription } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 
-
+declare global {
+  interface Window {
+    fcWidget: any; // Replace 'any' with the type of 'fcWidget' if you have specific typings for it.
+  }
+}
 @Component({
 	selector: 'fresh-chat',
 	template: '',
 })
-export class FreshChat implements AfterViewInit {
-	constructor() {};
+export class FreshChat implements AfterViewInit, OnDestroy {
+  private routerSubscription: Subscription;
+	constructor(private router: Router) {};
     text = `window.prechatTemplate = {
         "SubmitLabel": "Start Chat",
         "fields": {
@@ -66,6 +72,16 @@ export class FreshChat implements AfterViewInit {
         if(!this.isScriptLoaded(this.scriptUrls[1])) {
             this.loadFreshChatScripts();
         }
+
+      this.routerSubscription = this.router.events.subscribe((event) => {
+        if (event instanceof NavigationStart) {
+          if ((event.url.indexOf('quickorder') != -1) || (event.url.indexOf('checkout') != -1) || (event.url.indexOf('/mp/') != -1) || (event.url.indexOf('login') != -1)) {
+            window.fcWidget.hide();
+          } else {
+            window.fcWidget.show();
+          }
+        }
+      });
     }
 
     isScriptLoaded(url: string): boolean {
@@ -87,13 +103,13 @@ export class FreshChat implements AfterViewInit {
         )
         .subscribe(
           () => {
-            console.log('Script loaded successfully');
+            // console.log('Script loaded successfully');
           },
           (error) => {
-            console.error('Failed to load script:', error);
+            // console.error('Failed to load script:', error);
           },
           () => {
-              console.log('All scripts loaded');
+              // console.log('All scripts loaded');
           }
         );
      }
@@ -120,7 +136,12 @@ export class FreshChat implements AfterViewInit {
           }
           document.head.appendChild(script);
         });
-      }    
+      }   
+
+      ngOnDestroy() {
+        this.routerSubscription.unsubscribe();
+        window.fcWidget.show();
+      }
 }
 
 @NgModule({

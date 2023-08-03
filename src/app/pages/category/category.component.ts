@@ -80,6 +80,7 @@ export class CategoryComponent {
         if (this._commonService.isBrowser) {
             this._footerService.setMobileFoooters();
         }
+        this._commonService.loadFreshChat();
     }
 
     ngAfterViewInit(): void {

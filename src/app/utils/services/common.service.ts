@@ -1668,4 +1668,25 @@ export class CommonService
         data["custData"] = this.custDataTracking;
         this._analytics.sendAdobeCall(data, trackingname); 
     }
+
+    loadFreshChat(time = 1000) {
+        if(this.isBrowser) {
+            setTimeout(async () => {            
+                const { FreshChat } = await import('../../modules/fresh-chat/fresh-chat.component');
+                const freshchat = new FreshChat(this._router, this._localStorageService);
+                freshchat.ngAfterViewInit();
+            }, time);
+        }
+    }
+
+    isScriptLoaded(url: string): boolean {
+        const scripts = document.getElementsByTagName('script');
+        for (let i = 0; i < scripts.length; i++) {
+            if (scripts[i].src === url) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

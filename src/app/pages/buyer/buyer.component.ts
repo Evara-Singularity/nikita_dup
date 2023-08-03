@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser'; import { DOCUMENT, isPlatformServer } from "@angular/common";
 import { filter } from 'rxjs/operators';
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
   selector: "buyer",
@@ -24,6 +25,7 @@ export class BuyerComponent {
     private _renderer2: Renderer2,
     @Inject(DOCUMENT) private _document,
     private _router: Router,
+    private commonService: CommonService,
     @Inject(PLATFORM_ID) platformId: Object) {
 
     this.isServer = isPlatformServer(platformId);
@@ -61,5 +63,9 @@ export class BuyerComponent {
   }
   private setCurrentRoute() {
     this.currentRoute = this._router.url.split("?")[0].split("#")[0];
+  }
+
+  ngAfterViewInit() {
+    this.commonService.loadFreshChat();
   }
 }

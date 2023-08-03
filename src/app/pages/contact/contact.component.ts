@@ -1,7 +1,8 @@
-import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Renderer2, Inject, PLATFORM_ID, AfterViewInit } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT, isPlatformServer } from "@angular/common";
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
   selector: 'contact',
@@ -9,7 +10,7 @@ import CONSTANTS from '@app/config/constants';
   styleUrls: ['contact.scss']
 })
 
-export class ContactComponent {
+export class ContactComponent implements AfterViewInit{
 
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   imgAssetPath = CONSTANTS.IMAGE_ASSET_URL;
@@ -24,6 +25,7 @@ export class ContactComponent {
     @Inject(DOCUMENT) private _document,
     private title: Title,
     private meta: Meta,
+    private commonService: CommonService,
     @Inject(PLATFORM_ID) private platformId) {
 
     this.isServer = isPlatformServer(this.platformId)
@@ -76,5 +78,7 @@ export class ContactComponent {
     this._renderer2.appendChild(this._document.head, this.contactUsSchema);
     }
 
-
+    ngAfterViewInit() {
+      this.commonService.loadFreshChat();
+    }
 }

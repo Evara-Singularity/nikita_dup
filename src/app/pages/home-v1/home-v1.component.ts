@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Inject, Injector, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentFactoryResolver, Inject, Injector, OnDestroy, OnInit, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {CONSTANTS} from '@app/config/constants';
 import { CategoryData } from '@app/utils/models/categoryData';
@@ -12,6 +12,7 @@ import { DataService } from '@app/utils/services/data.service';
 import { ENDPOINTS } from '@app/config/endpoints';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { createComponent } from '@angular/compiler/src/core';
 
 
 
@@ -21,7 +22,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './home-v1.component.html',
   styleUrls: ['./home-v1.component.scss']
 })
-export class HomeV1Component implements OnInit {
+export class HomeV1Component implements OnInit, AfterViewInit {
 
   readonly bulkRfqConstant = CONSTANTS.bulkRfqConstant;
   isBrowser: boolean;
@@ -162,6 +163,12 @@ export class HomeV1Component implements OnInit {
     })
     this.checkForUser();
   }
+  
+  ngAfterViewInit() {
+    this._commonService.loadFreshChat();
+  }
+
+    
 
   checkForUser() {
     if(this._commonService.isBrowser){

@@ -49,9 +49,9 @@ export class CreateEnquiryComponent {
   ngOnInit() {
     this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
     this.bulkEnquiryForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required,Step.noWhitespaceValidator]],
       email: ['', [Validators.required, Step.validateEmail]],
-      phoneno: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      phoneno: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10),Validators.pattern(/^[0-9]\d*$/)]],
       company_name: [''],
     });
     this.initialize();

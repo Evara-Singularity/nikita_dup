@@ -133,7 +133,7 @@ export const product = {
     sort_by: 'सॉर्ट बाय',
     popularity: 'लोकप्रियता',
     low_price: 'कम कीमत',
-    high_price: 'किमी कीमट',
+    high_price: 'उच्च कीमत',
     filters: 'फिल्टर',
     showing: 'दिखा रहा है',
     out_of: 'में से',
@@ -143,7 +143,7 @@ export const product = {
     above: 'ऊपर',
     price_low_high: 'कीमत - कम से ज्यादा',
     price_high_low: 'कीमत - ज्यादा से कम',
-    send_query: 'भेजिए क्वैरी',
+    send_query: 'रिक्वेस्ट भेजें',
     easy_emi_availble: 'आसान ईएमआई उपलब्ध',
     available_request: 'रिक्वेस्ट पर उपलब्ध',
     product_added_successfully: 'उत्पाद सफलतापूर्वक जोड़ा गया',
@@ -190,7 +190,7 @@ export const product = {
     explore_available_products: 'उपलब्ध उत्पादों का विस्तार करें',
     select_variant: 'वैरिएंट का चयन करें',
     select: 'चुनें',
-    continue: 'संपर्क करें',
+    continue: 'जारी रखें',
     buy_with_gst_for_business_in_bulk: 'थोक में व्यापार के लिए जीएसटी के साथ खरीदें',
     get_customised_best_price: 'अनुकूलित और सर्वोत्तम मूल्य प्राप्त करें',
     raise_request: 'रिक्वेस्ट करें',
@@ -264,5 +264,6 @@ export const product = {
     shop_by_brand: 'ब्रांड द्वारा खरीदारी',
     best_sellers: 'बेस्टसेलर्स',
     articles_heading: 'संबंधित ___title___ लेख',
-    mid_plp_heading: '___filter___ द्वारा खरीदारी करें'
+    mid_plp_heading: '___filter___ द्वारा खरीदारी करें',
+    no_cost_emi_available: 'नो-कॉस्ट ईएमआई उपलब्ध है'
 }  

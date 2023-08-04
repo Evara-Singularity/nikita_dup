@@ -262,5 +262,6 @@ export const product = {
     shop_by_brand: 'Shop By Brand',
     best_sellers: 'BestSellers',
     articles_heading: 'Related ___title___ Articles',
-    mid_plp_heading: 'Shop by ___filter___'
+    mid_plp_heading: 'Shop by ___filter___',
+    no_cost_emi_available: 'No-Cost EMI Available'
 }

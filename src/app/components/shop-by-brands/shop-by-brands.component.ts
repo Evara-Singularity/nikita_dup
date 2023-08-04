@@ -106,6 +106,7 @@ export class ShopByBrandsComponent implements OnInit {
           this.tabsArray[index].msnList = [];
         }
       });
+      this.cdr.detectChanges();
   }
 }
 

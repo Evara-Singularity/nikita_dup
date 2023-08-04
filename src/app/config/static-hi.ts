@@ -138,7 +138,7 @@ export const product = {
     showing: 'दिखा रहा है',
     out_of: 'में से',
     products: 'प्रॉडक्ट्स',
-    clear_all: 'साफ करें सभी',
+    clear_all: 'फिल्टर हटाएं',
     apply: 'अप्लाई करें',
     above: 'ऊपर',
     price_low_high: 'कीमत - कम से ज्यादा',

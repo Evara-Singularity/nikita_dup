@@ -1,10 +1,12 @@
 @import "../../scss/variables";
+
 :host {
     display: block;
 
     .slide-up {
         transform: translateY(0);
     }
+
     .filter-wrapper {
         position: fixed;
         bottom: 0;
@@ -13,9 +15,11 @@
         width: 100%;
         box-shadow: 1px -3px 8px #cecece;
         background: #fff;
+
         &.slide-up {
             bottom: 0;
         }
+
         button {
             width: 50%;
             height: 54px;
@@ -25,15 +29,18 @@
             font-size: 16px;
             font-weight: 500;
             text-align: center;
+
             i {
                 padding-right: 10px;
             }
         }
     }
+
     .desc-brand {
         font-size: 12px;
         line-height: 18px;
         padding-bottom: 10px;
+
         a {
             color: blue;
             font-weight: 500;
@@ -44,16 +51,19 @@
 .popularCategories {
     padding: 15px;
     background: #f2f2f2;
+
     .innerPopularSection {
         box-shadow: 0 3px 6px rgb(0 0 0 / 10%);
         border-radius: 4px;
         opacity: 1;
         background: #fff;
         padding: 15px 30px;
+
         .heading-3 {
             border-bottom: 2px solid #e6e6e6;
             margin-bottom: 10px;
         }
+
         .popularCategoriesList {
             font-size: 13px;
             font-weight: 400;
@@ -64,13 +74,15 @@
         }
     }
 }
-.promo-container{
+
+.promo-container {
     margin-top: 10px;
 }
 
-.np-btm{
+.np-btm {
     padding-bottom: 0px !important;
 }
+
 .fixed-btm-app-prmo {
     position: fixed;
     bottom: 0;
@@ -106,4 +118,14 @@
             font-weight: $font-bold;
         }
     }
+}
+
+.no-text {
+    font-size: 12px;
+    display: block;
+    padding-top: 4px;
+}
+
+.grey-txt {
+    color: var(--dim-gray);
 }

@@ -172,6 +172,14 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   }
 
   createAttributeChartOptionsObject(data,seriesArray,attributeName?) {
+    if (seriesArray.length > 0) {
+      seriesArray[0].events = {
+        click: function () {
+          componentContext.generateFragmentUrl(attributeName, this.name);
+        }
+      };
+      seriesArray[0].className = 'cursor-pointer';
+    }
     let chartOptions = {
       chart: {
         type: 'column',

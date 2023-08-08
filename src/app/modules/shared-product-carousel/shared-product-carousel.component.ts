@@ -188,6 +188,8 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     if(isPopUp == null && !this.isHindiUrl){
       this.loadSelectLanguagePopUp();
     }else{
+      const language = this.isHindiUrl ? "en" : "hi";
+      this.productService.updateUserLanguagePrefrence(language); 
       this.translate();
     }
   }

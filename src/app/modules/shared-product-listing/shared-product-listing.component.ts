@@ -196,6 +196,8 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     if(isPopUp == null && !this.isHindiUrl){
       this.loadSelectLangPopup();
     }else{
+      const language = this.isHindiUrl ? "en" : "hi";
+      this._productService.updateUserLanguagePrefrence(language);
       this.translate();
     }
   }

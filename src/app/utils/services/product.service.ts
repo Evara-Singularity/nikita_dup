@@ -7,6 +7,7 @@ import CONSTANTS from "../../config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
 import { ProductsEntity } from "../models/product.listing.search";
 import { CommonService } from "./common.service";
+import { LocalAuthService } from "./auth.service";
 interface ProductDataArg {
     productBO: string;
     refreshCrousel?: boolean;
@@ -28,7 +29,7 @@ export class ProductService {
         similarData: [],
     };
 
-    constructor(private _dataService: DataService, public http: HttpClient, private _commonService: CommonService) { }
+    constructor(private _dataService: DataService, public http: HttpClient, private _commonService: CommonService, private _localAuthService: LocalAuthService) { }
 
     getSimilarProductBoByIndex(index) {
         return this.oosSimilarProductsData.similarData[index].rawProductData;
@@ -1293,6 +1294,31 @@ export class ProductService {
             return pcode[0] as string;
         }else{
             return null;
+        }
+    }
+
+    public updateUserLanguagePrefrence(languagePrefrence) {
+        const userSession = this._localAuthService.getUserSession();
+        if (
+          userSession &&
+          userSession["authenticated"] == "true" &&
+          languagePrefrence != null &&
+          languagePrefrence != userSession["preferredLanguage"]
+        ) {
+          const params =
+            "customerId=" +
+            userSession["userId"] +
+            "&languageCode=" +
+            languagePrefrence;
+          this._commonService.postUserLanguagePrefrence(params).subscribe(result=>{
+            if(result && result['status'] == true){
+              const selectedLanguage = result['data'] && result['data']['languageCode'];
+              const newUserSession = Object.assign({}, this._localAuthService.getUserSession());
+              newUserSession.preferredLanguage = selectedLanguage;
+              this._localAuthService.setUserSession(newUserSession);
+              sessionStorage.setItem("languagePrefrence", languagePrefrence);
+            }
+          })
         }
     }
 

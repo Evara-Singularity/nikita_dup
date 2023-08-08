@@ -63,7 +63,7 @@
         <informative_video *ngIf="(i === 10) && informativeVideosData !=[] " [informativeVideosData]="informativeVideosData" [categoryName]="categoryName">
         </informative_video>
     </ng-container>
-   <ng-container *ngIf="pageName == 'CATEGORY'  && appliedFilterCount == 0 && this.graphData">
+   <ng-container *ngIf="pageName == 'CATEGORY'  && appliedFilterCount == 0 && this.graphData && _commonService.selectedFilterData.page < 2">
        <div *ngFor="let block of this.graphData;">
           <ng-container *ngIf="block.block_name == 'product_report' && block.data && block.data.length > 0">
             <analytics-widget-wrapper *ngIf="(i == 5)"  [chartContainer]="'priceChartContainer'" [categoryId]="categoryId" [categoryName]="categoryName" [graphData]="graphData" [isL2CategoryCheck]="isL2CategoryCheck"></analytics-widget-wrapper>

@@ -13,7 +13,7 @@ import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card
   styleUrls: ["./product-popular-deals.component.scss"],
 })
 export class ProductPopularDealsComponent implements OnInit {
-  productStaticData = this.commonService.defaultLocaleValue;
+  @Input() productStaticData = this.commonService.defaultLocaleValue;
   readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
   polpularDealsProducts: ProductsEntity[] = null;
   @Input("outOfStock") outOfStock = false;

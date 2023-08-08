@@ -80,6 +80,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
     this.initializeLocalization();
+    console.log(this.productsListingData)
     // console.log("in shared listing ",this.informativeVideosData)
   }
 

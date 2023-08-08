@@ -28,7 +28,7 @@ export const product = {
     more_from:"एक्सप्लोर करें दूसरे ___categoryName___",
     more_from_brand:"एक्सप्लोर करें दूसरे ___brandName___ ___categoryName___",
     use_code:"कोड का इस्तेमाल करें",
-    best_of_moglix:"मोगलिक्स का बेस्ट",
+    best_of_moglix:"मोग्लिक्स के सर्वश्रेष्ठ प्रोडक्ट",
     frequently_bought_together:"इस प्रोडक्ट  को खरीदने वाले ग्राहकों ने ये भी खरीदा है",
     min_emi_text:"EMI बैंकों में न्यूनतम रु. 3000 और बजाज फिनसर्व में रु. 4500 की खरीद पर उपलब्ध है",
     emi_gst_text_part1:"जीएसटी चालान प्राप्त करें और व्यापार खरीद पर",
@@ -265,5 +265,9 @@ export const product = {
     best_sellers: 'बेस्टसेलर्स',
     articles_heading: 'संबंधित ___title___ लेख',
     mid_plp_heading: '___filter___ द्वारा खरीदारी करें',
-    no_cost_emi_available: 'नो-कॉस्ट ईएमआई उपलब्ध है'
+    no_cost_emi_available: 'नो-कॉस्ट ईएमआई उपलब्ध है',
+    similar_products_to_compare: 'समान प्रोडक्ट की तुलना करें',
+    explore_from_top_brands: 'एक्सप्लोर करें ___category___ के टॉप ब्रांड्स',
+    sub_categories: 'उपश्रेणियाँ',
+    view_more: 'और देखें'
 }  

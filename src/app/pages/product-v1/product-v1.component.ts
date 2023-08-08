@@ -298,17 +298,17 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 if (this.apiResponse && this.apiResponse.tagProducts) {
                     this.onVisiblePopularDeals();
                 }
-
+                
             } else {
                 this.setProductNotFound();
             }
         })
-        this.initializeLocalization();
         this.route.fragment.subscribe((fragment: string) => {
             this.fragment = fragment || '';
         })
+        this.initializeLocalization();
     }
-
+    
     @HostListener('window:scroll', ['$event'])
     isScrolledIntoView() {
         if (this.similarProductsElementRef) {
@@ -2700,7 +2700,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 );
 
             this.productPriceCompareInstance.instance["compareProductsData"] = this.compareProductsData;
-            
+            this.productPriceCompareInstance.instance['ProductPriceCompareComponent'] = this.productStaticData;
            
         }
     }
@@ -2722,6 +2722,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 );
             this.shopByBrandsInstance.instance["data"] = this.shopByDifferentBrands;
             this.shopByBrandsInstance.instance["categoryName"] = this.rawProductData.productCategoryDetails["categoryName"];
+            this.shopByBrandsInstance.instance['productStaticData'] = this.productStaticData;
         }
     }
 

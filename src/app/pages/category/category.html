@@ -6,7 +6,7 @@
             [class.slpLayout2]="layoutType == 2">
             <div class="container-fluid safetyshoebannersrow">
                 <cat-static [productStaticData]='productStaticData' [page_title]="page_title" [static_data]="catStaticData"></cat-static>
-                <slp-sub-category *ngIf="API_RESPONSE?.category[0]?.children && layoutType == 2"
+                <slp-sub-category *ngIf="API_RESPONSE?.category[0]?.children && layoutType == 2" [productStaticData]='productStaticData'
                     [sub_category_Data]=" API_RESPONSE.category[0].children"></slp-sub-category>
                 <shopby-brand [productStaticData]='productStaticData' [brand_Data]="shopByBrandData"></shopby-brand>
                 <cat-bestseller [productStaticData]='productStaticData' [bestSeller_Data]="catBestsellerData"></cat-bestseller>

@@ -77,11 +77,11 @@
                     </div>
 
                 </div>
-                <div class="emi-container"
+                <!-- <div class="emi-container"
                     *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice >= easyEMILimit">
                     <i class="icon-circle_check"></i>
                     <span>{{ productStaticData?.easy_emi_availble }}</span>
-                </div>
+                </div> -->
                 <div class="emi-container coupon-conatiner"
                     *ngIf="product.promoCodeDescription != null">
                     <i class="icon-offer"></i>
@@ -90,7 +90,7 @@
                 <div class="emi-container"
                     *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice >= easyEMILimit">
                     <i class="icon-circle_check"></i>
-                    <span>No-Cost EMI Available</span>
+                    <span>{{ productStaticData?.no_cost_emi_available }}</span>
                 </div>
                 
             </div>

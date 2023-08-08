@@ -1,7 +1,7 @@
 <ng-container *ngIf="sub_category_Data">
 <section class="slp_subcategory clearfix">
   <div class="sub-categoryRow clearfix">
-    <h2 class="slp-heading clearfix">Sub Categories </h2>
+    <h2 class="slp-heading clearfix">{{ productStaticData?.sub_categories }} </h2>
 
     <div class="outerBlock pad-lr-5" *ngFor="let subCategory of sub_category_Data | slice:0:4">
       <div class="subCatBlock">
@@ -11,7 +11,7 @@
         </a>
       </div>
     </div>
-    <h4 class="view-catTxt"><a (click)="openPopup=true;" class="viewAllTxt">VIEW MORE</a>
+    <h4 class="view-catTxt"><a (click)="openPopup=true;" class="viewAllTxt">{{ productStaticData?.view_more }}</a>
       <i class="icon-next"></i>
     </h4>
   </div>

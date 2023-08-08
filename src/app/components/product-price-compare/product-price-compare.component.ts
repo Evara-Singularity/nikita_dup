@@ -30,6 +30,7 @@ export class ProductPriceCompareComponent implements OnInit {
   @Input("compareProductsData") compareProductsData: Array<object> = [];
   @Input("analytics") analytics = null;
   @Output("compareDataLoadded$") compareDataLoadded$ = new EventEmitter();
+  @Input('productStaticData') productStaticData = this.commonService.defaultLocaleValue;
 
   isOutOfStockByQuantity: boolean = false;
   isOutOfStockByPrice: boolean = false;

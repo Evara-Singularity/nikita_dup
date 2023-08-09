@@ -1049,7 +1049,7 @@ export class CartService
         )
     }
 
-    getAddToCartProductItemRequest(args: { productGroupData, buyNow, selectPriceMap?, quantity?, isFbt?, languageMode?, originalProductBO?, v1?}, v1 = false): AddToCartProductSchema {
+    getAddToCartProductItemRequest(args: { productGroupData, buyNow, selectPriceMap?, quantity?, isFbt?, languageMode?, originalProductBO?, v1?}, v1 = false, fbtProduct = false): AddToCartProductSchema {
         const userSession = this.localAuthService.getUserSession();
         const partNumber = v1 ? args.productGroupData['msn'] : args.productGroupData['partNumber'] || args.productGroupData['defaultPartNumber'];
         const isProductPriceValid = v1 ? args.productGroupData['isProductPriceValid'] : args.productGroupData['isProductPriceValid'] || args.productGroupData['productPartDetails'][partNumber]['productPriceQuantity'] != null;
@@ -1078,8 +1078,8 @@ export class CartService
             taxes: productTax,
             amountWithTaxes: null,
             totalPayableAmount: productPrice,
-            productName: (args.languageMode) ? args.originalProductBO['productName'] : args.productGroupData['productName'],
-            brandName: (args.languageMode) ? args.originalProductBO['brandDetails']['brandName'] : productBrandDetails['brandName'],
+            productName: (args.languageMode && !fbtProduct) ? args.originalProductBO['productName'] : args.productGroupData['productName'],
+            brandName: (args.languageMode && !fbtProduct) ? args.originalProductBO['brandDetails']['brandName'] : productBrandDetails['brandName'],
             brandId: (productBrandDetails)?productBrandDetails['idBrand']:'',
             priceWithoutTax: priceWithoutTax,
             taxPercentage: priceQuantityCountry['taxRule']['taxPercentage'],

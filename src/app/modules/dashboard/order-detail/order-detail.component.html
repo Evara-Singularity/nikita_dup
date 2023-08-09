@@ -498,7 +498,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                 </p>
     
                             </div>
-                            <div class="order_return-bank-detail" *ngIf="savedBankDetailInfo?.length>0 && returnForm.controls['requestType'].value == 'return'">
+                            <div class="order_return-bank-detail" *ngIf="savedBankDetailInfo?.length>0 && returnForm.controls['requestType'].value == 'return' && detail?.payment_type === 'COD'">
                                 <h3 >Refund in My Bank</h3>
                                 <p>Share your bank details for refund of your COD payment.</p>
                             <form>
@@ -527,7 +527,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                 </div>
                             </form>
                             </div>
-                            <button class="btn secondry-full-btn" *ngIf="savedBankDetailInfo?.length>0 && returnForm.controls['requestType'].value == 'return'"  (click)="addAnotherBankDetail()">+ ADD ANOTHER BANK DETAIL</button>
+                            <button class="btn secondry-full-btn" *ngIf="savedBankDetailInfo?.length>0 && returnForm.controls['requestType'].value == 'return' && detail?.payment_type === 'COD'"  (click)="addAnotherBankDetail()">+ ADD ANOTHER BANK DETAIL</button>
 
                         </section>
 
@@ -678,10 +678,10 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
             </div>
             <div class="fixed-bottom-cta"
                 [ngClass]="{'show': step == 2 || !returnForm['controls']['bankDetail'] || showConfirmOnDirectSub==true, 'hide': step !== 2}"
-                *ngIf="step==2 || showConfirmOnDirectSub==true">
+                *ngIf="step==2 || showConfirmOnDirectSub==true || detail?.payment_type != 'COD'">
                 <div class="fixed-bottom-cta-items">
-                    <i class="icon-back" (click)="step = 1" id="icon-profile"></i>
-                    <button type="submit" [style.width.%]="!returnForm['controls']['bankDetail'] ? 100 : 85"
+                    <i class="icon-back" *ngIf="showBackArrowIcon && detail?.payment_type == 'COD'" (click)="step = 1;backIconRemove()" id="icon-profile"></i>
+                    <button type="submit" [style.width.%]="!returnForm['controls']['bankDetail'] ? 100 : 100"
                         class="btn primary-full-btn" type="submit"
                         [disabled]="!returnForm.valid || this.itemImages.length == 0">CONFIRM</button>
                 </div>

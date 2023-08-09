@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
 
 @Component({
   selector: 'shared-product-carousel',
@@ -55,7 +56,8 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     private _activatedRoute:ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private _commonService:CommonService,
-    private _analyticsService:GlobalAnalyticsService
+    private _analyticsService:GlobalAnalyticsService,
+    private _localAuthService: LocalAuthService
     ) { }
 
   ngOnInit(): void {
@@ -67,6 +69,28 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     }
     this._commonService.isProductCrouselLoaded.next(true)
     // this.getStaticSubjectData();
+    const languagePrefrence = sessionStorage.getItem("languagePrefrence");
+    this.updateUserLanguagePrefrence(languagePrefrence);
+  }
+
+  private updateUserLanguagePrefrence(languagePrefrence) {
+    const userSession = this._localAuthService.getUserSession();
+    if (
+      userSession &&
+      userSession["authenticated"] == "true" &&
+      languagePrefrence != null  &&
+      languagePrefrence != userSession["preferredLanguage"]
+    ) {
+      const params = "customerId=" + userSession["userId"] + "&languageCode=" + languagePrefrence;
+      this.commonService.postUserLanguagePrefrence(params).subscribe(result=>{
+        if(result && result['status'] == true){
+          const selectedLanguage = result['data'] && result['data']['languageCode'];
+          const newUserSession = Object.assign({}, this._localAuthService.getUserSession());
+          newUserSession.preferredLanguage = selectedLanguage;
+          this._localAuthService.setUserSession(newUserSession);
+        }
+      });
+    }
   }
 
   getStaticSubjectData() {

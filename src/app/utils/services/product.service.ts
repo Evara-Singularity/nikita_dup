@@ -1316,7 +1316,6 @@ export class ProductService {
               const newUserSession = Object.assign({}, this._localAuthService.getUserSession());
               newUserSession.preferredLanguage = selectedLanguage;
               this._localAuthService.setUserSession(newUserSession);
-              sessionStorage.setItem("languagePrefrence", languagePrefrence);
             }
           })
         }

@@ -129,6 +129,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   bankDetailInfoForm: FormGroup;
   showConfirmOnDirectSub = false;
   ifscSubscription: Subscription = null;
+  showBackArrowIcon:boolean=true;
 
   readonly validBuyAgainStatus = [
     "SHIPPED",
@@ -333,6 +334,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         });
     }
   }
+  backIconRemove(){
+    this.showBackArrowIcon=false;
+  }
+
 
   savedCardBankDetail() {
     if (this.user["userId"]) {
@@ -348,6 +353,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   }
 
   onSavedBankDetailSelecion(data) {
+    this.showBackArrowIcon=false
     const nestedbankDetailForm = this.returnForm.get("bankDetail") as FormGroup;
     this.returnForm.controls["bankDetail"]["controls"]["bankName"].setValue(
       data.bankName
@@ -373,6 +379,11 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       this.returnForm.controls["requestType"].valid &&
       this.itemImages.length > 0
     ) {
+      this.showBackArrowIcon=true;
+      const nestedbankDetailForm = this.returnForm.get(
+        "bankDetail"
+      ) as FormGroup;
+      nestedbankDetailForm.addControl("id", this._formBuilder.control(""));
       this.returnForm.controls["bankDetail"]["controls"]["bankName"].setValue(
         ""
       );
@@ -385,6 +396,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       this.returnForm.controls["bankDetail"]["controls"]["acountNo"].setValue(
         ""
       );
+      this.returnForm.controls["bankDetail"]["controls"]["id"].setValue(null);
       this.step = 2;
     } else {
       if (this.returnForm.controls["quantity"].invalid || this.returnForm.controls["reason"].invalid || this.returnForm.controls["requestType"].invalid) {
@@ -408,6 +420,11 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       this.returnForm.controls["requestType"].valid &&
       this.itemImages.length > 0
     ) {
+      this.showBackArrowIcon=true;
+      const nestedbankDetailForm = this.returnForm.get(
+        "bankDetail"
+      ) as FormGroup;
+      nestedbankDetailForm.addControl("id", this._formBuilder.control(""));
       this.returnForm.controls["bankDetail"]["controls"]["bankName"].setValue(
         data.bankName
       );

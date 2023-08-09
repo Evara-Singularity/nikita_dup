@@ -21,7 +21,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   private readonly PAST_ORDER_TAB_NAME = 'Buy it Again';
   private readonly WISHLIST_TAB_NAME = 'Wishlist';
   private readonly RFQ_TAB_NAME = 'My RFQ';
-  private readonly FBT_TAB_NAME = 'Brought Together';
+  private readonly FBT_TAB_NAME = 'Bought Together';
 
 
   readonly cardFeaturesConfig: ProductCardFeature = {

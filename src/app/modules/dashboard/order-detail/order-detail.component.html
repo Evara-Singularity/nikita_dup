@@ -498,7 +498,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                 </p>
     
                             </div>
-                            <div class="order_return-bank-detail" *ngIf="savedBankDetailInfo?.length>0 && returnForm.controls['requestType'].value == 'return'">
+                            <div class="order_return-bank-detail" *ngIf="savedBankDetailInfo?.length>0 && returnForm.controls['requestType'].value == 'return' && detail?.payment_type === 'COD'">
                                 <h3 >Refund in My Bank</h3>
                                 <p>Share your bank details for refund of your COD payment.</p>
                             <form>

@@ -387,10 +387,17 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       );
       this.step = 2;
     } else {
-      this._tms.show({
-        type: "error",
-        text: "Please Enter the above mandatory field",
-      });
+      if (this.returnForm.controls["quantity"].invalid || this.returnForm.controls["reason"].invalid || this.returnForm.controls["requestType"].invalid) {
+        this._tms.show({
+          type: "error",
+          text: "Please Enter the above mandatory field",
+        });        
+      } else if(!(this.itemImages.length > 0)) {
+        this._tms.show({
+          type: "error",
+          text: "Please upload product images or video to proceed",
+        });  
+      }
     }
   }
 
@@ -418,10 +425,17 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       );
       this.step = 2;
     } else {
-      this._tms.show({
-        type: "error",
-        text: "Please Enter the above mandatory field",
-      });
+      if (this.returnForm.controls["quantity"].invalid || this.returnForm.controls["reason"].invalid || this.returnForm.controls["requestType"].invalid) {
+        this._tms.show({
+          type: "error",
+          text: "Please Enter the above mandatory field",
+        });        
+      } else if(!(this.itemImages.length > 0)) {
+        this._tms.show({
+          type: "error",
+          text: "Please upload product images or video to proceed",
+        });  
+      }
     }
   }
 

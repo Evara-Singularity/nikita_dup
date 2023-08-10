@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from "@angular/core";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
-import { Observable, Subject } from "rxjs";
+import { Subject } from "rxjs";
 import { AuthFlowType } from '../models/auth.modals';
 
 @Injectable({

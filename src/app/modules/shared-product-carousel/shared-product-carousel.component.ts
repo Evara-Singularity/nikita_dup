@@ -214,7 +214,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     }else{
       const language = this.isHindiUrl ? "en" : "hi";
       sessionStorage.setItem("languagePrefrence", language);
-      this.productService.updateUserLanguagePrefrence(language); 
+      this.productService.updateUserLanguagePrefrence(); 
       this.translate();
     }
   }

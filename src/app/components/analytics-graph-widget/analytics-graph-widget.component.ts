@@ -232,7 +232,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         }
       },
       tooltip: {
-        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        headerFormat: '',
         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b> of total<br/>'
       },
       series: [
@@ -319,7 +319,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         }
       },
       tooltip: {
-        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        headerFormat: '',
         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b> of total<br/>'
       },
       series: [
@@ -394,7 +394,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         }
       },
       tooltip: {
-        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        headerFormat: '',
         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b> of total<br/>'
       },
       series: [

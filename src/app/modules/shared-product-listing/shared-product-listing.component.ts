@@ -220,7 +220,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     }else{
       const language = this.isHindiUrl ? "en" : "hi";
       sessionStorage.setItem("languagePrefrence", language); 
-      this._productService.updateUserLanguagePrefrence(language);
+      this._productService.updateUserLanguagePrefrence();
       this.translate();
     }
   }

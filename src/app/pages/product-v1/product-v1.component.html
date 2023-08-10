@@ -139,7 +139,7 @@
         [productCategoryDetails]="rawProductData?.productCategoryDetails" [productName]="rawProductData?.productName"
         [productAllImages]="productAllImages"></product-get-quote>
 
-    <div *ngIf="!rawProductData?.productOutOfStock" id="similarProducts" class="common-product" data-observeVisibility
+    <div *ngIf="!rawProductData?.productOutOfStock" id="similarProducts" data-observeVisibility
         [debounceTime]="100" (visible)="onVisibleSimilar($event)">
         <ng-container #similarProduct></ng-container>
         <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="similarProductInstance"></product-skeletons>
@@ -168,13 +168,13 @@
         <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
     </div>
 
-    <div class="common-product" data-observeVisibility *ngIf="isShopByDifferentBrands"
+    <div class="common-product bg-gray" data-observeVisibility *ngIf="isShopByDifferentBrands"
     [debounceTime]="100" (visible)="onVisibleShopByBrands()">
     <ng-container #shopByBrands></ng-container>
     <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="shopByBrandsInstance"></product-skeletons>
     </div>
 
-    <section id="popularDeals" class="common-product"
+    <section id="popularDeals" class="common-product bg-gray"
         *ngIf="!rawProductData?.productOutOfStock && apiResponse?.tagProducts && apiResponse?.tagProducts?.length > 0">
         <product-popular-deals [outOfStock]='rawProductData?.productOutOfStock' [apiResponse]='apiResponse?.tagProducts'
             [analytics]='dealsAnalytics'></product-popular-deals>

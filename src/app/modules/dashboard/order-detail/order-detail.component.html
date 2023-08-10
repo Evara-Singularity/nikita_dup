@@ -502,12 +502,12 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                 <h3 >Refund in My Bank</h3>
                                 <p>Share your bank details for refund of your COD payment.</p>
                             <form>
-                                <div class="selection-bank-detail-form active-multiple-address"
+                                <div class="selection-bank-detail-form" [ngClass]="{'active-multiple-address': i==selectedIndex}"
                                     *ngFor="let data of savedBankDetailInfo, let i=index">
                                     <div class="multiple-address ">
                                         <label>
                                             <span class="chk-txt">
-                                                <input type="radio" name="bankDetail" (click)="onSavedBankDetailSelecion(data)">
+                                                <input type="radio"  [checked]="i==selectedIndex" name="bankDetail" (click)="onSavedBankDetailSelecion(data,i)">
                                                 <span class="custom-box icon-box"></span>
                                             </span>
                                             <span class="right-text">

@@ -130,6 +130,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   showConfirmOnDirectSub = false;
   ifscSubscription: Subscription = null;
   showBackArrowIcon:boolean=true;
+  selectedIndex: number = null;
 
   readonly validBuyAgainStatus = [
     "SHIPPED",
@@ -352,8 +353,9 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSavedBankDetailSelecion(data) {
+  onSavedBankDetailSelecion(data,i) {
     this.showBackArrowIcon=false
+    this.selectedIndex = i;
     const nestedbankDetailForm = this.returnForm.get("bankDetail") as FormGroup;
     this.returnForm.controls["bankDetail"]["controls"]["bankName"].setValue(
       data.bankName
@@ -380,6 +382,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       this.itemImages.length > 0
     ) {
       this.showBackArrowIcon=true;
+      this.selectedIndex = null;
       const nestedbankDetailForm = this.returnForm.get(
         "bankDetail"
       ) as FormGroup;

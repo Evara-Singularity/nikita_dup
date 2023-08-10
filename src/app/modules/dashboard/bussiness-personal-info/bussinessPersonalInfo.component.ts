@@ -156,11 +156,11 @@ export class BussinessInfoComponent {
     this._commonService.postUserLanguagePrefrence(params).subscribe(result=>{
       if(result && result['status'] == true){
         this.selectedLanguage = result['data'] && result['data']['languageCode'];
+        sessionStorage.setItem("languagePrefrence", this.selectedLanguage);
         const userSession = this._localAuthService.getUserSession();
         const newUserSession = Object.assign({},userSession);
         newUserSession.preferredLanguage = this.selectedLanguage;
         this._localAuthService.setUserSession(newUserSession);
-        sessionStorage.setItem("languagePrefrence", this.selectedLanguage);
         this.selectLanguagePopUp = false;
         if(this.selectedLanguage == 'en'){
           this._tms.show({type: "success", text: "You choose ‘English’ as your preferred language"});

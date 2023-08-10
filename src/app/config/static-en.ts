@@ -267,5 +267,6 @@ export const product = {
     similar_products_to_compare: 'Similar Products To Compare',
     explore_from_top_brands: 'Explore ___category___ from Top Brands',
     sub_categories: 'Sub Categories',
-    view_more: 'VIEW MORE'
+    view_more: 'VIEW MORE',
+    online_at_best_price_india: 'Online at Best Price in India'
 }

@@ -506,7 +506,7 @@ export class CategoryComponent {
     }
 
     setTitleAndMetaForCategory() {
-        let title = (this.API_RESPONSE.category[0].categoryDetails.metaTitle != undefined && this.API_RESPONSE.category[0].categoryDetails.metaTitle != null && this.API_RESPONSE.category[0].categoryDetails.metaTitle != "") ? this.API_RESPONSE.category[0].categoryDetails.metaTitle : "Buy " + this.API_RESPONSE.category[0].categoryDetails.categoryName + " Online at Best Price in India - Moglix.com";
+        let title = (this.API_RESPONSE.category[0].categoryDetails.metaTitle != undefined && this.API_RESPONSE.category[0].categoryDetails.metaTitle != null && this.API_RESPONSE.category[0].categoryDetails.metaTitle != "") ? this.API_RESPONSE.category[0].categoryDetails.metaTitle : this.productStaticData.buy + " " + this.API_RESPONSE.category[0].categoryDetails.categoryName + ' ' + this.productStaticData.online_at_best_price_india +" - Moglix.com";
         let metaDescription = (this.API_RESPONSE.category[0].categoryDetails.metaDescription != undefined && this.API_RESPONSE.category[0].categoryDetails.metaDescription != null && this.API_RESPONSE.category[0].categoryDetails.metaDescription != "") ? this.API_RESPONSE.category[0].categoryDetails.metaDescription : "Shop online for " + this.API_RESPONSE.category[0].categoryDetails.categoryName + " at best prices now! Moglix is a one stop shop for genuine " + this.API_RESPONSE.category[0].categoryDetails.categoryName + ". Cash on delivery, Free shipping available.";
         this.meta.addTag({ 'name': 'description', 'content': metaDescription });
         this.meta.addTag({ 'name': 'og:title', 'content': title });

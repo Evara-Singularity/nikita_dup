@@ -269,5 +269,6 @@ export const product = {
     similar_products_to_compare: 'समान प्रोडक्ट की तुलना करें',
     explore_from_top_brands: 'एक्सप्लोर करें ___category___ के टॉप ब्रांड्स',
     sub_categories: 'उपश्रेणियाँ',
-    view_more: 'और देखें'
+    view_more: 'और देखें',
+    online_at_best_price_india: 'भारत में सर्वोत्तम मूल्य पर ऑनलाइन',
 }  

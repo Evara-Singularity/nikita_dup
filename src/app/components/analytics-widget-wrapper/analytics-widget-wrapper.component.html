@@ -17,14 +17,14 @@
                                 *ngFor="let price of priceDataWithoutProcessing" class="card">
                                 <p class="dots"></p>
                                 <p *ngIf="price.interval.toLowerCase() !== 'others' && !isL2CategoryCheck">
-                                    {{price.orderPercentage}}% of users prefer {{categoryName}} in price range of
-                                    {{formatPrice(price.interval,true)}}
+                                    <b>{{price.orderPercentage}}%</b> of users prefer {{categoryName}} in price range of
+                                    <b>{{formatPrice(price.interval,true)}}</b>
                                 </p>
                                 <p *ngIf="price.interval.toLowerCase() !== 'others' && isL2CategoryCheck">
-                                    {{price.orderPercentage}}% of users prefer {{price.categoryName}} 
+                                    <b>{{price.orderPercentage}}%</b> of users prefer <b>{{price.categoryName}}</b>
                                 </p>
                                 <p *ngIf="price.interval.toLowerCase() === 'others'">
-                                    {{price.orderPercentage}}% of users prefer {{categoryName}} in other price range.
+                                    <b>{{price.orderPercentage}}%</b> of users prefer {{categoryName}} in other price range.
                                 </p>
                             </div>
                         </div>
@@ -53,10 +53,10 @@
                      <div (click)="callBrandUrl(brand)" 
                         *ngFor="let brand of brandDataWithoutProcessing" class="card">
                         <p *ngIf="brand.brandName !== 'others'">
-                            {{brand.orderPercentage}}% of users prefer {{categoryName}} of <b>{{brand.brandName}}</b> brand
+                            <b>{{brand.orderPercentage}}%</b> of users prefer {{categoryName}} of <b>{{brand.brandName}}</b> brand
                         </p>
                         <p *ngIf="brand.brandName.toLowerCase() === 'others'">
-                            {{brand.orderPercentage}}% of users prefer {{categoryName}} of other brands
+                            <b>{{brand.orderPercentage}}%</b> of users prefer {{categoryName}} of other brands
                         </p>
                     </div>
                 </div>

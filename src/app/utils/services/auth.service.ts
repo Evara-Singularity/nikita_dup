@@ -3,7 +3,6 @@ import { EventEmitter, Injectable } from "@angular/core";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
 import { Subject } from "rxjs";
 import { AuthFlowType } from '../models/auth.modals';
-import { ProductService } from './product.service';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +14,7 @@ export class LocalAuthService
     public logout$ = new EventEmitter();
     pageHistory = {};
     constructor(private _sessionStorageService: SessionStorageService, private _localStorageService: LocalStorageService,
-        private _router:Router, private _productService: ProductService)
+        private _router:Router)
     {
     }
 
@@ -27,8 +26,6 @@ export class LocalAuthService
     setUserSession(data)
     {
         this._localStorageService.store('user', data);
-        this._productService.updateUserLanguagePrefrence();
-        
     }
 
     setPageInfo(pageName, info)

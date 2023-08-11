@@ -215,7 +215,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
     </div>
     
 </ng-container> -->
-    <div *ngIf="detail && showBuyAgain_Invoice(detail[ 'status']) " class="invoiceSection ">
+    <div *ngIf="detail && showBuyAgain_Invoice(detail[ 'status']) && detail?.customer_invoice " class="invoiceSection ">
         <a [href]="detail?.customer_invoice " target="_blank ">
             <img src="{{imageAssetURL}}assets/img/bill-fill.svg">
             <span class="pwa-text">DOWNLOAD INVOICE</span>

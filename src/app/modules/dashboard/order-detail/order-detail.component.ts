@@ -727,6 +727,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   }
 
   outData(data) {
+    this.showConfirmOnDirectSub=false;
     this[data.selector] = !this[data.selector];
     if (data && data.hide) {
       this.openPopup = null;

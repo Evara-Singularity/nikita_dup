@@ -678,7 +678,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
             </div>
             <div class="fixed-bottom-cta"
                 [ngClass]="{'show': step == 2 || !returnForm['controls']['bankDetail'] || showConfirmOnDirectSub==true, 'hide': step !== 2}"
-                *ngIf="step==2 || showConfirmOnDirectSub==true || detail?.payment_type != 'COD'">
+                *ngIf="step != 3 && (step==2 || showConfirmOnDirectSub==true || detail?.payment_type != 'COD')">
                 <div class="fixed-bottom-cta-items">
                     <i class="icon-back" *ngIf="showBackArrowIcon && detail?.payment_type == 'COD'" (click)="step = 1;backIconRemove()" id="icon-profile"></i>
                     <button type="submit" [style.width.%]="!returnForm['controls']['bankDetail'] ? 100 : 100"

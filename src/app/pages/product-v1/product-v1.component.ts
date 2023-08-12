@@ -228,6 +228,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     similarProductsScrolledIntoView: boolean;
     @ViewChild('recentProductsRef', {static: false}) private recentProductElementRef: ElementRef<HTMLDivElement>;
     recentProductScrolledIntoView: boolean;
+    currentProductMsn: any[];
     
 
     set showLoader(value: boolean) { this.globalLoader.setLoaderState(value); }
@@ -333,6 +334,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     processProductData(productGroup) {
         this.rawProductData = JSON.parse(JSON.stringify(productGroup));
+        this.currentProductMsn=[this.rawProductData['msn']]
         this.originalProductBO = JSON.parse(JSON.stringify(productGroup.originalProductBO));
         if (
             this.rawProductData && 
@@ -815,7 +817,12 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             );
         };
         if(res['recentProductsRes']) {
+            this.currentProductMsn =this.currentProductMsn.map(str => str.toLowerCase());
             this.recentProductItems = (res['recentProductsRes']['data'] as any[]).map(product => this.productService.recentProductResponseToProductEntity(product));
+            this.recentProductItems = this.recentProductItems.filter(
+                (item) =>
+                  !this.currentProductMsn.includes(item.moglixPartNumber.toLowerCase())
+            );
         }
     }
 

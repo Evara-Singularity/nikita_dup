@@ -798,24 +798,28 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     processClinetResponse(res) {
-        if(res['productCountRes']) {
+        if (res['productCountRes']) {
             this.rawProductCountData = Object.assign({}, res['productCountRes']);
             this.remoteApiCallRecentlyBought();
         };
-        if(res['duplicateOrderRes']) {
+        if (res['duplicateOrderRes']) {
             this.duplicateOrderCheck(res['duplicateOrderRes']);
         };
-        if(res['getPurchaseListRes']) {
+        if (res['getPurchaseListRes']) {
             this.processPurchaseListData(res['getPurchaseListRes'])
         };
-        if(res['fbtRes']) {
+        if (res['fbtRes']) {
             this.fetchFBTProducts(
                 this.rawProductData,
                 Object.assign({}, res['fbtRes'])
             );
         };
-        if(res['recentProductsRes']) {
+        if (res['recentProductsRes']) {
             this.recentProductItems = (res['recentProductsRes']['data'] as any[]).map(product => this.productService.recentProductResponseToProductEntity(product));
+            this.recentProductItems = this.recentProductItems.filter(
+                (item) =>
+                    ![this.rawProductData?.msn.toLowerCase()].includes(item.moglixPartNumber.toLowerCase())
+            );
         }
     }
 

@@ -1681,11 +1681,14 @@ export class CommonService
     }
 
     isHindiPage(detailsObj) {
-        let userLangPreference = sessionStorage.getItem("languagePrefrence") || 'en';
+        let userLangPreference = localStorage.getItem("languagePrefrence") || 'en';
         let hindiPageAvailable = false;
         if ( this.userSession && this.userSession["authenticated"] == "true" ) {
             userLangPreference = this.userSession["preferredLanguage"];
         }
+        if(userLangPreference == 'en') {
+            return false;
+        } 
         if(detailsObj && detailsObj.acceptLanguage && detailsObj.acceptLanguage.length) {
             hindiPageAvailable = true;
         }

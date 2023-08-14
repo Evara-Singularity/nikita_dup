@@ -80,9 +80,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
     this.initializeLocalization();
-    console.log(this.productsListingData)
-    // console.log("in shared listing ",this.informativeVideosData)
-    const languagePrefrence = sessionStorage.getItem("languagePrefrence");
+    const languagePrefrence = localStorage.getItem("languagePrefrence");
     this.updateUserLanguagePrefrence(languagePrefrence);
   }
 
@@ -114,7 +112,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
 
   updateUserLang() {
     let userPreference = null;
-    userPreference = sessionStorage.getItem('languagePrefrence');
+    userPreference = localStorage.getItem('languagePrefrence');
     const userSession = this._localAuthService.getUserSession();
     if (
       userSession &&
@@ -214,12 +212,12 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
   }
 
   pageTranslation(){
-    const isPopUp = sessionStorage.getItem("isPopUp");
+    const isPopUp = localStorage.getItem("isPopUp");
     if(isPopUp == null && !this.isHindiUrl){
       this.loadSelectLangPopup();
     }else{
       const language = this.isHindiUrl ? "en" : "hi";
-      sessionStorage.setItem("languagePrefrence", language); 
+      localStorage.setItem("languagePrefrence", language); 
       this._productService.updateUserLanguagePrefrence();
       this.translate();
     }

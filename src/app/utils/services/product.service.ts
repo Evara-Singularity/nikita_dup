@@ -1298,7 +1298,7 @@ export class ProductService {
     }
 
     public updateUserLanguagePrefrence() {
-        const languagePrefrence = sessionStorage.getItem("languagePrefrence");
+        const languagePrefrence = localStorage.getItem("languagePrefrence");
         const userSession = this._localAuthService.getUserSession();
         if (
           userSession &&

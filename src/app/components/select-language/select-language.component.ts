@@ -28,8 +28,8 @@ export class SelectLanguageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.languagePrefrence = sessionStorage.getItem("languagePrefrence");
-    this.isPopUp = sessionStorage.getItem("isPopUp");
+    this.languagePrefrence = localStorage.getItem("languagePrefrence");
+    this.isPopUp = localStorage.getItem("isPopUp");
     this.updateUserLanguagePrefrence();
   }
 
@@ -54,24 +54,24 @@ export class SelectLanguageComponent implements OnInit {
   }
 
   closeLanguagePopup(language) {
-    sessionStorage.setItem("languagePrefrence", language);
+    localStorage.setItem("languagePrefrence", language);
     this.languagePrefrence = language;
-    sessionStorage.setItem("isPopUp", "true");
+    localStorage.setItem("isPopUp", "true");
     this.isPopUp = "true";
     this.updateUserLanguagePrefrence();
   }
 
   translate() {
-    sessionStorage.setItem("languagePrefrence", "hi");
+    localStorage.setItem("languagePrefrence", "hi");
     this.languagePrefrence = "hi";
-    sessionStorage.setItem("isPopUp", "true");
+    localStorage.setItem("isPopUp", "true");
     this.isPopUp = "true";
     this.updateUserLanguagePrefrence();
     this.translate$.emit();
   }
 
   closePopUp(){
-    sessionStorage.setItem("isPopUp", "true");
+    localStorage.setItem("isPopUp", "true");
     this.isPopUp = "true";
   }
 }

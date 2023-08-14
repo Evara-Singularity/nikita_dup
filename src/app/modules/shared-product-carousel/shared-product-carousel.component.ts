@@ -69,7 +69,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     }
     this._commonService.isProductCrouselLoaded.next(true)
     // this.getStaticSubjectData();
-    const languagePrefrence = sessionStorage.getItem("languagePrefrence");
+    const languagePrefrence = localStorage.getItem("languagePrefrence");
     this.updateUserLanguagePrefrence(languagePrefrence);
   }
 
@@ -208,12 +208,12 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   }
 
   pageTranslation(){
-    const isPopUp = sessionStorage.getItem("isPopUp");
+    const isPopUp = localStorage.getItem("isPopUp");
     if(isPopUp == null && !this.isHindiUrl){
       this.loadSelectLanguagePopUp();
     }else{
       const language = this.isHindiUrl ? "en" : "hi";
-      sessionStorage.setItem("languagePrefrence", language);
+      localStorage.setItem("languagePrefrence", language);
       this.productService.updateUserLanguagePrefrence(); 
       this.translate();
     }

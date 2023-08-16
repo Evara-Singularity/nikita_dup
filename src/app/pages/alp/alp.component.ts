@@ -121,6 +121,7 @@ export class AlpComponent implements OnInit {
             return;
         }
         let attributeListing = this.alpAttrListingData['data']['attributesListing'];
+        this.isAcceptLanguage = this.alpAttrListingData['data']['acceptLanguage'] && this.alpAttrListingData['data']['acceptLanguage'].length ? true : false;
         this.titleHeading = attributeListing['title']
         this.titleDescription=attributeListing['titleDescription'];
         this.pageDescription = attributeListing['pageDescription'];
@@ -135,7 +136,6 @@ export class AlpComponent implements OnInit {
         this._commonService.showLoader = false;
         const ict = this.alpCategoryCodeData["categoryDetails"]['active'];
         const PRODUCT_COUNT = this.alpProductListingData['productSearchResult']['totalCount'];
-        this.isAcceptLanguage = this.alpProductListingData['acceptLanguage'] && this.alpProductListingData['acceptLanguage'].length ? true : false;
         if (!ict || PRODUCT_COUNT === 0) {
             //TODO 1704 :NO PRODUCTS FOUND SHOULD COME HERE
             if (this._commonService.isServer) {

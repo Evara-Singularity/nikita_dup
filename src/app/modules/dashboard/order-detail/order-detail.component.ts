@@ -341,6 +341,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
 
   savedCardBankDetail() {
+    this.selectedIndex=null
     if (this.user["userId"]) {
       this._OrderService
         .getSavedCardDetails(this.user["userId"])

@@ -368,11 +368,19 @@ export class CommonService
         delete this.defaultParams[key];
     }
 
-    private getCategoryData(type, curl, params)
+    private getCategoryData(type, curl, params, addHeader=false)
     {
         const formattedParams = this.formatParams(params);
+        const headerData = {}
+        if (this.isBrowser && addHeader) {
+          const isHindiPage = window.location.href.indexOf('/hi/') ? true : false;
+          if(isHindiPage) {
+              headerData['language'] = 'hi';
+              
+          } 
+        }
         return this._dataService
-            .callRestful(type, curl, { params: formattedParams })
+            .callRestful(type, curl, { params: formattedParams, headerData: headerData })
             .pipe(
                 catchError((res: HttpErrorResponse) =>
                 {
@@ -679,7 +687,7 @@ export class CommonService
                 if (defaultParams['searchTerm']) {
                     _observerable = this.getSearchData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SEARCH_V1, defaultParams);
                 } else {
-                    _observerable = this.getCategoryData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY, defaultParams);
+                    _observerable = this.getCategoryData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY, defaultParams, true);
                 }
                 this.currentRequest = _observerable.pipe(
                     map((res) =>

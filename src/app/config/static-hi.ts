@@ -140,7 +140,7 @@ export const product = {
     products: 'प्रॉडक्ट्स',
     clear_all: 'फिल्टर हटाएं',
     apply: 'अप्लाई करें',
-    above: 'ऊपर',
+    above: 'Above',   // will convert this in 2nd phase release
     price_low_high: 'कीमत - कम से ज्यादा',
     price_high_low: 'कीमत - ज्यादा से कम',
     send_query: 'रिक्वेस्ट भेजें',

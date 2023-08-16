@@ -224,13 +224,17 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
   }
 
   translate() {
+    let hash = '';
+    if(this._commonService.isBrowser) {
+      hash = window.location.hash.replace('#', '');
+    }
     if ((this.router.url).toLowerCase().indexOf('/hi/') !== -1) {
       const URL = this.getSanitizedUrl(this.router.url).split("/hi/").join('/');
-      this.router.navigate([URL]);
+      this.router.navigate([URL], (hash && hash.length) ? {fragment : decodeURIComponent(hash)}: {});
     }
     else {
       const URL = '/hi' + this.getSanitizedUrl(this.router.url);
-      this.router.navigate([URL]);
+      this.router.navigate([URL], {fragment : decodeURIComponent(hash)});
     }
   }
 

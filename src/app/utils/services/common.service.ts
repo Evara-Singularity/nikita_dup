@@ -368,16 +368,11 @@ export class CommonService
         delete this.defaultParams[key];
     }
 
-    private getCategoryData(type, curl, params, addHeader=false)
-    {
+    private getCategoryData(type, curl, params, requestOptions: any = {}) {
         const formattedParams = this.formatParams(params);
         const headerData = {}
-        if (this.isBrowser && addHeader) {
-          const isHindiPage = window.location.href.indexOf('/hi/') ? true : false;
-          if(isHindiPage) {
-              headerData['language'] = 'hi';
-              
-          } 
+        if (requestOptions && requestOptions.headers.has('language')) {
+            headerData['language'] = 'hi'
         }
         return this._dataService
             .callRestful(type, curl, { params: formattedParams, headerData: headerData })
@@ -554,7 +549,7 @@ export class CommonService
         return fragment.length > 0 ? fragment : null;
     }
 
-    refreshProducts(flagFromResolver?: boolean): Observable<any>
+    refreshProducts(flagFromResolver?: boolean, requestOptions = {}): Observable<any>
     {
         return new Observable((observer) =>
         {
@@ -687,7 +682,7 @@ export class CommonService
                 if (defaultParams['searchTerm']) {
                     _observerable = this.getSearchData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SEARCH_V1, defaultParams);
                 } else {
-                    _observerable = this.getCategoryData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY, defaultParams, true);
+                    _observerable = this.getCategoryData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY, defaultParams, requestOptions);
                 }
                 this.currentRequest = _observerable.pipe(
                     map((res) =>

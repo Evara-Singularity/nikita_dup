@@ -83,12 +83,12 @@ export class AlpResolver implements Resolve<object> {
         return newParams;
     }
 
-    private refreshProducts(defaultApiParams, currentQueryParams, fragment): Observable<{}>
+    private refreshProducts(defaultApiParams, currentQueryParams, fragment, requestOptions): Observable<{}>
     {
         defaultApiParams = this.createDefaultParams(defaultApiParams, currentQueryParams, fragment);
         defaultApiParams["pageName"] = this.pageName;
         this._commonService.updateDefaultParamsNew(defaultApiParams);
-        return this._commonService.refreshProducts();
+        return this._commonService.refreshProducts(false, requestOptions);
     }
 
 
@@ -138,7 +138,7 @@ export class AlpResolver implements Resolve<object> {
                     })),
 
                     this.http.get(get_category_code_url + CATEGORY, requestOptions).pipe(mergeMap(catData => this.http.get(breadcrump_url + '&pagetitle=' + _activatedRouteSnapshot.params['attribute'] + '&source=' + catData['categoryDetails']['categoryLink'], requestOptions))),
-                    this.refreshProducts(CIMS_DATA['defaultParams'], _activatedRouteSnapshot.queryParams, _activatedRouteSnapshot.fragment)
+                    this.refreshProducts(CIMS_DATA['defaultParams'], _activatedRouteSnapshot.queryParams, _activatedRouteSnapshot.fragment, requestOptions)
                     .pipe(map(res => {
                         const logInfo =  this._commonService.getLoggerObj(get_category_code_url + CATEGORY,'GET',startTime)
                         logInfo.endDateTime = new Date().getTime();

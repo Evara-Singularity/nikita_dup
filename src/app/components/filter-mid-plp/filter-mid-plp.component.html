@@ -2,15 +2,10 @@
     <div class="filter-container m-tb-10">
         <p class="filter-heading" *ngIf="inlineFilterData.name !== 'category-search-plp'">
             <!-- {{ productStaticData?.shop_by }} {{ inlineFilterData.name | titlecase}} <ng-container *ngIf="inlineFilterData.name === 'price'">{{ productStaticData?.range }}</ng-container> -->
-            {{
-            productStaticData?.mid_plp_heading.replace(
-            '___filter___',
-            (inlineFilterData.name | titlecase) + (inlineFilterData.name === 'price' ? productStaticData?.range : '')
-            )
-            }}
+            Shop by {{ inlineFilterData.name | titlecase}} <ng-container *ngIf="inlineFilterData.name === 'price'">Range</ng-container>
         </p>
         <p class="filter-heading" *ngIf="inlineFilterData.name === 'category-search-plp'">
-            {{ productStaticData?.are_you_looking_for }}
+            Are you looking for
         </p>
         <div class="inline-filter-card-list">
             <div class="inner-card-list">

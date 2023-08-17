@@ -250,7 +250,7 @@ export const product = {
     save: 'बचत',
     instantly: 'तुरंत',
     with_online_payment: 'with online payment',
-    via: 'via',
+    // via: 'via',
     payment_methods: 'UPI, EMI, Credit/Debit Card, Net Banking, Wallets',
     no_coupon_needed: 'No coupon needed',
     faq_category: 'Frequently Asked Questions about ___category___',
@@ -270,5 +270,6 @@ export const product = {
     explore_from_top_brands: 'Explore ___category___ from Top Brands',
     sub_categories: 'Sub Categories',
     view_more: 'VIEW MORE',
-    online_at_best_price_india: 'Online at Best Price in India'
+    online_at_best_price_india: 'Online at Best Price in India',
+    related_brand_categories: 'Related Brand Categories'
 }

@@ -119,7 +119,7 @@ export const product = {
     prepaid_discount_text: `ऑनलाइन भुगतान करें और प्राप्त करें, 
     ___brandName___ ___categoryName___ में ₹___minimumCartValue___ के न्यूनतम कार्ट मूल्य पर यूपीआई, ईएमआई, क्रेडिट / डेबिट कार्ड, नेट बैंकिंग, वॉलेट का उपयोग करके भुगतान करते समय लागू`,
     prepaid_discount_text_alt:`यूपीआई, ईएमआई, क्रेडिट / डेबिट कार्ड, नेट बैंकिंग, वॉलेट का उपयोग करके भुगतान करते समय लागू`,
-    via:``,
+    // via:``,
     get_rfq_text_1: 'बड़ी मात्रा में सामान खरीदें',
     get_rfq_text_2: 'अपने व्यवसाय के लिए सर्वोत्तम मूल्य प्राप्त करें',
     get_rfq_text_3: 'हम आपसे संपर्क करेंगे : ',
@@ -273,4 +273,5 @@ export const product = {
     sub_categories: 'उपश्रेणियाँ',
     view_more: 'और देखें',
     online_at_best_price_india: 'भारत में सर्वोत्तम मूल्य पर ऑनलाइन',
+    related_brand_categories: 'संबंधित ब्रांड कैटेगरी'
 }  

@@ -77,13 +77,20 @@ export class CartUtils
 
     static getShippingObj(cartSessions, shippingAddress = null)
     {
-        // console.log('getShippingObj', shippingAddress);
+        // console.log('getShippingObj', cartSessions);
         let sro = { itemsList: [], totalPayableAmount: 0 };
         if (cartSessions && cartSessions['itemsList'] && cartSessions['itemsList'].length > 0) {
             let itemsList: Array<{}> = cartSessions['itemsList'];
             itemsList.map((item) =>
             {
-                sro.itemsList.push({ "productId": item["productId"], "categoryId": item["categoryCode"], "taxonomy": item["taxonomyCode"] });
+                sro.itemsList.push({ 
+                    "productId": item["productId"], 
+                    "categoryId": item["categoryCode"], 
+                    "taxonomy": item["taxonomyCode"],
+                    'taxRate': item['taxPercentage'],
+                    "itemPrice": item['productUnitPrice'],
+                    "quantity": item['productQuantity']
+                });
             });
         }
         if (cartSessions && cartSessions['cart']) {

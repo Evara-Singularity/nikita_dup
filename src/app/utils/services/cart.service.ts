@@ -420,6 +420,7 @@ export class CartService
 
     private _getShipping(cartSession2): Observable<any>
     {
+        console.log(1);
         // console.trace();
         const cartSession = this.getCartSession();
         let sro = this.getShippingObj(cartSession);
@@ -1322,6 +1323,7 @@ export class CartService
 
     getShippingChargesApi(obj)
     {
+        console.log(1);
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getShippingValue;
         return this._dataService.callRestful("POST", url, { body: obj }).pipe(
             catchError((res: HttpErrorResponse) =>
@@ -1751,6 +1753,7 @@ export class CartService
 
     verifyShippingCharges(cartSession)
     {
+        console.log(2);
         const SHIPPING_DATA = this.getShippingObj(cartSession);
         const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CART.getShippingValue}`;
         return this._dataService.callRestful("POST", URL, { body: SHIPPING_DATA }).pipe(

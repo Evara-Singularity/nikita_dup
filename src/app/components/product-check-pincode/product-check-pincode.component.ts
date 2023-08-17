@@ -85,7 +85,10 @@ export class ProductCheckPincodeComponent implements OnInit
                 {
                     "productId": this.pageData['partNumber'],
                     "categoryId": categoryDetails['categoryCode'],
-                    "taxonomy": categoryDetails['taxonomyCode']
+                    "taxonomy": categoryDetails['taxonomyCode'],
+                    "quantity": this.pageData['quantity'],
+                    "itemPrice": this.pageData['itemPrice'],
+                    "taxRate": this.pageData['taxRate']
                 }
             ],
             "totalPayableAmount": this.pageData['productPrice'],

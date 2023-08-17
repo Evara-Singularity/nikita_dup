@@ -1734,6 +1734,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         productInfo["productPrice"] = this.rawProductData.productPrice;
         productInfo["quantity"] = quantity;
         productInfo["isHindiMode"] = this.isHindiUrl;
+        productInfo['taxRate'] = this.rawProductData.taxPercentage;
+        productInfo['itemPrice'] = this.rawProductData.productPrice;
         this.pincodeFormInstance.instance["pageData"] = productInfo;
         if (this.pincodeFormInstance) {
             (

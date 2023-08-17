@@ -172,6 +172,14 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   }
 
   createAttributeChartOptionsObject(data,seriesArray,attributeName?) {
+    if (seriesArray.length > 0) {
+      seriesArray[0].events = {
+        click: function () {
+          componentContext.generateFragmentUrl(attributeName, this.name);
+        }
+      };
+      seriesArray[0].className = 'cursor-pointer';
+    }
     let chartOptions = {
       chart: {
         type: 'column',
@@ -224,7 +232,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         }
       },
       tooltip: {
-        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        headerFormat: '',
         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b> of total<br/>'
       },
       series: [
@@ -311,7 +319,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         }
       },
       tooltip: {
-        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        headerFormat: '',
         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b> of total<br/>'
       },
       series: [
@@ -386,7 +394,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         }
       },
       tooltip: {
-        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        headerFormat: '',
         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b> of total<br/>'
       },
       series: [

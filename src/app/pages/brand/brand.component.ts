@@ -165,9 +165,9 @@ export class BrandComponent implements OnInit, AfterViewInit {
     private createFooterAccordianData() {
         this.accordiansDetails = [];
         this.accordiansDetails.push({
-            name: this.productStaticData.accordian_list2_label,
-            extra: this.API_RESPONSE['brand'][0].brandName,
-            data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: this.API_RESPONSE['brand'][0].brandName+' '+x[0], link: this._commonService.isHindiPage(x) ? 'hi/' + x[1] : x[1] }) as AccordianDataItem),
+            name: this.productStaticData.related_brand_categories,
+            //extra: this.API_RESPONSE['brand'][0].brandName,
+            data: Object.entries(this.API_RESPONSE.brand[1][0].brandCategoryLinkList)?.map(x => ({ name: this.API_RESPONSE['brand'][0].brandName+' '+x[0], link: this._commonService.isHindiPage(x) ? 'hi/' + x[1] : x[1] }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
         this.accordiansDetails.push({
@@ -192,9 +192,9 @@ export class BrandComponent implements OnInit, AfterViewInit {
             icon:'icon-brand_store'
         });
         this.accordiansDetails.push({
-            name: 'Related Brand Categories',
-            //extra: this.API_RESPONSE['brand'][0].brandName,
-            data: Object.entries(this.API_RESPONSE.brand[1][0].brandCategoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+            name: 'Popular Brand Categories',
+            extra: this.API_RESPONSE['brand'][0].brandName,
+            data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: this.API_RESPONSE['brand'][0].brandName+' '+x[0], link: x[1] }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
     }

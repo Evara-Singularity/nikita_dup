@@ -116,7 +116,7 @@
         <div class="need-help-strip">
             <div>
                 <span class="cncl-item"
-                    (click)="openPopup='return' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status); ">RETURN</span>
+                    (click)="openPopup='return' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status);savedCardBankDetail() ">RETURN</span>
                 <span class="cncl-item"
                     (click)="openPopup='return' ;getDataforCancel(detail.product_name,detail.price,detail.customer_id,detail.item_id,detail.status); ">EXCHANGE</span>
             </div>
@@ -215,7 +215,7 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
     </div>
     
 </ng-container> -->
-    <div *ngIf="detail && showBuyAgain_Invoice(detail[ 'status']) " class="invoiceSection ">
+    <div *ngIf="detail && showBuyAgain_Invoice(detail[ 'status']) && detail?.customer_invoice " class="invoiceSection ">
         <a [href]="detail?.customer_invoice " target="_blank ">
             <img src="{{imageAssetURL}}assets/img/bill-fill.svg">
             <span class="pwa-text">DOWNLOAD INVOICE</span>
@@ -346,8 +346,9 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                         (click)="reason_id ? openAlert=true : '' ">SUBMIT REQUEST</button>
                 </div>
             </div>
-            <!-- <h4 class="reason-text mt-15">Refund Status</h4>
-            <p>There will be no refund as the order is purchased using Cash-On-Delivery</p> -->
+            <h4 class="reason-text mt-15">Refund Status</h4>
+            <p *ngIf="detail?.payment_type === 'COD'">There will be no refund as the order is purchased using Cash-On-Delivery</p>
+            <p *ngIf="detail?.payment_type != 'COD'">Refund will be initiated to the source payment mode within 7-10 business days.</p>
             <div class="alert-box " *ngIf="openAlert ">
                 <div class="overlay "></div>
                 <div class="content-area ">
@@ -466,14 +467,14 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                 </p>
     
                             </div>
-                            <div class="outline-input-label">
+                            <div class="outline-input-label mb-15">
                                 <label [class.is-focus]="commentMsg.value.length > 0">
                                     <textarea class="large-height" formControlName="comment" #commentMsg></textarea>
                                     <span class="label">Comment</span>
                                 </label>
                             </div>
     
-                            <div class="clearfix" style="margin-bottom: 100px">
+                            <div class="clearfix mb-15">
                                 <!-- <span class="label"></span> -->
                                 <h3 class="heading-4">Upload Photos* </h3>
                                 <p class="photoNotetxt">
@@ -497,12 +498,43 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                                 </p>
     
                             </div>
+                            <div class="order_return-bank-detail" *ngIf="savedBankDetailInfo?.length>0 && returnForm.controls['requestType'].value == 'return' && detail?.payment_type === 'COD'">
+                                <h3 >Refund in My Bank</h3>
+                                <p>Share your bank details for refund of your COD payment.</p>
+                            <form>
+                                <div class="selection-bank-detail-form" [ngClass]="{'active-multiple-address': i==selectedIndex}"
+                                    *ngFor="let data of savedBankDetailInfo, let i=index">
+                                    <div class="multiple-address ">
+                                        <label>
+                                            <span class="chk-txt">
+                                                <input type="radio"  [checked]="i==selectedIndex" name="bankDetail" (click)="onSavedBankDetailSelecion(data,i)">
+                                                <span class="custom-box icon-box"></span>
+                                            </span>
+                                            <span class="right-text">
+                                                <span>Account Holder Name : {{data.username}}</span>
+                                                <span>Account Number : {{data.accountNumber}}</span>
+                                                <span>Bank Name : {{data.bankName}}</span>
+                                                <span>IFSC Code : {{data.ifscCode}}</span>
+                                            </span>
+                                        </label>
+                                        <span class="address-btn-section">
+                                            <span class="small-btn edit" (click)="onEditBankDetailSelecion(data)">EDIT</span>
+                                            <span class="small-btn delete" (click)="deleteBankDetailSelecion(data)">
+                                                DELETE
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
+                            <button class="btn secondry-full-btn" *ngIf="savedBankDetailInfo?.length>0 && returnForm.controls['requestType'].value == 'return' && detail?.payment_type === 'COD'"  (click)="addAnotherBankDetail()">+ ADD ANOTHER BANK DETAIL</button>
+
                         </section>
 
                         <!-- {{returnForm.controls['quantity'].valid}} -->
                         <div class="fixed-bottom-cta" *ngIf='!showError'>
                             <button class="primary-full-btn confirmbtn btn"
-                                *ngIf="step==1 && (!returnForm.controls['requestType'].value || returnForm.controls['requestType'].value == 'return') && (returnForm.controls['quantity'].value != 'exchange')"
+                                *ngIf="step==1 && (!returnForm.controls['requestType'].value || returnForm.controls['requestType'].value == 'return') && (returnForm.controls['quantity'].value != 'exchange') && showConfirmOnDirectSub==false"
                                 [disabled]="!returnForm.controls['quantity'].valid || !returnForm.controls['reason'].valid || !returnForm.controls['requestType'].valid || this.itemImages.length == 0"
                                 (click)="returnForm.controls['quantity'].valid && returnForm.controls['reason'].valid && returnForm.controls['requestType'].valid && this.itemImages.length>0 ? step = 2 : ''">NEXT</button>
 
@@ -634,10 +666,10 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                     </div>
                     <div class="return_note_text">
                         <!-- <p *ngIf="detail?.payment_type === 'COD' || detail?.payment_type === 'NEFT'" class="light-txt">Your order has been Returned.</p> -->
-                        <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'">Your order has been
+                        <!-- <p *ngIf="detail?.payment_type != 'COD' && detail?.payment_type != 'NEFT'">Your order has been
                             Returned the amount will be reflected in your account within 7-10 business days once the
-                            product reaches to our fulfillment center</p>
-                        <p>Please return the package in the same condition as received</p>
+                            product reaches to our fulfillment center</p> -->
+                        <p class="f-12-text">Your return request is getting reviewed. Our representative will get back to you in the next 48-72 hours.</p>
                     </div>
                 </form>
             </div>
@@ -645,11 +677,11 @@ AWAITING PAYMENT CONFIRMATION' && !customerReturn">
                 <button class="btn primary-full-btn" (click)="navigateTo('/')">CONTINUE</button>
             </div>
             <div class="fixed-bottom-cta"
-                [ngClass]="{'show': step == 2 || !returnForm['controls']['bankDetail'], 'hide': step !== 2}"
-                *ngIf="step==2">
+                [ngClass]="{'show': step == 2 || !returnForm['controls']['bankDetail'] || showConfirmOnDirectSub==true, 'hide': step !== 2}"
+                *ngIf="step != 3 && (step==2 || showConfirmOnDirectSub==true || detail?.payment_type != 'COD')">
                 <div class="fixed-bottom-cta-items">
-                    <i class="icon-back" (click)="step = 1" id="icon-profile"></i>
-                    <button type="submit" [style.width.%]="!returnForm['controls']['bankDetail'] ? 100 : 85"
+                    <i class="icon-back" *ngIf="showBackArrowIcon && detail?.payment_type == 'COD'" (click)="step = 1;backIconRemove()" id="icon-profile"></i>
+                    <button type="submit" [style.width.%]="!returnForm['controls']['bankDetail'] ? 100 : 100"
                         class="btn primary-full-btn" type="submit"
                         [disabled]="!returnForm.valid || this.itemImages.length == 0">CONFIRM</button>
                 </div>

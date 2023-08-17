@@ -33,7 +33,10 @@
                     via <b>{{ productStaticData?.payment_methods }}</b> {{ productStaticData?.on_min_cart_value }}
                     {{couponForbrandCategory['minimumCartValue'] | mathCeil | currency: 'INR' : 'symbol' :'1.0-0'}} in {{API_RESPONSE['brand'][0].brandName}} {{API_RESPONSE['brand'][1][0].categoryName}}   
                 </p>
-                <span><br>*{{ productStaticData?.no_coupon_needed }}</span>
+                <p *ngIf="!couponForbrandCategory['minimumCartValue'] || couponForbrandCategory['minimumCartValue']">
+                    {{ productStaticData?.via }} <b>{{ productStaticData?.prepaid_discount_text_alt }}</b>  
+                </p>
+                <span class="no-text">*{{ productStaticData?.no_coupon_needed }}</span>
             </div>
         </div>
     </ng-container>

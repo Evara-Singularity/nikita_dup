@@ -52,6 +52,9 @@
     min-height: 420px;
     width: 100%;
     background-color: var(--white);
+    &.bg-gray{
+        background-color: var(--ghost-white) !important;
+    }
 }
 
 .promo {

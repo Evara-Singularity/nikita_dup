@@ -58,6 +58,7 @@ export class RecentViewedProductsComponent implements OnInit {
     if (!this.recentProductList || this.recentProductList.length == 0) {
       this.getRecents();
     } else {
+      this.currentProductMsn = this.currentProductMsn.map(str => str.toLowerCase());
       this.recentProductItems = this.recentProductList.filter(
         (item) =>
           !this.currentProductMsn.includes(item.moglixPartNumber.toLowerCase())

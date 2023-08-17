@@ -9,7 +9,7 @@
 
             <p class="display-qn">
                 {{productStaticData.displaying_questions}}
-                <span>{{ questionAnswerList?.qlist?.length == 1 ? '1 ' : '1-2 ' }}</span>{{productStaticData.of}}
+                <span>{{ questionAnswerList?.qlist?.length == 1 ? '1 ' : '2 ' }}</span>{{productStaticData.of}}
                 <span>{{questionAnswerList?.qlist?.length}} </span>
             </p>
             <div class="qna-block" *ngFor="let item of questionAnswerList?.qlist | slice:0:2;index as i">
@@ -26,7 +26,7 @@
             </div>
           
             <div class="show-all-strip" (click)="$event.stopPropagation();handleFaqListPopup.emit()" *ngIf="questionAnswerList?.qlist?.length > 2">
-                <span>{{productStaticData.viewMore}} {{ (questionAnswerList?.qlist?.length) - 2 }} {{productStaticData.view_more_faq}}}</span><span><i class="icon-next"></i></span>
+                <span style="text-transform: none;" >{{productStaticData.viewMore}} {{ (questionAnswerList?.qlist?.length) - 2 }} {{productStaticData.view_more_faq}}</span><span><i class="icon-next"></i></span>
             </div>
         </ng-container>
     </div>

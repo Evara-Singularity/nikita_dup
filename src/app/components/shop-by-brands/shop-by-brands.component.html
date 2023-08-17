@@ -5,7 +5,7 @@
         </div>
         <div class="pwa-tabs-container" id="tabs">
             <ng-container *ngFor="let item of tabsArray;let tabIndex = index">
-                <div class="pwa-tab pwa-tab-variant2" *ngIf="item['data'].length>0"
+                <div class="pwa-tab pwa-tab-variant2" *ngIf="item['msnList']?.length> 0"
                     [ngClass]="{'selectedTab': tabsArray[tabIndex]['isSelected'] }" (click)="setProductTab(item.id)">
                     {{item['name']}}
                 </div>

@@ -17,14 +17,14 @@
                                 *ngFor="let price of priceDataWithoutProcessing" class="card">
                                 <p class="dots"></p>
                                 <p *ngIf="price.interval.toLowerCase() !== 'others' && !isL2CategoryCheck">
-                                    {{price.orderPercentage}}% {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.in_price_range }}
-                                    {{formatPrice(price.interval,true)}}
+                                    <b>{{price.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.in_price_range }}
+                                    <b>{{formatPrice(price.interval,true)}}</b>
                                 </p>
                                 <p *ngIf="price.interval.toLowerCase() !== 'others' && isL2CategoryCheck">
-                                    {{price.orderPercentage}}% {{ productStaticData?.of_users_prefer }} {{price.categoryName}} 
+                                    <b>{{price.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }} <b>{{price.categoryName}}</b>
                                 </p>
                                 <p *ngIf="price.interval.toLowerCase() === 'others'">
-                                    {{price.orderPercentage}}% {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.in_other_price_range }}.
+                                    <b>{{price.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.in_other_price_range }}.
                                 </p>
                             </div>
                         </div>
@@ -53,10 +53,10 @@
                      <div (click)="callBrandUrl(brand)" 
                         *ngFor="let brand of brandDataWithoutProcessing" class="card">
                         <p *ngIf="brand.brandName !== 'others'">
-                            {{brand.orderPercentage}}% {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.of1 }} <b>{{brand.brandName}}</b> {{productStaticData?.brand1}}
+                            <b>{{brand.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.of1 }} <b>{{brand.brandName}}</b> {{productStaticData?.brand1}}
                         </p>
                         <p *ngIf="brand.brandName.toLowerCase() === 'others'">
-                            {{brand.orderPercentage}}% {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.of_other_brands }}
+                            <b>{{brand.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.of_other_brands }}
                         </p>
                     </div>
                 </div>

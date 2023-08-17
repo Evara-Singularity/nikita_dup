@@ -146,5 +146,7 @@ export const ENDPOINTS = {
   GET_DIFFRENT_BRANDS_PRODUCT: '/search/shopByBrands?product=',
   ADSENSE: '/adsense/getCampaign',
   GET_MSN_BY_LIST: '/search/searchByListOfMsn',
-  UPDATE_CUSTOMER_LANGUAGE_PREFRENCE:"/customer/updateCustomerLanguageDetails?"
+  UPDATE_CUSTOMER_LANGUAGE_PREFRENCE:"/customer/updateCustomerLanguageDetails?",
+  CUSTOMER_BANK_DETAILS:'/address/getCustomerBankDetails?userId=',
+  DELETE_BANK_DETAILS:'/address/deleteCustomerBankDetails/'
 };

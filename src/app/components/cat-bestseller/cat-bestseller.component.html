@@ -20,11 +20,12 @@
                         <div class="name">{{product.productName | slice:0:30}} </div>
                         <p class="brand">{{ productStaticData?.by }}: <span>{{getBrandBy(product.short_description)}}</span></p>
                         <div class="prod-price-row">
+                            <p class="prod-selling-price">₹{{product.sellingPrice}}</p>
                             <div class="price">
                                 <span class="prod-mrp">₹{{product.mrp}}</span> 
                                 <span class="prod-discount">{{product.discount_percentage}}% {{productStaticData?.off}}</span>
                             </div>
-                            <p class="prod-selling-price">₹{{product.sellingPrice}}</p>
+                            
                         </div>
 
                     </div>
@@ -53,11 +54,12 @@
                         <div class="name">{{product.productName | slice:0:60}} <span *ngIf="product.productName.length>60">...</span></div>
                         <p class="brandname" style="color: #6f6f6f;"><span>{{ productStaticData?.by }} :</span>{{getBrandBy(product.short_description)}}</p>
                         <div class="prod-price-row">
+                            <p class="prod-selling-price">₹{{product.sellingPrice}}</p>
                             <div class="price">
                                 <span class="prod-mrp" style="color: #6f6f6f">₹{{product.mrp}}</span> 
                                 <span class="prod-discount">{{product.discount_percentage}}% {{ productStaticData?.off }}</span>
                             </div>
-                            <p class="prod-selling-price">₹{{product.sellingPrice}}</p>
+                           
                         </div>  
                     </div>
                 </a>

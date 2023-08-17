@@ -626,10 +626,10 @@ export class CategoryComponent {
                     let temp = [];
                     for (let j = 0; j < this.wantedBucket[i].terms.length && temp.length < 4; j++) {                                                      //getting top four values with non-zero min , max price 
                         if (this.wantedBucket[i].terms[j].minPrice > 0 && this.wantedBucket[i].terms[j].maxPrice > 0) {
+                            const brandName = this.wantedBucket[i].terms[j].term as string;
                             this.wantedBucket[i].terms[j].term = this.wantedBucket[i].terms[j].term + " " + this.API_RESPONSE.category[0].categoryDetails.categoryName;
-                            let brandName = this.wantedBucket[i].terms[j].term as string;
-                            const  a =  brandName.split(" ");
-                            this.wantedBucket[i].terms[j].categoryLink = "brands/" + a[0] + "/"+ this.categoryLink;
+                            const newBrandName = brandName.split(' ').join('-')
+                            this.wantedBucket[i].terms[j].categoryLink = "brands/" + newBrandName.toLowerCase() + "/"+ this.categoryLink;
                             temp.push(this.wantedBucket[i].terms[j]);
                         }
                     }

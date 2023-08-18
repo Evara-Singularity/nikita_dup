@@ -143,6 +143,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
         this.productStaticData = localization_content;
     });
+    console.log(this.productStaticData)
   }
 
   get isAdsEnable() {

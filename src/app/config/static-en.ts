@@ -267,7 +267,7 @@ export const product = {
     mid_plp_heading: 'Shop by ___filter___',
     no_cost_emi_available: 'No-Cost EMI Available',
     similar_products_to_compare: 'Similar Products To Compare',
-    explore_from_top_brands: 'Explore ___category___ from Top Brands',
+    explore_from_top_brands: 'Explore  ___category___ from Top Brands',
     sub_categories: 'Sub Categories',
     view_more: 'VIEW MORE',
     online_at_best_price_india: 'Online at Best Price in India',

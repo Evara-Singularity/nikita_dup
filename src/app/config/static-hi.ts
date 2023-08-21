@@ -269,7 +269,7 @@ export const product = {
     mid_plp_heading: '___filter___ द्वारा खरीदारी करें',
     no_cost_emi_available: 'नो-कॉस्ट ईएमआई उपलब्ध है',
     similar_products_to_compare: 'समान प्रोडक्ट की तुलना करें',
-    explore_from_top_brands: 'एक्सप्लोर करें ___category___ के टॉप ब्रांड्स',
+    explore_from_top_brands: 'एक्सप्लोर करें  ___category___ के टॉप ब्रांड्स',
     sub_categories: 'उपश्रेणियाँ',
     view_more: 'और देखें',
     online_at_best_price_india: 'भारत में सर्वोत्तम मूल्य पर ऑनलाइन',

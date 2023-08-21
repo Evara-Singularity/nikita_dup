@@ -20,7 +20,7 @@ interface ProductDataArg {
 export class ProductService {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
-    readonly promoCodeDescription_off_key = "Off";
+    readonly promoCodeDescription_off_key = "OFF";
     private basePath = CONSTANTS.NEW_MOGLIX_API;
     private basePath2 =  CONSTANTS.NEW_MOGLIX_API_V2;
     productCouponItem: any = null;

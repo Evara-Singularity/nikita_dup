@@ -37,7 +37,7 @@ export class ProductListService {
 
   showMidPlpFilterLoader: boolean = true;
   excludeAttributes: string[] = [];
-  readonly promoCodeDescription_off_key = "Off";
+  readonly promoCodeDescription_off_key = "OFF";
 
   filterBuckets(buckets: any[]) {
     if (this.excludeAttributes.length > 0) {

@@ -26,7 +26,7 @@ export const ENDPOINTS = {
   },
   GET_CIMS_ATTRIBUTE: '/cmsApi/getAttributesListingPage',
   GET_LAYOUT: "/homepage/layoutbycode",
-  GET_LAYOUT_HOME: "/homepage/layoutbyjson?requestType=mobile",
+  GET_LAYOUT_HOME: "/homepage/layoutbyjsonv2?requestType=mobile",
   GET_FDK_HOME: '/homepage/getFlyout/v2',
   GET_CATEGORY_BY_ID: '/category/getcategorybyid',
   GET_CATEGORY_SCHEMA: '/quest/getCategorySchema',

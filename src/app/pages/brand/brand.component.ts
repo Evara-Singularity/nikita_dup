@@ -134,7 +134,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                         this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList || {});
                     }
                     if (res.hasOwnProperty('brandCategoryLinkList')) {
-                        this.API_RESPONSE.brand[1][0].brandCategoryLinkList = JSON.parse(JSON.stringify(res['brandCategoryLinkList']));
+                        this.API_RESPONSE.brand[1][0].brandCategoryLinkList = JSON.parse(JSON.stringify(res['brandCategoryLinkList'] || {}));
                     }
                     // create accordians data
                     this.createFooterAccordianData();

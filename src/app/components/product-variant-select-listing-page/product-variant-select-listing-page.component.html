@@ -22,11 +22,12 @@
                             *ngIf="product.productName.length>60">...</span></p>
                         <p class="brand">{{ productStaticData?.by}} : {{product.brandName}}</p>
                         <div class="price">
+                            <span class="after-discount">{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' :
+                                '1.0-0' }}</span>
                             <span class="before-discount">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' :
                                 '1.0-0' }}</span>
                             <span class="discount">{{product.discount}}% {{ productStaticData?.off}}</span>
-                            <span class="after-discount">{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' :
-                                '1.0-0' }}</span>
+                            
                         </div>
                         <div class="oos-listing-section" *ngIf="product.salesPrice == 0">
                             <div class="out-of-stock-text">

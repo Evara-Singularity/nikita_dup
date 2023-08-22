@@ -192,7 +192,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
             icon:'icon-brand_store'
         });
         this.accordiansDetails.push({
-            name: 'Popular Brand Categories',
+            name: this.productStaticData.accordian_list2_label,
             extra: this.API_RESPONSE['brand'][0].brandName,
             data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: this.API_RESPONSE['brand'][0].brandName+' '+x[0], link: x[1] }) as AccordianDataItem),
             icon:'icon-brand_store'

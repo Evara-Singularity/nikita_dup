@@ -24,6 +24,18 @@ export class ProductMoreWidgetComponent implements OnInit {
 
   ngOnInit() {
     this.getStaticSubjectData();
+    this.updateLinks();
+  }
+
+  updateLinks() {
+    const isHindiBrand = this.commonService.isHindiPage(this.productBrandDetails);
+    const isHindiCategory = this.commonService.isHindiPage(this.productCategoryDetails)
+    if(isHindiCategory) {
+      this.productCategoryDetails.categoryLink = 'hi/' + this.productCategoryDetails.categoryLink;
+    }
+    if(isHindiBrand && isHindiCategory) {
+      this.productBrandCategoryUrl = 'hi/' + this.productBrandCategoryUrl;
+    }
   }
 
   getStaticSubjectData(){

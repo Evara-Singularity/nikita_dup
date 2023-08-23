@@ -4,17 +4,32 @@
       <i class="icon-Moglix-Insight"></i> Moglix Insights
     </h3>
   </div>
+
   <div class="pwa-col-12 moglix-insight-inner pad-lr-15">
-    <div class="moglix-insight-trustWidget pad-10" *ngIf="data['brand'] && data['brand']['message']">
-      <div class="content-desc">
-        <p [innerHTML]="data['brand']['message']"></p>
+    <ng-container *ngIf="data.brand && data.price; else  singleData">
+      <div class="moglix-insight-trustWidget pad-10" *ngIf="data['brand'] && data['brand']['message']">
+        <div class="content-desc">
+          <p [innerHTML]="data['brand']['message']"></p>
+        </div>
       </div>
-    </div>
-    <div class="moglix-insight-trustWidget pad-10" *ngIf="data['price'] && data['price']['message']">
-      <div class="content-desc">
-        <p [innerHTML]="data['price']['message']"></p>
+      <div class="moglix-insight-trustWidget pad-10" *ngIf="data['price'] && data['price']['message']">
+        <div class="content-desc">
+          <p [innerHTML]="data['price']['message']"></p>
+        </div>
       </div>
-    </div>
+    </ng-container>
+    <ng-template #singleData>
+      <ng-container >
+        <div class="single-insight-widget" *ngIf="data.brand">
+          <p [innerHTML]="data['brand']['message']"></p>
+        </div>
+      </ng-container>
+      <ng-container >
+        <div class="single-insight-widget" *ngIf="data.price">
+          <p [innerHTML]="data['price']['message']"></p>
+        </div>
+      </ng-container>
+    </ng-template>
   </div>
 </div>
 <!-- <pre>{{data['brand']['message']|json}}</pre> -->

@@ -47,7 +47,7 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() productBulkPrices;
   @Input() selectedProductBulkPrice;
   @Input() bulkSellingPrice;
-  @Input() msnId;
+  @Input() msnId = '';
   @Input() threeDImages = [];
   @Output() checkCartQuantityAndUpdate$: EventEmitter<any> = new EventEmitter<any>();
   show360btn: boolean;

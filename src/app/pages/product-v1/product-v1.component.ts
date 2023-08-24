@@ -1945,7 +1945,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
         if(this.commonService.isHindiPage(this.rawProductData.productBrandDetails) && this.commonService.isHindiPage(this.rawProductData.productCategoryDetails)) {
             this.rawProductData.productBrandCategoryUrl = 'hi/' + this.rawProductData.productBrandCategoryUrl;
-            this.rawProductData.productCategoryDetails.categoryLink	= 'hi/' + this.rawProductData.productCategoryDetails.categoryLink; 
+            // this.rawProductData.productCategoryDetails.categoryLink	= 'hi/' + this.rawProductData.productCategoryDetails.categoryLink; 
         }
         const details = {
             description: this.rawProductData.productDescripton,

@@ -16,7 +16,7 @@
         <ng-container *ngIf="carouselData[category.dataKey]['data'] && carouselData[category.dataKey]['data']['image_block'] && carouselData[category.dataKey]['data']['image_block'].length>=4">
         <div class="category-block-container">
             <div class="category-inner-block" *ngFor="let imageBlockItem of  carouselData[category.dataKey]['data']['image_block']|slice:0:4" [ngStyle]="{ 'background-color': getBackgroundColor(category.dataKey) }">
-                <a (click)="setCookieCluster(+imageBlockItem['image_link'], i)" [href]="produrl+ '/'+imageBlockItem['image_link']">
+                <a (click)="setCookieCluster(+imageBlockItem['image_link'], i)" [href]="produrl +imageBlockItem['image_link']">
                     <img [defaultImage]="defaultImage" [lazyLoad]="imageCdnPath + imageBlockItem['image_name']" alt="{{imageBlockItem.image_title}}">
                     <p>{{imageBlockItem.image_title}}</p>
                     <span>Explore Now</span>

@@ -6,6 +6,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { AccordiansDetails, AccordianDataItem } from '@app/utils/models/accordianInterface';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { makeStateKey } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'product-accordian',
   templateUrl: './product-accordians.component.html',
@@ -26,7 +27,7 @@ export class ProductAccordiansComponent {
   isBrowser: boolean;
   categoryId: any;
   productStaticData: any;
-
+  changeStaticSubscription: Subscription = null;
   constructor(
     public _commonService: CommonService,
     private globalAnalyticService: GlobalAnalyticsService,
@@ -45,10 +46,15 @@ export class ProductAccordiansComponent {
 
 
   getStaticSubjectData() {
-    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
       this.cdr.detectChanges();
     });
+  }
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
   }
 
   setAccordianData(relatedLinkRes, categoryBucketRes, similarCategoryRes) {

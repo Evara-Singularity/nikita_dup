@@ -9,6 +9,7 @@ import { CommonService } from '../../utils/services/common.service';
 import { PopUpModule } from '../../modules/popUp/pop-up.module';
 import CONSTANTS from '../../config/constants';
 import { ObserveVisibilityDirectiveModule } from '../../utils/directives/observe-visibility.directive';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -51,7 +52,7 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() threeDImages = [];
   @Output() checkCartQuantityAndUpdate$: EventEmitter<any> = new EventEmitter<any>();
   show360btn: boolean;
-
+  changeStaticSubscription: Subscription = null;
   constructor(
     private _tms: ToastMessageService,
     public _commonService:CommonService,
@@ -67,10 +68,11 @@ export class ProductDescriptionComponent implements OnInit {
   }
   
   getStaticSubjectData(){
-    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
     });
   }
+  
   updateProductQunatity(type: 'INCREMENT' | 'DECREMENT') {
     switch (type) {
       case 'DECREMENT':
@@ -166,6 +168,9 @@ export class ProductDescriptionComponent implements OnInit {
 
   ngOnDestroy() {
     this.resetLazyComponent();
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
   }
   resetLazyComponent(){
     if(this.product3dInstance) {

@@ -26,7 +26,7 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
   isCouponCopied=false;
   copiedCouponSubscription: Subscription; 
   copiedCoupon: string = '';
-
+  changeStaticSubscription: Subscription = null;
   constructor(
     public _cartService: CartService,
     public _commonService: CommonService,
@@ -38,7 +38,7 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
   }
   
   getStaticSubjectData(){
-    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
     });
   }
@@ -55,6 +55,12 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
           this.isCouponCopied = false
         }
       })
+    }
+  }
+
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
     }
   }
 

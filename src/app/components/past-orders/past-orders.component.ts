@@ -10,6 +10,7 @@ import { MathCeilPipeModule } from '@app/utils/pipes/math-ceil';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
 import { ProductBrowserService } from '@app/utils/services/product-browser.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { Subscription } from 'rxjs';
 import { CommonService } from '../../utils/services/common.service';
 
 @Component({
@@ -40,7 +41,7 @@ export class PastOrdersComponent implements OnInit
         lazyLoadImage: false
     }
     cardMetaInfo: ProductCardMetaInfo = null;
-
+    changeStaticSubscription: Subscription = null;
     constructor(private _productService: ProductBrowserService, public localStorageService: LocalStorageService,private _commonService:CommonService) { }
 
     ngOnInit(): void
@@ -52,8 +53,14 @@ export class PastOrdersComponent implements OnInit
             redirectedSectionName: this.outOfStock ? 'past_orders_product_oos' : 'past_orders__products'
         }
     }
+
+    ngOnDestroy() {
+        if(this.changeStaticSubscription) {
+          this.changeStaticSubscription.unsubscribe();
+        }
+      }
     getStaticSubjectData(){
-        this._commonService.changeStaticJson.subscribe(staticJsonData => {
+        this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
           this.productStaticData = staticJsonData;
         });
       }

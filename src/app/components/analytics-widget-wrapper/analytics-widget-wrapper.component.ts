@@ -6,6 +6,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import CONSTANTS from '../../config/constants';
 import { GlobalAnalyticsService } from '../../utils/services/global-analytics.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'analytics-widget-wrapper',
@@ -34,6 +35,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   attributeDataWithoutProcessing;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
   productStaticData = this.commonService.defaultLocaleValue;
+  changeStaticSubscription: Subscription;
 
 
   constructor(
@@ -50,7 +52,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   }
 
   getLocalization() {
-    this.commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+    this.changeStaticSubscription = this.commonService.changeStaticJson.asObservable().subscribe(localization_content => {
       this.productStaticData = localization_content;
     });
   }
@@ -199,6 +201,9 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   }
   ngOnDestroy() {
     // console.log("destroyed");
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
     this.resetLazyComponents();
   }
   callPriceFunction(priceObj){

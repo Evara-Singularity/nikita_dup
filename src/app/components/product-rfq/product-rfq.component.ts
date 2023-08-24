@@ -79,7 +79,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         isBusinessCustomer: new FormControl(false),
     });
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
-
+    changeStaticSubscription: Subscription = null;
     constructor(private localStorageService: LocalStorageService, private productService: ProductService, private productUtil: ProductUtilsService, private tms: ToastMessageService,
         private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, public cdr: ChangeDetectorRef, public _commonService: CommonService) {
         this.stateList = stateList['dataList'];
@@ -99,7 +99,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     }
 
     getLocalization() {
-        this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+        this.changeStaticSubscription = this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
             this.productStaticData = localization_content;
         });
     }
@@ -407,7 +407,9 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         if (this.getPincodeSubscriber) {
             this.getPincodeSubscriber.unsubscribe();
         }
-        this._commonService.changeStaticJson.unsubscribe();
+        if (this.changeStaticSubscription) {
+            this.changeStaticSubscription.unsubscribe();
+        }
     }
 
     onUpdate(event) {

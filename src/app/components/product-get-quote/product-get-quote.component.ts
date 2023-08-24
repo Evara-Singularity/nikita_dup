@@ -5,6 +5,7 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, E
 import { Router } from '@angular/router';
 import { CommonService } from '@app/utils/services/common.service';
 import { DOCUMENT } from "@angular/common";
+import { Subscription } from 'rxjs';
 @Component({
 	selector: 'product-get-quote',
 	templateUrl: './product-get-quote.component.html',
@@ -30,7 +31,7 @@ export class ProductGetQuoteComponent implements OnInit, AfterViewInit
 	userSession: any;
 	loginSub: any;
 	logoutSub: any;
-
+	changeStaticSubscription: Subscription = null;
 	constructor(public commonService: CommonService, @Inject(DOCUMENT) private _document, private _cdr: ChangeDetectorRef,
 		private _localAuthService: LocalAuthService, public _localStorageService:LocalStorageService) { }
 
@@ -52,10 +53,16 @@ export class ProductGetQuoteComponent implements OnInit, AfterViewInit
         this._localAuthService.logout$.subscribe((data) => { this.updateUserStatus(); });
 	}
 	getStaticSubjectData(){
-		this.commonService.changeStaticJson.subscribe(staticJsonData => {
+		this.changeStaticSubscription = this.commonService.changeStaticJson.subscribe(staticJsonData => {
 		  this.productStaticData = staticJsonData;
 		});
 	  }
+
+	ngOnDestroy() {
+	if(this.changeStaticSubscription) {
+		this.changeStaticSubscription.unsubscribe();
+	}
+	}
 
 	ngAfterViewInit()
 	{

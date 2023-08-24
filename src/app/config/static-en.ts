@@ -271,5 +271,11 @@ export const product = {
     sub_categories: 'Sub Categories',
     view_more: 'VIEW MORE',
     online_at_best_price_india: 'Online at Best Price in India',
-    related_brand_categories: 'Related Brand Categories'
+    related_brand_categories: 'Related Brand Categories',
+    Shop_online_for: "Shop online for",
+    at_best_prices_now: "at best prices now!",
+    Moglix_is_a_one_stop_shop_for_genuine:"Moglix is a one stop shop for genuine",
+    Cash_on_delivery_Free_shipping_available: "Cash on delivery, Free shipping available.",
+    for: ".",
+    purchase_as_per:"purchase as per"
 }

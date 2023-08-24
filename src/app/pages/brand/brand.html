@@ -70,7 +70,7 @@
                         </a> {{ productStaticData?.from_renowned_brand }}
                         <a class="text-blue"
                             [routerLink]="['/brands/' + API_RESPONSE['brand'][0].friendlyUrl]">{{API_RESPONSE['brand'][0].brandName}}</a>.
-                        {{ productStaticData?.brand_cat_heading }} {{(API_RESPONSE['brand'][1][0]?.heading | removeHTML)}}. {{ productStaticData?.brand_cat_desc }}
+                        {{ productStaticData?.brand_cat_heading }} {{(API_RESPONSE['brand'][1][0]?.heading | removeHTML)}} {{productStaticData.for}}. {{ productStaticData?.brand_cat_desc }}
                     </p>
             </div>
         </div>

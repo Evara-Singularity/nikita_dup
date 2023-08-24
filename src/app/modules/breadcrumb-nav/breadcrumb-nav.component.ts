@@ -26,12 +26,10 @@ export class BreadcrumbNavComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.breadCrumpCategorySchema();
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.breadCrumpCategorySchema();
-    },100)
   }
 
 

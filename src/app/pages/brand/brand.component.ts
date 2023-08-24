@@ -310,7 +310,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                         "item":
                         {
                             "@id": CONSTANTS.PROD,
-                            "name": "Home"
+                            "name": this.productStaticData.home
                         }
                     },
                     {
@@ -319,7 +319,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                         "item":
                         {
                             "@id": CONSTANTS.PROD + "/brand-store",
-                            "name": "Brand"
+                            "name": this.productStaticData.brand
                         }
                     },
                     {
@@ -359,7 +359,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                         "item":
                         {
                             "@id": CONSTANTS.PROD + "/brand-store",
-                            "name": "Brand"
+                            "name": this.productStaticData.brand
                         }
                     },
                     {

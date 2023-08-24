@@ -3,6 +3,7 @@ import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SeoTablesModule } from '@app/modules/seo-tables/seo-tables.module';
 import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe.';
+import { CommonService } from '@app/utils/services/common.service';
 
 
 @Component({
@@ -15,7 +16,9 @@ export class BrandDetailsFooterComponent {
     @Input('footerData') footerData: Subject<any>;
 	@Input('brandDetailsFooterData') brandDetailsFooterData;
 	@Input() productStaticData;
-	constructor() {
+	constructor(
+		public _commonService: CommonService
+	) {
 	}
 }
 

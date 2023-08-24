@@ -44,6 +44,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
   @Input() categoryTaxonomay: string; // only received in case used in category module
   @Input() searchKeyword: string; // only received in case used in search module
   @Input() categoryMidPlpFilterData: any; // only received in case used in search module
+  @Input() categoryNameEn: string = '';
   @Input() graphData:any = null;
   @Input() isL2CategoryCheck;
   @Input() informativeVideosData:any;
@@ -330,6 +331,9 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
           let keyword = '';
           if (this.pageName == 'CATEGORY') {
             keyword = this.headerName;
+            if(this._commonService.isHindiUrl) {
+              keyword = this.categoryNameEn;
+            }
           } else if (this.pageName == 'ATTRIBUTE') {
             keyword = this.categoryName;
           } else if (this.pageName == 'BRAND') {

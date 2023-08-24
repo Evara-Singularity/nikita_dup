@@ -676,8 +676,11 @@ export class CategoryComponent {
 
     getCategoryData(obj: any[]) {
         this.categoryLink = this.API_RESPONSE.category[0].categoryDetails.categoryName;
+        if(this._commonService.isHindiUrl) {
+            this.categoryLink = this.API_RESPONSE.category[0].categoryDetails.categoryNameEn;
+        }
         for (let i = 0; i < obj.length; i++) {
-            if (obj[i].term === this.API_RESPONSE.category[0].categoryDetails.categoryName) {
+            if (obj[i].term === this.categoryLink) {
                 this.categoryLink = obj[i]['categoryLink'];
                 this.reqArray = obj[i].childCategoryList;                              //Base condition.
                 break;

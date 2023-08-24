@@ -45,6 +45,7 @@
             [headerName]="API_RESPONSE?.category[0]['categoryDetails'] ? API_RESPONSE.category[0]['categoryDetails'].categoryName : ''"
             [pageName]="'CATEGORY'" [categoryId]="API_RESPONSE['category'][0]['categoryDetails']['categoryId']"
             [categoryName]="API_RESPONSE['category'][0]['categoryDetails']['categoryName']"
+            [categoryNameEn]="API_RESPONSE['category'][0]['categoryDetails']['categoryNameEn']"
             [categoryTaxonomay]="API_RESPONSE['category'][0]['categoryDetails']['taxonomy']"
             [productsListingData]="_productListService?.productListingData"
             [informativeVideosData]="informativeVideosData"

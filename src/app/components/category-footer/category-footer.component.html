@@ -5,7 +5,7 @@
         [innerHTML]="categoryFooterData?.getRelatedCatgory?.categoryDetails?.desc"></div>
 
     <ng-template #noCategoryDesc>
-        <div class="seo-data-box">
+        <div class="seo-data-box" *ngIf="!_commonService.isHindiUrl">
             <div *ngIf="categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0"
                 class="container">
                 <h2 class="heading" (click)="_commonService.scrollTo($event)"

@@ -118,6 +118,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
     this.brandContainerInstance.instance['graphData'] = this.graphData;
     this.brandContainerInstance.instance['categoryName'] = this.categoryName;
     this.brandContainerInstance.instance['isL2CategoryCheck'] = this.isL2CategoryCheck;
+    this.brandContainerInstance.instance['productStaticData'] = this.productStaticData;
   }
   async loadAttributeWidget() {
     const { AnalyticsGraphWidgetComponent } = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
@@ -131,6 +132,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
     this.attributeContainerInstance.instance['categoryId'] = this.categoryId;
     this.attributeContainerInstance.instance['graphData'] = this.graphData;
     this.attributeContainerInstance.instance['categoryName'] = this.categoryName;
+    this.brandContainerInstance.instance['productStaticData'] = this.productStaticData;
   }
   resetLazyComponents() {
     if (this.priceContainerInstance) {

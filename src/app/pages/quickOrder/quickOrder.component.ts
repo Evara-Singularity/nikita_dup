@@ -47,7 +47,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   showPromoOfferPopup: boolean = false;
   userData: any;
   addressCount: number = 0;
-
+  addressUpdated = false;
   // ondemad loaded component for homeMiscellaneousCarousel ( Buy it again, wishlist & FBT )
   homeMiscellaneousCarouselInstance = null;
   @ViewChild("homeMiscellaneousCarousel", { read: ViewContainerRef })
@@ -234,7 +234,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   //Address Information
-  handleDeliveryAddressEvent(address) {
+  handleDeliveryAddressEvent(address, callShipping = false) {
     this.deliveryAddress = address;
     this._cartService.shippingAddress = address;
     this.verifyDeliveryAndBillingAddress(
@@ -246,11 +246,24 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!POST_CODE) return;
         const cartSession = this._cartService.getCartSession();
         this.verifyServiceablityAndCashOnDelivery(POST_CODE , cartSession);
+        this.updateShipping();
+  }
+
+  updateShipping() {
+    if(this.addressUpdated) {
+      const cartSession = this._cartService.getCartSession();
+      const sro = this._cartService.getShippingObj(cartSession);
+      this._cartService.getShippingValue(sro).subscribe((data) => {
+        this._cartService.updateShippingCharges(data, cartSession);
+      });
+    }
+    this.addressUpdated = true;
   }
 
   handleBillingAddressEvent(address) {
     this.billingAddress = address;
     this._cartService.billingAddress = address;
+    this.updateShipping();
   }
 
   /**

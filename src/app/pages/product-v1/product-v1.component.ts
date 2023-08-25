@@ -1727,7 +1727,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         const quantity = this.cartQunatityForProduct;
         const productInfo = {};
         productInfo["partNumber"] =
-            this.rawProductData.partNumber || this.rawProductData.defaultPartNumber;
+            this.rawProductData.msn || this.rawProductData.defaultPartNumber;
         productInfo["estimatedDelivery"] =
             this.rawProductData.priceQuantityCountry["estimatedDelivery"];
         productInfo["categoryDetails"] = this.rawProductData.productCategoryDetails;

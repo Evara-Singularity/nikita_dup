@@ -448,6 +448,24 @@ export class CartService
             );
     }
 
+    updateShippingCharges(sv, cartSession) {
+        if (sv && sv['status'] && sv['statusCode'] === 200) {
+            cartSession['cart']['shippingCharges'] = sv['data']['totalShippingAmount'];
+            if (sv['data']['totalShippingAmount'] !== undefined && sv['data']['totalShippingAmount'] !== null) {
+                let itemsList = cartSession['itemsList'];
+                for (let i = 0; i < itemsList.length; i++) {
+                    cartSession['itemsList'][i]['shippingCharges'] = sv['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
+                }
+            }
+        }
+        // console.log('shipping  cart session', this.generateGenericCartSession(cartSession));
+        const updatedCartSessionAfterShipping = this.generateGenericCartSession(cartSession);
+        // console.log('updatedCartSessionAfterShipping', updatedCartSessionAfterShipping);
+        this.setShippingPriceChanges(updatedCartSessionAfterShipping);
+        this.setGenericCartSession(updatedCartSessionAfterShipping);
+        return updatedCartSessionAfterShipping;
+    }
+
     public getShippingAndUpdateCartSession(cartSession): Observable<any>
     {
         if(cartSession && (cartSession['itemsList'] as any[]).length)

@@ -43,6 +43,9 @@ export class SubCategoryComponent implements OnInit{
     }
 
     initializeSubcategoryData(data) {
+        data.forEach(ele=>{
+            ele['categoryDetails']['categoryLink'] = this.commonService.isHindiUrl ? 'hi/' + ele['categoryDetails']['categoryLink'] : ele['categoryDetails']['categoryLink'];
+        })
         this.relatedCatgoryList = data;
     }
 

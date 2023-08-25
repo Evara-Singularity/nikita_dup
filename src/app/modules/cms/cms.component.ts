@@ -16,6 +16,7 @@ export class CmsWrapperComponent {
     sample = {'padding': '20px', 'background': 'red'};
 
     @Input('cmsData') cmsData: any;
+    @Input('isAppDevice') isAppDevice:boolean;
     @Input('background') background: string = 'bg-white';
 
     ngOnInit() {

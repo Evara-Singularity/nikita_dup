@@ -1,6 +1,6 @@
 <static-breadcrumb *ngIf="!isAppDevice" [breadCrumbList]="breadCrumbList"></static-breadcrumb>
 <section class="dynamic-articlesmainwrap">
     <section class="container-fluid">
-        <data-cms [cmsData]="articles"></data-cms>
+        <data-cms [cmsData]="articles" [isAppDevice]="isAppDevice"></data-cms>
     </section>
 </section>

@@ -6,7 +6,7 @@
     <p class="attributeHeading">{{title}}</p>
     <ng-container *ngFor="let product of listOfProducts; let i = index;">
         <div class="innerContentWrapper" *ngIf="(i < 6 || (i > 6 && viewAll))" >
-            <ul>
+            <ul *ngIf="!isAppDevice">
                 <li (click)="$event.stopPropagation;_cmsService.navigateTo(product['productlink'], {navigation:'brand_store_' + componentName + '_' + (product['msn'] ? product['msn'] : '') })">
                     <div class="reviewRatingWrap">
                         <img class="product-img" src="{{imagePath + product['imageLink_small']}}" [alt]="product['productName']">
@@ -24,6 +24,26 @@
                     </div>
                 </li>
             </ul>
+
+            <ul *ngIf="isAppDevice">
+                <li>
+                    <div class="reviewRatingWrap">
+                        <img class="product-img" src="{{imagePath + product['imageLink_small']}}" [alt]="product['productName']">
+                    </div>
+                    <div class="rightSide">
+                        <p class="productName">{{product['productName'] | slice:0:64}}
+                            <span *ngIf="product.productName.length>64">...</span>
+                        </p>
+                        <p class="productBrand" *ngIf="product['brandName']">{{product['brandName']}}</p>
+                        <span class="pricedetails">
+                        <span>₹{{product['mrp']}}</span>
+                        <strong>{{product['discount_percentage']}}% OFF</strong>
+                        </span>
+                        <p class="fixedPrice">₹{{product['pricewithouttax']}}</p>
+                    </div>
+                </li>
+            </ul>
+
         </div>
     </ng-container>
 </div>

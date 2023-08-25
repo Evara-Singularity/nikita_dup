@@ -1,8 +1,8 @@
 <div *ngIf="displayPage">
-    
     <div class="pwa-row items-center cart-items-info" *ngIf="isQuickorder">
         <h3 class="pad-0">{{_cartService.getGenericCartSession?.itemsList.length}} item(s) in your cart</h3>
-        <button class="btn quaternary-btn-2 add-from-wishlist-item" (click)="openWishList()">+ ADD FROM WISHLIST</button>
+        <button class="btn quaternary-btn-2 add-from-wishlist-item" (click)="openWishList()">+ ADD FROM
+            WISHLIST</button>
     </div>
     <ng-container *ngFor="let item of _cartService.getGenericCartSession.itemsList; let itemIndex = index;">
         <div *ngIf="(!item.oos) && item['text1']" class="realTimePrice">
@@ -11,7 +11,7 @@
                     {{item['nPrice'] | currency:'INR' : 'symbol' : '1.2-2'}}</strong></span>
         </div>
         <!-- use this in for oos item -->
-        <div  class="realTimePrice" *ngIf="(item.oos)">
+        <div class="realTimePrice" *ngIf="(item.oos)">
             <span>Product not available for now</span>
         </div>
         <div [ngClass]="{'realTimeUpdate':item['text1']}" class="card relative ">
@@ -89,7 +89,7 @@
                 <span class="coup-disc green-txt">Coupon discount - ₹100</span>
                 <span class="free-ship green-txt">Free Shipping <i class="icon-free_shipping"></i></span>
             </div> -->
-            
+
             <div class="pwa-row pad-t-0"
                 *ngIf="_cartService.prepaidDataMapping && _cartService.prepaidDataMapping[item.productId] && !(_cartService.prepaidDataMapping[item.productId]['applicable']) && (_cartService.prepaidDataMapping[item.productId]['amount']) && (_cartService.prepaidDataMapping[item.productId]['minimumCartValue'])">
                 <div class="shop-more-container">
@@ -108,7 +108,8 @@
             && (_cartService.prepaidDataMapping[item.productId]['discountIn'])">
                 <div class="shop-more-container sigle-line-txt">
                     <p><span class="prepaid-discount-txt"><strong>Save instantly
-                                {{_cartService.prepaidDataMapping[item.productId]['discountIn']}} with online payment</strong></span>
+                                {{_cartService.prepaidDataMapping[item.productId]['discountIn']}} with online
+                                payment</strong></span>
                     </p>
                 </div>
             </div>
@@ -152,9 +153,11 @@
                 </ul>
             </div>
             <div class="cart-btm pad-15 " *ngIf="!item.oos">
-                <span class="coup-disc green-txt" *ngIf="item.offer > 0">Coupon&nbsp;discount&nbsp;-&nbsp;₹{{(item.offer ? item.offer : 0) | mathRound | number :
+                <span class="coup-disc green-txt" *ngIf="item.offer > 0">Coupon&nbsp;discount&nbsp;-&nbsp;₹{{(item.offer
+                    ? item.offer : 0) | mathRound | number :
                     '1.2-2'}}</span>
-                <span class="free-ship green-txt" *ngIf="item.shippingCharges == 0">Free Shipping <i class="icon-free_shipping"></i></span>
+                <span class="free-ship green-txt" *ngIf="item.shippingCharges == 0">Free Shipping <i
+                        class="icon-free_shipping"></i></span>
             </div>
             <!-- DO NOT REMOVE THIS SECTION IT WAS OF NEW DESIGN TO BE IMPLEMENTED LATER -->
             <!-- <div  class="coupen-and-discount">
@@ -196,7 +199,7 @@
                     </div>
                     <div class="cta-row">
                         <button class="btn secondry-btn-1" (click)="$event.stopPropagation();deleteProduct($event)"><i
-                            class="icon-bin"></i>&nbsp;REMOVE</button>
+                                class="icon-bin"></i>&nbsp;REMOVE</button>
                         <button (click)="$event.stopPropagation();addToPurchaseList();" cstatic-small-card-container
                             class="btn secondry-btn">MOVE TO WISHLIST</button>
                         <!-- <button class="btn secondry-btn" (click)="$event.stopPropagation();deleteProduct($event)"><i
@@ -209,3 +212,22 @@
 </app-bottom-menu>
 
 <ng-container #cartAddProductPopup></ng-container>
+
+
+<!-- Nudge Pop-Up on the Cart Page -->
+
+<!-- <app-bottom-menu>
+    <div content>
+        <div class="cart-nudgePopup-conatiner">
+            <div class="header-bottom-menu">
+                <p>These products are in high demand and <b>may sell out soon</b>.</p>
+                <i class="icon-circle-delete"></i>
+            </div>
+            <span class="mt-20">Are you sure want to leave this page?</span>
+            <div class="cta-row">
+                <button class="btn secondry-btn-1" >LEAVE</button>
+                <button class="btn secondry-btn">PROCEED TO PAY</button>
+            </div>
+        </div>
+    </div>
+</app-bottom-menu> -->

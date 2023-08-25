@@ -12,6 +12,7 @@ export class ProductsDetailsComponent implements OnInit {
     @Input('listOfProducts') listOfProducts: any[] = null;
     @Input('titleData') titleData = null;
     @Input('imagePath') imagePath = null;
+    @Input('isAppDevice') isAppDevice=false;
     title: string = '';
     viewAll: boolean = false;
     constructor(public _cmsService : CmsService) { }

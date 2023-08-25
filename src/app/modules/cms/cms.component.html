@@ -7,11 +7,11 @@
             </main-banner>
             <main-banner *ngSwitchCase="'HomePageFullWidthImage'" [componentName]="item['componentName']" [data]="item[data]" [imagePath]="imagePath" [customStyle]="item['style']">
             </main-banner>
-            <text *ngSwitchCase="'text_component'" [title]="item[title]" [componentName]="item['componentName']" [data]="item[data]"  [customStyle]="item['style']"></text>
+            <text *ngSwitchCase="'text_component'" [title]="item[title]" [componentName]="item['componentName']" [data]="item[data]"  [customStyle]="item['style']" [isAppDevice]="isAppDevice"></text>
             <image-text *ngSwitchCase="'image_text_component'" [componentName]="item['componentName']" [data]="item[data]" [imagePath]="imagePath"  [customStyle]="item['style']">
             </image-text>
-            <products-details *ngSwitchCase="'product_details_component'" [componentName]="item['componentName']" [listOfProducts]="item[data]"
-            [titleData]="item['titleData']" [imagePath]="imagePath"  [customStyle]="item['style']"></products-details>
+            <products-details  *ngSwitchCase="'product_details_component'" [componentName]="item['componentName']" [listOfProducts]="item[data]"
+                [titleData]="item['titleData']" [imagePath]="imagePath"  [customStyle]="item['style']" [isAppDevice]="isAppDevice"></products-details>
             <small-image *ngSwitchCase="'small_image_component'" [componentName]="item['componentName']" [listOfImgs]="item[data]" [imagePath]="imagePath"  [customStyle]="item['style']">
             </small-image>
             <full-image *ngSwitchCase="'full_image_component'" [componentName]="item['componentName']" [listOfImgs]="item[data]" [imagePath]="imagePath"  [customStyle]="item['style']">

@@ -373,7 +373,6 @@ export class BrandComponent implements OnInit, AfterViewInit {
                     },
                 ];
             }
-            console.log("this._commonService.isServer == ", this._commonService.isServer);
             let s = this._renderer2.createElement('script');
             s.type = "application/ld+json";
             s.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "BreadcrumbList", "itemListElement": itemsList });

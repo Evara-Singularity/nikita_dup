@@ -201,11 +201,12 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 
    setAdobeDataTracking(){
       this._analyticsService.sendAdobeCall(
-        { 
+        {
+          page:{ 
           channel: 'pdp', 
           linkPageName: this.pageLinkName,
           linkName:  this.showPocMsn ? '3D Image click' : '360 image click'
-        }, 
+        }}, 
         "genericClick")
   }
 

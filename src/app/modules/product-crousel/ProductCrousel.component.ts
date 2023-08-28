@@ -349,10 +349,10 @@ export class ProductCrouselComponent implements OnInit {
   }
   setAdobeDataTracking(){
       this._analyticsService.sendAdobeCall(
-        { channel: 'pdp', 
+        {page:{ channel: 'pdp', 
           pageName: this.pageLinkName,
           linkName:  this.showPocMsn ? '3D Image click' : '360 image click'
-        }, 
+        }}, 
         "genericClick")
   }
 

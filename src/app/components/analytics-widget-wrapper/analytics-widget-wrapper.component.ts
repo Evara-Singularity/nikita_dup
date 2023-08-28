@@ -132,7 +132,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
     this.attributeContainerInstance.instance['categoryId'] = this.categoryId;
     this.attributeContainerInstance.instance['graphData'] = this.graphData;
     this.attributeContainerInstance.instance['categoryName'] = this.categoryName;
-    this.brandContainerInstance.instance['productStaticData'] = this.productStaticData;
+    this.attributeContainerInstance.instance['productStaticData'] = this.productStaticData;
   }
   resetLazyComponents() {
     if (this.priceContainerInstance) {

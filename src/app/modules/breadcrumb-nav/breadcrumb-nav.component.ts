@@ -27,6 +27,7 @@ export class BreadcrumbNavComponent implements OnInit {
 
   ngOnInit(): void {
     this.breadCrumpCategorySchema();
+    console.log("BreadcrumbNavComponent =========> 30");
   }
 
   ngAfterViewInit(): void {
@@ -58,6 +59,8 @@ export class BreadcrumbNavComponent implements OnInit {
 
       let s = this.renderer2.createElement('script');
       s.type = "application/ld+json";
+
+      console.log("this.breadcrumb.length ==  62 > " , this.breadcrumb.length);
 
       s.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "BreadcrumbList", "itemListElement": itemsList });
       this.renderer2.appendChild(this.document.head, s);

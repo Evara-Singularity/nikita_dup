@@ -27,7 +27,6 @@ export class BreadcrumbNavComponent implements OnInit {
 
   ngOnInit(): void {
     this.breadCrumpCategorySchema();
-    console.log("BreadcrumbNavComponent =========> 30");
   }
 
   ngAfterViewInit(): void {
@@ -35,6 +34,8 @@ export class BreadcrumbNavComponent implements OnInit {
 
 
   breadCrumpCategorySchema() {
+    console.log("this._commonService.isServer ==>" , this._commonService.isServer);
+    console.log("this.breadcrumb ==>" , this.breadcrumb);
     if (this._commonService.isServer && this.breadcrumb && this.breadcrumb.length > 0) {
       let itemsList = [{
         "@type": "ListItem",

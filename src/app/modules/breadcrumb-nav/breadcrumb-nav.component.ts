@@ -50,7 +50,7 @@ export class BreadcrumbNavComponent implements OnInit {
           "position": index + 1,
           "item":
           {
-            "@id": CONSTANTS.PROD + (this._commonService.isHindiPage(element) ? '/hi/' : '/') + element['categoryLink'],
+            "@id": CONSTANTS.PROD + (this._commonService.isHindiUrl ? '/hi/' : '/') + element['categoryLink'],
             "name": element['categoryName']
           }
         })

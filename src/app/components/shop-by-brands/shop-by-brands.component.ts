@@ -93,14 +93,18 @@ export class ShopByBrandsComponent implements OnInit {
           const data =
             (response["searchProductList"] as any[]) 
               .map((item) =>
-                this._productService.recentProductResponseToProductEntityV1(
+                this._productService.searchResponseToProductEntity(
                   item
                 )
               )
               .filter((res) => this._productService.isInStock(res) == true) ||
             [];
-          this.tabsArray[index].data = data;
-          this.tabsArray[index].isSelected = true;
+          if(data.length == 0){ 
+            this.removeBrandData(index); 
+          }else{
+            this.tabsArray[index].isSelected = true;
+            this.tabsArray[index].data = data;
+          }
           this.cdr.detectChanges();
         }else{
           this.tabsArray[index].data = [];
@@ -110,6 +114,12 @@ export class ShopByBrandsComponent implements OnInit {
       });
       this.cdr.detectChanges();
   }
+
+  private removeBrandData(index){
+    this.tabsArray.splice(index, 1);
+    this.getBrandData(index);
+  }
+  
 }
 
 @NgModule({

@@ -17,6 +17,7 @@ export class ImagesComponent implements OnInit
     show360popupFlag:boolean = false;
     @Input("images") images: any[] = null;
     @Input() showPocMsn: boolean = false;
+    @Input() pageLinkName = '';
     currentImageIndex = -1;
    
 
@@ -43,9 +44,10 @@ export class ImagesComponent implements OnInit
     }
     setAdobeDataTracking(){
           this._analyticsService.sendAdobeCall(
-            { channel: 'pdp', 
-              pageName: this.showPocMsn ? 'moglix:pdp:360_poc_2':'moglix:pdp:360_poc_1',
-              linkName:  "moglix:" + this.router.url
+            {
+              channel: 'pdp', 
+              linkPageName: this.pageLinkName,
+              linkName:  this.showPocMsn ? '3D Image click' : '360 image click'
             }, 
             "genericClick")
         

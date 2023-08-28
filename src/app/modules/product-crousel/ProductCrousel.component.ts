@@ -80,7 +80,7 @@ export class ProductCrouselComponent implements OnInit {
   pz_instance: any = [];
   private cDistryoyed = new Subject();
   showPocMsn: boolean = false;
-
+  @Input() pageLinkName: string = '';
   constructor(
     private _router: Router,
     private injector: Injector,
@@ -350,8 +350,8 @@ export class ProductCrouselComponent implements OnInit {
   setAdobeDataTracking(){
       this._analyticsService.sendAdobeCall(
         { channel: 'pdp', 
-          pageName: this.showPocMsn ? 'moglix:pdp:360_poc_2':'moglix:pdp:360_poc_1',
-          linkName:  "moglix:" + this._router.url
+          pageName: this.pageLinkName,
+          linkName:  this.showPocMsn ? '3D Image click' : '360 image click'
         }, 
         "genericClick")
   }

@@ -16,6 +16,7 @@
         (addToPurchaseList$)="addToPurchaseList()" [moveToSlide$]="moveToSlide$"
         [refreshSiemaItems$]="refreshSiemaItems$" [productOutOfStock]="rawProductData?.productOutOfStock"
         [rawProductData]="rawProductData"
+        [pageLinkName]="pageLinkName"
         (scrollToId$)="scrollToId(!rawProductData?.productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
         [imagePathAsset]="imagePathAsset" (openPopUpcrousel)="openPopUpcrousel(0)"
         (sendProductImageClickTracking)="sendProductImageClickTracking()" [iOptions]="iOptions"

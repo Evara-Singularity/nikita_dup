@@ -76,7 +76,7 @@
                     <product-details [details]="contentInfo['product details']"></product-details>
                 </ngx-siema-slide>
                 <ngx-siema-slide *ngIf="displaySlide('images')">
-                    <images [showPocMsn]='showPocMsn' [images]="contentInfo['images']"></images>
+                    <images [showPocMsn]='showPocMsn' [pageLinkName]='pageLinkName' [images]="contentInfo['images']"></images>
                 </ngx-siema-slide>
             </ngx-siema>
         </div>

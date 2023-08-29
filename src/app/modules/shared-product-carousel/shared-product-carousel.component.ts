@@ -47,6 +47,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   selectLangaugeInstance = null;
   @ViewChild("selectLangauge", { read: ViewContainerRef })
   selectLangaugeContainerRef: ViewContainerRef;
+  @Input() pageLinkName = '';
 
   constructor(
     private cfr: ComponentFactoryResolver, 
@@ -126,6 +127,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
       this.productCrouselInstance.instance["refreshSiemaItems$"] = this.refreshSiemaItems$;
       this.productCrouselInstance.instance["productName"] = this.productName;
       this.productCrouselInstance.instance["productOutOfStock"] = this.productOutOfStock;
+      this.productCrouselInstance.instance['pageLinkName'] = this.pageLinkName;
       setTimeout(() =>
       {
         (this.productCrouselInstance.instance["moveToSlide$"] as Subject<number>).next(slideIndex);
@@ -199,12 +201,13 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 
    setAdobeDataTracking(){
       this._analyticsService.sendAdobeCall(
-        { channel: 'pdp', 
-          pageName: this.showPocMsn ? 'moglix:pdp:360_poc_2':'moglix:pdp:360_poc_1',
-          linkName:  "moglix:" + this.router.url
-        }, 
+        {
+          page:{ 
+          channel: 'pdp', 
+          linkPageName: this.pageLinkName,
+          linkName:  this.showPocMsn ? '3D Image click' : '360 image click'
+        }}, 
         "genericClick")
-    
   }
 
   pageTranslation(){

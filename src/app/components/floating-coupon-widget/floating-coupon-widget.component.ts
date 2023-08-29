@@ -81,5 +81,10 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
     document.body.removeChild(textarea);
     this._commonService.updateCopiedCoupon(text);
   }
+
+  setAdobeDataTracking() {
+    this._analytics.sendAdobeCall({page: {channel: 'pdp',linkPageName: this.pageLinkName,linkName: 'Price Overlay Closed'}},"genericClick");
+    this.closeproductDiscInfoComponent$.emit(false);
+  }
   
 }

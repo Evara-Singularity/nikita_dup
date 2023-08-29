@@ -49,13 +49,14 @@ export class ProductListService {
   }
 
   getPromoCodeDescription (promoCodeDescription: string){
-    const pcode = promoCodeDescription.split(this.promoCodeDescription_off_key);
+    let pcode = promoCodeDescription.split(this.promoCodeDescription_off_key);
+    if(pcode.length == 1){pcode = promoCodeDescription.split("Off")}
     if(typeof pcode != 'string' && pcode.length > 0){
         return pcode[0] as string;
     }else{
         return null;
     }
-}
+  }
 
   createAndProvideDataToSharedListingComponent(
     rawSearchData: SearchResponse,

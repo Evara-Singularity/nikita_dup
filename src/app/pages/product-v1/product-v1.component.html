@@ -16,6 +16,7 @@
         (addToPurchaseList$)="addToPurchaseList()" [moveToSlide$]="moveToSlide$"
         [refreshSiemaItems$]="refreshSiemaItems$" [productOutOfStock]="rawProductData?.productOutOfStock"
         [rawProductData]="rawProductData"
+        [pageLinkName]="pageLinkName"
         (scrollToId$)="scrollToId(!rawProductData?.productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
         [imagePathAsset]="imagePathAsset" (openPopUpcrousel)="openPopUpcrousel(0)"
         (sendProductImageClickTracking)="sendProductImageClickTracking()" [iOptions]="iOptions"
@@ -176,7 +177,7 @@
 
     <section id="popularDeals" class="common-product bg-gray"
         *ngIf="!rawProductData?.productOutOfStock && apiResponse?.tagProducts && apiResponse?.tagProducts?.length > 0">
-        <product-popular-deals [outOfStock]='rawProductData?.productOutOfStock' [apiResponse]='apiResponse?.tagProducts'
+        <product-popular-deals [outOfStock]='rawProductData?.productOutOfStock' [productStaticData]='productStaticData' [apiResponse]='apiResponse?.tagProducts'
             [analytics]='dealsAnalytics'></product-popular-deals>
     </section>
 

@@ -47,7 +47,7 @@
                 <span class="discount-txt" *ngIf="!couponForbrandCategory['minimumCartValue'] || couponForbrandCategory['minimumCartValue']==null">
                     {{productStaticData.via}}<b>{{productStaticData.prepaid_discount_text_alt}}</b>
                 </span>
-                <span class="no-text grey-txt">*No coupon needed</span>
+                <span class="no-text grey-txt">*{{ productStaticData.no_coupon_needed }}</span>
             </div>
         </div>
         <div class="pwa-row inline-list-item more-coupon-offers copy-coupon-offer-section" *ngIf="promoCodes">

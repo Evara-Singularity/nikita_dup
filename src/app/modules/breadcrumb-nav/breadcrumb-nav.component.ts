@@ -14,12 +14,13 @@ export class BreadcrumbNavComponent implements OnInit {
   @Input() breadcrumb: [] = null;
   @Input('analytics') analytics = null;
   readonly baseDomain = CONSTANTS.PROD;
+  @Input() productStaticData = this._commonService.defaultLocaleValue;
 
   constructor(
     private renderer2: Renderer2,
     @Inject(DOCUMENT) private document,
     private router: Router,
-    private _commonService: CommonService,
+    public _commonService: CommonService,
     private globalAnalyticService: GlobalAnalyticsService,
   ) {
   }
@@ -40,7 +41,7 @@ export class BreadcrumbNavComponent implements OnInit {
         "item":
         {
           "@id": CONSTANTS.PROD,
-          "name": "Home"
+          "name": this.productStaticData.home
         }
       }];
       this.breadcrumb.forEach((element, index) => {
@@ -49,7 +50,7 @@ export class BreadcrumbNavComponent implements OnInit {
           "position": index + 1,
           "item":
           {
-            "@id": CONSTANTS.PROD + '/' + element['categoryLink'],
+            "@id": CONSTANTS.PROD + (this._commonService.isHindiUrl ? '/hi/' : '/') + element['categoryLink'],
             "name": element['categoryName']
           }
         })

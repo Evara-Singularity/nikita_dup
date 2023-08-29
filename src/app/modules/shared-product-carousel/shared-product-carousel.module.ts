@@ -3,14 +3,16 @@ import { ComponentFactory, ComponentFactoryResolver, NgModule } from '@angular/c
 import { CommonModule } from '@angular/common';
 import { SharedProductCarouselComponent } from './shared-product-carousel.component';
 import { SwipeDirectiveModule } from '@app/utils/directives/swipe.directive';
+import { SelectLanguageModule } from "../../components/select-language/select-language.component";
 
 @NgModule({
-  declarations: [SharedProductCarouselComponent],
-  imports: [
-    CommonModule,
-    SwipeDirectiveModule
-  ],
-  exports: [SharedProductCarouselComponent]
+    declarations: [SharedProductCarouselComponent],
+    exports: [SharedProductCarouselComponent],
+    imports: [
+        CommonModule,
+        SwipeDirectiveModule,
+        SelectLanguageModule
+    ]
 })
 export class SharedProductCarouselModule
 {

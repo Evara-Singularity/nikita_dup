@@ -25,6 +25,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   @Input() categoryName: string;
   @Input() graphData;
   @Input() isL2CategoryCheck;
+  @Input() productStaticData;
   fragmentPriceObject: any;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
   readonly attributeChartId = 'attribute-chart';

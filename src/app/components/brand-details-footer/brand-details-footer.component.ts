@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule } from '@angular/core';
+import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SeoTablesModule } from '@app/modules/seo-tables/seo-tables.module';
 import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe.';
+import { CommonService } from '@app/utils/services/common.service';
 
 
 @Component({
@@ -14,7 +15,11 @@ import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe
 export class BrandDetailsFooterComponent {
     @Input('footerData') footerData: Subject<any>;
 	@Input('brandDetailsFooterData') brandDetailsFooterData;
-	constructor() {}
+	@Input() productStaticData;
+	constructor(
+		public _commonService: CommonService
+	) {
+	}
 }
 
 @NgModule({

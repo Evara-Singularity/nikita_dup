@@ -14,6 +14,8 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { AdsenseService } from '@app/utils/services/adsense.service';
+import * as localization_en from '../../config/static-en';
+import * as localization_hi from '../../config/static-hi';
 
 let digitalData = {
     page: {},
@@ -39,7 +41,9 @@ export class BrandComponent implements OnInit, AfterViewInit {
     popularCategories = [];
     couponForbrandCategory: Object= null;
     informativeVideosData:any;    
+    productStaticData = this._commonService.defaultLocaleValue;
     public adsenseData: any = null
+    isAcceptLanguage = false;
     constructor(
         public _activatedRoute: ActivatedRoute,
         public _router: Router,
@@ -64,8 +68,8 @@ export class BrandComponent implements OnInit, AfterViewInit {
 
 
     ngOnInit(): void {
+        this.initializeLocalization();
         if (this._commonService.isBrowser) {
-
             // set some extra meta tags if brand is a category page
             if (this._activatedRoute.snapshot.queryParams['category']) {
                 this.meta.addTag({ "name": "robots", "content": "noindex, nofollow" });
@@ -76,6 +80,21 @@ export class BrandComponent implements OnInit, AfterViewInit {
         }
 
         this.setDataFromResolver();
+    }
+
+    initializeLocalization() {
+        if ((this._router.url).includes("/hi/")) {
+            this._commonService.defaultLocaleValue = localization_hi.product;
+            this.productStaticData = localization_hi.product;
+            this._commonService.changeStaticJson.next(this.productStaticData);
+        } else {
+            this._commonService.defaultLocaleValue = localization_en.product;
+            this.productStaticData = localization_en.product;
+            this._commonService.changeStaticJson.next(this.productStaticData);
+        }
+        this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+            this.productStaticData = localization_content;
+        });
     }
 
     setDataFromResolver() {
@@ -90,14 +109,21 @@ export class BrandComponent implements OnInit, AfterViewInit {
 
             // create data for shared listing component
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results');
-            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.category, 'BRAND', this.API_RESPONSE.brand[1][0].brandName).subscribe(res => {
+            let brandName = this.API_RESPONSE.brand[1][0].brandName;
+            this.isAcceptLanguage = this.API_RESPONSE['brand'][1][0]['acceptLanguage'] && this.API_RESPONSE['brand'][1][0]['acceptLanguage'].length ? true : false;
+            if(this.isHindiUrl) {
+                if(this.API_RESPONSE['brand'][1][0]['productSearchResult'] && this.API_RESPONSE['brand'][1][0]['productSearchResult']['totalCount'] > 0) {
+                    brandName = this.API_RESPONSE['brand'][1][0]['productSearchResult']['products'][0]['brandName']
+                }
+            }
+            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.category, 'BRAND', brandName, this.isHindiUrl).subscribe(res => {
                 if (res.hasOwnProperty('buckets')) {
                     this.API_RESPONSE.brand[1][0].buckets = JSON.parse(JSON.stringify(res['buckets']));
                     this.API_RESPONSE.brand[1][0].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['brand'][1][0], 'Brand Results', true);
 
                     const category = this.API_RESPONSE.brand[1][0].buckets.find(c => c.name === 'category');
-                    if (!this._activatedRoute.snapshot.params.category && category.hasOwnProperty('terms')) {
+                    if (!this._activatedRoute.snapshot.params.category && category && category.hasOwnProperty('terms')) {
                         this.setPopularCategories(category.terms);
                     }
 
@@ -108,7 +134,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                         this.popularLinks = Object.keys(this.API_RESPONSE.brand[1][0].categoryLinkList || {});
                     }
                     if (res.hasOwnProperty('brandCategoryLinkList')) {
-                        this.API_RESPONSE.brand[1][0].brandCategoryLinkList = JSON.parse(JSON.stringify(res['brandCategoryLinkList']));
+                        this.API_RESPONSE.brand[1][0].brandCategoryLinkList = JSON.parse(JSON.stringify(res['brandCategoryLinkList'] || {}));
                     }
                     // create accordians data
                     this.createFooterAccordianData();
@@ -139,34 +165,34 @@ export class BrandComponent implements OnInit, AfterViewInit {
     private createFooterAccordianData() {
         this.accordiansDetails = [];
         this.accordiansDetails.push({
-            name: 'Related Brand Categories',
+            name: this.productStaticData.related_brand_categories,
             //extra: this.API_RESPONSE['brand'][0].brandName,
-            data: Object.entries(this.API_RESPONSE.brand[1][0].brandCategoryLinkList)?.map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+            data: Object.entries(this.API_RESPONSE.brand[1][0].brandCategoryLinkList)?.map(x => ({ name: x[0], link: this._commonService.isHindiPage(x) ? 'hi/' + x[1] : x[1] }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
         this.accordiansDetails.push({
-            name: 'Popular Categories',
-            data: this.popularCategories?.map(e => ({ name: e.name, link: e.link }) as AccordianDataItem),
+            name: this.productStaticData.popular_categories,
+            data: this.popularCategories?.map(e => ({ name: e.name, link: this._commonService.isHindiPage(e) ? 'hi/' + e.link : e.link }) as AccordianDataItem),
             icon:'icon-categories'
         });
         this.accordiansDetails.push({
-            name: 'Similar Category',
-            data: this.API_RESPONSE.brand[2]?.mostSoledSiblingCategories?.map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
+            name: this.productStaticData.similar_category,
+            data: this.API_RESPONSE.brand[2]?.mostSoledSiblingCategories?.map(e => ({ name: e.categoryName, link: this._commonService.isHindiPage(e) ? 'hi/' + e.categoryLink : e.categoryLink }) as AccordianDataItem),
             icon:'icon-categories'
         });
         this.accordiansDetails.push({
-            name: 'Related Searches',
-            data: this.API_RESPONSE.brand[5]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
+            name: this.productStaticData.accordian_list1_label,
+            data: this.API_RESPONSE.brand[5]?.data?.map(e => ({ name: e.title, link: this._commonService.isHindiPage(e) ? 'hi/' + e.friendlyUrl : e.friendlyUrl }) as AccordianDataItem),
             icon:'icon-attribute'
         });
         this.accordiansDetails.push({
-            name: 'Related Brands',
+            name: this.productStaticData.related_brands,
             isNotVisible:!!this._activatedRoute.snapshot.params.category,
-            data: this.API_RESPONSE.brand[3]?.searchBrandInfoList?.map(e => ({ name: e.brandName, link: e.brandLink }) as AccordianDataItem),
+            data: this.API_RESPONSE.brand[3]?.searchBrandInfoList?.map(e => ({ name: e.brandName, link: this._commonService.isHindiPage(e) ? 'hi/' + e.brandLink : e.brandLink }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
         this.accordiansDetails.push({
-            name: 'Popular Brand Categories',
+            name: this.productStaticData.accordian_list2_label,
             extra: this.API_RESPONSE['brand'][0].brandName,
             data: Object.entries(this.API_RESPONSE.brand[1][0].categoryLinkList).map(x => ({ name: this.API_RESPONSE['brand'][0].brandName+' '+x[0], link: x[1] }) as AccordianDataItem),
             icon:'icon-brand_store'
@@ -189,16 +215,20 @@ export class BrandComponent implements OnInit, AfterViewInit {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
+    get isHindiUrl() {
+        return (this._router.url).toLowerCase().indexOf('/hi') !== -1
+    }
+
     setLinks() {
         let qp = this._activatedRoute.snapshot.queryParams;
         let itemsList = [];
         //for null seo in brand only
         if(!this.API_RESPONSE.brand[0].seoDetails && (!this.API_RESPONSE['brand'][1][0].categoryName)){
-            let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
+            let title = this.productStaticData.buy + ' ' + this.API_RESPONSE.brand[1][0]["brandName"] + ' ' + this.productStaticData.buy_online +" - Moglix.com";
             this.title.setTitle(title);
             this.meta.addTag({ "name": "og:title", "content": title }); 
             
-            let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
+            let metaDescription = this.productStaticData.buy + " " + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.shop_online +' ' + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.brand_title;
             this.meta.addTag({ "name": "description", "content": metaDescription });
             this.meta.addTag({ "name": "og:description", "content": metaDescription });
         }
@@ -207,7 +237,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
             this.title.setTitle(this.API_RESPONSE.brand[0].seoDetails.title);
             this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[0].seoDetails.title });
         } else if(this.API_RESPONSE.brand[0].seoDetails && !this.API_RESPONSE.brand[0].seoDetails.title && (!this.API_RESPONSE['brand'][1][0].categoryName) ) {
-            let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
+            let title = this.productStaticData.buy + ' ' + this.API_RESPONSE.brand[1][0]["brandName"] + ' ' + this.productStaticData.buy_online +" - Moglix.com";
             this.title.setTitle(title);
             this.meta.addTag({ "name": "og:title", "content": title });
         }
@@ -216,7 +246,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
             this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
             this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
         } else if(this.API_RESPONSE.brand[0].seoDetails && !this.API_RESPONSE.brand[0].seoDetails.metaDescription && (!this.API_RESPONSE['brand'][1][0].categoryName) ){
-            let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
+            let metaDescription = this.productStaticData.buy + " " + this.API_RESPONSE.brand[1][0]["brandName"] + this.productStaticData.shop_online + " " + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.brand_title;
             this.meta.addTag({ "name": "description", "content": metaDescription });
             this.meta.addTag({ "name": "og:description", "content": metaDescription });
         }
@@ -233,11 +263,11 @@ export class BrandComponent implements OnInit, AfterViewInit {
         if (this.API_RESPONSE['brand'][1][0].categoryName && !this.API_RESPONSE.brand[1][0].metaDesciption) {
 
             if(!this.API_RESPONSE.brand[0].seoDetails){
-                let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
+                let title = this.productStaticData.buy + " " + this.API_RESPONSE.brand[1][0]["brandName"] + ' ' + this.productStaticData.buy_online +" - Moglix.com";
                 this.title.setTitle(title);
                 this.meta.addTag({ "name": "og:title", "content": title }); 
                 
-                let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
+                let metaDescription = this.productStaticData.buy + " " + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.shop_online +' ' + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.brand_title;
                 this.meta.addTag({ "name": "description", "content": metaDescription });
                 this.meta.addTag({ "name": "og:description", "content": metaDescription });
             }
@@ -245,7 +275,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                 this.title.setTitle(this.API_RESPONSE.brand[0].seoDetails.title);
                 this.meta.addTag({ "name": "og:title", "content": this.API_RESPONSE.brand[0].seoDetails.title });
             } else {
-                let title = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " Products Online at Best Price - Moglix.com";
+                let title = this.productStaticData.buy + " " + this.API_RESPONSE.brand[1][0]["brandName"] + ' ' + this.productStaticData.buy_online +" - Moglix.com";
                 this.title.setTitle(title);
                 this.meta.addTag({ "name": "og:title", "content": title });
             }
@@ -254,7 +284,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                 this.meta.addTag({ "name": "description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
                 this.meta.addTag({ "name": "og:description", "content": this.API_RESPONSE.brand[0].seoDetails.metaDescription });
             } else {
-                let metaDescription = "Buy " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at best prices in India. Shop online for " + this.API_RESPONSE.brand[1][0]["brandName"] + " products at Moglix. Free Delivery & COD options across India.";
+                let metaDescription = this.productStaticData.buy + " " + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.shop_online +' ' + this.API_RESPONSE.brand[1][0]["brandName"] + " " + this.productStaticData.brand_title;
                 this.meta.addTag({ "name": "description", "content": metaDescription });
                 this.meta.addTag({ "name": "og:description", "content": metaDescription });
             }
@@ -280,7 +310,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                         "item":
                         {
                             "@id": CONSTANTS.PROD,
-                            "name": "Home"
+                            "name": this.productStaticData.home
                         }
                     },
                     {
@@ -289,7 +319,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                         "item":
                         {
                             "@id": CONSTANTS.PROD + "/brand-store",
-                            "name": "Brand"
+                            "name": this.productStaticData.brand
                         }
                     },
                     {
@@ -320,7 +350,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                         "item":
                         {
                             "@id": CONSTANTS.PROD,
-                            "name": "Home"
+                            "name": this.productStaticData.home
                         }
                     },
                     {
@@ -329,7 +359,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                         "item":
                         {
                             "@id": CONSTANTS.PROD + "/brand-store",
-                            "name": "Brand"
+                            "name": this.productStaticData.brand
                         }
                     },
                     {
@@ -347,6 +377,32 @@ export class BrandComponent implements OnInit, AfterViewInit {
             s.type = "application/ld+json";
             s.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "BreadcrumbList", "itemListElement": itemsList });
             this._renderer2.appendChild(this._document.head, s);
+        }
+        if(this.isAcceptLanguage) {
+            const currentRoute = this._router.url.split('?')[0].split('#')[0];
+            const languagelink = this._renderer2.createElement("link");
+            languagelink.rel = "alternate";
+            if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
+                languagelink.href = this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD +  '/hi' + currentRoute.toLowerCase();
+            } else {
+                languagelink.href = this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + '/hi' + currentRoute.toLowerCase(); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
+            }
+            // languagelink.href = CONSTANTS.PROD + this.isHindiUrl ? CONSTANTS.PROD + this._router.url : '/hi/' + this._router.url;
+            languagelink.hreflang = 'hi-in';
+            this._renderer2.appendChild(this._document.head, languagelink);
+    
+            const elanguagelink = this._renderer2.createElement("link");
+            elanguagelink.rel = "alternate";
+            if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
+                elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', '');
+            } else {
+                elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', ''); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
+            }
+            elanguagelink.hreflang = 'en'
+            this._renderer2.appendChild(this._document.head, elanguagelink);
+            if (this._commonService.isBrowser) {
+                this.isHindiUrl ? document.documentElement.setAttribute("lang", 'hi') : document.documentElement.setAttribute("lang", 'en');
+            }
         }
         let currentQueryParams = this._activatedRoute.snapshot.queryParams;
         let currentRoute = this._commonService.getCurrentRoute(this._router.url);
@@ -496,7 +552,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                     productList.push({
                         "@type": "ListItem",
                         "position": index + 1,
-                        "url": CONSTANTS.PROD + '/' + product.productUrl,
+                        "url": !this.isHindiUrl ? CONSTANTS.PROD + '/' + product.productUrl : product.productUrl.includes('hi/') ? CONSTANTS.PROD + '/' + product.productUrl : CONSTANTS.PROD + '/hi/' + product.productUrl,
                         "name": product.productName,
                         "image": CONSTANTS.IMAGE_BASE_URL + product.mainImagePath
                     })
@@ -611,7 +667,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
     couponOnBrandCategory() {
         if (this._activatedRoute.snapshot.params.brand && this._activatedRoute.snapshot.params.category) {
             this._globalLoader.setLoaderState(true);
-            this._dataService.getCouponOnBrandCategory(this.API_RESPONSE['brand'][0].brandName, this._activatedRoute.snapshot.params.category).subscribe(response => {
+            this._dataService.getCouponOnBrandCategory(this._activatedRoute.snapshot.params.brand, this._activatedRoute.snapshot.params.category).subscribe(response => {
                 if (response['statusCode'] == 200 && response['data'] != null) {
                     this.couponForbrandCategory = response['data'];
                 } else {

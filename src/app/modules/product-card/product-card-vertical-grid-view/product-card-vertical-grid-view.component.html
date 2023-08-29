@@ -47,7 +47,7 @@
                     <span class="prod-discount">{{product.discount}}% OFF</span>
                 </div>
                 <div class="out-of-stock-text" *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
-                    <span>Available on Request</span>
+                    <span>{{ productStaticData?.available_request }}</span>
                 </div>
                 <div class="out-of-stock-price" *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice && product.priceWithoutTax!=0">
                     <span>{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
@@ -61,17 +61,17 @@
                     <span class="add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart" (click)="buyNow()">
                                     <i class="icon-cart1"></i>
                                 </span>
-                    <button class="btn tertiary-btn" *ngIf="cardFeaturesConfig.enableBuyNow" (click)="buyNow(true)">BUY NOW</button>
+                    <button class="btn tertiary-btn" *ngIf="cardFeaturesConfig.enableBuyNow" (click)="buyNow(true)">{{ productStaticData?.buy_now }}</button>
                 </ng-container>
             </div>
             <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
                 <button class="btn tertiary-outline-cta tertiary-outline-cta-8 wishlistBtn" (click)="openRfqForm()">
-                                SEND QUERY
+                                {{productStaticData?.send_query}}
                             </button>
             </ng-container>
             <ng-container *ngIf="cardFeaturesConfig.enableFullAddToCart && (!isOutOfStockByQuantity && !isOutOfStockByPrice)">
                 <button class="btn tertiary-btn wishlistBtn" (click)="buyNow()">
-                    <i class="icon-cart1"></i>&nbsp; ADD TO CART
+                    <i class="icon-cart1"></i>&nbsp; {{ productStaticData?.add_to_cart }}
                             </button>
             </ng-container>
         </div>

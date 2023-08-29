@@ -64,7 +64,7 @@ export class BulkRquestFormPopupComponent implements OnInit {
   sourceFlow: string = "login_otp"; // default it should be login
   rfqSubmmisionInProcess: number = 1;
   headerType:string = "pop-up-header3";
-
+  productStaticData = this._commonService.defaultLocaleValue;
   constructor(
     private localStorageService: LocalStorageService,
     private _commonService: CommonService,
@@ -80,6 +80,13 @@ export class BulkRquestFormPopupComponent implements OnInit {
   ngOnInit(): void {
     this.authFlow = this._localAuthService.getAuthFlow();
     this._sharedAuthUtilService.updateOTPControls(this.otpForm, 6);
+    this.getLocalization()
+  }
+
+  getLocalization() {
+    this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+      this.productStaticData = localization_content;
+    });
   }
 
   outData(data) {

@@ -2,14 +2,14 @@
 <section class="bscategory">
     <div class="bscatwrap">
         <div class="view-all-strip">
-            <h3 class="slp-heading">BestSellers</h3>
-                <a (click)="openPopup=true;" class="btn quinary-btn">VIEW ALL</a>
+            <h3 class="slp-heading">{{ productStaticData?.best_sellers }}</h3>
+                <a (click)="openPopup=true;" class="btn quinary-btn">{{ productStaticData?.view_all }}</a>
             
         </div>
         <div class="verticle-view-card mb-15">
             <div class="pwa-col-12 newarrivals-section row-gutter-space">
                 <div class="outer-view-section pwa-col-6" *ngFor="let product of bestSeller_Data">
-                    <a [routerLink]="'/'+product.productlink" >
+                    <a [routerLink]=" (commonService.isHindiPage(product) ? '/hi/' : '/') +product.productlink" >
                     <div class="pwa-image">
                         
                             <img [src]="defaultImage" lazyLoad="{{imagePath}}{{product.imageLink_medium}}"
@@ -18,12 +18,12 @@
                     </div>
                     <div class="product-card-lower-inner">
                         <div class="name">{{product.productName | slice:0:30}} </div>
-                        <p class="brand">By: <span>{{getBrandBy(product.short_description)}}</span></p>
+                        <p class="brand">{{ productStaticData?.by }}: <span>{{getBrandBy(product.short_description)}}</span></p>
                         <div class="prod-price-row">
                             <p class="prod-selling-price">₹{{product.sellingPrice}}</p>
                             <div class="price">
                                 <span class="prod-mrp">₹{{product.mrp}}</span> 
-                                <span class="prod-discount">{{product.discount_percentage}}% OFF</span>
+                                <span class="prod-discount">{{product.discount_percentage}}% {{productStaticData?.off}}</span>
                             </div>
                             
                         </div>
@@ -52,12 +52,12 @@
                     </div>
                     <div class="product-card-lower-inner">
                         <div class="name">{{product.productName | slice:0:60}} <span *ngIf="product.productName.length>60">...</span></div>
-                        <p class="brandname" style="color: #6f6f6f;"><span>By :</span>{{getBrandBy(product.short_description)}}</p>
+                        <p class="brandname" style="color: #6f6f6f;"><span>{{ productStaticData?.by }} :</span>{{getBrandBy(product.short_description)}}</p>
                         <div class="prod-price-row">
                             <p class="prod-selling-price">₹{{product.sellingPrice}}</p>
                             <div class="price">
                                 <span class="prod-mrp" style="color: #6f6f6f">₹{{product.mrp}}</span> 
-                                <span class="prod-discount">{{product.discount_percentage}}% OFF</span>
+                                <span class="prod-discount">{{product.discount_percentage}}% {{ productStaticData?.off }}</span>
                             </div>
                            
                         </div>  

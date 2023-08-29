@@ -12,6 +12,7 @@ export class TextComponent implements OnInit {
     @Input('data') data: Array<any> = null
     @Input('title') title: string = '';
     @Input('componentName') componentName;
+    @Input('isAppDevice') isAppDevice=false;
     info = null;
     titleData = null;
     textDescription; string = null;
@@ -26,7 +27,20 @@ export class TextComponent implements OnInit {
     initialize(info)
     {
         this.info = info;
-        this.textDescription = this.domsanitizer.bypassSecurityTrustHtml(info['textDescription']);
+        if (this.isAppDevice) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(info['textDescription'], 'text/html');
+            const anchors = doc.querySelectorAll('a');
+            anchors.forEach((anchor) => {
+              anchor.removeAttribute('href');
+              anchor.style.color = 'inherit';
+            });
+            const modifiedHtmlString = doc.body.innerHTML;
+    
+            this.textDescription = this.domsanitizer.bypassSecurityTrustHtml(modifiedHtmlString);            
+        }else{
+            this.textDescription = this.domsanitizer.bypassSecurityTrustHtml(info['textDescription']);
+        }
     }
 
 }

@@ -368,11 +368,14 @@ export class CommonService
         delete this.defaultParams[key];
     }
 
-    private getCategoryData(type, curl, params)
-    {
+    private getCategoryData(type, curl, params, requestOptions: any = {}) {
         const formattedParams = this.formatParams(params);
+        const headerData = {}
+        if (requestOptions && requestOptions.headers.has('language')) {
+            headerData['language'] = 'hi'
+        }
         return this._dataService
-            .callRestful(type, curl, { params: formattedParams })
+            .callRestful(type, curl, { params: formattedParams, headerData: headerData })
             .pipe(
                 catchError((res: HttpErrorResponse) =>
                 {
@@ -546,7 +549,7 @@ export class CommonService
         return fragment.length > 0 ? fragment : null;
     }
 
-    refreshProducts(flagFromResolver?: boolean): Observable<any>
+    refreshProducts(flagFromResolver?: boolean, requestOptions = {}): Observable<any>
     {
         return new Observable((observer) =>
         {
@@ -679,7 +682,7 @@ export class CommonService
                 if (defaultParams['searchTerm']) {
                     _observerable = this.getSearchData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.SEARCH_V1, defaultParams);
                 } else {
-                    _observerable = this.getCategoryData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY, defaultParams);
+                    _observerable = this.getCategoryData("GET", CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_CATEGORY, defaultParams, requestOptions);
                 }
                 this.currentRequest = _observerable.pipe(
                     map((res) =>
@@ -1667,5 +1670,28 @@ export class CommonService
         data["page"] = page;
         data["custData"] = this.custDataTracking;
         this._analytics.sendAdobeCall(data, trackingname); 
+    }
+
+    postUserLanguagePrefrence(params){
+        return this._dataService.callRestful(
+            "POST",
+            CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.UPDATE_CUSTOMER_LANGUAGE_PREFRENCE + params
+        );
+    }
+
+    get isHindiUrl() {
+        return (this._router.url).toLowerCase().indexOf('/hi') !== -1
+    }
+
+    isHindiPage(detailsObj) {
+        let userLangPreference = localStorage.getItem("languagePrefrence") || 'en';
+        let hindiPageAvailable = false;
+        if(userLangPreference == 'en') {
+            return false;
+        } 
+        if(detailsObj && detailsObj.acceptLanguage && detailsObj.acceptLanguage.length) {
+            hindiPageAvailable = true;
+        }
+        return ((userLangPreference == 'hi' && hindiPageAvailable) || (this.isHindiUrl && hindiPageAvailable)) ? true : false;
     }
 }

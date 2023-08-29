@@ -6,6 +6,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import CONSTANTS from '../../config/constants';
 import { GlobalAnalyticsService } from '../../utils/services/global-analytics.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'analytics-widget-wrapper',
@@ -33,6 +34,9 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   brandDataWithoutProcessing;
   attributeDataWithoutProcessing;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+  productStaticData = this.commonService.defaultLocaleValue;
+  changeStaticSubscription: Subscription;
+
 
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
@@ -44,6 +48,13 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
 
   ngOnInit(): void {
     this.getData();
+    this.getLocalization();
+  }
+
+  getLocalization() {
+    this.changeStaticSubscription = this.commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+      this.productStaticData = localization_content;
+    });
   }
 
   getData() {
@@ -107,6 +118,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
     this.brandContainerInstance.instance['graphData'] = this.graphData;
     this.brandContainerInstance.instance['categoryName'] = this.categoryName;
     this.brandContainerInstance.instance['isL2CategoryCheck'] = this.isL2CategoryCheck;
+    this.brandContainerInstance.instance['productStaticData'] = this.productStaticData;
   }
   async loadAttributeWidget() {
     const { AnalyticsGraphWidgetComponent } = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');
@@ -120,6 +132,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
     this.attributeContainerInstance.instance['categoryId'] = this.categoryId;
     this.attributeContainerInstance.instance['graphData'] = this.graphData;
     this.attributeContainerInstance.instance['categoryName'] = this.categoryName;
+    this.attributeContainerInstance.instance['productStaticData'] = this.productStaticData;
   }
   resetLazyComponents() {
     if (this.priceContainerInstance) {
@@ -190,6 +203,9 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   }
   ngOnDestroy() {
     // console.log("destroyed");
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
     this.resetLazyComponents();
   }
   callPriceFunction(priceObj){

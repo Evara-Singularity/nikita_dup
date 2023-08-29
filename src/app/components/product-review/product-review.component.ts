@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, EventEmitter, NgModule, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
+import { Subscription } from 'rxjs';
 import { CommonService } from '../../utils/services/common.service';
 
 @Component({
@@ -19,11 +20,18 @@ export class ProductReviewComponent {
   @Output('postHelpful') postHelpful = new EventEmitter();
   @Output('writeReview') writeReview = new EventEmitter();
   @Output('reviewRatingPopup') reviewRatingPopup = new EventEmitter();
+  changeStaticSubscription: Subscription = null;
   constructor(private _commonService:CommonService,private _activatedRoute:ActivatedRoute, private cdr: ChangeDetectorRef){
 
   }
   ngOnInit(){
     this.getStaticSubjectData();
+  }
+
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
   }
   
   ngAfterViewInit() {
@@ -46,7 +54,7 @@ export class ProductReviewComponent {
   }
 
   getStaticSubjectData(){
-    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
       this.cdr.detectChanges();
     });

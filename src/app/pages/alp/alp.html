@@ -5,7 +5,7 @@
         <div id="category-cards-section">
             <shared-product-listing [headerName]="titleHeading ? titleHeading : ''" [pageName]="'ATTRIBUTE'"
                 [productsListingData]="_productListService?.productListingData" [titleDescription]="titleDescription"
-                [categoryName]="alpCategoryCodeData.categoryDetails.categoryName"
+                [categoryName]="alpCategoryCodeData.categoryDetails.categoryName" [isAcceptLanguage]='isAcceptLanguage'
                 *ngIf="_productListService &&_productListService.productListingData">
             </shared-product-listing>
 
@@ -19,10 +19,10 @@
                 class="category_data pad-t-15 pad-b-30 pad-lr-15" [innerHTML]="pageDescription"></div>
         </div>
         <app-price-list-table *ngIf="alpPriceListData && alpPriceListData.length > 9 && _commonService.selectedFilterData.page < 2 && titleHeading"
-            [heading]="titleHeading"
+            [heading]="titleHeading" [productStaticData]='productStaticData'
             [priceListData]="alpPriceListData">
         </app-price-list-table>
-        <breadcrumb-nav [breadcrumb]="alpBreadCrumbData"></breadcrumb-nav>
+        <breadcrumb-nav [productStaticData]='productStaticData' [breadcrumb]="alpBreadCrumbData"></breadcrumb-nav>
     </div>
     <app-page-not-delivered *ngIf="showPageNotFound"></app-page-not-delivered>
 

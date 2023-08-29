@@ -270,7 +270,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     ) {
         this.isServer = commonService.isServer;
         this.isBrowser = commonService.isBrowser;
-        this.isLanguageHindi = ((this.router.url).toLowerCase().indexOf('/hi/') !== -1) || false;
+        const languagePrefrence = localStorage.getItem("languagePrefrence");
         if (((this.router.url).toLowerCase().indexOf('/hi/') !== -1)) {
             this.englishUrl = this.router.url.toLowerCase().split("/hi/").join('/');;
             this.hindiUrl = this.router.url;
@@ -279,6 +279,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.hindiUrl = "/hi" + this.router.url;
             this.englishUrl = (this.router.url).toLowerCase().split("/hi/").join('/');
         }
+        this.isLanguageHindi = ((this.router.url).toLowerCase().indexOf('/hi/') !== -1) || false;
+       
     }
 
     ngOnInit() {
@@ -290,23 +292,23 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"]) {
                 this.apiResponse = rawData.product[0].data.data;
-                this.isAcceptLanguage = this.apiResponse['acceptLanguage'] && this.apiResponse['acceptLanguage'].length ? true : false; 
+                this.isAcceptLanguage = this.apiResponse['acceptLanguage'] && this.apiResponse['acceptLanguage'].length > 0 ? true : false; 
                 this.processProductData(this.apiResponse.productGroup);
                 this.setQuestionAnswerSchema();
                 if (this.apiResponse && this.apiResponse.tagProducts) {
                     this.onVisiblePopularDeals();
                 }
-
+                
             } else {
                 this.setProductNotFound();
             }
         })
-        this.initializeLocalization();
         this.route.fragment.subscribe((fragment: string) => {
             this.fragment = fragment || '';
         })
+        this.initializeLocalization();
     }
-
+    
     @HostListener('window:scroll', ['$event'])
     isScrolledIntoView() {
         if (this.similarProductsElementRef) {
@@ -1855,6 +1857,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.productInfoPopupInstance.instance["analyticProduct"] = this._trackingService.basicPDPTrackingV1(this.rawProductData);
         this.productInfoPopupInstance.instance['msnId'] = this.rawProductData.msn;
         this.productInfoPopupInstance.instance['threeDImages'] = this.rawProductData.product3dImages;
+        this.productInfoPopupInstance.instance['pageLinkName'] = this.pageLinkName;
         this.productInfoPopupInstance.instance["modalData"] =
             oosProductIndex > -1
                 ? this.productService.getProductInfo(infoType, oosProductIndex)
@@ -1884,11 +1887,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     getBrandLink(brandDetails: {}) {
         if (brandDetails == undefined) {
-            return [];
+          return [];
+        }
+        let baseUrl = '/brands/';
+        if(this.commonService.isHindiPage(brandDetails)) {
+          baseUrl = '/hi' + baseUrl;
         }
         let d = brandDetails["friendlyUrl"];
-        return ["/brands/" + d.toLowerCase()];
-    }
+        return [baseUrl + d.toLowerCase()];
+      }
 
     private getSecondaryAttributes() {
         return {
@@ -1936,6 +1943,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
         if (this.rawProductData.productVideos && this.rawProductData.productVideos.length) {
             contentInfo["videos"] = this.rawProductData.productVideos;
+        }
+        if(this.commonService.isHindiPage(this.rawProductData.productBrandDetails) && this.commonService.isHindiPage(this.rawProductData.productCategoryDetails)) {
+            this.rawProductData.productBrandCategoryUrl = 'hi/' + this.rawProductData.productBrandCategoryUrl;
+            // this.rawProductData.productCategoryDetails.categoryLink	= 'hi/' + this.rawProductData.productCategoryDetails.categoryLink; 
         }
         const details = {
             description: this.rawProductData.productDescripton,
@@ -2695,7 +2706,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 );
 
             this.productPriceCompareInstance.instance["compareProductsData"] = this.compareProductsData;
-            
+            this.productPriceCompareInstance.instance['ProductPriceCompareComponent'] = this.productStaticData;
            
         }
     }
@@ -2717,6 +2728,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 );
             this.shopByBrandsInstance.instance["data"] = this.shopByDifferentBrands;
             this.shopByBrandsInstance.instance["categoryName"] = this.rawProductData.productCategoryDetails["categoryName"];
+            this.shopByBrandsInstance.instance['productStaticData'] = this.productStaticData;
         }
     }
 
@@ -3954,5 +3966,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnDestroy() {
         if(this.cartSubscription) this.cartSubscription.unsubscribe();
+        this.commonService.defaultLocaleValue = localization_en.product;
      }
 }

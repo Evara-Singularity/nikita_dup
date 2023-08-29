@@ -10,6 +10,7 @@ import { ProductCardVerticalGridViewModule } from "@app/modules/product-card/pro
 import { ProductCardVerticalContainerModule } from "@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module";
 import { ProductCardFeature } from "@app/utils/models/product.listing.search";
 import { ProductService } from "@app/utils/services/product.service";
+import { timeStamp } from "console";
 
 @Component({
   selector: "shop-by-brands",
@@ -19,6 +20,7 @@ import { ProductService } from "@app/utils/services/product.service";
 export class ShopByBrandsComponent implements OnInit {
   @Input("data") data: any;
   @Input("categoryName") categoryName;
+  @Input('productStaticData') productStaticData;
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config
@@ -91,14 +93,18 @@ export class ShopByBrandsComponent implements OnInit {
           const data =
             (response["searchProductList"] as any[]) 
               .map((item) =>
-                this._productService.recentProductResponseToProductEntityV1(
+                this._productService.searchResponseToProductEntity(
                   item
                 )
               )
               .filter((res) => this._productService.isInStock(res) == true) ||
             [];
-          this.tabsArray[index].data = data;
-          this.tabsArray[index].isSelected = true;
+          if(data.length == 0){ 
+            this.removeBrandData(index); 
+          }else{
+            this.tabsArray[index].isSelected = true;
+            this.tabsArray[index].data = data;
+          }
           this.cdr.detectChanges();
         }else{
           this.tabsArray[index].data = [];
@@ -108,6 +114,12 @@ export class ShopByBrandsComponent implements OnInit {
       });
       this.cdr.detectChanges();
   }
+
+  private removeBrandData(index){
+    this.tabsArray.splice(index, 1);
+    this.getBrandData(index);
+  }
+  
 }
 
 @NgModule({

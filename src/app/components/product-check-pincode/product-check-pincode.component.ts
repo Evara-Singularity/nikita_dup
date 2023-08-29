@@ -6,6 +6,7 @@ import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { LocalStorageService } from 'ngx-webstorage';
 import { ProductService } from '../../utils/services/product.service';
 import CONSTANTS from '@app/config/constants';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class ProductCheckPincodeComponent implements OnInit
     cartSession = null;
     cartId = '';
     user = null;
-    
+    changeStaticSubscription: Subscription = null;
 
     constructor(
         private localStorageService: LocalStorageService,
@@ -86,11 +87,18 @@ export class ProductCheckPincodeComponent implements OnInit
     }
     
     getStaticSubjectData(){
-        this._commonService.changeStaticJson.subscribe(staticJsonData => {
+        this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
           this._commonService.defaultLocaleValue = staticJsonData;
           this.productStaticData = staticJsonData;
         });
     }
+
+
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
+  }
 
     checkShippingCharges(pincode = null)
     {

@@ -15,6 +15,7 @@ export class FilterComponent{
     @Input() isBrandPage: Array<any>;
     @Input() brandName: string;
     @Input() brandUrl: string;
+    @Input() productStaticData: any;
 
     // Output event to toggle filter
     @Output('toggleFilter') toggleFilter: EventEmitter<any> = new EventEmitter<any>();

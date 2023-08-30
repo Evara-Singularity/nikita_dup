@@ -14,7 +14,7 @@
             <!-- <cart-notifications
                 (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications> -->
             <cart [moduleName]="'QUICKORDER'" (openWishList$)="openWishlistPopup()"
-                (openSimillarList$)="openSimillarProductsPopUp($event)"></cart>
+                (openSimillarList$)="openSimillarProductsPopUp($event)" (continueFrombackPopup$)="navigateToCheckout()"></cart>
 
             <!--homeMiscellaneousCarousel ( Buy it again, Recently Viewed, wishlist & my RFQ section)-->
             <ng-container>

@@ -26,6 +26,15 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 	cartUpdatesSubscription: Subscription = null;
 	orderId = null;
 
+	backClickedQuickorderSubscription: Subscription;
+    isBackClickedQuickorder: boolean=false; 
+	backClickedPaymentSubscription: Subscription;
+    isBackClickedPayment: boolean=false; 
+	cutIconClickedSubscription: Subscription;
+    isCutIconClicked: boolean=true;
+	cutIconClickedPaymentSubscription: Subscription;
+    isCutIconPaymentClicked: boolean=true;
+
 	constructor(
 		public _commonService: CommonService,
 		public _cartService: CartService,
@@ -36,6 +45,11 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 
 	ngOnInit(): void
 	{
+		this._naviagtionService.setBackClickedQuickorder(false);
+		this._naviagtionService.setBackClickedPayment(false);
+		this._naviagtionService.setCutIconQuickorderClicked(true);
+		this._naviagtionService.setCutIconPaymentClicked(true);
+
 		this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
 		{
 			//front end created dummy cart session;
@@ -46,6 +60,27 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 			}
 		});
 		this.noOfCartItems = this._cartService.getCartItemsCount();
+		this.backClickedQuickorderSubscription = this._naviagtionService.isBackClickedQuickorder$.subscribe(
+			value => {
+			  this.isBackClickedQuickorder = value;
+			}
+		  );
+		
+		this.backClickedPaymentSubscription = this._naviagtionService.isBackClickedPayment$.subscribe(
+		value => {
+			this.isBackClickedPayment = value;
+		}
+		);
+		this.cutIconClickedSubscription = this._naviagtionService.isCutIconQuickorderClicked$.subscribe(
+			value => {
+			  this.isCutIconClicked = value;
+			}
+		  );  
+		  this.cutIconClickedPaymentSubscription = this._naviagtionService.isCutIconPaymentClicked$.subscribe(
+			value => {
+			  this.isCutIconPaymentClicked = value;
+			}
+		  );    
 	}
 
 	handleNavigation()
@@ -53,8 +88,26 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		if (this.isCheckout && this._cartService.buyNow) {
 			this._cartService.clearBuyNowFlow();
 		}
-		if (this.isQuickorder) {
+		if (this.isQuickorder && !this.isBackClickedQuickorder && this.isCutIconClicked ) {
+			this._naviagtionService.setBackClickedQuickorder(true);
+			// this.resetCartChanges();
+			// this.goBack$.emit();
+			return
+		}
+		if (this.isQuickorder && this.isBackClickedQuickorder && !this.isCutIconClicked ) {
+			this._naviagtionService.setBackClickedQuickorder(false);
 			this.resetCartChanges();
+			this.goBack$.emit();
+			return
+		}
+		if(this.isPayment && !this.isBackClickedPayment && this.isCutIconPaymentClicked){
+			this._naviagtionService.setBackClickedPayment(true);
+			return
+		}
+		if(this.isPayment && this.isBackClickedPayment && this.isCutIconPaymentClicked){
+			this._naviagtionService.setBackClickedPayment(true);
+			this.goBack$.emit();
+			return
 		}
 		this.goBack$.emit();
 	}
@@ -88,6 +141,10 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 	ngOnDestroy(): void
 	{
 		if (this.cartUpdatesSubscription) { this.cartUpdatesSubscription.unsubscribe(); }
+		if (this.backClickedQuickorderSubscription) this.backClickedQuickorderSubscription.unsubscribe();
+		if (this.backClickedPaymentSubscription) this.backClickedPaymentSubscription.unsubscribe();
+		if (this.cutIconClickedSubscription) this.backClickedPaymentSubscription.unsubscribe();
+		if (this.cutIconClickedPaymentSubscription) this.backClickedPaymentSubscription.unsubscribe();
 	}
 
 }

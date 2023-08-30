@@ -216,18 +216,18 @@
 
 <!-- Nudge Pop-Up on the Cart Page -->
 
-<!-- <app-bottom-menu>
+<app-bottom-menu *ngIf="isBackClicked && isQuickorder && isCutIconClicked">
     <div content>
         <div class="cart-nudgePopup-conatiner">
             <div class="header-bottom-menu">
                 <p>These products are in high demand and <b>may sell out soon</b>.</p>
-                <i class="icon-circle-delete"></i>
+                <i class="icon-circle-delete" (click)="closebackpopup()"></i>
             </div>
             <span class="mt-20">Are you sure want to leave this page?</span>
             <div class="cta-row">
-                <button class="btn secondry-btn-1" >LEAVE</button>
-                <button class="btn secondry-btn">PROCEED TO PAY</button>
+                <button class="btn secondry-btn-1" (click)="backFromBackPopup()" >LEAVE</button>
+                <button class="btn secondry-btn" (click)="continueFrombackPopup$.emit(true)">CONTINUE</button>
             </div>
         </div>
     </div>
-</app-bottom-menu> -->
+</app-bottom-menu>

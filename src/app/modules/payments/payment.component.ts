@@ -1,4 +1,4 @@
-import { Compiler, Component,ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, Injector, NgModuleRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { Compiler, Component,ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, Injector, NgModuleRef, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CartUtils } from "@app/utils/services/cart-utils";
@@ -15,6 +15,7 @@ import { GlobalLoaderService } from "../../utils/services/global-loader.service"
 import { SharedTransactionDeclinedComponent } from '../shared-transaction-declined/shared-transaction-declined.component';
 import { SharedTransactionDeclinedModule } from '../shared-transaction-declined/shared-transaction-declined.module';
 import { PaymentService } from "./payment.service";
+import { NavigationService } from "@app/utils/services/navigation.service";
 
 // TODO:
 /**
@@ -68,8 +69,12 @@ export class PaymentComponent implements OnInit
   bankOfferBottomSheetInstance = null;
   @ViewChild('bankOfferBottomSheet', { read: ViewContainerRef })
   bankOfferBottomSheetRef: ViewContainerRef;
-  
 
+  backClickedPaymentSubscription: Subscription;
+  isBackClicked: boolean=false; 
+  private cutIconClickedSubscription: Subscription;
+  public isCutIconClicked: boolean=true;  
+  
   constructor(
     public _dataService: DataService,
     private _loaderService: GlobalLoaderService,
@@ -86,7 +91,9 @@ export class PaymentComponent implements OnInit
     private _injector: Injector,
     private _retryPaymentService: RetryPaymentService,
     private cfr: ComponentFactoryResolver,
-    private injector: Injector
+    private injector: Injector,
+    private _navigationService: NavigationService
+
   )
   {
     this.isShowLoader = true;
@@ -95,6 +102,18 @@ export class PaymentComponent implements OnInit
 
   ngOnInit()
   {
+    this._navigationService.setBackClickedPayment(false);
+    this._navigationService.setCutIconPaymentClicked(true);
+    this.backClickedPaymentSubscription = this._navigationService.isBackClickedPayment$.subscribe(
+      value => {
+        this.isBackClicked = value;
+      }
+    );
+    this.cutIconClickedSubscription = this._navigationService.isCutIconPaymentClicked$.subscribe(
+      value => {
+        this.isCutIconClicked = value;
+      }
+    );
     const queryParams = this._activatedRoute.snapshot.queryParams;
     this.orderId = queryParams['orderId'] || queryParams['txnId'];
 
@@ -501,6 +520,15 @@ export class PaymentComponent implements OnInit
     }
   }
 
+  closebackpopup(){
+    this._navigationService.setBackClickedPayment(false);
+    this._navigationService.setCutIconPaymentClicked(false);
+  }
+
+  backFromBackPopup(){
+  this._navigationService.goBack();
+  }   
+  
   ngOnDestroy() {
     if (this.payUOfferPopUpSubscription) {
       this.payUOfferPopUpSubscription.unsubscribe();
@@ -508,5 +536,7 @@ export class PaymentComponent implements OnInit
     if (this.payUOfferPopUpDataSubscription) {
       this.payUOfferPopUpDataSubscription.unsubscribe();
     }
+    if (this.backClickedPaymentSubscription) this.backClickedPaymentSubscription.unsubscribe();
+    if (this.cutIconClickedSubscription) this.cutIconClickedSubscription.unsubscribe();
   }
 }

@@ -243,18 +243,17 @@
 <ng-container #txnDeclined></ng-container>
 
 <!-- Nudge Pop-Up on the Payment Page -->
-
-<app-bottom-menu>
+<app-bottom-menu *ngIf="isBackClicked && isCutIconClicked">
     <div content>
         <div class="payment-nudgePopup-conatiner">
             <div class="header-bottom-menu">
                 <p>You might miss out on saving of <b>₹1399</b>.</p>
-                <i class="icon-circle-delete"></i>
+                <i class="icon-circle-delete" (click)="closebackpopup()"></i>
             </div>
             <span class="mt-20">Are you sure want to leave this page?</span>
             <div class="cta-row">
-                <button class="btn secondry-btn-1">LEAVE</button>
-                <button class="btn secondry-btn">PROCEED TO PAY</button>
+                <button class="btn secondry-btn-1" (click)="backFromBackPopup()">LEAVE</button>
+                <button class="btn secondry-btn" (click)="closebackpopup()"> STAY ON THE SAME PAGE</button>
             </div>
         </div>
     </div>

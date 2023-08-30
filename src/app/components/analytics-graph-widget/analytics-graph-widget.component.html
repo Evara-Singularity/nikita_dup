@@ -42,8 +42,20 @@
                     </div>
                     <div [id]="'attribute-chart'+i" style="width:100%;"></div>
                     <div  (click)="generateFragmentUrl(attribute.attributeName,getMaxValue(attribute.attributePercentange,'percent'))" class="card att-card">
-                        <p>
-                            <b>{{getMaxValue(attribute.attributePercentange)}}%</b> {{ productStaticData?.of_users_buy }} {{categoryName}} in <b>{{getMaxValue(attribute.attributePercentange,'percent')}}</b> {{attribute.attributeName | titlecase}}
+                        <p *ngIf='!commonService.isHindiUrl'>
+                            <b>{{getMaxValue(attribute.attributePercentange)}}%</b> 
+                            {{ productStaticData?.of_users_buy }} {{categoryName}} 
+                            {{productStaticData?.in}}
+                            <b>{{getMaxValue(attribute.attributePercentange,'percent')}}</b> 
+                            {{attribute.attributeName | titlecase}} 
+                        </p>
+                        <p *ngIf='commonService.isHindiUrl'>
+                            <b>{{getMaxValue(attribute.attributePercentange)}}%</b> 
+                            {{ productStaticData?.of_users_buy }}                             
+                            <b>{{getMaxValue(attribute.attributePercentange,'percent')}}</b> 
+                            {{attribute.attributeName | titlecase}} 
+                            {{productStaticData?.in_1}}
+                            {{categoryName}} 
                         </p>
                     </div>
                 </div>

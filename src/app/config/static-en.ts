@@ -280,5 +280,6 @@ export const product = {
     for: ".",
     purchase_as_per:"purchase as per",
     order_percentage: 'Order Percentage',
-    brands: 'Brands'
+    brands: 'Brands',
+    in_1: 'in'
 }

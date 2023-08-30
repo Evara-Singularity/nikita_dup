@@ -189,7 +189,7 @@
 
     <ng-container
         *ngIf="apiResponse?.breadCrumb && apiResponse?.breadCrumb.length > 0 && rawProductData?.productOutOfStock">
-        <breadcrumb-nav [breadcrumb]="apiResponse?.breadCrumb" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+        <breadcrumb-nav [productStaticData]='productStaticData' [breadcrumb]="apiResponse?.breadCrumb" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
     </ng-container>
 
     <div *ngIf="rawProductData?.productOutOfStock" id="similarProductsOos" data-observeVisibility [debounceTime]="100"

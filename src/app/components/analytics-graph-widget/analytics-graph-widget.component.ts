@@ -42,7 +42,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   attributeDataWithoutProcessing;
 
 
-  constructor(private dataService: DataService, private commonService: CommonService, private _productListService: ProductListService,public router:Router) {
+  constructor(private dataService: DataService, public commonService: CommonService, private _productListService: ProductListService,public router:Router) {
     
    }
 

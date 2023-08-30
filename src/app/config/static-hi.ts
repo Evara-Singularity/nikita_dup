@@ -198,6 +198,7 @@ export const product = {
     raise_request: 'रिक्वेस्ट करें',
     kindly_select_a_valid_product_type: 'कृपया एक वैध उत्पाद प्रकार का चयन करें',
     moglix_insight: 'मोग्लिक्स इनसाइट',
+    moglix_insights: 'मोग्लिक्स इनसाइट्स',
     top: 'शीर्ष',
     price_range_of: ' कीमत रेंज ऑफ',
     categories_of: ' श्रेणियां ऑफ',
@@ -279,5 +280,7 @@ export const product = {
     Moglix_is_a_one_stop_shop_for_genuine: 'मोग्लिक्स एक-स्टॉप शॉप है वास्तविक',
     Cash_on_delivery_Free_shipping_available:'सीओडी और मुफ्त शिपिंग उपलब्ध है।',
     for: " के लिए!",
-    purchase_as_per:"के अनुसार खरीद"
+    purchase_as_per:"के अनुसार खरीद",
+    order_percentage: 'ऑर्डर प्रतिशत',
+    brands: 'ब्रांड्स'
 }  

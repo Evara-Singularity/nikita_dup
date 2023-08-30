@@ -34,7 +34,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
   brandDataWithoutProcessing;
   attributeDataWithoutProcessing;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
-  productStaticData = this.commonService.defaultLocaleValue;
+  @Input() productStaticData = this.commonService.defaultLocaleValue;
   changeStaticSubscription: Subscription;
 
 
@@ -104,6 +104,7 @@ export class AnalyticsWidgetWrapperComponent implements OnInit {
     this.priceContainerInstance.instance['graphData'] = this.graphData;
     this.priceContainerInstance.instance['categoryName'] = this.categoryName;
     this.priceContainerInstance.instance['isL2CategoryCheck'] = this.isL2CategoryCheck;
+    this.priceContainerInstance.instance['productStaticData'] = this.productStaticData;
   }
   async loadBrandWidget() {
     const { AnalyticsGraphWidgetComponent } = await import('../../components/analytics-graph-widget/analytics-graph-widget.component');

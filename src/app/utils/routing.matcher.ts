@@ -29,13 +29,11 @@ export default class RoutingMatcher {
 
     brandCategoriesMatchTranslater(url: UrlSegment[]): any {
         const urlLength = url.length;
-        console.log(url);
         if (urlLength >= 2) {
             const lastParam = url[urlLength - 1].toString();
             const brandParam = url[1].toString();
             const firstParam = url[0].toString();
             if (firstParam === 'hi' && lastParam.match(/^\d{9}$/) && brandParam === 'brands') {
-                console.log('brand category hindi')
                 return {
                     consumed: url,
                     posParams: { category: url[urlLength - 1], brand: url[2] },
@@ -50,7 +48,6 @@ export default class RoutingMatcher {
             const lastParam = url[urlLength - 1].toString();
             const brandParam = url[0].toString();
             if (lastParam.match(/^\d{9}$/) && brandParam === 'brands') {
-                console.log('brand category english')
                 return {
                     consumed: url,
                     posParams: { category: url[urlLength - 1], brand: url[1] },
@@ -66,20 +63,17 @@ export default class RoutingMatcher {
             const brandParam = url[1].toString();
             const firstParam = url[0].toString();
             if (firstParam === 'hi' && lastParam.match(/^\d{9}$/) && brandParam !== 'brands') {
-                console.log('category hindi')
                 return { consumed: url, posParams: { id: url[urlLength - 1] } };
             }
         }
     }
 
     categoriesMatcher(url: UrlSegment[]): any {
-        console.log(url)
         const urlLength = url.length;
         if (urlLength > 0) {
             const lastParam = url[urlLength - 1].toString();
             const brandParam = url[0].toString();
             if (lastParam.match(/^\d{9}$/) && brandParam !== 'brands' && brandParam !== 'hi') {
-                console.log('category english')
                 return { consumed: url, posParams: { id: url[urlLength - 1] } };
             }
         }

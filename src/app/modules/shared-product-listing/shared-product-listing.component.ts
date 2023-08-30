@@ -83,7 +83,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     this.initializeLocalization();
     const languagePrefrence = localStorage.getItem("languagePrefrence");
     this.updateUserLanguagePrefrence(languagePrefrence);
-    console.log(this.productsListingData);
   }
 
   ngAfterViewInit() {
@@ -125,7 +124,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
       userPreference = userSession['preferredLanguage'];
     }
     // this.initializeLocalization(userPreference && userPreference == 'hi' ? true : false);
-    console.log(this.isHindiUrl, userPreference)
     if(!this.isHindiUrl && userPreference == 'hi') {
       const URL = '/hi' + this.getSanitizedUrl(this.router.url);
       this.router.navigateByUrl(URL);
@@ -338,7 +336,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
             keyword = this.categoryName;
           } else if (this.pageName == 'BRAND') {
             keyword = this.brandName;
-            if(this._commonService.isHindiUrl && this.productsListingData && this.productsListingData['totalCount'] > 0) {
+            if (this._commonService.isHindiUrl && this.productsListingData && this.productsListingData['totalCount'] > 0) {
               keyword = this.productsListingData['products'][0]['brandName']
           }
           }

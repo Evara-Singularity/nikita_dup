@@ -210,7 +210,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       yAxis: {
         title: {
-          text:'Order Percentage'
+          text: this.productStaticData.order_percentage
         }
       },
       legend: {
@@ -278,7 +278,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       yAxis: {
         title: {
-          text:'Order Percentage'
+          text: this.productStaticData.order_percentage
         }
       },
       legend: {
@@ -325,7 +325,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       series: [
         {
-          name: "Brands",
+          name: this.productStaticData.brands,
           colorByPoint: true,
           // dataSorting: {
           //   enabled: true
@@ -366,7 +366,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       yAxis: {
         title: {
-          text:'Order Percentage'
+          text: this.productStaticData.order_percentage
         }
       },
       legend: {
@@ -400,7 +400,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       series: [
         {
-          name: (this.isL2CategoryCheck)?"Categories":"Price Range",
+          name: (this.isL2CategoryCheck)? this.productStaticData.categories : this.productStaticData.price_range,
           colorByPoint: true,
           // dataSorting: {
           //   enabled: true

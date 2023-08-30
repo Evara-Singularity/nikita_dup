@@ -72,7 +72,7 @@
     </div>
 
     <!-- //moglix insight -->
-    <moglix-insight-pdp *ngIf="apiResponse?.productWidget" [data]="apiResponse?.productWidget"></moglix-insight-pdp>
+    <moglix-insight-pdp *ngIf="apiResponse?.productWidget" [productStaticData]="productStaticData" [data]="apiResponse?.productWidget"></moglix-insight-pdp>
 
     <!-- product benifits and policy -->
     <product-benefits [isProductReturnAble]="rawProductData?.isProductReturnAble"

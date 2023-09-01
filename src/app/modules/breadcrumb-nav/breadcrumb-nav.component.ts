@@ -43,14 +43,14 @@ export class BreadcrumbNavComponent implements OnInit {
 
 
   breadCrumpCategorySchema() {
-    if (this._commonService.isServer && this.breadcrumb && this.breadcrumb.length > 0) {
+    if ( this._commonService.isServer && this.breadcrumb && this.breadcrumb.length > 0) {
       let itemsList = [{
         "@type": "ListItem",
         "position": 0,
         "item":
         {
           "@id": CONSTANTS.PROD,
-          "name": this.productStaticData.home
+          "name": (this._commonService.isHindiUrl)?'होम':'home'
         }
       }];
       this.breadcrumb.forEach((element, index) => {

@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FooterService } from '@services/footer.service';
 import { CONSTANTS } from '@config/constants';
 import { ClientUtility } from '@utils/client.utility';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { GlobalAnalyticsService } from '@services/global-analytics.service';
 import { ProductListService } from '@app/utils/services/productList.service';
@@ -56,7 +56,9 @@ export class AlpComponent implements OnInit {
     showPageNotFound: boolean;
     alpPriceListData = [];
     isAcceptLanguage: boolean = false;
-    productStaticData: any;
+    productStaticData = this._commonService.defaultLocaleValue;
+    changeStaticSubscription: Subscription = null;
+
 
     constructor(
         @Optional() @Inject(RESPONSE) private _response,
@@ -82,6 +84,7 @@ export class AlpComponent implements OnInit {
         if (this._commonService.isBrowser) {
             ClientUtility.scrollToTop(100);
         }
+        this.getStaticSubjectData();
     }
 
     getLocalization() {
@@ -89,6 +92,12 @@ export class AlpComponent implements OnInit {
             this.productStaticData = localization_content;
         });
     }
+
+    getStaticSubjectData(){
+        this.changeStaticSubscription  = this._commonService.changeStaticJson.subscribe(staticJsonData => {
+          this.productStaticData = staticJsonData;
+        });
+      }
 
 
     setCategoryDataFromResolver() {

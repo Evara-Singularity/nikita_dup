@@ -214,7 +214,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
   }
 
   pageTranslation(){
-    this._analyticsService.sendAdobeCall({ page: { channel: 'pdp', linkPageName: this.pageLinkName, linkName: 'Translation icon clicked' } }, "genericClick")
+    this._analyticsService.sendAdobeCall({ page: { channel: 'listing', linkPageName: this.pageLinkName, linkName: 'Translation icon clicked' } }, "genericClick")
     const isPopUp = localStorage.getItem("isPopUp");
     if(isPopUp == null && !this.isHindiUrl){
       this.loadSelectLangPopup();

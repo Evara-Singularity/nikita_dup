@@ -8,6 +8,7 @@ import { ENDPOINTS } from "@app/config/endpoints";
 import { ProductsEntity } from "../models/product.listing.search";
 import { CommonService } from "./common.service";
 import { LocalAuthService } from "./auth.service";
+import { LocalStorageService } from "ngx-webstorage";
 interface ProductDataArg {
     productBO: string;
     refreshCrousel?: boolean;
@@ -28,9 +29,8 @@ export class ProductService {
     oosSimilarProductsData = {
         similarData: [],
     };
-    localStorageService: any;
 
-    constructor(private _dataService: DataService, public http: HttpClient, private _commonService: CommonService, private _localAuthService: LocalAuthService) { }
+    constructor(private _dataService: DataService, public http: HttpClient, private _commonService: CommonService, private _localAuthService: LocalAuthService, private localStorageService:LocalStorageService) { }
 
     getSimilarProductBoByIndex(index) {
         return this.oosSimilarProductsData.similarData[index].rawProductData;

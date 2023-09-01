@@ -736,7 +736,7 @@ export class EmiComponent {
 
     onCardNumberChange(cardNumber) {
         let response = null;
-        if (cardNumber && cardNumber.length === 16 && this.selectedBank == 'ONEC') {
+        if (cardNumber && cardNumber.length === 16) {
             this.isShowLoader = true;
             let paymnetCode = this.selectedEMIKey;
             this.getPayUOfferForUserCall(cardNumber,paymnetCode).subscribe((res): void => {

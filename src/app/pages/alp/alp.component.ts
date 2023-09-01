@@ -456,7 +456,7 @@ export class AlpComponent implements OnInit {
             // JIRA: ODP-1371
             // this.setAmpTag('alp');
         }
-        if(this.isAcceptLanguage) {
+        if(this.isAcceptLanguage && this._commonService.isServer) {
             const languagelink = this._renderer2.createElement("link");
             languagelink.rel = "alternate";
             if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
@@ -476,10 +476,8 @@ export class AlpComponent implements OnInit {
                 elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', ''); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
             }
             elanguagelink.hreflang = 'en'
-            this._renderer2.appendChild(this._document.head, elanguagelink);
-            if (this._commonService.isBrowser) {
+            this._renderer2.appendChild(this._document.head, elanguagelink);            
                 this.isHindiUrl ? document.documentElement.setAttribute("lang", 'hi') : document.documentElement.setAttribute("lang", 'en');
-            }
         }
 
         // Start Canonical URL

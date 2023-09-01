@@ -9,6 +9,7 @@ import { ProductService } from '@app/utils/services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as localization_en from '../../config/static-en';
 import * as localization_hi from '../../config/static-hi';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 
 @Component({
   selector: 'shared-product-listing',
@@ -64,7 +65,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
   taxonomyCodesArray: Array<any> = [];
   @Input() isAcceptLanguage = false;
   showNudge = true;
-  
+  @Input() pageLinkName = '';
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
     private _injector: Injector,
@@ -74,6 +75,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     private _localAuthService: LocalAuthService,
     private _activatedRoute: ActivatedRoute,
     private router: Router,
+    private _analyticsService: GlobalAnalyticsService,
     public _commonService: CommonService) {
   }
 
@@ -212,6 +214,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
   }
 
   pageTranslation(){
+    this._analyticsService.sendAdobeCall({ page: { channel: 'listing', linkPageName: this.pageLinkName, linkName: 'Translation icon clicked' } }, "genericClick")
     const isPopUp = localStorage.getItem("isPopUp");
     if(isPopUp == null && !this.isHindiUrl){
       this.loadSelectLangPopup();

@@ -1,15 +1,15 @@
 <div class="body-bg pt-1" *ngIf="brandDetailsFooterData?.firstPageContent">
-    <div class="container-fluid pad-lr-0" [ngClass]="{'notFoundEl' : !brandDetailsFooterData?.iba }" *ngIf="!_commonService.isHindiUrl">
+    <div class="container-fluid pad-lr-0" [ngClass]="{'notFoundEl' : !brandDetailsFooterData?.iba }">
         <div id="openCat3" class="category_data" style="display: block;">
             <div class="container cms-content">
                 <div
                     [innerHTML]="((brandDetailsFooterData?.brandCatDesc !== null && brandDetailsFooterData?.brandCatDesc !== '') ? brandDetailsFooterData?.brandCatDesc : 
-                        (brandDetailsFooterData?.showDesc == true ? brandDetailsFooterData?.brandShortDesc : 
-                        '<h2>' + productStaticData?.genuine_products_from + ' ' + brandDetailsFooterData?.brand + ' ' + productStaticData?.at_the_best_price + '</h2>' +
+                        (brandDetailsFooterData?.showDesc == true ? brandDetailsFooterData?.brandShortDesc :(_commonService.isHindiUrl)?'':
+                        ('<h2>' + productStaticData?.genuine_products_from + ' ' + brandDetailsFooterData?.brand + ' ' + productStaticData?.at_the_best_price + '</h2>' +
                 
                             '<p> '+ brandDetailsFooterData?.brand + ' ' + productStaticData?.brand_desc + brandDetailsFooterData?.productCount + productStaticData?.products_by + brandDetailsFooterData?.brand + ' ' + productStaticData?.brand_desc2 + ' ' + brandDetailsFooterData?.categoryNames + ' ' + productStaticData?.brand_desc3 + '</p><br />
                             
-                            <p>' + productStaticData?.brand_desc4 + ' ' + brandDetailsFooterData?.brand + productStaticData?.brand_desc5 +' </p>')) ">
+                            <p>' + productStaticData?.brand_desc4 + ' ' + brandDetailsFooterData?.brand + productStaticData?.brand_desc5 +' </p>'))) ">
                 </div>
             </div>
         </div>

@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { LocalAuthService } from '@app/utils/services/auth.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: 'shared-product-carousel',
@@ -58,7 +59,8 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     private cdr: ChangeDetectorRef,
     private _commonService:CommonService,
     private _analyticsService:GlobalAnalyticsService,
-    private _localAuthService: LocalAuthService
+    private _localAuthService: LocalAuthService,
+    private localStorageService: LocalStorageService
     ) { }
 
   ngOnInit(): void {
@@ -70,7 +72,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     }
     this._commonService.isProductCrouselLoaded.next(true)
     // this.getStaticSubjectData();
-    const languagePrefrence = localStorage.getItem("languagePrefrence");
+    const languagePrefrence = this.localStorageService.retrieve("languagePrefrence");
     this.updateUserLanguagePrefrence(languagePrefrence);
   }
 
@@ -217,7 +219,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
       this.loadSelectLanguagePopUp();
     }else{
       const language = this.isHindiUrl ? "en" : "hi";
-      localStorage.setItem("languagePrefrence", language);
+      this.localStorageService.store("languagePrefrence", language);
       this.productService.updateUserLanguagePrefrence(); 
       this.translate();
     }

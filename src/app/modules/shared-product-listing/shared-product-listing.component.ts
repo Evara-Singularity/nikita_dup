@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as localization_en from '../../config/static-en';
 import * as localization_hi from '../../config/static-hi';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: 'shared-product-listing',
@@ -76,6 +77,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     private _activatedRoute: ActivatedRoute,
     private router: Router,
     private _analyticsService: GlobalAnalyticsService,
+    private localStorageService: LocalStorageService,
     public _commonService: CommonService) {
   }
 
@@ -83,7 +85,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
     this.initializeLocalization();
-    const languagePrefrence = localStorage.getItem("languagePrefrence");
+    const languagePrefrence = this.localStorageService.retrieve("languagePrefrence");
     this.updateUserLanguagePrefrence(languagePrefrence);
   }
 
@@ -115,7 +117,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
 
   updateUserLang() {
     let userPreference = null;
-    userPreference = localStorage.getItem('languagePrefrence');
+    userPreference = this.localStorageService.retrieve('languagePrefrence');
     const userSession = this._localAuthService.getUserSession();
     if (
       userSession &&
@@ -220,7 +222,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
       this.loadSelectLangPopup();
     }else{
       const language = this.isHindiUrl ? "en" : "hi";
-      localStorage.setItem("languagePrefrence", language); 
+      this.localStorageService.store("languagePrefrence", language); 
       this._productService.updateUserLanguagePrefrence();
       this.translate();
     }

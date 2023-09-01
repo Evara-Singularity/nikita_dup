@@ -270,7 +270,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     ) {
         this.isServer = commonService.isServer;
         this.isBrowser = commonService.isBrowser;
-        const languagePrefrence = localStorage.getItem("languagePrefrence");
+        // const languagePrefrence = localStorage.getItem("languagePrefrence");
         if (((this.router.url).toLowerCase().indexOf('/hi/') !== -1)) {
             this.englishUrl = this.router.url.toLowerCase().split("/hi/").join('/');;
             this.hindiUrl = this.router.url;

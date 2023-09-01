@@ -1684,7 +1684,7 @@ export class CommonService
     }
 
     isHindiPage(detailsObj) {
-        let userLangPreference = localStorage.getItem("languagePrefrence") || 'en';
+        let userLangPreference = this._localStorageService.retrieve("languagePrefrence") || 'en';
         let hindiPageAvailable = false;
         if(userLangPreference == 'en') {
             return false;

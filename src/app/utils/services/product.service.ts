@@ -28,6 +28,7 @@ export class ProductService {
     oosSimilarProductsData = {
         similarData: [],
     };
+    localStorageService: any;
 
     constructor(private _dataService: DataService, public http: HttpClient, private _commonService: CommonService, private _localAuthService: LocalAuthService) { }
 
@@ -1299,7 +1300,7 @@ export class ProductService {
     }
 
     public updateUserLanguagePrefrence() {
-        const languagePrefrence = localStorage.getItem("languagePrefrence");
+        const languagePrefrence = this.localStorageService.retrieve("languagePrefrence");
         const userSession = this._localAuthService.getUserSession();
         if (
           userSession &&

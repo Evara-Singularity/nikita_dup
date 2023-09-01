@@ -379,7 +379,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
             s.text = JSON.stringify({ "@context": CONSTANTS.SCHEMA, "@type": "BreadcrumbList", "itemListElement": itemsList });
             this._renderer2.appendChild(this._document.head, s);
         }
-        if(this.isAcceptLanguage) {
+        if(this.isAcceptLanguage && this._commonService.isServer) {
             const currentRoute = this._router.url.split('?')[0].split('#')[0];
             const languagelink = this._renderer2.createElement("link");
             languagelink.rel = "alternate";
@@ -401,9 +401,9 @@ export class BrandComponent implements OnInit, AfterViewInit {
             }
             elanguagelink.hreflang = 'en'
             this._renderer2.appendChild(this._document.head, elanguagelink);
-            if (this._commonService.isBrowser) {
+         
                 this.isHindiUrl ? document.documentElement.setAttribute("lang", 'hi') : document.documentElement.setAttribute("lang", 'en');
-            }
+            
         }
         let currentQueryParams = this._activatedRoute.snapshot.queryParams;
         let currentRoute = this._commonService.getCurrentRoute(this._router.url);

@@ -44,6 +44,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
     productStaticData = this._commonService.defaultLocaleValue;
     public adsenseData: any = null
     isAcceptLanguage = false;
+    pageLinkName: string;
     constructor(
         public _activatedRoute: ActivatedRoute,
         public _router: Router,
@@ -477,8 +478,9 @@ export class BrandComponent implements OnInit, AfterViewInit {
         });
         if (this._commonService.isBrowser) {
             if (this.API_RESPONSE['brand'][1][0].categoryName) {
+                this.pageLinkName = "moglix:" + this._activatedRoute.snapshot.params.brand + ":" + sParams['category'] + ": listing";
                 page = {
-                    'pageName': "moglix:" + this._activatedRoute.snapshot.params.brand + ":" + sParams['category'] + ": listing",
+                    'pageName': this.pageLinkName,
                     'channel': "brand:category",
                     'subSection': "moglix:" + this._activatedRoute.snapshot.params.brand + ":" + sParams['category'] + ": listing " + this._commonService.getSectionClick().toLowerCase(),
                     'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
@@ -489,8 +491,9 @@ export class BrandComponent implements OnInit, AfterViewInit {
                     'productCategory': sParams['category']
                 }
             } else {
+                this.pageLinkName = "moglix:" + this._activatedRoute.snapshot.params.brand + ": listing";
                 page = {
-                    'pageName': "moglix:" + this._activatedRoute.snapshot.params.brand + ": listing",
+                    'pageName': this.pageLinkName,
                     'channel': "brand",
                     'subSection': "moglix:" + this._activatedRoute.snapshot.params.brand + ": listing " + this._commonService.getSectionClick().toLowerCase(),
                     'totalProductCount':this._productListService?.productListingData.totalCount,

@@ -57,7 +57,7 @@ export class AlpComponent implements OnInit {
     alpPriceListData = [];
     isAcceptLanguage: boolean = false;
     productStaticData: any;
-
+    pageLinkName: string;
     constructor(
         @Optional() @Inject(RESPONSE) private _response,
         private _tState: TransferState, private _renderer2: Renderer2,
@@ -295,8 +295,9 @@ export class AlpComponent implements OnInit {
                 this.taxo2 = this.alpCategoryCodeData.categoryDetails.taxonomy.split("/")[1] || '';
                 this.taxo3 = this.alpCategoryCodeData.categoryDetails.taxonomy.split("/")[2] || '';
             }
+            this.pageLinkName = "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing";
             let page = {
-                'pageName': "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing",
+                'pageName': this.pageLinkName,
                 'channel': "listing",
                 'subSection': "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing",
                 'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"

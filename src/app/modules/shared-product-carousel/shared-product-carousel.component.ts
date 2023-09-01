@@ -211,6 +211,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   }
 
   pageTranslation(){
+    this._analyticsService.sendAdobeCall({ page: { channel: 'pdp', linkPageName: this.pageLinkName, linkName: 'Translation icon clicked' } }, "genericClick")
     const isPopUp = localStorage.getItem("isPopUp");
     if(isPopUp == null && !this.isHindiUrl){
       this.loadSelectLanguagePopUp();

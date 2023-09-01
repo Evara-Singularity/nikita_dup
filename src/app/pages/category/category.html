@@ -49,6 +49,7 @@
             [categoryTaxonomay]="API_RESPONSE['category'][0]['categoryDetails']['taxonomy']"
             [productsListingData]="_productListService?.productListingData"
             [informativeVideosData]="informativeVideosData"
+            [pageLinkName]='pageLinkName'
         *ngIf="API_RESPONSE?.category[0] && _productListService &&_productListService.productListingData" [graphData]="graphData"  [isL2CategoryCheck]="isL2CategoryCheck">
         </shared-product-listing>
     </div>

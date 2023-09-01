@@ -235,6 +235,7 @@ export class FaqComponent {
 				}
 			}, 50);
 		}
+		this._commonService.loadFreshChat();
 	}
 
 	scrollTo(selector, index) {

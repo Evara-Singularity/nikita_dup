@@ -687,11 +687,13 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 if (productData["active"] == true ) {
                     this.processProductData(productData);
                     this.productFbtData();
+                    this.clearProductFormInstance();
                     if(this.rawProductData.productOutOfStock){
                         this.clearOfferInstance();
                     }else{
                         this.clearOfferInstance();
                     }
+                    this.onVisiblePincodeSection(null);
                     this.showLoader = false;
                 }
             });
@@ -960,12 +962,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.rfqFormInstance = null;
             this.rfqFormContainerRef.remove();
         }
-        if (this.pincodeFormInstance) {
-            this.pincodeFormInstance = null;
-            if (this.pincodeFormContainerRef) {
-                this.pincodeFormContainerRef.remove();
-            }
-        }
+        this.clearProductFormInstance();
         if (this.offerSectionInstance) {
             this.offerSectionInstance = null;
             if (this.offerSectionContainerRef) {
@@ -1022,6 +1019,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         if (this.returnInfoInstance) {
             this.returnInfoInstance = null;
             this.returnInfoContainerRef.remove();
+        }
+    }
+
+    clearProductFormInstance() {
+        if (this.pincodeFormInstance) {
+            this.pincodeFormInstance = null;
+            if (this.pincodeFormContainerRef) {
+                this.pincodeFormContainerRef.remove();
+            }
         }
     }
 
@@ -1743,13 +1749,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         const quantity = this.cartQunatityForProduct;
         const productInfo = {};
         productInfo["partNumber"] =
-            this.rawProductData.defaultPartNumber || this.rawProductData.defaultPartNumber;
+            this.rawProductData.msn || this.rawProductData.defaultPartNumber;
         productInfo["estimatedDelivery"] =
             this.rawProductData.priceQuantityCountry["estimatedDelivery"];
         productInfo["categoryDetails"] = this.rawProductData.productCategoryDetails;
         productInfo["productPrice"] = this.rawProductData.productPrice;
         productInfo["quantity"] = quantity;
         productInfo["isHindiMode"] = this.isHindiUrl;
+        productInfo['taxRate'] = this.rawProductData.taxPercentage;
+        productInfo['itemPrice'] = this.rawProductData.productPrice;
         this.pincodeFormInstance.instance["pageData"] = productInfo;
         if (this.pincodeFormInstance) {
             (

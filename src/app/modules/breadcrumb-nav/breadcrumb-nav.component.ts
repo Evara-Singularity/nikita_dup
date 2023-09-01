@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'breadcrumb-nav',
@@ -15,6 +16,7 @@ export class BreadcrumbNavComponent implements OnInit {
   @Input('analytics') analytics = null;
   readonly baseDomain = CONSTANTS.PROD;
   @Input() productStaticData = this._commonService.defaultLocaleValue;
+  changeStaticSubscription: Subscription = null;
 
   constructor(
     private renderer2: Renderer2,
@@ -27,6 +29,13 @@ export class BreadcrumbNavComponent implements OnInit {
 
   ngOnInit(): void {
     this.breadCrumpCategorySchema();
+    this.getStaticSubjectData();
+  }
+
+  getStaticSubjectData(){
+    this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
+      this.productStaticData = staticJsonData;
+    });
   }
 
   ngAfterViewInit(): void {
@@ -67,6 +76,12 @@ export class BreadcrumbNavComponent implements OnInit {
   goToCategory(link) {
     this.globalAnalyticService.sendAdobeCall(this.analytics, "genericClick");
     this.router.navigateByUrl(link);
+  }
+
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
   }
 
 }

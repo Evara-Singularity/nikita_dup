@@ -208,7 +208,7 @@ export const product = {
     brands_of: 'ब्रांड्स ऑफ',
     of1: 'का',
     brand1: 'ब्रांड',
-    of_other_brands: 'अन्य ब्रांडों के',
+    of_other_brands: 'अन्य ब्रांड्स के',
     of_users_buy: 'उपयोगकर्ता खरीदते हैं',
     in: 'इसमें',
     shop_by: 'शॉप बाय',

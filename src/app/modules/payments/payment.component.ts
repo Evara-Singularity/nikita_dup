@@ -70,10 +70,10 @@ export class PaymentComponent implements OnInit
   @ViewChild('bankOfferBottomSheet', { read: ViewContainerRef })
   bankOfferBottomSheetRef: ViewContainerRef;
 
-  backButtonclickPaymentSubscription: Subscription;
+  backButtonClickPaymentSubscription: Subscription;
   isBackClicked: boolean=false; 
-  private cancellIconClickedSubscription: Subscription;
-  public isCancellIconClicked: boolean=true;  
+  private cancelIconClickedSubscription: Subscription;
+  public isCancelIconClicked: boolean=true;  
   missOutSavingAmount: number=0;
   
   constructor(
@@ -104,15 +104,15 @@ export class PaymentComponent implements OnInit
   ngOnInit()
   {
     this._navigationService.setBackClickedPayment(false);
-    this._navigationService.setCancellIconPaymentClicked(true);
-    this.backButtonclickPaymentSubscription = this._navigationService.isBackClickedPayment$.subscribe(
+    this._navigationService.setCancelIconPaymentClicked(true);
+    this.backButtonClickPaymentSubscription = this._navigationService.isBackClickedPayment$.subscribe(
       value => {
         this.isBackClicked = value;
       }
     );
-    this.cancellIconClickedSubscription = this._navigationService.isCancellIconPaymentClicked$.subscribe(
+    this.cancelIconClickedSubscription = this._navigationService.isCancelIconPaymentClicked$.subscribe(
       value => {
-        this.isCancellIconClicked = value;
+        this.isCancelIconClicked = value;
       }
     );
     const queryParams = this._activatedRoute.snapshot.queryParams;
@@ -532,7 +532,7 @@ export class PaymentComponent implements OnInit
 
   closebackpopup(){
     this._navigationService.setBackClickedPayment(false);
-    this._navigationService.setCancellIconPaymentClicked(false);
+    this._navigationService.setCancelIconPaymentClicked(false);
   }
 
   backFromBackPopup(){
@@ -546,7 +546,7 @@ export class PaymentComponent implements OnInit
     if (this.payUOfferPopUpDataSubscription) {
       this.payUOfferPopUpDataSubscription.unsubscribe();
     }
-    if (this.backButtonclickPaymentSubscription) this.backButtonclickPaymentSubscription.unsubscribe();
-    if (this.cancellIconClickedSubscription) this.cancellIconClickedSubscription.unsubscribe();
+    if (this.backButtonClickPaymentSubscription) this.backButtonClickPaymentSubscription.unsubscribe();
+    if (this.cancelIconClickedSubscription) this.cancelIconClickedSubscription.unsubscribe();
   }
 }

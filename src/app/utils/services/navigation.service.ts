@@ -23,7 +23,7 @@ export class NavigationService
   private isBackClickedPaymentSubject = new BehaviorSubject<boolean>(true);
   isBackClickedPayment$=this.isBackClickedPaymentSubject.asObservable();
   private isCutIconClickedPaymentSubject = new BehaviorSubject<boolean>(true);
-  isCancellIconPaymentClicked$ = this.isCutIconClickedPaymentSubject.asObservable();
+  isCancelIconPaymentClicked$ = this.isCutIconClickedPaymentSubject.asObservable();
 
 
   constructor(private router: Router, private _localStorage: LocalStorageService, private productService: ProductService)
@@ -67,11 +67,11 @@ export class NavigationService
     })
   }
 
-  setBackClickedQuickorder(value: boolean) {
+  setBackClickedQuickOrder(value: boolean) {
     this.isBackClickedQuickorderSubject.next(value);
   }
 
-  setCancellIconQuickorderClicked(value: boolean) {
+  setCancelIconQuickOrderClicked(value: boolean) {
     this.isCutIconClickedQuickOrderSubject.next(value);
   }
 
@@ -79,7 +79,7 @@ export class NavigationService
     this.isBackClickedPaymentSubject.next(value);
   }
 
-  setCancellIconPaymentClicked(value: boolean) {
+  setCancelIconPaymentClicked(value: boolean) {
     this.isCutIconClickedPaymentSubject.next(value);
   }
 

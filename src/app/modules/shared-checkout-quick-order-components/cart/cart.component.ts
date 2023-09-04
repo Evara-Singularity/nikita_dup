@@ -49,10 +49,10 @@ export class CartComponent implements OnInit, AfterViewInit
     totalPayableAmountWithoutPrepaid:number=0;
     cartUpdatesSubscription: Subscription = null;
 
-    backButtonclickQuickorderSubscription: Subscription;
+    backButtonClickQuickOrderSubscription: Subscription;
     isBackClicked: boolean=false; 
-    private cancellIconClickedSubscription: Subscription;
-    public isCancellIconClicked: boolean=true; 
+    private cancelIconClickedSubscription: Subscription;
+    public isCancelIconClicked: boolean=true; 
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -69,24 +69,24 @@ export class CartComponent implements OnInit, AfterViewInit
     ) { }
 
     ngOnInit() {
-        this._navigationService.setBackClickedQuickorder(false)
-        this._navigationService.setCancellIconQuickorderClicked(true);
+        this._navigationService.setBackClickedQuickOrder(false)
+        this._navigationService.setCancelIconQuickOrderClicked(true);
 
-        this.backButtonclickQuickorderSubscription = this._navigationService.isBackClickedQuickOrder$.subscribe(
+        this.backButtonClickQuickOrderSubscription = this._navigationService.isBackClickedQuickOrder$.subscribe(
           value => {
             this.isBackClicked = value;
           }
         );
-        this.cancellIconClickedSubscription = this._navigationService.isCutIconQuickorderClicked$.subscribe(
+        this.cancelIconClickedSubscription = this._navigationService.isCutIconQuickorderClicked$.subscribe(
             value => {
-              this.isCancellIconClicked = value;
+              this.isCancelIconClicked = value;
             }
           );
       }
 
     closebackpopup(){
-        this._navigationService.setBackClickedQuickorder(false)
-        this._navigationService.setCancellIconQuickorderClicked(false);
+        this._navigationService.setBackClickedQuickOrder(false)
+        this._navigationService.setCancelIconQuickOrderClicked(false);
     }
     ngAfterViewInit(): void {
         if (this._commonService.isBrowser) {
@@ -101,8 +101,8 @@ export class CartComponent implements OnInit, AfterViewInit
         if (this.cartSubscription) this.cartSubscription.unsubscribe();
         if (this.shippingSubscription) this.shippingSubscription.unsubscribe();
         if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
-        if (this.backButtonclickQuickorderSubscription) this.backButtonclickQuickorderSubscription.unsubscribe();
-        if (this.cancellIconClickedSubscription) this.cancellIconClickedSubscription.unsubscribe();
+        if (this.backButtonClickQuickOrderSubscription) this.backButtonClickQuickOrderSubscription.unsubscribe();
+        if (this.cancelIconClickedSubscription) this.cancelIconClickedSubscription.unsubscribe();
     }
     
     openWishList(){

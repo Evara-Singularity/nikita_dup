@@ -17,6 +17,7 @@ export class FilterMidPlpComponent implements OnInit {
   @Input('position') position: number;
   @Input('pageName') pageName: string;
   @Input('categoryMidPlpFilterData') categoryMidPlpFilterData: any;
+  @Input('productStaticData') productStaticData: any;
   @Output('categoryClicked') categoryClicked: EventEmitter<string> = new EventEmitter<string>();
 
   public GLOBAL_CONSTANT = GLOBAL_CONSTANT;

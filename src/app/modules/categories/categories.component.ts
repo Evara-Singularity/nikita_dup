@@ -190,7 +190,8 @@ export class Categories implements OnInit {
             avgRating:null, //this.product.avgRating,
             itemInPack: null,
             ratingCount:  null, //this.product.ratingCount,
-            reviewCount:  null //this.product.reviewCount
+            reviewCount:  null, //this.product.reviewCount
+			promoCodeDescription: (product.promoCodeDescription) ? this._productService.getPromoCodeDescription(product.promoCodeDescription) : null
         };
         return productInfo;
 	}
@@ -210,6 +211,16 @@ export class Categories implements OnInit {
 		const analytices = { page: page, custData: this._commonService.custDataTracking, order: {} }
 		return analytices;
 	}
+	dataKeyColors: { [key: string]: string } = {
+		powerData: CONSTANTS.HOME_CATEGORY_COLOR1,
+		safetyData: CONSTANTS.HOME_CATEGORY_COLOR2,
+		electricalData: CONSTANTS.HOME_CATEGORY_COLOR3,
+		pumpData: CONSTANTS.HOME_CATEGORY_COLOR4
+	  }
+
+	  getBackgroundColor(dataKey: string): string {
+		return this.dataKeyColors[dataKey] || 'gray'; // Set a default color for other data keys not in the map.
+	  }
 
 
 }

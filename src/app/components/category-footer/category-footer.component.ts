@@ -13,6 +13,7 @@ import { ReplacePipeModule } from '@app/utils/pipes/remove-html-from-string.pipe
 })
 export class CategoryFooterComponent{
     @Input('categoryFooterData') categoryFooterData;
+    @Input() productStaticData = this._commonService.defaultLocaleValue;
     todayDate;
     constructor(public _commonService: CommonService, private _router: Router){
     }

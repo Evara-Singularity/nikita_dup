@@ -26,7 +26,7 @@ export const ENDPOINTS = {
   },
   GET_CIMS_ATTRIBUTE: '/cmsApi/getAttributesListingPage',
   GET_LAYOUT: "/homepage/layoutbycode",
-  GET_LAYOUT_HOME: "/homepage/layoutbyjson?requestType=mobile",
+  GET_LAYOUT_HOME: "/homepage/layoutbyjsonv2?requestType=mobile",
   GET_FDK_HOME: '/homepage/getFlyout/v2',
   GET_CATEGORY_BY_ID: '/category/getcategorybyid',
   GET_CATEGORY_SCHEMA: '/quest/getCategorySchema',
@@ -143,6 +143,10 @@ export const ENDPOINTS = {
   IFSC_CODE:'/payment/getBankDetails?ifsc=',
   GET_COMPARE_PRODUCTS:"/search/compareProducts?productId=",
   PRODUCT_API: '/aggregate/pdpDetails',
+  GET_DIFFRENT_BRANDS_PRODUCT: '/search/shopByBrands?product=',
   ADSENSE: '/adsense/getCampaign',
   GET_MSN_BY_LIST: '/search/searchByListOfMsn',
+  UPDATE_CUSTOMER_LANGUAGE_PREFRENCE:"/customer/updateCustomerLanguageDetails?",
+  CUSTOMER_BANK_DETAILS:'/address/getCustomerBankDetails?userId=',
+  DELETE_BANK_DETAILS:'/address/deleteCustomerBankDetails/'
 };

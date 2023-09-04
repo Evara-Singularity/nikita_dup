@@ -59,15 +59,15 @@
             line-height: 20px;
             &>i {
                 float: left;
-                margin-top: 3px;
+                // margin-top: 3px;
                 margin-right: 5px;
                 font-size: 12px;
             }
             p {
                 font-size: 14px;
                 i {
-                    font-size: 12px;
-                    margin: 0 3px 0 5px;
+                    font-size: 16px;
+                    margin: 0 3px 0 0px;
                 }
             }
             small {
@@ -88,7 +88,7 @@
 }
 
 .customer-review {
-    padding: 20px 0 40px;
+    padding: 20px 0 30px;
     background: white;
     .comp-name {
         color: #e40031;

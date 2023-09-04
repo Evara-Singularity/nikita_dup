@@ -1,0 +1,21 @@
+<div class="alert-box" *ngIf="isHindiUrl == false && isPopUp == null">
+    <div class="overlay"></div>
+    <div class="content-area">
+        <div class="info-area">
+            <div class="popup-header">
+                <p>
+                    <img src="/assets/img/vernacular-icon.svg">
+                    <b>Language to Translate into</b>
+                </p>
+                <i class="icon-circle-delete" (click)="closePopUp()"></i>
+            </div>
+            <div class="popup-body-section">
+                <ul>
+                    <li><a class="selected" (click)="closeLanguagePopup('en')">English</a></li>
+                    <li (click)="translate()"><a>हिंदी</a></li>
+                </ul>
+                <p>You choose <b>‘English’</b> as your preferred language</p>
+            </div>
+        </div>
+    </div>
+</div>

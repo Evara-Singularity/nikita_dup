@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, EventEmitter, NgModule, OnInit, Output } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'product-more-widget',
@@ -16,7 +17,7 @@ export class ProductMoreWidgetComponent implements OnInit {
   @Input('productBrandDetails') productBrandDetails;
   @Input('productCategoryDetails') productCategoryDetails;
   @Input('productBrandCategoryUrl') productBrandCategoryUrl;
-
+  changeStaticSubscription: Subscription = null;
   constructor(
     public commonService: CommonService,
     private analytics: GlobalAnalyticsService,
@@ -24,12 +25,30 @@ export class ProductMoreWidgetComponent implements OnInit {
 
   ngOnInit() {
     this.getStaticSubjectData();
+    this.updateLinks();
+  }
+
+  updateLinks() {
+    const isHindiBrand = this.commonService.isHindiPage(this.productBrandDetails);
+    const isHindiCategory = this.commonService.isHindiPage(this.productCategoryDetails)
+    if(isHindiCategory) {
+      this.productCategoryDetails.categoryLink = 'hi/' + this.productCategoryDetails.categoryLink;
+    }
+    if(isHindiBrand && isHindiCategory) {
+      this.productBrandCategoryUrl = 'hi/' + this.productBrandCategoryUrl;
+    }
   }
 
   getStaticSubjectData(){
-    this.commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription = this.commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
     });
+  }
+
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
   }
 
 

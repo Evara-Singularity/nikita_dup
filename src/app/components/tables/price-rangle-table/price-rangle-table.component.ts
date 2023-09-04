@@ -9,7 +9,7 @@ import { CommonService } from '@app/utils/services/common.service';
 export class PriceRangleTableComponent {
   @Input('priceRangeData') priceRangeData;
   @Input('heading') heading;
-
+  @Input() productStaticData = this._commonService.defaultLocaleValue;
   todayDate: number;
 
   constructor(

@@ -1,8 +1,12 @@
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from "@angular/core";
 import { LocalStorageService, SessionStorageService } from "ngx-webstorage";
-import { Observable, Subject } from "rxjs";
+import { Subject } from "rxjs";
 import { AuthFlowType } from '../models/auth.modals';
+import { HttpClient } from '@angular/common/http';
+import CONSTANTS from '@app/config/constants';
+import { ENDPOINTS } from '@app/config/endpoints';
+
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +18,7 @@ export class LocalAuthService
     public logout$ = new EventEmitter();
     pageHistory = {};
     constructor(private _sessionStorageService: SessionStorageService, private _localStorageService: LocalStorageService,
-        private _router:Router)
+        private _router:Router, private http: HttpClient)
     {
     }
 
@@ -26,6 +30,7 @@ export class LocalAuthService
     setUserSession(data)
     {
         this._localStorageService.store('user', data);
+        this.updateUserLanguagePrefrence(data);
     }
 
     setPageInfo(pageName, info)
@@ -109,5 +114,40 @@ export class LocalAuthService
         }else
             return false;
          
+    }
+
+    private updateUserLanguagePrefrence(userSession) {
+        const userlang = this._localStorageService.retrieve("languagePrefrence") || 'en';
+        if (
+          userSession &&
+          userSession["authenticated"] == "true" &&
+          userlang != null &&
+          userlang != userSession["preferredLanguage"]
+        ) {
+            this._localStorageService.store('languagePrefrence', userlang || 'en');
+            const params = "customerId=" + userSession["userId"] + "&languageCode=" + userlang;
+            this.postUserLanguagePrefrence(params, userSession);
+        }
+    }
+    
+    private postUserLanguagePrefrence(params, userSession){
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE'
+        };
+        headers['x-access-token'] = (userSession != null && userSession.token != undefined) ? userSession.token : '';
+        headers['x-request-id'] = (userSession != null && userSession.sessionId != undefined) ? userSession.sessionId : '';
+        const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.UPDATE_CUSTOMER_LANGUAGE_PREFRENCE + params;
+        this.http.post(url, null, { headers, withCredentials: true }).subscribe(result=>{
+            if(result && result['status'] == true){
+              const selectedLanguage = result['data'] && result['data']['languageCode'];
+              this._localStorageService.store("languagePrefrence", selectedLanguage);
+              const newUserSession = Object.assign({}, this.getUserSession());
+              newUserSession.preferredLanguage = selectedLanguage;
+              this.setUserSession(newUserSession);
+            }
+          },err=>{
+            console.log("postUserLanguagePrefrence API : " , err);
+          })
     }
 }

@@ -2,7 +2,7 @@
 @import '../../scss/components/tabs';
 
 .popularDeals{
-    background:#dbedff;
+    background:var(--ghost-white);
     padding-top: 5px;
     .view-all-strip{
       h3{
@@ -11,5 +11,11 @@
     }
     .pwa-tabs-container{
         padding-bottom:10px;
+        .pwa-tab-variant2{
+          font-size: 14px;
+          &.selectedTab{
+            background: var(--misty-rose);
+          }
+        }
     }
 }

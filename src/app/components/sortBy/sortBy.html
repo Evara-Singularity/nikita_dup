@@ -1,14 +1,8 @@
-<!-- <div class="bottom-options sort-by" >
-    <div class="overlay" (click)="toggleFilter.emit(true)"></div>
-    <div class="content-box roundedBox">
-            <h3 class="heading-3">Sort By <i class="icon-circle-delete" (click)="toggleFilter.emit(true)"></i></h3>
-    </div>
-</div> -->
 <app-bottom-menu>
   <div class="overlay" (click)="togglePopup(false)"></div>
   <div content class="sort-by roundedBox" id="sortBy {{ _commonService.selectedFilterData['sortBy'] }} ">
     <div class="top-header-bottom-menu">
-      <h3 class="heading-3">Sort By</h3>
+      <h3 class="heading-3">{{ productStaticData?.sort_by }}</h3>
       <i class="icon-circle-delete" (click)="togglePopup(false)"></i>
     </div>
     <div class="sortByLayout">
@@ -19,7 +13,7 @@
             (change)="togglePopup(false); _commonService.selectedFilterData['sortBy'] = 'popularity'; _commonService.applyFilter()">
           <span class="custom-box icon-box"></span>
         </span>
-        <span class="chk-txt">Popularity</span>
+        <span class="chk-txt">{{ productStaticData?.popularity }}</span>
       </label>
   
       <label>
@@ -29,7 +23,7 @@
             (change)="togglePopup(false);  _commonService.selectedFilterData['sortBy'] = 'lowPrice'; _commonService.applyFilter()">
           <span class="custom-box icon-box"></span>
         </span>
-        <span class="chk-txt"> Price - Low To High</span>
+        <span class="chk-txt"> {{ productStaticData?.price_low_high }}</span>
       </label>
   
       <label>
@@ -39,7 +33,7 @@
             (change)="togglePopup(false);  _commonService.selectedFilterData['sortBy'] = 'highPrice'; _commonService.applyFilter()">
           <span class="custom-box icon-box"></span>
         </span>
-        <span class="chk-txt">Price - High To Low</span>
+        <span class="chk-txt">{{ productStaticData?.price_high_low }}</span>
       </label>
     </div>
   </div>

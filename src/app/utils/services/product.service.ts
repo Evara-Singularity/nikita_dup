@@ -7,6 +7,8 @@ import CONSTANTS from "../../config/constants";
 import { ENDPOINTS } from "@app/config/endpoints";
 import { ProductsEntity } from "../models/product.listing.search";
 import { CommonService } from "./common.service";
+import { LocalAuthService } from "./auth.service";
+import { LocalStorageService } from "ngx-webstorage";
 interface ProductDataArg {
     productBO: string;
     refreshCrousel?: boolean;
@@ -19,6 +21,7 @@ interface ProductDataArg {
 export class ProductService {
     readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
+    readonly promoCodeDescription_off_key = "OFF";
     private basePath = CONSTANTS.NEW_MOGLIX_API;
     private basePath2 =  CONSTANTS.NEW_MOGLIX_API_V2;
     productCouponItem: any = null;
@@ -27,7 +30,7 @@ export class ProductService {
         similarData: [],
     };
 
-    constructor(private _dataService: DataService, public http: HttpClient, private _commonService: CommonService) { }
+    constructor(private _dataService: DataService, public http: HttpClient, private _commonService: CommonService, private _localAuthService: LocalAuthService, private localStorageService:LocalStorageService) { }
 
     getSimilarProductBoByIndex(index) {
         return this.oosSimilarProductsData.similarData[index].rawProductData;
@@ -890,7 +893,7 @@ export class ProductService {
         return productReturn;
     }
 
-       productLayoutJsonToProductEntity(product: any, brandId?:any, brandName?:any) {
+    productLayoutJsonToProductEntity(product: any, brandId?:any, brandName?:any) {
         // console.log('product ==>', product);
         const productMrp = product["mrp"];
         const priceWithoutTax = product['pricewithouttax'];
@@ -928,6 +931,7 @@ export class ProductService {
             reviewCount: product.reviewCount || 0,
             internalProduct: true,
             outOfStock: product.outOfStock,
+            promoCodeDescription: (product.promoCodeDescription) ? this.getPromoCodeDescription(product.promoCodeDescription) : null
         };
         // console.log('productEntity ==>', productEntity);
         return productEntity;
@@ -1170,9 +1174,13 @@ export class ProductService {
 
     }
 
-    getProductGroupDetails(productMsnId): Observable<any> {
+    getProductGroupDetails(productMsnId, isHindiUrl = false): Observable<any> {
+        const headerData = {}
+        if (isHindiUrl) {
+          headerData['language'] = 'hi'
+        }
         const PRODUCT_URL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRODUCT_INFO + `?productId=${productMsnId}&fetchGroup=true`;
-        return this._dataService.callRestful("GET", PRODUCT_URL);
+        return this._dataService.callRestful("GET", PRODUCT_URL, {headerData: headerData});
     }
 
 
@@ -1254,7 +1262,8 @@ export class ProductService {
             avgRating: (product.avgRating) ? product.avgRating : null, //this.product.avgRating,
             itemInPack: product['itemInPack'],
             ratingCount: (product.ratingCount) ? product.ratingCount : null, //this.product.ratingCount,
-            reviewCount: (product.reviewCount) ? product.reviewCount : null //this.product.reviewCount
+            reviewCount: (product.reviewCount) ? product.reviewCount : null, //this.product.reviewCount
+            promoCodeDescription: (product.promoCodeDescription) ? this.getPromoCodeDescription(product.promoCodeDescription) : null
         };
 
         return productEntity;
@@ -1270,6 +1279,11 @@ export class ProductService {
         return this._dataService.callRestful("GET",URL);
     }
 
+    getDifferentBrandProducts(msn) {
+        const URL=CONSTANTS.NEW_MOGLIX_API+ENDPOINTS.GET_DIFFRENT_BRANDS_PRODUCT + msn;
+        return this._dataService.callRestful("GET",URL);
+    }
+
     isInStock(product) {
         let isOutOfStockByQuantity = false;
         let isOutOfStockByPrice = false;
@@ -1279,5 +1293,39 @@ export class ProductService {
         return final;
     }
 
+    getPromoCodeDescription (promoCodeDescription){
+        let pcode = promoCodeDescription.split(this.promoCodeDescription_off_key);
+        if(pcode.length == 1){pcode = promoCodeDescription.split("Off")}
+        if(typeof pcode != 'string' && pcode.length > 0){
+            return pcode[0] as string;
+        }else{
+            return null;
+        }
+    }
+
+    public updateUserLanguagePrefrence() {
+        const languagePrefrence = this.localStorageService.retrieve("languagePrefrence");
+        const userSession = this._localAuthService.getUserSession();
+        if (
+          userSession &&
+          userSession["authenticated"] == "true" &&
+          languagePrefrence != null &&
+          languagePrefrence != userSession["preferredLanguage"]
+        ) {
+          const params =
+            "customerId=" +
+            userSession["userId"] +
+            "&languageCode=" +
+            languagePrefrence;
+          this._commonService.postUserLanguagePrefrence(params).subscribe(result=>{
+            if(result && result['status'] == true){
+              const selectedLanguage = result['data'] && result['data']['languageCode'];
+              const newUserSession = Object.assign({}, this._localAuthService.getUserSession());
+              newUserSession.preferredLanguage = selectedLanguage;
+              this._localAuthService.setUserSession(newUserSession);
+            }
+          })
+        }
+    }
 
 }

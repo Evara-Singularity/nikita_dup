@@ -21,7 +21,7 @@ export class ProductMoreOffersComponent implements OnInit, AfterViewInit {
   promoCodeOffers: any;
   activeIndex: any;
   copiedCouponSubscription: Subscription; 
-
+  changeStaticSubscription: Subscription = null;
   constructor(private _commonService:CommonService, private _analytics: GlobalAnalyticsService) { }
 
   ngOnInit(): void {
@@ -36,10 +36,16 @@ export class ProductMoreOffersComponent implements OnInit, AfterViewInit {
   }
 
   getStaticSubjectData(){
-    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this._commonService.defaultLocaleValue = staticJsonData;
       this.productStaticData = staticJsonData;
     });
+  }
+
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
   }
 
   outData(data) {

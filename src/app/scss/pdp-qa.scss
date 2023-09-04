@@ -60,12 +60,20 @@
             }
         }
     }
+    .show-all-strip{
+        border-top: 1px dashed var(--silver);
+        padding: 20px 0 10px;
+        justify-content: space-between;
+        display: flex;
+        font-size: 14px;
+    }
     .view-more-faq-strip {
         padding: 15px 0px 5px;
         .small-txt {
             color: var(--bleu-de-france);
             font-weight: bold;
             position: relative;
+            font-size: 14px;
         }
         i {
             font-size: $extra-large-2-font;

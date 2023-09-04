@@ -16,6 +16,7 @@
         (addToPurchaseList$)="addToPurchaseList()" [moveToSlide$]="moveToSlide$"
         [refreshSiemaItems$]="refreshSiemaItems$" [productOutOfStock]="rawProductData?.productOutOfStock"
         [rawProductData]="rawProductData"
+        [pageLinkName]="pageLinkName"
         (scrollToId$)="scrollToId(!rawProductData?.productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
         [imagePathAsset]="imagePathAsset" (openPopUpcrousel)="openPopUpcrousel(0)"
         (sendProductImageClickTracking)="sendProductImageClickTracking()" [iOptions]="iOptions"
@@ -71,7 +72,7 @@
     </div>
 
     <!-- //moglix insight -->
-    <moglix-insight-pdp *ngIf="apiResponse?.productWidget" [data]="apiResponse?.productWidget"></moglix-insight-pdp>
+    <moglix-insight-pdp *ngIf="apiResponse?.productWidget" [productStaticData]="productStaticData" [data]="apiResponse?.productWidget"></moglix-insight-pdp>
 
     <!-- product benifits and policy -->
     <product-benefits [isProductReturnAble]="rawProductData?.isProductReturnAble"
@@ -139,7 +140,7 @@
         [productCategoryDetails]="rawProductData?.productCategoryDetails" [productName]="rawProductData?.productName"
         [productAllImages]="productAllImages"></product-get-quote>
 
-    <div *ngIf="!rawProductData?.productOutOfStock" id="similarProducts" class="common-product" data-observeVisibility
+    <div *ngIf="!rawProductData?.productOutOfStock" id="similarProducts" data-observeVisibility
         [debounceTime]="100" (visible)="onVisibleSimilar($event)">
         <ng-container #similarProduct></ng-container>
         <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="similarProductInstance"></product-skeletons>
@@ -168,9 +169,15 @@
         <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
     </div>
 
-    <section id="popularDeals" class="common-product"
+    <div class="common-product bg-gray" data-observeVisibility *ngIf="isShopByDifferentBrands"
+    [debounceTime]="100" (visible)="onVisibleShopByBrands()">
+    <ng-container #shopByBrands></ng-container>
+    <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="shopByBrandsInstance"></product-skeletons>
+    </div>
+
+    <section id="popularDeals" class="common-product bg-gray"
         *ngIf="!rawProductData?.productOutOfStock && apiResponse?.tagProducts && apiResponse?.tagProducts?.length > 0">
-        <product-popular-deals [outOfStock]='rawProductData?.productOutOfStock' [apiResponse]='apiResponse?.tagProducts'
+        <product-popular-deals [outOfStock]='rawProductData?.productOutOfStock' [productStaticData]='productStaticData' [apiResponse]='apiResponse?.tagProducts'
             [analytics]='dealsAnalytics'></product-popular-deals>
     </section>
 
@@ -182,7 +189,7 @@
 
     <ng-container
         *ngIf="apiResponse?.breadCrumb && apiResponse?.breadCrumb.length > 0 && rawProductData?.productOutOfStock">
-        <breadcrumb-nav [breadcrumb]="apiResponse?.breadCrumb" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+        <breadcrumb-nav [productStaticData]='productStaticData' [breadcrumb]="apiResponse?.breadCrumb" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
     </ng-container>
 
     <div *ngIf="rawProductData?.productOutOfStock" id="similarProductsOos" data-observeVisibility [debounceTime]="100"

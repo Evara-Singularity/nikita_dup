@@ -65,6 +65,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
     productMOQ = 1;
     productMAQ = 999;
     getPincodeSubscriber: Subscription = null;
+    productStaticData = this._commonService.defaultLocaleValue;
     rfqForm = new FormGroup({
         quantity: new FormControl(1),
         firstName: new FormControl('', [Validators.required, Validators.maxLength(30), Validators.pattern(/^[a-z\s]+$/i)]),
@@ -78,7 +79,7 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         isBusinessCustomer: new FormControl(false),
     });
     readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
-
+    changeStaticSubscription: Subscription = null;
     constructor(private localStorageService: LocalStorageService, private productService: ProductService, private productUtil: ProductUtilsService, private tms: ToastMessageService,
         private router: Router, private localAuthService: LocalAuthService, private businessDetailService: BusinessDetailService, public cdr: ChangeDetectorRef, public _commonService: CommonService) {
         this.stateList = stateList['dataList'];
@@ -93,7 +94,14 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
             this.setUserDetails();
             this.getBusinessDetail(this.userSession);
         }
+        this.getLocalization();
         // console.log('product', this.product);
+    }
+
+    getLocalization() {
+        this.changeStaticSubscription = this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+            this.productStaticData = localization_content;
+        });
     }
 
     ngAfterViewInit() { this.addSubscribers(); }
@@ -398,6 +406,9 @@ export class ProductRFQComponent implements OnInit, AfterViewInit, AfterViewChec
         }
         if (this.getPincodeSubscriber) {
             this.getPincodeSubscriber.unsubscribe();
+        }
+        if (this.changeStaticSubscription) {
+            this.changeStaticSubscription.unsubscribe();
         }
     }
 

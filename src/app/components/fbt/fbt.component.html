@@ -26,6 +26,7 @@
                         <input type="checkbox" [checked]="product['isSelected']" (change)="updateFBT(product,fbtIndex)">
                         <span class="custom-box icon-box"></span>
                     </label>
+                    <!-- <span class="add-text">ADD</span> -->
                 </div>
                 <div (click)="navigateToPDP(product.url)" class="static-card-container">
                     <div class="product-img">
@@ -35,11 +36,12 @@
                         <p class="description-txt">{{product.productName}}</p>
                         <p class="brand"><span>By :</span> Premier</p>
                         <p class="price">
+                            <span class="after-discount">{{product.sellingPrice | mathFloor | currency:
+                                'INR' : 'symbol' : '1.0-0'}}</span>
                             <span class="before-discount" *ngIf="product.productMRP !== product.sellingPrice">{{product.productMRP | mathFloor | currency: 'INR':
                                 'symbol': '1.0-0'}}</span>
                             <span *ngIf="product.discount > 0" class="discount">{{product.discount | mathFloor}}% OFF</span>
-                            <span class="after-discount">{{product.sellingPrice | mathFloor | currency:
-                                'INR' : 'symbol' : '1.0-0'}}</span>
+
                         </p>
                          <div class="quan-details" *ngIf="product.productQuantity > 1"> 
                             <p>Qty Per Pack :

@@ -3,7 +3,7 @@
         <h3 class="heading titleCategory" (click)="_commonService.scrollTo($event)"
             [appKpToggle]="{idName: 'openCat2' , iconMode : true}">
             <span>{{heading}} -
-                Price Range</span>
+                {{ productStaticData?.price_range }}</span>
         </h3>
     </div>
     <div id="openCat2" style="display:block" class="seo-table-container">
@@ -15,18 +15,22 @@
                             {{priceRangeData?.getRelatedCatgory?.categoryDetails?.categoryName}}
                         </th>
                         <th>
-                            Min Price
+                            {{ productStaticData?.min_price }}
                         </th>
                         <th>
-                            Max Price
+                            {{ productStaticData?.max_price }}
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <ng-container *ngFor="let PRTA of priceRangeData?.PRTA | slice:0:100, let i=index">
                         <tr *ngIf="PRTA.minPrice>0 && PRTA.maxPrice!==0">
-                            <td>
-                                <!-- [routerLink]="[PRTA?.categoryLink ? '/' + PRTA?.categoryLink : './']" -->
+                            <td *ngIf="PRTA.categoryLink">
+                                <a [href]="PRTA?.categoryLink ? '/' + PRTA?.categoryLink : './'">
+                                {{PRTA.newName}}  
+                                </a>
+                            </td >
+                            <td *ngIf="!PRTA.categoryLink">
                                 {{PRTA.newName}}
                             </td>
                             <td>₹{{PRTA.minPrice}}</td>
@@ -37,7 +41,7 @@
             </table>
         </div>
 
-        <span class="date-text">This data was last updated on {{ todayDate | date:'shortDate'}}.</span>
+        <span class="date-text">{{productStaticData?.data_last_updated_on}} {{ todayDate | date:'shortDate'}}.</span>
     </div>
 
 </div>

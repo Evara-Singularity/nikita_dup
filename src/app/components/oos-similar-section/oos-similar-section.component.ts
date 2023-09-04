@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ProductService } from '@app/utils/services/product.service';
+import { Subscription } from 'rxjs';
 import { CommonService } from '../../utils/services/common.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class OosSimilarSectionComponent {
   @Input('oosSimilarcardFeaturesConfig') oosSimilarcardFeaturesConfig;
   @Input('similarForOOSContainer') similarForOOSContainer;
   @Input('similarForOOSLoaded') similarForOOSLoaded;
-
+  changeStaticSubscription: Subscription = null;
   constructor(public productService: ProductService,private _commonService:CommonService) {
     
    }
@@ -23,9 +24,14 @@ export class OosSimilarSectionComponent {
     this.getStaticSubjectData();
   }
   getStaticSubjectData(){
-    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this._commonService.defaultLocaleValue = staticJsonData;
       this.productStaticData = staticJsonData;
     });
+  }
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
   }
 }

@@ -5,11 +5,6 @@
 .online-discount{
   padding: 15px;
   border-bottom: 1px solid var(--platinum);
-  .inline-list-icon{
-    img{
-      width: 24px;
-    }
-  }
   .discount-txt{
     font-size: 12px;
     display: block;
@@ -100,6 +95,11 @@
     }
   }
 }
+.no-text{
+  font-size: 12px;
+  display: block;
+  padding-top: 4px;
+}
 .green-bg{
   background-color: var(--mint-cream);
   border-bottom: 1px solid var(--platinum);
@@ -111,3 +111,11 @@
   cursor: pointer;
 }
 
+.link-text{
+  font-weight: bold;
+}
+
+
+.grey-txt{
+  color: var(--dim-gray);
+}

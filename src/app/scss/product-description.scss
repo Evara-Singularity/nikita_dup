@@ -15,21 +15,22 @@
     }
 
     .prod-inner-desc {
-        padding: 10px 0px 5px;
+        padding: 10px 0px 10px;
         display: block;
         display: flex;
         align-items: center;
 
         .rating-box {
             background: var(--slimy-green);
-            padding: 5px;
+            padding: 5px 4px;
             border-radius: $border-radius-4;
             color: var(--white);
             font-weight: $font-bold;
+            font-size: 14px;
 
             i {
                 color: var(--white);
-                padding-left: 5px;
+                padding-left: 3px;
             }
         }
 
@@ -54,6 +55,7 @@
                 .review {
                     color: var(--dim-gray);
                     font-size: $medium-font;
+                    font-weight: bold;
                 }
 
                 .left-pipe {
@@ -76,7 +78,7 @@
         padding: 10px 0px 0px 0px;
 
         .mrp {
-            font-size: $medium-font;
+            font-size: $large-font;
             color: var(--dim-gray);
 
             span {
@@ -86,7 +88,7 @@
             }
 
             small {
-                font-size: $medium-font;
+                font-size: $large-font;
                 padding-right: 5px;
                 letter-spacing: 0.5px;
                 text-decoration: line-through;
@@ -98,13 +100,13 @@
             color: var(--black);
             // letter-spacing: 0.5px;
             small {
-                font-size: $medium-font;
+                font-size: $large-font;
                 font-weight: normal !important;
                 // display: block;
                 padding-top: 5px;
                 color: var(--dim-gray);
                 .icon-expand {
-                    font-size: 6px;
+                    font-size: 8px;
                     vertical-align: middle;
                     padding-bottom: 2px;
                     margin: 0 4px 0 -3px;

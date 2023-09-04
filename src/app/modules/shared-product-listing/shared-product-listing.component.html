@@ -1,32 +1,44 @@
-<div class="filter-wrapper" *ngIf="productsListingData?.products?.length>0 || filterChipsArray?.length > 0" [class.translateHeader]="!_commonService.isScrolledHeader">
-    <button type="button" (click)="toggleSortBy()">
-        <i class="icon-short icon-sort-by" aria-hidden="true"></i> <span class="txt"> Sort By
-            <span class="red-txt" [ngSwitch]="_commonService.selectedFilterData['sortBy']">
-                <ng-container *ngSwitchCase="'popularity'">
-                    Popularity
-                </ng-container>
-                <ng-container *ngSwitchCase="'lowPrice'">
-                    Low Price
-                </ng-container>
-                <ng-container *ngSwitchCase="'highPrice'">
-                    High Price
-                </ng-container>
-                <ng-container *ngSwitchDefault>
-                    Popularity
-                </ng-container>
+<div class="filter-wrapper" *ngIf="productsListingData?.products?.length>0 || filterChipsArray?.length > 0"
+    [class.translateHeader]="!_commonService.isScrolledHeader">
+    <div class="fliter-container">
+        <button type="button" (click)="toggleSortBy()">
+            <i class="icon-short icon-sort-by" aria-hidden="true"></i> <span class="txt"> {{ productStaticData?.sort_by
+                }}
+                <span class="red-txt" [ngSwitch]="_commonService.selectedFilterData['sortBy']">
+                    <ng-container *ngSwitchCase="'popularity'">
+                        {{ productStaticData?.popularity }}
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'lowPrice'">
+                        {{ productStaticData?.low_price }}
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'highPrice'">
+                        {{ productStaticData?.high_price }}
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                        {{ productStaticData?.popularity }}
+                    </ng-container>
+                </span>
             </span>
-        </span>
-    </button>
-    <button *ngIf="productsListingData?.filterData && productsListingData?.filterData?.length > 0" type="button"
-        (click)="filterUp()">
-        <i class="icon-filter-3-fill" aria-hidden="true"></i>
-        <span class="txt">Filters</span>
-        <span class="filter_count" *ngIf="appliedFilterCount > 0">{{ appliedFilterCount }}</span>
-    </button>
-    <button *ngIf="!productsListingData?.filterData || productsListingData?.filterData?.length === 0"
-        class="skeleton-filter-container">
-        <span class="skeleton-inner"></span>
-    </button>
+        </button>
+        <button *ngIf="productsListingData?.filterData && productsListingData?.filterData?.length > 0" type="button"
+            (click)="filterUp()">
+            <i class="icon-filter-3-fill" aria-hidden="true"></i>
+            <span class="txt">{{ productStaticData?.filters }}</span>
+            <span class="filter_count" *ngIf="appliedFilterCount > 0">{{ appliedFilterCount }}</span>
+        </button>
+
+        <button *ngIf="!productsListingData?.filterData || productsListingData?.filterData?.length === 0"
+            class="skeleton-filter-container">
+            <span class="skeleton-inner"></span>
+        </button>
+    </div>
+    <div class="translator-container" *ngIf='isAcceptLanguage'>
+        <img src="/assets/img/vernacular-icon.svg" (click)='pageTranslation()'>
+        <div class="select-language" *ngIf='showNudge'>
+            <p>{{ productStaticData?.select_language }}</p>
+        </div>
+    </div>
+    
 </div>
 <div class="filter_chips" *ngIf="filterChipsArray?.length > 0">
     <div class="overflow_wrapper_chip">
@@ -40,17 +52,22 @@
         </ng-container>
     </div>
 </div>
-<div class="list-heading" *ngIf="productsListingData?.products?.length>0" [class.list-heading-search]="pageName === 'SEARCH' || 'ALP'">
+<div class="list-heading" *ngIf="productsListingData?.products?.length>0"
+    [class.list-heading-search]="pageName === 'SEARCH' || 'ALP'">
     <ng-container>
         <h1 class="list-name">
             {{ headerName }}
         </h1>
-        <div class="list-num" *ngIf="productsListingData?.products">
-            Showing {{ productsListingData?.products.length }} out of {{ (productsListingData?.totalCount >
-            (productsListingData?.products.length) ? productsListingData?.totalCount :(
-            productsListingData?.products.length) ) }} products
+        <div class="list-num" *ngIf="productsListingData?.products && !isHindiUrl">
+            {{ productStaticData?.showing }} {{ productsListingData?.products.length }} {{ productStaticData?.out_of }}
+            {{ (productsListingData?.totalCount > (productsListingData?.products.length) ? productsListingData?.totalCount : (productsListingData?.products.length) ) }} 
+            {{ productStaticData?.products }}
         </div>
-        
+        <div class="list-num" *ngIf="productsListingData?.products && isHindiUrl">
+            {{ productStaticData?.showing }} {{ (productsListingData?.totalCount > (productsListingData?.products.length) ? productsListingData?.totalCount : (productsListingData?.products.length) ) }}
+            {{ productStaticData?.out_of }} {{ productsListingData?.products.length }} {{ productStaticData?.products }}
+        </div>
+
         <div class="right titleDescription"
             *ngIf="productsListingData?.products  && _commonService.selectedFilterData.page < 2"
             [innerHTML]="titleDescription">
@@ -60,19 +77,19 @@
 <ng-container *ngIf="productsListingData?.products?.length > 0">
    <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
     <ng-container *ngIf="(pageName == 'CATEGORY' || 'BRAND') && informativeVideosData" >
-        <informative_video *ngIf="(i === 10) && informativeVideosData !=[] " [informativeVideosData]="informativeVideosData" [categoryName]="categoryName">
+        <informative_video [productStaticData]='productStaticData'  *ngIf="(i === 10) && informativeVideosData !=[] " [informativeVideosData]="informativeVideosData" [categoryName]="categoryName">
         </informative_video>
     </ng-container>
-   <ng-container *ngIf="pageName == 'CATEGORY'  && appliedFilterCount == 0 && this.graphData">
+   <ng-container *ngIf="pageName == 'CATEGORY'  && appliedFilterCount == 0 && this.graphData && _commonService.selectedFilterData.page < 2">
        <div *ngFor="let block of this.graphData;">
           <ng-container *ngIf="block.block_name == 'product_report' && block.data && block.data.length > 0">
-            <analytics-widget-wrapper *ngIf="(i == 5)"  [chartContainer]="'priceChartContainer'" [categoryId]="categoryId" [categoryName]="categoryName" [graphData]="graphData" [isL2CategoryCheck]="isL2CategoryCheck"></analytics-widget-wrapper>
+            <analytics-widget-wrapper *ngIf="(i == 5)"  [productStaticData]='productStaticData' [chartContainer]="'priceChartContainer'" [categoryId]="categoryId" [categoryName]="categoryName" [graphData]="graphData" [isL2CategoryCheck]="isL2CategoryCheck"></analytics-widget-wrapper>
           </ng-container>
           <ng-container *ngIf="block.block_name == 'brand_report' &&  block.data && block.data.length > 0">
-            <analytics-widget-wrapper *ngIf="(i == 10)" [chartContainer]="'brandChartContainer'" [categoryId]="categoryId" [graphData]="graphData" [categoryName]="categoryName" [isL2CategoryCheck]="isL2CategoryCheck"></analytics-widget-wrapper>
+            <analytics-widget-wrapper *ngIf="(i == 10)" [productStaticData]='productStaticData' [chartContainer]="'brandChartContainer'" [categoryId]="categoryId" [graphData]="graphData" [categoryName]="categoryName" [isL2CategoryCheck]="isL2CategoryCheck"></analytics-widget-wrapper>
           </ng-container>
           <ng-container *ngIf="block.block_name == 'attribute_report' && block.data && block.data.length > 0">
-            <analytics-widget-wrapper *ngIf="(i == 15)" [chartContainer]="'attributeChartContainer'" [categoryId]="categoryId" [graphData]="graphData" [categoryName]="categoryName"></analytics-widget-wrapper>
+            <analytics-widget-wrapper *ngIf="(i == 15)" [productStaticData]='productStaticData' [chartContainer]="'attributeChartContainer'" [categoryId]="categoryId" [graphData]="graphData" [categoryName]="categoryName"></analytics-widget-wrapper>
           </ng-container>
        </div>
    </ng-container>
@@ -108,19 +125,21 @@
             </adsense-rectangle-banner>
         </ng-container>
     </ng-container>
-    <filter-mid-plp (categoryClicked)="categoryClicked.emit($event)"
-        [categoryMidPlpFilterData]="categoryMidPlpFilterData" [pageName]="pageName" [position]="i"
-        [filterData]="productsListingData?.filterData" *ngIf="(i === 5 || i === 10 || i === 15 || i === 20)">
-    </filter-mid-plp>
-    <div class="pwa-row plp-card-list">
-        <div class="pwa-col-12">
-            <!-- <product-card-skeleton
+        <filter-mid-plp [productStaticData]='productStaticData' (categoryClicked)="categoryClicked.emit($event)"
+            [categoryMidPlpFilterData]="categoryMidPlpFilterData" [pageName]="pageName" [position]="i"
+            [filterData]="productsListingData?.filterData" *ngIf="(i === 5 || i === 10 || i === 15 || i === 20)">
+        </filter-mid-plp>
+        <div class="pwa-row plp-card-list">
+            <div class="pwa-col-12">
+                <!-- <product-card-skeleton
                 *ngIf="sponseredProductPosition.includes(i)  && isAdsEnable && !sponseredProductLoadStatus">
             </product-card-skeleton> -->
-            <product-card-horizontal-list-view [moduleUsedIn]="'LISTING_PAGES'" [isAdEnable]="_commonService.selectedFilterData['sortBy'] == 'popularity' && appliedFilterCount == 0 && isAdsEnable && sponseredProductLoadStatus && sponseredProductPosition.includes(i)" [product]="product" [isPDPImageLazyLoaded]="(i < 5)" [isAd]="true"  >
-            </product-card-horizontal-list-view>
+                <product-card-horizontal-list-view [moduleUsedIn]="'LISTING_PAGES'"
+                    [isAdEnable]="_commonService.selectedFilterData['sortBy'] == 'popularity' && appliedFilterCount == 0 && isAdsEnable && sponseredProductLoadStatus && sponseredProductPosition.includes(i)"
+                    [product]="product" [isPDPImageLazyLoaded]="(i < 5)" [isAd]="true">
+                </product-card-horizontal-list-view>
+            </div>
         </div>
-    </div>
     </ng-container>
 </ng-container>
 
@@ -129,13 +148,12 @@
     <bulk-rquest-form-popup-lazy></bulk-rquest-form-popup-lazy>
 </ng-container>
 
-<app-search-not-found 
-    [helpText]="['No result found ', 'for your search.']"
-    [helpSubText]="['Please check the spelling or try searching for something else']" 
-     *ngIf="productsListingData?.products != undefined && productsListingData?.products?.length==0">
+<app-search-not-found [helpText]="['No result found ', 'for your search.']"
+    [helpSubText]="['Please check the spelling or try searching for something else']"
+    *ngIf="productsListingData?.products != undefined && productsListingData?.products?.length==0">
 </app-search-not-found>
 
-<ng-container *ngIf="productsListingData && productsListingData.products && productsListingData.products.length > 0"> 
+<ng-container *ngIf="productsListingData && productsListingData.products && productsListingData.products.length > 0">
     <span data-observeVisibility [debounceTime]="100" (visible)="onVisiblePagination()"></span>
     <span data-observeVisibility [debounceTime]="100" (visible)="onVisiblesearchBannerCard()"></span>
 </ng-container>
@@ -145,3 +163,4 @@
 <ng-template #pagination></ng-template>
 <ng-container #filter></ng-container>
 <ng-container #sortBy></ng-container>
+<ng-container #selectLang></ng-container>

@@ -11,6 +11,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 export class ShopbyBrandComponent {
   defaultImage;
   @Input('brand_Data') brand_Data;
+  @Input('productStaticData') productStaticData;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
 }
 

@@ -1,5 +1,5 @@
 import { isPlatformServer } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import {
@@ -33,6 +33,12 @@ export class CategoryResolver implements Resolve<any> {
 
   resolve(_activatedRouteSnapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     this.loaderService.setLoaderState(true);
+    const languageHeader = {
+      'language': 'hi'
+    };
+    const requestOptions = {                                                                                                                                                                                 
+      headers: new HttpHeaders((_activatedRouteSnapshot.data['language'] == 'hi')?languageHeader:{}), 
+    };
     const categoryId = _activatedRouteSnapshot.params.id;
     const source = _activatedRouteSnapshot['_routerState']['url'].split('#')[0].split('?')[0];
 
@@ -106,7 +112,7 @@ export class CategoryResolver implements Resolve<any> {
         const actualParams = this._commonService.formatParams(params);
         this._commonService.selectedFilterData.page = _activatedRouteSnapshot.queryParams.page || 1;
 
-        const getRelatedCategoriesObs = this.http.get(get_rel_cat_url).pipe(share(), 
+        const getRelatedCategoriesObs = this.http.get(get_rel_cat_url, requestOptions).pipe(share(), 
         map(res=>{
           const logInfo =  this._commonService.getLoggerObj(get_rel_cat_url,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();
@@ -115,7 +121,7 @@ export class CategoryResolver implements Resolve<any> {
           return res;
         }));
 
-        const getFAQObs = this.http.get(faq_url).pipe(share(), 
+        const getFAQObs = this.http.get(faq_url, requestOptions).pipe(share(), 
         map(res=>{
           const logInfo =  this._commonService.getLoggerObj(faq_url,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();
@@ -124,7 +130,7 @@ export class CategoryResolver implements Resolve<any> {
           return res;
         }));
 
-        const refreshProductsObs = this.http.get(refresh_product_url, { params: actualParams }).pipe(share(), 
+        const refreshProductsObs = this.http.get(refresh_product_url, { params: actualParams, headers: requestOptions['headers'] }).pipe(share(), 
         map(res=>{
           const logInfo =  this._commonService.getLoggerObj(refresh_product_url,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();
@@ -133,7 +139,7 @@ export class CategoryResolver implements Resolve<any> {
           return res;
         }));
 
-        const getBreadCrump = this.http.get(breadcrump_url).pipe(share(), 
+        const getBreadCrump = this.http.get(breadcrump_url, requestOptions).pipe(share(), 
         map(res=>{
           const logInfo =  this._commonService.getLoggerObj(breadcrump_url,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();
@@ -169,7 +175,7 @@ export class CategoryResolver implements Resolve<any> {
           return res;
         }));
 
-        const getcategoryextra = this.http.get(category_extra_url).pipe(share(), 
+        const getcategoryextra = this.http.get(category_extra_url, requestOptions).pipe(share(), 
         map(res=>{
           const logInfo =  this._commonService.getLoggerObj(category_extra_url,'GET',startTime)
           logInfo.endDateTime = new Date().getTime();

@@ -19,7 +19,7 @@
                 (click)="$event.stopPropagation();scrollToId(!productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
                 class="fixed_ico fixed_ico-img"><img src="{{imagePathAsset}}assets/img/similar-ico.svg">
             </span>
-            <span *ngIf="isAcceptLanguage" class="fixed_ico fixed_ico-img" (click)="translate()">
+            <span *ngIf="isAcceptLanguage" class="fixed_ico fixed_ico-img" (click)="pageTranslation()">
                 <img height="24" width="24"  src="assets/img/translate.gif">
             </span>
         </div>
@@ -28,14 +28,14 @@
         <div class="prod-carsl-pseudo" data-swipe (next)="onRotateNext()" #productCrouselPseudo
             (previous)="onRotatePrevious()">
             <!-- style="height: 100%;" -->
-            <div class="img-block img-block-pseudo" >
+            <div class="img-block img-block-pseudo">
                 <div class="inner_block inner-block-pseudo">
                     <div class="pinch-zoom element-pseudo"
                         (click)="$event.stopPropagation();sendProductImageClickTracking()"
                         style="transform-origin: 0% 0%;">
-                        <ng-container *ngIf="productAllImages && productAllImages[0] && productAllImages[0]['xxlarge']" >
+                        <ng-container *ngIf="productAllImages && productAllImages[0] && productAllImages[0]['xxlarge']">
                             <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['xxlarge'] }}"
-                                 alt="{{productName}}">
+                                alt="{{productName}}">
                             <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
                                 class="loader-image" />
                         </ng-container>
@@ -68,11 +68,11 @@
         <!-- TODO: check how this section is used in PQA -->
         <ng-container *ngIf="productTags != undefined && !this.productOutOfStock">
             <div class="image_tag">
-                <div class="tag_container"
-                    *ngFor="let tag of productTags | slice:0:1;let i = index;">
+                <div class="tag_container" *ngFor="let tag of productTags | slice:0:1;let i = index;">
                     <img src="{{tag.imageUrl}}" alt="{{tag.name}}">
                 </div>
             </div>
         </ng-container>
     </div>
 </div>
+<ng-container *ngIf="isAcceptLanguage" #selectLangauge></ng-container>

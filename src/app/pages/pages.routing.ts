@@ -69,6 +69,19 @@ const routes: Routes = [
 				},
 			},
 			{
+				matcher: _routingMatcher.categoriesMatchTranslater,
+				loadChildren: () =>
+					import('./category/category.module').then((m) => m.CategoryModule),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					pageName: 'listing',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE,
+					language: 'hi'
+				},
+			},
+			{
 				matcher: _routingMatcher.categoriesMatcher,
 				loadChildren: () =>
 					import('./category/category.module').then((m) => m.CategoryModule),
@@ -77,7 +90,8 @@ const routes: Routes = [
 					logo: true,
 					moreOpt: true,
 					pageName: 'listing',
-					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE,
+					language: 'en'
 				},
 			},
 			// {
@@ -91,6 +105,18 @@ const routes: Routes = [
 			// 	},
 			// },
 			{
+				path: 'hi/alp/:attribute',
+				loadChildren: () => import('./alp/alp.module').then(m => m.AlpModule),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					pageName: 'listing:alp',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE,
+					language: 'hi'
+				}
+			},
+			{
 				path: 'alp/:attribute',
 				loadChildren: () => import('./alp/alp.module').then(m => m.AlpModule),
 				data: {
@@ -98,7 +124,8 @@ const routes: Routes = [
 					logo: true,
 					moreOpt: true,
 					pageName: 'listing:alp',
-					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE,
+					language: 'en'
 				}
 			},
 			{
@@ -136,7 +163,34 @@ const routes: Routes = [
 					footer: false,
 					logo: true,
 					moreOpt: true,
+					language: 'en',
 					pageName: 'listing:brand',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
+				},
+			},
+			{
+				path: 'hi/brands/:brand',
+				loadChildren: () =>
+					import('./brand/brand.module').then((m) => m.BrandModule),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					language: 'hi',
+					pageName: 'listing:brand',
+					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
+				},
+			},
+			{
+				matcher: _routingMatcher.brandCategoriesMatchTranslater,
+				loadChildren: () =>
+					import('./brand/brand.module').then((m) => m.BrandModule),
+				data: {
+					footer: false,
+					logo: true,
+					moreOpt: true,
+					pageName: 'listing:brandCategory',
+					language: 'hi',
 					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
 				},
 			},
@@ -149,6 +203,7 @@ const routes: Routes = [
 					logo: true,
 					moreOpt: true,
 					pageName: 'listing:brandCategory',
+					language: 'en',
 					moduleName: CONSTANTS.MODULE_NAME.PRODUCT_LISTING_PAGE
 				},
 			},

@@ -16,6 +16,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 })
 export class SlpSubCategoryComponent {
   @Input('sub_category_Data') sub_category_Data;
+  @Input('productStaticData') productStaticData;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
   defaultImage = CONSTANTS.IMAGE_BASE_URL + CONSTANTS.ASSET_IMG;
   baseURL = CONSTANTS.PROD;

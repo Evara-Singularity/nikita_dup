@@ -4,20 +4,17 @@ import { CONSTANTS } from '@app/config/constants';
 import { CommonService } from '@app/utils/services/common.service';
 import { ProductListService } from '@app/utils/services/productList.service';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { FooterService } from '@app/utils/services/footer.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { DataService } from '@app/utils/services/data.service';
 import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 import { SharedProductListingComponent } from '@app/modules/shared-product-listing/shared-product-listing.component';
 import { AccordiansDetails,AccordianDataItem } from '@app/utils/models/accordianInterface';
-import { ENDPOINTS } from '@app/config/endpoints';
-import { HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
 import { AdsenseService } from '@app/utils/services/adsense.service';
+import * as localization_en from '../../config/static-en';
+import * as localization_hi from '../../config/static-hi';
 
 let digitalData = {
     page: {},
@@ -52,7 +49,10 @@ export class CategoryComponent {
     isL2CategoryCheck:Boolean = false;
     informativeVideosData:any;
     adsenseData: any = null;
-   
+    productStaticData = this._commonService.defaultLocaleValue;
+    isAcceptLanguage: boolean;
+    categoryLink: string = "";
+    pageLinkName: string;
 
     constructor(
         public _router: Router,
@@ -73,6 +73,7 @@ export class CategoryComponent {
     ) {
         this._commonService.isHomeHeader = false;
         this._commonService.isPLPHeader = true;
+        this.initializeLocalization();
     }
 
     ngOnInit(): void {
@@ -82,6 +83,21 @@ export class CategoryComponent {
         }
         this._commonService.loadFreshChat();
     }
+
+    initializeLocalization(isHindi = this.isHindiUrl) {
+        if (isHindi) {
+            this._commonService.defaultLocaleValue = localization_hi.product;
+            this.productStaticData = localization_hi.product;
+            this._commonService.changeStaticJson.next(this.productStaticData);
+        } else {
+            this._commonService.defaultLocaleValue = localization_en.product;
+            this.productStaticData = localization_en.product;
+            this._commonService.changeStaticJson.next(this.productStaticData);
+        }
+        this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+            this.productStaticData = localization_content;
+        });
+      }
 
     ngAfterViewInit(): void {
         // this.sharedProductList.getSponseredProducts();
@@ -150,10 +166,11 @@ export class CategoryComponent {
 
             // Update total product account
             this._commonService.selectedFilterData.totalCount = this.API_RESPONSE['category'][1].productSearchResult.totalCount;
-
+            this.isAcceptLanguage = this.API_RESPONSE['category'][1]['acceptLanguage'] && this.API_RESPONSE['category'][1]['acceptLanguage'].length ? true : false;
             // shared product listing data update
             this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results');
-            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'CATEGORY').subscribe(res => {
+            const isHindiUrl = this._router.url && (this._router.url).toLowerCase().indexOf('/hi/') !== -1 ? true : false;
+            this._productListService.getFilterBucket(this._activatedRoute.snapshot.params.id, 'CATEGORY', '', isHindiUrl).subscribe(res => {
                 if (res.hasOwnProperty('buckets')) {
                     this.API_RESPONSE.category[1].buckets = JSON.parse(JSON.stringify(res['buckets']));
                     this._productListService.createAndProvideDataToSharedListingComponent(this.API_RESPONSE['category'][1], 'Category Results', true);
@@ -161,8 +178,6 @@ export class CategoryComponent {
                 if (res.hasOwnProperty('priceRangeBuckets')) {
                     this.API_RESPONSE.category[1].priceRangeBuckets = JSON.parse(JSON.stringify(res['priceRangeBuckets']));
                 }
-                // update footer data
-                this.genrateAndUpdateCategoryFooterData();
 
                 if (res.hasOwnProperty('categoryLinkList')) {
                     this.API_RESPONSE.category[1].categoryLinkList = JSON.parse(JSON.stringify(res['categoryLinkList']));
@@ -171,6 +186,8 @@ export class CategoryComponent {
                     //accordian data            
                     this.createFooterAccordianData();
                 }
+                // update footer data
+                this.genrateAndUpdateCategoryFooterData();
             });
 
             // if (this.sharedProductList) {
@@ -200,24 +217,28 @@ export class CategoryComponent {
            
         });
     }
+
+    get isHindiUrl() {
+        return (this._router.url).toLowerCase().indexOf('/hi') !== -1
+      }
  
 
     private createFooterAccordianData() {
         this.accordiansDetails = [];
         this.accordiansDetails.push({
-            name: 'Popular Brand Category',
-            data: Object.entries(this.API_RESPONSE.category[1].categoryLinkList).map(x => ({ name: x[0], link: x[1] }) as AccordianDataItem),
+            name: this.productStaticData.accordian_list2_label,
+            data: Object.entries(this.API_RESPONSE.category[1].categoryLinkList).map(x => ({ name: x[0], link: this._commonService.isHindiPage(x) ? 'hi/' + x[1] : x[1] }) as AccordianDataItem),
             icon:'icon-brand_store'
         });
         this.accordiansDetails.push({
-            name: 'Related Searches',
-            data: this.API_RESPONSE.category[4]?.data?.map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
+            name: this.productStaticData.accordian_list1_label,
+            data: this.API_RESPONSE.category[4]?.data?.map(e => ({ name: e.title, link: this._commonService.isHindiPage(e) ? 'hi/' + e.friendlyUrl : e.friendlyUrl }) as AccordianDataItem),
             icon:'icon-attribute'
         });
         if(!this.API_RESPONSE.category[0].children){
             this.accordiansDetails.push({
-                name: 'Related Category',
-                data: this.API_RESPONSE.category[0].sibling?.map(x => ({ name: x.categoryDetails.categoryName, link: x.categoryDetails.categoryLink }) as AccordianDataItem),
+                name: this.productStaticData.related_category,
+                data: this.API_RESPONSE.category[0].sibling?.map(x => ({ name: x.categoryDetails.categoryName, link: this._commonService.isHindiPage(x.categoryDetails) ? 'hi/' + x.categoryDetails.categoryLink : x.categoryDetails.categoryLink }) as AccordianDataItem),
                 icon:'icon-brand_store'
             });
 
@@ -227,7 +248,6 @@ export class CategoryComponent {
 
     private setCanonicalUrls() {
         const currentRoute = this._router.url.split('?')[0].split('#')[0];
-
         if (!this._commonService.isServer) {
             const links = this._renderer2.createElement('link');
             links.rel = 'canonical';
@@ -237,6 +257,31 @@ export class CategoryComponent {
                 links.href = CONSTANTS.PROD + currentRoute.toLowerCase() + "?page=" + this._activatedRoute.snapshot.queryParams.page;
             }
             this._renderer2.appendChild(this._document.head, links);
+            if(this.isAcceptLanguage) {
+                const languagelink = this._renderer2.createElement("link");
+                languagelink.rel = "alternate";
+                if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
+                    languagelink.href = this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD +  '/hi' + currentRoute.toLowerCase();
+                } else {
+                    languagelink.href = this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + '/hi' + currentRoute.toLowerCase(); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
+                }
+                // languagelink.href = CONSTANTS.PROD + this.isHindiUrl ? CONSTANTS.PROD + this._router.url : '/hi/' + this._router.url;
+                languagelink.hreflang = 'hi-in';
+                this._renderer2.appendChild(this._document.head, languagelink);
+        
+                const elanguagelink = this._renderer2.createElement("link");
+                elanguagelink.rel = "alternate";
+                if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
+                    elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', '');
+                } else {
+                    elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', ''); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
+                }
+                elanguagelink.hreflang = 'en'
+                this._renderer2.appendChild(this._document.head, elanguagelink);
+                if (this._commonService.isBrowser) {
+                    this.isHindiUrl ? document.documentElement.setAttribute("lang", 'hi') : document.documentElement.setAttribute("lang", 'en');
+                }
+            }
         }
 
         const currentQueryParams = this._activatedRoute.snapshot.queryParams;
@@ -421,8 +466,9 @@ export class CategoryComponent {
             taxo2 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[1] || '';
             taxo3 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[2] || '';
         }
+        this.pageLinkName = "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing";
         let page = {
-            'pageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing",
+            'pageName': this.pageLinkName,
             'channel': "listing",
             'subSection': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing " + this._commonService.getSectionClick().toLowerCase(),
             'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
@@ -462,8 +508,8 @@ export class CategoryComponent {
     }
 
     setTitleAndMetaForCategory() {
-        let title = (this.API_RESPONSE.category[0].categoryDetails.metaTitle != undefined && this.API_RESPONSE.category[0].categoryDetails.metaTitle != null && this.API_RESPONSE.category[0].categoryDetails.metaTitle != "") ? this.API_RESPONSE.category[0].categoryDetails.metaTitle : "Buy " + this.API_RESPONSE.category[0].categoryDetails.categoryName + " Online at Best Price in India - Moglix.com";
-        let metaDescription = (this.API_RESPONSE.category[0].categoryDetails.metaDescription != undefined && this.API_RESPONSE.category[0].categoryDetails.metaDescription != null && this.API_RESPONSE.category[0].categoryDetails.metaDescription != "") ? this.API_RESPONSE.category[0].categoryDetails.metaDescription : "Shop online for " + this.API_RESPONSE.category[0].categoryDetails.categoryName + " at best prices now! Moglix is a one stop shop for genuine " + this.API_RESPONSE.category[0].categoryDetails.categoryName + ". Cash on delivery, Free shipping available.";
+        let title = (this.API_RESPONSE.category[0].categoryDetails.metaTitle != undefined && this.API_RESPONSE.category[0].categoryDetails.metaTitle != null && this.API_RESPONSE.category[0].categoryDetails.metaTitle != "") ? this.API_RESPONSE.category[0].categoryDetails.metaTitle : this.productStaticData.buy + " " + this.API_RESPONSE.category[0].categoryDetails.categoryName + ' ' + this.productStaticData.online_at_best_price_india +" - Moglix.com";
+        let metaDescription = (this.API_RESPONSE.category[0].categoryDetails.metaDescription != undefined && this.API_RESPONSE.category[0].categoryDetails.metaDescription != null && this.API_RESPONSE.category[0].categoryDetails.metaDescription != "") ? this.API_RESPONSE.category[0].categoryDetails.metaDescription : this.productStaticData.Shop_online_for + " " + this.API_RESPONSE.category[0].categoryDetails.categoryName + " " + this.productStaticData.at_best_prices_now + " " + this.productStaticData.Moglix_is_a_one_stop_shop_for_genuine + " " + this.API_RESPONSE.category[0].categoryDetails.categoryName + this.productStaticData.for + " " + this.productStaticData.Cash_on_delivery_Free_shipping_available;
         this.meta.addTag({ 'name': 'description', 'content': metaDescription });
         this.meta.addTag({ 'name': 'og:title', 'content': title });
         this.meta.addTag({ 'name': 'og:description', 'content': metaDescription });
@@ -582,7 +628,10 @@ export class CategoryComponent {
                     let temp = [];
                     for (let j = 0; j < this.wantedBucket[i].terms.length && temp.length < 4; j++) {                                                      //getting top four values with non-zero min , max price 
                         if (this.wantedBucket[i].terms[j].minPrice > 0 && this.wantedBucket[i].terms[j].maxPrice > 0) {
+                            const brandName = this.wantedBucket[i].terms[j].term as string;
                             this.wantedBucket[i].terms[j].term = this.wantedBucket[i].terms[j].term + " " + this.API_RESPONSE.category[0].categoryDetails.categoryName;
+                            const newBrandName = brandName.split(' ').join('-')
+                            this.wantedBucket[i].terms[j].categoryLink = "brands/" + newBrandName.toLowerCase() + "/"+ this.categoryLink;
                             temp.push(this.wantedBucket[i].terms[j]);
                         }
                     }
@@ -628,8 +677,13 @@ export class CategoryComponent {
      */
 
     getCategoryData(obj: any[]) {
+        this.categoryLink = this.API_RESPONSE.category[0].categoryDetails.categoryName;
+        if(this._commonService.isHindiUrl) {
+            this.categoryLink = this.API_RESPONSE.category[0].categoryDetails.categoryNameEn;
+        }
         for (let i = 0; i < obj.length; i++) {
-            if (obj[i].term === this.API_RESPONSE.category[0].categoryDetails.categoryName) {
+            if (obj[i].term === this.categoryLink) {
+                this.categoryLink = obj[i]['categoryLink'];
                 this.reqArray = obj[i].childCategoryList;                              //Base condition.
                 break;
             }
@@ -697,7 +751,6 @@ export class CategoryComponent {
         if (data['data'][0].block_data.image_block) {
             this.shopbyFeatrData = data['data'][0].block_data.image_block;
         }
-        
         if (data['data'][0].block_data.general_block) {
             this.catStaticData = data['data'][0].block_data.general_block;
         }
@@ -711,7 +764,7 @@ export class CategoryComponent {
                     productList.push({
                         "@type": "ListItem",
                         "position": index + 1,
-                        "url": CONSTANTS.PROD + '/' + product.productUrl,
+                        "url": !this.isHindiUrl ? CONSTANTS.PROD + '/' + product.productUrl : product.productUrl.includes('hi/') ? CONSTANTS.PROD + '/' + product.productUrl : CONSTANTS.PROD + '/hi/' + product.productUrl,
                         "name": product.productName,
                         "image": CONSTANTS.IMAGE_BASE_URL + product.mainImagePath
                     })

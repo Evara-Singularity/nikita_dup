@@ -119,6 +119,7 @@ header-nav {
   }
   .highcharts-legend-item{
       text-transform:capitalize;
+      pointer-events:none;
   }
   &+.highcharts-xaxis-labels{
     text-transform:capitalize;

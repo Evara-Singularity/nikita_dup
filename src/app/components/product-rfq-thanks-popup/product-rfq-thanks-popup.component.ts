@@ -4,6 +4,7 @@ import CONSTANTS from '@app/config/constants';
 import { GLOBAL_CONSTANT } from '@app/config/global.constant';
 import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { CommonService } from '@app/utils/services/common.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'product-rfq-thanks-popup',
@@ -24,16 +25,29 @@ export class ProductRfqThanksPopupComponent implements OnInit {
   @Output() closeRFQAlert$: EventEmitter<any> = new EventEmitter<any>();
   @Output() scrollToId$: EventEmitter<any> = new EventEmitter<any>();
   @Output() navigateToCategory$: EventEmitter<any> = new EventEmitter<any>();
-
-
+  productStaticData = this._commonService.defaultLocaleValue;
+  changeStaticSubscription: Subscription = null;
   constructor(
     private _commonService: CommonService
   ) {
     this.isBrowser = this._commonService.isBrowser
     this.isServer = this._commonService.isServer
   }
-
+  
   ngOnInit(): void {
+    this.getLocalization();
+  }
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
+  }
+
+
+  getLocalization() {
+    this.changeStaticSubscription = this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+      this.productStaticData = localization_content;
+    });
   }
 
   closeRFQAlert() {

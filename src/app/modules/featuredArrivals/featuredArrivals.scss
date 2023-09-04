@@ -1,11 +1,7 @@
 @import "../../scss/variables";
 .view-all-strip {
     @extend %view-all-strip;
-    background: var(--Light-grayish-orange);
     padding: 0 0 10px;
-    .quinary-btn {
-        background: var(--white);
-    }
 }
 .view-products {
     &.grid-variant1 {

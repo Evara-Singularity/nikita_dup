@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CommonService } from '../../utils/services/common.service';
 import CONSTANTS from '@app/config/constants';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'product-benefits',
@@ -18,7 +19,7 @@ export class ProductBenefitsComponent implements OnInit {
   @Input() moduleUsedIn = '';
   @Output() navigateToFAQ$: EventEmitter<any> = new EventEmitter<any>();
   imagePathAsset = CONSTANTS.IMAGE_ASSET_URL
-
+  changeStaticSubscription: Subscription = null;
   constructor(
     public _localAuthService: LocalAuthService,
     private _commonService:CommonService,
@@ -29,7 +30,7 @@ export class ProductBenefitsComponent implements OnInit {
     this.getStaticSubjectData();
   }
   getStaticSubjectData(){
-    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription =  this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
       this.cdr.detectChanges();
     });
@@ -37,6 +38,12 @@ export class ProductBenefitsComponent implements OnInit {
 
   navigateToFAQ() {
     this.navigateToFAQ$.emit();
+  }
+
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
   }
 
 }

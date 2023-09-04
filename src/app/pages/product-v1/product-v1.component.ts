@@ -101,6 +101,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     productFilterAttributesList: any;
     iscloseproductDiscInfoComponent:boolean=true;
     compareProductsData:Array<object> = [];
+    shopByDifferentBrands: object = {};
+    isShopByDifferentBrands: boolean = false;
     adsenseData: any = null;
 
     // lazy loaded component refs
@@ -182,6 +184,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     productPriceCompareInstance = null;
     @ViewChild("productPriceCompare", { read: ViewContainerRef })
     productPriceCompareContainerRef: ViewContainerRef;
+    // ondemand loaded components for shop by brands products
+    shopByBrandsInstance = null;
+    @ViewChild("shopByBrands", { read: ViewContainerRef })
+    shopByBrandsContainerRef: ViewContainerRef;
     // ondemand loaded components for sponsered products
     sponseredProductsInstance = null;
     @ViewChild("sponseredProducts", { read: ViewContainerRef })
@@ -264,7 +270,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     ) {
         this.isServer = commonService.isServer;
         this.isBrowser = commonService.isBrowser;
-        this.isLanguageHindi = ((this.router.url).toLowerCase().indexOf('/hi/') !== -1) || false;
+        // const languagePrefrence = localStorage.getItem("languagePrefrence");
         if (((this.router.url).toLowerCase().indexOf('/hi/') !== -1)) {
             this.englishUrl = this.router.url.toLowerCase().split("/hi/").join('/');;
             this.hindiUrl = this.router.url;
@@ -273,6 +279,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.hindiUrl = "/hi" + this.router.url;
             this.englishUrl = (this.router.url).toLowerCase().split("/hi/").join('/');
         }
+        this.isLanguageHindi = ((this.router.url).toLowerCase().indexOf('/hi/') !== -1) || false;
+       
     }
 
     ngOnInit() {
@@ -284,23 +292,23 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"]) {
                 this.apiResponse = rawData.product[0].data.data;
-                this.isAcceptLanguage = this.apiResponse['acceptLanguage'] && this.apiResponse['acceptLanguage'].length ? true : false; 
+                this.isAcceptLanguage = this.apiResponse['acceptLanguage'] && this.apiResponse['acceptLanguage'].length > 0 ? true : false; 
                 this.processProductData(this.apiResponse.productGroup);
                 this.setQuestionAnswerSchema();
                 if (this.apiResponse && this.apiResponse.tagProducts) {
                     this.onVisiblePopularDeals();
                 }
-
+                
             } else {
                 this.setProductNotFound();
             }
         })
-        this.initializeLocalization();
         this.route.fragment.subscribe((fragment: string) => {
             this.fragment = fragment || '';
         })
+        this.initializeLocalization();
     }
-
+    
     @HostListener('window:scroll', ['$event'])
     isScrolledIntoView() {
         if (this.similarProductsElementRef) {
@@ -358,9 +366,13 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         // analytics calls moved to this function incase PDP is redirecte to PDP
         this.callAnalyticForVisit();
         this.setMetatag();
-        if(!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null){ this.getCompareProductsData(this.rawProductData?.msn);}
-        if(this.rawProductData.defaultPartNumber.toLowerCase() == CONSTANTS.POC_MSN){
-            let url ="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js";
+        if (!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null) {
+            this.getCompareProductsData(this.rawProductData?.msn);
+            this.getShopByDifferentBrandsData(this.rawProductData?.msn);
+        }
+        if (!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null) { this.getCompareProductsData(this.rawProductData?.msn); }
+        if (this.rawProductData.defaultPartNumber.toLowerCase() == CONSTANTS.POC_MSN) {
+            let url = CONSTANTS.MODEL_JS_CDN_PATH;
             const script = document.createElement('script');
             script.src = url;
             script.type = 'module';
@@ -790,24 +802,28 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     processClinetResponse(res) {
-        if(res['productCountRes']) {
+        if (res['productCountRes']) {
             this.rawProductCountData = Object.assign({}, res['productCountRes']);
             this.remoteApiCallRecentlyBought();
         };
-        if(res['duplicateOrderRes']) {
+        if (res['duplicateOrderRes']) {
             this.duplicateOrderCheck(res['duplicateOrderRes']);
         };
-        if(res['getPurchaseListRes']) {
+        if (res['getPurchaseListRes']) {
             this.processPurchaseListData(res['getPurchaseListRes'])
         };
-        if(res['fbtRes']) {
+        if (res['fbtRes']) {
             this.fetchFBTProducts(
                 this.rawProductData,
                 Object.assign({}, res['fbtRes'])
             );
         };
-        if(res['recentProductsRes']) {
+        if (res['recentProductsRes']) {
             this.recentProductItems = (res['recentProductsRes']['data'] as any[]).map(product => this.productService.recentProductResponseToProductEntity(product));
+            this.recentProductItems = this.recentProductItems.filter(
+                (item) =>
+                    ![this.rawProductData?.msn.toLowerCase()].includes(item.moglixPartNumber.toLowerCase())
+            );
         }
     }
 
@@ -1849,6 +1865,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.productInfoPopupInstance.instance["analyticProduct"] = this._trackingService.basicPDPTrackingV1(this.rawProductData);
         this.productInfoPopupInstance.instance['msnId'] = this.rawProductData.msn;
         this.productInfoPopupInstance.instance['threeDImages'] = this.rawProductData.product3dImages;
+        this.productInfoPopupInstance.instance['pageLinkName'] = this.pageLinkName;
         this.productInfoPopupInstance.instance["modalData"] =
             oosProductIndex > -1
                 ? this.productService.getProductInfo(infoType, oosProductIndex)
@@ -1878,11 +1895,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     getBrandLink(brandDetails: {}) {
         if (brandDetails == undefined) {
-            return [];
+          return [];
+        }
+        let baseUrl = '/brands/';
+        if(this.commonService.isHindiPage(brandDetails)) {
+          baseUrl = '/hi' + baseUrl;
         }
         let d = brandDetails["friendlyUrl"];
-        return ["/brands/" + d.toLowerCase()];
-    }
+        return [baseUrl + d.toLowerCase()];
+      }
 
     private getSecondaryAttributes() {
         return {
@@ -1930,6 +1951,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
         if (this.rawProductData.productVideos && this.rawProductData.productVideos.length) {
             contentInfo["videos"] = this.rawProductData.productVideos;
+        }
+        if(this.commonService.isHindiPage(this.rawProductData.productBrandDetails) && this.commonService.isHindiPage(this.rawProductData.productCategoryDetails)) {
+            this.rawProductData.productBrandCategoryUrl = 'hi/' + this.rawProductData.productBrandCategoryUrl;
+            // this.rawProductData.productCategoryDetails.categoryLink	= 'hi/' + this.rawProductData.productCategoryDetails.categoryLink; 
         }
         const details = {
             description: this.rawProductData.productDescripton,
@@ -2082,7 +2107,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 });
             }
         } else {
-            this.goToLoginPage(this.rawProductData.productUrl + ((this.fragment && this.fragment.length) ? `#${this.fragment}` : ''));
+            this.goToLoginPage(this.rawProductData.productUrl + ((this.fragment && this.fragment.length) ? `#${this.fragment}` : ''),"Make your opinion count. Login to rate and review.");
         }
         this.cdr.detectChanges();
     }
@@ -2689,8 +2714,29 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 );
 
             this.productPriceCompareInstance.instance["compareProductsData"] = this.compareProductsData;
-            
+            this.productPriceCompareInstance.instance['ProductPriceCompareComponent'] = this.productStaticData;
            
+        }
+    }
+
+    async onVisibleShopByBrands()
+    {
+        if (!this.shopByBrandsInstance && this.isShopByDifferentBrands) {
+            const { ShopByBrandsComponent } = await import(
+                "./../../components/shop-by-brands/shop-by-brands.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(
+                ShopByBrandsComponent
+            );
+            this.shopByBrandsInstance =
+                this.shopByBrandsContainerRef.createComponent(
+                    factory,
+                    null,
+                    this.injector
+                );
+            this.shopByBrandsInstance.instance["data"] = this.shopByDifferentBrands;
+            this.shopByBrandsInstance.instance["categoryName"] = this.rawProductData.productCategoryDetails["categoryName"];
+            this.shopByBrandsInstance.instance['productStaticData'] = this.productStaticData;
         }
     }
 
@@ -2733,7 +2779,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     this.injector
                 );
             this.recentProductsInstance.instance["outOfStock"] =
-                this.rawProductData.productOutOfStock;
+                this.rawProductData.productOutOfStock;   
+            this.recentProductsInstance.instance["currentProductMsn"] = [this.rawProductData['msn']]; 
             this.recentProductsInstance.instance["recentProductList"] = this.recentProductItems;
             const custData = this.commonService.custDataTracking;
             const orderData = this.orderTracking;
@@ -3914,7 +3961,19 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         })
     }
 
+    getShopByDifferentBrandsData(msn: string) {
+        this.productService.getDifferentBrandProducts(msn).subscribe(result=>{
+            if(result && result['status'] != "error"){
+                this.shopByDifferentBrands = result;
+                this.isShopByDifferentBrands = (Object.keys(result).length > 0) ? true : false;
+            }
+        },(error)=>{
+            this.shopByDifferentBrands = [];
+        })
+    }
+
     ngOnDestroy() {
         if(this.cartSubscription) this.cartSubscription.unsubscribe();
+        this.commonService.defaultLocaleValue = localization_en.product;
      }
 }

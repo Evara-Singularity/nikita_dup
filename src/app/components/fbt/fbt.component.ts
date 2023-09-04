@@ -47,7 +47,7 @@ export class FbtComponent implements OnInit
     private cDistryoyed = new Subject();
     isModal = false;
     currentCTA = '';
-
+    changeStaticSubscription: Subscription = null;
     constructor(
         private cartService: CartService,
         private _commonService: CommonService,
@@ -66,7 +66,7 @@ export class FbtComponent implements OnInit
        }
     }
     getStaticSubjectData(){
-        this._commonService.changeStaticJson.subscribe(staticJsonData => {
+        this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
           this.productStaticData = staticJsonData;
         });
       }
@@ -138,7 +138,7 @@ export class FbtComponent implements OnInit
         let partReference = product.partNumber;
         let productPartDetails = product['productPartDetails'];
         if (productPartDetails && productPartDetails[partReference]['productPriceQuantity'] && productPartDetails[partReference]['productPriceQuantity']['india']) {
-            const productObject = this.cartService.getAddToCartProductItemRequest({ productGroupData: product, buyNow: false, quantity: this.productQuantity, isFbt: isFBT, originalProductBO: this.originalProductBO,languageMode: this.isHindiUrl });
+            const productObject = this.cartService.getAddToCartProductItemRequest({ productGroupData: product, buyNow: false, quantity: this.productQuantity, isFbt: isFBT, originalProductBO: this.originalProductBO,languageMode: this.isHindiUrl }, false, true);
             returnObj = { mProduct: productObject, validation: true }
         }
         return returnObj;
@@ -272,6 +272,9 @@ export class FbtComponent implements OnInit
         }
         this.cDistryoyed.next();
         this.cDistryoyed.unsubscribe();
+        if(this.changeStaticSubscription) {
+            this.changeStaticSubscription.unsubscribe();
+          }
     }
 }
 

@@ -5,13 +5,13 @@
         <div class="row splnewpage" [class.visibility]="!isSLPPage" [class.slpLayout1]="layoutType == 1"
             [class.slpLayout2]="layoutType == 2">
             <div class="container-fluid safetyshoebannersrow">
-                <cat-static [page_title]="page_title" [static_data]="catStaticData"></cat-static>
-                <slp-sub-category *ngIf="API_RESPONSE?.category[0]?.children && layoutType == 2"
+                <cat-static [productStaticData]='productStaticData' [page_title]="page_title" [static_data]="catStaticData"></cat-static>
+                <slp-sub-category *ngIf="API_RESPONSE?.category[0]?.children && layoutType == 2" [productStaticData]='productStaticData'
                     [sub_category_Data]=" API_RESPONSE.category[0].children"></slp-sub-category>
-                <shopby-brand [brand_Data]="shopByBrandData"></shopby-brand>
-                <cat-bestseller [bestSeller_Data]="catBestsellerData"></cat-bestseller>
+                <shopby-brand [productStaticData]='productStaticData' [brand_Data]="shopByBrandData"></shopby-brand>
+                <cat-bestseller [productStaticData]='productStaticData' [bestSeller_Data]="catBestsellerData"></cat-bestseller>
                 <div class="container-fluid safetyshshopbytype">
-                    <shopby-featr [shopBy_Data]="shopbyFeatrData"></shopby-featr>
+                    <shopby-featr [productStaticData]='productStaticData' [shopBy_Data]="shopbyFeatrData"></shopby-featr>
                 </div>
             </div>
         </div>
@@ -41,12 +41,15 @@
     <div id="category-cards-section">
         <shared-product-listing #sharedProductList
             [adsenseData]="adsenseData"
+            [isAcceptLanguage] ='isAcceptLanguage'
             [headerName]="API_RESPONSE?.category[0]['categoryDetails'] ? API_RESPONSE.category[0]['categoryDetails'].categoryName : ''"
             [pageName]="'CATEGORY'" [categoryId]="API_RESPONSE['category'][0]['categoryDetails']['categoryId']"
             [categoryName]="API_RESPONSE['category'][0]['categoryDetails']['categoryName']"
+            [categoryNameEn]="API_RESPONSE['category'][0]['categoryDetails']['categoryNameEn']"
             [categoryTaxonomay]="API_RESPONSE['category'][0]['categoryDetails']['taxonomy']"
             [productsListingData]="_productListService?.productListingData"
             [informativeVideosData]="informativeVideosData"
+            [pageLinkName]='pageLinkName'
         *ngIf="API_RESPONSE?.category[0] && _productListService &&_productListService.productListingData" [graphData]="graphData"  [isL2CategoryCheck]="isL2CategoryCheck">
         </shared-product-listing>
     </div>
@@ -61,10 +64,10 @@
                 <p class="sub_category_heading">
                     {{API_RESPONSE.category[0].categoryDetails?.categoryName}}
                     <span class="light-txt f-16">({{API_RESPONSE.category[0]?.children?.length}}
-                        Categories)</span>
+                        {{ productStaticData?.categories }})</span>
                 </p>
             </div>
-            <sub-category *ngIf="API_RESPONSE.category[0].children" [relatedCatgoryList]="API_RESPONSE.category[0].children"></sub-category>
+            <sub-category [productStaticData]='productStaticData' *ngIf="API_RESPONSE.category[0].children" [relatedCatgoryList]="API_RESPONSE.category[0].children"></sub-category>
         </div>
     </div>
 
@@ -82,7 +85,7 @@
 
         <!-- This is recently article section -->
         <div class="recent-article-container" *ngIf="(API_RESPONSE.category && API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []).length > 0">
-            <recent-articles [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []"
+            <recent-articles [productStaticData]='productStaticData' [recentArticles]="API_RESPONSE.category[5]['data'] ? API_RESPONSE.category[5]['data'] : []"
                 [title]="API_RESPONSE.category[0]?.categoryDetails?.categoryName"></recent-articles>
         </div>
         <!-- <div class="promo-container">
@@ -90,7 +93,7 @@
         </div> -->
     
         <!-- This is footer section -->
-        <category-footer [categoryFooterData]='categoryFooterData'></category-footer>
+        <category-footer [productStaticData]='productStaticData' [categoryFooterData]='categoryFooterData'></category-footer>
 
     </ng-container>
     
@@ -100,7 +103,7 @@
         </div>
     </ng-container>
     
-    <breadcrumb-nav [breadcrumb]="API_RESPONSE.category[3]"></breadcrumb-nav>
+    <breadcrumb-nav [productStaticData]='productStaticData' [breadcrumb]="API_RESPONSE.category[3]"></breadcrumb-nav>
     <whatsapp-toast
         (click)="sendWhatsappTrackingData()" [customText]="'Hi, I want to buy ' + API_RESPONSE.category[0]?.categoryDetails?.categoryName + ' products.'">
     </whatsapp-toast>

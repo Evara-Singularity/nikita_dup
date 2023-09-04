@@ -4,6 +4,7 @@ import { Component, EventEmitter, Input, NgModule, Output } from '@angular/core'
 import { NavigationExtras, Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { CommonService } from '../../utils/services/common.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'faq-list-popup',
@@ -15,7 +16,7 @@ export class FaqListPopoupComponent {
     @Output() closePopup$: EventEmitter<any> = new EventEmitter<any>();
     @Output() emitAskQuestinPopup$: EventEmitter<any> = new EventEmitter<any>();
     @Input('questionAnswerList') questionAnswerList = null;
-
+    changeStaticSubscription: Subscription = null;
     constructor(
         private router: Router,
         public localStorageService: LocalStorageService,
@@ -25,10 +26,16 @@ export class FaqListPopoupComponent {
         this.getStaticSubjectData();
      }
      getStaticSubjectData(){
-        this._commonService.changeStaticJson.subscribe(staticJsonData => {
+        this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
           this.productStaticData = staticJsonData;
         });
     }    
+    ngOnDestroy() {
+        // console.log("destroyed");
+        if(this.changeStaticSubscription) {
+          this.changeStaticSubscription.unsubscribe();
+        }
+      }
 
     toggleAskQuestionPopup() {
         this.closePopup$.emit();

@@ -74,6 +74,7 @@ export class PaymentComponent implements OnInit
   isBackClicked: boolean=false; 
   private cutIconClickedSubscription: Subscription;
   public isCutIconClicked: boolean=true;  
+  missOutSavingAmount: number=0;
   
   constructor(
     public _dataService: DataService,
@@ -179,7 +180,16 @@ export class PaymentComponent implements OnInit
       this.unAvailableMsnList = this._cartService.codNotAvailableObj["itemsArray"];
       this.callApisAsyncly();
       this.analyticVisit(cartData);
+      this.missOutSavingAmount=this.calculate_mrp_totalPayable_Difference();
     }
+  }
+  calculate_mrp_totalPayable_Difference() { 
+    const sums = this._cartService.getGenericCartSession["itemsList"].reduce((acc, item) => {
+      acc.sum_mrpAmounts += item.amount;
+      acc.sum_totalPayableAmounts += (item.totalPayableAmount + item.shippingCharges);
+      return acc;
+    }, { sum_mrpAmounts: 0, sum_totalPayableAmounts: 0 });
+    return sums.sum_mrpAmounts - sums.sum_totalPayableAmounts;
   }
 
   private getSavedCardData() {

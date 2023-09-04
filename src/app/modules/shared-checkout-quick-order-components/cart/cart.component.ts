@@ -51,7 +51,7 @@ export class CartComponent implements OnInit, AfterViewInit
 
     backButtonclickQuickorderSubscription: Subscription;
     isBackClicked: boolean=false; 
-    private cutIconClickedSubscription: Subscription;
+    private cancellIconClickedSubscription: Subscription;
     public isCutIconClicked: boolean=true; 
 
     constructor(
@@ -77,7 +77,7 @@ export class CartComponent implements OnInit, AfterViewInit
             this.isBackClicked = value;
           }
         );
-        this.cutIconClickedSubscription = this._navigationService.isCutIconQuickorderClicked$.subscribe(
+        this.cancellIconClickedSubscription = this._navigationService.isCutIconQuickorderClicked$.subscribe(
             value => {
               this.isCutIconClicked = value;
             }
@@ -102,7 +102,7 @@ export class CartComponent implements OnInit, AfterViewInit
         if (this.shippingSubscription) this.shippingSubscription.unsubscribe();
         if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
         if (this.backButtonclickQuickorderSubscription) this.backButtonclickQuickorderSubscription.unsubscribe();
-        if (this.cutIconClickedSubscription) this.cutIconClickedSubscription.unsubscribe();
+        if (this.cancellIconClickedSubscription) this.cancellIconClickedSubscription.unsubscribe();
     }
     
     openWishList(){

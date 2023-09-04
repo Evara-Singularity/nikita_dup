@@ -30,7 +30,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
     isBackClickedQuickorder: boolean=false; 
 	backButtonclickPaymentSubscription: Subscription;
     isBackClickedPayment: boolean=false; 
-	cutIconClickedSubscription: Subscription;
+	cancellIconClickedSubscription: Subscription;
     isCutIconClicked: boolean=true;
 	cutIconClickedPaymentSubscription: Subscription;
     isCutIconPaymentClicked: boolean=true;
@@ -71,7 +71,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 			this.isBackClickedPayment = value;
 		}
 		);
-		this.cutIconClickedSubscription = this._naviagtionService.isCutIconQuickorderClicked$.subscribe(
+		this.cancellIconClickedSubscription = this._naviagtionService.isCutIconQuickorderClicked$.subscribe(
 			value => {
 			  this.isCutIconClicked = value;
 			}
@@ -143,7 +143,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		if (this.cartUpdatesSubscription) { this.cartUpdatesSubscription.unsubscribe(); }
 		if (this.backButtonclickQuickorderSubscription) this.backButtonclickQuickorderSubscription.unsubscribe();
 		if (this.backButtonclickPaymentSubscription) this.backButtonclickPaymentSubscription.unsubscribe();
-		if (this.cutIconClickedSubscription) this.cutIconClickedSubscription.unsubscribe();
+		if (this.cancellIconClickedSubscription) this.cancellIconClickedSubscription.unsubscribe();
 		if (this.cutIconClickedPaymentSubscription) this.cutIconClickedPaymentSubscription.unsubscribe();
 	}
 

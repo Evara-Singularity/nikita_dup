@@ -72,7 +72,7 @@ export class PaymentComponent implements OnInit
 
   backButtonclickPaymentSubscription: Subscription;
   isBackClicked: boolean=false; 
-  private cutIconClickedSubscription: Subscription;
+  private cancellIconClickedSubscription: Subscription;
   public isCutIconClicked: boolean=true;  
   missOutSavingAmount: number=0;
   
@@ -110,7 +110,7 @@ export class PaymentComponent implements OnInit
         this.isBackClicked = value;
       }
     );
-    this.cutIconClickedSubscription = this._navigationService.isCutIconPaymentClicked$.subscribe(
+    this.cancellIconClickedSubscription = this._navigationService.isCutIconPaymentClicked$.subscribe(
       value => {
         this.isCutIconClicked = value;
       }
@@ -547,6 +547,6 @@ export class PaymentComponent implements OnInit
       this.payUOfferPopUpDataSubscription.unsubscribe();
     }
     if (this.backButtonclickPaymentSubscription) this.backButtonclickPaymentSubscription.unsubscribe();
-    if (this.cutIconClickedSubscription) this.cutIconClickedSubscription.unsubscribe();
+    if (this.cancellIconClickedSubscription) this.cancellIconClickedSubscription.unsubscribe();
   }
 }

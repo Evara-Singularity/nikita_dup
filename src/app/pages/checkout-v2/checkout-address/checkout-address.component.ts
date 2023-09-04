@@ -16,6 +16,7 @@ import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
 import { CartUtils } from './../../../utils/services/cart-utils';
 import { CommonService } from '@app/utils/services/common.service';
+import { QuickCodService } from '@app/utils/services/quick-cod.service';
 
 @Component({
     selector: 'checkout-address',
@@ -52,9 +53,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     cartUpdatesSubscription: Subscription = null;
     paymentMode: any;
     addressUpdated = false;
+    is_cod_section: number = 0;
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
-        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService, private _commonService: CommonService, private injector: Injector, private  cfr: ComponentFactoryResolver,)
+        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService, private _commonService: CommonService, private injector: Injector, private  cfr: ComponentFactoryResolver, private quickCodService: QuickCodService)
     {
         
     }
@@ -214,9 +216,24 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             const AGGREGATES = CheckoutUtil.formatAggregateValues(response);
             const NON_SERVICEABLE_MSNS: any[] = CheckoutUtil.getNonServiceableMsns(AGGREGATES);
             const NON_CASH_ON_DELIVERABLE_MSNS: any[] = CheckoutUtil.getNonCashOnDeliveryMsns(AGGREGATES);
+            this.getCodAndPayOnline(NON_CASH_ON_DELIVERABLE_MSNS);
             this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
             this.updateNonDeliverableItems(cartItems, NON_CASH_ON_DELIVERABLE_MSNS);
         })
+    }
+
+    getCodAndPayOnline(NON_CASH_ON_DELIVERABLE_MSNS){
+        if(NON_CASH_ON_DELIVERABLE_MSNS.length == 0){
+            this.quickCodService
+            .checkCODLimit(this.payableAmount)
+            .subscribe((res) => {
+              if (res && res["iswithInCODLimit"] == true) {
+                this.is_cod_section = 2
+              } else {
+                this.is_cod_section = 1
+              }
+            });
+        }
     }
 
     /**

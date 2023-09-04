@@ -243,7 +243,7 @@
 <ng-container #txnDeclined></ng-container>
 
 <!-- Nudge Pop-Up on the Payment Page -->
-<app-bottom-menu *ngIf="isBackClicked && isCancellIconClicked">
+<app-bottom-menu *ngIf="isBackClicked && isCancellIconClicked" (outData$)="closebackpopup()">
     <div content>
         <div class="payment-nudgePopup-conatiner">
             <div class="header-bottom-menu">

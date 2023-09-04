@@ -185,7 +185,7 @@ export class PaymentComponent implements OnInit
   }
   calculate_mrp_totalPayable_Difference() { 
     const sums = this._cartService.getGenericCartSession["itemsList"].reduce((acc, item) => {
-      acc.sum_mrpAmounts += item.amount;
+      acc.sum_mrpAmounts += (item.amount * item.productQuantity);
       acc.sum_totalPayableAmounts += (item.totalPayableAmount + item.shippingCharges);
       return acc;
     }, { sum_mrpAmounts: 0, sum_totalPayableAmounts: 0 });

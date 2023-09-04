@@ -77,7 +77,7 @@ export class CartComponent implements OnInit, AfterViewInit
             this.isBackClicked = value;
           }
         );
-        this.cancelIconClickedSubscription = this._navigationService.isCutIconQuickorderClicked$.subscribe(
+        this.cancelIconClickedSubscription = this._navigationService.isCancelIconQuickOrderClicked$.subscribe(
             value => {
               this.isCancelIconClicked = value;
             }

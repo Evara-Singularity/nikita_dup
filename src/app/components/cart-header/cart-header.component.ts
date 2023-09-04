@@ -71,7 +71,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 			this.isBackClickedPayment = value;
 		}
 		);
-		this.cancelIconClickedSubscription = this._naviagtionService.isCutIconQuickorderClicked$.subscribe(
+		this.cancelIconClickedSubscription = this._naviagtionService.isCancelIconQuickOrderClicked$.subscribe(
 			value => {
 			  this.isCancelIconClicked = value;
 			}

@@ -15,15 +15,15 @@ export class NavigationService
   moduleName = null;
   pdpBreadCrumbData = [];
   popUpState: boolean = false;
-  private isBackClickedQuickorderSubject = new BehaviorSubject<boolean>(false);
-  isBackClickedQuickOrder$=this.isBackClickedQuickorderSubject.asObservable();
-  private isCutIconClickedQuickOrderSubject = new BehaviorSubject<boolean>(true);
-  isCutIconQuickorderClicked$ = this.isCutIconClickedQuickOrderSubject.asObservable();
+  private isBackClickedQuickOrderSubject = new BehaviorSubject<boolean>(false);
+  isBackClickedQuickOrder$=this.isBackClickedQuickOrderSubject.asObservable();
+  private isCancelIconClickedQuickOrderSubject = new BehaviorSubject<boolean>(true);
+  isCancelIconQuickOrderClicked$ = this.isCancelIconClickedQuickOrderSubject.asObservable();
 
   private isBackClickedPaymentSubject = new BehaviorSubject<boolean>(true);
   isBackClickedPayment$=this.isBackClickedPaymentSubject.asObservable();
-  private isCutIconClickedPaymentSubject = new BehaviorSubject<boolean>(true);
-  isCancelIconPaymentClicked$ = this.isCutIconClickedPaymentSubject.asObservable();
+  private isCancelIconClickedPaymentSubject = new BehaviorSubject<boolean>(true);
+  isCancelIconPaymentClicked$ = this.isCancelIconClickedPaymentSubject.asObservable();
 
 
   constructor(private router: Router, private _localStorage: LocalStorageService, private productService: ProductService)
@@ -68,11 +68,11 @@ export class NavigationService
   }
 
   setBackClickedQuickOrder(value: boolean) {
-    this.isBackClickedQuickorderSubject.next(value);
+    this.isBackClickedQuickOrderSubject.next(value);
   }
 
   setCancelIconQuickOrderClicked(value: boolean) {
-    this.isCutIconClickedQuickOrderSubject.next(value);
+    this.isCancelIconClickedQuickOrderSubject.next(value);
   }
 
   setBackClickedPayment(value: boolean) {
@@ -80,7 +80,7 @@ export class NavigationService
   }
 
   setCancelIconPaymentClicked(value: boolean) {
-    this.isCutIconClickedPaymentSubject.next(value);
+    this.isCancelIconClickedPaymentSubject.next(value);
   }
 
   //in case of login flow no need to pop from history

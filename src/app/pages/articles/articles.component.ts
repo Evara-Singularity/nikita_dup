@@ -35,6 +35,7 @@ export class ArticlesComponent implements OnInit
     isServer = false;
     pageNumber = 0;
     hasNoRecords = false;
+    isAppDevice=false;
 
 
     constructor(private route: ActivatedRoute, private router: Router, private footerService: FooterService, private _commonService: CommonService, private toastMessageService: ToastMessageService, private _analytics: GlobalAnalyticsService,
@@ -46,6 +47,7 @@ export class ArticlesComponent implements OnInit
 
     ngOnInit(): void
     {
+        this.isAppDevice=this.route.snapshot.queryParamMap.get('device')=='app'?true:false;
         const ROUTE_INFO = (this.router.url.split('?')[0].split('#')[0] as string).toLowerCase();
         this.articleUrl = `${this.articleUrl}${ROUTE_INFO}`;
         if (this.route.snapshot.data['responseData']) {

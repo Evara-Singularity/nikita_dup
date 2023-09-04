@@ -70,7 +70,7 @@ export class CartComponent implements OnInit, AfterViewInit
 
     ngOnInit() {
         this._navigationService.setBackClickedQuickorder(false)
-        this._navigationService.setCutIconQuickorderClicked(true);
+        this._navigationService.setCancellIconQuickorderClicked(true);
 
         this.backButtonclickQuickorderSubscription = this._navigationService.isBackClickedQuickorder$.subscribe(
           value => {
@@ -86,7 +86,7 @@ export class CartComponent implements OnInit, AfterViewInit
 
     closebackpopup(){
         this._navigationService.setBackClickedQuickorder(false)
-        this._navigationService.setCutIconQuickorderClicked(false);
+        this._navigationService.setCancellIconQuickorderClicked(false);
     }
     ngAfterViewInit(): void {
         if (this._commonService.isBrowser) {

@@ -71,7 +71,7 @@ export class NavigationService
     this.isBackClickedQuickorderSubject.next(value);
   }
 
-  setCutIconQuickorderClicked(value: boolean) {
+  setCancellIconQuickorderClicked(value: boolean) {
     this.isCutIconClickedQuickOrderSubject.next(value);
   }
 
@@ -79,7 +79,7 @@ export class NavigationService
     this.isBackClickedPaymentSubject.next(value);
   }
 
-  setCutIconPaymentClicked(value: boolean) {
+  setCancellIconPaymentClicked(value: boolean) {
     this.isCutIconClickedPaymentSubject.next(value);
   }
 

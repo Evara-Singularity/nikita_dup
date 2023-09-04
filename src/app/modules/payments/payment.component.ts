@@ -104,7 +104,7 @@ export class PaymentComponent implements OnInit
   ngOnInit()
   {
     this._navigationService.setBackClickedPayment(false);
-    this._navigationService.setCutIconPaymentClicked(true);
+    this._navigationService.setCancellIconPaymentClicked(true);
     this.backButtonclickPaymentSubscription = this._navigationService.isBackClickedPayment$.subscribe(
       value => {
         this.isBackClicked = value;
@@ -532,7 +532,7 @@ export class PaymentComponent implements OnInit
 
   closebackpopup(){
     this._navigationService.setBackClickedPayment(false);
-    this._navigationService.setCutIconPaymentClicked(false);
+    this._navigationService.setCancellIconPaymentClicked(false);
   }
 
   backFromBackPopup(){

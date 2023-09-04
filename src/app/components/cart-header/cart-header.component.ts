@@ -47,8 +47,8 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 	{
 		this._naviagtionService.setBackClickedQuickorder(false);
 		this._naviagtionService.setBackClickedPayment(false);
-		this._naviagtionService.setCutIconQuickorderClicked(true);
-		this._naviagtionService.setCutIconPaymentClicked(true);
+		this._naviagtionService.setCancellIconQuickorderClicked(true);
+		this._naviagtionService.setCancellIconPaymentClicked(true);
 
 		this.cartUpdatesSubscription = this._cartService.getCartUpdatesChanges().subscribe(cartSession =>
 		{

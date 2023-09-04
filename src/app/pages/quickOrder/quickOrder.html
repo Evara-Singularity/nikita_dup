@@ -4,7 +4,7 @@
             <!-- <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"></cart-notifications> -->
             <ng-container *ngIf="_localAuthService.isUserLoggedIn()">
                 <quick-order-all-address [addDeliveryOrBilling]="addDeliveryOrBilling"
-                    (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
+                    (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event, true)"
                     (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
                     (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></quick-order-all-address>
             </ng-container>

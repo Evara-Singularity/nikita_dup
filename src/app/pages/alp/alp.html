@@ -3,7 +3,7 @@
     <app-promo  [page]="'alp'" class="fixed-btm-app-prmo" [isOverlayMode]="true"></app-promo>
     <div *ngIf="!showPageNotFound">
         <div id="category-cards-section">
-            <shared-product-listing [headerName]="titleHeading ? titleHeading : ''" [pageName]="'ATTRIBUTE'"
+            <shared-product-listing [headerName]="titleHeading ? titleHeading : ''" [pageName]="'ATTRIBUTE'" [pageLinkName]='pageLinkName'
                 [productsListingData]="_productListService?.productListingData" [titleDescription]="titleDescription"
                 [categoryName]="alpCategoryCodeData.categoryDetails.categoryName" [isAcceptLanguage]='isAcceptLanguage'
                 *ngIf="_productListService &&_productListService.productListingData">

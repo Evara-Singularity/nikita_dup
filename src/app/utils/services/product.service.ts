@@ -8,6 +8,7 @@ import { ENDPOINTS } from "@app/config/endpoints";
 import { ProductsEntity } from "../models/product.listing.search";
 import { CommonService } from "./common.service";
 import { LocalAuthService } from "./auth.service";
+import { LocalStorageService } from "ngx-webstorage";
 interface ProductDataArg {
     productBO: string;
     refreshCrousel?: boolean;
@@ -29,7 +30,7 @@ export class ProductService {
         similarData: [],
     };
 
-    constructor(private _dataService: DataService, public http: HttpClient, private _commonService: CommonService, private _localAuthService: LocalAuthService) { }
+    constructor(private _dataService: DataService, public http: HttpClient, private _commonService: CommonService, private _localAuthService: LocalAuthService, private localStorageService:LocalStorageService) { }
 
     getSimilarProductBoByIndex(index) {
         return this.oosSimilarProductsData.similarData[index].rawProductData;
@@ -1289,7 +1290,8 @@ export class ProductService {
     }
 
     getPromoCodeDescription (promoCodeDescription){
-        const pcode = promoCodeDescription.split(this.promoCodeDescription_off_key);
+        let pcode = promoCodeDescription.split(this.promoCodeDescription_off_key);
+        if(pcode.length == 1){pcode = promoCodeDescription.split("Off")}
         if(typeof pcode != 'string' && pcode.length > 0){
             return pcode[0] as string;
         }else{
@@ -1298,7 +1300,7 @@ export class ProductService {
     }
 
     public updateUserLanguagePrefrence() {
-        const languagePrefrence = localStorage.getItem("languagePrefrence");
+        const languagePrefrence = this.localStorageService.retrieve("languagePrefrence");
         const userSession = this._localAuthService.getUserSession();
         if (
           userSession &&

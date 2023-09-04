@@ -420,6 +420,10 @@ export class RfqSupplierComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    this._commonService.loadFreshChat();
+  }
+
 
 
 

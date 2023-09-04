@@ -124,6 +124,7 @@ export class AddToCartComponent implements OnDestroy {
             }
             if (productDetails.filterAttributesList) {
               this.product['discount'] = productDetails['discount'] || null;
+              this.product ['mrp'] = productDetails['productMRP'] || null;
               this.loadVariantPop(this.product, productDetails, buyNow);
             } else {
               this.addToCart(productDetails, buyNow);

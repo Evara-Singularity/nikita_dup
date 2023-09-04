@@ -51,6 +51,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     logoutSubscription: Subscription = null;
     cartUpdatesSubscription: Subscription = null;
     paymentMode: any;
+    addressUpdated = false;
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
         private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService, private _commonService: CommonService, private injector: Injector, private  cfr: ComponentFactoryResolver,)
@@ -155,12 +156,25 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this._cartService.shippingAddress = address;
         this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
         this._cartService.callShippingValueApi(this.cartSession);
+        this.updateShipping();
     }
+
+    updateShipping() {
+        if(this.addressUpdated) {
+          const cartSession = this._cartService.getCartSession();
+          const sro = this._cartService.getShippingObj(cartSession);
+          this._cartService.getShippingValue(sro).subscribe((data) => {
+            this._cartService.updateShippingCharges(data, cartSession);
+          });
+        }
+        this.addressUpdated = true;
+      }
 
     handleBillingAddressEvent(address)
     {
         this.billingAddress = address;
         this._cartService.billingAddress = address;
+        this.updateShipping();
     }
 
     /**

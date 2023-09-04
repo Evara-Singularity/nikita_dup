@@ -197,6 +197,7 @@ export const product = {
     raise_request: 'RAISE REQUEST',
     kindly_select_a_valid_product_type: 'Kindly select a valid product type',
     moglix_insight: 'Moglix Insight',
+    moglix_insights: 'Moglix Insights',
     top: 'Top',
     price_range_of: 'price range of',
     categories_of: 'categories of',
@@ -277,5 +278,8 @@ export const product = {
     Moglix_is_a_one_stop_shop_for_genuine:"Moglix is a one stop shop for genuine",
     Cash_on_delivery_Free_shipping_available: "Cash on delivery, Free shipping available.",
     for: ".",
-    purchase_as_per:"purchase as per"
+    purchase_as_per:"purchase as per",
+    order_percentage: 'Order Percentage',
+    brands: 'Brands',
+    in_1: 'in'
 }

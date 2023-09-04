@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FooterService } from '@services/footer.service';
 import { CONSTANTS } from '@config/constants';
 import { ClientUtility } from '@utils/client.utility';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { GlobalAnalyticsService } from '@services/global-analytics.service';
 import { ProductListService } from '@app/utils/services/productList.service';
@@ -56,7 +56,10 @@ export class AlpComponent implements OnInit {
     showPageNotFound: boolean;
     alpPriceListData = [];
     isAcceptLanguage: boolean = false;
-    productStaticData: any;
+    pageLinkName: string;
+    productStaticData = this._commonService.defaultLocaleValue;
+    changeStaticSubscription: Subscription = null;
+
 
     constructor(
         @Optional() @Inject(RESPONSE) private _response,
@@ -82,6 +85,7 @@ export class AlpComponent implements OnInit {
         if (this._commonService.isBrowser) {
             ClientUtility.scrollToTop(100);
         }
+        this.getStaticSubjectData();
     }
 
     getLocalization() {
@@ -89,6 +93,12 @@ export class AlpComponent implements OnInit {
             this.productStaticData = localization_content;
         });
     }
+
+    getStaticSubjectData(){
+        this.changeStaticSubscription  = this._commonService.changeStaticJson.subscribe(staticJsonData => {
+          this.productStaticData = staticJsonData;
+        });
+      }
 
 
     setCategoryDataFromResolver() {
@@ -295,8 +305,9 @@ export class AlpComponent implements OnInit {
                 this.taxo2 = this.alpCategoryCodeData.categoryDetails.taxonomy.split("/")[1] || '';
                 this.taxo3 = this.alpCategoryCodeData.categoryDetails.taxonomy.split("/")[2] || '';
             }
+            this.pageLinkName = "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing";
             let page = {
-                'pageName': "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing",
+                'pageName': this.pageLinkName,
                 'channel': "listing",
                 'subSection': "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing",
                 'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
@@ -445,7 +456,7 @@ export class AlpComponent implements OnInit {
             // JIRA: ODP-1371
             // this.setAmpTag('alp');
         }
-        if(this.isAcceptLanguage) {
+        if(this.isAcceptLanguage && this._commonService.isServer) {
             const languagelink = this._renderer2.createElement("link");
             languagelink.rel = "alternate";
             if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
@@ -465,10 +476,8 @@ export class AlpComponent implements OnInit {
                 elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', ''); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
             }
             elanguagelink.hreflang = 'en'
-            this._renderer2.appendChild(this._document.head, elanguagelink);
-            if (this._commonService.isBrowser) {
+            this._renderer2.appendChild(this._document.head, elanguagelink);            
                 this.isHindiUrl ? document.documentElement.setAttribute("lang", 'hi') : document.documentElement.setAttribute("lang", 'en');
-            }
         }
 
         // Start Canonical URL

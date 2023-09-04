@@ -110,7 +110,7 @@ export class PaymentComponent implements OnInit
         this.isBackClicked = value;
       }
     );
-    this.cancellIconClickedSubscription = this._navigationService.isCutIconPaymentClicked$.subscribe(
+    this.cancellIconClickedSubscription = this._navigationService.isCancellIconPaymentClicked$.subscribe(
       value => {
         this.isCancellIconClicked = value;
       }

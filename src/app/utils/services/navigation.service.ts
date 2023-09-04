@@ -23,7 +23,7 @@ export class NavigationService
   private isBackClickedPaymentSubject = new BehaviorSubject<boolean>(true);
   isBackClickedPayment$=this.isBackClickedPaymentSubject.asObservable();
   private isCutIconClickedPaymentSubject = new BehaviorSubject<boolean>(true);
-  isCutIconPaymentClicked$ = this.isCutIconClickedPaymentSubject.asObservable();
+  isCancellIconPaymentClicked$ = this.isCutIconClickedPaymentSubject.asObservable();
 
 
   constructor(private router: Router, private _localStorage: LocalStorageService, private productService: ProductService)

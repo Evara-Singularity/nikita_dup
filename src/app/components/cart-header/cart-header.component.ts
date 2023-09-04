@@ -32,8 +32,8 @@ export class CartHeaderComponent implements OnInit, OnDestroy
     isBackClickedPayment: boolean=false; 
 	cancellIconClickedSubscription: Subscription;
     isCancellIconClicked: boolean=true;
-	cutIconClickedPaymentSubscription: Subscription;
-    isCutIconPaymentClicked: boolean=true;
+	cancellIconClickedPaymentSubscription: Subscription;
+    isCancellIconPaymentClicked: boolean=true;
 
 	constructor(
 		public _commonService: CommonService,
@@ -76,9 +76,9 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 			  this.isCancellIconClicked = value;
 			}
 		  );  
-		  this.cutIconClickedPaymentSubscription = this._naviagtionService.isCutIconPaymentClicked$.subscribe(
+		  this.cancellIconClickedPaymentSubscription = this._naviagtionService.isCancellIconPaymentClicked$.subscribe(
 			value => {
-			  this.isCutIconPaymentClicked = value;
+			  this.isCancellIconPaymentClicked = value;
 			}
 		  );    
 	}
@@ -100,11 +100,11 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 			this.goBack$.emit();
 			return
 		}
-		if(this.isPayment && !this.isBackClickedPayment && this.isCutIconPaymentClicked){
+		if(this.isPayment && !this.isBackClickedPayment && this.isCancellIconPaymentClicked){
 			this._naviagtionService.setBackClickedPayment(true);
 			return
 		}
-		if(this.isPayment && this.isBackClickedPayment && this.isCutIconPaymentClicked){
+		if(this.isPayment && this.isBackClickedPayment && this.isCancellIconPaymentClicked){
 			this._naviagtionService.setBackClickedPayment(true);
 			this.goBack$.emit();
 			return
@@ -144,7 +144,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		if (this.backButtonclickQuickorderSubscription) this.backButtonclickQuickorderSubscription.unsubscribe();
 		if (this.backButtonclickPaymentSubscription) this.backButtonclickPaymentSubscription.unsubscribe();
 		if (this.cancellIconClickedSubscription) this.cancellIconClickedSubscription.unsubscribe();
-		if (this.cutIconClickedPaymentSubscription) this.cutIconClickedPaymentSubscription.unsubscribe();
+		if (this.cancellIconClickedPaymentSubscription) this.cancellIconClickedPaymentSubscription.unsubscribe();
 	}
 
 }

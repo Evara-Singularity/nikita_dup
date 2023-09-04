@@ -152,6 +152,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.rawProductData);
     this.returnProductDetails().subscribe((result) => {
       this.addTocart(result, true);
       this.item = result;

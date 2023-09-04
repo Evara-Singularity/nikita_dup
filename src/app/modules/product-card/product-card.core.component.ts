@@ -80,6 +80,10 @@ export class ProductCardCoreComponent implements OnInit {
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   productReviewCount: string;
   productStaticData = this._commonService.defaultLocaleValue;
+  // ondemad loaded components for quick order popUp
+  quickOrderInstance = null;
+  @ViewChild("quickOrder", { read: ViewContainerRef })
+  quickOrderContainerRef: ViewContainerRef;
   
   constructor(
     public _cartService: CartService,
@@ -126,12 +130,15 @@ export class ProductCardCoreComponent implements OnInit {
       map(productRawData => {
         // console.log('data ==> ', productRawData);
         if (productRawData['productBO']) {
-          return this._cartService.getAddToCartProductItemRequest({ productGroupData: productRawData['productBO'], buyNow });
+          return {
+            productDetails: this._cartService.getAddToCartProductItemRequest({ productGroupData: productRawData['productBO'], buyNow }),
+            productRawData: productRawData['productBO']  // Pass the productRawData along with productDetails
+          };
         } else {
           return null;
         }
       })
-    ).subscribe((productDetails: AddToCartProductSchema) => {
+    ).subscribe(({ productDetails, productRawData }: { productDetails: AddToCartProductSchema, productRawData: any }) => {
       if (productDetails) {
         if (productDetails['productQuantity'] && (productDetails['quantityAvailable'] < productDetails['productQuantity'])) {
           this._toastMessageService.show({ type: 'error', text: "Quantity not available" });
@@ -140,7 +147,7 @@ export class ProductCardCoreComponent implements OnInit {
         if (productDetails.filterAttributesList) {
           this.loadVariantPop(this.product, productDetails, buyNow);
         } else {
-          this.addToCart(productDetails, buyNow)
+          this.addToCart(productDetails, buyNow, productRawData)
         }
       } else {
         this.common_showAddToCartToast('Product does not exist');
@@ -188,7 +195,7 @@ export class ProductCardCoreComponent implements OnInit {
   }
 
   variantAddToCart(data) {
-    this.addToCart(data.product, data.buyNow)
+    this.addToCart(data.product, data.buyNow, null)
   }
 
   navigateToPDP() {
@@ -350,7 +357,57 @@ export class ProductCardCoreComponent implements OnInit {
   }
 
 
-  private addToCart(productDetails, buyNow): void {
+  private addToCart(productDetails, buyNow, rawData): void {
+    if(buyNow) {
+      this._productService.validateQuickCheckout(rawData).subscribe((res) => {
+        if (res != null) {
+          this.quickCheckoutPopUp(res.address, rawData);
+          // this._loader.setLoaderState(false);
+          this._commonService.setBodyScroll(null, false);
+          // this.analyticAddToCart(buyNow, this.cartQunatityForProduct, true);
+      } else {
+        this.proceedToCart(productDetails, buyNow)
+      }
+      })
+    } else {
+      this.proceedToCart(productDetails, buyNow)
+    }
+    
+  }
+
+  async quickCheckoutPopUp(address, rawProductData) {
+    console.log(rawProductData);
+    if (!this.quickOrderInstance) {
+        this._loader.setLoaderState(true);
+        const { PdpQuickCheckoutComponent } = await import(
+            "../../components/pdp-quick-checkout/pdp-quick-checkout.component"
+        ).finally(() => {
+            this._loader.setLoaderState(false);
+            this.cdr.detectChanges();
+        });
+        const factory = this._cfr.resolveComponentFactory(PdpQuickCheckoutComponent);
+        this.quickOrderInstance = this.quickOrderContainerRef.createComponent(
+            factory,
+            null,
+            this._injector
+        );
+
+        this.quickOrderInstance.instance["rawProductData"] = rawProductData;
+        this.quickOrderInstance.instance["productPrice"] = rawProductData.productPrice;
+        this.quickOrderInstance.instance["selectedProductBulkPrice"] = null;
+        this.quickOrderInstance.instance["cartQunatityForProduct"] = 1;
+        this.quickOrderInstance.instance["address"] = address;
+        (
+            this.quickOrderInstance.instance["isClose"] as EventEmitter<boolean>
+        ).subscribe((status) => {
+            this._router.navigate(["/checkout"]);
+        });
+        this.quickOrderInstance = null;
+        this.cdr.detectChanges();
+    }
+}
+
+  proceedToCart(productDetails, buyNow) {
     this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
       if (!result && this._cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api

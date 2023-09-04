@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { catchError } from "rxjs/operators";
+import { catchError, map, mergeMap } from "rxjs/operators";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { DataService } from "./data.service";
 import CONSTANTS from "../../config/constants";
@@ -1319,6 +1319,139 @@ export class ProductService {
               this._localAuthService.setUserSession(newUserSession);
             }
           })
+        }
+    }
+
+    // quick order validation utilities
+    validateQuickCheckout(rawProductData): Observable<any> {
+        if (this._localAuthService.isUserLoggedIn()) {
+            const userData = this._localAuthService.getUserSession();
+            const userId = userData ? userData["userId"] : null;
+            // if(!rawProductData['defaultPartNumber']) {
+            //     rawProductData['defaultPartNumber'] = rawProductData['productId'];
+            //     rawProductData['productPrice'] = rawProductData.totalPayableAmount;
+            //     rawProductData['productLinks'] = {
+            //         canonical: rawProductData['productUrl'],
+            //         default: rawProductData['productUrl']
+            //     }
+            //     rawProductData['productBrandDetails'] = {
+            //         idBrand: rawProductData['brandId'],
+            //         brandName: rawProductData['brandName']
+            //     }
+            //     rawProductData['productCategoryDetails'] = {
+            //         categoryCode: rawProductData['categoryCode'],
+            //         categoryName: rawProductData['category']
+            //     }
+            // }
+            return this.getCustomerLastOrder({
+                    customerId: userId,
+                    limit: 1,
+                })
+                .pipe(
+                    map(
+                        (res) => {
+                            if (!res) {
+                                return null;
+                            } else {
+                                console.log('customer verificatio: ' + this.getCustomerLastOrderVerification(res))
+                                return this.getCustomerLastOrderVerification(res);
+                            }
+                        },
+                        catchError((error) => {
+                            return of(null);
+                        })
+                    ),
+                    mergeMap((response) => {
+                        if (response) {
+                            const postBody = {
+                                productId: [rawProductData["defaultPartNumber"]],
+                                toPincode:
+                                    response.addressDetails["shippingAddress"][0]["zipCode"],
+                                price: rawProductData.productPrice,
+                            };
+                            return this.getLogisticAvailability(postBody)
+                                .pipe(
+                                    map(
+                                        (ress) => {
+                                            if (!ress) {
+                                                return null;
+                                            } else {
+                                                return this.getServiceAvailabilityVerification(
+                                                    ress,
+                                                    response,
+                                                    rawProductData
+                                                );
+                                            }
+                                        },
+                                        catchError((error) => {
+                                            return of(null);
+                                        })
+                                    )
+                                );
+                        } else {
+                            return of(null);
+                        }
+                    })
+                );
+        } else {
+            return of(null);
+        }
+    }
+
+    getCustomerLastOrderVerification(res) {
+        if (res && res["lastOrderDetails"] && res["lastOrderDetails"].length) {
+            const len =
+                res["lastOrderDetails"].length == 0
+                    ? res["lastOrderDetails"].length
+                    : res["lastOrderDetails"].length - 1;
+            const isValidOrder =
+                res["lastOrderDetails"][len].paymentType == "COD" &&
+                res["lastOrderDetails"][len].orderStatus == "DELIVERED";
+            if (isValidOrder) {
+                const isValidShippingAddress = (
+                    res["lastOrderDetails"][len].addressType == 'shipping' &&
+                    res["lastOrderDetails"][len]["addressDetails"] &&
+                    res["lastOrderDetails"][len]["addressDetails"]["shippingAddress"]
+                    && res["lastOrderDetails"][len]["addressDetails"]["shippingAddress"].length == 1
+                );
+                const isValidBillingAddress = (
+                    res["lastOrderDetails"][len].addressType == 'billing' &&
+                    res["lastOrderDetails"][len]["addressDetails"] &&
+                    res["lastOrderDetails"][len]["addressDetails"]["billingAddress"] &&
+                    res["lastOrderDetails"][len]["addressDetails"]["billingAddress"].length == 1 &&
+                    res["lastOrderDetails"][len]["addressDetails"]["shippingAddress"] &&
+                    res["lastOrderDetails"][len]["addressDetails"]["shippingAddress"].length == 1
+                );
+                if (isValidShippingAddress || isValidBillingAddress) {
+                    return {
+                        addressDetails: res["lastOrderDetails"][len]["addressDetails"],
+                        addressType: res["lastOrderDetails"][len]["addressType"],
+                    };
+                } else {
+                    return null
+                }
+
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    getServiceAvailabilityVerification(ress, address, rawProductData) {
+        if (ress && ress["statusCode"] && ress["statusCode"] == 200) {
+            let data =
+                ress["data"][rawProductData["defaultPartNumber"]]["aggregate"];
+            if (data["serviceable"] == true && data["codAvailable"] == true) {
+                return {
+                    address: address
+                };
+            } else {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 

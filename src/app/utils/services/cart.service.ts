@@ -1065,6 +1065,7 @@ export class CartService
         const productMinimmumQuantity = (priceQuantityCountry && priceQuantityCountry['moq']) ? priceQuantityCountry['moq'] : 1;
         const incrementUnit = (priceQuantityCountry && priceQuantityCountry['incrementUnit']) ? priceQuantityCountry['incrementUnit'] : 1;
         const productLinks = productPartDetails['productLinks'];
+        debugger;
         const productURL = (args.languageMode) ? v1 ? args.productGroupData['productUrl'] : args.originalProductBO['defaultCanonicalUrl'] : (productPartDetails['canonicalUrl'] || productLinks['canonical'] || productLinks['default']);
         const product = {
             sessionId: userSession.sessionId,

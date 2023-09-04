@@ -9,6 +9,7 @@ import {
 } from "@angular/core";
 import { LocalAuthService } from "@app/utils/services/auth.service";
 import { CommonService } from "@app/utils/services/common.service";
+import { LocalStorageService } from "ngx-webstorage";
 
 @Component({
   selector: "select-language",
@@ -24,11 +25,12 @@ export class SelectLanguageComponent implements OnInit {
 
   constructor(
     private commonService: CommonService,
-    private localAuthService: LocalAuthService
+    private localAuthService: LocalAuthService,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
-    this.languagePrefrence = localStorage.getItem("languagePrefrence");
+    this.languagePrefrence = this.localStorageService.retrieve("languagePrefrence");
     this.isPopUp = localStorage.getItem("isPopUp");
     this.updateUserLanguagePrefrence();
   }
@@ -54,7 +56,7 @@ export class SelectLanguageComponent implements OnInit {
   }
 
   closeLanguagePopup(language) {
-    localStorage.setItem("languagePrefrence", language);
+    this.localStorageService.store("languagePrefrence", language);
     this.languagePrefrence = language;
     localStorage.setItem("isPopUp", "true");
     this.isPopUp = "true";
@@ -62,7 +64,7 @@ export class SelectLanguageComponent implements OnInit {
   }
 
   translate() {
-    localStorage.setItem("languagePrefrence", "hi");
+    this.localStorageService.store("languagePrefrence", "hi");
     this.languagePrefrence = "hi";
     localStorage.setItem("isPopUp", "true");
     this.isPopUp = "true";

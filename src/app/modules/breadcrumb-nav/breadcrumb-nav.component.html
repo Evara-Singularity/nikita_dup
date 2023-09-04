@@ -3,7 +3,7 @@
         <ul class="bread-head no-margin">
             <li [routerLink]="['/']" class="f-size-12"><a [href]="baseDomain + '/'" ></a> {{ productStaticData?.home }} </li>
             <li class="item f-size-12" *ngFor="let item of breadcrumb" (click)="goToCategory(item.categoryLink)">
-                <a [href]="baseDomain + (_commonService.isHindiPage(item) ? 'hi/' : '/') + item.categoryLink">{{item?.categoryName}}</a>
+                <a [href]="baseDomain +(_commonService.isHindiPage(item) ? '/hi/' : '/') + item.categoryLink">{{item?.categoryName}}</a>
             </li>
         </ul>
     </div>

@@ -10,7 +10,9 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
 import CONSTANTS from './config/constants';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
+import { environment } from 'environments/environment';
+// import { ServiceWorkerModule } from '@angular/service-worker';
+// import { environment } from '../environments/environment';
 // import { SpeedTestModule } from 'ng-speed-test';
 
 

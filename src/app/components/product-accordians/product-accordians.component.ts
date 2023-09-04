@@ -72,7 +72,6 @@ export class ProductAccordiansComponent {
     if (categoryBucketRes && categoryBucketRes.length) {
       categoryBucketRes.map(each => this._commonService.isHindiPage(each) ? each['link']='hi/' + each['link'] : each['link'])
       this.ACCORDIAN_DATA[1] = categoryBucketRes;
-      console.log(categoryBucketRes)
       // accordian data
       // console.log(this.accordiansDetails['name']);
       this.accordiansDetails.push({

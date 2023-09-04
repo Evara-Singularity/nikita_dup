@@ -9,6 +9,8 @@ import { ProductService } from '@app/utils/services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as localization_en from '../../config/static-en';
 import * as localization_hi from '../../config/static-hi';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: 'shared-product-listing',
@@ -64,7 +66,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
   taxonomyCodesArray: Array<any> = [];
   @Input() isAcceptLanguage = false;
   showNudge = true;
-  
+  @Input() pageLinkName = '';
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
     private _injector: Injector,
@@ -74,6 +76,8 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     private _localAuthService: LocalAuthService,
     private _activatedRoute: ActivatedRoute,
     private router: Router,
+    private _analyticsService: GlobalAnalyticsService,
+    private localStorageService: LocalStorageService,
     public _commonService: CommonService) {
   }
 
@@ -81,9 +85,8 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
     this.initializeLocalization();
-    const languagePrefrence = localStorage.getItem("languagePrefrence");
+    const languagePrefrence = this.localStorageService.retrieve("languagePrefrence");
     this.updateUserLanguagePrefrence(languagePrefrence);
-    console.log(this.productsListingData);
   }
 
   ngAfterViewInit() {
@@ -114,7 +117,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
 
   updateUserLang() {
     let userPreference = null;
-    userPreference = localStorage.getItem('languagePrefrence');
+    userPreference = this.localStorageService.retrieve('languagePrefrence');
     const userSession = this._localAuthService.getUserSession();
     if (
       userSession &&
@@ -125,7 +128,6 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
       userPreference = userSession['preferredLanguage'];
     }
     // this.initializeLocalization(userPreference && userPreference == 'hi' ? true : false);
-    console.log(this.isHindiUrl, userPreference)
     if(!this.isHindiUrl && userPreference == 'hi') {
       const URL = '/hi' + this.getSanitizedUrl(this.router.url);
       this.router.navigateByUrl(URL);
@@ -214,12 +216,13 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
   }
 
   pageTranslation(){
+    this._analyticsService.sendAdobeCall({ page: { channel: 'listing', linkPageName: this.pageLinkName, linkName: 'Translation icon clicked' } }, "genericClick")
     const isPopUp = localStorage.getItem("isPopUp");
     if(isPopUp == null && !this.isHindiUrl){
       this.loadSelectLangPopup();
     }else{
       const language = this.isHindiUrl ? "en" : "hi";
-      localStorage.setItem("languagePrefrence", language); 
+      this.localStorageService.store("languagePrefrence", language); 
       this._productService.updateUserLanguagePrefrence();
       this.translate();
     }
@@ -338,7 +341,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
             keyword = this.categoryName;
           } else if (this.pageName == 'BRAND') {
             keyword = this.brandName;
-            if(this._commonService.isHindiUrl && this.productsListingData && this.productsListingData['totalCount'] > 0) {
+            if (this._commonService.isHindiUrl && this.productsListingData && this.productsListingData['totalCount'] > 0) {
               keyword = this.productsListingData['products'][0]['brandName']
           }
           }

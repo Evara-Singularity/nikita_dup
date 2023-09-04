@@ -25,6 +25,10 @@ export class DealsLayoutComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    this.commonService.loadFreshChat();
+  }
+
   sendAdobeAnalysis() {
     let PAGE = {
       channel: "deals",

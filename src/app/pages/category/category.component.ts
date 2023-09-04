@@ -52,7 +52,7 @@ export class CategoryComponent {
     productStaticData = this._commonService.defaultLocaleValue;
     isAcceptLanguage: boolean;
     categoryLink: string = "";
-   
+    pageLinkName: string;
 
     constructor(
         public _router: Router,
@@ -81,6 +81,7 @@ export class CategoryComponent {
         if (this._commonService.isBrowser) {
             this._footerService.setMobileFoooters();
         }
+        this._commonService.loadFreshChat();
     }
 
     initializeLocalization(isHindi = this.isHindiUrl) {
@@ -465,8 +466,9 @@ export class CategoryComponent {
             taxo2 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[1] || '';
             taxo3 = this.API_RESPONSE.category[0].categoryDetails.taxonomy.split("/")[2] || '';
         }
+        this.pageLinkName = "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing";
         let page = {
-            'pageName': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing",
+            'pageName': this.pageLinkName,
             'channel': "listing",
             'subSection': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing " + this._commonService.getSectionClick().toLowerCase(),
             'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"

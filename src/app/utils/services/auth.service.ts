@@ -117,14 +117,14 @@ export class LocalAuthService
     }
 
     private updateUserLanguagePrefrence(userSession) {
-        const userlang = localStorage.getItem("languagePrefrence") || 'en';
+        const userlang = this._localStorageService.retrieve("languagePrefrence") || 'en';
         if (
           userSession &&
           userSession["authenticated"] == "true" &&
           userlang != null &&
           userlang != userSession["preferredLanguage"]
         ) {
-            localStorage.setItem('languagePrefrence', userlang || 'en');
+            this._localStorageService.store('languagePrefrence', userlang || 'en');
             const params = "customerId=" + userSession["userId"] + "&languageCode=" + userlang;
             this.postUserLanguagePrefrence(params, userSession);
         }
@@ -141,7 +141,7 @@ export class LocalAuthService
         this.http.post(url, null, { headers, withCredentials: true }).subscribe(result=>{
             if(result && result['status'] == true){
               const selectedLanguage = result['data'] && result['data']['languageCode'];
-              localStorage.setItem("languagePrefrence", selectedLanguage);
+              this._localStorageService.store("languagePrefrence", selectedLanguage);
               const newUserSession = Object.assign({}, this.getUserSession());
               newUserSession.preferredLanguage = selectedLanguage;
               this.setUserSession(newUserSession);

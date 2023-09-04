@@ -10,6 +10,7 @@ import { ChangeDetectionStrategy, Component, Input, NgModule, OnInit } from '@an
 })
 export class MoglixInsightPdpComponent implements OnInit {
   @Input() data: any;
+  @Input() productStaticData;
   constructor(
     // public productService: ProductService,
   ) { }

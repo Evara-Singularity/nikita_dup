@@ -2,6 +2,7 @@ import { Component,  Inject, Renderer2} from '@angular/core';
 import { Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';import { DOCUMENT } from "@angular/common";
 import CONSTANTS from '@app/config/constants';
+import { CommonService } from '@app/utils/services/common.service';
 
 @Component({
   selector: 'about',
@@ -20,6 +21,7 @@ export class AboutComponent {
     @Inject(DOCUMENT) private _document, 
     public _router: Router, 
     private title: Title, 
+    private commonService: CommonService,
     private meta: Meta) {
   }
 
@@ -114,6 +116,10 @@ export class AboutComponent {
     Array.prototype.forEach.call(elements, (el, i)=>{
       this.animateValue(el, 0, el.innerHTML, 6000, i);
     });
+  }
+
+  ngAfterViewInit() {
+    this.commonService.loadFreshChat();
   }
 
 }

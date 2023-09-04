@@ -12,14 +12,14 @@ document.addEventListener('DOMContentLoaded', () => {
     platformBrowserDynamic().bootstrapModule(AppModule)
         .then(res => {
             console.log('<===ANGULAR SCRIPTS LOADED===>', new Date().getTime())
-            intializedGTM(window, document, 'script', 'dataLayer', environment.GTM_ANALYTICS_CODE);
-            initializeGoogleAnalytics();
+            setTimeout(() => {intializedGTM(window, document, 'script', 'dataLayer', environment.GTM_ANALYTICS_CODE);initializeGoogleAnalytics()}, 500)
         })
         .catch(err => console.error(err));
 });
 
 
 function intializedGTM(w, d, s, l, i) {
+    console.log('i am added')
     w[l] = w[l] || [];
     w[l].push({
         'gtm.start': new Date().getTime(),

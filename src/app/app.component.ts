@@ -1,9 +1,10 @@
 import { NavigationService } from '@app/utils/services/navigation.service';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,NavigationEnd } from '@angular/router';
 import { CommonService } from './utils/services/common.service';
 import CONSTANTS from './config/constants';
 import { ProductService } from './utils/services/product.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,14 @@ export class AppComponent {
       this.handleWindowEvents();
     }
   }
+  ngOnInit() {
+    this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+        const lang = event.url.includes('/hi/') ? 'hi' : 'en';
+        document.documentElement.lang = lang;
+    });
+}
 
   handleWindowEvents()
   {

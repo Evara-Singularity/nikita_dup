@@ -420,6 +420,7 @@ export class CartService
 
     private _getShipping(cartSession2): Observable<any>
     {
+        console.log(1);
         // console.trace();
         const cartSession = this.getCartSession();
         let sro = this.getShippingObj(cartSession);
@@ -445,6 +446,24 @@ export class CartService
                     return updatedCartSessionAfterShipping;
                 })
             );
+    }
+
+    updateShippingCharges(sv, cartSession) {
+        if (sv && sv['status'] && sv['statusCode'] === 200) {
+            cartSession['cart']['shippingCharges'] = sv['data']['totalShippingAmount'];
+            if (sv['data']['totalShippingAmount'] !== undefined && sv['data']['totalShippingAmount'] !== null) {
+                let itemsList = cartSession['itemsList'];
+                for (let i = 0; i < itemsList.length; i++) {
+                    cartSession['itemsList'][i]['shippingCharges'] = sv['data']['itemShippingAmount'][cartSession['itemsList'][i]['productId']];
+                }
+            }
+        }
+        // console.log('shipping  cart session', this.generateGenericCartSession(cartSession));
+        const updatedCartSessionAfterShipping = this.generateGenericCartSession(cartSession);
+        // console.log('updatedCartSessionAfterShipping', updatedCartSessionAfterShipping);
+        this.setShippingPriceChanges(updatedCartSessionAfterShipping);
+        this.setGenericCartSession(updatedCartSessionAfterShipping);
+        return updatedCartSessionAfterShipping;
     }
 
     public getShippingAndUpdateCartSession(cartSession): Observable<any>
@@ -1323,6 +1342,7 @@ export class CartService
 
     getShippingChargesApi(obj)
     {
+        console.log(1);
         let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getShippingValue;
         return this._dataService.callRestful("POST", url, { body: obj }).pipe(
             catchError((res: HttpErrorResponse) =>
@@ -1752,6 +1772,7 @@ export class CartService
 
     verifyShippingCharges(cartSession)
     {
+        console.log(2);
         const SHIPPING_DATA = this.getShippingObj(cartSession);
         const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CART.getShippingValue}`;
         return this._dataService.callRestful("POST", URL, { body: SHIPPING_DATA }).pipe(

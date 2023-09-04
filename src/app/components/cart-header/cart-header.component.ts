@@ -31,7 +31,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 	backButtonclickPaymentSubscription: Subscription;
     isBackClickedPayment: boolean=false; 
 	cancellIconClickedSubscription: Subscription;
-    isCutIconClicked: boolean=true;
+    isCancellIconClicked: boolean=true;
 	cutIconClickedPaymentSubscription: Subscription;
     isCutIconPaymentClicked: boolean=true;
 
@@ -73,7 +73,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		);
 		this.cancellIconClickedSubscription = this._naviagtionService.isCutIconQuickorderClicked$.subscribe(
 			value => {
-			  this.isCutIconClicked = value;
+			  this.isCancellIconClicked = value;
 			}
 		  );  
 		  this.cutIconClickedPaymentSubscription = this._naviagtionService.isCutIconPaymentClicked$.subscribe(
@@ -88,13 +88,13 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		if (this.isCheckout && this._cartService.buyNow) {
 			this._cartService.clearBuyNowFlow();
 		}
-		if (this.isQuickorder && !this.isBackClickedQuickorder && this.isCutIconClicked ) {
+		if (this.isQuickorder && !this.isBackClickedQuickorder && this.isCancellIconClicked ) {
 			this._naviagtionService.setBackClickedQuickorder(true);
 			// this.resetCartChanges();
 			// this.goBack$.emit();
 			return
 		}
-		if (this.isQuickorder && this.isBackClickedQuickorder && !this.isCutIconClicked ) {
+		if (this.isQuickorder && this.isBackClickedQuickorder && !this.isCancellIconClicked ) {
 			this._naviagtionService.setBackClickedQuickorder(false);
 			this.resetCartChanges();
 			this.goBack$.emit();

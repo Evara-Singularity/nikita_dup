@@ -73,7 +73,7 @@ export class PaymentComponent implements OnInit
   backButtonclickPaymentSubscription: Subscription;
   isBackClicked: boolean=false; 
   private cancellIconClickedSubscription: Subscription;
-  public isCutIconClicked: boolean=true;  
+  public isCancellIconClicked: boolean=true;  
   missOutSavingAmount: number=0;
   
   constructor(
@@ -112,7 +112,7 @@ export class PaymentComponent implements OnInit
     );
     this.cancellIconClickedSubscription = this._navigationService.isCutIconPaymentClicked$.subscribe(
       value => {
-        this.isCutIconClicked = value;
+        this.isCancellIconClicked = value;
       }
     );
     const queryParams = this._activatedRoute.snapshot.queryParams;

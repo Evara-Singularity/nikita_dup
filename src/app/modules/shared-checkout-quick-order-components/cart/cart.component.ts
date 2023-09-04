@@ -52,7 +52,7 @@ export class CartComponent implements OnInit, AfterViewInit
     backButtonclickQuickorderSubscription: Subscription;
     isBackClicked: boolean=false; 
     private cancellIconClickedSubscription: Subscription;
-    public isCutIconClicked: boolean=true; 
+    public isCancellIconClicked: boolean=true; 
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -79,7 +79,7 @@ export class CartComponent implements OnInit, AfterViewInit
         );
         this.cancellIconClickedSubscription = this._navigationService.isCutIconQuickorderClicked$.subscribe(
             value => {
-              this.isCutIconClicked = value;
+              this.isCancellIconClicked = value;
             }
           );
       }

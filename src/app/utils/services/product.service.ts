@@ -1174,9 +1174,13 @@ export class ProductService {
 
     }
 
-    getProductGroupDetails(productMsnId): Observable<any> {
+    getProductGroupDetails(productMsnId, isHindiUrl = false): Observable<any> {
+        const headerData = {}
+        if (isHindiUrl) {
+          headerData['language'] = 'hi'
+        }
         const PRODUCT_URL = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.PRODUCT_INFO + `?productId=${productMsnId}&fetchGroup=true`;
-        return this._dataService.callRestful("GET", PRODUCT_URL);
+        return this._dataService.callRestful("GET", PRODUCT_URL, {headerData: headerData});
     }
 
 

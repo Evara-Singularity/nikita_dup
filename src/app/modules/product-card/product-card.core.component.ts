@@ -397,6 +397,7 @@ export class ProductCardCoreComponent implements OnInit {
         this.quickOrderInstance.instance["selectedProductBulkPrice"] = null;
         this.quickOrderInstance.instance["cartQunatityForProduct"] = 1;
         this.quickOrderInstance.instance["address"] = address;
+        this.quickOrderInstance.instance['isFrompdp'] = false;
         (
             this.quickOrderInstance.instance["isClose"] as EventEmitter<boolean>
         ).subscribe((status) => {

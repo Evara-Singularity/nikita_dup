@@ -27,7 +27,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 	orderId = null;
 
 	backButtonclickQuickorderSubscription: Subscription;
-    isBackClickedQuickorder: boolean=false; 
+    isBackClickedQuickOrder: boolean=false; 
 	backButtonclickPaymentSubscription: Subscription;
     isBackClickedPayment: boolean=false; 
 	cancellIconClickedSubscription: Subscription;
@@ -60,9 +60,9 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 			}
 		});
 		this.noOfCartItems = this._cartService.getCartItemsCount();
-		this.backButtonclickQuickorderSubscription = this._naviagtionService.isBackClickedQuickorder$.subscribe(
+		this.backButtonclickQuickorderSubscription = this._naviagtionService.isBackClickedQuickOrder$.subscribe(
 			value => {
-			  this.isBackClickedQuickorder = value;
+			  this.isBackClickedQuickOrder = value;
 			}
 		  );
 		
@@ -88,13 +88,13 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		if (this.isCheckout && this._cartService.buyNow) {
 			this._cartService.clearBuyNowFlow();
 		}
-		if (this.isQuickorder && !this.isBackClickedQuickorder && this.isCancellIconClicked ) {
+		if (this.isQuickorder && !this.isBackClickedQuickOrder && this.isCancellIconClicked ) {
 			this._naviagtionService.setBackClickedQuickorder(true);
 			// this.resetCartChanges();
 			// this.goBack$.emit();
 			return
 		}
-		if (this.isQuickorder && this.isBackClickedQuickorder && !this.isCancellIconClicked ) {
+		if (this.isQuickorder && this.isBackClickedQuickOrder && !this.isCancellIconClicked ) {
 			this._naviagtionService.setBackClickedQuickorder(false);
 			this.resetCartChanges();
 			this.goBack$.emit();

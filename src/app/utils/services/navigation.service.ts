@@ -16,7 +16,7 @@ export class NavigationService
   pdpBreadCrumbData = [];
   popUpState: boolean = false;
   private isBackClickedQuickorderSubject = new BehaviorSubject<boolean>(false);
-  isBackClickedQuickorder$=this.isBackClickedQuickorderSubject.asObservable();
+  isBackClickedQuickOrder$=this.isBackClickedQuickorderSubject.asObservable();
   private isCutIconClickedQuickOrderSubject = new BehaviorSubject<boolean>(true);
   isCutIconQuickorderClicked$ = this.isCutIconClickedQuickOrderSubject.asObservable();
 

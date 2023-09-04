@@ -72,7 +72,7 @@ export class CartComponent implements OnInit, AfterViewInit
         this._navigationService.setBackClickedQuickorder(false)
         this._navigationService.setCancellIconQuickorderClicked(true);
 
-        this.backButtonclickQuickorderSubscription = this._navigationService.isBackClickedQuickorder$.subscribe(
+        this.backButtonclickQuickorderSubscription = this._navigationService.isBackClickedQuickOrder$.subscribe(
           value => {
             this.isBackClicked = value;
           }

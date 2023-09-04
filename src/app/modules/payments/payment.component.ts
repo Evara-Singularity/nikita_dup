@@ -70,7 +70,7 @@ export class PaymentComponent implements OnInit
   @ViewChild('bankOfferBottomSheet', { read: ViewContainerRef })
   bankOfferBottomSheetRef: ViewContainerRef;
 
-  backClickedPaymentSubscription: Subscription;
+  backButtonclickPaymentSubscription: Subscription;
   isBackClicked: boolean=false; 
   private cutIconClickedSubscription: Subscription;
   public isCutIconClicked: boolean=true;  
@@ -104,7 +104,7 @@ export class PaymentComponent implements OnInit
   {
     this._navigationService.setBackClickedPayment(false);
     this._navigationService.setCutIconPaymentClicked(true);
-    this.backClickedPaymentSubscription = this._navigationService.isBackClickedPayment$.subscribe(
+    this.backButtonclickPaymentSubscription = this._navigationService.isBackClickedPayment$.subscribe(
       value => {
         this.isBackClicked = value;
       }
@@ -536,7 +536,7 @@ export class PaymentComponent implements OnInit
     if (this.payUOfferPopUpDataSubscription) {
       this.payUOfferPopUpDataSubscription.unsubscribe();
     }
-    if (this.backClickedPaymentSubscription) this.backClickedPaymentSubscription.unsubscribe();
+    if (this.backButtonclickPaymentSubscription) this.backButtonclickPaymentSubscription.unsubscribe();
     if (this.cutIconClickedSubscription) this.cutIconClickedSubscription.unsubscribe();
   }
 }

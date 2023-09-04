@@ -49,7 +49,7 @@ export class CartComponent implements OnInit, AfterViewInit
     totalPayableAmountWithoutPrepaid:number=0;
     cartUpdatesSubscription: Subscription = null;
 
-    backClickedQuickorderSubscription: Subscription;
+    backButtonclickQuickorderSubscription: Subscription;
     isBackClicked: boolean=false; 
     private cutIconClickedSubscription: Subscription;
     public isCutIconClicked: boolean=true; 
@@ -72,7 +72,7 @@ export class CartComponent implements OnInit, AfterViewInit
         this._navigationService.setBackClickedQuickorder(false)
         this._navigationService.setCutIconQuickorderClicked(true);
 
-        this.backClickedQuickorderSubscription = this._navigationService.isBackClickedQuickorder$.subscribe(
+        this.backButtonclickQuickorderSubscription = this._navigationService.isBackClickedQuickorder$.subscribe(
           value => {
             this.isBackClicked = value;
           }
@@ -101,7 +101,7 @@ export class CartComponent implements OnInit, AfterViewInit
         if (this.cartSubscription) this.cartSubscription.unsubscribe();
         if (this.shippingSubscription) this.shippingSubscription.unsubscribe();
         if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
-        if (this.backClickedQuickorderSubscription) this.backClickedQuickorderSubscription.unsubscribe();
+        if (this.backButtonclickQuickorderSubscription) this.backButtonclickQuickorderSubscription.unsubscribe();
         if (this.cutIconClickedSubscription) this.cutIconClickedSubscription.unsubscribe();
     }
     

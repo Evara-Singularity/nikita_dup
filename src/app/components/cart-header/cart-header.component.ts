@@ -26,9 +26,9 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 	cartUpdatesSubscription: Subscription = null;
 	orderId = null;
 
-	backClickedQuickorderSubscription: Subscription;
+	backButtonclickQuickorderSubscription: Subscription;
     isBackClickedQuickorder: boolean=false; 
-	backClickedPaymentSubscription: Subscription;
+	backButtonclickPaymentSubscription: Subscription;
     isBackClickedPayment: boolean=false; 
 	cutIconClickedSubscription: Subscription;
     isCutIconClicked: boolean=true;
@@ -60,13 +60,13 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 			}
 		});
 		this.noOfCartItems = this._cartService.getCartItemsCount();
-		this.backClickedQuickorderSubscription = this._naviagtionService.isBackClickedQuickorder$.subscribe(
+		this.backButtonclickQuickorderSubscription = this._naviagtionService.isBackClickedQuickorder$.subscribe(
 			value => {
 			  this.isBackClickedQuickorder = value;
 			}
 		  );
 		
-		this.backClickedPaymentSubscription = this._naviagtionService.isBackClickedPayment$.subscribe(
+		this.backButtonclickPaymentSubscription = this._naviagtionService.isBackClickedPayment$.subscribe(
 		value => {
 			this.isBackClickedPayment = value;
 		}
@@ -141,10 +141,10 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 	ngOnDestroy(): void
 	{
 		if (this.cartUpdatesSubscription) { this.cartUpdatesSubscription.unsubscribe(); }
-		if (this.backClickedQuickorderSubscription) this.backClickedQuickorderSubscription.unsubscribe();
-		if (this.backClickedPaymentSubscription) this.backClickedPaymentSubscription.unsubscribe();
-		if (this.cutIconClickedSubscription) this.backClickedPaymentSubscription.unsubscribe();
-		if (this.cutIconClickedPaymentSubscription) this.backClickedPaymentSubscription.unsubscribe();
+		if (this.backButtonclickQuickorderSubscription) this.backButtonclickQuickorderSubscription.unsubscribe();
+		if (this.backButtonclickPaymentSubscription) this.backButtonclickPaymentSubscription.unsubscribe();
+		if (this.cutIconClickedSubscription) this.cutIconClickedSubscription.unsubscribe();
+		if (this.cutIconClickedPaymentSubscription) this.cutIconClickedPaymentSubscription.unsubscribe();
 	}
 
 }

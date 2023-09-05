@@ -26,7 +26,18 @@
                     display: block;
                     margin-top: 4px;
                     line-height: 20px;
-                
+                }
+                .price-section{
+                    display: flex;
+                    align-items: center;
+                    .mrp-price{
+                        font-size: 12px;
+                        text-decoration: line-through;
+                        margin-top: 0;
+                        line-height: 12px;
+                        margin-right: 3px;
+                        font-weight: 400;
+                    }
                 }
             }
             i{

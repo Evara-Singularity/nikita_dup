@@ -13,6 +13,14 @@
             justify-content: space-between;
             .text{
                 font-size: 12px;
+                p{
+                    display: flex;
+                    align-items: center;
+                    img{
+                        width: 30px;
+                        padding-left: 5px;
+                    }
+                }
                 span{
                     font-size: 14px;
                     display: block;
@@ -26,4 +34,7 @@
             }
         }
     }
+}
+.bg-blue{
+    background: #278BED;
 }

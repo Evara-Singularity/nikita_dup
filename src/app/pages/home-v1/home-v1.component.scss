@@ -188,8 +188,11 @@
    } 
 }
 
-.popular-Deals-section{
+.popular-Deals-Section{
     width: 100%;
+    .popularDeals{
+        background: var(--ghost-white) !important;
+    }
 }
 
 #container-div {

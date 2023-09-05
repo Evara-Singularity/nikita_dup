@@ -1,56 +1,82 @@
-
-  <div class="profile-card profile-name"  [ngClass]="{'full-border-radius': !_localAuthService.IsUserGoldMember()}">
-    <div class="profile-card-inner name"><i class="icon-profile"></i>
-    </div>
-    <div class="material-form update-name-form">
-      <div class="outline-input-label"><label [class.is-focus]="nameVal.value.length">
-        <input [value]="userName" [disabled]="isNameInputDisabled" #nameVal type="text"  data-alphabetsOnly>
-        <span class="label">Update Name</span><span *ngIf="!isNameInputDisabled" (click)="onSubmit(nameVal.value.trim())" class="form-inline-cta">UPDATE</span>
+<div class="profile-card profile-name" [ngClass]="{'full-border-radius': !_localAuthService.IsUserGoldMember()}">
+  <div class="profile-card-inner name"><i class="icon-profile"></i>
+  </div>
+  <div class="material-form update-name-form">
+    <div class="outline-input-label"><label [class.is-focus]="nameVal.value.length">
+        <input [value]="userName" [disabled]="isNameInputDisabled" #nameVal type="text" data-alphabetsOnly>
+        <span class="label">Update Name</span><span *ngIf="!isNameInputDisabled"
+          (click)="onSubmit(nameVal.value.trim())" class="form-inline-cta">UPDATE</span>
         <span *ngIf="isNameInputDisabled" (click)="activateInput()" class="form-inline-cta">EDIT</span></label>
-      </div>
     </div>
   </div>
-  <a *ngIf="_localAuthService.IsUserGoldMember()" (click)="_commonService.showgoldMembershipPopup()">
-    <div class="gold-member-strip "> 
-      <p>GOLD MEMBER</p>
-      <span class="lottie-span">
-        <lottie-player src="/assets/json/arrow.json" background="transparent"  speed="1"  style="width:40px; height: 40px;" loop  autoplay></lottie-player>
+</div>
+<a *ngIf="_localAuthService.IsUserGoldMember()" (click)="_commonService.showgoldMembershipPopup()">
+  <div class="gold-member-strip ">
+    <p>GOLD MEMBER</p>
+    <span class="lottie-span">
+      <lottie-player src="/assets/json/arrow.json" background="transparent" speed="1" style="width:40px; height: 40px;"
+        loop autoplay></lottie-player>
     </span>
-    </div>
-  </a>
+  </div>
+</a>
 <!-- email and phone -->
-<form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value)" class="material-form profile-form" novalidate>
-    <div class="container input-field custom-profile-input">
+<form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value)" class="material-form profile-form"
+  novalidate>
+  <div class="container input-field custom-profile-input">
+    <div>
+      <div>
         <label class="is-focus">
-      <input type="text" name="email" [ngModel]="userInfo?.email" readonly>
-      <span class="label">Email*</span>
-    </label>
-        <label class="is-focus">
-      <input type="number" name="phone" [ngModel]="userInfo?.phone" readonly>
-      <span class="label">Phone No.*</span>
-    </label>
+          <input type="email" name="email" [ngModel]="userInfo?.email" #email>
+          <span class="label">Email*</span>
+        </label>
+      </div>
+      <div>
+        <div class="edit-btn-field" >
+          <button class="btn secondry-btn-1" >CANCEL</button>
+          <button class="btn secondry-btn" [disabled]=" email.value.trim() == '' " >SAVE CHANGE</button>
+        </div>
+        <ng-template>
+          <ng-container #editBlockEmail>
+            <div>
+              <button>EDIT EMAIL</button>
+            </div>
+          </ng-container>
+          <ng-container #AddEmail>
+            <div>
+              <button>ADD EMAIL</button>
+            </div>
+          </ng-container>
+        </ng-template>
+      </div>
     </div>
+    <div>
+      <label class="is-focus">
+        <input type="number" name="phone" [ngModel]="userInfo?.phone" readonly>
+        <span class="label">Phone No.*</span>
+      </label>
+    </div>
+  </div>
 </form>
 <div class="profile-card profile-bottom-card" [routerLink]="['/dashboard/address']">
   <div class="profile-card-inner profile-bottom-card-inner">
-      <i class="icon-map-pin-fill"></i>
-      <span class="profile-card-inner-2 ">Addresses</span>
+    <i class="icon-map-pin-fill"></i>
+    <span class="profile-card-inner-2 ">Addresses</span>
   </div>
   <span><i class="icon-next"></i></span>
 </div>
 <div class="profile-card profile-bottom-card " (click)="toPasswordPage()">
-    <div class="profile-card-inner profile-bottom-card-inner">
-        <i class="icon-change_password"></i>
-        <span class="profile-card-inner-2 ">Change Password</span>
-    </div>
-    <span><i class="icon-next"></i></span>
+  <div class="profile-card-inner profile-bottom-card-inner">
+    <i class="icon-change_password"></i>
+    <span class="profile-card-inner-2 ">Change Password</span>
+  </div>
+  <span><i class="icon-next"></i></span>
 </div>
 <div class="profile-card profile-bottom-card" (click)="logout()">
-    <div class="profile-card-inner profile-bottom-card-inner">
-        <i class="icon-logout1"></i>
-        <span class="profile-card-inner-2 ">Logout</span>
-    </div>
-    <!-- <span><i class="icon-logout"></i></span> -->
+  <div class="profile-card-inner profile-bottom-card-inner">
+    <i class="icon-logout1"></i>
+    <span class="profile-card-inner-2 ">Logout</span>
+  </div>
+  <!-- <span><i class="icon-logout"></i></span> -->
 </div>
 <!-- 
 <div class="card logout" (click)="logout()">

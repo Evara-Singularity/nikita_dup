@@ -54,6 +54,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     paymentMode: any;
     addressUpdated = false;
     is_cod_section: number = 0;
+    moduleUsedIn: string = 'quick-checkout';
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
         private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService, private _commonService: CommonService, private injector: Injector, private  cfr: ComponentFactoryResolver, private quickCodService: QuickCodService)
@@ -78,6 +79,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this._cartService.showUnavailableItems = false;
         this._globalLoader.setLoaderState(true);
         this.updateExistingProductsState();
+        this.moduleUsedIn = (this._cartService.buyNow != undefined && this._cartService.buyNow == true) ? '' : 'quick-checkout';
     }
 
     // this will update the products state when any of the products were removed from cart
@@ -154,6 +156,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     //Address Information
     handleDeliveryAddressEvent(address)
     {
+        if(address == null){ this.is_cod_section = 1;}
         this.deliveryAddress = address;
         this._cartService.shippingAddress = address;
         this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
@@ -439,6 +442,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
           this.simillarProductsPopupContainerRef.remove();
           this.simillarProductsPopupInstance = null;
         });
+    }
+
+    continueToPayment$(){
+        this.continueToPayment();
     }
     
     ngOnDestroy()

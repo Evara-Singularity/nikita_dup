@@ -1,26 +1,19 @@
-<!-- <span style="width: 50px; height: 50px;">
-    <button (click)="validateCart()">COD </button>
-</span>
-<span style="width: 50px; height: 50px;">
-    <button>PREPAIRED save</button>
-</span> -->
-
 <div class="pad-tb-10 cod-payContainer">
     <div class="cod-payBtn">
         <div class="cod-btn btn primary-full-btn bg-blue">
             <div class="text-container">
-                <div class="text">
+                <div class="text" (click)="validateCart()">
                     <p>CASH ON DELIVERY</p>
-                    <span>₹8,00,499</span>
+                    <span>₹{{payableAmount}}</span>
                 </div>
                 <i class="icon-next"></i>
             </div>
         </div>
         <div class="cod-btn btn primary-full-btn">
             <div class="text-container">
-                <div class="text">
+                <div class="text" (click)="continueToPayment()">
                     <p>PAY ONLINE <img src="../../../assets/img/online-pay.png"></p>
-                    <span class="price-section"><span class="mrp-price">₹8,00,499</span><b>₹79,9999</b></span>
+                    <span class="price-section"><span class="mrp-price">₹{{payableAmount}}</span><b>₹{{payableAmount - cartService.totalPrepaidSaving}}</b></span>
                 </div>
                 <i class="icon-next"></i>
             </div>

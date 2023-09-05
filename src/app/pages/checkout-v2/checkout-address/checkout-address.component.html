@@ -7,7 +7,7 @@
                 <prepaid-offer-checkout></prepaid-offer-checkout>
             </div>
             <div class="fixed-bottom-cta pad-0">
-            <cod-and-pay-online *ngIf="is_cod_section == 2"></cod-and-pay-online>
+            <cod-and-pay-online *ngIf="is_cod_section == 2" [payableAmount]="payableAmount" (continueToPayment$)="continueToPayment$()"></cod-and-pay-online>
             <div *ngIf="is_cod_section == 1 && isUserLoggedIn else hideContinue" class="payment-strip">
                 <div class="amount-left-section">
                     <span class="payable-amnt">Amount&nbsp;Payable
@@ -44,7 +44,7 @@
             (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
             (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
             (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-        <all-promocode-v1></all-promocode-v1>    
+        <all-promocode-v1 [moduleUsedIn]="moduleUsedIn"></all-promocode-v1>    
         <cart [moduleName]="'CHECKOUT'" (openSimillarList$)="openSimillarProductsPopUp($event)"></cart>
         <order-summary></order-summary>
         <generic-offers></generic-offers>

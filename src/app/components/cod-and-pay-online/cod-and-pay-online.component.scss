@@ -1,0 +1,29 @@
+.cod-payContainer{
+    margin: 0 3px;
+}
+.cod-payBtn{
+    display: flex;
+    .cod-btn{
+        padding: 8px;
+        height: 55px;
+        margin: 2px;
+        .text-container{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .text{
+                font-size: 12px;
+                span{
+                    font-size: 14px;
+                    display: block;
+                    margin-top: 4px;
+                    line-height: 20px;
+                
+                }
+            }
+            i{
+                font-size: 14px;
+            }
+        }
+    }
+}

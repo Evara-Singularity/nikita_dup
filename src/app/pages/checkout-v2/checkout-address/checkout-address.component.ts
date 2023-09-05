@@ -233,6 +233,8 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
                 this.is_cod_section = 1
               }
             });
+        }else{
+            this.is_cod_section = 1;
         }
     }
 

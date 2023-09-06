@@ -1,19 +1,27 @@
 .cod-payContainer {
     margin: 0 3px;
+    background: var(--ghost-white);
 }
-
+.save-amount-text{
+    font-size: 12px;
+    text-align: center;
+    margin-bottom: 8px;
+    color: var(--onyx-black);
+    font-weight: 600;
+}
 .cod-payBtn {
     display: flex;
 
     .cod-btn {
-        padding: 8px;
         height: 55px;
         margin: 2px;
+        padding: 0 8px;
 
         .text-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            height: 55px;
 
             .text {
                 font-size: 12px;

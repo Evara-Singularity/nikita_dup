@@ -33,7 +33,7 @@ export class AllPromocodeV1Component implements OnInit {
         }
       );
       const url = this._activatedRoute.snapshot['_routerState'].url;
-      if(url == '/checkout/address'){ this.viewCouponHeaderText = 'APPLY COUPON'}
+      if(url == '/checkout/address' && (this._cartService.buyNow != true)){ this.viewCouponHeaderText = 'APPLY COUPON'}
   }
 
   openPromoCodeList() {

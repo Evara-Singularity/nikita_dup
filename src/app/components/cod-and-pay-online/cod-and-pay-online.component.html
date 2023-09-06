@@ -4,7 +4,7 @@
             <div class="text-container">
                 <div class="text" (click)="validateCart()">
                     <p>CASH ON DELIVERY</p>
-                    <span>₹{{payableAmount}}</span>
+                    <span class="cod-price">₹{{payableAmount}}</span>
                 </div>
                 <i class="icon-next"></i>
             </div>
@@ -13,7 +13,17 @@
             <div class="text-container">
                 <div class="text" (click)="continueToPayment()">
                     <p>PAY ONLINE <img src="../../../assets/img/online-pay.png"></p>
-                    <span class="price-section"><span class="mrp-price">₹{{payableAmount}}</span><b>₹{{payableAmount - cartService.totalPrepaidSaving}}</b></span>
+                    <span class="price-section">
+                        <!-- <span class="mrp-price">₹{{payableAmount}}</span> -->
+
+                        <span class="price-mrp gray-txt">
+                            <span class="strike-off-upper">
+                                <span class="strike-off"></span>
+                                ₹{{payableAmount}}
+                            </span>
+                        </span>
+                        <b>₹{{payableAmount - cartService.totalPrepaidSaving}}</b>
+                    </span>
                 </div>
                 <i class="icon-next"></i>
             </div>

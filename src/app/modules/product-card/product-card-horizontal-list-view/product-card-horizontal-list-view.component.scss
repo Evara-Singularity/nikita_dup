@@ -102,6 +102,11 @@
                         text-overflow: ellipsis;
                         max-height: 2.8em;
                     }
+                    span.ellipsis {
+                        // white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
                 }
                 .name-with-icon{
                     display: inline-flex;

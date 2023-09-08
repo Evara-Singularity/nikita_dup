@@ -41,13 +41,13 @@
                 </div>
                 <div *ngIf="!isWishlist" class="name" (click)="trackProductTitle('title');$event.preventDefault()">
                     <a [href]="prodUrl + '/' + product.productUrl">
-                        <span>{{product.productName | slice:0:75}}
+                        <span [ngClass]="{'ellipsis': product.productName.length > 75}">{{product.productName}}
                             <span *ngIf="product.productName.length>75">...</span></span></a>
                 </div>
                 <div *ngIf="isWishlist" class="name-with-icon">
                     <div class="name" (click)="trackProductTitle('title');$event.preventDefault()">
                         <a [href]="prodUrl + '/' + product.productUrl">
-                            <span>{{product.productName | slice:0:60}}
+                            <span [ngClass]="{'ellipsis': product.productName.length > 60}">{{product.productName | slice:0:60}}
                                 <span *ngIf="product.productName.length>60">...</span></span>
                         </a>
                     </div>

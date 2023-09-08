@@ -11,6 +11,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { ProductService } from '@app/utils/services/product.service';
 import { ProductListService } from '@app/utils/services/productList.service';
+import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ModalService } from '../modal/modal.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
@@ -84,7 +85,7 @@ export class ProductCardCoreComponent implements OnInit {
   quickOrderInstance = null;
   @ViewChild("quickOrder", { read: ViewContainerRef })
   quickOrderContainerRef: ViewContainerRef;
-  
+  productRawData: Subject<any> = new Subject();
   constructor(
     public _cartService: CartService,
     public _productListService: ProductListService,
@@ -145,7 +146,7 @@ export class ProductCardCoreComponent implements OnInit {
           return;
         }
         if (productDetails.filterAttributesList) {
-          this.loadVariantPop(this.product, productDetails, buyNow);
+          this.loadVariantPop(this.product, productDetails, buyNow, productRawData);
         } else {
           this.addToCart(productDetails, buyNow, productRawData)
         }
@@ -181,7 +182,9 @@ export class ProductCardCoreComponent implements OnInit {
         this.variantPopupInstance.instance['productGroupData'] = productRequest;
         this.variantPopupInstance.instance['product'] = product;
         this.variantPopupInstance.instance['isSelectedVariantOOO'] = outOfStockCheck;
+        this.productRawData.next(productBO);
         this.cdr.detectChanges();
+        return productBO;
       }
     }, error => {
       console.log('changeVariant ==>', error);
@@ -194,8 +197,8 @@ export class ProductCardCoreComponent implements OnInit {
     this.productGroupData = null;
   }
 
-  variantAddToCart(data) {
-    this.addToCart(data.product, data.buyNow, null)
+  variantAddToCart(data, productRawData = null) {
+    this.addToCart(data.product, data.buyNow, productRawData)
   }
 
   navigateToPDP() {
@@ -240,13 +243,18 @@ export class ProductCardCoreComponent implements OnInit {
     }
   }
 
-  async loadVariantPop(product, productGroupData, buyNow = false) {
+  async loadVariantPop(product, productGroupData, buyNow = false, productRawData=null) {
     if (!this.variantPopupInstance) {
       this._loader.setLoaderState(true);
       const { ProductVariantSelectListingPageComponent } = await import('../../components/product-variant-select-listing-page/product-variant-select-listing-page.component').finally(() => {
         this._loader.setLoaderState(false);
         this._commonService.enableNudge = false;
       });
+      this.productRawData.subscribe((data) => {
+        if(data) {
+          productRawData = data;
+        }
+      })
       const factory = this._cfr.resolveComponentFactory(ProductVariantSelectListingPageComponent);
       this.variantPopupInstance = this.variantPopupInstanceRef.createComponent(factory, null, this._injector);
       this.variantPopupInstance.instance['product'] = product;
@@ -262,12 +270,15 @@ export class ProductCardCoreComponent implements OnInit {
         this.openRfqFormCore(msnId);
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
+        this.productRawData.unsubscribe();
         this._commonService.enableNudge = false;
       });
       (this.variantPopupInstance.instance['continueToCart$'] as EventEmitter<boolean>).subscribe(data => {
-        this.variantAddToCart(data);
+        console.log(data);
+        this.variantAddToCart(data, productRawData);
         this._commonService.enableNudge = false;
         this.variantPopupInstance = null;
+        this.productRawData.unsubscribe();
         this.variantPopupInstanceRef.detach();
       });
       (this.variantPopupInstance.instance['hide$'] as EventEmitter<boolean>).subscribe(data => {
@@ -275,6 +286,7 @@ export class ProductCardCoreComponent implements OnInit {
         // this._commonService.resetSearchNudgeTimer();
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
+        this.productRawData.unsubscribe();
       });
       this.cdr.detectChanges();
     }

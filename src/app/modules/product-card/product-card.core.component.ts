@@ -283,7 +283,7 @@ export class ProductCardCoreComponent implements OnInit {
     const user = this._localAuthService.getUserSession();
     const isUserLogin = user && user.authenticated && ((user.authenticated) === 'true') ? true : false;
     if (isUserLogin) {
-      this._productService.getProductGroupDetails(productMsnId).pipe(
+      this._productService.getProductGroupDetails(productMsnId, this._commonService.isHindiUrl).pipe(
         map(productRawData => {
           return this._productService.getRFQProductSchema(productRawData['productBO'])
         })

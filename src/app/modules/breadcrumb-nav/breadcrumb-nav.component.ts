@@ -50,7 +50,7 @@ export class BreadcrumbNavComponent implements OnInit {
         "item":
         {
           "@id": CONSTANTS.PROD,
-          "name": (this._commonService.isHindiUrl)?'होम':'home'
+          "name": (this._commonService.isHindiUrl)?'होम':'Home'
         }
       }];
       this.breadcrumb.forEach((element, index) => {

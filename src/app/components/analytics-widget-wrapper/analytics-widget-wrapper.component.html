@@ -21,8 +21,8 @@
                                     <b>{{formatPrice(price.interval,true)}}</b>
                                 </p>
                                 <p *ngIf="price.interval.toLowerCase() !== 'others' && !isL2CategoryCheck && commonService.isHindiUrl">
-                                    <b>{{price.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }} {{categoryName}}
-                                    <b>{{formatPrice(price.interval,true)}}</b> {{ productStaticData?.in_price_range }}
+                                    <b>{{price.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }}
+                                    <b>{{formatPrice(price.interval,true)}}</b> {{ productStaticData?.in_price_range }} {{categoryName}}
                                 </p>
                                 <p *ngIf="price.interval.toLowerCase() !== 'others' && isL2CategoryCheck">
                                     <b>{{price.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }} <b>{{price.categoryName}}</b>
@@ -56,12 +56,22 @@
                     <!-- <div (click)="generateFragmentUrl('brand',brand.brandName)" -->
                      <div (click)="callBrandUrl(brand)" 
                         *ngFor="let brand of brandDataWithoutProcessing" class="card">
-                        <p *ngIf="brand.brandName !== 'others'">
-                            <b>{{brand.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.of1 }} <b>{{brand.brandName}}</b> {{productStaticData?.brand1}}
-                        </p>
-                        <p *ngIf="brand.brandName.toLowerCase() === 'others'">
-                            <b>{{brand.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.of_other_brands }}
-                        </p>
+                        <ng-container *ngIf='!commonService.isHindiUrl'>
+                            <p *ngIf="brand.brandName !== 'others'">
+                                <b>{{brand.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.of1 }} <b>{{brand.brandName}}</b> {{productStaticData?.brand1}}
+                            </p>
+                            <p *ngIf="brand.brandName.toLowerCase() === 'others'">
+                                <b>{{brand.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }} {{categoryName}} {{ productStaticData?.of_other_brands }}
+                            </p>
+                        </ng-container>
+                        <ng-container *ngIf='commonService.isHindiUrl'>
+                            <p *ngIf="brand.brandName !== 'others'">
+                                <b>{{brand.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }} <b>{{brand.brandName}}</b> {{productStaticData?.brand1}} {{ productStaticData?.of1 }} {{categoryName}}
+                            </p>
+                            <p *ngIf="brand.brandName.toLowerCase() === 'others'">
+                                <b>{{brand.orderPercentage}}%</b> {{ productStaticData?.of_users_prefer }} {{ productStaticData?.of_other_brands }} {{categoryName}}
+                            </p>
+                        </ng-container>
                     </div>
                 </div>
             </div>

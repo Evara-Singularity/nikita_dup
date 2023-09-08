@@ -372,17 +372,18 @@ label.payment-radio-btn {
             font-size: 16px;
             color: var(--onyx-black);
             padding-right: 20px;
-            line-height: 24px;
+            // line-height: 24px;
             font-weight: bold;
 
             b {
-                font-size: 22px;
+                font-size: 20px;
                 color: var(--slimy-green);
+                line-height: 34px;
             }
         }
 
         i {
-            font-size: 20px;
+            font-size: 16px;
             margin-left: auto;
         }
     }

@@ -88,16 +88,18 @@
 
     <!-- floating container ref -->
     <div #similarProductsRef></div>
-
-    <product-feature-details (showYTVideo$)="showYTVideo1($event)"
-        (handleProductInfoPopup$)="handleProductInfoPopup1($event)"
-        [productKeyFeatures]="rawProductData?.productKeyFeatures"
-        [productAttributes]="rawProductData?.productAttributes" [productDescripton]="rawProductData?.productDescripton"
-        [productCategoryDetails]="rawProductData?.productCategoryDetails"
-        [productBrandDetails]="rawProductData?.productBrandDetails" [productName]="rawProductData?.productName"
-        [productVideos]="rawProductData?.productVideos" [productDocumentInfo]="rawProductData?.productDocumentInfo"
-        [productBrandCategoryUrl]="rawProductData?.productBrandCategoryUrl">
-    </product-feature-details>
+    <div class="mb-10">
+        <product-feature-details (showYTVideo$)="showYTVideo1($event)"
+            (handleProductInfoPopup$)="handleProductInfoPopup1($event)"
+            [productKeyFeatures]="rawProductData?.productKeyFeatures"
+            [productAttributes]="rawProductData?.productAttributes"
+            [productDescripton]="rawProductData?.productDescripton"
+            [productCategoryDetails]="rawProductData?.productCategoryDetails"
+            [productBrandDetails]="rawProductData?.productBrandDetails" [productName]="rawProductData?.productName"
+            [productVideos]="rawProductData?.productVideos" [productDocumentInfo]="rawProductData?.productDocumentInfo"
+            [productBrandCategoryUrl]="rawProductData?.productBrandCategoryUrl">
+        </product-feature-details>
+    </div>
 
     <!-- adsense PDP -->
     <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData">
@@ -149,6 +151,12 @@
         [productCategoryDetails]="rawProductData?.productCategoryDetails" [productName]="rawProductData?.productName"
         [productAllImages]="productAllImages">
     </product-get-quote>
+
+    <div class="common-product bg-gray" data-observeVisibility *ngIf="isShopByDifferentBrands" [debounceTime]="100"
+        (visible)="onVisibleShopByBrands()">
+        <ng-container #shopByBrands></ng-container>
+        <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="shopByBrandsInstance"></product-skeletons>
+    </div>
 
     <section id="popularDeals" class="common-product bg-gray"
         *ngIf="!rawProductData?.productOutOfStock && apiResponse?.tagProducts && apiResponse?.tagProducts?.length > 0">
@@ -209,11 +217,7 @@
         <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
     </div>
 
-    <div class="common-product bg-gray" data-observeVisibility *ngIf="isShopByDifferentBrands" [debounceTime]="100"
-        (visible)="onVisibleShopByBrands()">
-        <ng-container #shopByBrands></ng-container>
-        <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="shopByBrandsInstance"></product-skeletons>
-    </div>
+
 
 
 

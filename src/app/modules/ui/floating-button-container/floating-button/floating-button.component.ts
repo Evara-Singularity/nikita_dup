@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { CommonService } from '@app/utils/services/common.service'
 @Component({
   selector: 'floating-button',
   templateUrl: './floating-button.component.html',
@@ -13,7 +14,9 @@ export class FloatingButtonComponent implements OnInit {
   @Input() iconClass: string;
   @Output() onClick: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(
+    private commonService:CommonService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -22,4 +25,29 @@ export class FloatingButtonComponent implements OnInit {
     this.onClick.emit();
   }
 
+  addLottieScript(){
+		this.commonService.addLottieScriptSubject.subscribe(lottieInstance => {
+			this.commonService.callLottieScript();
+			lottieInstance.next();
+		});
+	}
+  ngAfterViewInit(){
+    this.commonService.callLottieScript();
+    this.addLottieScript();
+    this.commonService.setBodyScroll(null, false);
+  }
 }
+
+// @NgModule({
+//   declarations: [
+//     FloatingButtonComponent
+//   ],
+//   imports: [
+//     CommonModule,
+//     MockLottiePlayerModule
+//   ],
+//   exports:[
+//     FloatingButtonComponent
+//   ]
+// })
+// export class FloatingButtonModule { }

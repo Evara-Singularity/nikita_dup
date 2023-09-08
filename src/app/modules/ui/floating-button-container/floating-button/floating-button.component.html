@@ -1,5 +1,6 @@
 <button [class]="isMultiple?'cart-btn':'cart-btn-fullwidth'" [ngClass]="{'red': type == 'RED', 'white': type == 'WHITE'}"
     (click)="onClickButton()">
-    <i *ngIf="iconClass" class="{{iconClass}}"></i>
-    <span>{{label}}</span>
+    <!-- <i *ngIf="iconClass" class="{{iconClass}}"></i>
+    <span>{{label}}</span> -->
+    <lottie-player src="/assets/json/goToCart.json" background="transparent"  speed="1"  style="width:183pxpx; height:51px;" autoplay></lottie-player>
 </button>

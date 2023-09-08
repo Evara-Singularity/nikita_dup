@@ -34,9 +34,6 @@ export class ProductMoreWidgetComponent implements OnInit {
     if(isHindiCategory) {
       this.productCategoryDetails.categoryLink = 'hi/' + this.productCategoryDetails.categoryLink;
     }
-    if(isHindiBrand && isHindiCategory) {
-      this.productBrandCategoryUrl = 'hi/' + this.productBrandCategoryUrl;
-    }
   }
 
   getStaticSubjectData(){

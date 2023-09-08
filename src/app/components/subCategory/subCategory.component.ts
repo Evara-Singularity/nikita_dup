@@ -38,8 +38,10 @@ export class SubCategoryComponent implements OnInit{
     };
 
     ngOnInit(): void {
-        this.initializeSubcategoryData(this.relatedCatgoryList);
-        this.showList(false);
+        if(this.commonService.isBrowser) {
+            this.initializeSubcategoryData(this.relatedCatgoryList);
+            this.showList(false);
+        }
     }
 
     initializeSubcategoryData(data) {

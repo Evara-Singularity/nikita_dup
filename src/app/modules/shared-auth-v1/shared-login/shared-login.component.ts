@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -8,10 +8,13 @@ import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { LocalStorageService } from 'ngx-webstorage';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid'; 
 import CONSTANTS from '../../../../app/config/constants';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
+import { switchMap, takeWhile } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 
 export interface BackurlWithTitle
@@ -25,7 +28,7 @@ export interface BackurlWithTitle
     templateUrl: './shared-login.component.html',
     styleUrls: ['./shared-login.component.scss']
 })
-export class SharedLoginComponent implements OnInit
+export class SharedLoginComponent implements OnInit, OnDestroy
 {
 
     readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
@@ -54,6 +57,11 @@ export class SharedLoginComponent implements OnInit
     authFlow:AuthFlowType = null;
     paramsSubscriber = null;
     state;
+    private truecallerRequestId:string = ""
+    private alive = true;
+    private subscription: Subscription;
+       
+
 
     constructor(
         private _fb: FormBuilder,
@@ -67,11 +75,58 @@ export class SharedLoginComponent implements OnInit
         private _route: ActivatedRoute,
         private _common: CommonService,
         public localStorageService: LocalStorageService,
-    ) { }
+        private http: HttpClient
+    ) {
+        this.truecallerRequestId = uuidv4();
+     }
 
     ngOnInit(): void
     {
         if (this._common.isBrowser) {
+            const params = {
+                type: "btmsheet",
+                requestNonce: this.truecallerRequestId,
+                partnerKey: "o68do1c71f3f1e8af4c13af239b29cd3b1eba",
+                partnerName: "moglix-app-qa",
+                lang: "en",
+                privacyUrl: "",
+                termsUrl: "",
+                loginPrefix: "continue",
+                loginSuffix: "signin",
+                ctaPrefix: "continuewith",
+                ctaColor: "%23f75d34",
+                ctaTextColor: "%23f75d34",
+                btnShape: "rect",
+                skipOption: "",
+                ttl: 8000,
+              };
+              
+            let url = `truecallersdk://truesdk/web_verify?` + this.objectToQueryString(params);
+            this.subscription = timer(600)
+              .pipe(
+                takeWhile(() => this.alive),
+                switchMap(() => {
+                  if (document.hasFocus()) {
+                    alert("Oops, it seems like you don't have the Truecaller app installed.");
+                    return [];
+                  } else {
+                    return this.http.get(`https://nodeapiqa.moglilabs.com/nodeApi/v1/auth/truecaller/fetch?requestId=${this.truecallerRequestId}`);
+                  }
+                })
+              )
+              .subscribe(
+                (response: any) => {
+                  if (response.status) {
+                    alert(JSON.stringify(response.data.truecallerApiResp));
+                  } else {
+                    alert(response.description);
+                  }
+                },
+                (error) => {
+                  alert(`Something went wrong: ${error.message}`);
+                }
+              );
+            window.open(url);
             this.authFlow = this._localAuthService.getAuthFlow();
             if (this.authFlow) { 
                 this.updateControls(this.authFlow.identifier)
@@ -81,6 +136,13 @@ export class SharedLoginComponent implements OnInit
         this.addQueryParamSubscribers();
         // Tracking 
         this.isLoginPopup ? this._sharedAuthUtilService.sendLoginPopUpTracking() : this._sharedAuthUtilService.sendLoginSignupGenericPageLoadTracking(this.headerTitle || "mainpage")
+    }
+
+    ngOnDestroy(): void {
+        this.alive = false;
+        if (this.subscription) {
+          this.subscription.unsubscribe();
+        }
     }
 
     addQueryParamSubscribers() {
@@ -93,6 +155,18 @@ export class SharedLoginComponent implements OnInit
         this.removeAuthComponent$.emit();
     }
 
+    objectToQueryString(obj) {
+        const keyValuePairs = [];
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                const value = obj[key];
+                if (value !== undefined && value !== null) {
+                    keyValuePairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+                }
+            }
+        }
+        return keyValuePairs.join('&');
+    }
 
     updateControls(identifier:string)
     {

@@ -78,55 +78,12 @@ export class SharedLoginComponent implements OnInit, OnDestroy
         private http: HttpClient
     ) {
         this.truecallerRequestId = uuidv4();
+        this.initializeTruecaller()
      }
 
     ngOnInit(): void
     {
         if (this._common.isBrowser) {
-            const params = {
-                type: "btmsheet",
-                requestNonce: this.truecallerRequestId,
-                partnerKey: "o68do1c71f3f1e8af4c13af239b29cd3b1eba",
-                partnerName: "moglix-app-qa",
-                lang: "en",
-                privacyUrl: "",
-                termsUrl: "",
-                loginPrefix: "continue",
-                loginSuffix: "signin",
-                ctaPrefix: "continuewith",
-                ctaColor: "%23f75d34",
-                ctaTextColor: "%23f75d34",
-                btnShape: "rect",
-                skipOption: "",
-                ttl: 8000,
-              };
-              
-            let url = `truecallersdk://truesdk/web_verify?` + this.objectToQueryString(params);
-            this.subscription = timer(600)
-              .pipe(
-                takeWhile(() => this.alive),
-                switchMap(() => {
-                  if (document.hasFocus()) {
-                    alert("Oops, it seems like you don't have the Truecaller app installed.");
-                    return [];
-                  } else {
-                    return this.http.get(`https://nodeapiqa.moglilabs.com/nodeApi/v1/auth/truecaller/fetch?requestId=${this.truecallerRequestId}`);
-                  }
-                })
-              )
-              .subscribe(
-                (response: any) => {
-                  if (response.status) {
-                    alert(JSON.stringify(response.data.truecallerApiResp));
-                  } else {
-                    alert(response.description);
-                  }
-                },
-                (error) => {
-                  alert(`Something went wrong: ${error.message}`);
-                }
-              );
-            window.open(url);
             this.authFlow = this._localAuthService.getAuthFlow();
             if (this.authFlow) { 
                 this.updateControls(this.authFlow.identifier)
@@ -143,6 +100,53 @@ export class SharedLoginComponent implements OnInit, OnDestroy
         if (this.subscription) {
           this.subscription.unsubscribe();
         }
+    }
+
+    initializeTruecaller(): void {
+        const params = {
+            type: "btmsheet",
+            requestNonce: this.truecallerRequestId,
+            partnerKey: "o68do1c71f3f1e8af4c13af239b29cd3b1eba",
+            partnerName: "moglix-app-qa",
+            lang: "en",
+            privacyUrl: "",
+            termsUrl: "",
+            loginPrefix: "continue",
+            loginSuffix: "signin",
+            ctaPrefix: "continuewith",
+            ctaColor: "%23f75d34",
+            ctaTextColor: "%23f75d34",
+            btnShape: "rect",
+            skipOption: "",
+            ttl: 8000,
+          };
+          
+        let url = `truecallersdk://truesdk/web_verify?` + this.objectToQueryString(params);
+        this.subscription = timer(600)
+          .pipe(
+            takeWhile(() => this.alive),
+            switchMap(() => {
+              if (document.hasFocus()) {
+                alert("Oops, it seems like you don't have the Truecaller app installed.");
+                return [];
+              } else {
+                return this.http.get(`https://nodeapiqa.moglilabs.com/nodeApi/v1/auth/truecaller/fetch?requestId=${this.truecallerRequestId}`);
+              }
+            })
+          )
+          .subscribe(
+            (response: any) => {
+              if (response.status) {
+                alert(JSON.stringify(response.data.truecallerApiResp));
+              } else {
+                alert(response.description);
+              }
+            },
+            (error) => {
+              alert(`Something went wrong: ${error.message}`);
+            }
+          );
+        window.open(url);
     }
 
     addQueryParamSubscribers() {

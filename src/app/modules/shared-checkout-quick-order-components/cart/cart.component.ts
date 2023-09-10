@@ -35,6 +35,7 @@ export class CartComponent implements OnInit, AfterViewInit
     cartSession = null;
     noOfCartItems = 0;
     backButtonClickText=''
+    private popStateListener;
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     @Output() openWishList$:EventEmitter<any> = new EventEmitter<any>();
     @Output() openSimillarList$:EventEmitter<any> = new EventEmitter<any>();
@@ -84,6 +85,10 @@ export class CartComponent implements OnInit, AfterViewInit
             }
           );
         this.backButtonClickText=this._cartService.getGenericCartSession["itemsList"].length==1?CONSTANTS.this_product_is:CONSTANTS.these_product_are
+        if (this.moduleName=='QUICKORDER') {
+            this.backUrlNavigationHandler();        
+        }
+
       }
 
     closebackpopup(){
@@ -99,12 +104,26 @@ export class CartComponent implements OnInit, AfterViewInit
         }
     }
 
+    backUrlNavigationHandler() {
+        this.popStateListener = (event) => {
+          event.preventDefault();
+          history.go(1);
+          this.backButtonClickQuickOrderSubscription = this._navigationService.isBackClickedQuickOrder$.subscribe(
+            value => {
+              this.isBackClicked = true;
+            }
+          ); 
+        };
+        window.addEventListener('popstate', this.popStateListener, { once: true });
+      }
+
     ngOnDestroy() {
         if (this.cartSubscription) this.cartSubscription.unsubscribe();
         if (this.shippingSubscription) this.shippingSubscription.unsubscribe();
         if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
         if (this.backButtonClickQuickOrderSubscription) this.backButtonClickQuickOrderSubscription.unsubscribe();
         if (this.cancelIconClickedSubscription) this.cancelIconClickedSubscription.unsubscribe();
+        window.removeEventListener('popstate', this.popStateListener);
     }
     
     openWishList(){

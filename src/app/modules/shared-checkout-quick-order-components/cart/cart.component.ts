@@ -55,6 +55,8 @@ export class CartComponent implements OnInit, AfterViewInit
     isBackClicked: boolean=false; 
     private cancelIconClickedSubscription: Subscription;
     public isCancelIconClicked: boolean=true; 
+    isBrowser = false;
+
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -68,7 +70,8 @@ export class CartComponent implements OnInit, AfterViewInit
         private injector: Injector,
         private _navigationService: NavigationService
 
-    ) { }
+    ) {     this.isBrowser = _commonService.isBrowser
+    }
 
     ngOnInit() {
         this._navigationService.setBackClickedQuickOrder(false)
@@ -85,7 +88,7 @@ export class CartComponent implements OnInit, AfterViewInit
             }
           );
         this.backButtonClickText=this._cartService.getGenericCartSession["itemsList"].length==1?CONSTANTS.this_product_is:CONSTANTS.these_product_are
-        if (this.moduleName=='QUICKORDER') {
+        if (this.isBrowser && this.moduleName=='QUICKORDER') {
             this.backUrlNavigationHandler();        
         }
 

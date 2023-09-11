@@ -1333,22 +1333,6 @@ export class ProductService {
         if (this._localAuthService.isUserLoggedIn()) {
             const userData = this._localAuthService.getUserSession();
             const userId = userData ? userData["userId"] : null;
-            // if(!rawProductData['defaultPartNumber']) {
-            //     rawProductData['defaultPartNumber'] = rawProductData['productId'];
-            //     rawProductData['productPrice'] = rawProductData.totalPayableAmount;
-            //     rawProductData['productLinks'] = {
-            //         canonical: rawProductData['productUrl'],
-            //         default: rawProductData['productUrl']
-            //     }
-            //     rawProductData['productBrandDetails'] = {
-            //         idBrand: rawProductData['brandId'],
-            //         brandName: rawProductData['brandName']
-            //     }
-            //     rawProductData['productCategoryDetails'] = {
-            //         categoryCode: rawProductData['categoryCode'],
-            //         categoryName: rawProductData['category']
-            //     }
-            // }
             return this.getCustomerLastOrder({
                     customerId: userId,
                     limit: 1,

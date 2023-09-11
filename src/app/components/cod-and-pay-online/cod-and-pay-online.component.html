@@ -7,9 +7,8 @@
     OFF on this order.
   </p>
   <p class="save-amount-text" *ngIf="cartService.totalPrepaidSaving == 0">
-    Payable Amount
-    {{ payableAmount | currency : "INR" : "symbol" : "1.0-0" }} OFF on this
-    order.
+    Payable Amount: 
+    {{ payableAmount | currency : "INR" : "symbol" : "1.0-0" }}
   </p>
   <div class="cod-payBtn">
     <div class="cod-btn btn primary-full-btn bg-blue">

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { CodDetails } from '@app/utils/models/address.modal';
@@ -49,6 +49,7 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 	isValidCartMsg = null;
 	prepaidDiscounts = null;
 	nonCods = [];
+	failureMessage: string = null;
 
 	constructor(
 		private _cartService: CartService, 
@@ -60,10 +61,16 @@ export class SharedTransactionDeclinedComponent implements OnInit, AfterViewInit
 		public localStorageService: LocalStorageService,
     	private globalAnalyticService: GlobalAnalyticsService,
 		public _commonService: CommonService,
-		private _retryPaymentService: RetryPaymentService) { }
+		private _retryPaymentService: RetryPaymentService,
+		private _activatedRoutes: ActivatedRoute) { }
 
 	ngOnInit()
 	{
+		if(this._activatedRoutes.snapshot.queryParams.failureMessage != "null"){ 
+			this.failureMessage = this._activatedRoutes.snapshot.queryParams.failureMessage;
+		}else{
+			this.failureMessage = 'Transaction was declined due to some technical reason/fault';
+		}
 		this.initiateRehydration(this.shoppingCartDto);
 	}
 

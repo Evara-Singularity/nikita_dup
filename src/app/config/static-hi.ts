@@ -107,7 +107,7 @@ export const product = {
     view_in_stock:"इन-स्टॉक देखें",
     pincode_shipping_applicable: 'शिपिंग लागू',
     pincode_on_this_order: 'इस आर्डर पर',
-    pincode_delivery_text: 'वितरण ___deliveryDays___ में ___pincode___ पर उपलब्ध है',
+    pincode_delivery_text: 'डिलिवरी ___deliveryDays___ में ___pincode___ पर उपलब्ध है',
     pincode_delivery_unavalible: '___pincode___ में डिलीवरी अनुपलब्ध है',
     pincode_pay_at_time_delivery: 'आप डिलीवरी के समय भुगतान कर सकते हैं',
     coupon_static_text:'भुगतान ऑनलाइन करें और ___brandName ___ ___categoryName___ पर ___coupon_discount___ की छूट प्राप्त करें।',
@@ -280,7 +280,7 @@ export const product = {
     Moglix_is_a_one_stop_shop_for_genuine: 'मोग्लिक्स एक-स्टॉप शॉप है वास्तविक',
     Cash_on_delivery_Free_shipping_available:'सीओडी और मुफ्त शिपिंग उपलब्ध है।',
     for: " के लिए!",
-    purchase_as_per:"के अनुसार खरीद",
+    purchase_as_per:"के अनुसार खरीदे गए",
     order_percentage: 'ऑर्डर प्रतिशत',
     brands: 'ब्रांड्स',
     in_1: 'के'

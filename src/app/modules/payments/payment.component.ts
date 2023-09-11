@@ -75,6 +75,9 @@ export class PaymentComponent implements OnInit
   private cancelIconClickedSubscription: Subscription;
   public isCancelIconClicked: boolean=true;  
   missOutSavingAmount: number=0;
+  popStateListener;
+  isBrowser = false;
+
   
   constructor(
     public _dataService: DataService,
@@ -98,6 +101,7 @@ export class PaymentComponent implements OnInit
   )
   {
     this.isShowLoader = true;
+    this.isBrowser = _commonService.isBrowser
   }
   
 
@@ -151,7 +155,24 @@ export class PaymentComponent implements OnInit
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
     this._cartService.clearCartNotfications();
+    if (this.isBrowser && this._router.url.includes('/checkout/payment')) {
+      this.backUrlNavigationHandler();  
+       }
   }
+
+  backUrlNavigationHandler() {
+    this.popStateListener = (event) => {
+      event.preventDefault();
+      history.go(1);
+      this.backButtonClickPaymentSubscription = this._navigationService.isBackClickedPayment$.subscribe(
+        value => {
+          this.isBackClicked = true;
+        }
+      );
+    };
+    window.addEventListener('popstate', this.popStateListener, { once: true });
+  }
+
 
   private intialize()
   {
@@ -548,5 +569,6 @@ export class PaymentComponent implements OnInit
     }
     if (this.backButtonClickPaymentSubscription) this.backButtonClickPaymentSubscription.unsubscribe();
     if (this.cancelIconClickedSubscription) this.cancelIconClickedSubscription.unsubscribe();
+    window.removeEventListener('popstate', this.popStateListener);
   }
 }

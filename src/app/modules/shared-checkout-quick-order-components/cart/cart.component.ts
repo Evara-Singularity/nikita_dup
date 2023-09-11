@@ -34,6 +34,8 @@ export class CartComponent implements OnInit, AfterViewInit
     pageEvent = "genericPageLoad";
     cartSession = null;
     noOfCartItems = 0;
+    backButtonClickText=''
+    private popStateListener;
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     @Output() openWishList$:EventEmitter<any> = new EventEmitter<any>();
     @Output() openSimillarList$:EventEmitter<any> = new EventEmitter<any>();
@@ -53,6 +55,8 @@ export class CartComponent implements OnInit, AfterViewInit
     isBackClicked: boolean=false; 
     private cancelIconClickedSubscription: Subscription;
     public isCancelIconClicked: boolean=true; 
+    isBrowser = false;
+
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -66,7 +70,8 @@ export class CartComponent implements OnInit, AfterViewInit
         private injector: Injector,
         private _navigationService: NavigationService
 
-    ) { }
+    ) {     this.isBrowser = _commonService.isBrowser
+    }
 
     ngOnInit() {
         this._navigationService.setBackClickedQuickOrder(false)
@@ -82,6 +87,11 @@ export class CartComponent implements OnInit, AfterViewInit
               this.isCancelIconClicked = value;
             }
           );
+        this.backButtonClickText=this._cartService.getGenericCartSession["itemsList"].length==1?CONSTANTS.this_product_is:CONSTANTS.these_product_are
+        if (this.isBrowser && this.moduleName=='QUICKORDER') {
+            this.backUrlNavigationHandler();        
+        }
+
       }
 
     closebackpopup(){
@@ -97,12 +107,26 @@ export class CartComponent implements OnInit, AfterViewInit
         }
     }
 
+    backUrlNavigationHandler() {
+        this.popStateListener = (event) => {
+          event.preventDefault();
+          history.go(1);
+          this.backButtonClickQuickOrderSubscription = this._navigationService.isBackClickedQuickOrder$.subscribe(
+            value => {
+              this.isBackClicked = true;
+            }
+          ); 
+        };
+        window.addEventListener('popstate', this.popStateListener, { once: true });
+      }
+
     ngOnDestroy() {
         if (this.cartSubscription) this.cartSubscription.unsubscribe();
         if (this.shippingSubscription) this.shippingSubscription.unsubscribe();
         if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
         if (this.backButtonClickQuickOrderSubscription) this.backButtonClickQuickOrderSubscription.unsubscribe();
         if (this.cancelIconClickedSubscription) this.cancelIconClickedSubscription.unsubscribe();
+        window.removeEventListener('popstate', this.popStateListener);
     }
     
     openWishList(){

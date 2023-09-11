@@ -155,15 +155,22 @@ export class PaymentComponent implements OnInit
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
     this._cartService.clearCartNotfications();
+    this.doubleCurrentPageInHistory();
     if (this.isBrowser && this._router.url.includes('/checkout/payment')) {
       this.backUrlNavigationHandler();  
        }
   }
-
+  private doubleCurrentPageInHistory(): void {
+    if (!this.isPageDoubled) {
+      window.history.pushState({ page: 'samePage' }, null, window.location.href);
+      this.isPageDoubled = true;
+    }
+  }
+  private isPageDoubled = false;
+  
   backUrlNavigationHandler() {
-    this.popStateListener = (event) => {
-      event.preventDefault();
-      history.go(1);
+    this.popStateListener = (event:PopStateEvent):void => {
+      this.doubleCurrentPageInHistory();
       this.backButtonClickPaymentSubscription = this._navigationService.isBackClickedPayment$.subscribe(
         value => {
           this.isBackClicked = true;

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, EventEmitter, NgModule, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
+import { Subscription } from 'rxjs';
 import { CommonService } from '../../utils/services/common.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class ProductQaComponent {
   @Input('questionAnswerList') questionAnswerList;
   @Output('askQuestion') askQuestion = new EventEmitter();
   @Output('handleFaqListPopup') handleFaqListPopup = new EventEmitter();
+  changeStaticSubscription: Subscription = null;
   constructor(private _commonService:CommonService, private cdr: ChangeDetectorRef, private _activatedRoute:ActivatedRoute){
   }
  
@@ -39,10 +41,15 @@ export class ProductQaComponent {
 
 
   getStaticSubjectData(){
-    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
       this.cdr.detectChanges();
     });
+  }
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
   }
 }
 

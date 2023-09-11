@@ -29,13 +29,13 @@ export class SpecificationsComponent implements OnInit
     constructor(public _commonService: CommonService,private _localAuthService : LocalAuthService,private cdr : ChangeDetectorRef) { }
 
     ngOnInit() {
-        //console.log('specifications', this.specifications);
+        console.log('specifications', this.specifications);
         this.checkSecondaryAttributes();
+        this.getStaticSubjectData();  
         if (BrandLinkMapping.hasOwnProperty(this.specifications["brand"]["brandId"])) {
             this.showNavToStorePage=true;
             this.specifications["brand"]['storeLink']=BrandLinkMapping[this.specifications["brand"]["brandId"]];
           }
-        this.getStaticSubjectData();  
     }
     getStaticSubjectData(){
         this._commonService.changeStaticJson.subscribe(staticJsonData => {

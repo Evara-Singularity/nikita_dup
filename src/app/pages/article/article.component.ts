@@ -27,6 +27,7 @@ export class ArticleComponent implements OnInit
     categoryCode = null;
     isBrowser = false;
     isServer = false;
+    isAppDevice=false;
 
     constructor(private route: ActivatedRoute, private articleUtilService: ArticleUtilService, private router: Router, private _commonService: CommonService, private _localStorageService: LocalStorageService, private _analytics: GlobalAnalyticsService,
         private toastMessageService: ToastMessageService, private title: Title, private renderer2: Renderer2, private meta: Meta, @Inject(DOCUMENT) private document)
@@ -37,6 +38,7 @@ export class ArticleComponent implements OnInit
 
     ngOnInit()
     {
+        this.isAppDevice=this.route.snapshot.queryParamMap.get('device')=='app'?true:false;
         this._commonService.isHomeHeader = false;
         this._commonService.isPLPHeader = false;
         this.articleUrl = this.articleUrl + (this.router.url.split('?')[0].split('#')[0] as string).toLowerCase();

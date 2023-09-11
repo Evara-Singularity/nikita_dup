@@ -5,7 +5,7 @@
         display: none;
         &:checked + .custom-box::before {
             content: "\e912";
-            color: var(--blue);
+            color: var(--bleu-de-france);
         }
     }
     input[type="radio"] {
@@ -43,7 +43,7 @@
         display: none;
         &:checked + .custom-box::before {
             content: "\e914";
-            color: var(--blue);
+            color: var(--bleu-de-france);
         }
     }
     .custom-box {

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { FooterService } from '@app/utils/services/footer.service';
 import { CommonService } from '@app/utils/services/common.service';
+import { StaticCountryText } from '@app/config/static-india-text';
 
 @Component({
   selector: 'bulk-enquiry',
@@ -13,7 +14,7 @@ import { CommonService } from '@app/utils/services/common.service';
   
 })
 export class BulkEnquiryComponent implements AfterViewInit{
-
+  staticCountryData = StaticCountryText;
   isServer: boolean;
   isBrowser: boolean;
   imagePath = CONSTANTS.IMAGE_BASE_URL;
@@ -25,14 +26,16 @@ export class BulkEnquiryComponent implements AfterViewInit{
     perPage: 3,
     loop: true,
     brandCarousel: true,
-    navHide: false
+    navHide: false,
+    dots:true
   };
   optionsCustomer = {
     selector: '.testimonial-siema',
     startIndex: 0,
     perPage: 1,
     testimonial: true,
-    goTo: true
+    goTo: true,
+    dots:true
   };
   brandCarousel = [
     {

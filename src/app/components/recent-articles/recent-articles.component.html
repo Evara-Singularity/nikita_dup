@@ -1,5 +1,5 @@
 <div class="recent-article-section" *ngIf="recentArticles?.length">
-    <h3>Related {{ title }} Articles</h3>
+    <h3>{{ productStaticData?.articles_heading.replace('___title___', title) }}</h3>
     <div id="articles-carousel" class="carousel slide" data-ride="carousel">
 
         <div class="carousel-inner">

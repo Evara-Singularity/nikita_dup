@@ -1,7 +1,7 @@
 <ng-container *ngIf="shopBy_Data">
 <section class="safetysh_sect1 clearfix" >            
 <div class="safetysh-shopby row">  
-    <h3 class="slp-heading">SHOP BY</h3>     
+    <h3 class="slp-heading">{{ productStaticData?.shop_by }}</h3>     
     <div class="clearfix shopbyrow">              
         <div class="shopbycol" *ngFor="let product of shopBy_Data">
             <div class="shopbywrap">

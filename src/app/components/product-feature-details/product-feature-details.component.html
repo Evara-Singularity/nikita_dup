@@ -28,8 +28,7 @@
                     </td>
                     <td class="right">
                         <div *ngIf="productBrandDetails">
-                            <a class="brandName" [href]='baseDomain + getBrandLink(productBrandDetails)'
-                                (click)="commonService.navigateTo(getBrandLink(productBrandDetails))">{{productBrandDetails['brandName']}}</a>
+                            <a class="brandName" (click)="$event.preventDefault(); commonService.navigateTo(getBrandLink(productBrandDetails));" [href]='baseDomain + getBrandLink(productBrandDetails)'>{{productBrandDetails['brandName']}}</a>
                         </div>
                     </td>
                 </tr>

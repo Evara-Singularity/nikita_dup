@@ -9,8 +9,7 @@
         <div class="payment_summary-conatiner">
             <div class="pwa-row" *ngIf="_cartService.totalPrepaidSaving>0">
                 <p class="save-prise-txt">
-                    Pay online & save EXTRA {{_cartService.totalPrepaidSaving| currency:'INR' : 'symbol' : '1.0-0'}} OFF
-                    on this order.
+                    Save instantly {{_cartService.totalPrepaidSaving| currency:'INR' : 'symbol' : '1.0-0'}} with online payment
                 </p>
             </div>
             <div class="order-summary pwa-row" id="payment_summary">
@@ -93,6 +92,11 @@
 
                 </ul>
 
+            </div>
+            <div class="pwa-row" *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null">
+                <p class="save-prise-txt">
+                    You saved ₹{{_cartService.getGenericCartSession.cart.totalOffer | mathRound | number :'1.2-2'}} on this order
+                </p>
             </div>
             <!-- <div class="saved-amt pwa-row no-border"
                 *ngIf="_cartService.getGenericCartSession.cart.totalOffer!==0 && _cartService.getGenericCartSession.cart.totalOffer!==null">

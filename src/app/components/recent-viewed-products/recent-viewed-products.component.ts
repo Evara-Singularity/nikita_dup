@@ -26,6 +26,7 @@ export class RecentViewedProductsComponent implements OnInit {
   @Input() analytics = null;
   @Input('pageName') pageName = "pdp";
   @Input('moduleUsedIn') moduleUsedIn = "PRODUCT_RECENT_PRODUCT";
+  @Input() currentProductMsn: string[]= []
 
   readonly cardFeaturesConfig: ProductCardFeature = {
     // feature config
@@ -46,7 +47,7 @@ export class RecentViewedProductsComponent implements OnInit {
     private productService: ProductService,
     public _router: Router,
     private localStorageService: LocalStorageService,
-    private _commonService:CommonService
+    private _commonService:CommonService,
   ) { }
 
   ngOnInit(): void {
@@ -54,13 +55,18 @@ export class RecentViewedProductsComponent implements OnInit {
       redirectedIdentifier: CONSTANTS.PRODUCT_CARD_MODULE_NAMES.PDP,
       redirectedSectionName: this.outOfStock ? 'recent_products_oos' : 'recent_productss'
     }
-    if(!this.recentProductList || this.recentProductList.length == 0){
+    if (!this.recentProductList || this.recentProductList.length == 0) {
       this.getRecents();
-    }else{
-      this.recentProductItems = this.recentProductList;
+    } else {
+      this.currentProductMsn = this.currentProductMsn.map(str => str.toLowerCase());
+      this.recentProductItems = this.recentProductList.filter(
+        (item) =>
+          !this.currentProductMsn.includes(item.moglixPartNumber.toLowerCase())
+      );
     }
     this.getStaticSubjectData();
   }
+  
   getStaticSubjectData(){
     this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;

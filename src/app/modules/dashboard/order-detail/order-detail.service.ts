@@ -94,4 +94,15 @@ getIfscAndBankName(ifscCode){
     return this.dataService.callRestful("GET",url);
 }
 
+getSavedCardDetails(userId){
+    const url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CUSTOMER_BANK_DETAILS + userId;
+    return this.dataService.callRestful("GET",url);
+}
+
+deleteSavedCardDetails(id,userId){
+    console.log('nikkk',id,userId)
+    const url=CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.DELETE_BANK_DETAILS+id+"?userId="+userId
+    return this.dataService.callRestful("DELETE",url);
+}
+
 }

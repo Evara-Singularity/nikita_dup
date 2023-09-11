@@ -79,7 +79,8 @@ export class ProductCardCoreComponent implements OnInit {
   variantPopupInstance = null;
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   productReviewCount: string;
-
+  productStaticData = this._commonService.defaultLocaleValue;
+  
   constructor(
     public _cartService: CartService,
     public _productListService: ProductListService,
@@ -98,14 +99,24 @@ export class ProductCardCoreComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getLocalization();
     this.isOutOfStockByQuantity = !this.product.quantityAvailable || this.product.outOfStock;
     this.isOutOfStockByPrice = !this.product.salesPrice && !this.product.mrp;
     // randomize product feature
     this.product['keyFeatures'] = this.getRandomValue(this.product['keyFeatures'] || [], 2)
     this.isAd = !this.product.internalProduct
-    this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' Reviews' : this.product.ratingCount + ' Review';
+    this.productReviewCount = this.product.ratingCount > 1 ? this.product.ratingCount + ' ' + this.productStaticData.reviews : this.product.ratingCount + ' ' + this.productStaticData.review;
     this.prodUrl = CONSTANTS.PROD;
+    if(this._commonService.isHindiPage(this.product)) {
+      this.product.productUrl = this.product.productUrl.includes('hi/') ? this.product.productUrl : 'hi/' + this.product.productUrl;
+    }
     // console.log('product 22==>', this.product);
+  }
+
+  getLocalization() {
+    this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+      this.productStaticData = localization_content;
+    });
   }
 
   buyNow(buyNow = false) {
@@ -194,7 +205,7 @@ export class ProductCardCoreComponent implements OnInit {
       const { GlobalToastComponent } = await import('../../components/global-toast/global-toast.component');
       const factory = this._cfr.resolveComponentFactory(GlobalToastComponent);
       this.addToCartToastInstance = this.addToCartToastContainerRef.createComponent(factory, null, this._injector);
-      this.addToCartToastInstance.instance['text'] = message || 'Product added successfully';
+      this.addToCartToastInstance.instance['text'] = message || this.productStaticData.product_added_successfully;
       this.addToCartToastInstance.instance['btnText'] = 'VIEW CART';
       this.addToCartToastInstance.instance['btnLink'] = '/quickorder';
       this.addToCartToastInstance.instance['showTime'] = 4000;
@@ -272,7 +283,7 @@ export class ProductCardCoreComponent implements OnInit {
     const user = this._localAuthService.getUserSession();
     const isUserLogin = user && user.authenticated && ((user.authenticated) === 'true') ? true : false;
     if (isUserLogin) {
-      this._productService.getProductGroupDetails(productMsnId).pipe(
+      this._productService.getProductGroupDetails(productMsnId, this._commonService.isHindiUrl).pipe(
         map(productRawData => {
           return this._productService.getRFQProductSchema(productRawData['productBO'])
         })

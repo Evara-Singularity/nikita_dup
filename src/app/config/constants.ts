@@ -28,6 +28,7 @@ export const CONSTANTS = {
   SERVER_CLIENT_IP: new InjectionToken<string>('serverClientIp'),
   SPEED_TEST_IMAGE: 'https://cdn.moglix.com/cms/flyout/Images_2021-09-15_15-45-36_Images_2020-06-03_16-42-50_SafetyImage-min.png', // ~500 KB image
   CDN_LOTTIE_PATH:'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
+  MODEL_JS_CDN_PATH: "https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js",
   pwaImages: {
     imgFolder: 'b/I/P/B/d'
   },
@@ -704,6 +705,13 @@ export const CONSTANTS = {
   PDP_REVIEW_HASH:"review",
   PDP_WRITE_REVIEW_HASH:"write-review",
   APP_OPEN_LINK:"https://moglix.page.link/appinstall",
+  HOME_CATEGORY_COLOR1:'#e6ebc7',
+  HOME_CATEGORY_COLOR2:'#ffedcb',
+  HOME_CATEGORY_COLOR3:'#ffe5d8',
+  HOME_CATEGORY_COLOR4:'#dbedff',
+  // HOME_CATEGORY_COLOR5:'#EBD8EA',
+  // HOME_CATEGORY_COLOR6:'#E4D8D5',
+  // HOME_CATEGORY_COLOR7:'#D2DDDF',
   POC_MSN : 'msn2vvrozzffc9'
 };
 export default CONSTANTS;

@@ -6,6 +6,7 @@ import CONSTANTS from '@app/config/constants';
 import { ProductCardFeature, ProductCardMetaInfo, ProductsEntity } from '@app/utils/models/product.listing.search';
 import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
 import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card-vertical-container/product-card-vertical-container.module';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: "product-popular-deals",
@@ -13,7 +14,7 @@ import { ProductCardVerticalContainerModule } from '@app/modules/ui/product-card
   styleUrls: ["./product-popular-deals.component.scss"],
 })
 export class ProductPopularDealsComponent implements OnInit {
-  productStaticData = this.commonService.defaultLocaleValue;
+  @Input() productStaticData = this.commonService.defaultLocaleValue;
   readonly imagePath = CONSTANTS.IMAGE_BASE_URL;
   polpularDealsProducts: ProductsEntity[] = null;
   @Input("outOfStock") outOfStock = false;
@@ -38,7 +39,7 @@ export class ProductPopularDealsComponent implements OnInit {
   selectedIndex: any;
   selectedProducts: ProductsEntity[] = null;
   isBrowser: boolean;
-
+  changeStaticSubscription: Subscription = null;
   constructor(
     public commonService: CommonService,
     private productService: ProductService,
@@ -56,8 +57,15 @@ export class ProductPopularDealsComponent implements OnInit {
         : "product_popular_deals_oos",
     };
   }
+
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
+  }
+  
   getStaticSubjectData(){
-    this.commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription = this.commonService.changeStaticJson.subscribe(staticJsonData => {
       this.commonService.defaultLocaleValue = staticJsonData;
       this.productStaticData = staticJsonData;
       this.cdr.detectChanges();

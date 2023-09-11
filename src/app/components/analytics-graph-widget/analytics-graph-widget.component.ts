@@ -25,6 +25,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   @Input() categoryName: string;
   @Input() graphData;
   @Input() isL2CategoryCheck;
+  @Input() productStaticData;
   fragmentPriceObject: any;
   readonly imagePathAsset = CONSTANTS.IMAGE_ASSET_URL;
   readonly attributeChartId = 'attribute-chart';
@@ -41,7 +42,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   attributeDataWithoutProcessing;
 
 
-  constructor(private dataService: DataService, private commonService: CommonService, private _productListService: ProductListService,public router:Router) {
+  constructor(private dataService: DataService, public commonService: CommonService, private _productListService: ProductListService,public router:Router) {
     
    }
 
@@ -172,6 +173,14 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
   }
 
   createAttributeChartOptionsObject(data,seriesArray,attributeName?) {
+    if (seriesArray.length > 0) {
+      seriesArray[0].events = {
+        click: function () {
+          componentContext.generateFragmentUrl(attributeName, this.name);
+        }
+      };
+      seriesArray[0].className = 'cursor-pointer';
+    }
     let chartOptions = {
       chart: {
         type: 'column',
@@ -201,7 +210,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       yAxis: {
         title: {
-          text:'Order Percentage'
+          text: this.productStaticData.order_percentage
         }
       },
       legend: {
@@ -224,7 +233,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         }
       },
       tooltip: {
-        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        headerFormat: '',
         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b> of total<br/>'
       },
       series: [
@@ -269,7 +278,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       yAxis: {
         title: {
-          text:'Order Percentage'
+          text: this.productStaticData.order_percentage
         }
       },
       legend: {
@@ -311,12 +320,12 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
         }
       },
       tooltip: {
-        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        headerFormat: '',
         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b> of total<br/>'
       },
       series: [
         {
-          name: "Brands",
+          name: this.productStaticData.brands,
           colorByPoint: true,
           // dataSorting: {
           //   enabled: true
@@ -357,7 +366,7 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
       },
       yAxis: {
         title: {
-          text:'Order Percentage'
+          text: this.productStaticData.order_percentage
         }
       },
       legend: {
@@ -377,18 +386,21 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
                 if(componentContext.isL2CategoryCheck === true){
                   componentContext.callRouter(this.options.link);
                 }
+                else{
+                  componentContext.generateFragmentUrl('price',componentContext.removeRupeeSymbol(this.options.name))
+               }
               }
             }
           }
         }
       },
       tooltip: {
-        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        headerFormat: '',
         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}%</b> of total<br/>'
       },
       series: [
         {
-          name: (this.isL2CategoryCheck)?"Categories":"Price Range",
+          name: (this.isL2CategoryCheck)? this.productStaticData.categories : this.productStaticData.price_range,
           colorByPoint: true,
           // dataSorting: {
           //   enabled: true
@@ -453,5 +465,8 @@ export class AnalyticsGraphWidgetComponent implements OnInit {
    callRouter(link){
      this.router.navigateByUrl(link);
    }
+   removeRupeeSymbol(inputString) {
+    return inputString.replace(/₹/g, '');
   }
+}
 

@@ -45,5 +45,16 @@
             }
 
         }
+        .single-insight-widget{
+            background-color: #E8F3FD;
+            border: 1px solid#77B9F883;
+            border-radius: 8px;
+            padding: 10px;
+            width: 100%;
+            p{
+                font-size: $large-font;
+                line-height: $medium-line-height; 
+            }
+        }
     }
 }

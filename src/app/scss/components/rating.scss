@@ -8,19 +8,22 @@
     margin-bottom: 5px;
     .avgrating {
         display: inline;
-        background-color: #458d00;
+        background-color: var(--slimy-green);
         padding: 3px 5px;
         color: #fff;
         border-radius: 3px;
-        font-size: $medium-font;
+        font-size: $small-font;
         margin-right: 5px;
+        font-weight: bold;
         i {
             padding-left: 2px;
-            font-size: 7px;
+            font-size: 8px;
         }
     }
     .count {
         color: var(--dim-gray);
+        font-weight: bold;
+        font-size: 10px;
     }
     .ads{
         position: absolute;

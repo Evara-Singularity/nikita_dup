@@ -14,7 +14,7 @@ export class BulkRquestFormPopupLazyComponent implements OnInit, AfterViewInit, 
   bulkRfqComponent = null;
   @ViewChild("bulkRfqForm", { read: ViewContainerRef })
   bulkRfqFormContainerRef: ViewContainerRef;
-
+  productStaticData = this.commonService.defaultLocaleValue;
   constructor(
     private cfr: ComponentFactoryResolver,
     private injector: Injector,
@@ -23,7 +23,13 @@ export class BulkRquestFormPopupLazyComponent implements OnInit, AfterViewInit, 
   ) { }
 
   ngOnInit(): void {
+    this.getLocalization()
+  }
 
+  getLocalization() {
+    this.commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+      this.productStaticData = localization_content;
+    });
   }
 
   ngAfterViewInit(): void {

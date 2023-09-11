@@ -24,12 +24,13 @@ import { environment } from 'environments/environment';
 
 export class SubCategoryComponent implements OnInit{
     @Input() relatedCatgoryList: Array<any> = [];
+    @Input() productStaticData: any = this.commonService.defaultLocaleValue;
     @Output() getCategoryById:EventEmitter<any>=new EventEmitter<any>();
     @Output() updateSubCategoryCount$: EventEmitter<any> = new EventEmitter<any>();
     catdata;
     imageBasePath: string = environment.IMAGE_BASE_URL;
     public isAllListShow:boolean;
-    moreLessCategoryText:string="SHOW MORE";
+    moreLessCategoryText:string=this.productStaticData.show_more;
     defaultImage = environment.IMAGE_BASE_URL+'assets/img/home_card.webp';
     showListFlag:boolean = false;
 
@@ -37,11 +38,16 @@ export class SubCategoryComponent implements OnInit{
     };
 
     ngOnInit(): void {
-        this.initializeSubcategoryData(this.relatedCatgoryList);
-        this.showList(false);
+        if(this.commonService.isBrowser) {
+            this.initializeSubcategoryData(this.relatedCatgoryList);
+            this.showList(false);
+        }
     }
 
     initializeSubcategoryData(data) {
+        data.forEach(ele=>{
+            ele['categoryDetails']['categoryLink'] = this.commonService.isHindiUrl ? 'hi/' + ele['categoryDetails']['categoryLink'] : ele['categoryDetails']['categoryLink'];
+        })
         this.relatedCatgoryList = data;
     }
 
@@ -57,11 +63,11 @@ export class SubCategoryComponent implements OnInit{
         if(this.isAllListShow)
         {
             this.showListFlag = true;
-            this.moreLessCategoryText="SHOW LESS";
+            this.moreLessCategoryText=this.productStaticData.show_less;
         }
         else{
             this.showListFlag = false;
-            this.moreLessCategoryText="SHOW MORE";
+            this.moreLessCategoryText=this.productStaticData.show_more;
         }
     }
 }

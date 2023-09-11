@@ -44,8 +44,8 @@
     align-items: center;
     border: 1px solid #efeff4;
     border-radius: 8px;
-    min-width: 120px;
-    width: 120px;
+    min-width: 131px;
+    width: 131px;
     margin-right: 10px;
     padding: 5px;
     .tab-img {
@@ -54,19 +54,19 @@
       padding: 2px;
       border-radius: 20%;
       i {
-        font-size: $large-font;
+        font-size: 16px;
         color: var(--primary);
       }
     }
     .tab-img-txt {
       color: var(--bleu-de-france);
-      font-size: 10px;
+      font-size: 12px;
       width: calc(100% - 45px);
       line-height: 14px;
     }
     .tab-img-txt-gray {
       color: var(--gray-web);
-      font-size: 10px;
+      font-size: 12px;
       width: calc(100% - 45px);
       line-height: 14px;
     }

@@ -1,17 +1,4 @@
 <div class="product-horizontal-card" data-observeVisibility [debounceTime]="200" (visible)="cardVisisble($event)">
-    <!-- YOUTUBE FEATURE START -->
-    <!-- <div class="youtubeThumbnail-listing"
-        *ngIf="cardFeaturesConfig.enableVideo && product['videoInfo'] && product['videoInfo'].length > 0 && this.youtubeThumbnail">
-        <a [title]="product['videoInfo'][0]['link']" (click)="stopNavigation($event)">
-            <div class="thumbnail" [lazyLoad]="youtubeThumbnail" [defaultImage]="defaultImage">
-                <input class="youtube_icon"
-                    (click)="showYTVideo(product['videoInfo'][0]['link']);$event.stopPropagation();" type="image"
-                    src="/assets/img/video_icon.svg" alt="text">
-            </div>
-        </a>
-    </div> -->
-    <!-- YOUTUBE FEATURE ENDS -->
-    <!-- <a class="s-h-l" [attr.href]="prodUrl+'/'+this.product.productUrl">{{product.productName}}</a> -->
     <div class="card-container">
         <div class="inner-container">
             <div class="left-container" (click)="navigateToPDP()">
@@ -26,7 +13,8 @@
                         <div class="youtube-iconsection">
                         </div>
                         <div class="youtube1">
-                            <img src="/assets/img/video_icon.svg" alt="youtube_icon" (click)="showYTVideo(product['videoInfo'][0]['link']);$event.stopPropagation();">
+                            <img src="/assets/img/video_icon.svg" alt="youtube_icon"
+                                (click)="showYTVideo(product['videoInfo'][0]['link']);$event.stopPropagation();">
                         </div>
                     </a>
                 </ng-container>
@@ -65,23 +53,21 @@
                     </div>
                     <i (click)="$event.stopPropagation();remove(product)" *ngIf="isWishlist" class="icon-bin"></i>
                 </div>
-                <!-- <div *ngIf="product.brandName" class="brand" (click)="navigateToPDP()">
-                    <span>By: {{product.brandName | brandName}}</span>
-                </div> -->
                 <div class="price-details">
                     <div class="left" (click)="navigateToPDP()">
-                        <div class="price"
-                            *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.discount > 0">
-                            <span class="prod-mrp">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
-                                }}</span>
-                            <span class="prod-discount">{{product.discount}}% OFF</span>
-                        </div>
                         <div class="prod-selling-price" *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice">
                             <span>{{ product.salesPrice | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
                                 }}</span>
                         </div>
+                        <div class="price"
+                            *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.discount > 0">
+                            <span class="prod-mrp">{{ product.mrp | mathFloor | currency: 'INR' : 'symbol' : '1.0-0'
+                                }}</span>
+                            <span class="prod-discount">{{product.discount}}% {{ productStaticData?.off }}</span>
+                        </div>
+                        
                         <div class="out-of-stock-text" *ngIf="isOutOfStockByQuantity || isOutOfStockByPrice">
-                            <span>Available on Request</span>
+                            <span>{{ productStaticData?.available_request }}</span>
                         </div>
                         <div class="out-of-stock-price"
                             *ngIf="isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice!=0">
@@ -91,11 +77,22 @@
                     </div>
 
                 </div>
+                <!-- <div class="emi-container"
+                    *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice >= easyEMILimit">
+                    <i class="icon-circle_check"></i>
+                    <span>{{ productStaticData?.easy_emi_availble }}</span>
+                </div> -->
+                <div class="emi-container coupon-conatiner"
+                    *ngIf="product.promoCodeDescription != null">
+                    <i class="icon-offer"></i>
+                    <span><b>{{product.promoCodeDescription}} OFF</b> with coupon</span>
+                </div>
                 <div class="emi-container"
                     *ngIf="!isOutOfStockByQuantity && !isOutOfStockByPrice && product.salesPrice >= easyEMILimit">
                     <i class="icon-circle_check"></i>
-                    <span>Easy EMI available</span>
+                    <span>{{ productStaticData?.no_cost_emi_available }}</span>
                 </div>
+                
             </div>
         </div>
         <!-- -- {{ product['attributeValuesForPart'] | json }} -- -->
@@ -110,9 +107,9 @@
         <div class="attribute-section"
             *ngIf="product['attributeValuesForPart'] != null && (product['attributeValuesForPart'] | keyvalue).length != 0">
             <div class="pwa-tabs-container">
-                <span class="pwa-tab" *ngFor="let item of modifiedFilterableAtrribute.slice(0,5)">
+                <div class="pwa-tab" *ngFor="let item of modifiedFilterableAtrribute.slice(0,5)">
                     {{item[0] | titlecase}}: {{item[1][0]}}
-                </span>
+                </div>
             </div>
         </div>
         <div class="btn-container">
@@ -121,21 +118,21 @@
                     *ngIf="(cardFeaturesConfig.enableAddToCart || cardFeaturesConfig.enableBuyNow) && (!isOutOfStockByQuantity && !isOutOfStockByPrice)  && pageName !='CartAddSimilarproduct'">
                     <button class="btn add_cart_btn" *ngIf="cardFeaturesConfig.enableAddToCart" (click)="buyNow()">
                         <i class="icon-cart1"></i>
-                        ADD TO CART
+                        {{ productStaticData.add_to_cart }}
                     </button>
                     <button class="btn tertiary-btn" *ngIf="cardFeaturesConfig.enableBuyNow" (click)="buyNow(true)">
-                        BUY NOW
+                        {{ productStaticData.buy_now }}
                     </button>
                 </ng-container>
                 <span class="add_cart_btn prepaid-btn"
                     *ngIf="cardFeaturesConfig.enableAddToCart && pageName=='CartAddSimilarproduct'" (click)="buyNow()">
                     <i class="icon-cart1"></i>
-                    ADD TO CART
+                    {{ productStaticData.add_to_cart }}
                 </span>
             </div>
             <ng-container *ngIf="(isOutOfStockByQuantity || isOutOfStockByPrice)">
                 <button class="btn secondry-btn-1" (click)="openRfqForm()" *ngIf="!isWishlist">
-                    SEND QUERY
+                    {{ productStaticData.send_query }}
                 </button>
             </ng-container>
         </div>

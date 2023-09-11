@@ -5,6 +5,8 @@ import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
+import { LocalAuthService } from '@app/utils/services/auth.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: 'shared-product-carousel',
@@ -43,6 +45,10 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
   @ViewChild("productCrouselPseudo", { read: ElementRef })
   productCrouselPseudoContainerRef: ElementRef;
   showPocMsn: boolean = false;
+  selectLangaugeInstance = null;
+  @ViewChild("selectLangauge", { read: ViewContainerRef })
+  selectLangaugeContainerRef: ViewContainerRef;
+  @Input() pageLinkName = '';
 
   constructor(
     private cfr: ComponentFactoryResolver, 
@@ -52,7 +58,9 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     private _activatedRoute:ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private _commonService:CommonService,
-    private _analyticsService:GlobalAnalyticsService
+    private _analyticsService:GlobalAnalyticsService,
+    private _localAuthService: LocalAuthService,
+    private localStorageService: LocalStorageService
     ) { }
 
   ngOnInit(): void {
@@ -64,6 +72,28 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     }
     this._commonService.isProductCrouselLoaded.next(true)
     // this.getStaticSubjectData();
+    const languagePrefrence = this.localStorageService.retrieve("languagePrefrence");
+    this.updateUserLanguagePrefrence(languagePrefrence);
+  }
+
+  private updateUserLanguagePrefrence(languagePrefrence) {
+    const userSession = this._localAuthService.getUserSession();
+    if (
+      userSession &&
+      userSession["authenticated"] == "true" &&
+      languagePrefrence != null  &&
+      languagePrefrence != userSession["preferredLanguage"]
+    ) {
+      const params = "customerId=" + userSession["userId"] + "&languageCode=" + languagePrefrence;
+      this.commonService.postUserLanguagePrefrence(params).subscribe(result=>{
+        if(result && result['status'] == true){
+          const selectedLanguage = result['data'] && result['data']['languageCode'];
+          const newUserSession = Object.assign({}, this._localAuthService.getUserSession());
+          newUserSession.preferredLanguage = selectedLanguage;
+          this._localAuthService.setUserSession(newUserSession);
+        }
+      });
+    }
   }
 
   getStaticSubjectData() {
@@ -99,6 +129,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
       this.productCrouselInstance.instance["refreshSiemaItems$"] = this.refreshSiemaItems$;
       this.productCrouselInstance.instance["productName"] = this.productName;
       this.productCrouselInstance.instance["productOutOfStock"] = this.productOutOfStock;
+      this.productCrouselInstance.instance['pageLinkName'] = this.pageLinkName;
       setTimeout(() =>
       {
         (this.productCrouselInstance.instance["moveToSlide$"] as Subject<number>).next(slideIndex);
@@ -172,12 +203,46 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
 
    setAdobeDataTracking(){
       this._analyticsService.sendAdobeCall(
-        { channel: 'pdp', 
-          pageName: this.showPocMsn ? 'moglix:pdp:360_poc_2':'moglix:pdp:360_poc_1',
-          linkName:  "moglix:" + this.router.url
-        }, 
+        {
+          page:{ 
+          channel: 'pdp', 
+          linkPageName: this.pageLinkName,
+          linkName:  this.showPocMsn ? '3D Image click' : '360 image click'
+        }}, 
         "genericClick")
-    
+  }
+
+  pageTranslation(){
+    this._analyticsService.sendAdobeCall({ page: { channel: 'pdp', linkPageName: this.pageLinkName, linkName: 'Translation icon clicked' } }, "genericClick")
+    const isPopUp = localStorage.getItem("isPopUp");
+    if(isPopUp == null && !this.isHindiUrl){
+      this.loadSelectLanguagePopUp();
+    }else{
+      const language = this.isHindiUrl ? "en" : "hi";
+      this.localStorageService.store("languagePrefrence", language);
+      this.productService.updateUserLanguagePrefrence(); 
+      this.translate();
+    }
+  }
+
+  async loadSelectLanguagePopUp() {
+      const { SelectLanguageComponent } = await import('../../components/select-language/select-language.component');
+      const factory = this.cfr.resolveComponentFactory(SelectLanguageComponent);
+      this.selectLangaugeInstance = this.selectLangaugeContainerRef.createComponent(
+        factory,
+        null,
+        this.injector
+      );
+      this.selectLangaugeInstance.instance["isHindiUrl"] = this.isHindiUrl;
+       // translate Event Handler
+      (
+        this.selectLangaugeInstance.instance[
+        "translate$"
+        ] as EventEmitter<any>
+    ).subscribe((data) =>
+    {
+        this.translate();
+    });
   }
    
    ngOnDestroy(){

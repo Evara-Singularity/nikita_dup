@@ -37,13 +37,25 @@
             <div class="multiple-widgets-container">
                 <div *ngFor="let attribute of attributeDataWithoutProcessing;let i = index" class="attribute-chart-container"> 
                     <div class="widget-heading">
-                        <p><img src="{{imagePathAsset}}assets/img/insight.svg"> Moglix Insight</p>
-                        <p class="heading-txt">{{categoryName}} purchase as per {{attribute.attributeName |  titlecase}}</p>
+                        <p><img src="{{imagePathAsset}}assets/img/insight.svg"> {{ productStaticData?.moglix_insight}}</p>
+                        <p class="heading-txt">{{categoryName}} {{productStaticData.purchase_as_per}} {{attribute.attributeName |  titlecase}}</p>
                     </div>
                     <div [id]="'attribute-chart'+i" style="width:100%;"></div>
-                    <div  (click)="generateFragmentUrl(attribute.attributeName,getMaxValue(attribute.attributePercentange,'percent'))" class="card">
-                        <p>
-                            {{getMaxValue(attribute.attributePercentange)}}% of users buy {{categoryName}} in {{getMaxValue(attribute.attributePercentange,'percent')}} {{attribute.attributeName | titlecase}}
+                    <div  (click)="generateFragmentUrl(attribute.attributeName,getMaxValue(attribute.attributePercentange,'percent'))" class="card att-card">
+                        <p *ngIf='!commonService.isHindiUrl'>
+                            <b>{{getMaxValue(attribute.attributePercentange)}}%</b> 
+                            {{ productStaticData?.of_users_buy }} {{categoryName}} 
+                            {{productStaticData?.in}}
+                            <b>{{getMaxValue(attribute.attributePercentange,'percent')}}</b> 
+                            {{attribute.attributeName | titlecase}} 
+                        </p>
+                        <p *ngIf='commonService.isHindiUrl'>
+                            <b>{{getMaxValue(attribute.attributePercentange)}}%</b> 
+                            {{ productStaticData?.of_users_buy }}                             
+                            <b>{{getMaxValue(attribute.attributePercentange,'percent')}}</b> 
+                            {{attribute.attributeName | titlecase}} 
+                            {{productStaticData?.in_1}}
+                            {{categoryName}} 
                         </p>
                     </div>
                 </div>

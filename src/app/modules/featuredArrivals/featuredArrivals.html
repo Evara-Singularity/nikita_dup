@@ -1,30 +1,19 @@
-<ng-container *ngIf="featureArrivalData && featureArrivalData.length > 0" >
+<ng-container *ngIf="featureArrivalData && featureArrivalData.length > 0">
     <section class="featr_arrival mt-15">
-            <div class="view-all-strip">
-                <h3 class="heading-2-16">Featured Arrivals</h3>
-                <a [routerLink]="['/deals/fresh-arrivals']" routerLinkActive="router-link-active"
-                    class="btn quinary-btn">VIEW ALL
-                </a>
-            </div>
-            <ul class="view-products grid-variant1">
-                <li *ngFor="let item of featureArrivalData | slice:0:4">
-                    <a [routerLink]="item.image_link" (click)="setCookieFeatured(item.image_title)">
-                     <div class ="product-card">
-                        <div class="product-img">
-                            <img [defaultImage]="defaultImage" [lazyLoad]="imagePath + item.image_name" alt="{{item.image_title}}">
-                        </div>
-                        <div class="product-description">
-                            <p class="prod-name">
-                                {{item.image_title}}
-                            </p>
-                            <p *ngFor="let imggen of item.image_general" class="product_helpLink">
-                                <a [routerLink]="imggen.general_url"
-                                    (click)=setCookieFeatured(item.image_title)>{{imggen.general_text}}</a>
-                            </p>
-                        </div>
-                     </div>
-                    </a>
-                </li>
-            </ul>
+        <div class="view-all-strip pad-lr-15">
+            <h3 class="heading-2-16">Featured Arrivals</h3>
+            <button [routerLink]="['/deals/fresh-arrivals']" routerLinkActive="router-link-active"
+                class="btn quinary-btn">VIEW ALL
+            </button>
+        </div>
+        <div class="pl-15">
+            <product-card-vertical-container [numberOfItems]="featureArrivalData.length">
+                <ng-container *ngFor="let product of featureArrivalData">
+                    <product-card-vertical-grid-view [moduleUsedIn]="'HOME-FEATURED-ARRIVALS'"
+                        [isPDPImageLazyLoaded]="false" [cardFeaturesConfig]="cardFeaturesConfig" [product]="product">
+                    </product-card-vertical-grid-view>
+                </ng-container>
+            </product-card-vertical-container>
+        </div>
     </section>
 </ng-container>

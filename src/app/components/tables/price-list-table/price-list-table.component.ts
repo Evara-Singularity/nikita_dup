@@ -11,6 +11,7 @@ export class PriceListTableComponent {
 	@Input('priceListData') priceListData;
 	@Input('heading') heading;
 	todayDate: number;
+	@Input() productStaticData = this._commonService.defaultLocaleValue;
 
 	constructor(
 		public _commonService: CommonService,

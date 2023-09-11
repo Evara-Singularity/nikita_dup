@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
 import { MathFloorPipeModule } from '@app/utils/pipes/math-floor';
+import { Subscription } from 'rxjs';
 import { CommonService } from '../../utils/services/common.service';
 
 @Component({
@@ -21,7 +22,7 @@ export class ProductBulkQuantityComponent implements OnInit {
   @Output() checkBulkPriceMode$: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectProductBulkPrice$: EventEmitter<number> = new EventEmitter<number>();
   @Input() productMinimmumQuantity;
-
+  changeStaticSubscription: Subscription = null;
   constructor(private _tms: ToastMessageService,private _commonService:CommonService) { }
 
   ngOnInit(): void {
@@ -29,10 +30,17 @@ export class ProductBulkQuantityComponent implements OnInit {
     this.getStaticSubjectData();
   }
   getStaticSubjectData(){
-    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this._commonService.defaultLocaleValue = staticJsonData;
       this.productStaticData = staticJsonData;
     });
+  }
+
+
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
   }
 
   selectProductBulkPrice(qunatity) {

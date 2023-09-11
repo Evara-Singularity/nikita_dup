@@ -16,6 +16,7 @@ export class Informative_videoComponent implements OnInit {
   @Input() categoryName:string;
   numberOfInformativeVideos: number = 0
   youtubeModalInstance = null;
+  @Input() productStaticData = this.commonService.defaultLocaleValue;
 
   constructor(
     public modalService: ModalService,

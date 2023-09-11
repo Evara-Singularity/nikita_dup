@@ -34,6 +34,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
     isCancelIconClicked: boolean=true;
 	cancelIconClickedPaymentSubscription: Subscription;
     isCancelIconPaymentClicked: boolean=true;
+	missOutSavingAmount: number=0; //calculate [mrp-(selling Price + shipping Charges)]
 
 	constructor(
 		public _commonService: CommonService,
@@ -68,6 +69,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		
 		this.backButtonClickPaymentSubscription = this._naviagtionService.isBackClickedPayment$.subscribe(
 		value => {
+			this.missOutSavingAmount=this.calculate_mrp_totalPayable_Difference();
 			this.isBackClickedPayment = value;
 		}
 		);
@@ -82,6 +84,14 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 			}
 		  );    
 	}
+	calculate_mrp_totalPayable_Difference() { 
+		const sums = this._cartService.getGenericCartSession["itemsList"].reduce((acc, item) => {
+		  acc.sum_mrpAmounts += (item.amount * item.productQuantity);
+		  acc.sum_totalPayableAmounts += (item.totalPayableAmount + item.shippingCharges);
+		  return acc;
+		}, { sum_mrpAmounts: 0, sum_totalPayableAmounts: 0 });
+		return sums.sum_mrpAmounts - sums.sum_totalPayableAmounts;
+	  }	
 
 	handleNavigation()
 	{
@@ -100,11 +110,16 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 			this.goBack$.emit();
 			return
 		}
-		if(this.isPayment && !this.isBackClickedPayment && this.isCancelIconPaymentClicked){
+		if(this.isPayment && !this.isBackClickedPayment && this.isCancelIconPaymentClicked && this.missOutSavingAmount){
 			this._naviagtionService.setBackClickedPayment(true);
 			return
 		}
-		if(this.isPayment && this.isBackClickedPayment && this.isCancelIconPaymentClicked){
+		if(this.isPayment && this.isBackClickedPayment && this.isCancelIconPaymentClicked && this.missOutSavingAmount){
+			this._naviagtionService.setBackClickedPayment(true);
+			this.goBack$.emit();
+			return
+		}
+		if(this.isPayment && !this.missOutSavingAmount){
 			this._naviagtionService.setBackClickedPayment(true);
 			this.goBack$.emit();
 			return

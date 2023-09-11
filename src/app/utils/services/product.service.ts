@@ -1369,11 +1369,22 @@ export class ProductService {
                     ),
                     mergeMap((response) => {
                         if (response) {
+                            const msn = rawProductData["defaultPartNumber"];
+                            const priceQuantityCountry = rawProductData["productPartDetails"][msn][
+                                "productPriceQuantity"
+                                ]
+                            ? Object.assign(
+                                {},
+                                rawProductData["productPartDetails"][msn][
+                                "productPriceQuantity"
+                                ]["india"]
+                            )
+                            : null;
                             const postBody = {
                                 productId: [rawProductData["defaultPartNumber"]],
                                 toPincode:
                                     response.addressDetails["shippingAddress"][0]["zipCode"],
-                                price: rawProductData.productPrice,
+                                price: priceQuantityCountry && !isNaN(priceQuantityCountry["sellingPrice"]) ? Number(priceQuantityCountry["sellingPrice"]) : 0,
                             };
                             return this.getLogisticAvailability(postBody)
                                 .pipe(

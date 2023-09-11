@@ -22,7 +22,7 @@ export const environment = {
   GTM_ANALYTICS_CODE: 'GTM-WW4R83Z',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js',
   LOG_FILE_PATH: "/var/log/moglix/online/pwa/",
-  buildVersion: '25.16',
+  buildVersion: '25.17',
   SOCIAL_LOGIN: {
     google: {
       clientId:

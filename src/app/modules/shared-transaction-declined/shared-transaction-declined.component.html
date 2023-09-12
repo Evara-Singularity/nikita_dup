@@ -5,12 +5,12 @@
                 <h3 class="heading-3">Transaction Declined</h3>
                 <i class="icon-circle-delete" (click)="$event.stopPropagation();pay()"></i>
             </div>
-            <p class="decline-txt">Transaction was declined due to some technical reason/fault</p>
+            <p class="decline-txt">{{failureMessage}}</p>
             <div class="img-block">
                 <!--Sachin:Move image to cdn-->
                 <img src="../../../assets/img/transaction-declined.gif" alt="">
             </div>
-            <div class="bottom-txt-block">
+            <!-- <div class="bottom-txt-block">
                 <p>We're having trouble processing your request.</p>
                 <div class="bottom-list-txt">
                     <p>-</p>
@@ -20,7 +20,7 @@
                     <p>-</p>
                     <p class="listInfo">May be there's a problem with the connection.</p>
                 </div>
-            </div>
+            </div> -->
             <div class="btn-block btn-block-2nd">
                 <ng-container *ngIf="canCOD">
                     <button class="secondry-btn" (click)="$event.stopPropagation();payAsCOD()">PAY CASH ON

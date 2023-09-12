@@ -1,0 +1,51 @@
+<div class="pad-tb-10 cod-payContainer">
+  <p class="save-amount-text" *ngIf="cartService.totalPrepaidSaving > 0">
+    Pay online & save extra
+    {{
+      cartService.totalPrepaidSaving | currency : "INR" : "symbol" : "1.0-0"
+    }}
+    OFF on this order.
+  </p>
+  <p class="save-amount-text" *ngIf="cartService.totalPrepaidSaving == 0">
+    Payable Amount: 
+    {{ payableAmount | currency : "INR" : "symbol" : "1.0-0" }}
+  </p>
+  <div class="cod-payBtn">
+    <div class="cod-btn btn primary-full-btn bg-blue">
+      <div class="text-container">
+        <div class="text" (click)="validateCart()">
+          <p>CASH ON DELIVERY</p>
+          <span class="cod-price" *ngIf="cartService.totalPrepaidSaving > 0">
+            {{ payableAmount | currency : "INR" : "symbol" : "1.0-0" }}
+          </span>
+        </div>
+        <i class="icon-next"></i>
+      </div>
+    </div>
+    <div class="cod-btn btn primary-full-btn">
+      <div class="text-container">
+        <div class="text" (click)="continueToPayment()">
+          <p>PAY ONLINE <img src="../../../assets/img/online-pay.png" /></p>
+          <span
+            class="price-section"
+            *ngIf="cartService.totalPrepaidSaving > 0"
+          >
+            <span class="price-mrp gray-txt">
+              <span class="strike-off-upper">
+                <span class="strike-off"></span>
+                {{ payableAmount | currency : "INR" : "symbol" : "1.0-0" }}
+              </span>
+            </span>
+            <b>
+              {{
+                payableAmount - cartService.totalPrepaidSaving
+                  | currency : "INR" : "symbol" : "1.0-0"
+              }}</b
+            >
+          </span>
+        </div>
+        <i class="icon-next"></i>
+      </div>
+    </div>
+  </div>
+</div>

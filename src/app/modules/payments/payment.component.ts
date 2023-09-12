@@ -1,4 +1,4 @@
-import { Compiler, Component,ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, Injector, NgModuleRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { Compiler, Component,ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, Injector, NgModuleRef, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CartUtils } from "@app/utils/services/cart-utils";
@@ -15,6 +15,7 @@ import { GlobalLoaderService } from "../../utils/services/global-loader.service"
 import { SharedTransactionDeclinedComponent } from '../shared-transaction-declined/shared-transaction-declined.component';
 import { SharedTransactionDeclinedModule } from '../shared-transaction-declined/shared-transaction-declined.module';
 import { PaymentService } from "./payment.service";
+import { NavigationService } from "@app/utils/services/navigation.service";
 
 // TODO:
 /**
@@ -68,8 +69,17 @@ export class PaymentComponent implements OnInit
   bankOfferBottomSheetInstance = null;
   @ViewChild('bankOfferBottomSheet', { read: ViewContainerRef })
   bankOfferBottomSheetRef: ViewContainerRef;
-  
 
+  backButtonClickPaymentSubscription: Subscription;
+  isBackClicked: boolean=false; 
+  private cancelIconClickedSubscription: Subscription;
+  public isCancelIconClicked: boolean=true;  
+  missOutSavingAmount: number=0; //calculate [mrp-(selling Price + shipping Charges)]
+  popStateListener;
+  isBrowser = false;
+  isPageDoubled = false;
+
+  
   constructor(
     public _dataService: DataService,
     private _loaderService: GlobalLoaderService,
@@ -86,15 +96,30 @@ export class PaymentComponent implements OnInit
     private _injector: Injector,
     private _retryPaymentService: RetryPaymentService,
     private cfr: ComponentFactoryResolver,
-    private injector: Injector
+    private injector: Injector,
+    private _navigationService: NavigationService
+
   )
   {
     this.isShowLoader = true;
+    this.isBrowser = _commonService.isBrowser
   }
   
 
   ngOnInit()
   {
+    this._navigationService.setBackClickedPayment(false);
+    this._navigationService.setCancelIconPaymentClicked(true);
+    this.backButtonClickPaymentSubscription = this._navigationService.isBackClickedPayment$.subscribe(
+      value => {
+        this.isBackClicked = value;
+      }
+    );
+    this.cancelIconClickedSubscription = this._navigationService.isCancelIconPaymentClicked$.subscribe(
+      value => {
+        this.isCancelIconClicked = value;
+      }
+    );
     const queryParams = this._activatedRoute.snapshot.queryParams;
     this.orderId = queryParams['orderId'] || queryParams['txnId'];
 
@@ -131,7 +156,31 @@ export class PaymentComponent implements OnInit
     this.intialize();
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
     this._cartService.clearCartNotfications();
+    if (this.isBrowser && this._router.url.includes('/checkout/payment') && this.missOutSavingAmount) {
+      this.doubleCurrentPageInHistory();
+      this.backUrlNavigationHandler();
+    }
   }
+  
+  private doubleCurrentPageInHistory(): void {
+    if (!this.isPageDoubled) {
+      window.history.pushState({ page: 'samePage' }, null, window.location.href);
+      this.isPageDoubled = true;
+    }
+  }
+
+  backUrlNavigationHandler() {
+    this.popStateListener = (event:PopStateEvent):void => {
+      this.doubleCurrentPageInHistory();
+      this.backButtonClickPaymentSubscription = this._navigationService.isBackClickedPayment$.subscribe(
+        value => {
+          this.isBackClicked = true;
+        }
+      );
+    };
+    window.addEventListener('popstate', this.popStateListener, { once: true });
+  }
+
 
   private intialize()
   {
@@ -160,7 +209,16 @@ export class PaymentComponent implements OnInit
       this.unAvailableMsnList = this._cartService.codNotAvailableObj["itemsArray"];
       this.callApisAsyncly();
       this.analyticVisit(cartData);
+      this.missOutSavingAmount=this.calculate_mrp_totalPayable_Difference();
     }
+  }
+  calculate_mrp_totalPayable_Difference() { 
+    const sums = this._cartService.getGenericCartSession["itemsList"].reduce((acc, item) => {
+      acc.sum_mrpAmounts += (item.amount * item.productQuantity);
+      acc.sum_totalPayableAmounts += (item.totalPayableAmount + item.shippingCharges);
+      return acc;
+    }, { sum_mrpAmounts: 0, sum_totalPayableAmounts: 0 });
+    return sums.sum_mrpAmounts - sums.sum_totalPayableAmounts;
   }
 
   private getSavedCardData() {
@@ -501,6 +559,15 @@ export class PaymentComponent implements OnInit
     }
   }
 
+  closebackpopup(){
+    this._navigationService.setBackClickedPayment(false);
+    this._navigationService.setCancelIconPaymentClicked(false);
+  }
+
+  backFromBackPopup(){
+  this._navigationService.goBack();
+  }   
+  
   ngOnDestroy() {
     if (this.payUOfferPopUpSubscription) {
       this.payUOfferPopUpSubscription.unsubscribe();
@@ -508,5 +575,8 @@ export class PaymentComponent implements OnInit
     if (this.payUOfferPopUpDataSubscription) {
       this.payUOfferPopUpDataSubscription.unsubscribe();
     }
+    if (this.backButtonClickPaymentSubscription) this.backButtonClickPaymentSubscription.unsubscribe();
+    if (this.cancelIconClickedSubscription) this.cancelIconClickedSubscription.unsubscribe();
+    window.removeEventListener('popstate', this.popStateListener);
   }
 }

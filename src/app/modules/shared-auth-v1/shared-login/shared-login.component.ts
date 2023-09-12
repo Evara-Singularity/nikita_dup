@@ -77,13 +77,14 @@ export class SharedLoginComponent implements OnInit, OnDestroy
         public localStorageService: LocalStorageService,
         private http: HttpClient
     ) {
-        this.truecallerRequestId = uuidv4();
+        this.truecallerRequestId = uuidv4()
         this.initializeTruecaller()
      }
 
     ngOnInit(): void
     {
         if (this._common.isBrowser) {
+            this.initializeTruecaller()
             this.authFlow = this._localAuthService.getAuthFlow();
             if (this.authFlow) { 
                 this.updateControls(this.authFlow.identifier)
@@ -103,6 +104,7 @@ export class SharedLoginComponent implements OnInit, OnDestroy
     }
 
     initializeTruecaller(): void {
+        console.log("initializeTruecaller: called")
         const params = {
             type: "btmsheet",
             requestNonce: this.truecallerRequestId,

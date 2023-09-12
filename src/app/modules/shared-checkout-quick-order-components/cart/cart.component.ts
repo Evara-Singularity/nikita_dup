@@ -34,7 +34,6 @@ export class CartComponent implements OnInit, AfterViewInit
     pageEvent = "genericPageLoad";
     cartSession = null;
     noOfCartItems = 0;
-    backButtonClickText=''
     private popStateListener;
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     @Output() openWishList$:EventEmitter<any> = new EventEmitter<any>();
@@ -56,6 +55,8 @@ export class CartComponent implements OnInit, AfterViewInit
     private cancelIconClickedSubscription: Subscription;
     public isCancelIconClicked: boolean=true; 
     isBrowser = false;
+    this_product_is=CONSTANTS.this_product_is
+    these_product_are=CONSTANTS.these_product_are
 
 
     constructor(
@@ -87,7 +88,6 @@ export class CartComponent implements OnInit, AfterViewInit
               this.isCancelIconClicked = value;
             }
           );
-        this.backButtonClickText=this._cartService.getGenericCartSession["itemsList"].length==1?CONSTANTS.this_product_is:CONSTANTS.these_product_are
         if (this.isBrowser && this.moduleName=='QUICKORDER') {
             this.backUrlNavigationHandler();        
         }

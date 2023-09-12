@@ -655,6 +655,28 @@ export class CartComponent implements OnInit, AfterViewInit
 		this._cartService.shippingAddress = null;
 		this._cartService.billingAddress = null;
         this._navigationService.goBack();
+        this.leaveButtonClickAdobeTracking('Tracking')
+
     }   
+    leaveButtonClickAdobeTracking(trackingName){
+        const page = {
+            'linkPageName': "moglix:cart",
+           'linkName': 'cart:leave',
+          }
+        let data = {}
+        data["page"] = page;
+        data["custData"] = this._commonService.custDataTracking;
+        this._globalAnalyticsService.sendAdobeCall(data, trackingName); 
+      }
+    nudgePopupContinueButtonClickAdobeTracking(trackingName){
+        const page = {
+           'linkPageName': "moglix:cart",
+           'linkName': 'cart:continue',
+          }
+        let data = {}
+        data["page"] = page;
+        data["custData"] = this._commonService.custDataTracking;
+        this._globalAnalyticsService.sendAdobeCall(data, trackingName); 
+    }
     
 }

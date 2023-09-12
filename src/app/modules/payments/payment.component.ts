@@ -97,7 +97,8 @@ export class PaymentComponent implements OnInit
     private _retryPaymentService: RetryPaymentService,
     private cfr: ComponentFactoryResolver,
     private injector: Injector,
-    private _navigationService: NavigationService
+    private _navigationService: NavigationService,
+    private _globalAnalyticsService: GlobalAnalyticsService,
 
   )
   {
@@ -562,11 +563,35 @@ export class PaymentComponent implements OnInit
   closebackpopup(){
     this._navigationService.setBackClickedPayment(false);
     this._navigationService.setCancelIconPaymentClicked(false);
+    this.nudgePopupPayButtonClickAdobeTracking('Tracking')
   }
 
   backFromBackPopup(){
   this._navigationService.goBack();
-  }   
+  this.leaveButtonClickAdobeTracking('Tracking')
+  }
+
+  leaveButtonClickAdobeTracking(trackingName){
+    const page = {
+      'linkPageName': "moglix:paymentpage",
+     'linkName': 'Paymentpage:Leave',
+    }
+    let data = {}
+    data["page"] = page;
+    data["custData"] = this._commonService.custDataTracking;
+    this._globalAnalyticsService.sendAdobeCall(data, trackingName); 
+  }
+
+  nudgePopupPayButtonClickAdobeTracking(trackingName){
+    const page = {
+      'linkPageName': "moglix:paymentpage",
+     'linkName': 'Paymentpage:Payment',
+    }
+    let data = {}
+    data["page"] = page;
+    data["custData"] = this._commonService.custDataTracking;
+    this._globalAnalyticsService.sendAdobeCall(data, trackingName); 
+} 
   
   ngOnDestroy() {
     if (this.payUOfferPopUpSubscription) {

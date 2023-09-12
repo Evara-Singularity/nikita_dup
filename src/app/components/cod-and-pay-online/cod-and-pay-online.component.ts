@@ -1,21 +1,27 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, Output } from '@angular/core';
-import { InitiateQuickCod } from '@app/utils/models/cart.initial';
-import { LocalAuthService } from '@app/utils/services/auth.service';
-import { CartService } from '@app/utils/services/cart.service';
-import { CommonService } from '@app/utils/services/common.service';
-import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
-import { QuickCodService } from '@app/utils/services/quick-cod.service';
+import { CommonModule } from "@angular/common";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  NgModule,
+  Output,
+} from "@angular/core";
+import { InitiateQuickCod } from "@app/utils/models/cart.initial";
+import { LocalAuthService } from "@app/utils/services/auth.service";
+import { CartService } from "@app/utils/services/cart.service";
+import { CommonService } from "@app/utils/services/common.service";
+import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
+import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
+import { QuickCodService } from "@app/utils/services/quick-cod.service";
+import { MathRoundPipeModule } from "../../utils/pipes/math-round";
 
 @Component({
-  selector: 'cod-and-pay-online',
-  templateUrl: './cod-and-pay-online.component.html',
-  styleUrls: ['./cod-and-pay-online.component.scss']
+  selector: "cod-and-pay-online",
+  templateUrl: "./cod-and-pay-online.component.html",
+  styleUrls: ["./cod-and-pay-online.component.scss"],
 })
 export class CodAndPayOnlineComponent {
-
-  @Input('payableAmount') payableAmount: number = 0;
+  @Input("payableAmount") payableAmount: number = 0;
   @Output() continueToPayment$: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
@@ -25,8 +31,7 @@ export class CodAndPayOnlineComponent {
     private localAuthService: LocalAuthService,
     private _analytics: GlobalAnalyticsService,
     private _commonService: CommonService
-  ) { }
-
+  ) {}
 
   validateCart() {
     this.globalLoader.setLoaderState(true);
@@ -48,38 +53,37 @@ export class CodAndPayOnlineComponent {
       userId: _userId,
     };
     this.quickCodService.initiateQuickCOD(validateDtoRequest);
-    this.adobeTracking('checkout:COD')
+    this.adobeTracking("checkout:COD");
   }
 
-  getBuyNow(){
-    const buyNow =  (this.cartService.buyNow != undefined && this.cartService.buyNow == true ) ? true : false;
-    return buyNow
+  getBuyNow() {
+    const buyNow =
+      this.cartService.buyNow != undefined && this.cartService.buyNow == true
+        ? true
+        : false;
+    return buyNow;
   }
 
-  continueToPayment(){
+  continueToPayment() {
     this.continueToPayment$.emit(true);
-    this.adobeTracking('checkout:payonline');
+    this.adobeTracking("checkout:payonline");
   }
 
-  adobeTracking(trackingname){
+  adobeTracking(trackingname) {
     const page = {
-        'linkPageName': "moglix:checkout",
-        'linkName': trackingname,
-    }
-    let data = {}
+      linkPageName: "moglix:checkout",
+      linkName: trackingname,
+    };
+    let data = {};
     data["page"] = page;
     data["custData"] = this._commonService.custDataTracking;
-    this._analytics.sendAdobeCall(data, trackingname); 
+    this._analytics.sendAdobeCall(data, trackingname);
   }
-
 }
 
 @NgModule({
   declarations: [CodAndPayOnlineComponent],
-  imports: [
-    CommonModule,
-  ],
-  exports:[CodAndPayOnlineComponent]
+  exports: [CodAndPayOnlineComponent],
+  imports: [CommonModule, MathRoundPipeModule],
 })
-export class CodAndPayOnlineModule {
-}
+export class CodAndPayOnlineModule {}

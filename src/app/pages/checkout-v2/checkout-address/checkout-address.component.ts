@@ -312,6 +312,11 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const SHIPPING_CHARGES = cart['shippingCharges'] || 0;
         const TOTAL_OFFER = cart['totalOffer'] || 0;
         this.payableAmount = (TOTAL_AMOUNT + SHIPPING_CHARGES) - TOTAL_OFFER;
+        if(this.payableAmount > CONSTANTS.GLOBAL.codMin && this.payableAmount < CONSTANTS.GLOBAL.codMax){
+            this.is_cod_section = 2;
+        }else{
+            this.is_cod_section = 1;
+        }
     }
 
     validateCart()

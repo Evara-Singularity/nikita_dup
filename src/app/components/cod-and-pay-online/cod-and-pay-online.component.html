@@ -37,9 +37,9 @@
     >
   </p>
   <div class="cod-payBtn">
-    <div class="cod-btn btn primary-full-btn bg-blue">
+    <div class="cod-btn btn primary-full-btn bg-blue" (click)="validateCart()">
       <div class="text-container">
-        <div class="text" (click)="validateCart()">
+        <div class="text">
           <p>CASH ON DELIVERY</p>
           <span class="cod-price" *ngIf="cartService.totalPrepaidSaving > 0">
             <ng-container
@@ -76,9 +76,9 @@
         <i class="icon-next"></i>
       </div>
     </div>
-    <div class="cod-btn btn primary-full-btn">
+    <div class="cod-btn btn primary-full-btn" (click)="continueToPayment()">
       <div class="text-container">
-        <div class="text" (click)="continueToPayment()">
+        <div class="text" >
           <p>PAY ONLINE <img src="../../../assets/img/online-pay.png" /></p>
           <span
             class="price-section"

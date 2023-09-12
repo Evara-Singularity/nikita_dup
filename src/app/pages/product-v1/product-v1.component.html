@@ -191,9 +191,17 @@
     </product-accordian>
 
 
+    <!-- // TODO: whatsapp-toast should be lazy loaded ngafterviewinit with sketon -->
+    <past-orders *ngIf="isBrowser && user?.authenticated == 'true'" [outOfStock]="rawProductData?.productOutOfStock"
+        [analytics]="pastOrderAnalytics">
+    </past-orders>
 
-
-
+    <section *ngIf="rawProductData?.productOutOfStock"  data-observeVisibility class="pwa-col-12 common-product" [debounceTime]="100"
+         [ngClass]="{'recent_section': !recentProductsInstance}"
+        (visible)="onVisibleRecentProduct($event)">
+        <ng-container #recentProducts></ng-container>
+        <product-skeletons [type]="'RECENT'" [templateRefInstance]="recentProductsInstance"></product-skeletons>
+    </section>
 
     <!-- adsense PDP -->
     <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']">
@@ -229,12 +237,9 @@
         <ng-container #similarProductOOS></ng-container>
     </div>
 
-    <!-- // TODO: whatsapp-toast should be lazy loaded ngafterviewinit with sketon -->
-    <past-orders *ngIf="isBrowser && user?.authenticated == 'true'" [outOfStock]="rawProductData?.productOutOfStock"
-        [analytics]="pastOrderAnalytics">
-    </past-orders>
-    <section data-observeVisibility class="pwa-col-12 common-product" [debounceTime]="100"
-        *ngIf='recentProductItems.length' [ngClass]="{'recent_section': !recentProductsInstance}"
+
+    <section *ngIf="!rawProductData?.productOutOfStock" data-observeVisibility class="pwa-col-12 common-product" [debounceTime]="100"
+        [ngClass]="{'recent_section': !recentProductsInstance}"
         (visible)="onVisibleRecentProduct($event)">
         <ng-container #recentProducts></ng-container>
         <product-skeletons [type]="'RECENT'" [templateRefInstance]="recentProductsInstance"></product-skeletons>

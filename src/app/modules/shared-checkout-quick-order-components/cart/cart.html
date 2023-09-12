@@ -226,7 +226,7 @@
             <span class="mt-20">Are you sure you want to leave this page?</span>
             <div class="cta-row">
                 <button class="btn secondry-btn-1" (click)="backFromBackPopup()" >LEAVE</button>
-                <button class="btn secondry-btn" (click)="continueFrombackPopup$.emit(true)">CONTINUE</button>
+                <button class="btn secondry-btn" (click)="continueFrombackPopup$.emit(true);nudgePopupContinueButtonClickAdobeTracking('Tracking')">CONTINUE</button>
             </div>
         </div>
     </div>

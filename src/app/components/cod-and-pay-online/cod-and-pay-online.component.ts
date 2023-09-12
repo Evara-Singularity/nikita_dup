@@ -3,6 +3,8 @@ import { Component, EventEmitter, Input, NgModule, Output } from '@angular/core'
 import { InitiateQuickCod } from '@app/utils/models/cart.initial';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { CartService } from '@app/utils/services/cart.service';
+import { CommonService } from '@app/utils/services/common.service';
+import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { QuickCodService } from '@app/utils/services/quick-cod.service';
 
@@ -21,6 +23,8 @@ export class CodAndPayOnlineComponent {
     private globalLoader: GlobalLoaderService,
     public cartService: CartService,
     private localAuthService: LocalAuthService,
+    private _analytics: GlobalAnalyticsService,
+    private _commonService: CommonService
   ) { }
 
 
@@ -44,6 +48,7 @@ export class CodAndPayOnlineComponent {
       userId: _userId,
     };
     this.quickCodService.initiateQuickCOD(validateDtoRequest);
+    this.adobeTracking('checkout:COD')
   }
 
   getBuyNow(){
@@ -53,6 +58,18 @@ export class CodAndPayOnlineComponent {
 
   continueToPayment(){
     this.continueToPayment$.emit(true);
+    this.adobeTracking('checkout:payonline');
+  }
+
+  adobeTracking(trackingname){
+    const page = {
+        'linkPageName': "moglix:checkout",
+        'linkName': trackingname,
+    }
+    let data = {}
+    data["page"] = page;
+    data["custData"] = this._commonService.custDataTracking;
+    this._analytics.sendAdobeCall(data, trackingname); 
   }
 
 }

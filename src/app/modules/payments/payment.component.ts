@@ -573,7 +573,8 @@ export class PaymentComponent implements OnInit
 
   leaveButtonClickAdobeTracking(trackingName){
     const page = {
-      'Paymentpage':'Leave'
+      'linkPageName': "moglix:checkout",
+     'linkName': 'Paymentpage:Leave',
     }
     let data = {}
     data["page"] = page;
@@ -583,7 +584,8 @@ export class PaymentComponent implements OnInit
 
   nudgePopupPayButtonClickAdobeTracking(trackingName){
     const page = {
-      'Paymentpage':'Payment'
+      'linkPageName': "moglix:checkout",
+     'linkName': 'Paymentpage:Payment',
     }
     let data = {}
     data["page"] = page;

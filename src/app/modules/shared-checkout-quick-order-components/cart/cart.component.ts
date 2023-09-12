@@ -660,8 +660,9 @@ export class CartComponent implements OnInit, AfterViewInit
     }   
     leaveButtonClickAdobeTracking(trackingName){
         const page = {
-            'cart':'leave'
-        }
+            'linkPageName': "moglix:cart",
+           'linkName': 'cart:leave',
+          }
         let data = {}
         data["page"] = page;
         data["custData"] = this._commonService.custDataTracking;
@@ -669,8 +670,9 @@ export class CartComponent implements OnInit, AfterViewInit
       }
     nudgePopupContinueButtonClickAdobeTracking(trackingName){
         const page = {
-            'cart':'continue'
-        }
+           'linkPageName': "moglix:cart",
+           'linkName': 'cart:continue',
+          }
         let data = {}
         data["page"] = page;
         data["custData"] = this._commonService.custDataTracking;

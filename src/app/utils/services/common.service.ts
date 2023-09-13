@@ -1715,12 +1715,16 @@ export class CommonService
     }
 
     toTitleCase(str) {
-        return str
-            .toLowerCase()
-            .replaceAll('-', ' ')
-            .split(' ')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
+        if (str && str.length) {
+            return str
+                .toLowerCase()
+                .replaceAll('-', ' ')
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        } else {
+            return '';
+        }
     }
 
 }

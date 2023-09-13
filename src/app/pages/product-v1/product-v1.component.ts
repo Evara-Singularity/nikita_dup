@@ -1732,43 +1732,45 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     async onVisiblePincodeSection($event) {
-        this.showLoader = true;
-        const { ProductCheckPincodeComponent } = await import(
-            "./../../components/product-check-pincode/product-check-pincode.component"
-        ).finally(() => {
-            this.showLoader = false;
-        });
-        const factory = this.cfr.resolveComponentFactory(
-            ProductCheckPincodeComponent
-        );
-        this.pincodeFormInstance = this.pincodeFormContainerRef.createComponent(
-            factory,
-            null,
-            this.injector
-        );
-        const quantity = this.cartQunatityForProduct;
-        const productInfo = {};
-        productInfo["partNumber"] =
-            this.rawProductData.msn || this.rawProductData.defaultPartNumber;
-        productInfo["estimatedDelivery"] =
-            this.rawProductData.priceQuantityCountry["estimatedDelivery"];
-        productInfo["categoryDetails"] = this.rawProductData.productCategoryDetails;
-        productInfo["productPrice"] = this.rawProductData.productPrice;
-        productInfo["quantity"] = quantity;
-        productInfo["isHindiMode"] = this.isHindiUrl;
-        productInfo['taxRate'] = this.rawProductData.taxPercentage;
-        productInfo['itemPrice'] = this.rawProductData.productPrice;
-        this.pincodeFormInstance.instance["pageData"] = productInfo;
-        if (this.pincodeFormInstance) {
-            (
-                this.pincodeFormInstance.instance[
-                "sendAnalyticsCall"
-                ] as EventEmitter<any>
-            ).subscribe((data) => {
-                this.analyticPincodeAvaliabilty(data);
+        if(!this.pincodeFormInstance) {
+            this.showLoader = true;
+            const { ProductCheckPincodeComponent } = await import(
+                "./../../components/product-check-pincode/product-check-pincode.component"
+            ).finally(() => {
+                this.showLoader = false;
             });
+            const factory = this.cfr.resolveComponentFactory(
+                ProductCheckPincodeComponent
+            );
+            this.pincodeFormInstance = this.pincodeFormContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            const quantity = this.cartQunatityForProduct;
+            const productInfo = {};
+            productInfo["partNumber"] =
+                this.rawProductData.msn || this.rawProductData.defaultPartNumber;
+            productInfo["estimatedDelivery"] =
+                this.rawProductData.priceQuantityCountry["estimatedDelivery"];
+            productInfo["categoryDetails"] = this.rawProductData.productCategoryDetails;
+            productInfo["productPrice"] = this.rawProductData.productPrice;
+            productInfo["quantity"] = quantity;
+            productInfo["isHindiMode"] = this.isHindiUrl;
+            productInfo['taxRate'] = this.rawProductData.taxPercentage;
+            productInfo['itemPrice'] = this.rawProductData.productPrice;
+            this.pincodeFormInstance.instance["pageData"] = productInfo;
+            if (this.pincodeFormInstance) {
+                (
+                    this.pincodeFormInstance.instance[
+                    "sendAnalyticsCall"
+                    ] as EventEmitter<any>
+                ).subscribe((data) => {
+                    this.analyticPincodeAvaliabilty(data);
+                });
+            }
+            this.cdr.detectChanges();
         }
-        this.cdr.detectChanges();
     }
     analyticPincodeAvaliabilty(analytics) {
         const taxonomy = this.rawProductData.productCategoryDetails["taxonomy"];

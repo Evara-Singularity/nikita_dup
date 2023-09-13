@@ -150,7 +150,7 @@ export class AlpResolver implements Resolve<object> {
                         return res;
                     })),
 
-                    this.http.get(get_category_code_url + CATEGORY, requestOptions).pipe(mergeMap(catData => this.http.get(breadcrump_url + '&pagetitle=' + _activatedRouteSnapshot.params['attribute'] + '&source=' + catData['categoryDetails']['categoryLink'], requestOptions))),
+                    this.http.get(get_category_code_url + CATEGORY, requestOptions).pipe(mergeMap(catData => this.http.get(breadcrump_url + '&pagetitle=' + _activatedRouteSnapshot.params['attribute'].replaceAll('-', ' ') + '&source=' + catData['categoryDetails']['categoryLink'], requestOptions))),
                     this.refreshProducts(CIMS_DATA['defaultParams'], _activatedRouteSnapshot.queryParams, _activatedRouteSnapshot.fragment, requestOptions)
                     .pipe(map(res => {
                         const logInfo =  this._commonService.getLoggerObj(get_category_code_url + CATEGORY,'GET',startTime)

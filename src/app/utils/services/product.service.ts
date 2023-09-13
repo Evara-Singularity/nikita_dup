@@ -1356,7 +1356,7 @@ export class ProductService {
                             const msn = rawProductData["defaultPartNumber"];
                             const priceQuantityCountry = rawProductData["productPartDetails"][msn][
                                 "productPriceQuantity"
-                                ]
+                                ] != null
                             ? Object.assign(
                                 {},
                                 rawProductData["productPartDetails"][msn][
@@ -1368,7 +1368,7 @@ export class ProductService {
                                 productId: [rawProductData["defaultPartNumber"]],
                                 toPincode:
                                     response.addressDetails["shippingAddress"][0]["zipCode"],
-                                price: priceQuantityCountry && !isNaN(priceQuantityCountry["sellingPrice"]) ? Number(priceQuantityCountry["sellingPrice"]) : 0,
+                                price: priceQuantityCountry && priceQuantityCountry!=null && !isNaN(priceQuantityCountry["sellingPrice"]) ? Number(priceQuantityCountry["sellingPrice"]) : 0,
                             };
                             return this.getLogisticAvailability(postBody)
                                 .pipe(

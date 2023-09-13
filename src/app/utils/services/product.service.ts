@@ -1353,7 +1353,7 @@ export class ProductService {
                     ),
                     mergeMap((response) => {
                         if (response) {
-                            const msn = rawProductData["defaultPartNumber"];
+                            const msn = rawProductData["partNumber"];
                             const priceQuantityCountry = rawProductData["productPartDetails"][msn][
                                 "productPriceQuantity"
                                 ] != null
@@ -1365,7 +1365,7 @@ export class ProductService {
                             )
                             : null;
                             const postBody = {
-                                productId: [rawProductData["defaultPartNumber"]],
+                                productId: [rawProductData["partNumber"]],
                                 toPincode:
                                     response.addressDetails["shippingAddress"][0]["zipCode"],
                                 price: priceQuantityCountry && priceQuantityCountry!=null && !isNaN(priceQuantityCountry["sellingPrice"]) ? Number(priceQuantityCountry["sellingPrice"]) : 0,
@@ -1443,7 +1443,7 @@ export class ProductService {
     getServiceAvailabilityVerification(ress, address, rawProductData) {
         if (ress && ress["statusCode"] && ress["statusCode"] == 200) {
             let data =
-                ress["data"][rawProductData["defaultPartNumber"]]["aggregate"];
+                ress["data"][rawProductData["partNumber"]]["aggregate"];
             if (data["serviceable"] == true && data["codAvailable"] == true) {
                 return {
                     address: address

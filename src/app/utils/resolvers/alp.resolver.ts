@@ -83,6 +83,19 @@ export class AlpResolver implements Resolve<object> {
         return newParams;
     }
 
+    toTitleCase(str) {
+        if (str && str.length) {
+            return str
+                .toLowerCase()
+                .replaceAll('-', ' ')
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        } else {
+            return '';
+        }
+    }
+
     private refreshProducts(defaultApiParams, currentQueryParams, fragment, requestOptions): Observable<{}>
     {
         defaultApiParams = this.createDefaultParams(defaultApiParams, currentQueryParams, fragment);

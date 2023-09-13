@@ -21,8 +21,13 @@ import { MathRoundPipeModule } from "../../utils/pipes/math-round";
   styleUrls: ["./cod-and-pay-online.component.scss"],
 })
 export class CodAndPayOnlineComponent {
+  readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
   @Input("payableAmount") payableAmount: number = 0;
+  @Input("invoiceType") invoiceType = this.INVOICE_TYPES.RETAIL;
   @Output() continueToPayment$: EventEmitter<any> = new EventEmitter<any>();
+
+  @Input("deliveryAddress") deliveryAddress: any = null;
+  @Input("billingAddress") billingAddress: any = null;
 
   constructor(
     private quickCodService: QuickCodService,
@@ -34,6 +39,20 @@ export class CodAndPayOnlineComponent {
   ) {}
 
   validateCart() {
+    //address verification
+    if (!this.deliveryAddress) {
+      this.continueToPayment$.emit(true);
+        return;
+    }
+    if (this.invoiceType === this.INVOICE_TYPES.TAX) {
+        if (!this.billingAddress) {
+          this.continueToPayment$.emit(true);
+            return;
+        } else if (!this.billingAddress['gstinVerified']) {
+          this.continueToPayment$.emit(true);
+          return;
+        }
+    }
     this.globalLoader.setLoaderState(true);
     const _cartSession = this.cartService.getCartSession();
     const _shippingAddress = this.cartService.shippingAddress ?? null;

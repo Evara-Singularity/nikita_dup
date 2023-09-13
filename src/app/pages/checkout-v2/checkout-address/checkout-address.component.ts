@@ -54,6 +54,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     paymentMode: any;
     addressUpdated = false;
     is_cod_section: number = 0;
+    isAllCartAvailableForCod: boolean = false;
     moduleUsedIn: string = 'quick-checkout';
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
@@ -227,6 +228,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
 
     getCodAndPayOnline(NON_CASH_ON_DELIVERABLE_MSNS){
         if(NON_CASH_ON_DELIVERABLE_MSNS.length == 0){
+            this.isAllCartAvailableForCod = true;
             this.quickCodService
             .checkCODLimit(this.payableAmount)
             .subscribe((res) => {
@@ -237,6 +239,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
               }
             });
         }else{
+            this.isAllCartAvailableForCod = false;
             this.is_cod_section = 1;
         }
     }
@@ -311,11 +314,18 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const TOTAL_AMOUNT = cart['totalAmount'] || 0;
         const SHIPPING_CHARGES = cart['shippingCharges'] || 0;
         const TOTAL_OFFER = cart['totalOffer'] || 0;
+        if(!this.isAllCartAvailableForCod){
         this.payableAmount = (TOTAL_AMOUNT + SHIPPING_CHARGES) - TOTAL_OFFER;
-        if(this.payableAmount > CONSTANTS.GLOBAL.codMin && this.payableAmount < CONSTANTS.GLOBAL.codMax){
-            this.is_cod_section = 2;
         }else{
-            this.is_cod_section = 1;
+            this._cartService.getShippingPriceChanges().subscribe(res=>{
+                const  SHIPPING_CHARGES = res.cart['shippingCharges'] || 0;
+                this.payableAmount = (TOTAL_AMOUNT + SHIPPING_CHARGES) - TOTAL_OFFER;
+                if(this.payableAmount > CONSTANTS.GLOBAL.codMin && this.payableAmount < CONSTANTS.GLOBAL.codMax){
+                    this.is_cod_section = 2;
+                }else{
+                    this.is_cod_section = 1;
+                }
+            })
         }
     }
 

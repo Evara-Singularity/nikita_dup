@@ -212,7 +212,12 @@ export class DataService {
                         this.getSessionApi = undefined;
                     });
             }
-
+        }else if(error.status == 400){
+            const message = error?.error?.message as string || 'Something went wrong';
+            this.showMessage('error', message);
+        }else if(error.status == 429){
+            const message = error?.error?.message as string || 'Something went wrong';
+            this.showMessage('error', message);
         } else {
             this.showMessage('error', 'Something went wrong');
         }

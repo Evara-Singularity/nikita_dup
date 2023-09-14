@@ -1,5 +1,8 @@
 @import "../../scss/variables";
 @import '../../scss/components/home-listing.scss';
+.plp-container-header-adjust{
+    margin-top: 170px;
+}
 :host {
     display: block;
     // margin-top: 108px;

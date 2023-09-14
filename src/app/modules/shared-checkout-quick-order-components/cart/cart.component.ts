@@ -108,9 +108,8 @@ export class CartComponent implements OnInit, AfterViewInit
     }
 
     backUrlNavigationHandler() {
+        window.history.pushState(null, "", window.location.href);        
         this.popStateListener = (event) => {
-          event.preventDefault();
-          history.go(1);
           this.backButtonClickQuickOrderSubscription = this._navigationService.isBackClickedQuickOrder$.subscribe(
             value => {
               this.isBackClicked = true;

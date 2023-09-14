@@ -84,17 +84,12 @@ export class AlpResolver implements Resolve<object> {
     }
 
     toTitleCase(str) {
-        if (str && str.length) {
-            return str
-                .toLowerCase()
-                .replaceAll('-', ' ')
-                .split(' ')
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(' ');
+        if(str && str.length) {
+            return str.replace(/\b\w/g, (match) => match.toUpperCase()).replace(/-/g, ' ');
         } else {
             return '';
         }
-    }
+      }
 
     private refreshProducts(defaultApiParams, currentQueryParams, fragment, requestOptions): Observable<{}>
     {
@@ -150,7 +145,7 @@ export class AlpResolver implements Resolve<object> {
                         return res;
                     })),
 
-                    this.http.get(get_category_code_url + CATEGORY, requestOptions).pipe(mergeMap(catData => this.http.get(breadcrump_url + '&pagetitle=' + _activatedRouteSnapshot.params['attribute'] + '&source=' + catData['categoryDetails']['categoryLink'], requestOptions))),
+                    this.http.get(get_category_code_url + CATEGORY, requestOptions).pipe(mergeMap(catData => this.http.get(breadcrump_url + '&pagetitle=' + this.toTitleCase(_activatedRouteSnapshot.params['attribute']) + '&source=' + catData['categoryDetails']['categoryLink'], requestOptions))),
                     this.refreshProducts(CIMS_DATA['defaultParams'], _activatedRouteSnapshot.queryParams, _activatedRouteSnapshot.fragment, requestOptions)
                     .pipe(map(res => {
                         const logInfo =  this._commonService.getLoggerObj(get_category_code_url + CATEGORY,'GET',startTime)

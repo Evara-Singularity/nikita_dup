@@ -77,7 +77,6 @@ export class PaymentComponent implements OnInit
   missOutSavingAmount: number=0; //calculate [mrp-(selling Price + shipping Charges)]
   popStateListener;
   isBrowser = false;
-  isPageDoubled = false;
 
   
   constructor(
@@ -158,21 +157,13 @@ export class PaymentComponent implements OnInit
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
     this._cartService.clearCartNotfications();
     if (this.isBrowser && this._router.url.includes('/checkout/payment') && this.missOutSavingAmount) {
-      this.doubleCurrentPageInHistory();
       this.backUrlNavigationHandler();
-    }
-  }
-  
-  private doubleCurrentPageInHistory(): void {
-    if (!this.isPageDoubled) {
-      window.history.pushState({ page: 'samePage' }, null, window.location.href);
-      this.isPageDoubled = true;
     }
   }
 
   backUrlNavigationHandler() {
-    this.popStateListener = (event:PopStateEvent):void => {
-      this.doubleCurrentPageInHistory();
+    window.history.pushState(null, "", window.location.href);
+    this.popStateListener = (event) => {
       this.backButtonClickPaymentSubscription = this._navigationService.isBackClickedPayment$.subscribe(
         value => {
           this.isBackClicked = true;

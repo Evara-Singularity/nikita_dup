@@ -229,6 +229,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     getCodAndPayOnline(NON_CASH_ON_DELIVERABLE_MSNS){
         if(NON_CASH_ON_DELIVERABLE_MSNS.length == 0){
             this.isAllCartAvailableForCod = true;
+            this.calculatePayableAmount(this.cartSession['cart']);
             this.quickCodService
             .checkCODLimit(this.payableAmount)
             .subscribe((res) => {

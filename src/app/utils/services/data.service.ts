@@ -155,7 +155,7 @@ export class DataService {
                     logInfo.sessionId = userSession ? userSession.sessionId : null;
                     this._loggerService.apiServerLog(logInfo);
                     return res;
-                }), catchError(err => this.handleError(err, logInfo)));
+                }), catchError(err => this.handleError(err, logInfo, url)));
 
             case 'PUT':
                 return this._http.put(url, body, { headers, withCredentials: true }).pipe(map(res => {
@@ -179,7 +179,7 @@ export class DataService {
         }
     }
     
-    private handleError(error: HttpErrorResponse | any, logInfo?: ServerLogSchema) {
+    private handleError(error: HttpErrorResponse | any, logInfo?: ServerLogSchema, url?: string) {
         if (error.status === 403) {
             this._localStorageService.clear('user');
             this.getSession().subscribe((res) => {
@@ -212,10 +212,10 @@ export class DataService {
                         this.getSessionApi = undefined;
                     });
             }
-        }else if(error.status == 400){
+        }else if(error.status == 400 && url.includes("sendOTP") == true){
             const message = error?.error?.message as string || 'Something went wrong';
             this.showMessage('error', message);
-        }else if(error.status == 429){
+        }else if(error.status == 429 && url.includes("sendOTP") == true){
             const message = error?.error?.message as string || 'Something went wrong';
             this.showMessage('error', message);
         } else {

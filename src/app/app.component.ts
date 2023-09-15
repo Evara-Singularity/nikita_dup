@@ -29,8 +29,10 @@ export class AppComponent {
     this.router.events.pipe(
         filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-        const lang = event.url.includes('/hi/') ? 'hi' : 'en';
-        document.documentElement.lang = lang;
+        if(this._commonService.isBrowser) {
+          const lang = event.url.includes('/hi/') ? 'hi' : 'en';
+          document.documentElement.lang = lang;
+        }
     });
 }
 

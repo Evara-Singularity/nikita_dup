@@ -477,7 +477,7 @@ export class AlpComponent implements OnInit {
             }
             elanguagelink.hreflang = 'en'
             this._renderer2.appendChild(this._document.head, elanguagelink);            
-                this.isHindiUrl ? document.documentElement.setAttribute("lang", 'hi') : document.documentElement.setAttribute("lang", 'en');
+                this.isHindiUrl ? this._document.documentElement.setAttribute("lang", 'hi') : this._document.documentElement.setAttribute("lang", 'en');
         }
 
         // Start Canonical URL

@@ -213,17 +213,26 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const addressId = deliveryAddress && deliveryAddress['idAddress'];
         const cartId = this.cartSession['cart']['cartId'];
         const userId = this.cartSession['cart']['userId'];
+       let setTime = false;
         this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode , isGstInvoice: isGstInvoice, 
             orderPlatform: orderPlatform ,addressId :addressId ,cartId: cartId , userId: userId}).subscribe((response) =>
         {
-            if (!response) return;
+            setTime = true
+            if (!response) { this.is_cod_section = 1; return};
             const AGGREGATES = CheckoutUtil.formatAggregateValues(response);
             const NON_SERVICEABLE_MSNS: any[] = CheckoutUtil.getNonServiceableMsns(AGGREGATES);
             const NON_CASH_ON_DELIVERABLE_MSNS: any[] = CheckoutUtil.getNonCashOnDeliveryMsns(AGGREGATES);
             this.getCodAndPayOnline(NON_CASH_ON_DELIVERABLE_MSNS);
             this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
             this.updateNonDeliverableItems(cartItems, NON_CASH_ON_DELIVERABLE_MSNS);
+        },err=>{
+            this.is_cod_section = 1;
         })
+        setTimeout(()=>{
+         if(setTime == false){
+            this.is_cod_section = 1;
+         }
+        },1100)
     }
 
     getCodAndPayOnline(NON_CASH_ON_DELIVERABLE_MSNS){

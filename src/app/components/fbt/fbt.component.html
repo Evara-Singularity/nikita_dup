@@ -7,7 +7,7 @@
         </div>
         <div class="pwa-row static-small-card-container">
             <div class="product-img">
-                <img [src]="rootProduct.productImage">
+                <img [src]="rootProduct.productImage" alt="product-img">
             </div>
             <div class="product-description">
                 <p class="description-txt">{{rootProduct.productName}}</p>
@@ -30,7 +30,7 @@
                 </div>
                 <div (click)="navigateToPDP(product.url)" class="static-card-container">
                     <div class="product-img">
-                        <img [src]="product.productImage">
+                        <img [src]="product.productImage" alt="product-img">
                     </div>
                     <div class="product-description">
                         <p class="description-txt">{{product.productName}}</p>

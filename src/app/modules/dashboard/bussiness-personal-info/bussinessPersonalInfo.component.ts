@@ -20,6 +20,7 @@ export class BussinessInfoComponent {
   errorMsg: string = "";
   userInfo:any;
   isBrowser: boolean;
+  isEditEmail=false;
   user: any;
   isServer: boolean;
   isHomePage: boolean;
@@ -87,38 +88,83 @@ export class BussinessInfoComponent {
     this._cartService.logOutAndClearCart('/');
   }
 
-  onSubmit(firstName:string) {
-    if (!firstName) {
+  onSubmit(firstName:string, type:string) {
+    console.log(firstName, " ====email ");
+    if (type =="name" && !firstName) {
       this._tms.show({type: "success", text: "User name cannot be empty."});
+      return;
+    }
+    if (type =="email" && !firstName) {
+      this._tms.show({type: "success", text: "Email cannot be empty."});
       return;
     }
     let userSession = this._localAuthService.getUserSession();
     this.showLoader = true;
     let user = this.localStorageService.retrieve("user");
-    let obj = { userid: user.userId, pname: firstName || " ", lname: " ", };
-    this._dashboardService.updatePersonalInfo(obj).subscribe((res) => {
-      this.showLoader = false;
-      if (res["status"]) {
-        this.error = false;
-        this.errorMsg = res["statusDescription"];
-        this._tms.show({
-          type: "success",
-          text: "Profile updated successfully.",
-        });
-        this.isNameInputDisabled = true;
-        userSession['userName'] = firstName;
-        if (this.localStorageService.retrieve("user")) {
-          let user = this.localStorageService.retrieve("user");
-          if (user.authenticated == "true") {
-            this._localAuthService.setUserSession(userSession);
-            this._localAuthService.login$.next();
+    let obj = {};
+    if(type =="name"){
+       obj = { userid: user.userId, pname: firstName || " ", lname: " ", };
+       this._dashboardService.updatePersonalInfo(obj).subscribe((res) => {
+        this.showLoader = false;
+        if (res["status"]) {
+          this.error = false;
+          this.errorMsg = res["statusDescription"];
+          this._tms.show({
+            type: "success",
+            text: "Profile updated successfully.",
+          });
+          this.isNameInputDisabled = true;
+          userSession['userName'] = firstName;
+          if (this.localStorageService.retrieve("user")) {
+            let user = this.localStorageService.retrieve("user");
+            if (user.authenticated == "true") {
+              this._localAuthService.setUserSession(userSession);
+              this._localAuthService.login$.next();
+            }
           }
+        } else {
+          this.error = true;
+          this.errorMsg = "Something went wrong";
         }
-      } else {
-        this.error = true;
-        this.errorMsg = "Something went wrong";
+      });
+    }
+    if(type =="email"){
+      let pattern: RegExp =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      const isValid = pattern.test(firstName);
+      if(!isValid) {
+        this._tms.show({ type: 'success', text: 'please enter a valid details'});
+        this.showLoader=false;
+        return;
       }
-    });
+      obj = { userid: user.userId,email:firstName ,pname: this.localStorageService.retrieve("user").userName || " ", lname: " ",};
+      
+      this._dashboardService.updatePersonalInfo(obj).subscribe((res) => {
+        this.showLoader = false;
+        if (res["status"]) {
+          this.error = false;
+          this.errorMsg = res["statusDescription"];
+          this._tms.show({
+            type: "success",
+            text: "Profile updated successfully.",
+          });
+          this.isEditEmail = false;
+        }
+        // else {
+        //   this.error = true;
+        //   this.errorMsg = "Something went wrong";
+        // }
+      }, error => this._tms.show({ type: 'error', text: "Email Already in Use!" }));
+   }
+  }
+  onUpdateEmail(){
+     this.isEditEmail = true
+    
+  }
+
+  cancelEdit(){
+    if(this.isEditEmail){
+      this.isEditEmail=false;
+    }
   }
 
   toPasswordPage() {

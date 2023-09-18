@@ -5,7 +5,7 @@
     <div class="outline-input-label"><label [class.is-focus]="nameVal.value.length">
         <input [value]="userName" [disabled]="isNameInputDisabled" #nameVal type="text" data-alphabetsOnly>
         <span class="label">Update Name</span><span *ngIf="!isNameInputDisabled"
-          (click)="onSubmit(nameVal.value.trim())" class="form-inline-cta">UPDATE</span>
+          (click)="onSubmit(nameVal.value.trim(),'name')" class="form-inline-cta">UPDATE</span>
         <span *ngIf="isNameInputDisabled" (click)="activateInput()" class="form-inline-cta">EDIT</span></label>
     </div>
   </div>
@@ -20,35 +20,29 @@
   </div>
 </a>
 <!-- email and phone -->
-<form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value)" class="material-form profile-form"
-  novalidate>
+<form #personalInfodForm2="ngForm" (ngSubmit)="onSubmit(personalInfodForm2.value,'email')"
+  class="material-form profile-form" novalidate>
+  <p class="userDetail">User Details</p>
+  <div class="material-form email-field-section">
+    <div class="outline-input-label mb-0">
+      <label>
+        <input type="text">
+        <span class="label">Update Name</span>
+        <span class="form-inline-btn">Add</span>
+      </label>
+    </div>
+  </div>
   <div class="container input-field custom-profile-input">
-    <div>
+    <!-- <div>
       <div>
         <label class="is-focus">
           <input type="email" name="email" [ngModel]="userInfo?.email" #email>
           <span class="label">Email*</span>
         </label>
       </div>
-      <div>
-        <div class="edit-btn-field" >
-          <button class="btn secondry-btn-1" >CANCEL</button>
-          <button class="btn secondry-btn" [disabled]=" email.value.trim() == '' " >SAVE CHANGE</button>
-        </div>
-        <ng-template>
-          <ng-container #editBlockEmail>
-            <div>
-              <button>EDIT EMAIL</button>
-            </div>
-          </ng-container>
-          <ng-container #AddEmail>
-            <div>
-              <button>ADD EMAIL</button>
-            </div>
-          </ng-container>
-        </ng-template>
-      </div>
-    </div>
+    </div> -->
+
+
     <div>
       <label class="is-focus">
         <input type="number" name="phone" [ngModel]="userInfo?.phone" readonly>

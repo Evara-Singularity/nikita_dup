@@ -36,6 +36,7 @@ export class CartComponent implements OnInit, AfterViewInit
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     @Output() openWishList$:EventEmitter<any> = new EventEmitter<any>();
     @Output() openSimillarList$:EventEmitter<any> = new EventEmitter<any>();
+
     
     //cartAddproduct var
     cartAddProductPopupInstance = null;
@@ -46,6 +47,7 @@ export class CartComponent implements OnInit, AfterViewInit
     totalPayableAmountWithoutPrepaid:number=0;
     cartUpdatesSubscription: Subscription = null;
 
+
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
         public objectToArray: ObjectToArray, public footerService: FooterService, public activatedRoute: ActivatedRoute,
@@ -55,11 +57,11 @@ export class CartComponent implements OnInit, AfterViewInit
         private _globalAnalyticsService: GlobalAnalyticsService,
         public _localAuthService: LocalAuthService,
         private cfr: ComponentFactoryResolver,
-        private injector: Injector,
+        private injector: Injector
+    ){}
 
-    ) { }
-
-    ngOnInit(){}
+    ngOnInit() {
+      }
 
     ngAfterViewInit(): void {
         if (this._commonService.isBrowser) {
@@ -593,5 +595,5 @@ export class CartComponent implements OnInit, AfterViewInit
             this._router.navigate(['/login'], navigationExtras);
         }
     }
-
+    
 }

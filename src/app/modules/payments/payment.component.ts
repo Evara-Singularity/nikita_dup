@@ -1,4 +1,4 @@
-import { Compiler, Component,ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, Injector, NgModuleRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
+import { Compiler, Component,ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, Injector, NgModuleRef, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CartUtils } from "@app/utils/services/cart-utils";
@@ -68,11 +68,13 @@ export class PaymentComponent implements OnInit
   bankOfferBottomSheetInstance = null;
   @ViewChild('bankOfferBottomSheet', { read: ViewContainerRef })
   bankOfferBottomSheetRef: ViewContainerRef;
-  
 
+
+  
   constructor(
     public _dataService: DataService,
     private _loaderService: GlobalLoaderService,
+    private _injector: Injector,
     public _cartService: CartService,
     public _popupService:PopupService,
     private _paymentService: PaymentService,
@@ -83,10 +85,10 @@ export class PaymentComponent implements OnInit
     private _elementRef: ElementRef,
     private _activatedRoute: ActivatedRoute,
     private _compiler: Compiler,
-    private _injector: Injector,
     private _retryPaymentService: RetryPaymentService,
     private cfr: ComponentFactoryResolver,
-    private injector: Injector
+    private injector: Injector,
+
   )
   {
     this.isShowLoader = true;
@@ -132,6 +134,7 @@ export class PaymentComponent implements OnInit
     this._cartService.sendAdobeOnCheckoutOnVisit("payment");
     this._cartService.clearCartNotfications();
   }
+
 
   private intialize()
   {
@@ -501,6 +504,7 @@ export class PaymentComponent implements OnInit
     }
   }
 
+  
   ngOnDestroy() {
     if (this.payUOfferPopUpSubscription) {
       this.payUOfferPopUpSubscription.unsubscribe();

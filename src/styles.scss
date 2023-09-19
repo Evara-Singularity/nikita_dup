@@ -2,6 +2,7 @@
 @font-face {
     font-family: "icomooon_pwa";
     src: url('#{$cdn_url}assets/fonts/icomoon_pwa.ttf') format('truetype');
+    font-display: swap;
 }
 // font-icons
 @import './app/scss/root';

@@ -20,6 +20,7 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input('headerSubText') headerSubText: any;
     @Output() outData$: EventEmitter<any> = new EventEmitter<any>();
     @Input('popUpName') popUpName: string;
+    @Input('navigateAfterClose') navigateAfterClose: boolean = true;
     @Input() for3dPopup: boolean = false;
 
     // closeClass: any = "icon-circle-delete";
@@ -90,7 +91,7 @@ export class PopUpComponent implements OnInit, AfterViewInit, OnDestroy {
         this.enableScroll();
         setTimeout(() => {
             let currentUrl=this._commonService.currentUrl;
-            if(currentUrl.split('#').length > 1){
+            if(currentUrl.split('#').length > 1 && this.navigateAfterClose){
                 this.router.navigate([currentUrl.split('#')[0]]) // remove fragment
             }else{
                 this.outData$.emit({ hide: true, selector: this.selector });

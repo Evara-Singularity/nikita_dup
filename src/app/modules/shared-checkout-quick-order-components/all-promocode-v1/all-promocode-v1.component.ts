@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { CartService } from "@app/utils/services/cart.service";
 import { CommonService } from "@app/utils/services/common.service";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 import { Subscription } from "rxjs";
-import { setTimeout } from "timers";
 
 @Component({
   selector: "all-promocode-v1",
@@ -15,11 +15,13 @@ export class AllPromocodeV1Component implements OnInit {
   appliedPromocodeSubscription: Subscription;
   appliedPromocode: string = "";
   @Input() moduleUsedIn = '';
+  isFromCheckout: boolean = false;
 
   constructor(
     private _commonService: CommonService,
     public _cartService: CartService,
-    private _analytics: GlobalAnalyticsService
+    private _analytics: GlobalAnalyticsService,
+    private _activatedRoute: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -29,6 +31,8 @@ export class AllPromocodeV1Component implements OnInit {
           this.appliedPromocode = promocode || "";
         }
       );
+      const url = this._activatedRoute.snapshot['_routerState'].url;
+      if(url == '/checkout/address'){ this.isFromCheckout = true; }
   }
 
   openPromoCodeList() {

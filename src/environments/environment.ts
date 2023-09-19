@@ -4,12 +4,12 @@ export const environment = {
   PROD_NAME: 'https://www.moglix.com',
 
   // UNCOMMENT THIS FOR PROD ENV all 3 variables
-  //BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
+  BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2', 
   APP_BASE_URL: 'https://api.moglix.com',
   
   // COMMENT THIS FOR QA ENV all 3 variables
-   BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
+  //  BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   // BASE_URL_V2: 'https://nodeapiqa.moglilabs.com/nodeApi/v2',
   // APP_BASE_URL: 'https://apiqa.moglilabs.com',
 

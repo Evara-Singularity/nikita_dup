@@ -1,13 +1,17 @@
 <div *ngIf="!productNotFound">
 
-    <app-floating-coupon-widget *ngIf="similarProductsScrolledIntoView && iscloseproductDiscInfoComponent && !rawProductData?.productOutOfStock" (closeproductDiscInfoComponent$)="closeproductDiscInfoComponent()"
-        [isBulkPricesProduct]="isBulkPricesProduct" [pageLinkName]="pageLinkName" [productMrp]="rawProductData?.priceQuantityCountry?.mrp"
+    <app-floating-coupon-widget
+        *ngIf="similarProductsScrolledIntoView && iscloseproductDiscInfoComponent && !rawProductData?.productOutOfStock"
+        (closeproductDiscInfoComponent$)="closeproductDiscInfoComponent()" [isBulkPricesProduct]="isBulkPricesProduct"
+        [pageLinkName]="pageLinkName" [productMrp]="rawProductData?.priceQuantityCountry?.mrp"
         [selectedProductBulkPrice]="selectedProductBulkPrice" [productPrice]="rawProductData?.productPrice"
-        [productDiscount]="rawProductData?.priceQuantityCountry?.discount" [productName]="rawProductData.productName" [priceWithoutTax]="rawProductData?.priceWithoutTax"
-        [gstPercentage]='rawProductData?.taxPercentage' [promoCodes]='apiResponse?.applicablePromo'></app-floating-coupon-widget>
+        [productDiscount]="rawProductData?.priceQuantityCountry?.discount" [productName]="rawProductData.productName"
+        [priceWithoutTax]="rawProductData?.priceWithoutTax" [gstPercentage]='rawProductData?.taxPercentage'
+        [promoCodes]='apiResponse?.applicablePromo'></app-floating-coupon-widget>
 
-    <app-oos-similar-section [productOutOfStock]="rawProductData?.productOutOfStock" [similarForOOSContainer]="similarForOOSContainer"
-        [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig" [similarForOOSLoaded]="similarForOOSLoaded">
+    <app-oos-similar-section [productOutOfStock]="rawProductData?.productOutOfStock"
+        [similarForOOSContainer]="similarForOOSContainer" [oosSimilarcardFeaturesConfig]="oosSimilarcardFeaturesConfig"
+        [similarForOOSLoaded]="similarForOOSLoaded">
     </app-oos-similar-section>
 
     <shared-product-carousel (openPopUpcrousel$)="openPopUpcrousel()" [productAllImages]="productAllImages"
@@ -15,14 +19,13 @@
         [isPurcahseListProduct]="isPurcahseListProduct" [productName]="rawProductData.productName"
         (addToPurchaseList$)="addToPurchaseList()" [moveToSlide$]="moveToSlide$"
         [refreshSiemaItems$]="refreshSiemaItems$" [productOutOfStock]="rawProductData?.productOutOfStock"
-        [rawProductData]="rawProductData"
-        [pageLinkName]="pageLinkName"
+        [rawProductData]="rawProductData" [pageLinkName]="pageLinkName"
         (scrollToId$)="scrollToId(!rawProductData?.productOutOfStock ? 'similarProducts' : 'similarProductsOos')"
         [imagePathAsset]="imagePathAsset" (openPopUpcrousel)="openPopUpcrousel(0)"
         (sendProductImageClickTracking)="sendProductImageClickTracking()" [iOptions]="iOptions"
         [productTags]="apiResponse?.tags" (translate$)="translate()" [isAcceptLanguage]="isAcceptLanguage">
     </shared-product-carousel>
-   
+
     <product-description (checkCartQuantityAndUpdate$)="checkCartQuantityAndUpdate($event)"
         [isBulkPricesProduct]="isBulkPricesProduct" [productBulkPrices]="productBulkPirces"
         [selectedProductBulkPrice]="selectedProductBulkPrice" [qunatityFormControl]="qunatityFormControl"
@@ -40,11 +43,14 @@
 
     <product-grouping-attributes [isCommonProduct]="rawProductData?.productFilterAttributesList > 0"
         [productFilterAttributesList]="productFilterAttributesList" (updateAttr)="updateAttr($event)"
-        (removeOosSimilarSection)="removeOosSimilarSection()"></product-grouping-attributes>
-    <ng-container *ngIf="rawProductData?.priceQuantityCountry?.bulkPricesModified && rawProductData?.priceQuantityCountry?.bulkPricesModified?.length > 0">
+        (removeOosSimilarSection)="removeOosSimilarSection()">
+    </product-grouping-attributes>
+    <ng-container
+        *ngIf="rawProductData?.priceQuantityCountry?.bulkPricesModified && rawProductData?.priceQuantityCountry?.bulkPricesModified?.length > 0">
         <product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()"
             (selectProductBulkPrice$)="selectProductBulkPrice($event)" [rawProductData]="rawProductData"
-            [productOutOfStock]="rawProductData?.productOutOfStock" [isCommonProduct]="rawProductData?.productFilterAttributesList > 0"
+            [productOutOfStock]="rawProductData?.productOutOfStock"
+            [isCommonProduct]="rawProductData?.productFilterAttributesList > 0"
             [priceQuantityCountry]="rawProductData?.priceQuantityCountry" [productBulkPrices]="productBulkPrices"
             [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl"
             [productMinimmumQuantity]="rawProductData?.productMinimmumQuantity">
@@ -53,10 +59,10 @@
 
     <!-- TODO: skeleton to be implemented -->
     <div class="coupon" *ngIf='!rawProductData?.productOutOfStock && rawProductData?.priceQuantityCountry?.mrp > 0'>
-        <app-product-offers [pageLinkName]="pageLinkName" [price]='rawProductData?.productPrice' [gstPercentage]='rawProductData?.taxPercentage'
-            [productmsn]='rawProductData?.defaultPartNumber' [isHindiMode]='isHindiUrl'
-            (viewPopUpHandler)='fetchCategoryExtras()' (promoCodePopUpHandler)='fetchPromoCodes()'
-            [brandName]='rawProductData?.productBrandDetails?.brandName'
+        <app-product-offers [pageLinkName]="pageLinkName" [price]='rawProductData?.productPrice'
+            [gstPercentage]='rawProductData?.taxPercentage' [productmsn]='rawProductData?.defaultPartNumber'
+            [isHindiMode]='isHindiUrl' (viewPopUpHandler)='fetchCategoryExtras()'
+            (promoCodePopUpHandler)='fetchPromoCodes()' [brandName]='rawProductData?.productBrandDetails?.brandName'
             [couponForbrandCategory]='apiResponse?.prepaidDiscount'
             [categoryId]='rawProductData?.productCategoryDetails?.categoryCode'
             [categoryName]='rawProductData?.productCategoryDetails?.categoryName'
@@ -72,7 +78,8 @@
     </div>
 
     <!-- //moglix insight -->
-    <moglix-insight-pdp *ngIf="apiResponse?.productWidget" [productStaticData]="productStaticData" [data]="apiResponse?.productWidget"></moglix-insight-pdp>
+    <moglix-insight-pdp *ngIf="apiResponse?.productWidget" [productStaticData]="productStaticData"
+        [data]="apiResponse?.productWidget"></moglix-insight-pdp>
 
     <!-- product benifits and policy -->
     <product-benefits [isProductReturnAble]="rawProductData?.isProductReturnAble"
@@ -81,44 +88,48 @@
 
     <!-- floating container ref -->
     <div #similarProductsRef></div>
+    <div class="mb-10">
+        <product-feature-details (showYTVideo$)="showYTVideo1($event)"
+            (handleProductInfoPopup$)="handleProductInfoPopup1($event)"
+            [productKeyFeatures]="rawProductData?.productKeyFeatures"
+            [productAttributes]="rawProductData?.productAttributes"
+            [productDescripton]="rawProductData?.productDescripton"
+            [productCategoryDetails]="rawProductData?.productCategoryDetails"
+            [productBrandDetails]="rawProductData?.productBrandDetails" [productName]="rawProductData?.productName"
+            [productVideos]="rawProductData?.productVideos" [productDocumentInfo]="rawProductData?.productDocumentInfo"
+            [productBrandCategoryUrl]="rawProductData?.productBrandCategoryUrl">
+        </product-feature-details>
+    </div>
 
-    <product-feature-details (showYTVideo$)="showYTVideo1($event)"
-        (handleProductInfoPopup$)="handleProductInfoPopup1($event)"
-        [productKeyFeatures]="rawProductData?.productKeyFeatures"
-        [productAttributes]="rawProductData?.productAttributes" [productDescripton]="rawProductData?.productDescripton"
-        [productCategoryDetails]="rawProductData?.productCategoryDetails"
-        [productBrandDetails]="rawProductData?.productBrandDetails" [productName]="rawProductData?.productName"
-        [productVideos]="rawProductData?.productVideos" [productDocumentInfo]="rawProductData?.productDocumentInfo"
-        [productBrandCategoryUrl]="rawProductData?.productBrandCategoryUrl"></product-feature-details>
-
-            <!-- adsense PDP -->
-            <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData">
-                <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PDP']">
-                    <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PDP']" [analyticsIdentifier]="'MOBILE_LEADERBOARD_PDP_'+adsenseData['ANALYTIC_IDENTIFIER']">
-                    </adsense-leaderboard-banner>
-                </ng-container>
-                <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PDP']">
-                    <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PDP']" [analyticsIdentifier]="'INLINE_RECTANGLE_PDP_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-rectangle-banner>
-                </ng-container>
-            </ng-container>
+    <!-- adsense PDP -->
+    <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData">
+        <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PDP']">
+            <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PDP']"
+                [analyticsIdentifier]="'MOBILE_LEADERBOARD_PDP_'+adsenseData['ANALYTIC_IDENTIFIER']">
+            </adsense-leaderboard-banner>
+        </ng-container>
+        <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PDP']">
+            <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PDP']"
+                [analyticsIdentifier]="'INLINE_RECTANGLE_PDP_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-rectangle-banner>
+        </ng-container>
+    </ng-container>
 
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
-    <div *ngIf="rawProductData?.productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen" data-observeVisibility
-        [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
+    <div *ngIf="rawProductData?.productOutOfStock && !isRFQSuccessfull && !isAskQuestionPopupOpen"
+        data-observeVisibility [debounceTime]="100" (visible)="onVisibleProductRFQ($event)">
         <ng-container #productRFQ></ng-container>
         <product-skeletons [type]="'RFQ'" [templateRefInstance]="pincodeFormInstance"></product-skeletons>
     </div>
 
-    <!-- TODO: skeleton to be implemented -->
-    <!-- TODO: Check in case TYPE B & TYPE C products -->
-    <div class="card" [class.fbtSection]='fbtFlag' *ngIf='fbtFlag'>
-        <fbt [originalProductBO]='originalProductBO' [isHindiUrl]='isHindiUrl' [productQuantity]='cartQunatityForProduct'
-            [analytics]='fbtAnalytics'></fbt>
+    <div *ngIf="!rawProductData?.productOutOfStock" id="similarProducts" data-observeVisibility [debounceTime]="100"
+        (visible)="onVisibleSimilar($event)">
+        <ng-container #similarProduct></ng-container>
+        <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="similarProductInstance"></product-skeletons>
     </div>
 
-    <div *ngIf="compareProductsData.length > 0" class="common-product" data-observeVisibility
-        [debounceTime]="100" (visible)="onVisibleproductPriceCompare()">
+    <div *ngIf="compareProductsData.length > 0" class="common-product" data-observeVisibility [debounceTime]="100"
+        (visible)="onVisibleproductPriceCompare()">
         <ng-container #productPriceCompare></ng-container>
         <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="productPriceCompareInstance"></product-skeletons>
     </div>
@@ -138,13 +149,20 @@
     <product-get-quote (raiseRFQQuote$)="raiseRFQQuote()" [rfqQuoteRaised]="rfqQuoteRaised"
         [productOutOfStock]="rawProductData?.productOutOfStock" [productMrp]="rawProductData?.priceQuantityCountry?.mrp"
         [productCategoryDetails]="rawProductData?.productCategoryDetails" [productName]="rawProductData?.productName"
-        [productAllImages]="productAllImages"></product-get-quote>
+        [productAllImages]="productAllImages">
+    </product-get-quote>
 
-    <div *ngIf="!rawProductData?.productOutOfStock" id="similarProducts" data-observeVisibility
-        [debounceTime]="100" (visible)="onVisibleSimilar($event)">
-        <ng-container #similarProduct></ng-container>
-        <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="similarProductInstance"></product-skeletons>
+    <div class="common-product bg-gray" data-observeVisibility *ngIf="isShopByDifferentBrands" [debounceTime]="100"
+        (visible)="onVisibleShopByBrands()">
+        <ng-container #shopByBrands></ng-container>
+        <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="shopByBrandsInstance"></product-skeletons>
     </div>
+
+    <section id="popularDeals" class="common-product bg-gray"
+        *ngIf="!rawProductData?.productOutOfStock && apiResponse?.tagProducts && apiResponse?.tagProducts?.length > 0">
+        <product-popular-deals [outOfStock]='rawProductData?.productOutOfStock' [productStaticData]='productStaticData'
+            [apiResponse]='apiResponse?.tagProducts' [analytics]='dealsAnalytics'></product-popular-deals>
+    </section>
 
     <product-more-widget [taxons]="taxons" [baseDomain]="baseDomain" [orderTracking]="orderTracking"
         [productBrandDetails]="rawProductData?.productBrandDetails"
@@ -152,13 +170,40 @@
         [productBrandCategoryUrl]="rawProductData?.productBrandCategoryUrl">
     </product-more-widget>
 
-    <!-- adsense PDP -->    
+    <!-- TODO: skeleton to be implemented -->
+    <!-- TODO: Check in case TYPE B & TYPE C products -->
+    <div class="card" [class.fbtSection]='fbtFlag' *ngIf='fbtFlag'>
+        <fbt [originalProductBO]='originalProductBO' [isHindiUrl]='isHindiUrl'
+            [productQuantity]='cartQunatityForProduct' [analytics]='fbtAnalytics'></fbt>
+    </div>
+
+
+    <div class="app-promo mt-10 promo" data-observeVisibility [debounceTime]="300"
+        (visible)="onVisibleAppPromo($event)">
+        <ng-container #appPromo></ng-container>
+        <product-skeletons [type]="'APP_PROMO'" [templateRefInstance]="appPromoInstance"></product-skeletons>
+    </div>
+
+    <product-accordian [isHindiMode]="isHindiUrl" [categoryBrandDetails]="getCategoryBrandDetails()"
+        [msn]="rawProductData?.defaultPartNumber" [relatedLinkRes]="apiResponse?.relatedLinks"
+        [categoryBucketRes]="apiResponse?.mostSold" [similarCategoryRes]="apiResponse?.bucketAggregation"
+        [analyticsInfo]="getAnalyticsInfo()">
+    </product-accordian>
+
+
+
+
+
+
+    <!-- adsense PDP -->
     <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']">
-        <adsense-promoted-brands-unit [isPdpPage]="true" [data]="adsenseData['PROMOTOTED_BRAND_ADS']" [analyticsIdentifier]="'PROMOTOTED_BRAND_ADS_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-promoted-brands-unit>
+        <adsense-promoted-brands-unit [isPdpPage]="true" [data]="adsenseData['PROMOTOTED_BRAND_ADS']"
+            [analyticsIdentifier]="'PROMOTOTED_BRAND_ADS_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-promoted-brands-unit>
     </ng-container>
 
     <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData && adsenseData['FEATURED_PRODUCT_ADS']">
-        <adsense-feature-products-unit  [data]="adsenseData['FEATURED_PRODUCT_ADS']"  [analyticsIdentifier]="'FEATURED_PRODUCT_ADS_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-feature-products-unit>
+        <adsense-feature-products-unit [data]="adsenseData['FEATURED_PRODUCT_ADS']"
+            [analyticsIdentifier]="'FEATURED_PRODUCT_ADS_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-feature-products-unit>
     </ng-container>
 
     <!-- removed sponsored products -->
@@ -169,27 +214,14 @@
         <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
     </div>
 
-    <div class="common-product bg-gray" data-observeVisibility *ngIf="isShopByDifferentBrands"
-    [debounceTime]="100" (visible)="onVisibleShopByBrands()">
-    <ng-container #shopByBrands></ng-container>
-    <product-skeletons [type]="'SIMILAR'" [templateRefInstance]="shopByBrandsInstance"></product-skeletons>
-    </div>
 
-    <section id="popularDeals" class="common-product bg-gray"
-        *ngIf="!rawProductData?.productOutOfStock && apiResponse?.tagProducts && apiResponse?.tagProducts?.length > 0">
-        <product-popular-deals [outOfStock]='rawProductData?.productOutOfStock' [productStaticData]='productStaticData' [apiResponse]='apiResponse?.tagProducts'
-            [analytics]='dealsAnalytics'></product-popular-deals>
-    </section>
 
-    <product-accordian [isHindiMode]="isHindiUrl" [categoryBrandDetails]="getCategoryBrandDetails()"
-        [msn]="rawProductData?.defaultPartNumber" [relatedLinkRes]="apiResponse?.relatedLinks"
-        [categoryBucketRes]="apiResponse?.mostSold" [similarCategoryRes]="apiResponse?.bucketAggregation"
-        [analyticsInfo]="getAnalyticsInfo()">
-    </product-accordian>
+
 
     <ng-container
         *ngIf="apiResponse?.breadCrumb && apiResponse?.breadCrumb.length > 0 && rawProductData?.productOutOfStock">
-        <breadcrumb-nav [productStaticData]='productStaticData' [breadcrumb]="apiResponse?.breadCrumb" [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
+        <breadcrumb-nav [productStaticData]='productStaticData' [breadcrumb]="apiResponse?.breadCrumb"
+            [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
     </ng-container>
 
     <div *ngIf="rawProductData?.productOutOfStock" id="similarProductsOos" data-observeVisibility [debounceTime]="100"
@@ -202,14 +234,9 @@
         [analytics]="pastOrderAnalytics">
     </past-orders>
 
-    <div class="app-promo mt-10 promo" data-observeVisibility [debounceTime]="300"
-        (visible)="onVisibleAppPromo($event)">
-        <ng-container #appPromo></ng-container>
-        <product-skeletons [type]="'APP_PROMO'" [templateRefInstance]="appPromoInstance"></product-skeletons>
-    </div>
-
-    <section data-observeVisibility class="pwa-col-12 common-product" [debounceTime]="100" *ngIf='recentProductItems.length'
-        [ngClass]="{'recent_section': !recentProductsInstance}" (visible)="onVisibleRecentProduct($event)">
+    <section data-observeVisibility class="pwa-col-12 common-product" [debounceTime]="100"
+        *ngIf='recentProductItems.length' [ngClass]="{'recent_section': !recentProductsInstance}"
+        (visible)="onVisibleRecentProduct($event)">
         <ng-container #recentProducts></ng-container>
         <product-skeletons [type]="'RECENT'" [templateRefInstance]="recentProductsInstance"></product-skeletons>
     </section>

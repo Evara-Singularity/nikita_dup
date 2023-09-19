@@ -48,7 +48,6 @@ export class FeaturedArrivals {
 			';path=/';
 	}
 	ngOnInit(){
-		console.log(this.featureArrivalData,"this.featureArrivalData")
 		this.featureArrivalData = (this.featureArrivalData).map((item) => this._productService.productLayoutJsonToProductEntity(item));
 
 	}

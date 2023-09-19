@@ -15,6 +15,7 @@ import { SharedCheckoutStepperModule } from './../../../modules/shared-checkout-
 import { SharedCheckoutUnavailableItemsModule } from './../../../modules/shared-checkout-unavailable-items/shared-checkout-unavailable-items.module';
 import { CheckoutAddressRoutingModule } from './checkout-address-routing.module';
 import { CheckoutAddressComponent } from './checkout-address.component';
+import { CodAndPayOnlineModule } from '../../../components/cod-and-pay-online/cod-and-pay-online.component';
 
 @NgModule({
   declarations: [CheckoutAddressComponent],
@@ -32,7 +33,8 @@ import { CheckoutAddressComponent } from './checkout-address.component';
     MathRoundPipeModule,
     PrepaidOfferCheckoutModule,
     YTThumnailPipeModule,
-    AllPromocodeV1Module
+    AllPromocodeV1Module,
+    CodAndPayOnlineModule
   ]
 })
 export class CheckoutAddressModule { }

@@ -88,7 +88,7 @@ export class CreateEditDeliveryAddressComponent implements OnInit, AfterViewInit
     {
         this.addressForm = this._formBuilder.group({
             'idAddress': address && address.idAddress ? address.idAddress : null,
-            'addressCustomerName': [(address && address.addressCustomerName) ? address.addressCustomerName : (this.userSesssion['userName'] && (this.userSesssion['userName']!=CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER )? this.userSesssion['userName']:""), [Validators.required, Validators.pattern('^(?=.*[a-zA-Z])[a-zA-Z ]*$')]],
+            'addressCustomerName': [(address && address.addressCustomerName) ? address.addressCustomerName : (this.userSesssion['userName'] && (this.userSesssion['userName']!=CONSTANTS.DEFAULT_USER_NAME_PLACE_HOLDER )? this.userSesssion['userName']:""), [Validators.required, Validators.pattern('^(?=[a-zA-Z ]*[a-zA-Z]{2})[a-zA-Z ]*$')]],
             'phone': [(address && address.phone) ? address.phone : this.userSesssion['phone'], [Validators.required, Step.validatePhone, Validators.minLength(10)]],
             'alternatePhone': [(address && address.alternatePhone) ? address.alternatePhone : this.userSesssion['alternatePhone'], [Validators.pattern("[0-9]{10}")]],
             'postCode': [(address && address.postCode) ? address.postCode : null, [Validators.required, Step.validatePostCode]],

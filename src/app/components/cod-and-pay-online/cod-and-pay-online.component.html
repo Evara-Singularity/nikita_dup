@@ -37,45 +37,6 @@
     >
   </p>
   <div class="cod-payBtn">
-    <div class="cod-btn btn primary-full-btn" (click)="validateCart()">
-      <div class="text-container">
-        <div class="text">
-          <p>CASH ON DELIVERY</p>
-          <span class="cod-price" *ngIf="cartService.totalPrepaidSaving > 0">
-            <ng-container
-              *ngIf="
-                cartService.getGenericCartSession.cart.totalOffer == 0 ||
-                cartService.getGenericCartSession.cart.totalOffer == null
-              "
-            >
-              ₹{{
-                cartService.getGenericCartSession.cart.tawot +
-                  cartService.getGenericCartSession.cart.tpt +
-                  cartService.getGenericCartSession.cart.shippingCharges
-                  | mathRound
-                  | number : "1.2-2"
-              }}</ng-container
-            >
-            <ng-container
-              *ngIf="
-                cartService.getGenericCartSession.cart.totalOffer !== 0 &&
-                cartService.getGenericCartSession.cart.totalOffer !== null
-              "
-            >
-              ₹{{
-                cartService.getGenericCartSession.cart.tawot +
-                  cartService.getGenericCartSession.cart.tpt +
-                  cartService.getGenericCartSession.cart.shippingCharges -
-                  cartService.getGenericCartSession.cart.totalOffer
-                  | mathRound
-                  | number : "1.2-2"
-              }}</ng-container
-            >
-          </span>
-        </div>
-        <i class="icon-next"></i>
-      </div>
-    </div>
     <div class="cod-btn btn primary-full-btn bg-blue" (click)="continueToPayment()">
       <div class="text-container">
         <div class="text" >
@@ -151,6 +112,45 @@
                 }}</ng-container
               >
             </b>
+          </span>
+        </div>
+        <i class="icon-next"></i>
+      </div>
+    </div>
+    <div class="cod-btn btn primary-full-btn" (click)="validateCart()">
+      <div class="text-container">
+        <div class="text">
+          <p>CASH ON DELIVERY</p>
+          <span class="cod-price" *ngIf="cartService.totalPrepaidSaving > 0">
+            <ng-container
+              *ngIf="
+                cartService.getGenericCartSession.cart.totalOffer == 0 ||
+                cartService.getGenericCartSession.cart.totalOffer == null
+              "
+            >
+              ₹{{
+                cartService.getGenericCartSession.cart.tawot +
+                  cartService.getGenericCartSession.cart.tpt +
+                  cartService.getGenericCartSession.cart.shippingCharges
+                  | mathRound
+                  | number : "1.2-2"
+              }}</ng-container
+            >
+            <ng-container
+              *ngIf="
+                cartService.getGenericCartSession.cart.totalOffer !== 0 &&
+                cartService.getGenericCartSession.cart.totalOffer !== null
+              "
+            >
+              ₹{{
+                cartService.getGenericCartSession.cart.tawot +
+                  cartService.getGenericCartSession.cart.tpt +
+                  cartService.getGenericCartSession.cart.shippingCharges -
+                  cartService.getGenericCartSession.cart.totalOffer
+                  | mathRound
+                  | number : "1.2-2"
+              }}</ng-container
+            >
           </span>
         </div>
         <i class="icon-next"></i>

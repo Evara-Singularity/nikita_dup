@@ -20,13 +20,14 @@ export class BussinessInfoComponent {
   errorMsg: string = "";
   userInfo:any;
   isBrowser: boolean;
-  isEditEmail=false;
+  isEmailAvailable: boolean = false;
   user: any;
   isServer: boolean;
   isHomePage: boolean;
   public isMenuCollapsed: boolean = false;
   currentRoute: string;
   isNameInputDisabled: boolean =true;
+  isEmailInputDisabled: boolean =true;
   set showLoader(value){
     this.loaderService.setLoaderState(value);
   }
@@ -67,12 +68,14 @@ export class BussinessInfoComponent {
       this.user = this._localAuthService.getUserSession();
     });
   }
-
   ngOnInit() {
     let obj = {};
     obj["userId"] = this.localStorageService.retrieve("user").userId;
 
     this._dashboardService.getPersonalInfo(obj).subscribe((res) => {
+      if(res && res['email']){
+        this.isEmailAvailable = true;
+      }
       this.userInfo = res;
       this.showLoader = false;
     });
@@ -89,7 +92,6 @@ export class BussinessInfoComponent {
   }
 
   onSubmit(firstName:string, type:string) {
-    console.log(firstName, " ====email ");
     if (type =="name" && !firstName) {
       this._tms.show({type: "success", text: "User name cannot be empty."});
       return;
@@ -145,9 +147,10 @@ export class BussinessInfoComponent {
           this.errorMsg = res["statusDescription"];
           this._tms.show({
             type: "success",
-            text: "Profile updated successfully.",
+            text: res['statusDescription'] || "Profile updated successfully.",
           });
-          this.isEditEmail = false;
+          this.isEmailAvailable = true;
+          this.isEmailInputDisabled=true;
         }
         // else {
         //   this.error = true;
@@ -156,23 +159,14 @@ export class BussinessInfoComponent {
       }, error => this._tms.show({ type: 'error', text: "Email Already in Use!" }));
    }
   }
-  onUpdateEmail(){
-     this.isEditEmail = true
-    
-  }
-
-  cancelEdit(){
-    if(this.isEditEmail){
-      this.isEditEmail=false;
-    }
-  }
-
+  
   toPasswordPage() {
     this._router.navigate(["dashboard/password"]);
   }
 
-  activateInput(){
-    this.isNameInputDisabled = false;
+  activateInput(type:string){
+    if(type=='name'){this.isNameInputDisabled = false;}
+    if(type=='email'){this.isEmailInputDisabled=false;}
   }
   addLottieScript() {
     this._commonService.addLottieScriptSubject.subscribe(lottieInstance => {

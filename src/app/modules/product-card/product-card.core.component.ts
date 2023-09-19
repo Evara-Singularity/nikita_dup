@@ -11,7 +11,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { ProductService } from '@app/utils/services/product.service';
 import { ProductListService } from '@app/utils/services/productList.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ModalService } from '../modal/modal.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
@@ -86,6 +86,7 @@ export class ProductCardCoreComponent implements OnInit {
   @ViewChild("quickOrder", { read: ViewContainerRef })
   quickOrderContainerRef: ViewContainerRef;
   productRawData: Subject<any> = new Subject();
+  rawProductSubscription: Subscription = null;
   constructor(
     public _cartService: CartService,
     public _productListService: ProductListService,
@@ -243,6 +244,11 @@ export class ProductCardCoreComponent implements OnInit {
     }
   }
 
+  private createProductRawDataObservable() {
+    return this.productRawData.asObservable();
+  }
+  
+
   async loadVariantPop(product, productGroupData, buyNow = false, productRawData=null) {
     if (!this.variantPopupInstance) {
       this._loader.setLoaderState(true);
@@ -250,7 +256,8 @@ export class ProductCardCoreComponent implements OnInit {
         this._loader.setLoaderState(false);
         this._commonService.enableNudge = false;
       });
-      this.productRawData.subscribe((data) => {
+      this.rawProductSubscription = null;
+      this.rawProductSubscription = this.createProductRawDataObservable().subscribe((data) => {
         if(data) {
           productRawData = data;
         }
@@ -270,7 +277,8 @@ export class ProductCardCoreComponent implements OnInit {
         this.openRfqFormCore(msnId);
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
-        this.productRawData.unsubscribe();
+        this.rawProductSubscription && this.rawProductSubscription.unsubscribe();
+        // this.productRawData.unsubscribe();
         this._commonService.enableNudge = false;
       });
       (this.variantPopupInstance.instance['continueToCart$'] as EventEmitter<boolean>).subscribe(data => {
@@ -278,15 +286,18 @@ export class ProductCardCoreComponent implements OnInit {
         this.variantAddToCart(data, productRawData);
         this._commonService.enableNudge = false;
         this.variantPopupInstance = null;
-        this.productRawData.unsubscribe();
+        this.rawProductSubscription && this.rawProductSubscription.unsubscribe();
+        // this.productRawData.unsubscribe();
         this.variantPopupInstanceRef.detach();
       });
       (this.variantPopupInstance.instance['hide$'] as EventEmitter<boolean>).subscribe(data => {
         this._commonService.enableNudge = false;
         // this._commonService.resetSearchNudgeTimer();
+        this.rawProductSubscription && this.rawProductSubscription.unsubscribe();
+        // this.productRawData.unsubscribe();
+        console.log('I am in ')
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
-        this.productRawData.unsubscribe();
       });
       this.cdr.detectChanges();
     }

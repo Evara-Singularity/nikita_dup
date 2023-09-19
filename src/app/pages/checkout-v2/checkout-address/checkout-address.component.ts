@@ -16,6 +16,7 @@ import { Subject, Subscription } from 'rxjs';
 import { CheckoutUtil } from '../checkout-util';
 import { CartUtils } from './../../../utils/services/cart-utils';
 import { CommonService } from '@app/utils/services/common.service';
+import { QuickCodService } from '@app/utils/services/quick-cod.service';
 
 @Component({
     selector: 'checkout-address',
@@ -52,9 +53,12 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     cartUpdatesSubscription: Subscription = null;
     paymentMode: any;
     addressUpdated = false;
+    is_cod_section: number = 0;
+    isAllCartAvailableForCod: boolean = false;
+    moduleUsedIn: string = 'quick-checkout';
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
-        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService, private _commonService: CommonService, private injector: Injector, private  cfr: ComponentFactoryResolver,)
+        private _router: Router, private _toastService: ToastMessageService, private _globalLoader: GlobalLoaderService, private _analytics: GlobalAnalyticsService, private _localStorageService:LocalStorageService, private _commonService: CommonService, private injector: Injector, private  cfr: ComponentFactoryResolver, private quickCodService: QuickCodService)
     {
         
     }
@@ -76,6 +80,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         this._cartService.showUnavailableItems = false;
         this._globalLoader.setLoaderState(true);
         this.updateExistingProductsState();
+        this.moduleUsedIn = (this._cartService.buyNow != undefined && this._cartService.buyNow == true) ? '' : 'quick-checkout';
     }
 
     // this will update the products state when any of the products were removed from cart
@@ -152,6 +157,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     //Address Information
     handleDeliveryAddressEvent(address)
     {
+        if(address == null){ this.is_cod_section = 1;}
         this.deliveryAddress = address;
         this._cartService.shippingAddress = address;
         this.verifyDeliveryAndBillingAddress(this.invoiceType, this.deliveryAddress);
@@ -207,16 +213,45 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const addressId = deliveryAddress && deliveryAddress['idAddress'];
         const cartId = this.cartSession['cart']['cartId'];
         const userId = this.cartSession['cart']['userId'];
+       let setTime = false;
         this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode , isGstInvoice: isGstInvoice, 
             orderPlatform: orderPlatform ,addressId :addressId ,cartId: cartId , userId: userId}).subscribe((response) =>
         {
-            if (!response) return;
+            setTime = true
+            if (!response) { this.is_cod_section = 1; return};
             const AGGREGATES = CheckoutUtil.formatAggregateValues(response);
             const NON_SERVICEABLE_MSNS: any[] = CheckoutUtil.getNonServiceableMsns(AGGREGATES);
             const NON_CASH_ON_DELIVERABLE_MSNS: any[] = CheckoutUtil.getNonCashOnDeliveryMsns(AGGREGATES);
+            this.getCodAndPayOnline(NON_CASH_ON_DELIVERABLE_MSNS);
             this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
             this.updateNonDeliverableItems(cartItems, NON_CASH_ON_DELIVERABLE_MSNS);
+        },err=>{
+            this.is_cod_section = 1;
         })
+        setTimeout(()=>{
+         if(setTime == false){
+            this.is_cod_section = 1;
+         }
+        },1100)
+    }
+
+    getCodAndPayOnline(NON_CASH_ON_DELIVERABLE_MSNS){
+        if(NON_CASH_ON_DELIVERABLE_MSNS.length == 0){
+            this.isAllCartAvailableForCod = true;
+            this.calculatePayableAmount(this.cartSession['cart']);
+            this.quickCodService
+            .checkCODLimit(this.payableAmount)
+            .subscribe((res) => {
+              if (res && res["iswithInCODLimit"] == true) {
+                this.is_cod_section = 2
+              } else {
+                this.is_cod_section = 1
+              }
+            });
+        }else{
+            this.isAllCartAvailableForCod = false;
+            this.is_cod_section = 1;
+        }
     }
 
     /**
@@ -289,7 +324,19 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const TOTAL_AMOUNT = cart['totalAmount'] || 0;
         const SHIPPING_CHARGES = cart['shippingCharges'] || 0;
         const TOTAL_OFFER = cart['totalOffer'] || 0;
+        if(!this.isAllCartAvailableForCod){
         this.payableAmount = (TOTAL_AMOUNT + SHIPPING_CHARGES) - TOTAL_OFFER;
+        }else{
+            this._cartService.getShippingPriceChanges().subscribe(res=>{
+                const  SHIPPING_CHARGES = res.cart['shippingCharges'] || 0;
+                this.payableAmount = (TOTAL_AMOUNT + SHIPPING_CHARGES) - TOTAL_OFFER;
+                if(this.payableAmount > CONSTANTS.GLOBAL.codMin && this.payableAmount < CONSTANTS.GLOBAL.codMax){
+                    this.is_cod_section = 2;
+                }else{
+                    this.is_cod_section = 1;
+                }
+            })
+        }
     }
 
     validateCart()
@@ -420,6 +467,10 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
           this.simillarProductsPopupContainerRef.remove();
           this.simillarProductsPopupInstance = null;
         });
+    }
+
+    continueToPayment$(){
+        this.continueToPayment();
     }
     
     ngOnDestroy()

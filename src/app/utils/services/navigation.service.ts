@@ -56,6 +56,7 @@ export class NavigationService
     })
   }
 
+
   //in case of login flow no need to pop from history
   public goBack(isRemove = false, isBackBtnClicked = false)
   {

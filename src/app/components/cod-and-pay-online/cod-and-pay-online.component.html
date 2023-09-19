@@ -1,0 +1,160 @@
+<div class="pad-tb-10 cod-payContainer">
+  <p class="save-amount-text" *ngIf="cartService.totalPrepaidSaving > 0">
+    Pay online & save extra
+    {{ cartService.totalPrepaidSaving | currency : "INR" : "symbol" : "1.0-0" }}
+    OFF on this order.
+  </p>
+  <p class="save-amount-text" *ngIf="cartService.totalPrepaidSaving == 0">
+    Payable Amount:
+    <ng-container
+      *ngIf="
+        cartService.getGenericCartSession.cart.totalOffer == 0 ||
+        cartService.getGenericCartSession.cart.totalOffer == null
+      "
+    >
+      ₹{{
+        cartService.getGenericCartSession.cart.tawot +
+          cartService.getGenericCartSession.cart.tpt +
+          cartService.getGenericCartSession.cart.shippingCharges
+          | mathRound
+          | number : "1.2-2"
+      }}</ng-container
+    >
+    <ng-container
+      *ngIf="
+        cartService.getGenericCartSession.cart.totalOffer !== 0 &&
+        cartService.getGenericCartSession.cart.totalOffer !== null
+      "
+    >
+      ₹{{
+        cartService.getGenericCartSession.cart.tawot +
+          cartService.getGenericCartSession.cart.tpt +
+          cartService.getGenericCartSession.cart.shippingCharges -
+          cartService.getGenericCartSession.cart.totalOffer
+          | mathRound
+          | number : "1.2-2"
+      }}</ng-container
+    >
+  </p>
+  <div class="cod-payBtn">
+    <div class="cod-btn btn primary-full-btn bg-blue" (click)="continueToPayment()">
+      <div class="text-container">
+        <div class="text" >
+          <p>PAY ONLINE <img src="../../../assets/img/payment_icon.png" /></p>
+          <span
+            class="price-section"
+            *ngIf="cartService.totalPrepaidSaving > 0"
+          >
+            <span class="price-mrp gray-txt">
+              <span class="strike-off-upper">
+                <span class="strike-off"></span>
+                <ng-container
+                  *ngIf="
+                    cartService.getGenericCartSession.cart.totalOffer == 0 ||
+                    cartService.getGenericCartSession.cart.totalOffer == null
+                  "
+                >
+                  ₹{{
+                    cartService.getGenericCartSession.cart.tawot +
+                      cartService.getGenericCartSession.cart.tpt +
+                      cartService.getGenericCartSession.cart.shippingCharges
+                      | mathRound
+                      | number : "1.2-2"
+                  }}</ng-container
+                >
+                <ng-container
+                  *ngIf="
+                    cartService.getGenericCartSession.cart.totalOffer !== 0 &&
+                    cartService.getGenericCartSession.cart.totalOffer !== null
+                  "
+                >
+                  ₹{{
+                    cartService.getGenericCartSession.cart.tawot +
+                      cartService.getGenericCartSession.cart.tpt +
+                      cartService.getGenericCartSession.cart.shippingCharges -
+                      cartService.getGenericCartSession.cart.totalOffer
+                      | mathRound
+                      | number : "1.2-2"
+                  }}</ng-container
+                >
+              </span>
+            </span>
+            <b>
+              <ng-container
+                *ngIf="
+                  cartService.getGenericCartSession.cart.totalOffer == 0 ||
+                  cartService.getGenericCartSession.cart.totalOffer == null
+                "
+              >
+                ₹{{
+                  cartService.getGenericCartSession.cart.tawot +
+                    cartService.getGenericCartSession.cart.tpt +
+                    cartService.getGenericCartSession.cart.shippingCharges -
+                    cartService.totalPrepaidSaving
+                    | mathRound
+                    | number : "1.2-2"
+                }}</ng-container
+              >
+              <ng-container
+                *ngIf="
+                  cartService.getGenericCartSession.cart.totalOffer !== 0 &&
+                  cartService.getGenericCartSession.cart.totalOffer !== null
+                "
+              >
+                ₹{{
+                  cartService.getGenericCartSession.cart.tawot +
+                    cartService.getGenericCartSession.cart.tpt +
+                    cartService.getGenericCartSession.cart.shippingCharges -
+                    cartService.getGenericCartSession.cart.totalOffer -
+                    cartService.totalPrepaidSaving
+                    | mathRound
+                    | number : "1.2-2"
+                }}</ng-container
+              >
+            </b>
+          </span>
+        </div>
+        <i class="icon-next"></i>
+      </div>
+    </div>
+    <div class="cod-btn btn primary-full-btn" (click)="validateCart()">
+      <div class="text-container">
+        <div class="text">
+          <p>CASH ON DELIVERY</p>
+          <span class="cod-price" *ngIf="cartService.totalPrepaidSaving > 0">
+            <ng-container
+              *ngIf="
+                cartService.getGenericCartSession.cart.totalOffer == 0 ||
+                cartService.getGenericCartSession.cart.totalOffer == null
+              "
+            >
+              ₹{{
+                cartService.getGenericCartSession.cart.tawot +
+                  cartService.getGenericCartSession.cart.tpt +
+                  cartService.getGenericCartSession.cart.shippingCharges
+                  | mathRound
+                  | number : "1.2-2"
+              }}</ng-container
+            >
+            <ng-container
+              *ngIf="
+                cartService.getGenericCartSession.cart.totalOffer !== 0 &&
+                cartService.getGenericCartSession.cart.totalOffer !== null
+              "
+            >
+              ₹{{
+                cartService.getGenericCartSession.cart.tawot +
+                  cartService.getGenericCartSession.cart.tpt +
+                  cartService.getGenericCartSession.cart.shippingCharges -
+                  cartService.getGenericCartSession.cart.totalOffer
+                  | mathRound
+                  | number : "1.2-2"
+              }}</ng-container
+            >
+          </span>
+        </div>
+        <i class="icon-next"></i>
+      </div>
+    </div>
+  </div>
+</div>

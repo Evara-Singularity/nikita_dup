@@ -97,7 +97,7 @@ export class CodAndPayOnlineComponent {
     let data = {};
     data["page"] = page;
     data["custData"] = this._commonService.custDataTracking;
-    this._analytics.sendAdobeCall(data, trackingname);
+    this._analytics.sendAdobeCall(data, 'genericClick');
   }
 }
 

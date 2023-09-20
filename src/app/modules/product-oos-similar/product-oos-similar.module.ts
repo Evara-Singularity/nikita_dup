@@ -15,29 +15,31 @@ import {  MathCeilPipeModule } from "@app/utils/pipes/math-ceil";
 import { ProductFeatureDetailsModule } from "@app/components/product-feature-details/product-feature-details.component";
 import { BreadcrumbNavModule } from "../breadcrumb-nav/breadcrumb-nav.module";
 import ProductDescriptionModule from "@app/components/product-description/product-description.component";
+import { MockLottiePlayerModule } from "../../components/mock-lottie-player/mock-lottie-player.module";
 
 @NgModule({
-  declarations: [ProductOosSimilarComponent, ProductOosSimilarCardComponent, 
-    ProductOosSimilarProductDetailComponent
-  ],
-  imports: [
-    RouterModule,
-    SwipeDirectiveModule,
-    CommonModule,
-    MathFloorPipeModule,
-    MathCeilPipeModule,
-    SliceArrayPipeModule,
-    BreadcrumbNavModule,
-    ProductDescriptionModule,
-    ReactiveFormsModule,
-    ProductFeatureDetailsModule,
-    ProductInfoSectionPipeModule,
-    ObjectToArrayPipeModule,
-    ProductFeatureDetailsModule,
-    ObserveVisibilityDirectiveModule
-  ],
-  exports: [ProductOosSimilarComponent, ProductOosSimilarCardComponent, 
-    ProductOosSimilarProductDetailComponent
-  ],
+    declarations: [ProductOosSimilarComponent, ProductOosSimilarCardComponent,
+        ProductOosSimilarProductDetailComponent
+    ],
+    exports: [ProductOosSimilarComponent, ProductOosSimilarCardComponent,
+        ProductOosSimilarProductDetailComponent
+    ],
+    imports: [
+        RouterModule,
+        SwipeDirectiveModule,
+        CommonModule,
+        MathFloorPipeModule,
+        MathCeilPipeModule,
+        SliceArrayPipeModule,
+        BreadcrumbNavModule,
+        ProductDescriptionModule,
+        ReactiveFormsModule,
+        ProductFeatureDetailsModule,
+        ProductInfoSectionPipeModule,
+        ObjectToArrayPipeModule,
+        ProductFeatureDetailsModule,
+        ObserveVisibilityDirectiveModule,
+        MockLottiePlayerModule
+    ]
 })
 export class ProductOosSimilarModule {}

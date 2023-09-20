@@ -338,6 +338,9 @@ export class ProductOosSimilarCardComponent {
   }
 
   buyNow(buyNow) {
+  if (this.animationStart) {
+    this.commonService.navigateTo('/quickorder', true)
+  } else {
     this._loader.setLoaderState(true);      
     of(this._cartService.getAddToCartProductItemRequest({
       productGroupData: this.productService.getSimilarProductBoByIndex(this.index),
@@ -366,8 +369,10 @@ export class ProductOosSimilarCardComponent {
     }, error => {
       console.log('buyNow ==>', error);
     })
+    
   }
-
+  }
+  animationStart:boolean=false
   private addToCart(productDetails, buyNow, rawData = this.productService.getSimilarProductBoByIndex(this.index)): void {
     if(buyNow) {
       this.productService.validateQuickCheckout(rawData).subscribe((res) => {
@@ -382,6 +387,7 @@ export class ProductOosSimilarCardComponent {
       })
     } else {
       this.proceedToCart(productDetails, buyNow)
+      this.animationStart=true
     }
     
   }

@@ -3244,8 +3244,14 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Add to cart methods
-    async showFBT() {
-        this.addToCart(false);
+    async showFBT(lotteieInfo?: any) {
+        if (lotteieInfo) {
+            console.log(lotteieInfo);
+            this.commonService.navigateTo('/quickorder', true)
+        }else
+        {
+            this.addToCart(false);
+        }
         // if (this.fbtFlag) {
         //     const TAXONS = this.taxons;
         //     let page = {

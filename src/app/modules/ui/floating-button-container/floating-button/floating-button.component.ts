@@ -12,7 +12,10 @@ export class FloatingButtonComponent implements OnInit {
   @Input() isMultiple = true;
   @Input() label: string = 'Button';
   @Input() iconClass: string;
+  @Input() isPdpMainProduct: boolean=false;
   @Output() onClick: EventEmitter<any> = new EventEmitter<any>();
+  @Input() displayAddToCartAnimation: boolean=false;
+  lotteieInfo:boolean= false;
 
   constructor(
     private commonService:CommonService
@@ -22,8 +25,13 @@ export class FloatingButtonComponent implements OnInit {
   }
 
   onClickButton() {
-    this.onClick.emit();
+    this.onClick.emit(this.lotteieInfo);
+    if (this.isPdpMainProduct && !this.displayAddToCartAnimation && !this.lotteieInfo ) {
+      this.displayAddToCartAnimation=true;
+      this.lotteieInfo=true
+    }
   }
+  
 
   addLottieScript(){
 		this.commonService.addLottieScriptSubject.subscribe(lottieInstance => {

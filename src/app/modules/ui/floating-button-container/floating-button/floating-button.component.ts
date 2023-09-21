@@ -34,15 +34,14 @@ export class FloatingButtonComponent implements OnInit {
   
 
   addLottieScript(){
-		this.commonService.addLottieScriptSubject.subscribe(lottieInstance => {
-			this.commonService.callLottieScript();
+		this.commonService.addLottieScriptGoToCartSubject.subscribe(lottieInstance => {
+			this.commonService.callLottieScriptGoToCart();
 			lottieInstance.next();
 		});
 	}
   ngAfterViewInit(){
-    this.commonService.callLottieScript();
+    this.commonService.callLottieScriptGoToCart();
     this.addLottieScript();
-    this.commonService.setBodyScroll(null, false);
   }
 }
 

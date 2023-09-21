@@ -12,6 +12,7 @@ import { PopUpModule } from '@app/modules/popUp/pop-up.module';
 import { CommonService } from '@app/utils/services/common.service';
 import { BottomMenuModule } from '@app/modules/bottomMenu/bottom-menu.module';
 import { NumberDirectiveModule } from '@app/utils/directives/numeric-only.directive';
+import { StaticCountryText } from '@app/config/static-india-text';
 
 @Component({
   selector: 'create-enquiry-component',
@@ -24,6 +25,9 @@ export class CreateEnquiryComponent {
   public customerId: number;
   showThanksPopup = false;
   isFormSubmitted: boolean= false;
+  staticCountryData = StaticCountryText;
+  isFromUAE:boolean;
+  mobileMaxLength = 10;
 
   private userDetails: { name: string, phoneno: string, email: string, company_name: string, isLogin: boolean } = {
     name: '',
@@ -45,9 +49,9 @@ export class CreateEnquiryComponent {
   ngOnInit() {
     this.meta.addTag({ "name": "robots", "content": CONSTANTS.META.ROBOT2 });
     this.bulkEnquiryForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required,Validators.pattern('[a-zA-Z ]*'),Step.noWhitespaceValidator]],
       email: ['', [Validators.required, Step.validateEmail]],
-      phoneno: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      phoneno: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10),Validators.pattern(/^[0-9]\d*$/)]],
       company_name: [''],
     });
     this.initialize();
@@ -108,22 +112,15 @@ export class CreateEnquiryComponent {
 
   sendBulkEnquiry() {
     let user = this.localStorageService.retrieve("user");
-    let obj = {
-      "rfqEnquiryCustomer": {
-        "firstName": this.nameFC.value,
-        "email": this.emailFC.value,
-        "mobile": this.phoneFC.value,
-        "company": this.companyFC.value,
-        "tin": '',
-        "city": '',
-        "description": '',
-        "pincode": '',
-        "businessUser": true,
-        'customerId': (user && user['authenticated'] === 'true') ? user['userId'] : '',
-        "platform": "mobile",
-        "state": "",
-      },
-      "rfqEnquiryItemsList": []
+    
+      let obj = {
+        "rfqEnquiryCustomer": {
+          "firstName": this.nameFC.value,
+          "email": this.emailFC.value,
+          "mobile": this.phoneFC.value,
+          "company": this.companyFC.value,
+        },
+        "rfqEnquiryItemsList": []
     }
     this.bulkEnquiryService.postBulkEnquiry(obj).subscribe(
       res => {
@@ -132,16 +129,23 @@ export class CreateEnquiryComponent {
           this.showThanksPopup = true;
           this.isFormSubmitted = false;
           this.bulkEnquiryForm.reset();
+          this.resetFieldValues();
           this.adobeEventAfterSubmission();
         }
       }
     );
   }
-
+  resetFieldValues(){
+    this.nameFC.setValue('');
+    this.emailFC.setValue('');
+    this.phoneFC.setValue('');
+    this.companyFC.setValue('');
+  }
   
   togglePopUp(){
     this.showThanksPopup = false;
     this.bulkEnquiryForm.reset();
+    this.resetFieldValues();
     this.setLoginUserData();
   }
 
@@ -194,6 +198,9 @@ export class CreateEnquiryComponent {
     return this.bulkEnquiryForm.get('company_name')
   }
   
+  ngAfterViewInit(){
+ 
+  }
 
 
 }

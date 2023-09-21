@@ -15,6 +15,7 @@ import { DataService } from "./data.service";
 import { GlobalAnalyticsService } from "./global-analytics.service";
 import { Observable, of } from "rxjs";
 import { product } from "@app/config/static-en";
+import { HttpHeaders } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
@@ -31,11 +32,12 @@ export class ProductListService {
     private _activatedRoute: ActivatedRoute,
     private _cartService: CartService,
     public _localStorageService: LocalStorageService,
-    private globalAnalyticsService: GlobalAnalyticsService
+    private globalAnalyticsService: GlobalAnalyticsService,
   ) {}
 
   showMidPlpFilterLoader: boolean = true;
   excludeAttributes: string[] = [];
+  readonly promoCodeDescription_off_key = "OFF";
 
   filterBuckets(buckets: any[]) {
     if (this.excludeAttributes.length > 0) {
@@ -44,6 +46,16 @@ export class ProductListService {
       );
     }
     return buckets;
+  }
+
+  getPromoCodeDescription (promoCodeDescription: string){
+    let pcode = promoCodeDescription.split(this.promoCodeDescription_off_key);
+    if(pcode.length == 1){pcode = promoCodeDescription.split("Off")}
+    if(typeof pcode != 'string' && pcode.length > 0){
+        return pcode[0] as string;
+    }else{
+        return null;
+    }
   }
 
   createAndProvideDataToSharedListingComponent(
@@ -95,6 +107,7 @@ export class ProductListService {
             product["mrp"],
             product["salesPrice"]
           );
+          product['promoCodeDescription'] = product.promoCodeDescription ? this.getPromoCodeDescription(product.promoCodeDescription) : null
           return product;
         }
       ),
@@ -159,10 +172,13 @@ export class ProductListService {
     return [];
   }
 
-  getFilterBucket(categoryId, pageName, brandName?: string) {
+  getFilterBucket(categoryId, pageName, brandName?: string, isHindiUrl?: boolean) {
     if (this._commonService.isBrowser) {
       this.showMidPlpFilterLoader = true;
-
+      const headerData = {}
+      if (isHindiUrl) {
+        headerData['language'] = 'hi'
+      }
       let filter_url =
         environment.BASE_URL +
         "/" +
@@ -193,6 +209,7 @@ export class ProductListService {
       }
       return this._dataService.callRestful("GET", filter_url, {
         params: actualParams,
+        headerData: headerData
       });
     } else {
       return of({});
@@ -410,6 +427,9 @@ export class ProductListService {
       case "PRODUCT_SIMILAR":
         str = "pdp:product_similar";
         break;
+      case "SHOP_BY_BRANDS":
+        str = "pdp:shop_by_brands";  
+        break;
       case "HOME_PRODUCT":
         str = "pdp:home_product";
         break;
@@ -425,6 +445,9 @@ export class ProductListService {
       case "ADS_FEATURE":
         str = "pdp:widget:" + adCampaignName;
         break;
+      case "HOME-FEATURED-ARRIVALS":
+        str = "pdp:widget:" + adCampaignName;
+      break;
       default:
         str = "pdp-extra";
         break;

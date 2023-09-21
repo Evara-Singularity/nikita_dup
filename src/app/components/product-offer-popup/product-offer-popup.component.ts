@@ -4,6 +4,7 @@ import { PopUpModule } from '../../modules/popUp/pop-up.module';
 import { ModalModule } from '../../modules/modal/modal.module';
 import CONSTANTS from '../../config/constants';
 import { CommonService } from '../../utils/services/common.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-offer-popup',
@@ -19,7 +20,7 @@ export class ProductOfferPopupComponent implements OnInit {
   @Output() out: EventEmitter<any> = new EventEmitter<any>();
   @Output() isLoading: EventEmitter<any> = new EventEmitter<any>();
   IMG_PATH = CONSTANTS.IMAGE_BASE_URL;
-
+  changeStaticSubscription: Subscription = null;
   constructor(private _commonService:CommonService){
 
   }
@@ -27,7 +28,7 @@ export class ProductOfferPopupComponent implements OnInit {
     this.getStaticSubjectData();
   }
   getStaticSubjectData(){
-    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this._commonService.defaultLocaleValue = staticJsonData;
       this.productStaticData = staticJsonData;
     });
@@ -36,6 +37,12 @@ export class ProductOfferPopupComponent implements OnInit {
   outData(data) {
     // console.log('outData', data);
     this.out.emit(data);
+  }
+
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
   }
 
 }

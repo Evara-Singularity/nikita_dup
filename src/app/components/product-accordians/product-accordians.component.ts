@@ -6,6 +6,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { AccordiansDetails, AccordianDataItem } from '@app/utils/models/accordianInterface';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
 import { makeStateKey } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'product-accordian',
   templateUrl: './product-accordians.component.html',
@@ -26,7 +27,7 @@ export class ProductAccordiansComponent {
   isBrowser: boolean;
   categoryId: any;
   productStaticData: any;
-
+  changeStaticSubscription: Subscription = null;
   constructor(
     public _commonService: CommonService,
     private globalAnalyticService: GlobalAnalyticsService,
@@ -45,10 +46,15 @@ export class ProductAccordiansComponent {
 
 
   getStaticSubjectData() {
-    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
       this.cdr.detectChanges();
     });
+  }
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
   }
 
   setAccordianData(relatedLinkRes, categoryBucketRes, similarCategoryRes) {
@@ -58,14 +64,14 @@ export class ProductAccordiansComponent {
       if (this.ACCORDIAN_DATA[0]?.length > 0) {
         this.accordiansDetails.push({
           name: this.productStaticData.accordian_list1_label,
-          data: (this.ACCORDIAN_DATA[0]).map(e => ({ name: e.title, link: e.friendlyUrl }) as AccordianDataItem),
+          data: (this.ACCORDIAN_DATA[0]).map(e => ({ name: e.title, link: this._commonService.isHindiPage(e) ? 'hi/' + e.friendlyUrl : e.friendlyUrl }) as AccordianDataItem),
           icon: 'icon-attribute'
         });
       }
     }
     if (categoryBucketRes && categoryBucketRes.length) {
+      categoryBucketRes.map(each => this._commonService.isHindiPage(each) ? each['link']='hi/' + each['link'] : each['link'])
       this.ACCORDIAN_DATA[1] = categoryBucketRes;
-
       // accordian data
       // console.log(this.accordiansDetails['name']);
       this.accordiansDetails.push({
@@ -81,7 +87,7 @@ export class ProductAccordiansComponent {
       if (this.ACCORDIAN_DATA[2]?.length > 0) {
         this.accordiansDetails.push({
           name: this.productStaticData.accordian_list2_label,
-          data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: e.categoryLink }) as AccordianDataItem),
+          data: (this.ACCORDIAN_DATA[2]).map(e => ({ name: e.categoryName, link: this._commonService.isHindiPage(e) ? 'hi/' + e.categoryLink : e.categoryLink }) as AccordianDataItem),
           icon: 'icon-categories'
         });
       }

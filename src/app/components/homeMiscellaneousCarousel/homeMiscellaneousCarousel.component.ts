@@ -21,7 +21,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   private readonly PAST_ORDER_TAB_NAME = 'Buy it Again';
   private readonly WISHLIST_TAB_NAME = 'Wishlist';
   private readonly RFQ_TAB_NAME = 'My RFQ';
-  private readonly FBT_TAB_NAME = 'Brought Together';
+  private readonly FBT_TAB_NAME = 'Bought Together';
 
 
   readonly cardFeaturesConfig: ProductCardFeature = {
@@ -47,6 +47,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
   @Input("analytics") analytics = null;
   @Input("headertext") headertext:string = "Your Activity";
   @Input("isQuickOrder") isQuickOrder:boolean = false;
+  @Input() msnListAtQuickOrder=[]
 
   tabsArray: { id: number, name: string, data: any[], isSelected: boolean }[] = [];
   sectionName: string = "Summary ";
@@ -58,7 +59,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     private _productService: ProductService,
     private _productBrowserService: ProductBrowserService,
     public _loaderService: GlobalLoaderService,
-    private _globalAnalyticsService: GlobalAnalyticsService
+    private _globalAnalyticsService: GlobalAnalyticsService,
   ) {
   }
 
@@ -68,7 +69,7 @@ export class HomeMiscellaneousCarouselComponent implements OnInit {
     this.moduleUsedIn = this.isQuickOrder ? "POPULAR_DEALS_QUICKORDER" : "POPULAR_DEALS_HOME"
     if (this.recentResponse && (this.recentResponse['statusCode'] === 200) && this.recentResponse['data'] && this.recentResponse['data'].length > 0) {
       let recentResponseData = []
-      recentResponseData = this.isQuickOrder ? (this.recentResponse['data'] as any []).map(product => this._productService.recentProductResponseToProductEntity(product)).filter(res=> (this._productService.isInStock(res) == true))
+      recentResponseData = this.isQuickOrder ? (this.recentResponse['data'] as any []).map(product => this._productService.recentProductResponseToProductEntity(product)).filter(res=> (this._productService.isInStock(res) == true && !this.msnListAtQuickOrder.includes(res.moglixPartNumber)))
       : (this.recentResponse['data'] as any []).slice(0, 10).map(product => this._productService.recentProductResponseToProductEntity(product));
 
       this.pushDataIntoTabsArray(1, this.RECENT_TAB_NAME, recentResponseData, false);

@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FooterService } from '@services/footer.service';
 import { CONSTANTS } from '@config/constants';
 import { ClientUtility } from '@utils/client.utility';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
 import { GlobalAnalyticsService } from '@services/global-analytics.service';
 import { ProductListService } from '@app/utils/services/productList.service';
@@ -55,6 +55,11 @@ export class AlpComponent implements OnInit {
     alpProductListingData = null;
     showPageNotFound: boolean;
     alpPriceListData = [];
+    isAcceptLanguage: boolean = false;
+    pageLinkName: string;
+    productStaticData = this._commonService.defaultLocaleValue;
+    changeStaticSubscription: Subscription = null;
+
 
     constructor(
         @Optional() @Inject(RESPONSE) private _response,
@@ -75,11 +80,26 @@ export class AlpComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.getLocalization();
         this.setCategoryDataFromResolver();
         if (this._commonService.isBrowser) {
             ClientUtility.scrollToTop(100);
         }
+        this.getStaticSubjectData();
     }
+
+    getLocalization() {
+        this._commonService.changeStaticJson.asObservable().subscribe(localization_content => {
+            this.productStaticData = localization_content;
+        });
+    }
+
+    getStaticSubjectData(){
+        this.changeStaticSubscription  = this._commonService.changeStaticJson.subscribe(staticJsonData => {
+          this.productStaticData = staticJsonData;
+        });
+      }
+
 
     setCategoryDataFromResolver() {
         this._commonService.showLoader = true;
@@ -111,6 +131,7 @@ export class AlpComponent implements OnInit {
             return;
         }
         let attributeListing = this.alpAttrListingData['data']['attributesListing'];
+        this.isAcceptLanguage = this.alpAttrListingData['data']['acceptLanguage'] && this.alpAttrListingData['data']['acceptLanguage'].length ? true : false;
         this.titleHeading = attributeListing['title']
         this.titleDescription=attributeListing['titleDescription'];
         this.pageDescription = attributeListing['pageDescription'];
@@ -284,8 +305,9 @@ export class AlpComponent implements OnInit {
                 this.taxo2 = this.alpCategoryCodeData.categoryDetails.taxonomy.split("/")[1] || '';
                 this.taxo3 = this.alpCategoryCodeData.categoryDetails.taxonomy.split("/")[2] || '';
             }
+            this.pageLinkName = "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing";
             let page = {
-                'pageName': "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing",
+                'pageName': this.pageLinkName,
                 'channel': "listing",
                 'subSection': "moglix:" + this.taxo1 + ":" + this.taxo2 + ":" + this.taxo3 + ": listing",
                 'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
@@ -391,7 +413,7 @@ export class AlpComponent implements OnInit {
                     productList.push({
                         "@type": "ListItem",
                         "position": index + 1,
-                        "url": CONSTANTS.PROD + '/' + product.productUrl,
+                        "url": !this.isHindiUrl ? CONSTANTS.PROD + '/' + product.productUrl : product.productUrl.includes('hi/') ? CONSTANTS.PROD + '/' + product.productUrl : CONSTANTS.PROD + '/hi/' + product.productUrl,
                         "name": product.productName,
                         "image": CONSTANTS.IMAGE_BASE_URL + product.mainImagePath
                     })
@@ -434,6 +456,29 @@ export class AlpComponent implements OnInit {
             // JIRA: ODP-1371
             // this.setAmpTag('alp');
         }
+        if(this.isAcceptLanguage && this._commonService.isServer) {
+            const languagelink = this._renderer2.createElement("link");
+            languagelink.rel = "alternate";
+            if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
+                languagelink.href = this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD +  '/hi' + currentRoute.toLowerCase();
+            } else {
+                languagelink.href = this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + '/hi' + currentRoute.toLowerCase(); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
+            }
+            // languagelink.href = CONSTANTS.PROD + this.isHindiUrl ? CONSTANTS.PROD + this._router.url : '/hi/' + this._router.url;
+            languagelink.hreflang = 'hi-in';
+            this._renderer2.appendChild(this._document.head, languagelink);
+    
+            const elanguagelink = this._renderer2.createElement("link");
+            elanguagelink.rel = "alternate";
+            if (this._activatedRoute.snapshot.queryParams.page == undefined || this._activatedRoute.snapshot.queryParams.page == 1) {
+                elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', '');
+            } else {
+                elanguagelink.href = !this.isHindiUrl ? CONSTANTS.PROD + currentRoute.toLowerCase() : CONSTANTS.PROD + currentRoute.toLowerCase().replace('/hi', ''); + "?page=" + this._activatedRoute.snapshot.queryParams.page;
+            }
+            elanguagelink.hreflang = 'en'
+            this._renderer2.appendChild(this._document.head, elanguagelink);            
+                this.isHindiUrl ? this._document.documentElement.setAttribute("lang", 'hi') : this._document.documentElement.setAttribute("lang", 'en');
+        }
 
         // Start Canonical URL
         const currentQueryParams = this._activatedRoute.snapshot.queryParams;
@@ -467,6 +512,10 @@ export class AlpComponent implements OnInit {
             links.href = CONSTANTS.PROD + currentRoute + '?page=' + (currentPageP - 1);
             this._renderer2.appendChild(this._document.head, links);
         }
+    }
+
+    get isHindiUrl() {
+        return (this._router.url).toLowerCase().indexOf('/hi') !== -1
     }
 
     getExtraCategoryData(data): Observable<{}> {

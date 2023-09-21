@@ -3,7 +3,7 @@
     <div class="price-table ">
         <h3 class="heading titleCategory" (click)="_commonService.scrollTo($event)"
             [appKpToggle]="{idName: 'openCat4' , iconMode : true}">
-            <span>Top Selling {{heading}} Price List in India</span>
+            <span>{{ productStaticData?.top_selling }} {{heading}} {{ productStaticData?.price_list_india }}</span>
         </h3>
     </div>
 
@@ -12,9 +12,9 @@
             <table style="width:100%">
                 <thead>
                     <tr>
-                        <th>Latest Models</th>
-                        <th>Price</th>
-                        <th>Discount</th>
+                        <th>{{ productStaticData?.latest_models }}</th>
+                        <th>{{ productStaticData?.price }}</th>
+                        <th>{{ productStaticData?.discount }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,7 +34,7 @@
                                 <ng-container
                                     *ngIf=" _commonService.calculcateDiscount(null, product.mrp, product.salesPrice ) > 0">
                                     {{ _commonService.calculcateDiscount(null, product.mrp, product.salesPrice ) |
-                                    number : '1.0-0'}}% off
+                                    number : '1.0-0'}}% {{ productStaticData?.off }}
                                 </ng-container>
                             </td>
                         </tr>
@@ -42,7 +42,7 @@
                 </tbody>
             </table>
         </div>
-        <span class="date-text">This data was last updated on {{ todayDate | date:'shortDate'}}.</span>
+        <span class="date-text">{{productStaticData?.data_last_updated_on}} {{ todayDate | date:'shortDate'}}.</span>
     </div>
 
 </div>

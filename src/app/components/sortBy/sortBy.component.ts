@@ -12,7 +12,7 @@ import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angu
 })
 
 export class SortByComponent {
-
+  @Input() productStaticData: any;
   @Output('toggleFilter') toggleFilter: EventEmitter<any> = new EventEmitter<any>();
   constructor(public _commonService: CommonService) {};
 

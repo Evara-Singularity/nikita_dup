@@ -2,19 +2,20 @@
     <div class="container-fluid pad-lr-0" [ngClass]="{'notFoundEl' : !brandDetailsFooterData?.iba }">
         <div id="openCat3" class="category_data" style="display: block;">
             <div class="container cms-content">
-                <div [innerHTML]="((brandDetailsFooterData?.brandCatDesc !== null && brandDetailsFooterData?.brandCatDesc !== '') ? brandDetailsFooterData?.brandCatDesc : (brandDetailsFooterData?.showDesc == true ? brandDetailsFooterData?.brandShortDesc : '<h2> Genuine Products from '+ brandDetailsFooterData?.brand + ' at the Best Prices Online at Moglix </h2>
-
-            <p> '+ brandDetailsFooterData?.brand + ' products are procured through reliable distributors and dealers in India and several other countries worldwide. We, at Moglix, offer more than
-            ' + brandDetailsFooterData?.productCount + ' products by '+ brandDetailsFooterData?.brand + ' that are listed on our online store. These are suitable for personal or commercial use in various industries, homes, businesses and offices. These listings have been properly curated and arranged in various product categories such as ' +   brandDetailsFooterData?.categoryNames + ' to provide easy navigation and seamless user experience.</p><br />
-            
-            <p>Moglix is one stop solution if you are looking online for best deals and offers on '+ brandDetailsFooterData?.brand + ' products. We also offer the option of bulk buying or wholesale prices on these products. Having a pan India presence including major cities like Delhi NCR, Mumbai, Chennai, Bengaluru, Kolkata, Chennai, Pune, Jaipur, Hyderabad, and Ahmedabad, Moglix provides timely doorstep delivery nation-wide.</p>
-            
-            ')) ">
+                <div
+                    [innerHTML]="((brandDetailsFooterData?.brandCatDesc !== null && brandDetailsFooterData?.brandCatDesc !== '') ? brandDetailsFooterData?.brandCatDesc : 
+                        (brandDetailsFooterData?.showDesc == true ? brandDetailsFooterData?.brandShortDesc :(_commonService.isHindiUrl)?'':
+                        ('<h2>' + productStaticData?.genuine_products_from + ' ' + brandDetailsFooterData?.brand + ' ' + productStaticData?.at_the_best_price + '</h2>' +
+                
+                            '<p> '+ brandDetailsFooterData?.brand + ' ' + productStaticData?.brand_desc + brandDetailsFooterData?.productCount + productStaticData?.products_by + brandDetailsFooterData?.brand + ' ' + productStaticData?.brand_desc2 + ' ' + brandDetailsFooterData?.categoryNames + ' ' + productStaticData?.brand_desc3 + '</p><br />
+                            
+                            <p>' + productStaticData?.brand_desc4 + ' ' + brandDetailsFooterData?.brand + productStaticData?.brand_desc5 +' </p>'))) ">
                 </div>
             </div>
         </div>
     </div>
-    <app-price-list-table *ngIf="brandDetailsFooterData?.productSearchResultSEO.length > 0 && brandDetailsFooterData?.heading"
+    <app-price-list-table [productStaticData]='productStaticData'
+        *ngIf="brandDetailsFooterData?.productSearchResultSEO.length > 0 && brandDetailsFooterData?.heading"
         [heading]="brandDetailsFooterData?.heading ? (brandDetailsFooterData?.heading | removeHTML) : brandDetailsFooterData?.brand"
         [priceListData]="brandDetailsFooterData.productSearchResultSEO">
     </app-price-list-table>

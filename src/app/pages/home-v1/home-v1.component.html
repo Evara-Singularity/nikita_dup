@@ -46,9 +46,8 @@
             <div class="pwa-col-12 category-grid-container mb-15">
                 <h3 class="heading-2-16">Category Stores</h3>
                 <div class="pwa-row pwa-row-noPad pad-tb-0 row-gutter-space">
-                    <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card pwa-col-4"
-                        [routerLink]="item.category_url">
-                        <a>
+                    <div *ngFor="let item of clustorCategories| slice:0:5" class="category-grid-card pwa-col-4">
+                        <a href="/{{item.category_url}}">
                             <img alt={{item.CategoryName}}
                             [defaultImage]="defaultImage" [lazyLoad]="clusterimagePath + 'img/cluster/'+item.category_image"
                              width="97" height="65">
@@ -82,7 +81,7 @@
         </div>
 
         <!--homeMiscellaneousCarousel ( Buy it again, Recently Viewed, wishlist & my RFQ section)-->
-        <section *ngIf="isUserLoggedIn" class="popular-Deals-section" id="popularDeals" data-observeVisibility [debounceTime]="100" (visible)="callHomePageWidgetsApis()">
+        <section *ngIf="isUserLoggedIn" class="popular-Deals-Section" id="popularDeals" data-observeVisibility [debounceTime]="100" (visible)="callHomePageWidgetsApis()">
             <ng-container #homeMiscellaneousCarousel></ng-container>
             <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="homeMiscellaneousCarouselInstance"></home-page-skeletons>
         </section>      
@@ -94,7 +93,7 @@
 
         <!-- feature arrival banner  -->
         <ng-container *ngIf="featureArrivalData && featureArrivalData.length>0">
-            <div class="featr_arrival pwa-col-12 pad-lr-15">
+            <div style="width:100%">
                 <home-feature-arrivals [defaultImage]="defaultImage" [featureArrivalData]="featureArrivalData"
                     [imagePath]="imagePath"></home-feature-arrivals>
             </div>

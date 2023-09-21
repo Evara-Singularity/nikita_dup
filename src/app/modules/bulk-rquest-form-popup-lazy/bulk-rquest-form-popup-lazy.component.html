@@ -2,15 +2,15 @@
     <div class="load-bulk-rfq-inner pad-15 br-8">
         <div class="buy-with-gst">
             <div class="bwg-txt">
-                <h2>Buy with GST for Business in Bulk</h2>
-                <p class="mt-5 mb-10">Get customised & best price</p>
+                <h2>{{ productStaticData?.buy_with_gst_for_business_in_bulk }}</h2>
+                <p class="mt-5 mb-10">{{ productStaticData?.get_customised_best_price }}</p>
             </div>
             <div class="bwg-img">
                 <img src="assets/img/rfq-phase2.png" alt="">
             </div>
             
         </div>
-        <button (click)="loadBulkRFQ()" class="btn continue-btn br-8 mt-5">RAISE REQUEST</button>
+        <button (click)="loadBulkRFQ()" class="btn continue-btn br-8 mt-5">{{ productStaticData?.raise_request }}</button>
     </div>
 </div>
 <ng-container #bulkRfqForm></ng-container>

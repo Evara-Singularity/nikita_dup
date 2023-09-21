@@ -91,7 +91,7 @@ export class ProductInfoComponent implements OnInit
     open360Popup:boolean = false;
     showPocMsn:boolean = false;
     for3dPopup: boolean = false;
-
+    @Input() pageLinkName: string = ''
 
     constructor(
         private globalAnalyticService: GlobalAnalyticsService,

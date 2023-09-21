@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Input, ElementRef, Pipe, PipeTransform } from '@angular/core';
+import { Component, ViewEncapsulation, Input, ElementRef, Pipe, PipeTransform, ViewChild, ViewContainerRef, Injector, ComponentFactoryResolver } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { CreditCardValidator } from "ng2-cc-library";
 import { LocalStorageService } from 'ngx-webstorage';
@@ -18,7 +18,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription, of } from 'rxjs';
 import { DataService } from '@app/utils/services/data.service';
 import { SortByEMIMonthsPipe } from '@app/utils/pipes/emiSort.pipe';
-
 @Component({
     selector: 'emi',
     templateUrl: './emi.html',
@@ -79,6 +78,9 @@ export class EmiComponent {
     offerKey: string = null;
     cartSession: any = null;
     clearBankDiscount: boolean = true;
+    bottomSheetInstance = null;
+    @ViewChild('bottomSheet', { read: ViewContainerRef })
+    bottomSheetContainerRef: ViewContainerRef;
 
     set isShowLoader(value) {
         this.loaderService.setLoaderState(value);
@@ -99,10 +101,12 @@ export class EmiComponent {
         private _bankNamePipe: BankNamePipe, 
         private _analytics: GlobalAnalyticsService,
         private _dataService: DataService,
+        private injector: Injector,
+        private cfr: ComponentFactoryResolver
     ) {
+        this.createYrsOptions();
         this.initForm();
         this.fetchInitialEmiData();
-        this.createYrsOptions();
     }
 
     private createYrsOptions() {
@@ -157,7 +161,7 @@ export class EmiComponent {
 
     private initForm() {
         this.emiForm = this._formBuilder.group({
-            "store_card": [false],
+            "store_card": [true],
             "mode": ['EMI', []],
             "requestParams": this._formBuilder.group({
                 "ccexpyr": ['', [Validators.required]],
@@ -871,6 +875,26 @@ export class EmiComponent {
                 return of({status: false, statusCode: res.status});
             })
         );
+    }
+
+    async initiateRbiGuidlinesPopUp()
+    {
+        if (!this.bottomSheetInstance) {
+            const { RbiGuidelinesBottomSheetComponent } = await import(
+                './../../../components/rbi-guidelines-bottom-sheet/rbi-guidelines-bottom-sheet.component'
+            );
+            const factory = this.cfr.resolveComponentFactory(RbiGuidelinesBottomSheetComponent);
+            this.bottomSheetInstance = this.bottomSheetContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.bottomSheetInstance.instance['bm'] = true;
+
+        } else {
+            //toggle
+            this.bottomSheetInstance.instance['bm'] = !(this.bottomSheetInstance.instance['bm']);
+        }
     }
 
 }

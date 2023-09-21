@@ -40,7 +40,7 @@ export class ProductOffersComponent implements OnInit
     couponForbrandCategoryDiscount: any;
     isCouponCopied=false;
     copiedCouponSubscription: Subscription 
-
+    changeStaticSubscription: Subscription = null;
     constructor(
         public localStorageService: LocalStorageService,
         private common: CommonService,
@@ -49,13 +49,18 @@ export class ProductOffersComponent implements OnInit
     ) { }
 
     ngOnInit(): void {
-      this.common.changeStaticJson.subscribe(staticJsonData => {
+      this.changeStaticSubscription = this.common.changeStaticJson.subscribe(staticJsonData => {
         this.common.defaultLocaleValue = staticJsonData;
         this.productStaticData = staticJsonData;
         this.cdr.detectChanges();
       });
     }
 
+    ngOnDestroy() {
+      if(this.changeStaticSubscription) {
+        this.changeStaticSubscription.unsubscribe();
+      }
+    }
   ngAfterViewInit() {
     this.couponOnPDPBrandCategory(this.couponForbrandCategory);
     if (this.common.isBrowser) {

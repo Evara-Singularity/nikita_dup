@@ -145,7 +145,7 @@
         <product-skeletons [type]="'SPONSERED'" [templateRefInstance]="sponseredProductsInstance"></product-skeletons>
     </div> -->
 
-    <section id="popularDeals" class="common-product" *ngIf="!productOutOfStock && bestProductsRes?.totalCount > 0">
+    <section id="popularDeals"  style="background-color: #efeff4;" *ngIf="!productOutOfStock && bestProductsRes?.totalCount > 0">
         <product-popular-deals [outOfStock]='productOutOfStock' [apiResponse]='bestProductsRes'
             [analytics]='dealsAnalytics'></product-popular-deals>
     </section>

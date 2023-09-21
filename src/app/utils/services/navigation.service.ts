@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
+import { BehaviorSubject } from 'rxjs';
 import { ProductService } from './product.service';
 
 @Injectable({ providedIn: 'root' })
@@ -14,6 +15,16 @@ export class NavigationService
   moduleName = null;
   pdpBreadCrumbData = [];
   popUpState: boolean = false;
+  private isBackClickedQuickOrderSubject = new BehaviorSubject<boolean>(false);
+  isBackClickedQuickOrder$=this.isBackClickedQuickOrderSubject.asObservable();
+  private isCancelIconClickedQuickOrderSubject = new BehaviorSubject<boolean>(true);
+  isCancelIconQuickOrderClicked$ = this.isCancelIconClickedQuickOrderSubject.asObservable();
+
+  private isBackClickedPaymentSubject = new BehaviorSubject<boolean>(true);
+  isBackClickedPayment$=this.isBackClickedPaymentSubject.asObservable();
+  private isCancelIconClickedPaymentSubject = new BehaviorSubject<boolean>(true);
+  isCancelIconPaymentClicked$ = this.isCancelIconClickedPaymentSubject.asObservable();
+
 
   constructor(private router: Router, private _localStorage: LocalStorageService, private productService: ProductService)
   {
@@ -54,6 +65,22 @@ export class NavigationService
         }
       }
     })
+  }
+
+  setBackClickedQuickOrder(value: boolean) {
+    this.isBackClickedQuickOrderSubject.next(value);
+  }
+
+  setCancelIconQuickOrderClicked(value: boolean) {
+    this.isCancelIconClickedQuickOrderSubject.next(value);
+  }
+
+  setBackClickedPayment(value: boolean) {
+    this.isBackClickedPaymentSubject.next(value);
+  }
+
+  setCancelIconPaymentClicked(value: boolean) {
+    this.isCancelIconClickedPaymentSubject.next(value);
   }
 
   //in case of login flow no need to pop from history

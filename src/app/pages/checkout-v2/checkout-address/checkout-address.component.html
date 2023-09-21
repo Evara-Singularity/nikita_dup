@@ -3,11 +3,12 @@
     <cart-notifications (viewUnavailableItems$)="viewUnavailableItemsFromNotifacions($event)"> </cart-notifications>
     <ng-container>
         <section>
-            <div class="floating-promo">
+            <div class="floating-promo" *ngIf="is_cod_section == 1"> 
                 <prepaid-offer-checkout></prepaid-offer-checkout>
             </div>
             <div class="fixed-bottom-cta pad-0">
-            <div *ngIf="isUserLoggedIn else hideContinue" class="payment-strip">
+            <cod-and-pay-online *ngIf="is_cod_section == 2" [payableAmount]="payableAmount" (continueToPayment$)="continueToPayment$()" [deliveryAddress]="deliveryAddress" [billingAddress]="billingAddress" [invoiceType]="this.invoiceType" class="w-full bg-light-gray"></cod-and-pay-online>
+            <div *ngIf="is_cod_section == 1 && isUserLoggedIn else hideContinue" class="payment-strip">
                 <div class="amount-left-section">
                     <span class="payable-amnt">Amount&nbsp;Payable
                         <span (click)="scrollPaymentSummary();">
@@ -43,7 +44,7 @@
             (emitDeliveryAddressSelectEvent$)="handleDeliveryAddressEvent($event)"
             (emitBillingAddressSelectEvent$)="handleBillingAddressEvent($event)"
             (emitInvoiceTypeEvent$)="handleInvoiceTypeEvent($event)"></all-addresses>
-        <all-promocode-v1></all-promocode-v1>    
+        <all-promocode-v1 [moduleUsedIn]="moduleUsedIn"></all-promocode-v1>    
         <cart [moduleName]="'CHECKOUT'" (openSimillarList$)="openSimillarProductsPopUp($event)"></cart>
         <order-summary></order-summary>
         <generic-offers></generic-offers>

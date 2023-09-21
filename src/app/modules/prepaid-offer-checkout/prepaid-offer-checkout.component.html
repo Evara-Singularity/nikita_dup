@@ -1,6 +1,6 @@
 <p *ngIf="_cartService.totalPrepaidSaving>0 && displayMode == 'FLOATING' && !bankDiscountAmount" class="discount-offer">
     <span class="large-text">
-        Pay online & save EXTRA {{_cartService.totalPrepaidSaving | currency:'INR' : 'symbol' : '1.0-0'}} OFF
+        Save {{_cartService.totalPrepaidSaving | currency:'INR' : 'symbol' : '1.0-0'}}  instantly with online payment.
     </span>
     <br />
     <span class="small-text">
@@ -8,7 +8,7 @@
     </span>
 </p>
 <p class="small-text-v2" *ngIf="_cartService.totalPrepaidSaving>0 && displayMode == 'LABEL' && !bankDiscountAmount ">
-    You are saving {{_cartService.totalPrepaidSaving | currency:'INR' : 'symbol' : '1.0-0'}} with {{displayText}}.
+    You are saving {{_cartService.totalPrepaidSaving | currency:'INR' : 'symbol' : '1.0-0'}} extra with {{displayText}}.
 </p>
 <p *ngIf="displayMode == 'LABEL' &&  bankDiscountAmount" class="small-text-v2 offer-info-section">
     You are eligible for ₹{{bankDiscountAmount}} instant discount. <i class="icon-information info-icon"

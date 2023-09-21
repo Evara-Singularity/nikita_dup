@@ -7,6 +7,7 @@ import { CommonService } from '@app/utils/services/common.service';
 import { YTThumnailPipeModule } from '../../utils/pipes/ytthumbnail.pipe';
 import { ObjectToArrayPipeModule } from '../../utils/pipes/object-to-array.pipe';
 import { BrandLinkMapping } from '@app/utils/brandLinkMapping';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'product-feature-details',
@@ -32,7 +33,7 @@ export class ProductFeatureDetailsComponent implements OnInit {
   @Output() handleProductInfoPopup$: EventEmitter<any> = new EventEmitter<any>();
   @Output() showYTVideo$: EventEmitter<any> = new EventEmitter<any>();
   @Input() applyExtraMargin : boolean = true;
-
+  changeStaticSubscription: Subscription = null;
   constructor( private router: Router, public commonService: CommonService) { }
 
   ngOnInit(): void {
@@ -44,9 +45,15 @@ export class ProductFeatureDetailsComponent implements OnInit {
   }
   
   getStaticSubjectData(){
-    this.commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription  = this.commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
     });
+  }
+
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
   }
 
   handleProductInfoPopup(infoType, cta) {
@@ -66,8 +73,21 @@ export class ProductFeatureDetailsComponent implements OnInit {
     if (brandDetails == undefined) {
       return [];
     }
+    let baseUrl = '/brands/';
+    if(this.commonService.isHindiPage(brandDetails)) {
+      baseUrl = '/hi' + baseUrl;
+    }
     let d = brandDetails["friendlyUrl"];
-    return ["/brands/" + d.toLowerCase()];
+    return [baseUrl + d.toLowerCase()];
+  }
+
+  getCategoryLink(categoryDetails = null) {
+    console.log(categoryDetails)
+    if(categoryDetails == undefined || categoryDetails == null) { return ''};
+      if(categoryDetails && categoryDetails['acceptLanguage'] && categoryDetails['acceptLanguage'].length) {
+        return 'hi/' + categoryDetails['storeLink'];
+      }
+      return categoryDetails['storeLink'];
   }
 
 

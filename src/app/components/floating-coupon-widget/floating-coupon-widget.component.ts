@@ -26,7 +26,7 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
   isCouponCopied=false;
   copiedCouponSubscription: Subscription; 
   copiedCoupon: string = '';
-
+  changeStaticSubscription: Subscription = null;
   constructor(
     public _cartService: CartService,
     public _commonService: CommonService,
@@ -38,7 +38,7 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
   }
   
   getStaticSubjectData(){
-    this._commonService.changeStaticJson.subscribe(staticJsonData => {
+    this.changeStaticSubscription = this._commonService.changeStaticJson.subscribe(staticJsonData => {
       this.productStaticData = staticJsonData;
     });
   }
@@ -58,6 +58,12 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
     }
   }
 
+  ngOnDestroy() {
+    if(this.changeStaticSubscription) {
+      this.changeStaticSubscription.unsubscribe();
+    }
+  }
+
 
   copyCouponTextArea() {
     this.isCouponCopied = true
@@ -74,6 +80,11 @@ export class FloatingCouponWidgetComponent implements OnInit, AfterViewInit {
     document.execCommand('copy');
     document.body.removeChild(textarea);
     this._commonService.updateCopiedCoupon(text);
+  }
+
+  setAdobeDataTracking() {
+    this._analytics.sendAdobeCall({page: {channel: 'pdp',linkPageName: this.pageLinkName,linkName: 'Price Overlay Closed'}},"genericClick");
+    this.closeproductDiscInfoComponent$.emit(false);
   }
   
 }

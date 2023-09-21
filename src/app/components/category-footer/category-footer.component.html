@@ -5,7 +5,7 @@
         [innerHTML]="categoryFooterData?.getRelatedCatgory?.categoryDetails?.desc"></div>
 
     <ng-template #noCategoryDesc>
-        <div class="seo-data-box">
+        <div class="seo-data-box" *ngIf="!_commonService.isHindiUrl">
             <div *ngIf="categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0"
                 class="container">
                 <h2 class="heading" (click)="_commonService.scrollTo($event)"
@@ -35,7 +35,7 @@
            [ngClass]="{'hide': !(categoryFooterData?.productSearchResult && categoryFooterData?.productSearchResult['products'].length>0)}">
             <div class="pwa-row pad-tb-5">
             <h3  class="heading-2 faq-accordian" [appKpToggle]="{idName: 'openFaq', iconMode : true}" (click)="_commonService.scrollTo($event);"> 
-                <span>Frequently Asked Questions about {{categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName}}</span>
+                <span>{{ productStaticData?.faq_category.replace('___category___', categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName) }}</span>
                 <span class="iconaccordian">
                     <i class="icon-down"></i>
                 </span>
@@ -54,7 +54,7 @@
         [heading]="categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName"
         [priceListData]="categoryFooterData.productSearchResultSEO">
     </app-price-list-table>
-    <app-price-range-table *ngIf="categoryFooterData?.PRTA?.length>0 && categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName"
+    <app-price-range-table [productStaticData]='productStaticData' *ngIf="categoryFooterData?.PRTA?.length>0 && categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName"
         [heading]="categoryFooterData?.getRelatedCatgory?.categoryDetails?.categoryName"
         [priceRangeData]="categoryFooterData">
     </app-price-range-table>

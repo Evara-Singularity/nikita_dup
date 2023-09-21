@@ -62,10 +62,13 @@
                     </div>
                 </div>
             </div>
-            <div class="warranty-policy" *ngIf='isBrandMsn'>
-                <h4>Customer Warranty Policy</h4>
-                <div class="warranty-info"><p>The warranty is at the discretion of brand. On-site and off-site warranty shall be confirmed by brand only.</p></div>
-                <div class="warranty-info"><p>In case the product is received in Defective/Missing condition, the customer needs to connect the brand.</p></div>
+            <div class="warranty-policy">
+                <div class="warranty-info"><p>Return/Replacement request will be verified by Moglix. Customer have to submit the proof of issue.</p></div>
+                <div class="warranty-info"><p>Please note that brand assistance for device and other issues is subject to brand warranty guidelines and service policies. Kindly contact the nearest authorized service center for further details.</p></div>
+                <div class="warranty-info"><p>During on-call support, you may be prompted to download a diagnostic app or upload an image for verification or need to connect with Brand directly . Depending on your location, further inspection may be done either at your doorstep or at nearest brand service centre. Final resolution may take up to 7 days.</p></div>
+                <div class="warranty-info"><p>Return or replacement is only applicable if the Brand issues a DOA certificate or if the part is unavailable for repair/replacement. Otherwise, it may not be applicable.</p></div>
+                <div class="warranty-info"><p>For products without a warranty, customer needs to contact the Brand for warranty services, which may or may not be chargeable.</p></div>
+
                 <!-- <div class="warranty-info"><p>Call the brand at <a href="tel:9898989898" class="linktxt"> +91 9898989898</a> or mail at <a href="mailto:brandxyz@gmail.com" class="linktxt">brandxyz@gmail.com</a>.</p></div> -->
             </div>
             <div class="read-full-cta" (click)='navigateToFAQ$.emit();$event.stopPropagation()'>

@@ -102,7 +102,7 @@ export class ClusterStoreComponent implements OnInit {
 	ngOnInit() {
 		this._activatedRoute.data.subscribe((rawData) => {
 			let response = rawData['clusterStoreData'];
-			if(!response['data'][0]){
+			if(!response?.['data']?.[0]){
 				this.pageNotFound=true;
 			}
 			if (

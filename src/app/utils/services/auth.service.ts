@@ -109,10 +109,7 @@ export class LocalAuthService
     }
  
     IsUserGoldMember(){
-        if(this.getUserSession()){
-            return (this.getUserSession()).customerCategory; 
-        }else
-            return false;
+        return true;
          
     }
 

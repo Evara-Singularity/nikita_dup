@@ -4,7 +4,6 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CONSTANTS } from '@app/config/constants';
 import { LocalAuthService } from '@app/utils/services/auth.service';
 import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.service';
-import { NavigationService } from '@app/utils/services/navigation.service';
 import { ToastMessageService } from '@modules/toastMessage/toast-message.service';
 import { GlobalState } from '@utils/global.state';
 import { ObjectToArray } from '@utils/pipes/object-to-array.pipe';
@@ -34,11 +33,9 @@ export class CartComponent implements OnInit, AfterViewInit
     pageEvent = "genericPageLoad";
     cartSession = null;
     noOfCartItems = 0;
-    private popStateListener;
     @Input() moduleName: 'CHECKOUT' | 'QUICKORDER' = 'QUICKORDER';
     @Output() openWishList$:EventEmitter<any> = new EventEmitter<any>();
     @Output() openSimillarList$:EventEmitter<any> = new EventEmitter<any>();
-    @Output() continueFrombackPopup$:EventEmitter<any> = new EventEmitter<any>();
 
     
     //cartAddproduct var
@@ -50,14 +47,6 @@ export class CartComponent implements OnInit, AfterViewInit
     totalPayableAmountWithoutPrepaid:number=0;
     cartUpdatesSubscription: Subscription = null;
 
-    backButtonClickQuickOrderSubscription: Subscription;
-    isBackClicked: boolean=false; 
-    private cancelIconClickedSubscription: Subscription;
-    public isCancelIconClicked: boolean=true; 
-    isBrowser = false;
-    this_product_is=CONSTANTS.this_product_is
-    these_product_are=CONSTANTS.these_product_are
-
 
     constructor(
         public _state: GlobalState, public meta: Meta, public pageTitle: Title,
@@ -68,36 +57,12 @@ export class CartComponent implements OnInit, AfterViewInit
         private _globalAnalyticsService: GlobalAnalyticsService,
         public _localAuthService: LocalAuthService,
         private cfr: ComponentFactoryResolver,
-        private injector: Injector,
-        private _navigationService: NavigationService
-
-    ) {     this.isBrowser = _commonService.isBrowser
-    }
+        private injector: Injector
+    ){}
 
     ngOnInit() {
-        this._navigationService.setBackClickedQuickOrder(false)
-        this._navigationService.setCancelIconQuickOrderClicked(true);
-
-        this.backButtonClickQuickOrderSubscription = this._navigationService.isBackClickedQuickOrder$.subscribe(
-          value => {
-            this.isBackClicked = value;
-          }
-        );
-        this.cancelIconClickedSubscription = this._navigationService.isCancelIconQuickOrderClicked$.subscribe(
-            value => {
-              this.isCancelIconClicked = value;
-            }
-          );
-        if (this.isBrowser && this.moduleName=='QUICKORDER') {
-            this.backUrlNavigationHandler();        
-        }
-
       }
 
-    closebackpopup(){
-        this._navigationService.setBackClickedQuickOrder(false)
-        this._navigationService.setCancelIconQuickOrderClicked(false);
-    }
     ngAfterViewInit(): void {
         if (this._commonService.isBrowser) {
             this._commonService.updateUserSession();
@@ -107,25 +72,10 @@ export class CartComponent implements OnInit, AfterViewInit
         }
     }
 
-    backUrlNavigationHandler() {
-        window.history.pushState(null, "", window.location.href);        
-        this.popStateListener = (event) => {
-          this.backButtonClickQuickOrderSubscription = this._navigationService.isBackClickedQuickOrder$.subscribe(
-            value => {
-              this.isBackClicked = true;
-            }
-          ); 
-        };
-        window.addEventListener('popstate', this.popStateListener, { once: true });
-      }
-
     ngOnDestroy() {
         if (this.cartSubscription) this.cartSubscription.unsubscribe();
         if (this.shippingSubscription) this.shippingSubscription.unsubscribe();
         if (this.cartUpdatesSubscription) this.cartUpdatesSubscription.unsubscribe();
-        if (this.backButtonClickQuickOrderSubscription) this.backButtonClickQuickOrderSubscription.unsubscribe();
-        if (this.cancelIconClickedSubscription) this.cancelIconClickedSubscription.unsubscribe();
-        window.removeEventListener('popstate', this.popStateListener);
     }
     
     openWishList(){
@@ -644,38 +594,6 @@ export class CartComponent implements OnInit, AfterViewInit
               };
             this._router.navigate(['/login'], navigationExtras);
         }
-    }
-
-    backFromBackPopup(){
-        this.isBackClicked=false;  
-        this._cartService.lastPaymentMode = null;
-		this._cartService.lastParentOrderId = null;
-		this._cartService.invoiceType = null;
-		this._cartService.shippingAddress = null;
-		this._cartService.billingAddress = null;
-        this._navigationService.goBack();
-        this.leaveButtonClickAdobeTracking('Tracking')
-
-    }   
-    leaveButtonClickAdobeTracking(trackingName){
-        const page = {
-            'linkPageName': "moglix:cart",
-           'linkName': 'cart:leave',
-          }
-        let data = {}
-        data["page"] = page;
-        data["custData"] = this._commonService.custDataTracking;
-        this._globalAnalyticsService.sendAdobeCall(data, trackingName); 
-      }
-    nudgePopupContinueButtonClickAdobeTracking(trackingName){
-        const page = {
-           'linkPageName': "moglix:cart",
-           'linkName': 'cart:continue',
-          }
-        let data = {}
-        data["page"] = page;
-        data["custData"] = this._commonService.custDataTracking;
-        this._globalAnalyticsService.sendAdobeCall(data, trackingName); 
     }
     
 }

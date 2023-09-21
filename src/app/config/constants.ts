@@ -713,7 +713,5 @@ export const CONSTANTS = {
   // HOME_CATEGORY_COLOR6:'#E4D8D5',
   // HOME_CATEGORY_COLOR7:'#D2DDDF',
   POC_MSN : 'msn2vvrozzffc9',
-  these_product_are:'These products are',
-  this_product_is:'This product is'
 };
 export default CONSTANTS;

@@ -67,4 +67,20 @@ export class OrderConfirmationService
             return null;
         }));
     }
+
+    checkCookie(name) {
+        // Split all cookies into an array
+        const cookies = document.cookie.split(';');
+        // Iterate through the array of cookies
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Check if this cookie starts with the desired name
+          if (cookie.indexOf(name + '=') === 0) {
+            // Cookie with the specified name found
+            return true;
+          }
+        }
+        // Cookie with the specified name not found
+        return false;
+      }      
 }

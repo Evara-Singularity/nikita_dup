@@ -1,5 +1,5 @@
 import { GlobalSessionStorageService } from './../../utils/services/global-session-storage.service';
-import { Component, OnInit, ComponentFactoryResolver, Injector, ViewChild, ViewContainerRef, EventEmitter } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, Injector, ViewChild, ViewContainerRef, EventEmitter, ElementRef, Renderer2 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocalStorageService } from 'ngx-webstorage';
 import { OrderConfirmationService } from './orderConfirmation.service';
@@ -49,6 +49,39 @@ export class OrderConfirmationComponent implements OnInit {
     // ondemand loaded components for app Promo
     appPromoInstance = null;
     @ViewChild('appPromo', { read: ViewContainerRef }) appPromoContainerRef: ViewContainerRef;
+    @ViewChild('iframeContainer', { static: true }) iframeContainer: ElementRef;
+    iframeSources = [
+        {
+            type: 'iframe',
+            src: 'https://track.vcommission.com/pixel?adid=64743f8fdf12f84ed101e3ef&sub1={{TransactionID}}&sub2=&sale_amount={{OrderRevenue}}&currency=INR',
+            cookieCheck: false
+        },
+        {
+            type: 'iframe',
+            src: 'https://track.clickonik.com/pixel?adid=648998bbf1cf554c307985cf&sale_amount={{OrderRevenue}}&sub1={{TransactionID}}',
+            cookieCheck: false
+        },
+        {
+            type: 'iframe',
+            src: 'https://rainmaker49.gotrackier.com/pixel?adid=64805ed8407577334745ece2&txn_id={{TransactionID}}&sale_amount={{OrderRevenue}}',
+            cookieCheck: false
+        },
+        {
+            type: 'iframe',
+            src: 'https://tracking.primedigital.in/aff_l?offer_id=11383&adv_sub={{TransactionID}}&amount={{OrderRevenue}}',
+            cookieCheck: false
+        },
+        {
+            type: 'iframe',
+            src: 'https://conv.trackaw.com/tracking/conversion/192745?country=India&partner_trans_id={{TransactionID}}&os_version=android&event_type=event name/goal name&order_id={{TransactionID}}&order_value={{OrderRevenue}}',
+            cookieCheck: true,
+            cookie: 'zoutons'
+        },
+        {
+            type: 'script',
+            src: 'https://pixiloom.com/veion/starerthi/jari/othRtre.js'
+        }
+    ]
 
     constructor(
         private localStorageService: LocalStorageService,
@@ -68,6 +101,7 @@ export class OrderConfirmationComponent implements OnInit {
         private _globalSessionService:GlobalSessionStorageService,
         private globalAnalyticsService: GlobalAnalyticsService,
         private _urlsService: UrlsService,
+        private renderer: Renderer2
         ) {
         this.isServer = _commonService.isServer;
         this.isBrowser = _commonService.isBrowser;
@@ -89,6 +123,39 @@ export class OrderConfirmationComponent implements OnInit {
         // console.log(log);
         this.checkUserSessionAndValidateOrder(userSession, utm_medium);
         this.getItemsCount(userSession);
+        this.insertIframes();
+    }
+
+    insertIframes() {
+        if(this.orderId && this.amount) {
+            console.log(this.orderId, this.amount)
+            this.iframeSources.forEach((each) => {
+                each['src'] = each['src'].replace('{{TransactionID}}', this.orderId)
+                each['src'] = each['src'].replace('{{OrderRevenue}}', this.amount)
+                if(each['type'] == 'iframe' && !each['cookieCheck']) {
+                    this.loadIframe(each['src']);
+                } else if(each['type'] == 'iframe' && each['cookieCheck']) {
+                    if(this._orderConfrimationService.checkCookie(each['cookie'])) {
+                        this.loadIframe(each['src']);
+                    }
+                } else if(each['type'] == 'script') {
+                    this.loadScript(each['src'])
+                }
+            })
+        }
+    };
+
+    loadIframe(src) {
+        const iframe = this.renderer.createElement('iframe');
+        this.renderer.setAttribute(iframe, 'src', src);
+        this.renderer.appendChild(this.iframeContainer.nativeElement, iframe);
+    }
+
+    loadScript(url) {
+        const script = document.createElement('script');
+        script.src = url;
+        script.type = 'text/javascript';
+        document.head.appendChild(script);
     }
 
     checkUserSessionAndValidateOrder(userSession, utm_medium){

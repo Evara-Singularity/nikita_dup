@@ -71,8 +71,8 @@ export class CodAndPayOnlineComponent {
       postCode: _postCode,
       userId: _userId,
     };
-    this.quickCodService.initiateQuickCOD(validateDtoRequest);
     this.adobeTracking("checkout:COD");
+    this.quickCodService.initiateQuickCOD(validateDtoRequest);
   }
 
   getBuyNow() {
@@ -84,19 +84,20 @@ export class CodAndPayOnlineComponent {
   }
 
   continueToPayment() {
-    this.continueToPayment$.emit(true);
     this.adobeTracking("checkout:payonline");
+    this.continueToPayment$.emit(true);
   }
 
   adobeTracking(trackingname) {
     const page = {
       linkPageName: "moglix:checkout",
       linkName: trackingname,
+      channel: "checkout"
     };
     let data = {};
     data["page"] = page;
     data["custData"] = this._commonService.custDataTracking;
-    this._analytics.sendAdobeCall(data, trackingname);
+    this._analytics.sendAdobeCall(data, 'genericClick');
   }
 }
 

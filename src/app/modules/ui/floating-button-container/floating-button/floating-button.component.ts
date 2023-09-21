@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { CommonService } from '@app/utils/services/common.service'
 @Component({
   selector: 'floating-button',
   templateUrl: './floating-button.component.html',
@@ -11,15 +12,50 @@ export class FloatingButtonComponent implements OnInit {
   @Input() isMultiple = true;
   @Input() label: string = 'Button';
   @Input() iconClass: string;
+  @Input() isPdpMainProduct: boolean=false;
   @Output() onClick: EventEmitter<any> = new EventEmitter<any>();
+  @Input() displayAddToCartAnimation: boolean=false;
+  lotteieInfo:boolean= false;
 
-  constructor() { }
+  constructor(
+    private commonService:CommonService
+  ) { }
 
   ngOnInit(): void {
   }
 
   onClickButton() {
-    this.onClick.emit();
+    this.onClick.emit(this.lotteieInfo);
+    if (this.isPdpMainProduct && !this.displayAddToCartAnimation && !this.lotteieInfo ) {
+      this.displayAddToCartAnimation=true;
+      this.lotteieInfo=true
+    }
   }
+  
 
+  addLottieScript(){
+		this.commonService.addLottieScriptSubject.subscribe(lottieInstance => {
+			this.commonService.callLottieScript();
+			lottieInstance.next();
+		});
+	}
+  ngAfterViewInit(){
+    this.commonService.callLottieScript();
+    this.addLottieScript();
+    this.commonService.setBodyScroll(null, false);
+  }
 }
+
+// @NgModule({
+//   declarations: [
+//     FloatingButtonComponent
+//   ],
+//   imports: [
+//     CommonModule,
+//     MockLottiePlayerModule
+//   ],
+//   exports:[
+//     FloatingButtonComponent
+//   ]
+// })
+// export class FloatingButtonModule { }

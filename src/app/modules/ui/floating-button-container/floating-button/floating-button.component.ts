@@ -15,6 +15,7 @@ export class FloatingButtonComponent implements OnInit {
   @Input() isPdpMainProduct: boolean=false;
   @Output() onClick: EventEmitter<any> = new EventEmitter<any>();
   @Input() displayAddToCartAnimation: boolean=false;
+  @Input() isHindiMode:boolean=false
   lotteieInfo:boolean= false;
 
   constructor(

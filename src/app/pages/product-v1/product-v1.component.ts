@@ -757,22 +757,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 } else {
                     resObj['productCountRes'] = null;
                 }
-                let url = '?msn=' + this.rawProductData.defaultPartNumber;
-                if(this.user && this.user['authenticated'] == 'true') {
-                    url += `&userId=${this.user.userId}`
-                }
-                if(this.user && this.user['authenticated'] == 'true') {
-                    return this.productService.getAllPromoCodeOffers(url);
-                } else {
-                    return of({status: false});
-                }
-            }),
-            mergeMap(promoResponse => {
-                if(promoResponse && promoResponse['status']) {
-                    resObj['totalCoupons'] = promoResponse['applicablePromoCodeList'].length || 0;
-                } else {
-                    resObj['totalCoupons'] = 0;
-                }
                 return this.productService.getFBTProducts(this.rawProductData.defaultPartNumber);
             }),
             mergeMap(fbtRes => {
@@ -818,11 +802,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     processClinetResponse(res) {
-        if(this.user && this.user.authenticated == 'true' && this.apiResponse.applicablePromo) {
-            this.apiResponse.applicablePromo['totalCoupons'] = res['totalCoupons'];
-            console.log(this.apiResponse.applicablePromo)
-            this.cdr.detectChanges();
-        }
         if (res['productCountRes']) {
             this.rawProductCountData = Object.assign({}, res['productCountRes']);
             this.remoteApiCallRecentlyBought();

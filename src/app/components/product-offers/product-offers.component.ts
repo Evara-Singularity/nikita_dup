@@ -36,6 +36,8 @@ export class ProductOffersComponent implements OnInit
     @Input() promoCodes: any = null;
     @Input() couponForbrandCategory:any=null;
     @Input() pageLinkName;
+    @Input() user: any;
+    @Input() msn: any;
     minimumRequiredPriceforCoupon: any;
     couponForbrandCategoryDiscount: any;
     isCouponCopied=false;
@@ -46,6 +48,7 @@ export class ProductOffersComponent implements OnInit
         private common: CommonService,
         private cdr: ChangeDetectorRef,
         private _analytics: GlobalAnalyticsService,
+        private productService: ProductService
     ) { }
 
     ngOnInit(): void {
@@ -63,7 +66,8 @@ export class ProductOffersComponent implements OnInit
     }
   ngAfterViewInit() {
     this.couponOnPDPBrandCategory(this.couponForbrandCategory);
-    console.timeLog(this.promoCodes);
+    this.updateCouponsForLoggedInUser();
+    console.log(this.promoCodes);
     if (this.common.isBrowser) {
       this.copiedCouponSubscription = this.common.getCopiedCoupon().subscribe(coupon => {
         if (this.promoCodes.promoCode && (this.promoCodes.promoCode == coupon)) {
@@ -72,6 +76,21 @@ export class ProductOffersComponent implements OnInit
           this.isCouponCopied = false
         }
         this.cdr.detectChanges();
+      })
+    }
+  }
+
+  updateCouponsForLoggedInUser() {
+    if(this.user && this.user['authenticated'] == 'true') {
+      let url = '?msn=' + this.msn + `&userId=${this.user.userId}`;
+      this.productService.getAllPromoCodeOffers(url).subscribe((resp) => {
+        if(resp && resp['status']) {
+          this.promoCodes['totalCoupons'] = resp['applicablePromoCodeList'].length || 0;
+          this.cdr.detectChanges();
+        } else {
+          this.promoCodes= null;
+          this.cdr.detectChanges();
+        }
       })
     }
   }

@@ -43,6 +43,7 @@ export class ProductOffersComponent implements OnInit
     isCouponCopied=false;
     copiedCouponSubscription: Subscription 
     changeStaticSubscription: Subscription = null;
+    promosChecked = false;
     constructor(
         public localStorageService: LocalStorageService,
         private common: CommonService,
@@ -50,6 +51,10 @@ export class ProductOffersComponent implements OnInit
         private _analytics: GlobalAnalyticsService,
         private productService: ProductService
     ) { }
+
+    get isUserLoggedIn() {
+      return this.user && this.user['authenticated'] == 'true';
+    }
 
     ngOnInit(): void {
       this.changeStaticSubscription = this.common.changeStaticJson.subscribe(staticJsonData => {
@@ -86,11 +91,11 @@ export class ProductOffersComponent implements OnInit
       this.productService.getAllPromoCodeOffers(url).subscribe((resp) => {
         if(resp && resp['status']) {
           this.promoCodes['totalCoupons'] = resp['applicablePromoCodeList'].length || 0;
-          this.cdr.detectChanges();
         } else {
           this.promoCodes= null;
-          this.cdr.detectChanges();
         }
+        this.promosChecked = true;
+        this.cdr.detectChanges();
       })
     }
   }

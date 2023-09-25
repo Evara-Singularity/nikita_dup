@@ -770,7 +770,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             }),
             mergeMap(promoResponse => {
                 if(promoResponse && promoResponse['status']) {
-                    resObj['totalCoupons'] = promoResponse['applicablePromoCodeList'] || 0;
+                    resObj['totalCoupons'] = promoResponse['applicablePromoCodeList'].length || 0;
                     this.apiResponse.applicablePromo['applicablePromo'] = resObj['totalCouponse'];
                     this.cdr.detectChanges();
                 }

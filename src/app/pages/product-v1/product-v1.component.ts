@@ -758,6 +758,22 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 } else {
                     resObj['productCountRes'] = null;
                 }
+                let url = '?msn=' + this.rawProductData.defaultPartNumber;
+                if(this.user && this.user['authenticated'] == 'true') {
+                    url += `&userId=${this.user.userId}`
+                }
+                if(this.user && this.user['authenticated'] == 'true') {
+                    return this.productService.getAllPromoCodeOffers(url);
+                } else {
+                    return of({status: false});
+                }
+            }),
+            mergeMap(promoResponse => {
+                if(promoResponse && promoResponse['status']) {
+                    resObj['totalCoupons'] = promoResponse['applicablePromoCodeList'] || 0;
+                    this.apiResponse.applicablePromo['applicablePromo'] = resObj['totalCouponse'];
+                    this.cdr.detectChanges();
+                }
                 return this.productService.getFBTProducts(this.rawProductData.defaultPartNumber);
             }),
             mergeMap(fbtRes => {

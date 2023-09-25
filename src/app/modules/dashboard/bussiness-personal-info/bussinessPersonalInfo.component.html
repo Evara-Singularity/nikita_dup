@@ -26,7 +26,7 @@
   <div class="material-form email-field-section">
     <div class="outline-input-label mb-0">
       <label [class.is-focus]="email.value.length">
-        <input type="email" name="email" [disabled]="isEmailInputDisabled" [ngModel]="userInfo?.email" #email>
+        <input type="email" name="email" [disabled]="isEmailInputDisabled" [ngModel]="userInfo?.email" (input)="email.value = email.value.trim()" #email>
         <span class="form-inline-btn" *ngIf="!isEmailAvailable && userInfo?.email?.length == 0" (click)="activateInput('email')">ADD</span>
         <span class="form-inline-btn" *ngIf="isEmailAvailable" (click)="activateInput('email')">EDIT</span>
         <span class="form-inline-btn"  *ngIf="!isEmailInputDisabled" (click)="onSubmit(email.value,'email')"

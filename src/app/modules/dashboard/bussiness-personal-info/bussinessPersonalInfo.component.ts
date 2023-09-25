@@ -136,7 +136,7 @@ export class BussinessInfoComponent {
       let pattern: RegExp =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       const isValid = pattern.test(firstName);
       if(!isValid) {
-        this._tms.show({ type: 'success', text: 'please enter a valid details'});
+        this._tms.show({ type: 'success', text: 'Kindly enter your valid Email id'});
         this.showLoader=false;
         return;
       }
@@ -158,7 +158,9 @@ export class BussinessInfoComponent {
         //   this.error = true;
         //   this.errorMsg = "Something went wrong";
         // }
-      }, error => this._tms.show({ type: 'error', text: "Email Already in Use!" }));
+      }, error => {
+        const str = JSON.parse(error.error.message)
+       this._tms.show({ type: 'error', text: str.statusDescription || "Something went wrong." })});
    }
   }
   

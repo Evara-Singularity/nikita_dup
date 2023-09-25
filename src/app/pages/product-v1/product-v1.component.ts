@@ -292,7 +292,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"] && rawData["product"][0]['data']['data']['productGroup']["active"]==true) {
                 this.apiResponse = rawData.product[0].data.data;
-                console.log(this.apiResponse.applicablePromo)
                 this.isAcceptLanguage = this.apiResponse['acceptLanguage'] && this.apiResponse['acceptLanguage'].length > 0 ? true : false; 
                 this.processProductData(this.apiResponse.productGroup);
                 this.setQuestionAnswerSchema();
@@ -771,8 +770,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             mergeMap(promoResponse => {
                 if(promoResponse && promoResponse['status']) {
                     resObj['totalCoupons'] = promoResponse['applicablePromoCodeList'].length || 0;
-                    this.apiResponse.applicablePromo['applicablePromo'] = resObj['totalCouponse'];
-                    this.cdr.detectChanges();
+                } else {
+                    resObj['totalCoupons'] = 0;
                 }
                 return this.productService.getFBTProducts(this.rawProductData.defaultPartNumber);
             }),
@@ -819,6 +818,11 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     processClinetResponse(res) {
+        if(this.user && this.user.authenticated == 'true' && this.apiResponse.applicablePromo) {
+            this.apiResponse.applicablePromo['totalCoupons'] = res['totalCoupons'];
+            console.log(this.apiResponse.applicablePromo)
+            this.cdr.detectChanges();
+        }
         if (res['productCountRes']) {
             this.rawProductCountData = Object.assign({}, res['productCountRes']);
             this.remoteApiCallRecentlyBought();

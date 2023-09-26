@@ -125,23 +125,15 @@ export class SharedLoginComponent implements OnInit, OnDestroy
     }
 
     private fetchTruecallerUserFlow() {
-        this.http
-          .get<any>(`https://nodeapiqa.moglilabs.com/nodeApi/v1/auth/truecaller/fetch?requestId=${this.truecallerRequestId}`)
-          .subscribe(
-            (response) => {
-              if (response && response.status) {
-                alert(JSON.stringify(response.data))
-                this.processAuthenticaton(response.data)
-                // alert(JSON.stringify(response))
-                //Navigate
-              } else {
-                console.error(`method: TruecallerUserFlow: failed: ${response.message}`);
-              }
-            },
-            (error) => {
-              console.error(`method: TruecallerUserFlow: exceptionError: `, error);
-            }
-          );
+        this._sharedAuthService.fetchTrueCallerUser({
+            requestId: this.truecallerRequestId
+        }).subscribe((response) => {
+            alert(JSON.stringify(response))
+            if (response["code"] == 200 && response["status"]) {
+                // alert(JSON.stringify(response["data"]))
+                this.processAuthenticaton(response["data"])
+            } 
+          });
       }
 
     initializeTruecaller(): void {

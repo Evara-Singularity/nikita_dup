@@ -81,7 +81,9 @@ export class SharedLoginComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         if (this._common.isBrowser) {
-            this.initializeTruecaller()
+            if(this.isAndroid()){
+                this.initializeTruecaller()
+            }
             this.authFlow = this._localAuthService.getAuthFlow();
             if (this.authFlow) { 
                 this.updateControls(this.authFlow.identifier)
@@ -133,7 +135,7 @@ export class SharedLoginComponent implements OnInit, OnDestroy
                 this.processAuthenticaton(response["data"])
             } 
           });
-      }
+    }
 
     initializeTruecaller(): void {
         console.log("initializeTruecaller: called")
@@ -171,6 +173,12 @@ export class SharedLoginComponent implements OnInit, OnDestroy
     intiatePopUpLogin(){
         this.removeAuthComponent$.emit();
     }
+
+    isAndroid(): boolean {
+        const userAgent = navigator.userAgent.toLowerCase();
+        return /android/.test(userAgent);
+      }
+    
 
     objectToQueryString(obj) {
         const keyValuePairs = [];

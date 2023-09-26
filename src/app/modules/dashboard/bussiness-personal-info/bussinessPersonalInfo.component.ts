@@ -149,7 +149,7 @@ export class BussinessInfoComponent {
           this.errorMsg = res["statusDescription"];
           this._tms.show({
             type: "success",
-            text: res['statusDescription'] || "Profile updated successfully.",
+            text: "E-mail ID updated successfully" ,
           });
           this.isEmailAvailable = true;
           this.isEmailInputDisabled=true;
@@ -159,11 +159,11 @@ export class BussinessInfoComponent {
         //   this.errorMsg = "Something went wrong";
         // }
       }, error => {
-        const str = JSON.parse(error.error.message)
-       this._tms.show({ type: 'error', text: str.statusDescription || "Something went wrong." })});
+        // const str = JSON.parse(error.error.message)
+        this._tms.show({ type: 'error', text: "This email id already registered with other account, try entering different email id" })});
    }
   }
-  
+
   toPasswordPage() {
     this._router.navigate(["dashboard/password"]);
   }
@@ -178,7 +178,7 @@ export class BussinessInfoComponent {
       lottieInstance.next();
     });
   }
-
+  
   get userName() {
     if (!this.userInfo){return ""};
     const pname = this.userInfo['pname'] || "";

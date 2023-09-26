@@ -136,7 +136,7 @@ export class BussinessInfoComponent {
       let pattern: RegExp =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       const isValid = pattern.test(firstName);
       if(!isValid) {
-        this._tms.show({ type: 'success', text: 'please enter a valid details'});
+        this._tms.show({ type: 'success', text: 'Kindly enter your valid Email id'});
         this.showLoader=false;
         return;
       }
@@ -149,7 +149,7 @@ export class BussinessInfoComponent {
           this.errorMsg = res["statusDescription"];
           this._tms.show({
             type: "success",
-            text: res['statusDescription'] || "Profile updated successfully.",
+            text: "E-mail ID updated successfully" ,
           });
           this.isEmailAvailable = true;
           this.isEmailInputDisabled=true;
@@ -158,10 +158,12 @@ export class BussinessInfoComponent {
         //   this.error = true;
         //   this.errorMsg = "Something went wrong";
         // }
-      }, error => this._tms.show({ type: 'error', text: "Email Already in Use!" }));
+      }, error => {
+        // const str = JSON.parse(error.error.message)
+        this._tms.show({ type: 'error', text: "This email id already registered with other account, try entering different email id" })});
    }
   }
-  
+
   toPasswordPage() {
     this._router.navigate(["dashboard/password"]);
   }
@@ -176,7 +178,7 @@ export class BussinessInfoComponent {
       lottieInstance.next();
     });
   }
-
+  
   get userName() {
     if (!this.userInfo){return ""};
     const pname = this.userInfo['pname'] || "";

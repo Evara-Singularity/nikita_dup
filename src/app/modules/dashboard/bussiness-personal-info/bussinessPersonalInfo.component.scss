@@ -236,7 +236,13 @@
     margin: 15px 15px 0 15px;
   border-bottom: 1px solid var(--ghost-white);
   padding-bottom: 15px;
-
+    .outline-input-label{
+        label{
+                input{
+                    font-size: 14px;
+                }
+        }
+    }
 }
 .form-inline-btn {
     background-color: var(--misty-rose);

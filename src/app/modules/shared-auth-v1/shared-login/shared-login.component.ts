@@ -128,7 +128,6 @@ export class SharedLoginComponent implements OnInit, OnDestroy
         this._sharedAuthService.fetchTrueCallerUser({
             requestId: this.truecallerRequestId
         }).subscribe((response) => {
-            alert(JSON.stringify(response))
             if (response["code"] == 200 && response["status"]) {
                 // alert(JSON.stringify(response["data"]))
                 this.processAuthenticaton(response["data"])

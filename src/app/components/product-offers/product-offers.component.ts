@@ -90,7 +90,7 @@ export class ProductOffersComponent implements OnInit
       let url = '?msn=' + this.msn + `&userId=${this.user.userId}`;
       this.productService.getAllPromoCodeOffers(url).subscribe((resp) => {
         if(resp && resp['status']) {
-          this.promoCodes['totalCoupons'] = resp['applicablePromoCodeList'].length || 0;
+          this.promoCodes['totalCoupons'] = resp && resp['data'] && resp['data']['applicablePromoCodeList'].length || 0;
         } else {
           this.promoCodes= null;
         }

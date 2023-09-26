@@ -4,7 +4,7 @@
   <div class="material-form update-name-form">
     <div class="outline-input-label"><label [class.is-focus]="nameVal.value.length">
         <input [value]="userName" [disabled]="isNameInputDisabled" #nameVal type="text" data-alphabetsOnly>
-      <span class="label">Full Name</span><span *ngIf="!isNameInputDisabled"
+      <span class="label">Name</span><span *ngIf="!isNameInputDisabled"
         (click)="onSubmit(nameVal.value.trim(),'name')" class="form-inline-cta">UPDATE</span>
         <span *ngIf="isNameInputDisabled" (click)="activateInput('name')" class="form-inline-cta">EDIT</span></label>
     </div>
@@ -26,12 +26,13 @@
   <div class="material-form email-field-section">
     <div class="outline-input-label mb-0">
       <label [class.is-focus]="email.value.length">
-        <input type="email" name="email" [disabled]="isEmailInputDisabled" [ngModel]="userInfo?.email" #email>
+        <input  type="email" name="email" [disabled]="isEmailInputDisabled" [ngModel]="userInfo?.email" 
+        (input)="email.value = email.value.trim()" #email >
+         <span class="label" >Email ID*</span>
         <span class="form-inline-btn" *ngIf="!isEmailAvailable && userInfo?.email?.length == 0" (click)="activateInput('email')">ADD</span>
         <span class="form-inline-btn" *ngIf="isEmailAvailable" (click)="activateInput('email')">EDIT</span>
         <span class="form-inline-btn"  *ngIf="!isEmailInputDisabled" (click)="onSubmit(email.value,'email')"
-        >SAVE</span>
-        <span class="label" (click)="activateInput('email')">Email ID*</span>        
+        >SAVE</span>      
       </label>
     </div>
   </div>

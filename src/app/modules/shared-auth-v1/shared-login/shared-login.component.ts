@@ -58,10 +58,7 @@ export class SharedLoginComponent implements OnInit, OnDestroy
     paramsSubscriber = null;
     state;
     private truecallerRequestId:string = ""
-    private alive = true;
-    private subscription: Subscription;
-       
-
+    private timeoutId: any;
 
     constructor(
         private _fb: FormBuilder,
@@ -78,7 +75,6 @@ export class SharedLoginComponent implements OnInit, OnDestroy
         private http: HttpClient
     ) {
         this.truecallerRequestId = uuidv4()
-        this.initializeTruecaller()
      }
 
     ngOnInit(): void
@@ -97,11 +93,26 @@ export class SharedLoginComponent implements OnInit, OnDestroy
     }
 
     ngOnDestroy(): void {
-        this.alive = false;
-        if (this.subscription) {
-          this.subscription.unsubscribe();
-        }
+        clearTimeout(this.timeoutId);
     }
+
+    private fetchTruecallerUserFlow() {
+        this.http
+          .get<any>(`https://nodeapiqa.moglilabs.com/nodeApi/v1/auth/truecaller/fetch?requestId=${this.truecallerRequestId}`)
+          .subscribe(
+            (response) => {
+              if (response && response.status) {
+                alert(JSON.stringify(response))
+                //Navigate
+              } else {
+                console.error(`method: TruecallerUserFlow: failed: ${response.message}`);
+              }
+            },
+            (error) => {
+              console.error(`method: TruecallerUserFlow: exceptionError: `, error);
+            }
+          );
+      }
 
     initializeTruecaller(): void {
         console.log("initializeTruecaller: called")
@@ -124,31 +135,10 @@ export class SharedLoginComponent implements OnInit, OnDestroy
           };
           
         let url = `truecallersdk://truesdk/web_verify?` + this.objectToQueryString(params);
-        this.subscription = timer(600)
-          .pipe(
-            takeWhile(() => this.alive),
-            switchMap(() => {
-              if (document.hasFocus()) {
-                alert("Oops, it seems like you don't have the Truecaller app installed.");
-                return [];
-              } else {
-                return this.http.get(`https://nodeapiqa.moglilabs.com/nodeApi/v1/auth/truecaller/fetch?requestId=${this.truecallerRequestId}`);
-              }
-            })
-          )
-          .subscribe(
-            (response: any) => {
-              if (response.status) {
-                alert(JSON.stringify(response.data.truecallerApiResp));
-              } else {
-                alert(response.description);
-              }
-            },
-            (error) => {
-              alert(`Something went wrong: ${error.message}`);
-            }
-          );
         window.open(url);
+        this.timeoutId = setTimeout(() => {
+            this.fetchTruecallerUserFlow();
+        }, 600);
     }
 
     addQueryParamSubscribers() {

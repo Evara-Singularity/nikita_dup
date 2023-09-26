@@ -130,6 +130,7 @@ export class SharedLoginComponent implements OnInit, OnDestroy
           .subscribe(
             (response) => {
               if (response && response.status) {
+                alert(JSON.stringify(response.data))
                 this.processAuthenticaton(response.data)
                 // alert(JSON.stringify(response))
                 //Navigate

@@ -67,7 +67,7 @@
             [categoryId]='rawProductData?.productCategoryDetails?.categoryCode'
             [categoryName]='rawProductData?.productCategoryDetails?.categoryName'
             [allofferData]='apiResponse?.extraCategories' (emaiComparePopUpHandler)='emiComparePopUpOpen($event)'
-            [promoCodes]='apiResponse?.applicablePromo'>
+            [promoCodes]='apiResponse?.applicablePromo' [user]='user' [msn]='rawProductData?.defaultPartNumber'>
         </app-product-offers>
     </div>
     <!-- TODO: skeleton to be implemented -->

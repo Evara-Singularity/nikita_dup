@@ -36,17 +36,25 @@ export class ProductOffersComponent implements OnInit
     @Input() promoCodes: any = null;
     @Input() couponForbrandCategory:any=null;
     @Input() pageLinkName;
+    @Input() user: any;
+    @Input() msn: any;
     minimumRequiredPriceforCoupon: any;
     couponForbrandCategoryDiscount: any;
     isCouponCopied=false;
     copiedCouponSubscription: Subscription 
     changeStaticSubscription: Subscription = null;
+    promosChecked = false;
     constructor(
         public localStorageService: LocalStorageService,
         private common: CommonService,
         private cdr: ChangeDetectorRef,
         private _analytics: GlobalAnalyticsService,
+        private productService: ProductService
     ) { }
+
+    get isUserLoggedIn() {
+      return this.user && this.user['authenticated'] == 'true';
+    }
 
     ngOnInit(): void {
       this.changeStaticSubscription = this.common.changeStaticJson.subscribe(staticJsonData => {
@@ -63,7 +71,7 @@ export class ProductOffersComponent implements OnInit
     }
   ngAfterViewInit() {
     this.couponOnPDPBrandCategory(this.couponForbrandCategory);
-    console.timeLog(this.promoCodes);
+    this.updateCouponsForLoggedInUser();
     if (this.common.isBrowser) {
       this.copiedCouponSubscription = this.common.getCopiedCoupon().subscribe(coupon => {
         if (this.promoCodes.promoCode && (this.promoCodes.promoCode == coupon)) {
@@ -71,6 +79,21 @@ export class ProductOffersComponent implements OnInit
         } else {
           this.isCouponCopied = false
         }
+        this.cdr.detectChanges();
+      })
+    }
+  }
+
+  updateCouponsForLoggedInUser() {
+    if(this.user && this.user['authenticated'] == 'true') {
+      let url = '?msn=' + this.msn + `&userId=${this.user.userId}`;
+      this.productService.getAllPromoCodeOffers(url).subscribe((resp) => {
+        if(resp && resp['status']) {
+          this.promoCodes['totalCoupons'] = resp && resp['data'] && resp['data']['applicablePromoCodeList'].length || 0;
+        } else {
+          this.promoCodes= null;
+        }
+        this.promosChecked = true;
         this.cdr.detectChanges();
       })
     }

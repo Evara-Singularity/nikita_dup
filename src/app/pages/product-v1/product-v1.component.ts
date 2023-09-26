@@ -292,7 +292,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"] && rawData["product"][0]['data']['data']['productGroup']["active"]==true) {
                 this.apiResponse = rawData.product[0].data.data;
-                console.log(this.apiResponse.applicablePromo)
                 this.isAcceptLanguage = this.apiResponse['acceptLanguage'] && this.apiResponse['acceptLanguage'].length > 0 ? true : false; 
                 this.processProductData(this.apiResponse.productGroup);
                 this.setQuestionAnswerSchema();

@@ -289,6 +289,12 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.addSubcriber();
         this.pageUrl = this.router.url;
         this.route.data.subscribe((rawData) => {
+            const resp = rawData.product[0].data.data || null;
+            if(resp?.productGroup == null){
+                this.setProductNotFound();
+                this.rawProductData = null;
+                return;
+            }
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"] && rawData["product"][0]['data']['data']['productGroup']["active"]==true) {
                 this.apiResponse = rawData.product[0].data.data;
@@ -750,14 +756,14 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     callAPIs() {
         const resObj = {};
 
-        this.productService.getProductStatusCount(this.rawProductData.defaultPartNumber, this.isHindiUrl ? { headerData: { 'language': 'hi' } } : null).pipe(
+        this.productService.getProductStatusCount(this.rawProductData?.defaultPartNumber, this.isHindiUrl ? { headerData: { 'language': 'hi' } } : null).pipe(
             mergeMap(productCountRes => {
                 if(productCountRes && productCountRes['status']) {
                     resObj['productCountRes'] = productCountRes;
                 } else {
                     resObj['productCountRes'] = null;
                 }
-                return this.productService.getFBTProducts(this.rawProductData.defaultPartNumber);
+                return this.productService.getFBTProducts(this.rawProductData?.defaultPartNumber);
             }),
             mergeMap(fbtRes => {
                 if(fbtRes && fbtRes['status']) {
@@ -1014,7 +1020,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
         if (this.rawProductData) {
             this.productInfoPopupInstance = null;
-            this.productInfoPopupContainerRef.remove();
+            this.productInfoPopupContainerRef?.remove();
         }
         if (this.returnInfoInstance) {
             this.returnInfoInstance = null;
@@ -1085,7 +1091,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     fetchFBTProducts(productBO, rawProductFbtData) {
-        if (this.rawProductData.productOutOfStock) {
+        if (this.rawProductData?.productOutOfStock) {
             this.productUtil.resetFBTSource();
         } else {
             this.fbtFlag = false;
@@ -1426,8 +1432,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         // make sure no browser history is present
         if (this.location.getState() && this.location.getState()['navigationId'] == 1) {
             this.sessionStorageService.store('NO_HISTROY_PDP', 'NO_HISTROY_PDP');
-            if (this.rawProductData.productCategoryDetails && this.rawProductData.productCategoryDetails['categoryLink']) {
-                window.history.replaceState('', '', this.rawProductData.productCategoryDetails['categoryLink'] + '?back=1');
+            if (this.rawProductData?.productCategoryDetails && this.rawProductData?.productCategoryDetails['categoryLink']) {
+                window.history.replaceState('', '', this.rawProductData?.productCategoryDetails['categoryLink'] + '?back=1');
                 window.history.pushState('', '', this.router.url);
             }
         }
@@ -3246,7 +3252,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     // Add to cart methods
     async showFBT(lotteieInfo?: any) {
         if (lotteieInfo) {
-            console.log(lotteieInfo);
             this.commonService.navigateTo('/quickorder', true)
         }else
         {

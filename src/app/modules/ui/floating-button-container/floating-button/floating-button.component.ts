@@ -15,6 +15,7 @@ export class FloatingButtonComponent implements OnInit {
   @Input() isPdpMainProduct: boolean=false;
   @Output() onClick: EventEmitter<any> = new EventEmitter<any>();
   @Input() displayAddToCartAnimation: boolean=false;
+  @Input() isHindiMode:boolean=false
   lotteieInfo:boolean= false;
 
   constructor(
@@ -34,15 +35,14 @@ export class FloatingButtonComponent implements OnInit {
   
 
   addLottieScript(){
-		this.commonService.addLottieScriptSubject.subscribe(lottieInstance => {
-			this.commonService.callLottieScript();
+		this.commonService.addLottieScriptGoToCartSubject.subscribe(lottieInstance => {
+			this.commonService.callLottieScriptGoToCart();
 			lottieInstance.next();
 		});
 	}
   ngAfterViewInit(){
-    this.commonService.callLottieScript();
+    this.commonService.callLottieScriptGoToCart();
     this.addLottieScript();
-    this.commonService.setBodyScroll(null, false);
   }
 }
 

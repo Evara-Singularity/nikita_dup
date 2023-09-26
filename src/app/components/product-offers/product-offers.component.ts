@@ -72,7 +72,6 @@ export class ProductOffersComponent implements OnInit
   ngAfterViewInit() {
     this.couponOnPDPBrandCategory(this.couponForbrandCategory);
     this.updateCouponsForLoggedInUser();
-    console.log(this.promoCodes);
     if (this.common.isBrowser) {
       this.copiedCouponSubscription = this.common.getCopiedCoupon().subscribe(coupon => {
         if (this.promoCodes.promoCode && (this.promoCodes.promoCode == coupon)) {

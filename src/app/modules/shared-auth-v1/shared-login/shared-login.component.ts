@@ -30,7 +30,7 @@ export interface BackurlWithTitle
 })
 export class SharedLoginComponent implements OnInit, OnDestroy
 {
-
+    readonly CHECKOUT_ADDRESS = "/checkout/address";
     readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
     readonly LOGIN_USING_PHONE = this._sharedAuthService.AUTH_USING_PHONE;
     readonly LOGIN_USING_EMAIL = this._sharedAuthService.AUTH_USING_EMAIL;
@@ -72,7 +72,8 @@ export class SharedLoginComponent implements OnInit, OnDestroy
         private _route: ActivatedRoute,
         private _common: CommonService,
         public localStorageService: LocalStorageService,
-        private http: HttpClient
+        private http: HttpClient,
+        private _commonService: CommonService,
     ) {
         this.truecallerRequestId = uuidv4()
      }
@@ -96,13 +97,41 @@ export class SharedLoginComponent implements OnInit, OnDestroy
         clearTimeout(this.timeoutId);
     }
 
+
+    processAuthenticaton(response) {
+        this._sharedAuthUtilService.sendGenericPageClickTracking(true);
+        const BACKURLTITLE = this._localAuthService.getBackURLTitle();
+        let REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;
+        const queryParams = this._commonService.extractQueryParamsManually(location.search.substring(1))
+        if (queryParams.hasOwnProperty('state') && queryParams.state === 'raiseRFQQuote') {
+            REDIRECT_URL += '?state=' + queryParams['state'];
+        }
+        this._localAuthService.setUserSession(response);
+        this._localAuthService.clearAuthFlow();
+        this._localAuthService.clearBackURLTitle();
+        if (this.isLoginPopup) {
+            // console.log('popup login', this.isLoginPopup);
+            this._sharedAuthUtilService.loginPopUpAuthenticationProcess(response).subscribe(cartSession => {
+                this.removeAuthComponent$.emit();
+            })
+        } else {
+            // console.log('normal login', this.isLoginPopup);
+            this._sharedAuthUtilService.processAuthentication(
+                response,
+                this.isCheckout,
+                ((this.isCheckout) ? this.CHECKOUT_ADDRESS : REDIRECT_URL)
+            );
+        }
+    }
+
     private fetchTruecallerUserFlow() {
         this.http
           .get<any>(`https://nodeapiqa.moglilabs.com/nodeApi/v1/auth/truecaller/fetch?requestId=${this.truecallerRequestId}`)
           .subscribe(
             (response) => {
               if (response && response.status) {
-                alert(JSON.stringify(response))
+                this.processAuthenticaton(response.data)
+                // alert(JSON.stringify(response))
                 //Navigate
               } else {
                 console.error(`method: TruecallerUserFlow: failed: ${response.message}`);

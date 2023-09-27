@@ -7,6 +7,7 @@ export const environment = {
   // APP_BASE_URL: 'https://api.moglix.com',
   BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   BASE_URL_V2: 'https://nodeapiqa.moglilabs.com/nodeApi/v2',
+  BASE_URL_V3: 'https://api-gt.moglilabs.com/api',
   APP_BASE_URL: 'https://apiqa.moglilabs.com',
   IMAGE_ASSET_URL: 'https://cdn.moglix.com/online/qa/pwa/bundles/',
   SOCKET_URL: "https://socketqa.moglilabs.com",

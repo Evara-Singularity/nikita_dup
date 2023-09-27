@@ -115,17 +115,21 @@ export class AlpComponent implements OnInit {
             //TODO:1704 Uncomment
             this._commonService.showLoader = false;
             const ALP_DATA = res.alp[0];
-            this.alpAttrListingData = ALP_DATA[0];
             this.alpCategoryCodeData = ALP_DATA[1];
             this.alpBreadCrumbData = ALP_DATA[2];
             this.alpProductListingData = ALP_DATA[3];
-            this.setAttributeListingInfo();
+            if(ALP_DATA[0]?.status == true){
+                this.alpAttrListingData = ALP_DATA[0];
+                this.setAttributeListingInfo();
+            }else{
+                this.showPageNotFound = true;
+            }
         });
     }
 
     setAttributeListingInfo() {
         //TODO:1704 if data is null then 404
-        this.showPageNotFound = this.alpAttrListingData['data'] === null || Object.keys(this.alpAttrListingData['data']).length === 0 || this.alpAttrListingData['data'].length === 0;
+        this.showPageNotFound = this.alpAttrListingData?.['data'] === null || Object.keys(this.alpAttrListingData['data']).length === 0 || this.alpAttrListingData['data'].length === 0;
         if (this.showPageNotFound && this._commonService.isServer) {
             this._response.status(404);
             return;
@@ -477,7 +481,7 @@ export class AlpComponent implements OnInit {
             }
             elanguagelink.hreflang = 'en'
             this._renderer2.appendChild(this._document.head, elanguagelink);            
-                this.isHindiUrl ? document.documentElement.setAttribute("lang", 'hi') : document.documentElement.setAttribute("lang", 'en');
+                this.isHindiUrl ? this._document.documentElement.setAttribute("lang", 'hi') : this._document.documentElement.setAttribute("lang", 'en');
         }
 
         // Start Canonical URL

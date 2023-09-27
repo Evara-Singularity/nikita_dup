@@ -221,6 +221,8 @@ export class PdpQuickCheckoutComponent implements OnInit {
         buyNow: true,
         selectPriceMap: this.selectedProductBulkPrice,
         quantity: this.cartQunatityForProduct,
+        languageMode: this.commonService.isHindiUrl,
+        originalProductBO: this.rawProductData['originalProductBO']
       }, this.isFrompdp)
     );
   }

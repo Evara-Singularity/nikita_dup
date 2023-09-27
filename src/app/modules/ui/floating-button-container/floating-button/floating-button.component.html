@@ -1,5 +1,12 @@
-<button [class]="isMultiple?'cart-btn':'cart-btn-fullwidth'" [ngClass]="{'red': type == 'RED', 'white': type == 'WHITE'}"
-    (click)="onClickButton()">
-    <i *ngIf="iconClass" class="{{iconClass}}"></i>
+<button *ngIf="!displayAddToCartAnimation" [class]="isMultiple?'cart-btn':'cart-btn-fullwidth'"
+    [ngClass]="{'red': type == 'RED', 'white': type == 'WHITE'}" (click)="onClickButton()">
+    <i class="{{iconClass}}"></i>
     <span>{{label}}</span>
-</button>
+</button>  
+<button *ngIf="displayAddToCartAnimation && isPdpMainProduct" [class]="isMultiple?'cart-btn':'cart-btn-fullwidth'"
+    [ngClass]="{'red': type == 'RED', 'white': type == 'WHITE'}" (click)="onClickButton()">   
+    <span *ngIf="!isHindiMode"><lottie-player src="/assets/json/CartAnimation.json" background="transparent" speed="1"
+            style="width:183px; height:51px;" autoplay></lottie-player></span>
+    <span *ngIf="isHindiMode"><lottie-player src="/assets/json/CartAnimationHindi.json" background="transparent" speed="1"
+        style="width:183px; height:51px;" autoplay></lottie-player></span>
+</button>  

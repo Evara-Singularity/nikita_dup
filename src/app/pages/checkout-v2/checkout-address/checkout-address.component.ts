@@ -54,6 +54,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     paymentMode: any;
     addressUpdated = false;
     is_cod_section: number = 0;
+    isAllCartAvailableForCod: boolean = false;
     moduleUsedIn: string = 'quick-checkout';
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
@@ -212,21 +213,32 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const addressId = deliveryAddress && deliveryAddress['idAddress'];
         const cartId = this.cartSession['cart']['cartId'];
         const userId = this.cartSession['cart']['userId'];
+       let setTime = false;
         this._addressService.getServiceabilityAndCashOnDelivery({ productId: MSNS, toPincode: postCode , isGstInvoice: isGstInvoice, 
             orderPlatform: orderPlatform ,addressId :addressId ,cartId: cartId , userId: userId}).subscribe((response) =>
         {
-            if (!response) return;
+            setTime = true
+            if (!response) { this.is_cod_section = 1; return};
             const AGGREGATES = CheckoutUtil.formatAggregateValues(response);
             const NON_SERVICEABLE_MSNS: any[] = CheckoutUtil.getNonServiceableMsns(AGGREGATES);
             const NON_CASH_ON_DELIVERABLE_MSNS: any[] = CheckoutUtil.getNonCashOnDeliveryMsns(AGGREGATES);
             this.getCodAndPayOnline(NON_CASH_ON_DELIVERABLE_MSNS);
             this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
             this.updateNonDeliverableItems(cartItems, NON_CASH_ON_DELIVERABLE_MSNS);
+        },err=>{
+            this.is_cod_section = 1;
         })
+        setTimeout(()=>{
+         if(setTime == false){
+            this.is_cod_section = 1;
+         }
+        },1100)
     }
 
     getCodAndPayOnline(NON_CASH_ON_DELIVERABLE_MSNS){
         if(NON_CASH_ON_DELIVERABLE_MSNS.length == 0){
+            this.isAllCartAvailableForCod = true;
+            this.calculatePayableAmount(this.cartSession['cart']);
             this.quickCodService
             .checkCODLimit(this.payableAmount)
             .subscribe((res) => {
@@ -237,6 +249,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
               }
             });
         }else{
+            this.isAllCartAvailableForCod = false;
             this.is_cod_section = 1;
         }
     }
@@ -311,11 +324,18 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
         const TOTAL_AMOUNT = cart['totalAmount'] || 0;
         const SHIPPING_CHARGES = cart['shippingCharges'] || 0;
         const TOTAL_OFFER = cart['totalOffer'] || 0;
+        if(!this.isAllCartAvailableForCod){
         this.payableAmount = (TOTAL_AMOUNT + SHIPPING_CHARGES) - TOTAL_OFFER;
-        if(this.payableAmount > CONSTANTS.GLOBAL.codMin && this.payableAmount < CONSTANTS.GLOBAL.codMax){
-            this.is_cod_section = 2;
         }else{
-            this.is_cod_section = 1;
+            this._cartService.getShippingPriceChanges().subscribe(res=>{
+                const  SHIPPING_CHARGES = res.cart['shippingCharges'] || 0;
+                this.payableAmount = (TOTAL_AMOUNT + SHIPPING_CHARGES) - TOTAL_OFFER;
+                if(this.payableAmount > CONSTANTS.GLOBAL.codMin && this.payableAmount < CONSTANTS.GLOBAL.codMax){
+                    this.is_cod_section = 2;
+                }else{
+                    this.is_cod_section = 1;
+                }
+            })
         }
     }
 

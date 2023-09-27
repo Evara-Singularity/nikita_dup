@@ -131,6 +131,7 @@
                     min-width: 70px;
                     text-align: center;
                 }
+
                 &.is-focus .label,
                 input:focus + .label,
                 select:focus + .label {
@@ -193,7 +194,6 @@
 }
 .profile-bottom-card {
     background-color: var(--white);
-    cursor: pointer;
     .profile-bottom-card-inner {
         i {
             font-size: $extra-large-3-font;
@@ -231,83 +231,35 @@
 .full-border-radius{
     border-radius: 8px !important;
 }
-.alert-box {
-    .overlay {
-      background: rgba(0, 0, 0, 0.5);
-    }
-  
-    .content-area {
-      border-radius: 12px;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-  
-      .info-area {
-        padding: 0;
-  
-        .popup-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 15px;
-          border-bottom: 1px solid var(--spanish-gray);
-  
-          p {
-            display: flex;
-            align-items: center;
-  
-            img {
-              margin-right: 10px;
-              width: 24px;
-              height: 24px;
-            }
-          }
-        }
-  
-        .popup-body-section {
-          padding: 15px;
-  
-          ul {
-            display: flex;
-            overflow-x: scroll;
-            white-space: nowrap;
-            scrollbar-width: none;
-  
-            li {
-              margin: 0px 10px 15px 0px;
-  
-              a {
-                display: inline-block;
-                padding: 8px 12px;
-                font-size: 14px;
-                font-weight: $font-bold;
-                color: var(--onyx-black);
-                width: 86px;
-                text-align: center;
-                border: 1px solid var(--spanish-gray);
-                border-radius: $border-radius-8;
-                line-height: 16px;
-                cursor: pointer;
-  
-                &.selected {
-                  background: var(--border-red);
-                  color: var(--primary);
-                  border: 1px solid var(--primary);
+
+.email-field-section{
+    margin: 15px 15px 0 15px;
+  border-bottom: 1px solid var(--ghost-white);
+  padding-bottom: 15px;
+    .outline-input-label{
+        label{
+                input{
+                    font-size: 14px;
                 }
-  
-                &.inactive {
-                  opacity: 0.5;
-                  pointer-events: none;
-                }
-              }
-            }
-          }
         }
-      }
     }
-  }
-  .translate_section{
-    img{
-        width: 24px;
-    }
-  }
+}
+.form-inline-btn {
+    background-color: var(--misty-rose);
+    color: var(--primary);
+    font-size: $medium-font;
+    border-radius:$border-radius-4;
+    // min-width: 70px;
+    text-align: center;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    padding: 8px 10px;
+    font-weight: bold;
+}
+.userDetail{
+    font-size: 14px;
+    font-weight: bold;
+    padding: 15px 15px 5px 15px;
+
+}

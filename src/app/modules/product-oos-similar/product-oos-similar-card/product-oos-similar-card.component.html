@@ -94,9 +94,11 @@
             </ng-container>
         </ng-template>
         <div class="bottom-bar nonFixed" data-observeVisibility [debounceTime]="100" (visible)="onVisibleInViewPort()">
-            <button class="cart-btn ml-5 bold-txt f-14 f-left" (click)="buyNow(false)">
-                <i class="icon-cart1"></i>
-                <span>ADD TO CART</span>
+            <button class="cart-btn ml-5 bold-txt f-14 f-left b-bg" (click)="buyNow(false)">
+                <i *ngIf="!animationStart" class="icon-cart1"></i>
+                <span *ngIf="!animationStart">ADD TO CART</span>
+                <span *ngIf="animationStart"><lottie-player src="/assets/json/CartAnimation.json" background="transparent" speed="1"
+                    style="width:183px; height:51px;" autoplay></lottie-player></span>
             </button>
             <div class="buy-now f-right">
                 <button (click)="buyNow(true)">BUY NOW</button>
@@ -113,3 +115,4 @@
 <ng-container #addToCartToast></ng-container>
 <ng-container #productRFQ></ng-container>
 <ng-container #alertBox></ng-container>
+<ng-container #quickOrder></ng-container>

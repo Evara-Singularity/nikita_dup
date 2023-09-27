@@ -82,7 +82,11 @@ export class ProductOosSimilarCardComponent {
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   GLOBAL_CONSTANT = GLOBAL_CONSTANT;
   rawProductData: any;
-
+  // ondemad loaded components for quick order popUp
+  quickOrderInstance = null;
+  @ViewChild("quickOrder", { read: ViewContainerRef })
+  quickOrderContainerRef: ViewContainerRef;
+  productRawData: Subject<any> = new Subject();
   constructor(
     public productService: ProductService,
     private cfr: ComponentFactoryResolver,
@@ -334,6 +338,9 @@ export class ProductOosSimilarCardComponent {
   }
 
   buyNow(buyNow) {
+  if (this.animationStart) {
+    this.commonService.navigateTo('/quickorder', true)
+  } else {
     this._loader.setLoaderState(true);      
     of(this._cartService.getAddToCartProductItemRequest({
       productGroupData: this.productService.getSimilarProductBoByIndex(this.index),
@@ -351,9 +358,9 @@ export class ProductOosSimilarCardComponent {
           // incase grouped product ask for variant
           const productEntity = this.productService.productEntityFromProductBO(this.productService.getSimilarProductBoByIndex(this.index));
             setTimeout(() => { this._loader.setLoaderState(false); }, 1000);
-          this.loadVariantPop(productEntity, productDetails, buyNow);
+          this.loadVariantPop(productEntity, productDetails, buyNow, this.productService.getSimilarProductBoByIndex(this.index));
         } else {
-          this.addToCart(productDetails, buyNow)
+          this.addToCart(productDetails, buyNow, this.productService.getSimilarProductBoByIndex(this.index))
         }
       } else {
           setTimeout(() => { this._loader.setLoaderState(false);}, 1000);
@@ -362,9 +369,62 @@ export class ProductOosSimilarCardComponent {
     }, error => {
       console.log('buyNow ==>', error);
     })
+    
+  }
+  }
+  animationStart:boolean=false
+  private addToCart(productDetails, buyNow, rawData = this.productService.getSimilarProductBoByIndex(this.index)): void {
+    if(buyNow) {
+      this.productService.validateQuickCheckout(rawData).subscribe((res) => {
+        if (res != null) {
+          this.quickCheckoutPopUp(res.address, rawData);
+          // this._loader.setLoaderState(false);
+          this.commonService.setBodyScroll(null, false);
+          // this.analyticAddToCart(buyNow, this.cartQunatityForProduct, true);
+      } else {
+        this.proceedToCart(productDetails, buyNow)
+      }
+      })
+    } else {
+      this.proceedToCart(productDetails, buyNow)
+      this.animationStart=true
+    }
+    
   }
 
-  private addToCart(productDetails, buyNow): void {
+  async quickCheckoutPopUp(address, rawProductData) {
+    console.log(rawProductData);
+    if (!this.quickOrderInstance) {
+        this._loader.setLoaderState(true);
+        const { PdpQuickCheckoutComponent } = await import(
+            "../../../components/pdp-quick-checkout/pdp-quick-checkout.component"
+        ).finally(() => {
+            this._loader.setLoaderState(false);
+            this.cdr.detectChanges();
+        });
+        const factory = this.cfr.resolveComponentFactory(PdpQuickCheckoutComponent);
+        this.quickOrderInstance = this.quickOrderContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+
+        this.quickOrderInstance.instance["rawProductData"] = rawProductData;
+        this.quickOrderInstance.instance["productPrice"] = rawProductData.productPrice;
+        this.quickOrderInstance.instance["selectedProductBulkPrice"] = null;
+        this.quickOrderInstance.instance["cartQunatityForProduct"] = 1;
+        this.quickOrderInstance.instance["address"] = address;
+        this.quickOrderInstance.instance['isFrompdp'] = false;
+        (
+            this.quickOrderInstance.instance["isClose"] as EventEmitter<boolean>
+        ).subscribe((status) => {
+            this._router.navigate(["/checkout"]);
+        });
+        this.quickOrderInstance = null;
+        this.cdr.detectChanges();
+    }
+}
+  proceedToCart(productDetails, buyNow) {
     this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
       if (!result && this._cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api
@@ -394,9 +454,8 @@ export class ProductOosSimilarCardComponent {
       }
     })
   }
-
-  variantAddToCart(data) {
-    this.addToCart(data.product, data.buyNow)
+  variantAddToCart(data, productRawData = {}) {
+    this.addToCart(data.product, data.buyNow, productRawData)
   }
 
   async showAddToCartToast(message = null) {
@@ -417,12 +476,17 @@ export class ProductOosSimilarCardComponent {
     }
   }
 
-  async loadVariantPop(productEntity, productAddToCartSchema, buyNow = false) {
+  async loadVariantPop(productEntity, productAddToCartSchema, buyNow = false, productRawData=null) {
     if (!this.variantPopupInstance) {
       this._loader.setLoaderState(true);
       const { ProductVariantSelectListingPageComponent } = await import('../../../components/product-variant-select-listing-page/product-variant-select-listing-page.component').finally(() => {
         this._loader.setLoaderState(false);
       });
+      this.productRawData.subscribe((data) => {
+        if(data) {
+          productRawData = data;
+        }
+      })
       const factory = this.cfr.resolveComponentFactory(ProductVariantSelectListingPageComponent);
       this.variantPopupInstance = this.variantPopupInstanceRef.createComponent(factory, null, this.injector);
       this.variantPopupInstance.instance['product'] = productEntity;
@@ -438,12 +502,14 @@ export class ProductOosSimilarCardComponent {
       (this.variantPopupInstance.instance['selectedVariantOOO$'] as EventEmitter<boolean>).subscribe(msnId => {
         this.openRfqFormCore(msnId);
         this.variantPopupInstance = null;
+        this.productRawData.unsubscribe();
         this.variantPopupInstanceRef.detach();
         this.commonService.enableNudge = false;
       });
       (this.variantPopupInstance.instance['continueToCart$'] as EventEmitter<boolean>).subscribe(data => {
-        this.variantAddToCart(data);
+        this.variantAddToCart(data, productRawData);
         this.variantPopupInstance = null;
+        this.productRawData.unsubscribe();
         this.variantPopupInstanceRef.detach();
         this.commonService.enableNudge = false;
       });
@@ -451,6 +517,7 @@ export class ProductOosSimilarCardComponent {
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
         this.commonService.enableNudge = false;
+        this.productRawData.unsubscribe();
         // this.commonService.resetSearchNudgeTimer();
       });
       this.cdr.detectChanges()
@@ -475,6 +542,7 @@ export class ProductOosSimilarCardComponent {
         this.variantPopupInstance.instance['productGroupData'] = productRequest;
         this.variantPopupInstance.instance['product'] = product;
         this.variantPopupInstance.instance['isSelectedVariantOOO'] = outOfStockCheck;
+        this.productRawData.next(productBO);
         this.cdr.detectChanges()
       }
     }, error => {

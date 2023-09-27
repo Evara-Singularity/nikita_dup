@@ -7,7 +7,7 @@
                 <prepaid-offer-checkout></prepaid-offer-checkout>
             </div>
             <div class="fixed-bottom-cta pad-0">
-            <cod-and-pay-online *ngIf="is_cod_section == 2" [payableAmount]="payableAmount" (continueToPayment$)="continueToPayment$()" class="w-full bg-light-gray"></cod-and-pay-online>
+            <cod-and-pay-online *ngIf="is_cod_section == 2" [payableAmount]="payableAmount" (continueToPayment$)="continueToPayment$()" [deliveryAddress]="deliveryAddress" [billingAddress]="billingAddress" [invoiceType]="this.invoiceType" class="w-full bg-light-gray"></cod-and-pay-online>
             <div *ngIf="is_cod_section == 1 && isUserLoggedIn else hideContinue" class="payment-strip">
                 <div class="amount-left-section">
                     <span class="payable-amnt">Amount&nbsp;Payable

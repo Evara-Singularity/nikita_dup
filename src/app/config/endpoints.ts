@@ -128,7 +128,7 @@ export const ENDPOINTS = {
   PROCESS_D2C_TOKEN: '/createProductUrl/processD2cToken',
   GET_ADD_SIMILAR_PRODUCT_ON_CART:'/search/similarProducts/search',
   GET_COUPOUN_ON_BRAND_CATEGORY:'/cmsapi/prepaidDiscount/getByBrandNameAndCategoryCode',
-  CLICK_STREAM: '/clickStream/clickStreamData',
+  CLICK_STREAM: '/analytic/clickstream',
   PRODUCT_TAGS:'/cmsapi/getTagsByMsn?msn=',
   INFORMATION_VIDEO:'/category/getvideoLinkByCategoryCode',
   CUSTOMER_FEEDBACK:'/feedback/customerGetFeedback',

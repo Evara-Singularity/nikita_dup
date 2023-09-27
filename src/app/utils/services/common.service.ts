@@ -105,6 +105,8 @@ export class CommonService
     private copiedCouponInternal: string = '';
     public open360popup$: Subject<any> = new Subject<any>();
     public open360popup1$: Subject<any> = new Subject<any>();
+    private _displayAddToCartAnimation = new Subject<boolean>();
+    displayAddToCartAnimation$ = this._displayAddToCartAnimation.asObservable();
 
     constructor(
         @Inject(PLATFORM_ID) platformId,
@@ -1753,5 +1755,8 @@ export class CommonService
             return '';
         }
     }
+    setDisplayAddToCartAnimation(value: boolean) {
+        this._displayAddToCartAnimation.next(value);
+      }
 
 }

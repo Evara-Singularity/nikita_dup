@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service'
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'floating-button',
   templateUrl: './floating-button.component.html',
@@ -16,12 +17,18 @@ export class FloatingButtonComponent implements OnInit {
   @Output() onClick: EventEmitter<any> = new EventEmitter<any>();
   displayAddToCartAnimation: boolean=false;
   @Input() isHindiMode:boolean=false
+  private subscriptionAddToCartAnimation: Subscription;
 
   constructor(
     private commonService:CommonService
   ) { }
 
   ngOnInit(): void {
+    this.subscriptionAddToCartAnimation = this.commonService.displayAddToCartAnimation$.subscribe(
+      value => {
+        this.displayAddToCartAnimation = value
+      }
+    );
   }
 
   onClickButton() {
@@ -41,6 +48,9 @@ export class FloatingButtonComponent implements OnInit {
   ngAfterViewInit(){
     this.commonService.callLottieScriptGoToCart();
     this.addLottieScript();
+  }
+  ngOnDestroy() {
+    this.subscriptionAddToCartAnimation.unsubscribe();
   }
 }
 

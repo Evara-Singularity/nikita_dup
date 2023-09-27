@@ -136,7 +136,7 @@ export class BussinessInfoComponent {
       let pattern: RegExp =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       const isValid = pattern.test(firstName);
       if(!isValid) {
-        this._tms.show({ type: 'success', text: 'Kindly enter your valid Email id'});
+        this._tms.show({ type: 'success', text: 'Kindly enter your valid email id.'});
         this.showLoader=false;
         return;
       }

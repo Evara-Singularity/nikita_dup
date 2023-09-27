@@ -3262,6 +3262,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     async showFBT(lotteieInfo?: any) {
         if (lotteieInfo) {
             this.commonService.navigateTo('/quickorder', true)
+            this.analyticGoToCart(false, this.cartQunatityForProduct, true);
         }else
         {
             this.addToCart(false);
@@ -3300,6 +3301,60 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // cart methods 
+
+    analyticGoToCart(buyNow, quantity, isCod) {
+        const user = this.localStorageService.retrieve("user");
+        const taxonomy = this.rawProductData.productCategoryDetails["taxonomyCode"];
+        let taxo1 = "";
+        let taxo2 = "";
+        let taxo3 = "";
+        if (this.rawProductData.productCategoryDetails["taxonomyCode"]) {
+            taxo1 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[0] || "";
+            taxo2 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[1] || "";
+            taxo3 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[2] || "";
+        }
+
+        let ele = []; // product tags for adobe;
+        // this.productTags.forEach((element) =>
+        // {
+        //     ele.push(element.name);
+        // });
+        const tagsForAdobe = ele.join("|");
+
+        let page = {
+            linkPageName: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
+            linkName: (isCod ? "Quick cod  " : "Go to cart"),
+            channel: "pdp",
+        };
+
+        if (this.displayCardCta) {
+            page["linkName"] =
+                (isCod ? "Quick cod" : (!buyNow ? "Add to cart Overlay" : "Buy Now Overlay"));
+            if (this.popupCrouselInstance) {
+                page["linkName"] =
+                    isCod ? "Quick cod  Main Image Overlay " :
+                        (!buyNow
+                            ? "Add to cart Main Image Overlay"
+                            : "Buy Now Main Image Overlay")
+            }
+        }
+
+        let custData = this.commonService.custDataTracking;
+        let order = {
+            productID: this.rawProductData.defaultPartNumber, // TODO: partNumber
+            parentID: this.rawProductData.defaultPartNumber,
+            productCategoryL1: taxo1,
+            productCategoryL2: taxo2,
+            productCategoryL3: taxo3,
+            price: this.rawProductData.productPrice,
+            quantity: quantity,
+            brand: this.rawProductData.productBrandDetails["brandName"],
+            tags: tagsForAdobe,
+        };
+
+        this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
+    }
+
     analyticAddToCart(buyNow, quantity, isCod) {
         const user = this.localStorageService.retrieve("user");
         const taxonomy = this.rawProductData.productCategoryDetails["taxonomyCode"];

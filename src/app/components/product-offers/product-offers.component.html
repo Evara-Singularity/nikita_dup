@@ -50,37 +50,39 @@
                 <span class="no-text grey-txt">*{{ productStaticData.no_coupon_needed }}</span>
             </div>
         </div>
-        <div class="pwa-row inline-list-item more-coupon-offers copy-coupon-offer-section" *ngIf="promoCodes">
-            <div class="inline-list-icon">
-                <i class="icon-coupon-3-fill-1"></i>
-            </div>
-            <div class="inline-list-text coupon-offer-text">
-                <span>{{productStaticData.and_get}} {{promoCodes.promoDescription}}</span><br/>
-                <span class="green-promo-code-min" *ngIf="promoCodes.minCartValue > 0">
-                    {{productStaticData.min_cart_value.replace('___count___', promoCodes.minCartValue | currency:'INR': 'symbol': '1.0-0')}}
-                </span>
-            </div>
-            <div class="inline-list-link">
-                <div class="copy-coupon-container cursor" id="couponText" [ngClass]="{'active' :isCouponCopied }" (click)="copyCouponTextArea()">
-                    {{promoCodes.promoCode}}
-                </div>
-                <span class="copy-text" *ngIf="!isCouponCopied">Tap to Copy</span>
-                <span class="copy-text" *ngIf="isCouponCopied">Coupon Copied</span>
-            </div>
-        </div>
-        <div *ngIf="promoCodes && promoCodes.totalCoupons > 1" class="pwa-row inline-list-item" [ngClass]="{'more-coupon-offers-border': promoCodes && promoCodes.length < 2}">
-            <ng-container >
+        <ng-container *ngIf="(promoCodes && !isUserLoggedIn) || (promoCodes && isUserLoggedIn && promosChecked)">
+            <div class="pwa-row inline-list-item more-coupon-offers copy-coupon-offer-section">
                 <div class="inline-list-icon">
+                    <i class="icon-coupon-3-fill-1"></i>
                 </div>
-                <div class="inline-list-text">
-                    <a class="link-text" (click)="seeMoreOffers()">
-                        {{ productStaticData.see_more_coupons.replace('___promoCodes___', (promoCodes.totalCoupons - 1).toString()) }}
-                    </a>
+                <div class="inline-list-text coupon-offer-text">
+                    <span>{{productStaticData.and_get}} {{promoCodes.promoDescription}}</span><br/>
+                    <span class="green-promo-code-min" *ngIf="promoCodes.minCartValue > 0">
+                        {{productStaticData.min_cart_value.replace('___count___', promoCodes.minCartValue | currency:'INR': 'symbol': '1.0-0')}}
+                    </span>
                 </div>
                 <div class="inline-list-link">
+                    <div class="copy-coupon-container cursor" id="couponText" [ngClass]="{'active' :isCouponCopied }" (click)="copyCouponTextArea()">
+                        {{promoCodes.promoCode}}
+                    </div>
+                    <span class="copy-text" *ngIf="!isCouponCopied">Tap to Copy</span>
+                    <span class="copy-text" *ngIf="isCouponCopied">Coupon Copied</span>
                 </div>
-            </ng-container>
-        </div>
+            </div>
+            <div *ngIf="promoCodes && promoCodes.totalCoupons > 1" class="pwa-row inline-list-item" [ngClass]="{'more-coupon-offers-border': promoCodes && promoCodes.length < 2}">
+                <ng-container >
+                    <div class="inline-list-icon">
+                    </div>
+                    <div class="inline-list-text">
+                        <a class="link-text" (click)="seeMoreOffers()">
+                            {{ productStaticData.see_more_coupons.replace('___promoCodes___', (promoCodes.totalCoupons - 1).toString()) }}
+                        </a>
+                    </div>
+                    <div class="inline-list-link">
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
         <div class="pwa-row inline-list-item">
             <div class="inline-list-icon">
                 <i class="icon-coupon-3-fill-1"></i>

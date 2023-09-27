@@ -3323,19 +3323,16 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
         let page = {
             linkPageName: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
-            linkName: (isCod ? "Quick cod  " : "Go to cart"),
+            linkName: 'Go to cart',
             channel: "pdp",
         };
 
         if (this.displayCardCta) {
-            page["linkName"] =
-                (isCod ? "Quick cod" : (!buyNow ? "Add to cart Overlay" : "Buy Now Overlay"));
+            page["linkName"] ='Go to cart'
+               
             if (this.popupCrouselInstance) {
-                page["linkName"] =
-                    isCod ? "Quick cod  Main Image Overlay " :
-                        (!buyNow
-                            ? "Add to cart Main Image Overlay"
-                            : "Buy Now Main Image Overlay")
+                page["linkName"] ='Go to cart'
+                   
             }
         }
 

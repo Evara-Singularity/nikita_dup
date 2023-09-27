@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service'
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'floating-button',
   templateUrl: './floating-button.component.html',
@@ -14,35 +15,42 @@ export class FloatingButtonComponent implements OnInit {
   @Input() iconClass: string;
   @Input() isPdpMainProduct: boolean=false;
   @Output() onClick: EventEmitter<any> = new EventEmitter<any>();
-  @Input() displayAddToCartAnimation: boolean=false;
-  lotteieInfo:boolean= false;
+  displayAddToCartAnimation: boolean=false;
+  @Input() isHindiMode:boolean=false
+  private subscriptionAddToCartAnimation: Subscription;
 
   constructor(
     private commonService:CommonService
   ) { }
 
   ngOnInit(): void {
+    this.subscriptionAddToCartAnimation = this.commonService.displayAddToCartAnimation$.subscribe(
+      value => {
+        this.displayAddToCartAnimation = value
+      }
+    );
   }
 
   onClickButton() {
-    this.onClick.emit(this.lotteieInfo);
-    if (this.isPdpMainProduct && !this.displayAddToCartAnimation && !this.lotteieInfo ) {
+    this.onClick.emit(this.displayAddToCartAnimation);
+    if (this.isPdpMainProduct && !this.displayAddToCartAnimation) {
       this.displayAddToCartAnimation=true;
-      this.lotteieInfo=true
     }
   }
   
 
   addLottieScript(){
-		this.commonService.addLottieScriptSubject.subscribe(lottieInstance => {
-			this.commonService.callLottieScript();
+		this.commonService.addLottieScriptGoToCartSubject.subscribe(lottieInstance => {
+			this.commonService.callLottieScriptGoToCart();
 			lottieInstance.next();
 		});
 	}
   ngAfterViewInit(){
-    this.commonService.callLottieScript();
+    this.commonService.callLottieScriptGoToCart();
     this.addLottieScript();
-    this.commonService.setBodyScroll(null, false);
+  }
+  ngOnDestroy() {
+    this.subscriptionAddToCartAnimation.unsubscribe();
   }
 }
 

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service'
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'floating-button',
   templateUrl: './floating-button.component.html',
@@ -14,22 +15,26 @@ export class FloatingButtonComponent implements OnInit {
   @Input() iconClass: string;
   @Input() isPdpMainProduct: boolean=false;
   @Output() onClick: EventEmitter<any> = new EventEmitter<any>();
-  @Input() displayAddToCartAnimation: boolean=false;
+  displayAddToCartAnimation: boolean=false;
   @Input() isHindiMode:boolean=false
-  lotteieInfo:boolean= false;
+  private subscriptionAddToCartAnimation: Subscription;
 
   constructor(
     private commonService:CommonService
   ) { }
 
   ngOnInit(): void {
+    this.subscriptionAddToCartAnimation = this.commonService.displayAddToCartAnimation$.subscribe(
+      value => {
+        this.displayAddToCartAnimation = value
+      }
+    );
   }
 
   onClickButton() {
-    this.onClick.emit(this.lotteieInfo);
-    if (this.isPdpMainProduct && !this.displayAddToCartAnimation && !this.lotteieInfo ) {
+    this.onClick.emit(this.displayAddToCartAnimation);
+    if (this.isPdpMainProduct && !this.displayAddToCartAnimation) {
       this.displayAddToCartAnimation=true;
-      this.lotteieInfo=true
     }
   }
   
@@ -43,6 +48,9 @@ export class FloatingButtonComponent implements OnInit {
   ngAfterViewInit(){
     this.commonService.callLottieScriptGoToCart();
     this.addLottieScript();
+  }
+  ngOnDestroy() {
+    this.subscriptionAddToCartAnimation.unsubscribe();
   }
 }
 

@@ -14,9 +14,8 @@ export class FloatingButtonComponent implements OnInit {
   @Input() iconClass: string;
   @Input() isPdpMainProduct: boolean=false;
   @Output() onClick: EventEmitter<any> = new EventEmitter<any>();
-  @Input() displayAddToCartAnimation: boolean=false;
+  displayAddToCartAnimation: boolean=false;
   @Input() isHindiMode:boolean=false
-  lotteieInfo:boolean= false;
 
   constructor(
     private commonService:CommonService
@@ -26,10 +25,9 @@ export class FloatingButtonComponent implements OnInit {
   }
 
   onClickButton() {
-    this.onClick.emit(this.lotteieInfo);
-    if (this.isPdpMainProduct && !this.displayAddToCartAnimation && !this.lotteieInfo ) {
+    this.onClick.emit(this.displayAddToCartAnimation);
+    if (this.isPdpMainProduct && !this.displayAddToCartAnimation) {
       this.displayAddToCartAnimation=true;
-      this.lotteieInfo=true
     }
   }
   

@@ -150,12 +150,12 @@
 
 <app-search-not-found [helpText]="['No result found ', 'for your search.']"
     [helpSubText]="['Please check the spelling or try searching for something else']"
-    *ngIf="(isSearchPage || isFilter) && productsListingData?.products != undefined && productsListingData?.products?.length==0">
+    *ngIf="productsListingData?.products != undefined && productsListingData?.products?.length==0">
 </app-search-not-found>
 
-<ng-container *ngIf="!isSearchPage && !isFilter && productsListingData?.products != undefined && productsListingData?.products?.length==0">
+<!-- <ng-container *ngIf="!isSearchPage && !isFilter && productsListingData?.products != undefined && productsListingData?.products?.length==0">
     <app-page-not-delivered></app-page-not-delivered>
-</ng-container>
+</ng-container> -->
 
 <ng-container *ngIf="productsListingData && productsListingData.products && productsListingData.products.length > 0">
     <span data-observeVisibility [debounceTime]="100" (visible)="onVisiblePagination()"></span>

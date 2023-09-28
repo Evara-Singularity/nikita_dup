@@ -4,7 +4,7 @@ export const environment = {
   PROD_NAME: 'https://www.moglix.com',
   BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2',
-  BASE_URL_V3: 'https://api-gt.mogllix.com/api',
+  BASE_URL_V3: 'https://api-gt.moglix.com/api',
   APP_BASE_URL: 'https://api.moglix.com',
   IMAGE_ASSET_URL: 'https://cdn.moglix.com/online/prod/pwa/bundles/',
   SOCKET_URL: "https://socket.moglix.com",

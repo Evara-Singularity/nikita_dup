@@ -11,6 +11,7 @@ import { GlobalAnalyticsService } from '@app/utils/services/global-analytics.ser
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { ProductService } from '@app/utils/services/product.service';
 import { ProductListService } from '@app/utils/services/productList.service';
+import { Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ModalService } from '../modal/modal.service';
 import { ToastMessageService } from '../toastMessage/toast-message.service';
@@ -80,7 +81,12 @@ export class ProductCardCoreComponent implements OnInit {
   @ViewChild('variantPopup', { read: ViewContainerRef }) variantPopupInstanceRef: ViewContainerRef;
   productReviewCount: string;
   productStaticData = this._commonService.defaultLocaleValue;
-  
+  // ondemad loaded components for quick order popUp
+  quickOrderInstance = null;
+  @ViewChild("quickOrder", { read: ViewContainerRef })
+  quickOrderContainerRef: ViewContainerRef;
+  productRawData: Subject<any> = new Subject();
+  rawProductSubscription: Subscription = null;
   constructor(
     public _cartService: CartService,
     public _productListService: ProductListService,
@@ -126,21 +132,24 @@ export class ProductCardCoreComponent implements OnInit {
       map(productRawData => {
         // console.log('data ==> ', productRawData);
         if (productRawData['productBO']) {
-          return this._cartService.getAddToCartProductItemRequest({ productGroupData: productRawData['productBO'], buyNow });
+          return {
+            productDetails: this._cartService.getAddToCartProductItemRequest({ productGroupData: productRawData['productBO'], buyNow }),
+            productRawData: productRawData['productBO']  // Pass the productRawData along with productDetails
+          };
         } else {
           return null;
         }
       })
-    ).subscribe((productDetails: AddToCartProductSchema) => {
+    ).subscribe(({ productDetails, productRawData }: { productDetails: AddToCartProductSchema, productRawData: any }) => {
       if (productDetails) {
         if (productDetails['productQuantity'] && (productDetails['quantityAvailable'] < productDetails['productQuantity'])) {
           this._toastMessageService.show({ type: 'error', text: "Quantity not available" });
           return;
         }
         if (productDetails.filterAttributesList) {
-          this.loadVariantPop(this.product, productDetails, buyNow);
+          this.loadVariantPop(this.product, productDetails, buyNow, productRawData);
         } else {
-          this.addToCart(productDetails, buyNow)
+          this.addToCart(productDetails, buyNow, productRawData)
         }
       } else {
         this.common_showAddToCartToast('Product does not exist');
@@ -174,7 +183,9 @@ export class ProductCardCoreComponent implements OnInit {
         this.variantPopupInstance.instance['productGroupData'] = productRequest;
         this.variantPopupInstance.instance['product'] = product;
         this.variantPopupInstance.instance['isSelectedVariantOOO'] = outOfStockCheck;
+        this.productRawData.next(productBO);
         this.cdr.detectChanges();
+        return productBO;
       }
     }, error => {
       console.log('changeVariant ==>', error);
@@ -187,8 +198,8 @@ export class ProductCardCoreComponent implements OnInit {
     this.productGroupData = null;
   }
 
-  variantAddToCart(data) {
-    this.addToCart(data.product, data.buyNow)
+  variantAddToCart(data, productRawData = null) {
+    this.addToCart(data.product, data.buyNow, productRawData)
   }
 
   navigateToPDP() {
@@ -233,13 +244,24 @@ export class ProductCardCoreComponent implements OnInit {
     }
   }
 
-  async loadVariantPop(product, productGroupData, buyNow = false) {
+  private createProductRawDataObservable() {
+    return this.productRawData.asObservable();
+  }
+  
+
+  async loadVariantPop(product, productGroupData, buyNow = false, productRawData=null) {
     if (!this.variantPopupInstance) {
       this._loader.setLoaderState(true);
       const { ProductVariantSelectListingPageComponent } = await import('../../components/product-variant-select-listing-page/product-variant-select-listing-page.component').finally(() => {
         this._loader.setLoaderState(false);
         this._commonService.enableNudge = false;
       });
+      this.rawProductSubscription = null;
+      this.rawProductSubscription = this.createProductRawDataObservable().subscribe((data) => {
+        if(data) {
+          productRawData = data;
+        }
+      })
       const factory = this._cfr.resolveComponentFactory(ProductVariantSelectListingPageComponent);
       this.variantPopupInstance = this.variantPopupInstanceRef.createComponent(factory, null, this._injector);
       this.variantPopupInstance.instance['product'] = product;
@@ -255,17 +277,25 @@ export class ProductCardCoreComponent implements OnInit {
         this.openRfqFormCore(msnId);
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
+        this.rawProductSubscription && this.rawProductSubscription.unsubscribe();
+        // this.productRawData.unsubscribe();
         this._commonService.enableNudge = false;
       });
       (this.variantPopupInstance.instance['continueToCart$'] as EventEmitter<boolean>).subscribe(data => {
-        this.variantAddToCart(data);
+        console.log(data);
+        this.variantAddToCart(data, productRawData);
         this._commonService.enableNudge = false;
         this.variantPopupInstance = null;
+        this.rawProductSubscription && this.rawProductSubscription.unsubscribe();
+        // this.productRawData.unsubscribe();
         this.variantPopupInstanceRef.detach();
       });
       (this.variantPopupInstance.instance['hide$'] as EventEmitter<boolean>).subscribe(data => {
         this._commonService.enableNudge = false;
         // this._commonService.resetSearchNudgeTimer();
+        this.rawProductSubscription && this.rawProductSubscription.unsubscribe();
+        // this.productRawData.unsubscribe();
+        console.log('I am in ')
         this.variantPopupInstance = null;
         this.variantPopupInstanceRef.detach();
       });
@@ -350,7 +380,58 @@ export class ProductCardCoreComponent implements OnInit {
   }
 
 
-  private addToCart(productDetails, buyNow): void {
+  private addToCart(productDetails, buyNow, rawData): void {
+    if(buyNow) {
+      this._productService.validateQuickCheckout(rawData).subscribe((res) => {
+        if (res != null) {
+          this.quickCheckoutPopUp(res.address, rawData);
+          // this._loader.setLoaderState(false);
+          this._commonService.setBodyScroll(null, false);
+          // this.analyticAddToCart(buyNow, this.cartQunatityForProduct, true);
+      } else {
+        this.proceedToCart(productDetails, buyNow)
+      }
+      })
+    } else {
+      this.proceedToCart(productDetails, buyNow)
+    }
+    
+  }
+
+  async quickCheckoutPopUp(address, rawProductData) {
+    console.log(rawProductData);
+    if (!this.quickOrderInstance) {
+        this._loader.setLoaderState(true);
+        const { PdpQuickCheckoutComponent } = await import(
+            "../../components/pdp-quick-checkout/pdp-quick-checkout.component"
+        ).finally(() => {
+            this._loader.setLoaderState(false);
+            this.cdr.detectChanges();
+        });
+        const factory = this._cfr.resolveComponentFactory(PdpQuickCheckoutComponent);
+        this.quickOrderInstance = this.quickOrderContainerRef.createComponent(
+            factory,
+            null,
+            this._injector
+        );
+
+        this.quickOrderInstance.instance["rawProductData"] = rawProductData;
+        this.quickOrderInstance.instance["productPrice"] = rawProductData.productPrice;
+        this.quickOrderInstance.instance["selectedProductBulkPrice"] = null;
+        this.quickOrderInstance.instance["cartQunatityForProduct"] = 1;
+        this.quickOrderInstance.instance["address"] = address;
+        this.quickOrderInstance.instance['isFrompdp'] = false;
+        (
+            this.quickOrderInstance.instance["isClose"] as EventEmitter<boolean>
+        ).subscribe((status) => {
+            this._router.navigate(["/checkout"]);
+        });
+        this.quickOrderInstance = null;
+        this.cdr.detectChanges();
+    }
+}
+
+  proceedToCart(productDetails, buyNow) {
     this._cartService.addToCart({ buyNow, productDetails }).subscribe(result => {
       if (!result && this._cartService.buyNowSessionDetails) {
         // case: if user is not logged in then buyNowSessionDetails holds temp cartsession request and used after user logged in to called updatecart api

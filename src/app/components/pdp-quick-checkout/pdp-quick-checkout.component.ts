@@ -48,6 +48,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   @Input("cartQunatityForProduct") cartQunatityForProduct;
   @Input("address") address;
   @ViewChild(BottomMenuComponent) _bottomMenuComponent: BottomMenuComponent;
+  @Input('isFrompdp') isFrompdp = true;
   //outputs
   @Output() isClose: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -152,6 +153,7 @@ export class PdpQuickCheckoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.rawProductData);
     this.returnProductDetails().subscribe((result) => {
       this.addTocart(result, true);
       this.item = result;
@@ -219,7 +221,9 @@ export class PdpQuickCheckoutComponent implements OnInit {
         buyNow: true,
         selectPriceMap: this.selectedProductBulkPrice,
         quantity: this.cartQunatityForProduct,
-      }, true)
+        languageMode: this.commonService.isHindiUrl,
+        originalProductBO: this.rawProductData['originalProductBO']
+      }, this.isFrompdp)
     );
   }
 

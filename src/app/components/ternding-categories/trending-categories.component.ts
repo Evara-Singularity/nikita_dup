@@ -11,7 +11,7 @@ import { CommonService } from "@app/utils/services/common.service";
 })
 export class TrendingCategoriesComponent {
     @Input('flyOutData') flyOutData: CategoryData[];
-    @Input('tocd') tocd;
+    @Input('tocd') tocd = "Trending Categories";
     
     constructor(private _commonService: CommonService, private router: Router) {}
 

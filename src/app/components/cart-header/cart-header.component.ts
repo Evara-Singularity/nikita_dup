@@ -48,6 +48,7 @@ export class CartHeaderComponent implements OnInit, OnDestroy
 		this.noOfCartItems = this._cartService.getCartItemsCount();
 	}
 
+
 	handleNavigation()
 	{
 		if (this.isCheckout && this._cartService.buyNow) {

@@ -87,6 +87,7 @@ export class CommonService
 
     public _sideNavToggle: Subject<boolean> = new Subject<boolean>();
     public addLottieScriptSubject: Subject<any> = new Subject<any>();
+    public addLottieScriptGoToCartSubject: Subject<any> = new Subject<any>();
     public changeStaticJson: Subject<any> = new Subject<any>();
     private gaGtmData: { pageFrom?: string; pageTo?: string; list?: string };
 
@@ -104,6 +105,8 @@ export class CommonService
     private copiedCouponInternal: string = '';
     public open360popup$: Subject<any> = new Subject<any>();
     public open360popup1$: Subject<any> = new Subject<any>();
+    private _displayAddToCartAnimation = new Subject<boolean>();
+    displayAddToCartAnimation$ = this._displayAddToCartAnimation.asObservable();
 
     constructor(
         @Inject(PLATFORM_ID) platformId,
@@ -1633,7 +1636,33 @@ export class CommonService
         } catch (error) {
             console.log('callLottieScript', error);
         }
-    }   
+    } 
+
+    callLottieScriptGoToCart(){
+        try {
+            if(1){
+                let script = this._renderer2.createElement('script');
+                script.src = CONSTANTS.CDN_LOTTIE_PATH;
+                script.id = 'lottieScript';
+                let scripts = this._document.getElementsByTagName('script');
+                for (var i = scripts.length; i--;) {
+                    if (scripts[i].src == CONSTANTS.CDN_LOTTIE_PATH){
+                        return;
+                    }
+                    else{
+                        this._renderer2.appendChild(this._document.body,script);
+                        script.onload = ()=>{
+                            console.log("lottie loaded");
+                        };
+                    }
+                 }
+            }
+        } catch (error) {
+            console.log('callLottieScript', error);
+        }
+    }
+    
+    
   
     showgoldMembershipPopup(){
         this.goldMemberPopupOpened.next();
@@ -1713,5 +1742,21 @@ export class CommonService
         }
         return false;
     }
+
+    toTitleCase(str) {
+        if (str && str.length) {
+            return str
+                .toLowerCase()
+                .replaceAll('-', ' ')
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        } else {
+            return '';
+        }
+    }
+    setDisplayAddToCartAnimation(value: boolean) {
+        this._displayAddToCartAnimation.next(value);
+      }
 
 }

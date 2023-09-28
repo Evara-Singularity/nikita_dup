@@ -113,7 +113,7 @@
                         <input class="youtube_icon" (click)="$event.stopPropagation();showYTVideo(video['link'])"
                             type="image" src="{{imagePathAsset}}assets/img/youtube_icon.svg"
                             border="border of the image" alt="text">
-                        <img [src]="video['link'] | ytthumbnail:'hqdefault'">
+                        <img [src]="video['link'] | ytthumbnail:'hqdefault'" alt="">
                         <a target="_blank" href="{{video.link}}"><span class="heading-4 mt-10">{{video.title}}</span></a>
                     </div>
                 </div>

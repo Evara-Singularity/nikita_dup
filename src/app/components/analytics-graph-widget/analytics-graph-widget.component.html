@@ -38,7 +38,8 @@
                 <div *ngFor="let attribute of attributeDataWithoutProcessing;let i = index" class="attribute-chart-container"> 
                     <div class="widget-heading">
                         <p><img src="{{imagePathAsset}}assets/img/insight.svg"> {{ productStaticData?.moglix_insight}}</p>
-                        <p class="heading-txt">{{categoryName}} {{productStaticData.purchase_as_per}} {{attribute.attributeName |  titlecase}}</p>
+                        <p class="heading-txt" *ngIf='!commonService.isHindiUrl'>{{categoryName}} {{productStaticData.purchase_as_per}} {{attribute.attributeName |  titlecase}}</p>
+                        <p class="heading-txt" *ngIf='commonService.isHindiUrl'>{{attribute.attributeName |  titlecase}} {{productStaticData.purchase_as_per}} {{categoryName}}</p>
                     </div>
                     <div [id]="'attribute-chart'+i" style="width:100%;"></div>
                     <div  (click)="generateFragmentUrl(attribute.attributeName,getMaxValue(attribute.attributePercentange,'percent'))" class="card att-card">

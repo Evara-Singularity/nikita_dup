@@ -2,6 +2,7 @@
 @font-face {
     font-family: "icomooon_pwa";
     src: url('#{$cdn_url}assets/fonts/icomoon_pwa.ttf') format('truetype');
+    font-display: swap;
 }
 // font-icons
 @import './app/scss/root';
@@ -13,16 +14,15 @@
 @import './app/scss/base/typography.scss';
 @import './app/scss/layout/grid.scss';
 @import './app/scss/utils/spacing.scss';
-@import './app/scss/utils/utilities.scss';
 @import './app/scss/components/alert-box.scss';
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
-}*:focus {
-    outline: none;
+    &:focus{
+      outline: none;
+    } 
 }
 body {
     background: var(--ghost-white);
@@ -49,40 +49,14 @@ a {
     color: var(--onyx-black);
     text-decoration: none;
 }
-.promo-code {
-    input {
-        float: left;
-        border: solid var(--spanish-gray);
-        border-width: 1px 0 1px 1px;
-        height: 40px;
-        border-top-left-radius: 2px;
-        border-bottom-left-radius: 2px;
-        width: 70%;
-        padding-left: 10px;
-        width: calc(100% - 115px);
-    }
-
-    button {
-        float: left;
-        border: 1px solid var(--primary);
-        height: 40px;
-        width: 115px;
-        border-top-right-radius: 2px;
-        border-bottom-right-radius: 2px;
-        background: var(--primary);
-        color: var(--white);
-        font-size: $large-font;
-        font-weight: 600;
-    }
-}
 
 .hide {
     display: none;
 }
 
-.plp-container-header-adjust{
-    margin-top: 170px;
-}
+// .plp-container-header-adjust{
+//     margin-top: 170px;
+// }
 // Common Header Css
 header-nav {
     &.inner_head {

@@ -37,6 +37,10 @@
     .prod-desc-video-container {
         .prod-desc-video {
             position: relative;
+            img{
+                width: 100%;
+                height: 260px;
+            }
         }
         position: relative;
     }

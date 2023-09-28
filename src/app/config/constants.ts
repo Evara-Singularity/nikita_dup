@@ -8,6 +8,7 @@ let siemaOptionsObject: {
 
 export const CONSTANTS = {
   PROD: environment.PROD_NAME,
+  GATEWAY_API: environment.BASE_URL_V3,
   NEW_MOGLIX_API: environment.BASE_URL,
   NEW_MOGLIX_API_V2: environment.BASE_URL_V2,
   APP_BASE_URL: environment.APP_BASE_URL,
@@ -713,5 +714,23 @@ export const CONSTANTS = {
   // HOME_CATEGORY_COLOR6:'#E4D8D5',
   // HOME_CATEGORY_COLOR7:'#D2DDDF',
   POC_MSN : 'msn2vvrozzffc9',
+  TRUECALLER_PARAMS : {
+    type: "btmsheet",
+    requestNonce: "",
+    partnerKey: "",
+    partnerName: "by moglix.com",
+    lang: "en",
+    privacyUrl: "",
+    termsUrl: "",
+    loginPrefix: "continue",
+    loginSuffix: "signin",
+    ctaPrefix: "continuewith",
+    ctaColor: "%23f75d34",
+    ctaTextColor: "%23f75d34",
+    btnShape: "rect",
+    skipOption: "",
+    ttl: 8000,
+}
 };
+
 export default CONSTANTS;

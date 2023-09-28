@@ -37,6 +37,7 @@ export class SharedAuthService implements OnInit
         GETOTP: { method: 'POST', url: BASEURL + ENDPOINTS.LOGIN_URL },
         VALIDATEOTP: { method: 'POST', url: BASEURL + ENDPOINTS.LOGIN_OTP },
         SIGNUP: { method: 'POST', url: BASEURL + ENDPOINTS.SIGN_UP },
+        TRUECALLER_FLOW: { method: 'GET', url: BASEURL + ENDPOINTS.FETCH_TRUECALLER},
         USEREXISTS: { method: 'POST', url: BASEURL + ENDPOINTS.VERIFY_CUSTOMER },
         AUTHENTICATE: { method: 'POST', url: BASEURL + ENDPOINTS.LOGIN_AUTHENTICATE },
         UPDATEPASSWORD: { method: 'POST', url: BASEURL + ENDPOINTS.FORGOT_PASSWORD },
@@ -116,6 +117,11 @@ export class SharedAuthService implements OnInit
 
     resetCheckoutLoginSteps(){
         this._checkoutTabChage.next(this.LOGIN_TAB);
+    }
+
+    fetchTrueCallerUser(data)
+    {
+        return this.dataService.callRestful(this.BASEURLS.TRUECALLER_FLOW.method, this.BASEURLS.TRUECALLER_FLOW.url, { params: data });
     }
 
 }

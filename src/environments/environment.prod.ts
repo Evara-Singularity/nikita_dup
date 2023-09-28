@@ -4,7 +4,7 @@ export const environment = {
   PROD_NAME: 'https://www.moglix.com',
   BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2',
-  BASE_URL_V3: 'https://api-gt.moglilabs.com/api',
+  BASE_URL_V3: 'https://api-gt.mogllix.com/api',
   APP_BASE_URL: 'https://api.moglix.com',
   IMAGE_ASSET_URL: 'https://cdn.moglix.com/online/prod/pwa/bundles/',
   SOCKET_URL: "https://socket.moglix.com",
@@ -45,5 +45,6 @@ export const environment = {
     FEATURE_ARRIVAL: "cm976581",
     SECONDARY_CAROUSEL_DATA:"cm336308"
   },
+  TRUECALLER_PARTNER_KEY: "7ykXf4a159283e0a74ce8928af23c91b0975b",
   logger: false
 };

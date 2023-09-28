@@ -49,5 +49,6 @@ export const environment = {
     FEATURE_ARRIVAL: "cm976581",
     SECONDARY_CAROUSEL_DATA:"cm336308"
   },
+  TRUECALLER_PARTNER_KEY: "o68do1c71f3f1e8af4c13af239b29cd3b1eba",
   logger: true
 };

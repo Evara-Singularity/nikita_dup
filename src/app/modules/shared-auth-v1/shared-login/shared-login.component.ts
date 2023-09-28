@@ -13,8 +13,8 @@ import { v4 as uuidv4 } from 'uuid';
 import CONSTANTS from '../../../../app/config/constants';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
-import { switchMap, takeWhile } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { environment } from 'environments/environment';
+
 
 
 export interface BackurlWithTitle {
@@ -71,7 +71,6 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
         private _route: ActivatedRoute,
         private _common: CommonService,
         public localStorageService: LocalStorageService,
-        private http: HttpClient,
         private _commonService: CommonService,
     ) {
         this.truecallerRequestId = uuidv4()
@@ -79,6 +78,7 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         if (this._common.isBrowser) {
+            //Invoke truecaller only for android device
             if (this.isAndroid()) {
                 this.initializeTruecaller()
             }
@@ -129,36 +129,20 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
             requestId: this.truecallerRequestId
         }).subscribe((response) => {
             if (response["code"] == 200 && response["status"]) {
-                // alert(JSON.stringify(response["data"]))
                 this.processAuthenticaton(response["data"])
             }
         });
     }
 
     initializeTruecaller(): void {
-        console.log("initializeTruecaller: called")
-        const params = {
-            type: "btmsheet",
-            requestNonce: this.truecallerRequestId,
-            partnerKey: "o68do1c71f3f1e8af4c13af239b29cd3b1eba",
-            partnerName: "moglix-app-qa",
-            lang: "en",
-            privacyUrl: "",
-            termsUrl: "",
-            loginPrefix: "continue",
-            loginSuffix: "signin",
-            ctaPrefix: "continuewith",
-            ctaColor: "%23f75d34",
-            ctaTextColor: "%23f75d34",
-            btnShape: "rect",
-            skipOption: "",
-            ttl: 8000,
-        };
-
+        const params = CONSTANTS.TRUECALLER_PARAMS;
+        params.requestNonce = this.truecallerRequestId
+        params.partnerKey = environment.TRUECALLER_PARTNER_KEY
         let url = `truecallersdk://truesdk/web_verify?` + this.objectToQueryString(params);
         window.location.href = url
         this.timeoutId = setTimeout(() => {
             if (document.hasFocus()) {
+                //It means truecaller app is not available in user's phone
                 this.isTruecallerFlowInvoked = false
             }
             else {

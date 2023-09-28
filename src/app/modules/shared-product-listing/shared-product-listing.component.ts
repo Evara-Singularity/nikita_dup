@@ -67,6 +67,8 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
   @Input() isAcceptLanguage = false;
   showNudge = true;
   @Input() pageLinkName = '';
+  isFilter: boolean = false;
+  isSearchPage: boolean = false;
   constructor(
     private _componentFactoryResolver: ComponentFactoryResolver,
     private _injector: Injector,
@@ -85,6 +87,7 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
     this.updateFilterCountAndSort();
     this.getUpdatedSession();
     this.initializeLocalization();
+    this.checkFiltersAndSearchPage();
     const languagePrefrence = this.localStorageService.retrieve("languagePrefrence");
     this.updateUserLanguagePrefrence(languagePrefrence);
   }
@@ -113,6 +116,17 @@ export class SharedProductListingComponent implements OnInit, OnDestroy, AfterVi
         }
       });
     }
+  }
+  checkFiltersAndSearchPage(){
+    const isSearchUrl = this._activatedRoute.snapshot.queryParams?.['controller'];
+    if(isSearchUrl == "search"){ this.isSearchPage = true;}
+    this._activatedRoute.fragment.subscribe(result=>{
+      if(result == undefined || result == null){ 
+        this.isFilter = false;
+      }else{
+        this.isFilter = true;
+      }
+    });
   }
 
   updateUserLang() {

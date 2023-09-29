@@ -23,7 +23,7 @@ export class AdsenseService {
     brandName: string = null,
     msn: string = null
   ) {
-    let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.ADSENSE + "?platform=PWA";
+    let url = CONSTANTS.GATEWAY_API + ENDPOINTS.ADSENSE + "?platform=PWA";
     url = categoryId ? url + "&category=" + categoryId : url;
     url = brandName ? url + "&brand=" + brandName : url;
     url = msn ? url + "&msn=" + msn : url;

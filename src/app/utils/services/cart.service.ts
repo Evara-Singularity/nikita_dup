@@ -132,7 +132,7 @@ export class CartService
 
     getShippingValue(cartSession)
     {
-        return this._dataService.callRestful('POST', CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.GET_ShippingValue, { body: cartSession }).
+        return this._dataService.callRestful('POST', CONSTANTS.GATEWAY_API + ENDPOINTS.GET_ShippingValue, { body: cartSession }).
             pipe(catchError((res: HttpErrorResponse) => { return of({ status: false, statusCode: res.status }); }));
     }
 
@@ -1341,7 +1341,7 @@ export class CartService
     getShippingChargesApi(obj)
     {
         console.log(1);
-        let url = CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.CART.getShippingValue;
+        let url = CONSTANTS.GATEWAY_API + ENDPOINTS.CART.getShippingValue;
         return this._dataService.callRestful("POST", url, { body: obj }).pipe(
             catchError((res: HttpErrorResponse) =>
             {
@@ -1771,7 +1771,7 @@ export class CartService
     verifyShippingCharges(cartSession)
     {
         const SHIPPING_DATA = this.getShippingObj(cartSession);
-        const URL = `${CONSTANTS.NEW_MOGLIX_API}${ENDPOINTS.CART.getShippingValue}`;
+        const URL = `${CONSTANTS.GATEWAY_API}${ENDPOINTS.CART.getShippingValue}`;
         return this._dataService.callRestful("POST", URL, { body: SHIPPING_DATA }).pipe(
             map((response) =>
             {

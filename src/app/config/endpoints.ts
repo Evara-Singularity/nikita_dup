@@ -20,7 +20,7 @@ export const ENDPOINTS = {
   FETCH_TRUECALLER: "/auth/truecaller/fetch?",
   CART: {
     validatePromoCode: "/promoCode/validatePromoCode",
-    getShippingValue: "/shipping/getShippingValue",
+    getShippingValue: "/shipment/getShippingValue",
     getAllActivePromoCodes: "/promoCode/getAllActivePromoCodes",
     getPromoCodeDetails: "/promoCode/getPromoCodeDetails",
     validateUserPromoCode: "/promoCode/validatePromoForUser"
@@ -84,7 +84,7 @@ export const ENDPOINTS = {
   SET_SetCartValidationMessages: "/cart/setCartValidationMessages",
   VALIDATE_CART: "/cart/validateCart",
   GET_CartByUser: "/cart/getCartByUser",
-  GET_ShippingValue: "/shipping/getShippingValue",
+  GET_ShippingValue: "/shipment/getShippingValue",
   GET_CategoryExtras: "/category/getcategoryExtras?requestType=",
   GET_CategorySchema: "/quest/getCategorySchema?categoryCode=",
   GET_RELATED_ARTICLES: "/cmsApi/getArticlesListByCategory?categoryCode=",

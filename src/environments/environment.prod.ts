@@ -4,6 +4,7 @@ export const environment = {
   PROD_NAME: 'https://www.moglix.com',
   BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2',
+  BASE_URL_V3: 'https://api-gt.moglix.com/api',
   APP_BASE_URL: 'https://api.moglix.com',
   IMAGE_ASSET_URL: 'https://cdn.moglix.com/online/prod/pwa/bundles/',
   SOCKET_URL: "https://socket.moglix.com",
@@ -12,7 +13,7 @@ export const environment = {
   CDN_IMAGE_URL: 'https://cdn.moglix.com/',
   GTM_ANALYTICS_CODE: 'GTM-PMPXQQ',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-fd00645b6c3b.min.js',
-  buildVersion: '25.18',
+  buildVersion: '25.19',
   LOG_FILE_PATH: "/var/log/moglix/online/pwa/",
   SOCIAL_LOGIN: {
     "google": {
@@ -44,5 +45,6 @@ export const environment = {
     FEATURE_ARRIVAL: "cm976581",
     SECONDARY_CAROUSEL_DATA:"cm336308"
   },
+  TRUECALLER_PARTNER_KEY: "7ykXf4a159283e0a74ce8928af23c91b0975b",
   logger: false
 };

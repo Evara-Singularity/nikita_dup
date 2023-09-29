@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ToastMessageService } from '@app/modules/toastMessage/toast-message.service';
@@ -8,14 +8,16 @@ import { CommonService } from '@app/utils/services/common.service';
 import { GlobalLoaderService } from '@app/utils/services/global-loader.service';
 import { UsernameValidator } from '@app/utils/validators/username.validator';
 import { LocalStorageService } from 'ngx-webstorage';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 import CONSTANTS from '../../../../app/config/constants';
 import { SharedAuthUtilService } from '../shared-auth-util.service';
 import { SharedAuthService } from '../shared-auth.service';
+import { environment } from 'environments/environment';
 
 
-export interface BackurlWithTitle
-{
+
+export interface BackurlWithTitle {
     backurl: string,
     title: string
 }
@@ -25,9 +27,8 @@ export interface BackurlWithTitle
     templateUrl: './shared-login.component.html',
     styleUrls: ['./shared-login.component.scss']
 })
-export class SharedLoginComponent implements OnInit
-{
-
+export class SharedLoginComponent implements OnInit, OnDestroy {
+    readonly CHECKOUT_ADDRESS = "/checkout/address";
     readonly imagePath = CONSTANTS.IMAGE_ASSET_URL;
     readonly LOGIN_USING_PHONE = this._sharedAuthService.AUTH_USING_PHONE;
     readonly LOGIN_USING_EMAIL = this._sharedAuthService.AUTH_USING_EMAIL;
@@ -49,11 +50,14 @@ export class SharedLoginComponent implements OnInit
     isLoginEmailFormSubmitted: boolean = false;
     emailAutoCompleteSuggestion: string[] = [];
     bURLTitleSubscriber: Subscription = null;
-    headerTitle:string = null;
+    headerTitle: string = null;
     displaySuggestion = true;
-    authFlow:AuthFlowType = null;
+    authFlow: AuthFlowType = null;
     paramsSubscriber = null;
     state;
+    private truecallerRequestId: string = ""
+    private isTruecallerFlowInvoked = true;
+    private timeoutId: any;
 
     constructor(
         private _fb: FormBuilder,
@@ -67,13 +71,19 @@ export class SharedLoginComponent implements OnInit
         private _route: ActivatedRoute,
         private _common: CommonService,
         public localStorageService: LocalStorageService,
-    ) { }
+        private _commonService: CommonService,
+    ) {
+        this.truecallerRequestId = uuidv4()
+    }
 
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         if (this._common.isBrowser) {
+            //Invoke truecaller only for android device
+            if (this.isAndroid()) {
+                this.initializeTruecaller()
+            }
             this.authFlow = this._localAuthService.getAuthFlow();
-            if (this.authFlow) { 
+            if (this.authFlow) {
                 this.updateControls(this.authFlow.identifier)
             }
         }
@@ -83,20 +93,95 @@ export class SharedLoginComponent implements OnInit
         this.isLoginPopup ? this._sharedAuthUtilService.sendLoginPopUpTracking() : this._sharedAuthUtilService.sendLoginSignupGenericPageLoadTracking(this.headerTitle || "mainpage")
     }
 
+    ngOnDestroy(): void {
+        clearTimeout(this.timeoutId);
+    }
+
+
+    processAuthenticaton(response) {
+        this._sharedAuthUtilService.sendGenericPageClickTracking(true);
+        const BACKURLTITLE = this._localAuthService.getBackURLTitle();
+        let REDIRECT_URL = (BACKURLTITLE && BACKURLTITLE['backurl']) || this._sharedAuthService.redirectUrl;
+        const queryParams = this._commonService.extractQueryParamsManually(location.search.substring(1))
+        if (queryParams.hasOwnProperty('state') && queryParams.state === 'raiseRFQQuote') {
+            REDIRECT_URL += '?state=' + queryParams['state'];
+        }
+        this._localAuthService.setUserSession(response);
+        this._localAuthService.clearAuthFlow();
+        this._localAuthService.clearBackURLTitle();
+        if (this.isLoginPopup) {
+            // console.log('popup login', this.isLoginPopup);
+            this._sharedAuthUtilService.loginPopUpAuthenticationProcess(response).subscribe(cartSession => {
+                this.removeAuthComponent$.emit();
+            })
+        } else {
+            // console.log('normal login', this.isLoginPopup);
+            this._sharedAuthUtilService.processAuthentication(
+                response,
+                this.isCheckout,
+                ((this.isCheckout) ? this.CHECKOUT_ADDRESS : REDIRECT_URL)
+            );
+        }
+    }
+
+    private fetchTruecallerUserFlow() {
+        this._sharedAuthService.fetchTrueCallerUser({
+            requestId: this.truecallerRequestId
+        }).subscribe((response) => {
+            if (response["code"] == 200 && response["status"]) {
+                this.processAuthenticaton(response["data"])
+            }
+        });
+    }
+
+    initializeTruecaller(): void {
+        const params = CONSTANTS.TRUECALLER_PARAMS;
+        params.requestNonce = this.truecallerRequestId
+        params.partnerKey = environment.TRUECALLER_PARTNER_KEY
+        let url = `truecallersdk://truesdk/web_verify?` + this.objectToQueryString(params);
+        window.location.href = url
+        this.timeoutId = setTimeout(() => {
+            if (document.hasFocus()) {
+                //It means truecaller app is not available in user's phone
+                this.isTruecallerFlowInvoked = false
+            }
+            else {
+                this.fetchTruecallerUserFlow();
+            }
+        }, 600);
+    }
+
     addQueryParamSubscribers() {
         this.paramsSubscriber = this.activatedRoute.queryParams.subscribe(data => {
             this._sharedAuthService.redirectUrl = data['backurl'];
         });
     }
 
-    intiatePopUpLogin(){
+    intiatePopUpLogin() {
         this.removeAuthComponent$.emit();
     }
 
+    isAndroid(): boolean {
+        const userAgent = navigator.userAgent.toLowerCase();
+        return /android/.test(userAgent);
+    }
 
-    updateControls(identifier:string)
-    {
-        if (identifier.includes("@")){
+
+    objectToQueryString(obj) {
+        const keyValuePairs = [];
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                const value = obj[key];
+                if (value !== undefined && value !== null) {
+                    keyValuePairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+                }
+            }
+        }
+        return keyValuePairs.join('&');
+    }
+
+    updateControls(identifier: string) {
+        if (identifier.includes("@")) {
             this.emailFC.patchValue(identifier);
             this.loginType = this.LOGIN_USING_EMAIL;
             return;
@@ -105,10 +190,8 @@ export class SharedLoginComponent implements OnInit
         this.loginType = this.LOGIN_USING_PHONE;
     }
 
-    handleBackUrlTitle()
-    {
-        this._route.queryParamMap.subscribe(params =>
-        {
+    handleBackUrlTitle() {
+        this._route.queryParamMap.subscribe(params => {
             this.headerTitle = params.get('title');
         })
         const DATA: BackurlWithTitle = this._localAuthService.getBackURLTitle();
@@ -117,8 +200,7 @@ export class SharedLoginComponent implements OnInit
         }
     }
 
-    submit(logintype)
-    {
+    submit(logintype) {
         switch (logintype) {
             case this.LOGIN_USING_PHONE:
                 this.isLoginNumberFormSubmitted = true;
@@ -139,21 +221,19 @@ export class SharedLoginComponent implements OnInit
      * signup flow with otp
      * action: redirect to otp without password option, as user registration is not done 
      * */
-    validateUserWithPhone()
-    {
+    validateUserWithPhone() {
         this._loader.setLoaderState(true);
         const body = { email: '', phone: this.phoneFC.value, type: 'p' };
-        this._sharedAuthService.isUserExist(body).subscribe(response =>
-        {
+        this._sharedAuthService.isUserExist(body).subscribe(response => {
             if (response['statusCode'] == 200) {
                 const isUserExists = response['exists'] as boolean;
                 //NOTE:using local storage//flowType, identifierType, identifier, data
                 const FLOW_TYPE = (isUserExists) ? this._sharedAuthService.AUTH_LOGIN_FLOW : this._sharedAuthService.AUTH_SIGNUP_FLOW;
                 this._localAuthService.setAuthFlow(isUserExists, FLOW_TYPE, this._sharedAuthService.AUTH_USING_PHONE, this.phoneFC.value);
                 if (this.isLoginPopup) { // navigate to next popup screen
-                   this.navigateToNextPopUp(isUserExists);
-                } else { 
-                   this.navigateToNext(isUserExists);
+                    this.navigateToNextPopUp(isUserExists);
+                } else {
+                    this.navigateToNext(isUserExists);
                 }
             } else {
                 this._tms.show({ type: 'error', text: response['message'] });
@@ -163,16 +243,14 @@ export class SharedLoginComponent implements OnInit
     }
 
     navigateToNextPopUp(isUserExists) {
-        const LINK = (isUserExists) ? 'otp': 'sign-up';
+        const LINK = (isUserExists) ? 'otp' : 'sign-up';
         this.togglePopUp$.emit(LINK);
     }
 
-    validateUserWithEmail()
-    {
+    validateUserWithEmail() {
         this._loader.setLoaderState(true);
         const body = { email: this.emailFC.value, phone: '', type: 'e' };
-        this._sharedAuthService.isUserExist(body).subscribe(response =>
-        {
+        this._sharedAuthService.isUserExist(body).subscribe(response => {
             if (response['statusCode'] == 200) {
                 const isUserExists = response['exists'] as boolean;
                 //NOTE:using local storage//flowType, identifierType, identifier, data
@@ -183,21 +261,19 @@ export class SharedLoginComponent implements OnInit
                     this.navigateToNextPopUp(isUserExists);
                 } else {
                     this.navigateToNext(isUserExists);
-                }          
-              } else {
+                }
+            } else {
                 this._tms.show({ type: 'error', text: response['message'] });
             }
             this._loader.setLoaderState(false);
         })
     }
- 
-    clearSuggestion()
-    {
+
+    clearSuggestion() {
         this.emailAutoCompleteSuggestion = [];
     }
 
-    createEmailSuggestion(value)
-    {
+    createEmailSuggestion(value) {
         const proposedHostValue = (value.split('@').length > 0) ? value.split('@')[1] : '';
         if (proposedHostValue) {
             // show only filtered suggestion as user types
@@ -210,13 +286,12 @@ export class SharedLoginComponent implements OnInit
     }
 
     // supporting functions
-    navigateToNext(isUserExists)
-    {
+    navigateToNext(isUserExists) {
         const LINK = (isUserExists) ?
             ((this.isCheckout) ? "/checkout/otp" : "/otp") :
             ((this.isCheckout) ? "/checkout/sign-up" : "/sign-up");
         let navigationExtras: NavigationExtras = {
-            queryParams: { 
+            queryParams: {
                 'backurl': this._sharedAuthService.redirectUrl,
                 'state': this.activatedRoute.snapshot.queryParams.state
             },
@@ -224,23 +299,20 @@ export class SharedLoginComponent implements OnInit
         this._router.navigate([LINK], navigationExtras);
     }
 
-    toggleLoginType(type)
-    {
+    toggleLoginType(type) {
         this.loginType = type;
         this.resetForms();
         this.clearSuggestion();
     }
 
-    resetForms()
-    {
+    resetForms() {
         this.phoneFC.setValue('');
         this.emailFC.setValue('');
         this.isLoginEmailFormSubmitted = false;
         this.isLoginNumberFormSubmitted = false;
     }
 
-    fillEmailSuggestion(value)
-    {
+    fillEmailSuggestion(value) {
         this.emailFC.patchValue(value);
         this.clearSuggestion();
         this.displaySuggestion = false;
@@ -248,8 +320,7 @@ export class SharedLoginComponent implements OnInit
 
     toggleListDisplay(flag) { setTimeout(() => { this.displaySuggestion = flag; }, 100) }
 
-    filter(value: string)
-    {
+    filter(value: string) {
         if (value.indexOf('@') > 0 && this.displaySuggestion) {
             this.createEmailSuggestion(value);
         } else {
@@ -274,29 +345,29 @@ export class SharedLoginComponent implements OnInit
                         return;
                     }
                 } else {
-                    if (backRedirectUrl != 'null'){
+                    if (backRedirectUrl != 'null') {
                         this._router.navigateByUrl(backRedirectUrl);
-                    }else
-                    this._router.navigateByUrl('/');
+                    } else
+                        this._router.navigateByUrl('/');
                 }
             }
         }
     }
-    
-    removeAuthComponent(){
+
+    removeAuthComponent() {
         this.removeAuthComponent$.emit();
     }
-    navigateHome() { 
-       if(this.isLoginPopup){
-          this.removeAuthComponent();
-          this._router.navigate(["."]);
-          return;
-       }
-       this._router.navigate(["."]);
+    navigateHome() {
+        if (this.isLoginPopup) {
+            this.removeAuthComponent();
+            this._router.navigate(["."]);
+            return;
+        }
+        this._router.navigate(["."]);
     }
     get isAuthHeader() { return this.isCheckout === false && this.headerTitle !== null }
     get phoneFC() { return this.loginNumberForm.get("phone"); }
     get emailFC() { return this.loginEmailForm.get("email"); }
-    get isNormalLogin() { return this.isCheckout === false && !(this.headerTitle)  }
-    get isWhiteHeader() { return this.isCheckout || (this.headerTitle && this.headerTitle.length>0)}
+    get isNormalLogin() { return this.isCheckout === false && !(this.headerTitle) }
+    get isWhiteHeader() { return this.isCheckout || (this.headerTitle && this.headerTitle.length > 0) }
 }

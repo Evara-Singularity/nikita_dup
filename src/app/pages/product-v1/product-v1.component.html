@@ -254,8 +254,8 @@
 
     <!-- CTA Fixed position -->
     <floating-button-container [class.highIndex]="displayCardCta" *ngIf="!rawProductData?.productOutOfStock">
-        <floating-button [iconClass]="'icon-cart1'" [label]="productStaticData.add_to_cart" [type]="'WHITE'"
-            (onClick)="showFBT()"></floating-button>
+        <floating-button [iconClass]="'icon-cart1'" [isHindiMode]="isHindiUrl" [isPdpMainProduct]="true" [label]="productStaticData.add_to_cart" [type]="'WHITE'"
+            (onClick)="showFBT($event)"></floating-button>
         <floating-button [iconClass]="''" [label]="productStaticData.buy_now" [type]="'RED'"
             (onClick)="addToCart(true)"></floating-button>
     </floating-button-container>

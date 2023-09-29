@@ -104,6 +104,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     shopByDifferentBrands: object = {};
     isShopByDifferentBrands: boolean = false;
     adsenseData: any = null;
+    private subscriptionAddToCartAnimation: Subscription;
+    displayAddToCartAnimation: boolean=false;
 
     // lazy loaded component refs
     productShareInstance = null;
@@ -289,6 +291,12 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.addSubcriber();
         this.pageUrl = this.router.url;
         this.route.data.subscribe((rawData) => {
+            const resp = rawData.product[0].data.data || null;
+            if(resp?.productGroup == null){
+                this.setProductNotFound();
+                this.rawProductData = null;
+                return;
+            }
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"] && rawData["product"][0]['data']['data']['productGroup']["active"]==true) {
                 this.apiResponse = rawData.product[0].data.data;
@@ -307,6 +315,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.fragment = fragment || '';
         })
         this.initializeLocalization();
+        this.subscriptionAddToCartAnimation = this.commonService.displayAddToCartAnimation$.subscribe(
+            value => {
+              (this.displayAddToCartAnimation = value)}
+          );
     }
     
     @HostListener('window:scroll', ['$event'])
@@ -678,6 +690,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     updateAttr(productId)
     {
+        this.commonService.setDisplayAddToCartAnimation(false);    
         this.removeRfqForm(); 
         this.showLoader = true;
         this.productService
@@ -750,14 +763,14 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     callAPIs() {
         const resObj = {};
 
-        this.productService.getProductStatusCount(this.rawProductData.defaultPartNumber, this.isHindiUrl ? { headerData: { 'language': 'hi' } } : null).pipe(
+        this.productService.getProductStatusCount(this.rawProductData?.defaultPartNumber, this.isHindiUrl ? { headerData: { 'language': 'hi' } } : null).pipe(
             mergeMap(productCountRes => {
                 if(productCountRes && productCountRes['status']) {
                     resObj['productCountRes'] = productCountRes;
                 } else {
                     resObj['productCountRes'] = null;
                 }
-                return this.productService.getFBTProducts(this.rawProductData.defaultPartNumber);
+                return this.productService.getFBTProducts(this.rawProductData?.defaultPartNumber);
             }),
             mergeMap(fbtRes => {
                 if(fbtRes && fbtRes['status']) {
@@ -1014,7 +1027,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
         if (this.rawProductData) {
             this.productInfoPopupInstance = null;
-            this.productInfoPopupContainerRef.remove();
+            this.productInfoPopupContainerRef?.remove();
         }
         if (this.returnInfoInstance) {
             this.returnInfoInstance = null;
@@ -1085,7 +1098,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     fetchFBTProducts(productBO, rawProductFbtData) {
-        if (this.rawProductData.productOutOfStock) {
+        if (this.rawProductData?.productOutOfStock) {
             this.productUtil.resetFBTSource();
         } else {
             this.fbtFlag = false;
@@ -1426,8 +1439,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         // make sure no browser history is present
         if (this.location.getState() && this.location.getState()['navigationId'] == 1) {
             this.sessionStorageService.store('NO_HISTROY_PDP', 'NO_HISTROY_PDP');
-            if (this.rawProductData.productCategoryDetails && this.rawProductData.productCategoryDetails['categoryLink']) {
-                window.history.replaceState('', '', this.rawProductData.productCategoryDetails['categoryLink'] + '?back=1');
+            if (this.rawProductData?.productCategoryDetails && this.rawProductData?.productCategoryDetails['categoryLink']) {
+                window.history.replaceState('', '', this.rawProductData?.productCategoryDetails['categoryLink'] + '?back=1');
                 window.history.pushState('', '', this.router.url);
             }
         }
@@ -1466,6 +1479,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     checkCartQuantityAndUpdate(value): void {
+        this.commonService.setDisplayAddToCartAnimation(false);
         if (!value) {
             this._tms.show({
                 type: 'error',
@@ -1540,6 +1554,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     selectProductBulkPrice(qunatity) {
+        this.commonService.setDisplayAddToCartAnimation(false);       
         if (qunatity > this.rawProductData.priceQuantityCountry['quantityAvailable']) {
             this._tms.show({
                 type: 'error',
@@ -3244,8 +3259,14 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Add to cart methods
-    async showFBT() {
-        this.addToCart(false);
+    async showFBT(lotteieInfo?: any) {
+        if (lotteieInfo) {
+            this.commonService.navigateTo('/quickorder', true)
+            this.analyticGoToCart(false, this.cartQunatityForProduct, true);
+        }else
+        {
+            this.addToCart(false);
+        }
         // if (this.fbtFlag) {
         //     const TAXONS = this.taxons;
         //     let page = {
@@ -3280,6 +3301,57 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // cart methods 
+
+    analyticGoToCart(buyNow, quantity, isCod) {
+        const user = this.localStorageService.retrieve("user");
+        const taxonomy = this.rawProductData.productCategoryDetails["taxonomyCode"];
+        let taxo1 = "";
+        let taxo2 = "";
+        let taxo3 = "";
+        if (this.rawProductData.productCategoryDetails["taxonomyCode"]) {
+            taxo1 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[0] || "";
+            taxo2 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[1] || "";
+            taxo3 = this.rawProductData.productCategoryDetails["taxonomyCode"].split("/")[2] || "";
+        }
+
+        let ele = []; // product tags for adobe;
+        // this.productTags.forEach((element) =>
+        // {
+        //     ele.push(element.name);
+        // });
+        const tagsForAdobe = ele.join("|");
+
+        let page = {
+            linkPageName: "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ":pdp",
+            linkName: 'Go to cart',
+            channel: "pdp",
+        };
+
+        if (this.displayCardCta) {
+            page["linkName"] ='Go to cart'
+               
+            if (this.popupCrouselInstance) {
+                page["linkName"] ='Go to cart'
+                   
+            }
+        }
+
+        let custData = this.commonService.custDataTracking;
+        let order = {
+            productID: this.rawProductData.defaultPartNumber, // TODO: partNumber
+            parentID: this.rawProductData.defaultPartNumber,
+            productCategoryL1: taxo1,
+            productCategoryL2: taxo2,
+            productCategoryL3: taxo3,
+            price: this.rawProductData.productPrice,
+            quantity: quantity,
+            brand: this.rawProductData.productBrandDetails["brandName"],
+            tags: tagsForAdobe,
+        };
+
+        this.analytics.sendAdobeCall({ page, custData, order }, "genericClick");
+    }
+
     analyticAddToCart(buyNow, quantity, isCod) {
         const user = this.localStorageService.retrieve("user");
         const taxonomy = this.rawProductData.productCategoryDetails["taxonomyCode"];
@@ -3973,5 +4045,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     ngOnDestroy() {
         if(this.cartSubscription) this.cartSubscription.unsubscribe();
         this.commonService.defaultLocaleValue = localization_en.product;
+        this.subscriptionAddToCartAnimation.unsubscribe();
      }
 }

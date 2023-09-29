@@ -53,6 +53,8 @@ export class ProductOosSimilarCardComponent {
   @ViewChild("productCrouselPseudo", { read: ElementRef })
   productCrouselPseudoContainerRef: ElementRef;
   selectedProductBulkPrice: null
+  animationStart:boolean=false
+
 
   @Output("firstImageClickedEvent") firstImageClickedEvent = new EventEmitter();
   @Output("removeWindowScrollListenerEvent") removeWindowScrollListenerEvent = new EventEmitter();
@@ -173,6 +175,7 @@ export class ProductOosSimilarCardComponent {
   }
 
   checkCartQuantityAndUpdate(value): void {
+    this.animationStart=false
     if (!value) {
       this._toastMessageService.show({
         type: 'error',
@@ -337,6 +340,10 @@ export class ProductOosSimilarCardComponent {
     this.firstImageClickedEvent.emit(this.index);
   }
 
+  goToCart(){
+  this.commonService.navigateTo('/quickorder', true) 
+  }
+
   buyNow(buyNow) {
     this._loader.setLoaderState(true);      
     of(this._cartService.getAddToCartProductItemRequest({
@@ -382,6 +389,7 @@ export class ProductOosSimilarCardComponent {
       })
     } else {
       this.proceedToCart(productDetails, buyNow)
+      this.animationStart=true
     }
     
   }

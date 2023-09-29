@@ -54,7 +54,7 @@
         </shared-product-listing>
     </div>
 
-    <recent-viewed-products-wrapper [pageName]="'category'" [moduleUsedIn]="'PRODUCT_RECENT_PRODUCT_CATEGORY'"></recent-viewed-products-wrapper>
+    <recent-viewed-products-wrapper *ngIf="_productListService?.productListingData?.product?.length > 0" [pageName]="'category'" [moduleUsedIn]="'PRODUCT_RECENT_PRODUCT_CATEGORY'"></recent-viewed-products-wrapper>
     
     <!-- This is sub category section -->
     <div class="pwa-row" [class.visibility]="_commonService.selectedFilterData.page > 1" [class.category-list]="_commonService.selectedFilterData.page > 1"

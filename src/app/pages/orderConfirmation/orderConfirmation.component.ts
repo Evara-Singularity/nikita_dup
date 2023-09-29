@@ -123,7 +123,7 @@ export class OrderConfirmationComponent implements OnInit {
         // console.log(log);
         this.checkUserSessionAndValidateOrder(userSession, utm_medium);
         this.getItemsCount(userSession);
-        this.insertIframes();
+        // this.insertIframes();
     }
 
     insertIframes() {

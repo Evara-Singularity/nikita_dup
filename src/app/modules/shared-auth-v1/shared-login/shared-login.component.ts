@@ -79,9 +79,9 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         if (this._common.isBrowser) {
             //Invoke truecaller only for android device
-            if (this.isAndroid()) {
-                this.initializeTruecaller()
-            }
+            // if (this.isAndroid()) {
+            //     this.initializeTruecaller()
+            // }
             this.authFlow = this._localAuthService.getAuthFlow();
             if (this.authFlow) {
                 this.updateControls(this.authFlow.identifier)

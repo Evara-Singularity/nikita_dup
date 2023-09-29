@@ -291,12 +291,12 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.addSubcriber();
         this.pageUrl = this.router.url;
         this.route.data.subscribe((rawData) => {
-            // const resp = rawData.product[0].data.data || null;
-            // if(resp?.productGroup == null){
-            //     this.setProductNotFound();
-            //     this.rawProductData = null;
-            //     return;
-            // }
+            const resp = rawData.product[0].data.data || null;
+            if(resp?.productGroup == null){
+                this.setProductNotFound();
+                this.rawProductData = null;
+                return;
+            }
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"] && rawData["product"][0]['data']['data']['productGroup']["active"]==true) {
                 this.apiResponse = rawData.product[0].data.data;

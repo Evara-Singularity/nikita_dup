@@ -73,13 +73,14 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
         public localStorageService: LocalStorageService,
         private _commonService: CommonService,
     ) {
-        this.truecallerRequestId = uuidv4()
+       
     }
 
     ngOnInit(): void {
         if (this._common.isBrowser) {
             //Invoke truecaller only for android device
             if (this.isAndroidAndChromeBrowser()) {
+                this.truecallerRequestId = uuidv4()
                 this.initializeTruecaller()
             }
             this.authFlow = this._localAuthService.getAuthFlow();

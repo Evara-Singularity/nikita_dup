@@ -79,7 +79,8 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         if (this._common.isBrowser) {
             //Invoke truecaller only for android device
-            if (this.isAndroidAndChromeBrowser()) {
+            if (this.isAndroidAndChromeBrowser() && !this.isFacebookReferrer()) {
+                alert(document.referrer)
                 this.truecallerRequestId = uuidv4()
                 this.initializeTruecaller()
             }
@@ -123,6 +124,14 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
                 ((this.isCheckout) ? this.CHECKOUT_ADDRESS : REDIRECT_URL)
             );
         }
+    }
+
+    private isFacebookReferrer(){
+        const referrer = document.referrer;
+        if(referrer && referrer.toLowerCase().includes('facebook')){
+            return true
+        }
+        return false
     }
 
     private fetchTruecallerUserFlow() {

@@ -79,9 +79,9 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         if (this._common.isBrowser) {
             //Invoke truecaller only for android device
-            // if (this.isAndroid()) {
-            //     this.initializeTruecaller()
-            // }
+            if (this.isAndroidAndChromeBrowser()) {
+                this.initializeTruecaller()
+            }
             this.authFlow = this._localAuthService.getAuthFlow();
             if (this.authFlow) {
                 this.updateControls(this.authFlow.identifier)
@@ -161,11 +161,10 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
         this.removeAuthComponent$.emit();
     }
 
-    isAndroid(): boolean {
+    isAndroidAndChromeBrowser(): boolean {
         const userAgent = navigator.userAgent.toLowerCase();
-        return /android/.test(userAgent);
+        return /android/.test(userAgent) && /chrome/.test(userAgent);
     }
-
 
     objectToQueryString(obj) {
         const keyValuePairs = [];

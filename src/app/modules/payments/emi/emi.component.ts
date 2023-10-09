@@ -784,6 +784,7 @@ export class EmiComponent {
 
         this.offerKey = null;
         this.bankDiscountAmount = 0;
+        this.bankOfferApplied = false;
         // this.emiResponse = this.paymentMethod == this.CARD_TYPES.debitCard ? this.emiResponseMaster[this.CARD_TYPES.debitCard] : this.emiResponseMaster[this.CARD_TYPES.creditCard];
         this.emiRawDebitCardResponse = this.emiResponseMaster[this.CARD_TYPES.debitCard];
         this.emiRawCreditCardResponse = this.emiResponseMaster[this.CARD_TYPES.creditCard];

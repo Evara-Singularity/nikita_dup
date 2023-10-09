@@ -73,6 +73,7 @@ export class EmiComponent {
     selectedEMIKey = null;
     showPayUOffer: boolean = false;
     bankDiscountAmount: number = 0;
+    bankOfferApplied: boolean =false ;
     ccNameSubscription: Subscription = null;
     bankCodeSubscription: Subscription = null;
     offerKey: string = null;
@@ -237,10 +238,10 @@ export class EmiComponent {
             element['bankname'] = this._bankNamePipe.transform(element.key);
             let elementData = this._objectToArray.transform(element.value, "associative");
             elementData.forEach((ele, index) => {
-                if (ele.value['tenure'] == "03 months" || ele.value['tenure'] == "3") {
+                if ((!this.bankOfferApplied ) && (ele.value['tenure'] == "03 months" || ele.value['tenure'] == "3" )) {
                     ele.value['emi_value'] = (payableAmount) / 3;
                     ele.value['emi_interest_paid'] = 0;
-                } else if (ele.value['tenure'] == "06 months" || ele.value['tenure'] == "6") {
+                } else if ( (!this.bankOfferApplied ) && (ele.value['tenure'] == "06 months" || ele.value['tenure'] == "6")) {
                     ele.value['emi_value'] = (payableAmount) / 6;
                     ele.value['emi_interest_paid'] = 0;
                 } else {
@@ -469,7 +470,7 @@ export class EmiComponent {
             "bankname": this.selectedBank,
             "bankcode": data.requestParams.bankcode,
             "emitenure": emitenureFlag,
-            "emiFlag": 1,
+            "emiFlag": this.bankOfferApplied ? 0 : 1,
             "noCostEmiDiscount": Math.round(this.nocostEmiDiscount * 100) / 100,
             "gateway": this.type == "tax" ? "razorpay" : "",
             "totalPayableAmount" : this.totalPayableAmount.toFixed(2),
@@ -622,7 +623,7 @@ export class EmiComponent {
         offeramount = offeramount ? offeramount + this.bankDiscountAmount : this.bankDiscountAmount;
         const payableAmount = (offeramount) ?  this._cartService.totalDisplayPayableAmountWithOutPrepaid - offeramount :  this._cartService.totalDisplayPayableAmountWithPrepaid;
         this.nocostEmiDiscount = 0;
-        if (month == 3 || month == 6) {
+        if ( !this.bankOfferApplied && ( month == 3 || month == 6)) {
             // ODP-359
             if (rate != null) {
                 this.nocostEmiDiscount = amount - amount * (Math.pow((1 + rate), month) - 1) / (month * Math.pow((1 + rate), month) * rate);
@@ -750,12 +751,19 @@ export class EmiComponent {
                     return;
                 }
                 response = res['data'];
+            
                 if (response['result'] && response['result']['offerDiscount']  && response['result']['offerDiscount']['discount'] && response['result']['offerDiscount']['discount'] > 0 ) {
-                    this.bankDiscountAmount = response['result']['offerDiscount']['discount'];
-                    this.fetchInitialEmiData(response['result']['offerDiscount']['discountedAmount']);
-                    this.offerKey =response['requestOfferKey'];
-                    this.setPayUOfferDiscount(response['result']);
-
+                   
+                    if(this.totalPayableAmount >  response['result']['offers'][0]['minTxnAmount']  )
+                    {
+                        this.bankDiscountAmount = response['result']['offerDiscount']['discount'];
+                        this.bankOfferApplied =true;
+                        this.fetchInitialEmiData(response['result']['offerDiscount']['discountedAmount']);
+                        this.offerKey =response['requestOfferKey'];
+                        this.setPayUOfferDiscount(response['result']);
+                        
+                    }
+                
                 }else{
                     this.resetBankDiscountAmount();
                 }

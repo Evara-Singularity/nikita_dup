@@ -588,7 +588,7 @@ export class CartService
         {
             cart['lastParentOrderId'] = this.lastParentOrderId
         }
-        return obj; Checkout 
+        return obj;
     }
 
     public getItemsList(cartItems)

@@ -751,10 +751,11 @@ export class EmiComponent {
                     return;
                 }
                 response = res['data'];
+                let amount = this._cartService.totalDisplayPayableAmountWithOutPrepaid;
             
                 if (response['result'] && response['result']['offerDiscount']  && response['result']['offerDiscount']['discount'] && response['result']['offerDiscount']['discount'] > 0 ) {
                    
-                    if(this.totalPayableAmount >  response['result']['offers'][0]['minTxnAmount']  )
+                    if(amount >  response['result']['offers'][0]['minTxnAmount']  )
                     {
                         this.bankDiscountAmount = response['result']['offerDiscount']['discount'];
                         this.bankOfferApplied =true;

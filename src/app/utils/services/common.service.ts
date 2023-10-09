@@ -105,6 +105,7 @@ export class CommonService
     private copiedCouponInternal: string = '';
     public open360popup$: Subject<any> = new Subject<any>();
     public open360popup1$: Subject<any> = new Subject<any>();
+    private lottieScriptUrl = 'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js';
     private _displayAddToCartAnimation = new Subject<boolean>();
     displayAddToCartAnimation$ = this._displayAddToCartAnimation.asObservable();
 
@@ -1638,24 +1639,20 @@ export class CommonService
         }
     } 
 
-    callLottieScriptGoToCart(){
+    loadLottieScript(callback: Function) {
         try {
-            if(1){
-                let script = this._renderer2.createElement('script');
-                script.src = CONSTANTS.CDN_LOTTIE_PATH;
+            if (!this._document.getElementById('lottieScript')) {
+                const script = this._renderer2.createElement('script');
+                script.src = this.lottieScriptUrl;
                 script.id = 'lottieScript';
-                let scripts = this._document.getElementsByTagName('script');
-                for (var i = scripts.length; i--;) {
-                    if (scripts[i].src == CONSTANTS.CDN_LOTTIE_PATH){
-                        return;
-                    }
-                    else{
-                        this._renderer2.appendChild(this._document.body,script);
-                        script.onload = ()=>{
-                            console.log("lottie loaded");
-                        };
-                    }
-                 }
+                this._renderer2.appendChild(this._document.body, script);
+    
+                script.onload = () => {
+                    console.log("Lottie loaded");
+                    callback();
+                };
+            } else {
+                callback(); // If script already loaded, play the animation.
             }
         } catch (error) {
             console.log('callLottieScript', error);

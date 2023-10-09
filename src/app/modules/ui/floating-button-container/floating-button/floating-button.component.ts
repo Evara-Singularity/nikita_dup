@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, NgModule, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonService } from '@app/utils/services/common.service'
 import { Subscription } from 'rxjs';
 @Component({
@@ -18,6 +18,7 @@ export class FloatingButtonComponent implements OnInit {
   displayAddToCartAnimation: boolean=false;
   @Input() isHindiMode:boolean=false
   private subscriptionAddToCartAnimation: Subscription;
+  @ViewChild('lottiePlayer') lottiePlayer: ElementRef;
 
   constructor(
     private commonService:CommonService
@@ -31,23 +32,37 @@ export class FloatingButtonComponent implements OnInit {
     );
   }
 
+  playLottieAnimation() {
+    const lottieInstance = this.lottiePlayer.nativeElement;
+    if (lottieInstance) {
+      lottieInstance.play();
+    }
+}
+
   onClickButton() {
+    this.commonService.loadLottieScript(() => {
+      setTimeout(() => {
+        this.playLottieAnimation();
+      }, 1000); // wait for 1 second
+    });
     this.onClick.emit(this.displayAddToCartAnimation);
     if (this.isPdpMainProduct && !this.displayAddToCartAnimation) {
       this.displayAddToCartAnimation=true;
     }
+    
   }
   
 
-  addLottieScript(){
-		this.commonService.addLottieScriptGoToCartSubject.subscribe(lottieInstance => {
-			this.commonService.callLottieScriptGoToCart();
-			lottieInstance.next();
-		});
-	}
+  // addLottieScript(){
+	// 	this.commonService.addLottieScriptGoToCartSubject.subscribe(lottieInstance => {
+	// 		this.commonService.callLottieScriptGoToCart();
+	// 		lottieInstance.next();
+	// 	});
+	// }
+  
   ngAfterViewInit(){
-    this.commonService.callLottieScriptGoToCart();
-    this.addLottieScript();
+    // this.commonService.callLottieScriptGoToCart();
+    // this.addLottieScript();
   }
   ngOnDestroy() {
     this.subscriptionAddToCartAnimation.unsubscribe();

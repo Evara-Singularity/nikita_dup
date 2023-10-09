@@ -40,15 +40,16 @@ export class FloatingButtonComponent implements OnInit {
 }
 
   onClickButton() {
+    this.commonService.loadLottieScript(() => {
+      setTimeout(() => {
+        this.playLottieAnimation();
+      }, 1000); // wait for 1 second
+    });
     this.onClick.emit(this.displayAddToCartAnimation);
     if (this.isPdpMainProduct && !this.displayAddToCartAnimation) {
       this.displayAddToCartAnimation=true;
     }
-    this.commonService.loadLottieScript(() => {
-      setTimeout(() => {
-          this.playLottieAnimation();
-      }, 1000); // wait for 1 second
-  });
+    
   }
   
 

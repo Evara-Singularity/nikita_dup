@@ -80,7 +80,6 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
         if (this._common.isBrowser) {
             //Invoke truecaller only for android device
             if (this.isAndroidAndChromeBrowser() && !this.isFacebookReferrer()) {
-                alert(document.referrer)
                 this.truecallerRequestId = uuidv4()
                 this.initializeTruecaller()
             }

@@ -34,7 +34,7 @@ export class GlobalAnalyticsService {
 
   sendAdobeCall(data: any, trackingname = "genericPageLoad") {
     // console.log(environment["ISCHROME"]);
-    console.log("sendAdobeCall   :: data =====>", data);
+    // console.log("sendAdobeCall   :: data =====>", data);
     if (this.isBrowser && _satellite != undefined && _satellite.track) {
       digitalData = Object.assign({}, data);
       // console.log('digitalData', digitalData);
@@ -97,7 +97,6 @@ export class GlobalAnalyticsService {
 
   //this method gives basic common tracking object
   getCommonTrackingObject(product?, channel?, linkName?) {
-    console.log(product, channel, linkName);
     let tracking = { page: {}, order: {}, custData: this.custDataTracking };
     tracking['page']['channel'] = channel ? channel : "";
     tracking['page']['linkName'] = linkName ? linkName : "";
@@ -217,7 +216,7 @@ export class GlobalAnalyticsService {
       // temp fix to check if this API impacting pageload time.
       setTimeout(() => {
         this._dataService.callRestful("POST", CONSTANTS.GATEWAY_API + ENDPOINTS.CLICK_STREAM, { body: data }).subscribe(res => {
-          console.log('clickstream captured');
+          // console.log('clickstream captured');
         });
       }, 3000);
     }else{

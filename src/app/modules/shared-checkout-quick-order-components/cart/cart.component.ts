@@ -109,7 +109,7 @@ export class CartComponent implements OnInit, AfterViewInit
                 const userSession = this._localAuthService.getUserSession();
                 this._cartService.getPromoCodesByUserId(userSession['userId'], false);
             }else{
-                console.log('duplicate cart call ignored');
+                // console.log('duplicate cart call ignored');
             }
             
         });

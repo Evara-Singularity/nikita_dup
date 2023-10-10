@@ -102,7 +102,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
   }
 
   checkForSession() {
-    console.log('requestServerIp', this.requestServerIp);
+    // console.log('requestServerIp', this.requestServerIp);
     const queryParams = this._aRoute.snapshot.queryParams;
     const orderId = queryParams['orderId'];
     if (orderId) return;
@@ -273,7 +273,7 @@ export class PagesComponent implements OnInit, AfterViewInit {
     const elem = document.createElement("canvas");
     if (!!(elem.getContext && elem.getContext("2d"))) {
       // was able or not to get WebP representation
-      console.log("was able or not to get WebP representation");
+      // console.log("was able or not to get WebP representation");
       this._commonService.setWebpSupportState(
         elem.toDataURL("image/webp").indexOf("data:image/webp") == 0
       );

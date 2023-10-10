@@ -25,6 +25,7 @@ import { CommonService } from "@services/common.service";
 import { forkJoin, Subject, Subscription } from "rxjs";
 import { delay, map } from "rxjs/operators";
 import { CheckoutUtil } from "../checkout-v2/checkout-util";
+import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 
 @Component({
   selector: "quick-order",
@@ -76,7 +77,8 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     private injector: Injector,
     private cfr: ComponentFactoryResolver,
     private _addressService: AddressService,
-    private _productService: ProductService
+    private _productService: ProductService,
+    private _analytics: GlobalAnalyticsService
   ) {
     this._cartService.getGenericCartSession;
   }
@@ -86,6 +88,7 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this._localAuthService.isUserLoggedIn()) {
       this.getWishlistData();
     }
+    this.setAnalyticTags();
   }
 
   ngAfterViewInit(): void {
@@ -132,6 +135,51 @@ export class QuickOrderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.wishlistPopupContainerRef.remove();
     }
   }
+
+  setAnalyticTags() {
+    if(this._commonService.isBrowser){
+      const userSession = this._localAuthService.getUserSession();
+      if (
+        userSession &&
+        userSession.authenticated &&
+        userSession.authenticated == 'true'
+      ) {
+        /*Start Criteo DataLayer Tags */
+        const obj = {
+          event: 'viewHome',
+          email: userSession && userSession.email ? userSession.email : '',
+        };
+        this._analytics.sendGTMCall(obj);
+        /*End Criteo DataLayer Tags */
+      } else {
+        const obj = {
+          event: 'viewHome',
+          email: '',
+        };
+        this._analytics.sendGTMCall(obj);
+      }
+      /*Start Adobe Analytics Tags */
+      let page = {
+        pageName: 'moglix:quickorder',
+        channel: 'quickorder',
+        subSection: 'moglix:quickorder',
+        linkName: this.router.url,
+        loginStatus:
+          userSession &&
+            userSession.authenticated &&
+            userSession.authenticated == 'true'
+            ? 'registered user'
+            : 'guest',
+      };
+      let order = {};
+      let digitalData = {};
+      digitalData['page'] = page;
+      digitalData['custData'] = this._commonService.custDataTracking;
+      digitalData['order'] = order;
+      this._analytics.sendAdobeCall(digitalData);
+      // clickstream data
+    }
+	}
 
   private addSubscribers() {
     this.addToCartSubscription =

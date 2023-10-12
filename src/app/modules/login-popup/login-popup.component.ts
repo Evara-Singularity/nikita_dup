@@ -116,6 +116,7 @@ export class LoginPopupComponent implements OnInit, AfterViewInit {
         this.authInstance = null;
         this.authInstanceref.remove();
         this._cdr.detectChanges();
+        this._commonService.setBodyScroll(null, true);
         // this._router.navigate([]);
       });
       this._cdr.detectChanges();

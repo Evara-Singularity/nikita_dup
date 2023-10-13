@@ -113,7 +113,7 @@ function appendImagePreloads(indexHtml, url) {
   } else {
     return indexHtml
   }
-
+  urls.push('<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>');
   const allImagePreloadLink = urls.join('')
   const replaceStringInIndex = '<!-- INSERT DYNAMIC IMAGES PRELOAD DURING SSR SERVE HERE -->';
   const headStartingTagIdx = indexHtml.indexOf(replaceStringInIndex);

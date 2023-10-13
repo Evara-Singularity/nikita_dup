@@ -102,7 +102,7 @@ function appendImagePreloads(indexHtml, url) {
   if (indexHtml.match(regexImage)) {
     urls = indexHtml.match(regexImage).map((val, index) => {
       // extract image URL from extacted img tags
-      if ((val.match(regexImageSrc) || val.match(regexImageSrc).length > 0) && index < maxLimit) {
+      if ((val.match(regexImageSrc) || val.match(regexImageSrc).length > 0) && index < maxLimit && (url.includes('/mp/') && val.includes('xxlarge') || !url.includes('/mp/'))) {
       // if ((val.match(regexImageSrc) || val.match(regexImageSrc).length > 0)) {
         return `<link rel="preload" as="image" href="${val.match(regexImageSrc)[0].replace('src="', '').replace('"', '')}">
         `;
@@ -113,7 +113,7 @@ function appendImagePreloads(indexHtml, url) {
   } else {
     return indexHtml
   }
-
+  urls.push('<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>');
   const allImagePreloadLink = urls.join('')
   const replaceStringInIndex = '<!-- INSERT DYNAMIC IMAGES PRELOAD DURING SSR SERVE HERE -->';
   const headStartingTagIdx = indexHtml.indexOf(replaceStringInIndex);

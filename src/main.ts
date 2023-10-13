@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     platformBrowserDynamic().bootstrapModule(AppModule)
         .then(res => {
             // console.log('<===ANGULAR SCRIPTS LOADED===>', new Date().getTime())
-            setTimeout(() => {intializedGTM(window, document, 'script', 'dataLayer', environment.GTM_ANALYTICS_CODE);initializeGoogleAnalytics()}, 500)
+            setTimeout(() => {intializedGTM(window, document, 'script', 'dataLayer', environment.GTM_ANALYTICS_CODE);initializeGoogleAnalytics()}, 1500)
         })
         .catch(err => console.error(err));
 });

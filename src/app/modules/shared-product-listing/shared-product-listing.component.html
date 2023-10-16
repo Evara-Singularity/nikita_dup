@@ -33,12 +33,18 @@
         </button>
     </div>
     <div class="translator-container" *ngIf='isAcceptLanguage'>
-        <img src="/assets/img/vernacular-icon.svg" (click)='pageTranslation()'>
+        <!-- <img src="/assets/img/vernacular-icon.svg" (click)='pageTranslation()'> -->
+        <span class="st-icon-vernacular" (click)='pageTranslation()'>
+            <span class="icon-vernacular_1"></span>
+            <span class="icon-vernacular_2"></span>
+            <span class="icon-vernacular_3"></span>
+            <span class="icon-vernacular_4"></span>
+        </span>
         <div class="select-language" *ngIf='showNudge'>
             <p>{{ productStaticData?.select_language }}</p>
         </div>
     </div>
-    
+
 </div>
 <div class="filter_chips" *ngIf="filterChipsArray?.length > 0">
     <div class="overflow_wrapper_chip">
@@ -60,11 +66,14 @@
         </h1>
         <div class="list-num" *ngIf="productsListingData?.products && !isHindiUrl">
             {{ productStaticData?.showing }} {{ productsListingData?.products.length }} {{ productStaticData?.out_of }}
-            {{ (productsListingData?.totalCount > (productsListingData?.products.length) ? productsListingData?.totalCount : (productsListingData?.products.length) ) }} 
+            {{ (productsListingData?.totalCount > (productsListingData?.products.length) ?
+            productsListingData?.totalCount : (productsListingData?.products.length) ) }}
             {{ productStaticData?.products }}
         </div>
         <div class="list-num" *ngIf="productsListingData?.products && isHindiUrl">
-            {{ productStaticData?.showing }} {{ (productsListingData?.totalCount > (productsListingData?.products.length) ? productsListingData?.totalCount : (productsListingData?.products.length) ) }}
+            {{ productStaticData?.showing }} {{ (productsListingData?.totalCount >
+            (productsListingData?.products.length) ? productsListingData?.totalCount :
+            (productsListingData?.products.length) ) }}
             {{ productStaticData?.out_of }} {{ productsListingData?.products.length }} {{ productStaticData?.products }}
         </div>
 
@@ -75,56 +84,65 @@
     </ng-container>
 </div>
 <ng-container *ngIf="productsListingData?.products?.length > 0">
-   <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
-    <ng-container *ngIf="(pageName == 'CATEGORY' || 'BRAND') && informativeVideosData" >
-        <informative_video [productStaticData]='productStaticData'  *ngIf="(i === 10) && informativeVideosData !=[] " [informativeVideosData]="informativeVideosData" [categoryName]="categoryName">
-        </informative_video>
-    </ng-container>
-   <ng-container *ngIf="pageName == 'CATEGORY'  && appliedFilterCount == 0 && this.graphData && _commonService.selectedFilterData.page < 2">
-       <div *ngFor="let block of this.graphData;">
-          <ng-container *ngIf="block.block_name == 'product_report' && block.data && block.data.length > 0">
-            <analytics-widget-wrapper *ngIf="(i == 5)"  [productStaticData]='productStaticData' [chartContainer]="'priceChartContainer'" [categoryId]="categoryId" [categoryName]="categoryName" [graphData]="graphData" [isL2CategoryCheck]="isL2CategoryCheck"></analytics-widget-wrapper>
-          </ng-container>
-          <ng-container *ngIf="block.block_name == 'brand_report' &&  block.data && block.data.length > 0">
-            <analytics-widget-wrapper *ngIf="(i == 10)" [productStaticData]='productStaticData' [chartContainer]="'brandChartContainer'" [categoryId]="categoryId" [graphData]="graphData" [categoryName]="categoryName" [isL2CategoryCheck]="isL2CategoryCheck"></analytics-widget-wrapper>
-          </ng-container>
-          <ng-container *ngIf="block.block_name == 'attribute_report' && block.data && block.data.length > 0">
-            <analytics-widget-wrapper *ngIf="(i == 15)" [productStaticData]='productStaticData' [chartContainer]="'attributeChartContainer'" [categoryId]="categoryId" [graphData]="graphData" [categoryName]="categoryName"></analytics-widget-wrapper>
-          </ng-container>
-       </div>
-   </ng-container>
-    <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
-        <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_1'] && (i === 4)">
-            <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_1']"
-                [analyticsIdentifier]="'MOBILE_LEADERBOARD_PLP_POSITION_1_'+adsenseData['ANALYTIC_IDENTIFIER']">
-            </adsense-leaderboard-banner>
+    <ng-container *ngFor="let product of productsListingData?.products; let i = index;">
+        <ng-container *ngIf="(pageName == 'CATEGORY' || 'BRAND') && informativeVideosData">
+            <informative_video [productStaticData]='productStaticData' *ngIf="(i === 10) && informativeVideosData !=[] "
+                [informativeVideosData]="informativeVideosData" [categoryName]="categoryName">
+            </informative_video>
         </ng-container>
-        <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_2'] && (i === 8)">
-            <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_2']"
-                [analyticsIdentifier]="'MOBILE_LEADERBOARD_PLP_POSITION_2_'+adsenseData['ANALYTIC_IDENTIFIER']">
-            </adsense-leaderboard-banner>
+        <ng-container
+            *ngIf="pageName == 'CATEGORY'  && appliedFilterCount == 0 && this.graphData && _commonService.selectedFilterData.page < 2">
+            <div *ngFor="let block of this.graphData;">
+                <ng-container *ngIf="block.block_name == 'product_report' && block.data && block.data.length > 0">
+                    <analytics-widget-wrapper *ngIf="(i == 5)" [productStaticData]='productStaticData'
+                        [chartContainer]="'priceChartContainer'" [categoryId]="categoryId" [categoryName]="categoryName"
+                        [graphData]="graphData" [isL2CategoryCheck]="isL2CategoryCheck"></analytics-widget-wrapper>
+                </ng-container>
+                <ng-container *ngIf="block.block_name == 'brand_report' &&  block.data && block.data.length > 0">
+                    <analytics-widget-wrapper *ngIf="(i == 10)" [productStaticData]='productStaticData'
+                        [chartContainer]="'brandChartContainer'" [categoryId]="categoryId" [graphData]="graphData"
+                        [categoryName]="categoryName"
+                        [isL2CategoryCheck]="isL2CategoryCheck"></analytics-widget-wrapper>
+                </ng-container>
+                <ng-container *ngIf="block.block_name == 'attribute_report' && block.data && block.data.length > 0">
+                    <analytics-widget-wrapper *ngIf="(i == 15)" [productStaticData]='productStaticData'
+                        [chartContainer]="'attributeChartContainer'" [categoryId]="categoryId" [graphData]="graphData"
+                        [categoryName]="categoryName"></analytics-widget-wrapper>
+                </ng-container>
+            </div>
         </ng-container>
-        <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_3'] && (i === 12)">
-            <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_3']"
-                [analyticsIdentifier]="'MOBILE_LEADERBOARD_PLP_POSITION_3_'+adsenseData['ANALYTIC_IDENTIFIER']">
-            </adsense-leaderboard-banner>
+        <ng-container *ngIf="_commonService.selectedFilterData.page < 2">
+            <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_1'] && (i === 4)">
+                <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_1']"
+                    [analyticsIdentifier]="'MOBILE_LEADERBOARD_PLP_POSITION_1_'+adsenseData['ANALYTIC_IDENTIFIER']">
+                </adsense-leaderboard-banner>
+            </ng-container>
+            <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_2'] && (i === 8)">
+                <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_2']"
+                    [analyticsIdentifier]="'MOBILE_LEADERBOARD_PLP_POSITION_2_'+adsenseData['ANALYTIC_IDENTIFIER']">
+                </adsense-leaderboard-banner>
+            </ng-container>
+            <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_3'] && (i === 12)">
+                <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PLP_POSITION_3']"
+                    [analyticsIdentifier]="'MOBILE_LEADERBOARD_PLP_POSITION_3_'+adsenseData['ANALYTIC_IDENTIFIER']">
+                </adsense-leaderboard-banner>
+            </ng-container>
+            <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PLP_POSITION_1'] && (i === 4)">
+                <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PLP_POSITION_1']"
+                    [analyticsIdentifier]="'INLINE_RECTANGLE_PLP_POSITION_1_'+adsenseData['ANALYTIC_IDENTIFIER']">
+                </adsense-rectangle-banner>
+            </ng-container>
+            <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PLP_POSITION_2'] && (i === 8)">
+                <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PLP_POSITION_2']"
+                    [analyticsIdentifier]="'INLINE_RECTANGLE_PLP_POSITION_2_'+adsenseData['ANALYTIC_IDENTIFIER']">
+                </adsense-rectangle-banner>
+            </ng-container>
+            <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PLP_POSITION_3'] && (i === 12)">
+                <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PLP_POSITION_3']"
+                    [analyticsIdentifier]="'INLINE_RECTANGLE_PLP_POSITION_3_'+adsenseData['ANALYTIC_IDENTIFIER']">
+                </adsense-rectangle-banner>
+            </ng-container>
         </ng-container>
-        <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PLP_POSITION_1'] && (i === 4)">
-            <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PLP_POSITION_1']"
-                [analyticsIdentifier]="'INLINE_RECTANGLE_PLP_POSITION_1_'+adsenseData['ANALYTIC_IDENTIFIER']">
-            </adsense-rectangle-banner>
-        </ng-container>
-        <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PLP_POSITION_2'] && (i === 8)">
-            <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PLP_POSITION_2']"
-                [analyticsIdentifier]="'INLINE_RECTANGLE_PLP_POSITION_2_'+adsenseData['ANALYTIC_IDENTIFIER']">
-            </adsense-rectangle-banner>
-        </ng-container>
-        <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PLP_POSITION_3'] && (i === 12)">
-            <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PLP_POSITION_3']"
-                [analyticsIdentifier]="'INLINE_RECTANGLE_PLP_POSITION_3_'+adsenseData['ANALYTIC_IDENTIFIER']">
-            </adsense-rectangle-banner>
-        </ng-container>
-    </ng-container>
         <filter-mid-plp [productStaticData]='productStaticData' (categoryClicked)="categoryClicked.emit($event)"
             [categoryMidPlpFilterData]="categoryMidPlpFilterData" [pageName]="pageName" [position]="i"
             [filterData]="productsListingData?.filterData" *ngIf="(i === 5 || i === 10 || i === 15 || i === 20)">

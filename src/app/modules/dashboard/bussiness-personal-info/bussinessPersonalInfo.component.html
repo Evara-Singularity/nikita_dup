@@ -55,6 +55,17 @@
     </div>
   </div>
 </form>
+<div class="profile-card profile-bottom-card" (click)="loadSelectLanguagePopUp()">
+  <div class="profile-card-inner profile-bottom-card-inner">
+    <span class="st-icon-vernacular translate-icon">
+      <span class="icon-vernacular_1"></span>
+      <span class="icon-vernacular_2"></span>
+      <span class="icon-vernacular_3"></span>
+      <span class="icon-vernacular_4"></span>
+  </span>
+      <span class="profile-card-inner-2 ">Select Language</span>
+  </div>
+</div>
 <div class="profile-card profile-bottom-card" [routerLink]="['/dashboard/address']">
   <div class="profile-card-inner profile-bottom-card-inner">
     <i class="icon-map-pin-fill"></i>
@@ -76,6 +87,31 @@
   </div>
   <!-- <span><i class="icon-logout"></i></span> -->
 </div>
+
+<ng-container *ngIf="selectLanguagePopUp">
+  <div class="alert-box" >
+    <div class="overlay"></div>
+    <div class="content-area">
+        <div class="info-area">
+            <div class="popup-header">
+                <p>
+                    <img src="assets/img/vernacular-icon.svg">
+                    <b>Language to Translate into</b>
+                </p>
+                <i class="icon-circle-delete" (click)="updateLanguage(null)"></i>
+            </div>
+            <div class="popup-body-section">
+                <ul>
+                    <li (click)="updateLanguage('en')"><a  [ngClass]="{'selected': selectedLanguage == 'en'}">English</a></li>
+                    <li (click)="updateLanguage('hi')"><a [ngClass]="{'selected': selectedLanguage == 'hi'}">हिंदी</a></li>
+                </ul>
+                <p *ngIf="selectedLanguage == 'en'">You choose <b>‘English’</b> as your preferred language</p>
+                <p *ngIf="selectedLanguage == 'hi'">आपने अपनी पसंदीदा भाषा के रूप में <b>’हिंदी’</b> को चुना हैं</p>
+            </div>
+        </div>
+    </div>
+</div>
+</ng-container>
 <!-- 
 <div class="card logout" (click)="logout()">
   <i class="icon-map-pin-fill"></i>

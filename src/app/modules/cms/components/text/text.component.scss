@@ -14,12 +14,18 @@
         font-size: $extra-large-1-font;
         margin: 0;
         padding: 20px 0px 0px 0px;
+        a{
+            color: var(--bleu-de-france);
+        }
     }
     h3 {
         color: var(--onyx-black);
         font-size: $extra-large-font;
         margin: 0;
         padding: 20px 0px 0px 0px;
+        a{
+            color: var(--bleu-de-france);
+        }
     }
     p {
         color: var(--onyx-black);

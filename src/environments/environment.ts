@@ -3,13 +3,13 @@ export const environment = {
   enableServerLitogs: false,
   PROD_NAME: 'https://www.moglix.com',
 
-  // UNCOMMENT THIS FOR PROD ENV all 3 variables
+  //UNCOMMENT THIS FOR PROD ENV all 3 variables
   BASE_URL: 'https://apinew.moglix.com/nodeApi/v1',
   BASE_URL_V2: 'https://apinew.moglix.com/nodeApi/v2', 
   BASE_URL_V3: 'https://api-gt.moglix.com/api',
   APP_BASE_URL: 'https://api.moglix.com',
   
-  // COMMENT THIS FOR QA ENV all 3 variables
+ // COMMENT THIS FOR QA ENV all 3 variables
   // BASE_URL: 'https://nodeapiqa.moglilabs.com/nodeApi/v1',
   // BASE_URL_V2: 'https://nodeapiqa.moglilabs.com/nodeApi/v2',
   // BASE_URL_V3: 'https://api-gt.moglilabs.com/api',
@@ -24,7 +24,7 @@ export const environment = {
   GTM_ANALYTICS_CODE: 'GTM-WW4R83Z',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js',
   LOG_FILE_PATH: "/var/log/moglix/online/pwa/",
-  buildVersion: '25.19',
+  buildVersion: '25.21',
   SOCIAL_LOGIN: {
     google: {
       clientId:

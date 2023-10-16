@@ -548,7 +548,7 @@ export class CartService
                     type: extra.mode,
                     bankName: extra.bankname,
                     bankEmi: extra.bankcode,
-                    emiFlag: extra.emitenure,
+                    emiFlag: extra.emiFlag,
                     gateway: extra.gateway,
                 },
                 deliveryMethod: {

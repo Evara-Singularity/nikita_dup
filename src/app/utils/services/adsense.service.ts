@@ -61,17 +61,6 @@ export class AdsenseService {
       const featuredProductUnit = this._mapfeaturedProductUnit(campaignData);
       const videoUnit = this._videoUnit(campaignData);
       const banners = this._bannerAdUnits(campaignData);
-      console.log("adsense data", {
-        ...featuredProductUnit,
-        ...promotedBrandUnit,
-        ...videoUnit,
-        ...banners,
-        NAME: campaignData["campaignName"],
-        ID: campaignData["id"],
-        TYPE: campaignData["campaignType"],
-        ANALYTIC_IDENTIFIER:
-          campaignData["campaignName"] + "_" + campaignData["campaignType"],
-      });
       return {
         ...featuredProductUnit,
         ...promotedBrandUnit,

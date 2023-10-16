@@ -549,10 +549,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 s.text = JSON.stringify(schema);
                 this.renderer2.appendChild(this.document.head, s);
             } else {
-                console.log("product schema not created due to price zero");
+                // console.log("product schema not created due to price zero");
             }
         } else {
-            console.log("product schema not created");
+            // console.log("product schema not created");
         }
     }
 

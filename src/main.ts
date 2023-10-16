@@ -11,15 +11,15 @@ if (environment.production) {
 document.addEventListener('DOMContentLoaded', () => {
     platformBrowserDynamic().bootstrapModule(AppModule)
         .then(res => {
-            console.log('<===ANGULAR SCRIPTS LOADED===>', new Date().getTime())
-            setTimeout(() => {intializedGTM(window, document, 'script', 'dataLayer', environment.GTM_ANALYTICS_CODE);initializeGoogleAnalytics()}, 500)
+            // console.log('<===ANGULAR SCRIPTS LOADED===>', new Date().getTime())
+            setTimeout(() => {intializedGTM(window, document, 'script', 'dataLayer', environment.GTM_ANALYTICS_CODE);initializeGoogleAnalytics()}, 1500)
         })
         .catch(err => console.error(err));
 });
 
 
 function intializedGTM(w, d, s, l, i) {
-    console.log('i am added')
+    // console.log('i am added')
     w[l] = w[l] || [];
     w[l].push({
         'gtm.start': new Date().getTime(),
@@ -32,7 +32,7 @@ function intializedGTM(w, d, s, l, i) {
     j.src =
         'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
     j.onload = () => {
-        console.log('GTAG Loaded after Angular loaded', new Date().getTime());
+        // console.log('GTAG Loaded after Angular loaded', new Date().getTime());
     }
     setTimeout(() => {
         f.parentNode.insertBefore(j, f)
@@ -43,7 +43,7 @@ function initializeGoogleAnalytics() {
     var s = document.createElement( 'script' );
     s.defer = true;
     s.onload = () => {
-        console.log('Google tag added')
+        // console.log('Google tag added')
     }
     s.setAttribute( 'src', 'https://www.google-analytics.com/analytics.js' );
     document.body.appendChild( s );

@@ -78,6 +78,7 @@ export class TrackingService
 
     sendAdobeCall(data: any, trackingname = "genericPageLoad")
     {
+        console.log('trackingService :: ==>', data)
         if (_satellite && _satellite.track) {
             digitalData = Object.assign({}, data);
             _satellite.track(trackingname);

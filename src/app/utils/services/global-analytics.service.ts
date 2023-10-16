@@ -216,7 +216,7 @@ export class GlobalAnalyticsService {
       // temp fix to check if this API impacting pageload time.
       setTimeout(() => {
         this._dataService.callRestful("POST", CONSTANTS.GATEWAY_API + ENDPOINTS.CLICK_STREAM, { body: data }).subscribe(res => {
-          console.log('clickstream captured');
+          // console.log('clickstream captured');
         });
       }, 3000);
     }else{

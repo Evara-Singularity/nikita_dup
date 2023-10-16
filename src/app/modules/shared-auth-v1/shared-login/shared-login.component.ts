@@ -73,13 +73,14 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
         public localStorageService: LocalStorageService,
         private _commonService: CommonService,
     ) {
-        this.truecallerRequestId = uuidv4()
+       
     }
 
     ngOnInit(): void {
         if (this._common.isBrowser) {
             //Invoke truecaller only for android device
-            if (this.isAndroid()) {
+            if (this.isAndroidAndChromeBrowser() && !this.isFacebookReferrer()) {
+                this.truecallerRequestId = uuidv4()
                 this.initializeTruecaller()
             }
             this.authFlow = this._localAuthService.getAuthFlow();
@@ -124,6 +125,14 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
         }
     }
 
+    private isFacebookReferrer(){
+        const referrer = document.referrer;
+        if(referrer && referrer.toLowerCase().includes('facebook')){
+            return true
+        }
+        return false
+    }
+
     private fetchTruecallerUserFlow() {
         this._sharedAuthService.fetchTrueCallerUser({
             requestId: this.truecallerRequestId
@@ -161,11 +170,10 @@ export class SharedLoginComponent implements OnInit, OnDestroy {
         this.removeAuthComponent$.emit();
     }
 
-    isAndroid(): boolean {
+    isAndroidAndChromeBrowser(): boolean {
         const userAgent = navigator.userAgent.toLowerCase();
-        return /android/.test(userAgent);
+        return /android/.test(userAgent) && /chrome/.test(userAgent);
     }
-
 
     objectToQueryString(obj) {
         const keyValuePairs = [];

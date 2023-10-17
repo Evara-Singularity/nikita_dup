@@ -37,11 +37,17 @@ export class LeaderboardBannerComponent {
         isClick ? "genericClick" : "genericPageLoad"
       );
       setTimeout(() => {
-        console.log(monet);
+        console.log(monet)
         if(this.commonService.isBrowser) {
-          if(isClick && url) this._router.navigateByUrl(url.replace(CONSTANTS.PROD, ''));
+          if(isClick && url) {
+            if(url.includes(CONSTANTS.PROD)) {
+              this._router.navigateByUrl(url.replace(CONSTANTS.PROD, ''))
+            } else {
+              window.location.href = url;
+            }
+          };
         }
-      },100);
+      },200);
     }
   }
 }

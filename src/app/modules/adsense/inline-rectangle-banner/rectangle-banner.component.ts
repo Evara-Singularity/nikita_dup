@@ -1,5 +1,6 @@
 import { Component, Input } from "@angular/core";
 import { Router } from "@angular/router";
+import CONSTANTS from "@app/config/constants";
 import { BannerAdUnit } from "@app/utils/models/adsense.model";
 import { CommonService } from "@app/utils/services/common.service";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
@@ -32,7 +33,7 @@ export class RectangleBannerComponent {
       setTimeout(() => {
         console.log(monet)
         if(this.commonService.isBrowser) {
-          if(isClick && url) window.location.href = url;
+          if(isClick && url) this._router.navigateByUrl(url.replace(CONSTANTS.PROD, ''));
         }
       },100);
     }

@@ -39,7 +39,7 @@ export class LeaderboardBannerComponent {
       setTimeout(() => {
         console.log(monet);
         if(this.commonService.isBrowser) {
-          if(isClick && url) window.location.href = url;
+          if(isClick && url) this._router.navigateByUrl(url.replace(CONSTANTS.PROD, ''));
         }
       },100);
     }

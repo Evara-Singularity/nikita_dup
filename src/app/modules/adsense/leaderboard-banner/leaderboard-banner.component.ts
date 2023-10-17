@@ -36,9 +36,12 @@ export class LeaderboardBannerComponent {
         {monet},
         isClick ? "genericClick" : "genericPageLoad"
       );
-      if(this.commonService.isBrowser) {
-        if(isClick && url) window.location.href = url;
-      }
+      setTimeout(() => {
+        console.log(monet);
+        if(this.commonService.isBrowser) {
+          if(isClick && url) window.location.href = url;
+        }
+      },100);
     }
   }
 }

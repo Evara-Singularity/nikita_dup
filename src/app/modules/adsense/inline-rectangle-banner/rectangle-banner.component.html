@@ -1,5 +1,5 @@
 <ng-container *ngIf="data && data.pictureUrl && data.landingPageUrl">
-    <a href="{{data.landingPageUrl}}" (click)="$event.stopPropagation();onVisisble($event, true);">
+    <a (click)="$event.preventDefault();onVisisble($event, true, data.landingPageUrl);" href="{{data.landingPageUrl}}">
         <div class="inline-rectangle-container mb-10" data-observeVisibility [debounceTime]="200"
             (visible)="onVisisble($event)">
             <img src="{{data.pictureUrl}}">

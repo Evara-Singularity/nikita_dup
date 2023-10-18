@@ -1,10 +1,6 @@
 import { Component, Input } from "@angular/core";
-import { Router } from "@angular/router";
-import CONSTANTS from "@app/config/constants";
 import { BannerAdUnit } from "@app/utils/models/adsense.model";
-import { CommonService } from "@app/utils/services/common.service";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
-import { environment } from "environments/environment";
 
 @Component({
   selector: "adsense-leaderboard-banner",
@@ -14,14 +10,13 @@ import { environment } from "environments/environment";
 export class LeaderboardBannerComponent {
   @Input() data: BannerAdUnit | null = null;
   @Input() analyticsIdentifier: string = null;
-  prodUrl = CONSTANTS.PROD;
-  constructor(public _analytic: GlobalAnalyticsService, public _router: Router, private commonService: CommonService) {}
+  constructor(public _analytic: GlobalAnalyticsService) {}
 
   onVisisble(event, isClick = false) {
     this.analyticsImpresssion(isClick);
   }
 
-  analyticsImpresssion(isClick = false, url=null) {
+  analyticsImpresssion(isClick = false) {
     if (this.data && this.analyticsIdentifier) {
       const type = isClick ? "click_" : "impression_";
       const monet = {
@@ -32,13 +27,7 @@ export class LeaderboardBannerComponent {
       //   isClick ? "genericClick" : "genericPageLoad",
       //   monet
       // );
-      this._analytic.sendAdobeCall(
-        {monet},
-        isClick ? "genericClick" : "genericPageLoad"
-      );
-      if(this.commonService.isBrowser) {
-        if(isClick && url) window.location.href = url;
-      }
+      this._analytic.sendAdobeCall({monet});
     }
   }
 }

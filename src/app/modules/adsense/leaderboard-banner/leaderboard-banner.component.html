@@ -1,7 +1,7 @@
 <ng-container *ngIf="data && data.pictureUrl && data.landingPageUrl">
-    <div (click)="$event.stopPropagation();analyticsImpresssion(true, data.landingPageUrl);" data-observeVisibility [debounceTime]="200" (visible)="onVisisble($event)">
-        <a href="{{data.landingPageUrl}}" (click)="$event.preventDefault()">
-            <div class="leadership-banner-container mb-10">
+    <div (click)="$event.stopPropagation();analyticsImpresssion(true);" data-observeVisibility [debounceTime]="200" (visible)="onVisisble($event)">
+        <a href="{{data.landingPageUrl}}" (click)="$event.stopPropagation(); analyticsImpresssion(true);">
+            <div class="leadership-banner-container mb-10" (click)="$event.stopPropagation(); analyticsImpresssion(true);">
                 <img src="{{data.pictureUrl}}">
             </div>
         </a>

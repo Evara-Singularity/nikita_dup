@@ -1,7 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { Router } from "@angular/router";
 import { BannerAdUnit } from "@app/utils/models/adsense.model";
-import { CommonService } from "@app/utils/services/common.service";
 import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.service";
 
 @Component({
@@ -13,25 +11,22 @@ export class RectangleBannerComponent {
   @Input() data: BannerAdUnit | null = null;
   @Input() analyticsIdentifier: string = null;
 
-  constructor(public _analytic: GlobalAnalyticsService, private _router: Router, private commonService: CommonService) {}
+  constructor(public _analytic: GlobalAnalyticsService) {}
 
-  onVisisble(event, isClick = false, url=null) {
-    this.analyticsImpresssion(isClick, url);
+  onVisisble(event, isClick = false) {
+    this.analyticsImpresssion(isClick);
   }
 
-  analyticsImpresssion(isClick = false, url=null) {
+  analyticsImpresssion(isClick = false) {
     if (this.data && this.analyticsIdentifier) {
       const type = isClick ? "click_" : "impression_";
       const monet = {
         adType: type + this.analyticsIdentifier,
       };
       this._analytic.sendAdobeCall(
-        {monet},
-        isClick ? "genericClick" : "genericPageLoad"
+        {monet}
+        // isClick ? "genericClick" : "genericPageLoad"
       );
-      if(this.commonService.isBrowser) {
-        if(isClick && url) window.location.href = url;
-      }
     }
   }
 }

@@ -8,6 +8,15 @@ if (environment.production) {
     enableProdMode();
 }
 
+const preloadLink = document.createElement('link');
+preloadLink.rel = 'preload';
+preloadLink.as = 'script';
+preloadLink.href = 'https://www.googletagmanager.com/gtm.js?id=' + environment.GTM_ANALYTICS_CODE;
+
+// Append the link element to the document's head
+document.head.appendChild(preloadLink);
+
+
 document.addEventListener('DOMContentLoaded', () => {
     platformBrowserDynamic().bootstrapModule(AppModule)
         .then(res => {

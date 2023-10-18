@@ -113,12 +113,12 @@ function appendImagePreloads(indexHtml, url) {
   } else {
     return indexHtml
   }
-  urls.unshift('<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>');
-  urls.unshift('<link rel="dns-prefetch" href="https://www.googletagmanager.com">');
-  urls.unshift('<link rel="preconnect" href="https://www.google-analytics.com" crossorigin>');
-  urls.unshift('<link rel="dns-prefetch" href="https://www.google-analytics.com">');
-  urls.unshift('<link rel="preconnect" href="https://img.youtube.com/" crossorigin>');
-  urls.unshift('<link rel="dns-prefetch" href="https://img.youtube.com/">');
+  urls.push('<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>');
+  urls.push('<link rel="dns-prefetch" href="https://www.googletagmanager.com">');
+  urls.push('<link rel="preconnect" href="https://www.google-analytics.com" crossorigin>');
+  urls.push('<link rel="dns-prefetch" href="https://www.google-analytics.com">');
+  urls.push('<link rel="preconnect" href="https://img.youtube.com/" crossorigin>');
+  urls.push('<link rel="dns-prefetch" href="https://img.youtube.com/">');
   const allImagePreloadLink = urls.join('')
   const replaceStringInIndex = '<!-- INSERT DYNAMIC IMAGES PRELOAD DURING SSR SERVE HERE -->';
   const headStartingTagIdx = indexHtml.indexOf(replaceStringInIndex);

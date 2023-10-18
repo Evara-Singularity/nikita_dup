@@ -27,10 +27,7 @@ export class LeaderboardBannerComponent {
       //   isClick ? "genericClick" : "genericPageLoad",
       //   monet
       // );
-      this._analytic.sendAdobeCall(
-        {monet},
-        isClick ? "genericClick" : "genericPageLoad"
-      );
+      this._analytic.sendAdobeCall({monet});
     }
   }
 }

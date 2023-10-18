@@ -24,8 +24,8 @@ export class RectangleBannerComponent {
         adType: type + this.analyticsIdentifier,
       };
       this._analytic.sendAdobeCall(
-        {monet},
-        isClick ? "genericClick" : "genericPageLoad"
+        {monet}
+        // isClick ? "genericClick" : "genericPageLoad"
       );
     }
   }

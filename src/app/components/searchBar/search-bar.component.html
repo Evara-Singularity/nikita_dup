@@ -32,7 +32,7 @@
                         <ul class="plan-list">
                             <ng-container *ngFor="let prod of suggestionList | slice:0:5; let i = index;">
                                 <li *ngIf="prod.productCount" class="ac_even" type="suggestionList"
-                                    (click)="navigateTo('SEARCH', prod.term,null,prod.categoryIdList.join(','),prod.attributes, prod['brandName'] )"
+                                    (click)="searchData({searchTerm: prod.term}, true)"
                                     [attr.data-index]="i">
                                     <span class="search-text">{{prod.term}}</span>
                                     <div class="search-count">

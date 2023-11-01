@@ -58,7 +58,7 @@
                         <a>
                             <img alt="View All Categories" src="{{clusterimagePath + 'img/cluster/all_categories.png'}}"
                                 width="97" height="65">
-                            <p class="category-text view-all-cate">View All<br> Categories</p>
+                            <p class="category-tedebouncext view-all-cate">View All<br> Categories</p>
                         </a>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
         </div>
 
         <!--homeMiscellaneousCarousel ( Buy it again, Recently Viewed, wishlist & my RFQ section)-->
-        <section *ngIf="isUserLoggedIn" class="popular-Deals-Section" id="popularDeals" data-observeVisibility [debounceTime]="100" (visible)="callHomePageWidgetsApis()">
+        <section *ngIf="isUserLoggedIn" class="popular-Deals-Section" id="popularDeals" data-observeVisibility [debounceTime]="0" (visible)="callHomePageWidgetsApis()">
             <ng-container #homeMiscellaneousCarousel></ng-container>
             <home-page-skeletons [type]="'SIMILAR'" [templateRefInstance]="homeMiscellaneousCarouselInstance"></home-page-skeletons>
         </section>      

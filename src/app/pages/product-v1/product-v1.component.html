@@ -47,19 +47,17 @@
     </product-grouping-attributes>
     <ng-container
         *ngIf="rawProductData?.priceQuantityCountry?.bulkPricesModified && rawProductData?.priceQuantityCountry?.bulkPricesModified?.length > 0">
-        <product-bulk-quantity (checkBulkPriceMode$)="checkBulkPriceMode()"
-            (selectProductBulkPrice$)="selectProductBulkPrice($event)" [rawProductData]="rawProductData"
-            [productOutOfStock]="rawProductData?.productOutOfStock"
-            [isCommonProduct]="rawProductData?.productFilterAttributesList > 0"
-            [priceQuantityCountry]="rawProductData?.priceQuantityCountry" [productBulkPrices]="productBulkPrices"
-            [cartQunatityForProduct]="cartQunatityForProduct" [qunatityFormControl]="qunatityFormControl"
-            [productMinimmumQuantity]="rawProductData?.productMinimmumQuantity">
-        </product-bulk-quantity>
+        <div data-observeVisibility [debounceTime]="100" (visible)="onVisibleProductBulkQtySection()" #productBulkQty></div>
     </ng-container>
 
     <!-- TODO: skeleton to be implemented -->
-    <div class="coupon" *ngIf='!rawProductData?.productOutOfStock && rawProductData?.priceQuantityCountry?.mrp > 0'>
-        <app-product-offers [pageLinkName]="pageLinkName" [price]='rawProductData?.productPrice'
+    <div class="coupon" *ngIf='!rawProductData?.productOutOfStock && rawProductData?.priceQuantityCountry?.mrp > 0'
+        data-observeVisibility [debounceTime]="100" (visible)="onVisibleOffer()">
+        <ng-container #offerSection></ng-container>
+        <div [ngClass]="{ 'coupon-inner': !offerSectionInstance}" class="coupon-inner">
+            <product-skeletons [type]="'COUPON'" [templateRefInstance]="offerSectionInstance"></product-skeletons>
+        </div>
+        <!-- <app-product-offers [pageLinkName]="pageLinkName" [price]='rawProductData?.productPrice'
             [gstPercentage]='rawProductData?.taxPercentage' [productmsn]='rawProductData?.defaultPartNumber'
             [isHindiMode]='isHindiUrl' (viewPopUpHandler)='fetchCategoryExtras()'
             (promoCodePopUpHandler)='fetchPromoCodes()' [brandName]='rawProductData?.productBrandDetails?.brandName'
@@ -68,7 +66,7 @@
             [categoryName]='rawProductData?.productCategoryDetails?.categoryName'
             [allofferData]='apiResponse?.extraCategories' (emaiComparePopUpHandler)='emiComparePopUpOpen($event)'
             [promoCodes]='apiResponse?.applicablePromo' [user]='user' [msn]='rawProductData?.defaultPartNumber'>
-        </app-product-offers>
+        </app-product-offers> -->
     </div>
     <!-- TODO: skeleton to be implemented -->
     <div data-observeVisibility class="pincode" [debounceTime]="100" (visible)="onVisiblePincodeSection($event)"
@@ -82,10 +80,7 @@
         [data]="apiResponse?.productWidget"></moglix-insight-pdp>
 
     <!-- product benifits and policy -->
-    <product-benefits [isProductReturnAble]="rawProductData?.isProductReturnAble"
-        [isBrandMsn]='rawProductData?.productBrandDetails["brandTag"] == "Brand" ? true : false'
-        [productOutOfStock]="rawProductData?.productOutOfStock" (navigateToFAQ$)="loadReturnInfo()"></product-benefits>
-
+    <div data-observeVisibility [debounceTime]="100" (visible)="onVisibleProductBenifits()" #productBenifits></div>
     <!-- floating container ref -->
     <div #similarProductsRef></div>
     <div class="mb-10">
@@ -172,9 +167,12 @@
 
     <!-- TODO: skeleton to be implemented -->
     <!-- TODO: Check in case TYPE B & TYPE C products -->
-    <div class="card" [class.fbtSection]='fbtFlag' *ngIf='fbtFlag'>
-        <fbt [originalProductBO]='originalProductBO' [isHindiUrl]='isHindiUrl'
-            [productQuantity]='cartQunatityForProduct' [analytics]='fbtAnalytics'></fbt>
+    <div class="card" [class.fbtSection]='fbtFlag' *ngIf='fbtFlag' 
+        data-observeVisibility [debounceTime]="300" (visible)="onVisibleFbtSection()">
+        <ng-container #fbt></ng-container>
+        <product-skeletons [type]="'FBT'" [templateRefInstance]="fbtComponentInstance"></product-skeletons>
+        <!-- <fbt [originalProductBO]='originalProductBO' [isHindiUrl]='isHindiUrl'
+            [productQuantity]='cartQunatityForProduct' [analytics]='fbtAnalytics'></fbt> -->
     </div>
 
 
@@ -230,9 +228,7 @@
     </div>
 
     <!-- // TODO: whatsapp-toast should be lazy loaded ngafterviewinit with sketon -->
-    <past-orders *ngIf="isBrowser && user?.authenticated == 'true'" [outOfStock]="rawProductData?.productOutOfStock"
-        [analytics]="pastOrderAnalytics">
-    </past-orders>
+    <div data-observeVisibility *ngIf="isBrowser && user?.authenticated == 'true'" [debounceTime]="100" (visible)="onVisiblePastOrders()" #pastOrders></div>
 
     <section data-observeVisibility class="pwa-col-12 common-product" [debounceTime]="100"
         *ngIf='recentProductItems.length' [ngClass]="{'recent_section': !recentProductsInstance}"
@@ -325,6 +321,7 @@
 </div>
 
 <ng-container *ngIf="!rawProductData?.productOutOfStock">
+    <div data-observeVisibility [debounceTime]="100" (visible)="onVisibleProductBenifits()" #productBenifits></div>
     <appInstallWidget></appInstallWidget>
 </ng-container>
 

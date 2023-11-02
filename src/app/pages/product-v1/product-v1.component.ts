@@ -230,8 +230,19 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     similarProductsScrolledIntoView: boolean;
     @ViewChild('recentProductsRef', {static: false}) private recentProductElementRef: ElementRef<HTMLDivElement>;
     recentProductScrolledIntoView: boolean;
-    
-
+    // ondemad loaded components for showing product benifits
+    productBenifitsInstance = null;
+    @ViewChild("productBenifits", { read: ViewContainerRef })
+    productBenifitsContainerRef: ViewContainerRef;
+    // ondemad loaded components for showing past orders
+    pastOrdersInstance = null;
+    @ViewChild("pastOrders", { read: ViewContainerRef })
+    pastOrdersContainerRef: ViewContainerRef;
+    // ondemad loaded components for showing product bulj qunatity
+    productBulkQtyInstance = null;
+    @ViewChild("productBulkQty", { read: ViewContainerRef })
+    productBulkQtyContainerRef: ViewContainerRef;
+    productBulkQty
     set showLoader(value: boolean) { this.globalLoader.setLoaderState(value); }
 
     get getWhatsText() {
@@ -1032,6 +1043,19 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         if (this.returnInfoInstance) {
             this.returnInfoInstance = null;
             this.returnInfoContainerRef.remove();
+        }
+        this.clearOfferInstance();
+        if(this.productBenifitsInstance) {
+            this.productBenifitsInstance = null;
+            this.productBenifitsContainerRef.remove();
+        }
+        if(this.pastOrdersInstance) {
+            this.pastOrdersInstance = null;
+            this.pastOrdersContainerRef.remove();
+        }
+        if(this.productBulkQtyInstance) {
+            this.productBulkQtyInstance = null;
+            this.productBulkQtyContainerRef.remove();
         }
     }
 
@@ -4040,6 +4064,147 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         },(error)=>{
             this.shopByDifferentBrands = [];
         })
+    }
+
+    async onVisibleOffer() {
+        if (!this.rawProductData.productOutOfStock && this.rawProductData.productMrp > 0) {
+            const { ProductOffersComponent } = await import(
+                "./../../components/product-offers/product-offers.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(ProductOffersComponent);
+            this.offerSectionInstance = this.offerSectionContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.offerSectionInstance.instance["pageLinkName"] = this.pageLinkName;
+            this.offerSectionInstance.instance['price'] = this.rawProductData?.productPrice;
+            this.offerSectionInstance.instance['gstPercentage'] = this.rawProductData?.taxPercentage;
+            this.offerSectionInstance.instance['productmsn'] = this.rawProductData?.defaultPartNumber;
+            this.offerSectionInstance.instance['msn'] = this.rawProductData?.defaultPartNumber;
+            this.offerSectionInstance.instance['isHindiMode'] = this.isHindiUrl;
+            this.offerSectionInstance.instance['brandName'] = this.rawProductData?.productBrandDetails?.brandName;
+            this.offerSectionInstance.instance['couponForbrandCategory'] = this.apiResponse?.prepaidDiscount;
+            this.offerSectionInstance.instance['categoryId'] = this.rawProductData?.productCategoryDetails?.categoryCode;
+            this.offerSectionInstance.instance['categoryName'] = this.rawProductData?.productCategoryDetails?.categoryName;
+            this.offerSectionInstance.instance['allofferData'] = this.apiResponse?.extraCategories;
+            this.offerSectionInstance.instance['promoCodes'] = this.apiResponse?.applicablePromo;
+            this.offerSectionInstance.instance['user'] = this.user;
+            (
+                this.offerSectionInstance.instance[
+                "viewPopUpHandler"
+                ] as EventEmitter<boolean>
+            ).subscribe((data) => {
+                this.fetchCategoryExtras();
+            });
+            (
+                this.offerSectionInstance.instance[
+                "emaiComparePopUpHandler"
+                ] as EventEmitter<boolean>
+            ).subscribe((status) => {
+                this.emiComparePopUpOpen(status);
+            });
+            (
+                this.offerSectionInstance.instance[
+                "promoCodePopUpHandler"
+                ] as EventEmitter<boolean>
+            ).subscribe((data) => {
+                this.fetchPromoCodes();
+            });
+            this.cdr.detectChanges();
+        } else {
+
+        }
+    }
+
+    async onVisibleProductBenifits() {
+        const { ProductBenefitsComponent } = await import(
+            "../../components/product-benefits/product-benefits.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(ProductBenefitsComponent);
+        this.productBenifitsInstance = this.productBenifitsContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.productBenifitsInstance.instance["isProductReturnAble"] = this.rawProductData?.isProductReturnAble;
+        this.productBenifitsInstance.instance['isBrandMsn'] = this.rawProductData?.productBrandDetails["brandTag"] == "Brand" ? true : false;
+        this.productBenifitsInstance.instance['productOutOfStock'] = this.rawProductData?.productOutOfStock;
+        (
+            this.productBenifitsInstance.instance[
+            "navigateToFAQ$"
+            ] as EventEmitter<boolean>
+        ).subscribe((data) => {
+            this.loadReturnInfo();
+        });
+        this.cdr.detectChanges();
+    }
+
+    async onVisibleFbtSection() {
+        const { FbtComponent } = await import(
+            "../../components/fbt/fbt.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(FbtComponent);
+        this.fbtComponentInstance = this.fbtComponentContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.fbtComponentInstance.instance["originalProductBO"] = this.originalProductBO;
+        this.fbtComponentInstance.instance['isHindiUrl'] = this.isHindiUrl;
+        this.fbtComponentInstance.instance['productQuantity'] = this.cartQunatityForProduct;
+        this.fbtComponentInstance.instance['analytics'] = this.fbtAnalytics;
+        this.cdr.detectChanges();
+    }
+
+    async onVisiblePastOrders() {
+        const { PastOrdersComponent } = await import(
+            "../../components/past-orders/past-orders.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(PastOrdersComponent);
+        this.pastOrdersInstance = this.pastOrdersContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.pastOrdersInstance.instance["outOfStock"] = this.rawProductData.productOutOfStock;
+        this.pastOrdersInstance.instance['analytics'] = this.pastOrderAnalytics;
+        this.cdr.detectChanges();
+    }
+
+    async onVisibleProductBulkQtySection() {
+        const { ProductBulkQuantityComponent } = await import(
+            "../../components/product-bulk-quantity/product-bulk-quantity.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(ProductBulkQuantityComponent);
+        this.productBulkQtyInstance = this.pastOrdersContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.productBulkQtyInstance.instance["rawProductData"] = this.rawProductData;
+        this.productBulkQtyInstance.instance['productOutOfStock'] = this.rawProductData.productOutOfStock;
+        this.productBulkQtyInstance.instance["isCommonProduct"] = this.rawProductData?.productFilterAttributesList > 0;
+        this.productBulkQtyInstance.instance["priceQuantityCountry"] = this.rawProductData.priceQuantityCountry;
+        this.productBulkQtyInstance.instance["productBulkPrices"] = this.productBulkPrices;
+        this.productBulkQtyInstance.instance["cartQunatityForProduct"] = this.cartQunatityForProduct;
+        this.productBulkQtyInstance.instance["qunatityFormControl"] = this.qunatityFormControl;
+        this.productBulkQtyInstance.instance["productMinimmumQuantity"] = this.rawProductData.productMinimmumQuantity;
+        (
+            this.productBenifitsInstance.instance[
+            "checkBulkPriceMode$"
+            ] as EventEmitter<boolean>
+        ).subscribe((data) => {
+            this.checkBulkPriceMode();
+        });
+        (
+            this.productBenifitsInstance.instance[
+            "selectProductBulkPrice$"
+            ] as EventEmitter<any>
+        ).subscribe((data) => {
+            this.selectProductBulkPrice(data);
+        });
+        this.cdr.detectChanges();
     }
 
     ngOnDestroy() {

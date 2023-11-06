@@ -64,6 +64,7 @@ export class SharedProductCarouselComponent implements OnInit, AfterViewInit
     ) { }
 
   ngOnInit(): void {
+    console.log(this.productAllImages);
     // console.log(this.productBo,"this.productBo");
     this.productStaticData = this.commonService.getLocalizationData(!this.isHindiUrl);
     this.commonService.similarProductsLoaded.subscribe(value => value && this.cdr.detectChanges())

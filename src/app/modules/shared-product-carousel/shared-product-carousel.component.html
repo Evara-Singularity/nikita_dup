@@ -38,8 +38,8 @@
                     <div class="pinch-zoom element-pseudo"
                         (click)="$event.stopPropagation();sendProductImageClickTracking()"
                         style="transform-origin: 0% 0%;">
-                        <ng-container *ngIf="productAllImages && productAllImages[0] && productAllImages[0]['xxlarge']">
-                            <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['xxlarge'] }}"
+                        <ng-container *ngIf="productAllImages && productAllImages[0] && productAllImages[0]['xlarge']">
+                            <img *ngIf="!isProductCrouselLoaded" src="{{productAllImages[0]['xlarge'] }}"
                                 alt="{{productName}}">
                             <img *ngIf="isProductCrouselLoaded" src="{{imagePathAsset}}assets/img/loader_new.gif"
                                 class="loader-image" />

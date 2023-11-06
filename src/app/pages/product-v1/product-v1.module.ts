@@ -65,7 +65,7 @@ import { AdsenseService } from "@app/utils/services/adsense.service";
         // PastOrdersModule, // lazy load
         ProductRfqThanksPopupModule, // lazy load
         // WhatsAppToastModule, // lazy load
-        AppInstallWidgetModule, // lazy load
+        AppInstallWidgetModule, // lazy load 
         FloatingButtonContainerModule,
         ProductGroupingAttributesModule,
         // ProductBulkQuantityModule, // lazy load
@@ -73,7 +73,7 @@ import { AdsenseService } from "@app/utils/services/adsense.service";
         EmiPlansModule, // lazy load
         ProductOosSimilarModule,
         ProductInfoModule, // lazy load
-        FloatingCouponWidgetModule, // lazy load
+        FloatingCouponWidgetModule,
         AdsenseFeatureProductsUnitModule, // lazy load
         AdsensePromotedBrandsUnitModule, // lazy load
         AdsenseLeaderboardBannerModule, // lazy load

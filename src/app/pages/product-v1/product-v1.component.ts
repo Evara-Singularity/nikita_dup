@@ -319,6 +319,30 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             value => {
               (this.displayAddToCartAnimation = value)}
           );
+
+        // send tracking data 
+        this.sendTrackingClickStreamData();  
+    }
+
+    sendTrackingClickStreamData() {
+        if (this.commonService.isBrowser) {
+            const userSession = this.localAuthService.getUserSession();
+            let trackData = {
+                event_type: "page_load",
+                label: "view",
+                url: CONSTANTS.PROD + this.router.url,
+                session_id: userSession?.sessionId || null,
+                user_id: userSession?.userId  || null,
+                product_name: this.rawProductData?.productName || null,
+                brand: this.rawProductData?.productBrandDetails?.brandName || null, 
+                oos: this.rawProductData?.productOutOfStock || null,
+                msn: this.rawProductData?.msn || null,
+                email:userSession?.email,
+                channel: "pdp",
+                page_type: "product_page"
+            }
+            this.analytics.sendMessage(trackData);
+        }
     }
     
     @HostListener('window:scroll', ['$event'])

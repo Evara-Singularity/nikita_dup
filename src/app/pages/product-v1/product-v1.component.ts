@@ -243,6 +243,18 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild("productBulkQty", { read: ViewContainerRef })
     productBulkQtyContainerRef: ViewContainerRef;
     productBulkQty
+    AdsenseProductBrandsInstance = null;
+    @ViewChild("AdsenseProductBrands", { read: ViewContainerRef })
+    AdsenseProductBrandsContainerRef: ViewContainerRef;
+    AdsenseFeatureProductsInstance = null;
+    @ViewChild("AdsenseFeatureProducts", { read: ViewContainerRef })
+    AdsenseFeatureProductsContainerRef: ViewContainerRef;
+    AdsenseLeaderBoardBannerInstance = null;
+    @ViewChild("AdsenseLeaderBoardBanner", { read: ViewContainerRef })
+    AdsenseLeaderBoardBannerContainerRef: ViewContainerRef;
+    AdsenseRectangleBannerInstance = null;
+    @ViewChild("AdsenseRectangleBanner", { read: ViewContainerRef })
+    AdsenseRectangleBannerContainerRef: ViewContainerRef;
     set showLoader(value: boolean) { this.globalLoader.setLoaderState(value); }
 
     get getWhatsText() {
@@ -1056,6 +1068,22 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         if(this.productBulkQtyInstance) {
             this.productBulkQtyInstance = null;
             this.productBulkQtyContainerRef.remove();
+        }
+        if(this.AdsenseFeatureProductsInstance) {
+            this.AdsenseFeatureProductsInstance = null;
+            this.AdsenseFeatureProductsContainerRef.remove();
+        }
+        if(this.AdsenseProductBrandsInstance) {
+            this.AdsenseProductBrandsInstance = null;
+            this.AdsenseProductBrandsContainerRef.remove();
+        }
+        if(this.AdsenseLeaderBoardBannerInstance) {
+            this.AdsenseLeaderBoardBannerInstance = null;
+            this.AdsenseLeaderBoardBannerContainerRef.remove();
+        }
+        if(this.AdsenseRectangleBannerInstance) {
+            this.AdsenseRectangleBannerInstance = null;
+            this.AdsenseRectangleBannerContainerRef.remove();
         }
     }
 
@@ -4204,6 +4232,67 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         ).subscribe((data) => {
             this.selectProductBulkPrice(data);
         });
+        this.cdr.detectChanges();
+    }
+
+    async onVisibleAdsenseProductBrands() {
+        const { PromotedBrandsUnitComponent } = await import(
+            "../../modules/adsense/promoted-brands-unit/promoted-brands-unit.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(PromotedBrandsUnitComponent);
+        this.AdsenseProductBrandsInstance = this.AdsenseProductBrandsContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.AdsenseProductBrandsInstance.instance["isPdpPage"] = true;
+        this.AdsenseProductBrandsInstance.instance["analyticsIdentifier"] = 'PROMOTOTED_BRAND_ADS_'+ this.adsenseData['ANALYTIC_IDENTIFIER'];
+        this.AdsenseProductBrandsInstance.instance['data'] = this.adsenseData['PROMOTOTED_BRAND_ADS'];
+        this.cdr.detectChanges();
+    }
+
+    async onVisibleAdsenseFeatureProducts() {
+        const { FeatureProductsUnitComponent } = await import(
+            "../../modules/adsense/feature-products-unit/feature-products-unit.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(FeatureProductsUnitComponent);
+        this.AdsenseFeatureProductsInstance = this.AdsenseFeatureProductsContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.AdsenseFeatureProductsInstance.instance["analyticsIdentifier"] = 'FEATURED_PRODUCT_ADS_'+ this.adsenseData['ANALYTIC_IDENTIFIER'];
+        this.AdsenseFeatureProductsInstance.instance['data'] = this.adsenseData['FEATURED_PRODUCT_ADS'];
+        this.cdr.detectChanges();
+    }
+
+    async onVisibleAdsenseLeaderBoardBanner() {
+        const { FeatureProductsUnitComponent } = await import(
+            "../../modules/adsense/feature-products-unit/feature-products-unit.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(FeatureProductsUnitComponent);
+        this.AdsenseLeaderBoardBannerInstance = this.AdsenseLeaderBoardBannerContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.AdsenseLeaderBoardBannerInstance.instance["analyticsIdentifier"] = 'MOBILE_LEADERBOARD_PDP_' + this.adsenseData['ANALYTIC_IDENTIFIER'];
+        this.AdsenseLeaderBoardBannerInstance.instance['data'] = this.adsenseData['MOBILE_LEADERBOARD_PDP'];
+        this.cdr.detectChanges();
+    }
+
+    async onVisibleAdsenseRectangleBanner() {
+        const { FeatureProductsUnitComponent } = await import(
+            "../../modules/adsense/feature-products-unit/feature-products-unit.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(FeatureProductsUnitComponent);
+        this.AdsenseLeaderBoardBannerInstance = this.AdsenseLeaderBoardBannerContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.AdsenseLeaderBoardBannerInstance.instance["analyticsIdentifier"] = 'INLINE_RECTANGLE_PDP_'+ this.adsenseData['ANALYTIC_IDENTIFIER'];
+        this.AdsenseLeaderBoardBannerInstance.instance['data'] = this.adsenseData['INLINE_RECTANGLE_PDP'];
         this.cdr.detectChanges();
     }
 

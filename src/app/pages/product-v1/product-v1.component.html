@@ -99,13 +99,15 @@
     <!-- adsense PDP -->
     <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData">
         <ng-container *ngIf="adsenseData && adsenseData['MOBILE_LEADERBOARD_PDP']">
-            <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PDP']"
+            <!-- <adsense-leaderboard-banner [data]="adsenseData['MOBILE_LEADERBOARD_PDP']"
                 [analyticsIdentifier]="'MOBILE_LEADERBOARD_PDP_'+adsenseData['ANALYTIC_IDENTIFIER']">
-            </adsense-leaderboard-banner>
+            </adsense-leaderboard-banner> -->
+            <div data-observeVisibility [debounceTime]="100" (visible)="onVisibleAdsenseLeaderBoardBanner()" #AdsenseLeaderBoardBanner></div>
         </ng-container>
         <ng-container *ngIf="adsenseData && adsenseData['INLINE_RECTANGLE_PDP']">
-            <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PDP']"
-                [analyticsIdentifier]="'INLINE_RECTANGLE_PDP_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-rectangle-banner>
+            <!-- <adsense-rectangle-banner [data]="adsenseData['INLINE_RECTANGLE_PDP']"
+                [analyticsIdentifier]="'INLINE_RECTANGLE_PDP_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-rectangle-banner> -->
+            <div data-observeVisibility [debounceTime]="100" (visible)="onVisibleAdsenseRectangleBanner()" #AdsenseRectangleBanner></div>
         </ng-container>
     </ng-container>
 
@@ -195,13 +197,11 @@
 
     <!-- adsense PDP -->
     <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData && adsenseData['PROMOTOTED_BRAND_ADS']">
-        <adsense-promoted-brands-unit [isPdpPage]="true" [data]="adsenseData['PROMOTOTED_BRAND_ADS']"
-            [analyticsIdentifier]="'PROMOTOTED_BRAND_ADS_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-promoted-brands-unit>
+        <div data-observeVisibility [debounceTime]="100" (visible)="onVisibleAdsenseProductBrands()" #AdsenseProductBrands></div>
     </ng-container>
 
     <ng-container *ngIf="!rawProductData?.productOutOfStock && adsenseData && adsenseData['FEATURED_PRODUCT_ADS']">
-        <adsense-feature-products-unit [data]="adsenseData['FEATURED_PRODUCT_ADS']"
-            [analyticsIdentifier]="'FEATURED_PRODUCT_ADS_'+adsenseData['ANALYTIC_IDENTIFIER']"></adsense-feature-products-unit>
+        <div data-observeVisibility [debounceTime]="100" (visible)="onVisibleAdsenseFeatureProducts()" #AdsenseFeatureProducts></div>
     </ng-container>
 
     <!-- removed sponsored products -->

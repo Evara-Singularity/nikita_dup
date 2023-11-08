@@ -255,6 +255,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     AdsenseRectangleBannerInstance = null;
     @ViewChild("AdsenseRectangleBanner", { read: ViewContainerRef })
     AdsenseRectangleBannerContainerRef: ViewContainerRef;
+    rfqThanksPopupInstance = null;
+    @ViewChild("rfqThanksPopup", { read: ViewContainerRef })
+    rfqThanksPopupContainerRef: ViewContainerRef;
     set showLoader(value: boolean) { this.globalLoader.setLoaderState(value); }
 
     get getWhatsText() {
@@ -2576,6 +2579,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.productRFQUpdateInstance.instance["onRFQUpdateSuccess"] as EventEmitter<string>
         ).subscribe((status) => {
             this.isRFQSuccessfull = true;
+            this.loadRFQThanksPopup();
             this.cdr.detectChanges();
         });
         this.cdr.detectChanges();
@@ -4294,6 +4298,57 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.AdsenseLeaderBoardBannerInstance.instance["analyticsIdentifier"] = 'INLINE_RECTANGLE_PDP_'+ this.adsenseData['ANALYTIC_IDENTIFIER'];
         this.AdsenseLeaderBoardBannerInstance.instance['data'] = this.adsenseData['INLINE_RECTANGLE_PDP'];
         this.cdr.detectChanges();
+    }
+
+    async loadRFQThanksPopup() {
+        const { ProductRfqThanksPopupComponent } = await import(
+            "../../components/product-rfq-thanks-popup/product-rfq-thanks-popup.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(ProductRfqThanksPopupComponent);
+        this.rfqThanksPopupInstance = this.rfqThanksPopupContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.rfqThanksPopupInstance.instance["getWhatsText"] = this.getWhatsText;
+        this.rfqThanksPopupInstance.instance['similarProducts'] = this.similarProducts;
+        this.rfqThanksPopupInstance.instance['isRFQSuccessfull'] = true;
+        this.rfqThanksPopupInstance.instance['imagePathAsset'] = this.imagePathAsset;
+        this.rfqThanksPopupInstance.instance['rfqTotalValue'] = this.rfqTotalValue;
+        this.rfqThanksPopupInstance.instance['hasGstin'] = this.hasGstin;
+        this.rfqThanksPopupInstance.instance['productOutOfStock'] = this.rawProductData.productOutOfStock;
+        (
+            this.rfqThanksPopupInstance.instance[
+            "closeRFQAlert$"
+            ] as EventEmitter<any>
+        ).subscribe(() => {
+            this.clearRFQThanksPopup();
+            this.cdr.detectChanges();
+        });
+        (
+            this.rfqThanksPopupInstance.instance[
+            "scrollToId$"
+            ] as EventEmitter<any>
+        ).subscribe((data) => {
+            this.scrollToId(data);
+            this.cdr.detectChanges();
+        });
+        (
+            this.rfqThanksPopupInstance.instance[
+            "navigateToCategory$"
+            ] as EventEmitter<any>
+        ).subscribe((data) => {
+            this.navigateToCategory();
+        });
+        this.cdr.detectChanges();
+    }
+
+    clearRFQThanksPopup() {
+        if(this.rfqThanksPopupInstance) {
+            this.isRFQSuccessfull = false;
+            this.rfqThanksPopupInstance = null;
+            this.rfqThanksPopupContainerRef.remove();
+        }
     }
 
     ngOnDestroy() {

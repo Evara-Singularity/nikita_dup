@@ -293,21 +293,7 @@
     <ng-container #globalToast></ng-container>
     <ng-container #addToCartToast></ng-container>
     <ng-container #quickOrder></ng-container>
-
-
-
-
-
-
-
-
-    <!-- // TODO: product-rfq-thanks-popup should be lazy loaded -->
-    <product-rfq-thanks-popup (closeRFQAlert$)="closeRFQAlert()" (scrollToId$)="scrollToId($event)"
-        (navigateToCategory$)="navigateToCategory()" [rfqTotalValue]="rfqTotalValue" [hasGstin]="hasGstin"
-        [getWhatsText]="getWhatsText" [similarProducts]="similarProducts"
-        [productOutOfStock]="rawProductData?.productOutOfStock" [isRFQSuccessfull]="isRFQSuccessfull"
-        [imagePathAsset]="imagePathAsset">
-    </product-rfq-thanks-popup>
+    <ng-container #rfqThanksPopup></ng-container>
 
     <!-- // TODO: whatsapp-toast should be lazy loaded ngafterviewinit -->
     <whatsapp-toast (click)="sendTrackingData()" [customText]="getWhatsText"></whatsapp-toast>

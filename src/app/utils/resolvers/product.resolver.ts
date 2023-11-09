@@ -15,6 +15,8 @@ import { CommonService } from '../services/common.service';
 import { map } from 'rxjs/operators';
 import { LoggerService } from '../services/logger.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import * as mock from '../../pages/product-v1/mock.js';
+
 
 
 @Injectable({
@@ -68,33 +70,33 @@ export class ProductResolver implements Resolve<any> {
           productUrl += `&userId=${user.userId}`
         }
       }
-      const productResponseObj = this.http.get(productUrl, requestOptions).pipe(share(),
-        map(res => {
-          const logInfo = this._commonService.getLoggerObj(productUrl, 'GET', startTime)
-          logInfo.endDateTime = new Date().getTime();
-          logInfo.responseStatus = res["status"];
-          this._loggerService.apiServerLog(logInfo);
-          return res;
-        }));
-
+      // const productResponseObj = this.http.get(productUrl, requestOptions).pipe(share(),
+      //   map(res => {
+      //     const logInfo = this._commonService.getLoggerObj(productUrl, 'GET', startTime)
+      //     logInfo.endDateTime = new Date().getTime();
+      //     logInfo.responseStatus = res["status"];
+      //     this._loggerService.apiServerLog(logInfo);
+      //     return res;
+      //   }));
+      const productResponseObj = mock.resp3;
       const apiList = [
         productResponseObj,
       ];
-
-      return forkJoin(apiList).pipe(
-        catchError((err) => {
-          console.log('category forkJoin error ==>', err);
-          // this.loaderService.setLoaderState(false);
-          return of(err);
-        }),
-        tap(result => {
-          // console.log(result);
-          if (isPlatformServer(this.platformId)) {
-            this.transferState.set(PRODUCT_KEY, result[0]);
-          }
-          // this.loaderService.setLoaderState(false);
-        })
-      );
+      return of([productResponseObj])
+      // return forkJoin(apiList).pipe(
+      //   catchError((err) => {
+      //     console.log('category forkJoin error ==>', err);
+      //     // this.loaderService.setLoaderState(false);
+      //     return of(err);
+      //   }),
+      //   tap(result => {
+      //     // console.log(result);
+      //     if (isPlatformServer(this.platformId)) {
+      //       this.transferState.set(PRODUCT_KEY, result[0]);
+      //     }
+      //     // this.loaderService.setLoaderState(false);
+      //   })
+      // );
     }
   }
 

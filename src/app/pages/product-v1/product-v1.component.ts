@@ -29,6 +29,7 @@ import { Observable, of, Subject, Subscription } from "rxjs";
 import { catchError, map, mergeMap, take } from "rxjs/operators";
 import * as localization_en from '../../config/static-en';
 import * as localization_hi from '../../config/static-hi';
+import * as mocks from './mock.js'
 
 @Component({
     selector: "product-v1",
@@ -318,6 +319,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.pageUrl = this.router.url;
         this.route.data.subscribe((rawData) => {
             const resp = rawData.product[0].data.data || null;
+            console.log(resp);
             if(resp?.productGroup == null){
                 this.setProductNotFound();
                 this.rawProductData = null;

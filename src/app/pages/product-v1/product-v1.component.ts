@@ -106,6 +106,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     adsenseData: any = null;
     private subscriptionAddToCartAnimation: Subscription;
     displayAddToCartAnimation: boolean=false;
+    tags: any;
 
     // lazy loaded component refs
     productShareInstance = null;
@@ -292,6 +293,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.pageUrl = this.router.url;
         this.route.data.subscribe((rawData) => {
             const resp = rawData.product[0].data.data || null;
+            console.log(rawData["product"][0]['data']['data']['tags'])
+            this.tags = rawData?.product?.[0]?.data?.data?.tags || null;
             if(resp?.productGroup == null){
                 this.setProductNotFound();
                 this.rawProductData = null;
@@ -335,11 +338,18 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 user_id: userSession?.userId  || null,
                 product_name: this.rawProductData?.productName || null,
                 brand: this.rawProductData?.productBrandDetails?.brandName || null, 
-                oos: this.rawProductData?.productOutOfStock || null,
+                quantity: this.qunatityFormControl.value,
+                price: this.rawProductData?.productPrice,
+                oos: this.rawProductData?.productOutOfStock,
+                active_tags: this.tags?.length > 0 ? this.tags[this.tags?.length-1]?.name : null,
+                prodURL: CONSTANTS.PROD + this.router.url,
                 msn: this.rawProductData?.msn || null,
                 email:userSession?.email,
                 channel: "pdp",
                 page_type: "product_page"
+            }
+            for(let i = 0; i < this.apiResponse?.breadCrumb?.length; i++){
+                trackData[`category_l${i+1}`] = this.apiResponse?.breadCrumb[i]['categoryLink'];
             }
             this.analytics.sendMessage(trackData);
         }

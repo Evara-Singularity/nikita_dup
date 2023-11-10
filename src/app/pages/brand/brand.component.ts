@@ -45,6 +45,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
     public adsenseData: any = null
     isAcceptLanguage = false;
     pageLinkName: string;
+    isSearchPage: boolean = false;
     constructor(
         public _activatedRoute: ActivatedRoute,
         public _router: Router,
@@ -78,6 +79,9 @@ export class BrandComponent implements OnInit, AfterViewInit {
 
             // Set footers
             this._footerService.setMobileFoooters();
+            this._activatedRoute.queryParams.subscribe((params) => {
+                this.isSearchPage = params['search_query'] && params['search_query'].length ? true : false;
+            })
         }
 
         this.setDataFromResolver();
@@ -481,7 +485,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                 this.pageLinkName = "moglix:" + this._activatedRoute.snapshot.params.brand + ":" + sParams['category'] + ": listing";
                 page = {
                     'pageName': this.pageLinkName,
-                    'channel': "brand:category",
+                    'channel': this.isSearchPage ? "Search Brand+Category Page" : "brand:category",
                     'subSection': "moglix:" + this._activatedRoute.snapshot.params.brand + ":" + sParams['category'] + ": listing " + this._commonService.getSectionClick().toLowerCase(),
                     'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
                 }
@@ -494,7 +498,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
                 this.pageLinkName = "moglix:" + this._activatedRoute.snapshot.params.brand + ": listing";
                 page = {
                     'pageName': this.pageLinkName,
-                    'channel': "brand",
+                    'channel': this.isSearchPage ? "Search Brand Page" : "brand",
                     'subSection': "moglix:" + this._activatedRoute.snapshot.params.brand + ": listing " + this._commonService.getSectionClick().toLowerCase(),
                     'totalProductCount':this._productListService?.productListingData.totalCount,
                     'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest",
@@ -590,10 +594,16 @@ export class BrandComponent implements OnInit, AfterViewInit {
     setAdobeTrackingData() {
         // console.log('setAdobeTrackingData', 'nrand called');
         if (this._commonService.isBrowser) {
+            let channel = 'Listing';
+            if(this.isSearchPage && this.API_RESPONSE['brand'][1][0].categoryName) {
+                channel = "Search Brand+Category Page"
+            } else if (this.isSearchPage && !this.API_RESPONSE['brand'][1][0].categoryName) {
+                channel = "Search Brand Page"
+            }
             var trackingData = {
                 event_type: "page_load",
                 label: "view",
-                channel: "Listing",
+                channel: channel,
                 page_type: "brand_page",
                 brand: this.API_RESPONSE['brand'][0].brandName,
                 filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',

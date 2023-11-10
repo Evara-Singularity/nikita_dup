@@ -221,7 +221,7 @@ export class SearchComponent implements OnInit {
     const trackingData = {
       event_type: "page_load",
       label: "view",
-      channel: "Search Listing",
+      channel: "Search Result Page",
       page_type: "search page",
       search_query: this._activatedRoute.snapshot.queryParams['search_query'] ? this._activatedRoute.snapshot.queryParams['search_query'].trim() : this._activatedRoute.snapshot.queryParams['search_query'],
       filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
@@ -257,7 +257,7 @@ export class SearchComponent implements OnInit {
     const user = this._localStorageService.retrieve('user');
     let page = {
       'pageName': "Search Listing Page",
-      'channel': "search",
+      'channel': "Search Result Page",
       'categoryRecommended': '',
       'categoryRecSelected': '',
       'subSection': "moglix:search " + this._commonService.getSectionClick().toLowerCase(),

@@ -80,7 +80,7 @@ export class BrandComponent implements OnInit, AfterViewInit {
             // Set footers
             this._footerService.setMobileFoooters();
             this._activatedRoute.queryParams.subscribe((params) => {
-                this.isSearchPage = params['search_query'] && params['search_query'].length ? true : false;
+                this.isSearchPage = this._commonService.isSearchPage(params);
             })
         }
 

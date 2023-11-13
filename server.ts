@@ -103,7 +103,7 @@ function appendImagePreloads(indexHtml, url) {
     urls = indexHtml.match(regexImage).map((val, index) => {
       // extract image URL from extacted img tags
       if ((val.match(regexImageSrc) || val.match(regexImageSrc).length > 0) && index < maxLimit && (url.includes('/mp/') && val.includes('xlarge') || !url.includes('/mp/'))) {
-        return `<link rel="preload" importance="high" as="image" href="${val.match(regexImageSrc)[0].replace('src="', '').replace('"', '')}">
+        return `<link rel="preload" importance="high" fetchPriority="high" as="image" href="${val.match(regexImageSrc)[0].replace('src="', '').replace('"', '')}">
         `;
       } else {
         return "";

@@ -1755,5 +1755,9 @@ export class CommonService
     setDisplayAddToCartAnimation(value: boolean) {
         this._displayAddToCartAnimation.next(value);
       }
+    
+    isSearchPage(params) {
+        return (params['search_query'] && params['search_query'].length) || (params['tS']) ? true : false;
+    }
 
 }

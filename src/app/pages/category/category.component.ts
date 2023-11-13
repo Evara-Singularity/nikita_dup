@@ -53,7 +53,7 @@ export class CategoryComponent {
     isAcceptLanguage: boolean;
     categoryLink: string = "";
     pageLinkName: string;
-
+    isSearchPage: boolean = false;
     constructor(
         public _router: Router,
         private _renderer2: Renderer2,
@@ -77,10 +77,13 @@ export class CategoryComponent {
     }
 
     ngOnInit(): void {
-        this.setDataFromResolver();
         if (this._commonService.isBrowser) {
             this._footerService.setMobileFoooters();
+            this._activatedRoute.queryParams.subscribe((params) => {
+                this.isSearchPage = this._commonService.isSearchPage(params);
+            })
         }
+        this.setDataFromResolver();
         this._commonService.loadFreshChat();
     }
 
@@ -319,6 +322,7 @@ export class CategoryComponent {
 
     sendTrackingData() {
         if (this._commonService.isBrowser) {
+            console.log(this.isSearchPage)
             let taxonomy = this.API_RESPONSE['category'][0]["categoryDetails"]['taxonomy'];
             let trackData = {
                 event_type: "page_load",
@@ -327,7 +331,7 @@ export class CategoryComponent {
                 category_l1: taxonomy.split("/")[0] ? taxonomy.split("/")[0] : null,
                 category_l2: taxonomy.split("/")[1] ? taxonomy.split("/")[1] : null,
                 category_l3: taxonomy.split("/")[2] ? taxonomy.split("/")[2] : null,
-                channel: "Listing",
+                channel: this.isSearchPage ? "Search Category Page" : "Listing",
                 search_query: null,
                 suggestion_click: null,
                 filter_added: !!window.location.hash.substr(1) ? 'true' : 'false',
@@ -469,7 +473,7 @@ export class CategoryComponent {
         this.pageLinkName = "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing";
         let page = {
             'pageName': this.pageLinkName,
-            'channel': "listing",
+            'channel': this.isSearchPage ? "Search Category Page" : "Listing",
             'subSection': "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing " + this._commonService.getSectionClick().toLowerCase(),
             'loginStatus': (user && user["authenticated"] == 'true') ? "registered user" : "guest"
         }
@@ -803,7 +807,7 @@ export class CategoryComponent {
         const page = {
             "linkPageName": "moglix:" + taxo1 + ":" + taxo2 + ":" + taxo3 + ": listing",
             "linkName": "WhatsApp",
-            "channel": "listing"
+            'channel': this.isSearchPage ? "Search Category Page" : "Listing",
         };
         const custData = this._commonService.custDataTracking;
         const order = {

@@ -13,10 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
     platformBrowserDynamic().bootstrapModule(AppModule)
         .then(res => {
             // console.log('<===ANGULAR SCRIPTS LOADED===>', new Date().getTime())
-            setTimeout(() => {intializedGTM(window, document, 'script', 'dataLayer', environment.GTM_ANALYTICS_CODE);initializeGoogleAnalytics()}, 1500)
+           // setTimeout(() => {intializedGTM(window, document, 'script', 'dataLayer', environment.GTM_ANALYTICS_CODE);initializeGoogleAnalytics()}, 1500)
         })
         .catch(err => console.error(err));
 });
+
+window.onload = () => {
+    const c = "true" == sessionStorage.getItem("scriptLoaded") ? 0 : 3500;
+                    console.log(c);
+                    const _ = setInterval(()=>{
+                        intializedGTM(window, document, 'script', 'dataLayer', environment.GTM_ANALYTICS_CODE),
+                        initializeGoogleAnalytics(),
+                        sessionStorage.setItem("scriptLoaded", "true"),
+                        clearInterval(_)
+                    }
+                    , c)
+  };
 
 
 function intializedGTM(w, d, s, l, i) {

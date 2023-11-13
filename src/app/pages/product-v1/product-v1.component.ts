@@ -749,13 +749,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
 
     ngAfterViewInit() {
-        if (this.commonService.isBrowser) {
-            this.addSessionSubscriber();
-            // this.resetLazyComponents();
-            this.backUrlNavigationHandler();
-            this.attachBackClickHandler();
-            this.getAdsenseData();
-        }
+        setTimeout(() => {
+            if (this.commonService.isBrowser) {
+                this.addSessionSubscriber();
+                // this.resetLazyComponents();p
+                this.backUrlNavigationHandler();
+                this.attachBackClickHandler();
+                this.getAdsenseData();
+            }
+        }, 2000)
     }
 
     private getAdsenseData() {

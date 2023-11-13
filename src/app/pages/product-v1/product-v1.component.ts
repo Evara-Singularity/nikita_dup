@@ -4164,26 +4164,28 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     async onVisibleProductBenifits() {
-        const { ProductBenefitsComponent } = await import(
-            "../../components/product-benefits/product-benefits.component"
-        );
-        const factory = this.cfr.resolveComponentFactory(ProductBenefitsComponent);
-        this.productBenifitsInstance = this.productBenifitsContainerRef.createComponent(
-            factory,
-            null,
-            this.injector
-        );
-        this.productBenifitsInstance.instance["isProductReturnAble"] = this.rawProductData?.isProductReturnAble;
-        this.productBenifitsInstance.instance['isBrandMsn'] = this.rawProductData?.productBrandDetails["brandTag"] == "Brand" ? true : false;
-        this.productBenifitsInstance.instance['productOutOfStock'] = this.rawProductData?.productOutOfStock;
-        (
-            this.productBenifitsInstance.instance[
-            "navigateToFAQ$"
-            ] as EventEmitter<boolean>
-        ).subscribe((data) => {
-            this.loadReturnInfo();
-        });
-        this.cdr.detectChanges();
+        if(!this.productBenifitsInstance) {
+            const { ProductBenefitsComponent } = await import(
+                "../../components/product-benefits/product-benefits.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(ProductBenefitsComponent);
+            this.productBenifitsInstance = this.productBenifitsContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.productBenifitsInstance.instance["isProductReturnAble"] = this.rawProductData?.isProductReturnAble;
+            this.productBenifitsInstance.instance['isBrandMsn'] = this.rawProductData?.productBrandDetails["brandTag"] == "Brand" ? true : false;
+            this.productBenifitsInstance.instance['productOutOfStock'] = this.rawProductData?.productOutOfStock;
+            (
+                this.productBenifitsInstance.instance[
+                "navigateToFAQ$"
+                ] as EventEmitter<boolean>
+            ).subscribe((data) => {
+                this.loadReturnInfo();
+            });
+            this.cdr.detectChanges();
+        }
     }
 
     async onVisibleFbtSection() {

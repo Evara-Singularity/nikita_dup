@@ -112,8 +112,8 @@ function appendImagePreloads(indexHtml, url) {
   } else {
     return indexHtml
   }
+  urls.unshift('<link rel="preconnect" href="https://www.cdn.moglix.com">');
   urls.push('<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>');
-  urls.push('<link rel="preconnect" href="https://www.cdn.moglix.com">');
   urls.push('<link rel="preconnect" href="https://www.google-analytics.com" crossorigin>');
   urls.push('<link rel="preconnect" href="https://img.youtube.com" crossorigin>');
   urls.push('<link rel="preconnect" href="https://dynamic.criteo.com" crossorigin>');

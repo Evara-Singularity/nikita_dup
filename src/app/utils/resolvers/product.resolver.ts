@@ -15,8 +15,6 @@ import { CommonService } from '../services/common.service';
 import { map } from 'rxjs/operators';
 import { LoggerService } from '../services/logger.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import * as mock from '../../pages/product-v1/mock.js';
-
 
 
 @Injectable({
@@ -63,40 +61,40 @@ export class ProductResolver implements Resolve<any> {
         PRODUCT_KEY_OBJ,
       ]);
     } else {
-      let productUrl = environment.BASE_URL + ENDPOINTS.PRODUCT_API + `?msn=${productMsnId}`;
+      let productUrl = environment.BASE_URL_V3 + ENDPOINTS.PRODUCT_API + `?msn=${productMsnId}`;
       if(this.isBrowser) {
         let user: any = this.localStorageService.retrieve('user');
         if (user && user.authenticated == "true") {
           productUrl += `&userId=${user.userId}`
         }
       }
-      // const productResponseObj = this.http.get(productUrl, requestOptions).pipe(share(),
-      //   map(res => {
-      //     const logInfo = this._commonService.getLoggerObj(productUrl, 'GET', startTime)
-      //     logInfo.endDateTime = new Date().getTime();
-      //     logInfo.responseStatus = res["status"];
-      //     this._loggerService.apiServerLog(logInfo);
-      //     return res;
-      //   }));
-      const productResponseObj = mock.resp3;
+      const productResponseObj = this.http.get(productUrl, requestOptions).pipe(share(),
+        map(res => {
+          const logInfo = this._commonService.getLoggerObj(productUrl, 'GET', startTime)
+          logInfo.endDateTime = new Date().getTime();
+          logInfo.responseStatus = res["status"];
+          this._loggerService.apiServerLog(logInfo);
+          return res;
+        }));
+
       const apiList = [
         productResponseObj,
       ];
-      return of([productResponseObj])
-      // return forkJoin(apiList).pipe(
-      //   catchError((err) => {
-      //     console.log('category forkJoin error ==>', err);
-      //     // this.loaderService.setLoaderState(false);
-      //     return of(err);
-      //   }),
-      //   tap(result => {
-      //     // console.log(result);
-      //     if (isPlatformServer(this.platformId)) {
-      //       this.transferState.set(PRODUCT_KEY, result[0]);
-      //     }
-      //     // this.loaderService.setLoaderState(false);
-      //   })
-      // );
+
+      return forkJoin(apiList).pipe(
+        catchError((err) => {
+          console.log('category forkJoin error ==>', err);
+          // this.loaderService.setLoaderState(false);
+          return of(err);
+        }),
+        tap(result => {
+          // console.log(result);
+          if (isPlatformServer(this.platformId)) {
+            this.transferState.set(PRODUCT_KEY, result[0]);
+          }
+          // this.loaderService.setLoaderState(false);
+        })
+      );
     }
   }
 

@@ -29,7 +29,6 @@ import { Observable, of, Subject, Subscription } from "rxjs";
 import { catchError, map, mergeMap, take } from "rxjs/operators";
 import * as localization_en from '../../config/static-en';
 import * as localization_hi from '../../config/static-hi';
-import * as mocks from './mock.js'
 
 @Component({
     selector: "product-v1",
@@ -375,7 +374,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     processProductData(productGroup) {
         this.rawProductData = JSON.parse(JSON.stringify(productGroup));
-        this.originalProductBO = JSON.parse(JSON.stringify(productGroup.originalProductBO));
+        this.originalProductBO = JSON.parse(JSON.stringify(productGroup.originalProductBO || this.rawProductData));
         if (
             this.rawProductData && 
             Object.values(this.rawProductData["productAllImages"]) !== null

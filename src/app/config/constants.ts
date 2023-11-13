@@ -11,6 +11,7 @@ export const CONSTANTS = {
   GATEWAY_API: environment.BASE_URL_V3,
   NEW_MOGLIX_API: environment.BASE_URL,
   NEW_MOGLIX_API_V2: environment.BASE_URL_V2,
+  NEW_MOGLIX_API_V3: environment.BASE_URL_V3,
   APP_BASE_URL: environment.APP_BASE_URL,
   IMAGE_ASSET_URL: environment.IMAGE_ASSET_URL,
   SOCKET_URL: environment.SOCKET_URL,

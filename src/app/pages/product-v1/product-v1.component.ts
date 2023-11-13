@@ -318,7 +318,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.pageUrl = this.router.url;
         this.route.data.subscribe((rawData) => {
             const resp = rawData.product[0].data.data || null;
-            console.log(resp);
             if(resp?.productGroup == null){
                 this.setProductNotFound();
                 this.rawProductData = null;
@@ -752,7 +751,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit() {
         if (this.commonService.isBrowser) {
             this.addSessionSubscriber();
-            this.resetLazyComponents();
+            // this.resetLazyComponents();
             this.backUrlNavigationHandler();
             this.attachBackClickHandler();
             this.getAdsenseData();
@@ -782,9 +781,22 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.cartSubscription = this.cartService.getCartUpdatesChanges().pipe(take(2)).subscribe((data) =>{
             if(data && data['cart'] && data['cart']['sessionId'] && !this.blockAPICalls) {
                 this.blockAPICalls = true;
-                this.callAPIs();
+                this.patchApiResponse()
+
             }
         });
+    }
+
+    patchApiResponse() {
+        this.productService.secondaryAPIs(this.rawProductData.msn).subscribe((resp: any) => {
+            if(resp && resp.status && resp.data && resp.data.data) {
+                console.log(this.apiResponse);
+                this.apiResponse = {...this.apiResponse, ...resp.data.data};
+                this.cdr.detectChanges();
+                this.resetLazyComponents();
+                this.callAPIs;
+            }
+        })
     }
 
     callAPIs() {

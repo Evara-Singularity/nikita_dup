@@ -752,7 +752,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
             if (this.commonService.isBrowser) {
                 this.addSessionSubscriber();
-                // this.resetLazyComponents();p
+                this.resetLazyComponents();
                 this.backUrlNavigationHandler();
                 this.attachBackClickHandler();
                 this.getAdsenseData();
@@ -784,7 +784,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             if(data && data['cart'] && data['cart']['sessionId'] && !this.blockAPICalls) {
                 this.blockAPICalls = true;
                 this.patchApiResponse()
-
             }
         });
     }
@@ -795,7 +794,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 console.log(this.apiResponse);
                 this.apiResponse = {...this.apiResponse, ...resp.data.data};
                 this.cdr.detectChanges();
-                this.resetLazyComponents();
+                // this.resetLazyComponents();
                 this.callAPIs;
             }
         })

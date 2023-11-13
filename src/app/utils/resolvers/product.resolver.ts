@@ -61,7 +61,8 @@ export class ProductResolver implements Resolve<any> {
         PRODUCT_KEY_OBJ,
       ]);
     } else {
-      let productUrl = environment.BASE_URL_V3 + ENDPOINTS.PRODUCT_API + `?msn=${productMsnId}`;
+      let productUrl = 'https://api-gt.moglilabs.com/api' + ENDPOINTS.PRODUCT_API + `?msn=${productMsnId}`;
+      // let productUrl = environment.BASE_URL_V3 + ENDPOINTS.PRODUCT_API + `?msn=${productMsnId}`;
       if(this.isBrowser) {
         let user: any = this.localStorageService.retrieve('user');
         if (user && user.authenticated == "true") {

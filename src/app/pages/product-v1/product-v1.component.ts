@@ -293,7 +293,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.pageUrl = this.router.url;
         this.route.data.subscribe((rawData) => {
             const resp = rawData.product[0].data.data || null;
-            console.log(rawData["product"][0]['data']['data']['tags'])
             this.tags = rawData?.product?.[0]?.data?.data?.tags || null;
             if(resp?.productGroup == null){
                 this.setProductNotFound();

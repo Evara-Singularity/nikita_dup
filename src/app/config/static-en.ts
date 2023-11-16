@@ -30,7 +30,7 @@ export const product = {
     use_code:"Use Code",
     best_of_moglix:"Best of Moglix",
     frequently_bought_together:"Frequently Bought Together",
-    min_emi_text:"On min. purchase of Rs. 3000 across banks and Rs. 4500 for Bajaj Finserv",
+    min_emi_text:"On min. purchase of Rs. 3000 across banks",
     emi_gst_text_part1:"Get GST invoice and save up to",
     emi_gst_text_part2:"on business purchases",
     write_review:"WRITE A REVIEW",

@@ -4260,7 +4260,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             "../../components/product-bulk-quantity/product-bulk-quantity.component"
         );
         const factory = this.cfr.resolveComponentFactory(ProductBulkQuantityComponent);
-        this.productBulkQtyInstance = this.pastOrdersContainerRef.createComponent(
+        this.productBulkQtyInstance = this.productBulkQtyContainerRef.createComponent(
             factory,
             null,
             this.injector
@@ -4274,14 +4274,14 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.productBulkQtyInstance.instance["qunatityFormControl"] = this.qunatityFormControl;
         this.productBulkQtyInstance.instance["productMinimmumQuantity"] = this.rawProductData.productMinimmumQuantity;
         (
-            this.productBenifitsInstance.instance[
+            this.productBulkQtyInstance.instance[
             "checkBulkPriceMode$"
             ] as EventEmitter<boolean>
         ).subscribe((data) => {
             this.checkBulkPriceMode();
         });
         (
-            this.productBenifitsInstance.instance[
+            this.productBulkQtyInstance.instance[
             "selectProductBulkPrice$"
             ] as EventEmitter<any>
         ).subscribe((data) => {

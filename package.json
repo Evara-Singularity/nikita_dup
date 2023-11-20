@@ -58,6 +58,7 @@
         "@ngx-meta/core": "9.0.0",
         "angularx-social-login": "3.5.7",
         "credit-card-type": "9.1.0",
+        "crypto-js": "^4.2.0",
         "express": "4.15.2",
         "highcharts": "10.2.1",
         "jquery": "^3.6.0",

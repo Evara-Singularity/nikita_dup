@@ -9,6 +9,7 @@ import CONSTANTS from '../../config/constants';
 import { DataService } from '../../utils/services/data.service';
 import { SharedAuthUtilService } from './shared-auth-util.service';
 const BASEURL = CONSTANTS.NEW_MOGLIX_API;
+import * as CryptoJS from 'crypto-js';
 
 /**
  * TODO:Device information to be passed-1809
@@ -65,10 +66,18 @@ export class SharedAuthService implements OnInit
         return this.dataService.callRestful(this.BASEURLS.USEREXISTS.method, this.BASEURLS.USEREXISTS.url, { body: userData });
     }
 
+    generateAuthKey(privateKey, identifier) {
+        const salt = CryptoJS.lib.WordArray.random(16).toString();
+        const data = salt + privateKey + identifier;
+        const hash = CryptoJS.SHA256(data).toString();
+        return `${salt}.${hash}`;
+    }
+
     sendOTP(data): Observable<any>
     {
+        const accessKey = this.generateAuthKey(CONSTANTS.SEND_OTP_PRIVATE_KEY, data.phone ? data.phone: data.email)
         data['device'] = CONSTANTS.DEVICE.device;
-        return this.dataService.callRestful(this.BASEURLS.GETOTP.method, this.BASEURLS.GETOTP.url, { body: data });
+        return this.dataService.callRestful(this.BASEURLS.GETOTP.method, this.BASEURLS.GETOTP.url, { body: data, headerData: { 'accessKey': accessKey } });
     }
 
     validateOTP(data): Observable<any>

@@ -17,6 +17,7 @@ export const CONSTANTS = {
   IMAGE_BASE_URL: environment.IMAGE_BASE_URL,
   DOCUMENT_URL: environment.DOCUMENT_URL,
   SECRET_KEY: 'moglix@4241',
+  SEND_OTP_PRIVATE_KEY: environment.SEND_OTP_PRIVATE_KEY,
   SOCIAL_LOGIN: environment.SOCIAL_LOGIN,
   AB_TESTING: environment.AB_TESTING,
   CDN_IMAGE_PATH: environment.CDN_IMAGE_URL,

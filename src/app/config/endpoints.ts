@@ -10,7 +10,7 @@ export const ENDPOINTS = {
   GET_RELATED_LINKS: "/cmsApi/getRelatedLinks",
   SIMILAR_CATEGORY: "/category/mostSold",
   SIMILAR_BRAND: "/brand/getsimilarbrands",
-  LOGIN_URL: "/login/sendOTP",
+  LOGIN_URL: "/login/sendOtpV2",
   BHARATPAY_URL: '/marketPlace/cartSessionbyId/',
   LOGIN_OTP: "/login/validateotp",
   LOGIN_AUTHENTICATE: "/login/authenticate",

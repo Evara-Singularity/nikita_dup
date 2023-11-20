@@ -103,8 +103,7 @@ function appendImagePreloads(indexHtml, url) {
     urls = indexHtml.match(regexImage).map((val, index) => {
       // extract image URL from extacted img tags
       if ((val.match(regexImageSrc) || val.match(regexImageSrc).length > 0) && index < maxLimit && (url.includes('/mp/') && val.includes('xlarge') || !url.includes('/mp/'))) {
-      // if ((val.match(regexImageSrc) || val.match(regexImageSrc).length > 0)) {
-        return `<link rel="preload" fetchpriority="high" as="image" href="${val.match(regexImageSrc)[0].replace('src="', '').replace('"', '')}">
+        return `<link rel="preload" importance="high" fetchPriority="high" as="image" href="${val.match(regexImageSrc)[0].replace('src="', '').replace('"', '')}">
         `;
       } else {
         return "";
@@ -113,7 +112,11 @@ function appendImagePreloads(indexHtml, url) {
   } else {
     return indexHtml
   }
+  urls.unshift('<link rel="preconnect" href="https://www.cdn.moglix.com">');
   urls.push('<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>');
+  urls.push('<link rel="preconnect" href="https://www.google-analytics.com" crossorigin>');
+  urls.push('<link rel="preconnect" href="https://img.youtube.com" crossorigin>');
+  urls.push('<link rel="preconnect" href="https://dynamic.criteo.com" crossorigin>');
   const allImagePreloadLink = urls.join('')
   const replaceStringInIndex = '<!-- INSERT DYNAMIC IMAGES PRELOAD DURING SSR SERVE HERE -->';
   const headStartingTagIdx = indexHtml.indexOf(replaceStringInIndex);

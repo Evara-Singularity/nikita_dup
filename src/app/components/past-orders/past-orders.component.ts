@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, NgModule, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import CONSTANTS from '@app/config/constants';
 import { ProductCardVerticalGridViewModule } from '@app/modules/product-card/product-card-vertical-grid-view/product-card-vertical-grid-view.module';
@@ -42,7 +42,11 @@ export class PastOrdersComponent implements OnInit
     }
     cardMetaInfo: ProductCardMetaInfo = null;
     changeStaticSubscription: Subscription = null;
-    constructor(private _productService: ProductBrowserService, public localStorageService: LocalStorageService,private _commonService:CommonService) { }
+    constructor(
+        private _productService: ProductBrowserService, 
+        private cdr: ChangeDetectorRef,
+        public localStorageService: LocalStorageService,
+        private _commonService:CommonService) { }
 
     ngOnInit(): void
     {
@@ -72,6 +76,7 @@ export class PastOrdersComponent implements OnInit
         {
             if (response['status']) {
                 this.productList = (response['data'] as any[]).slice(0,10).map(product => this._productService.pastOrdersProductResponseToProductEntity(product));
+                this.cdr.detectChanges();
             }
             this.isRequested = true;
         });

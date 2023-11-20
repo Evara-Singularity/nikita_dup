@@ -3,7 +3,7 @@ const cssLinkRegExp = /<link rel="stylesheet" href="(.+)">/;
 
 function getAsyncLink(href) {
     return `
-    <link rel="preload" href="${href}" as="style" fetchpriority="low" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="${href}" as="style" importance="low" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="${href}"></noscript>
     `;
 }

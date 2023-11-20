@@ -1456,4 +1456,13 @@ export class ProductService {
         }
     }
 
+    secondaryAPIs(msn) {
+        let url = CONSTANTS.NEW_MOGLIX_API_V3 + ENDPOINTS.BASIC_DETAILS + msn?.toLowerCase();
+        return this._dataService.callRestful("GET", url).pipe(
+            catchError((res: HttpErrorResponse) => {
+                return of({ status: false, statusCode: res.status, data: [] });
+            })
+        );
+    }
+
 }

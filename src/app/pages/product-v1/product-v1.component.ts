@@ -231,8 +231,34 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     similarProductsScrolledIntoView: boolean;
     @ViewChild('recentProductsRef', {static: false}) private recentProductElementRef: ElementRef<HTMLDivElement>;
     recentProductScrolledIntoView: boolean;
-    
-
+    // ondemad loaded components for showing product benifits
+    productBenifitsInstance = null;
+    @ViewChild("productBenifits", { read: ViewContainerRef })
+    productBenifitsContainerRef: ViewContainerRef;
+    // ondemad loaded components for showing past orders
+    pastOrdersInstance = null;
+    @ViewChild("pastOrders", { read: ViewContainerRef })
+    pastOrdersContainerRef: ViewContainerRef;
+    // ondemad loaded components for showing product bulj qunatity
+    productBulkQtyInstance = null;
+    @ViewChild("productBulkQty", { read: ViewContainerRef })
+    productBulkQtyContainerRef: ViewContainerRef;
+    productBulkQty
+    AdsenseProductBrandsInstance = null;
+    @ViewChild("AdsenseProductBrands", { read: ViewContainerRef })
+    AdsenseProductBrandsContainerRef: ViewContainerRef;
+    AdsenseFeatureProductsInstance = null;
+    @ViewChild("AdsenseFeatureProducts", { read: ViewContainerRef })
+    AdsenseFeatureProductsContainerRef: ViewContainerRef;
+    AdsenseLeaderBoardBannerInstance = null;
+    @ViewChild("AdsenseLeaderBoardBanner", { read: ViewContainerRef })
+    AdsenseLeaderBoardBannerContainerRef: ViewContainerRef;
+    AdsenseRectangleBannerInstance = null;
+    @ViewChild("AdsenseRectangleBanner", { read: ViewContainerRef })
+    AdsenseRectangleBannerContainerRef: ViewContainerRef;
+    rfqThanksPopupInstance = null;
+    @ViewChild("rfqThanksPopup", { read: ViewContainerRef })
+    rfqThanksPopupContainerRef: ViewContainerRef;
     set showLoader(value: boolean) { this.globalLoader.setLoaderState(value); }
 
     get getWhatsText() {
@@ -380,7 +406,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     processProductData(productGroup) {
         this.rawProductData = JSON.parse(JSON.stringify(productGroup));
-        this.originalProductBO = JSON.parse(JSON.stringify(productGroup.originalProductBO));
+        this.originalProductBO = JSON.parse(JSON.stringify(productGroup.originalProductBO || this.rawProductData));
         if (
             this.rawProductData && 
             Object.values(this.rawProductData["productAllImages"]) !== null
@@ -411,10 +437,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         // analytics calls moved to this function incase PDP is redirecte to PDP
         this.callAnalyticForVisit();
         this.setMetatag();
-        if (!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null) {
-            this.getCompareProductsData(this.rawProductData?.msn);
-            this.getShopByDifferentBrandsData(this.rawProductData?.msn);
-        }
         if (!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null) { this.getCompareProductsData(this.rawProductData?.msn); }
         if (this.rawProductData.defaultPartNumber.toLowerCase() == CONSTANTS.POC_MSN) {
             let url = CONSTANTS.MODEL_JS_CDN_PATH;
@@ -737,7 +759,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     if(this.rawProductData.productOutOfStock){
                         this.clearOfferInstance();
                     }else{
-                        this.clearOfferInstance();
+                        this.onVisibleOffer();
                     }
                     this.onVisiblePincodeSection(null);
                     this.showLoader = false;
@@ -756,13 +778,15 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
 
     ngAfterViewInit() {
-        if (this.commonService.isBrowser) {
-            this.addSessionSubscriber();
-            this.resetLazyComponents();
-            this.backUrlNavigationHandler();
-            this.attachBackClickHandler();
-            this.getAdsenseData();
-        }
+        setTimeout(() => {
+            if (this.commonService.isBrowser) {
+                this.addSessionSubscriber();
+                this.resetLazyComponents();
+                this.backUrlNavigationHandler();
+                this.attachBackClickHandler();
+                this.getAdsenseData();
+            }
+        }, 2000)
     }
 
     private getAdsenseData() {
@@ -788,9 +812,23 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         this.cartSubscription = this.cartService.getCartUpdatesChanges().pipe(take(2)).subscribe((data) =>{
             if(data && data['cart'] && data['cart']['sessionId'] && !this.blockAPICalls) {
                 this.blockAPICalls = true;
-                this.callAPIs();
+                this.patchApiResponse()
             }
         });
+    }
+
+    patchApiResponse() {
+        this.productService.secondaryAPIs(this.rawProductData.msn).subscribe((resp: any) => {
+            if(resp && resp.status && resp.data && resp.data.data) {
+                console.log(this.apiResponse);
+                this.apiResponse = {...this.apiResponse, ...resp.data.data};
+                this.clearOfferInstance();
+                this.onVisibleOffer();
+                this.cdr.detectChanges();
+                this.callAPIs();
+                // this.resetLazyComponents();
+            }
+        })
     }
 
     callAPIs() {
@@ -843,11 +881,11 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 resObj['duplicateOrderRes'] = null;
             }
-            this.processClinetResponse(resObj);
+            this.processClientResponse(resObj);
         });
     }
 
-    processClinetResponse(res) {
+    processClientResponse(res) {
         if (res['productCountRes']) {
             this.rawProductCountData = Object.assign({}, res['productCountRes']);
             this.remoteApiCallRecentlyBought();
@@ -870,6 +908,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 (item) =>
                     ![this.rawProductData?.msn.toLowerCase()].includes(item.moglixPartNumber.toLowerCase())
             );
+        }
+        if (!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null) {
+            this.getCompareProductsData(this.rawProductData?.msn);
+            this.getShopByDifferentBrandsData(this.rawProductData?.msn);
         }
     }
 
@@ -1065,6 +1107,35 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         if (this.returnInfoInstance) {
             this.returnInfoInstance = null;
             this.returnInfoContainerRef.remove();
+        }
+        this.clearOfferInstance();
+        if(this.productBenifitsInstance) {
+            this.productBenifitsInstance = null;
+            this.productBenifitsContainerRef.remove();
+        }
+        if(this.pastOrdersInstance) {
+            this.pastOrdersInstance = null;
+            this.pastOrdersContainerRef.remove();
+        }
+        if(this.productBulkQtyInstance) {
+            this.productBulkQtyInstance = null;
+            this.productBulkQtyContainerRef.remove();
+        }
+        if(this.AdsenseFeatureProductsInstance) {
+            this.AdsenseFeatureProductsInstance = null;
+            this.AdsenseFeatureProductsContainerRef.remove();
+        }
+        if(this.AdsenseProductBrandsInstance) {
+            this.AdsenseProductBrandsInstance = null;
+            this.AdsenseProductBrandsContainerRef.remove();
+        }
+        if(this.AdsenseLeaderBoardBannerInstance) {
+            this.AdsenseLeaderBoardBannerInstance = null;
+            this.AdsenseLeaderBoardBannerContainerRef.remove();
+        }
+        if(this.AdsenseRectangleBannerInstance) {
+            this.AdsenseRectangleBannerInstance = null;
+            this.AdsenseRectangleBannerContainerRef.remove();
         }
     }
 
@@ -2557,6 +2628,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.productRFQUpdateInstance.instance["onRFQUpdateSuccess"] as EventEmitter<string>
         ).subscribe((status) => {
             this.isRFQSuccessfull = true;
+            this.loadRFQThanksPopup();
             this.cdr.detectChanges();
         });
         this.cdr.detectChanges();
@@ -4073,6 +4145,261 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         },(error)=>{
             this.shopByDifferentBrands = [];
         })
+    }
+
+    async onVisibleOffer() {
+        if (!this.rawProductData.productOutOfStock && this.rawProductData.productMrp > 0 && !this.offerSectionInstance) {
+            const { ProductOffersComponent } = await import(
+                "./../../components/product-offers/product-offers.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(ProductOffersComponent);
+            this.offerSectionInstance = this.offerSectionContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.offerSectionInstance.instance["pageLinkName"] = this.pageLinkName;
+            this.offerSectionInstance.instance['price'] = this.rawProductData?.productPrice;
+            this.offerSectionInstance.instance['gstPercentage'] = this.rawProductData?.taxPercentage;
+            this.offerSectionInstance.instance['productmsn'] = this.rawProductData?.defaultPartNumber;
+            this.offerSectionInstance.instance['msn'] = this.rawProductData?.defaultPartNumber;
+            this.offerSectionInstance.instance['isHindiMode'] = this.isHindiUrl;
+            this.offerSectionInstance.instance['brandName'] = this.rawProductData?.productBrandDetails?.brandName;
+            this.offerSectionInstance.instance['couponForbrandCategory'] = this.apiResponse?.prepaidDiscount;
+            this.offerSectionInstance.instance['categoryId'] = this.rawProductData?.productCategoryDetails?.categoryCode;
+            this.offerSectionInstance.instance['categoryName'] = this.rawProductData?.productCategoryDetails?.categoryName;
+            this.offerSectionInstance.instance['allofferData'] = this.apiResponse?.extraCategories;
+            this.offerSectionInstance.instance['promoCodes'] = this.apiResponse?.applicablePromo;
+            this.offerSectionInstance.instance['user'] = this.user;
+            (
+                this.offerSectionInstance.instance[
+                "viewPopUpHandler"
+                ] as EventEmitter<boolean>
+            ).subscribe((data) => {
+                this.fetchCategoryExtras();
+            });
+            (
+                this.offerSectionInstance.instance[
+                "emaiComparePopUpHandler"
+                ] as EventEmitter<boolean>
+            ).subscribe((status) => {
+                this.emiComparePopUpOpen(status);
+            });
+            (
+                this.offerSectionInstance.instance[
+                "promoCodePopUpHandler"
+                ] as EventEmitter<boolean>
+            ).subscribe((data) => {
+                this.fetchPromoCodes();
+            });
+            this.cdr.detectChanges();
+        } else {
+
+        }
+    }
+
+    async onVisibleProductBenifits() {
+        if(!this.productBenifitsInstance) {
+            const { ProductBenefitsComponent } = await import(
+                "../../components/product-benefits/product-benefits.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(ProductBenefitsComponent);
+            this.productBenifitsInstance = this.productBenifitsContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.productBenifitsInstance.instance["isProductReturnAble"] = this.rawProductData?.isProductReturnAble;
+            this.productBenifitsInstance.instance['isBrandMsn'] = this.rawProductData?.productBrandDetails["brandTag"] == "Brand" ? true : false;
+            this.productBenifitsInstance.instance['productOutOfStock'] = this.rawProductData?.productOutOfStock;
+            (
+                this.productBenifitsInstance.instance[
+                "navigateToFAQ$"
+                ] as EventEmitter<boolean>
+            ).subscribe((data) => {
+                this.loadReturnInfo();
+            });
+            this.cdr.detectChanges();
+        }
+    }
+
+    async onVisibleFbtSection() {
+        const { FbtComponent } = await import(
+            "../../components/fbt/fbt.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(FbtComponent);
+        this.fbtComponentInstance = this.fbtComponentContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.fbtComponentInstance.instance["originalProductBO"] = this.originalProductBO;
+        this.fbtComponentInstance.instance['isHindiUrl'] = this.isHindiUrl;
+        this.fbtComponentInstance.instance['productQuantity'] = this.cartQunatityForProduct;
+        this.fbtComponentInstance.instance['analytics'] = this.fbtAnalytics;
+        this.cdr.detectChanges();
+    }
+
+    async onVisiblePastOrders() {
+        const { PastOrdersComponent } = await import(
+            "../../components/past-orders/past-orders.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(PastOrdersComponent);
+        this.pastOrdersInstance = this.pastOrdersContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.pastOrdersInstance.instance["outOfStock"] = this.rawProductData.productOutOfStock;
+        this.pastOrdersInstance.instance['analytics'] = this.pastOrderAnalytics;
+        this.cdr.detectChanges();
+    }
+
+    async onVisibleProductBulkQtySection() {
+        const { ProductBulkQuantityComponent } = await import(
+            "../../components/product-bulk-quantity/product-bulk-quantity.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(ProductBulkQuantityComponent);
+        this.productBulkQtyInstance = this.productBulkQtyContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.productBulkQtyInstance.instance["rawProductData"] = this.rawProductData;
+        this.productBulkQtyInstance.instance['productOutOfStock'] = this.rawProductData.productOutOfStock;
+        this.productBulkQtyInstance.instance["isCommonProduct"] = this.rawProductData?.productFilterAttributesList > 0;
+        this.productBulkQtyInstance.instance["priceQuantityCountry"] = this.rawProductData.priceQuantityCountry;
+        this.productBulkQtyInstance.instance["productBulkPrices"] = this.productBulkPrices;
+        this.productBulkQtyInstance.instance["cartQunatityForProduct"] = this.cartQunatityForProduct;
+        this.productBulkQtyInstance.instance["qunatityFormControl"] = this.qunatityFormControl;
+        this.productBulkQtyInstance.instance["productMinimmumQuantity"] = this.rawProductData.productMinimmumQuantity;
+        (
+            this.productBulkQtyInstance.instance[
+            "checkBulkPriceMode$"
+            ] as EventEmitter<boolean>
+        ).subscribe((data) => {
+            this.checkBulkPriceMode();
+        });
+        (
+            this.productBulkQtyInstance.instance[
+            "selectProductBulkPrice$"
+            ] as EventEmitter<any>
+        ).subscribe((data) => {
+            this.selectProductBulkPrice(data);
+        });
+        this.cdr.detectChanges();
+    }
+
+    async onVisibleAdsenseProductBrands() {
+        const { PromotedBrandsUnitComponent } = await import(
+            "../../modules/adsense/promoted-brands-unit/promoted-brands-unit.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(PromotedBrandsUnitComponent);
+        this.AdsenseProductBrandsInstance = this.AdsenseProductBrandsContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.AdsenseProductBrandsInstance.instance["isPdpPage"] = true;
+        this.AdsenseProductBrandsInstance.instance["analyticsIdentifier"] = 'PROMOTOTED_BRAND_ADS_'+ this.adsenseData['ANALYTIC_IDENTIFIER'];
+        this.AdsenseProductBrandsInstance.instance['data'] = this.adsenseData['PROMOTOTED_BRAND_ADS'];
+        this.cdr.detectChanges();
+    }
+
+    async onVisibleAdsenseFeatureProducts() {
+        const { FeatureProductsUnitComponent } = await import(
+            "../../modules/adsense/feature-products-unit/feature-products-unit.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(FeatureProductsUnitComponent);
+        this.AdsenseFeatureProductsInstance = this.AdsenseFeatureProductsContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.AdsenseFeatureProductsInstance.instance["analyticsIdentifier"] = 'FEATURED_PRODUCT_ADS_'+ this.adsenseData['ANALYTIC_IDENTIFIER'];
+        this.AdsenseFeatureProductsInstance.instance['data'] = this.adsenseData['FEATURED_PRODUCT_ADS'];
+        this.cdr.detectChanges();
+    }
+
+    async onVisibleAdsenseLeaderBoardBanner() {
+        const { FeatureProductsUnitComponent } = await import(
+            "../../modules/adsense/feature-products-unit/feature-products-unit.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(FeatureProductsUnitComponent);
+        this.AdsenseLeaderBoardBannerInstance = this.AdsenseLeaderBoardBannerContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.AdsenseLeaderBoardBannerInstance.instance["analyticsIdentifier"] = 'MOBILE_LEADERBOARD_PDP_' + this.adsenseData['ANALYTIC_IDENTIFIER'];
+        this.AdsenseLeaderBoardBannerInstance.instance['data'] = this.adsenseData['MOBILE_LEADERBOARD_PDP'];
+        this.cdr.detectChanges();
+    }
+
+    async onVisibleAdsenseRectangleBanner() {
+        const { FeatureProductsUnitComponent } = await import(
+            "../../modules/adsense/feature-products-unit/feature-products-unit.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(FeatureProductsUnitComponent);
+        this.AdsenseLeaderBoardBannerInstance = this.AdsenseLeaderBoardBannerContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.AdsenseLeaderBoardBannerInstance.instance["analyticsIdentifier"] = 'INLINE_RECTANGLE_PDP_'+ this.adsenseData['ANALYTIC_IDENTIFIER'];
+        this.AdsenseLeaderBoardBannerInstance.instance['data'] = this.adsenseData['INLINE_RECTANGLE_PDP'];
+        this.cdr.detectChanges();
+    }
+
+    async loadRFQThanksPopup() {
+        const { ProductRfqThanksPopupComponent } = await import(
+            "../../components/product-rfq-thanks-popup/product-rfq-thanks-popup.component"
+        );
+        const factory = this.cfr.resolveComponentFactory(ProductRfqThanksPopupComponent);
+        this.rfqThanksPopupInstance = this.rfqThanksPopupContainerRef.createComponent(
+            factory,
+            null,
+            this.injector
+        );
+        this.rfqThanksPopupInstance.instance["getWhatsText"] = this.getWhatsText;
+        this.rfqThanksPopupInstance.instance['similarProducts'] = this.similarProducts;
+        this.rfqThanksPopupInstance.instance['isRFQSuccessfull'] = true;
+        this.rfqThanksPopupInstance.instance['imagePathAsset'] = this.imagePathAsset;
+        this.rfqThanksPopupInstance.instance['rfqTotalValue'] = this.rfqTotalValue;
+        this.rfqThanksPopupInstance.instance['hasGstin'] = this.hasGstin;
+        this.rfqThanksPopupInstance.instance['productOutOfStock'] = this.rawProductData.productOutOfStock;
+        (
+            this.rfqThanksPopupInstance.instance[
+            "closeRFQAlert$"
+            ] as EventEmitter<any>
+        ).subscribe(() => {
+            this.clearRFQThanksPopup();
+            this.cdr.detectChanges();
+        });
+        (
+            this.rfqThanksPopupInstance.instance[
+            "scrollToId$"
+            ] as EventEmitter<any>
+        ).subscribe((data) => {
+            this.scrollToId(data);
+            this.cdr.detectChanges();
+        });
+        (
+            this.rfqThanksPopupInstance.instance[
+            "navigateToCategory$"
+            ] as EventEmitter<any>
+        ).subscribe((data) => {
+            this.navigateToCategory();
+        });
+        this.cdr.detectChanges();
+    }
+
+    clearRFQThanksPopup() {
+        if(this.rfqThanksPopupInstance) {
+            this.isRFQSuccessfull = false;
+            this.rfqThanksPopupInstance = null;
+            this.rfqThanksPopupContainerRef.remove();
+        }
     }
 
     ngOnDestroy() {

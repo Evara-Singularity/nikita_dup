@@ -28,7 +28,7 @@ glob(buildDirectPath + "*.ttf", {}, function (err, files) {
           return;
         }
       
-        const fontPreloadTags = ttfFiles.map(file => `<link rel="preload" href="${file}" as="font" type="font/ttf" crossorigin="anonymous">`).join('\n');
+        const fontPreloadTags = ttfFiles.map(file => `<link rel="preload" href="${file}" importance="low" as="font" type="font/ttf" crossorigin="anonymous">`).join('\n');
         const replaced = contents.replace('<!-- INSERT DYNAMIC FONT PRELOAD AFTER SSR BUILD HERE -->', fontPreloadTags);
 
         writeFile(indexDir, replaced, 'utf-8', function (err) {

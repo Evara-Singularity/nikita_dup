@@ -131,7 +131,6 @@ export class ProductService {
     }
 
     getrecentProduct(user_id) {
-        debugger;
         return this._dataService.callRestful(
             "GET",
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.RECENTLY_VIEWED + user_id

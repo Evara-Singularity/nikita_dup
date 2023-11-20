@@ -437,10 +437,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         // analytics calls moved to this function incase PDP is redirecte to PDP
         this.callAnalyticForVisit();
         this.setMetatag();
-        if (!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null) {
-            this.getCompareProductsData(this.rawProductData?.msn);
-            this.getShopByDifferentBrandsData(this.rawProductData?.msn);
-        }
         if (!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null) { this.getCompareProductsData(this.rawProductData?.msn); }
         if (this.rawProductData.defaultPartNumber.toLowerCase() == CONSTANTS.POC_MSN) {
             let url = CONSTANTS.MODEL_JS_CDN_PATH;
@@ -763,7 +759,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     if(this.rawProductData.productOutOfStock){
                         this.clearOfferInstance();
                     }else{
-                        this.clearOfferInstance();
+                        this.onVisibleOffer();
                     }
                     this.onVisiblePincodeSection(null);
                     this.showLoader = false;
@@ -826,9 +822,11 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             if(resp && resp.status && resp.data && resp.data.data) {
                 console.log(this.apiResponse);
                 this.apiResponse = {...this.apiResponse, ...resp.data.data};
+                this.clearOfferInstance();
+                this.onVisibleOffer();
                 this.cdr.detectChanges();
+                this.callAPIs();
                 // this.resetLazyComponents();
-                this.callAPIs;
             }
         })
     }
@@ -883,11 +881,11 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             } else {
                 resObj['duplicateOrderRes'] = null;
             }
-            this.processClinetResponse(resObj);
+            this.processClientResponse(resObj);
         });
     }
 
-    processClinetResponse(res) {
+    processClientResponse(res) {
         if (res['productCountRes']) {
             this.rawProductCountData = Object.assign({}, res['productCountRes']);
             this.remoteApiCallRecentlyBought();
@@ -910,6 +908,10 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 (item) =>
                     ![this.rawProductData?.msn.toLowerCase()].includes(item.moglixPartNumber.toLowerCase())
             );
+        }
+        if (!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null) {
+            this.getCompareProductsData(this.rawProductData?.msn);
+            this.getShopByDifferentBrandsData(this.rawProductData?.msn);
         }
     }
 
@@ -4146,7 +4148,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     async onVisibleOffer() {
-        if (!this.rawProductData.productOutOfStock && this.rawProductData.productMrp > 0) {
+        if (!this.rawProductData.productOutOfStock && this.rawProductData.productMrp > 0 && !this.offerSectionInstance) {
             const { ProductOffersComponent } = await import(
                 "./../../components/product-offers/product-offers.component"
             );

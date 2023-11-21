@@ -24,6 +24,7 @@ import { LocalAuthService } from "./auth.service";
 import { abort } from "process";
 import * as localization_en from '../../config/static-en';
 import * as localization_hi from '../../config/static-hi';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
     providedIn: "root",
@@ -1402,10 +1403,11 @@ export class CommonService
     sendOtp(data): Observable<{}>
     {
         data["device"] = CONSTANTS.DEVICE.device;
+        const accessKey = this.generateAuthKey(CONSTANTS.SEND_OTP_PRIVATE_KEY, data.phone ? data.phone: data.email)
         return this._dataService.callRestful(
             "POST",
             CONSTANTS.NEW_MOGLIX_API + ENDPOINTS.LOGIN_URL,
-            { body: data }
+            { body: data, headerData: { 'accessKey': accessKey }  }
         );
     }
 
@@ -1760,4 +1762,11 @@ export class CommonService
         return (params['search_query'] && params['search_query'].length) || (params['tS']) ? true : false;
     }
 
+    generateAuthKey(privateKey, identifier) {
+        const salt = CryptoJS.lib.WordArray.random(16).toString();
+        const data = salt + privateKey + identifier;
+        const hash = CryptoJS.SHA256(data).toString();
+        return `${salt}.${hash}`;
+    }
+    
 }

@@ -217,8 +217,8 @@
 
 
     <ng-container
-        *ngIf="apiResponse?.breadCrumb && apiResponse?.breadCrumb.length > 0 && rawProductData?.productOutOfStock">
-        <breadcrumb-nav [productStaticData]='productStaticData' [breadcrumb]="apiResponse?.breadCrumb"
+        *ngIf="apiResponse?.breadcrumb && apiResponse?.breadcrumb.length > 0 && rawProductData?.productOutOfStock">
+        <breadcrumb-nav [productStaticData]='productStaticData' [breadcrumb]="apiResponse?.breadcrumb"
             [analytics]="breadCrumbAnalytics"></breadcrumb-nav>
     </ng-container>
 

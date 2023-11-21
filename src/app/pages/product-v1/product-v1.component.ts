@@ -1048,7 +1048,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.rfqFormInstance = null;
             this.rfqFormContainerRef.remove();
         }
-        this.clearProductFormInstance();
+        // this.clearProductFormInstance();
         if (this.offerSectionInstance) {
             this.offerSectionInstance = null;
             if (this.offerSectionContainerRef) {

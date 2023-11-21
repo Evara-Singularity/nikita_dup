@@ -192,9 +192,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild("shopByBrands", { read: ViewContainerRef })
     shopByBrandsContainerRef: ViewContainerRef;
     // ondemand loaded components for sponsered products
-    sponseredProductsInstance = null;
-    @ViewChild("sponseredProducts", { read: ViewContainerRef })
-    sponseredProductsContainerRef: ViewContainerRef;
+    // sponseredProductsInstance = null;
+    // @ViewChild("sponseredProducts", { read: ViewContainerRef })
+    // sponseredProductsContainerRef: ViewContainerRef;
     similarProductInstanceOOS = null;
     @ViewChild("similarProductOOS", { read: ViewContainerRef })
     similarProductInstanceOOSContainerRef: ViewContainerRef;
@@ -1034,11 +1034,11 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.similarProductInstanceOOSContainerRef.remove();
             this.onVisibleSimilarOOS(null);
         }
-        if (this.sponseredProductsInstance) {
-            this.sponseredProductsInstance = null;
-            if (this.sponseredProductsContainerRef) { this.sponseredProductsContainerRef.remove();}
-            this.onVisibleSponsered(null);
-        }
+        // if (this.sponseredProductsInstance) {
+        //     this.sponseredProductsInstance = null;
+        //     if (this.sponseredProductsContainerRef) { this.sponseredProductsContainerRef.remove();}
+        //     this.onVisibleSponsered(null);
+        // }
 
         if (this.recentProductsInstance && this.recentProductsContainerRef !=undefined) {
             this.recentProductsInstance = null;
@@ -2927,51 +2927,51 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // dynamically load similar section
-    async onVisibleSponsered(htmlElement) {
-        if (!this.sponseredProductsInstance) {
-            const { ProductSponsoredListComponent } = await import(
-                "./../../components/product-sponsored-list/product-sponsored-list.component"
-            );
-            const factory = this.cfr.resolveComponentFactory(
-                ProductSponsoredListComponent
-            );
-            this.sponseredProductsInstance =
-                this.sponseredProductsContainerRef.createComponent(
-                    factory,
-                    null,
-                    this.injector
-                );
-            this.sponseredProductsInstance.instance["productName"] = this.rawProductData.productName;
-            this.sponseredProductsInstance.instance["productId"] =
-                this.rawProductData.defaultPartNumber;
-            this.sponseredProductsInstance.instance["categoryCode"] =
-                this.rawProductData.productCategoryDetails["categoryCode"];
-            this.sponseredProductsInstance.instance["outOfStock"] =
-                this.rawProductData.productOutOfStock;
-            (this.sponseredProductsInstance.instance[
-                "sponseredDataLoaded$"
-            ] as EventEmitter<any>
-            ).subscribe((data) => {
-                // this.commonService.triggerAttachHotKeysScrollEvent('sponsered-products');
-            });
-            const custData = this.commonService.custDataTracking;
-            const orderData = this.orderTracking;
-            const TAXONS = this.taxons;
-            const page = {
-                pageName: null,
-                channel: "pdp",
-                subSection: "You May Also Like",
-                linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
-                linkName: null,
-                loginStatus: this.commonService.loginStatusTracking,
-            };
-            this.sponseredProductsInstance.instance["analytics"] = {
-                page: page,
-                custData: custData,
-                order: orderData,
-            };
-        }
-    }
+    // async onVisibleSponsered(htmlElement) {
+    //     if (!this.sponseredProductsInstance) {
+    //         const { ProductSponsoredListComponent } = await import(
+    //             "./../../components/product-sponsored-list/product-sponsored-list.component"
+    //         );
+    //         const factory = this.cfr.resolveComponentFactory(
+    //             ProductSponsoredListComponent
+    //         );
+    //         this.sponseredProductsInstance =
+    //             this.sponseredProductsContainerRef.createComponent(
+    //                 factory,
+    //                 null,
+    //                 this.injector
+    //             );
+    //         this.sponseredProductsInstance.instance["productName"] = this.rawProductData.productName;
+    //         this.sponseredProductsInstance.instance["productId"] =
+    //             this.rawProductData.defaultPartNumber;
+    //         this.sponseredProductsInstance.instance["categoryCode"] =
+    //             this.rawProductData.productCategoryDetails["categoryCode"];
+    //         this.sponseredProductsInstance.instance["outOfStock"] =
+    //             this.rawProductData.productOutOfStock;
+    //         (this.sponseredProductsInstance.instance[
+    //             "sponseredDataLoaded$"
+    //         ] as EventEmitter<any>
+    //         ).subscribe((data) => {
+    //             // this.commonService.triggerAttachHotKeysScrollEvent('sponsered-products');
+    //         });
+    //         const custData = this.commonService.custDataTracking;
+    //         const orderData = this.orderTracking;
+    //         const TAXONS = this.taxons;
+    //         const page = {
+    //             pageName: null,
+    //             channel: "pdp",
+    //             subSection: "You May Also Like",
+    //             linkPageName: `moglix:${TAXONS[0]}:${TAXONS[1]}:${TAXONS[2]}:pdp`,
+    //             linkName: null,
+    //             loginStatus: this.commonService.loginStatusTracking,
+    //         };
+    //         this.sponseredProductsInstance.instance["analytics"] = {
+    //             page: page,
+    //             custData: custData,
+    //             order: orderData,
+    //         };
+    //     }
+    // }
 
     async onVisiblePopularDeals() {
         const custData = this.commonService.custDataTracking;

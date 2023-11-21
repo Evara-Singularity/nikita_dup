@@ -33,7 +33,7 @@ export class FloatingButtonComponent implements OnInit {
   }
 
   playLottieAnimation() {
-    const lottieInstance = this.lottiePlayer.nativeElement;
+    const lottieInstance = this.lottiePlayer && this.lottiePlayer.nativeElement;
     if (lottieInstance) {
       lottieInstance.play();
     }

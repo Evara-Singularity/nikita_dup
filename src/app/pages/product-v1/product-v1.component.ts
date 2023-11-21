@@ -328,7 +328,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"] && rawData["product"][0]['data']['data']['productGroup']["active"]==true) {
                 this.apiResponse = rawData.product[0].data.data;
-                this.isAcceptLanguage = this.apiResponse['acceptLanguage'] && this.apiResponse['acceptLanguage'].length > 0 ? true : false; 
                 this.processProductData(this.apiResponse.productGroup);
                 this.setQuestionAnswerSchema();
                 if (this.apiResponse && this.apiResponse.tagProducts) {
@@ -406,6 +405,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     processProductData(productGroup) {
         this.rawProductData = JSON.parse(JSON.stringify(productGroup));
+        this.isAcceptLanguage = this.rawProductData.isAcceptLanguage; 
         this.originalProductBO = JSON.parse(JSON.stringify(productGroup.originalProductBO || this.rawProductData));
         if (
             this.rawProductData && 

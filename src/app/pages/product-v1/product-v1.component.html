@@ -35,8 +35,8 @@
         [taxPercentage]="rawProductData?.taxPercentage" [productOutOfStock]="rawProductData?.productOutOfStock"
         [productMinimmumQuantity]="rawProductData?.productMinimmumQuantity"
         [priceQuantityCountry]="rawProductData?.priceQuantityCountry"
-        [starsCount]="apiResponse?.productReviews?.startCount"
-        [rawReviewsCount]="apiResponse?.productReviews?.summaryData?.reviewCount || 0"
+        [starsCount]="apiResponse?.reviews?.startCount"
+        [rawReviewsCount]="apiResponse?.reviews?.summaryData?.reviewCount || 0"
         [rawProductCountMessage]="rawProductCountMessage" [msnId]="rawProductData?.msn"
         [threeDImages]='rawProductData?.product3dImages'>
     </product-description>
@@ -132,8 +132,8 @@
     </div>
 
     <app-product-review [productName]="rawProductData?.productName"
-        [reviewLength]="apiResponse?.productReviews?.summaryData?.reviewCount"
-        [overallRating]="apiResponse?.productReviews?.startCount" [rawReviewsData]="apiResponse?.productReviews"
+        [reviewLength]="apiResponse?.reviews?.summaryData?.reviewCount"
+        [overallRating]="apiResponse?.reviews?.startCount" [rawReviewsData]="apiResponse?.reviews"
         (writeReview)="writeReview($event)" (reviewRatingPopup)="handleReviewRatingPopup($event)"
         (postHelpful)="handlePostHelpful($event)">
     </app-product-review>
@@ -231,8 +231,7 @@
     <div data-observeVisibility *ngIf="isBrowser && user?.authenticated == 'true'" [debounceTime]="0" (visible)="onVisiblePastOrders()" #pastOrders></div>
 
     <section data-observeVisibility class="pwa-col-12 common-product" [debounceTime]="0"
-        *ngIf='recentProductItems.length' [ngClass]="{'recent_section': !recentProductsInstance}"
-        (visible)="onVisibleRecentProduct($event)">
+        *ngIf='recentProductItems.length' [ngClass]="{'recent_section': !recentProductsInstance}">
         <ng-container #recentProducts></ng-container>
         <product-skeletons [type]="'RECENT'" [templateRefInstance]="recentProductsInstance"></product-skeletons>
     </section>
@@ -259,7 +258,7 @@
     <floating-button-container
         *ngIf="rawProductData?.productOutOfStock && !showScrollToTopButton && productService.oosSimilarProductsData.similarData.length > 2">
         <floating-button [label]="productStaticData.view_in_stock" [type]="'WHITE'"
-            (onClick)="scrollToId(!rawProductData?.productOutOfStock ? 'similarProducts' : 'similarProductsOos')">
+            (onClick)="scrollToId(!rawProductData?.productOutOfStock ? 'similarProducts' : 'similarProductsOos');">
         </floating-button>
         <floating-button [iconClass]="''" [label]="productStaticData.get_best_price" [type]="'RED'"
             (onClick)="getBestPrice($event)"></floating-button>

@@ -328,7 +328,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             // && rawData["product"][0]['data']['data']['productGroup']["active"]
             if (!rawData["product"][0]["error"] && rawData["product"][0]['data']['data']['productGroup']["active"]==true) {
                 this.apiResponse = rawData.product[0].data.data;
-                this.isAcceptLanguage = this.apiResponse['acceptLanguage'] && this.apiResponse['acceptLanguage'].length > 0 ? true : false; 
                 this.processProductData(this.apiResponse.productGroup);
                 this.setQuestionAnswerSchema();
                 if (this.apiResponse && this.apiResponse.tagProducts) {
@@ -406,6 +405,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     processProductData(productGroup) {
         this.rawProductData = JSON.parse(JSON.stringify(productGroup));
+        this.isAcceptLanguage = this.rawProductData.isAcceptLanguage; 
         this.originalProductBO = JSON.parse(JSON.stringify(productGroup.originalProductBO || this.rawProductData));
         if (
             this.rawProductData && 
@@ -503,12 +503,12 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 ? "http://schema.org/InStock"
                 : "http://schema.org/OutOfStock";
             let reviewCount =
-            this.apiResponse?.productReviews?.summaryData.reviewCount > 0
-                    ? this.apiResponse?.productReviews?.summaryData.reviewCount
+            this.apiResponse?.reviews?.summaryData.reviewCount > 0
+                    ? this.apiResponse?.reviews?.summaryData.reviewCount
                     : 1;
             let ratingValue =
-                this.apiResponse?.productReviews?.summaryData.finalAverageRating > 0
-                    ? this.apiResponse?.productReviews?.summaryData.finalAverageRating
+                this.apiResponse?.reviews?.summaryData.finalAverageRating > 0
+                    ? this.apiResponse?.reviews?.summaryData.finalAverageRating
                     : 3.5;
             let imageSchema = this.renderer2.createElement("script");
             imageSchema.type = "application/ld+json";
@@ -594,7 +594,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     delete schema["offers"]["availability"];
                 }
                 if (
-                    this.apiResponse.productReviews?.summaryData?.finalAverageRating === 0 ||
+                    this.apiResponse.reviews?.summaryData?.finalAverageRating === 0 ||
                     null ||
                     ""
                 ) {
@@ -781,6 +781,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
             if (this.commonService.isBrowser) {
                 this.addSessionSubscriber();
+                this.resetLazyComponents();
                 this.backUrlNavigationHandler();
                 this.attachBackClickHandler();
                 this.getAdsenseData();
@@ -824,7 +825,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 this.onVisibleOffer();
                 this.cdr.detectChanges();
                 this.callAPIs();
-                this.resetLazyComponents();
+                // this.resetLazyComponents();
             }
         })
     }
@@ -906,6 +907,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 (item) =>
                     ![this.rawProductData?.msn.toLowerCase()].includes(item.moglixPartNumber.toLowerCase())
             );
+            this.cdr.detectChanges();
+            setTimeout(() => this.clearRecentProductSection(), 100)
         }
         if (!this.rawProductData?.productOutOfStock && this.rawProductData?.msn != null) {
             this.getCompareProductsData(this.rawProductData?.msn);
@@ -988,14 +991,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    removeSimilarProductInstanceOOS()
-    {
-        if (this.similarProductInstanceOOS) {
-            this.similarProductInstanceOOS = null;
-            this.similarProductInstanceOOSContainerRef.remove();
-        }
-    }
-
     removeOosSimilarSection()
     {
         if (this.isBrowser) {
@@ -1007,16 +1002,23 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    clearRecentProductSection() {
+        if (this.recentProductsInstance && this.recentProductsContainerRef != undefined) {
+            this.recentProductsInstance = null;
+            this.recentProductsContainerRef && this.recentProductsContainerRef.remove();
+            this.onVisibleRecentProduct();
+            this.cdr.detectChanges();
+        } else {
+            this.onVisibleRecentProduct();
+        }
+    }
+
     resetLazyComponents()
     {
         // this function  is useable when user is redirect from PDP to PDP
         if (this.productShareInstance) {
             this.productShareInstance = null;
             this.productShareContainerRef.remove();
-        }
-        if (this.similarProductInstanceOOS) {
-            this.similarProductInstanceOOS = null;
-            this.similarProductInstanceOOSContainerRef.remove();
         }
         if (this.fbtComponentInstance) {
             this.fbtComponentInstance = null;
@@ -1037,12 +1039,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         //     if (this.sponseredProductsContainerRef) { this.sponseredProductsContainerRef.remove();}
         //     this.onVisibleSponsered(null);
         // }
-
-        if (this.recentProductsInstance && this.recentProductsContainerRef !=undefined) {
-            this.recentProductsInstance = null;
-            this.recentProductsContainerRef && this.recentProductsContainerRef.remove();
-            this.onVisibleRecentProduct(null);
-        }
   
         if (this.rfqFormInstance) {
             this.rfqFormInstance = null;
@@ -1115,7 +1111,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.pastOrdersInstance = null;
             this.pastOrdersContainerRef.remove();
         }
-        this.clearBulkQtySection();
         if(this.AdsenseFeatureProductsInstance) {
             this.AdsenseFeatureProductsInstance = null;
             this.AdsenseFeatureProductsContainerRef.remove();
@@ -1174,20 +1169,12 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     }
                     this.similarForOOSLoaded = false;
                     this.commonService.similarProductsLoaded.next(true);
+                    if(this.commonService.isBrowser && this.rawProductData.productOutOfStock) {
+                        this.onVisibleSimilarOOS(null);
+                    } 
                     this.cdr.detectChanges();
                 });
         }
-    }
-
-    getRecents() {
-        let user = this.localStorageService.retrieve('user');
-        const userId = (user['userId']) ? user['userId'] : null;
-        this.productService.getrecentProduct(userId).subscribe(result => {
-            if (result['statusCode'] === 200) {
-                this.recentProductItems = (result['data'] as any[]).map(product => this.productService.recentProductResponseToProductEntity(product));
-                // if (this.recentProductItems.length === 0) { this.noRecentlyViewed$.emit(true);}
-            }
-        })
     }
 
     // Frequently brought togther functions
@@ -1300,6 +1287,9 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
     scrollToId(id: string) {
         this.holdRFQForm = true;
+        if(id == 'similarProductsOos') {
+            this.onVisibleSimilarOOS(null, true);
+        }
         if (document.getElementById(id)) {
             let footerOffset = document.getElementById(id).offsetTop;
             ClientUtility.scrollToTop(1000, footerOffset + 190);
@@ -2284,12 +2274,12 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 null,
                 this.injector
             );
-        this.apiResponse.productReviews['productName'] = this.rawProductData.productName;
+        this.apiResponse.reviews['productName'] = this.rawProductData.productName;
         this.reviewRatingPopupInstance.instance["oosSimilarCardNumber"] = index;
         this.reviewRatingPopupInstance.instance["rawReviewsData"] =
-            (index > -1) ? this.productService.oosSimilarProductsData.similarData[index].reviewRatingApiData : this.apiResponse.productReviews;
+            (index > -1) ? this.productService.oosSimilarProductsData.similarData[index].reviewRatingApiData : this.apiResponse.reviews;
 
-        this.reviewRatingPopupInstance.instance["productUrl"] = (index > -1) ? this.productService.oosSimilarProductsData.similarData[index].productUrl : this.rawProductData.productReviews;
+        this.reviewRatingPopupInstance.instance["productUrl"] = (index > -1) ? this.productService.oosSimilarProductsData.similarData[index].productUrl : this.rawProductData.reviews;
         (
             this.reviewRatingPopupInstance.instance[
             "closePopup$"
@@ -2369,12 +2359,12 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                         }
                         this.productService.getReviewsRating(reviewObj).subscribe((newRes) => {
                             if (newRes["code"] === 200) {
-                                const filteredObj = newRes['data']['reviewList'].find(each => each.id == this.apiResponse.productReviews.reviewList[i].id);
-                                this.apiResponse.productReviews.reviewList[i]["yes"] = filteredObj["isReviewHelpfulCountYes"];
-                                this.apiResponse.productReviews.reviewList[i]['like'] = reviewValue == 'yes' ? 1 : 0;
-                                this.apiResponse.productReviews.reviewList[i]['dislike'] = reviewValue == 'no' ? 1 : 0;
-                                this.apiResponse.productReviews.reviewList[i]["no"] = filteredObj["isReviewHelpfulCountNo"];
-                                this.apiResponse.productReviews.reviewList[i] = JSON.parse(JSON.stringify(this.apiResponse.productReviews.reviewList[i]));
+                                const filteredObj = newRes['data']['reviewList'].find(each => each.id == this.apiResponse.reviews.reviewList[i].id);
+                                this.apiResponse.reviews.reviewList[i]["yes"] = filteredObj["isReviewHelpfulCountYes"];
+                                this.apiResponse.reviews.reviewList[i]['like'] = reviewValue == 'yes' ? 1 : 0;
+                                this.apiResponse.reviews.reviewList[i]['dislike'] = reviewValue == 'no' ? 1 : 0;
+                                this.apiResponse.reviews.reviewList[i]["no"] = filteredObj["isReviewHelpfulCountNo"];
+                                this.apiResponse.reviews.reviewList[i] = JSON.parse(JSON.stringify(this.apiResponse.reviews.reviewList[i]));
                                 this.commonService.feedBackPosted.next(true);
                                 this.cdr.detectChanges();
                             }
@@ -2515,7 +2505,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     async onVisibleProductRFQ(htmlElement) {
-        if (this.holdRFQForm) return
+        if (this.holdRFQForm) return;
         this.removeRfqForm();
         if (!this.productRFQInstance) {
             this.intiateRFQQuote(true, false);
@@ -2886,7 +2876,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
 
     // dynamically recent products section
 
-    async onVisibleRecentProduct(htmlElement) {
+    async onVisibleRecentProduct(htmlElement = null) {
         if (!this.recentProductsInstance && this.recentProductItems.length > 0) {
             const { RecentViewedProductsComponent } = await import(
                 "./../../components/recent-viewed-products/recent-viewed-products.component"
@@ -2920,14 +2910,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 custData: custData,
                 order: orderData,
             };
-            // (
-            //     this.recentProductsInstance.instance["noRecentlyViewed$"] as EventEmitter<any>).subscribe((flag) =>
-            //     {
-            //         this.hasRecentlyView = false;
-            //     }
-            // );
+            this.cdr.detectChanges();
         }
-        this.cdr.detectChanges();
     }
 
     // dynamically load similar section
@@ -3067,7 +3051,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     oosCardIndex = -1;
-    async onVisibleSimilarOOS(event) {
+    async onVisibleSimilarOOS(event, holdRFQValue = false) {
         if (!this.similarProductInstanceOOS && this.rawProductData.productOutOfStock) {
             this.commonService.oosSimilarCard$.next(false);
             const { ProductOosSimilarComponent } = await import(
@@ -3132,7 +3116,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                 });
             }
         }
-        this.holdRFQForm = false;
+        this.holdRFQForm = holdRFQValue;
     }
 
     handlemetaUpdateEvent(index) {

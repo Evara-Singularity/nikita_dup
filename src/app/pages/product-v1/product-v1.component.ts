@@ -73,7 +73,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     productCartThumb: any;
     productMediumImage: any;
     qunatityFormControl: FormControl = new FormControl(1, []); // setting a default quantity to 1
-    productBulkPrices: any;
+    productBulkPrices: any = [];
     isBulkPricesProduct: boolean;
     selectedProductBulkPrice: any;
     bulkPriceWithoutTax: any;
@@ -781,7 +781,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
             if (this.commonService.isBrowser) {
                 this.addSessionSubscriber();
-                this.resetLazyComponents();
                 this.backUrlNavigationHandler();
                 this.attachBackClickHandler();
                 this.getAdsenseData();
@@ -820,13 +819,12 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     patchApiResponse() {
         this.productService.secondaryAPIs(this.rawProductData.msn).subscribe((resp: any) => {
             if(resp && resp.status && resp.data && resp.data.data) {
-                console.log(this.apiResponse);
                 this.apiResponse = {...this.apiResponse, ...resp.data.data};
                 this.clearOfferInstance();
                 this.onVisibleOffer();
                 this.cdr.detectChanges();
                 this.callAPIs();
-                // this.resetLazyComponents();
+                this.resetLazyComponents();
             }
         })
     }
@@ -1117,10 +1115,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.pastOrdersInstance = null;
             this.pastOrdersContainerRef.remove();
         }
-        if(this.productBulkQtyInstance) {
-            this.productBulkQtyInstance = null;
-            this.productBulkQtyContainerRef.remove();
-        }
+        this.clearBulkQtySection();
         if(this.AdsenseFeatureProductsInstance) {
             this.AdsenseFeatureProductsInstance = null;
             this.AdsenseFeatureProductsContainerRef.remove();
@@ -1136,6 +1131,13 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         if(this.AdsenseRectangleBannerInstance) {
             this.AdsenseRectangleBannerInstance = null;
             this.AdsenseRectangleBannerContainerRef.remove();
+        }
+    }
+
+    clearBulkQtySection() {
+        if(this.productBulkQtyInstance) {
+            this.productBulkQtyInstance = null;
+            this.productBulkQtyContainerRef.remove();
         }
     }
 
@@ -1653,6 +1655,8 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             if (this.selectedProductBulkPrice) {
                 this.bulkPriceWithoutTax = this.selectedProductBulkPrice['bulkSPWithoutTax'];
             }
+            this.clearBulkQtySection();
+            this.onVisibleProductBulkQtySection();
             this.cdr.detectChanges();
         }
     }
@@ -4256,38 +4260,40 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     async onVisibleProductBulkQtySection() {
-        const { ProductBulkQuantityComponent } = await import(
-            "../../components/product-bulk-quantity/product-bulk-quantity.component"
-        );
-        const factory = this.cfr.resolveComponentFactory(ProductBulkQuantityComponent);
-        this.productBulkQtyInstance = this.productBulkQtyContainerRef.createComponent(
-            factory,
-            null,
-            this.injector
-        );
-        this.productBulkQtyInstance.instance["rawProductData"] = this.rawProductData;
-        this.productBulkQtyInstance.instance['productOutOfStock'] = this.rawProductData.productOutOfStock;
-        this.productBulkQtyInstance.instance["isCommonProduct"] = this.rawProductData?.productFilterAttributesList > 0;
-        this.productBulkQtyInstance.instance["priceQuantityCountry"] = this.rawProductData.priceQuantityCountry;
-        this.productBulkQtyInstance.instance["productBulkPrices"] = this.productBulkPrices;
-        this.productBulkQtyInstance.instance["cartQunatityForProduct"] = this.cartQunatityForProduct;
-        this.productBulkQtyInstance.instance["qunatityFormControl"] = this.qunatityFormControl;
-        this.productBulkQtyInstance.instance["productMinimmumQuantity"] = this.rawProductData.productMinimmumQuantity;
-        (
-            this.productBulkQtyInstance.instance[
-            "checkBulkPriceMode$"
-            ] as EventEmitter<boolean>
-        ).subscribe((data) => {
-            this.checkBulkPriceMode();
-        });
-        (
-            this.productBulkQtyInstance.instance[
-            "selectProductBulkPrice$"
-            ] as EventEmitter<any>
-        ).subscribe((data) => {
-            this.selectProductBulkPrice(data);
-        });
-        this.cdr.detectChanges();
+        if(this.productBulkPrices && !this.productBulkQtyInstance) {
+            const { ProductBulkQuantityComponent } = await import(
+                "../../components/product-bulk-quantity/product-bulk-quantity.component"
+            );
+            const factory = this.cfr.resolveComponentFactory(ProductBulkQuantityComponent);
+            this.productBulkQtyInstance = this.productBulkQtyContainerRef.createComponent(
+                factory,
+                null,
+                this.injector
+            );
+            this.productBulkQtyInstance.instance["rawProductData"] = this.rawProductData;
+            this.productBulkQtyInstance.instance['productOutOfStock'] = this.rawProductData.productOutOfStock;
+            this.productBulkQtyInstance.instance["isCommonProduct"] = this.rawProductData?.productFilterAttributesList > 0;
+            this.productBulkQtyInstance.instance["priceQuantityCountry"] = this.rawProductData.priceQuantityCountry;
+            this.productBulkQtyInstance.instance["productBulkPrices"] = this.productBulkPrices;
+            this.productBulkQtyInstance.instance["cartQunatityForProduct"] = this.cartQunatityForProduct;
+            this.productBulkQtyInstance.instance["qunatityFormControl"] = this.qunatityFormControl;
+            this.productBulkQtyInstance.instance["productMinimmumQuantity"] = this.rawProductData.productMinimmumQuantity;
+            (
+                this.productBulkQtyInstance.instance[
+                "checkBulkPriceMode$"
+                ] as EventEmitter<boolean>
+            ).subscribe((data) => {
+                this.checkBulkPriceMode();
+            });
+            (
+                this.productBulkQtyInstance.instance[
+                "selectProductBulkPrice$"
+                ] as EventEmitter<any>
+            ).subscribe((data) => {
+                this.selectProductBulkPrice(data);
+            });
+            this.cdr.detectChanges();
+        }
     }
 
     async onVisibleAdsenseProductBrands() {

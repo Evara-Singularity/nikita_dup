@@ -1115,7 +1115,6 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             this.pastOrdersInstance = null;
             this.pastOrdersContainerRef.remove();
         }
-        this.clearBulkQtySection();
         if(this.AdsenseFeatureProductsInstance) {
             this.AdsenseFeatureProductsInstance = null;
             this.AdsenseFeatureProductsContainerRef.remove();

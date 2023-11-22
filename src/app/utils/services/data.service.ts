@@ -216,11 +216,11 @@ export class DataService {
                         this.getSessionApi = undefined;
                     });
             }
-        }else if(error.status == 400 && url.includes("sendOTP") == true){
+        }else if(error.status == 400 && url.includes("sendOtpV2") == true){
             const message = error?.error?.message as string || 'Something went wrong';
             this.showMessage('error', message);
-        }else if(error.status == 429 && url.includes("sendOTP") == true){
-            const message = error?.error?.message as string || 'Something went wrong';
+        }else if(error.status == 429 && url.includes("sendOtpV2") == true){
+            const message = 'Maximum OTP attempts reached. Please try after 24 hours!';
             this.showMessage('error', message);
         } else {
             this.showMessage('error', 'Something went wrong');

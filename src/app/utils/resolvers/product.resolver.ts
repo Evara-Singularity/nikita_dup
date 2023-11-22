@@ -40,10 +40,11 @@ export class ProductResolver implements Resolve<any> {
     // this.loaderService.setLoaderState(true);
     const startTime = new Date().getTime();
     const languageHeader = {
-      'language': 'hi'
+      'language': 'hi',
+      'x-rest-call': 'true'
     };
     const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders((_activatedRouteSnapshot.data['language'] == 'hi')?languageHeader:{}), 
+      headers: new HttpHeaders((_activatedRouteSnapshot.data['language'] == 'hi')?languageHeader:{'x-rest-call': 'true'}), 
     };
     // Get product MSN from url
     let productMsnId = _activatedRouteSnapshot.params['msnid'];  // get MSN id from URL

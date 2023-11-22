@@ -1457,7 +1457,7 @@ export class ProductService {
     }
 
     secondaryAPIs(msn, userId = null, headerData?) {
-        let url = CONSTANTS.NEW_MOGLIX_API_V3 + ENDPOINTS.BASIC_DETAILS + msn?.toLowerCase() + userId ? '&userId=' + userId : '';
+        let url = CONSTANTS.NEW_MOGLIX_API_V3 + ENDPOINTS.BASIC_DETAILS + msn?.toLowerCase() + (userId ? `&userId=${userId}` : '');
         return this._dataService.callRestful("GET", url, headerData).pipe(
             catchError((res: HttpErrorResponse) => {
                 return of({ status: false, statusCode: res.status, data: [] });

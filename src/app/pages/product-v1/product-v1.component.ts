@@ -819,7 +819,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
     }
 
     patchApiResponse() {
-        this.productService.secondaryAPIs(this.rawProductData.msn, this.user ? this.user.userId : null, this.isHindiUrl ? { headerData: { 'language': 'hi' } } : null).subscribe((resp: any) => {
+        this.productService.secondaryAPIs(this.rawProductData.msn, this.user ? this.user.userId : null, this.isHindiUrl ? { headerData: { 'language': 'hi', 'x-rest-call': 'true' } } : {headerData:{'x-rest-call': 'true'}}).subscribe((resp: any) => {
             if(resp && resp.status && resp.data && resp.data.data) {
                 this.apiResponse = {...this.apiResponse, ...resp.data.data};
                 this.clearOfferInstance();

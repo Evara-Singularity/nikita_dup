@@ -92,7 +92,7 @@ export class DataService {
             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE'
         };
 
-        headers['x-Platform'] = 'PWA'
+        headers['x-Platform'] = 'PWA';
         headers['x-access-token'] = (userSession != null && userSession.token != undefined) ? userSession.token : '';
         headers['x-request-id'] = (userSession != null && userSession.sessionId != undefined) ? userSession.sessionId : '';
         if (options && options.headerData && Object.keys(options.headerData).length) {
@@ -117,6 +117,9 @@ export class DataService {
             }
             if (options.headerData['accessKey']) {
                 headers['accessKey'] = options.headerData['accessKey'];
+            }
+            if (options.headerData['x-rest-call']) {
+                headers['x-rest-call'] = options.headerData['x-rest-call'];
             }
         }
 

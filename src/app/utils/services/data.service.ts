@@ -220,7 +220,7 @@ export class DataService {
             const message = error?.error?.message as string || 'Something went wrong';
             this.showMessage('error', message);
         }else if(error.status == 429 && url.includes("sendOTP") == true){
-            const message = error?.error?.message as string || 'Something went wrong';
+            const message = 'Maximum OTP attempts reached. Please try after 24 hours!';
             this.showMessage('error', message);
         } else {
             this.showMessage('error', 'Something went wrong');

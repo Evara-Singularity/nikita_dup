@@ -38,7 +38,7 @@
         [starsCount]="apiResponse?.reviews?.startCount"
         [rawReviewsCount]="apiResponse?.reviews?.summaryData?.reviewCount || 0"
         [rawProductCountMessage]="rawProductCountMessage" [msnId]="rawProductData?.msn"
-        [threeDImages]='threeDimensionImages?.product3dImages'>
+        [threeDImages]='rawProductData?.product3dImages'>
     </product-description>
 
     <product-grouping-attributes [isCommonProduct]="rawProductData?.productFilterAttributesList > 0"

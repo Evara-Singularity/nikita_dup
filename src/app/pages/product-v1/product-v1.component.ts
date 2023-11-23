@@ -297,7 +297,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         @Inject(DOCUMENT) private document,
         @Optional() @Inject(RESPONSE) private _response: any,
     ) {
-        this.isServer = commonService.isServer;
+        this.isServer = true;
         this.isBrowser = commonService.isBrowser;
         // const languagePrefrence = localStorage.getItem("languagePrefrence");
         if (((this.router.url).toLowerCase().indexOf('/hi/') !== -1)) {
@@ -3298,7 +3298,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
         if (this.isServer) {
             const links = this.renderer2.createElement("link");
             links.rel = "canonical";
-            let url = ''
+            let url = '';
             if (this.isHindiUrl) {
                 url = CONSTANTS.PROD + this.hindiUrl;
             }
@@ -3321,7 +3321,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
             }
             else {
                 if (!metaObj.productUrl) {
-                    url = baseUrl + this.rawProductData;
+                    url = baseUrl + this.rawProductData.canonicalUrl;
                 }
             }
 

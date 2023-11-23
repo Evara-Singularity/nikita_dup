@@ -605,6 +605,15 @@ export class OrderConfirmationComponent implements OnInit {
         try {
             if (cartSession["itemsList"] !== null && cartSession["itemsList"]) {
                 var totQuantity = 0;
+                let eventData = { 'prodId': '', 'prodPrice': 0, 'prodQuantity': 0, 'prodImage': '', 'prodName': '', 'prodURL': '' };
+                for (let p = 0; p < cartSession["itemsList"].length; p++) {
+                    eventData['prodId'] = cartSession["itemsList"][p]['productId'] + ', ' + eventData['prodId'];
+                    eventData['prodPrice'] = cartSession["itemsList"][p]['productUnitPrice'] * cartSession["itemsList"][p]['productQuantity'] + eventData['prodPrice'];
+                    eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
+                    eventData['prodImage'] = cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
+                    eventData['prodName'] = cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
+                    eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+                }
                 var trackData = {
                     event_type: "page_load",
                     page_type: "order_confirmation",
@@ -632,6 +641,7 @@ export class OrderConfirmationComponent implements OnInit {
                             quantity: item["productQuantity"],
                         };
                     }),
+                    eventData: eventData
                 };
                 this.globalAnalyticsService.sendMessage(trackData);
                 // console.log('order onfirmation logs ==> completed sendClickStreamData ');

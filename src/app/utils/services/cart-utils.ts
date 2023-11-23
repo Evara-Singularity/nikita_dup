@@ -263,6 +263,7 @@ export class CartUtils
                     taxPercentage: cartItems[i]["taxPercentage"],
                     categoryCode: cartItems[i]["categoryCode"],
                     taxonomyCode: cartItems[i]["taxonomyCode"],
+                    productUrl: cartItems[i]['productUrl']
                 };
                 if (cartItems[i]["buyNow"]) {
                     item["buyNow"] = true;

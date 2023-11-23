@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     platformBrowserDynamic().bootstrapModule(AppModule)
         .then(res => {
             // console.log('<===ANGULAR SCRIPTS LOADED===>', new Date().getTime())
-           setTimeout(() => {intializeAdobe(),intializedGTM(window, document, 'script', 'dataLayer', environment.GTM_ANALYTICS_CODE);initializeGoogleAnalytics()}, 4000)
+           setTimeout(() => {intializedGTM(window, document, 'script', 'dataLayer', environment.GTM_ANALYTICS_CODE);initializeGoogleAnalytics()}, 4000)
         })
         .catch(err => console.error(err));
 });
@@ -59,15 +59,5 @@ function initializeGoogleAnalytics() {
         // console.log('Google tag added')
     }
     s.setAttribute( 'src', 'https://www.google-analytics.com/analytics.js' );
-    document.body.appendChild( s );
-}
-
-function intializeAdobe() {
-    var s = document.createElement( 'script' );
-    s.defer = true;
-    s.onload = () => {
-        // console.log('Google tag added')
-    }
-    s.setAttribute( 'src', "//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-3511f938e1fe-staging.min.js" );
     document.body.appendChild( s );
 }

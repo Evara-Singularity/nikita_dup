@@ -612,7 +612,9 @@ export class OrderConfirmationComponent implements OnInit {
                     eventData['prodQuantity'] = cartSession["itemsList"][p]['productQuantity'] + eventData['prodQuantity'];
                     eventData['prodImage'] = cartSession["itemsList"][p]['productImg'] + ', ' + eventData['prodImage'];
                     eventData['prodName'] = cartSession["itemsList"][p]['productName'] + ', ' + eventData['prodName'];
-                    eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'] + ', ' + eventData['prodURL'];
+                    eventData['prodURL'] = cartSession["itemsList"][p]['productUrl'].includes('https://') ?
+                        cartSession["itemsList"][p]['productUrl'] : CONSTANTS.PROD + '/' + cartSession["itemsList"][p]['productUrl'] +
+                        ', ' + eventData['prodURL'];
                 }
                 var trackData = {
                     event_type: "page_load",

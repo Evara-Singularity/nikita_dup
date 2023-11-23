@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.onload = () => {
-    const c = "true" == sessionStorage.getItem("scriptLoaded") ? 0 : 3500;
+    const c = "true" == sessionStorage.getItem("scriptLoaded") ? 0 : 4000;
                     console.log(c);
                     const _ = setInterval(()=>{
                         intializedGTM(window, document, 'script', 'dataLayer', environment.GTM_ANALYTICS_CODE),

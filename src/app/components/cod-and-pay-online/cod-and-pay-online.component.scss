@@ -1,3 +1,4 @@
+@import '../../scss/variables';
 .cod-payContainer {
     margin: 0 3px;
     background: var(--ghost-white);
@@ -99,4 +100,41 @@
         }
     }
 
+}
+
+.cod-popup {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    background-color: var(--white);
+    border-radius: 8px;
+    width: 100%;
+    padding: 15px;
+    .cod {
+        width: 100%;
+
+        img {
+            width: 208px;
+        }
+        h3 {
+            font-size: $extra-large-2-font;
+            line-height: 30px;
+        }
+        .btn-sec{
+            display: flex;
+            padding-top: 30px;
+            .small-btn{
+                padding: 10px 0;
+                width: calc(35% - 15px)
+            }
+            .big-btn{
+                padding: 10px 0;
+                width: 65%;
+                margin-left: 15px;
+            }
+            
+        }
+    }
+   
 }

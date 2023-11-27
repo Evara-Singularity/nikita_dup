@@ -14,6 +14,7 @@ import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.ser
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { QuickCodService } from "@app/utils/services/quick-cod.service";
 import { MathRoundPipeModule } from "../../utils/pipes/math-round";
+import { BottomMenuModule } from "@app/modules/bottomMenu/bottom-menu.module";
 
 @Component({
   selector: "cod-and-pay-online",
@@ -101,9 +102,10 @@ export class CodAndPayOnlineComponent {
   }
 }
 
+
 @NgModule({
   declarations: [CodAndPayOnlineComponent],
   exports: [CodAndPayOnlineComponent],
-  imports: [CommonModule, MathRoundPipeModule],
+  imports: [CommonModule, MathRoundPipeModule,  BottomMenuModule,],
 })
 export class CodAndPayOnlineModule {}

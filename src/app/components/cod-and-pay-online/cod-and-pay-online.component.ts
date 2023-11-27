@@ -96,6 +96,19 @@ export class CodAndPayOnlineComponent {
   }
 
   validate_COD_Order(){
+    if (!this.deliveryAddress) {
+      this.continueToPayment$.emit(true);
+        return;
+    }
+    if (this.invoiceType === this.INVOICE_TYPES.TAX) {
+        if (!this.billingAddress) {
+          this.continueToPayment$.emit(true);
+            return;
+        } else if (!this.billingAddress['gstinVerified']) {
+          this.continueToPayment$.emit(true);
+          return;
+        }
+    }
     this.orderConfirmationPopUp = true; 
   }
   

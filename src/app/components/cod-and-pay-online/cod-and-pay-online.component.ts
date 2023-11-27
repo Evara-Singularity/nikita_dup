@@ -73,7 +73,7 @@ export class CodAndPayOnlineComponent {
       postCode: _postCode,
       userId: _userId,
     };
-    this.adobeTracking("checkout:COD");
+    this.adobeTracking("checkout:flashcod-confirm");
     this.quickCodService.initiateQuickCOD(validateDtoRequest);
   }
 
@@ -90,11 +90,17 @@ export class CodAndPayOnlineComponent {
     this.continueToPayment$.emit(true);
   }
 
+  outSideAdobeTracking(){
+    this.orderConfirmationPopUp = false;
+    this.adobeTracking("checkout:flashcod-cancel-outsidepopupclick");
+  }
+
   validate_COD_Order(){
     this.orderConfirmationPopUp = true; 
   }
   
   closePopUp(){
+    this.adobeTracking("checkout:flashcod-cancel");
     this.orderConfirmationPopUp = false;
   }
 

@@ -96,7 +96,7 @@
         <i class="icon-next"></i>
       </div>
     </div>
-    <div class="cod-btn btn primary-full-btn" (click)="validateCart()">
+    <div class="cod-btn btn primary-full-btn" (click)="validate_COD_Order()">
       <div class="text-container">
         <div class="text">
           <p>CASH ON DELIVERY</p>
@@ -132,15 +132,15 @@
   </div>
 </div>
 
-<app-bottom-menu>
+<app-bottom-menu *ngIf="orderConfirmationPopUp" (outData$)="closePopUp()"> 
   <div content>
     <div class="cod-popup">
       <div class="cod pt-15">
         <img src="assets/img/cod-img.png" alt="">
         <h3 class="pad-0 mt-10">Confirm your<br> Cash on Delivery Order</h3>
         <div class="btn-sec">
-          <button class="btn tertiary-outline-cta small-btn">CANCEL</button>
-          <button class="btn tertiary-btn big-btn">CONFIRM</button>
+          <button class="btn tertiary-outline-cta small-btn" (click)="closePopUp()">CANCEL</button>
+          <button class="btn tertiary-btn big-btn" (click)="validateCart()">CONFIRM</button>
         </div>
       </div>
       

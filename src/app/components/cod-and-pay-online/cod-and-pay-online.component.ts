@@ -23,6 +23,7 @@ import { BottomMenuModule } from "@app/modules/bottomMenu/bottom-menu.module";
 })
 export class CodAndPayOnlineComponent {
   readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
+  orderConfirmationPopUp: boolean = false;
   @Input("payableAmount") payableAmount: number = 0;
   @Input("invoiceType") invoiceType = this.INVOICE_TYPES.RETAIL;
   @Output() continueToPayment$: EventEmitter<any> = new EventEmitter<any>();
@@ -87,6 +88,14 @@ export class CodAndPayOnlineComponent {
   continueToPayment() {
     this.adobeTracking("checkout:payonline");
     this.continueToPayment$.emit(true);
+  }
+
+  validate_COD_Order(){
+    this.orderConfirmationPopUp = true; 
+  }
+  
+  closePopUp(){
+    this.orderConfirmationPopUp = false;
   }
 
   adobeTracking(trackingname) {

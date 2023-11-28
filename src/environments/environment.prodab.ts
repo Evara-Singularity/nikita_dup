@@ -16,7 +16,7 @@ export const environment = {
   SEND_OTP_PRIVATE_KEY: "P0wQmL9nF1kG8vJ5oT6zH7wXeC4rY3dA2sK1qB8pVfR7jU6gH9zL5tN0mX3sP4wE",
   GTM_ANALYTICS_CODE: 'GTM-PMPXQQ',
   ADOBE_ANALYTIC_SCRIPT: '//assets.adobedtm.com/055f91edd8ef/2cc21fe6ff8d/launch-fd00645b6c3b.min.js',
-  buildVersion: '25.25',
+  buildVersion: '25.26',
   LOG_FILE_PATH: "/var/log/moglix/online/pwa-ab/",
   SOCIAL_LOGIN: {
     "google": {

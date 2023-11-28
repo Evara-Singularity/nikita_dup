@@ -55,6 +55,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
     addressUpdated = false;
     is_cod_section: number = 0;
     isAllCartAvailableForCod: boolean = false;
+    NON_CASH_ON_DELIVERABLE_MSNS: any = [];
     moduleUsedIn: string = 'quick-checkout';
 
     constructor(public _addressService: AddressService, public _cartService: CartService, private _localAuthService: LocalAuthService, private _activatedRoute: ActivatedRoute,
@@ -204,6 +205,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
    */
     verifyServiceablityAndCashOnDelivery(postCode,deliveryAddress)
     {
+        this.NON_CASH_ON_DELIVERABLE_MSNS = [];
         const cartItems: any[] = this.cartSession['itemsList'] || [];
         if ((!cartItems) || (cartItems.length === 0)) return;
         const MSNS = cartItems.map(item => item.productId);
@@ -222,6 +224,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             const AGGREGATES = CheckoutUtil.formatAggregateValues(response);
             const NON_SERVICEABLE_MSNS: any[] = CheckoutUtil.getNonServiceableMsns(AGGREGATES);
             const NON_CASH_ON_DELIVERABLE_MSNS: any[] = CheckoutUtil.getNonCashOnDeliveryMsns(AGGREGATES);
+            this.NON_CASH_ON_DELIVERABLE_MSNS =  NON_CASH_ON_DELIVERABLE_MSNS;
             this.getCodAndPayOnline(NON_CASH_ON_DELIVERABLE_MSNS);
             this.updateNonServiceableItems(cartItems, NON_SERVICEABLE_MSNS);
             this.updateNonDeliverableItems(cartItems, NON_CASH_ON_DELIVERABLE_MSNS);
@@ -330,7 +333,7 @@ export class CheckoutAddressComponent implements OnInit, AfterViewInit, OnDestro
             this._cartService.getShippingPriceChanges().subscribe(res=>{
                 const  SHIPPING_CHARGES = res.cart['shippingCharges'] || 0;
                 this.payableAmount = (TOTAL_AMOUNT + SHIPPING_CHARGES) - TOTAL_OFFER;
-                if(this.payableAmount > CONSTANTS.GLOBAL.codMin && this.payableAmount < CONSTANTS.GLOBAL.codMax){
+                if(this.payableAmount > CONSTANTS.GLOBAL.codMin && this.payableAmount < CONSTANTS.GLOBAL.codMax && this.NON_CASH_ON_DELIVERABLE_MSNS.length === 0){
                     this.is_cod_section = 2;
                 }else{
                     this.is_cod_section = 1;

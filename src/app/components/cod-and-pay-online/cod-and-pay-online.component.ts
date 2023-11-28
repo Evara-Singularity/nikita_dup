@@ -14,6 +14,7 @@ import { GlobalAnalyticsService } from "@app/utils/services/global-analytics.ser
 import { GlobalLoaderService } from "@app/utils/services/global-loader.service";
 import { QuickCodService } from "@app/utils/services/quick-cod.service";
 import { MathRoundPipeModule } from "../../utils/pipes/math-round";
+import { BottomMenuModule } from "@app/modules/bottomMenu/bottom-menu.module";
 
 @Component({
   selector: "cod-and-pay-online",
@@ -22,6 +23,7 @@ import { MathRoundPipeModule } from "../../utils/pipes/math-round";
 })
 export class CodAndPayOnlineComponent {
   readonly INVOICE_TYPES = { RETAIL: "retail", TAX: "tax" };
+  orderConfirmationPopUp: boolean = false;
   @Input("payableAmount") payableAmount: number = 0;
   @Input("invoiceType") invoiceType = this.INVOICE_TYPES.RETAIL;
   @Output() continueToPayment$: EventEmitter<any> = new EventEmitter<any>();
@@ -71,7 +73,7 @@ export class CodAndPayOnlineComponent {
       postCode: _postCode,
       userId: _userId,
     };
-    this.adobeTracking("checkout:COD");
+    this.adobeTracking("checkout:flashcod-confirm");
     this.quickCodService.initiateQuickCOD(validateDtoRequest);
   }
 
@@ -88,6 +90,33 @@ export class CodAndPayOnlineComponent {
     this.continueToPayment$.emit(true);
   }
 
+  outSideAdobeTracking(){
+    this.orderConfirmationPopUp = false;
+    this.adobeTracking("checkout:flashcod-cancel-outsidepopupclick");
+  }
+
+  validate_COD_Order(){
+    if (!this.deliveryAddress) {
+      this.continueToPayment$.emit(true);
+        return;
+    }
+    if (this.invoiceType === this.INVOICE_TYPES.TAX) {
+        if (!this.billingAddress) {
+          this.continueToPayment$.emit(true);
+            return;
+        } else if (!this.billingAddress['gstinVerified']) {
+          this.continueToPayment$.emit(true);
+          return;
+        }
+    }
+    this.orderConfirmationPopUp = true; 
+  }
+  
+  closePopUp(){
+    this.adobeTracking("checkout:flashcod-cancel");
+    this.orderConfirmationPopUp = false;
+  }
+
   adobeTracking(trackingname) {
     const page = {
       linkPageName: "moglix:checkout",
@@ -101,9 +130,10 @@ export class CodAndPayOnlineComponent {
   }
 }
 
+
 @NgModule({
   declarations: [CodAndPayOnlineComponent],
   exports: [CodAndPayOnlineComponent],
-  imports: [CommonModule, MathRoundPipeModule],
+  imports: [CommonModule, MathRoundPipeModule,  BottomMenuModule,],
 })
 export class CodAndPayOnlineModule {}

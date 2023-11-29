@@ -3751,7 +3751,7 @@ export class ProductV1Component implements OnInit, AfterViewInit, OnDestroy {
                     this.injector
                 );
             this.addToCartToastInstance.instance["text"] =
-                this.rawCartNotificationMessage;
+                this.rawCartNotificationMessage == undefined ? "Product added successfully" : this.rawCartNotificationMessage;
             this.addToCartToastInstance.instance["btnText"] = "VIEW CART";
             this.addToCartToastInstance.instance["btnLink"] = "/quickorder";
             this.addToCartToastInstance.instance["showTime"] = 6000;
